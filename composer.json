@@ -1,0 +1,16 @@
+{
+	"name": "yurunsoft/imi",
+	"type": "library",
+	"description": "A swoole framework, it's very six!",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "autoload": {
+        "psr-4" : {
+			"Imi\\" : "src/"
+        }
+    }
+}
