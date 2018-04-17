@@ -3,7 +3,12 @@
 	"type": "library",
 	"description": "A swoole framework, it's very six!",
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "yurunsoft/yurun-event": "~2.0",
+        "doctrine/annotations": "1.4"
+    },
+    "require-dev": {
+        "eaglewu/swoole-ide-helper": "dev-master"
     },
     "autoload": {
         "psr-4" : {
