@@ -26,14 +26,34 @@ abstract class Base
 
 	/**
 	 * 事件对象
-	 * @var \Imi\Server\Http\IServerEvent
+	 * @var object
 	 */
 	protected $eventInstance;
 
-	public function __construct($config)
+	/**
+	 * 是否为子服务器
+	 * @var bool
+	 */
+	protected $isSubServer;
+
+	/**
+	 * 构造方法
+	 * @param array $config
+	 * @param \swoole_server $serverInstance
+	 * @param bool $subServer 是否为子服务器
+	 */
+	public function __construct($config, $isSubServer = false)
 	{
 		$this->config = $config;
-		$this->createServer();
+		$this->isSubServer = $isSubServer;
+		if($isSubServer)
+		{
+			$this->createSubServer();
+		}
+		else
+		{
+			$this->createServer();
+		}
 		if(!empty($config['configs']))
 		{
 			$this->swooleServer->set($config['configs']);
@@ -51,10 +71,28 @@ abstract class Base
 	}
 
 	/**
+	 * 获取服务器事件处理对象实例
+	 * @return object
+	 */
+	public function getEventInstance()
+	{
+		return $this->eventInstance;
+	}
+
+	/**
+	 * 是否为子服务器
+	 * @return boolean
+	 */
+	public function isSubServer()
+	{
+		return $this->isSubServer;
+	}
+
+	/**
 	 * 绑定服务器事件
 	 * @return void
 	 */
-	public function bindEvents()
+	protected function bindEvents()
 	{
 		$reader = new AnnotationReader();
 		$ref = new \ReflectionClass($this->eventInterface);
@@ -72,15 +110,26 @@ abstract class Base
 		}
 	}
 
-	public function start()
+	protected function scanRoutes()
 	{
-		$this->swooleServer->start();
+
 	}
 
 	/**
 	 * 创建 swoole 服务器对象
 	 * @return void
 	 */
-	public abstract function createServer();
+	protected abstract function createServer();
 
+	/**
+	 * 从主服务器监听端口，作为子服务器
+	 * @return void
+	 */
+	protected abstract function createSubServer();
+
+	/**
+	 * 获取服务器初始化需要的配置
+	 * @return array
+	 */
+	protected abstract function getServerInitConfig();
 }
