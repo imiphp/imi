@@ -1,9 +1,9 @@
 <?php
 namespace Imi;
 
+use Imi\Event\Event;
 use Imi\Server\Http\Server;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Yurun\Util\Event;
 
 abstract class Manager
 {
