@@ -27,11 +27,15 @@ class EventParam
 	 */
 	protected $stopPropagation = false;
 
-	public function __construct($eventName, $target = null, $data = [])
+	public function __construct($eventName, $data = [], $target = null)
 	{
 		$this->eventName = $eventName;
 		$this->target = $target;
 		$this->data = $data;
+		foreach($data as $key => $value)
+		{
+			$this->$key = $value;
+		}
 	}
 
 	/**
@@ -74,7 +78,7 @@ class EventParam
 	 * 是否阻止事件继续传播
 	 * @return boolean
 	 */
-	public function isStopPropagation()
+	public function isPropagationStopped()
 	{
 		return $this->stopPropagation;
 	}
