@@ -1,11 +1,14 @@
 <?php
 namespace Imi\Server;
 
+use Imi\Event\TEvent;
 use Imi\Server\Annotation\Listen;
 use Doctrine\Common\Annotations\AnnotationReader;
 
 abstract class Base
 {
+	use TEvent;
+	
 	/**
 	 * swoole 服务器对象
 	 * @var \swoole_server
@@ -17,18 +20,6 @@ abstract class Base
 	 * @var array
 	 */
 	protected $config;
-
-	/**
-	 * 事件接口
-	 * @var string
-	 */
-	protected $eventInterface;
-
-	/**
-	 * 事件对象
-	 * @var object
-	 */
-	protected $eventInstance;
 
 	/**
 	 * 是否为子服务器
@@ -92,28 +83,7 @@ abstract class Base
 	 * 绑定服务器事件
 	 * @return void
 	 */
-	protected function bindEvents()
-	{
-		$reader = new AnnotationReader();
-		$ref = new \ReflectionClass($this->eventInterface);
-		$this->eventInstance = $ref->newInstance();
-		foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
-		{
-			$annotations = $reader->getMethodAnnotations($method);
-			foreach($annotations as $item)
-			{
-				if($item instanceof Listen)
-				{
-					$this->swooleServer->on($item->name, [$this->eventInstance, $method->name]);
-				}
-			}
-		}
-	}
-
-	protected function scanRoutes()
-	{
-
-	}
+	protected abstract function bindEvents();
 
 	/**
 	 * 创建 swoole 服务器对象

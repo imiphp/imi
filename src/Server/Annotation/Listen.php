@@ -13,4 +13,10 @@ class Listen
 	 * @var string
 	 */
 	public $name;
+
+	/**
+	 * 优先级，越大越先执行
+	 * @var int
+	 */
+	public $priority = 0;
 }

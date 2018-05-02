@@ -1,11 +1,15 @@
 <?php
 namespace Imi\Server\Http;
 
+use Imi\App;
 use Imi\Server\Base;
-use Imi\Manager;
+use Imi\Bean\Annotation\Bean;
+use Imi\Server\Event\CloseEventParam;
+use Imi\Server\Event\RequestEventParam;
 
 /**
  * Http 服务器类
+ * @Bean
  */
 class Server extends Base
 {
@@ -32,7 +36,7 @@ class Server extends Base
 	protected function createSubServer()
 	{
 		$config = $this->getServerInitConfig();
-		$this->swooleServer = Manager::getServer('main')->getSwooleServer()->addListener($config['host'], $config['port'], $config['sockType']);
+		$this->swooleServer = App::getServer('main')->getSwooleServer()->addListener($config['host'], $config['port'], $config['sockType']);
 	}
 
 	/**
@@ -47,5 +51,26 @@ class Server extends Base
 			'sockType'	=>	isset($this->config['sockType']) ? $this->config['sockType'] : SWOOLE_SOCK_TCP,
 			'mode'		=>	isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
 		];
+	}
+
+	/**
+	 * 绑定服务器事件
+	 * @return void
+	 */
+	protected function bindEvents()
+	{
+		$this->swooleServer->on('request', function(\swoole_http_request $request, \swoole_http_response $response){
+			$this->trigger('request', [
+				'request'	=>	$request,
+				'response'	=>	$response,
+			], $this, RequestEventParam::class);
+		});
+
+		$this->swooleServer->on('close', function(\swoole_http_server $server, int $fd){
+			$this->trigger('close', [
+				'server'	=>	$server,
+				'fd'		=>	$fd,
+			], $this, CloseEventParam::class);
+		});
 	}
 }

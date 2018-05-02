@@ -10,7 +10,13 @@ trait TSingleton
 	 * 实例对象
 	 * @var mixed
 	 */
-	private static $instance;
+	protected static $instance;
+
+	/**
+	 * 实例对象数组
+	 * @var array
+	 */
+	protected static $instances = [];
 
 	private function __construct()
 	{
@@ -19,14 +25,35 @@ trait TSingleton
 	/**
 	 * 获取单例对象
 	 * @param array ...$args
-	 * @return void
+	 * @return static
 	 */
 	public static function getInstance(...$args)
 	{
-		if(null === static::$instance)
+		if(static::isChildClassSingleton())
 		{
-			static::$instance = new static(...$args);
+			$className = get_called_class();
+			if(!isset(static::$instances[$className]))
+			{
+				static::$instances[$className] = new static(...$args);
+			}
+			return static::$instances[$className];
 		}
-		return static::$instance;
+		else
+		{
+			if(null === static::$instance)
+			{
+				static::$instance = new static(...$args);
+			}
+			return static::$instance;
+		}
+	}
+
+	/**
+	 * 是否子类作为单独实例
+	 * @return boolean
+	 */
+	protected static function isChildClassSingleton()
+	{
+		return false;
 	}
 }

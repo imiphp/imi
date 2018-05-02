@@ -2,6 +2,8 @@
 namespace Imi\Event;
 
 use Imi\Util\KVStorage;
+use Imi\Util\Call;
+use Imi\Bean\Parser\ClassEventParser;
 
 trait TEvent
 {
@@ -97,17 +99,18 @@ trait TEvent
 	 */
 	public function trigger($name, $data = [], $target = null, $paramClass = EventParam::class)
 	{
-		if(!isset($this->eventQueue[$name]))
-		{
-			return;
-		}
-		$callbacks = clone $this->eventQueue[$name];
+		// ClassEventListener支持
+		$callbacks = $this->getTriggerCallbacks($name);
+		// 实例化参数
 		$param = new $paramClass($name, $data, $target);
 		$hasOne = false;
 		foreach($callbacks as $callback)
 		{
 			// 事件配置
-			$option = $this->events[$name]->offsetGet($callback);
+			if(isset($this->events[$name]))
+			{
+				$option = $this->events[$name]->offsetGet($callback);
+			}
 			// 回调类型处理，优先判断为类的情况
 			$type = 'callback';
 			if(is_string($callback) && class_exists($callback))
@@ -118,11 +121,11 @@ trait TEvent
 			switch($type)
 			{
 				case 'callback':
-					call_user_func_array($callback, [$param]);
+					Call::callUserFuncArray($callback, [$param]);
 					break;
 				case 'class':
 					$obj = new $callback;
-					call_user_func_array([$obj, 'handle'], [$param]);
+					Call::callUserFuncArray([$obj, 'handle'], [$param]);
 					break;
 			}
 			// 仅触发一次
@@ -142,6 +145,30 @@ trait TEvent
 		{
 			$this->rebuildEventQueue($name);
 		}
+	}
+
+	private function getTriggerCallbacks($name)
+	{
+		if(isset($this->eventQueue[$name]))
+		{
+			$callbacks = clone $this->eventQueue[$name];
+		}
+		else
+		{
+			$callbacks = new \SplPriorityQueue;
+		}
+		$data = ClassEventParser::getInstance()->getData();
+		foreach($data as $className => $option)
+		{
+			if($this instanceof $className && isset($option[$name]))
+			{
+				foreach($option[$name] as $callbak)
+				{
+					$callbacks->insert($callbak['className'], $callbak['priority']);
+				}
+			}
+		}
+		return $callbacks;
 	}
 
 	/**
