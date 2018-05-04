@@ -14,12 +14,6 @@ use Imi\Server\Event\Param\RequestEventParam;
 class Server extends Base
 {
 	/**
-	 * 事件接口
-	 * @var string
-	 */
-	protected $eventInterface = ServerEvent::class;
-
-	/**
 	 * 创建 swoole 服务器对象
 	 * @return void
 	 */

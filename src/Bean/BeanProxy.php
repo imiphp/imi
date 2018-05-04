@@ -9,6 +9,7 @@ use Imi\Bean\Parser\AopParser;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Bean\Annotation\AfterThrowing;
+use Imi\App;
 
 class BeanProxy
 {
@@ -61,6 +62,26 @@ class BeanProxy
 		}
 	}
 
+	public function __set($name, $value) 
+    {
+		$this->object->$name = $value;
+    }
+
+    public function __get($name) 
+    {
+		return $this->object->$name;
+    }
+
+    public function __isset($name) 
+    {
+		return isset($this->object->$name);
+    }
+
+    public function __unset($name) 
+    {
+		unset($this->object->$name);
+    }
+
 	/**
 	 * 初始化
 	 * @return void
@@ -68,6 +89,13 @@ class BeanProxy
 	private function init()
 	{
 		$this->refClass = new \ReflectionClass($this->object);
+		// 属性注入
+		$this->injectProps();
+		// 初始化方法
+		if($this->refClass->hasMethod('__init'))
+		{
+			$this->object->__init();
+		}
 		$className = $this->refClass->getName();
 		// 每个类只需处理一次
 		if(isset(static::$aspects[$className]))
@@ -83,6 +111,20 @@ class BeanProxy
 			{
 				static::$aspects[$className][$aspectClassName] = $option;
 			}
+		}
+	}
+
+	private function injectProps()
+	{
+		$className = $this->refClass->getName();
+		$aopData = AopParser::getInstance()->getData();
+		if(!isset($aopData[$className]))
+		{
+			return;
+		}
+		foreach($aopData[$className]['property'] as $propName => $option)
+		{
+			$this->object->$propName = App::getBean($option['inject']->name, $option['inject']->args);
 		}
 	}
 
