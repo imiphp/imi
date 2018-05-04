@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Server\Event;
+namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
 

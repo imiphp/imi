@@ -23,7 +23,7 @@ trait TEvent
 	 * 事件监听
 	 * @param string $name 事件名称
 	 * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
-	 * @param int $priority 优先级，越大越先执行，相等时后监听后执行
+	 * @param int $priority 优先级，越大越先执行
 	 * @return void
 	 */
 	public function on($name, $callback, $priority = 0)
@@ -49,7 +49,7 @@ trait TEvent
 	 * 监听事件，仅触发一次
 	 * @param string $name 事件名称
 	 * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
-	 * @param int $priority 优先级，越大越先执行，相等时后监听后执行
+	 * @param int $priority 优先级，越大越先执行
 	 * @return void
 	 */
 	public function one($name, $callback, $priority = 0)
@@ -162,9 +162,9 @@ trait TEvent
 		{
 			if($this instanceof $className && isset($option[$name]))
 			{
-				foreach($option[$name] as $callbak)
+				foreach($option[$name] as $callback)
 				{
-					$callbacks->insert($callbak['className'], $callbak['priority']);
+					$callbacks->insert($callback['className'], $callback['priority']);
 				}
 			}
 		}

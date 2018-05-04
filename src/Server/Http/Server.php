@@ -4,8 +4,8 @@ namespace Imi\Server\Http;
 use Imi\App;
 use Imi\Server\Base;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Event\CloseEventParam;
-use Imi\Server\Event\RequestEventParam;
+use Imi\Server\Event\Param\CloseEventParam;
+use Imi\Server\Event\Param\RequestEventParam;
 
 /**
  * Http 服务器类
@@ -72,5 +72,10 @@ class Server extends Base
 				'fd'		=>	$fd,
 			], $this, CloseEventParam::class);
 		});
+	}
+
+	public function test()
+	{
+		throw new \Exception('异常啦');
 	}
 }

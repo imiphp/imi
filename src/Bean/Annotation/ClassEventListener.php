@@ -22,7 +22,7 @@ class ClassEventListener extends Base
 	public $eventName;
 	
 	/**
-	 * 优先级，越大越先执行，相等时后监听后执行
+	 * 优先级，越大越先执行
 	 * @var int
 	 */
 	public $priority = 0;

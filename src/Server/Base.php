@@ -62,15 +62,6 @@ abstract class Base
 	}
 
 	/**
-	 * 获取服务器事件处理对象实例
-	 * @return object
-	 */
-	public function getEventInstance()
-	{
-		return $this->eventInstance;
-	}
-
-	/**
 	 * 是否为子服务器
 	 * @return boolean
 	 */

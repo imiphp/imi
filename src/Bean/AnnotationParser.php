@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Bean;
 
+use Imi\Bean\Parser\BaseParser;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
@@ -207,6 +208,7 @@ class AnnotationParser
 		{
 			return;
 		}
+		// 类
 		foreach($this->data[$className]['class'] as $annotation)
 		{
 			$annotationClassName = get_class($annotation);
@@ -214,7 +216,39 @@ class AnnotationParser
 			{
 				continue;
 			}
-			$this->getParser($annotationClassName)->parse($className, $annotation);
+			$this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
+		}
+		// 属性
+		if(isset($this->data[$className]['prop']))
+		{
+			foreach($this->data[$className]['prop'] as $propName => $annotations)
+			{
+				foreach($annotations as $annotation)
+				{
+					$annotationClassName = get_class($annotation);
+					if(!$this->hasParser($annotationClassName))
+					{
+						continue;
+					}
+					$this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
+				}
+			}
+		}
+		// 方法
+		if(isset($this->data[$className]['method']))
+		{
+			foreach($this->data[$className]['method'] as $methodName => $annotations)
+			{
+				foreach($annotations as $annotation)
+				{
+					$annotationClassName = get_class($annotation);
+					if(!$this->hasParser($annotationClassName))
+					{
+						continue;
+					}
+					$this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
+				}
+			}
 		}
 	}
 	

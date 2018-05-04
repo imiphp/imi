@@ -22,7 +22,6 @@ class Main extends BaseMain
 		return [
 			'Imi\Bean',
 			'Imi\Annotation',
-			'Imi\Listener',
 			'Imi\Server',
 		];
 	}

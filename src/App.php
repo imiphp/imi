@@ -47,9 +47,11 @@ abstract class App
 		static::createServers();
 		// 主服务器启动前事件
 		Event::trigger('IMI.MAIN_SERVER.START.BEFORE');
+		static::getServer('main')->isSubServer();
+		static::getServer('main')->test();
 		static::getServer('main')->getSwooleServer()->start();
-		// 主服务器启动完毕事件
-		Event::trigger('IMI.MAIN_SERVER.START.AFTER');
+		// 主服务器启动完毕事件，无效
+		// Event::trigger('IMI.MAIN_SERVER.START.AFTER');
 	}
 
 	/**
@@ -116,7 +118,6 @@ abstract class App
 		// 服务器类名
 		$serverClassName = 'Imi\Server\\' . $config['type'] . '\Server';
 		// 主服务器实例对象
-		// $server = new $serverClassName($config, $isSubServer);
 		$server = static::getBean($serverClassName, $config, $isSubServer);
 		static::$servers[$name] = $server;
 		// 创建服务器对象前置后作
