@@ -209,14 +209,17 @@ class AnnotationParser
 			return;
 		}
 		// 类
-		foreach($this->data[$className]['class'] as $annotation)
+		if(isset($this->data[$className]['class']))
 		{
-			$annotationClassName = get_class($annotation);
-			if(!$this->hasParser($annotationClassName))
+			foreach($this->data[$className]['class'] as $annotation)
 			{
-				continue;
+				$annotationClassName = get_class($annotation);
+				if(!$this->hasParser($annotationClassName))
+				{
+					continue;
+				}
+				$this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
 			}
-			$this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
 		}
 		// 属性
 		if(isset($this->data[$className]['prop']))

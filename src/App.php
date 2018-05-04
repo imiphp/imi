@@ -47,8 +47,6 @@ abstract class App
 		static::createServers();
 		// 主服务器启动前事件
 		Event::trigger('IMI.MAIN_SERVER.START.BEFORE');
-		static::getServer('main')->isSubServer();
-		static::getServer('main')->test();
 		static::getServer('main')->getSwooleServer()->start();
 		// 主服务器启动完毕事件，无效
 		// Event::trigger('IMI.MAIN_SERVER.START.AFTER');
