@@ -27,7 +27,7 @@ class BeanProxy
 
 	/**
 	 * 存储每个类对应的切面关系
-	 * @var array
+	 * @var \SplPriorityQueue[]
 	 */
 	private static $aspects = [];
 
@@ -102,14 +102,14 @@ class BeanProxy
 		{
 			return;
 		}
-		static::$aspects[$className] = [];
+		static::$aspects[$className] = new \SplPriorityQueue;
 		$aopData = AopParser::getInstance()->getData();
 		foreach($aopData as $aspectClassName => $option)
 		{
 			// 判断是否属于当前类的切面
 			if($this->isAspectCurrentClass($option))
 			{
-				static::$aspects[$className][$aspectClassName] = $option;
+				static::$aspects[$className]->insert($option, $option['aspect']->priority);
 			}
 		}
 	}
@@ -319,8 +319,10 @@ class BeanProxy
 	private function doAspect($method, $pointType, $callback)
 	{
 		$className = $this->refClass->getName();
-		foreach(static::$aspects[$className] as $aspectClassName => $option)
+		$list = clone static::$aspects[$className];
+		foreach($list as $option)
 		{
+			$aspectClassName = $option['className'];
 			foreach($option['method'] as $methodName => $methodOption)
 			{
 				if(!isset($methodOption[$pointType]) || !$methodOption[$pointType])
