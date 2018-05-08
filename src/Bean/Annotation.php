@@ -38,8 +38,10 @@ class Annotation
 		// 应用
 		$this->loadModuleAnnotations(App::getNamespace());
 		// 服务器
-
-		
+		foreach(MainHelper::getMain(App::getNamespace())->getConfig()['subServers'] as $item)
+		{
+			$this->loadModuleAnnotations($item['namespace']);
+		}
 	}
 
 	/**
