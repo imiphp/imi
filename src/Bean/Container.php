@@ -36,19 +36,16 @@ class Container
 		
 		if(isset($data[$name]))
 		{
-			$object = new $data[$name]['className'](...$params);
+			$object = BeanFactory::newInstance($data[$name]['className'], ...$params);
 		}
 		else if(class_exists($name))
 		{
-			$object = new $name(...$params);
+			$object = BeanFactory::newInstance($name, ...$params);
 		}
 		else
 		{
 			throw new \Exception(sprintf('bean %s not found', $name));
 		}
-
-		// 代理类
-		$object = new BeanProxy($object);
 
 		// 传参实例化强制不使用单例
 		if(!isset($params[0]) && isset($data[$name]['instanceType']) && $data[$name]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)

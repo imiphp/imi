@@ -43,44 +43,24 @@ class BeanProxy
 	 * @param array $args
 	 * @return mixed
 	 */
-	public function __call($method, $args)
+	public function call($method, $callback, $args)
 	{
 		try{
 			// 先尝试环绕
-			if($this->parseAround($method, $args, $result))
+			if($this->parseAround($method, $args, $result, $callback))
 			{
 				return $result;
 			}
 			else
 			{
 				// 正常请求
-				return $this->call($method, $args);
+				return $this->callOrigin($method, $args, $callback);
 			}
 		}catch(\Throwable $throwable){
 			// 异常
 			$this->parseAfterThrowing($method, $args, $throwable);
 		}
 	}
-
-	public function __set($name, $value) 
-    {
-		$this->object->$name = $value;
-    }
-
-    public function __get($name) 
-    {
-		return $this->object->$name;
-    }
-
-    public function __isset($name) 
-    {
-		return isset($this->object->$name);
-    }
-
-    public function __unset($name) 
-    {
-		unset($this->object->$name);
-    }
 
 	/**
 	 * 初始化
@@ -162,11 +142,11 @@ class BeanProxy
 	 * @param array $args
 	 * @return mixed
 	 */
-	private function call($method, $args)
+	private function callOrigin($method, $args, $callback)
 	{
 		$this->parseBefore($method, $args);
 		// 原始方法调用
-		$result = $this->object->$method(...$args);
+		$result = $callback(...$args);
 		$this->parseAfter($method, $args);
 		$this->parseAfterReturning($method, $args, $result);
 		return $result;
@@ -224,7 +204,7 @@ class BeanProxy
 	 * @param mixed $returnValue
 	 * @return void
 	 */
-	private function parseAround($method, $args, &$returnValue)
+	private function parseAround($method, $args, &$returnValue, $callback)
 	{
 		$aroundAspectDoList = [];
 		$this->doAspect($method, 'around', function($aspectClassName, $methodName) use(&$aroundAspectDoList){
@@ -241,8 +221,8 @@ class BeanProxy
 
 		foreach($aroundAspectDoList as $aroundAspectDo)
 		{
-			$joinPoint = new AroundJoinPoint('around', $method, $args, $this->object, $this, (null === $nextJoinPoint ? function() use($method, $args){
-				return $this->call($method, $args);
+			$joinPoint = new AroundJoinPoint('around', $method, $args, $this->object, $this, (null === $nextJoinPoint ? function() use($method, $args, $callback){
+				return $this->callOrigin($method, $args, $callback);
 			} : function() use($nextAroundAspectDo, $nextJoinPoint){
 				return Call::callUserFunc($nextAroundAspectDo, $nextJoinPoint);
 			}));
