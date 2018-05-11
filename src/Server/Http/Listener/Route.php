@@ -81,7 +81,7 @@ class Route implements IRequestEventListener
 			}
 			else if($param->isOptional())
 			{
-				$result[] = $e->request->get[$param->getDefaultValue()];
+				$result[] = $param->getDefaultValue();
 			}
 			else
 			{
