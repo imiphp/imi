@@ -10,7 +10,7 @@ interface IRequestEventListener
 {
 	/**
 	 * 事件处理方法
-	 * @param EventParam $e
+	 * @param RequestEventParam $e
 	 * @return void
 	 */
 	public function handle(RequestEventParam $e);

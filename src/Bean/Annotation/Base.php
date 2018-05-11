@@ -12,7 +12,7 @@ abstract class Base
 	 */
 	protected $defaultFieldName;
 
-	public function __construct($data)
+	public function __construct($data = [])
 	{
 		if(null !== $this->defaultFieldName && isset($data['value']) && 1 === count($data))
 		{

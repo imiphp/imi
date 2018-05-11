@@ -3,6 +3,7 @@ namespace Imi\Server\Http;
 
 use Imi\App;
 use Imi\Server\Base;
+use Imi\ServerManage;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Event\Param\RequestEventParam;
@@ -30,7 +31,7 @@ class Server extends Base
 	protected function createSubServer()
 	{
 		$config = $this->getServerInitConfig();
-		$this->swooleServer = App::getServer('main')->getSwooleServer()->addListener($config['host'], $config['port'], $config['sockType']);
+		$this->swooleServer = ServerManage::getServer('main')->getSwooleServer()->addListener($config['host'], $config['port'], $config['sockType']);
 	}
 
 	/**
@@ -51,7 +52,7 @@ class Server extends Base
 	 * 绑定服务器事件
 	 * @return void
 	 */
-	protected function bindEvents()
+	protected function __bindEvents()
 	{
 		$this->swooleServer->on('request', function(\swoole_http_request $request, \swoole_http_response $response){
 			$this->trigger('request', [

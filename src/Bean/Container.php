@@ -2,11 +2,13 @@
 namespace Imi\Bean;
 
 use Imi\Bean\BeanProxy;
+use Imi\Bean\Proxy\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Parser\BeanParser;
-use Imi\Bean\Proxy\Proxy;
+use Psr\Container\ContainerInterface;
+use Imi\Bean\Exception\ContainerException;
 
-class Container
+class Container implements ContainerInterface
 {
 	/**
 	 * 单例对象们
@@ -25,33 +27,64 @@ class Container
 		$this->beanParser = BeanParser::getInstance();
 	}
 
-	public function getBean($name, ...$params)
+    /**
+     * 从容器中获取实例对象，如果不存在则实例化
+     * @param string $id 标识符
+     * @throws NotFoundExceptionInterface  没有找到对象
+     * @throws ContainerExceptionInterface 检索时出错
+     *
+     * @return mixed Entry.
+     */
+	public function get($id)
 	{
-		// 单例中有数据，且无实例化参数时直接返回单例
-		if(isset($this->singletonObjects[$name]) && !isset($params[0]))
+		if(!is_string($id))
 		{
-			return $this->singletonObjects[$name];
+			throw new ContainerException('id is not a string value');
+		}
+		if('' === $id)
+		{
+			throw new ContainerException('id can not be a empty string value');
+		}
+		
+		// 实现传递实例化参数
+		$params = func_get_args();
+		array_shift($params);
+		// 单例中有数据，且无实例化参数时直接返回单例
+		if(isset($this->singletonObjects[$id]) && !isset($params[0]))
+		{
+			return $this->singletonObjects[$id];
 		}
 		$data = $this->beanParser->getData();
 		
-		if(isset($data[$name]))
+		if(isset($data[$id]))
 		{
-			$object = BeanFactory::newInstance($data[$name]['className'], ...$params);
+			$object = BeanFactory::newInstance($data[$id]['className'], ...$params);
 		}
-		else if(class_exists($name))
+		else if(class_exists($id))
 		{
-			$object = BeanFactory::newInstance($name, ...$params);
+			$object = BeanFactory::newInstance($id, ...$params);
 		}
 		else
 		{
-			throw new \Exception(sprintf('bean %s not found', $name));
+			throw new ContainerException(sprintf('%s not found', $id));
 		}
 
 		// 传参实例化强制不使用单例
-		if(!isset($params[0]) && isset($data[$name]['instanceType']) && $data[$name]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)
+		if(!isset($params[0]) && isset($data[$id]['instanceType']) && $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)
 		{
-			$this->singletonObjects[$name] = $object;
+			$this->singletonObjects[$id] = $object;
 		}
 		return $object;
 	}
+
+    /**
+     * 实例对象是否存在
+     * @param string $id 标识符
+     * @return bool
+     */
+	public function has($id)
+	{
+		return is_string($id) && '' !== $id && isset($this->singletonObjects[$id]);
+	}
+
 }

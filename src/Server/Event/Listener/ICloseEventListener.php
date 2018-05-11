@@ -10,7 +10,7 @@ interface ICloseEventListener
 {
 	/**
 	 * 事件处理方法
-	 * @param EventParam $e
+	 * @param CloseEventParam $e
 	 * @return void
 	 */
 	public function handle(CloseEventParam $e);

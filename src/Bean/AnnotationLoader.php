@@ -71,7 +71,7 @@ class AnnotationLoader
 				$tNamespace = implode('\\', $namespaceSplit);
 				if(isset($this->loaded[$tNamespace]))
 				{
-					$path = $this->loaded[$tNamespace] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $pops);
+					$path = $this->loaded[$tNamespace] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_reverse($pops));
 					// 回调
 					Call::callUserFunc($callback, $namespace, $path);
 					break;

@@ -4,7 +4,8 @@
 	"description": "A swoole framework, it's very six!",
     "require": {
         "php": ">=7.0.0",
-        "doctrine/annotations": "1.4"
+        "doctrine/annotations": "1.4",
+        "psr/container": "1.0.0"
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master"

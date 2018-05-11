@@ -12,7 +12,6 @@ abstract class BeanFactory
 	public static function newInstance($class, ...$args)
 	{
 		$tpl = static::getTpl($class);
-		var_dump($tpl);
 		return eval($tpl);
 	}
 
@@ -72,7 +71,7 @@ TPL;
 			$tpl .= <<<TPL
 	public function {$method->name}({$paramsTpls['define']})
 	{
-		\$args = [{$paramsTpls['args']}];
+		\$args = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
 		return \$this->beanProxy->call(
 			'{$method->name}',
 			function({$paramsTpls['define']}){
@@ -90,14 +89,17 @@ TPL;
 	private static function getMethodParamTpls(\ReflectionMethod $method)
 	{
 		$result = [
-			'args'		=>	[],
-			'define'	=>	[],
-			'call'		=>	[],
+			'args'			=>	[],
+			'define'		=>	[],
+			'call'			=>	[],
 		];
 		foreach($method->getParameters() as $param)
 		{
 			// 数组参数，支持引用传参
-			$result['args'][] = static::getMethodParamArgsTpl($param);
+			if(!$param->isVariadic())
+			{
+				$result['args'][] = static::getMethodParamArgsTpl($param);
+			}
 			// 方法参数定义
 			$result['define'][] = static::getMethodParamDefineTpl($param);
 			// 调用传参
@@ -105,7 +107,19 @@ TPL;
 		}
 		foreach($result as &$item)
 		{
-			$item = implode(',', $item);
+			if(is_array($item))
+			{
+				$item = implode(',', $item);
+			}
+		}
+		// 可变参数
+		if(isset($param) && $param->isVariadic())
+		{
+			$result['args_variadic'] = static::getMethodArgsVariadicTpl($param);
+		}
+		else
+		{
+			$result['args_variadic'] = '';
 		}
 		return $result;
 	}
@@ -144,6 +158,17 @@ TPL;
 
 	private static function getMethodParamCallTpl(\ReflectionParameter $param)
 	{
-		return '$' . $param->name;
+		return ($param->isVariadic() ? '...' : '') . '$' . $param->name;
+	}
+
+	private static function getMethodArgsVariadicTpl(\ReflectionParameter $param)
+	{
+		return <<<TPL
+
+		foreach(\${$param->name} as \$item)
+		{
+			\$args[] = \$item;
+		}
+TPL;
 	}
 }
