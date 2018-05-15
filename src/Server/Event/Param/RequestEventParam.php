@@ -7,13 +7,13 @@ class RequestEventParam extends EventParam
 {
 	/**
 	 * swoole 请求对象
-	 * @var \swoole_http_request
+	 * @var \Imi\Server\Http\Message\Request
 	 */
 	public $request;
 
 	/**
 	 * swoole 响应对象
-	 * @var \swoole_http_response
+	 * @var \Imi\Server\Http\Message\Response
 	 */
 	public $response;
 }

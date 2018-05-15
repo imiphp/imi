@@ -61,4 +61,16 @@ abstract class Text
 	{
 		return substr($string, -strlen($compare)) === $compare;
 	}
+
+	/**
+	 * 插入字符串
+	 * @param string $string 原字符串
+	 * @param int $position 位置
+	 * @param string $insertString 被插入的字符串
+	 * @return string
+	 */
+	public static function insert($string, $position, $insertString)
+	{
+		return substr_replace($string, $insertString, $position, 0);
+	}
 }

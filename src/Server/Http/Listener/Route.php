@@ -30,7 +30,7 @@ class Route implements IRequestEventListener
 		$result = $route->parse($param);
 		if(null === $result)
 		{
-			$e->response->end('404');
+			$e->response->write('404');
 		}
 		else
 		{
@@ -44,6 +44,12 @@ class Route implements IRequestEventListener
 		}
 	}
 
+	/**
+	 * 准备调用action的参数
+	 * @param RequestEventParam $e
+	 * @param array $routeResult
+	 * @return array
+	 */
 	private function prepareActionParams(RequestEventParam $e, $routeResult)
 	{
 		try{
@@ -71,13 +77,13 @@ class Route implements IRequestEventListener
 			{
 				$result[] = $routeResult['params'][$param->name];
 			}
-			else if(isset($e->request->post[$param->name]))
+			else if($e->request->hasPost($param->name))
 			{
-				$result[] = $e->request->post[$param->name];
+				$result[] = $e->request->post($param->name);
 			}
-			else if(isset($e->request->get[$param->name]))
+			else if($e->request->hasGet($param->name))
 			{
-				$result[] = $e->request->get[$param->name];
+				$result[] = $e->request->get($param->name);
 			}
 			else if($param->isOptional())
 			{

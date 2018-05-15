@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Server\Http\Consts;
+namespace Imi\Util\Http\Consts;
 
 /**
  * 常见的媒体类型

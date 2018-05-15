@@ -5,6 +5,8 @@ use Imi\App;
 use Imi\Server\Base;
 use Imi\ServerManage;
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\Http\Message\Request;
+use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Event\Param\RequestEventParam;
 
@@ -54,11 +56,17 @@ class Server extends Base
 	 */
 	protected function __bindEvents()
 	{
-		$this->swooleServer->on('request', function(\swoole_http_request $request, \swoole_http_response $response){
+		$this->swooleServer->on('request', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
+			$request = new Request($swooleRequest);
+			$response = new Response($swooleResponse);
 			$this->trigger('request', [
-				'request'	=>	$request,
-				'response'	=>	$response,
+				'request'	=>	&$request,
+				'response'	=>	&$response,
 			], $this, RequestEventParam::class);
+			if(!$response->isEnded())
+			{
+				$response->send();
+			}
 		});
 
 		$this->swooleServer->on('close', function(\swoole_http_server $server, int $fd){

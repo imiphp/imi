@@ -11,6 +11,11 @@ use Imi\Server\Route\Annotation\Route as RouteAnnotation;
  */
 class HttpRoute extends BaseRoute
 {
+	/**
+	 * 路由解析处理
+	 * @param BaseRouteParam $param
+	 * @return array
+	 */
 	public function parse(BaseRouteParam $param)
 	{
 		// 为了IDE能提示，PHP>=7.2才可以覆盖方法时修改参数类型
@@ -22,7 +27,6 @@ class HttpRoute extends BaseRoute
 		{
 			if($this->checkUrl($param, $url, $params))
 			{
-				var_dump('params:', $params);
 				foreach($items as $item)
 				{
 					if(
@@ -44,11 +48,18 @@ class HttpRoute extends BaseRoute
 		return null;
 	}
 
+	/**
+	 * 检查验证url是否匹配
+	 * @param RouteParam $param
+	 * @param string $url
+	 * @param array $params url路由中的自定义参数
+	 * @return boolean
+	 */
 	private function checkUrl(RouteParam $param, string $url, &$params)
 	{
 		$rule = $this->parseUrlRule($url, $fields);
 		$params = [];
-		if(preg_match_all($rule, $param->request->server['path_info'], $matches) > 0)
+		if(preg_match_all($rule, $param->request->getServerParam('path_info'), $matches) > 0)
 		{
 			foreach($fields as $i => $fieldName)
 			{
@@ -59,6 +70,12 @@ class HttpRoute extends BaseRoute
 		return false;
 	}
 
+	/**
+	 * 处理url路由为正则
+	 * @param string $url
+	 * @param array $fields 路由中包含的自定义参数
+	 * @return string
+	 */
 	private function parseUrlRule($url, &$fields)
 	{
 		$fields = [];
@@ -73,29 +90,60 @@ class HttpRoute extends BaseRoute
 		) . '\/?$/';
 	}
 
+	/**
+	 * 检查验证请求方法是否匹配
+	 * @param RouteParam $param
+	 * @param mixed $method
+	 * @return boolean
+	 */
 	private function checkMethod(RouteParam $param, $method)
 	{
+		
 		return true;
 	}
 	
+	/**
+	 * 检查验证域名是否匹配
+	 * @param RouteParam $param
+	 * @param mixed $domain
+	 * @return boolean
+	 */
 	private function checkDomain(RouteParam $param, $domain)
 	{
 
 		return true;
 	}
 	
+	/**
+	 * 检查验证参数是否匹配
+	 * @param RouteParam $param
+	 * @param mixed $params
+	 * @return boolean
+	 */
 	private function checkParams(RouteParam $param, $params)
 	{
 
 		return true;
 	}
 	
+	/**
+	 * 检查验证请求头是否匹配
+	 * @param RouteParam $param
+	 * @param mixed $header
+	 * @return boolean
+	 */
 	private function checkHeader(RouteParam $param, $header)
 	{
 
 		return true;
 	}
 	
+	/**
+	 * 检查验证请求媒体类型是否匹配
+	 * @param RouteParam $param
+	 * @param mixed $requestMime
+	 * @return boolean
+	 */
 	private function checkRequestMime(RouteParam $param, $requestMime)
 	{
 

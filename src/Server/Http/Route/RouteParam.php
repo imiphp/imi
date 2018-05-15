@@ -7,7 +7,7 @@ class RouteParam extends BaseRouteParam
 {
 	/**
 	 * swoole 请求对象
-	 * @var \swoole_http_request
+	 * @var \Imi\Server\Http\Message\Request
 	 */
 	public $request;
 
