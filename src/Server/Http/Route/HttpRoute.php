@@ -155,15 +155,9 @@ class HttpRoute extends BaseRoute
 		{
 			return true;
 		}
-		foreach(is_array($params) ? $params : [$params] as $rule)
-		{
-			if(!Imi::checkCompareRule($rule, function($name) use($request){
-				return $request->get($name);
-			}))
-			{
-				return false;
-			}
-		}
+		return Imi::checkCompareRules($params, function($name) use($request){
+			return $request->get($name);
+		});
 		return true;
 	}
 	
@@ -179,16 +173,9 @@ class HttpRoute extends BaseRoute
 		{
 			return true;
 		}
-		foreach(is_array($params) ? $params : [$params] as $rule)
-		{
-			if(!Imi::checkCompareRule($rule, function($name) use($request){
-				return $request->post($name);
-			}))
-			{
-				return false;
-			}
-		}
-		return true;
+		return Imi::checkCompareRules($params, function($name) use($request){
+			return $request->post($name);
+		});
 	}
 
 	/**
@@ -203,16 +190,9 @@ class HttpRoute extends BaseRoute
 		{
 			return true;
 		}
-		foreach(is_array($header) ? $header : [$header] as $rule)
-		{
-			if(!Imi::checkCompareRule($rule, function($name) use($request){
-				return $request->getHeaderLine($name);
-			}))
-			{
-				return false;
-			}
-		}
-		return true;
+		return Imi::checkCompareRules($params, function($name) use($request){
+			return $request->getHeaderLine($name);
+		});
 	}
 	
 	/**

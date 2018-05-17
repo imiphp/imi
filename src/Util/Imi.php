@@ -44,6 +44,31 @@ abstract class Imi
 	}
 
 	/**
+	 * 检查验证比较规则集
+	 * @param string|array $rules
+	 * @param callable $valueCallback
+	 * @return boolean
+	 */
+	public static function checkCompareRules($rules, $valueCallback)
+	{
+		foreach(is_array($rules) ? $rules : [$rules] as $fieldName => $rule)
+		{
+			if(is_numeric($fieldName))
+			{
+				if(!static::checkCompareRule($rule, $valueCallback))
+				{
+					return false;
+				}
+			}
+			else if(preg_match('/^' . $rule . '$/', Call::callUserFunc($valueCallback, $fieldName)) <= 0)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * 检查验证比较规则，如果符合规则返回bool，不符合规则返回null
 	 * id=1
 	 * id!=1 id<>1
@@ -51,7 +76,7 @@ abstract class Imi
 	 * !id
 	 * @param string $rule
 	 * @param callable $valueCallback
-	 * @return null|boolean
+	 * @return boolean
 	 */
 	public static function checkCompareRule($rule, $valueCallback)
 	{

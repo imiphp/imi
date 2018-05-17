@@ -41,6 +41,7 @@ class Route extends Base
 	 * id!=100 或 id<>100 必须包含id，并且值不为100
 	 * id 必须包含id参数
 	 * !id 必须不包含id参数
+	 * "id" => "\d+" 支持正则
 	 * @var string|array
 	 */
 	public $paramsGet;
@@ -53,6 +54,7 @@ class Route extends Base
 	 * id!=100 或 id<>100 必须包含id，并且值不为100
 	 * id 必须包含id参数
 	 * !id 必须不包含id参数
+	 * "id" => "\d+" 支持正则
 	 * @var string|array
 	 */
 	public $paramsPost;
@@ -65,6 +67,7 @@ class Route extends Base
 	 * id!=100 或 id<>100 必须包含id，并且值不为100
 	 * id 必须包含id参数
 	 * !id 必须不包含id参数
+	 * "id" => "\d+" 支持正则
 	 * @var string|array
 	 */
 	public $header;
