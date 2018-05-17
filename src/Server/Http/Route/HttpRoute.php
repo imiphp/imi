@@ -190,7 +190,7 @@ class HttpRoute extends BaseRoute
 		{
 			return true;
 		}
-		return Imi::checkCompareRules($params, function($name) use($request){
+		return Imi::checkCompareRules($header, function($name) use($request){
 			return $request->getHeaderLine($name);
 		});
 	}
@@ -203,7 +203,10 @@ class HttpRoute extends BaseRoute
 	 */
 	private function checkRequestMime(Request $request, $requestMime)
 	{
-
-		return true;
+		if(empty($requestMime))
+		{
+			return true;
+		}
+		return Imi::checkCompareValues($requestMime, $request->getHeaderLine('Content-Type'));
 	}
 }

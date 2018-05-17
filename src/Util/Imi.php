@@ -106,6 +106,44 @@ abstract class Imi
 	}
 
 	/**
+	 * 检查验证比较值集
+	 * @param string|array $rules
+	 * @param mixed $value
+	 * @return boolean
+	 */
+	public static function checkCompareValues($rules, $value)
+	{
+		foreach(is_array($rules) ? $rules : [$rules] as $rule)
+		{
+			if(!static::checkCompareValue($rule, $value))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 检查验证比较值
+	 * @param string|array $rule
+	 * @param mixed $value
+	 * @return boolean
+	 */
+	public static function checkCompareValue($rule, $value)
+	{
+		if(isset($rule[0]) && '!' === $rule[0])
+		{
+			// 不等
+			return $value !== $rule;
+		}
+		else
+		{
+			// 相等
+			return $value === $rule;
+		}
+	}
+
+	/**
 	 * 处理按.分隔的规则文本，支持\.转义不分隔
 	 * @param string $rule
 	 */
