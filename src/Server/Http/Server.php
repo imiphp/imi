@@ -57,16 +57,12 @@ class Server extends Base
 	protected function __bindEvents()
 	{
 		$this->swooleServer->on('request', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
-			$request = new Request($swooleRequest);
-			$response = new Response($swooleResponse);
+			$request = new Request($this, $swooleRequest);
+			$response = new Response($this, $swooleResponse);
 			$this->trigger('request', [
 				'request'	=>	&$request,
 				'response'	=>	&$response,
 			], $this, RequestEventParam::class);
-			if(!$response->isEnded())
-			{
-				$response->send();
-			}
 		});
 
 		$this->swooleServer->on('close', function(\swoole_http_server $server, int $fd){

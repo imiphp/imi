@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Bean;
 
+use Imi\App;
+use Imi\Util\Imi;
 use Imi\Util\Call;
 use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
@@ -9,7 +11,6 @@ use Imi\Bean\Parser\AopParser;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Bean\Annotation\AfterThrowing;
-use Imi\App;
 
 class BeanProxy
 {
@@ -127,7 +128,7 @@ class BeanProxy
 			}
 			foreach($methodOption['pointCut']->allow as $allowItem)
 			{
-				if(Text::checkClassRule($allowItem, $this->refClass->getName()))
+				if(Imi::checkClassRule($allowItem, $this->refClass->getName()))
 				{
 					return true;
 				}
@@ -253,7 +254,7 @@ class BeanProxy
 					$allowResult = false;
 					foreach($annotation->allow as $rule)
 					{
-						$allowResult = Text::checkRuleMatch($rule, $throwableClassName);
+						$allowResult = Imi::checkRuleMatch($rule, $throwableClassName);
 						if($allowResult)
 						{
 							break;
@@ -267,7 +268,7 @@ class BeanProxy
 				$denyResult = false;
 				foreach($annotation->deny as $rule)
 				{
-					$denyResult = Text::checkRuleMatch($rule, $throwableClassName);
+					$denyResult = Imi::checkRuleMatch($rule, $throwableClassName);
 					if($denyResult)
 					{
 						return;
@@ -312,7 +313,7 @@ class BeanProxy
 				$allowResult = false;
 				foreach($methodOption['pointCut']->allow as $rule)
 				{
-					$allowResult = Text::checkClassMethodRule($rule, $className, $method);
+					$allowResult = Imi::checkClassMethodRule($rule, $className, $method);
 					if($allowResult)
 					{
 						break;
@@ -323,7 +324,7 @@ class BeanProxy
 					$denyResult = false;
 					foreach($methodOption['pointCut']->deny as $rule)
 					{
-						$denyResult = Text::checkClassMethodRule($rule, $className, $method);
+						$denyResult = Imi::checkClassMethodRule($rule, $className, $method);
 						if($denyResult)
 						{
 							break;

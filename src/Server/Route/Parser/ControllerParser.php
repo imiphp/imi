@@ -5,6 +5,7 @@ use Imi\Bean\Annotation\Base;
 use Imi\Bean\Parser\BaseParser;
 use Imi\ServerManage;
 use Imi\Util\Text;
+use Imi\Config;
 
 /**
  * 控制器注解处理器

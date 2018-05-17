@@ -1,6 +1,10 @@
 <?php
 namespace Imi\Bean;
 
+use Imi\Config;
+use Imi\Bean\Parser\BeanParser;
+
+
 abstract class BeanFactory
 {
 	/**
@@ -12,7 +16,7 @@ abstract class BeanFactory
 	public static function newInstance($class, ...$args)
 	{
 		$tpl = static::getTpl($class);
-		return eval($tpl);
+		return static::injectProperties(eval($tpl), $class);
 	}
 
 	/**
@@ -68,8 +72,9 @@ TPL;
 				continue;
 			}
 			$paramsTpls = static::getMethodParamTpls($method);
+			$methodReturnType = static::getMethodReturnType($method);
 			$tpl .= <<<TPL
-	public function {$method->name}({$paramsTpls['define']})
+	public function {$method->name}({$paramsTpls['define']}){$methodReturnType}
 	{
 		\$args = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
 		return \$this->beanProxy->call(
@@ -170,5 +175,42 @@ TPL;
 			\$args[] = \$item;
 		}
 TPL;
+	}
+
+	private static function getMethodReturnType(\ReflectionMethod $method)
+	{
+		if(!$method->hasReturnType())
+		{
+			return '';
+		}
+		return ' : ' . $method->getReturnType();
+	}
+
+	/**
+	 * 注入属性
+	 * @param object $object
+	 * @param string $class
+	 * @return object
+	 */
+	private static function injectProperties($object, $class)
+	{
+		$ref = new \ReflectionClass($class);
+		$beanData = BeanParser::getInstance()->getData();
+		if(!isset($beanData[$class]['beanName']))
+		{
+			return $object;
+		}
+		$beanProperties = Config::get('beans.' . $beanData[$class]['beanName'], []);
+		foreach($beanProperties as $name => $value)
+		{
+			$propRef = $ref->getProperty($name);
+			if(null === $propRef)
+			{
+				continue;
+			}
+			$propRef->setAccessible(true);
+			$propRef->setValue($object, $value);
+		}
+		return $object;
 	}
 }

@@ -85,12 +85,12 @@ class Uri implements UriInterface
 		// 协议
 		if('' !== $scheme)
 		{
-			$uri = $scheme . ':';
+			$uri = $scheme . '://';
 		}
 		// 用户信息
 		if('' !== $userInfo)
 		{
-			$uri .= '//' . $userInfo . '@';
+			$uri .= $userInfo . '@';
 		}
 		// 主机+端口
 		$uri .= $host. (null === $port ? '' : (':' . $port));
@@ -99,7 +99,7 @@ class Uri implements UriInterface
 		// 查询参数
 		$uri .= ('' === $query ? '' : ('?' . $query));
 		// 锚点
-		$uri .= ('' === $fragment ? '' : ('#' . $fragment));
+        $uri .= ('' === $fragment ? '' : ('#' . $fragment));
 		return $uri;
     }
 
@@ -494,5 +494,20 @@ class Uri implements UriInterface
     public function __toString()
 	{
         return static::makeUriString($this->host, $this->path, $this->query, $this->port, $this->scheme, $this->fragment, $this->userInfo);
-	}
+    }
+    
+    /**
+     * 获取域名
+     * 格式：host[:port]
+     * @return string
+     */
+    public function getDomain()
+    {
+        $result = $this->host;
+        if(null !== $this->port)
+        {
+            $result .= ':' . $this->port;
+        }
+        return $result;
+    }
 }

@@ -16,7 +16,8 @@ class BeanParser extends BaseParser
 		if($annotation instanceof \Imi\Bean\Annotation\Bean)
 		{
 			$beanName = $annotation->name ?? $className;
-			$this->data[$beanName] = [
+			$this->data[$className] = $this->data[$beanName] = [
+				'beanName'		=>	$beanName,
 				'className'		=>	$className,
 				'instanceType'	=>	$annotation->instanceType,
 			];

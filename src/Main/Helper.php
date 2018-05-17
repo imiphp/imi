@@ -6,23 +6,65 @@ namespace Imi\Main;
  */
 abstract class Helper
 {
-	public static $mains = [];
+	private static $mains = [];
+
+	private static $nameMap = [];
 
 	/**
 	 * 获取主类实例对象
 	 * @param string $namespace
 	 * @return \Imi\Main\BaseMain
 	 */
-	public static function getMain($namespace)
+	public static function getMain($namespace, $serverName = null)
 	{
-		if(isset(static::$mains[$namespace]))
+		if(null !== $namespace)
 		{
-			return static::$mains[$namespace];
+			if(null === $serverName)
+			{
+				// 获取
+				if(isset(static::$mains[$namespace]))
+				{
+					return static::$mains[$namespace];
+				}
+				else
+				{
+					return null;
+				}
+			}
+			else
+			{
+				// 获取或新实例
+				if(isset(static::$mains[$namespace]))
+				{
+					return static::$mains[$namespace];
+				}
+				else
+				{
+					return static::newInstance($namespace, $serverName);
+				}
+			}
 		}
+		else if(null !== $serverName)
+		{
+			if(!isset(static::$mains[static::$nameMap[$serverName]]))
+			{
+				return null;
+			}
+			return static::$mains[static::$nameMap[$serverName]];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private static function newInstance($namespace, $serverName)
+	{
 		$className = $namespace . '\\Main';
 		if(class_exists($className))
 		{
-			static::$mains[$namespace] = new $className;
+			static::$mains[$namespace] = new $className($serverName);
+			static::$nameMap[$serverName] = $namespace;
 			return static::$mains[$namespace];
 		}
 		else

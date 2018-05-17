@@ -3,6 +3,7 @@ namespace Imi\Bean;
 
 use Imi\App;
 use Imi\Main\Helper as MainHelper;
+use Imi\Config;
 
 /**
  * 注解处理类
@@ -37,14 +38,13 @@ class Annotation
 		$this->loadModuleAnnotations('Imi');
 		// 应用
 		$this->loadModuleAnnotations(App::getNamespace());
-		// 服务器
-		$config = MainHelper::getMain(App::getNamespace())->getConfig();
-		if(isset($config['subServers']))
+		// 主服务器
+		$this->loadModuleAnnotations(Config::get('@app.mainServer.namespace'));
+		// 子服务器
+		$subServers = Config::get('@app.subServers', []);
+		foreach($subServers as $item)
 		{
-			foreach($config['subServers'] as $item)
-			{
-				$this->loadModuleAnnotations($item['namespace']);
-			}
+			$this->loadModuleAnnotations($item['namespace']);
 		}
 	}
 

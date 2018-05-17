@@ -34,19 +34,37 @@ class Route extends Base
 	public $domain;
 
 	/**
-	 * 参数条件
-	 * 必须包含这些参数才可以被调用
-	 * 可以是单个字符串：id=100
-	 * 也可以是键值数组
+	 * GET参数条件
+	 * 可以是单个字符串，也可以是数组
+	 * 取值：
+	 * id=100 必须包含id，并且值为100
+	 * id!=100 或 id<>100 必须包含id，并且值不为100
+	 * id 必须包含id参数
+	 * !id 必须不包含id参数
 	 * @var string|array
 	 */
-	public $params;
+	public $paramsGet;
+
+	/**
+	 * POST参数条件
+	 * 可以是单个字符串，也可以是数组
+	 * 取值：
+	 * id=100 必须包含id，并且值为100
+	 * id!=100 或 id<>100 必须包含id，并且值不为100
+	 * id 必须包含id参数
+	 * !id 必须不包含id参数
+	 * @var string|array
+	 */
+	public $paramsPost;
 
 	/**
 	 * 请求头条件
-	 * 必须包含这些请求头才可以被调用
-	 * 可以是单个字符串：Content-Type:text/html;charset=utf-8
-	 * 也可以是键值数组
+	 * 可以是单个字符串，也可以是数组
+	 * 取值：
+	 * id=100 必须包含id，并且值为100
+	 * id!=100 或 id<>100 必须包含id，并且值不为100
+	 * id 必须包含id参数
+	 * !id 必须不包含id参数
 	 * @var string|array
 	 */
 	public $header;

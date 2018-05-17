@@ -56,19 +56,16 @@ abstract class App
 	{
 		static::$container = new Container;
 		// 框架主类执行
-		MainHelper::getMain('Imi')->init();
+		MainHelper::getMain('Imi', 'Imi')->init();
 		// 项目主类执行
-		$main = MainHelper::getMain(static::$namespace);
+		$main = MainHelper::getMain(static::$namespace, 'app');
 		$main->init();
 		// 服务器主类执行
-		$config = $main->getConfig();
-		if(isset($config['subServers']))
+		$subServers = Config::get('@app.subServers', []);
+		foreach($subServers as $serverName => $item)
 		{
-			foreach($config['subServers'] as $item)
-			{
-				$subServerMain = MainHelper::getMain($item['namespace']);
-				null !== $subServerMain and $subServerMain->init();
-			}
+			$subServerMain = MainHelper::getMain($item['namespace'], 'server_' . $serverName);
+			null !== $subServerMain and $subServerMain->init();
 		}
 		// 注解处理
 		static::$annotation = new Annotation;
@@ -83,20 +80,18 @@ abstract class App
 	{
 		// 创建服务器对象们前置操作
 		Event::trigger('IMI.SERVERS.CREATE.BEFORE');
-		$config = MainHelper::getMain(static::$namespace)->getConfig();
-		if(!isset($config['mainServer']))
+		$mainServer = Config::get('@app.mainServer');
+		if(null === $mainServer)
 		{
 			throw new \Exception('config.mainServer not found');
 		}
 		// 主服务器
-		ServerManage::createServer('main', $config['mainServer']);
+		ServerManage::createServer('main', $mainServer);
 		// 创建监听子服务器端口
-		if(isset($config['subServers']))
+		$subServers = Config::get('@app.subServers', []);
+		foreach($subServers as $name => $config)
 		{
-			foreach($config['subServers'] as $name => $config)
-			{
-				ServerManage::createServer($name, $config, true);
-			}
+			ServerManage::createServer($name, $config, true);
 		}
 		// 创建服务器对象们后置操作
 		Event::trigger('IMI.SERVERS.CREATE.AFTER');

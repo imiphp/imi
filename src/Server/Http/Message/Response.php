@@ -4,19 +4,13 @@ namespace Imi\Server\Http\Message;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Stream\MemoryStream;
 
-class Response
+class Response extends \Imi\Util\Http\Response
 {
 	/**
 	 * swoole响应对象
 	 * @var \swoole_http_response
 	 */
 	protected $swooleResponse;
-
-	/**
-	 * 符合psr-7规范的Response对象
-	 * @var \Imi\Util\Http\Response
-	 */
-	protected $psr7Response;
 
 	/**
 	 * cookies
@@ -42,10 +36,17 @@ class Response
      */
     protected $isEnded = false;
 
-    public function __construct(\swoole_http_response $response)
+    /**
+     * 对应的服务器
+     * @var \Imi\Server\Http\Server
+     */
+	protected $serverInstance;
+	
+    public function __construct(\Imi\Server\Http\Server $server, \swoole_http_response $response)
     {
 		$this->swooleResponse = $response;
-		$this->psr7Response = new \Imi\Util\Http\Response();
+        $this->serverInstance = $server;
+		parent::__construct();
 	}
 
 	/**
@@ -59,9 +60,10 @@ class Response
 	 * @param boolean $httponly
 	 * @return static
 	 */
-	public function cookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
+	public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
 	{
-		$this->cookies[] = [
+		$self = clone $this;
+		$self->cookies[] = [
 			'key'		=>	$key,
 			'value'		=>	$value,
 			'expire'	=>	$expire,
@@ -70,44 +72,19 @@ class Response
 			'secure'	=>	$secure,
 			'httponly'	=>	$httponly,
 		];
-		return $this;
-	}
-
-	/**
-	 * 设置响应头
-	 * @param string $name
-	 * @param string $value
-	 * @return void
-	 */
-	public function header($name, $value)
-	{
-		$this->psr7Response = $this->psr7Response->withHeader($name, $value);
-		return $this;
-	}
-
-	/**
-	 * 批量设置响应头
-	 * @param array $headers
-	 * @return void
-	 */
-	public function headers($headers)
-	{
-		foreach($headers as $name => $value)
-		{
-			$this->psr7Response = $this->psr7Response->withHeader($name, $value);
-		}
-		return $this;
+		return $self;
 	}
 
 	/**
 	 * 输出内容，但不发送
-	 * @param string $body
+	 * @param string $content
 	 * @return static
 	 */
-	public function write(string $body)
+	public function write(string $content)
 	{
-		$this->psr7Response->getBody()->write($body);
-		return $this;
+		$body = clone $this->getBody();
+		$body->write($content);
+		return $this->withBody($body);
 	}
 
 	/**
@@ -116,8 +93,7 @@ class Response
 	 */
 	public function clear()
 	{
-		$this->psr7Response = $this->psr7Response->withBody(new MemoryStream());
-		return $this;
+		return $this->withBody(new MemoryStream(''));
 	}
 	
 	/**
@@ -129,8 +105,24 @@ class Response
 	 */
 	public function redirect($url, $status = StatusCode::FOUND)
 	{
-		$this->psr7Response->withStatus($status)->withHeader('location', $url);
-		return $this;
+		return $this->withStatus($status)->withHeader('location', $url);
+	}
+
+	/**
+	 * 设置GZIP压缩
+	 * @param bool $status
+	 * @param int $level
+	 * @return void
+	 */
+	public function withGzip(boolean $status, $level = null)
+	{
+		$self = clone $this;
+		$self->gzipStatus = $status;
+		if(null !== $level)
+		{
+			$self->gzipLevel = $level;
+		}
+		return $self;
 	}
 
 	/**
@@ -145,16 +137,12 @@ class Response
 			$this->swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
 		}
 		// header
-		foreach($this->psr7Response->getHeaders() as $name => $headers)
+		foreach($this->getHeaders() as $name => $headers)
 		{
-			// 截止写这行注释（2018-05-15）时，swoole还不支持多个同名header输出，后面的会覆盖前面的
-			foreach($headers as $header)
-			{
-				$this->swooleResponse->header($name, $header);
-			}
+			$this->swooleResponse->header($name, $this->getHeaderLine($name));
 		}
 		// status
-		$this->swooleResponse->status($this->psr7Response->getStatusCode());
+		$this->swooleResponse->status($this->getStatusCode());
 		return $this;
 	}
 
@@ -170,7 +158,7 @@ class Response
 			$this->swooleResponse->gzip($this->gzipLevel);
 		}
 		$this->sendHeaders();
-		$this->swooleResponse->end($this->psr7Response->getBody());
+		$this->swooleResponse->end($this->getBody());
 		$this->isEnded = true;
 		return $this;
 	}
@@ -200,22 +188,12 @@ class Response
 	}
 
 	/**
-	 * 获取psr-7响应对象
-	 * @return \Imi\Util\Http\Response
+	 * 获取对应的服务器
+	 * @return \Imi\Server\Http\Server
 	 */
-	public function getPsr7Response(): \Imi\Util\Http\Response
+	public function getServerInstance(): \Imi\Server\Http\Server
 	{
-		return $this->psr7Response;
-	}
-
-	/**
-	 * 设置psr-7响应对象
-	 * @param \Imi\Util\Http\Response $response
-	 * @return void
-	 */
-	public function setPsr7Response(\Imi\Util\Http\Response $response)
-	{
-		$this->psr7Response = $response;
+		return $this->serverInstance;
 	}
 
 	/**
