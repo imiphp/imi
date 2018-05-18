@@ -3,7 +3,7 @@ namespace Imi\Bean;
 
 use Imi\Config;
 use Imi\Bean\Parser\BeanParser;
-
+use Imi\RequestContext;
 
 abstract class BeanFactory
 {
@@ -200,7 +200,23 @@ TPL;
 		{
 			return $object;
 		}
-		$beanProperties = Config::get('beans.' . $beanData[$class]['beanName'], []);
+		// 优先从服务器bean配置获取
+		try{
+			$request = RequestContext::get('request');
+			if(null !== $request)
+			{
+				$beanProperties = Config::get('@server_' . $request->getServerInstance()->getName() . '.beans.' . $beanData[$class]['beanName'], null);
+			}
+		}
+		catch(\Throwable $ex)
+		{
+			$beanProperties = null;
+		}
+		// 全局bean配置
+		if(null === $beanProperties)
+		{
+			$beanProperties = Config::get('beans.' . $beanData[$class]['beanName'], []);
+		}
 		foreach($beanProperties as $name => $value)
 		{
 			$propRef = $ref->getProperty($name);

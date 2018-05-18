@@ -158,4 +158,14 @@ abstract class Imi
 		});
 		return $result;
 	}
+
+	/**
+	 * 获取类短名称
+	 * @param string $className
+	 * @return string
+	 */
+	public static function getClassShortName(string $className)
+	{
+		return implode('', array_slice(explode('\\', $className), -1));
+	}
 }

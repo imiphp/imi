@@ -61,11 +61,11 @@ abstract class App
 		$main = MainHelper::getMain(static::$namespace, 'app');
 		$main->init();
 		// 服务器主类执行
-		$subServers = Config::get('@app.subServers', []);
-		foreach($subServers as $serverName => $item)
+		$servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
+		foreach($servers as $serverName => $item)
 		{
-			$subServerMain = MainHelper::getMain($item['namespace'], 'server_' . $serverName);
-			null !== $subServerMain and $subServerMain->init();
+			$serverMain = MainHelper::getMain($item['namespace'], 'server_' . $serverName);
+			null !== $serverMain and $serverMain->init();
 		}
 		// 注解处理
 		static::$annotation = new Annotation;

@@ -41,4 +41,20 @@ abstract class File
 			yield $item[0];
 		}
 	}
+
+	/**
+	 * 组合路径，目录后的/不是必须
+	 * @param string $path
+	 * @param string $fileName
+	 * @return string
+	 */
+	public function path($path, $fileName)
+	{
+		$result = $path;
+		if(substr($path, -1, 1) !== DIRECTORY_SEPARATOR)
+		{
+			$result .= DIRECTORY_SEPARATOR;
+		}
+		return $result . $fileName;
+	}
 }

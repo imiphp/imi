@@ -86,6 +86,10 @@ abstract class BaseMain implements IMain
 		return Config::get('@' . $this->serverName . '.beanScan', []);
 	}
 
+	/**
+	 * 获取服务器名称
+	 * @return string
+	 */
 	public function getServerName(): string
 	{
 		return $this->serverName;

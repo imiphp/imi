@@ -1,0 +1,38 @@
+<?php
+namespace Imi\Server\View\Annotation;
+
+use Imi\Bean\Annotation\Base;
+use Imi\Bean\Annotation\Parser;
+
+/**
+ * 视图注解
+ * @Annotation
+ * @Target({"CLASS","METHOD"})
+ * @Parser("Imi\Server\View\Parser\ViewParser")
+ */
+class View extends Base
+{
+	/**
+	 * 只传一个参数时的参数名
+	 * @var string
+	 */
+	protected $defaultFieldName = 'template';
+
+	/**
+	 * 模版路径
+	 * @var string
+	 */
+	public $template;
+
+	/**
+	 * 渲染类型
+	 * @var string
+	 */
+	public $renderType = 'html';
+
+	/**
+	 * 附加数据
+	 * @var array
+	 */
+	public $data = [];
+}

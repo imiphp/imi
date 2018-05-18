@@ -1,22 +1,19 @@
 <?php
 namespace Imi\Server\Route\Parser;
 
+use Imi\Config;
+use Imi\Util\Text;
+use Imi\ServerManage;
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Parser\BaseParser;
-use Imi\ServerManage;
-use Imi\Util\Text;
-use Imi\Config;
+use Imi\Util\Traits\TServerAnnotationParser;
 
 /**
  * 控制器注解处理器
  */
 class ControllerParser extends BaseParser
 {
-	/**
-	 * 根据服务器获取的控制器缓存
-	 * @var array
-	 */
-	private $cache = [];
+	use TServerAnnotationParser;
 
 	/**
 	 * 处理方法
@@ -51,27 +48,4 @@ class ControllerParser extends BaseParser
 		}
 	}
 
-	/**
-	 * 根据服务器获取对应的控制器数据
-	 * @param string $serverName
-	 * @return array
-	 */
-	public function getByServer($serverName)
-	{
-		if(isset($this->cache[$serverName]))
-		{
-			return $this->cache[$serverName];
-		}
-		$namespace = ServerManage::getServer($serverName)->getConfig()['namespace'];
-		$result = [];
-		foreach($this->data as $className => $item)
-		{
-			if(Text::startwith($className, $namespace))
-			{
-				$result[$className] = $item;
-			}
-		}
-		$this->cache[$serverName] = $result;
-		return $result;
-	}
 }
