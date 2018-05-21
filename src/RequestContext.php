@@ -2,6 +2,7 @@
 namespace Imi;
 
 use Imi\Util\Coroutine;
+use Imi\Server\Base;
 
 abstract class RequestContext
 {
@@ -96,5 +97,36 @@ abstract class RequestContext
 			throw new \RuntimeException('get context failed, current context is not found');
 		}
 		return static::$context[$coID];
+	}
+
+	/**
+	 * 获取当前的服务器对象
+	 * @return \Imi\Server\Base
+	 */
+	public static function getServer(): Base
+	{
+		return static::get('request')->getServerInstance();
+	}
+
+	/**
+	 * 在当前服务器上下文中获取Bean对象
+	 * @param string $name
+	 * @return mixed
+	 */
+	public static function getBean($name, ...$params)
+	{
+		return static::getServer()->getBean($name, ...$params);
+	}
+
+	/**
+	 * 记录日志
+	 * @param string $level
+	 * @param mixed $message
+	 * @param array $context
+	 * @return void
+	 */
+	public static function log($level, $message, array $context = array())
+	{
+		static::getServer()->getBean('Log')->log($level, $message, $context);
 	}
 }

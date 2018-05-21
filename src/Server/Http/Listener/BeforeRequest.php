@@ -26,7 +26,7 @@ class BeforeRequest implements IRequestEventListener
 		RequestContext::set('response', $e->response);
 
 		// 中间件
-		$dispatcher = App::getBean('HttpDispatcher');
+		$dispatcher = RequestContext::getBean('HttpDispatcher');
 		$dispatcher->dispatch($e->request, $e->response);
 	}
 }

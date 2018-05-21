@@ -6,6 +6,7 @@ use Imi\Bean\Annotation;
 use Imi\Server\Http\Server;
 use Imi\Main\Helper as MainHelper;
 use Imi\Bean\Container;
+use Imi\Log\LogLevel;
 
 abstract class App
 {
@@ -34,6 +35,12 @@ abstract class App
 	private static $container;
 
 	/**
+	 * 日志对象
+	 * @var \Imi\Log\Log
+	 */
+	private static $logger;
+
+	/**
 	 * 框架运行入口
 	 * @param string $namespace 应用命名空间
 	 * @return void
@@ -42,6 +49,7 @@ abstract class App
 	{
 		static::$namespace = $namespace;
 		static::initFramework();
+		static::$logger = static::getBean('Log');
 		// 框架运行事件
 		Event::trigger('IMI.RUN');
 		static::createServers();
@@ -114,5 +122,26 @@ abstract class App
 	public static function getBean($name, ...$params)
 	{
 		return static::$container->get($name, ...$params);
+	}
+
+	/**
+	 * 获取日志对象
+	 * @return \Imi\Log\Log
+	 */
+	public static function getLogger(): \Imi\Log\Log
+	{
+		return static::$logger;
+	}
+
+	/**
+	 * 记录日志
+	 * @param string $level
+	 * @param mixed $message
+	 * @param array $context
+	 * @return void
+	 */
+	public static function log($level, $message, array $context = array())
+	{
+		static::$logger->log($level, $message, $context);
 	}
 }

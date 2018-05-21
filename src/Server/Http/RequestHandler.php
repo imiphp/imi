@@ -44,7 +44,7 @@ class RequestHandler implements RequestHandlerInterface
 			}
 			else
 			{
-				$requestHandler = App::getBean($middleware);
+				$requestHandler = RequestContext::getBean($middleware);
 			}
 		}
 		else

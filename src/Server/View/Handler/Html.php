@@ -1,10 +1,11 @@
 <?php
 namespace Imi\Server\View\Handler;
 
+use Imi\Util\File;
+use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\View\Annotation\View;
 use Imi\Server\Http\Message\Response;
-use Imi\Util\File;
 
 /**
  * Html视图处理器
@@ -38,7 +39,7 @@ class Html implements IHandler
 	{
 		$fileName = $this->getTemplateFilePath($viewAnnotation->template);
 
-		$engine = $response->getServerInstance()->getBean($this->templateEngine);
+		$engine = RequestContext::getBean($this->templateEngine);
 
 		return $engine->render($response, $fileName, $viewAnnotation->data);
 	}

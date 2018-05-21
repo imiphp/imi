@@ -15,19 +15,25 @@ abstract class BeanFactory
 	 */
 	public static function newInstance($class, ...$args)
 	{
-		$tpl = static::getTpl($class);
-		return static::injectProperties(eval($tpl), $class);
+		$ref = new \ReflectionClass($class);
+		$tpl = static::getTpl($ref);
+		$object = static::injectProperties(eval($tpl), $ref);
+		if($ref->hasMethod('__init'))
+		{
+			$ref->getMethod('__init')->invoke($object);
+		}
+		return $object;
 	}
 
 	/**
 	 * 获取类模版
-	 * @param string $class
+	 * @param \ReflectionClass $ref
 	 * @param mixed ...$args
 	 * @return string
 	 */
-	private static function getTpl($class)
+	private static function getTpl($ref)
 	{
-		$ref = new \ReflectionClass($class);
+		$class = $ref->getName();
 		$methodsTpl = static::getMethodsTpl($ref, $class);
 		$construct = '';
 		if(null !== $ref->getConstructor())
@@ -189,12 +195,12 @@ TPL;
 	/**
 	 * 注入属性
 	 * @param object $object
-	 * @param string $class
+	 * @param \ReflectionClass $class
 	 * @return object
 	 */
-	private static function injectProperties($object, $class)
+	private static function injectProperties($object, $ref)
 	{
-		$ref = new \ReflectionClass($class);
+		$class = $ref->getName();
 		$beanData = BeanParser::getInstance()->getData();
 		if(!isset($beanData[$class]['beanName']))
 		{
@@ -205,7 +211,7 @@ TPL;
 			$request = RequestContext::get('request');
 			if(null !== $request)
 			{
-				$beanProperties = Config::get('@server_' . $request->getServerInstance()->getName() . '.beans.' . $beanData[$class]['beanName'], null);
+				$beanProperties = Config::get('@server_' . RequestContext::getServer()->getName() . '.beans.' . $beanData[$class]['beanName'], null);
 			}
 		}
 		catch(\Throwable $ex)

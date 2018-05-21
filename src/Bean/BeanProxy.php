@@ -72,11 +72,6 @@ class BeanProxy
 		$this->refClass = new \ReflectionClass($this->object);
 		// 属性注入
 		$this->injectProps();
-		// 初始化方法
-		if($this->refClass->hasMethod('__init'))
-		{
-			$this->object->__init();
-		}
 		$className = $this->refClass->getName();
 		// 每个类只需处理一次
 		if(isset(static::$aspects[$className]))

@@ -3,15 +3,16 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\App;
 use Imi\Util\Call;
+use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Message\Request;
+use Imi\Server\View\Parser\ViewParser;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Imi\Server\View\Parser\ViewParser;
 
 /**
  * @Bean
@@ -29,7 +30,7 @@ class RouteMiddleware implements MiddlewareInterface
 		// 获取Response对象
 		$response = $handler->handle($request);
 		// 路由解析
-		$route = $request->getServerInstance()->getBean('HttpRoute');
+		$route = RequestContext::getBean('HttpRoute');
 		$result = $route->parse($request);
 		if(null === $result)
 		{
@@ -57,7 +58,7 @@ class RouteMiddleware implements MiddlewareInterface
 			}
 
 			// 视图
-			$view = App::getBean('View');
+			$view = RequestContext::getBean('View');
 
 			if($actionResult instanceof \Imi\Server\View\Annotation\View)
 			{

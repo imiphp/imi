@@ -13,7 +13,7 @@ abstract class ServerManage
 
 	/**
 	 * 获取服务器数组
-	 * @return array
+	 * @return \Imi\Server\Base[]
 	 */
 	public static function getServers()
 	{

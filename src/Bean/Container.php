@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Bean;
 
-use Imi\Bean\BeanProxy;
 use Imi\Bean\Proxy\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Parser\BeanParser;

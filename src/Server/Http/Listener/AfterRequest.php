@@ -5,6 +5,8 @@ use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Listener\IRequestEventListener;
+use Imi\App;
+use Imi\ServerManage;
 
 /**
  * request事件后置处理
@@ -19,6 +21,13 @@ class AfterRequest implements IRequestEventListener
 	 */
 	public function handle(RequestEventParam $e)
 	{
+		// 日志处理
+		App::getLogger()->endRequest();
+		foreach(ServerManage::getServers() as $server)
+		{
+			$server->getBean('Log')->endRequest();
+		}
+		// 销毁请求上下文
 		RequestContext::destroy();
 	}
 }

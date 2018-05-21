@@ -52,7 +52,7 @@ class View
 
 	protected function handle($handlerClass, ViewAnnotation $view, Response $response = null): Response
 	{
-		$handler = $response->getServerInstance()->getBean($handlerClass);
+		$handler = RequestContext::getBean($handlerClass);
 		return $handler->handle($view, $response);
 	}
 }

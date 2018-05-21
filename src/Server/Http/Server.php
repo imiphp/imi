@@ -72,9 +72,4 @@ class Server extends Base
 			], $this, CloseEventParam::class);
 		});
 	}
-
-	public function test()
-	{
-		throw new \Exception('异常啦');
-	}
 }

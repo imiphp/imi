@@ -23,6 +23,7 @@ class Main extends BaseMain
 			'Imi\Bean',
 			'Imi\Annotation',
 			'Imi\Server',
+			'Imi\Log',
 		];
 	}
 }
