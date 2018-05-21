@@ -28,7 +28,7 @@ abstract class Base
 	 * 日志格式
 	 * @var string
 	 */
-	protected $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}' . PHP_EOL . '{trace}';
+	protected $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}';
 
 	/**
 	 * 最后一个调用跟踪格式
