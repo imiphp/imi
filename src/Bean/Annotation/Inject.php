@@ -3,6 +3,7 @@ namespace Imi\Bean\Annotation;
 
 /**
  * 属性注入
+ * 使用：App::getBean()
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\AopParser")

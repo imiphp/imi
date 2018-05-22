@@ -44,6 +44,10 @@ class AopParser extends BaseParser
 		{
 			$this->data[$className][$target][$targetName]['around'] = true;
 		}
+		else if($annotation instanceof \Imi\Bean\Annotation\RequestInject)
+		{
+			$this->data[$className][$target][$targetName]['requestInject'] = $annotation;
+		}
 		else if($annotation instanceof \Imi\Bean\Annotation\Inject)
 		{
 			$this->data[$className][$target][$targetName]['inject'] = $annotation;

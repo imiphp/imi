@@ -11,6 +11,7 @@ use Imi\Bean\Parser\AopParser;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Bean\Annotation\AfterThrowing;
+use Imi\RequestContext;
 
 class BeanProxy
 {
@@ -100,7 +101,14 @@ class BeanProxy
 		}
 		foreach($aopData[$className]['property'] as $propName => $option)
 		{
-			$this->object->$propName = App::getBean($option['inject']->name, $option['inject']->args);
+			if(isset($option['requestInject']))
+			{
+				$this->object->$propName = RequestContext::getBean($option['requestInject']->name, $option['requestInject']->args);
+			}
+			else if(isset($option['inject']))
+			{
+				$this->object->$propName = App::getBean($option['inject']->name, $option['inject']->args);
+			}
 		}
 	}
 
