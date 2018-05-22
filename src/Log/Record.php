@@ -33,7 +33,7 @@ class Record
 	 */
 	private $logTime;
 
-	public function __construct($level, $message, array $context = array(), $trace, $logTime)
+	public function __construct($level, $message, array $context, $trace, $logTime)
 	{
 		$this->level = $level;
 		$this->message = $message;

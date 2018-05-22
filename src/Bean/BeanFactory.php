@@ -20,7 +20,7 @@ abstract class BeanFactory
 		$object = eval($tpl);
 		if($ref->hasMethod('__init'))
 		{
-			$ref->getMethod('__init')->invoke($object);
+			$ref->getMethod('__init')->invoke($object, ...$args);
 		}
 		return $object;
 	}
@@ -59,15 +59,11 @@ TPL;
 	}
 
 	/**
-	 * 获取加随机符号的类名
+	 * 获取方法模版
+	 * @param \ReflectionClass $ref
 	 * @param string $class
 	 * @return string
 	 */
-	private static function getClassName($class)
-	{
-		return str_replace('\\', '_', $class) . '_' . str_replace('.', '', uniqid('', true));
-	}
-
 	private static function getMethodsTpl($ref, $class)
 	{
 		$tpl = '';
@@ -97,6 +93,11 @@ TPL;
 		return $tpl;
 	}
 
+	/**
+	 * 获取方法参数模版们
+	 * @param \ReflectionClass $ref
+	 * @return string
+	 */
 	private static function getMethodParamTpls(\ReflectionMethod $method)
 	{
 		$result = [
@@ -135,12 +136,22 @@ TPL;
 		return $result;
 	}
 
+	/**
+	 * 获取方法参数模版
+	 * @param \ReflectionParameter $param
+	 * @return string
+	 */
 	private static function getMethodParamArgsTpl(\ReflectionParameter $param)
 	{
 		$reference = $param->isPassedByReference() ? '&' : '';
 		return $reference . '$' . $param->name;
 	}
 
+	/**
+	 * 获取方法参数定义模版
+	 * @param \ReflectionParameter $param
+	 * @return string
+	 */
 	private static function getMethodParamDefineTpl(\ReflectionParameter $param)
 	{
 		$result = '';
@@ -167,11 +178,21 @@ TPL;
 		return $result;
 	}
 
+	/**
+	 * 获取方法参数调用模版
+	 * @param \ReflectionParameter $param
+	 * @return string
+	 */
 	private static function getMethodParamCallTpl(\ReflectionParameter $param)
 	{
 		return ($param->isVariadic() ? '...' : '') . '$' . $param->name;
 	}
 
+	/**
+	 * 获取方法可变参数模版
+	 * @param \ReflectionParameter $param
+	 * @return string
+	 */
 	private static function getMethodArgsVariadicTpl(\ReflectionParameter $param)
 	{
 		return <<<TPL
@@ -183,6 +204,11 @@ TPL;
 TPL;
 	}
 
+	/**
+	 * 获取方法返回值模版
+	 * @param \ReflectionMethod $method
+	 * @return string
+	 */
 	private static function getMethodReturnType(\ReflectionMethod $method)
 	{
 		if(!$method->hasReturnType())

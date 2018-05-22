@@ -51,7 +51,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     protected $attributes = [];
 
-    public function __construct($uri = null, array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1', array $server, array $cookies, array $get, array $post, array $files)
+    public function __construct($uri = null, array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1', array $server = [], array $cookies = [], array $get = [], array $post = [], array $files = [])
     {
         $this->server = $server;
         $this->cookies = $cookies;

@@ -25,7 +25,7 @@ class AfterRequest implements IRequestEventListener
 		App::getLogger()->endRequest();
 		foreach(ServerManage::getServers() as $server)
 		{
-			$server->getBean('Log')->endRequest();
+			$server->getBean('Logger')->endRequest();
 		}
 		// 销毁请求上下文
 		RequestContext::destroy();

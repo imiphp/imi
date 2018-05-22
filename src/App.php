@@ -11,12 +11,6 @@ use Imi\Log\LogLevel;
 abstract class App
 {
 	/**
-	 * 服务器对象数组
-	 * @var array
-	 */
-	private static $servers;
-
-	/**
 	 * 注解类
 	 * @var \Imi\Bean\Annotation
 	 */
@@ -36,7 +30,7 @@ abstract class App
 
 	/**
 	 * 日志对象
-	 * @var \Imi\Log\Log
+	 * @var \Imi\Log\Logger
 	 */
 	private static $logger;
 
@@ -49,7 +43,7 @@ abstract class App
 	{
 		static::$namespace = $namespace;
 		static::initFramework();
-		static::$logger = static::getBean('Log');
+		static::$logger = static::getBean('Logger');
 		// 框架运行事件
 		Event::trigger('IMI.RUN');
 		static::createServers();
@@ -126,9 +120,9 @@ abstract class App
 
 	/**
 	 * 获取日志对象
-	 * @return \Imi\Log\Log
+	 * @return \Imi\Log\Logger
 	 */
-	public static function getLogger(): \Imi\Log\Log
+	public static function getLogger(): \Imi\Log\Logger
 	{
 		return static::$logger;
 	}

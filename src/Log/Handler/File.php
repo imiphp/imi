@@ -29,18 +29,6 @@ class File extends Base
 	private $currentFileDateTime;
 
 	/**
-	 * 当前保存的日志文件名，不带序号，不带扩展名
-	 * @var string
-	 */
-	private $currentBaseFileName;
-
-	/**
-	 * 当前保存的日志文件名，带序号
-	 * @var string
-	 */
-	private $currentFileName;
-
-	/**
 	 * 当前文件序号
 	 * @var integer
 	 */
@@ -48,10 +36,15 @@ class File extends Base
 
 	/**
 	 * 当前日志文件扩展名
-	 *
 	 * @var string
 	 */
 	private $currentFileExt;
+
+	/**
+	 * 当前无序号的文件名
+	 * @var string
+	 */
+	private $currentNoIndexFileName;
 
 	/**
 	 * 真正的保存操作实现

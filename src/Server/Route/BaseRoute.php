@@ -39,7 +39,7 @@ abstract class BaseRoute implements IRoute
 	 * @param mixed $callable
 	 * @return void
 	 */
-	public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation = null, $callable)
+	public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable)
 	{
 		$this->rules[$annotation->url][$this->hashKey($annotation)] = [
 			'annotation'=>	$annotation,

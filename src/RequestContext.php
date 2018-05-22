@@ -127,6 +127,6 @@ abstract class RequestContext
 	 */
 	public static function log($level, $message, array $context = array())
 	{
-		static::getServer()->getBean('Log')->log($level, $message, $context);
+		static::getServer()->getBean('Logger')->log($level, $message, $context);
 	}
 }

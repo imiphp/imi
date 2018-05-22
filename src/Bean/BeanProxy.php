@@ -85,7 +85,7 @@ class BeanProxy
 		}
 		static::$aspects[$className] = new \SplPriorityQueue;
 		$aopData = AopParser::getInstance()->getData();
-		foreach($aopData as $aspectClassName => $option)
+		foreach($aopData as $option)
 		{
 			// 判断是否属于当前类的切面
 			if($this->isAspectCurrentClass($option))

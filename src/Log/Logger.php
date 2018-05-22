@@ -7,9 +7,9 @@ use Imi\App;
 use Imi\Util\Coroutine;
 
 /**
- * @Bean("Log")
+ * @Bean("Logger")
  */
-class Log extends AbstractLogger
+class Logger extends AbstractLogger
 {
 	/**
 	 * 核心处理器
