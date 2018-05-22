@@ -111,7 +111,7 @@ class AnnotationParser
 	 */
 	public function parseProps(\ReflectionClass $ref)
 	{
-		foreach($ref->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop)
+		foreach($ref->getProperties() as $prop)
 		{
 			$this->parseProp($ref, $prop);
 		}

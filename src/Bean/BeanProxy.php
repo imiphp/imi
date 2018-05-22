@@ -2,16 +2,20 @@
 namespace Imi\Bean;
 
 use Imi\App;
+use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Call;
 use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
+use Imi\RequestContext;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Bean\Parser\AopParser;
+use Imi\Bean\Annotation\Inject;
+use Imi\Bean\Parser\BeanParser;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Bean\Annotation\AfterThrowing;
-use Imi\RequestContext;
+use Imi\Util\Coroutine;
 
 class BeanProxy
 {
@@ -73,7 +77,7 @@ class BeanProxy
 		$this->refClass = new \ReflectionClass($this->object);
 		// 属性注入
 		$this->injectProps();
-		$className = $this->refClass->getName();
+		$className = $this->refClass->getParentClass()->getName();
 		// 每个类只需处理一次
 		if(isset(static::$aspects[$className]))
 		{
@@ -93,23 +97,84 @@ class BeanProxy
 
 	private function injectProps()
 	{
-		$className = $this->refClass->getName();
-		$aopData = AopParser::getInstance()->getData();
-		if(!isset($aopData[$className]))
+		$annotations = $this->getInjectAnnotations();
+		$configs = $this->getConfigInjects();
+		foreach(array_keys($configs) as $key)
 		{
-			return;
-		}
-		foreach($aopData[$className]['property'] as $propName => $option)
-		{
-			if(isset($option['requestInject']))
+			if(isset($annotations[$key]))
 			{
-				$this->object->$propName = RequestContext::getBean($option['requestInject']->name, $option['requestInject']->args);
+				unset($annotations[$key]);
+			}
+		}
+		
+
+		// @inject()和@requestInject()注入
+		foreach($annotations as $propName => $option)
+		{
+			$propRef = $this->refClass->getProperty($propName);
+			$propRef->setAccessible(true);
+			if(isset($option['requestInject']) && Coroutine::isIn())
+			{
+				$propRef->setValue($this->object, RequestContext::getBean($option['requestInject']->name, $option['requestInject']->args));
 			}
 			else if(isset($option['inject']))
 			{
-				$this->object->$propName = App::getBean($option['inject']->name, $option['inject']->args);
+				$propRef->setValue($this->object, App::getBean($option['inject']->name, $option['inject']->args));
 			}
 		}
+
+		// 配置注入
+		foreach($configs as $name => $value)
+		{
+			$propRef = $this->refClass->getProperty($name);
+			if(null === $propRef)
+			{
+				continue;
+			}
+			$propRef->setAccessible(true);
+			$propRef->setValue($this->object, $value);
+		}
+	}
+
+	private function getInjectAnnotations()
+	{
+		$className = $this->refClass->getParentClass()->getName();
+		$aopData = AopParser::getInstance()->getData();
+		if(!isset($aopData[$className]))
+		{
+			return [];
+		}
+		return $aopData[$className]['property'];
+	}
+
+	private function getConfigInjects()
+	{
+		$className = $this->refClass->getParentClass()->getName();
+		// 配置文件注入
+		$beanData = BeanParser::getInstance()->getData();
+		if(isset($beanData[$className]))
+		{
+			$beanName = $beanData[$className]['beanName'];
+		}
+		else
+		{
+			$beanName = $className;
+		}
+		$beanProperties = null;
+		// 优先从服务器bean配置获取
+		try{
+			$beanProperties = Config::get('@server_' . RequestContext::getServer()->getName() . '.beans.' . $beanName, null);
+		}
+		catch(\Throwable $ex)
+		{
+			$beanProperties = null;
+		}
+		// 全局bean配置
+		if(null === $beanProperties)
+		{
+			$beanProperties = Config::get('beans.' . $beanName, []);
+		}
+		return $beanProperties ?? [];
 	}
 
 	/**
@@ -131,7 +196,7 @@ class BeanProxy
 			}
 			foreach($methodOption['pointCut']->allow as $allowItem)
 			{
-				if(Imi::checkClassRule($allowItem, $this->refClass->getName()))
+				if(Imi::checkClassRule($allowItem, $this->refClass->getParentClass()->getName()))
 				{
 					return true;
 				}
@@ -302,7 +367,7 @@ class BeanProxy
 	 */
 	private function doAspect($method, $pointType, $callback)
 	{
-		$className = $this->refClass->getName();
+		$className = $this->refClass->getParentClass()->getName();
 		$list = clone static::$aspects[$className];
 		foreach($list as $option)
 		{

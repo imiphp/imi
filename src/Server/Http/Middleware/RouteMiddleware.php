@@ -39,6 +39,11 @@ class RouteMiddleware implements MiddlewareInterface
 		}
 		else
 		{
+			// 通过闭包获取实例对象，解决不在请求上下文时的属性注入问题
+			if(isset($result['callable'][0]) && $result['callable'][0] instanceof \Closure)
+			{
+				$result['callable'][0] = Call::callUserFunc($result['callable'][0]);
+			}
 			// 路由匹配结果是否是[控制器对象, 方法名]
 			$isObject = isset($result['callable'][0]) && $result['callable'][0] instanceof HttpController;
 			if($isObject)

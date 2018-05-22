@@ -15,11 +15,11 @@ abstract class BaseRoute implements IRoute
 	/**
 	 * 增加路由规则
 	 * @param string $url url规则
-	 * @param callable $callable 回调
+	 * @param mixed $callable 回调
 	 * @param \Imi\Server\Route\Annotation\Route $annotation 路由定义注解，可选
 	 * @return void
 	 */
-	public function addRule(string $url, callable $callable, \Imi\Server\Route\Annotation\Route $annotation = null)
+	public function addRule(string $url, $callable, \Imi\Server\Route\Annotation\Route $annotation = null)
 	{
 		if(null === $annotation)
 		{
@@ -36,10 +36,10 @@ abstract class BaseRoute implements IRoute
 	/**
 	 * 增加路由规则，直接使用注解方式
 	 * @param \Imi\Server\Route\Annotation\Route $annotation
-	 * @param callable $callable
+	 * @param mixed $callable
 	 * @return void
 	 */
-	public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation = null, callable $callable)
+	public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation = null, $callable)
 	{
 		$this->rules[$annotation->url][$this->hashKey($annotation)] = [
 			'annotation'=>	$annotation,

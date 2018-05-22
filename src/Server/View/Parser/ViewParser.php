@@ -7,6 +7,7 @@ use Imi\Util\Traits\TServerAnnotationParser;
 use Imi\Util\File;
 use Imi\Util\Text;
 use Imi\Util\Imi;
+use Imi\Util\ClassObject;
 
 /**
  * 视图注解处理器
@@ -45,7 +46,14 @@ class ViewParser extends BaseParser
 	public function getByCallable(array $callable)
 	{
 		list($object, $methodName) = $callable;
-		$className = get_class($object);
+		if(ClassObject::isAnymous($object))
+		{
+			$className = get_parent_class($object);
+		}
+		else
+		{
+			$className = get_class($object);
+		}
 		$shortClassName = Imi::getClassShortName($className);
 		if(isset($this->data[$className]['methods'][$methodName]['view']))
 		{

@@ -17,7 +17,7 @@ abstract class BeanFactory
 	{
 		$ref = new \ReflectionClass($class);
 		$tpl = static::getTpl($ref);
-		$object = static::injectProperties(eval($tpl), $ref);
+		$object = eval($tpl);
 		if($ref->hasMethod('__init'))
 		{
 			$ref->getMethod('__init')->invoke($object);
@@ -192,47 +192,4 @@ TPL;
 		return ' : ' . $method->getReturnType();
 	}
 
-	/**
-	 * 注入属性
-	 * @param object $object
-	 * @param \ReflectionClass $class
-	 * @return object
-	 */
-	private static function injectProperties($object, $ref)
-	{
-		$class = $ref->getName();
-		$beanData = BeanParser::getInstance()->getData();
-		if(!isset($beanData[$class]['beanName']))
-		{
-			return $object;
-		}
-		// 优先从服务器bean配置获取
-		try{
-			$request = RequestContext::get('request');
-			if(null !== $request)
-			{
-				$beanProperties = Config::get('@server_' . RequestContext::getServer()->getName() . '.beans.' . $beanData[$class]['beanName'], null);
-			}
-		}
-		catch(\Throwable $ex)
-		{
-			$beanProperties = null;
-		}
-		// 全局bean配置
-		if(null === $beanProperties)
-		{
-			$beanProperties = Config::get('beans.' . $beanData[$class]['beanName'], []);
-		}
-		foreach($beanProperties as $name => $value)
-		{
-			$propRef = $ref->getProperty($name);
-			if(null === $propRef)
-			{
-				continue;
-			}
-			$propRef->setAccessible(true);
-			$propRef->setValue($object, $value);
-		}
-		return $object;
-	}
 }
