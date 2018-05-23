@@ -69,7 +69,7 @@ class Container implements ContainerInterface
 		}
 
 		// 传参实例化强制不使用单例
-		if(!isset($params[0]) && isset($data[$id]['instanceType']) && $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)
+		if([] === $params && isset($data[$id]['instanceType']) && $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)
 		{
 			$this->singletonObjects[$id] = $object;
 		}

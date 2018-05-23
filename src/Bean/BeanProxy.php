@@ -115,11 +115,11 @@ class BeanProxy
 			$propRef->setAccessible(true);
 			if(isset($option['requestInject']) && Coroutine::isIn())
 			{
-				$propRef->setValue($this->object, RequestContext::getBean($option['requestInject']->name, $option['requestInject']->args));
+				$propRef->setValue($this->object, RequestContext::getBean($option['requestInject']->name, ...$option['requestInject']->args));
 			}
 			else if(isset($option['inject']))
 			{
-				$propRef->setValue($this->object, App::getBean($option['inject']->name, $option['inject']->args));
+				$propRef->setValue($this->object, App::getBean($option['inject']->name, ...$option['inject']->args));
 			}
 		}
 
