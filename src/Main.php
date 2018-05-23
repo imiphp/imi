@@ -24,6 +24,18 @@ class Main extends BaseMain
 			'Imi\Annotation',
 			'Imi\Server',
 			'Imi\Log',
+			'Imi\Listener',
+		];
+	}
+
+	/**
+	 * 获取要初始化的原子计数名称
+	 * @return array
+	 */
+	public function getAtomics(): array
+	{
+		return [
+			'session'
 		];
 	}
 }

@@ -58,6 +58,15 @@ abstract class Helper
 		}
 	}
 
+	/**
+	 * 获取所有Main对象
+	 * @return \Imi\Main\BaseMain[]
+	 */
+	public static function getMains()
+	{
+		return static::$mains;
+	}
+
 	private static function newInstance($namespace, $serverName)
 	{
 		$className = $namespace . '\\Main';

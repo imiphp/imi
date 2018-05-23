@@ -7,6 +7,7 @@ use Imi\Server\Http\Server;
 use Imi\Main\Helper as MainHelper;
 use Imi\Bean\Container;
 use Imi\Log\LogLevel;
+use Imi\Main\BaseMain;
 
 abstract class App
 {
@@ -44,8 +45,8 @@ abstract class App
 		static::$namespace = $namespace;
 		static::initFramework();
 		static::$logger = static::getBean('Logger');
-		// 框架运行事件
-		Event::trigger('IMI.RUN');
+		// 框架初始化完成事件
+		Event::trigger('IMI.INITED');
 		static::createServers();
 		ServerManage::getServer('main')->getSwooleServer()->start();
 	}
@@ -57,21 +58,29 @@ abstract class App
 	private static function initFramework()
 	{
 		static::$container = new Container;
-		// 框架主类执行
-		MainHelper::getMain('Imi', 'Imi')->init();
-		// 项目主类执行
-		$main = MainHelper::getMain(static::$namespace, 'app');
-		$main->init();
-		// 服务器主类执行
-		$servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
-		foreach($servers as $serverName => $item)
-		{
-			$serverMain = MainHelper::getMain($item['namespace'], 'server_' . $serverName);
-			null !== $serverMain and $serverMain->init();
-		}
+		// 初始化Main类
+		static::initMains();
 		// 注解处理
 		static::$annotation = new Annotation;
 		static::$annotation->init();
+	}
+
+	/**
+	 * 初始化Main类
+	 * @return void
+	 */
+	private static function initMains()
+	{
+		// 框架
+		MainHelper::getMain('Imi', 'Imi');
+		// 项目
+		MainHelper::getMain(static::$namespace, 'app');
+		// 服务器们
+		$servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
+		foreach($servers as $serverName => $item)
+		{
+			MainHelper::getMain($item['namespace'], 'server_' . $serverName);
+		}
 	}
 
 	/**

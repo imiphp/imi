@@ -15,7 +15,7 @@ abstract class AppBaseMain extends BaseMain
 	protected function loadConfig()
 	{
 		parent::loadConfig();
-		foreach(Config::get('@' . $this->serverName . '.configs') as $name => $fileName)
+		foreach(Config::get('@' . $this->moduleName . '.configs', []) as $name => $fileName)
 		{
 			Config::addConfig($name, include $fileName);
 		}

@@ -21,18 +21,14 @@ abstract class BaseMain implements IMain
 	protected $namespace;
 
 	/**
-	 * 服务器名称
+	 * 模块名称
 	 * @var string
 	 */
-	protected $serverName;
+	protected $moduleName;
 
-	public function __construct(string $serverName)
+	public function __construct(string $moduleName)
 	{
-		$this->serverName = $serverName;
-	}
-
-	public function init()
-	{
+		$this->moduleName = $moduleName;
 		$this->loadConfig();
 		$this->__init();
 	}
@@ -46,7 +42,7 @@ abstract class BaseMain implements IMain
 		$fileName = $this->getPath() . DIRECTORY_SEPARATOR . 'config/config.php';
 		if(is_file($fileName))
 		{
-			Config::addConfig('@' . $this->serverName, include $fileName);
+			Config::addConfig('@' . $this->moduleName, include $fileName);
 		}
 	}
 
@@ -83,15 +79,24 @@ abstract class BaseMain implements IMain
 	 */
 	public function getBeanScan(): array
 	{
-		return Config::get('@' . $this->serverName . '.beanScan', []);
+		return Config::get('@' . $this->moduleName . '.beanScan', []);
 	}
 
 	/**
-	 * 获取服务器名称
+	 * 获取要初始化的原子计数名称
+	 * @return array
+	 */
+	public function getAtomics(): array
+	{
+		return Config::get('@' . $this->moduleName . '.atomics', []);
+	}
+
+	/**
+	 * 获取模块名称
 	 * @return string
 	 */
-	public function getServerName(): string
+	public function getModuleName(): string
 	{
-		return $this->serverName;
+		return $this->moduleName;
 	}
 }

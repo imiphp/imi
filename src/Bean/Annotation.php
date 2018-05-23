@@ -34,17 +34,9 @@ class Annotation
 	 */
 	public function init()
 	{
-		// 框架
-		$this->loadModuleAnnotations('Imi');
-		// 应用
-		$this->loadModuleAnnotations(App::getNamespace());
-		// 主服务器
-		$this->loadModuleAnnotations(Config::get('@app.mainServer.namespace'));
-		// 子服务器
-		$subServers = Config::get('@app.subServers', []);
-		foreach($subServers as $item)
+		foreach(MainHelper::getMains() as $main)
 		{
-			$this->loadModuleAnnotations($item['namespace']);
+			$this->loadModuleAnnotations($main->getNamespace());
 		}
 	}
 
