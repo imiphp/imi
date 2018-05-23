@@ -124,7 +124,18 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
         $self = clone $this;
         $self->cookies = $cookies;
         return $self;
-	}
+    }
+    
+    /**
+     * 获取cookie值
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getCookie($name, $default = null)
+    {
+        return $this->cookies[$name] ?? $default;
+    }
 
     /**
      * Retrieve query string arguments.
