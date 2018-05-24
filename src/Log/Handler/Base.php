@@ -85,7 +85,7 @@ abstract class Base
 		'U',
 	];
 
-	public function __construct($option)
+	public function __construct($option = [])
 	{
 		foreach($option as $k => $v)
 		{
