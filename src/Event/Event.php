@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Event;
 
-use Imi\Util\TSingleton;
+use Imi\Util\Traits\TSingleton;
 
 class Event
 {

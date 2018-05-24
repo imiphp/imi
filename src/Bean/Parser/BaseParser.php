@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Bean\Parser;
 
-use Imi\Util\TSingleton;
+use Imi\Util\Traits\TSingleton;
 
 abstract class BaseParser implements IParser
 {

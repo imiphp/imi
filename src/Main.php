@@ -2,7 +2,6 @@
 namespace Imi;
 
 use Imi\Main\BaseMain;
-use Imi\Util\TSingleton;
 
 /**
  * 主类
