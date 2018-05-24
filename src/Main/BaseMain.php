@@ -92,6 +92,24 @@ abstract class BaseMain implements IMain
 	}
 
 	/**
+	 * 获取要初始化的通道名称
+	 * @return array
+	 */
+	public function getChannels(): array
+	{
+		return Config::get('@' . $this->moduleName . '.channels', []);
+	}
+
+	/**
+	 * 获取要初始化的协程通道名称
+	 * @return array
+	 */
+	public function getCoroutineChannels(): array
+	{
+		return Config::get('@' . $this->moduleName . '.coroutineChannels', []);
+	}
+
+	/**
 	 * 获取模块名称
 	 * @return string
 	 */
