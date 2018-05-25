@@ -13,8 +13,8 @@ abstract class CoroutineChannelManager extends ChannelManager
 	protected static $isInited = false;
 	
 	/**
-	 * \Swoole\Channel 数组
-	 * @var \Swoole\Channel[]
+	 * \Swoole\Coroutine\Channel 数组
+	 * @var \Swoole\Coroutine\Channel[]
 	 */
 	protected static $channels = [];
 	
@@ -60,5 +60,23 @@ abstract class CoroutineChannelManager extends ChannelManager
 	public static function select(string $name, array &$read, array &$write, float $timeout = 0)
 	{
 		return static::getInstance($name)->select($name, $read, $write, $timeout);
+	}
+
+	/**
+	 * 获取实例
+	 * @param string $name
+	 * @return \Swoole\Atomic
+	 */
+	public static function getInstance(string $name): \Swoole\Coroutine\Channel
+	{
+		if(!static::$isInited)
+		{
+			throw new \RuntimeException('getInstance failed, ChannelManager is not initialized');
+		}
+		if(!isset(static::$channels[$name]))
+		{
+			throw new \RuntimeException(sprintf('getInstance failed, %s is not found', $name));
+		}
+		return static::$channels[$name];
 	}
 }

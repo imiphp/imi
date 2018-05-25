@@ -81,7 +81,7 @@ abstract class ChannelManager
 	 * @param string $name
 	 * @return \Swoole\Atomic
 	 */
-	public static function getInstance(string $name): \Swoole\Atomic
+	public static function getInstance(string $name): \Swoole\Channel
 	{
 		if(!static::$isInited)
 		{
