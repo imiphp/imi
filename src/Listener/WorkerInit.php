@@ -22,6 +22,5 @@ class WorkerInit implements IEventListener
 		$main = Helper::getMain($e->getTarget()->getConfig()['namespace']);
 		// 协程通道队列初始化
 		CoroutineChannelManager::setNames($main->getCoroutineChannels());
-		CoroutineChannelManager::init();
 	}
 }
