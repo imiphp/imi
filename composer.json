@@ -11,7 +11,7 @@
         "psr/http-server-middleware": "1.0.0"
     },
     "require-dev": {
-        "eaglewu/swoole-ide-helper": "dev-master"
+        "swoft/swoole-ide-helper": "~2.0"
     },
     "autoload": {
         "psr-4" : {
