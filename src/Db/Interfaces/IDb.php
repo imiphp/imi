@@ -1,0 +1,103 @@
+<?php
+namespace Imi\Db\Interfaces;
+
+interface IDb
+{
+	/**
+	 * 打开
+	 * @return boolean
+	 */
+	public function open();
+
+	/**
+	 * 关闭
+	 * @return void
+	 */
+	public function close();
+
+	/**
+	 * 启动一个事务
+	 * @return boolean
+	 */
+	public function beginTransaction(): bool;
+
+	/**
+	 * 提交一个事务
+	 * @return boolean
+	 */
+	public function commit(): bool;
+
+	/**
+	 * 回滚一个事务
+	 * @return boolean
+	 */
+	public function rollBack(): bool;
+
+	/**
+	 * 返回错误码
+	 * @return mixed
+	 */
+	public function errorCode();
+	
+	/**
+	 * 返回错误信息
+	 * @return array
+	 */
+	public function errorInfo(): array;
+
+	/**
+	 * 执行一条 SQL 语句，并返回受影响的行数
+	 * @param string $statement
+	 * @return integer
+	 */
+	public function exec(string $statement): int;
+
+	/**
+	 * 取回一个数据库连接的属性
+	 * @param mixed $attribute
+	 * @return mixed
+	 */
+	public function getAttribute($attribute);
+
+	/**
+	 * 设置属性
+	 * @param mixed $attribute
+	 * @param mixed $value
+	 * @return bool
+	 */
+	public function setAttribute($attribute, $value);
+
+	/**
+	 * 检查是否在一个事务内
+	 * @return bool
+	 */
+	public function inTransaction(): bool;
+
+	/**
+	 * 返回最后插入行的ID或序列值
+	 * @param string $name
+	 * @return string
+	 */
+	public function lastInsertId(string $name = null);
+
+	/**
+	 * 准备执行语句并返回一个语句对象
+	 * @param string $statement
+	 * @param array $driverOptions
+	 * @return IStatement|bool
+	 */
+	public function prepare(string $statement, array $driverOptions = []);
+
+	/**
+	 * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
+	 * @param string $statement
+	 * @return IStatement|bool
+	 */
+	public function query(string $statement);
+
+	/**
+	 * 获取原对象实例
+	 * @return object
+	 */
+	public function getInstance();
+}

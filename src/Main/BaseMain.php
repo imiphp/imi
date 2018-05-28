@@ -110,6 +110,15 @@ abstract class BaseMain implements IMain
 	}
 
 	/**
+	 * 获取配置
+	 * @return array
+	 */
+	public function getConfig()
+	{
+		return Config::get('@' . $this->moduleName, []);
+	}
+
+	/**
 	 * 获取模块名称
 	 * @return string
 	 */

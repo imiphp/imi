@@ -23,6 +23,8 @@ class Main extends BaseMain
 			'Imi\Annotation',
 			'Imi\Server',
 			'Imi\Log',
+			'Imi\Pool',
+			'Imi\Db',
 			'Imi\Listener',
 		];
 	}
