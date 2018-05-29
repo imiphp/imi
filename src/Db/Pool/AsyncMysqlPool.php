@@ -30,14 +30,7 @@ class AsyncMysqlPool extends BaseAsyncPool
 	 */
 	protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
 	{
-		return new AsyncMysqlResource(App::getBean($this->handlerClass), $this->resourceConfig);
-		// return new \Imi\Db\Pool\AsyncMysqlResource(new \Swoole\Mysql, [
-		// 	'host'		=> '192.168.0.110',
-		// 	'user'		=> 'root',
-		// 	'password'	=> 'root',
-		// 	'database'	=> 'xincheng',
-		// ]);;
-		return new AsyncMysqlResource(new \Swoole\Mysql, $this->resourceConfig);
-		return new AsyncMysqlResource($a, $this->resourceConfig);
+		$db = clone App::getBean($this->handlerClass);
+		return new AsyncMysqlResource($db, $this->resourceConfig);
 	}
 }

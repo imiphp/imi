@@ -145,12 +145,6 @@ abstract class BasePool implements IPool
 	protected function addResource()
 	{
 		$resource = $this->createResource();
-		// $resource = new \Imi\Db\Pool\AsyncMysqlResource(new \Swoole\Mysql, [
-		// 	'host'		=> '192.168.0.110',
-		// 	'user'		=> 'root',
-		// 	'password'	=> 'root',
-		// 	'database'	=> 'xincheng',
-		// ]);
 		$resource->open();
 		
 		$hash = spl_object_hash($resource);
