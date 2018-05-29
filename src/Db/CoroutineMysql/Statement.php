@@ -25,17 +25,11 @@ class Statement implements IStatement
 	protected $columnBinds = [];
 
 	/**
-	 * bindParam 关联关系
+	 * bindParam和bindParam 关联关系
 	 * @var array
 	 */
-	protected $paramBinds = [];
+	protected $binds = [];
 
-	/**
-	 * bindValue 关联关系
-	 * @var array
-	 */
-	protected $valueBinds = [];
-	
 	/**
 	 * 当前游标位置
 	 * @var int
@@ -87,12 +81,7 @@ class Statement implements IStatement
 	 */
 	public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, int $length = null, $driverOptions = null): bool
 	{
-		$this->paramBinds[$parameter] = [
-			'variable'		=>	&$variable,
-			'dataType'		=>	$dataType,
-			'length'		=>	$length,
-			'driverOptions'	=>	$driverOptions
-		];
+		$this->binds[$parameter] = &$variable;
 		return true;
 	}
 
@@ -105,10 +94,8 @@ class Statement implements IStatement
 	 */
 	public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
 	{
-		$this->valueBinds[$parameter] = [
-			'value'		=>	$value,
-			'dataType'	=>	$dataType,
-		];
+		$this->binds[$parameter] = $value;
+		return true;
 	}
 
 	/**
@@ -119,6 +106,7 @@ class Statement implements IStatement
 	{
 		$this->cursor = -1;
 		$this->data = null;
+		return true;
 	}
 
 	/**
@@ -160,13 +148,18 @@ class Statement implements IStatement
 	 * @param array $inputParameters
 	 * @return boolean
 	 */
-	public function execute(array $inputParameters = []): bool
+	public function execute(array $inputParameters = null): bool
 	{
 		if($this->cursor >= 0)
 		{
 			return false;
 		}
+		if(null === $inputParameters)
+		{
+			$inputParameters = $this->binds;
+		}
 		$result = $this->statement->execute($inputParameters);
+		$this->binds = [];
 		if(false === $result)
 		{
 			return false;
