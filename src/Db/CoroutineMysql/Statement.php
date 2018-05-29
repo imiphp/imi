@@ -6,6 +6,8 @@ use Imi\Util\LazyArrayObject;
 
 /**
  * Swoole协程MySQL驱动Statement
+ * 
+ * @property-read string $queryString
  */
 class Statement implements IStatement
 {
@@ -45,9 +47,12 @@ class Statement implements IStatement
 	 */
 	protected $fetchAllParser;
 
-	public function __construct($statement, $data = null)
+	protected $queryString;
+
+	public function __construct($statement, $queryString, $data = null)
 	{
 		$this->statement = $statement;
+		$this->queryString = $queryString;
 		$this->data = $data;
 		$this->cursor = null === $data ? -1 : 0;
 		$this->fetchAllParser = new StatementFetchAllParser;
@@ -324,5 +329,14 @@ class Statement implements IStatement
 	public function valid()
 	{
 		return false !== $this->current();
+	}
+
+	public function __get($name)
+	{
+		switch($name)
+		{
+			case 'queryString':
+				return $this->queryString;
+		}
 	}
 }

@@ -189,12 +189,12 @@ class Driver implements IDb
 	 */
 	public function prepare(string $statement, array $driverOptions = [])
 	{
-		$statement = $this->instance->prepare($statement);
-		if(false === $statement)
+		$stmt = $this->instance->prepare($statement);
+		if(false === $stmt)
 		{
 			return false;
 		}
-		return new Statement($statement);
+		return new Statement($stmt, $statement);
 	}
 
 	/**
@@ -204,13 +204,12 @@ class Driver implements IDb
 	 */
 	public function query(string $statement)
 	{
-		$statement = $this->instance->prepare($statement);
-		if(false === $statement)
+		$stmt = $this->instance->prepare($statement);
+		if(false === $stmt)
 		{
 			return false;
 		}
-		$data = $statement->execute([]);
-		return new Statement($statement, $data);
+		$data = $stmt->execute([]);
+		return new Statement($stmt, $statement, $data);
 	}
-
 }
