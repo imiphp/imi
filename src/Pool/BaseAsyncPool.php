@@ -3,6 +3,7 @@ namespace Imi\Pool;
 
 use Swoole\Coroutine\Channel;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Util\Coroutine;
 
 /**
  * 异步池子，必须用在协程中
@@ -102,7 +103,16 @@ abstract class BaseAsyncPool extends BasePool
 	 */
 	protected function push(IPoolResource $resource)
 	{
-		$this->queue->push($resource);
+		if(Coroutine::isIn())
+		{
+			$this->queue->push($resource);
+		}
+		else
+		{
+			go(function() use($resource){
+				$this->queue->push($resource);
+			});
+		}
 	}
 
 	/**

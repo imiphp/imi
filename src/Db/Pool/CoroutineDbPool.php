@@ -30,6 +30,6 @@ class CoroutineDbPool extends BaseAsyncPool
 	 */
 	protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
 	{
-		return new CoroutineDbResource(App::getBean($this->handlerClass, $this->resourceConfig));
+		return new DbResource(App::getBean($this->handlerClass, $this->resourceConfig));
 	}
 }

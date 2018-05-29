@@ -7,7 +7,7 @@ use Imi\Pool\Interfaces\IPoolResource;
 /**
  * Swoole协程MySQL的连接资源
  */
-class CoroutineDbResource implements IPoolResource
+class DbResource implements IPoolResource
 {
 	/**
 	 * db对象
@@ -24,9 +24,9 @@ class CoroutineDbResource implements IPoolResource
 	 * 打开
 	 * @return boolean
 	 */
-	public function open()
+	public function open($callback = null)
 	{
-		return $this->db->open();
+		$this->db->open();
 	}
 
 	/**

@@ -8,12 +8,14 @@ interface IPoolResource
 {
 	/**
 	 * 打开
+	 * @param callable $callback
 	 * @return boolean
 	 */
-	public function open();
+	public function open($callback = null);
 
 	/**
 	 * 关闭
+	 * @param callable $callback
 	 * @return void
 	 */
 	public function close();

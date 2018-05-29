@@ -6,7 +6,6 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
-use Imi\Util\Coroutine;
 use Imi\App;
 
 /**
