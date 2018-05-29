@@ -4,6 +4,9 @@ namespace Imi\Db\CoroutineMysql;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Util\LazyArrayObject;
 
+/**
+ * Swoole协程MySQL驱动Statement
+ */
 class Statement implements IStatement
 {
 	/**

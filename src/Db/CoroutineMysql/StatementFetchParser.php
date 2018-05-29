@@ -3,6 +3,9 @@ namespace Imi\Db\CoroutineMysql;
 
 use Imi\Util\LazyArrayObject;
 
+/**
+ * Statement fetch处理器
+ */
 class StatementFetchParser
 {
 	/**

@@ -4,6 +4,9 @@ namespace Imi\Db\Pool;
 use Imi\Pool\BaseAsyncPool;
 use Imi\App;
 
+/**
+ * Swoole协程MySQL的连接池
+ */
 class CoroutineDbPool extends BaseAsyncPool
 {
 	/**

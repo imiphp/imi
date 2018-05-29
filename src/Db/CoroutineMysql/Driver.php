@@ -5,7 +5,9 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Pool\Interfaces\IPoolResource;
 
-
+/**
+ * Swoole协程MySQL驱动
+ */
 class Driver implements IDb
 {
 	/**

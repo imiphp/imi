@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Db\CoroutineMysql;
 
+/**
+ * Statement fetchAll处理器
+ */
 class StatementFetchAllParser
 {
 	/**

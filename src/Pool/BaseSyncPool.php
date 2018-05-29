@@ -5,7 +5,9 @@ use Swoole\Channel;
 use Imi\Pool\Interfaces\IPoolResource;
 
 /**
- * 同步池子，必须用在协程中
+ * 同步池子，支持使用在大部分情况
+ * 仅支持尝试获取后立即返回结果，如果获取失败返回null
+ * 支持跨进程连接池管理
  */
 abstract class BaseSyncPool extends BasePool
 {
