@@ -47,12 +47,23 @@ class Statement implements IStatement
 	 */
 	protected $fetchAllParser;
 
-	protected $queryString;
+	/**
+	 * SQL语句
+	 * @var string
+	 */
+	protected $sql;
 
-	public function __construct($statement, $queryString, $data = null)
+	/**
+	 * 参数映射
+	 * @var array
+	 */
+	protected $paramsMap;
+
+	public function __construct($statement, $sql, $paramsMap, $data = null)
 	{
 		$this->statement = $statement;
-		$this->queryString = $queryString;
+		$this->sql = $sql;
+		$this->paramsMap = $paramsMap;
 		$this->data = $data;
 		$this->cursor = null === $data ? -1 : 0;
 		$this->fetchAllParser = new StatementFetchAllParser;
@@ -164,7 +175,7 @@ class Statement implements IStatement
 		}
 		if(null === $inputParameters)
 		{
-			$inputParameters = $this->binds;
+			$inputParameters = $this->getExecuteParams();
 		}
 		$result = $this->statement->execute($inputParameters);
 		$this->binds = [];
@@ -178,6 +189,20 @@ class Statement implements IStatement
 			$this->cursor = 0;
 			return true;
 		}
+	}
+
+	/**
+	 * 获取执行SQL语句要传入的参数
+	 * @return array
+	 */
+	protected function getExecuteParams(): array
+	{
+		$params = [];
+		foreach($this->paramsMap as $key)
+		{
+			$params[] = $this->binds[$key] ?? null;
+		}
+		return $params;
 	}
 
 	/**
@@ -336,7 +361,7 @@ class Statement implements IStatement
 		switch($name)
 		{
 			case 'queryString':
-				return $this->queryString;
+				return $this->sql;
 		}
 	}
 }

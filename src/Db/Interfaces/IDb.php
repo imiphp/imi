@@ -47,10 +47,10 @@ interface IDb
 
 	/**
 	 * 执行一条 SQL 语句，并返回受影响的行数
-	 * @param string $statement
+	 * @param string $sql
 	 * @return integer
 	 */
-	public function exec(string $statement): int;
+	public function exec(string $sql): int;
 
 	/**
 	 * 取回一个数据库连接的属性
@@ -82,18 +82,18 @@ interface IDb
 
 	/**
 	 * 准备执行语句并返回一个语句对象
-	 * @param string $statement
+	 * @param string $sql
 	 * @param array $driverOptions
 	 * @return IStatement|bool
 	 */
-	public function prepare(string $statement, array $driverOptions = []);
+	public function prepare(string $sql, array $driverOptions = []);
 
 	/**
 	 * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
-	 * @param string $statement
+	 * @param string $sql
 	 * @return IStatement|bool
 	 */
-	public function query(string $statement);
+	public function query(string $sql);
 
 	/**
 	 * 获取原对象实例

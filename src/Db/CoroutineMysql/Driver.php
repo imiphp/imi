@@ -2,6 +2,7 @@
 namespace Imi\Db\CoroutineMysql;
 
 use Imi\Db\Interfaces\IDb;
+use Imi\Db\Traits\SqlParser;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Pool\Interfaces\IPoolResource;
 
@@ -10,6 +11,8 @@ use Imi\Pool\Interfaces\IPoolResource;
  */
 class Driver implements IDb
 {
+	use SqlParser;
+
 	/**
 	 * 连接对象
 	 * @var \Swoole\Coroutine\MySQL
@@ -134,12 +137,12 @@ class Driver implements IDb
 
 	/**
 	 * 执行一条 SQL 语句，并返回受影响的行数
-	 * @param string $statement
+	 * @param string $sql
 	 * @return integer
 	 */
-	public function exec(string $statement): int
+	public function exec(string $sql): int
 	{
-		$result = $this->instance->query($statement);
+		$result = $this->instance->query($sql);
 		if(false === $result)
 		{
 			return 0;
@@ -183,33 +186,35 @@ class Driver implements IDb
 
 	/**
 	 * 准备执行语句并返回一个语句对象
-	 * @param string $statement
+	 * @param string $sql
 	 * @param array $driverOptions
 	 * @return IStatement|bool
 	 */
-	public function prepare(string $statement, array $driverOptions = [])
+	public function prepare(string $sql, array $driverOptions = [])
 	{
-		$stmt = $this->instance->prepare($statement);
+		// 处理支持 :xxx 参数格式
+		$execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
+		$stmt = $this->instance->prepare($execSql);
 		if(false === $stmt)
 		{
 			return false;
 		}
-		return new Statement($stmt, $statement);
+		return new Statement($stmt, $sql, $params);
 	}
 
 	/**
 	 * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
-	 * @param string $statement
+	 * @param string $sql
 	 * @return IStatement|bool
 	 */
-	public function query(string $statement)
+	public function query(string $sql)
 	{
-		$stmt = $this->instance->prepare($statement);
+		$stmt = $this->instance->prepare($sql);
 		if(false === $stmt)
 		{
 			return false;
 		}
 		$data = $stmt->execute([]);
-		return new Statement($stmt, $statement, $data);
+		return new Statement($stmt, $sql, [], $data);
 	}
 }
