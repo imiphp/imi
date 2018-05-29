@@ -69,7 +69,7 @@ TPL;
 		$tpl = '';
 		foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
 		{
-			if($method->isStatic() || '__construct' === $method->name)
+			if($method->isStatic() || '__construct' === $method->name || $method->isFinal())
 			{
 				continue;
 			}
@@ -124,6 +124,11 @@ TPL;
 				$item = implode(',', $item);
 			}
 		}
+		// 调用如果参数为空处理
+		if('' === $result['call'])
+		{
+			$result['call'] = '...func_get_args()';
+		}
 		// 可变参数
 		if(isset($param) && $param->isVariadic())
 		{
@@ -133,6 +138,14 @@ TPL;
 		{
 			$result['args_variadic'] = '';
 		}
+		$result['args_variadic'] .= <<<STR
+
+		if(!isset(\$args[func_num_args() - 1]))
+		{
+			\$allArgs = func_get_args();
+			\$args = array_merge(\$args, array_splice(\$allArgs, count(\$args)));
+		}
+STR;
 		return $result;
 	}
 
@@ -173,7 +186,14 @@ TPL;
 		// 默认值
 		if($param->isOptional() && !$param->isVariadic())
 		{
-			$result .= ' = ' . json_encode($param->getDefaultValue());
+			if($param->isDefaultValueAvailable())
+			{
+				$result .= ' = ' . json_encode($param->getDefaultValue());
+			}
+			else
+			{
+				$result .= ' = null';
+			}
 		}
 		return $result;
 	}
