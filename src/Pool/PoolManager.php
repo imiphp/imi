@@ -3,6 +3,8 @@ namespace Imi\Pool;
 
 use Imi\Pool\Interfaces\IPool;
 use Imi\App;
+use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Util\Call;
 
 class PoolManager
 {
@@ -46,5 +48,50 @@ class PoolManager
 			throw new \RuntimeException(sprintf('getInstance failed, %s is not found', $name));
 		}
 		return static::$pools[$name];
+	}
+
+	/**
+	 * 获取池子中的资源
+	 * @param string $name
+	 * @return IPoolResource
+	 */
+	public static function getResource(string $name): IPoolResource
+	{
+		return static::getInstance($name)->getResource();
+	}
+
+	/**
+	 * 尝试获取资源，获取到则返回资源，没有获取到返回false
+	 * @param string $name
+	 * @return IPoolResource|boolean
+	 */
+	public static function tryGetResource(string $name)
+	{
+		return static::getInstance($name)->tryGetResource();
+	}
+
+	/**
+	 * 释放资源占用
+	 * @param string $name
+	 * @param IPoolResource $resource
+	 * @return void
+	 */
+	public static function releaseResource(string $name, IPoolResource $resource)
+	{
+		return static::getInstance($name)->release($resource);
+	}
+
+	/**
+	 * 使用回调来使用池子中的资源，无需手动释放
+	 * 回调有两个参数：$resource(资源对象), $instance(操作实例对象，如数据库、Redis等)
+	 * @param string $name
+	 * @param callable $callback
+	 * @return void
+	 */
+	public static function use(string $name, callable $callback)
+	{
+		$resource = static::getResource($name);
+		Call::callUserFunc($callback, $resource, $resource->getInstance());
+		static::releaseResource($name, $resource);
 	}
 }
