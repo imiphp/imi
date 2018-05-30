@@ -6,7 +6,6 @@ use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
 use Imi\Util\Stream\StreamMode;
-use Imi\Cache\InvalidArgumentException;
 
 /**
  * @Bean("FileCache")
@@ -307,32 +306,6 @@ class File extends Base
 	public function getExDataFileName($fileName)
 	{
 		return $fileName . '.ex';
-	}
-
-	/**
-	 * 检查key格式
-	 * @param string $key
-	 * @return void
-	 */
-	protected function checkKey($key)
-	{
-		if(!is_string($key))
-		{
-			throw new InvalidArgumentException('invalid key: ' . $key);
-		}
-	}
-
-	/**
-	 * 检查值是否是数组或Traversable
-	 * @param mixed $values
-	 * @return void
-	 */
-	protected function checkArrayOrTraversable($values)
-	{
-		if(!is_array($values) && !$values instanceof \Traversable)
-		{
-			throw new InvalidArgumentException('invalid keys');
-		}
 	}
 
 	/**

@@ -3,6 +3,7 @@ namespace Imi\Cache\Handler;
 
 use Imi\RequestContext;
 use Psr\SimpleCache\CacheInterface;
+use Imi\Cache\InvalidArgumentException;
 
 abstract class Base implements CacheInterface
 {
@@ -52,6 +53,32 @@ abstract class Base implements CacheInterface
 		else
 		{
 			return RequestContext::getBean($this->formatHandlerClass)->decode($data);
+		}
+	}
+	
+	/**
+	 * 检查key格式
+	 * @param string $key
+	 * @return void
+	 */
+	protected function checkKey($key)
+	{
+		if(!is_string($key))
+		{
+			throw new InvalidArgumentException('invalid key: ' . $key);
+		}
+	}
+
+	/**
+	 * 检查值是否是数组或Traversable
+	 * @param mixed $values
+	 * @return void
+	 */
+	protected function checkArrayOrTraversable($values)
+	{
+		if(!is_array($values) && !$values instanceof \Traversable)
+		{
+			throw new InvalidArgumentException('invalid keys');
 		}
 	}
 }
