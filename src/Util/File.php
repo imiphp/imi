@@ -57,4 +57,55 @@ abstract class File
 		}
 		return $result . $fileName;
 	}
+
+	/**
+	 * 根据文件打开句柄，读取文件所有内容
+	 * @param mixed $fp
+	 * @return string
+	 */
+	public static function readAll($fp)
+	{
+		$data = '';
+		while (!feof($fp))
+		{
+			$data .= fread($fp, 4096);
+		}
+		return $data;
+	}
+
+	/**
+	 * 读取文件所有内容，优先使用协程，如果不支持则使用传统阻塞方式
+	 * @param string $fileName
+	 * @return string
+	 */
+	public static function readFile($fileName)
+	{
+		if(Coroutine::isIn())
+		{
+			return Coroutine::readFile($fileName);
+		}
+		else
+		{
+			return file_get_contents($fileName);
+		}
+	}
+
+	/**
+	 * 写入文件，优先使用协程，如果不支持则使用传统阻塞方式
+	 * @param string $fileName
+	 * @param string $content
+	 * @param integer $flags
+	 * @return boolean
+	 */
+	public static function writeFile($fileName, $content, $flags = 0)
+	{
+		if(Coroutine::isIn())
+		{
+			return Coroutine::writeFile($fileName, $content, $flags);
+		}
+		else
+		{
+			return false !== file_put_contents($fileName, $content, $flags);
+		}
+	}
 }

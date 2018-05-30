@@ -21,6 +21,7 @@ class Main extends BaseMain
 		return [
 			'Imi\Bean',
 			'Imi\Annotation',
+			'Imi\Cache',
 			'Imi\Server',
 			'Imi\Log',
 			'Imi\Pool',

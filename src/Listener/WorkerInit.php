@@ -7,6 +7,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
 use Imi\App;
+use Imi\Cache\CacheManager;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORK.START",priority=PHP_INT_MAX)
@@ -29,6 +30,13 @@ class WorkerInit implements IEventListener
 		foreach($pools as $name => $pool)
 		{
 			\Imi\Pool\PoolManager::addName($name, $pool['pool']['class'], new \Imi\Pool\PoolConfig($pool['pool']['config']), $pool['resource']);
+		}
+
+		// 缓存初始化
+		$caches = array_merge(Helper::getMain(App::getNamespace())->getConfig()['caches'] ?? [], $main->getConfig()['caches'] ?? []);
+		foreach($caches as $name => $cache)
+		{
+			CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
 		}
 	}
 }
