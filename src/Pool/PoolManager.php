@@ -84,14 +84,16 @@ class PoolManager
 	/**
 	 * 使用回调来使用池子中的资源，无需手动释放
 	 * 回调有两个参数：$resource(资源对象), $instance(操作实例对象，如数据库、Redis等)
+	 * 本方法返回值为回调的返回值
 	 * @param string $name
 	 * @param callable $callback
-	 * @return void
+	 * @return mixed
 	 */
 	public static function use(string $name, callable $callback)
 	{
 		$resource = static::getResource($name);
-		Call::callUserFunc($callback, $resource, $resource->getInstance());
+		$result = Call::callUserFunc($callback, $resource, $resource->getInstance());
 		static::releaseResource($name, $resource);
+		return $result;
 	}
 }

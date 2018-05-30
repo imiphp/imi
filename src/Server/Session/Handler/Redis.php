@@ -50,11 +50,9 @@ class Redis extends Base
 	 */
 	public function read($sessionID)
 	{
-		$result = '';
-		PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($sessionID, &$result){
-			$result = $redis->get($this->getKey($sessionID));
+		return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($sessionID, &$result){
+			return $redis->get($this->getKey($sessionID));
 		});
-		return $result;
 	}
 
 	/**
