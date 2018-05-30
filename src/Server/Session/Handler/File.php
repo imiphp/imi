@@ -3,6 +3,7 @@ namespace Imi\Server\Session\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
+use Imi\Util\Coroutine;
 
 /**
  * @Bean("SessionFile")
@@ -58,7 +59,7 @@ class File extends Base
 		$fileName = $this->getFileName($sessionID);
 		if(is_file($fileName))
 		{
-			return file_get_contents($fileName);
+			return Coroutine::readFile($fileName);
 		}
 		else
 		{
@@ -75,7 +76,7 @@ class File extends Base
 	 */
 	public function write($sessionID, $sessionData, $maxLifeTime)
 	{
-		file_put_contents($this->getFileName($sessionID), $sessionData);
+		Coroutine::writeFile($this->getFileName($sessionID), $sessionData, LOCK_EX);
 	}
 
 	/**
