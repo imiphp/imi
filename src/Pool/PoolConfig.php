@@ -11,12 +11,6 @@ use Imi\Pool\Interfaces\IPoolConfig;
 class PoolConfig implements IPoolConfig
 {
 	/**
-	 * 池子名称
-	 * @var string
-	 */
-	protected $name;
-
-	/**
 	 * 池子中最多资源数
 	 * @var integer
 	 */
@@ -52,15 +46,6 @@ class PoolConfig implements IPoolConfig
 		{
 			$this->$k = $v;
 		}
-	}
-
-	/**
-	 * 池子名称
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
 	}
 
 	/**

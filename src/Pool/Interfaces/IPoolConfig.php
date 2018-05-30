@@ -7,12 +7,6 @@ namespace Imi\Pool\Interfaces;
 interface IPoolConfig
 {
 	/**
-	 * 池子名称
-	 * @return string
-	 */
-	public function getName();
-
-	/**
 	 * 池子中最多资源数
 	 * @return int
 	 */
