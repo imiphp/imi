@@ -106,7 +106,7 @@ class SessionManager
 	 */
 	public function save()
 	{
-		$this->handler->write($this->id, $this->handler->encode($this->data));
+		$this->handler->write($this->id, $this->handler->encode($this->data), $this->config->maxLifeTime);
 	}
 
 	/**
@@ -198,6 +198,7 @@ class SessionManager
 	 * 设置Session值
 	 * @param string $name
 	 * @param mixed $value
+	 * @return void
 	 */
 	public function set($name, $value)
 	{
@@ -207,6 +208,7 @@ class SessionManager
 	/**
 	 * 删除Session值
 	 * @param string $name
+	 * @return void
 	 */
 	public function delete($name)
 	{
@@ -232,6 +234,7 @@ class SessionManager
 	/**
 	 * 清空所有Session
 	 * @param string $name
+	 * @return void
 	 */
 	public function clear()
 	{

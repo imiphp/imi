@@ -31,7 +31,7 @@ class File extends Base
 
 	/**
 	 * 垃圾回收
-	 * @param string $maxLifeTime 最大存活时间
+	 * @param int $maxLifeTime 最大存活时间，单位：秒
 	 * @return void
 	 */
 	public function gc($maxLifeTime)
@@ -70,9 +70,10 @@ class File extends Base
 	 * 写入session
 	 * @param string $sessionID
 	 * @param string $sessionData
+	 * @param string $maxLifeTime
 	 * @return void
 	 */
-	public function write($sessionID, $sessionData)
+	public function write($sessionID, $sessionData, $maxLifeTime)
 	{
 		file_put_contents($this->getFileName($sessionID), $sessionData);
 	}
