@@ -19,7 +19,7 @@ abstract class Base implements ISessionHandler
 	 */
 	public function createSessionID()
 	{
-		// 时间+自增，md5一半+sha1一半，重复概率很小了吧
+		// 时间+自增，md5 id+时间各自的一半，重复概率很小了吧
 		$id = AtomicManager::add('session');
 		$time = microtime();
 		return substr(md5($id), 0, 16) . substr(md5($time), 0, 16);
