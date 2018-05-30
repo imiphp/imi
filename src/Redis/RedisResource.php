@@ -1,9 +1,10 @@
 <?php
 namespace Imi\Redis;
 
+use Imi\Pool\BasePoolResource;
 use Imi\Pool\Interfaces\IPoolResource;
 
-class RedisResource implements IPoolResource
+class RedisResource extends BasePoolResource
 {
 	/**
 	 * db对象
@@ -17,9 +18,11 @@ class RedisResource implements IPoolResource
 	 */
 	private $config;
 
-	public function __construct(\Swoole\Coroutine\Redis $redis, $config)
+	public function __construct(\Imi\Pool\Interfaces\IPool $pool, \Swoole\Coroutine\Redis $redis, $config)
 	{
+		parent::__construct($pool);
 		$this->redis = $redis;
+		$this->config = $config;
 	}
 
 	/**

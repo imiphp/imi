@@ -28,6 +28,6 @@ class RedisPool extends BaseAsyncPool
 	protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
 	{
 		$db = clone App::getBean($this->handlerClass);
-		return new RedisResource($db, $this->resourceConfig);
+		return new RedisResource($this, $db, $this->resourceConfig);
 	}
 }

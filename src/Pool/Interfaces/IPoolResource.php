@@ -25,4 +25,16 @@ interface IPoolResource
 	 * @return mixed
 	 */
 	public function getInstance();
+
+	/**
+	 * 获取池子实例
+	 * @return IPool
+	 */
+	public function getPool(): IPool;
+
+	/**
+	 * 释放当前资源
+	 * @return void
+	 */
+	public function release();
 }

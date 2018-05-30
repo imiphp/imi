@@ -2,12 +2,13 @@
 namespace Imi\Db\Pool;
 
 use Imi\Db\Interfaces\IDb;
+use Imi\Pool\BasePoolResource;
 use Imi\Pool\Interfaces\IPoolResource;
 
 /**
  * Swoole协程MySQL的连接资源
  */
-class DbResource implements IPoolResource
+class DbResource extends BasePoolResource
 {
 	/**
 	 * db对象
@@ -15,8 +16,9 @@ class DbResource implements IPoolResource
 	 */
 	private $db;
 
-	public function __construct(IDb $db)
+	public function __construct(\Imi\Pool\Interfaces\IPool $pool, IDb $db)
 	{
+		parent::__construct($pool);
 		$this->db = $db;
 	}
 
