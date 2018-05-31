@@ -26,13 +26,13 @@ IMI 框架底层开发使用了强类型，支持 Aop ，支持使用注解和�
 
 ### 功能组件
 
-- [x] Aop
+- [x] Aop (同时支持注解和配置文件)
 - [x] Container (PSR-11)
 - [x] 注解
 - [x] 全局事件/类事件
 - [x] HttpServer
 - [x] HttpRequest/HttpResponse (PSR-7)
-- [x] Http 中间件、路由 (PSR-15)
+- [x] Http 中间件、注解路由、配置文件路由 (PSR-15)
 - [x] Session (File + Redis)
 - [x] View
 - [x] 日志 (PSR-3 / File + Console)
