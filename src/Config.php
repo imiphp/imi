@@ -6,21 +6,11 @@ use Imi\Util\ArrayData;
 
 abstract class Config
 {
-	private static $configs = [];
-
 	/**
-	 * 加载配置列表
-	 * @param array $configList
-	 * @return void
+	 * 配置数组
+	 * @var ArrayData[]
 	 */
-	public static function load(array $configList)
-	{
-		static::$configs = [];
-		foreach($configList as $alias => $fileName)
-		{
-			static::$configs[$alias] = new ArrayData(include $fileName);
-		}
-	}
+	private static $configs = [];
 
 	/**
 	 * 增加配置
@@ -35,9 +25,26 @@ abstract class Config
 			return false;
 		}
 		static::$configs[$name] = new ArrayData($config);
+		if(static::$configs[$name]->exists('configs'))
+		{
+			static::load($name, static::$configs[$name]->get('configs', []));
+		}
 		return true;
 	}
 
+	/**
+	 * 加载配置列表
+	 * @param array $configList
+	 * @return void
+	 */
+	public static function load($name, array $configList)
+	{
+		foreach($configList as $alias => $fileName)
+		{
+			static::set($name . '.' . $alias, include $fileName);
+		}
+	}
+	
 	/**
 	 * 设置配置
 	 * @param string $name
