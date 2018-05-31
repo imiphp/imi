@@ -2,6 +2,7 @@
 namespace Imi;
 
 use Imi\Main\BaseMain;
+use Imi\Util\File;
 
 /**
  * 主类
@@ -13,31 +14,15 @@ class Main extends BaseMain
 	}
 
 	/**
-	 * 获取要扫描的bean的命名空间
-	 * @return array
+	 * 加载配置
+	 * @return void
 	 */
-	public function getBeanScan(): array
+	protected function loadConfig()
 	{
-		return [
-			'Imi\Bean',
-			'Imi\Annotation',
-			'Imi\Cache',
-			'Imi\Server',
-			'Imi\Log',
-			'Imi\Pool',
-			'Imi\Db',
-			'Imi\Listener',
-		];
-	}
-
-	/**
-	 * 获取要初始化的原子计数名称
-	 * @return array
-	 */
-	public function getAtomics(): array
-	{
-		return [
-			'session'
-		];
+		$fileName = File::path(dirname($this->getPath()), 'config/config.php');
+		if(is_file($fileName))
+		{
+			Config::addConfig('@' . $this->moduleName, include $fileName);
+		}
 	}
 }

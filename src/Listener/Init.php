@@ -23,9 +23,9 @@ class Init implements IEventListener
 		foreach(Helper::getMains() as $main)
 		{
 			// 原子计数初始化
-			AtomicManager::setNames($main->getAtomics());
+			AtomicManager::setNames($main->getConfig()['atomics'] ?? []);
 			// 通道队列初始化
-			ChannelManager::setNames($main->getChannels());
+			ChannelManager::setNames($main->getConfig()['channels'] ?? []);
 		}
 		AtomicManager::init();
 		ChannelManager::init();
