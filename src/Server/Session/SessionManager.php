@@ -1,11 +1,11 @@
 <?php
 namespace Imi\Server\Session;
 
+use Imi\Util\Random;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Bean\Annotation\Inject;
+use Imi\Aop\Annotation\Inject;
 use Imi\Server\Session\Handler\ISessionHandler;
-use Imi\Util\Random;
 
 /**
  * @Bean("SessionManager")

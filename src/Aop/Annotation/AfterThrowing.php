@@ -1,11 +1,14 @@
 <?php
-namespace Imi\Bean\Annotation;
+namespace Imi\Aop\Annotation;
+
+use Imi\Bean\Annotation\Base;
+use Imi\Bean\Annotation\Parser;
 
 /**
  * 在异常时通知
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Bean\Parser\AopParser")
+ * @Parser("Imi\Aop\Parser\AopParser")
  */
 class AfterThrowing extends Base
 {

@@ -1,5 +1,7 @@
 <?php
-namespace Imi\Bean\Parser;
+namespace Imi\Aop\Parser;
+
+use Imi\Bean\Parser\BaseParser;
 
 class AopParser extends BaseParser
 {
@@ -13,42 +15,42 @@ class AopParser extends BaseParser
 	 */
 	public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
 	{
-		if($annotation instanceof \Imi\Bean\Annotation\Aspect)
+		if($annotation instanceof \Imi\Aop\Annotation\Aspect)
 		{
 			$this->data[$className] = [
 				'className'	=>	$className,
 				'aspect'	=>	$annotation,
 			];
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\PointCut)
+		else if($annotation instanceof \Imi\Aop\Annotation\PointCut)
 		{
 			$this->data[$className][$target][$targetName]['pointCut'] = $annotation;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\Before)
+		else if($annotation instanceof \Imi\Aop\Annotation\Before)
 		{
 			$this->data[$className][$target][$targetName]['before'] = true;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\After)
+		else if($annotation instanceof \Imi\Aop\Annotation\After)
 		{
 			$this->data[$className][$target][$targetName]['after'] = true;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\AfterReturning)
+		else if($annotation instanceof \Imi\Aop\Annotation\AfterReturning)
 		{
 			$this->data[$className][$target][$targetName]['afterReturning'] = true;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\AfterThrowing)
+		else if($annotation instanceof \Imi\Aop\Annotation\AfterThrowing)
 		{
 			$this->data[$className][$target][$targetName]['afterThrowing'] = $annotation;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\Around)
+		else if($annotation instanceof \Imi\Aop\Annotation\Around)
 		{
 			$this->data[$className][$target][$targetName]['around'] = true;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\RequestInject)
+		else if($annotation instanceof \Imi\Aop\Annotation\RequestInject)
 		{
 			$this->data[$className][$target][$targetName]['requestInject'] = $annotation;
 		}
-		else if($annotation instanceof \Imi\Bean\Annotation\Inject)
+		else if($annotation instanceof \Imi\Aop\Annotation\Inject)
 		{
 			$this->data[$className][$target][$targetName]['inject'] = $annotation;
 		}

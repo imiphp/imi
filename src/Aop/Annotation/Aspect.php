@@ -1,11 +1,14 @@
 <?php
-namespace Imi\Bean\Annotation;
+namespace Imi\Aop\Annotation;
+
+use Imi\Bean\Annotation\Base;
+use Imi\Bean\Annotation\Parser;
 
 /**
  * 切面注解
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Bean\Parser\AopParser")
+ * @Parser("Imi\Aop\Parser\AopParser")
  */
 class Aspect extends Base
 {

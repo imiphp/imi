@@ -36,6 +36,7 @@ class Annotation
 	{
 		foreach(MainHelper::getMains() as $main)
 		{
+			// 扫描注解
 			$this->loadModuleAnnotations($main->getNamespace());
 		}
 	}

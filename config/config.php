@@ -1,6 +1,7 @@
 <?php
 return [
 	'beanScan'	=>	[
+		'Imi\Aop',
 		'Imi\Bean',
 		'Imi\Annotation',
 		'Imi\Cache',

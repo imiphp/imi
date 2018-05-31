@@ -1,11 +1,14 @@
 <?php
-namespace Imi\Bean\Annotation;
+namespace Imi\Aop\Annotation;
+
+use Imi\Bean\Annotation\Base;
+use Imi\Bean\Annotation\Parser;
 
 /**
  * 切入点
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Bean\Parser\AopParser")
+ * @Parser("Imi\Aop\Parser\AopParser")
  */
 class PointCut extends Base
 {

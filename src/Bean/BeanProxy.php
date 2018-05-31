@@ -9,7 +9,7 @@ use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
 use Imi\RequestContext;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Bean\Parser\AopParser;
+use Imi\Aop\Parser\AopParser;
 use Imi\Bean\Annotation\Inject;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Aop\AfterThrowingJoinPoint;

@@ -1,12 +1,14 @@
 <?php
-namespace Imi\Bean\Annotation;
+namespace Imi\Aop\Annotation;
+
+use Imi\Bean\Annotation\Parser;
 
 /**
  * 属性注入
  * 使用：RequestContext::getBean()
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Bean\Parser\AopParser")
+ * @Parser("Imi\Aop\Parser\AopParser")
  */
 class RequestInject extends Inject
 {
