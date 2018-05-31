@@ -7,6 +7,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\Route\BaseRoute;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
+use Imi\Server\Route\RouteCallable;
 
 /**
  * @Bean("HttpRoute")
@@ -35,9 +36,10 @@ class HttpRoute extends BaseRoute
 						$this->checkRequestMime($request, $item['annotation']->requestMime)
 					)
 					{
+						$params = array_merge($params, $domainParams);
 						return [
-							'params'	=>	array_merge($params, $domainParams),
-							'callable'	=>	$item['callable']
+							'params'	=>	$params,
+							'callable'	=>	$this->parseCallable($params, $item['callable']),
 						];
 					}
 				}
@@ -208,5 +210,23 @@ class HttpRoute extends BaseRoute
 			return true;
 		}
 		return Imi::checkCompareValues($requestMime, $request->getHeaderLine('Content-Type'));
+	}
+
+	/**
+	 * 处理回调
+	 * @param array $params
+	 * @param mixed $callable
+	 * @return callable
+	 */
+	private function parseCallable($params, $callable)
+	{
+		if($callable instanceof RouteCallable)
+		{
+			return $callable->getCallable($params);
+		}
+		else
+		{
+			return $callable;
+		}
 	}
 }

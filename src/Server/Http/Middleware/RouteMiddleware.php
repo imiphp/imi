@@ -13,6 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Imi\Server\Http\Message\Response;
 
 /**
  * @Bean
@@ -32,20 +33,15 @@ class RouteMiddleware implements MiddlewareInterface
 		// 路由解析
 		$route = RequestContext::getBean('HttpRoute');
 		$result = $route->parse($request);
-		if(null === $result)
+		if(null === $result || !is_callable($result['callable']))
 		{
 			// 未匹配到路由
 			return $response->withStatus(404);
 		}
 		else
 		{
-			// 通过闭包获取实例对象，解决不在请求上下文时的属性注入问题
-			if(isset($result['callable'][0]) && $result['callable'][0] instanceof \Closure)
-			{
-				$result['callable'][0] = Call::callUserFunc($result['callable'][0]);
-			}
 			// 路由匹配结果是否是[控制器对象, 方法名]
-			$isObject = isset($result['callable'][0]) && $result['callable'][0] instanceof HttpController;
+			$isObject = is_array($result['callable']) && isset($result['callable'][0]) && $result['callable'][0] instanceof HttpController;
 			if($isObject)
 			{
 				// 复制一份控制器对象
@@ -61,33 +57,42 @@ class RouteMiddleware implements MiddlewareInterface
 				// 获得控制器中的Response
 				$response = $result['callable'][0]->response;
 			}
-
 			// 视图
-			$view = RequestContext::getBean('View');
-
 			if($actionResult instanceof \Imi\Server\View\Annotation\View)
 			{
 				// 动作返回的值是@View注解
 				$viewAnnotation = $actionResult;
 			}
+			else if($actionResult instanceof Response)
+			{
+				$response = $actionResult;
+			}
 			else
 			{
 				// 获取对应动作的视图注解
 				$viewAnnotation = ViewParser::getInstance()->getByCallable($result['callable']);
-				if(is_array($actionResult))
+				if(null !== $viewAnnotation)
 				{
-					// 动作返回值是数组，合并到视图注解
-					$viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
-				}
-				else
-				{
-					// 非数组直接赋值
-					$viewAnnotation->data = $actionResult;
+					if(is_array($actionResult))
+					{
+						// 动作返回值是数组，合并到视图注解
+						$viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
+					}
+					else
+					{
+						// 非数组直接赋值
+						$viewAnnotation->data = $actionResult;
+					}
 				}
 			}
 
-			// 视图渲染
-			$response = $view->render($viewAnnotation, $response);
+			if(isset($viewAnnotation))
+			{
+				// 视图渲染
+				$view = RequestContext::getBean('View');
+				var_dump($viewAnnotation);
+				$response = $view->render($viewAnnotation, $response);
+			}
 			
 		}
 		return $response;

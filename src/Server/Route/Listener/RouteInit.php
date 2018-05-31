@@ -1,9 +1,11 @@
 <?php
 namespace Imi\Server\Route\Listener;
 
+use Imi\Main\Helper;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
+use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Parser\ControllerParser;
 
@@ -19,6 +21,16 @@ class RouteInit implements IEventListener
 	 * @return void
 	 */
 	public function handle(EventParam $e)
+	{
+		$this->parseAnnotations($e);
+		$this->parseConfigs($e);
+	}
+
+	/**
+	 * 处理注解路由
+	 * @return void
+	 */
+	private function parseAnnotations(EventParam $e)
 	{
 		$controllerParser = ControllerParser::getInstance();
 		$server = $e->getTarget();
@@ -53,11 +65,39 @@ class RouteInit implements IEventListener
 					{
 						$routeItem->url = $classAnnotation->prefix . $routeItem->url;
 					}
-					$route->addRuleAnnotation($routeItem, [function() use($server, $className){
-						return $server->getBean($className);
-					}, $methodName]);
+					$route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName));
 				}
 			}
+		}
+	}
+
+	/**
+	 * 处理配置文件路由
+	 * @return void
+	 */
+	private function parseConfigs(EventParam $e)
+	{
+		$server = $e->getTarget();
+		if($server instanceof \Imi\Server\Http\Server)
+		{
+			$route = $server->getBean('HttpRoute');
+		}
+		else
+		{
+			return;
+		}
+		foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
+		{
+			$routeAnnotation = new Route($routeOption['route'] ?? []);
+			if(isset($routeOption['callback']))
+			{
+				$callable = $routeOption['callback'];
+			}
+			else
+			{
+				$callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
+			}
+			$route->addRuleAnnotation($routeAnnotation, $callable);
 		}
 	}
 }

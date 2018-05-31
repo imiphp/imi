@@ -43,8 +43,12 @@ class ViewParser extends BaseParser
 		}
 	}
 
-	public function getByCallable(array $callable)
+	public function getByCallable($callable)
 	{
+		if(!is_array($callable))
+		{
+			return null;
+		}
 		list($object, $methodName) = $callable;
 		if(ClassObject::isAnymous($object))
 		{

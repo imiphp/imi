@@ -39,6 +39,11 @@ class Html implements IHandler
 	{
 		$fileName = $this->getTemplateFilePath($viewAnnotation->template);
 
+		if(!is_file($fileName))
+		{
+			return $response;
+		}
+
 		$engine = RequestContext::getBean($this->templateEngine);
 
 		return $engine->render($response, $fileName, $viewAnnotation->data);
