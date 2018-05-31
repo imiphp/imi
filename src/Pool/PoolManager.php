@@ -93,7 +93,7 @@ class PoolManager
 	{
 		$resource = static::getResource($name);
 		$result = Call::callUserFunc($callback, $resource, $resource->getInstance());
-		static::releaseResource($name, $resource);
+		$resource->release();
 		return $result;
 	}
 }
