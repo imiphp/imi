@@ -5,12 +5,15 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
+use Imi\Util\Traits\Aspect\TDefer;
 
 /**
  * @Aspect
  */
 class RedisAspect
 {
+	use TDefer;
+
 	/**
 	 * Redis 延迟收包
 	 * @PointCut(
@@ -166,22 +169,6 @@ class RedisAspect
 	 */
 	public function defer(AroundJoinPoint $joinPoint)
 	{
-		// 获取调用前的defer状态
-		$isDefer = $joinPoint->getTarget()->getDefer();
-		if(!$isDefer)
-		{
-			// 强制设为延迟收包
-			$joinPoint->getTarget()->setDefer(true);
-		}
-		// 调用原方法
-		$joinPoint->proceed();
-		// 接收结果
-		$result = $joinPoint->getTarget()->recv();
-		if(!$isDefer)
-		{
-			// 设为调用前状态
-			$joinPoint->getTarget()->setDefer(false);
-		}
-		return $result;
+		return $this->parseDefer($joinPoint);
 	}
 }
