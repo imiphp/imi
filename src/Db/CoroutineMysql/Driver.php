@@ -133,7 +133,7 @@ class Driver implements IDb
 	 */
 	public function errorInfo(): array
 	{
-		return [$this->instance->error];
+		return '' === $this->instance->error ? [] : [$this->instance->error];
 	}
 
 	/**
@@ -183,6 +183,15 @@ class Driver implements IDb
 	public function lastInsertId(string $name = null)
 	{
 		return $this->instance->lastInsertId;
+	}
+
+	/**
+	 * 返回受上一个 SQL 语句影响的行数
+	 * @return int
+	 */
+	public function rowCount(): int
+	{
+		return $this->instance->affected_rows;
 	}
 
 	/**

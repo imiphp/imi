@@ -87,10 +87,10 @@ interface IStatement extends \Iterator
 
 	/**
 	 * 从结果集中的下一行返回单独的一列。
-	 * @param integer $columnNumber
+	 * @param integer|string $columnKey
 	 * @return mixed
 	 */
-	public function fetchColumn(int $columnNumber = 0);
+	public function fetchColumn($columnKey = 0);
 	
 	/**
 	 * 获取下一行并作为一个对象返回。
@@ -121,6 +121,13 @@ interface IStatement extends \Iterator
 	 */
 	public function nextRowset(): bool;
 
+	/**
+	 * 返回最后插入行的ID或序列值
+	 * @param string $name
+	 * @return string
+	 */
+	public function lastInsertId(string $name = null);
+	
 	/**
 	 * 返回受上一个 SQL 语句影响的行数
 	 * @return int

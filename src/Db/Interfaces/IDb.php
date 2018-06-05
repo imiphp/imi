@@ -81,6 +81,12 @@ interface IDb
 	public function lastInsertId(string $name = null);
 
 	/**
+	 * 返回受上一个 SQL 语句影响的行数
+	 * @return int
+	 */
+	public function rowCount(): int;
+	
+	/**
 	 * 准备执行语句并返回一个语句对象
 	 * @param string $sql
 	 * @param array $driverOptions

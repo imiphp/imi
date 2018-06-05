@@ -176,7 +176,7 @@ class Statement implements IStatement
 	 */
 	public function errorInfo(): array
 	{
-		return [$this->statement->error];
+		return '' === $this->statement->error ? [] : [$this->statement->error];
 	}
 
 	/**
@@ -280,13 +280,13 @@ class Statement implements IStatement
 	}
 
 	/**
-	 * 从结果集中的下一行返回单独的一列。
-	 * @param integer $columnNumber
+	 * 从结果集中的下一行返回单独的一列，不存在返回null
+	 * @param integer|string $columnKey
 	 * @return mixed
 	 */
-	public function fetchColumn(int $columnNumber = 0)
+	public function fetchColumn($columnKey = 0)
 	{
-		return $this->fetch(\PDO::FETCH_NUM)[$columnNumber] ?? false;
+		return $this->fetch(\PDO::FETCH_BOTH)[$columnKey] ?? null;
 	}
 	
 	/**
@@ -333,6 +333,16 @@ class Statement implements IStatement
 	public function nextRowset(): bool
 	{
 		return false;
+	}
+
+	/**
+	 * 返回最后插入行的ID或序列值
+	 * @param string $name
+	 * @return string
+	 */
+	public function lastInsertId(string $name = null)
+	{
+		return $this->statement->lastInsertId;
 	}
 
 	/**
