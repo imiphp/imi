@@ -215,7 +215,7 @@ class BeanProxy
 	{
 		$this->parseBefore($method, $args);
 		// 原始方法调用
-		$result = $callback(...$args);
+		$result = Call::callUserFuncArray($callback, $args);
 		$this->parseAfter($method, $args);
 		$this->parseAfterReturning($method, $args, $result);
 		return $result;

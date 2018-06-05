@@ -90,7 +90,6 @@ class RouteMiddleware implements MiddlewareInterface
 			{
 				// 视图渲染
 				$view = RequestContext::getBean('View');
-				var_dump($viewAnnotation);
 				$response = $view->render($viewAnnotation, $response);
 			}
 			

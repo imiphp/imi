@@ -71,7 +71,7 @@ class JoinPoint
 
 	/**
 	 * 获取连接点所在的目标对象
-	 * @return void
+	 * @return mixed
 	 */
 	public function getTarget()
 	{

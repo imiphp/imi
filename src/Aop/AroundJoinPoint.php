@@ -13,7 +13,7 @@ class AroundJoinPoint extends JoinPoint
 
 	public function __construct($type, $method, $args, $target, $_this, $nextProceed)
 	{
-		parent::__construct(...func_get_args());
+		parent::__construct($type, $method, $args, $target, $_this);
 		$this->nextProceed = $nextProceed;
 	}
 

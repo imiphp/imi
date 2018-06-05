@@ -9,6 +9,7 @@ return [
 		'Imi\Log',
 		'Imi\Pool',
 		'Imi\Db',
+		'Imi\Redis',
 		'Imi\Listener',
 	],
 	'atomics'	=>	[
