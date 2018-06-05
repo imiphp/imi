@@ -11,21 +11,22 @@ trait TDefer
 {
 	public function parseDefer(AroundJoinPoint $joinPoint)
 	{
+		$client = $joinPoint->getTarget();
 		// 获取调用前的defer状态
-		$isDefer = $joinPoint->getTarget()->getDefer();
+		$isDefer = $client->getDefer();
 		if(!$isDefer)
 		{
 			// 强制设为延迟收包
-			$joinPoint->getTarget()->setDefer(true);
+			$client->setDefer(true);
 		}
 		// 调用原方法
 		$joinPoint->proceed();
 		// 接收结果
-		$result = $joinPoint->getTarget()->recv();
+		$result = $client->recv();
 		if(!$isDefer)
 		{
 			// 设为调用前状态
-			$joinPoint->getTarget()->setDefer(false);
+			$client->setDefer(false);
 		}
 		return $result;
 	}

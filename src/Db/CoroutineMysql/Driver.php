@@ -5,6 +5,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\App;
 
 /**
  * Swoole协程MySQL驱动
@@ -199,7 +200,7 @@ class Driver implements IDb
 		{
 			return false;
 		}
-		return new Statement($stmt, $sql, $params);
+		return App::getBean(Statement::class, $this, $stmt, $sql, $params);
 	}
 
 	/**
@@ -215,6 +216,6 @@ class Driver implements IDb
 			return false;
 		}
 		$data = $stmt->execute([]);
-		return new Statement($stmt, $sql, [], $data);
+		return App::getBean(Statement::class, $this, $stmt, $sql, [], $dat);
 	}
 }

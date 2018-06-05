@@ -1,8 +1,9 @@
 <?php
 namespace Imi\Db\CoroutineMysql;
 
-use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
+use Imi\Db\Interfaces\IStatement;
 
 /**
  * Swoole协程MySQL驱动Statement
@@ -59,14 +60,30 @@ class Statement implements IStatement
 	 */
 	protected $paramsMap;
 
-	public function __construct($statement, $sql, $paramsMap, $data = null)
+	/**
+	 * 数据库操作对象
+	 * @var Idb
+	 */
+	protected $db;
+
+	public function __construct(Idb $db, $statement, $sql, $paramsMap, $data = null)
 	{
+		$this->db = $db;
 		$this->statement = $statement;
 		$this->sql = $sql;
 		$this->paramsMap = $paramsMap;
 		$this->data = $data;
 		$this->cursor = null === $data ? -1 : 0;
 		$this->fetchAllParser = new StatementFetchAllParser;
+	}
+
+	/**
+	 * 获取数据库操作对象
+	 * @return IDb
+	 */
+	public function getDb(): IDb
+	{
+		return $this->db;
 	}
 
 	/**
@@ -185,6 +202,11 @@ class Statement implements IStatement
 		}
 		else
 		{
+			$dbInstance = $this->db->getInstance();
+			if($dbInstance->getDefer())
+			{
+				$result = $dbInstance->recv();
+			}
 			$this->data = $result;
 			$this->cursor = 0;
 			return true;

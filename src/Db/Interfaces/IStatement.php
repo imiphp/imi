@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Db\Interfaces;
 
+use Imi\Db\Interfaces\IDb;
+
 interface IStatement extends \Iterator
 {
 	/**
@@ -130,4 +132,10 @@ interface IStatement extends \Iterator
 	 * @return object
 	 */
 	public function getInstance();
+
+	/**
+	 * 获取数据库操作对象
+	 * @return IDb
+	 */
+	public function getDb(): IDb;
 }
