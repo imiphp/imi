@@ -27,7 +27,7 @@ trait SqlParser
 
 		// 匹配 :xxx 参数
 		$i = 1;
-		$sql = preg_replace_callback('/(\?|:[^\s]+)/', function($matches) use(&$params, &$i){
+		$sql = preg_replace_callback('/(\?|:\w+)/', function($matches) use(&$params, &$i){
 			if('?' === $matches[1])
 			{
 				$params[] = $i;
