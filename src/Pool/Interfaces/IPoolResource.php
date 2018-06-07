@@ -32,9 +32,4 @@ interface IPoolResource
 	 */
 	public function getPool(): IPool;
 
-	/**
-	 * 释放当前资源
-	 * @return void
-	 */
-	public function release();
 }

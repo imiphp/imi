@@ -26,12 +26,4 @@ abstract class BasePoolResource implements IPoolResource
 		return $this->pool;
 	}
 
-	/**
-	 * 释放当前资源
-	 * @return void
-	 */
-	public function release()
-	{
-		$this->pool->release($this);
-	}
 }

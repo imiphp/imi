@@ -1,10 +1,11 @@
 <?php
 namespace Imi\Pool;
 
-use Imi\Pool\Interfaces\IPool;
 use Imi\App;
-use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Util\Call;
+use Imi\RequestContext;
+use Imi\Pool\Interfaces\IPool;
+use Imi\Pool\Interfaces\IPoolResource;
 
 class PoolManager
 {
@@ -57,7 +58,11 @@ class PoolManager
 	 */
 	public static function getResource(string $name): IPoolResource
 	{
-		return static::getInstance($name)->getResource();
+		$resource = static::getInstance($name)->getResource();
+
+		static::pushResourceToRequestContext($resource);
+
+		return $resource;
 	}
 
 	/**
@@ -67,7 +72,12 @@ class PoolManager
 	 */
 	public static function tryGetResource(string $name)
 	{
-		return static::getInstance($name)->tryGetResource();
+		$resource = static::getInstance($name)->tryGetResource();
+		if(!$resource)
+		{
+			static::pushResourceToRequestContext($resource);
+		}
+		return $resource;
 	}
 
 	/**
@@ -76,9 +86,10 @@ class PoolManager
 	 * @param IPoolResource $resource
 	 * @return void
 	 */
-	public static function releaseResource(string $name, IPoolResource $resource)
+	public static function releaseResource(IPoolResource $resource)
 	{
-		return static::getInstance($name)->release($resource);
+		$resource->getPool()->release($resource);
+		static::removeResourceFromRequestContext($resource);
 	}
 
 	/**
@@ -92,8 +103,58 @@ class PoolManager
 	public static function use(string $name, callable $callback)
 	{
 		$resource = static::getResource($name);
-		$result = Call::callUserFunc($callback, $resource, $resource->getInstance());
-		$resource->release();
+		$result = null;
+		try{
+			$result = Call::callUserFunc($callback, $resource, $resource->getInstance());
+		}
+		finally{
+			static::releaseResource($resource);
+		}
 		return $result;
+	}
+
+	/**
+	 * 释放当前上下文请求的未被释放的资源
+	 * @return void
+	 */
+	public static function destroyCurrentContext()
+	{
+		$poolResources = RequestContext::get('poolResources', []);
+		foreach($poolResources as $resource)
+		{
+			$resource->getPool()->release($resource);
+		}
+		RequestContext::set('poolResources', []);
+	}
+
+	/**
+	 * 把资源存放到当前上下文
+	 *
+	 * @param IPoolResource $resource
+	 * @return void
+	 */
+	private static function pushResourceToRequestContext(IPoolResource $resource)
+	{
+		$poolResources = RequestContext::get('poolResources', []);
+		$instance = $resource->getInstance();
+		$poolResources[spl_object_hash($instance)] = $resource;
+		RequestContext::set('poolResources', $poolResources);
+	}
+
+	/**
+	 * 把资源从当前上下文删除
+	 * @param IPoolResource $resource
+	 * @return void
+	 */
+	private static function removeResourceFromRequestContext(IPoolResource $resource)
+	{
+		$poolResources = RequestContext::get('poolResources', []);
+		$instance = $resource->getInstance();
+		$key = spl_object_hash($instance);
+		if(isset($poolResources[$key]))
+		{
+			unset($poolResources[$key]);
+			RequestContext::set('poolResources', $poolResources);
+		}
 	}
 }

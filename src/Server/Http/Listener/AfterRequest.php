@@ -7,6 +7,7 @@ use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\App;
 use Imi\ServerManage;
+use Imi\Pool\PoolManager;
 
 /**
  * request事件后置处理
@@ -27,6 +28,8 @@ class AfterRequest implements IRequestEventListener
 		{
 			$server->getBean('Logger')->endRequest();
 		}
+		// 释放请求的进程池资源
+		PoolManager::destroyCurrentContext();
 		// 销毁请求上下文
 		RequestContext::destroy();
 	}
