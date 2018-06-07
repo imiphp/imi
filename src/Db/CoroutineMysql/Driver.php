@@ -6,6 +6,7 @@ use Imi\Db\Traits\SqlParser;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\App;
+use Imi\Db\Exception\DbException;
 
 /**
  * Swoole协程MySQL驱动
@@ -31,6 +32,12 @@ class Driver implements IDb
 	 * @var boolean
 	 */
 	protected $inTransaction = false;
+
+	/**
+	 * 最后执行过的SQL语句
+	 * @var string
+	 */
+	protected $lastSql = '';
 
 	/**
 	 * 参数格式：
@@ -137,6 +144,15 @@ class Driver implements IDb
 	}
 
 	/**
+	 * 获取最后一条执行的SQL语句
+	 * @return string
+	 */
+	public function lastSql()
+	{
+		return $this->lastSql;
+	}
+	
+	/**
 	 * 执行一条 SQL 语句，并返回受影响的行数
 	 * @param string $sql
 	 * @return integer
@@ -182,7 +198,7 @@ class Driver implements IDb
 	 */
 	public function lastInsertId(string $name = null)
 	{
-		return $this->instance->lastInsertId;
+		return $this->instance->insert_id;
 	}
 
 	/**
@@ -198,16 +214,18 @@ class Driver implements IDb
 	 * 准备执行语句并返回一个语句对象
 	 * @param string $sql
 	 * @param array $driverOptions
-	 * @return IStatement|bool
+	 * @return IStatement
+	 * @throws DbException
 	 */
 	public function prepare(string $sql, array $driverOptions = [])
 	{
 		// 处理支持 :xxx 参数格式
+		$this->lastSql = $sql;
 		$execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
 		$stmt = $this->instance->prepare($execSql);
 		if(false === $stmt)
 		{
-			return false;
+			throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $sql);
 		}
 		return App::getBean(Statement::class, $this, $stmt, $sql, $params);
 	}
@@ -215,14 +233,16 @@ class Driver implements IDb
 	/**
 	 * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
 	 * @param string $sql
-	 * @return IStatement|bool
+	 * @return IStatement
+	 * @throws DbException
 	 */
 	public function query(string $sql)
 	{
+		$this->lastSql = $sql;
 		$stmt = $this->instance->prepare($sql);
 		if(false === $stmt)
 		{
-			return false;
+			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $sql);
 		}
 		$data = $stmt->execute([]);
 		return App::getBean(Statement::class, $this, $stmt, $sql, [], $dat);

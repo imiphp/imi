@@ -46,6 +46,12 @@ interface IDb
 	public function errorInfo(): array;
 
 	/**
+	 * 获取最后一条执行的SQL语句
+	 * @return string
+	 */
+	public function lastSql();
+
+	/**
 	 * 执行一条 SQL 语句，并返回受影响的行数
 	 * @param string $sql
 	 * @return integer

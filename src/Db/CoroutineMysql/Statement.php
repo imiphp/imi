@@ -180,6 +180,15 @@ class Statement implements IStatement
 	}
 
 	/**
+	 * 获取SQL语句
+	 * @return string
+	 */
+	public function getSql()
+	{
+		return $this->sql;
+	}
+
+	/**
 	 * 执行一条预处理语句
 	 * @param array $inputParameters
 	 * @return boolean
@@ -190,18 +199,16 @@ class Statement implements IStatement
 		{
 			return false;
 		}
-		if(null === $inputParameters)
-		{
-			$inputParameters = $this->getExecuteParams();
-		}
-		$result = $this->statement->execute($inputParameters);
+		$params = $this->getExecuteParams($inputParameters);
+		$result = $this->statement->execute($params);
 		$this->binds = [];
 		if(false === $result)
 		{
-			return false;
+			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $this->errorCode());
 		}
 		else
 		{
+			// 延迟收包支持
 			$dbInstance = $this->db->getInstance();
 			if($dbInstance->getDefer())
 			{
@@ -215,14 +222,22 @@ class Statement implements IStatement
 
 	/**
 	 * 获取执行SQL语句要传入的参数
+	 * @param array $binds
 	 * @return array
 	 */
-	protected function getExecuteParams(): array
+	protected function getExecuteParams($binds = null): array
 	{
 		$params = [];
 		foreach($this->paramsMap as $key)
 		{
-			$params[] = $this->binds[$key] ?? null;
+			if(null === $binds)
+			{
+				$params[] = $this->binds[$key] ?? null;
+			}
+			else
+			{
+				$params[] = $binds[$key] ?? null;
+			}
 		}
 		return $params;
 	}
@@ -342,7 +357,7 @@ class Statement implements IStatement
 	 */
 	public function lastInsertId(string $name = null)
 	{
-		return $this->statement->lastInsertId;
+		return $this->statement->insert_id;
 	}
 
 	/**

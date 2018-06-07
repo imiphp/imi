@@ -61,6 +61,12 @@ interface IStatement extends \Iterator
 	public function errorInfo(): array;
 
 	/**
+	 * 获取SQL语句
+	 * @return string
+	 */
+	public function getSql();
+
+	/**
 	 * 执行一条预处理语句
 	 * @param array $inputParameters
 	 * @return boolean

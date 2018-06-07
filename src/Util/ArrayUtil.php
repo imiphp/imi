@@ -64,7 +64,7 @@ abstract class ArrayUtil
 	 * @param string $column 列名
 	 * @param boolean $keepOld 是否保留列名，默认保留
 	 */
-	function columnToKey(&$array, $column, $keepOld = true)
+	public static function columnToKey(&$array, $column, $keepOld = true)
 	{
 		$s = count($array);
 		for($i = 0; $i < $s; ++$i)
@@ -75,5 +75,15 @@ abstract class ArrayUtil
 				unset($array[$i]);
 			}
 		}
+	}
+
+	/**
+	 * 判断数组是否为关联数组
+	 * @param array $array 
+	 * @return bool 
+	 */
+	public static function isAssoc($array)
+	{  
+		return array_keys($array) !== range(0, count($array) - 1);  
 	}
 }
