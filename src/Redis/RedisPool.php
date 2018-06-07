@@ -2,8 +2,9 @@
 namespace Imi\Redis;
 
 use Imi\App;
-use Imi\Pool\BaseAsyncPool;
 use Imi\Util\Random;
+use Imi\Bean\BeanFactory;
+use Imi\Pool\BaseAsyncPool;
 
 class RedisPool extends BaseAsyncPool
 {
@@ -28,7 +29,7 @@ class RedisPool extends BaseAsyncPool
 	 */
 	protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
 	{
-		$db = App::getBean($this->handlerClass, [Random::letterAndNumber(8, 16)]);
+		$db = BeanFactory::newInstance($this->handlerClass, [Random::letterAndNumber(8, 16)]);
 		return new RedisResource($this, $db, $this->resourceConfig);
 	}
 }

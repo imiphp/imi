@@ -1,8 +1,9 @@
 <?php
 namespace Imi\Db\Pool;
 
-use Imi\Pool\BaseAsyncPool;
 use Imi\App;
+use Imi\Bean\BeanFactory;
+use Imi\Pool\BaseAsyncPool;
 
 /**
  * Swoole协程MySQL的连接池
@@ -30,6 +31,6 @@ class CoroutineDbPool extends BaseAsyncPool
 	 */
 	protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
 	{
-		return new DbResource($this, App::getBean($this->handlerClass, $this->resourceConfig));
+		return new DbResource($this, BeanFactory::newInstance($this->handlerClass, $this->resourceConfig));
 	}
 }

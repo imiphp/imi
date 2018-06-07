@@ -7,6 +7,7 @@ use Imi\Db\Interfaces\IStatement;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\App;
 use Imi\Db\Exception\DbException;
+use Imi\Bean\BeanFactory;
 
 /**
  * Swoole协程MySQL驱动
@@ -227,7 +228,7 @@ class Driver implements IDb
 		{
 			throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $sql);
 		}
-		return App::getBean(Statement::class, $this, $stmt, $sql, $params);
+		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
 	}
 
 	/**
@@ -245,6 +246,6 @@ class Driver implements IDb
 			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $sql);
 		}
 		$data = $stmt->execute([]);
-		return App::getBean(Statement::class, $this, $stmt, $sql, [], $dat);
+		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, [], $dat);
 	}
 }

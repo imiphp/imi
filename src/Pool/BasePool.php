@@ -3,6 +3,7 @@ namespace Imi\Pool;
 
 use Imi\App;
 use Imi\Util\Coroutine;
+use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 
@@ -46,7 +47,7 @@ abstract class BasePool implements IPool
 	{
 		if(is_array($this->config))
 		{
-			$this->config = App::getBean('PoolConfig', $this->config);
+			$this->config = BeanFactory::newInstance(PoolConfig::class, $this->config);
 		}
 	}
 

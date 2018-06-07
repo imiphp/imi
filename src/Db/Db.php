@@ -2,9 +2,11 @@
 namespace Imi\Db;
 
 use Imi\RequestContext;
+use Imi\Bean\BeanFactory;
 use Imi\Pool\PoolManager;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Query\Query;
 
 abstract class Db
 {
@@ -70,6 +72,6 @@ abstract class Db
 			$poolName = static::$defaultPoolName;
 		}
 
-		return RequestContext::getBean('Query', static::getInstance($poolName));
+		return BeanFactory::newInstance(Query::class, static::getInstance($poolName));
 	}
 }

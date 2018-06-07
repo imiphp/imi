@@ -1,10 +1,11 @@
 <?php
 namespace Imi\Log;
 
-use Psr\Log\AbstractLogger;
-use Imi\Bean\Annotation\Bean;
 use Imi\App;
 use Imi\Util\Coroutine;
+use Imi\Bean\BeanFactory;
+use Psr\Log\AbstractLogger;
+use Imi\Bean\Annotation\Bean;
 
 /**
  * @Bean("Logger")
@@ -47,7 +48,7 @@ class Logger extends AbstractLogger
 	{
 		foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
 		{
-			$this->handlers[] = App::getBean($handlerOption['class'], $handlerOption['options']);
+			$this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
 		}
 	}
 
