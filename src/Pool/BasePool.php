@@ -7,9 +7,14 @@ use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 
-
 abstract class BasePool implements IPool
 {
+	/**
+	 * 池子名称
+	 * @var string
+	 */
+	protected $name;
+
 	/**
 	 * 池子存储
 	 * @var \Imi\Pool\PoolItem[]
@@ -34,8 +39,9 @@ abstract class BasePool implements IPool
 	 */
 	protected $timerID;
 
-	public function __construct(\Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+	public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
 	{
+		$this->name = $name;
 		if(null !== $config)
 		{
 			$this->config = $config;
@@ -49,6 +55,15 @@ abstract class BasePool implements IPool
 		{
 			$this->config = BeanFactory::newInstance(PoolConfig::class, $this->config);
 		}
+	}
+
+	/**
+	 * 获取池子名称
+	 * @return string
+	 */
+	public function getName(): string
+	{
+		return $this->name;
 	}
 
 	/**

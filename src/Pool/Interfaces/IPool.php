@@ -7,6 +7,13 @@ namespace Imi\Pool\Interfaces;
 interface IPool
 {
 	/**
+	 * 获取池子名称
+	 *
+	 * @return string
+	 */
+	public function getName(): string;
+
+	/**
 	 * 获取池子配置
 	 * @return IPoolConfig
 	 */

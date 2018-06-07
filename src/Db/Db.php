@@ -32,7 +32,22 @@ abstract class Db
 	}
 
 	/**
-	 * 获取数据库连接实例
+	 * 获取新的数据库连接实例
+	 * @param string $poolName 连接池名称
+	 * @return \Imi\Db\Interfaces\IDb
+	 */
+	public static function getNewInstance($poolName = null): IDb
+	{
+		if(null === $poolName)
+		{
+			$poolName = static::$defaultPoolName;
+		}
+		
+		return PoolManager::getResource($poolName)->getInstance();
+	}
+
+	/**
+	 * 获取数据库连接实例，每个RequestContext中共用一个
 	 * @param string $poolName 连接池名称
 	 * @return \Imi\Db\Interfaces\IDb
 	 */
@@ -43,7 +58,7 @@ abstract class Db
 			$poolName = static::$defaultPoolName;
 		}
 		
-		return PoolManager::getResource($poolName)->getInstance();
+		return PoolManager::getRequestContextResource($poolName)->getInstance();
 	}
 
 	/**

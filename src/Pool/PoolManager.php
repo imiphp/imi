@@ -25,7 +25,7 @@ class PoolManager
 	 */
 	public static function addName(string $name, string $poolClassName, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
 	{
-		static::$pools[$name] = BeanFactory::newInstance($poolClassName, $config, $resourceConfig);
+		static::$pools[$name] = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
 		static::$pools[$name]->open();
 	}
 
@@ -63,6 +63,22 @@ class PoolManager
 
 		static::pushResourceToRequestContext($resource);
 
+		return $resource;
+	}
+
+	/**
+	 * 获取请求上下文资源，一个请求上下文通过此方法，只能获取同一个资源
+	 * @param string $name
+	 * @return IPoolResource
+	 */
+	public static function getRequestContextResource(string $name): IPoolResource
+	{
+		$resource = RequestContext::get('poolResource.' . $name);
+		if(null === $resource)
+		{
+			$resource = static::getResource($name);
+			RequestContext::set('poolResource.' . $name, $resource);
+		}
 		return $resource;
 	}
 
@@ -156,6 +172,13 @@ class PoolManager
 		{
 			unset($poolResources[$key]);
 			RequestContext::set('poolResources', $poolResources);
+		}
+
+		$name = 'poolResource.' . $resource->getPool()->getName();
+		$poolResource = RequestContext::get($name);
+		if($poolResource === $resource)
+		{
+			RequestContext::set($name, null);
 		}
 	}
 }

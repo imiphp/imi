@@ -16,9 +16,9 @@ class CoroutineDbPool extends BaseAsyncPool
 	 */
 	protected $handlerClass;
 
-	public function __construct(\Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+	public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
 	{
-		parent::__construct($config, $resourceConfig);
+		parent::__construct($name, $config, $resourceConfig);
 		if(isset($resourceConfig['dbClass']))
 		{
 			$this->handlerClass = $resourceConfig['dbClass'];

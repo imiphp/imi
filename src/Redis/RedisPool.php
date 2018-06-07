@@ -14,9 +14,9 @@ class RedisPool extends BaseAsyncPool
 	 */
 	protected $handlerClass = \Swoole\Coroutine\Redis::class;
 
-	public function __construct(\Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+	public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
 	{
-		parent::__construct($config, $resourceConfig);
+		parent::__construct($name, $config, $resourceConfig);
 		if(isset($resourceConfig['handlerClass']))
 		{
 			$this->handlerClass = $resourceConfig['handlerClass'];
