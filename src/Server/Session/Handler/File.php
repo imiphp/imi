@@ -37,7 +37,7 @@ class File extends Base
 	 */
 	public function gc($maxLifeTime)
 	{
-		$files = new FilesystemIterator($this->savePath);
+		$files = new \FilesystemIterator($this->savePath);
 		$maxTime = time() - $maxLifeTime;
 		foreach($files as $file)
 		{
