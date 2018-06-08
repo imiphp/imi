@@ -47,7 +47,12 @@ trait TKeyword
 				unset($keywords[$k]);
 			}
 		}
+		$isLastStar = '*' === end($keywords);
 		$result = BaseBuilder::DELIMITED_IDENTIFIERS . implode(BaseBuilder::DELIMITED_IDENTIFIERS . '.' . BaseBuilder::DELIMITED_IDENTIFIERS, $keywords) . BaseBuilder::DELIMITED_IDENTIFIERS;
+		if($isLastStar)
+		{
+			$result = str_replace(BaseBuilder::DELIMITED_IDENTIFIERS . '*' . BaseBuilder::DELIMITED_IDENTIFIERS, '*', $result);
+		}
 		if(!Text::isEmpty($alias))
 		{
 			$result .= ' as ' . BaseBuilder::DELIMITED_IDENTIFIERS . $alias . BaseBuilder::DELIMITED_IDENTIFIERS;
