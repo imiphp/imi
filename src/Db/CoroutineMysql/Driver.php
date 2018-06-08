@@ -246,6 +246,6 @@ class Driver implements IDb
 			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $sql);
 		}
 		$data = $stmt->execute([]);
-		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, [], $dat);
+		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, [], $data);
 	}
 }

@@ -5,6 +5,7 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
+use Imi\Db\Exception\DbException;
 use Imi\Util\Traits\Aspect\TDefer;
 
 /**
@@ -27,7 +28,13 @@ class MysqlAspect
 	 */
 	public function defer(AroundJoinPoint $joinPoint)
 	{
-		return $this->parseDefer($joinPoint);
+		$result = $this->parseDefer($joinPoint);
+		if(false === $result)
+		{
+			$statement = $joinPoint->getTarget();
+			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->errorCode());
+		}
+		return $result;
 	}
 
 	/**
@@ -57,6 +64,10 @@ class MysqlAspect
 		{
 			// 设为调用前状态
 			$client->setDefer(false);
+		}
+		if(false === $result)
+		{
+			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->errorCode());
 		}
 		return $result;
 	}

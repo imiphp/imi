@@ -57,7 +57,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess
 
 	public function rewind()
 	{
-		rewind($this->data);
+		reset($this->data);
 	}
 
 	public function valid()

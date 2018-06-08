@@ -3,6 +3,7 @@ namespace Imi\Db\Query;
 
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Interfaces\IStatement;
+use Imi\Model\Model;
 
 class Result implements IResult
 {
@@ -12,10 +13,21 @@ class Result implements IResult
 	 */
 	private $statement;
 
+	/**
+	 * 是否执行成功
+	 * @var bool
+	 */
 	private $isSuccess;
 
-	public function __construct($statement)
+	/**
+	 * 查询结果类的类名，为null则为数组
+	 * @var string
+	 */
+	private $modelClass;
+
+	public function __construct($statement, $modelClass = null)
 	{
+		$this->modelClass = $modelClass;
 		if($statement instanceof IStatement)
 		{
 			$this->statement = clone $statement;
@@ -74,16 +86,28 @@ class Result implements IResult
 			throw new \RuntimeException('Result is not success!');
 		}
 		$result = $this->statement->fetch();
+
+		if(null === $className)
+		{
+			$className = $this->modelClass;
+		}
 		if(null === $className)
 		{
 			return $result;
 		}
 		else
 		{
-			$object = new $className;
-			foreach($result as $k => $v)
+			if(is_subclass_of($className, Model::class))
 			{
-				$object->$k = $v;
+				$object = new $className($result);
+			}
+			else
+			{
+				$object = new $className;
+				foreach($result as $k => $v)
+				{
+					$object->$k = $v;
+				}
 			}
 			return $object;
 		}
@@ -101,6 +125,11 @@ class Result implements IResult
 			throw new \RuntimeException('Result is not success!');
 		}
 		$result = $this->statement->fetchAll();
+
+		if(null === $className)
+		{
+			$className = $this->modelClass;
+		}
 		if(null === $className)
 		{
 			return $result;
@@ -108,13 +137,22 @@ class Result implements IResult
 		else
 		{
 			$list = [];
+			$isModelClass = is_subclass_of($className, Model::class);
 			foreach($result as $item)
 			{
-				foreach($item as $k => $v)
+				if($isModelClass)
+				{
+					$object = new $className($item);
+				}
+				else
 				{
 					$object = new $className;
-					$object->$k = $v;
+					foreach($item as $k => $v)
+					{
+						$object->$k = $v;
+					}
 				}
+				$list[] = $object;
 			}
 			return $list;
 		}
@@ -132,5 +170,18 @@ class Result implements IResult
 			throw new \RuntimeException('Result is not success!');
 		}
 		return $this->statement->fetchColumn();
+	}
+	
+	/**
+	 * 获取记录行数
+	 * @return int
+	 */
+	public function getRowCount()
+	{
+		if(!$this->isSuccess)
+		{
+			throw new \RuntimeException('Result is not success!');
+		}
+		return count($this->statement->fetchAll());
 	}
 }

@@ -78,15 +78,16 @@ abstract class Db
 	/**
 	 * 返回一个查询器
 	 * @param string $poolName
+	 * @param string $modelClass
 	 * @return IQuery
 	 */
-	public static function query($poolName = null): IQuery
+	public static function query($poolName = null, $modelClass = null): IQuery
 	{
 		if(null === $poolName)
 		{
 			$poolName = static::$defaultPoolName;
 		}
 
-		return BeanFactory::newInstance(Query::class, static::getInstance($poolName));
+		return BeanFactory::newInstance(Query::class, static::getInstance($poolName), $modelClass);
 	}
 }

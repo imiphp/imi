@@ -44,9 +44,16 @@ class Query implements IQuery
 	 */
 	private $db;
 
-	public function __construct(IDb $db)
+	/**
+	 * 查询结果类的类名，为null则为数组
+	 * @var string
+	 */
+	private $modelClass;
+
+	public function __construct(IDb $db, $modelClass = null)
 	{
 		$this->db = $db;
+		$this->modelClass = $modelClass;
 	}
 
 	public function __init()
@@ -76,9 +83,9 @@ class Query implements IQuery
 
 	/**
 	 * 获取数据库操作对象
-	 * @return Idb
+	 * @return IDb
 	 */
-	public function getDb(): Idb
+	public function getDb(): IDb
 	{
 		return $this->db;
 	}
@@ -699,7 +706,7 @@ class Query implements IQuery
 	{
 		$builder = new SelectBuilder($this);
 		$sql = $builder->build();
-		$result = new Result($this->execute($sql));
+		$result = new Result($this->execute($sql), $this->modelClass);
 		$this->__init();
 		return $result;
 	}
@@ -713,7 +720,7 @@ class Query implements IQuery
 	{
 		$builder = new InsertBuilder($this);
 		$sql = $builder->build($data);
-		$result = new Result($this->execute($sql));
+		$result = new Result($this->execute($sql), $this->modelClass);
 		$this->__init();
 		return $result;
 	}
@@ -727,7 +734,7 @@ class Query implements IQuery
 	{
 		$builder = new UpdateBuilder($this);
 		$sql = $builder->build($data);
-		$result = new Result($this->execute($sql));
+		$result = new Result($this->execute($sql), $this->modelClass);
 		$this->__init();
 		return $result;
 	}
@@ -740,7 +747,7 @@ class Query implements IQuery
 	{
 		$builder = new DeleteBuilder($this);
 		$sql = $builder->build();
-		$result = new Result($this->execute($sql));
+		$result = new Result($this->execute($sql), $this->modelClass);
 		$this->__init();
 		return $result;
 	}

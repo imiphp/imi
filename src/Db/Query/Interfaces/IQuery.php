@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Db\Query\Interfaces;
 
+use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\QueryOption;
 use Imi\Db\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IHaving;
@@ -24,6 +25,12 @@ interface IQuery
 	 * @return static
 	 */
 	public function setOption(QueryOption $option);
+
+	/**
+	 * 获取数据库操作对象
+	 * @return IDb
+	 */
+	public function getDb(): IDb;
 
 	/**
 	 * 设置表名

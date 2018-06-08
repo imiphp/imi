@@ -40,4 +40,10 @@ interface IResult
 	 * @return mixed
 	 */
 	public function getScalar();
+
+	/**
+	 * 获取记录行数
+	 * @return int
+	 */
+	public function getRowCount();
 }

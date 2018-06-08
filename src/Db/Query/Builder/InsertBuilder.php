@@ -11,6 +11,10 @@ class InsertBuilder extends BaseBuilder
 	{
 		$option = $this->query->getOption();
 		list($data) = $args;
+		if($data instanceof \Traversable)
+		{
+			$data = \iterator_to_array($data);
+		}
 		$valueParams = [];
 		if(ArrayUtil::isAssoc($data))
 		{

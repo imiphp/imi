@@ -3,6 +3,7 @@ namespace Imi\Db\CoroutineMysql;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
+use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 
 /**
@@ -62,11 +63,11 @@ class Statement implements IStatement
 
 	/**
 	 * 数据库操作对象
-	 * @var Idb
+	 * @var IDb
 	 */
 	protected $db;
 
-	public function __construct(Idb $db, $statement, $sql, $paramsMap, $data = null)
+	public function __construct(IDb $db, $statement, $sql, $paramsMap, $data = null)
 	{
 		$this->db = $db;
 		$this->statement = $statement;
@@ -213,6 +214,10 @@ class Statement implements IStatement
 			if($dbInstance->getDefer())
 			{
 				$result = $dbInstance->recv();
+			}
+			if(false === $result)
+			{
+				throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $this->errorCode());
 			}
 			$this->data = $result;
 			$this->cursor = 0;
