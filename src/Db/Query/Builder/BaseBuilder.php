@@ -76,7 +76,7 @@ abstract class BaseBuilder implements IBuilder
 			{
 				$field = new Field(null, null, $k, $v);
 			}
-			$result[] = (string)$field;
+			$result[] = $field;
 		}
 		return implode(',', $result);
 	}

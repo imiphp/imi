@@ -144,6 +144,74 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	}
 
 	/**
+	 * 统计数量
+	 * @param string $field
+	 * @return int
+	 */
+	public static function count($field = '*')
+	{
+		return static::aggregate('count', $field);
+	}
+
+	/**
+	 * 求和
+	 * @param string $field
+	 * @return float
+	 */
+	public static function sum($field)
+	{
+		return static::aggregate('sum', $field);
+	}
+
+	/**
+	 * 平均值
+	 * @param string $field
+	 * @return float
+	 */
+	public static function avg($field)
+	{
+		return static::aggregate('avg', $field);
+	}
+	
+	/**
+	 * 最大值
+	 * @param string $field
+	 * @return float
+	 */
+	public static function max($field)
+	{
+		return static::aggregate('max', $field);
+	}
+	
+	/**
+	 * 最小值
+	 * @param string $field
+	 * @return float
+	 */
+	public static function min($field)
+	{
+		return static::aggregate('min', $field);
+	}
+
+	/**
+	 * 聚合函数
+	 * @param string $functionName
+	 * @param string $fieldName
+	 * @param callable $queryCallable
+	 * @return mixed
+	 */
+	public static function aggregate($functionName, $fieldName, callable $queryCallable = null)
+	{
+		$query = static::query();
+		if(null !== $queryCallable)
+		{
+			// 回调传入条件
+			Call::callUserFunc($queryCallable, $query);
+		}
+		return Call::callUserFunc([$query, $functionName], $fieldName);
+	}
+
+	/**
 	 * 处理主键where条件
 	 * @param IQuery $query
 	 * @return IQuery
@@ -171,7 +239,7 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	public function offsetExists($offset)
 	{
 		$methodName = 'get' . ucfirst($offset);
-		return method_exists($this, $methodName) && null !== $this->$methodName();
+		return method_exists($this, $methodName) && null !== Call::callUserFunc([$this, $methodName]);
 	}
 
 	public function offsetGet($offset)
@@ -181,7 +249,7 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 		{
 			return null;
 		}
-		return $this->$methodName();
+		return Call::callUserFunc([$this, $methodName]);
 	}
 
 	public function offsetSet($offset, $value)
@@ -191,7 +259,7 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 		{
 			return;
 		}
-		$this->$methodName($value);
+		Call::callUserFunc([$this, $methodName], $value);
 	}
 
 	public function offsetUnset($offset)

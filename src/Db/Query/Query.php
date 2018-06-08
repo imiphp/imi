@@ -753,6 +753,73 @@ class Query implements IQuery
 	}
 
 	/**
+	 * 统计数量
+	 * @param string $field
+	 * @return int
+	 */
+	public function count($field = '*')
+	{
+		return $this->aggregate('count', $field);
+	}
+
+	/**
+	 * 求和
+	 * @param string $field
+	 * @return float
+	 */
+	public function sum($field)
+	{
+		return $this->aggregate('sum', $field);
+	}
+
+	/**
+	 * 平均值
+	 * @param string $field
+	 * @return float
+	 */
+	public function avg($field)
+	{
+		return $this->aggregate('avg', $field);
+	}
+	
+	/**
+	 * 最大值
+	 * @param string $field
+	 * @return float
+	 */
+	public function max($field)
+	{
+		return $this->aggregate('max', $field);
+	}
+	
+	/**
+	 * 最小值
+	 * @param string $field
+	 * @return float
+	 */
+	public function min($field)
+	{
+		return $this->aggregate('min', $field);
+	}
+
+	/**
+	 * 聚合函数
+	 * @param string $functionName
+	 * @param string $fieldName
+	 * @return mixed
+	 */
+	public function aggregate($functionName, $fieldName)
+	{
+		$field = new Field;
+		$field->useRaw();
+		$field->setRawSQL($functionName . '(' . $field->parseKeyword($fieldName). ')');
+		$this->option->field = [
+			$field
+		];
+		return $this->select()->getScalar();
+	}
+
+	/**
 	 * 执行SQL语句
 	 * @param string $sql
 	 * @return IStatement|bool
