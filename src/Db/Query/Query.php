@@ -665,6 +665,7 @@ class Query implements IQuery
 	public function bindValue($name, $value, $dataType = \PDO::PARAM_STR)
 	{
 		$this->binds[$name] = $value;
+		return $this;
 	}
 
 	/**
@@ -674,7 +675,10 @@ class Query implements IQuery
 	 */
 	public function bindValues($values)
 	{
-		$this->binds = array_merge($this->binds, $values);
+		foreach($values as $k => $v)
+		{
+			$this->binds[$k] = $v;
+		}
 		return $this;
 	}
 
