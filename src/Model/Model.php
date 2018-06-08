@@ -114,6 +114,18 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	}
 
 	/**
+	 * 批量更新
+	 * @param mixed $data
+	 * @param array|callable $where
+	 * @return IResult
+	 */
+	public static function updateBatch($data, $where = null): IResult
+	{
+		$query = static::query();
+		return static::parseWhere($query, $where)->update($data);
+	}
+
+	/**
 	 * 保存记录
 	 * @return IResult
 	 */
@@ -141,6 +153,17 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	{
 		$query = static::query();
 		return $this->parseWhereId($query)->delete();
+	}
+
+	/**
+	 * 批量删除
+	 * @param array|callable $where
+	 * @return IResult
+	 */
+	public static function deleteBatch($where = null): IResult
+	{
+		$query = static::query();
+		return static::parseWhere($query, $where)->delete();
 	}
 
 	/**
@@ -229,6 +252,37 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 			if(isset($this->$idName))
 			{
 				$query->where($idName, '=', $this->$idName);
+			}
+		}
+		return $query;
+	}
+
+	/**
+	 * 处理where条件
+	 * @param IQuery $query
+	 * @param array $where
+	 * @return IQuery
+	 */
+	private static function parseWhere(IQuery $query, $where)
+	{
+		if(is_callable($where))
+		{
+			// 回调传入条件
+			Call::callUserFunc($where, $query);
+		}
+		else
+		{
+			foreach($where as $k => $v)
+			{
+				if(is_array($v))
+				{
+					$operation = array_unshift($v);
+					$query->where($k, $operation, $v[1]);
+				}
+				else
+				{
+					$query->where($k, '=', $v);
+				}
 			}
 		}
 		return $query;

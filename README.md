@@ -41,7 +41,7 @@ IMI 框架底层开发使用了强类型，支持 Aop ，支持使用注解和�
 - [x] 协程 MySQL 连接池
 - [ ] 协程 PostgreSQL 连接池
 - [x] Db 连贯操作
-- [ ] Model ORM
+- [x] Model ORM
 - [ ] Task 异步任务
 - [ ] 命令行开发辅助工具
 - [ ] 图形化管理工具
