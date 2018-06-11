@@ -23,8 +23,9 @@ IMI 框架底层开发使用了强类型，支持 Aop ，支持使用注解和�
 - [x] View
 - [x] 日志 (PSR-3 / File + Console)
 - [x] 缓存 (PSR-16 / File + Redis)
-- [x] Redis 连接池
+- [x] Redis (同步 + 协程) 连接池
 - [x] 协程 MySQL 连接池
+- [x] PDO 连接池
 - [ ] 协程 PostgreSQL 连接池
 - [x] Db 连贯操作
 - [x] Model ORM
