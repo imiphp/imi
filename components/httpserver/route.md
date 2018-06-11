@@ -1,3 +1,4 @@
+
 ### 注解说明
 
 #### @Controller
@@ -34,6 +35,43 @@
 表明一个方法是动作
 
 属性：无
+
+---
+
+如下代码所示，一个最简单的控制器+路由注解代码。
+
+```php
+<?php
+namespace Test;
+
+use Imi\Controller\HttpController;
+use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Route\Annotation\Action;
+use Imi\Server\Route\Annotation\Controller;
+
+/**
+ * 一个简单的控制器
+ * @Controller
+ */
+class Index extends HttpController
+{
+	/**
+	 * 一个动作
+	 * @Action
+	 * @Route(url="/")
+	 */
+	public function index()
+	{
+		return $this->response->write('hello imi!');
+	}
+}
+```
+
+访问地址：`http://localhost:{port}/`
+输出内容：
+```
+hello imi!
+```
 
 ## 配置
 
