@@ -17,14 +17,14 @@
   * [RESTful](components/httpserver/restful.md)
   * [Session](components/httpserver/session.md)
   * [视图](components/httpserver/view.md)
-* [ORM](components/orm/index.html)
-* [数据库操作](components/db/index.html)
-* [连接池](components/pool/index.html)
-* [缓存](components/cache/index.html)
-* [日志](components/log/index.html)
-* [后台异步任务](components/task/index.html)
-* [事件监听](components/event/index.html)
-* [AOP](components/aop/index.html)
+* [ORM](components/orm/index.md)
+* [数据库操作](components/db/index.md)
+* [连接池](components/pool/index.md)
+* [缓存](components/cache/index.md)
+* [日志](components/log/index.md)
+* [后台异步任务](components/task/index.md)
+* [事件监听](components/event/index.md)
+* [AOP](components/aop/index.md)
 
 ## 进阶开发
 
