@@ -12,6 +12,7 @@ return [
 		'Imi\Redis',
 		'Imi\Listener',
 		'Imi\Model',
+		'Imi\Task',
 	],
 	'atomics'	=>	[
 		'session'

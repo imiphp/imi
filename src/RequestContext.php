@@ -9,15 +9,11 @@ abstract class RequestContext
 	private static $context = [];
 
 	/**
-	 * 为当前协程创建上下文
+	 * 为当前请求创建上下文
 	 * @return void
 	 */
 	public static function create()
 	{
-		if(!Coroutine::isIn())
-		{
-			throw new \RuntimeException('Create context failed, is not in coroutine');
-		}
 		$coID = Coroutine::getuid();
 		if(!isset(static::$context[$coID]))
 		{
@@ -30,7 +26,7 @@ abstract class RequestContext
 	}
 
 	/**
-	 * 销毁当前协程的上下文
+	 * 销毁当前请求的上下文
 	 * @return void
 	 */
 	public static function destroy()
