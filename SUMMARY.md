@@ -10,19 +10,19 @@
 
 ## 功能组件
 
-* [HTTP服务器](gong-neng-zu-jian/httpfu-wu-qi.md)
-  * 控制器
-  * 路由
-  * 中间件
-  * RESTful
-  * Session
-  * 视图
-* [ORM](gong-neng-zu-jian/mo-xing-orm.md)
-* 数据库操作
-* 连接池
-* 缓存
-* 日志
-* 后台异步任务
-* 事件监听
-* AOP
+* [HTTP服务器](components/httpserver/index.md)
+  * [控制器](components/httpserver/controller.md)
+  * [路由](components/httpserver/route.html)
+  * [中间件](components/httpserver/middleware.html)
+  * [RESTful](components/httpserver/restful.html)
+  * [Session](components/httpserver/session.html)
+  * [视图](components/httpserver/view.html)
+* [ORM](components/orm/index.html)
+* [数据库操作](components/db/index.html)
+* [连接池](components/pool/index.html)
+* [缓存](components/cache/index.html)
+* [日志](components/log/index.html)
+* [后台异步任务](components/task/index.html)
+* [事件监听](components/event/index.html)
+* [AOP](components/aop/index.html)
 
