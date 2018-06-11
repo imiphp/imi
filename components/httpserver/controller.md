@@ -99,6 +99,11 @@ hello imi!
 
 `public function getServerInstance(): \Imi\Server\Http\Server`
 
+#### 获取上传的文件
+`public function getUploadedFiles()`
+
+返回值为`Imi\Server\Http\Message\UploadedFile数组`
+
 ### $response
 
 响应对象，遵循 PSR-7 标准。
@@ -119,3 +124,54 @@ public function action()
 	return $this->response->write('hello imi!');
 }
 ```
+
+#### 重定向
+
+`public function redirect($url, $status = StatusCode::FOUND)`
+
+`$status` 是状态码，默认302，可以使用`StatusCode::XXX`常量
+
+#### 输出内容
+
+`public function write(string $content)`
+
+#### 清空输出缓冲区
+
+`public function clear()`
+
+#### 设置Cookie
+
+`public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)`
+
+#### 设置GZIP压缩
+
+`public function withGzip(boolean $status, $level = null)`
+
+#### 发送所有响应数据
+
+`public function send()`
+
+#### 发送文件，一般用于文件下载
+
+```php
+/**
+ * 发送文件，一般用于文件下载
+ * @param string $filename 要发送的文件名称，文件不存在或没有访问权限sendfile会失败
+ * @param integer $offset 上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
+ * @param integer $length 发送数据的尺寸，默认为整个文件的尺寸
+ * @return static
+ */
+public function sendFile(string $filename, int $offset = 0, int $length = 0)
+```
+
+#### 是否已结束请求
+
+`public function isEnded()`
+
+#### 获取swoole响应对象
+
+`public function getSwooleResonse(): \swoole_http_response`
+
+#### 获取对应的服务器
+
+`public function getServerInstance(): \Imi\Server\Http\Server`
