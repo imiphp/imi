@@ -93,3 +93,48 @@ public function index()
 
 ## 模版渲染
 
+### 必选配置
+
+```php
+return [
+	'beans'		=>	[
+		'HtmlView'	=>	[
+			'templatePath'	=>	'模版文件根路径',
+			// 支持的模版文件扩展名，优先级按先后顺序
+			// 'fileSuffixs'		=>	[
+				'tpl',
+				'html',
+				'php'
+			],
+		]
+	]
+];
+```
+
+### 使用方式
+
+#### 控制器-动作
+```php
+/**
+ * @Action
+ * @View("a/b")
+ */
+public function index()
+{
+	return [
+		'content'	=>	'hello imi',
+	];
+}
+```
+
+#### 模版文件
+
+`模版文件根路径/a/b.html`
+
+```html
+<?=$content?>
+```
+
+运行结果：`hello imi`
+
+IMI 没有造模版引擎的轮子，是因为现在 PHP 渲染 HTML 的场景越来越少，如果有需要也可以自己集成其它开源模版引擎。
