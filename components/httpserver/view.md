@@ -57,6 +57,20 @@ public function index()
 }
 ```
 
+### 可选配置
+
+```php
+return [
+	'beans'		=>	[
+		'JsonView'	=>	[
+			// json_encode 的参数值配置
+			'options'	=>	0,
+			'depth'		=>	512,
+		]
+	]
+];
+```
+
 ## xml
 
 ```php
