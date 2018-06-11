@@ -4,15 +4,15 @@ namespace Imi\Redis;
 use Imi\App;
 use Imi\Util\Random;
 use Imi\Bean\BeanFactory;
-use Imi\Pool\BaseAsyncPool;
+use Imi\Pool\BaseSyncPool;
 
-class RedisPool extends BaseAsyncPool
+class SyncRedisPool extends BaseSyncPool
 {
 	/**
 	 * 数据库操作类
 	 * @var mixed
 	 */
-	protected $handlerClass = \Swoole\Coroutine\Redis::class;
+	protected $handlerClass = \Redis::class;
 
 	public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
 	{
@@ -25,11 +25,11 @@ class RedisPool extends BaseAsyncPool
 
 	/**
 	 * 创建资源
-	 * @return \Imi\Pool\Interfaces\IPoolResource
+	 * @return SyncRedisResource
 	 */
 	protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
 	{
-		$db = BeanFactory::newInstance($this->handlerClass, [Random::letterAndNumber(8, 16)]);
-		return new RedisResource($this, $db, $this->resourceConfig);
+		$db = BeanFactory::newInstance($this->handlerClass);
+		return new SyncRedisResource($this, $db, $this->resourceConfig);
 	}
 }
