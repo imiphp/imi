@@ -15,7 +15,7 @@
   * [中间件](components/httpserver/middleware.md)
   * [控制器](components/httpserver/controller.md)
   * [RESTful](components/httpserver/restful.md)
-  * [Session](components/httpserver/session.html)
+  * [Session](components/httpserver/session.md)
   * [视图](components/httpserver/view.html)
 * [ORM](components/orm/index.html)
 * [数据库操作](components/db/index.html)
