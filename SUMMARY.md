@@ -6,7 +6,6 @@
 * [介绍](base/intro.md)
 * [环境要求](base/env.md)
 * [开始一个新项目](base/new.md)
-* [项目加载](xiang-mu-jia-zai.md)
 * [配置文件](base/config.md)
 
 ## 功能组件
