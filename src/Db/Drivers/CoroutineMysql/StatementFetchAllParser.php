@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Db\CoroutineMysql;
+namespace Imi\Db\Drivers\CoroutineMysql;
 
 /**
  * Statement fetchAll处理器

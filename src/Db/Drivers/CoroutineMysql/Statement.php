@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Db\CoroutineMysql;
+namespace Imi\Db\Drivers\CoroutineMysql;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
@@ -205,7 +205,7 @@ class Statement implements IStatement
 		$this->binds = [];
 		if(false === $result)
 		{
-			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $this->errorCode());
+			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $this->getSql());
 		}
 		else
 		{
@@ -217,7 +217,7 @@ class Statement implements IStatement
 			}
 			if(false === $result)
 			{
-				throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $this->errorCode());
+				throw new DbException('sql query error: [' . $this->errorCode() . '] ' . implode(',', $this->errorInfo()) . ' sql: ' . $this->getSql());
 			}
 			$this->data = $result;
 			$this->cursor = 0;

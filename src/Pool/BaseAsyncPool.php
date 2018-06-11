@@ -8,7 +8,6 @@ use Imi\Util\Coroutine;
 /**
  * 异步池子，必须用在协程中
  * 支持协程挂起等待连接被释放
- * 仅支持单进程的连接池管理
  */
 abstract class BaseAsyncPool extends BasePool
 {

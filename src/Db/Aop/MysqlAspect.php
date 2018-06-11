@@ -32,7 +32,7 @@ class MysqlAspect
 		if(false === $result)
 		{
 			$statement = $joinPoint->getTarget();
-			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->errorCode());
+			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->getSql());
 		}
 		return $result;
 	}
@@ -41,7 +41,7 @@ class MysqlAspect
 	 * Statement 延迟收包
 	 * @PointCut(
 	 * 		allow={
-	 * 			"Imi\Db\CoroutineMysql\Statement::execute",
+	 * 			"Imi\Db\Drivers\CoroutineMysql\Statement::execute",
 	 * 		}
 	 * )
 	 * @Around
@@ -67,7 +67,7 @@ class MysqlAspect
 		}
 		if(false === $result)
 		{
-			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->errorCode());
+			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->getSql());
 		}
 		return $result;
 	}

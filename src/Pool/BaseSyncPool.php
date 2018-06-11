@@ -7,25 +7,27 @@ use Imi\Pool\Interfaces\IPoolResource;
 /**
  * 同步池子，支持使用在大部分情况
  * 仅支持尝试获取后立即返回结果，如果获取失败返回null
- * 支持跨进程连接池管理
  */
 abstract class BaseSyncPool extends BasePool
 {
 	/**
 	 * 队列
-	 * @var \Swoole\Coroutine\Channel
+	 * @var \SplQueue
 	 */
 	protected $queue;
-
-	public function __init()
-	{
-		parent::__init();
-		$this->queue = new Channel($this->config->getMaxResources() * 16);
-	}
 
 	public function __destruct()
 	{
 		$this->queue->close();
+	}
+
+	/**
+	 * 初始化队列
+	 * @return void
+	 */
+	protected function initQueue()
+	{
+		$this->queue = new \SplQueue;
 	}
 
 	/**
@@ -73,5 +75,14 @@ abstract class BaseSyncPool extends BasePool
 	protected function push(IPoolResource $resource)
 	{
 		$this->queue->push($resource);
+	}
+
+	/**
+	 * 获取当前池子中空闲资源总数
+	 * @return int
+	 */
+	public function getFree()
+	{
+		return $this->queue->count();
 	}
 }

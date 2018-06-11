@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Db\CoroutineMysql;
+namespace Imi\Db\Drivers\CoroutineMysql;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
@@ -57,6 +57,14 @@ class Driver implements IDb
 	public function __construct($option = [])
 	{
 		$this->option = $option;
+		if(!isset($this->option['username']))
+		{
+			$this->option['username'] = 'root';
+		}
+		if(!isset($option['password']))
+		{
+			$this->option['password'] = '';
+		}
 		$this->instance = new \Swoole\Coroutine\MySQL();
 	}
 

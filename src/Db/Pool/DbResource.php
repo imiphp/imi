@@ -6,7 +6,7 @@ use Imi\Pool\BasePoolResource;
 use Imi\Pool\Interfaces\IPoolResource;
 
 /**
- * Swoole协程MySQL的连接资源
+ * 数据库连接池的资源
  */
 class DbResource extends BasePoolResource
 {
