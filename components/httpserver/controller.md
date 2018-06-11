@@ -46,14 +46,14 @@ hello imi!
 直接对该对象操作无效，需要如下使用才可。
 
 1. 操作后赋值：
-```
+```php
 public function action()
 {
 	$this->response = $this->response->write('hello imi!');
 }
 ```
 2. 操作后返回
-```
+```php
 public function action()
 {
 	return $this->response->write('hello imi!');
