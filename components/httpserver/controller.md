@@ -36,4 +36,3 @@ class Index extends HttpController
 ```
 hello imi!
 ```
-
