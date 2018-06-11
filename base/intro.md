@@ -10,6 +10,8 @@ IMI 框架底层开发使用了强类型，支持 Aop ，支持使用注解和�
 
 同时欢迎有志之士加入我们，一起开发完善！
 
+QQ群：74401592 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://shang.qq.com/wpa/qunwpa?idkey=e2e6b49e9a648aae5285b3aba155d59107bb66fde02e229e078bd7359cac8ac3)，如有问题会有人解答和修复。
+
 ### 功能组件
 
 - [x] Aop (同时支持注解和配置文件)
