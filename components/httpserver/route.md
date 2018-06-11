@@ -1,7 +1,22 @@
+## 启用路由
 
-### 注解说明
+服务器配置文件中加入中间件：
 
-#### @Controller
+```php
+return [
+	'beans'	=>	[
+		'HttpDispatcher'	=>	[
+			'middlewares'	=>	[
+				\Imi\Server\Http\Middleware\RouteMiddleware::class,
+			],
+		],
+	],
+];
+```
+
+## 注解说明
+
+### @Controller
 
 注释目标：类
 
@@ -11,7 +26,7 @@
 | ------------ | ------------ 
 | prefix | 动作配置的访问地址前缀，如果动作配置的访问地址规则以`/`开始，则本属性无效 |
 
-#### @Route
+### @Route
 
 注释目标：方法
 
@@ -28,7 +43,7 @@
 | requestMime | 请求的mime类型判断<br/>判断请求头中的Content-Type中是否包含这些mime类型之一<br/>支持字符串和字符串数组<br/> |
 | responseMime |  |
 
-#### @Action
+### @Action
 
 注释目标：方法
 
