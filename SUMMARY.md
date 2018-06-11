@@ -16,7 +16,7 @@
   * [控制器](components/httpserver/controller.md)
   * [RESTful](components/httpserver/restful.md)
   * [Session](components/httpserver/session.md)
-  * [视图](components/httpserver/view.html)
+  * [视图](components/httpserver/view.md)
 * [ORM](components/orm/index.html)
 * [数据库操作](components/db/index.html)
 * [连接池](components/pool/index.html)
