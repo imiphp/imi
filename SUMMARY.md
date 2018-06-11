@@ -14,7 +14,7 @@
   * [路由](components/httpserver/route.md)
   * [中间件](components/httpserver/middleware.md)
   * [控制器](components/httpserver/controller.md)
-  * [RESTful](components/httpserver/restful.html)
+  * [RESTful](components/httpserver/restful.md)
   * [Session](components/httpserver/session.html)
   * [视图](components/httpserver/view.html)
 * [ORM](components/orm/index.html)
