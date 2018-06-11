@@ -76,3 +76,48 @@ hello imi!
 
 ## 配置
 
+路由配置必须写在服务器配置文件中，如果你写在项目配置文件是无效的。
+
+路由配置支持三种方式：传统、回调、路由回调
+
+```php
+return [
+    'route'    => [
+    	// 传统方式，直接指定控制器、方法、路由，和注解方式比较类似
+        [
+		'controller'	=>	\ImiDemo\HttpDemo\MainServer\Controller\Test::class,
+		'method'		=>	'index',
+		'route'	=>	[
+			'url'	=>	'/test',
+			// 'method'	=>	'PUT',
+			// 'method'	=>	['GET', 'POST'],
+			// 'domain'	=>	'{name}.xxx.com',
+		],
+	],
+	// 回调方式，给callback指定一个callable类型
+	[
+		'route'	=>	[
+			'url'	=>	'/callback1',
+		],
+		'callback'	=>	function(){
+			return RequestContext::get('response')->write('callback1');
+		},
+	],
+	// 路由回调方式，new RouteCallable(类名, 方法名)
+	[
+		'route'	=>	[
+			'url'	=>	'/callback2',
+		],
+		'callback'	=>	new RouteCallable('\Test', 'abc'),
+	],
+	// 匹配URL，把interface代入到类、方法名中
+	[
+		'controller'	=>	'\ImiDemo\HttpDemo\MainServer\Controller\Test{$interface}',
+		'method'		=>	'{$interface}',
+		'route'	=>	[
+			'url'	=>	'/test/{interface}',
+		],
+	],
+    ]
+];
+```
