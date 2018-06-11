@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Parser\ControllerParser;
+use Imi\ServerManage;
 
 /**
  * http服务器路由初始化
@@ -33,39 +34,34 @@ class RouteInit implements IEventListener
 	private function parseAnnotations(EventParam $e)
 	{
 		$controllerParser = ControllerParser::getInstance();
-		$server = $e->getTarget();
-		if($server instanceof \Imi\Server\Http\Server)
+		foreach(ServerManage::getServers() as $name => $server)
 		{
 			$route = $server->getBean('HttpRoute');
-		}
-		else
-		{
-			return;
-		}
-		foreach($controllerParser->getByServer($server->getName()) as $className => $classItem)
-		{
-			$classAnnotation = $classItem['annotation'];
-			foreach($classItem['methods'] as $methodName => $methodItem)
+			foreach($controllerParser->getByServer($name) as $className => $classItem)
 			{
-				if(!isset($methodItem['routes']))
+				$classAnnotation = $classItem['annotation'];
+				foreach($classItem['methods'] as $methodName => $methodItem)
 				{
-					$methodItem['routes'] = [
-						new Route([
-							'url'	=>	$methodName,
-						])
-					];
-				}
-				foreach($methodItem['routes'] as $routeItem)
-				{
-					if(null === $routeItem->url)
+					if(!isset($methodItem['routes']))
 					{
-						$routeItem->url = $methodName;
+						$methodItem['routes'] = [
+							new Route([
+								'url'	=>	$methodName,
+							])
+						];
 					}
-					if((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]) && '' != $classAnnotation->prefix)
+					foreach($methodItem['routes'] as $routeItem)
 					{
-						$routeItem->url = $classAnnotation->prefix . $routeItem->url;
+						if(null === $routeItem->url)
+						{
+							$routeItem->url = $methodName;
+						}
+						if((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]) && '' != $classAnnotation->prefix)
+						{
+							$routeItem->url = $classAnnotation->prefix . $routeItem->url;
+						}
+						$route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName));
 					}
-					$route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName));
 				}
 			}
 		}
