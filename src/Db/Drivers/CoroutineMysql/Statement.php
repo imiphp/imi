@@ -177,7 +177,7 @@ class Statement implements IStatement
 	 */
 	public function errorInfo(): string
 	{
-		return $this->statement->erro;
+		return $this->statement->error;
 	}
 
 	/**
