@@ -6,7 +6,8 @@
 * [介绍](base/intro.md)
 * [环境要求](base/env.md)
 * [开始一个新项目](base/new.md)
-* [参与框架开发](base/dev.md)
+* [项目加载](xiang-mu-jia-zai.md)
+* [配置文件](base/config.md)
 
 ## 功能组件
 
@@ -25,4 +26,8 @@
 * [后台异步任务](components/task/index.html)
 * [事件监听](components/event/index.html)
 * [AOP](components/aop/index.html)
+
+## 进阶开发
+
+* [参与框架开发](adv/dev.md)
 
