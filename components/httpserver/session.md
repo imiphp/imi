@@ -31,6 +31,13 @@ return [
 			// 设置为 TRUE 表示 PHP 发送 cookie 的时候会使用 httponly 标记。
 			// 'httponly'	=>	false,
 		],
+		// 中间件
+		'HttpDispatcher'	=>	[
+			'middlewares'	=>	[
+				// 中间件
+				\Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
+			],
+		],
 	],
 ];
 ```
