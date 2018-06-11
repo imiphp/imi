@@ -11,9 +11,9 @@
 ## 功能组件
 
 * [HTTP服务器](components/httpserver/index.md)
+  * [路由](components/httpserver/route.md)
+  * [中间件](components/httpserver/middleware.md)
   * [控制器](components/httpserver/controller.md)
-  * [路由](components/httpserver/route.html)
-  * [中间件](components/httpserver/middleware.html)
   * [RESTful](components/httpserver/restful.html)
   * [Session](components/httpserver/session.html)
   * [视图](components/httpserver/view.html)
