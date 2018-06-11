@@ -100,7 +100,19 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	 */
 	public function insert(): IResult
 	{
-		return static::query()->insert($this);
+		$result = static::query()->insert($this);
+		if($result->isSuccess())
+		{
+			foreach(ModelManager::getFields($this) as $name => $column)
+			{
+				if($column->isAutoIncrement)
+				{
+					$this[$name] = $result->getLastInsertId();
+					break;
+				}
+			}
+		}
+		return $result;
 	}
 
 	/**
