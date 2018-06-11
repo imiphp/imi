@@ -36,8 +36,11 @@ abstract class BaseSyncPool extends BasePool
 	 */
 	public function getResource(): IPoolResource
 	{
-		$result = $this->queue->pop();
-		return $result ? $result : null;
+		if(0 === $this->queue->count())
+		{
+			return null;
+		}
+		return $this->queue->pop();
 	}
 
 	/**
@@ -46,6 +49,10 @@ abstract class BaseSyncPool extends BasePool
 	 */
 	public function tryGetResource()
 	{
+		if(0 === $this->queue->count())
+		{
+			return false;
+		}
 		return $this->queue->pop();
 	}
 
@@ -56,10 +63,7 @@ abstract class BaseSyncPool extends BasePool
 	protected function buildQueue()
 	{
 		// 清空队列
-		while($this->queue->pop())
-		{
-
-		}
+		$this->initQueue();
 		// 重新建立队列
 		foreach($this->pool as $item)
 		{
