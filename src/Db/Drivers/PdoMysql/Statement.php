@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Db\Drivers\CoroutineMysql;
+namespace Imi\Db\Drivers\PdoMysql;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
@@ -7,15 +7,15 @@ use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 
 /**
- * Swoole协程MySQL驱动Statement
+ * PDO MySQL驱动Statement
  * 
  * @property-read string $queryString
  */
 class Statement implements IStatement
 {
 	/**
-	 * \Swoole\Coroutine\MySQL\Statement
-	 * @var \Swoole\Coroutine\MySQL\Statement
+	 * \PDOStatement
+	 * @var \PDOStatement
 	 */
 	protected $statement;
 
@@ -26,56 +26,15 @@ class Statement implements IStatement
 	protected $data;
 
 	/**
-	 * bindColumn 关联关系
-	 * @var array
-	 */
-	protected $columnBinds = [];
-
-	/**
-	 * bindParam和bindParam 关联关系
-	 * @var array
-	 */
-	protected $binds = [];
-
-	/**
-	 * 当前游标位置
-	 * @var int
-	 */
-	protected $cursor;
-
-	/**
-	 * 处理所有行数据处理器
-	 * @var StatementFetchAllParser
-	 */
-	protected $fetchAllParser;
-
-	/**
-	 * SQL语句
-	 * @var string
-	 */
-	protected $sql;
-
-	/**
-	 * 参数映射
-	 * @var array
-	 */
-	protected $paramsMap;
-
-	/**
 	 * 数据库操作对象
 	 * @var IDb
 	 */
 	protected $db;
 
-	public function __construct(IDb $db, $statement, $sql, $paramsMap, $data = null)
+	public function __construct(IDb $db, $statement)
 	{
 		$this->db = $db;
 		$this->statement = $statement;
-		$this->sql = $sql;
-		$this->paramsMap = $paramsMap;
-		$this->data = $data;
-		$this->cursor = null === $data ? -1 : 0;
-		$this->fetchAllParser = new StatementFetchAllParser;
 	}
 
 	/**
@@ -98,13 +57,7 @@ class Statement implements IStatement
 	 */
 	public function bindColumn($column, &$param, int $type = null, int $maxLen = null, $driverData = null): bool
 	{
-		$this->columnBinds[$column] = [
-			'param'		=>	&$param,
-			'type'		=>	$type,
-			'maxLen'	=>	$maxLen,
-			'driverData'=>	$driverData
-		];
-		return true;
+		return $this->statement->bindColumn($column, $param, $type, $maxLen, $driverData);
 	}
 
 	/**
@@ -118,8 +71,7 @@ class Statement implements IStatement
 	 */
 	public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, int $length = null, $driverOptions = null): bool
 	{
-		$this->binds[$parameter] = &$variable;
-		return true;
+		return $this->statement->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
 	}
 
 	/**
@@ -131,8 +83,7 @@ class Statement implements IStatement
 	 */
 	public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
 	{
-		$this->binds[$parameter] = $value;
-		return true;
+		return $this->statement->bindValue($parameter, $value, $dataType);
 	}
 
 	/**
@@ -141,9 +92,7 @@ class Statement implements IStatement
 	 */
 	public function closeCursor(): bool
 	{
-		$this->cursor = -1;
-		$this->data = null;
-		return true;
+		return $this->statement->closeCursor();
 	}
 
 	/**
@@ -152,14 +101,7 @@ class Statement implements IStatement
 	 */
 	public function columnCount(): int
 	{
-		if($this->cursor >= 0)
-		{
-			return count(current($this->data));
-		}
-		else
-		{
-			return 0;
-		}
+		return $this->statement->columnCount();
 	}
 	
 	/**
@@ -168,7 +110,7 @@ class Statement implements IStatement
 	 */
 	public function errorCode()
 	{
-		return $this->statement->errno;
+		return $this->statement->errorCode();
 	}
 	
 	/**
@@ -177,7 +119,8 @@ class Statement implements IStatement
 	 */
 	public function errorInfo(): string
 	{
-		return $this->statement->erro;
+		$errorInfo = $this->statement->errorInfo();
+		return !isset($errorInfo[0]) || 0 == $errorInfo[0] ? '' : implode(' ', $errorInfo);
 	}
 
 	/**
@@ -186,7 +129,7 @@ class Statement implements IStatement
 	 */
 	public function getSql()
 	{
-		return $this->sql;
+		return $this->statement->queryString;
 	}
 
 	/**
@@ -196,55 +139,12 @@ class Statement implements IStatement
 	 */
 	public function execute(array $inputParameters = null): bool
 	{
-		if($this->cursor >= 0)
-		{
-			return false;
-		}
-		$params = $this->getExecuteParams($inputParameters);
-		$result = $this->statement->execute($params);
-		$this->binds = [];
-		if(false === $result)
+		$result = $this->statement->execute($inputParameters);
+		if(!$result)
 		{
 			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
 		}
-		else
-		{
-			// 延迟收包支持
-			$dbInstance = $this->db->getInstance();
-			if($dbInstance->getDefer())
-			{
-				$result = $dbInstance->recv();
-			}
-			if(false === $result)
-			{
-				throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
-			}
-			$this->data = $result;
-			$this->cursor = 0;
-			return true;
-		}
-	}
-
-	/**
-	 * 获取执行SQL语句要传入的参数
-	 * @param array $binds
-	 * @return array
-	 */
-	protected function getExecuteParams($binds = null): array
-	{
-		$params = [];
-		foreach($this->paramsMap as $key)
-		{
-			if(null === $binds)
-			{
-				$params[] = $this->binds[$key] ?? null;
-			}
-			else
-			{
-				$params[] = $binds[$key] ?? null;
-			}
-		}
-		return $params;
+		return $result;
 	}
 
 	/**
@@ -256,36 +156,7 @@ class Statement implements IStatement
 	 */
 	public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
 	{
-		// 游标
-		switch($cursorOrientation)
-		{
-			case \PDO::FETCH_ORI_NEXT:
-				$row = $this->data[$this->cursor++] ?? false;
-				break;
-			case \PDO::FETCH_ORI_PRIOR:
-				$row = $this->data[--$this->cursor] ?? false;
-				break;
-			case \PDO::FETCH_ORI_FIRST:
-				$row = $this->data[$this->cursor = 0] ?? false;
-				break;
-			case \PDO::FETCH_ORI_LAST:
-				$row = $this->data[$this->cursor = count($this->data) - 1] ?? false;
-				break;
-			case \PDO::FETCH_ORI_ABS:
-				$row = $this->data[$this->cursor += $cursorOffset] ?? false;
-				break;
-			case \PDO::FETCH_ORI_REL:
-				$row = $this->data[$this->cursor = $cursorOffset] ?? false;
-				break;
-			default:
-				throw new \InvalidArgumentException('Statement fetch $cursorOrientation can not use ' . $cursorOrientation);
-		}
-		if(false === $row)
-		{
-			return false;
-		}
-		// 结果集
-		return $this->fetchAllParser->getFetchParser()->parseRow($row, $fetchStyle, $this->columnBinds);
+		return $this->statement->fetch($fetchStyle, $cursorOrientation, $cursorOffset);
 	}
 
 	/**
@@ -296,7 +167,14 @@ class Statement implements IStatement
 	 */
 	public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = array()): array
 	{
-		return $this->fetchAllParser->parseAll($this->data, $fetchStyle);
+		if(null === $fetchArgument)
+		{
+			return $this->statement->fetchAll($fetchStyle);
+		}
+		else
+		{
+			return $this->statement->fetchAll($fetchStyle, $fetchArgument, $ctorArgs);
+		}
 	}
 
 	/**
@@ -306,7 +184,7 @@ class Statement implements IStatement
 	 */
 	public function fetchColumn($columnKey = 0)
 	{
-		return $this->fetch(\PDO::FETCH_BOTH)[$columnKey] ?? null;
+		return $this->statement->fetchColumn($columnKey);
 	}
 	
 	/**
@@ -317,12 +195,7 @@ class Statement implements IStatement
 	 */
 	public function fetchObject(string $className = "stdClass", array $ctorArgs = null)
 	{
-		$object = new $className;
-		foreach($this->fetch(\PDO::FETCH_ASSOC) as $name => $value)
-		{
-			$object->$name = $value;
-		}
-		return $object;
+		return $this->statement->fetchObject($className, $ctorArgs);
 	}
 
 	/**
@@ -332,7 +205,7 @@ class Statement implements IStatement
 	 */
 	public function getAttribute($attribute)
 	{
-		return null;
+		return $this->statement->getAttribute($attribute);
 	}
 
 	/**
@@ -343,7 +216,7 @@ class Statement implements IStatement
 	 */
 	public function setAttribute($attribute, $value): bool
 	{
-		return true;
+		return $this->statement->setAttribute($attribute, $value);
 	}
 
 	/**
@@ -352,7 +225,7 @@ class Statement implements IStatement
 	 */
 	public function nextRowset(): bool
 	{
-		return false;
+		return $this->statement->nextRowset();
 	}
 
 	/**
@@ -362,7 +235,7 @@ class Statement implements IStatement
 	 */
 	public function lastInsertId(string $name = null)
 	{
-		return $this->statement->insert_id;
+		return $this->db->lastInsertId($name);
 	}
 
 	/**
@@ -371,7 +244,7 @@ class Statement implements IStatement
 	 */
 	public function rowCount(): int
 	{
-		return $this->statement->affected_rows;
+		return $this->statement->rowCount();
 	}
 
 	/**
@@ -385,35 +258,26 @@ class Statement implements IStatement
 
 	public function current()
 	{
-		return $this->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_ABS);
+		return current($this->statement);
 	}
 
 	public function key()
 	{
-		return $this->cursor;;
+		return key($this->statement);
 	}
 
 	public function next()
 	{
-		return $this->fetch(\PDO::FETCH_ASSOC);
+		return next($this->statement);
 	}
 
 	public function rewind()
 	{
-		return $this->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_REL);
+		return reset($this->statement);
 	}
 
 	public function valid()
 	{
 		return false !== $this->current();
-	}
-
-	public function __get($name)
-	{
-		switch($name)
-		{
-			case 'queryString':
-				return $this->sql;
-		}
 	}
 }

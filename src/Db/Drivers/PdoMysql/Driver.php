@@ -1,16 +1,14 @@
 <?php
-namespace Imi\Db\Drivers\CoroutineMysql;
+namespace Imi\Db\Drivers\PdoMysql;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Pool\Interfaces\IPoolResource;
-use Imi\App;
 use Imi\Db\Exception\DbException;
 use Imi\Bean\BeanFactory;
 
 /**
- * Swoole协程MySQL驱动
+ * PDO MySQL驱动
  */
 class Driver implements IDb
 {
@@ -18,7 +16,7 @@ class Driver implements IDb
 
 	/**
 	 * 连接对象
-	 * @var \Swoole\Coroutine\MySQL
+	 * @var \PDO
 	 */
 	protected $instance;
 
@@ -29,16 +27,16 @@ class Driver implements IDb
 	protected $option;
 
 	/**
-	 * 是否在一个事务内
-	 * @var boolean
-	 */
-	protected $inTransaction = false;
-
-	/**
 	 * 最后执行过的SQL语句
 	 * @var string
 	 */
 	protected $lastSql = '';
+
+	/**
+	 * Statement
+	 * @var Statement
+	 */
+	protected $lastStmt;
 
 	/**
 	 * 参数格式：
@@ -50,7 +48,7 @@ class Driver implements IDb
 	 * 'port'    => 'MySQL端口 默认3306 可选参数',
 	 * 'timeout' => '建立连接超时时间',
 	 * 'charset' => '字符集',
-	 * 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+	 * 'options' => [], // PDO连接选项
 	 * ]
 	 * @param array $option
 	 */
@@ -65,7 +63,29 @@ class Driver implements IDb
 		{
 			$this->option['password'] = '';
 		}
-		$this->instance = new \Swoole\Coroutine\MySQL();
+		if(!isset($option['options']))
+		{
+			$this->option['options'] = [];
+		}
+	}
+
+	/**
+	 * 构建DNS字符串
+	 * @return string
+	 */
+	protected function buildDSN()
+	{
+		if(isset($this->option['dsn']))
+		{
+			return $this->option['dsn'];
+		}
+		return 'mysql:'
+				 . 'host=' . ($this->option['host'] ?? '127.0.0.1')
+				 . ';port=' . ($this->option['port'] ?? '3306')
+				 . ';dbname=' . ($this->option['database'] ?? '')
+				 . ';unix_socket=' . ($this->option['unix_socket'] ?? '')
+				 . ';charset=' . ($this->option['charset'] ?? 'utf8')
+				 ;
 	}
 
 	/**
@@ -74,7 +94,8 @@ class Driver implements IDb
 	 */
 	public function open()
 	{
-		return $this->instance->connect($this->option);
+		$this->instance = new \PDO($this->buildDSN(), $this->option['username'], $this->option['password'], $this->option['options']);
+		return true;
 	}
 
 	/**
@@ -83,14 +104,14 @@ class Driver implements IDb
 	 */
 	public function close()
 	{
-		$this->instance->close();
+		$this->instance = null;
 	}
 
 	/**
 	 * 获取原对象实例
-	 * @return \Swoole\Coroutine\MySQL
+	 * @return \PDO
 	 */
-	public function getInstance(): \Swoole\Coroutine\MySQL
+	public function getInstance(): \PDO
 	{
 		return $this->instance;
 	}
@@ -101,8 +122,7 @@ class Driver implements IDb
 	 */
 	public function beginTransaction(): bool
 	{
-		$this->inTransaction = true;
-		return $this->instance->begin();
+		return $this->instance->beginTransaction();
 	}
 
 	/**
@@ -111,7 +131,6 @@ class Driver implements IDb
 	 */
 	public function commit(): bool
 	{
-		$this->inTransaction = false;
 		return $this->instance->commit();
 	}
 
@@ -131,7 +150,7 @@ class Driver implements IDb
 	 */
 	public function inTransaction(): bool
 	{
-		return $this->inTransaction;
+		return $this->instance->inTransaction();
 	}
 
 	/**
@@ -140,7 +159,14 @@ class Driver implements IDb
 	 */
 	public function errorCode()
 	{
-		return $this->instance->errno;
+		if($this->lastStmt)
+		{
+			return $this->lastStmt->errorCode();
+		}
+		else
+		{
+			return $this->instance->errorCode();
+		}
 	}
 	
 	/**
@@ -149,7 +175,15 @@ class Driver implements IDb
 	 */
 	public function errorInfo(): string
 	{
-		return $this->instance->error;
+		if($this->lastStmt)
+		{
+			return $this->lastStmt->errorInfo();
+		}
+		else
+		{
+			$errorInfo = $this->instance->errorInfo();
+			return !isset($errorInfo[0]) || 0 == $errorInfo[0] ? '' : implode(' ', $errorInfo);
+		}
 	}
 
 	/**
@@ -168,15 +202,7 @@ class Driver implements IDb
 	 */
 	public function exec(string $sql): int
 	{
-		$result = $this->instance->query($sql);
-		if(false === $result)
-		{
-			return 0;
-		}
-		else
-		{
-			return $this->instance->affected_rows;
-		}
+		return $this->instance->exec($sql);
 	}
 
 	/**
@@ -186,7 +212,7 @@ class Driver implements IDb
 	 */
 	public function getAttribute($attribute)
 	{
-		return null;
+		return $this->instance->getAttribute($attribute);
 	}
 
 	/**
@@ -197,7 +223,7 @@ class Driver implements IDb
 	 */
 	public function setAttribute($attribute, $value)
 	{
-		return true;
+		return $this->instance->setAttribute($attribute, $value);
 	}
 
 	/**
@@ -207,7 +233,7 @@ class Driver implements IDb
 	 */
 	public function lastInsertId(string $name = null)
 	{
-		return $this->instance->insert_id;
+		return $this->instance->lastInsertId($name);
 	}
 
 	/**
@@ -216,7 +242,7 @@ class Driver implements IDb
 	 */
 	public function rowCount(): int
 	{
-		return $this->instance->affected_rows;
+		return null === $this->lastStmt ? 0 : $this->lastStmt->rowCount();
 	}
 
 	/**
@@ -230,13 +256,12 @@ class Driver implements IDb
 	{
 		// 处理支持 :xxx 参数格式
 		$this->lastSql = $sql;
-		$execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
-		$stmt = $this->instance->prepare($execSql);
-		if(false === $stmt)
+		$this->lastStmt = $this->instance->prepare($sql, $driverOptions);
+		if(false === $this->lastStmt)
 		{
 			throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
 		}
-		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
+		return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
 	}
 
 	/**
@@ -248,12 +273,11 @@ class Driver implements IDb
 	public function query(string $sql)
 	{
 		$this->lastSql = $sql;
-		$stmt = $this->instance->prepare($sql);
-		if(false === $stmt)
+		$this->lastStmt = $this->instance->query($sql);
+		if(false === $this->lastStmt)
 		{
-			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+			throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
 		}
-		$data = $stmt->execute([]);
-		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, [], $data);
+		return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
 	}
 }

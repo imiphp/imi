@@ -32,7 +32,7 @@ class MysqlAspect
 		if(false === $result)
 		{
 			$statement = $joinPoint->getTarget();
-			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->getSql());
+			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . $statement->errorInfo() . ' sql: ' . $statement->getSql());
 		}
 		return $result;
 	}
@@ -67,7 +67,7 @@ class MysqlAspect
 		}
 		if(false === $result)
 		{
-			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . implode(',', $statement->errorInfo()) . ' sql: ' . $statement->getSql());
+			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . $statement->errorInfo() . ' sql: ' . $statement->getSql());
 		}
 		return $result;
 	}

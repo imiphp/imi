@@ -31,7 +31,7 @@ class Result implements IResult
 		if($statement instanceof IStatement)
 		{
 			$this->statement = clone $statement;
-			$this->isSuccess = [] === $this->statement->errorInfo();
+			$this->isSuccess = '' === $this->statement->errorInfo();
 		}
 		else
 		{

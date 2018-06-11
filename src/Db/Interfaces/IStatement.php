@@ -58,7 +58,7 @@ interface IStatement extends \Iterator
 	 * 返回错误信息
 	 * @return array
 	 */
-	public function errorInfo(): array;
+	public function errorInfo(): string;
 
 	/**
 	 * 获取SQL语句

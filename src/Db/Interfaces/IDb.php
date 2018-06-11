@@ -43,7 +43,7 @@ interface IDb
 	 * 返回错误信息
 	 * @return array
 	 */
-	public function errorInfo(): array;
+	public function errorInfo(): string;
 
 	/**
 	 * 获取最后一条执行的SQL语句
