@@ -3,6 +3,7 @@ namespace Imi\Model;
 
 use Imi\Db\Db;
 use Imi\Util\Call;
+use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Db\Query\Interfaces\IResult;
@@ -18,6 +19,16 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 			$this->$k = $v;
 		}
 		$this->__fieldNames = ModelManager::getFieldNames($this);
+	}
+
+	/**
+	 * 实例化当前类
+	 * @param mixed ...$args
+	 * @return static
+	 */
+	public static function newInstance(...$args)
+	{
+		return BeanFactory::newInstance(static::class, ...$args);
 	}
 
 	/**
@@ -80,18 +91,13 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 
 	/**
 	 * 查询多条记录
-	 * @param callable $queryCallable
+	 * @param array|callable $where
 	 * @return static[]
 	 */
-	public static function select(callable $queryCallable = null)
+	public static function select($where = null)
 	{
 		$query = static::query();
-		if(null !== $queryCallable)
-		{
-			// 回调传入条件
-			Call::callUserFunc($queryCallable, $query);
-		}
-		return $query->select()->getArray();
+		return static::parseWhere($where)->select()->getArray();
 	}
 
 	/**
