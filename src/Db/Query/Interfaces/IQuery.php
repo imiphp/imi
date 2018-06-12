@@ -443,4 +443,11 @@ interface IQuery
 	 * @return IResult
 	 */
 	public function delete(): IResult;
+
+	/**
+	 * 执行SQL语句
+	 * @param string $sql
+	 * @return IResult
+	 */
+	public function execute($sql);
 }

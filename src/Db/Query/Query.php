@@ -706,13 +706,11 @@ class Query implements IQuery
 	{
 		$builder = new SelectBuilder($this);
 		$sql = $builder->build();
-		$result = new Result($this->execute($sql), $this->modelClass);
-		$this->__init();
-		return $result;
+		return $this->execute($sql);
 	}
 
 	/**
-	 * 更新数据
+	 * 插入记录
 	 * @param array $data
 	 * @return IResult
 	 */
@@ -720,13 +718,11 @@ class Query implements IQuery
 	{
 		$builder = new InsertBuilder($this);
 		$sql = $builder->build($data);
-		$result = new Result($this->execute($sql), $this->modelClass);
-		$this->__init();
-		return $result;
+		return $this->execute($sql);
 	}
 
 	/**
-	 * 更新数据
+	 * 更新记录
 	 * @param array $data
 	 * @return IResult
 	 */
@@ -734,20 +730,18 @@ class Query implements IQuery
 	{
 		$builder = new UpdateBuilder($this);
 		$sql = $builder->build($data);
-		$result = new Result($this->execute($sql), $this->modelClass);
-		$this->__init();
-		return $result;
+		return $this->execute($sql);
 	}
 
 	/**
-	 * 删除数据
+	 * 删除记录
 	 * @return IResult
 	 */
 	public function delete(): IResult
 	{
 		$builder = new DeleteBuilder($this);
 		$sql = $builder->build();
-		$result = new Result($this->execute($sql), $this->modelClass);
+		$result = $this->execute($sql);
 		$this->__init();
 		return $result;
 	}
@@ -822,9 +816,9 @@ class Query implements IQuery
 	/**
 	 * 执行SQL语句
 	 * @param string $sql
-	 * @return IStatement|bool
+	 * @return IResult
 	 */
-	protected function execute($sql)
+	public function execute($sql)
 	{
 		if(empty($this->binds))
 		{
@@ -842,7 +836,8 @@ class Query implements IQuery
 				$result = false;
 			}
 		}
-		return $result;
+		$this->__init();
+		return new Result($result, $this->modelClass);
 	}
 
 	/**
