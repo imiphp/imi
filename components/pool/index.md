@@ -115,6 +115,40 @@ return [
 
 ## 获取连接
 
+### 获取池子中的资源
+
+`\Imi\Pool\PoolManager::getResource(string $name): IPoolResource`
+
+`$name` 为池子名称
+
+### 获取请求上下文资源
+
+一个请求上下文通过此方法，只能获取同一个资源
+
+`\Imi\Pool\PoolManager::getRequestContextResource(string $name): IPoolResource`
+
+### 尝试获取资源
+
+`\Imi\Pool\PoolManager::tryGetResource(string $name): IPoolResource|boolean`
+
+### 回调方式使用资源
+
+使用回调来使用池子中的资源，无需手动释放
+
+```php
+$result = \Imi\Pool\PoolManager::use($poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+	return $redis->get($key);
+});
+```
+
+`$poolName`-池子名称
+第二个参数为回调，接收两个参数，第一个资源本身，第二个为资源里面的实例。比如上面的是Redis
+回调的返回值也会成为use方法的返回值
+
 ## 手动释放连接
 
+`\Imi\Pool\PoolManager::releaseResource(IPoolResource $resource)`
+
 ## 自动释放连接
+
+调用`\Imi\Pool\PoolManager::getRequestContextResource()`方法获取，当上下文被销毁时，会自动释放资源。
