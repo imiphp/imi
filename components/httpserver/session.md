@@ -54,6 +54,6 @@ return [
 ]
 ```
 
-> 文件缓存未来不支持分布式，推荐使用 Redis！
+> 文件 Session 未来不支持分布式，推荐使用 Redis！
 
 ## Redis
