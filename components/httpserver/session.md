@@ -57,3 +57,12 @@ return [
 > 文件 Session 未来不支持分布式，推荐使用 Redis！
 
 ## Redis
+
+```php
+'SessionRedis'	=>	[
+	// Redis连接池名称
+	'poolName'	=>	'',
+	// Redis中存储的key前缀，可以用于多系统session的分离
+	// 'keyPrefix'	=>	'imi.',
+]
+```
