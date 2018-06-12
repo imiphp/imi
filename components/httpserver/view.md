@@ -138,3 +138,20 @@ public function index()
 运行结果：`hello imi`
 
 IMI 没有造模版引擎的轮子，是因为现在 PHP 渲染 HTML 的场景越来越少，如果有需要也可以自己集成其它开源模版引擎。
+
+## 其它
+
+在控制器-动作中，除了返回数据，你还可以直接返回`$this->response`，如：
+```
+return $this->response->write('hello world');
+```
+
+你还可以直接返回`@View`的注解类实例：
+```
+return new \Imi\Server\View\Annotation\View([
+	'template'	=>	'index',
+	'data'		=>	[
+		'name'	=>	'imi',
+	],
+]);
+```
