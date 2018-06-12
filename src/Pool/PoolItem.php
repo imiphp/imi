@@ -33,6 +33,7 @@ class PoolItem
 	public function __construct(\Imi\Pool\Interfaces\IPoolResource $resource)
 	{
 		$this->resource = $resource;
+		$this->createTime = time();
 	}
 
 	/**
