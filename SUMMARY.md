@@ -22,8 +22,8 @@
 * [数据库操作](components/db/index.md)
 * [缓存](components/cache/index.md)
 * [日志](components/log/index.md)
-* [后台异步任务](components/task/index.md)
 * [事件监听](components/event/index.md)
+* [后台异步任务](components/task/index.md)
 * [AOP](components/aop/index.md)
 
 ## 进阶开发
