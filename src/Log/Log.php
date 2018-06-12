@@ -15,7 +15,7 @@ abstract class Log
      *
      * @return void
      */
-	public function log($level, $message, array $context = array())
+	public static function log($level, $message, array $context = array())
 	{
 		App::getBean('Logger')->log($level, $message, $context);
 	}
