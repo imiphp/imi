@@ -142,12 +142,12 @@ IMI 没有造模版引擎的轮子，是因为现在 PHP 渲染 HTML 的场景�
 ## 其它
 
 在控制器-动作中，除了返回数据，你还可以直接返回`$this->response`，如：
-```
+```php
 return $this->response->write('hello world');
 ```
 
 你还可以直接返回`@View`的注解类实例：
-```
+```php
 return new \Imi\Server\View\Annotation\View([
 	'template'	=>	'index',
 	'data'		=>	[

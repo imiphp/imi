@@ -36,14 +36,13 @@ return [
 
 | 属性名称 | 说明 |
 | ------------ | ------------ 
-| url | 请求地址规则。<br/>以`/`开头则忽视`@Controller`中的`prefix`<br/>支持代入`{name}`形式占位符，匹配出来的值可以作为参数传入动作 |
-| method | 如果设置了`method`，则请求方法必须在`method`列表中才可以进到动作。<br/>支持字符串和数组。如：`"GET"`或`{"GET", "POST"}` |
-| domain | 判断域名，只有符合条件才允许访问。<br/>支持字符串和数组，支持`{name}`形式占位符，可以作为参数传入动作 |
-| paramsGet | 判断`GET`参数，只有符合条件才允许访问。<br/>可以是字符串或数组。<br/>`id=100`必须包含id，并且值为100<br/>`id!=100`或`id<>100`必须包含id，并且值不为100<br/>`id`必须包含id参数<br/>`!id`必须不包含id参数</br>`["id" => "\d+"]`支持正则</br> |
+| url | 请求地址规则。<br>以`/`开头则忽视`@Controller`中的`prefix`<br>支持代入`{name}`形式占位符，匹配出来的值可以作为参数传入动作 |
+| method | 如果设置了`method`，则请求方法必须在`method`列表中才可以进到动作。<br>支持字符串和数组。如：`"GET"`或`{"GET", "POST"}` |
+| domain | 判断域名，只有符合条件才允许访问。<br>支持字符串和数组，支持`{name}`形式占位符，可以作为参数传入动作 |
+| paramsGet | 判断`GET`参数，只有符合条件才允许访问。<br>可以是字符串或数组。<br>`id=100`必须包含id，并且值为100<br>`id!=100`或`id<>100`必须包含id，并且值不为100<br>`id`必须包含id参数<br>`!id`必须不包含id参数</br>`["id" => "\d+"]`支持正则</br> |
 | paramsPost | 判断`POST`参数，用法同`paramsGet` |
 | header | 判断请求头，用法同`paramsGet` |
-| requestMime | 请求的mime类型判断<br/>判断请求头中的Content-Type中是否包含这些mime类型之一<br/>支持字符串和字符串数组<br/> |
-| responseMime |  |
+| requestMime | 请求的mime类型判断<br>判断请求头中的Content-Type中是否包含这些mime类型之一<br>支持字符串和字符串数组<br> |
 
 ### @Action
 
