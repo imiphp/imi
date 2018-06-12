@@ -31,7 +31,19 @@ class CoroutineRedisResource extends BasePoolResource
 	 */
 	public function open($callback = null)
 	{
-		return $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['serialize'] ?? true);
+		$result = $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['serialize'] ?? true);
+		if(isset($this->config['password']))
+		{
+			$result = $result && $this->redis->auth($this->config['password']);
+		}
+		if(isset($this->config['db']))
+		{
+			var_dump($this->config['db'], $result);
+			$r = $this->redis->select($this->config['db']);
+			$result = $result && $r;
+			var_dump($r, $result);
+		}
+		return $result;
 	}
 
 	/**

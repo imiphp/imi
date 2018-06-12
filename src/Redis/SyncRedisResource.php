@@ -32,9 +32,17 @@ class SyncRedisResource extends BasePoolResource
 	public function open($callback = null)
 	{
 		$result = $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379);
+		if(isset($this->config['password']))
+		{
+			$result = $result && $this->redis->auth($this->config['password']);
+		}
+		if(isset($this->config['db']))
+		{
+			$result = $result && $this->redis->select($this->config['db']);
+		}
 		if($this->config['serialize'] ?? true)
 		{
-			$this->redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
+			$result = $result && $this->redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
 		}
 		return $result;
 	}
