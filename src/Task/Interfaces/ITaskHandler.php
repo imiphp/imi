@@ -7,6 +7,10 @@ interface ITaskHandler
 {
 	/**
 	 * 任务处理方法
+	 * @param TaskParam $param
+	 * @param \Swoole\Server $server
+	 * @param integer $taskID
+	 * @param integer $WorkerID
 	 * @return void
 	 */
 	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID);
