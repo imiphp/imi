@@ -114,15 +114,4 @@ abstract class RequestContext
 		return static::getServer()->getBean($name, ...$params);
 	}
 
-	/**
-	 * 记录日志
-	 * @param string $level
-	 * @param mixed $message
-	 * @param array $context
-	 * @return void
-	 */
-	public static function log($level, $message, array $context = array())
-	{
-		static::getServer()->getBean('Logger')->log($level, $message, $context);
-	}
 }

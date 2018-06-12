@@ -23,7 +23,7 @@ class AfterRequest implements IRequestEventListener
 	public function handle(RequestEventParam $e)
 	{
 		// 日志处理
-		App::getLogger()->endRequest();
+		App::getBean('Logger')->endRequest();
 		foreach(ServerManage::getServers() as $server)
 		{
 			$server->getBean('Logger')->endRequest();
