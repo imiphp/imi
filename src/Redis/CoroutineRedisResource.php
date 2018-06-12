@@ -38,10 +38,8 @@ class CoroutineRedisResource extends BasePoolResource
 		}
 		if(isset($this->config['db']))
 		{
-			var_dump($this->config['db'], $result);
 			$r = $this->redis->select($this->config['db']);
 			$result = $result && $r;
-			var_dump($r, $result);
 		}
 		return $result;
 	}
