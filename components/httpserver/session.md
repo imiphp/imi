@@ -2,6 +2,8 @@ IMI 的 Http Session 目前内嵌支持文件和 Redis 两种存储方式，当�
 
 如果想要启用 Session，需要在配置文件中进行设置。
 
+## 配置
+
 在服务器配置文件中：
 
 ```php
@@ -44,7 +46,7 @@ return [
 
 其中每一种存储方式还有特别的配置项，请看下文。
 
-## 文件
+### 文件
 
 服务器配置文件->beans中加入：
 
@@ -56,7 +58,7 @@ return [
 
 > 文件 Session 未来不支持分布式，推荐使用 Redis！
 
-## Redis
+### Redis
 
 ```php
 'SessionRedis'	=>	[
@@ -65,4 +67,42 @@ return [
 	// Redis中存储的key前缀，可以用于多系统session的分离
 	// 'keyPrefix'	=>	'imi.',
 ]
+```
+
+## 使用
+
+### 引入 Session 类
+
+```php
+use Imi\Server\Session\Session;
+```
+
+### 读取
+
+```php
+Session::get($name = null, $default = null)
+```
+
+### 写入
+
+```php
+Session::set($name, $value)
+```
+
+### 删除
+
+```php
+Session::delete($name)
+```
+
+### 读取并删除
+
+```php
+Session::once($name, $default = false)
+```
+
+### 清空
+
+```php
+Session::clear();
 ```
