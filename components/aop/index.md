@@ -169,7 +169,7 @@ class Test
 
 #### 配置
 
-```
+```php
 <?php
 return [
 	// 类名
