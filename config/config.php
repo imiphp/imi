@@ -13,6 +13,7 @@ return [
 		'Imi\Listener',
 		'Imi\Model',
 		'Imi\Task',
+		'Imi\Tool',
 	],
 	'atomics'	=>	[
 		'session'
