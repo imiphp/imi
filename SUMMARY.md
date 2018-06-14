@@ -19,6 +19,8 @@
   * [视图](components/httpserver/view.md)
 * [连接池](components/pool/index.md)
 * [ORM](components/orm/index.md)
+  * [数据库模型](components/orm/RDModel.md)
+  * [内存表模型](components/orm/MemoryTableModel.md)
 * [数据库操作](components/db/index.md)
 * [缓存](components/cache/index.md)
 * [日志](components/log/index.md)
