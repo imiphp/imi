@@ -18,7 +18,7 @@ abstract class BaseSyncPool extends BasePool
 
 	public function __destruct()
 	{
-		$this->queue->close();
+		
 	}
 
 	/**
@@ -36,9 +36,17 @@ abstract class BaseSyncPool extends BasePool
 	 */
 	public function getResource(): IPoolResource
 	{
-		if(0 === $this->queue->count())
+		if($this->getFree() <= 0)
 		{
-			return null;
+			if($this->getCount() < $this->config->getMaxResources())
+			{
+				// 没有空闲连接，当前连接数少于最大连接数
+				$this->addResource();
+			}
+			else 
+			{
+				return null;
+			}
 		}
 		return $this->queue->pop();
 	}
@@ -49,9 +57,17 @@ abstract class BaseSyncPool extends BasePool
 	 */
 	public function tryGetResource()
 	{
-		if(0 === $this->queue->count())
+		if($this->getFree() <= 0)
 		{
-			return false;
+			if($this->getCount() < $this->config->getMaxResources())
+			{
+				// 没有空闲连接，当前连接数少于最大连接数
+				$this->addResource();
+			}
+			else 
+			{
+				return false;
+			}
 		}
 		return $this->queue->pop();
 	}

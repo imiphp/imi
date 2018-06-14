@@ -65,6 +65,18 @@ abstract class BaseAsyncPool extends BasePool
 	 */
 	public function tryGetResource()
 	{
+		if($this->getFree() <= 0)
+		{
+			if($this->getCount() < $this->config->getMaxResources())
+			{
+				// 没有空闲连接，当前连接数少于最大连接数
+				$this->addResource();
+			}
+			else 
+			{
+				return false;
+			}
+		}
 		$read = [$this->queue];
 		// Coroutine\Channel::select() 最小超时时间1毫秒
 		$result = Channel::select($read, null, 0.001);
