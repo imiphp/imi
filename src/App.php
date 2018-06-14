@@ -30,7 +30,7 @@ abstract class App
 	private static $container;
 
 	/**
-	 * 框架运行入口
+	 * 框架服务运行入口
 	 * @param string $namespace 应用命名空间
 	 * @return void
 	 */
@@ -38,10 +38,19 @@ abstract class App
 	{
 		static::$namespace = $namespace;
 		static::initFramework();
-		// 框架初始化完成事件
-		Event::trigger('IMI.INITED');
 		static::createServers();
 		ServerManage::getServer('main')->getSwooleServer()->start();
+	}
+
+	/**
+	 * 框架命令行工具运行入口
+	 * @return void
+	 */
+	public static function runTool($namespace)
+	{
+		static::$namespace = $namespace;
+		static::initFramework();
+		Event::trigger('IMI.RUNTOOL');
 	}
 
 	/**
@@ -56,6 +65,7 @@ abstract class App
 		// 注解处理
 		static::$annotation = new Annotation;
 		static::$annotation->init();
+		Event::trigger('IMI.INITED');
 	}
 
 	/**
