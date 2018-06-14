@@ -5,32 +5,13 @@ use Imi\Db\Db;
 use Imi\Util\Call;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Util\Interfaces\IArrayable;
 use Imi\Db\Query\Interfaces\IResult;
 
-class Model implements \Iterator, \ArrayAccess, IArrayable
+/**
+ * 常用的数据库模型
+ */
+abstract class Model extends BaseModel
 {
-	private $__fieldNames;
-
-	public function __construct($data = [])
-	{
-		foreach($data as $k => $v)
-		{
-			$this->$k = $v;
-		}
-		$this->__fieldNames = ModelManager::getFieldNames($this);
-	}
-
-	/**
-	 * 实例化当前类
-	 * @param mixed ...$args
-	 * @return static
-	 */
-	public static function newInstance(...$args)
-	{
-		return BeanFactory::newInstance(static::class, ...$args);
-	}
-
 	/**
 	 * 返回一个查询器
 	 * @return \Imi\Db\Query\Interfaces\IQuery
@@ -106,7 +87,7 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	 */
 	public function insert(): IResult
 	{
-		$result = static::query()->insert($this);
+		$result = static::query()->insert(static::parseSaveData($this));
 		if($result->isSuccess())
 		{
 			foreach(ModelManager::getFields($this) as $name => $column)
@@ -128,7 +109,7 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	public function update(): IResult
 	{
 		$query = static::query();
-		return $this->parseWhereId($query)->update($this);
+		return $this->parseWhereId($query)->update(static::parseSaveData($this));
 	}
 
 	/**
@@ -140,7 +121,12 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	public static function updateBatch($data, $where = null): IResult
 	{
 		$query = static::query();
-		return static::parseWhere($query, $where)->update($data);
+		$updateData = [];
+		foreach($data as $item)
+		{
+			$updateData[] = static::parseSaveData($item);
+		}
+		return static::parseWhere($query, $where)->update($updateData);
 	}
 
 	/**
@@ -260,7 +246,7 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 	private function parseWhereId(IQuery $query)
 	{
 		// 主键条件加入
-		$id = ModelManager::getId(static::class);
+		$id = ModelManager::getId($this);
 		if(is_string($id))
 		{
 			$id = [$id];
@@ -306,70 +292,19 @@ class Model implements \Iterator, \ArrayAccess, IArrayable
 		return $query;
 	}
 
-	// 实现接口的方法们：
-
-	public function offsetExists($offset)
-	{
-		$methodName = 'get' . ucfirst($offset);
-		return method_exists($this, $methodName) && null !== Call::callUserFunc([$this, $methodName]);
-	}
-
-	public function offsetGet($offset)
-	{
-		$methodName = 'get' . ucfirst($offset);
-		if(!method_exists($this, $methodName))
-		{
-			return null;
-		}
-		return Call::callUserFunc([$this, $methodName]);
-	}
-
-	public function offsetSet($offset, $value)
-	{
-		$methodName = 'set' . ucfirst($offset);
-		if(!method_exists($this, $methodName))
-		{
-			return;
-		}
-		Call::callUserFunc([$this, $methodName], $value);
-	}
-
-	public function offsetUnset($offset)
-	{
-		
-	}
-
-	public function current()
-	{
-		return $this[current($this->__fieldNames)];
-	}
-
-	public function key()
-	{
-		return current($this->__fieldNames);
-	}
-
-	public function next()
-	{
-		next($this->__fieldNames);
-	}
-
-	public function rewind()
-	{
-		reset($this->__fieldNames);
-	}
-
-	public function valid()
-	{
-		return false !== current($this->__fieldNames);
-	}
-
 	/**
-	 * 将当前对象作为数组返回
+	 * 处理保存的数据
+	 * @param array $data
 	 * @return array
 	 */
-	public function toArray(): array
+	private static function parseSaveData($data)
 	{
-		return \iterator_to_array($this);
+		$result = [];
+		foreach(ModelManager::getFieldNames(static::class) as $name)
+		{
+			$result[$name] = $data[$name];
+		}
+		return $result;
 	}
+
 }

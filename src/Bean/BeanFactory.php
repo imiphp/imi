@@ -48,8 +48,8 @@ return new class(...\$args) extends \\{$class}
 
 	public function __construct(...\$args)
 	{
-		{$construct}
 		\$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
+		{$construct}
 	}
 
 {$methodsTpl}

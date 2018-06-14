@@ -4,6 +4,7 @@ namespace Imi\Model;
 use Imi\Util\Imi;
 use Imi\Model\Parser\ModelParser;
 use Imi\RequestContext;
+use Imi\Util\ClassObject;
 
 abstract class ModelManager
 {
@@ -131,7 +132,14 @@ abstract class ModelManager
 	{
 		if(is_object($object))
 		{
-			return get_class($object);
+			if(ClassObject::isAnymous($object))
+			{
+				return get_parent_class($object);
+			}
+			else
+			{
+				return get_class($object);
+			}
 		}
 		else
 		{
