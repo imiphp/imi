@@ -2,9 +2,10 @@
 namespace Imi\Model\Parser;
 
 use Imi\Bean\Parser\BaseParser;
-use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\MemoryTable;
 
 class ModelParser extends BaseParser
 {
@@ -32,6 +33,10 @@ class ModelParser extends BaseParser
 		else if($annotation instanceof Column)
 		{
 			$this->data[$className]['properties'][$targetName]['Column'] = $annotation;
+		}
+		else if($annotation instanceof MemoryTable)
+		{
+			$this->data[$className]['MemoryTable'] = $annotation;
 		}
 	}
 }
