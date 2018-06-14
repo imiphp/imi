@@ -91,6 +91,10 @@ abstract class MemoryTableModel extends BaseModel
 		{
 			return null;
 		}
+		if(isset($keys[0]) && is_array($keys[0]))
+		{
+			$keys = $keys[0];
+		}
 		foreach($keys as $key)
 		{
 			MemoryTableManager::del($memoryTableAnnotation->name, $key);
