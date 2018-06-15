@@ -51,7 +51,7 @@ abstract class File
 	public function path($path, $fileName)
 	{
 		$result = $path;
-		if(substr($path, -1, 1) !== DIRECTORY_SEPARATOR)
+		if(substr($path, -1, 1) !== DIRECTORY_SEPARATOR && (!isset($fileName[0]) || DIRECTORY_SEPARATOR !== $fileName[0]))
 		{
 			$result .= DIRECTORY_SEPARATOR;
 		}
