@@ -104,7 +104,7 @@ abstract class ModelManager
 		{
 			$option = ModelParser::getInstance()->getData()[$objectClass] ?? [];
 			$fields = [];
-			foreach($option['properties'] as $name => $item)
+			foreach($option['properties'] ?? [] as $name => $item)
 			{
 				$fields[$name] = $item['Column'];
 			}

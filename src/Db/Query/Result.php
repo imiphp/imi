@@ -1,9 +1,10 @@
 <?php
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Interfaces\IResult;
-use Imi\Db\Interfaces\IStatement;
 use Imi\Model\Model;
+use Imi\Bean\BeanFactory;
+use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Query\Interfaces\IResult;
 
 class Result implements IResult
 {
@@ -99,11 +100,11 @@ class Result implements IResult
 		{
 			if(is_subclass_of($className, Model::class))
 			{
-				$object = new $className($result);
+				$object = BeanFactory::newInstance($className, $result);
 			}
 			else
 			{
-				$object = new $className;
+				$object = BeanFactory::newInstance($className);
 				foreach($result as $k => $v)
 				{
 					$object->$k = $v;
@@ -142,11 +143,11 @@ class Result implements IResult
 			{
 				if($isModelClass)
 				{
-					$object = new $className($item);
+					$object = BeanFactory::newInstance($item);
 				}
 				else
 				{
-					$object = new $className;
+					$object = BeanFactory::newInstance($className);
 					foreach($item as $k => $v)
 					{
 						$object->$k = $v;

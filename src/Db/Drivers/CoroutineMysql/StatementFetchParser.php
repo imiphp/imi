@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Db\Drivers\CoroutineMysql;
 
+use Imi\Bean\BeanFactory;
 use Imi\Util\LazyArrayObject;
 
 /**
@@ -41,7 +42,7 @@ class StatementFetchParser
 				{
 					$className = 'stdClass';
 				}
-				$object = new $className;
+				$object = BeanFactory::newInstance($className);
 				foreach($row as $key => $value)
 				{
 					$object->$key = $value;
@@ -53,7 +54,7 @@ class StatementFetchParser
 				return array_values($row);
 			case \PDO::FETCH_OBJ:
 				$className = 'stdClass';
-				$object = new $className;
+				$object = BeanFactory::newInstance($className);
 				foreach($row as $key => $value)
 				{
 					$object->$key = $value;

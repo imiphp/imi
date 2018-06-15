@@ -5,6 +5,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
+use Imi\Bean\BeanFactory;
 
 /**
  * Swoole协程MySQL驱动Statement
@@ -317,7 +318,7 @@ class Statement implements IStatement
 	 */
 	public function fetchObject(string $className = "stdClass", array $ctorArgs = null)
 	{
-		$object = new $className;
+		$object = BeanFactory::newInstance($className);
 		foreach($this->fetch(\PDO::FETCH_ASSOC) as $name => $value)
 		{
 			$object->$name = $value;
