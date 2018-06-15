@@ -193,3 +193,115 @@ return [
 	],
 ];
 ```
+
+## 所有注入演示
+
+```php
+<?php
+namespace Test;
+
+use Imi\Aop\JoinPoint;
+use Imi\Aop\AroundJoinPoint;
+use Imi\Aop\Annotation\After;
+use Imi\Aop\Annotation\Around;
+use Imi\Aop\Annotation\Aspect;
+use Imi\Aop\Annotation\Before;
+use Imi\Aop\Annotation\PointCut;
+use Imi\Aop\AfterThrowingJoinPoint;
+use Imi\Aop\AfterReturningJoinPoint;
+use Imi\Aop\Annotation\AfterThrowing;
+use Imi\Aop\Annotation\AfterReturning;
+
+/**
+ * @Aspect
+ */
+class Test
+{
+	/**
+	 * 前置操作
+	 * @PointCut(
+	 *         allow={
+	 *             "ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
+	 *         }
+	 * )
+	 * @Before
+	 * @param JoinPoint $a
+	 * @return void
+	 */
+	public function before(JoinPoint $joinPoint)
+	{
+		echo 'getScore()-before', PHP_EOL;
+	}
+
+	/**
+	 * 后置操作
+	 * @PointCut(
+	 *         allow={
+	 *             "ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
+	 *         }
+	 * )
+	 * @After
+	 * @param JoinPoint $a
+	 * @return void
+	 */
+	public function after(JoinPoint $joinPoint)
+	{
+		echo 'getScore()-after', PHP_EOL;
+	}
+
+	/**
+	 * 环绕
+	 * @PointCut(
+	 * 		allow={
+	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore1",
+	 * 		}
+	 * )
+	 * @Around
+	 * @return mixed
+	 */
+	public function around(AroundJoinPoint $joinPoint)
+	{
+		var_dump('调用前');
+		// 调用原方法，获取返回值
+		$result = $joinPoint->proceed();
+		var_dump('调用后');
+		return 'value'; // 无视原方法调用后的返回值，强制返回一个其它值
+		return $result; // 返回原方法返回值
+	}
+
+	/**
+	 * 返回值
+	 * @PointCut(
+	 * 		allow={
+	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
+	 * 		}
+	 * )
+	 * @AfterReturning
+	 * @param AfterReturningJoinPoint $joinPoint
+	 * @return void
+	 */
+	public function afterReturning(AfterReturningJoinPoint $joinPoint)
+	{
+		$joinPoint->setReturnValue('修改返回值');
+	}
+
+	/**
+	 * 异常捕获
+	 * @PointCut(
+	 * 		allow={
+	 * 			"ImiDemo\HttpDemo\MainServer\Model\Goods::getScore",
+	 * 		}
+	 * )
+	 * @AfterThrowing
+	 * @param AfterThrowingJoinPoint $joinPoint
+	 * @return void
+	 */
+	public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
+	{
+		// 异常不会被继续抛出
+		$joinPoint->cancelThrow();
+		var_dump('异常捕获:' . $joinPoint->getThrowable()->getMessage());
+	}
+}
+
+```
