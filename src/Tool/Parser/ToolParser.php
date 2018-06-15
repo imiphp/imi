@@ -5,6 +5,7 @@ use Imi\Tool\Annotation\Tool;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Tool\Annotation\Operation;
 use Imi\App;
+use Imi\Tool\Annotation\Arg;
 
 class ToolParser extends BaseParser
 {
@@ -30,6 +31,10 @@ class ToolParser extends BaseParser
 			}
 			$this->data[$className]['class']['Methods'][$targetName]['Operation'] = $annotation;
 			$this->data['tool'][$this->data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
+		}
+		else if($annotation instanceof Arg)
+		{
+			$this->data[$className]['class']['Methods'][$targetName]['Args'][$annotation->name] = $annotation;
 		}
 	}
 
