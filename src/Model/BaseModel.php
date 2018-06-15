@@ -8,7 +8,7 @@ use Imi\Util\Interfaces\IArrayable;
 /**
  * 模型基类
  */
-abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable
+abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
 {
 	/**
 	 * 字段名称
@@ -101,4 +101,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable
 	{
 		return false !== current($this->__fieldNames);
 	}
+	
+	public function jsonSerialize()
+	{
+        return $this->toArray();
+    }
 }
