@@ -34,7 +34,7 @@ class AnnotationParser
 		AnnotationRegistry::registerLoader(function($class){
 			return class_exists($class) || interface_exists($class);
 		});
-		$this->reader = new AnnotationReader();;
+		$this->reader = new AnnotationReader();
 	}
 	
 	public function parse($className)

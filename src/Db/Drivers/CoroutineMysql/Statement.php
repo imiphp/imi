@@ -390,7 +390,7 @@ class Statement implements IStatement
 
 	public function key()
 	{
-		return $this->cursor;;
+		return $this->cursor;
 	}
 
 	public function next()
