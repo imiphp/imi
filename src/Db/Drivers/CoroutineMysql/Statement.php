@@ -296,7 +296,7 @@ class Statement implements IStatement
 	 */
 	public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = array()): array
 	{
-		return $this->fetchAllParser->parseAll($this->data, $fetchStyle);
+		return $this->fetchAllParser->parseAll($this->data, $fetchStyle, $fetchArgument, $ctorArgs);
 	}
 
 	/**

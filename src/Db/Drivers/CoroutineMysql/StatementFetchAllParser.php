@@ -32,12 +32,21 @@ class StatementFetchAllParser
 	 * @param integer $fetchStyle
 	 * @return array
 	 */
-	public function parseAll(array $data, int $fetchStyle): array
+	public function parseAll(array $data, int $fetchStyle, $fetchArgument = null, array $ctorArgs = array()): array
 	{
 		$result = [];
 		foreach($data as $row)
 		{
-			$result[] = $this->fetchParser->parseRow($row, $fetchStyle);
+			switch($fetchStyle)
+			{
+				case \PDO::FETCH_COLUMN:
+					$item = $this->fetchParser->parseRow($row, \PDO::FETCH_BOTH);
+					$result[] = $item[$fetchArgument] ?? null;
+					break;
+				default:
+					$result[] = $this->fetchParser->parseRow($row, $fetchStyle);
+					break;
+			}
 		}
 		return $result;
 	}

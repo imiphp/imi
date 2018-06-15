@@ -36,6 +36,12 @@ interface IResult
 	public function getArray($className = null);
 
 	/**
+	 * 获取一列
+	 * @return array
+	 */
+	public function getColumn($column = 0);
+
+	/**
 	 * 获取标量结果
 	 * @return mixed
 	 */

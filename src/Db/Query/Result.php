@@ -159,6 +159,19 @@ class Result implements IResult
 	}
 
 	/**
+	 * 获取一列数据
+	 * @return array
+	 */
+	public function getColumn($column = 0)
+	{
+		if(!$this->isSuccess)
+		{
+			throw new \RuntimeException('Result is not success!');
+		}
+		return $this->statement->fetchAll(\PDO::FETCH_COLUMN, $column);
+	}
+
+	/**
 	 * 获取标量结果
 	 * @param integer|string $columnKey
 	 * @return mixed

@@ -171,6 +171,10 @@ class Statement implements IStatement
 		{
 			return $this->statement->fetchAll($fetchStyle);
 		}
+		else if([] === $ctorArgs)
+		{
+			return $this->statement->fetchAll($fetchStyle, $fetchArgument);
+		}
 		else
 		{
 			return $this->statement->fetchAll($fetchStyle, $fetchArgument, $ctorArgs);
