@@ -7,30 +7,11 @@ use Imi\Pool\PoolManager;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Query;
+use Imi\Main\Helper;
+use Imi\App;
 
 abstract class Db
 {
-	private static $defaultPoolName;
-
-	/**
-	 * 设置默认的数据库连接池名称
-	 * @param string $poolName
-	 * @return void
-	 */
-	public static function setDefaultPoolName($poolName)
-	{
-		static::$defaultPoolName = $poolName;
-	}
-
-	/**
-	 * 获取默认的数据库连接池名称
-	 * @return string
-	 */
-	public static function getDefaultPoolName()
-	{
-		return static::$defaultPoolName;
-	}
-
 	/**
 	 * 获取新的数据库连接实例
 	 * @param string $poolName 连接池名称
@@ -40,7 +21,7 @@ abstract class Db
 	{
 		if(null === $poolName)
 		{
-			$poolName = static::$defaultPoolName;
+			$poolName = static::getDefaultPoolName();
 		}
 		
 		return PoolManager::getResource($poolName)->getInstance();
@@ -55,7 +36,7 @@ abstract class Db
 	{
 		if(null === $poolName)
 		{
-			$poolName = static::$defaultPoolName;
+			$poolName = static::getDefaultPoolName();
 		}
 		
 		return PoolManager::getRequestContextResource($poolName)->getInstance();
@@ -85,9 +66,38 @@ abstract class Db
 	{
 		if(null === $poolName)
 		{
-			$poolName = static::$defaultPoolName;
+			$poolName = static::getDefaultPoolName();
 		}
 
 		return BeanFactory::newInstance(Query::class, static::getInstance($poolName), $modelClass);
+	}
+
+	/**
+	 * 获取默认池子名称
+	 * @return string
+	 */
+	public static function getDefaultPoolName()
+	{
+		$namespace = null;
+		if(RequestContext::exsits())
+		{
+			try{
+				$namespace = RequestContext::getServer()->getConfig()['namespace'];
+				$defaultPool = Helper::getMain($namespace)->getConfig()['db']['defaultPool'] ?? null;
+				if(null === $defaultPool)
+				{
+					$namespace = null;
+				}
+			}
+			catch(\Throwable $ex)
+			{
+				$namespace = null;
+			}
+		}
+		if(null === $namespace)
+		{
+			$namespace = App::getNamespace();
+		}
+		return Helper::getMain($namespace)->getConfig()['db']['defaultPool'] ?? null;
 	}
 }

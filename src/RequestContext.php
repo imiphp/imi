@@ -43,6 +43,15 @@ abstract class RequestContext
 	}
 
 	/**
+	 * 判断当前请求上下文是否存在
+	 * @return boolean
+	 */
+	public static function exsits()
+	{
+		return isset(static::$context[Coroutine::getuid()]);
+	}
+
+	/**
 	 * 获取上下文数据
 	 * @param string $name
 	 * @param mixed $default
