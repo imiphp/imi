@@ -175,3 +175,26 @@ public function sendFile(string $filename, int $offset = 0, int $length = 0)
 #### 获取对应的服务器
 
 `public function getServerInstance(): \Imi\Server\Http\Server`
+
+#### 设置状态码
+
+`public function withStatus($code, $reasonPhrase = '')`
+
+#### 设置返回头
+
+`public function withHeader($name, $value)`
+
+```php
+$reponse->withHeader('test', 'v1');
+$reponse->withHeader('test', ['v2', 'v3']);
+// 最终header中test为v2,v3
+```
+
+#### 添加返回头
+
+`public function withAddedHeader($name, $value)`
+```php
+$reponse->withAddedHeader('test', 'v1');
+$reponse->withAddedHeader('test', ['v2', 'v3']);
+// 最终header中test为v1,v2,v3
+```

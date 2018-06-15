@@ -28,6 +28,11 @@
 * [后台任务](components/task/index.md)
 * [AOP](components/aop/index.md)
 
+## 开发者工具
+
+* [生成工具](dev/generate.md)
+  * [模型生成器](dev/generate/model.md)
+
 ## 进阶开发
 
 * [参与框架开发](adv/dev.md)
