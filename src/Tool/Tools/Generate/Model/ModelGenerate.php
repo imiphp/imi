@@ -11,6 +11,7 @@ use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
 use Imi\Util\Text;
+use Imi\Util\Imi;
 
 /**
  * @Tool("generate")
@@ -46,7 +47,7 @@ class ModelGenerate
 						->select()
 						->getColumn();
 		// model保存路径
-		$modelPath = $this->getModelPath($namespace);
+		$modelPath = Imi::getNamespacePath($namespace);
 		foreach($tables as $table)
 		{
 			if(!$this->checkTable($table, $include, $exclude))
@@ -105,21 +106,6 @@ class ModelGenerate
 		return ucfirst(preg_replace_callback('/_(\w)/', function($matches){
 			return strtoupper($matches[1]);
 		}, ltrim($table, $prefix)));
-	}
-
-	/**
-	 * 获取Model文件保存路径
-	 * @param string $namespace
-	 * @return string
-	 */
-	private function getModelPath($namespace)
-	{
-		$appNamespace = App::getNamespace();
-		$appMain = Helper::getMain($appNamespace);
-		$refClass = new \ReflectionClass($appMain);
-		$path = dirname($refClass->getFileName());
-		$namespaceSubPath = substr($namespace, strlen($appNamespace));
-		return File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
 	}
 
 	/**

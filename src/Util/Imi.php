@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Util;
 
+use Imi\App;
+use Imi\Main\Helper;
+
 /**
  * 框架里杂七杂八的各种工具方法
  */
@@ -167,5 +170,20 @@ abstract class Imi
 	public static function getClassShortName(string $className)
 	{
 		return implode('', array_slice(explode('\\', $className), -1));
+	}
+
+	/**
+	 * 根据命名空间获取真实路径
+	 * @param string $namespace
+	 * @return string
+	 */
+	public static function getNamespacePath($namespace)
+	{
+		$appNamespace = App::getNamespace();
+		$appMain = Helper::getMain($appNamespace);
+		$refClass = new \ReflectionClass($appMain);
+		$path = dirname($refClass->getFileName());
+		$namespaceSubPath = substr($namespace, strlen($appNamespace));
+		return File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
 	}
 }
