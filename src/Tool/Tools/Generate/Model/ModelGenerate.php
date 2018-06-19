@@ -10,6 +10,7 @@ use Imi\Tool\ArgType;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
+use Imi\Util\Text;
 
 /**
  * @Tool("generate")
@@ -107,18 +108,6 @@ class ModelGenerate
 	}
 
 	/**
-	 * 获取变量名
-	 * @param string $fieldName
-	 * @return string
-	 */
-	private function getVarName($fieldName)
-	{
-		return preg_replace_callback('/_(\w)/', function($matches){
-			return strtoupper($matches[1]);
-		}, $fieldName);
-	}
-
-	/**
 	 * 获取Model文件保存路径
 	 * @param string $namespace
 	 * @return string
@@ -148,7 +137,7 @@ class ModelGenerate
 			$isPk = 'PRI' === $field['Key'];
 			$data['fields'][] = [
 				'name'				=>	$field['Field'],
-				'varName'			=>	$this->getVarName($field['Field']),
+				'varName'			=>	Text::toCamelName($field['Field']),
 				'type'				=>	$typeName,
 				'phpType'			=>	$this->dbFieldTypeToPhp($typeName),
 				'length'			=>	$length,

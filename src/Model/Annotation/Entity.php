@@ -12,5 +12,9 @@ use Imi\Bean\Annotation\Parser;
  */
 class Entity extends Base
 {
-
+	/**
+	 * 序列化时使用驼峰命名
+	 * @var boolean
+	 */
+	public $camel = true;
 }

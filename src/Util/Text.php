@@ -46,4 +46,16 @@ abstract class Text
 	{
 		return '' === $string || null === $string;
 	}
+
+	/**
+	 * 转为驼峰命名，会把下划线后字母转为大写
+	 * @param string $name
+	 * @return string
+	 */
+	public function toCamelName($name)
+	{
+		return preg_replace_callback('/_(\w)/', function($matches){
+			return strtoupper($matches[1]);
+		}, $name);
+	}
 }

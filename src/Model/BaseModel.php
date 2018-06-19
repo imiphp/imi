@@ -4,6 +4,7 @@ namespace Imi\Model;
 use Imi\Util\Call;
 use Imi\Bean\BeanFactory;
 use Imi\Util\Interfaces\IArrayable;
+use Imi\Util\Text;
 
 /**
  * 模型基类
@@ -11,10 +12,16 @@ use Imi\Util\Interfaces\IArrayable;
 abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
 {
 	/**
-	 * 字段名称
+	 * 数据库原始字段名称
 	 * @var array
 	 */
 	protected $__fieldNames;
+
+	/**
+	 * 驼峰缓存
+	 * @var array
+	 */
+	protected $__camelCache = [];
 
 	public function __construct($data = [])
 	{
@@ -39,13 +46,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
 	public function offsetExists($offset)
 	{
-		$methodName = 'get' . ucfirst($offset);
+		$methodName = 'get' . ucfirst($this->__getCamelName($offset));
 		return method_exists($this, $methodName) && null !== Call::callUserFunc([$this, $methodName]);
 	}
 
 	public function offsetGet($offset)
 	{
-		$methodName = 'get' . ucfirst($offset);
+		$methodName = 'get' . ucfirst($this->__getCamelName($offset));
 		if(!method_exists($this, $methodName))
 		{
 			return null;
@@ -55,7 +62,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
 	public function offsetSet($offset, $value)
 	{
-		$methodName = 'set' . ucfirst($offset);
+		$methodName = 'set' . ucfirst($this->__getCamelName($offset));
 		if(!method_exists($this, $methodName))
 		{
 			return;
@@ -79,12 +86,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	
 	public function current()
 	{
-		return $this[current($this->__fieldNames)] ?? null;
+		return $this[$this->__getFieldName(current($this->__fieldNames))] ?? null;
 	}
 
 	public function key()
 	{
-		return current($this->__fieldNames);
+		return $this->__getFieldName(current($this->__fieldNames));
 	}
 
 	public function next()
@@ -99,11 +106,41 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
 	public function valid()
 	{
-		return false !== current($this->__fieldNames);
+		return false !== $this->__getFieldName(current($this->__fieldNames));
 	}
 	
 	public function jsonSerialize()
 	{
         return $this->toArray();
-    }
+	}
+	
+	/**
+	 * 获取驼峰命名
+	 * @param string $name
+	 * @return string
+	 */
+	protected function __getCamelName($name)
+	{
+		if(!isset($this->__camelCache[$name]))
+		{
+			$this->__camelCache[$name] = Text::toCamelName($name);
+		}
+		return $this->__camelCache[$name];
+	}
+
+	protected function __getFieldName($fieldName)
+	{
+		if(false === $fieldName)
+		{
+			return false;
+		}
+		if(ModelManager::isCamel($this))
+		{
+			return $this->__getCamelName($fieldName);
+		}
+		else
+		{
+			return $fieldName;
+		}
+	}
 }

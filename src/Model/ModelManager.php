@@ -9,6 +9,12 @@ use Imi\Util\ClassObject;
 abstract class ModelManager
 {
 	/**
+	 * 驼峰命名缓存
+	 * @var array
+	 */
+	private static $isCamelCache = [];
+
+	/**
 	 * 获取当前模型类的类注解
 	 * @param string|object $object
 	 * @param string $annotationClass
@@ -106,7 +112,7 @@ abstract class ModelManager
 			$fields = [];
 			foreach($option['properties'] ?? [] as $name => $item)
 			{
-				$fields[$name] = $item['Column'];
+				$fields[$item['Column']->name] = $item['Column'];
 			}
 			RequestContext::set($key, $fields);
 		}
@@ -145,5 +151,20 @@ abstract class ModelManager
 		{
 			return (string)$object;
 		}
+	}
+
+	/**
+	 * 模型是否为驼峰命名
+	 * @param  string|object
+	 * @return boolean
+	 */
+	public static function isCamel($object)
+	{
+		$class = static::getObjectClass($object);
+		if(!isset(static::$isCamelCache[$class]))
+		{
+			static::$isCamelCache[$class] = static::getAnnotation($object, 'Entity')->camel;
+		}
+		return static::$isCamelCache[$class];
 	}
 }
