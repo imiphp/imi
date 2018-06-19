@@ -29,8 +29,18 @@ class View
 	 */
 	protected $exHandlers = [];
 
+	/**
+	 * 传入视图处理器的数据
+	 * @var array
+	 */
+	protected $data = [];
+
 	public function render(ViewAnnotation $view, Response $response = null): Response
 	{
+		if(is_array($view->data))
+		{
+			$view->data = array_merge($this->data, $view->data);
+		}
 		if(null === $response)
 		{
 			$response = RequestContext::get('response');
