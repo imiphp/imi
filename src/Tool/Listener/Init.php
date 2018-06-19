@@ -28,21 +28,71 @@ class Init implements IEventListener
 	 */
 	public function handle(EventParam $e)
 	{
-		if(!isset($_SERVER['argv'][1]))
-		{
-			exit;
+		try{
+			if(!isset($_SERVER['argv'][1]))
+			{
+				exit;
+			}
+			$this->init();
+			// cli参数初始化
+			Args::init(2);
+			// 工具名/操作名
+			list($tool, $operation) = explode('/', $_SERVER['argv'][1]);
+			// 获取回调
+			$callable = ToolParser::getInstance()->getCallable($tool, $operation);
+			if(null === $callable)
+			{
+				throw new \RuntimeException(sprintf('tool %s does not exists!', $_SERVER['argv'][1]));
+			}
+			if(Args::get('h'))
+			{
+				// 帮助
+				$className = get_parent_class($callable[0]);
+				$refClass = new \ReflectionClass($className);
+				$required = [];
+				$other = [];
+				foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] as $arg)
+				{
+					if($arg->required)
+					{
+						$required[] = $arg;
+					}
+					else
+					{
+						$other[] = $arg;
+					}
+				}
+				echo '工具名称：', $tool, '/', $operation, PHP_EOL, PHP_EOL;
+				echo $this->parseComment($refClass->getMethod($callable[1])->getDocComment()), PHP_EOL;
+				if(isset($required[0]))
+				{
+					echo PHP_EOL, '必选参数：', PHP_EOL;
+					foreach($required as $arg)
+					{
+						echo '-', $arg->name, ' ', $arg->comments, PHP_EOL;
+					}
+				}
+				if(isset($other[0]))
+				{
+					echo PHP_EOL, '可选参数：', PHP_EOL;
+					foreach($other as $arg)
+					{
+						echo '-', $arg->name, ' ', $arg->comments, PHP_EOL;
+					}
+				}
+			}
+			else
+			{
+				// 执行参数
+				$args = $this->getCallToolArgs($callable, $tool, $operation);
+				// 执行工具操作
+				Call::callUserFuncArray($callable, $args);
+			}
 		}
-		$this->init();
-		// cli参数初始化
-		Args::init(2);
-		// 工具名/操作名
-		list($tool, $operation) = explode('/', $_SERVER['argv'][1]);
-		// 获取回调
-		$callable = ToolParser::getInstance()->getCallable($tool, $operation);
-		// 执行参数
-		$args = $this->getCallToolArgs($callable, $tool, $operation);
-		// 执行工具操作
-		Call::callUserFuncArray($callable, $args);
+		catch(\Throwable $ex)
+		{
+			echo $ex->getMessage(), PHP_EOL;
+		}
 		\swoole_event_exit();
 	}
 
@@ -135,5 +185,15 @@ class Init implements IEventListener
 				break;
 		}
 		return $value;
+	}
+
+	/**
+	 * 处理注释
+	 * @param string $content
+	 * @return string
+	 */
+	private function parseComment($content)
+	{
+		return trim(preg_replace('/@.+\n/', '', preg_replace('/\/*\s*\*\s*\/*/', PHP_EOL, $content)));
 	}
 }

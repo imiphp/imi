@@ -29,12 +29,12 @@ class ToolParser extends BaseParser
 			{
 				throw new \RuntimeException(sprintf('Tool %s/%s is already exists!', isset($this->data['class'][$className]['Tool']) ? $this->data['class'][$className]['Tool']->name : $className, $annotation->name));
 			}
-			$this->data[$className]['class']['Methods'][$targetName]['Operation'] = $annotation;
+			$this->data['class'][$className]['Methods'][$targetName]['Operation'] = $annotation;
 			$this->data['tool'][$this->data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
 		}
 		else if($annotation instanceof Arg)
 		{
-			$this->data[$className]['class']['Methods'][$targetName]['Args'][$annotation->name] = $annotation;
+			$this->data['class'][$className]['Methods'][$targetName]['Args'][$annotation->name] = $annotation;
 		}
 	}
 
