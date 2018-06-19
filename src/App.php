@@ -30,6 +30,12 @@ abstract class App
 	private static $container;
 
 	/**
+	 * 当前是否为调试模式
+	 * @var boolean
+	 */
+	private static $isDebug = false;
+
+	/**
 	 * 框架服务运行入口
 	 * @param string $namespace 应用命名空间
 	 * @return void
@@ -130,4 +136,22 @@ abstract class App
 		return static::$container->get($name, ...$params);
 	}
 
+	/**
+	 * 当前是否为调试模式
+	 * @return boolean
+	 */
+	public static function isDebug()
+	{
+		return static::$isDebug;
+	}
+
+	/**
+	 * 开关调试模式
+	 * @param boolean $isDebug
+	 * @return void
+	 */
+	public static function setDebug($isDebug)
+	{
+		static::$isDebug = $isDebug;
+	}
 }
