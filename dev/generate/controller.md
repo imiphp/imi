@@ -1,4 +1,4 @@
-生成Http Controller
+生成一个 Http Controller
 
 必选参数：
 `-name` 生成的 Controller 类名
