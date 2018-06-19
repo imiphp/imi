@@ -14,7 +14,7 @@ use Imi\Bean\Annotation\Inject;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
-use Imi\Bean\Annotation\AfterThrowing;
+use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Util\Coroutine;
 
 class BeanProxy
