@@ -19,7 +19,7 @@ use Imi\Util\Imi;
 class ModelGenerate
 {
 	/**
-	 * 生成Model
+	 * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
 	 * @Operation("model")
 	 *
 	 * @Arg(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")

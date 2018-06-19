@@ -15,7 +15,7 @@ use Imi\Tool\Parser\ToolParser;
 class ControllerGenerate
 {
 	/**
-	 * 生成Http Controller
+	 * 生成一个 Http Controller
 	 * @Operation("httpController")
 	 *
 	 * @Arg(name="name", type=ArgType::STRING, required=true, comments="生成的 Controller 类名")
