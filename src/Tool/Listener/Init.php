@@ -138,7 +138,7 @@ class Init implements IEventListener
 		$className = get_parent_class($callable[0]);
 		$methodRef = new \ReflectionMethod($className, $callable[1]);
 		$args = [];
-		foreach(ToolParser::getInstance()->getData()[$className]['class']['Methods'][$methodRef->name]['Args'] ?? [] as $annotation)
+		foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'] ?? [] as $annotation)
 		{
 			if(Args::exists($annotation->name))
 			{
