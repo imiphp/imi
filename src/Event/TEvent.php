@@ -4,6 +4,7 @@ namespace Imi\Event;
 use Imi\Util\KVStorage;
 use Imi\Util\Call;
 use Imi\Bean\Parser\ClassEventParser;
+use Imi\Bean\BeanFactory;
 
 trait TEvent
 {
@@ -124,7 +125,7 @@ trait TEvent
 					Call::callUserFuncArray($callback, [$param]);
 					break;
 				case 'class':
-					$obj = new $callback;
+					$obj = BeanFactory::newInstance($callback);
 					Call::callUserFuncArray([$obj, 'handle'], [$param]);
 					break;
 			}
