@@ -17,6 +17,7 @@
   * [RESTful](components/httpserver/restful.md)
   * [Session](components/httpserver/session.md)
   * [视图](components/httpserver/view.md)
+  * [错误异常处理](components/httpserver/error.md)
 * [连接池](components/pool/index.md)
 * [ORM](components/orm/index.md)
   * [数据库模型](components/orm/RDModel.md)

@@ -305,3 +305,28 @@ class Test
 }
 
 ```
+
+### 属性注入
+
+如下代码例子，定义一个类，使用`@Inject`注解来注释属性，在通过`getBean()`实例化时，会自动给被注释的属性赋值相应的实例对象。
+
+```php
+namespace Test;
+
+class TestClass
+{
+	/**
+	 * 某Model对象
+	 * @Inject("XXX\Model\User")
+	 */
+	protected $model;
+	
+	public function test()
+	{
+		var_dump($model->toArray());
+	}
+}
+
+$testClass = App::getBean('Test\TestClass');
+$testClass->test();
+```
