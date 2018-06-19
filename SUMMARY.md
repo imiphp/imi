@@ -31,8 +31,10 @@
 
 ## 开发者工具
 
+* [介绍](dev/intro.md)
 * [生成工具](dev/generate.md)
-  * [模型生成器](dev/generate/model.md)
+  * [模型生成](dev/generate/model.md)
+  * [控制器生成](dev/generate/controller.md)
 
 ## 进阶开发
 
