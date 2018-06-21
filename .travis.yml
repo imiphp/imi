@@ -6,3 +6,6 @@ php:
 
 install:
   - composer update
+
+script:
+  
