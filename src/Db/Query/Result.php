@@ -143,15 +143,11 @@ class Result implements IResult
 			{
 				if($isModelClass)
 				{
-					$object = BeanFactory::newInstance($item);
+					$object = BeanFactory::newInstance($className, $item);
 				}
 				else
 				{
-					$object = BeanFactory::newInstance($className);
-					foreach($item as $k => $v)
-					{
-						$object->$k = $v;
-					}
+					$object = $item;
 				}
 				$list[] = $object;
 			}

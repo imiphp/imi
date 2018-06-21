@@ -78,7 +78,7 @@ abstract class Model extends BaseModel
 	public static function select($where = null)
 	{
 		$query = static::query();
-		return static::parseWhere($where)->select()->getArray();
+		return static::parseWhere($query, $where)->select()->getArray();
 	}
 
 	/**
