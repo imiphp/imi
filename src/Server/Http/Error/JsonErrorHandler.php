@@ -42,7 +42,7 @@ class JsonErrorHandler implements IErrorHandler
 		}
 		RequestContext::get('response')
 		->withAddedHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
-		->write(Json::encode($data))
+		->write(json_encode($data))
 		->send();
 		return $this->cancelThrow;
 	}
