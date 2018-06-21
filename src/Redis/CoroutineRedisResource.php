@@ -61,4 +61,13 @@ class CoroutineRedisResource extends BasePoolResource
 	{
 		return $this->redis;
 	}
+	
+	/**
+	 * 重置资源，当资源被使用后重置一些默认的设置
+	 * @return void
+	 */
+	public function reset()
+	{
+		$this->redis->select($this->config['db'] ?? 0);
+	}
 }

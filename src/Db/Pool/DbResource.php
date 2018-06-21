@@ -48,4 +48,12 @@ class DbResource extends BasePoolResource
 	{
 		return $this->db;
 	}
+
+	/**
+	 * 重置资源，当资源被使用后重置一些默认的设置
+	 * @return void
+	 */
+	public function reset()
+	{
+	}
 }
