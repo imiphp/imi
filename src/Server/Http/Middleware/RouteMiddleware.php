@@ -70,7 +70,7 @@ class RouteMiddleware implements MiddlewareInterface
 			else
 			{
 				// 获取对应动作的视图注解
-				$viewAnnotation = ViewParser::getInstance()->getByCallable($result['callable']);
+				$viewAnnotation = clone ViewParser::getInstance()->getByCallable($result['callable']);
 				if(null !== $viewAnnotation)
 				{
 					if(is_array($actionResult))
