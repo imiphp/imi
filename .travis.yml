@@ -8,4 +8,4 @@ install:
   - composer update
 
 script:
-  
+  - php test/test.php
