@@ -1,11 +1,11 @@
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="" alt="imi" />
+        <img src="https://raw.githubusercontent.com/Yurunsoft/IMI/dev/logo.png" alt="imi" />
     </a>
 </p>
 
 ![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)
-![Travis](https://img.shields.io/travis/Yurunsoft/imi.svg)
+![Travis](https://img.shields.io/travis/Yurunsoft/IMI.svg)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.2.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg)](https://github.com/redis/hiredis)
