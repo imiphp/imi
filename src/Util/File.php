@@ -8,7 +8,7 @@ abstract class File
 	 * @param string $dirPath
 	 * @return \RecursiveIterator
 	 */
-	public function enum($dirPath)
+	public static function enum($dirPath)
 	{
 		if(!is_dir($dirPath))
 		{
@@ -27,7 +27,7 @@ abstract class File
 	 * @param string $dirPath
 	 * @return \RegexIterator
 	 */
-	public function enumPHPFile($dirPath)
+	public static function enumPHPFile($dirPath)
 	{
 		if(!is_dir($dirPath))
 		{
@@ -48,7 +48,7 @@ abstract class File
 	 * @param string $fileName
 	 * @return string
 	 */
-	public function path($path, $fileName)
+	public static function path($path, $fileName)
 	{
 		$result = $path;
 		if(substr($path, -1, 1) !== DIRECTORY_SEPARATOR && (!isset($fileName[0]) || DIRECTORY_SEPARATOR !== $fileName[0]))

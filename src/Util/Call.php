@@ -23,6 +23,7 @@ class Call
 		}
 	}
 
+
 	/**
 	 * call_user_func_array，智能判断，优先使用协程
 	 * @param callable $callback
