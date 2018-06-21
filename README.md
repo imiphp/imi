@@ -4,13 +4,13 @@
     </a>
 </p>
 
-![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg?style=for-the-badge)
-![Travis](https://img.shields.io/travis/USER/REPO.svg?style=for-the-badge)
-[![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg?style=for-the-badge)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.2.0-brightgreen.svg?style=for-the-badge)](https://github.com/swoole/swoole-src)
-[![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg?style=for-the-badge)](https://github.com/redis/hiredis)
-[![IMI Doc](https://img.shields.io/badge/docs-passing-green.svg?style=for-the-badge)](https://doc.imiphp.com)
-[![IMI License](https://img.shields.io/hexpm/l/plug.svg?style=for-the-badge)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
+![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)
+![Travis](https://img.shields.io/travis/Yurunsoft/imi.svg)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.0-brightgreen.svg)](https://secure.php.net/)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=2.2.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg)](https://github.com/redis/hiredis)
+[![IMI Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
+[![IMI License](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
 
 ## 介绍
 
