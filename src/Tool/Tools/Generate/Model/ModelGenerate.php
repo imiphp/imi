@@ -103,9 +103,14 @@ class ModelGenerate
 	 */
 	private function getClassName($table, $prefix)
 	{
+		$prefixLen = strlen($prefix);
+		if(substr($prefix, 0, $prefixLen) === $prefix)
+		{
+			$table = substr($table, $prefixLen);
+		}
 		return ucfirst(preg_replace_callback('/_(\w)/', function($matches){
 			return strtoupper($matches[1]);
-		}, ltrim($table, $prefix)));
+		}, $table));
 	}
 
 	/**
