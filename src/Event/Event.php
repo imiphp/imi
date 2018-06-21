@@ -58,7 +58,7 @@ class Event
 	 * @param string $paramClass 参数类
 	 * @return void
 	 */
-	public function trigger($name, $data = [], $target = null, $paramClass = EventParam::class)
+	public static function trigger($name, $data = [], $target = null, $paramClass = EventParam::class)
 	{
 		static::getInstance()->__trigger($name, $data, $target, $paramClass);
 	}

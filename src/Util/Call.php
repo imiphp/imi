@@ -13,7 +13,7 @@ class Call
 	 */
 	public static function callUserFunc($callback, ...$parameter)
 	{
-		if(Coroutine::isIn())
+		if(swoole_version() <3 &&  Coroutine::isIn())
 		{
 			return Coroutine::call_user_func($callback, ...$parameter);
 		}
@@ -23,6 +23,7 @@ class Call
 		}
 	}
 
+
 	/**
 	 * call_user_func_array，智能判断，优先使用协程
 	 * @param callable $callback
@@ -31,7 +32,7 @@ class Call
 	 */
 	public static function callUserFuncArray($callback, $paramArray)
 	{
-		if(Coroutine::isIn())
+		if(swoole_version() <3 && Coroutine::isIn())
 		{
 			return Coroutine::call_user_func_array($callback, $paramArray);
 		}
