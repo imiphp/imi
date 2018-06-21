@@ -15,7 +15,7 @@ abstract class TaskManager
 	 * @param int $workerID
 	 * @return int|bool
 	 */
-	public static function post(TaskInfo $taskInfo, $workerID = null)
+	public static function post(TaskInfo $taskInfo, $workerID = -1)
 	{
 		return ServerManage::getServer('main')->getSwooleServer()->task($taskInfo, $workerID, [$taskInfo->getTaskHandler(), 'finish']);
 	}
@@ -28,7 +28,7 @@ abstract class TaskManager
 	 * @param int $workerID
 	 * @return string|bool
 	 */
-	public static function postWait(TaskInfo $taskInfo, $timeout, $workerID = null)
+	public static function postWait(TaskInfo $taskInfo, $timeout, $workerID = -1)
 	{
 		$server = ServerManage::getServer('main')->getSwooleServer();
 		$result = $server->taskwait($taskInfo, $timeout, $workerID);
