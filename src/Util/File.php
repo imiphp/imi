@@ -108,9 +108,8 @@ abstract class File
     public static function createDir($dir, $mode = 0775)
     {
         if (empty($dir)) return false;
-        $path = str_replace("\\", "/", $dir);
-        if (!is_dir($path)) {
-            if(@mkdir($path, $mode, true)){
+        if (!is_dir($dir)) {
+            if(@mkdir($dir, $mode, true)){
                 return true;
             }else{
                 return false;
@@ -130,14 +129,10 @@ abstract class File
     public static function createFile($file, $mode = 0775)
     {
         if (empty($file)) return false;
-        $path = str_replace("\\", "/", $file);
-        if (is_file($path)) {
+        if (is_file($file)) {
             return true;
         }
-        $temp_arr = explode('/', $path);
-        array_pop($temp_arr);
-        $file = $path;
-        $dir = implode('/', $temp_arr);
+        $dir = dirname($file);
         self::createDir($dir);
         $fh = @fopen($file, 'a');
         if ($fh) {

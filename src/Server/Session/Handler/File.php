@@ -16,6 +16,13 @@ class File extends Base
 	 */
 	protected $savePath;
 
+    /**
+     * 执行初始化操作
+     */
+	public function __init(){
+        FileUtil::createDir($this->savePath);
+    }
+
 	/**
 	 * 销毁session数据
 	 * @param string $sessionID
@@ -86,7 +93,6 @@ class File extends Base
 	 */
 	public function getFileName($sessionID)
 	{
-	    FileUtil::createDir($this->savePath);// 创建目录
 		return FileUtil::path($this->savePath, $sessionID . '.session');
 	}
 }
