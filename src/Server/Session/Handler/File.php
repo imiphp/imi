@@ -86,6 +86,7 @@ class File extends Base
 	 */
 	public function getFileName($sessionID)
 	{
+	    FileUtil::createDir($this->savePath);// 创建目录
 		return FileUtil::path($this->savePath, $sessionID . '.session');
 	}
 }
