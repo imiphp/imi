@@ -140,7 +140,6 @@ class Driver implements IDb
 	 */
 	public function rollBack(): bool
 	{
-		$this->inTransaction = false;
 		return $this->instance->rollback();
 	}
 
