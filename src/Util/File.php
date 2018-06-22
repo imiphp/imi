@@ -97,4 +97,53 @@ abstract class File
             return false !== file_put_contents($fileName, $content, $flags);
         }
     }
+
+    /**
+     * 创建一个目录
+     * author:lovefc
+     * @param $dir 目录路径
+     * @param $mode 目录的权限
+     * @return false|true
+     */
+    public static function createDir($dir, $mode = 0775)
+    {
+        if (empty($dir)) return false;
+        $path = str_replace("\\", "/", $dir);
+        if (!is_dir($path)) {
+            if(@mkdir($path, $mode, true)){
+                return true;
+            }else{
+                return false;
+            }
+        } else {
+           return true;
+        }
+    }
+
+    /**
+     * 创建一个文件
+     * author:lovefc
+     * @param $dir 文件路径
+     * @param $mode 文件的权限
+     * @return false|true
+     */
+    public static function createFile($file, $mode = 0775)
+    {
+        if (empty($file)) return false;
+        $path = str_replace("\\", "/", $file);
+        if (is_file($path)) {
+            return true;
+        }
+        $temp_arr = explode('/', $path);
+        array_pop($temp_arr);
+        $file = $path;
+        $dir = implode('/', $temp_arr);
+        self::createDir($dir);
+        $fh = @fopen($file, 'a');
+        if ($fh) {
+            fclose($fh);
+            return true;
+        }
+        return false;
+    }
 }
