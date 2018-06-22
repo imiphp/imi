@@ -108,9 +108,7 @@ class ModelGenerate
 		{
 			$table = substr($table, $prefixLen);
 		}
-		return ucfirst(preg_replace_callback('/_(\w)/', function($matches){
-			return strtoupper($matches[1]);
-		}, $table));
+		return Text::toPascalName($table);
 	}
 
 	/**

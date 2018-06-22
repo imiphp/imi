@@ -52,10 +52,18 @@ abstract class Text
 	 * @param string $name
 	 * @return string
 	 */
-	public function toCamelName($name)
+	public static function toCamelName($name)
 	{
-		return preg_replace_callback('/_(\w)/', function($matches){
-			return strtoupper($matches[1]);
-		}, $name);
+		return str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+	}
+
+	/**
+	 * 转为每个单词大写的命名，会把下划线后字母转为大写
+	 * @param string $name
+	 * @return string
+	 */
+	public static function toPascalName($name)
+	{
+		return ucfirst(static::toCamelName($name));
 	}
 }
