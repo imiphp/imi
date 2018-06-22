@@ -2,9 +2,10 @@
 namespace Imi\Model;
 
 use Imi\Util\Imi;
-use Imi\Model\Parser\ModelParser;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
+use Imi\Model\Key\KeyRule;
+use Imi\Model\Parser\ModelParser;
 
 abstract class ModelManager
 {
@@ -13,6 +14,12 @@ abstract class ModelManager
 	 * @var array
 	 */
 	private static $isCamelCache = [];
+
+	/**
+	 * 键规则缓存
+	 * @var array
+	 */
+	private static $keyRules = [];
 
 	/**
 	 * 获取当前模型类的类注解
@@ -166,5 +173,40 @@ abstract class ModelManager
 			static::$isCamelCache[$class] = static::getAnnotation($object, 'Entity')->camel;
 		}
 		return static::$isCamelCache[$class];
+	}
+
+	/**
+	 * 获取键
+	 * @param string|object $object
+	 * @return \Imi\Model\Key\KeyRule
+	 */
+	public static function getKeyRule($object)
+	{
+		$class = static::getObjectClass($object);
+		if(!isset(static::$keyRules[$class]))
+		{
+			$key = static::getAnnotation($object, 'RedisEntity')->key;
+			preg_match_all('/{([^}]+)}/', $key, $matches);
+			static::$keyRules[$class] = new KeyRule($key, $matches[1]);
+		}
+		return static::$keyRules[$class];
+	}
+	
+	/**
+	 * 获取当前模型类的Redis注解
+	 * @param string|object $object
+	 * @return string
+	 */
+	public static function getRedisEntity($object)
+	{
+		$annotation = static::getAnnotation($object, 'RedisEntity');
+		if(null !== $annotation)
+		{
+			return $annotation;
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

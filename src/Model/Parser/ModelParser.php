@@ -6,6 +6,7 @@ use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\MemoryTable;
+use Imi\Model\Annotation\RedisEntity;
 
 class ModelParser extends BaseParser
 {
@@ -37,6 +38,10 @@ class ModelParser extends BaseParser
 		else if($annotation instanceof MemoryTable)
 		{
 			$this->data[$className]['MemoryTable'] = $annotation;
+		}
+		else if($annotation instanceof RedisEntity)
+		{
+			$this->data[$className]['RedisEntity'] = $annotation;
 		}
 	}
 }
