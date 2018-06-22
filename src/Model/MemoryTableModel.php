@@ -13,7 +13,7 @@ abstract class MemoryTableModel extends BaseModel
 	 * 记录的key值
 	 * @var string
 	 */
-	protected $key;
+	protected $__key;
 
 	/**
 	 * 查找一条记录
@@ -32,7 +32,7 @@ abstract class MemoryTableModel extends BaseModel
 		{
 			return null;
 		}
-		$data['key'] = $key;
+		$data['__key'] = $key;
 		return static::newInstance($data);
 	}
 
@@ -62,7 +62,7 @@ abstract class MemoryTableModel extends BaseModel
 		{
 			return null;
 		}
-		MemoryTableManager::set($memoryTableAnnotation->name, $this->key, $this->toArray());
+		MemoryTableManager::set($memoryTableAnnotation->name, $this->__key, $this->toArray());
 	}
 	
 	/**
@@ -76,7 +76,7 @@ abstract class MemoryTableModel extends BaseModel
 		{
 			return null;
 		}
-		MemoryTableManager::del($memoryTableAnnotation->name, $this->key);
+		MemoryTableManager::del($memoryTableAnnotation->name, $this->__key);
 	}
 
 	/**
@@ -119,9 +119,9 @@ abstract class MemoryTableModel extends BaseModel
 	 * 获取键
 	 * @return string
 	 */
-	public function getKey()
+	public function __getKey()
 	{
-		return $this->key;
+		return $this->__key;
 	}
 
 	/**
@@ -129,9 +129,9 @@ abstract class MemoryTableModel extends BaseModel
 	 * @param string $key
 	 * @return static
 	 */
-	public function setKey($key)
+	public function __setKey($key)
 	{
-		$this->key = $key;
+		$this->__key = $key;
 		return $this;
 	}
 }
