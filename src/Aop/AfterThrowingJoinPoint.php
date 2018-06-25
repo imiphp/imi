@@ -1,8 +1,6 @@
 <?php
 namespace Imi\Aop;
 
-use Imi\Util\Call;
-
 class AfterThrowingJoinPoint extends JoinPoint
 {
 	/**

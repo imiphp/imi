@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Db\Query\Where;
 
-use Imi\Util\Call;
 use Imi\Db\Query\Traits\TRaw;
 use Imi\Db\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IWhere;
@@ -80,7 +79,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 		{
 			return $this->rawSQL;
 		}
-		$callResult = Call::callUserFunc($this->callback);
+		$callResult = call_user_func($this->callback);
 		if($callResult instanceof IBaseWhere)
 		{
 			$result = '(' . $callResult . ')';

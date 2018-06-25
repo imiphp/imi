@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Bean;
 
-use Imi\Util\Call;
 use Imi\Util\File;
 use Imi\Main\Helper as MainHelper;
 
@@ -40,7 +39,7 @@ class AnnotationLoader
 				}
 				$fileNamespace = $ns . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $diffPath . basename($filePath, '.php'));
 				// 回调
-				Call::callUserFunc($callback, $fileNamespace);
+				call_user_func($callback, $fileNamespace);
 			}
 		});
 	}
@@ -73,7 +72,7 @@ class AnnotationLoader
 				{
 					$path = $this->loaded[$tNamespace] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_reverse($pops));
 					// 回调
-					Call::callUserFunc($callback, $namespace, $path);
+					call_user_func($callback, $namespace, $path);
 					break;
 				}
 			}while(isset($namespaceSplit[0]));

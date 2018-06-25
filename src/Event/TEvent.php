@@ -2,7 +2,6 @@
 namespace Imi\Event;
 
 use Imi\Util\KVStorage;
-use Imi\Util\Call;
 use Imi\Bean\Parser\ClassEventParser;
 use Imi\Bean\BeanFactory;
 
@@ -122,11 +121,11 @@ trait TEvent
 			switch($type)
 			{
 				case 'callback':
-					Call::callUserFuncArray($callback, [$param]);
+					call_user_func_array($callback, [$param]);
 					break;
 				case 'class':
 					$obj = BeanFactory::newInstance($callback);
-					Call::callUserFuncArray([$obj, 'handle'], [$param]);
+					call_user_func_array([$obj, 'handle'], [$param]);
 					break;
 			}
 			// 仅触发一次

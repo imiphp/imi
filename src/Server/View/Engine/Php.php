@@ -2,7 +2,6 @@
 namespace Imi\Server\View\Engine;
 
 use Imi\Server\Http\Message\Response;
-use Imi\Util\Call;
 
 /**
  * PHP原生模版引擎
@@ -20,7 +19,7 @@ class Php implements IEngine
 			include $__renderFileName;
 		};
 		ob_start();
-		Call::callUserFunc($closure, $fileName, $data);
+		call_user_func($closure, $fileName, $data);
 		return $response->write(ob_get_clean());
 	}
 }

@@ -1,8 +1,6 @@
 <?php
 namespace Imi\Aop;
 
-use Imi\Util\Call;
-
 class AroundJoinPoint extends JoinPoint
 {
 	/**
@@ -23,6 +21,6 @@ class AroundJoinPoint extends JoinPoint
 	 */
 	public function proceed()
 	{
-		return Call::callUserFunc($this->nextProceed, $this->getArgs());
+		return call_user_func($this->nextProceed, $this->getArgs());
 	}
 }

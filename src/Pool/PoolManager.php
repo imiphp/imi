@@ -2,7 +2,6 @@
 namespace Imi\Pool;
 
 use Imi\App;
-use Imi\Util\Call;
 use Imi\RequestContext;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
@@ -122,7 +121,7 @@ class PoolManager
 		$resource = static::getResource($name);
 		$result = null;
 		try{
-			$result = Call::callUserFunc($callback, $resource, $resource->getInstance());
+			$result = call_user_func($callback, $resource, $resource->getInstance());
 		}
 		finally{
 			static::releaseResource($resource);

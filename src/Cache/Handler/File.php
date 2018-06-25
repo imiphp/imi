@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Cache\Handler;
 
-use Imi\Util\Call;
 use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
@@ -289,7 +288,7 @@ class File extends Base
 		if(is_callable($this->saveFileNameCallback))
 		{
 			// 使用回调处理
-			return Call::callUserFunc($this->saveFileNameCallback, $this->savePath, $key);
+			return call_user_func($this->saveFileNameCallback, $this->savePath, $key);
 		}
 		else
 		{

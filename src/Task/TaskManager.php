@@ -4,7 +4,6 @@ namespace Imi\Task;
 use Imi\Task\Interfaces\ITaskParam;
 use Imi\Task\Interfaces\ITaskHandler;
 use Imi\ServerManage;
-use Imi\Util\Call;
 
 abstract class TaskManager
 {
@@ -32,7 +31,7 @@ abstract class TaskManager
 	{
 		$server = ServerManage::getServer('main')->getSwooleServer();
 		$result = $server->taskwait($taskInfo, $timeout, $workerID);
-		Call::callUserFunc([$taskInfo->getTaskHandler(), 'finish'], $server, -1, $result);
+		call_user_func([$taskInfo->getTaskHandler(), 'finish'], $server, -1, $result);
 		return $result;
 	}
 
@@ -49,7 +48,7 @@ abstract class TaskManager
 		$result = $server->taskCo($tasks, $timeout);
 		foreach($result as $i => $item)
 		{
-			Call::callUserFunc([$tasks[$i]->getTaskHandler(), 'finish'], $server, -1, $item);
+			call_user_func([$tasks[$i]->getTaskHandler(), 'finish'], $server, -1, $item);
 		}
 		return $result;
 	}

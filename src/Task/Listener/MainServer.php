@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Task\Listener;
 
-use Imi\Util\Call;
 use Imi\Task\TaskInfo;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
@@ -26,7 +25,7 @@ class MainServer implements ITaskEventListener
 			$taskInfo = $e->data;
 			if($taskInfo instanceof TaskInfo)
 			{
-				Call::callUserFunc([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server, $e->taskID, $e->workerID);
+				call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server, $e->taskID, $e->workerID);
 			}
 		}
 		catch(\Throwable $ex)

@@ -2,7 +2,6 @@
 namespace Imi\Server\Http\Middleware;
 
 use Imi\App;
-use Imi\Util\Call;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Stream\MemoryStream;
@@ -51,7 +50,7 @@ class RouteMiddleware implements MiddlewareInterface
 				$result['callable'][0]->response = $response;
 			}
 			// 执行动作
-			$actionResult = Call::callUserFuncArray($result['callable'], $this->prepareActionParams($request, $result));
+			$actionResult = call_user_func_array($result['callable'], $this->prepareActionParams($request, $result));
 			if($isObject)
 			{
 				// 获得控制器中的Response

@@ -3,7 +3,6 @@ namespace Imi\Tool\Listener;
 
 use Imi\App;
 use Imi\Tool\Args;
-use Imi\Util\Call;
 use Imi\Main\Helper;
 use Imi\RequestContext;
 use Imi\Pool\PoolConfig;
@@ -86,7 +85,7 @@ class Init implements IEventListener
 				// 执行参数
 				$args = $this->getCallToolArgs($callable, $tool, $operation);
 				// 执行工具操作
-				Call::callUserFuncArray($callable, $args);
+				call_user_func_array($callable, $args);
 			}
 		}
 		catch(\Throwable $ex)

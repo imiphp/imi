@@ -63,7 +63,7 @@ abstract class Imi
 					return false;
 				}
 			}
-			else if(preg_match('/^' . $rule . '$/', Call::callUserFunc($valueCallback, $fieldName)) <= 0)
+			else if(preg_match('/^' . $rule . '$/', call_user_func($valueCallback, $fieldName)) <= 0)
 			{
 				return false;
 			}
@@ -86,11 +86,11 @@ abstract class Imi
 		if(isset($rule[0]) && '!' === $rule[0])
 		{
 			// 不应该存在参数支持
-			return null === Call::callUserFunc($valueCallback, substr($rule, 1));
+			return null === call_user_func($valueCallback, substr($rule, 1));
 		}
 		else if(preg_match('/([^!<=]+)(!=|<>|=)(.+)/', $rule, $matches) > 0)
 		{
-			$value = Call::callUserFunc($valueCallback, $matches[1]);
+			$value = call_user_func($valueCallback, $matches[1]);
 			switch($matches[2])
 			{
 				case '!=':
@@ -104,7 +104,7 @@ abstract class Imi
 		}
 		else
 		{
-			return null !== Call::callUserFunc($valueCallback, $rule);
+			return null !== call_user_func($valueCallback, $rule);
 		}
 	}
 

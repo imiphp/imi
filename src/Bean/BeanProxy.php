@@ -4,7 +4,6 @@ namespace Imi\Bean;
 use Imi\App;
 use Imi\Config;
 use Imi\Util\Imi;
-use Imi\Util\Call;
 use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
 use Imi\RequestContext;
@@ -215,7 +214,7 @@ class BeanProxy
 	{
 		$this->parseBefore($method, $args);
 		// 原始方法调用
-		$result = Call::callUserFuncArray($callback, $args);
+		$result = call_user_func_array($callback, $args);
 		$this->parseAfter($method, $args);
 		$this->parseAfterReturning($method, $args, $result);
 		return $result;
@@ -231,7 +230,7 @@ class BeanProxy
 	{
 		$this->doAspect($method, 'before', function($aspectClassName, $methodName) use($method, $args){
 			$joinPoint = new JoinPoint('before', $method, $args, $this->object, $this);
-			Call::callUserFunc([new $aspectClassName, $methodName], $joinPoint);
+			call_user_func([new $aspectClassName, $methodName], $joinPoint);
 		});
 	}
 
@@ -245,7 +244,7 @@ class BeanProxy
 	{
 		$this->doAspect($method, 'after', function($aspectClassName, $methodName) use($method, $args){
 			$joinPoint = new JoinPoint('after', $method, $args, $this->object, $this);
-			Call::callUserFunc([new $aspectClassName, $methodName], $joinPoint);
+			call_user_func([new $aspectClassName, $methodName], $joinPoint);
 		});
 	}
 
@@ -261,7 +260,7 @@ class BeanProxy
 		$this->doAspect($method, 'afterReturning', function($aspectClassName, $methodName) use($method, $args, &$returnValue){
 			$joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $this->object, $this);
 			$joinPoint->setReturnValue($returnValue);
-			Call::callUserFunc([new $aspectClassName, $methodName], $joinPoint);
+			call_user_func([new $aspectClassName, $methodName], $joinPoint);
 			$returnValue = $joinPoint->getReturnValue();
 		});
 	}
@@ -293,12 +292,12 @@ class BeanProxy
 			$joinPoint = new AroundJoinPoint('around', $method, $args, $this->object, $this, (null === $nextJoinPoint ? function() use($method, $args, $callback){
 				return $this->callOrigin($method, $args, $callback);
 			} : function() use($nextAroundAspectDo, $nextJoinPoint){
-				return Call::callUserFunc($nextAroundAspectDo, $nextJoinPoint);
+				return call_user_func($nextAroundAspectDo, $nextJoinPoint);
 			}));
 			$nextJoinPoint = $joinPoint;
 			$nextAroundAspectDo = $aroundAspectDo;
 		}
-		$returnValue = Call::callUserFunc($nextAroundAspectDo, $nextJoinPoint);
+		$returnValue = call_user_func($nextAroundAspectDo, $nextJoinPoint);
 		return true;
 	}
 
@@ -345,7 +344,7 @@ class BeanProxy
 			}
 			// 处理
 			$joinPoint = new AfterThrowingJoinPoint('afterThrowing', $method, $args, $this->object, $this, $throwable);
-			Call::callUserFunc([new $aspectClassName, $methodName], $joinPoint);
+			call_user_func([new $aspectClassName, $methodName], $joinPoint);
 			if(!$isCancelThrow && $joinPoint->isCancelThrow())
 			{
 				$isCancelThrow = true;
@@ -402,7 +401,7 @@ class BeanProxy
 					{
 						continue;
 					}
-					Call::callUserFunc($callback, $aspectClassName, $methodName, $methodOption[$pointType]);
+					call_user_func($callback, $aspectClassName, $methodName, $methodOption[$pointType]);
 				}
 			}
 		}

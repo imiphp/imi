@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Model;
 
-use Imi\Util\Call;
 use Imi\Bean\BeanFactory;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\Text;
@@ -47,7 +46,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	public function offsetExists($offset)
 	{
 		$methodName = 'get' . ucfirst($this->__getCamelName($offset));
-		return method_exists($this, $methodName) && null !== Call::callUserFunc([$this, $methodName]);
+		return method_exists($this, $methodName) && null !== call_user_func([$this, $methodName]);
 	}
 
 	public function offsetGet($offset)
@@ -57,7 +56,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 		{
 			return null;
 		}
-		return Call::callUserFunc([$this, $methodName]);
+		return call_user_func([$this, $methodName]);
 	}
 
 	public function offsetSet($offset, $value)
@@ -67,7 +66,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 		{
 			return;
 		}
-		Call::callUserFunc([$this, $methodName], $value);
+		call_user_func([$this, $methodName], $value);
 	}
 
 	public function offsetUnset($offset)
