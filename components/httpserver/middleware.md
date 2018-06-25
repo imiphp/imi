@@ -2,6 +2,8 @@ IMI 框架遵循 PSR-7、PSR-15 标准，使用中间件来实现路由。
 
 开发者也可以开发中间件类，对整个请求和响应过程进行自定义处理。
 
+### 定义中间件
+
 ```php
 use Imi\Bean\Annotation\Bean;
 use Psr\Http\Message\ResponseInterface;
@@ -32,4 +34,20 @@ class TestMiddleware implements MiddlewareInterface
 		return $response;
 	}
 }
+```
+
+### 配置启用中间件
+
+```php
+return [
+	'beans'	=>	[
+		// 中间件
+		'HttpDispatcher'	=>	[
+			'middlewares'	=>	[
+				// 中间件
+				\Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
+			],
+		],
+	],
+];
 ```
