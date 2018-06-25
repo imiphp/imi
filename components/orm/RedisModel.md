@@ -185,9 +185,3 @@ TestRedisModel::deleteBatch('kkk', [
 	'name'	=>	'imi'
 ]);
 ```
-
-### 统计数量
-
-```php
-MTest::count();
-```
