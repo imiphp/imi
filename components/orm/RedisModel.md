@@ -157,22 +157,19 @@ foreach($list as $item)
 ### 保存记录
 
 ```php
-$model = MTest::newInstance();
-$model->setKey('abc');
-$model->setStr('aaa');
-$model->setInt(123);
-$model->setFloat(4.56);
-$model->save();
-```
-
-### 删除记录
-
-```php
 $model = TestRedisModel::newInstance();
 $model->setId(123);
 $model->setName('imi');
 $model->setAge(100);
 $model->save();
+
+```
+
+### 删除记录
+
+```php
+$model2 = TestRedisModel::find('123-imi');
+$model2->delete();
 ```
 
 ### 批量删除
