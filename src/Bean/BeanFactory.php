@@ -40,8 +40,9 @@ abstract class BeanFactory
 		{
 			$construct = 'parent::__construct(...$args);';
 		}
-		// 匿名类
-		$tpl = <<<TPL
+		// 匿名类模版定义
+		// 这里的换行符是为了解决某个不明觉厉的BUG加的，不加有时会有奇怪的问题，原因未知，BUG复现难……
+		$tpl = PHP_EOL . <<<TPL
 return new class(...\$args) extends \\{$class}
 {
 	private \$beanProxy;
