@@ -112,7 +112,7 @@ class MTest extends MemoryTableModel
 }
 ```
 
-需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法，很快我们将推出一个生成器，无需手动定义。
+需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法。
 
 `@MemoryTable(name="test")` 是指定SwooleTable的名称
 `@Column(name="str",type="string",length=128)`中的`name`代表字段名，`type`支持`string/int/float`，`string`类型必须设置`length`
