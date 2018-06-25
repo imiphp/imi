@@ -54,6 +54,7 @@ IMI 框架底层开发使用了强类型，易维护，性能更强。支持 Aop
 - [x] Db 连贯操作
 - [x] 关系型数据库 模型 ORM
 - [x] 跨进程共享内存表 模型 ORM
+- [x] Redis 模型 ORM
 - [x] Task 异步任务
 - [x] 命令行开发辅助工具
 - [ ] 图形化管理工具
@@ -74,9 +75,9 @@ QQ群：74401592 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 运行环境
 
-- [PHP](https://php.net/) >= 7.0
+- [PHP](https://php.net/) >= 7.1
 - [Composer](https://getcomposer.org/)
-- [Swoole](https://www.swoole.com/) >= 2.2.0 (必须启用协程，如使用 Redis 请开启)
+- [Swoole](https://www.swoole.com/) >= 4.0.0 (必须启用协程，如使用 Redis 请开启)
 - [Hiredis](https://github.com/redis/hiredis/releases) (需要在安装 Swoole 之前装)
 
 ## 版权信息
