@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Util;
 
-class Coroutine extends \Swoole\Coroutine
+abstract class Coroutine extends \Swoole\Coroutine
 {
 	/**
 	 * 是否在协程中

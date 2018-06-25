@@ -1,7 +1,7 @@
 <?php
-namespace Imi\Tool;
+namespace Imi\Util;
 
-class Args
+abstract class Args
 {
 	/**
 	 * 参数存储
