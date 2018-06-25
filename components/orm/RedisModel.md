@@ -108,7 +108,8 @@ class TestRedisModel extends RedisModel
 		$this->age = $age;
 		return $this;
 	}
-}```
+}
+```
 
 需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法。
 
