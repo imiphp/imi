@@ -38,7 +38,10 @@ class SessionConfig
 	public function __construct(string $name = 'imisid', SessionCookie $cookie = null, float $gcProbability = 0.01, int $maxLifeTime = 86400 * 30)
 	{
 		$this->name = $name;
-		$this->cookie = $cookie;
+		if(null !== $cookie)
+		{
+			$this->cookie = $cookie;
+		}
 		$this->gcProbability = $gcProbability;
 		$this->maxLifeTime = $maxLifeTime;
 	}
