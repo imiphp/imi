@@ -1,3 +1,5 @@
+# 环境要求
+
 ## 运行环境
 - Linux 系统 (Swoole 不支持在 Windows 上运行)
 - [PHP](https://php.net/) >= 7.1

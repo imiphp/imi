@@ -1,3 +1,5 @@
+# 配置文件
+
 在每个`Main`所在目录下的`config/config.php`配置文件，会在该`Main`被实例化时加载。
 
 如果你不知道`Main`是什么，请看上一章：[《开始一个新项目》](/base/new.html)
