@@ -134,6 +134,14 @@ return [
 				'url' => '/test/{interface}',
 			],
 		],
+		// 懒人免去写@Controller和@Action注解的麻烦
+		[
+			'controller'	=>	'\ImiDemo\HttpDemo\MainServer\Controller\{$controller}',
+			'method'		=>	'{$action}',
+			'route'	=>	[
+				'url'	=>	'/{controller}/{action}',
+			],
+		],
 	]
 ];
 ```
