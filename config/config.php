@@ -14,6 +14,7 @@ return [
 		'Imi\Model',
 		'Imi\Task',
 		'Imi\Tool',
+		'Imi\Process',
 	],
 	'atomics'	=>	[
 		'session'
