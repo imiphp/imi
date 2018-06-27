@@ -2,10 +2,10 @@
 namespace Imi\Pool;
 
 use Imi\App;
-use Imi\Util\Coroutine;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Event\Event;
 
 abstract class BasePool implements IPool
 {
@@ -202,6 +202,22 @@ abstract class BasePool implements IPool
 	 * @return void
 	 */
 	public function startAutoGC()
+	{
+		if(App::isInited())
+		{
+			$this->__startAutoGC();
+		}
+		else
+		{
+			Event::on('IMI.INITED', [$this, '__startAutoGC']);
+		}
+	}
+
+	/**
+	 * 开始自动垃圾回收
+	 * @return void
+	 */
+	private function __startAutoGC()
 	{
 		$this->timerID = \swoole_timer_tick($this->config->getGCInterval() * 1000, [$this, 'gc']);
 	}
