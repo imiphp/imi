@@ -65,5 +65,48 @@ public $pipeType = 2;
  * @param int $pipeType
  * @return \Swoole\Process
  */
-public static function create($name, $args = [], $redirectStdinStdout = null, $pipeType = null): \Swoole\Process
+ProcessManager::create($name, $args = [], $redirectStdinStdout = null, $pipeType = null): \Swoole\Process
+```
+
+### 运行进程，同步阻塞等待进程执行返回
+
+```php
+/**
+ * 运行进程，同步阻塞等待进程执行返回
+ * 不返回\Swoole\Process对象实例
+ * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
+ * array(
+ * 	'code' => 0,
+ * 	'signal' => 0,
+ * 	'output' => '',
+ * );
+ *
+ * @param string $name
+ * @param array $args
+ * @param boolean $redirectStdinStdout
+ * @param int $pipeType
+ * @return array
+ */
+ProcessManager::run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+```
+
+### 运行进程，创建一个协程执行进程，无法获取进程执行结果
+
+```php
+/**
+ * 运行进程，创建一个协程执行进程，无法获取进程执行结果
+ * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
+ * array(
+ * 	'code' => 0,
+ * 	'signal' => 0,
+ * 	'output' => '',
+ * );
+ *
+ * @param string $name
+ * @param array $args
+ * @param boolean $redirectStdinStdout
+ * @param int $pipeType
+ * @return void
+ */
+ProcessManager::coRun($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
 ```
