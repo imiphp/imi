@@ -6,6 +6,8 @@
 
 * 功能Demo：https://gitee.com/yurunsoft/imi-demo
 
+> 如何运行请看上面项目中的`README.md`
+
 ## 流程说明
 
 在IMI框架中，一个项目分为一个主服务器和多个子服务器。
