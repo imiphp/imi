@@ -25,6 +25,9 @@ class OnStart implements IManagerStartEventListener
 	public function handle(ManagerStartEventParam $e)
 	{
 		$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
-		File::writeFile($fileName, $e->server->manager_pid);
+		File::writeFile($fileName, json_encode([
+			'masterPID'		=>	$e->server->master_pid,
+			'managerPID'	=>	$e->server->manager_pid,
+		]));
 	}
 }
