@@ -46,7 +46,7 @@ abstract class Helper
 		}
 		else if(null !== $serverName)
 		{
-			if(!isset(static::$mains[static::$nameMap[$serverName]]))
+			if(!isset(static::$nameMap[$serverName], static::$mains[static::$nameMap[$serverName]]))
 			{
 				return null;
 			}

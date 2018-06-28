@@ -5,7 +5,7 @@ use Imi\Util\File;
 
 Args::init();
 
-$namespace = Args::get('namespace');
+$namespace = Args::get('appNamespace');
 if(null === $namespace)
 {
 	$config = include File::path(dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');

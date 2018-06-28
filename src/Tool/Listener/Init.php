@@ -6,6 +6,7 @@ use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Tool\ArgType;
 use Imi\RequestContext;
+use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Event\EventParam;
 use Imi\Pool\PoolManager;
@@ -100,6 +101,7 @@ class Init implements IEventListener
 	 */
 	private function init()
 	{
+		Annotation::getInstance()->init(Helper::getAppMains());
 		RequestContext::create();
 		// 获取配置
 		$pools = $caches = [];
