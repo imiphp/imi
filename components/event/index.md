@@ -113,7 +113,7 @@ class BeforeRequest implements IRequestEventListener
 
 类必须实现对应接口和`handle()`方法，每个类的事件定义不同。
 
-然后在类上写`@ClassEventListener`注解。注解有两个参数：
+然后在类上写`@ClassEventListener`注解。注解参数如下：
 
 `className`类名
 `eventName`要监听的事件名称
