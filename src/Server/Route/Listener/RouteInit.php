@@ -12,7 +12,7 @@ use Imi\ServerManage;
 
 /**
  * http服务器路由初始化
- * @Listener("IMI.MAIN_SERVER.WORK.START")
+ * @Listener("IMI.MAIN_SERVER.WORKER.START")
  */
 class RouteInit implements IEventListener
 {

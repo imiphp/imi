@@ -2,8 +2,11 @@
 namespace Imi\Listener;
 
 use Imi\App;
+use Imi\Config;
 use Imi\Main\Helper;
+use Imi\RequestContext;
 use Imi\Util\Coroutine;
+use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Event\EventParam;
 use Imi\Pool\PoolManager;
@@ -11,10 +14,11 @@ use Imi\Cache\CacheManager;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
-use Imi\RequestContext;
+use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Route\Parser\ControllerParser;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORK.START",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
  */
 class WorkerInit implements IEventListener
 {
@@ -25,6 +29,10 @@ class WorkerInit implements IEventListener
 	 */
 	public function handle(EventParam $e)
 	{
+		// 加载服务器注解
+		Annotation::getInstance()->init(Helper::getAppMains());
+		
+		// 初始化
 		$main = Helper::getMain($e->getTarget()->getConfig()['namespace']);
 		if(Coroutine::isIn())
 		{

@@ -17,7 +17,7 @@ class Main extends BaseMain
 	 * 加载配置
 	 * @return void
 	 */
-	protected function loadConfig()
+	public function loadConfig()
 	{
 		$fileName = File::path(dirname($this->getPath()), 'config/config.php');
 		if(is_file($fileName))

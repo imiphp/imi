@@ -62,8 +62,10 @@ abstract class App
 		// 初始化Main类
 		static::initMains();
 		// 注解处理
-		static::$annotation = new Annotation;
-		static::$annotation->init();
+		static::$annotation = Annotation::getInstance();
+		static::$annotation->init([
+			MainHelper::getMain('Imi', 'Imi'),
+		]);
 		Event::trigger('IMI.INITED');
 		static::$isInited = true;
 	}

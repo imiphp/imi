@@ -12,7 +12,7 @@ abstract class AppBaseMain extends BaseMain
 	 * 加载配置
 	 * @return void
 	 */
-	protected function loadConfig()
+	public function loadConfig()
 	{
 		parent::loadConfig();
 		foreach(Config::get('@' . $this->moduleName . '.configs', []) as $name => $fileName)
