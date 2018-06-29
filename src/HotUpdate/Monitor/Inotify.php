@@ -2,6 +2,7 @@
 namespace Imi\HotUpdate\Monitor;
 
 use Imi\Util\File;
+use Imi\Util\Bit;
 
 class Inotify extends BaseMonitor
 {
@@ -22,7 +23,7 @@ class Inotify extends BaseMonitor
 	 * inotify_add_watch() mask参数
 	 * @var int
 	 */
-	protected $mask = IN_MODIFY | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF;
+	protected $mask = IN_MODIFY | IN_MOVE | IN_CREATE | IN_DELETE;
 
 	/**
 	 * 初始化
@@ -49,8 +50,7 @@ class Inotify extends BaseMonitor
 					$filePath = dirname($fileName);
 					if(!isset($this->paths[$filePath]))
 					{
-						$this->paths[$filePath] = true;
-						\inotify_add_watch($this->handler, $filePath, $this->mask);
+						$this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
 					}
 				}
 			}
@@ -63,8 +63,7 @@ class Inotify extends BaseMonitor
 					$filePath = dirname($item[0]);
 					if(!isset($this->paths[$filePath]))
 					{
-						$this->paths[$filePath] = true;
-						\inotify_add_watch($this->handler, $filePath, $this->mask);
+						$this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
 					}
 				}
 			}
@@ -77,32 +76,24 @@ class Inotify extends BaseMonitor
 	 */
 	public function isChanged(): bool
 	{
-		foreach($this->paths as $path => $v)
+		$result = \inotify_read($this->handler);
+		foreach($result as $item)
 		{
-			$dir = dir($path);
-			if(null === $dir || false === $dir)
+			if(Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO))
 			{
-				continue;
-			}
-			while(false !== ($file = $dir->read()))
-			{
-				if('.' === $file || '..' === $file)
+				$key = array_search($item['wd'], $this->paths);
+				if(false === $key)
 				{
 					continue;
 				}
-				$filePath = File::path($path, $file);
-				if(!is_dir($filePath))
+				$filePath = File::path($key, $item['name']);
+				if(is_dir($filePath) && !$this->isExclude($filePath))
 				{
-					continue;
-				}
-				if(!isset($this->paths[$filePath]) && !$this->isExclude($filePath))
-				{
-					$this->paths[$filePath] = true;
-					\inotify_add_watch($this->handler, $filePath, $this->mask);
+					var_dump($filePath);
+					$this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
 				}
 			}
 		}
-		$result = \inotify_read($this->handler);
 		return isset($result[0]);
 	}
 

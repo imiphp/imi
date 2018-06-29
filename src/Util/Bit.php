@@ -14,6 +14,6 @@ abstract class Bit
 	 */
 	public static function has($value, $subValue)
 	{
-		return $subValue === $value & $subValue;
+		return $value === $subValue || ($subValue === $value & $subValue);
 	}
 }
