@@ -41,7 +41,7 @@ QQ群：74401592 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 - [x] Task 异步任务
 - [x] 命令行开发辅助工具
 - [ ] 图形化管理工具
-- [ ] 项目热更新
+- [x] 业务代码热更新
 - [ ] RPC 远程调用
 - [ ] WebSocket 服务器相关……
 - [ ] TCP 服务器相关……
