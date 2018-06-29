@@ -89,7 +89,6 @@ class Inotify extends BaseMonitor
 				$filePath = File::path($key, $item['name']);
 				if(is_dir($filePath) && !$this->isExclude($filePath))
 				{
-					var_dump($filePath);
 					$this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
 				}
 			}
