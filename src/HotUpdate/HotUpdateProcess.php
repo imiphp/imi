@@ -43,7 +43,7 @@ class HotUpdateProcess extends BaseProcess
 	 * 默认监视路径
 	 * @var array
 	 */
-	protected $defaultPath = [];
+	protected $defaultPath = null;
 
 	/**
 	 * 是否开启热更新，默认开启
@@ -57,9 +57,12 @@ class HotUpdateProcess extends BaseProcess
 		{
 			return;
 		}
-		$this->defaultPath = [
-			Imi::getNamespacePath(App::getNamespace()),
-		];
+		if(null === $this->defaultPath)
+		{
+			$this->defaultPath = [
+				Imi::getNamespacePath(App::getNamespace()),
+			];
+		}
 		go(function(){
 			$monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
 			$reloadCmd = 'php ' . $_SERVER['argv'][0] . ' server/reload';
