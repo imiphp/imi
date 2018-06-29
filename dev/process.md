@@ -15,5 +15,8 @@
 
 ```
 HttpDemo/bin/imi process/start -name 进程名称
+
+# 跟上进程需要获取的参数
+HttpDemo/bin/imi process/start -name 进程名称 -a 1 -b 2
 ```
 

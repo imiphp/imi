@@ -34,11 +34,11 @@
 ## 开发者工具
 
 * [介绍](dev/intro.md)
-* [服务器工具](dev/fu-wu-qi-gong-ju.md)
+* [服务器工具](dev/server.md)
 * [生成工具](dev/generate.md)
   * [模型生成](dev/generate/model.md)
   * [控制器生成](dev/generate/controller.md)
-* [进程工具](dev/jin-cheng-gong-ju.md)
+* [进程工具](dev/process.md)
 
 ## 进阶开发
 
