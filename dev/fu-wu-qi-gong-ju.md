@@ -7,9 +7,25 @@
 示例：
 
 ```
-HttpDemo/bin/imi generate/model -namespace 命名空间
+HttpDemo/bin/imi server/start
 ```
 
 ## 停止服务
 
+无参数
+
+示例：
+
+```
+HttpDemo/bin/imi server/stop
+```
+
 ## 重新加载服务
+
+无参数
+
+示例：
+
+```
+HttpDemo/bin/imi server/reload
+```
