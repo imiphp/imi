@@ -14,7 +14,7 @@
 
 示例：
 ```
-php tool.php generate/httpController -name 控制器名 -namespace "命名空间"
+HttpDemo/bin/imi generate/httpController -name 控制器名 -namespace "命名空间"
 
-php tool.php generate/httpController -name 控制器名 -namespace "命名空间" -rest
+HttpDemo/bin/imi generate/httpController -name 控制器名 -namespace "命名空间" -rest
 ```

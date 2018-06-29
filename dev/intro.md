@@ -2,19 +2,21 @@
 
 IMI 目前提供了命令行生成工具，方便开发者，减少重复无谓的体力劳动。
 
-开发者工具的使用需要开发者自建php文件，内容如下：
+运行命令行工具有两种方式：
 
-```php
-<?php
-require_once __DIR__ . '/vendor/autoload.php';
+### 方式一
 
-use Imi\App;
+框架自带文件：`vendor/yurunsoft/imi/bin/imi`
 
-App::runTool('ImiDemo\HttpDemo');
-```
+用框架自带执行命令行，需要手动传入`-appNamespace "项目命名空间"`参数
 
-使用命令行工具：
+### 方式二
 
-```
-php tool.php 工具名 参数
-```
+项目自建文件，以imi-demo为例：`HttpDemo/bin/imi`
+
+使用项目自建文件可以传入`-appNamespace "项目命名空间"`参数，也可以通过配置文件指定。
+
+
+`项目路径/config/config`中`namespace`设置为项目命名空间即可。
+
+可以参考`imi-demo`示例项目
