@@ -11,6 +11,7 @@ use Imi\Server\Event\Param\StartEventParam;
 use Imi\Server\Event\Listener\IStartEventListener;
 use Imi\Server\Event\Param\ManagerStartEventParam;
 use Imi\Server\Event\Listener\IManagerStartEventListener;
+use Imi\Process\ProcessManager;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=PHP_INT_MAX)
@@ -29,5 +30,9 @@ class OnStart implements IManagerStartEventListener
 			'masterPID'		=>	$e->server->master_pid,
 			'managerPID'	=>	$e->server->manager_pid,
 		]));
+		
+		// 热更新
+		$process = ProcessManager::create('hotUpdate');
+		$process->start();
 	}
 }

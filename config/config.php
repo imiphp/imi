@@ -15,6 +15,7 @@ return [
 		'Imi\Task',
 		'Imi\Tool',
 		'Imi\Process',
+		'Imi\HotUpdate',
 	],
 	'atomics'	=>	[
 		'session'
