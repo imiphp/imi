@@ -51,7 +51,7 @@ class Init implements IEventListener
 				$refClass = new \ReflectionClass($className);
 				$required = [];
 				$other = [];
-				foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] as $arg)
+				foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] ?? [] as $arg)
 				{
 					if($arg->required)
 					{
