@@ -18,7 +18,7 @@ class Process
 	 * 
 	 * @Operation("start")
 	 *
-	 * @Arg(name="name", type=ArgType::STRING, required=true, comments="进程名称")
+	 * @Arg(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
 	 * @Arg(name="redirectStdinStdout", type=ArgType::STRING, default=null, comments="重定向子进程的标准输入和输出。启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。")
 	 * @Arg(name="pipeType", type=ArgType::STRING, default=null, comments="管道类型，启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0")
 	 * 
