@@ -8,6 +8,8 @@ class KVStorage extends \SplObjectStorage
 {
 	private $objectMap = [];
 
+	private $otherMap = [];
+
 	public function attach($object, $data = null)
 	{
 		parent::attach($this->parseObject($object), $data);
@@ -60,15 +62,36 @@ class KVStorage extends \SplObjectStorage
 		{
 			return $object;
 		}
-		if(!isset($this->objectMap[$object]))
+		if(is_scalar($object))
 		{
-			$this->objectMap[$object] = (object)$object;
+			if(isset($this->objectMap[$object]))
+			{
+				return $this->objectMap[$object];
+			}
+			else if($isStore)
+			{
+				return $this->objectMap[$object] = (object)$object;
+			}
+			else
+			{
+				return (object)$object;
+			}
 		}
-		$result = $this->objectMap[$object];
-		if(!$isStore)
+		else
 		{
-			unset($this->objectMap[$object]);
+			// 其它
+			if(false !== ($index = array_search($object, $this->otherMap)))
+			{
+				return $this->otherMap[$index];	
+			}
+			else if($isStore)
+			{
+				return $this->otherMap[$index] = (object)$object;
+			}
+			else
+			{
+				return (object)$object;
+			}
 		}
-		return $result;
 	}
 }

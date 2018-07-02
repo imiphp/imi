@@ -30,6 +30,12 @@ abstract class App
 	private static $container;
 
 	/**
+	 * 框架是否已初始化
+	 * @var boolean
+	 */
+	private static $isInited = false;
+
+	/**
 	 * 当前是否为调试模式
 	 * @var boolean
 	 */
@@ -44,19 +50,6 @@ abstract class App
 	{
 		static::$namespace = $namespace;
 		static::initFramework();
-		static::createServers();
-		ServerManage::getServer('main')->getSwooleServer()->start();
-	}
-
-	/**
-	 * 框架命令行工具运行入口
-	 * @return void
-	 */
-	public static function runTool($namespace)
-	{
-		static::$namespace = $namespace;
-		static::initFramework();
-		Event::trigger('IMI.RUNTOOL');
 	}
 
 	/**
@@ -69,9 +62,12 @@ abstract class App
 		// 初始化Main类
 		static::initMains();
 		// 注解处理
-		static::$annotation = new Annotation;
-		static::$annotation->init();
+		static::$annotation = Annotation::getInstance();
+		static::$annotation->init([
+			MainHelper::getMain('Imi', 'Imi'),
+		]);
 		Event::trigger('IMI.INITED');
+		static::$isInited = true;
 	}
 
 	/**
@@ -96,7 +92,7 @@ abstract class App
 	 * 创建服务器对象们
 	 * @return void
 	 */
-	private static function createServers()
+	public static function createServers()
 	{
 		// 创建服务器对象们前置操作
 		Event::trigger('IMI.SERVERS.CREATE.BEFORE');
@@ -153,5 +149,14 @@ abstract class App
 	public static function setDebug($isDebug)
 	{
 		static::$isDebug = $isDebug;
+	}
+
+	/**
+	 * 框架是否已初始化
+	 * @return boolean
+	 */
+	public static function isInited()
+	{
+		return static::$isInited;
 	}
 }

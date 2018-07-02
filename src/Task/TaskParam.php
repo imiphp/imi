@@ -5,9 +5,9 @@ use Imi\Task\Interfaces\ITaskParam;
 
 class TaskParam implements ITaskParam
 {
-	protected $data;
+	protected $data = [];
 
-	public function __construct($data)
+	public function __construct($data = [])
 	{
 		$this->data = $data;
 	}

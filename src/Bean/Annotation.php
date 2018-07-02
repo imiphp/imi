@@ -4,12 +4,15 @@ namespace Imi\Bean;
 use Imi\App;
 use Imi\Main\Helper as MainHelper;
 use Imi\Config;
+use Imi\Util\Traits\TSingleton;
 
 /**
  * 注解处理类
  */
 class Annotation
 {
+	use TSingleton;
+
 	/**
 	 * 加载器
 	 * @var AnnotationLoader
@@ -30,11 +33,12 @@ class Annotation
 
 	/**
 	 * 初始化
+	 * @param \Imi\Main\BaseMain[] $mains
 	 * @return void
 	 */
-	public function init()
+	public function init($mains = null)
 	{
-		foreach(MainHelper::getMains() as $main)
+		foreach($mains ?? MainHelper::getMains() as $main)
 		{
 			// 扫描注解
 			$this->loadModuleAnnotations($main->getNamespace());

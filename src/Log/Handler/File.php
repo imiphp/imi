@@ -2,6 +2,7 @@
 namespace Imi\Log\Handler;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\File as FileUtil;
 
 /**
  * @Bean("FileLog")
@@ -55,7 +56,7 @@ class File extends Base
 		$this->parseDate();
         foreach($this->records as $record)
         {
-			\Swoole\Async::writeFile($this->getFileName(), $this->getLogString($record) . PHP_EOL, null, FILE_APPEND);
+			FileUtil::writeFile($this->getFileName(), $this->getLogString($record) . PHP_EOL, FILE_APPEND);
         }
 	}
 	

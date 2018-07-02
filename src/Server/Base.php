@@ -116,14 +116,14 @@ abstract class Base
 			});
 	
 			$this->swooleServer->on('WorkerStart', function(\swoole_server $server, int $workerID){
-				Event::trigger('IMI.MAIN_SERVER.WORK.START', [
+				Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
 					'server'	=>	$server,
 					'workerID'	=>	$workerID,
 				], $this, WorkStartEventParam::class);
 			});
 	
 			$this->swooleServer->on('WorkerStop', function(\swoole_server $server, int $workerID){
-				Event::trigger('IMI.MAIN_SERVER.WORK.STOP', [
+				Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
 					'server'	=>	$server,
 					'workerID'	=>	$workerID,
 				], $this, WorkStopEventParam::class);

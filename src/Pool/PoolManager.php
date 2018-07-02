@@ -7,7 +7,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 
-class PoolManager
+abstract class PoolManager
 {
 	/**
 	 * \池子数组

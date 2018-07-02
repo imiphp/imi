@@ -10,14 +10,24 @@ use Imi\Main\Helper;
 abstract class Imi
 {
 	/**
+	 * 处理规则，暂只支持通配符*
+	 * @param string $rule
+	 * @return string
+	 */
+	public static function parseRule($rule)
+	{
+		return \str_replace('\\*', '.*', \preg_quote($rule));
+	}
+
+	/**
 	 * 检查规则是否匹配，支持通配符*
 	 * @param string $rule
 	 * @param string $string
-	 * @return void
+	 * @return boolean
 	 */
 	public static function checkRuleMatch($rule, $string)
 	{
-		$rule = '/^' . \str_replace('\\*', '.*', \preg_quote($rule)) . '$/';
+		$rule = '/^' . static::parseRule($rule) . '$/';
 		return \preg_match($rule, $string) > 0;
 	}
 
@@ -26,7 +36,7 @@ abstract class Imi
 	 * @param string $rule
 	 * @param string $className
 	 * @param string $methodName
-	 * @return void
+	 * @return boolean
 	 */
 	public static function checkClassMethodRule($rule, $className, $methodName)
 	{
@@ -38,7 +48,7 @@ abstract class Imi
 	 * 检查类是否匹配，支持通配符*
 	 * @param string $rule
 	 * @param string $className
-	 * @return void
+	 * @return boolean
 	 */
 	public static function checkClassRule($rule, $className)
 	{

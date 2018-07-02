@@ -36,9 +36,16 @@ abstract class BeanFactory
 		$class = $ref->getName();
 		$methodsTpl = static::getMethodsTpl($ref, $class);
 		$construct = '';
-		if(null !== $ref->getConstructor())
+		$constructMethod = $ref->getConstructor();
+		if(null !== $constructMethod)
 		{
-			$construct = 'parent::__construct(...$args);';
+			$paramsTpls = static::getMethodParamTpls($constructMethod);
+			$constructDefine = $paramsTpls['define'];
+			$construct = "parent::__construct({$paramsTpls['call']});";
+		}
+		else
+		{
+			$constructDefine = '...$args';
 		}
 		// 匿名类模版定义
 		// 这里的换行符是为了解决某个不明觉厉的BUG加的，不加有时会有奇怪的问题，原因未知，BUG复现难……
@@ -47,7 +54,7 @@ return new class(...\$args) extends \\{$class}
 {
 	private \$beanProxy;
 
-	public function __construct(...\$args)
+	public function __construct({$constructDefine})
 	{
 		\$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
 		{$construct}

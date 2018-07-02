@@ -54,7 +54,7 @@ abstract class Text
 	 */
 	public static function toCamelName($name)
 	{
-		return str_replace(' ', '', ucwords(str_replace('_', ' ', $name)));
+		return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $name))));
 	}
 
 	/**

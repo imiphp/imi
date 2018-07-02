@@ -2,21 +2,22 @@
 namespace Imi\Tool\Listener;
 
 use Imi\App;
-use Imi\Tool\Args;
+use Imi\Util\Args;
 use Imi\Main\Helper;
+use Imi\Tool\ArgType;
 use Imi\RequestContext;
+use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Event\EventParam;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
+use Imi\Tool\Annotation\Arg;
 use Imi\Event\IEventListener;
 use Imi\Tool\Parser\ToolParser;
 use Imi\Bean\Annotation\Listener;
-use Imi\Tool\Annotation\Arg;
-use Imi\Tool\ArgType;
 
 /**
- * @Listener(eventName="IMI.RUNTOOL")
+ * @Listener(eventName="IMI.INITED")
  */
 class Init implements IEventListener
 {
@@ -50,7 +51,7 @@ class Init implements IEventListener
 				$refClass = new \ReflectionClass($className);
 				$required = [];
 				$other = [];
-				foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] as $arg)
+				foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] ?? [] as $arg)
 				{
 					if($arg->required)
 					{
@@ -92,7 +93,6 @@ class Init implements IEventListener
 		{
 			echo $ex->getMessage(), PHP_EOL;
 		}
-		\swoole_event_exit();
 	}
 
 	/**

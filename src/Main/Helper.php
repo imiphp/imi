@@ -46,7 +46,7 @@ abstract class Helper
 		}
 		else if(null !== $serverName)
 		{
-			if(!isset(static::$mains[static::$nameMap[$serverName]]))
+			if(!isset(static::$nameMap[$serverName], static::$mains[static::$nameMap[$serverName]]))
 			{
 				return null;
 			}
@@ -65,6 +65,17 @@ abstract class Helper
 	public static function getMains()
 	{
 		return static::$mains;
+	}
+
+	/**
+	 * 获取项目Main对象
+	 * @return \Imi\Main\BaseMain[]
+	 */
+	public static function getAppMains()
+	{
+		$mains = static::$mains;
+		unset($mains['Imi']);
+		return $mains;
 	}
 
 	private static function newInstance($namespace, $serverName)

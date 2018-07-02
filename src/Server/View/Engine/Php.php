@@ -15,7 +15,10 @@ class Php implements IEngine
 			return $response;
 		}
 		$closure = function($__renderFileName, $__renderData){
-			extract($__renderData);
+			if(is_array($__renderData))
+			{
+				extract($__renderData);
+			}
 			include $__renderFileName;
 		};
 		ob_start();

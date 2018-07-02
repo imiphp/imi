@@ -37,7 +37,7 @@ abstract class BaseMain implements IMain
 	 * 加载配置
 	 * @return void
 	 */
-	protected function loadConfig()
+	public function loadConfig()
 	{
 		$fileName = $this->getPath() . DIRECTORY_SEPARATOR . 'config/config.php';
 		if(is_file($fileName))
