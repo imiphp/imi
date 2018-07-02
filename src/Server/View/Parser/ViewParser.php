@@ -43,6 +43,12 @@ class ViewParser extends BaseParser
 		}
 	}
 
+	/**
+	 * 获取对应动作的视图注解
+	 * 
+	 * @param callable $callable
+	 * @return \Imi\Server\View\Annotation\View
+	 */
 	public function getByCallable($callable)
 	{
 		if(!is_array($callable))
@@ -66,13 +72,25 @@ class ViewParser extends BaseParser
 		else if(isset($this->data[$className]['view']))
 		{
 			$view = clone $this->data[$className]['view'];
-			$view->template = File::path(Text::isEmpty($view->template) ? $shortClassName : $view->template, $methodName);
+			if(Text::isEmpty($view->baseDir))
+			{
+				$view->template = File::path(Text::isEmpty($view->template) ? $shortClassName : $view->template, $methodName);
+			}
+			else
+			{
+				$view->template = $methodName;
+			}
 		}
 		else
 		{
 			$view = new View([
 				'template'	=>	File::path($shortClassName, $methodName),
 			]);
+		}
+		// baseDir
+		if(null === $view->baseDir && isset($this->data[$className]['view']))
+		{
+			$view->baseDir = $this->data[$className]['view']->baseDir;
 		}
 		return $view;
 	}
