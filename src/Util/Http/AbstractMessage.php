@@ -224,6 +224,10 @@ abstract class AbstractMessage implements MessageInterface
         {
             $self->headers[$lowerName][] = $value;
         }
+        else if(is_array($value))
+        {
+            $self->headers[$lowerName] = array_merge($self->headers[$lowerName], $value);
+        }
         else
         {
             throw new \InvalidArgumentException('invalid header names or values');
