@@ -89,6 +89,20 @@ class Driver implements IDb
 	}
 
 	/**
+	 * 是否已连接
+	 * @return boolean
+	 */
+	public function isConnected(): bool
+	{
+		try{
+			$this->instance->getAttribute(\PDO::ATTR_SERVER_INFO);
+		} catch (\PDOException $e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * 打开
 	 * @return boolean
 	 */

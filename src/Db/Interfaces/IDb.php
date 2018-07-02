@@ -16,6 +16,12 @@ interface IDb
 	public function close();
 
 	/**
+	 * 是否已连接
+	 * @return boolean
+	 */
+	public function isConnected(): bool;
+
+	/**
 	 * 启动一个事务
 	 * @return boolean
 	 */

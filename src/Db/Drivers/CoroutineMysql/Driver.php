@@ -87,6 +87,15 @@ class Driver implements IDb
 	}
 
 	/**
+	 * 是否已连接
+	 * @return boolean
+	 */
+	public function isConnected(): bool
+	{
+		return $this->instance->connected;
+	}
+
+	/**
 	 * 获取原对象实例
 	 * @return \Swoole\Coroutine\MySQL
 	 */

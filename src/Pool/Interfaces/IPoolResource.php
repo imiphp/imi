@@ -37,4 +37,10 @@ interface IPoolResource
 	 * @return void
 	 */
 	public function reset();
+
+	/**
+	 * 检查资源是否可用
+	 * @return bool
+	 */
+	public function checkState(): bool;
 }

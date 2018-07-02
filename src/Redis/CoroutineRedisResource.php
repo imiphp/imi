@@ -70,4 +70,18 @@ class CoroutineRedisResource extends BasePoolResource
 	{
 		$this->redis->select($this->config['db'] ?? 0);
 	}
+
+	/**
+	 * 检查资源是否可用
+	 * @return bool
+	 */
+	public function checkState(): bool
+	{
+		try{
+			return 'PONG' === $this->redis->ping();
+		}catch(\Throwable $ex)
+		{
+			return false;
+		}
+	}
 }
