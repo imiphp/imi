@@ -2,6 +2,7 @@
 namespace Imi\Listener;
 
 use Imi\Main\Helper;
+use Imi\Util\Coroutine;
 use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Event\EventParam;
@@ -28,28 +29,46 @@ class WorkerInit implements IEventListener
 		Annotation::getInstance()->init($appMains);
 		
 		// 初始化
-		foreach($appMains as $main)
+		if(Coroutine::isIn())
 		{
-			// 协程通道队列初始化
-			CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
-	
-			// 异步池子初始化
-			$pools = $main->getConfig()['pools'] ?? [];
-			foreach($pools as $name => $pool)
+			foreach($appMains as $main)
 			{
-				if(isset($pool['async']))
+				// 协程通道队列初始化
+				CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
+		
+				// 异步池子初始化
+				$pools = $main->getConfig()['pools'] ?? [];
+				foreach($pools as $name => $pool)
 				{
-					$pool = $pool['async'];
-					PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+					if(isset($pool['async']))
+					{
+						$pool = $pool['async'];
+						PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+					}
 				}
 			}
-
-			// 缓存初始化
-			$caches = $main->getConfig()['caches'] ?? [];
-			foreach($caches as $name => $cache)
+		}
+		else
+		{
+			foreach($appMains as $main)
 			{
-				CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
+				// 同步池子初始化
+				$pools = $main->getConfig()['pools'] ?? [];
+				foreach($pools as $name => $pool)
+				{
+					if(isset($pool['sync']))
+					{
+						$pool = $pool['sync'];
+						PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+					}
+				}
 			}
+		}
+		// 缓存初始化
+		$caches = $main->getConfig()['caches'] ?? [];
+		foreach($caches as $name => $cache)
+		{
+			CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
 		}
 	}
 }
