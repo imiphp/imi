@@ -41,17 +41,19 @@ abstract class File
 
     /**
      * 组合路径，目录后的/不是必须
-     * @param string $path
-     * @param string $fileName
+     *
+     * @param string ...$args
      * @return string
      */
-    public static function path($path, $fileName)
+    public static function path(...$args)
     {
-        $result = $path;
-        if (substr($path, -1, 1) !== DIRECTORY_SEPARATOR && (!isset($fileName[0]) || DIRECTORY_SEPARATOR !== $fileName[0])) {
-            $result .= DIRECTORY_SEPARATOR;
+        static $dsds = DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
+        $result = implode(DIRECTORY_SEPARATOR, $args);
+        while(false !== strpos($result, $dsds))
+        {
+            $result = str_replace($dsds, DIRECTORY_SEPARATOR, $result);
         }
-        return $result . $fileName;
+        return $result;
     }
 
     /**
