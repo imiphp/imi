@@ -222,11 +222,18 @@ abstract class AbstractMessage implements MessageInterface
         }
         if(is_string($value))
         {
-            $self->headers[$lowerName][] = $value;
+            $self->headers[$lowerName][] = [$value];
         }
         else if(is_array($value))
         {
-            $self->headers[$lowerName] = array_merge($self->headers[$lowerName], $value);
+            if(isset($self->headers[$lowerName]))
+            {
+                $self->headers[$lowerName] = array_merge($self->headers[$lowerName], $value);
+            }
+            else
+            {
+                $self->headers[$lowerName] = $value;
+            }
         }
         else
         {
