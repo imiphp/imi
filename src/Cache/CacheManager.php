@@ -35,6 +35,15 @@ abstract class CacheManager
 	}
 
 	/**
+	 * 清空池子
+	 * @return void
+	 */
+	public static function clearPools()
+	{
+		static::$handlers = [];
+    }
+    
+	/**
 	 * 获取实例
 	 * @param string $name
 	 * @return \Psr\SimpleCache\CacheInterface
