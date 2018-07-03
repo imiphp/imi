@@ -46,7 +46,17 @@ class Uri implements UriInterface
 	 * 锚点，在#后的
 	 * @var string
 	 */
-	protected $fragment;
+    protected $fragment;
+    
+    /**
+     * 协议标准端口
+     * @var array
+     */
+    public static $schemePorts = [
+        'http'  =>  80,
+        'https' =>  443,
+        'ftp'   =>  21,
+    ];
 
 	public function __construct(string $uri = '')
 	{
@@ -223,6 +233,10 @@ class Uri implements UriInterface
      */
     public function getPort()
 	{
+        if(null === $this->port && isset(static::$schemePorts[$this->scheme]))
+        {
+            return static::$schemePorts[$this->scheme];
+        }
 		return $this->port;
 	}
 
