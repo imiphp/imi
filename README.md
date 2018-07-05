@@ -10,7 +10,7 @@
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.0.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg)](https://github.com/redis/hiredis)
 [![IMI Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
-[![IMI License](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
+[![IMI License](https://img.shields.io/github/license/Yurunsoft/imi.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
 
 ## 介绍
 
