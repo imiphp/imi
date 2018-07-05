@@ -75,10 +75,32 @@ class HotUpdateProcess extends BaseProcess
 				// 检查文件是否有修改
 				if($monitor->isChanged())
 				{
+					// 清除各种缓存
+					$this->clearCache();
 					// 执行重新加载
 					Coroutine::exec($reloadCmd);
 				}
 			}
 		});
+	}
+
+	/**
+	 * 清除各种缓存
+	 *
+	 * @return void
+	 */
+	private function clearCache()
+	{
+		static $functions = [
+			'apc_clear_cache',
+			'opcache_reset',
+		];
+		foreach($functions as $function)
+		{
+			if(function_exists($function))
+			{
+				$function();
+			}
+		}
 	}
 }
