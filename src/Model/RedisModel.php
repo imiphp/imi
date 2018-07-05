@@ -22,9 +22,9 @@ abstract class RedisModel extends BaseModel
 	 */
 	protected $__ttl;
 
-	public function __construct($data = [])
+	public function __init($data = [])
 	{
-		parent::__construct($data);
+		parent::__init($data);
 		$this->__ttl = ModelManager::getRedisEntity($this)->ttl;
 	}
 
