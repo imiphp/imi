@@ -116,7 +116,12 @@ abstract class AbstractMessage implements MessageInterface
      */
     public function hasHeader($name)
     {
-        return isset($this->headers[strtolower($name)]);
+        $lowerName = strtolower($name);
+        if(isset($object->headerNames[$lowerName]))
+        {
+            $name = $object->headerNames[$lowerName];
+        }
+        return isset($this->headers[$name]);
     }
 
     /**
@@ -135,7 +140,11 @@ abstract class AbstractMessage implements MessageInterface
      */
     public function getHeader($name)
     {
-        $name = strtolower($name);
+        $lowerName = strtolower($name);
+        if(isset($object->headerNames[$lowerName]))
+        {
+            $name = $object->headerNames[$lowerName];
+        }
         if(isset($this->headers[$name]))
         {
             return $this->headers[$name];
@@ -167,7 +176,11 @@ abstract class AbstractMessage implements MessageInterface
      */
     public function getHeaderLine($name)
     {
-        $name = strtolower($name);
+        $lowerName = strtolower($name);
+        if(isset($object->headerNames[$lowerName]))
+        {
+            $name = $object->headerNames[$lowerName];
+        }
         if(!isset($this->headers[$name]))
         {
             return '';
@@ -216,23 +229,27 @@ abstract class AbstractMessage implements MessageInterface
     {
         $self = clone $this;
         $lowerName = strtolower($name);
-        if(!isset($self->headerNames[$lowerName]))
+        if(isset($object->headerNames[$lowerName]))
         {
-            $self->headerNames[$lowerName] = $name;
+            $name = $object->headerNames[$lowerName];
+        }
+        else
+        {
+            $object->headerNames[$lowerName] = $name;
         }
         if(is_string($value))
         {
-            $self->headers[$lowerName] = [$value];
+            $self->headers[$name] = [$value];
         }
         else if(is_array($value))
         {
-            if(isset($self->headers[$lowerName]))
+            if(isset($self->headers[$name]))
             {
-                $self->headers[$lowerName] = array_merge($self->headers[$lowerName], $value);
+                $self->headers[$name] = array_merge($self->headers[$name], $value);
             }
             else
             {
-                $self->headers[$lowerName] = $value;
+                $self->headers[$name] = $value;
             }
         }
         else
@@ -258,9 +275,13 @@ abstract class AbstractMessage implements MessageInterface
     {
         $self = clone $this;
         $lowerName = strtolower($name);
-        if(isset($self->headers[$lowerName]))
+        if(isset($object->headerNames[$lowerName]))
         {
-            unset($self->headers[$lowerName]);
+            $name = $object->headerNames[$lowerName];
+        }
+        if(isset($self->headers[$name]))
+        {
+            unset($self->headers[$name]);
         }
         return $self;
     }
@@ -316,20 +337,24 @@ abstract class AbstractMessage implements MessageInterface
      * @param string $value
      * @return static
      */
-    protected function setHeader(AbstractMessage $object, $name, $value)
+    protected function setHeader($object, $name, $value)
     {
         $lowerName = strtolower($name);
-        if(!isset($object->headerNames[$lowerName]))
+        if(isset($object->headerNames[$lowerName]))
+        {
+            $name = $object->headerNames[$lowerName];
+        }
+        else
         {
             $object->headerNames[$lowerName] = $name;
         }
         if(is_string($value))
         {
-            $object->headers[$lowerName] = [$value];
+            $object->headers[$name] = [$value];
         }
         else if(is_array($value))
         {
-            $object->headers[$lowerName] = $value;
+            $object->headers[$name] = $value;
         }
         else
         {
