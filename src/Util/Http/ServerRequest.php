@@ -13,31 +13,31 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * 服务器信息
      * @var array
      */
-    protected $server;
+    protected $server = [];
 
     /**
      * cookie数据
      * @var array
      */
-	protected $cookies;
+	protected $cookies = [];
 	
     /**
      * get数据
      * @var array
      */
-    protected $get;
+    protected $get = [];
 
     /**
      * post数据
      * @var array
      */
-    protected $post;
+    protected $post = [];
 
     /**
      * 上传的文件
-     * @var \Imi\Server\Http\Message\UploadedFile[]
+     * @var \Yurun\Util\YurunHttp\Http\Psr7\UploadedFile[]
      */
-    protected $files;
+    protected $files = [];
 
     /**
      * 处理过的主体内容
