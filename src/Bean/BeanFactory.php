@@ -196,7 +196,7 @@ STR;
 		{
 			if($param->isDefaultValueAvailable())
 			{
-				$result .= ' = ' . json_encode($param->getDefaultValue());
+				$result .= ' = ' . json_encode($param->getDefaultValue(), JSON_UNESCAPED_SLASHES);
 			}
 			else
 			{
