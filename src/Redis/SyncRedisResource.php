@@ -81,7 +81,7 @@ class SyncRedisResource extends BasePoolResource
 	public function checkState(): bool
 	{
 		try{
-			return 'PONG' === $this->redis->ping();
+			return '+PONG' === $this->redis->ping();
 		}catch(\Throwable $ex)
 		{
 			return false;
