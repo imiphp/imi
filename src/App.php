@@ -2,12 +2,17 @@
 namespace Imi;
 
 use Imi\Event\Event;
-use Imi\Bean\Annotation;
-use Imi\Server\Http\Server;
-use Imi\Main\Helper as MainHelper;
-use Imi\Bean\Container;
 use Imi\Log\LogLevel;
 use Imi\Main\BaseMain;
+use Imi\Bean\Container;
+use Imi\Util\Coroutine;
+use Imi\Bean\Annotation;
+use Imi\Pool\PoolConfig;
+use Imi\Pool\PoolManager;
+use Imi\Cache\CacheManager;
+use Imi\Server\Http\Server;
+use Imi\Main\Helper as MainHelper;
+use Imi\Util\CoroutineChannelManager;
 
 abstract class App
 {
@@ -158,5 +163,60 @@ abstract class App
 	public static function isInited()
 	{
 		return static::$isInited;
+	}
+
+	/**
+	 * 初始化worker
+	 *
+	 * @return void
+	 */
+	public static function initWorker()
+	{
+		$appMains = MainHelper::getAppMains();
+		// 加载服务器注解
+		Annotation::getInstance()->init($appMains);
+		
+		// 初始化
+		if(Coroutine::isIn())
+		{
+			foreach($appMains as $main)
+			{
+				// 协程通道队列初始化
+				CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
+		
+				// 异步池子初始化
+				$pools = $main->getConfig()['pools'] ?? [];
+				foreach($pools as $name => $pool)
+				{
+					if(isset($pool['async']))
+					{
+						$pool = $pool['async'];
+						PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+					}
+				}
+			}
+		}
+		else
+		{
+			foreach($appMains as $main)
+			{
+				// 同步池子初始化
+				$pools = $main->getConfig()['pools'] ?? [];
+				foreach($pools as $name => $pool)
+				{
+					if(isset($pool['sync']))
+					{
+						$pool = $pool['sync'];
+						PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+					}
+				}
+			}
+		}
+		// 缓存初始化
+		$caches = $main->getConfig()['caches'] ?? [];
+		foreach($caches as $name => $cache)
+		{
+			CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
+		}
 	}
 }
