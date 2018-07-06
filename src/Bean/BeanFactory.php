@@ -2,8 +2,9 @@
 namespace Imi\Bean;
 
 use Imi\Config;
-use Imi\Bean\Parser\BeanParser;
 use Imi\RequestContext;
+use Imi\Util\ClassObject;
+use Imi\Bean\Parser\BeanParser;
 
 abstract class BeanFactory
 {
@@ -246,4 +247,27 @@ TPL;
 		return ' : ' . $method->getReturnType();
 	}
 
+	/**
+	 * 获取对象类名
+	 * @param string|object $object
+	 * @return string
+	 */
+	public static function getObjectClass($object)
+	{
+		if(is_object($object))
+		{
+			if(ClassObject::isAnymous($object))
+			{
+				return get_parent_class($object);
+			}
+			else
+			{
+				return get_class($object);
+			}
+		}
+		else
+		{
+			return (string)$object;
+		}
+	}
 }
