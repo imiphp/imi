@@ -40,6 +40,19 @@ class RouteInit implements IEventListener
 			foreach($controllerParser->getByServer($name) as $className => $classItem)
 			{
 				$classAnnotation = $classItem['annotation'];
+				// 类中间件
+				$classMiddlewares = [];
+				foreach($classItem['middlewares'] ?? [] as $middleware)
+				{
+					if(is_array($middleware->middlewares))
+					{
+						$classMiddlewares = array_merge($classMiddlewares, $middleware->middlewares);
+					}
+					else
+					{
+						$classMiddlewares[] = $middleware->middlewares;
+					}
+				}
 				foreach($classItem['methods'] as $methodName => $methodItem)
 				{
 					if(!isset($methodItem['routes']))
@@ -50,6 +63,22 @@ class RouteInit implements IEventListener
 							])
 						];
 					}
+					// 方法中间件
+					$methodMiddlewares = [];
+					foreach($methodItem['middlewares'] ?? [] as $middleware)
+					{
+						if(is_array($middleware->middlewares))
+						{
+							$methodMiddlewares = array_merge($methodMiddlewares, $middleware->middlewares);
+						}
+						else
+						{
+							$methodMiddlewares[] = $middleware->middlewares;
+						}
+					}
+					// 最终中间件
+					$middlewares = array_unique(array_merge($classMiddlewares, $methodMiddlewares));
+					
 					foreach($methodItem['routes'] as $routeItem)
 					{
 						if(null === $routeItem->url)
@@ -60,7 +89,9 @@ class RouteInit implements IEventListener
 						{
 							$routeItem->url = $classAnnotation->prefix . $routeItem->url;
 						}
-						$route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName));
+						$route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
+							'middlewares'	=>	$middlewares,
+						]);
 					}
 				}
 			}
@@ -93,7 +124,9 @@ class RouteInit implements IEventListener
 			{
 				$callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
 			}
-			$route->addRuleAnnotation($routeAnnotation, $callable);
+			$route->addRuleAnnotation($routeAnnotation, $callable, [
+				'middlewares'	=>	$routeOption['middlewares'],
+			]);
 		}
 	}
 }

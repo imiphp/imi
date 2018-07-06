@@ -46,6 +46,26 @@ class ControllerParser extends BaseParser
 		{
 			$this->data[$className]['methods'][$targetName]['routes'][] = $annotation;
 		}
+		else if($annotation instanceof \Imi\Server\Route\Annotation\Middleware)
+		{
+			switch($target)
+			{
+				case static::TARGET_CLASS:
+					if(!isset($this->data[$className]['middlewares']))
+					{
+						$this->data[$className]['middlewares'] = [];
+					}
+					$this->data[$className]['middlewares'][] = $annotation;
+					break;
+				case static::TARGET_METHOD:
+					if(!isset($this->data[$className]['methods'][$targetName]['middlewares']))
+					{
+						$this->data[$className]['methods'][$targetName]['middlewares'] = [];
+					}
+					$this->data[$className]['methods'][$targetName]['middlewares'][] = $annotation;
+					break;
+			}
+		}
 	}
 
 }

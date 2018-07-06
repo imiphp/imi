@@ -73,4 +73,5 @@ class RequestHandler implements RequestHandlerInterface
 	{
 		return !isset($this->middlewares[$this->index]);
 	}
+	
 }

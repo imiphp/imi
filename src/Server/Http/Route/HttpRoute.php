@@ -38,8 +38,9 @@ class HttpRoute extends BaseRoute
 					{
 						$params = array_merge($params, $domainParams);
 						return [
-							'params'	=>	$params,
-							'callable'	=>	$this->parseCallable($params, $item['callable']),
+							'params'		=>	$params,
+							'callable'		=>	$this->parseCallable($params, $item['callable']),
+							'middlewares'	=>	$item['middlewares'] ?? [],
 						];
 					}
 				}
