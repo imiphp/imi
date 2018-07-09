@@ -13,11 +13,13 @@ abstract class Model extends BaseModel
 {
 	/**
 	 * 返回一个查询器
+	 * @param string|object $object
 	 * @return \Imi\Db\Query\Interfaces\IQuery
 	 */
-	public static function query()
+	public static function query($object = null)
 	{
-		return Db::query(ModelManager::getDbPoolName(static::class), static::class)->table(ModelManager::getTable(static::class));
+		$class = BeanFactory::getObjectClass($object ?? static::class);
+		return Db::query(ModelManager::getDbPoolName($class), $class)->table(ModelManager::getTable($class));
 	}
 
 	/**
@@ -86,7 +88,7 @@ abstract class Model extends BaseModel
 	 */
 	public function insert(): IResult
 	{
-		$result = static::query()->insert(static::parseSaveData($this));
+		$result = static::query($this)->insert(static::parseSaveData($this));
 		if($result->isSuccess())
 		{
 			foreach(ModelManager::getFields($this) as $name => $column)
@@ -107,7 +109,7 @@ abstract class Model extends BaseModel
 	 */
 	public function update(): IResult
 	{
-		$query = static::query();
+		$query = static::query($this);
 		return $this->parseWhereId($query)->update(static::parseSaveData($this));
 	}
 
@@ -134,7 +136,7 @@ abstract class Model extends BaseModel
 	 */
 	public function save(): IResult
 	{
-		$query = static::query();
+		$query = static::query($this);
 		$selectResult = $this->parseWhereId($query)->select();
 		if($selectResult->getRowCount() > 0)
 		{
@@ -154,7 +156,7 @@ abstract class Model extends BaseModel
 	 */
 	public function delete(): IResult
 	{
-		$query = static::query();
+		$query = static::query($this);
 		return $this->parseWhereId($query)->delete();
 	}
 
@@ -296,10 +298,15 @@ abstract class Model extends BaseModel
 	 * @param array $data
 	 * @return array
 	 */
-	private static function parseSaveData($data)
+	private static function parseSaveData($data, $object = null)
 	{
+		if(null === $object && is_object($data))
+		{
+			$object = $data;
+		}
+		$class = BeanFactory::getObjectClass($object ?? static::class);
 		$result = [];
-		foreach(ModelManager::getFieldNames(static::class) as $name)
+		foreach(ModelManager::getFieldNames($class) as $name)
 		{
 			$result[$name] = $data[$name];
 		}

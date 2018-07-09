@@ -9,6 +9,9 @@ use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
 use Swoole\Coroutine;
 use Imi\Util\File;
+use Imi\RequestContext;
+use Imi\Pool\PoolManager;
+use Imi\Cache\CacheManager;
 
 /**
  * @Tool("server")
@@ -24,6 +27,9 @@ class Server
 	 */
 	public function start()
 	{
+		RequestContext::destroy();
+		PoolManager::clearPools();
+		CacheManager::clearPools();
 		App::createServers();
 		ServerManage::getServer('main')->getSwooleServer()->start();
 	}

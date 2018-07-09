@@ -48,7 +48,12 @@ abstract class BaseSyncPool extends BasePool
 				return null;
 			}
 		}
-		return $this->queue->pop();
+		$resource = $this->queue->pop();
+		if(!$resource->checkState())
+		{
+			$resource->open();
+		}
+		return $resource;
 	}
 
 	/**
@@ -69,7 +74,12 @@ abstract class BaseSyncPool extends BasePool
 				return false;
 			}
 		}
-		return $this->queue->pop();
+		$resource = $this->queue->pop();
+		if(!$resource->checkState())
+		{
+			$resource->open();
+		}
+		return $resource;
 	}
 
 	/**

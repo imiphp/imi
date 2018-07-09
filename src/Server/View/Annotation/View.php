@@ -19,6 +19,14 @@ class View extends Base
 	protected $defaultFieldName = 'template';
 
 	/**
+	 * 模版基础路径
+	 * abc-配置中设定的路径/abc/
+	 * /abc/-绝对路径
+	 * @var string
+	 */
+	public $baseDir;
+
+	/**
 	 * 模版路径
 	 * @var string
 	 */

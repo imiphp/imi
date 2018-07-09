@@ -11,6 +11,7 @@ use Imi\Cache\CacheManager;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
+use Imi\App;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
@@ -24,51 +25,6 @@ class WorkerInit implements IEventListener
 	 */
 	public function handle(EventParam $e)
 	{
-		$appMains = Helper::getAppMains();
-		// 加载服务器注解
-		Annotation::getInstance()->init($appMains);
-		
-		// 初始化
-		if(Coroutine::isIn())
-		{
-			foreach($appMains as $main)
-			{
-				// 协程通道队列初始化
-				CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
-		
-				// 异步池子初始化
-				$pools = $main->getConfig()['pools'] ?? [];
-				foreach($pools as $name => $pool)
-				{
-					if(isset($pool['async']))
-					{
-						$pool = $pool['async'];
-						PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
-					}
-				}
-			}
-		}
-		else
-		{
-			foreach($appMains as $main)
-			{
-				// 同步池子初始化
-				$pools = $main->getConfig()['pools'] ?? [];
-				foreach($pools as $name => $pool)
-				{
-					if(isset($pool['sync']))
-					{
-						$pool = $pool['sync'];
-						PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
-					}
-				}
-			}
-		}
-		// 缓存初始化
-		$caches = $main->getConfig()['caches'] ?? [];
-		foreach($caches as $name => $cache)
-		{
-			CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
-		}
+		App::initWorker();
 	}
 }

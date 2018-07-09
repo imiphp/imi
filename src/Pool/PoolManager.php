@@ -38,6 +38,19 @@ abstract class PoolManager
 	}
 
 	/**
+	 * 清空池子
+	 * @return void
+	 */
+	public static function clearPools()
+	{
+		foreach(static::$pools as $pool)
+		{
+			$pool->close();
+		}
+		static::$pools = [];
+	}
+
+	/**
 	 * 获取实例
 	 * @param string $name
 	 * @return \Swoole\Atomic

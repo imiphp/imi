@@ -56,4 +56,13 @@ class DbResource extends BasePoolResource
 	public function reset()
 	{
 	}
+	
+	/**
+	 * 检查资源是否可用
+	 * @return bool
+	 */
+	public function checkState(): bool
+	{
+		return $this->db->isConnected();
+	}
 }

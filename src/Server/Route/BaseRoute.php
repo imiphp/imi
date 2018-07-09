@@ -37,14 +37,15 @@ abstract class BaseRoute implements IRoute
 	 * 增加路由规则，直接使用注解方式
 	 * @param \Imi\Server\Route\Annotation\Route $annotation
 	 * @param mixed $callable
+	 * @param array $options
 	 * @return void
 	 */
-	public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable)
+	public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
 	{
-		$this->rules[$annotation->url][$this->hashKey($annotation)] = [
+		$this->rules[$annotation->url][$this->hashKey($annotation)] = array_merge([
 			'annotation'=>	$annotation,
 			'callable'	=>	$callable,
-		];
+		], $options);
 	}
 
 	/**

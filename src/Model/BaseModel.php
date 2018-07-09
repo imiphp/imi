@@ -4,6 +4,7 @@ namespace Imi\Model;
 use Imi\Bean\BeanFactory;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\Text;
+use Imi\Util\ClassObject;
 
 /**
  * 模型基类
@@ -23,6 +24,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	protected $__camelCache = [];
 
 	public function __construct($data = [])
+	{
+		if(!ClassObject::isAnymous($this))
+		{
+			$this->__init();
+		}
+	}
+
+	public function __init($data = [])
 	{
 		$this->__fieldNames = ModelManager::getFieldNames($this);
 		foreach($data as $k => $v)
@@ -72,6 +81,16 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	public function offsetUnset($offset)
 	{
 		
+	}
+
+	public function __get($name)
+	{
+		return $this[$name];
+	}
+
+	public function __set($name, $value)
+	{
+		$this[$name] = $value;
 	}
 
 	/**

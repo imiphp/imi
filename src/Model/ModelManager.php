@@ -3,6 +3,7 @@ namespace Imi\Model;
 
 use Imi\Util\Imi;
 use Imi\RequestContext;
+use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 use Imi\Model\Key\KeyRule;
 use Imi\Model\Parser\ModelParser;
@@ -29,7 +30,7 @@ abstract class ModelManager
 	 */
 	public static function getAnnotation($object, $annotationClass)
 	{
-		$option = ModelParser::getInstance()->getData()[static::getObjectClass($object)] ?? [];
+		$option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
 		$key = Imi::getClassShortName($annotationClass);
 		return $option[$key] ?? null;
 	}
@@ -43,7 +44,7 @@ abstract class ModelManager
 	 */
 	public static function getPropertyAnnotation($object, $propertyName, $annotationClass)
 	{
-		$option = ModelParser::getInstance()->getData()[static::getObjectClass($object)] ?? [];
+		$option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
 		$key = Imi::getClassShortName($annotationClass);
 		return $option['properties'][$propertyName][$key] ?? null;
 	}
@@ -110,7 +111,7 @@ abstract class ModelManager
 	 */
 	public static function getFields($object)
 	{
-		$objectClass = static::getObjectClass($object);
+		$objectClass = BeanFactory::getObjectClass($object);
 		$key = 'Model.fields.' . $objectClass;
 		$fields = RequestContext::get($key);
 		if(null === $fields)
@@ -137,37 +138,13 @@ abstract class ModelManager
 	}
 
 	/**
-	 * 获取对象类名
-	 * @param string|object $object
-	 * @return string
-	 */
-	private static function getObjectClass($object)
-	{
-		if(is_object($object))
-		{
-			if(ClassObject::isAnymous($object))
-			{
-				return get_parent_class($object);
-			}
-			else
-			{
-				return get_class($object);
-			}
-		}
-		else
-		{
-			return (string)$object;
-		}
-	}
-
-	/**
 	 * 模型是否为驼峰命名
 	 * @param  string|object
 	 * @return boolean
 	 */
 	public static function isCamel($object)
 	{
-		$class = static::getObjectClass($object);
+		$class = BeanFactory::getObjectClass($object);
 		if(!isset(static::$isCamelCache[$class]))
 		{
 			static::$isCamelCache[$class] = static::getAnnotation($object, 'Entity')->camel;
@@ -182,7 +159,7 @@ abstract class ModelManager
 	 */
 	public static function getKeyRule($object)
 	{
-		$class = static::getObjectClass($object);
+		$class = BeanFactory::getObjectClass($object);
 		if(!isset(static::$keyRules[$class]))
 		{
 			$key = static::getAnnotation($object, 'RedisEntity')->key;

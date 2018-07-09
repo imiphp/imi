@@ -1,12 +1,13 @@
 <?php
 namespace Imi\Tool\Tools\Process;
 
+use Imi\App;
+use Imi\Util\Args;
 use Imi\Tool\ArgType;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Process\ProcessManager;
 use Imi\Tool\Annotation\Operation;
-use Imi\Util\Args;
 
 /**
  * @Tool("process")
@@ -26,6 +27,7 @@ class Process
 	 */
 	public function start($name, $redirectStdinStdout, $pipeType)
 	{
+		App::initWorker();
 		$args = Args::get();
 		$process = ProcessManager::create($name, $args, $redirectStdinStdout, $pipeType);
 		$process->start();

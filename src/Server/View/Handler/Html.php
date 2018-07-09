@@ -37,7 +37,7 @@ class Html implements IHandler
 
 	public function handle(View $viewAnnotation, Response $response): Response
 	{
-		$fileName = $this->getTemplateFilePath($viewAnnotation->template);
+		$fileName = $this->getTemplateFilePath($viewAnnotation);
 
 		if(!is_file($fileName))
 		{
@@ -51,17 +51,17 @@ class Html implements IHandler
 
 	/**
 	 * 获取模版文件真实路径，失败返回false
-	 * @param string $template
+	 * @param \Imi\Server\View\Annotation\View $viewAnnotation
 	 * @return string|boolean
 	 */
-	protected function getTemplateFilePath($template)
+	protected function getTemplateFilePath($viewAnnotation)
 	{
-		$fileName = realpath($template);
+		$fileName = realpath($viewAnnotation->template);
 		if(is_file($fileName))
 		{
-			return $template;
+			return $fileName;
 		}
-		$fileName = File::path($this->templatePath, $template);
+		$fileName = File::path($this->templatePath, $viewAnnotation->baseDir ?? '', $viewAnnotation->template);
 		foreach($this->fileSuffixs as $suffix)
 		{
 			$tryFileName = $fileName . '.' . $suffix;

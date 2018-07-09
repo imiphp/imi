@@ -56,7 +56,12 @@ abstract class BaseAsyncPool extends BasePool
 				}
 			}
 		}
-		return $this->queue->pop();
+		$resource = $this->queue->pop();
+		if(!$resource->checkState())
+		{
+			$resource->open();
+		}
+		return $resource;
 	}
 
 	/**
@@ -85,7 +90,12 @@ abstract class BaseAsyncPool extends BasePool
 		{
 			return false;
 		}
-		return $this->queue->pop();
+		$resource = $this->queue->pop();
+		if(!$resource->checkState())
+		{
+			$resource->open();
+		}
+		return $resource;
 	}
 
 	/**
