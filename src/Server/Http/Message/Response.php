@@ -182,7 +182,7 @@ class Response extends \Imi\Util\Http\Response
 	 * 获取swoole响应对象
 	 * @return \swoole_http_response
 	 */
-	public function getSwooleResonse(): \swoole_http_response
+	public function getSwooleResponse(): \swoole_http_response
 	{
 		return $this->swooleResponse;
 	}
