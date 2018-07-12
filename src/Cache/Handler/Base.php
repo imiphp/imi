@@ -35,7 +35,7 @@ abstract class Base implements CacheInterface
 		}
 		else
 		{
-			return RequestContext::getBean($this->formatHandlerClass)->encode($data);
+			return RequestContext::getServerBean($this->formatHandlerClass)->encode($data);
 		}
 	}
 
@@ -52,7 +52,7 @@ abstract class Base implements CacheInterface
 		}
 		else
 		{
-			return RequestContext::getBean($this->formatHandlerClass)->decode($data);
+			return RequestContext::getServerBean($this->formatHandlerClass)->decode($data);
 		}
 	}
 	

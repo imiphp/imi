@@ -32,7 +32,7 @@ abstract class Base implements ISessionHandler
 	 */
 	public function encode(array $data)
 	{
-		return RequestContext::getBean($this->formatHandlerClass)->encode($data);
+		return RequestContext::getServerBean($this->formatHandlerClass)->encode($data);
 	}
 
 	/**
@@ -42,7 +42,7 @@ abstract class Base implements ISessionHandler
 	 */
 	public function decode($data): array
 	{
-		$result = RequestContext::getBean($this->formatHandlerClass)->decode($data);
+		$result = RequestContext::getServerBean($this->formatHandlerClass)->decode($data);
 		if(!is_array($result))
 		{
 			$result = [];

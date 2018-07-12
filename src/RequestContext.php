@@ -3,6 +3,7 @@ namespace Imi;
 
 use Imi\Util\Coroutine;
 use Imi\Server\Base;
+use Imi\Bean\Container;
 
 abstract class RequestContext
 {
@@ -17,7 +18,9 @@ abstract class RequestContext
 		$coID = Coroutine::getuid();
 		if(!isset(static::$context[$coID]))
 		{
-			static::$context[$coID] = [];
+			static::$context[$coID] = [
+				'container'	=>	new Container,
+			];
 		}
 		else
 		{
@@ -118,9 +121,19 @@ abstract class RequestContext
 	 * @param string $name
 	 * @return mixed
 	 */
-	public static function getBean($name, ...$params)
+	public static function getServerBean($name, ...$params)
 	{
 		return static::getServer()->getBean($name, ...$params);
+	}
+
+	/**
+	 * 在当前请求上下文中获取Bean对象
+	 * @param string $name
+	 * @return mixed
+	 */
+	public static function getBean($name, ...$params)
+	{
+		return static::get('container')->get($name, ...$params);
 	}
 
 }

@@ -82,7 +82,7 @@ class ActionMiddleware implements MiddlewareInterface
 		if(isset($viewAnnotation))
 		{
 			// 视图渲染
-			$view = RequestContext::getBean('View');
+			$view = RequestContext::getServerBean('View');
 			$response = $view->render($viewAnnotation, $response);
 		}
 
