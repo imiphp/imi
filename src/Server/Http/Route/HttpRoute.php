@@ -15,6 +15,30 @@ use Imi\Server\Route\RouteCallable;
 class HttpRoute extends BaseRoute
 {
 	/**
+	 * url规则缓存
+	 * @var array
+	 */
+	private $rulesCache = [];
+
+	/**
+	 * 检查URL是否匹配的缓存
+	 * @var array
+	 */
+	private $urlCheckCache = [];
+
+	/**
+	 * url匹配缓存数量
+	 * @var integer
+	 */
+	private $urlCheckCacheCount = 0;
+
+	/**
+	 * URL是否匹配的缓存数量
+	 * @var integer
+	 */
+	protected $urlCacheNumber = 1024;
+
+	/**
 	 * 路由解析处理
 	 * @param Request $request
 	 * @return array
@@ -58,17 +82,40 @@ class HttpRoute extends BaseRoute
 	 */
 	private function checkUrl(Request $request, string $url, &$params)
 	{
-		$rule = $this->parseRule($url, $fields);
-		$params = [];
-		if(preg_match_all($rule, $request->getServerParam('path_info'), $matches) > 0)
+		$pathInfo = $request->getServerParam('path_info');
+		if(!isset($this->urlCheckCache[$pathInfo][$url]))
 		{
-			foreach($fields as $i => $fieldName)
+			$rule = $this->parseRule($url, $fields);
+			$params = [];
+			if(preg_match_all($rule, $pathInfo, $matches) > 0)
 			{
-				$params[$fieldName] = $matches[$i + 1][0];
+				foreach($fields as $i => $fieldName)
+				{
+					$params[$fieldName] = $matches[$i + 1][0];
+				}
+				$result = [
+					'result'	=>	true,
+					'params'	=>	$params,
+				];
 			}
-			return true;
+			else
+			{
+				$result = [
+					'result'	=>	false,
+					'params'	=>	$params,
+				];
+			}
+			// 最大缓存数量处理
+			if($this->urlCheckCacheCount >= $this->urlCacheNumber)
+			{
+				array_shift($this->urlCheckCache);
+				--$this->urlCheckCacheCount;
+			}
+			$this->urlCheckCache[$pathInfo][$url] = $result;
+			++$this->urlCheckCacheCount;
 		}
-		return false;
+		$params = $this->urlCheckCache[$pathInfo][$url]['params'];
+		return $this->urlCheckCache[$pathInfo][$url]['result'];
 	}
 
 	/**
@@ -79,16 +126,20 @@ class HttpRoute extends BaseRoute
 	 */
 	private function parseRule($rule, &$fields)
 	{
-		$fields = [];
-		$rule = str_replace(['/', '\{', '\}'], ['\/', '{', '}'], preg_quote($rule));
-		return '/^' . preg_replace_callback(
-			'/{([^}]+)}/i',
-			function($matches)use(&$fields){
-				$fields[] = $matches[1];
-				return '(.+)';
-			},
-			$rule
-		) . '\/?$/';
+		if(!isset($this->rulesCache[$rule]))
+		{
+			$fields = [];
+			$rule = str_replace(['/', '\{', '\}'], ['\/', '{', '}'], preg_quote($rule));
+			$this->rulesCache[$rule] = '/^' . preg_replace_callback(
+				'/{([^}]+)}/i',
+				function($matches)use(&$fields){
+					$fields[] = $matches[1];
+					return '(.+)';
+				},
+				$rule
+			) . '\/?$/';
+		}
+		return $this->rulesCache[$rule];
 	}
 
 	/**
@@ -229,5 +280,14 @@ class HttpRoute extends BaseRoute
 		{
 			return $callable;
 		}
+	}
+
+	/**
+	 * 获取当前缓存的url匹配数量
+	 * @return int
+	 */
+	public function getUrlCacheNumber()
+	{
+		return $this->urlCacheNumber;
 	}
 }
