@@ -18,9 +18,7 @@ abstract class RequestContext
 		$coID = Coroutine::getuid();
 		if(!isset(static::$context[$coID]))
 		{
-			static::$context[$coID] = [
-				'container'	=>	new Container,
-			];
+			static::$context[$coID] = [];
 		}
 		else
 		{
@@ -133,7 +131,13 @@ abstract class RequestContext
 	 */
 	public static function getBean($name, ...$params)
 	{
-		return static::get('container')->get($name, ...$params);
+		$container = static::get('container');
+		if(null === $container)
+		{
+			$container = new Container;
+			static::set('container', $container);
+		}
+		return $container->get($name, ...$params);
 	}
 
 }
