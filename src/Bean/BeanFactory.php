@@ -19,9 +19,10 @@ abstract class BeanFactory
 		$ref = new \ReflectionClass($class);
 		$tpl = static::getTpl($ref);
 		$object = eval($tpl);
-		if($ref->hasMethod('__init'))
+
+		if(method_exists($object, '__init'))
 		{
-			$ref->getMethod('__init')->invoke($object, ...$args);
+			$object->__init(...$args);
 		}
 		return $object;
 	}
@@ -49,8 +50,9 @@ abstract class BeanFactory
 			$constructDefine = '...$args';
 		}
 		// 匿名类模版定义
-		// 这里的换行符是为了解决某个不明觉厉的BUG加的，不加有时会有奇怪的问题，原因未知，BUG复现难……
-		$tpl = PHP_EOL . <<<TPL
+		// 第二次改这个奇怪的BUG……已解决，继续观察中……
+		$tpl = <<<TPL
+// {$class}
 return new class(...\$args) extends \\{$class}
 {
 	private \$beanProxy;
