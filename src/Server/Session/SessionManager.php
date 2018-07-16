@@ -184,6 +184,10 @@ class SessionManager
 	 */
 	public function get($name = null, $default = null)
 	{
+		if(null === $name)
+		{
+			return $this->data;
+		}
 		if(array_key_exists($name, $this->data))
 		{
 			return $this->data[$name];
