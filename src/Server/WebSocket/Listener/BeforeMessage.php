@@ -2,7 +2,9 @@
 namespace Imi\Server\WebSocket\Listener;
 
 use Imi\App;
+use Imi\ConnectContext;
 use Imi\RequestContext;
+use Imi\Server\WebSocket\Message\Frame;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\MessageEventParam;
 use Imi\Server\Event\Listener\IMessageEventListener;
@@ -21,13 +23,12 @@ class BeforeMessage implements IMessageEventListener
 	public function handle(MessageEventParam $e)
 	{
 		// 上下文创建
-		RequestContext::create();
-		// RequestContext::set('request', $e->request);
-		// RequestContext::set('response', $e->response);
+		ConnectContext::create($e->frame->fd);
+		RequestContext::set('server', $e->getTarget());
 
 		// 中间件
-		// $dispatcher = RequestContext::getBean('HttpDispatcher');
-		// $dispatcher->dispatch($e->request, $e->response);
-		var_dump($e->frame->data);
+		$dispatcher = RequestContext::getServerBean('WebSocketDispatcher');
+		$dispatcher->dispatch(new Frame($e->frame));
+
 	}
 }

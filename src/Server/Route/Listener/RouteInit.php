@@ -105,7 +105,7 @@ class RouteInit implements IEventListener
 	private function parseConfigs(EventParam $e)
 	{
 		$server = $e->getTarget();
-		if($server instanceof \Imi\Server\Http\Server)
+		if($server instanceof \Imi\Server\Http\Server || $server instanceof \Imi\Server\WebSocket\Server)
 		{
 			$route = $server->getBean('HttpRoute');
 		}

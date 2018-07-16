@@ -111,7 +111,7 @@ abstract class RequestContext
 	 */
 	public static function getServer(): Base
 	{
-		return static::get('request')->getServerInstance();
+		return static::get('server');
 	}
 
 	/**

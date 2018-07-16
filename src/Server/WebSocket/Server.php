@@ -86,7 +86,6 @@ class Server extends Base
 		});
 
 		$this->swooleServer->on('close', function(\swoole_http_server $server, $fd){
-			var_dump('close');
 			$this->trigger('close', [
 				'server'	=>	$server,
 				'fd'		=>	$fd,

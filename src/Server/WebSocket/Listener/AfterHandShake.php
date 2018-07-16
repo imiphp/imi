@@ -1,10 +1,11 @@
 <?php
 namespace Imi\Server\WebSocket\Listener;
 
+use Imi\ConnectContext;
+use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\HandShakeEventParam;
 use Imi\Server\Event\Listener\IHandShakeEventListener;
-use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * HandShake事件后置处理
@@ -19,51 +20,22 @@ class AfterHandShake implements IHandShakeEventListener
 	 */
 	public function handle(HandShakeEventParam $e)
 	{
-		$response = &$e->response;
-		if($response->isEnded())
-		{
-			// 已经处理过事件的不再做处理
-			$this->parseAfter($e);
-			return;
-		}
-		$request = $e->request;
-		$secWebSocketKey = $request->getHeaderLine('sec-websocket-key');
-		static $patten = '#^[+/0-9A-Za-z]{21}[AQgw]==$#';
-		if (0 === preg_match($patten, $secWebSocketKey) || 16 !== strlen(base64_decode($secWebSocketKey)))
-		{
-			$response->send();
-			return;
-		}
+		// 上下文创建
+		RequestContext::create();
+		RequestContext::set('server', $e->request->getServerInstance());
+		RequestContext::set('request', $e->request);
+		RequestContext::set('response', $e->response);
 
-		$key = base64_encode(sha1($secWebSocketKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
+		// 中间件
+		$dispatcher = RequestContext::getServerBean('HttpDispatcher');
+		$dispatcher->dispatch($e->request, $e->response);
 
-		$headers = [
-			'Upgrade' => 'websocket',
-			'Connection' => 'Upgrade',
-			'Sec-WebSocket-Accept' => $key,
-			'Sec-WebSocket-Version' => '13',
-		];
+		// 连接上下文创建
+		ConnectContext::create($e->request->getSwooleRequest()->fd);
+		ConnectContext::set('httpRequest', $e->request);
 
-		if($request->hasHeader('Sec-WebSocket-Protocol'))
-		{
-			$headers['Sec-WebSocket-Protocol'] = $request->getHeaderLine('Sec-WebSocket-Protocol');
-		}
-
-		foreach ($headers as $key => $val)
-		{
-			$response = $response->withHeader($key, $val);
-		}
-
-		// $response->status(101);
-		// $response->end();
-		$response = $response->withStatus(StatusCode::SWITCHING_PROTOCOLS);
-		$response->send();
-
-		$this->parseAfter($e);
+		// 释放请求上下文
+		RequestContext::destroy();
 	}
 
-	private function parseAfter(HandShakeEventParam $e)
-	{
-		
-	}
 }

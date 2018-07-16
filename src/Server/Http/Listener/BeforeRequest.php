@@ -22,6 +22,7 @@ class BeforeRequest implements IRequestEventListener
 	{
 		// 上下文创建
 		RequestContext::create();
+		RequestContext::set('server', $e->request->getServerInstance());
 		RequestContext::set('request', $e->request);
 		RequestContext::set('response', $e->response);
 

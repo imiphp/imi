@@ -13,6 +13,12 @@ use Imi\Bean\Annotation\Parser;
 class Route extends Base
 {
 	/**
+	 * 只传一个参数时的参数名
+	 * @var string
+	 */
+	protected $defaultFieldName = 'url';
+
+	/**
 	 * 请求地址规则
 	 * @var string
 	 */

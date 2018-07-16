@@ -4,10 +4,11 @@ namespace Imi\Server\WebSocket\Listener;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Event\Listener\ICloseEventListener;
+use Imi\ConnectContext;
 
 /**
- * Message事件前置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="close",priority=PHP_INT_MAX)
+ * Close事件前置处理
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="close")
  */
 class OnClose implements ICloseEventListener
 {
@@ -18,6 +19,6 @@ class OnClose implements ICloseEventListener
 	 */
 	public function handle(CloseEventParam $e)
 	{
-		var_dump('close');
+		ConnectContext::destroy($e->fd);
 	}
 }
