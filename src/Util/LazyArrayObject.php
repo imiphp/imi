@@ -1,10 +1,12 @@
 <?php
 namespace Imi\Util;
 
+use Imi\Util\Interfaces\IArrayable;
+
 /**
  * 同时可以作为数组和对象访问的类
  */
-class LazyArrayObject implements \Iterator, \ArrayAccess
+class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
 {
 	/**
 	 * 数据
@@ -22,9 +24,17 @@ class LazyArrayObject implements \Iterator, \ArrayAccess
 		return isset($this->data[$offset]);
 	}
 
-	public function offsetGet($offset)
+	public function &offsetGet($offset)
 	{
-		return $this->data[$offset] ?? null;
+		if(isset($this->data[$offset]))
+		{
+			$value = &$this->data[$offset];
+		}
+		else
+		{
+			$value = null;
+		}
+		return $value;
 	}
 
 	public function offsetSet($offset, $value)
@@ -34,7 +44,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess
 
 	public function offsetUnset($offset)
 	{
-		if($this->data[$offset])
+		if(isset($this->data[$offset]))
 		{
 			unset($this->data[$offset]);
 		}
@@ -42,7 +52,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess
 
 	public function current()
 	{
-		current($this->data);
+		return current($this->data);
 	}
 
 	public function key()
@@ -70,9 +80,17 @@ class LazyArrayObject implements \Iterator, \ArrayAccess
 		$this->data[$name] = $value;
 	}
 
-	public function __get($name)
+	public function &__get($name)
 	{
-		return $this->data[$name] ?? null;
+		if(isset($this->data[$name]))
+		{
+			$value = &$this->data[$name];
+		}
+		else
+		{
+			$value = null;
+		}
+		return $value;
 	}
 
 	public function __isset($name)
@@ -82,9 +100,28 @@ class LazyArrayObject implements \Iterator, \ArrayAccess
 
 	public function __unset($name)
 	{
-		if($this->data[$offset])
+		if(isset($this->data[$name]))
 		{
-			unset($this->data[$offset]);
+			unset($this->data[$name]);
 		}
+	}
+
+	/**
+	 * 将当前对象作为数组返回
+	 * @return array
+	 */
+	public function toArray(): array
+	{
+		return \iterator_to_array($this);
+	}
+
+	/**
+	 * json 序列化
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize()
+	{
+        return $this->toArray();
 	}
 }
