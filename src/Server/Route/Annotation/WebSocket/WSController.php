@@ -1,16 +1,16 @@
 <?php
-namespace Imi\Server\Route\Annotation;
+namespace Imi\Server\Route\Annotation\WebSocket;
 
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 控制器注解
+ * WebSocket 控制器注解
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Server\Route\Parser\ControllerParser")
+ * @Parser("Imi\Server\Route\Parser\WSControllerParser")
  */
-class Controller extends Base
+class WSController extends Base
 {
 	/**
 	 * 只传一个参数时的参数名
@@ -18,9 +18,4 @@ class Controller extends Base
 	 */
 	protected $defaultFieldName = 'prefix';
 
-	/**
-	 * 路由前缀
-	 * @var string
-	 */
-	public $prefix;
 }

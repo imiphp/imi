@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Controller;
 
+/**
+ * Http 控制器
+ */
 abstract class HttpController
 {
 	/**

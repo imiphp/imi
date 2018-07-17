@@ -65,6 +65,7 @@ class HttpRoute extends BaseRoute
 							'params'		=>	$params,
 							'callable'		=>	$this->parseCallable($params, $item['callable']),
 							'middlewares'	=>	$item['middlewares'] ?? [],
+							'wsConfig'		=>	$item['wsConfig'],
 						];
 					}
 				}

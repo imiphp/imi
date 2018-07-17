@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Server\WebSocket\Message;
 
+use Imi\Server\WebSocket\Parser\DataParser;
+use Imi\RequestContext;
+
 class Frame implements IFrame
 {
 	/**
@@ -9,9 +12,16 @@ class Frame implements IFrame
 	 */
 	protected $frame;
 
+	/**
+	 * 格式化后的数据
+	 * @var array
+	 */
+	protected $data;
+
 	public function __construct(\Swoole\Websocket\Frame $frame)
 	{
 		$this->frame = $frame;
+		$this->data = RequestContext::getServerBean(DataParser::class)->decode($frame->data);
 	}
 
 	/**
@@ -30,6 +40,15 @@ class Frame implements IFrame
 	public function getData()
 	{
 		return $this->frame->data;
+	}
+
+	/**
+	 * 获取格式化后的数据，一般是数组或对象
+	 * @return mixed
+	 */
+	public function getFormatData()
+	{
+		return $this->data;
 	}
 
 	/**

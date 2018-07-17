@@ -33,6 +33,7 @@ class AfterHandShake implements IHandShakeEventListener
 		// 连接上下文创建
 		ConnectContext::create($e->request->getSwooleRequest()->fd);
 		ConnectContext::set('httpRequest', $e->request);
+		ConnectContext::set('httpRouteResult', ConnectContext::get('routeResult'));
 
 		// 释放请求上下文
 		RequestContext::destroy();

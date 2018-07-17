@@ -6,5 +6,5 @@ use Imi\Server\WebSocket\IMessageHandler;
 
 interface IMiddleware
 {
-	public function process(IFrame $request, IMessageHandler $handler);
+	public function process(IFrame $frame, IMessageHandler $handler);
 }

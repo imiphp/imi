@@ -5,6 +5,7 @@ use Imi\App;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\WebSocket\Message\IFrame;
+use Imi\Server\WebSocket\Parser\DataParser;
 
 /**
  * @Bean("WebSocketDispatcher")
@@ -23,7 +24,7 @@ class Dispatcher
 		$responseData = $requestHandler->handle($frame);
 		if(null !== $responseData)
 		{
-			RequestContext::getServer()->getSwooleServer()->push($frame->getFd(), $responseData);
+			RequestContext::getServer()->getSwooleServer()->push($frame->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
 		}
 	}
 

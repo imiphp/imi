@@ -11,7 +11,7 @@ use Imi\Util\Traits\TServerAnnotationParser;
 /**
  * 控制器注解处理器
  */
-class ControllerParser extends BaseParser
+class WSControllerParser extends BaseParser
 {
 	use TServerAnnotationParser;
 
@@ -25,7 +25,7 @@ class ControllerParser extends BaseParser
 	 */
 	public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
 	{
-		if($annotation instanceof \Imi\Server\Route\Annotation\Controller)
+		if($annotation instanceof \Imi\Server\Route\Annotation\WebSocket\WSController)
 		{
 			if(!isset($this->data[$className]))
 			{
@@ -35,18 +35,18 @@ class ControllerParser extends BaseParser
 				];
 			}
 		}
-		else if($annotation instanceof \Imi\Server\Route\Annotation\Action)
+		else if($annotation instanceof \Imi\Server\Route\Annotation\WebSocket\WSAction)
 		{
 			if(!isset($this->data[$className][$targetName]))
 			{
 				$this->data[$className]['methods'][$targetName] = [];
 			}
 		}
-		else if($annotation instanceof \Imi\Server\Route\Annotation\Route)
+		else if($annotation instanceof \Imi\Server\Route\Annotation\WebSocket\WSRoute)
 		{
 			$this->data[$className]['methods'][$targetName]['routes'][] = $annotation;
 		}
-		else if($annotation instanceof \Imi\Server\Route\Annotation\Middleware)
+		else if($annotation instanceof \Imi\Server\Route\Annotation\WebSocket\WSMiddleware)
 		{
 			switch($target)
 			{
@@ -65,10 +65,6 @@ class ControllerParser extends BaseParser
 					$this->data[$className]['methods'][$targetName]['middlewares'][] = $annotation;
 					break;
 			}
-		}
-		else if($annotation instanceof \Imi\Server\Route\Annotation\WebSocket\WSConfig)
-		{
-			$this->data[$className]['methods'][$targetName]['WSConfig'] = $annotation;
 		}
 	}
 

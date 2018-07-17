@@ -16,6 +16,12 @@ interface IFrame
 	public function getData();
 
 	/**
+	 * 获取格式化后的数据，一般是数组或对象
+	 * @return mixed
+	 */
+	public function getFormatData();
+
+	/**
 	 * WebSocket的OpCode类型，可以参考WebSocket协议标准文档
 	 * WEBSOCKET_OPCODE_TEXT = 0x1 ，文本数据
 	 * WEBSOCKET_OPCODE_BINARY = 0x2 ，二进制数据
