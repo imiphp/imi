@@ -6,6 +6,7 @@ use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Aop\Annotation\Inject;
 use Imi\Server\Session\Handler\ISessionHandler;
+use Imi\Util\ObjectArrayHelper;
 
 /**
  * @Bean("SessionManager")
@@ -188,14 +189,7 @@ class SessionManager
 		{
 			return $this->data;
 		}
-		if(array_key_exists($name, $this->data))
-		{
-			return $this->data[$name];
-		}
-		else
-		{
-			return $default;
-		}
+		return ObjectArrayHelper::get($this->data, $name, $default);
 	}
 
 	/**
@@ -206,7 +200,7 @@ class SessionManager
 	 */
 	public function set($name, $value)
 	{
-		$this->data[$name] = $value;
+		ObjectArrayHelper::set($this->data, $name, $value);
 	}
 
 	/**
@@ -216,10 +210,7 @@ class SessionManager
 	 */
 	public function delete($name)
 	{
-		if(isset($this->data[$name]))
-		{
-			unset($this->data[$name]);
-		}
+		ObjectArrayHelper::remove($this->data, $name);
 	}
 
 	/**
@@ -228,7 +219,7 @@ class SessionManager
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function once($name, $default = false)
+	public function once($name, $default = null)
 	{
 		$value = $this->get($name, $default);
 		$this->delete($name);
