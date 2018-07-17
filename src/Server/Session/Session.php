@@ -57,4 +57,5 @@ abstract class Session
 	{
 		RequestContext::getBean('SessionManager')->clear();
 	}
+
 }

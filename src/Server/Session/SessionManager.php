@@ -189,6 +189,7 @@ class SessionManager
 		{
 			return $this->data;
 		}
+		$name = $this->parseName($name);
 		return ObjectArrayHelper::get($this->data, $name, $default);
 	}
 
@@ -200,6 +201,7 @@ class SessionManager
 	 */
 	public function set($name, $value)
 	{
+		$name = $this->parseName($name);
 		ObjectArrayHelper::set($this->data, $name, $value);
 	}
 
@@ -210,6 +212,7 @@ class SessionManager
 	 */
 	public function delete($name)
 	{
+		$name = $this->parseName($name);
 		ObjectArrayHelper::remove($this->data, $name);
 	}
 
@@ -221,6 +224,7 @@ class SessionManager
 	 */
 	public function once($name, $default = null)
 	{
+		$name = $this->parseName($name);
 		$value = $this->get($name, $default);
 		$this->delete($name);
 		return $value;
@@ -245,4 +249,21 @@ class SessionManager
 		return $this->config;
 	}
 
+	/**
+	 * 处理name名称，@替换为前缀
+	 * @param string $name
+	 * @return string
+	 */
+	public function parseName($name)
+	{
+		if(null !== $this->config->prefix)
+		{
+			return str_replace('@', $this->config->prefix, $name);
+		}
+		else
+		{
+			return $name;
+		}
+	}
+	
 }
