@@ -89,13 +89,13 @@ TPL;
 			$tpl .= <<<TPL
 	public function {$method->name}({$paramsTpls['define']}){$methodReturnType}
 	{
-		\$args = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
+		\$__args__ = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
 		return \$this->beanProxy->call(
 			'{$method->name}',
 			function({$paramsTpls['define']}){
 				return parent::{$method->name}({$paramsTpls['call']});
 			},
-			\$args
+			\$__args__
 		);
 	}
 
@@ -151,10 +151,10 @@ TPL;
 		}
 		$result['args_variadic'] .= <<<STR
 
-		if(!isset(\$args[func_num_args() - 1]))
+		if(!isset(\$__args__[func_num_args() - 1]))
 		{
-			\$allArgs = func_get_args();
-			\$args = array_merge(\$args, array_splice(\$allArgs, count(\$args)));
+			\$__allArgs__ = func_get_args();
+			\$__args__ = array_merge(\$__args__, array_splice(\$__allArgs__, count(\$__args__)));
 		}
 STR;
 		return $result;
@@ -228,9 +228,9 @@ STR;
 	{
 		return <<<TPL
 
-		foreach(\${$param->name} as \$item)
+		foreach(\${$param->name} as \$__item__)
 		{
-			\$args[] = \$item;
+			\$__args__[] = \$__item__;
 		}
 TPL;
 	}
