@@ -32,15 +32,15 @@ class PhpSession implements IFormat
 		{
 			if (!strstr(substr($data, $offset), '|'))
 			{
-				throw new \Exception('invalid data, remaining: ' . substr($data, $offset));
+				return [];
 			}
 			$pos = strpos($data, '|', $offset);
 			$num = $pos - $offset;
 			$varname = substr($data, $offset, $num);
 			$offset += $num + 1;
-			$data = unserialize(substr($data, $offset));
-			$result[$varname] = $data;
-			$offset += strlen(serialize($data));
+			$dataItem = unserialize(substr($data, $offset));
+			$result[$varname] = $dataItem;
+			$offset += strlen(serialize($dataItem));
 		}
 		return $result;
 	}
