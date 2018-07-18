@@ -87,4 +87,14 @@ trait TServerGroup
 	{
 		return $this->createGroup($groupName)->$methodName(...$args);
 	}
+
+	/**
+	 * 获取所有组列表
+	 *
+	 * @return \Imi\Server\Group\Group[]
+	 */
+	public function getGroups(): array
+	{
+		return $this->groups;
+	}
 }

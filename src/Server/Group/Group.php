@@ -79,6 +79,7 @@ class Group
 	public function join($fd)
 	{
 		$this->handler->joinGroup($this->groupName, $fd);
+		RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
 	}
 
 	/**
@@ -91,6 +92,7 @@ class Group
 	public function leave($fd)
 	{
 		$this->handler->leaveGroup($this->groupName, $fd);
+		RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
 	}
 
 	/**

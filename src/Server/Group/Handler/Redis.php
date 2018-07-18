@@ -189,7 +189,7 @@ class Redis implements IGroupHandler
 	{
 		PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
 			$key = $this->getGroupNameKey($groupName);
-			$redis->lrem($key, 0, $fd);
+			$redis->lrem($key, $fd, 0);
 		});
 	}
 
