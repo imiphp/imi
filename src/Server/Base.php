@@ -14,10 +14,11 @@ use Imi\Server\Event\Param\WorkStartEventParam;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\ManagerStartEventParam;
+use Imi\Server\Group\TServerGroup;
 
 abstract class Base
 {
-	use TEvent;
+	use TEvent, TServerGroup;
 	
 	/**
 	 * swoole 服务器对象
