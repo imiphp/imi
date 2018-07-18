@@ -2,8 +2,6 @@
 namespace Imi\Server\Group;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Group\Exception\JoinGroupException;
-use Imi\Server\Group\Exception\LeaveGroupException;
 use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Server\Group\Handler\IGroupHandler;
 use Imi\RequestContext;
@@ -75,7 +73,6 @@ class Group
 	 * 
 	 * @param int $fd
 	 * @return void
-	 * @throws \Imi\Server\Group\Exception\JoinGroupException
 	 */
 	public function join($fd)
 	{
@@ -93,7 +90,6 @@ class Group
 	 *
 	 * @param int $fd
 	 * @return void
-	 * @throws \Imi\Server\Group\Exception\JoinGroupException
 	 */
 	public function leave($fd)
 	{

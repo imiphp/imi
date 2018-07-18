@@ -18,11 +18,24 @@ class FdMap
 	 */
 	protected $map = [];
 
+	/**
+	 * 获取fd绑定的所有的组
+	 *
+	 * @param integer $fd
+	 * @return \Imi\Server\Group\Group[]
+	 */
 	public function getGroups(int $fd)
 	{
 		return $this->map[$fd] ?? [];
 	}
 
+	/**
+	 * 增加fd关联关系
+	 *
+	 * @param integer $fd
+	 * @param Group $group
+	 * @return void
+	 */
 	public function joinGroup(int $fd, Group $group)
 	{
 		$index = array_search($group, $this->map[$fd] ?? []);
@@ -32,6 +45,13 @@ class FdMap
 		}
 	}
 
+	/**
+	 * 移除fd关联关系
+	 *
+	 * @param integer $fd
+	 * @param Group $group
+	 * @return void
+	 */
 	public function leaveGroup(int $fd, Group $group)
 	{
 		$index = array_search($group, $this->map[$fd] ?? []);
@@ -41,6 +61,12 @@ class FdMap
 		}
 	}
 
+	/**
+	 * 将fd从所有组中移除
+	 *
+	 * @param integer $fd
+	 * @return void
+	 */
 	public function leaveAll(int $fd)
 	{
 		$map = $this->map[$fd] ?? [];
