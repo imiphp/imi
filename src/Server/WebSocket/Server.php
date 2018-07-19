@@ -80,14 +80,14 @@ class Server extends Base
 
 		$this->swooleServer->on('message', function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) {
 			$this->trigger('message', [
-				'server'	=>	$server,
+				'server'	=>	$this,
 				'frame'		=>	$frame,
 			], $this, MessageEventParam::class);
 		});
 
 		$this->swooleServer->on('close', function(\swoole_http_server $server, $fd){
 			$this->trigger('close', [
-				'server'	=>	$server,
+				'server'	=>	$this,
 				'fd'		=>	$fd,
 			], $this, CloseEventParam::class);
 		});

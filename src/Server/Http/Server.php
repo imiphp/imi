@@ -67,7 +67,7 @@ class Server extends Base
 
 		$this->swooleServer->on('close', function(\swoole_http_server $server, int $fd){
 			$this->trigger('close', [
-				'server'	=>	$server,
+				'server'	=>	$this,
 				'fd'		=>	$fd,
 			], $this, CloseEventParam::class);
 		});

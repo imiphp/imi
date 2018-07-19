@@ -6,8 +6,8 @@ use Imi\Event\EventParam;
 class MessageEventParam extends EventParam
 {
 	/**
-	 * websocket 服务器对象
-	 * @var \swoole_websocket_server
+	 * 服务器对象
+	 * @var \Imi\Server\Base
 	 */
 	public $server;
 

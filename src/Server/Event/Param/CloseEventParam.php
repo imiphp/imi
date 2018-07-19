@@ -6,8 +6,8 @@ use Imi\Event\EventParam;
 class CloseEventParam extends EventParam
 {
 	/**
-	 * swoole 服务器对象
-	 * @var \swoole_http_server
+	 * 服务器对象
+	 * @var \Imi\Server\Base
 	 */
 	public $server;
 

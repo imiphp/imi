@@ -27,8 +27,8 @@ class OnStart implements IManagerStartEventListener
 	{
 		$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
 		File::writeFile($fileName, json_encode([
-			'masterPID'		=>	$e->server->master_pid,
-			'managerPID'	=>	$e->server->manager_pid,
+			'masterPID'		=>	$e->server->getSwooleServer()->master_pid,
+			'managerPID'	=>	$e->server->getSwooleServer()->manager_pid,
 		]));
 		
 		// 热更新

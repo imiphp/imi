@@ -10,9 +10,9 @@ use Imi\Server\Event\Listener\ICloseEventListener;
 
 /**
  * Close事件前置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="close")
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="close",priority=PHP_INT_MAX)
  */
-class OnClose implements ICloseEventListener
+class BeforeClose implements ICloseEventListener
 {
 	/**
 	 * 事件处理方法
@@ -21,13 +21,12 @@ class OnClose implements ICloseEventListener
 	 */
 	public function handle(CloseEventParam $e)
 	{
-		RequestContext::create();
+		if(!RequestContext::exsits())
+		{
+			RequestContext::create();
+		}
+		RequestContext::set('fd', $e->fd);
 		RequestContext::set('server', $e->getTarget());
 		
-		// 当前连接离开所有组
-		$e->getTarget()->getBean('FdMap')->leaveAll($e->fd);
-
-		RequestContext::destroy();
-		ConnectContext::destroy($e->fd);
 	}
 }
