@@ -25,18 +25,27 @@ interface IGroupHandler
 	 *
 	 * @param string $groupName
 	 * @param integer $fd
-	 * @return void
+	 * @return boolean
 	 */
-	public function joinGroup(string $groupName, int $fd);
+	public function joinGroup(string $groupName, int $fd): bool;
 
 	/**
 	 * 离开组，组不存在则自动创建
 	 *
 	 * @param string $groupName
 	 * @param integer $fd
-	 * @return void
+	 * @return boolean
 	 */
-	public function leaveGroup(string $groupName, int $fd);
+	public function leaveGroup(string $groupName, int $fd): bool;
+	
+	/**
+	 * 连接是否存在于组里
+	 *
+	 * @param string $groupName
+	 * @param integer $fd
+	 * @return boolean
+	 */
+	public function isInGroup(string $groupName, int $fd): bool;
 	
 	/**
 	 * 获取所有fd

@@ -77,7 +77,7 @@ class Redis implements IGroupHandler
 				foreach($keys as $key)
 				{
 					try{
-						if($redis->llen($key) > 0)
+						if($redis->scard($key) > 0)
 						{
 							$redis->del($key);
 						}
@@ -147,7 +147,7 @@ class Redis implements IGroupHandler
 		PoolManager::use($this->redisPool, function($resource, $redis) use($groupName){
 			$key = $this->getGroupNameKey($groupName);
 			try{
-				if($redis->llen($key) > 0)
+				if($redis->scard($key) > 0)
 				{
 					$redis->del($key);
 				}
@@ -166,15 +166,11 @@ class Redis implements IGroupHandler
 	 * @param integer $fd
 	 * @return void
 	 */
-	public function joinGroup(string $groupName, int $fd)
+	public function joinGroup(string $groupName, int $fd): bool
 	{
-		PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
+		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
 			$key = $this->getGroupNameKey($groupName);
-			$redis->rpush($key, $fd);
-			if($this->groups[$groupName]['maxClient'] > 0)
-			{
-				$redis->ltrim($key, 0, $this->groups[$groupName]['maxClient'] - 1); // 防止超出限制
-			}
+			return $redis->sadd($key, $fd) > 0;
 		});
 	}
 
@@ -185,11 +181,26 @@ class Redis implements IGroupHandler
 	 * @param integer $fd
 	 * @return void
 	 */
-	public function leaveGroup(string $groupName, int $fd)
+	public function leaveGroup(string $groupName, int $fd): bool
 	{
-		PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
+		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
 			$key = $this->getGroupNameKey($groupName);
-			$redis->lrem($key, $fd, 0);
+			return $redis->srem($key, $fd) > 0;
+		});
+	}
+
+	/**
+	 * 连接是否存在于组里
+	 *
+	 * @param string $groupName
+	 * @param integer $fd
+	 * @return boolean
+	 */
+	public function isInGroup(string $groupName, int $fd): bool
+	{
+		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
+			$key = $this->getGroupNameKey($groupName);
+			$redis->sIsMember($key, $fd);
 		});
 	}
 
@@ -203,7 +214,14 @@ class Redis implements IGroupHandler
 	{
 		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName){
 			$key = $this->getGroupNameKey($groupName);
-			return $redis->lrange($key, 0, $this->groups[$groupName]['maxClient'] ?? 0);
+			if($this->groups[$groupName]['maxClient'] > 0)
+			{
+				return $redis->sRandMember($key, $this->groups[$groupName]['maxClient']);
+			}
+			else
+			{
+				return $redis->sMembers($key);
+			}
 		});
 	}
 

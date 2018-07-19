@@ -76,13 +76,15 @@ class Group
 	 */
 	public function join($fd)
 	{
-		$this->handler->joinGroup($this->groupName, $fd);
-		RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
-		Event::trigger('IMI.SERVER.GROUP.JOIN', [
-			'server'		=>	RequestContext::getServer(),
-			'groupName'		=>	$this->groupName,
-			'fd'			=>	$fd,
-		]);
+		if($this->handler->joinGroup($this->groupName, $fd))
+		{
+			RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
+			Event::trigger('IMI.SERVER.GROUP.JOIN', [
+				'server'		=>	RequestContext::getServer(),
+				'groupName'		=>	$this->groupName,
+				'fd'			=>	$fd,
+			]);
+		}
 	}
 
 	/**
@@ -93,13 +95,15 @@ class Group
 	 */
 	public function leave($fd)
 	{
-		$this->handler->leaveGroup($this->groupName, $fd);
-		RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
-		Event::trigger('IMI.SERVER.GROUP.LEAVE', [
-			'server'		=>	RequestContext::getServer(),
-			'groupName'		=>	$this->groupName,
-			'fd'			=>	$fd,
-		]);
+		if($this->handler->leaveGroup($this->groupName, $fd))
+		{
+			RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
+			Event::trigger('IMI.SERVER.GROUP.LEAVE', [
+				'server'		=>	RequestContext::getServer(),
+				'groupName'		=>	$this->groupName,
+				'fd'			=>	$fd,
+			]);
+		}
 	}
 
 	/**
