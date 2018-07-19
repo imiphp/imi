@@ -20,6 +20,12 @@ abstract class BeanFactory
 		$tpl = static::getTpl($ref);
 		$object = eval($tpl);
 
+		// 尝试解决一个陈年老 BUG，有时候 eval实例化出的对象根本不是预想中的，再执行就行了，灰常奇怪
+		if(!$object instanceof $class)
+		{
+			$object = eval($tpl);
+		}
+
 		if(method_exists($object, '__init'))
 		{
 			$object->__init(...$args);
@@ -50,9 +56,7 @@ abstract class BeanFactory
 			$constructDefine = '...$args';
 		}
 		// 匿名类模版定义
-		// 第二次改这个奇怪的BUG……已解决，继续观察中……
 		$tpl = <<<TPL
-// {$class}
 return new class(...\$args) extends \\{$class}
 {
 	private \$beanProxy;
