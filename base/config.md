@@ -4,20 +4,46 @@
 
 如果你不知道`Main`是什么，请看上一章：[《开始一个新项目》](/base/new.html)
 
-## 公共配置约定
+## 配置文件结构
+
+## 共有结构
 
 ```php
+<?php
 return [
     // 加载子配置文件，避免`config.php`过于臃肿不便维护
+    // 要注意这里的别名不可与configs同级的名字重复，否则会被覆盖
     'configs'    =>    [
         "别名1"    =>    '配置文件路径1',
         "别名2"    =>    '配置文件路径2',
         ……
     ],
+    // bean扫描目录，指定命名空间
+    'beanScan'	=>	[
+    	'ImiDemo\WebSocketDemo\Listener',
+    ],
+    // 配置方式注入类属性，详见AOP章节
+    'beans'    =>    [
+        'hotUpdate'	=>	[
+		// 'status'	=>	false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
+
+		// --- 文件修改时间监控 ---
+		// 'monitorClass'	=>	\Imi\HotUpdate\Monitor\FileMTime::class,
+		// 'timespan'	=>	1, // 检测时间间隔，单位：秒
+
+		// --- Inotify 扩展监控 ---
+		// 'monitorClass'	=>	\Imi\HotUpdate\Monitor\Inotify::class,
+		// 'timespan'	=>	0, // 检测时间间隔，单位：秒，使用扩展建议设为0性能更佳
+
+		// 'includePaths'	=>	[], // 要包含的路径数组
+		// 'excludePaths'	=>	[], // 要排除的路径数组，支持通配符*
+		// 'defaultPath'	=>	[], // 设为数组则覆盖默认的监控路径
+	],
+    ],
 ];
 ```
 
-## 项目配置文件
+### 项目配置文件
 
 ```php
 return [
