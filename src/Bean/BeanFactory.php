@@ -34,13 +34,6 @@ abstract class BeanFactory
 
 		$object = include $cacheFileName;
 
-		if(get_parent_class($object) !== $ref->getName())
-		{
-			echo '[error] ', get_parent_class($object), ' ; ', $ref->getName(), ' ; ', $cacheFileName, PHP_EOL;
-			var_dump($object);
-			var_dump(RequestContext::getServer()->getSwooleServer()->getLastError());
-		}
-
 		if(method_exists($object, '__init'))
 		{
 			$object->__init(...$args);
