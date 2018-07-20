@@ -156,10 +156,10 @@ public function groupCall(string $groupName, string $methodName, ...$args);
 
 ```php
 /**
-* 获取所有组列表
-*
-* @return \Imi\Server\Group\Group[]
-*/
+ * 获取所有组列表
+ *
+ * @return \Imi\Server\Group\Group[]
+ */
 public function getGroups(): array;
 ```
 ### $frame
