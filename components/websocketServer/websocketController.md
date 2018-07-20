@@ -91,66 +91,66 @@ $this->server->groupCall('组名', 'push', ['success'=>true]);
 
 ```php
 /**
-* 组是否存在
-*
-* @param string $groupName
-* @return boolean
-*/
+ * 组是否存在
+ *
+ * @param string $groupName
+ * @return boolean
+ */
 public function hasGroup(string $groupName);
 ```
 
 ```php
 /**
-* 创建组，返回组对象
-*
-* @param string $groupName
-* @param integer $maxClients
-* @return \Imi\Server\Group\Group
-*/
+ * 创建组，返回组对象
+ *
+ * @param string $groupName
+ * @param integer $maxClients
+ * @return \Imi\Server\Group\Group
+ */
 public function createGroup(string $groupName, int $maxClients = -1);
 ```
 
 ```php
 /**
-* 获取组对象，不存在返回null
-*
-* @param string $groupName
-* @return \Imi\Server\Group\Group|null
-*/
+ * 获取组对象，不存在返回null
+ *
+ * @param string $groupName
+ * @return \Imi\Server\Group\Group|null
+ */
 public function getGroup(string $groupName);
 ```
 
 ```php
 /**
-* 加入组，组不存在则自动创建
-*
-* @param string $groupName
-* @param integer $fd
-* @return void
-*/
+ * 加入组，组不存在则自动创建
+ *
+ * @param string $groupName
+ * @param integer $fd
+ * @return void
+ */
 public function joinGroup(string $groupName, int $fd);
 ```
 
 ```php
 /**
-* 离开组，组不存在则自动创建
-*
-* @param string $groupName
-* @param integer $fd
-* @return void
-*/
+ * 离开组，组不存在则自动创建
+ *
+ * @param string $groupName
+ * @param integer $fd
+ * @return void
+ */
 public function leaveGroup(string $groupName, int $fd);
 ```
 
 ```php
 /**
-* 调用组方法
-*
-* @param string $groupName
-* @param string $methodName
-* @param mixed ...$args
-* @return array
-*/
+ * 调用组方法
+ *
+ * @param string $groupName
+ * @param string $methodName
+ * @param mixed ...$args
+ * @return array
+ */
 public function groupCall(string $groupName, string $methodName, ...$args);
 ```
 
