@@ -138,10 +138,36 @@ class Group
 		{
 			throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', get_class($this->server), $name));
 		}
+		// 要检查的方法名
+		static $checkMethods = [
+			'close',
+			'send',
+			'sendfile',
+			'sendwait',
+			'push'
+		];
+		// 客户端关闭的错误
+		static $clientCloseErrors = [
+			1001,
+			1002,
+			1003,
+			1004,
+		];
+		$methodIsCheck = in_array($name, $checkMethods);
 		$result = [];
+		$fdMap = RequestContext::getServerBean('FdMap');
 		foreach($this->handler->getFds($this->groupName) as $fd)
 		{
-			$result[$fd] = $this->server->$name($fd, ...$arguments);
+			// 执行结果
+			$result[$fd] = $itemResult = $this->server->$name($fd, ...$arguments);
+			if($methodIsCheck && false === $itemResult)
+			{
+				if(in_array($this->server->getLastError(), $clientCloseErrors))
+				{
+					// 客户端关闭的错误，直接把该客户端T出全部组
+					$fdMap->leaveAll($fd);
+				}
+			}
 		}
 		return $result;
     }
