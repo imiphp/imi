@@ -2,6 +2,8 @@
 namespace Imi\Bean;
 
 use Imi\Config;
+use Imi\Worker;
+use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
 use Imi\Bean\Parser\BeanParser;
@@ -17,13 +19,26 @@ abstract class BeanFactory
 	public static function newInstance($class, ...$args)
 	{
 		$ref = new \ReflectionClass($class);
-		$tpl = static::getTpl($ref);
-		$object = eval($tpl);
 
-		// 尝试解决一个陈年老 BUG，有时候 eval实例化出的对象根本不是预想中的，再执行就行了，灰常奇怪
-		if(!$object instanceof $class)
+		$cacheFileName = static::getCacheFileName($class);
+		if(!is_file($cacheFileName))
 		{
-			$object = eval($tpl);
+			$tpl = static::getTpl($ref);
+			$path = dirname($cacheFileName);
+			if(!is_dir($path))
+			{
+				File::createDir($path);
+			}
+			File::writeFile($cacheFileName, '<?php ' . $tpl);
+		}
+
+		$object = include $cacheFileName;
+
+		if(get_parent_class($object) !== $ref->getName())
+		{
+			echo '[error] ', get_parent_class($object), ' ; ', $ref->getName(), ' ; ', $cacheFileName, PHP_EOL;
+			var_dump($object);
+			var_dump(RequestContext::getServer()->getSwooleServer()->getLastError());
 		}
 
 		if(method_exists($object, '__init'))
@@ -31,6 +46,18 @@ abstract class BeanFactory
 			$object->__init(...$args);
 		}
 		return $object;
+	}
+
+	/**
+	 * 获取类缓存文件名
+	 *
+	 * @param string $className
+	 * @return string
+	 */
+	private static function getCacheFileName($className)
+	{
+		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
+		return File::path($path, 'imiBeanCache', Worker::getWorkerID(), str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
 	}
 
 	/**
