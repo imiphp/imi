@@ -11,14 +11,15 @@
 ## 功能组件
 
 * [配置\(Config\)](components/httpserver/config.md)
-* [HTTP服务器](components/httpserver/index.md)
-  * [路由](components/httpserver/route.md)
-  * [中间件](components/httpserver/middleware.md)
-  * [控制器](components/httpserver/controller.md)
-  * [RESTful](components/httpserver/restful.md)
-  * [Session](components/httpserver/session.md)
-  * [视图](components/httpserver/view.md)
-  * [错误异常处理](components/httpserver/error.md)
+* 服务器
+  * [HTTP服务器](components/httpserver/index.md)
+    * [路由](components/httpserver/route.md)
+    * [中间件](components/httpserver/middleware.md)
+    * [控制器](components/httpserver/controller.md)
+    * [RESTful](components/httpserver/restful.md)
+    * [Session](components/httpserver/session.md)
+    * [视图](components/httpserver/view.md)
+    * [错误异常处理](components/httpserver/error.md)
 * [连接池](components/pool/index.md)
 * [ORM](components/orm/index.md)
   * [数据库模型](components/orm/RDModel.md)
@@ -32,11 +33,7 @@
 * [AOP](components/aop/index.md)
 * [进程](components/process/index.md)
 * [热更新](components/hotupdate/index.md)
-* [数据结构](components/struct/index.md)
-  * [Atomic](components/struct/atomic.md)
-  * [Channel](components/struct/channel.md)
-  * [协程 Channel](components/struct/co-channel.md)
-  * [MemoryTable](components/struct/memory-table.md)
+* 服务器
 
 ## 开发者工具
 
