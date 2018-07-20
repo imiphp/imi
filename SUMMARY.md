@@ -31,7 +31,9 @@
 * [后台任务](components/task/index.md)
 * [AOP](components/aop/index.md)
 * [进程](components/process/index.md)
-* [热更新](components/httpserver/re-geng-xin.md)
+* [热更新](components/hotupdate/index.md)
+* 数据结构
+  * 原子计数
 
 ## 开发者工具
 
