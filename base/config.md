@@ -1,4 +1,4 @@
-# 配置文件
+ 配置文件
 
 在每个`Main`所在目录下的`config/config.php`配置文件，会在该`Main`被实例化时加载。
 
@@ -22,8 +22,9 @@ return [
     'beanScan'	=>	[
     	'ImiDemo\WebSocketDemo\Listener',
     ],
-    // 配置方式注入类属性，详见AOP章节
+    // 配置方式注入类属性，可被注入的属性一般是public和protected
     'beans'    =>    [
+        // 类名或类注解中定义的@Bean("名称")
         'hotUpdate'	=>	[
 		// 'status'	=>	false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
 
@@ -40,6 +41,16 @@ return [
 		// 'defaultPath'	=>	[], // 设为数组则覆盖默认的监控路径
 	],
     ],
+    'db'	=>	[
+    	// 数据库默认连接池名
+    	'defaultPool'	=>	'maindb',
+    ],
+    // 连接池配置，详见对应章节
+    'pools'	=>	[
+    ],
+    // 缓存配置，详见对应章节
+    'caches'	=>	[
+    ]
 ];
 ```
 
