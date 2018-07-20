@@ -1,6 +1,6 @@
 # 会话数据
 
-IMI 中 WebSocket 服务中使用 `Imi\ConnectContext` 类对连接的会话数据进行管理。
+IMI 中 WebSocket 服务中使用 `Imi\ConnectContext` 类对连接的会话数据进行管理。在整个连接的生命周期中都有效。
 
 ## 使用
 
