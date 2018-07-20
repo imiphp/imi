@@ -32,8 +32,11 @@
 * [AOP](components/aop/index.md)
 * [进程](components/process/index.md)
 * [热更新](components/hotupdate/index.md)
-* 数据结构
-  * 原子计数
+* [数据结构](components/struct/index.md)
+  * [Atomic](components/struct/atomic.md)
+  * [Channel](components/struct/channel.md)
+  * [协程 Channel](components/struct/co-channel.md)
+  * [MemoryTable](components/struct/memory-table.md)
 
 ## 开发者工具
 
