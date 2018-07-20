@@ -22,6 +22,8 @@ return [
 			// 'gcProbability'	=>	0.1,
 			// 最大存活时间，默认30天，单位秒
 			// 'maxLifeTime'=>	0.1,
+			// session 前缀
+			// 'prefix' => 'imi',
 		],
 		'SessionCookie'	=>	[
 			// Cookie 的 生命周期，以秒为单位。
@@ -82,7 +84,14 @@ use Imi\Server\Session\Session;
 ### 读取
 
 ```php
-Session::get($name = null, $default = null)
+// 获取值
+Session::get('aaa');
+// 获取值，如果不存在则返回默认值
+Session::get('aaa', 'default value');
+// 获取$session['a']['b']的值
+Session::get('a.b');
+// 获取$session[前缀]['aaa']的值，前缀在配置文件中设置
+Session::get('@.aaa');
 ```
 
 ### 写入
