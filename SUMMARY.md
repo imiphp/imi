@@ -10,7 +10,7 @@
 
 ## 功能组件
 
-* [配置\(Config\)](components/httpserver/pei-7f6e28-config.md)
+* [配置\(Config\)](components/httpserver/config.md)
 * [HTTP服务器](components/httpserver/index.md)
   * [路由](components/httpserver/route.md)
   * [中间件](components/httpserver/middleware.md)
