@@ -55,8 +55,10 @@ return [
 服务器配置文件->beans中加入：
 
 ```php
-'SessionFile'	=>	[
-	'savePath'	=>	'Session文件存储路径',
+'beans'	=>	[
+	'SessionFile'	=>	[
+		'savePath'	=>	'Session文件存储路径',
+	]
 ]
 ```
 
@@ -65,13 +67,34 @@ return [
 ### Redis
 
 ```php
-'SessionRedis'	=>	[
-	// Redis连接池名称
-	'poolName'	=>	'',
-	// Redis中存储的key前缀，可以用于多系统session的分离
-	// 'keyPrefix'	=>	'imi.',
+'beans'	=>	[
+	'SessionRedis'	=>	[
+		// Redis连接池名称
+		'poolName'	=>	'',
+		// Redis中存储的key前缀，可以用于多系统session的分离
+		// 'keyPrefix'	=>	'imi.',
+	]
 ]
 ```
+
+## Session 存储序列化方式配置
+
+根据你选用的存储驱动类，配置在对应的节里，下面以文件驱动演示
+
+```php
+'beans'	=>	[
+	'SessionFile'	=>	[
+		'formatHandlerClass'	=>	\Imi\Util\Format\SwooleSerialize::class,
+	]
+]
+```
+
+可以选用的序列化类：
+
+JSON:`\Imi\Util\Format\Json::class`
+PHP序列化:`\Imi\Util\Format\PhpSerialize::class`
+Swoole 序列化:`\Imi\Util\Format\SwooleSerialize::class`
+PHP Session 序列化:`\Imi\Util\Format\PhpSession::class`
 
 ## 使用
 
