@@ -107,7 +107,7 @@ class ModelGenerate
 	private function getClassName($table, $prefix)
 	{
 		$prefixLen = strlen($prefix);
-		if(substr($prefix, 0, $prefixLen) === $prefix)
+		if(substr($table, 0, $prefixLen) === $prefix)
 		{
 			$table = substr($table, $prefixLen);
 		}
