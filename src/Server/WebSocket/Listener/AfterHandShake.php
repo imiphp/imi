@@ -25,13 +25,14 @@ class AfterHandShake implements IHandShakeEventListener
 		RequestContext::set('server', $e->request->getServerInstance());
 		RequestContext::set('request', $e->request);
 		RequestContext::set('response', $e->response);
+		RequestContext::set('fd', $e->request->getSwooleRequest()->fd);
 
 		// 中间件
 		$dispatcher = RequestContext::getServerBean('HttpDispatcher');
 		$dispatcher->dispatch($e->request, $e->response);
 
 		// 连接上下文创建
-		ConnectContext::create($e->request->getSwooleRequest()->fd);
+		ConnectContext::create();
 
 		// 释放请求上下文
 		RequestContext::destroy();

@@ -23,7 +23,8 @@ class BeforeMessage implements IMessageEventListener
 	public function handle(MessageEventParam $e)
 	{
 		// 上下文创建
-		ConnectContext::create($e->frame->fd);
+		RequestContext::create();
+		RequestContext::set('fd', $e->frame->fd);
 		RequestContext::set('server', $e->getTarget());
 
 		// 中间件
