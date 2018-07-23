@@ -16,5 +16,5 @@
 示例：
 
 ```
-HttpDemo/bin/imi generate/model namespace 命名空间
+HttpDemo/bin/imi generate/model -namespace "命名空间"
 ```
