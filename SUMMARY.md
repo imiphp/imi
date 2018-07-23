@@ -10,8 +10,8 @@
 
 ## 功能组件
 
-* [配置读写](components/httpserver/config.md)
-* 服务器
+* [配置读写](components/config/index.md)
+* [服务器](components/httpserver/fu-wu-qi.md)
   * [HTTP 服务器](components/httpserver/index.md)
     * [路由](components/httpserver/route.md)
     * [中间件](components/httpserver/middleware.md)
