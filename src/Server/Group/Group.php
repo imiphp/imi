@@ -107,6 +107,15 @@ class Group
 	}
 
 	/**
+	 * 获取组中的连接总数
+	 * @return integer
+	 */
+	public function count()
+	{
+		return $this->handler->count($this->groupName);
+	}
+
+	/**
 	 * 获取服务器对象
 	 *
 	 * @return \Swoole\Server

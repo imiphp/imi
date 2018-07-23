@@ -20,6 +20,13 @@ class Redis implements IGroupHandler
 	protected $redisPool;
 
 	/**
+	 * redis中第几个库
+	 *
+	 * @var integer
+	 */
+	protected $redisDb = 0;
+
+	/**
 	 * 心跳时间，单位：秒
 	 *
 	 * @var int
@@ -62,7 +69,7 @@ class Redis implements IGroupHandler
 
 	public function __init()
 	{
-		PoolManager::use($this->redisPool, function($resource, $redis){
+		$this->useRedis(function($resource, $redis){
 			// 判断master进程pid
 			$this->masterPID = RequestContext::getServer()->getSwooleServer()->master_pid;
 			$storeMasterPID = $redis->get($this->key);
@@ -95,7 +102,7 @@ class Redis implements IGroupHandler
 
 	public function timer()
 	{
-		PoolManager::use($this->redisPool, function($resource, $redis){
+		$this->useRedis(function($resource, $redis){
 			$redis->setex($this->key, $this->heartbeatTtl, $this->masterPID);
 		});
 	}
@@ -144,7 +151,7 @@ class Redis implements IGroupHandler
 	 */
 	public function closeGroup(string $groupName)
 	{
-		PoolManager::use($this->redisPool, function($resource, $redis) use($groupName){
+		$this->useRedis(function($resource, $redis) use($groupName){
 			$key = $this->getGroupNameKey($groupName);
 			try{
 				if($redis->scard($key) > 0)
@@ -168,7 +175,7 @@ class Redis implements IGroupHandler
 	 */
 	public function joinGroup(string $groupName, int $fd): bool
 	{
-		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
+		return $this->useRedis(function($resource, $redis) use($groupName, $fd){
 			$key = $this->getGroupNameKey($groupName);
 			return $redis->sadd($key, $fd) > 0;
 		});
@@ -183,7 +190,7 @@ class Redis implements IGroupHandler
 	 */
 	public function leaveGroup(string $groupName, int $fd): bool
 	{
-		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
+		return $this->useRedis(function($resource, $redis) use($groupName, $fd){
 			$key = $this->getGroupNameKey($groupName);
 			return $redis->srem($key, $fd) > 0;
 		});
@@ -198,7 +205,7 @@ class Redis implements IGroupHandler
 	 */
 	public function isInGroup(string $groupName, int $fd): bool
 	{
-		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName, $fd){
+		return $this->useRedis(function($resource, $redis) use($groupName, $fd){
 			$key = $this->getGroupNameKey($groupName);
 			$redis->sIsMember($key, $fd);
 		});
@@ -212,7 +219,7 @@ class Redis implements IGroupHandler
 	 */
 	public function getFds(string $groupName): array
 	{
-		return PoolManager::use($this->redisPool, function($resource, $redis) use($groupName){
+		return $this->useRedis(function($resource, $redis) use($groupName){
 			$key = $this->getGroupNameKey($groupName);
 			if($this->groups[$groupName]['maxClient'] > 0)
 			{
@@ -234,5 +241,31 @@ class Redis implements IGroupHandler
 	public function getGroupNameKey(string $groupName): string
 	{
 		return $this->key . '-' . $groupName;
+	}
+
+	/**
+	 * 获取组中的连接总数
+	 * @return integer
+	 */
+	public function count(string $groupName): int
+	{
+		return $this->useRedis(function($resource, $redis) use($groupName){
+			$key = $this->getGroupNameKey($groupName);
+			return $redis->scard($key);
+		});
+	}
+
+	/**
+	 * 使用redis
+	 *
+	 * @param callable $callback
+	 * @return void
+	 */
+	private function useRedis($callback)
+	{
+		return PoolManager::use($this->redisPool, function($resource, $redis) use($callback){
+			$redis->select($this->redisDb);
+			return $callback($resource, $redis);
+		});
 	}
 }

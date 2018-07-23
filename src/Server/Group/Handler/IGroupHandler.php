@@ -54,4 +54,10 @@ interface IGroupHandler
 	 * @return int[]
 	 */
 	public function getFds(string $groupName): array;
+
+	/**
+	 * 获取在组中的连接总数
+	 * @return integer
+	 */
+	public function count(string $groupName): int;
 }
