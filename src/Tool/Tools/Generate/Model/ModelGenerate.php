@@ -74,7 +74,7 @@ class ModelGenerate
 				],
 				'fields'	=>	[],
 			];
-			$fields = $query->bindValue(':table', $table)->execute('show columns from ' . $table)->getArray();
+			$fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
 			$this->parseFields($fields, $data);
 			$content = $this->renderTemplate($data);
 			File::writeFile($fileName, $content);
@@ -139,6 +139,7 @@ class ModelGenerate
 				'isPrimaryKey'		=>	$isPk,
 				'primaryKeyIndex'	=>	$isPk ? $idCount : -1,
 				'isAutoIncrement'	=>	false !== strpos($field['Extra'], 'auto_increment'),
+				'comment'			=>	$field['Comment'],
 			];
 			if($isPk)
 			{
