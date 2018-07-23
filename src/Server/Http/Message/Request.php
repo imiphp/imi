@@ -14,11 +14,11 @@ class Request extends ServerRequest
 
     /**
      * 对应的服务器
-     * @var \Imi\Server\Http\Server
+     * @var \Imi\Server\Base
      */
     protected $serverInstance;
 
-    public function __construct(\Imi\Server\Http\Server $server, \swoole_http_request $request)
+    public function __construct(\Imi\Server\Base $server, \swoole_http_request $request)
     {
         $this->swooleRequest = $request;
         $this->serverInstance = $server;
@@ -61,9 +61,9 @@ class Request extends ServerRequest
 
 	/**
 	 * 获取对应的服务器
-	 * @return \Imi\Server\Http\Server
+	 * @return \Imi\Server\Base
 	 */
-	public function getServerInstance(): \Imi\Server\Http\Server
+	public function getServerInstance(): \Imi\Server\Base
 	{
 		return $this->serverInstance;
 	}

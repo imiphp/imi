@@ -5,7 +5,7 @@ use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 动作注解
+ * 控制器注解
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Server\Route\Parser\ControllerParser")

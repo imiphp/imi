@@ -114,10 +114,10 @@ abstract class AtomicManager
 	/**
 	 * 减少计数，返回结果数值
 	 * @param string $name 原子计数对象名称
-	 * @param integer $value 要增加的数值，默认为1。与原值相加如果低于0将会溢出，高位数值会被丢弃
+	 * @param integer $value 要减少的数值，默认为1。与原值相加如果低于0将会溢出，高位数值会被丢弃
 	 * @return int
 	 */
-	public static function sub(string $name, int $value)
+	public static function sub(string $name, int $value = 1)
 	{
 		return static::getInstance($name)->sub($value);
 	}

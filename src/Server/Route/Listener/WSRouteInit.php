@@ -2,19 +2,19 @@
 namespace Imi\Server\Route\Listener;
 
 use Imi\Main\Helper;
+use Imi\ServerManage;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Server\Route\RouteCallable;
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Parser\ControllerParser;
-use Imi\ServerManage;
+use Imi\Server\Route\Parser\WSControllerParser;
+use Imi\Server\Route\Annotation\WebSocket\WSRoute;
 
 /**
- * http服务器路由初始化
+ * WebSocket 服务器路由初始化
  * @Listener("IMI.MAIN_SERVER.WORKER.START")
  */
-class RouteInit implements IEventListener
+class WSRouteInit implements IEventListener
 {
 	/**
 	 * 事件处理方法
@@ -33,10 +33,10 @@ class RouteInit implements IEventListener
 	 */
 	private function parseAnnotations(EventParam $e)
 	{
-		$controllerParser = ControllerParser::getInstance();
+		$controllerParser = WSControllerParser::getInstance();
 		foreach(ServerManage::getServers() as $name => $server)
 		{
-			$route = $server->getBean('HttpRoute');
+			$route = $server->getBean('WSRoute');
 			foreach($controllerParser->getByServer($name) as $className => $classItem)
 			{
 				$classAnnotation = $classItem['annotation'];
@@ -57,11 +57,7 @@ class RouteInit implements IEventListener
 				{
 					if(!isset($methodItem['routes']))
 					{
-						$methodItem['routes'] = [
-							new Route([
-								'url'	=>	$methodName,
-							])
-						];
+						throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
 					}
 					// 方法中间件
 					$methodMiddlewares = [];
@@ -81,14 +77,6 @@ class RouteInit implements IEventListener
 					
 					foreach($methodItem['routes'] as $routeItem)
 					{
-						if(null === $routeItem->url)
-						{
-							$routeItem->url = $methodName;
-						}
-						if((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]) && '' != $classAnnotation->prefix)
-						{
-							$routeItem->url = $classAnnotation->prefix . $routeItem->url;
-						}
 						$route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
 							'middlewares'	=>	$middlewares,
 						]);
@@ -105,9 +93,9 @@ class RouteInit implements IEventListener
 	private function parseConfigs(EventParam $e)
 	{
 		$server = $e->getTarget();
-		if($server instanceof \Imi\Server\Http\Server)
+		if($server instanceof \Imi\Server\WebSocket\Server)
 		{
-			$route = $server->getBean('HttpRoute');
+			$route = $server->getBean('WSRoute');
 		}
 		else
 		{

@@ -44,7 +44,7 @@ class Html implements IHandler
 			return $response;
 		}
 
-		$engine = RequestContext::getBean($this->templateEngine);
+		$engine = RequestContext::getServerBean($this->templateEngine);
 
 		return $engine->render($response, $fileName, $viewAnnotation->data);
 	}

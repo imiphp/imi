@@ -22,11 +22,12 @@ class BeforeRequest implements IRequestEventListener
 	{
 		// 上下文创建
 		RequestContext::create();
+		RequestContext::set('server', $e->request->getServerInstance());
 		RequestContext::set('request', $e->request);
 		RequestContext::set('response', $e->response);
 
 		// 中间件
-		$dispatcher = RequestContext::getBean('HttpDispatcher');
+		$dispatcher = RequestContext::getServerBean('HttpDispatcher');
 		$dispatcher->dispatch($e->request, $e->response);
 	}
 }

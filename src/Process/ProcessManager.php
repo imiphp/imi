@@ -34,6 +34,8 @@ abstract class ProcessManager
 		}
 		$processInstance = BeanFactory::newInstance($processOption['className'], $args);
 		$process = new \Swoole\Process(function(\Swoole\Process $swooleProcess) use($processInstance, $name){
+			// 设置进程名称
+			$swooleProcess->name($name);
 			// 进程开始事件
 			Event::trigger('IMI.PROCESS.BEGIN', [
 				'name'		=>	$name,
@@ -47,8 +49,6 @@ abstract class ProcessManager
 				'process'	=>	$swooleProcess,
 			]);
 		}, $redirectStdinStdout, $pipeType);
-		// 设置进程名称
-		$process->name($name);
 		return $process;
 	}
 

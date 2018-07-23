@@ -6,6 +6,7 @@ use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Aop\Annotation\Inject;
 use Imi\Server\Session\Handler\ISessionHandler;
+use Imi\Util\ObjectArrayHelper;
 
 /**
  * @Bean("SessionManager")
@@ -67,7 +68,7 @@ class SessionManager
 		{
 			throw new \RuntimeException('Session can not repeated start');
 		}
-		$this->handler = RequestContext::getBean($this->handlerClass);
+		$this->handler = RequestContext::getServerBean($this->handlerClass);
 		if(null === $sessionID)
 		{
 			$this->id = $this->handler->createSessionID();
@@ -184,14 +185,12 @@ class SessionManager
 	 */
 	public function get($name = null, $default = null)
 	{
-		if(array_key_exists($name, $this->data))
+		if(null === $name)
 		{
-			return $this->data[$name];
+			return $this->data;
 		}
-		else
-		{
-			return $default;
-		}
+		$name = $this->parseName($name);
+		return ObjectArrayHelper::get($this->data, $name, $default);
 	}
 
 	/**
@@ -202,7 +201,8 @@ class SessionManager
 	 */
 	public function set($name, $value)
 	{
-		$this->data[$name] = $value;
+		$name = $this->parseName($name);
+		ObjectArrayHelper::set($this->data, $name, $value);
 	}
 
 	/**
@@ -212,10 +212,8 @@ class SessionManager
 	 */
 	public function delete($name)
 	{
-		if(isset($this->data[$name]))
-		{
-			unset($this->data[$name]);
-		}
+		$name = $this->parseName($name);
+		ObjectArrayHelper::remove($this->data, $name);
 	}
 
 	/**
@@ -224,8 +222,9 @@ class SessionManager
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function once($name, $default = false)
+	public function once($name, $default = null)
 	{
+		$name = $this->parseName($name);
 		$value = $this->get($name, $default);
 		$this->delete($name);
 		return $value;
@@ -250,4 +249,21 @@ class SessionManager
 		return $this->config;
 	}
 
+	/**
+	 * 处理name名称，@替换为前缀
+	 * @param string $name
+	 * @return string
+	 */
+	public function parseName($name)
+	{
+		if(null !== $this->config->prefix)
+		{
+			return str_replace('@', $this->config->prefix, $name);
+		}
+		else
+		{
+			return $name;
+		}
+	}
+	
 }

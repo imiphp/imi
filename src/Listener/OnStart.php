@@ -25,12 +25,27 @@ class OnStart implements IManagerStartEventListener
 	 */
 	public function handle(ManagerStartEventParam $e)
 	{
+		// 进程PID记录
 		$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
 		File::writeFile($fileName, json_encode([
-			'masterPID'		=>	$e->server->master_pid,
-			'managerPID'	=>	$e->server->manager_pid,
+			'masterPID'		=>	$e->server->getSwooleServer()->master_pid,
+			'managerPID'	=>	$e->server->getSwooleServer()->manager_pid,
 		]));
 		
+		// 清除所有 worker 进程的 Bean 类缓存
+		$path = Config::get('@app.beanClassCache');
+		if(null !== $path)
+		{
+			$path = File::path($path, 'imiBeanCache');
+			foreach (File::enum($path) as $file)
+			{
+				if (is_file($file))
+				{
+					unlink($file);
+				}
+			}
+		}
+
 		// 热更新
 		$process = ProcessManager::create('hotUpdate');
 		$process->start();

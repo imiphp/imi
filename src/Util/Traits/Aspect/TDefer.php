@@ -20,14 +20,20 @@ trait TDefer
 			$client->setDefer(true);
 		}
 		// 调用原方法
-		$joinPoint->proceed();
-		// 接收结果
-		$result = $client->recv();
-		if(!$isDefer)
+		if($joinPoint->proceed())
 		{
-			// 设为调用前状态
-			$client->setDefer(false);
+			// 接收结果
+			$result = $client->recv();
+			if(!$isDefer)
+			{
+				// 设为调用前状态
+				$client->setDefer(false);
+			}
+			return $result;
 		}
-		return $result;
+		else
+		{
+			return false;
+		}
 	}
 }

@@ -1,30 +1,48 @@
 <?php
 namespace Imi\Listener;
 
+use Imi\App;
+use Imi\Config;
+use Imi\Worker;
+use Imi\Util\File;
 use Imi\Main\Helper;
 use Imi\Util\Coroutine;
 use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
-use Imi\Event\EventParam;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
-use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
-use Imi\App;
+use Imi\Server\Event\Param\WorkStartEventParam;
+use Imi\Server\Event\Listener\IWorkStartEventListener;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
  */
-class WorkerInit implements IEventListener
+class WorkerInit implements IWorkStartEventListener
 {
 	/**
 	 * 事件处理方法
 	 * @param EventParam $e
 	 * @return void
 	 */
-	public function handle(EventParam $e)
+	public function handle(WorkStartEventParam $e)
 	{
+		// 当前进程的 WorkerID 设置
+		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
+
+		// 清除当前 worker 进程的 Bean 类缓存
+		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
+		$path = File::path($path, 'imiBeanCache', Worker::getWorkerID());
+		foreach (File::enum($path) as $file)
+		{
+			if (is_file($file))
+			{
+				unlink($file);
+			}
+		}
+
+		// 初始化 worker
 		App::initWorker();
 	}
 }

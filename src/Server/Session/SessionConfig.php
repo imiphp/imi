@@ -35,7 +35,13 @@ class SessionConfig
 	 */
 	public $maxLifeTime;
 
-	public function __construct(string $name = 'imisid', SessionCookie $cookie = null, float $gcProbability = 0.01, int $maxLifeTime = 86400 * 30)
+	/**
+	 * Session 前缀
+	 * @var string
+	 */
+	public $prefix;
+
+	public function __construct(string $name = 'imisid', SessionCookie $cookie = null, float $gcProbability = 0.01, int $maxLifeTime = 86400 * 30, string $prefix = null)
 	{
 		$this->name = $name;
 		if(null !== $cookie)
@@ -44,5 +50,6 @@ class SessionConfig
 		}
 		$this->gcProbability = $gcProbability;
 		$this->maxLifeTime = $maxLifeTime;
+		$this->prefix = $prefix;
 	}
 }

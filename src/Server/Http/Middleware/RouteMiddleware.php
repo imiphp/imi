@@ -33,7 +33,7 @@ class RouteMiddleware implements MiddlewareInterface
 		$response = $handler->handle($request);
 		RequestContext::set('response', $response);
 		// 路由解析
-		$route = RequestContext::getBean('HttpRoute');
+		$route = RequestContext::getServerBean('HttpRoute');
 		$result = $route->parse($request);
 		if(null === $result || !is_callable($result['callable']))
 		{

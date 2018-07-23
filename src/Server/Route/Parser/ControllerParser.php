@@ -66,6 +66,10 @@ class ControllerParser extends BaseParser
 					break;
 			}
 		}
+		else if($annotation instanceof \Imi\Server\Route\Annotation\WebSocket\WSConfig)
+		{
+			$this->data[$className]['methods'][$targetName]['WSConfig'] = $annotation;
+		}
 	}
 
 }

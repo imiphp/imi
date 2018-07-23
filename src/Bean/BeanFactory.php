@@ -2,6 +2,8 @@
 namespace Imi\Bean;
 
 use Imi\Config;
+use Imi\Worker;
+use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
 use Imi\Bean\Parser\BeanParser;
@@ -17,13 +19,38 @@ abstract class BeanFactory
 	public static function newInstance($class, ...$args)
 	{
 		$ref = new \ReflectionClass($class);
-		$tpl = static::getTpl($ref);
-		$object = eval($tpl);
-		if($ref->hasMethod('__init'))
+
+		$cacheFileName = static::getCacheFileName($class);
+		if(!is_file($cacheFileName))
 		{
-			$ref->getMethod('__init')->invoke($object, ...$args);
+			$tpl = static::getTpl($ref);
+			$path = dirname($cacheFileName);
+			if(!is_dir($path))
+			{
+				File::createDir($path);
+			}
+			File::writeFile($cacheFileName, '<?php ' . $tpl);
+		}
+
+		$object = include $cacheFileName;
+
+		if(method_exists($object, '__init'))
+		{
+			$object->__init(...$args);
 		}
 		return $object;
+	}
+
+	/**
+	 * 获取类缓存文件名
+	 *
+	 * @param string $className
+	 * @return string
+	 */
+	private static function getCacheFileName($className)
+	{
+		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
+		return File::path($path, 'imiBeanCache', Worker::getWorkerID(), str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
 	}
 
 	/**
@@ -49,8 +76,7 @@ abstract class BeanFactory
 			$constructDefine = '...$args';
 		}
 		// 匿名类模版定义
-		// 这里的换行符是为了解决某个不明觉厉的BUG加的，不加有时会有奇怪的问题，原因未知，BUG复现难……
-		$tpl = PHP_EOL . <<<TPL
+		$tpl = <<<TPL
 return new class(...\$args) extends \\{$class}
 {
 	private \$beanProxy;
@@ -87,13 +113,13 @@ TPL;
 			$tpl .= <<<TPL
 	public function {$method->name}({$paramsTpls['define']}){$methodReturnType}
 	{
-		\$args = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
+		\$__args__ = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
 		return \$this->beanProxy->call(
 			'{$method->name}',
 			function({$paramsTpls['define']}){
 				return parent::{$method->name}({$paramsTpls['call']});
 			},
-			\$args
+			\$__args__
 		);
 	}
 
@@ -149,10 +175,10 @@ TPL;
 		}
 		$result['args_variadic'] .= <<<STR
 
-		if(!isset(\$args[func_num_args() - 1]))
+		if(!isset(\$__args__[func_num_args() - 1]))
 		{
-			\$allArgs = func_get_args();
-			\$args = array_merge(\$args, array_splice(\$allArgs, count(\$args)));
+			\$__allArgs__ = func_get_args();
+			\$__args__ = array_merge(\$__args__, array_splice(\$__allArgs__, count(\$__args__)));
 		}
 STR;
 		return $result;
@@ -226,9 +252,9 @@ STR;
 	{
 		return <<<TPL
 
-		foreach(\${$param->name} as \$item)
+		foreach(\${$param->name} as \$__item__)
 		{
-			\$args[] = \$item;
+			\$__args__[] = \$__item__;
 		}
 TPL;
 	}

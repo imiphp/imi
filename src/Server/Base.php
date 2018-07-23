@@ -14,10 +14,11 @@ use Imi\Server\Event\Param\WorkStartEventParam;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\ManagerStartEventParam;
+use Imi\Server\Group\TServerGroup;
 
 abstract class Base
 {
-	use TEvent;
+	use TEvent, TServerGroup;
 	
 	/**
 	 * swoole 服务器对象
@@ -105,45 +106,45 @@ abstract class Base
 		{
 			$this->swooleServer->on('start', function(\swoole_server $server){
 				Event::trigger('IMI.MAIN_SERVER.START', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 				], $this, StartEventParam::class);
 			});
 	
 			$this->swooleServer->on('shutdown', function(\swoole_server $server){
 				Event::trigger('IMI.MAIN_SERVER.SHUTDOWN', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 				], $this, ShutdownEventParam::class);
 			});
 	
 			$this->swooleServer->on('WorkerStart', function(\swoole_server $server, int $workerID){
 				Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 					'workerID'	=>	$workerID,
 				], $this, WorkStartEventParam::class);
 			});
 	
 			$this->swooleServer->on('WorkerStop', function(\swoole_server $server, int $workerID){
 				Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 					'workerID'	=>	$workerID,
 				], $this, WorkStopEventParam::class);
 			});
 	
 			$this->swooleServer->on('ManagerStart', function(\swoole_server $server){
 				Event::trigger('IMI.MAIN_SERVER.MANAGER.START', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 				], $this, ManagerStartEventParam::class);
 			});
 	
 			$this->swooleServer->on('ManagerStop', function(\swoole_server $server){
 				Event::trigger('IMI.MAIN_SERVER.MANAGER.STOP', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 				], $this, ManagerStopEventParam::class);
 			});
 	
 			$this->swooleServer->on('task', function(\swoole_server $server, int $taskID, int $workerID, $data){
 				Event::trigger('IMI.MAIN_SERVER.TASK', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 					'taskID'	=>	$taskID,
 					'workerID'	=>	$workerID,
 					'data'		=>	$data,
@@ -152,7 +153,7 @@ abstract class Base
 	
 			$this->swooleServer->on('finish', function(\swoole_server $server, int $taskID, $data){
 				Event::trigger('IMI.MAIN_SERVER.FINISH', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 					'taskID'	=>	$taskID,
 					'data'		=>	$data,
 				], $this, FinishEventParam::class);
@@ -160,7 +161,7 @@ abstract class Base
 	
 			$this->swooleServer->on('PipeMessage', function(\swoole_server $server, int $workerID, $message){
 				Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-					'server'	=>	$server,
+					'server'	=>	$this,
 					'workerID'	=>	$workerID,
 					'message'	=>	$message,
 				], $this, PipeMessageEventParam::class);
