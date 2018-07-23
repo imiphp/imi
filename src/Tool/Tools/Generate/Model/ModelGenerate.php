@@ -42,7 +42,10 @@ class ModelGenerate
 		// 表
 		$tables = $query->tableRaw('information_schema.TABLES')
 						->where('TABLE_SCHEMA', '=', $database)
-						->where('TABLE_TYPE', '=', 'BASE TABLE')
+						->whereIn('TABLE_TYPE', [
+							'BASE TABLE',
+							'VIEW',
+						])
 						->field('TABLE_NAME')
 						->select()
 						->getColumn();
