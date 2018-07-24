@@ -32,17 +32,14 @@ class OnStart implements IManagerStartEventListener
 			'managerPID'	=>	$e->server->getSwooleServer()->manager_pid,
 		]));
 		
-		// 清除所有 worker 进程的 Bean 类缓存
-		$path = Config::get('@app.beanClassCache');
-		if(null !== $path)
+		// 清除框架 Bean类 缓存
+		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
+		$path = File::path($path, 'imiBeanCache', 'imi');
+		foreach (File::enum($path) as $file)
 		{
-			$path = File::path($path, 'imiBeanCache');
-			foreach (File::enum($path) as $file)
+			if (is_file($file))
 			{
-				if (is_file($file))
-				{
-					unlink($file);
-				}
+				unlink($file);
 			}
 		}
 

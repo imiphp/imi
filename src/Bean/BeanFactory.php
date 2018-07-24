@@ -50,7 +50,7 @@ abstract class BeanFactory
 	private static function getCacheFileName($className)
 	{
 		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		return File::path($path, 'imiBeanCache', Worker::getWorkerID(), str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
+		return File::path($path, 'imiBeanCache', Worker::getWorkerID() ?? 'imi', str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
 	}
 
 	/**
