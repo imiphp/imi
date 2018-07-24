@@ -94,32 +94,22 @@ class BeanProxy
 		}
 	}
 
+	/**
+	 * 注入属性
+	 *
+	 * @return void
+	 */
 	private function injectProps()
 	{
-		$annotations = $this->getInjectAnnotations();
-		$configs = $this->getConfigInjects();
-		foreach(array_keys($configs) as $key)
-		{
-			if(isset($annotations[$key]))
-			{
-				unset($annotations[$key]);
-			}
-		}
-		
+		$className = $this->refClass->getParentClass()->getName();
+		list($annotations, $configs) = static::getInjects($className);
 
 		// @inject()和@requestInject()注入
-		foreach($annotations as $propName => $option)
+		foreach($annotations as $propName => $annotation)
 		{
 			$propRef = $this->refClass->getProperty($propName);
 			$propRef->setAccessible(true);
-			if(isset($option['requestInject']) && Coroutine::isIn())
-			{
-				$propRef->setValue($this->object, RequestContext::getBean($option['requestInject']->name, ...$option['requestInject']->args));
-			}
-			else if(isset($option['inject']))
-			{
-				$propRef->setValue($this->object, App::getBean($option['inject']->name, ...$option['inject']->args));
-			}
+			$propRef->setValue($this->object, static::getInjectValueByAnnotation($annotation));
 		}
 
 		// 配置注入
@@ -135,9 +125,36 @@ class BeanProxy
 		}
 	}
 
-	private function getInjectAnnotations()
+	/**
+	 * 根据注解获取注入值
+	 *
+	 * @param \Imi\Aop\Annotation\Inject $annotation
+	 * @return mixed
+	 */
+	public static function getInjectValueByAnnotation($annotation)
 	{
-		$className = $this->refClass->getParentClass()->getName();
+		if(isset($annotation['requestInject']) && Coroutine::isIn())
+		{
+			return RequestContext::getBean($annotation['requestInject']->name, ...$annotation['requestInject']->args);
+		}
+		else if(isset($annotation['inject']))
+		{
+			return App::getBean($annotation['inject']->name, ...$annotation['inject']->args);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * 获取注入属性的注解们
+	 *
+	 * @param string $className
+	 * @return array
+	 */
+	public static function getInjectAnnotations($className)
+	{
 		$aopData = AopParser::getInstance()->getData();
 		if(!isset($aopData[$className]))
 		{
@@ -146,9 +163,14 @@ class BeanProxy
 		return $aopData[$className]['property'];
 	}
 
-	private function getConfigInjects()
+	/**
+	 * 获取注入属性的配置们
+	 *
+	 * @param string $className
+	 * @return array
+	 */
+	public static function getConfigInjects($className)
 	{
-		$className = $this->refClass->getParentClass()->getName();
 		// 配置文件注入
 		$beanData = BeanParser::getInstance()->getData();
 		if(isset($beanData[$className]))
@@ -174,6 +196,26 @@ class BeanProxy
 			$beanProperties = Config::get('beans.' . $beanName, []);
 		}
 		return $beanProperties ?? [];
+	}
+
+	/**
+	 * 获取注入类属性的注解和配置
+	 *
+	 * @param string $className
+	 * @return [$annotations, $configs]
+	 */
+	public static function getInjects($className)
+	{
+		$annotations = static::getInjectAnnotations($className);
+		$configs = static::getConfigInjects($className);
+		foreach(array_keys($configs) as $key)
+		{
+			if(isset($annotations[$key]))
+			{
+				unset($annotations[$key]);
+			}
+		}
+		return [$annotations, $configs];
 	}
 
 	/**
@@ -406,4 +448,29 @@ class BeanProxy
 			}
 		}
 	}
+
+	/**
+	 * 获取注入类属性的值
+	 *
+	 * @param string $className
+	 * @param string $propertyName
+	 * @return mixed
+	 */
+	public static function getInjectValue($className, $propertyName)
+	{
+		list($annotations, $configs) = static::getInjects($className);
+		if(isset($configs[$propertyName]))
+		{
+			return $configs[$propertyName];
+		}
+		else if(isset($annotations[$propertyName]))
+		{
+			return static::getInjectValueByAnnotation($annotations[$propertyName]);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
 }
