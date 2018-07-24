@@ -13,20 +13,20 @@ use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
-use Imi\Server\Event\Param\WorkStartEventParam;
-use Imi\Server\Event\Listener\IWorkStartEventListener;
+use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Server\Event\Listener\IWorkerStartEventListener;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
  */
-class WorkerInit implements IWorkStartEventListener
+class WorkerInit implements IWorkerStartEventListener
 {
 	/**
 	 * 事件处理方法
 	 * @param EventParam $e
 	 * @return void
 	 */
-	public function handle(WorkStartEventParam $e)
+	public function handle(WorkerStartEventParam $e)
 	{
 		// 当前进程的 WorkerID 设置
 		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);

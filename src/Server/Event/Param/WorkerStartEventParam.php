@@ -3,7 +3,7 @@ namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
 
-class WorkExitEventParam extends EventParam
+class WorkerStartEventParam extends EventParam
 {
 	/**
 	 * 服务器对象

@@ -9,12 +9,13 @@ use Imi\Server\Event\Param\TaskEventParam;
 use Imi\Server\Event\Param\StartEventParam;
 use Imi\Server\Event\Param\FinishEventParam;
 use Imi\Server\Event\Param\ShutdownEventParam;
-use Imi\Server\Event\Param\WorkStopEventParam;
-use Imi\Server\Event\Param\WorkStartEventParam;
+use Imi\Server\Event\Param\WorkerStopEventParam;
+use Imi\Server\Event\Param\WorkerStartEventParam;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\ManagerStartEventParam;
 use Imi\Server\Group\TServerGroup;
+use Imi\Server\Event\Param\WorkerErrorEventParam;
 
 abstract class Base
 {
@@ -120,14 +121,14 @@ abstract class Base
 				Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
 					'server'	=>	$this,
 					'workerID'	=>	$workerID,
-				], $this, WorkStartEventParam::class);
+				], $this, WorkerStartEventParam::class);
 			});
 	
 			$this->swooleServer->on('WorkerStop', function(\swoole_server $server, int $workerID){
 				Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
 					'server'	=>	$this,
 					'workerID'	=>	$workerID,
-				], $this, WorkStopEventParam::class);
+				], $this, WorkerStopEventParam::class);
 			});
 	
 			$this->swooleServer->on('ManagerStart', function(\swoole_server $server){
@@ -165,6 +166,16 @@ abstract class Base
 					'workerID'	=>	$workerID,
 					'message'	=>	$message,
 				], $this, PipeMessageEventParam::class);
+			});
+
+			$this->swooleServer->on('WorkerError', function(\swoole_server $server, int $workerID, int $workerPid, int $exitCode, int $signal){
+				Event::trigger('IMI.MAIN_SERVER.WORKER_ERROR', [
+					'server'	=>	$this,
+					'workerID'	=>	$workerID,
+					'workerPid'	=>	$workerPid,
+					'exitCode'	=>	$exitCode,
+					'signal'	=>	$signal,
+				], $this, WorkerErrorEventParam::class);
 			});
 		}
 		$this->__bindEvents();
