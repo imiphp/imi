@@ -16,7 +16,7 @@ abstract class ConnectContext
 		$key = static::getContextKey();
 		if(!isset(static::$context[$key]))
 		{
-			static::$context[$key] = [];
+			static::$context[$key] = RequestContext::getServerBean('ConnectContextStore')->read($key);
 		}
 	}
 
@@ -31,6 +31,7 @@ abstract class ConnectContext
 		{
 			unset(static::$context[$key]);
 		}
+		RequestContext::getServerBean('ConnectContextStore')->destroy($key);
 	}
 
 	/**
@@ -42,7 +43,7 @@ abstract class ConnectContext
 		if(RequestContext::exsits())
 		{
 			$key = static::getContextKey();
-			return isset(static::$context[$key]);
+			return isset(static::$context[$key]) || RequestContext::getServerBean('ConnectContextStore')->exists($key);
 		}
 		else
 		{
@@ -59,6 +60,10 @@ abstract class ConnectContext
 	public static function get($name, $default = null)
 	{
 		$key = static::getContextKey();
+		if(!isset(static::$context[$key]))
+		{
+			static::$context[$key] = RequestContext::getServerBean('ConnectContextStore')->read($key);
+		}
 		return static::$context[$key][$name] ?? $default;
 	}
 
@@ -71,7 +76,13 @@ abstract class ConnectContext
 	public static function set($name, $value)
 	{
 		$key = static::getContextKey();
+		$store = RequestContext::getServerBean('ConnectContextStore');
+		if(!isset(static::$context[$key]))
+		{
+			static::$context[$key] = $store->read($key);
+		}
 		static::$context[$key][$name] = $value;
+		$store->save($key, static::$context[$key]);
 	}
 
 	/**
