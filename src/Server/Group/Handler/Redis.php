@@ -69,42 +69,128 @@ class Redis implements IGroupHandler
 
 	public function __init()
 	{
+		if(null === $this->redisPool)
+		{
+			return;
+		}
 		$this->useRedis(function($resource, $redis){
 			// 判断master进程pid
 			$this->masterPID = RequestContext::getServer()->getSwooleServer()->master_pid;
+			$hasPing = $this->hasPing($redis);
 			$storeMasterPID = $redis->get($this->key);
-			if(null !== $storeMasterPID && $this->masterPID != $storeMasterPID)
+			if(null === $storeMasterPID)
 			{
-				throw new \RuntimeException('Server Group Redis repeat');
+				// 没有存储master进程pid
+				$this->initRedis($redis, $storeMasterPID);
 			}
-			if($redis->setnx($this->key, RequestContext::getServer()->getSwooleServer()->master_pid) && $redis->expire($this->key, $this->heartbeatTtl))
+			else if($this->masterPID != $storeMasterPID)
 			{
-				// 初始化所有分组列表
-				$keys = $redis->keys($this->key . '-*');
-				foreach($keys as $key)
+				if($hasPing)
 				{
-					try{
-						if($redis->scard($key) > 0)
-						{
-							$redis->del($key);
-						}
-					}
-					catch(\Throwable $ex)
-					{
-
-					}
+					// 与master进程ID不等
+					throw new \RuntimeException('Server Group Redis repeat');
+				}
+				else
+				{
+					$this->initRedis($redis, $storeMasterPID);
 				}
 			}
+			$this->startPing($redis);
 		});
-		// 心跳定时器
-		$this->timerID = \swoole_timer_tick($this->heartbeatTimespan * 1000, [$this, 'timer']);
 	}
 
-	public function timer()
+	/**
+	 * 初始化redis数据
+	 *
+	 * @param mixed $redis
+	 * @param int $storeMasterPID
+	 * @return void
+	 */
+	private function initRedis($redis, $storeMasterPID = null)
+	{
+		if(null !== $storeMasterPID && $redis->del($this->key))
+		{
+			return;
+		}
+		if($redis->setnx($this->key, $this->masterPID))
+		{
+			// 初始化所有分组列表
+			$keys = $redis->keys($this->key . '.*');
+			foreach($keys as $key)
+			{
+				try{
+					if($redis->scard($key) > 0)
+					{
+						$redis->del($key);
+					}
+				}
+				catch(\Throwable $ex)
+				{
+
+				}
+			}
+		}
+	}
+
+	/**
+	 * 开始ping
+	 *
+	 * @param mixed $redis
+	 * @return void
+	 */
+	private function startPing($redis)
+	{
+		if($this->ping($redis))
+		{
+			// 心跳定时器
+			$this->timerID = \swoole_timer_tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
+		}
+	}
+
+	/**
+	 * ping定时器执行操作
+	 *
+	 * @return void
+	 */
+	public function pingTimer()
 	{
 		$this->useRedis(function($resource, $redis){
-			$redis->setex($this->key, $this->heartbeatTtl, $this->masterPID);
+			$this->ping($redis);
 		});
+	}
+
+	/**
+	 * 获取redis中存储ping的key
+	 *
+	 * @return void
+	 */
+	private function getPingKey()
+	{
+		return $this->key . '-PING';
+	}
+
+	/**
+	 * ping操作
+	 *
+	 * @param mixed $redis
+	 * @return boolean
+	 */
+	private function ping($redis)
+	{
+		$key = $this->getPingKey();
+		return $redis->set($key, '') && $redis->expire($key, $this->heartbeatTtl);
+	}
+
+	/**
+	 * 是否有ping
+	 *
+	 * @param mixed $redis
+	 * @return boolean
+	 */
+	private function hasPing($redis)
+	{
+		$key = $this->getPingKey();
+		return 1 == $redis->exists($key);
 	}
 
 	public function __destruct()
@@ -240,7 +326,7 @@ class Redis implements IGroupHandler
 	 */
 	public function getGroupNameKey(string $groupName): string
 	{
-		return $this->key . '-' . $groupName;
+		return $this->key . '.' . $groupName;
 	}
 
 	/**
