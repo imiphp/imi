@@ -165,6 +165,10 @@ class Redis implements IHandler
 		$redis->set($key, '');
 		$redis->expire($key, $this->heartbeatTtl);
 		$result = $redis->exec();
+		if(!$result)
+		{
+			return false;
+		}
 		foreach($result as $value)
 		{
 			if(!$value)
