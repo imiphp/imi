@@ -178,7 +178,18 @@ class Redis implements IGroupHandler
 	private function ping($redis)
 	{
 		$key = $this->getPingKey();
-		return $redis->set($key, '') && $redis->expire($key, $this->heartbeatTtl);
+		$redis->multi();
+		$redis->set($key, '');
+		$redis->expire($key, $this->heartbeatTtl);
+		$result = $redis->exec();
+		foreach($result as $value)
+		{
+			if(!$value)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
