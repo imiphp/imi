@@ -1,11 +1,11 @@
 <?php
-namespace Imi\Server\WebSocket;
+namespace Imi\Server\TcpServer;
 
 use Imi\App;
 use Imi\RequestContext;
-use Imi\Server\WebSocket\Message\IFrame;
+use Imi\Server\TcpServer\Message\IReceiveData;
 
-class MessageHandler implements IMessageHandler
+class ReceiveHandler implements IReceiveHandler
 {
 	/**
 	 * 中间件数组
@@ -30,15 +30,15 @@ class MessageHandler implements IMessageHandler
 
 	/**
 	 * 返回值为响应内容，为null则无任何响应
-	 * @param IFrame $frame
+	 * @param IReceiveData $data
 	 * @return mixed
 	 */
-    public function handle(IFrame $frame)
+    public function handle(IReceiveData $data)
 	{
 		if(isset($this->middlewares[$this->index]))
 		{
 			$middleware = $this->middlewares[$this->index];
-			if($middleware instanceof IMessageHandler)
+			if($middleware instanceof IReceiveHandler)
 			{
 				$requestHandler = $middleware;
 			}
@@ -51,7 +51,7 @@ class MessageHandler implements IMessageHandler
 		{
 			return null;
 		}
-		return $requestHandler->process($frame, $this->next());
+		return $requestHandler->process($data, $this->next());
 	}
 
 	/**

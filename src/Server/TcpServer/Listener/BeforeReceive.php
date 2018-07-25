@@ -7,6 +7,7 @@ use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\ReceiveEventParam;
 use Imi\Server\Event\Listener\IReceiveEventListener;
+use Imi\Server\TcpServer\Message\ReceiveData;
 
 /**
  * Receive事件前置处理
@@ -23,12 +24,12 @@ class BeforeReceive implements IReceiveEventListener
 	{
 		// 上下文创建
 		RequestContext::create();
-		RequestContext::set('fd', $e->frame->fd);
+		RequestContext::set('fd', $e->fd);
 		RequestContext::set('server', $e->getTarget());
 
 		// 中间件
-		// $dispatcher = RequestContext::getServerBean('WebSocketDispatcher');
-		// $dispatcher->dispatch(new Frame($e->frame));
+		$dispatcher = RequestContext::getServerBean('TcpDispatcher');
+		$dispatcher->dispatch(new ReceiveData($e->fd, $e->reactorID, $e->data));
 
 	}
 }

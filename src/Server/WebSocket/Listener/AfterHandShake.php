@@ -34,6 +34,11 @@ class AfterHandShake implements IHandShakeEventListener
 		// 连接上下文创建
 		ConnectContext::create();
 
+		// http 路由解析结果
+		$routeResult = RequestContext::get('routeResult');
+		unset($routeResult['callable']);
+		ConnectContext::set('httpRouteResult', $routeResult);
+
 		// 释放请求上下文
 		RequestContext::destroy();
 	}
