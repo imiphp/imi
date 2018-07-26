@@ -85,10 +85,11 @@ class Server extends Base
 			], $this, ReceiveEventParam::class);
 		});
 		
-		$this->swooleServer->on('close', function(\swoole_server $server, $fd){
+		$this->swooleServer->on('close', function(\swoole_server $server, $fd, $reactorID){
 			$this->trigger('close', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,
+				'reactorID'	=>	$reactorID,
 			], $this, CloseEventParam::class);
 		});
 
