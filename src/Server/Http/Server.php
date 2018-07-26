@@ -33,7 +33,8 @@ class Server extends Base
 	protected function createSubServer()
 	{
 		$config = $this->getServerInitConfig();
-		$this->swooleServer = ServerManage::getServer('main')->getSwooleServer()->addListener($config['host'], $config['port'], $config['sockType']);
+		$this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
+		$this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
 	}
 
 	/**

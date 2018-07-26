@@ -28,6 +28,13 @@ abstract class Base
 	protected $swooleServer;
 
 	/**
+	 * swoole 监听端口
+	 *
+	 * @var \Swoole\Server\Port
+	 */
+	protected $swoolePort;
+
+	/**
 	 * 服务器配置
 	 * @var array
 	 */
@@ -86,6 +93,16 @@ abstract class Base
 	public function getSwooleServer()
 	{
 		return $this->swooleServer;
+	}
+
+	/**
+	 * 获取 swoole 监听端口
+	 *
+	 * @return \Swoole\Server\Port
+	 */
+	public function getSwoolePort()
+	{
+		return $this->swoolePort;
 	}
 
 	/**
