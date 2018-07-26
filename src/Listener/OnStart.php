@@ -12,6 +12,7 @@ use Imi\Server\Event\Listener\IStartEventListener;
 use Imi\Server\Event\Param\ManagerStartEventParam;
 use Imi\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Process\ProcessManager;
+use Imi\Util\Swoole;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=PHP_INT_MAX)
@@ -28,8 +29,8 @@ class OnStart implements IManagerStartEventListener
 		// 进程PID记录
 		$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
 		File::writeFile($fileName, json_encode([
-			'masterPID'		=>	$e->server->getSwooleServer()->master_pid,
-			'managerPID'	=>	$e->server->getSwooleServer()->manager_pid,
+			'masterPID'		=>	Swoole::getMasterPID(),
+			'managerPID'	=>	Swoole::getManagerPID(),
 		]));
 		
 		// 清除框架 Bean类 缓存

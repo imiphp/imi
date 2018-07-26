@@ -1,11 +1,12 @@
 <?php
 namespace Imi\Server\Group\Handler;
 
+use Imi\Util\Swoole;
+use Imi\RequestContext;
 use Imi\Util\ArrayUtil;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 use Swoole\Coroutine\Redis as CoRedis;
-use Imi\RequestContext;
 
 /**
  * @Bean("GroupRedis")
@@ -75,7 +76,7 @@ class Redis implements IGroupHandler
 		}
 		$this->useRedis(function($resource, $redis){
 			// 判断master进程pid
-			$this->masterPID = RequestContext::getServer()->getSwooleServer()->master_pid;
+			$this->masterPID = Swoole::getMasterPID();
 			$hasPing = $this->hasPing($redis);
 			$storeMasterPID = $redis->get($this->key);
 			if(null === $storeMasterPID)

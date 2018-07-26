@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\ConnectContext\StoreHandler;
 
+use Imi\Util\Swoole;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
@@ -67,7 +68,7 @@ class Redis implements IHandler
 		}
 		$this->useRedis(function($resource, $redis){
 			// 判断master进程pid
-			$this->masterPID = RequestContext::getServer()->getSwooleServer()->master_pid;
+			$this->masterPID = Swoole::getMasterPID();
 			$hasPing = $this->hasPing($redis);
 			$storeMasterPID = $redis->get($this->key);
 			if(null === $storeMasterPID)
