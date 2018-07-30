@@ -28,11 +28,11 @@ trait TDefer
 
 			$isRecv = true;
 
-			if($this->hasMulti($joinPoint->getThis()))
+			if($this->hasMulti($joinPoint->getTarget()))
 			{
 				if('exec' === $lowerMethod)
 				{
-					$this->setHasMulti($joinPoint->getThis(), false);
+					$this->setHasMulti($joinPoint->getTarget(), false);
 				}
 				else
 				{
@@ -43,7 +43,7 @@ trait TDefer
 			{
 				if('multi' === $lowerMethod)
 				{
-					$this->setHasMulti($joinPoint->getThis(), true);
+					$this->setHasMulti($joinPoint->getTarget(), true);
 					$isRecv = false;
 				}
 			}
