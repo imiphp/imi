@@ -42,7 +42,10 @@ class ModelGenerate
 		// 表
 		$tables = $query->tableRaw('information_schema.TABLES')
 						->where('TABLE_SCHEMA', '=', $database)
-						->where('TABLE_TYPE', '=', 'BASE TABLE')
+						->whereIn('TABLE_TYPE', [
+							'BASE TABLE',
+							'VIEW',
+						])
 						->field('TABLE_NAME')
 						->select()
 						->getColumn();
@@ -71,7 +74,7 @@ class ModelGenerate
 				],
 				'fields'	=>	[],
 			];
-			$fields = $query->bindValue(':table', $table)->execute('show columns from ' . $table)->getArray();
+			$fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
 			$this->parseFields($fields, $data);
 			$content = $this->renderTemplate($data);
 			File::writeFile($fileName, $content);
@@ -104,7 +107,7 @@ class ModelGenerate
 	private function getClassName($table, $prefix)
 	{
 		$prefixLen = strlen($prefix);
-		if(substr($prefix, 0, $prefixLen) === $prefix)
+		if(substr($table, 0, $prefixLen) === $prefix)
 		{
 			$table = substr($table, $prefixLen);
 		}
@@ -136,6 +139,7 @@ class ModelGenerate
 				'isPrimaryKey'		=>	$isPk,
 				'primaryKeyIndex'	=>	$isPk ? $idCount : -1,
 				'isAutoIncrement'	=>	false !== strpos($field['Extra'], 'auto_increment'),
+				'comment'			=>	$field['Comment'],
 			];
 			if($isPk)
 			{

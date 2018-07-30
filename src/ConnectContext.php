@@ -11,16 +11,12 @@ abstract class ConnectContext
 	 * 为当前请求创建上下文
 	 * @return void
 	 */
-	public static function create($fd)
+	public static function create()
 	{
-		if(!RequestContext::exsits())
+		$key = static::getContextKey();
+		if(!isset(static::$context[$key]))
 		{
-			RequestContext::create();
-		}
-		RequestContext::set('fd', $fd);
-		if(!isset(static::$context[$fd]))
-		{
-			static::$context[$fd] = [];
+			static::$context[$key] = RequestContext::getServerBean('ConnectContextStore')->read($key);
 		}
 	}
 
@@ -30,10 +26,12 @@ abstract class ConnectContext
 	 */
 	public static function destroy($fd)
 	{
-		if(isset(static::$context[$fd]))
+		$key = static::getContextKey();
+		if(isset(static::$context[$key]))
 		{
-			unset(static::$context[$fd]);
+			unset(static::$context[$key]);
 		}
+		RequestContext::getServerBean('ConnectContextStore')->destroy($key);
 	}
 
 	/**
@@ -44,7 +42,8 @@ abstract class ConnectContext
 	{
 		if(RequestContext::exsits())
 		{
-			return isset(static::$context[RequestContext::get('fd')]);
+			$key = static::getContextKey();
+			return isset(static::$context[$key]) || RequestContext::getServerBean('ConnectContextStore')->exists($key);
 		}
 		else
 		{
@@ -60,7 +59,12 @@ abstract class ConnectContext
 	 */
 	public static function get($name, $default = null)
 	{
-		return static::$context[RequestContext::get('fd')][$name] ?? $default;
+		$key = static::getContextKey();
+		if(!isset(static::$context[$key]))
+		{
+			static::$context[$key] = RequestContext::getServerBean('ConnectContextStore')->read($key);
+		}
+		return static::$context[$key][$name] ?? $default;
 	}
 
 	/**
@@ -71,7 +75,14 @@ abstract class ConnectContext
 	 */
 	public static function set($name, $value)
 	{
-		static::$context[RequestContext::get('fd')][$name] = $value;
+		$key = static::getContextKey();
+		$store = RequestContext::getServerBean('ConnectContextStore');
+		if(!isset(static::$context[$key]))
+		{
+			static::$context[$key] = $store->read($key);
+		}
+		static::$context[$key][$name] = $value;
+		$store->save($key, static::$context[$key]);
 	}
 
 	/**
@@ -80,6 +91,17 @@ abstract class ConnectContext
 	 */
 	public static function getContext()
 	{
-		return static::$context[RequestContext::get('fd')] ?? null;
+		$key = static::getContextKey();
+		return static::$context[$key] ?? null;
+	}
+
+	/**
+	 * 获取上下文的key
+	 *
+	 * @return string
+	 */
+	private static function getContextKey()
+	{
+		return RequestContext::getServer()->getName() . '-' . RequestContext::get('fd');
 	}
 }

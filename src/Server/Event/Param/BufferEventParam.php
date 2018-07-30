@@ -3,7 +3,7 @@ namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
 
-class WorkStartEventParam extends EventParam
+class BufferEventParam extends EventParam
 {
 	/**
 	 * 服务器对象
@@ -12,8 +12,8 @@ class WorkStartEventParam extends EventParam
 	public $server;
 
 	/**
-	 * Worker进程ID
+	 * 客户端连接的标识符
 	 * @var int
 	 */
-	public $workerID;
+	public $fd;
 }

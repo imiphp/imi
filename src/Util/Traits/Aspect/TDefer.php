@@ -9,6 +9,8 @@ use Imi\Aop\AroundJoinPoint;
  */
 trait TDefer
 {
+	private static $hasMulti = [];
+
 	public function parseDefer(AroundJoinPoint $joinPoint)
 	{
 		$client = $joinPoint->getTarget();
@@ -22,8 +24,40 @@ trait TDefer
 		// 调用原方法
 		if($joinPoint->proceed())
 		{
-			// 接收结果
-			$result = $client->recv();
+			$lowerMethod = strtolower($joinPoint->getMethod());
+
+			$isRecv = true;
+
+			if($this->hasMulti($joinPoint->getThis()))
+			{
+				if('exec' === $lowerMethod)
+				{
+					$this->setHasMulti($joinPoint->getThis(), false);
+				}
+				else
+				{
+					$isRecv = false;
+				}
+			}
+			else
+			{
+				if('multi' === $lowerMethod)
+				{
+					$this->setHasMulti($joinPoint->getThis(), true);
+					$isRecv = false;
+				}
+			}
+
+			if($isRecv)
+			{
+				// 接收结果
+				$result = $client->recv();
+			}
+			else
+			{
+				$result = true;
+			}
+
 			if(!$isDefer)
 			{
 				// 设为调用前状态
@@ -35,5 +69,17 @@ trait TDefer
 		{
 			return false;
 		}
+	}
+
+	private function hasMulti($redis)
+	{
+		$hash = spl_object_hash($redis);
+		return static::$hasMulti[$hash] ?? false;
+	}
+
+	private function setHasMulti($redis, $has)
+	{
+		$hash = spl_object_hash($redis);
+		static::$hasMulti[$hash] = $has;
 	}
 }

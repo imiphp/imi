@@ -110,7 +110,12 @@ abstract class Model extends BaseModel
 	public function update(): IResult
 	{
 		$query = static::query($this);
-		return $this->parseWhereId($query)->update(static::parseSaveData($this));
+		$query = $this->parseWhereId($query);
+		if(!isset($query->getOption()->where[0]))
+		{
+			throw new \RuntimeException('use Model->update(), primary key can not be null');
+		}
+		return $query->update(static::parseSaveData($this));
 	}
 
 	/**
@@ -137,17 +142,18 @@ abstract class Model extends BaseModel
 	public function save(): IResult
 	{
 		$query = static::query($this);
-		$selectResult = $this->parseWhereId($query)->select();
-		if($selectResult->getRowCount() > 0)
+		$query = $this->parseWhereId($query);
+		if(isset($query->getOption()->where[0]))
 		{
-			// 更新
-			return $this->update();
+			$selectResult = $query->select();
+			if($selectResult->getRowCount() > 0)
+			{
+				// 更新
+				return $this->update();
+			}
 		}
-		else
-		{
-			// 插入
-			return $this->insert();
-		}
+		// 插入
+		return $this->insert();
 	}
 
 	/**
@@ -157,7 +163,12 @@ abstract class Model extends BaseModel
 	public function delete(): IResult
 	{
 		$query = static::query($this);
-		return $this->parseWhereId($query)->delete();
+		$query = $this->parseWhereId($query);
+		if(!isset($query->getOption()->where[0]))
+		{
+			throw new \RuntimeException('use Model->delete(), primary key can not be null');
+		}
+		return $query->delete();
 	}
 
 	/**

@@ -35,7 +35,7 @@ trait TServerGroup
 	{
 		if(!isset($this->groups[$groupName]))
 		{
-			$this->groups[$groupName] = RequestContext::getServerBean('ServerGroup', $this->swooleServer, $groupName, $maxClients);
+			$this->groups[$groupName] = RequestContext::getServerBean('ServerGroup', $this, $groupName, $maxClients);
 		}
 		return $this->groups[$groupName];
 	}

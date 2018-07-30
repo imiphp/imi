@@ -24,7 +24,7 @@ class AfterClose implements ICloseEventListener
 		// 当前连接离开所有组
 		$e->getTarget()->getBean('FdMap')->leaveAll($e->fd);
 
-		RequestContext::destroy();
 		ConnectContext::destroy($e->fd);
+		RequestContext::destroy();
 	}
 }

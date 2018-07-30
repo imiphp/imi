@@ -3,6 +3,8 @@ namespace Imi\Util;
 
 use Imi\App;
 use Imi\Main\Helper;
+use Imi\Bean\BeanProxy;
+use Imi\Bean\Parser\BeanParser;
 
 /**
  * 框架里杂七杂八的各种工具方法
@@ -195,5 +197,27 @@ abstract class Imi
 		$path = dirname($refClass->getFileName());
 		$namespaceSubPath = substr($namespace, strlen($appNamespace));
 		return File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
+	}
+
+	/**
+	 * 获取类属性的值，支持传入Bean名称
+	 *
+	 * @param string $className
+	 * @param string $propertyName
+	 * @return mixed
+	 */
+	public static function getClassPropertyValue($className, $propertyName)
+	{
+		$value = BeanProxy::getInjectValue($className, $propertyName);
+		if(null === $value)
+		{
+			if(!class_exists($className))
+			{
+				$className = BeanParser::getInstance()->getData()[$className]['className'];
+			}
+			$ref = new \ReflectionClass($className);
+			$value = $ref->getDefaultProperties()[$propertyName] ?? null;
+		}
+		return $value;
 	}
 }

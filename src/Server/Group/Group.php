@@ -23,7 +23,7 @@ class Group
 	/**
 	 * 服务器对象
 	 *
-	 * @var \Swoole\Server
+	 * @var \Imi\Server\Base
 	 */
 	protected $server;
 
@@ -55,7 +55,7 @@ class Group
 	 */
 	protected $handler;
 
-	public function __construct(\Swoole\Server $server, string $groupName, int $maxClients = -1)
+	public function __construct(\Imi\Server\Base $server, string $groupName, int $maxClients = -1)
 	{
 		$this->server = $server;
 		$this->groupName = $groupName;
@@ -107,9 +107,18 @@ class Group
 	}
 
 	/**
+	 * 获取组中的连接总数
+	 * @return integer
+	 */
+	public function count()
+	{
+		return $this->handler->count($this->groupName);
+	}
+
+	/**
 	 * 获取服务器对象
 	 *
-	 * @return \Swoole\Server
+	 * @return \Imi\Server\Base
 	 */ 
 	public function getServer()
 	{
@@ -134,9 +143,10 @@ class Group
 	 */
 	public function __call($name, $arguments)
     {
-		if(!method_exists($this->server, $name))
+		$server = $this->server->getSwooleServer();
+		if(!method_exists($server, $name))
 		{
-			throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', get_class($this->server), $name));
+			throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', get_class($server), $name));
 		}
 		// 要检查的方法名
 		static $checkMethods = [
@@ -159,10 +169,10 @@ class Group
 		foreach($this->handler->getFds($this->groupName) as $fd)
 		{
 			// 执行结果
-			$result[$fd] = $itemResult = $this->server->$name($fd, ...$arguments);
+			$result[$fd] = $itemResult = $server->$name($fd, ...$arguments);
 			if($methodIsCheck && false === $itemResult)
 			{
-				if(in_array($this->server->getLastError(), $clientCloseErrors))
+				if(in_array($server->getLastError(), $clientCloseErrors))
 				{
 					// 客户端关闭的错误，直接把该客户端T出全部组
 					$fdMap->leaveAll($fd);

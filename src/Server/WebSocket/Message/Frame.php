@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Server\WebSocket\Message;
 
-use Imi\Server\WebSocket\Parser\DataParser;
+use Imi\Server\DataParser\DataParser;
 use Imi\RequestContext;
 
 class Frame implements IFrame

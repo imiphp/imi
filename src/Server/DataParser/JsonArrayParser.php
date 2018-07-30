@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Server\WebSocket\Parser;
+namespace Imi\Server\DataParser;
 
 class JsonArrayParser implements IParser
 {

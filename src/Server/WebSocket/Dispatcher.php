@@ -5,7 +5,7 @@ use Imi\App;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\WebSocket\Message\IFrame;
-use Imi\Server\WebSocket\Parser\DataParser;
+use Imi\Server\DataParser\DataParser;
 
 /**
  * @Bean("WebSocketDispatcher")

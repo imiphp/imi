@@ -133,7 +133,7 @@ class Where extends BaseWhere implements IWhere
 			return $this->rawSQL;
 		}
 		$result = $this->parseKeyword($this->fieldName) . ' ' . $this->operation . ' ';
-		switch($this->operation)
+		switch(strtolower($this->operation))
 		{
 			case 'between':
 			case 'not between':
@@ -142,6 +142,18 @@ class Where extends BaseWhere implements IWhere
 				$result .= "{$begin} and {$end}";
 				$this->binds[$begin] = $this->value[0];
 				$this->binds[$end] = $this->value[1];
+				break;
+			case 'in':
+			case 'not in':
+				$result .= '(';
+				$valueNames = [];
+				foreach($this->value as $value)
+				{
+					$paramName = Query::getAutoParamName();
+					$valueNames[] = $paramName;
+					$this->binds[$paramName] = $value;
+				}
+				$result .= implode(',', $valueNames) . ')';
 				break;
 			default:
 				$value = Query::getAutoParamName();

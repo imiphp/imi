@@ -3,7 +3,7 @@ namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
 
-class WorkStopEventParam extends EventParam
+class PacketEventParam extends EventParam
 {
 	/**
 	 * 服务器对象
@@ -12,8 +12,15 @@ class WorkStopEventParam extends EventParam
 	public $server;
 
 	/**
-	 * Worker进程ID
-	 * @var int
+	 * 数据
+	 * @var string
 	 */
-	public $workerID;
+	public $data;
+
+	/**
+	 * 客户端信息
+	 *
+	 * @var array
+	 */
+	public $clientInfo;
 }

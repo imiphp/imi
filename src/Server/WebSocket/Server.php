@@ -46,7 +46,8 @@ class Server extends Base
 	protected function createSubServer()
 	{
 		$config = $this->getServerInitConfig();
-		$this->swooleServer = ServerManage::getServer('main')->getSwooleServer()->addListener($config['host'], $config['port'], $config['sockType']);
+		$this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
+		$this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
 	}
 
 	/**
@@ -69,7 +70,9 @@ class Server extends Base
 	 */
 	protected function __bindEvents()
 	{
-		$this->swooleServer->on('handShake', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
+		$server = $this->swoolePort ?? $this->swooleServer;
+
+		$server->on('handShake', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
 			$request = new Request($this, $swooleRequest);
 			$response = new Response($this, $swooleResponse);
 			$this->trigger('handShake', [
@@ -78,17 +81,18 @@ class Server extends Base
 			], $this, HandShakeEventParam::class);
 		});
 
-		$this->swooleServer->on('message', function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) {
+		$server->on('message', function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) {
 			$this->trigger('message', [
 				'server'	=>	$this,
 				'frame'		=>	$frame,
 			], $this, MessageEventParam::class);
 		});
 
-		$this->swooleServer->on('close', function(\swoole_http_server $server, $fd){
+		$server->on('close', function(\swoole_http_server $server, $fd, $reactorID){
 			$this->trigger('close', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,
+				'reactorID'	=>	$reactorID,
 			], $this, CloseEventParam::class);
 		});
 	}

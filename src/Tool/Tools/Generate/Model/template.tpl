@@ -19,7 +19,7 @@ class <?= $className ?> extends Model
 	foreach($fields as $field):
 ?>
 	/**
-	 * <?= $field['name'] ?>
+	 * <?= $field['name'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
 
 	 * @Column(name="<?= $field['name'] ?>", type="<?= $field['type'] ?>", length=<?= $field['length'] ?>, accuracy=<?= $field['accuracy'] ?>, nullable=<?= json_encode($field['nullable']) ?>, default="<?= $field['default'] ?>", isPrimaryKey=<?= json_encode($field['isPrimaryKey']) ?>, primaryKeyIndex=<?= $field['primaryKeyIndex'] ?>, isAutoIncrement=<?= json_encode($field['isAutoIncrement']) ?>)
 	 * @var <?= $field['phpType'] ?>
@@ -28,7 +28,7 @@ class <?= $className ?> extends Model
 	protected $<?= $field['varName'] ?>;
 
 	/**
-	 * 获取 <?= $field['varName'] ?>
+	 * 获取 <?= $field['varName'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
 
 	 *
 	 * @return <?= $field['phpType'] ?>
@@ -40,7 +40,7 @@ class <?= $className ?> extends Model
 	}
 
 	/**
-	 * 赋值 <?= $field['varName'] ?>
+	 * 赋值 <?= $field['varName'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
 
 	 * @param <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= $field['name'] ?>
 

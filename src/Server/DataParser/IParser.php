@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Server\WebSocket\Parser;
+namespace Imi\Server\DataParser;
 
 use Imi\Util\Format\IFormat;
 

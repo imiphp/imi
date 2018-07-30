@@ -35,9 +35,6 @@ class ActionMiddleware implements IMiddleware
 			$result['callable'][0] = clone $result['callable'][0];
 			$result['callable'][0]->server = RequestContext::getServer();
 			$result['callable'][0]->frame = $frame;
-			// 传入Request和Response对象
-			// $result['callable'][0]->request = $request;
-			// $result['callable'][0]->response = $response;
 		}
 		// 执行动作
 		$actionResult = call_user_func($result['callable'], $frame->getFormatData());
