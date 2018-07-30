@@ -1,46 +1,45 @@
-# WebSocket 控制器
+# TCP 控制器
 
 ## 定义
 
 ```php
 <?php
-namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
+namespace ImiDemo\TcpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Controller\WebSocketController;
-use Imi\Server\Route\Annotation\WebSocket\WSRoute;
-use Imi\Server\Route\Annotation\WebSocket\WSAction;
-use Imi\Server\Route\Annotation\WebSocket\WSController;
+use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Server\Route\Annotation\Tcp\TcpAction;
+use Imi\Server\Route\Annotation\Tcp\TcpController;
 
 /**
  * 数据收发测试
- * @WSController
+ * @TcpController
  */
-class Test extends WebSocketController
+class Test extends \Imi\Controller\TcpController
 {
 	/**
 	 * 登录
 	 * 
-	 * @WSAction
-	 * @WSRoute({"action"="login"})
+	 * @TcpAction
+	 * @TcpRoute({"action"="login"})
 	 * @return void
 	 */
 	public function login($data)
 	{
 		ConnectContext::set('username', $data->username);
-		$this->server->joinGroup('g1', $this->frame->getFd());
-		return ['success'=>true];
+		$this->server->joinGroup('g1', $this->data->getFd());
+		return ['action'=>'login', 'success'=>true];
 	}
 }
 ```
 
-首先控制器类必须有`@WSController`注解，对应动作必须有`@WSAction`和`@WSRoute`注解。
+首先控制器类必须有`@TcpController`注解，对应动作必须有`@TcpAction`和`@TcpRoute`注解。
 
 ## 注解
 
-### @WSRoute
+### @TcpRoute
 
-指定 WebSocket 路由解析规则。
+指定 Tcp 路由解析规则。
 
 ```php
 // 解析 $data['action'] === 'login'
@@ -64,7 +63,35 @@ class Test extends WebSocketController
 
 ### 响应当前这个请求
 
-直接在方法中返回一个数组或对象，在Http 控制器中`@WSConfig`中设定的处理器，就会把这个转为对应数据响应给客户端。
+直接在方法中返回一个数组或对象，在服务器配置设定的处理器，就会把这个转为对应数据响应给客户端。
+
+**配置文件**
+
+```php
+return [
+	// 主服务器配置，提供websocket服务
+	'mainServer'	=>	[
+		'namespace'	=>	'ImiDemo\TcpDemo\MainServer',
+		'type'		=>	Type::TCP_SERVER,
+		// 'host'		=>	'0.0.0.0',
+		'port'		=>	8085,
+		// 'mode'		=>	SWOOLE_BASE,
+		// 'sockType'	=>	SWOOLE_SOCK_TCP,
+		'configs'	=>	[
+			'reactor_num'		=>	2,
+			'worker_num'		=>	2,
+			'task_worker_num'	=>	8,
+			// EOF自动分包
+			'open_eof_split'	=>	true, //打开EOF_SPLIT检测
+			'package_eof'		=>	"\r\n", //设置EOF
+		],
+		// 数据处理器
+		'dataParser'	=>	\ImiDemo\TcpDemo\MainServer\Parser\JsonObjectParser::class,
+	],
+}
+```
+
+**响应数据**
 
 ```php
 return ['success'=>true];
@@ -192,26 +219,9 @@ public function getFormatData();
 
 ```php
 /**
- * WebSocket的OpCode类型，可以参考WebSocket协议标准文档
- * WEBSOCKET_OPCODE_TEXT = 0x1 ，文本数据
- * WEBSOCKET_OPCODE_BINARY = 0x2 ，二进制数据
+ * 获取Reactor线程ID
+ *
  * @return int
  */
-public function getOpcode();
-```
-
-```php
-/**
- * 表示数据帧是否完整
- * @return boolean
- */
-public function isFinish();
-```
-
-```php
-/**
- * 获取 \Swoole\Websocket\Frame 对象
- * @return \Swoole\Websocket\Frame
- */
-public function getSwooleWebSocketFrame(): \Swoole\Websocket\Frame;
+public function getReactorID(): int;
 ```

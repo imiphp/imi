@@ -1,18 +1,14 @@
 # 中间件
 
-开发者可以开发中间件类，对整个WebSocket请求和响应过程进行自定义处理。
+开发者可以开发中间件类，对整个TCP请求和响应过程进行自定义处理。
 
 ### 定义中间件
 
 ```php
 <?php
-namespace Imi\Server\WebSocket\Middleware;
+namespace Imi\Server\TcpServer\Middleware;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\WebSocket\Message\IFrame;
-use Imi\Server\WebSocket\MessageHandler;
-use Imi\Server\WebSocket\IMessageHandler;
 
 /**
  * @Bean
@@ -22,11 +18,11 @@ class RouteMiddleware implements IMiddleware
 	/**
 	 * 处理方法
 	 *
-	 * @param IFrame $frame
-	 * @param IMessageHandler $handler
+	 * @param IReceiveData $data
+	 * @param IReceiveHandler $handle
 	 * @return void
 	 */
-    public function process(IFrame $frame, IMessageHandler $handler)
+	public function process(IReceiveData $data, IReceiveHandler $handler)
 	{
 		
 	}
@@ -40,10 +36,10 @@ class RouteMiddleware implements IMiddleware
 return [
 	'beans'	=>	[
 		// 中间件
-		'WebSocketDispatcher'	=>	[
+		'TcpDispatcher'	=>	[
 			'middlewares'	=>	[
 				// 中间件
-				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
+				\Imi\Server\Tcp\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -56,31 +52,29 @@ return [
 
 ```php
 <?php
-namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
+namespace ImiDemo\TcpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Controller\WebSocketController;
-use Imi\Server\Route\Annotation\WebSocket\WSRoute;
-use Imi\Server\Route\Annotation\WebSocket\WSAction;
-use Imi\Server\Route\Annotation\WebSocket\WSController;
-use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
+use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Server\Route\Annotation\Tcp\TcpAction;
+use Imi\Server\Route\Annotation\Tcp\TcpController;
 
 /**
  * 数据收发测试
- * @WSController
+ * @TcpController
  */
-class Test extends WebSocketController
+class Test extends \Imi\Controller\TcpController
 {
 	/**
-	 * test
+	 * 登录
 	 * 
-	 * @WSAction
-	 * @WSRoute({"action"="login"})
-	 * @WSMiddleware(XXX::class)
-	 * @WSMiddleware({XXX::class,XXX2::class})
+	 * @TcpAction
+	 * @TcpRoute({"action"="login"})
+	 * @TcpMiddleware(XXX::class)
+	 * @TcpMiddleware({XXX::class,XXX2::class})
 	 * @return void
 	 */
-	public function test($data)
+	public function login($data)
 	{
 	}
 }
