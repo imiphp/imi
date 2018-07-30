@@ -11,6 +11,17 @@ use Imi\Db\Db;
 $query = Db::query();
 ```
 
+### 事务
+
+```php
+// 开启事务
+Db::getInstance()->beginTransaction();
+// 提交事务
+Db::getInstance()->commit();
+// 回滚事务
+Db::getInstance()->rollBack();
+```
+
 ### 指定表 (table/from)
 
 ```php
