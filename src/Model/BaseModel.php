@@ -93,6 +93,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 		$this[$name] = $value;
 	}
 
+	public function __isset($name)
+	{
+		return isset($this[$name]);
+	}
+
 	/**
 	 * 将当前对象作为数组返回
 	 * @return array
