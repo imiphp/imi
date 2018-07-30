@@ -57,7 +57,9 @@ class Server extends Base
 	 */
 	protected function __bindEvents()
 	{
-		$this->swooleServer->on('request', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
+		$server = $this->swoolePort ?? $this->swooleServer;
+
+		$server->on('request', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
 			$request = new Request($this, $swooleRequest);
 			$response = new Response($this, $swooleResponse);
 			$this->trigger('request', [
@@ -66,7 +68,7 @@ class Server extends Base
 			], $this, RequestEventParam::class);
 		});
 
-		$this->swooleServer->on('close', function(\swoole_http_server $server, $fd, $reactorID){
+		$server->on('close', function(\swoole_http_server $server, $fd, $reactorID){
 			$this->trigger('close', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,

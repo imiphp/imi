@@ -81,7 +81,7 @@ abstract class Base
 		}
 		if(!empty($config['configs']))
 		{
-			$this->swooleServer->set($config['configs']);
+			($this->swoolePort ?? $this->swooleServer)->set($config['configs']);
 		}
 		$this->bindEvents();
 	}

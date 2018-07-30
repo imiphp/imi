@@ -69,7 +69,9 @@ class Server extends Base
 	 */
 	protected function __bindEvents()
 	{
-		$this->swooleServer->on('connect', function(\swoole_server $server, $fd, $reactorID){
+		$server = $this->swoolePort ?? $this->swooleServer;
+
+		$server->on('connect', function(\swoole_server $server, $fd, $reactorID){
 			$this->trigger('connect', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,
@@ -77,7 +79,7 @@ class Server extends Base
 			], $this, ConnectEventParam::class);
 		});
 		
-		$this->swooleServer->on('receive', function(\swoole_server $server, $fd, $reactorID, $data){
+		$server->on('receive', function(\swoole_server $server, $fd, $reactorID, $data){
 			$this->trigger('receive', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,
@@ -86,7 +88,7 @@ class Server extends Base
 			], $this, ReceiveEventParam::class);
 		});
 		
-		$this->swooleServer->on('close', function(\swoole_server $server, $fd, $reactorID){
+		$server->on('close', function(\swoole_server $server, $fd, $reactorID){
 			$this->trigger('close', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,
@@ -94,14 +96,14 @@ class Server extends Base
 			], $this, CloseEventParam::class);
 		});
 
-		$this->swooleServer->on('BufferFull', function(\swoole_server $server, $fd){
+		$server->on('BufferFull', function(\swoole_server $server, $fd){
 			$this->trigger('bufferFull', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,
 			], $this, BufferEventParam::class);
 		});
 
-		$this->swooleServer->on('BufferEmpty', function(\swoole_server $server, $fd){
+		$server->on('BufferEmpty', function(\swoole_server $server, $fd){
 			$this->trigger('bufferEmpty', [
 				'server'	=>	$this,
 				'fd'		=>	$fd,

@@ -66,7 +66,9 @@ class Server extends Base
 	 */
 	protected function __bindEvents()
 	{
-		$this->swooleServer->on('packet', function(\swoole_server $server, $data, $clientInfo){
+		$server = $this->swoolePort ?? $this->swooleServer;
+
+		$server->on('packet', function(\swoole_server $server, $data, $clientInfo){
 			$this->trigger('packet', [
 				'server'	=>	$this,
 				'data'		=>	$data,
