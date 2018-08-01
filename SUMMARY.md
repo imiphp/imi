@@ -20,6 +20,7 @@
     * [Session](components/httpserver/session.md)
     * [视图](components/httpserver/view.md)
     * [错误异常处理](components/httpserver/error.md)
+    * [404处理](components/httpserver/404.md)
   * [WebSocket 服务器](components/websocketServer/index.md)
     * [HTTP 路由](components/websocketServer/httpRoute.md)
     * [HTTP 控制器](components/websocketServer/httpController.md)
