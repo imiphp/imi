@@ -107,6 +107,6 @@ class Logger extends AbstractLogger
 	protected function getTrace()
 	{
 		$backtrace = debug_backtrace();
-		return array_splice($backtrace, 6);
+		return array_splice($backtrace, 13);
 	}
 }
