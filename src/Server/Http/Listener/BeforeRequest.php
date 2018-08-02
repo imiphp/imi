@@ -6,6 +6,8 @@ use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\App;
+use Imi\Worker;
+use Imi\Util\Coroutine;
 
 /**
  * request事件前置处理
@@ -20,6 +22,12 @@ class BeforeRequest implements IRequestEventListener
 	 */
 	public function handle(RequestEventParam $e)
 	{
+		if(!Worker::isInited())
+		{
+			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+			Coroutine::suspend();
+		}
+		
 		// 上下文创建
 		RequestContext::create();
 		RequestContext::set('server', $e->request->getServerInstance());

@@ -28,6 +28,8 @@ class WorkerInit implements IWorkerStartEventListener
 	 */
 	public function handle(WorkerStartEventParam $e)
 	{
+		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
+
 		// 当前进程的 WorkerID 设置
 		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
 

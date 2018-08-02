@@ -1,17 +1,19 @@
 <?php
 namespace Imi\Server\WebSocket\Listener;
 
+use Imi\Worker;
 use Imi\ConnectContext;
 use Imi\RequestContext;
+use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\HandShakeEventParam;
 use Imi\Server\Event\Listener\IHandShakeEventListener;
 
 /**
- * HandShake事件后置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="handShake",priority=PHP_INT_MIN)
+ * HandShake事件前置处理
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="handShake",priority=PHP_INT_MAX)
  */
-class AfterHandShake implements IHandShakeEventListener
+class BeforeHandShake implements IHandShakeEventListener
 {
 	/**
 	 * 默认的 WebSocket 握手
@@ -20,6 +22,11 @@ class AfterHandShake implements IHandShakeEventListener
 	 */
 	public function handle(HandShakeEventParam $e)
 	{
+		if(!Worker::isInited())
+		{
+			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+			Coroutine::suspend();
+		}
 		// 上下文创建
 		RequestContext::create();
 		RequestContext::set('server', $e->request->getServerInstance());

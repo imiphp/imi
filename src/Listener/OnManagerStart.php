@@ -17,7 +17,7 @@ use Imi\Util\Swoole;
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=PHP_INT_MAX)
  */
-class OnStart implements IManagerStartEventListener
+class OnManagerStart implements IManagerStartEventListener
 {
 	/**
 	 * 事件处理方法
