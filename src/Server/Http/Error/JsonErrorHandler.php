@@ -19,7 +19,7 @@ class JsonErrorHandler implements IErrorHandler
 	 * 取消继续抛出异常
 	 * @var boolean
 	 */
-	protected $cancelThrow = true;
+	protected $cancelThrow = false;
 
 	public function handle(\Throwable $throwable): bool
 	{
