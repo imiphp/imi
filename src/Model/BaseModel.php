@@ -136,6 +136,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	{
         return $this->toArray();
 	}
+
+	/**
+	 * 从一个数组赋值到当前模型
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public function set(array $data)
+	{
+		foreach($data as $k => $v)
+		{
+			$this[$k] = $v;
+		}
+	}
 	
 	/**
 	 * 获取驼峰命名
