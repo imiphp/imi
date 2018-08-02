@@ -72,6 +72,20 @@ class Logger extends AbstractLogger
      */
     private $beanCacheFilePath;
 
+	/**
+	 * 自动保存间隔，单位：秒
+	 *
+	 * @var integer
+	 */
+	protected $autoSaveInterval = 10;
+
+	/**
+	 * 定时器ID
+	 *
+	 * @var int
+	 */
+	private $timerID;
+
 	public function __init()
 	{
 		foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
@@ -79,7 +93,23 @@ class Logger extends AbstractLogger
 			$this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
         $path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-        $this->beanCacheFilePath = File::path($path, 'imiBeanCache', '%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+		$this->beanCacheFilePath = File::path($path, 'imiBeanCache', '%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+		if($this->autoSaveInterval > 0)
+		{
+			$this->timerID = swoole_timer_tick($this->autoSaveInterval * 1000, function(){
+				$this->endRequest();
+				$this->save();
+			});
+		}
+	}
+
+	public function __destruct()
+	{
+		if(null !== $this->timerID)
+		{
+			swoole_timer_clear($this->timerID);
+			$this->timerID = null;
+		}
 	}
 
     /**

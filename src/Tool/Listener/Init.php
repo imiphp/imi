@@ -31,7 +31,7 @@ class Init implements IEventListener
 		try{
 			if(!isset($_SERVER['argv'][1]))
 			{
-				exit;
+				throw new \RuntimeException(sprintf('tool args error!'));
 			}
 			$this->init();
 			// cli参数初始化

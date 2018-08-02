@@ -6,6 +6,8 @@ use Imi\Config;
 use Imi\Worker;
 use Imi\Log\Log;
 use Imi\Util\File;
+use Imi\RequestContext;
+use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 
 /**
@@ -102,7 +104,31 @@ class ErrorLog
 				'trace'	=>	[],
 			]);
 		}
+		$logger = App::getBean('Logger');
+		$logger->endRequest();
+		$logger->save();
+		exit;
+	}
+
+	/**
+	 * 致命错误
+	 *
+	 * @return void
+	 */
+	public function onException(\Throwable $ex)
+	{
+		// 日志处理
+		Log::error($ex->getMessage(), [
+			'trace'	=>	$ex->getTrace(),
+		]);
 		App::getBean('Logger')->endRequest();
+		// 请求上下文处理
+		if(RequestContext::exsits())
+		{
+			// 释放请求的进程池资源
+			PoolManager::destroyCurrentContext();
+			RequestContext::destroy();
+		}
 	}
 
 	/**
