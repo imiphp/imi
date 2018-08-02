@@ -5,6 +5,7 @@ use Imi\App;
 use Imi\Config;
 use Imi\Worker;
 use Imi\Util\File;
+use Imi\Log\LogLevel;
 use Imi\Util\Coroutine;
 use Imi\Bean\BeanFactory;
 use Psr\Log\AbstractLogger;
@@ -23,9 +24,26 @@ class Logger extends AbstractLogger
 		[
 			'class'		=>	\Imi\Log\Handler\Console::class,
 			'options'	=>	[
-				'levels'	=>	LogLevel::ALL,
+				'levels'	=>	[
+					LogLevel::DEBUG,
+					LogLevel::INFO,
+					LogLevel::NOTICE,
+					LogLevel::WARNING,
+				],
 			],
 		],
+		[
+			'class'		=>	\Imi\Log\Handler\Console::class,
+			'options'	=>	[
+				'levels'	=>	[
+					LogLevel::ALERT,
+					LogLevel::CRITICAL,
+					LogLevel::EMERGENCY,
+					LogLevel::ERROR,
+				],
+				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+			],
+		]
 	];
 
 	/**
