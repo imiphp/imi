@@ -38,7 +38,11 @@ class Annotation
 	 */
 	public function init($mains = null)
 	{
-		foreach($mains ?? MainHelper::getMains() as $main)
+		if(null === $mains)
+		{
+			$mains = MainHelper::getMains();
+		}
+		foreach($mains as $main)
 		{
 			// 扫描注解
 			$this->loadModuleAnnotations($main->getNamespace());
