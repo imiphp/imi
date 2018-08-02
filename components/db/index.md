@@ -22,6 +22,12 @@ Db::getInstance()->commit();
 Db::getInstance()->rollBack();
 ```
 
+**自动事务处理**
+
+`@Transaction` 注解，类：`Imi\Db\Annotation\Transaction`
+
+这个注解可以加在任意方法上，在方法调用前开启事务，在方法中抛出异常时回滚事务，方法成功返回时提交事务。
+
 ### 指定表 (table/from)
 
 ```php
