@@ -172,8 +172,11 @@ abstract class Base
 		$find = $replace = [];
 		foreach ($record->getContext() as $key => $value)
 		{
-			$find[] = '{' . $key . '}';
-			$replace[] = $value;
+			if(is_scalar($value))
+			{
+				$find[] = '{' . $key . '}';
+				$replace[] = $value;
+			}
 		}
 		return str_replace($find, $replace, $record->getMessage());
 	}
