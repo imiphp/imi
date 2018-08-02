@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Log;
 
+use Imi\App;
 use Imi\Config;
 use Imi\Worker;
 use Imi\Log\Log;
@@ -26,6 +27,7 @@ class ErrorLog
 	 */
 	public function register()
 	{
+		error_reporting(0);
         $path = Config::get('@app.beanClassCache', sys_get_temp_dir());
         $this->beanCacheFilePath = File::path($path, 'imiBeanCache', 'imi', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
 		register_shutdown_function([$this, 'onShutdown']);
@@ -97,9 +99,10 @@ class ErrorLog
 		]))
 		{
 			Log::error($e['message'], [
-				'trace'	=>	$this->getTrace(),
+				'trace'	=>	[],
 			]);
 		}
+		App::getBean('Logger')->endRequest();
 	}
 
 	/**
