@@ -42,6 +42,11 @@ class Init implements IEventListener
 			$callable = ToolParser::getInstance()->getCallable($tool, $operation);
 			if(null === $callable)
 			{
+				Annotation::getInstance()->init([Helper::getMain(App::getNamespace())]);
+			}
+			$callable = ToolParser::getInstance()->getCallable($tool, $operation);
+			if(null === $callable)
+			{
 				throw new \RuntimeException(sprintf('tool %s does not exists!', $_SERVER['argv'][1]));
 			}
 			if(Args::get('h'))
@@ -101,7 +106,6 @@ class Init implements IEventListener
 	 */
 	private function init()
 	{
-		Annotation::getInstance()->init([Helper::getMain(App::getNamespace())]);
 		RequestContext::create();
 		// 获取配置
 		$pools = $caches = [];
