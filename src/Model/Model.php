@@ -401,6 +401,10 @@ abstract class Model extends BaseModel
 	 */
 	private static function parseWhere(IQuery $query, $where)
 	{
+		if(null === $where)
+		{
+			return $query;
+		}
 		if(is_callable($where))
 		{
 			// 回调传入条件
