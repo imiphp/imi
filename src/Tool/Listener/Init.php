@@ -101,6 +101,7 @@ class Init implements IEventListener
 	 */
 	private function init()
 	{
+		Annotation::getInstance()->init([Helper::getMain(App::getNamespace())]);
 		RequestContext::create();
 		// 获取配置
 		$pools = $caches = [];
