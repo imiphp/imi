@@ -70,6 +70,7 @@ abstract class App
 		static::$annotation = Annotation::getInstance();
 		static::$annotation->init([
 			MainHelper::getMain('Imi', 'Imi'),
+			MainHelper::getMain(static::$namespace),
 		]);
 		Event::trigger('IMI.INITED');
 		static::$isInited = true;
