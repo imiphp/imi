@@ -33,17 +33,6 @@ class OnManagerStart implements IManagerStartEventListener
 			'managerPID'	=>	Swoole::getManagerPID(),
 		]));
 		
-		// 清除框架 Bean类 缓存
-		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		$path = File::path($path, 'imiBeanCache', 'imi');
-		foreach (File::enum($path) as $file)
-		{
-			if (is_file($file))
-			{
-				unlink($file);
-			}
-		}
-
 		// 热更新
 		$process = ProcessManager::create('hotUpdate');
 		$process->start();
