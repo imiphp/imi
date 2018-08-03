@@ -58,6 +58,7 @@ class ModelGenerate
 				// 不符合$include和$exclude
 				continue;
 			}
+			echo 'generating ', $table, '...', PHP_EOL;
 			$className = $this->getClassName($table, $prefix);
 			$fileName = File::path($modelPath, $className . '.php');
 			if(is_file($fileName) && !$override)
@@ -79,6 +80,7 @@ class ModelGenerate
 			$content = $this->renderTemplate($data);
 			File::writeFile($fileName, $content);
 		}
+		echo 'complete', PHP_EOL;
 	}
 
 	/**
