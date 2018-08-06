@@ -71,7 +71,7 @@ IMI 框架底层开发使用了强类型，易维护，性能更强。支持 Aop
 
 [完全开发手册](https://doc.imiphp.com)
 
-QQ群：74401592 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://shang.qq.com/wpa/qunwpa?idkey=e2e6b49e9a648aae5285b3aba155d59107bb66fde02e229e078bd7359cac8ac3)，如有问题会有人解答和修复。
+QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题会有人解答和修复。
 
 ## 运行环境
 
