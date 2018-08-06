@@ -199,6 +199,19 @@ abstract class App
 		// 加载服务器注解
 		Annotation::getInstance()->init($appMains);
 		
+		// 日志初始化
+		if(static::$container->has('Logger'))
+		{
+			$logger = static::getBean('Logger');
+			foreach($appMains as $main)
+			{
+				foreach($main->getConfig()['beans']['Logger']['exHandlers'] ?? [] as $exHandler)
+				{
+					$logger->addExHandler($exHandler);
+				}
+			}
+		}
+
 		// 初始化
 		if(Coroutine::isIn())
 		{

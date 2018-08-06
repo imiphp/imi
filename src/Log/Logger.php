@@ -209,5 +209,17 @@ class Logger extends AbstractLogger
             $context['trace'] = $this->getTrace();
         }
         return $context;
-    }
+	}
+	
+	/**
+	 * 增加扩展处理器
+	 *
+	 * @param array $exHandler
+	 * @return void
+	 */
+	public function addExHandler($exHandler)
+	{
+		$this->exHandlers = $exHandler;
+		$this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
+	}
 }
