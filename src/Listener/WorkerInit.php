@@ -30,12 +30,9 @@ class WorkerInit implements IWorkerStartEventListener
 	{
 		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
 
-		// 当前进程的 WorkerID 设置
-		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
-
 		// 清除当前 worker 进程的 Bean 类缓存
 		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		$path = File::path($path, 'imiBeanCache', Worker::getWorkerID());
+		$path = File::path($path, 'imiBeanCache', $e->server->getSwooleServer()->worker_id);
 		foreach (File::enum($path) as $file)
 		{
 			if (is_file($file))
@@ -43,6 +40,9 @@ class WorkerInit implements IWorkerStartEventListener
 				unlink($file);
 			}
 		}
+
+		// 当前进程的 WorkerID 设置
+		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
 
 		// 初始化 worker
 		App::initWorker();
