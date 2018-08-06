@@ -92,6 +92,7 @@ class Init implements IEventListener
 				$args = $this->getCallToolArgs($callable, $tool, $operation);
 				// 执行工具操作
 				call_user_func_array($callable, $args);
+				swoole_event_wait();
 			}
 		}
 		catch(\Throwable $ex)
