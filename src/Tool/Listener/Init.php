@@ -33,6 +33,10 @@ class Init implements IEventListener
 			{
 				throw new \RuntimeException(sprintf('tool args error!'));
 			}
+			if(false === strpos($_SERVER['argv'][1], '/'))
+			{
+				throw new \RuntimeException(sprintf('tool name and operation not found!'));
+			}
 			$this->init();
 			// cli参数初始化
 			Args::init(2);
