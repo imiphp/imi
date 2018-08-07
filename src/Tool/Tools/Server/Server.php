@@ -44,7 +44,7 @@ class Server
 	public function stop()
 	{
 		go(function(){
-			$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
+			$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.pid');
 			if(!is_file($fileName))
 			{
 				exit(sprintf('pid file %s is not exists', $fileName));
@@ -74,7 +74,7 @@ class Server
 	public function reload()
 	{
 		go(function(){
-			$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
+			$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.pid');
 			if(!is_file($fileName))
 			{
 				exit(sprintf('pid file %s is not exists', $fileName));

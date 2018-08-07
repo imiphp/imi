@@ -13,6 +13,7 @@ use Imi\Server\Event\Param\ManagerStartEventParam;
 use Imi\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Process\ProcessManager;
 use Imi\Util\Swoole;
+use Imi\App;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=PHP_INT_MAX)
@@ -27,7 +28,7 @@ class OnManagerStart implements IManagerStartEventListener
 	public function handle(ManagerStartEventParam $e)
 	{
 		// 进程PID记录
-		$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), 'imi.pid');
+		$fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.pid');
 		File::writeFile($fileName, json_encode([
 			'masterPID'		=>	Swoole::getMasterPID(),
 			'managerPID'	=>	Swoole::getManagerPID(),
