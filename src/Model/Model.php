@@ -213,7 +213,7 @@ abstract class Model extends BaseModel
 	{
 		$query = static::query($this);
 		$query = $this->parseWhereId($query);
-		$data = static::parseSaveData($data);
+		$data = static::parseSaveData($this);
 
 		// 保存前
 		$this->trigger(ModelEvents::BEFORE_SAVE, [
