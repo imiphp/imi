@@ -148,7 +148,7 @@ class ErrorLog
                 {
                     if($this->beanCacheFilePath === $item['file'])
                     {
-                        $index = $i + 2;
+                        $index = $i + 1;
                         break;
                     }
                 }
