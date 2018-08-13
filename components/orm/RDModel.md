@@ -257,3 +257,21 @@ TestModel::deleteBatch([
 $testModel = TestModel::query()->where()->join()->select()->get();
 // $testModel 依然是 TestModel 类型
 ```
+
+### 初始化模型
+
+```php
+$testModel = TestModel::newInstance([
+	'a'	=>	'abc',
+	'b'	=>	'def',
+]);
+```
+
+```php
+$testModel = TestModel::newInstance();
+$testModel->set([
+	'a'	=>	'abc',
+	'b'	=>	'def',
+]);
+```
+
