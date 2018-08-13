@@ -266,7 +266,7 @@ $testModel = TestModel::newInstance([
 	'b'	=>	'def',
 ]);
 ```
-
+第二种方法：
 ```php
 $testModel = TestModel::newInstance();
 $testModel->set([
