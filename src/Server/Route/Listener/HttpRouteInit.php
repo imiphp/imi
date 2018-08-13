@@ -128,7 +128,7 @@ class HttpRouteInit implements IEventListener
 				$callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
 			}
 			$route->addRuleAnnotation($routeAnnotation, $callable, [
-				'middlewares'	=>	$routeOption['middlewares'],
+				'middlewares'	=>	$routeOption['middlewares'] ?? [],
 			]);
 		}
 	}
