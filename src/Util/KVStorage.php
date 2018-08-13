@@ -6,9 +6,33 @@ namespace Imi\Util;
  */
 class KVStorage extends \SplObjectStorage
 {
-	private $objectMap = [];
+/**
+	 * object hash => 真实
+	 *
+	 * @var array
+	 */
+	private static $map = [];
 
-	private $otherMap = [];
+	/**
+	 * scalar resource => object object
+	 *
+	 * @var array
+	 */
+	private static $objectMap = [];
+
+	/**
+	 * not scalar resource => object object
+	 *
+	 * @var array
+	 */
+	private static $otherMap = [];
+
+	/**
+	 * object key => object object
+	 *
+	 * @var array
+	 */
+	private static $otherToObjectMap = [];
 
 	public function attach($object, $data = null)
 	{
@@ -37,7 +61,7 @@ class KVStorage extends \SplObjectStorage
 
 	public function offsetGet($object)
 	{
-		return parent::offsetGet($this->parseObject($object));
+		return parent::offsetGet($this->parseObject($object, false));
 	}
 
 	public function offsetSet($object, $data = null)
@@ -56,7 +80,7 @@ class KVStorage extends \SplObjectStorage
 	 * @param boolean $isStore 是否存储该对象
 	 * @return object
 	 */
-	private function parseObject($object, $isStore = true)
+	private static function parseObject($object, $isStore = true)
 	{
 		if(is_object($object))
 		{
@@ -64,13 +88,13 @@ class KVStorage extends \SplObjectStorage
 		}
 		if(is_scalar($object))
 		{
-			if(isset($this->objectMap[$object]))
+			if(isset(static::$objectMap[$object]))
 			{
-				return $this->objectMap[$object];
+				return static::$objectMap[$object];
 			}
 			else if($isStore)
 			{
-				return $this->objectMap[$object] = (object)$object;
+				return static::$objectMap[$object] = (object)$object;
 			}
 			else
 			{
@@ -80,13 +104,15 @@ class KVStorage extends \SplObjectStorage
 		else
 		{
 			// 其它
-			if(false !== ($index = array_search($object, $this->otherMap)))
+			if(false !== ($index = array_search($object, static::$otherMap)))
 			{
-				return $this->otherMap[$index];	
+				return static::$otherToObjectMap[$index];	
 			}
 			else if($isStore)
 			{
-				return $this->otherMap[$index] = (object)$object;
+				$key = spl_object_hash(new \stdclass);
+				static::$otherMap[$key] = $object;
+				return static::$otherToObjectMap[$key] = (object)$object;
 			}
 			else
 			{
