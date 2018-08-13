@@ -69,11 +69,17 @@ class Server extends Base
 		$server = $this->swoolePort ?? $this->swooleServer;
 
 		$server->on('packet', function(\swoole_server $server, $data, $clientInfo){
-			$this->trigger('packet', [
-				'server'	=>	$this,
-				'data'		=>	$data,
-				'clientInfo'=>	$clientInfo,
-			], $this, PacketEventParam::class);
+			try{
+				$this->trigger('packet', [
+					'server'	=>	$this,
+					'data'		=>	$data,
+					'clientInfo'=>	$clientInfo,
+				], $this, PacketEventParam::class);
+			}
+			catch(\Throwable $ex)
+			{
+				App::getBean('ErrorLog')->onException($ex);
+			}
 		});
 		
 	}

@@ -31,7 +31,11 @@ class Init implements IEventListener
 		try{
 			if(!isset($_SERVER['argv'][1]))
 			{
-				exit;
+				throw new \RuntimeException(sprintf('tool args error!'));
+			}
+			if(false === strpos($_SERVER['argv'][1], '/'))
+			{
+				throw new \RuntimeException(sprintf('tool name and operation not found!'));
 			}
 			$this->init();
 			// cli参数初始化
@@ -39,6 +43,11 @@ class Init implements IEventListener
 			// 工具名/操作名
 			list($tool, $operation) = explode('/', $_SERVER['argv'][1]);
 			// 获取回调
+			$callable = ToolParser::getInstance()->getCallable($tool, $operation);
+			if(null === $callable)
+			{
+				Annotation::getInstance()->init([Helper::getMain(App::getNamespace())]);
+			}
 			$callable = ToolParser::getInstance()->getCallable($tool, $operation);
 			if(null === $callable)
 			{
@@ -87,6 +96,7 @@ class Init implements IEventListener
 				$args = $this->getCallToolArgs($callable, $tool, $operation);
 				// 执行工具操作
 				call_user_func_array($callable, $args);
+				swoole_event_wait();
 			}
 		}
 		catch(\Throwable $ex)

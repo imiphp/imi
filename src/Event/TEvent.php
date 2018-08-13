@@ -137,7 +137,7 @@ trait TEvent
 			// 阻止事件传播
 			if($param->isPropagationStopped())
 			{
-				return;
+				break;
 			}
 		}
 		// 仅触发一次的处理

@@ -2,6 +2,9 @@
 namespace Imi\Log;
 
 use Imi\App;
+use Imi\Config;
+use Imi\Worker;
+use Imi\Util\File;
 
 
 abstract class Log
@@ -17,7 +20,7 @@ abstract class Log
      */
 	public static function log($level, $message, array $context = array())
 	{
-		App::getBean('Logger')->log($level, $message, $context);
+		App::getBean('Logger')->log($level, $message, static::parseContext($context));
 	}
 
 	/**
@@ -30,7 +33,7 @@ abstract class Log
      */
     public static function emergency($message, array $context = array())
     {
-        App::getBean('Logger')->emergency($message, $context);
+        App::getBean('Logger')->emergency($message, static::parseContext($context));
     }
 
     /**
@@ -46,7 +49,7 @@ abstract class Log
      */
     public static function alert($message, array $context = array())
     {
-        App::getBean('Logger')->alert($message, $context);
+        App::getBean('Logger')->alert($message, static::parseContext($context));
     }
 
     /**
@@ -61,7 +64,7 @@ abstract class Log
      */
     public static function critical($message, array $context = array())
     {
-        App::getBean('Logger')->critical($message, $context);
+        App::getBean('Logger')->critical($message, static::parseContext($context));
     }
 
     /**
@@ -75,7 +78,7 @@ abstract class Log
      */
     public static function error($message, array $context = array())
     {
-        App::getBean('Logger')->error($message, $context);
+        App::getBean('Logger')->error($message, static::parseContext($context));
     }
 
     /**
@@ -91,7 +94,7 @@ abstract class Log
      */
     public static function warning($message, array $context = array())
     {
-        App::getBean('Logger')->warning($message, $context);
+        App::getBean('Logger')->warning($message, static::parseContext($context));
     }
 
     /**
@@ -104,7 +107,7 @@ abstract class Log
      */
     public static function notice($message, array $context = array())
     {
-        App::getBean('Logger')->notice($message, $context);
+        App::getBean('Logger')->notice($message, static::parseContext($context));
     }
 
     /**
@@ -119,7 +122,7 @@ abstract class Log
      */
     public static function info($message, array $context = array())
     {
-        App::getBean('Logger')->info($message, $context);
+        App::getBean('Logger')->info($message, static::parseContext($context));
     }
 
     /**
@@ -132,6 +135,31 @@ abstract class Log
      */
     public static function debug($message, array $context = array())
     {
-        App::getBean('Logger')->debug($message, $context);
+        App::getBean('Logger')->debug($message, static::parseContext($context));
+    }
+    
+	/**
+	 * 获取代码调用跟踪
+	 * @return array
+	 */
+	public static function getTrace()
+	{
+        $backtrace = debug_backtrace();
+        return array_splice($backtrace, 2);
+    }
+    
+    /**
+     * 处理context
+     *
+     * @param array $context
+     * @return array
+     */
+    private static function parseContext($context)
+    {
+        if(!isset($context['trace']))
+        {
+            $context['trace'] = static::getTrace();
+        }
+        return $context;
     }
 }

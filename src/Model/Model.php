@@ -3,8 +3,11 @@ namespace Imi\Model;
 
 use Imi\Db\Db;
 use Imi\Bean\BeanFactory;
+use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Util\LazyArrayObject;
+use Imi\Event\Event;
 
 /**
  * 常用的数据库模型
@@ -84,11 +87,30 @@ abstract class Model extends BaseModel
 
 	/**
 	 * 插入记录
+	 * 
+	 * @param mixed $data
 	 * @return IResult
 	 */
-	public function insert(): IResult
+	public function insert($data = null): IResult
 	{
-		$result = static::query($this)->insert(static::parseSaveData($this));
+		if(null === $data)
+		{
+			$data = static::parseSaveData($this);
+		}
+		else if(!$data instanceof \ArrayAccess)
+		{
+			$data = new LazyArrayObject($data);
+		}
+		$query = static::query($this);
+
+		// 插入前
+		$this->trigger(ModelEvents::BEFORE_INSERT, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+			'query'	=>	$query,
+		], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
+
+		$result = $query->insert($data);
 		if($result->isSuccess())
 		{
 			foreach(ModelManager::getFields($this) as $name => $column)
@@ -100,22 +122,58 @@ abstract class Model extends BaseModel
 				}
 			}
 		}
+
+		// 插入后
+		$this->trigger(ModelEvents::AFTER_INSERT, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+			'result'=>	$result
+		], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
+
 		return $result;
 	}
 
 	/**
 	 * 更新记录
+	 * 
+	 * @param mixed $data
 	 * @return IResult
 	 */
-	public function update(): IResult
+	public function update($data = null): IResult
 	{
 		$query = static::query($this);
 		$query = $this->parseWhereId($query);
+		if(null === $data)
+		{
+			$data = static::parseSaveData($this);
+		}
+		else if(!$data instanceof \ArrayAccess)
+		{
+			$data = new LazyArrayObject($data);
+		}
+
+		// 更新前
+		$this->trigger(ModelEvents::BEFORE_UPDATE, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+			'query'	=>	$query,
+		], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
+
 		if(!isset($query->getOption()->where[0]))
 		{
 			throw new \RuntimeException('use Model->update(), primary key can not be null');
 		}
-		return $query->update(static::parseSaveData($this));
+
+		$result = $query->update($data);
+
+		// 更新后
+		$this->trigger(ModelEvents::AFTER_UPDATE, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+			'result'=>	$result,
+		], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -127,12 +185,24 @@ abstract class Model extends BaseModel
 	public static function updateBatch($data, $where = null): IResult
 	{
 		$query = static::query();
-		$updateData = [];
-		foreach($data as $item)
-		{
-			$updateData[] = static::parseSaveData($item);
-		}
-		return static::parseWhere($query, $where)->update($updateData);
+		$updateData = static::parseSaveData($data);
+		$query = static::parseWhere($query, $where);
+
+		// 更新前
+		Event::trigger(static::class . ModelEvents::BEFORE_BATCH_UPDATE, [
+			'data'	=>	$updateData,
+			'query'	=>	$query,
+		], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+		
+		$result = $query->update($updateData);
+
+		// 更新后
+		Event::trigger(static::class . ModelEvents::AFTER_BATCH_UPDATE, [
+			'data'	=>	$updateData,
+			'result'=>	$result,
+		], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -143,17 +213,38 @@ abstract class Model extends BaseModel
 	{
 		$query = static::query($this);
 		$query = $this->parseWhereId($query);
+		$data = static::parseSaveData($this);
+
+		// 保存前
+		$this->trigger(ModelEvents::BEFORE_SAVE, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+			'query'	=>	$query,
+		], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+
 		if(isset($query->getOption()->where[0]))
 		{
 			$selectResult = $query->select();
 			if($selectResult->getRowCount() > 0)
 			{
 				// 更新
-				return $this->update();
+				$result = $this->update($data);
 			}
 		}
-		// 插入
-		return $this->insert();
+		if(!isset($result))
+		{
+			// 插入
+			$result = $this->insert($data);
+		}
+
+		// 保存后
+		$this->trigger(ModelEvents::AFTER_SAVE, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+			'result'=>	$result,
+		], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -164,11 +255,26 @@ abstract class Model extends BaseModel
 	{
 		$query = static::query($this);
 		$query = $this->parseWhereId($query);
+
+		// 删除前
+		$this->trigger(ModelEvents::BEFORE_DELETE, [
+			'model'	=>	$this,
+			'query'	=>	$query,
+		], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
+
 		if(!isset($query->getOption()->where[0]))
 		{
 			throw new \RuntimeException('use Model->delete(), primary key can not be null');
 		}
-		return $query->delete();
+		$result = $query->delete();
+
+		// 删除后
+		$this->trigger(ModelEvents::AFTER_DELETE, [
+			'model'	=>	$this,
+			'result'=>	$result,
+		], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -179,7 +285,21 @@ abstract class Model extends BaseModel
 	public static function deleteBatch($where = null): IResult
 	{
 		$query = static::query();
-		return static::parseWhere($query, $where)->delete();
+		$query = static::parseWhere($query, $where);
+
+		// 删除前
+		Event::trigger(static::class . ModelEvents::BEFORE_BATCH_DELETE, [
+			'query'	=>	$query,
+		], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
+
+		$result = $query->delete();
+
+		// 删除后
+		Event::trigger(static::class . ModelEvents::AFTER_BATCH_DELETE, [
+			'result'=>	$result,
+		], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -281,6 +401,10 @@ abstract class Model extends BaseModel
 	 */
 	private static function parseWhere(IQuery $query, $where)
 	{
+		if(null === $where)
+		{
+			return $query;
+		}
 		if(is_callable($where))
 		{
 			// 回调传入条件
@@ -316,7 +440,7 @@ abstract class Model extends BaseModel
 			$object = $data;
 		}
 		$class = BeanFactory::getObjectClass($object ?? static::class);
-		$result = [];
+		$result = new LazyArrayObject;
 		foreach(ModelManager::getFieldNames($class) as $name)
 		{
 			$result[$name] = $data[$name];

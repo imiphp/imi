@@ -2,6 +2,10 @@
 namespace Imi\Log;
 
 use Imi\App;
+use Imi\Config;
+use Imi\Worker;
+use Imi\Util\File;
+use Imi\Log\LogLevel;
 use Imi\Util\Coroutine;
 use Imi\Bean\BeanFactory;
 use Psr\Log\AbstractLogger;
@@ -20,9 +24,26 @@ class Logger extends AbstractLogger
 		[
 			'class'		=>	\Imi\Log\Handler\Console::class,
 			'options'	=>	[
-				'levels'	=>	LogLevel::ALL,
+				'levels'	=>	[
+					LogLevel::DEBUG,
+					LogLevel::INFO,
+					LogLevel::NOTICE,
+					LogLevel::WARNING,
+				],
 			],
 		],
+		[
+			'class'		=>	\Imi\Log\Handler\Console::class,
+			'options'	=>	[
+				'levels'	=>	[
+					LogLevel::ALERT,
+					LogLevel::CRITICAL,
+					LogLevel::EMERGENCY,
+					LogLevel::ERROR,
+				],
+				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+			],
+		]
 	];
 
 	/**
@@ -42,13 +63,52 @@ class Logger extends AbstractLogger
 	 * 日志记录
 	 * @var \Imi\Log\Record[]
 	 */
-	protected $records = [];
+    protected $records = [];
+    
+    /**
+     * 当前类在缓存中的文件路径
+     *
+     * @var string
+     */
+    private $beanCacheFilePath;
+
+	/**
+	 * 自动保存间隔，单位：秒
+	 *
+	 * @var integer
+	 */
+	protected $autoSaveInterval = 10;
+
+	/**
+	 * 定时器ID
+	 *
+	 * @var int
+	 */
+	private $timerID;
 
 	public function __init()
 	{
 		foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
 		{
 			$this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
+        }
+        $path = Config::get('@app.beanClassCache', sys_get_temp_dir());
+		$this->beanCacheFilePath = File::path($path, 'imiBeanCache', '%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+		if($this->autoSaveInterval > 0)
+		{
+			$this->timerID = swoole_timer_tick($this->autoSaveInterval * 1000, function(){
+				$this->endRequest();
+				$this->save();
+			});
+		}
+	}
+
+	public function __destruct()
+	{
+		if(null !== $this->timerID)
+		{
+			swoole_timer_clear($this->timerID);
+			$this->timerID = null;
 		}
 	}
 
@@ -63,8 +123,9 @@ class Logger extends AbstractLogger
      */
 	public function log($level, $message, array $context = array())
 	{
-		$trace = $this->getTrace();
-		$logTime = time();
+		$context = $this->parseContext($context);
+		$trace = $context['trace'];
+        $logTime = time();
 		$this->records[] = new Record($level, $message, $context, $trace, $logTime);
 		if(!Coroutine::isIn())
 		{
@@ -107,6 +168,58 @@ class Logger extends AbstractLogger
 	protected function getTrace()
 	{
 		$backtrace = debug_backtrace();
-		return array_splice($backtrace, 6);
+        $index = null;
+        $hasNull = false;
+        $beanCacheFilePath = sprintf($this->beanCacheFilePath, Worker::getWorkerID() ?? 'imi');
+        foreach($backtrace as $i => $item)
+        {
+            if(isset($item['file']))
+            {
+                if($hasNull)
+                {
+                    if($beanCacheFilePath === $item['file'])
+                    {
+                        $index = $i + 1;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                $hasNull = true;
+            }
+        }
+        if(null === $index)
+        {
+            return [];
+        }
+		return array_splice($backtrace, $index);
+	}
+
+    /**
+     * 处理context
+     *
+     * @param array $context
+     * @return array
+     */
+    private function parseContext($context)
+    {
+        if(!isset($context['trace']))
+        {
+            $context['trace'] = $this->getTrace();
+        }
+        return $context;
+	}
+	
+	/**
+	 * 增加扩展处理器
+	 *
+	 * @param array $exHandler
+	 * @return void
+	 */
+	public function addExHandler($exHandler)
+	{
+		$this->exHandlers = $exHandler;
+		$this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
 	}
 }

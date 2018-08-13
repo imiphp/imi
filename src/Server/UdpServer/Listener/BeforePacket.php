@@ -1,9 +1,11 @@
 <?php
 namespace Imi\Server\UdpServer\Listener;
 
+use Imi\Worker;
 use Imi\ServerManage;
 use Imi\ConnectContext;
 use Imi\RequestContext;
+use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\PacketEventParam;
 use Imi\Server\UdpServer\Message\PacketData;
@@ -22,6 +24,11 @@ class BeforePacket implements IPacketEventListener
 	 */
 	public function handle(PacketEventParam $e)
 	{
+		if(!Worker::isInited())
+		{
+			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+			Coroutine::suspend();
+		}
 		// 上下文创建
 		RequestContext::create();
 		RequestContext::set('clientInfo', $e->clientInfo);

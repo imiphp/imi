@@ -12,6 +12,10 @@ use Imi\Model\Annotation\Entity;
 
  * @Entity
  * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?>)
+<?php foreach($fields as $field):?>
+ * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?>
+
+<?php endforeach;?>
  */
 class <?= $className ?> extends Model
 {

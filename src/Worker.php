@@ -6,9 +6,16 @@ abstract class Worker
 	/**
 	 * 当前进程的WorkerID
 	 *
-	 * @var [type]
+	 * @var int
 	 */
 	private static $workerID;
+
+	/**
+	 * 是否初始化完毕
+	 *
+	 * @return boolean
+	 */
+	private static $isInited = false;
 
 	/**
 	 * 此方法请勿手动调用，避免错乱！
@@ -32,5 +39,25 @@ abstract class Worker
 	public static function getWorkerID()
 	{
 		return static::$workerID;
+	}
+
+	/**
+	 * 是否初始化完毕
+	 *
+	 * @return boolean
+	 */
+	public static function isInited()
+	{
+		return static::$isInited;
+	}
+
+	/**
+	 * 初始化完毕
+	 *
+	 * @return void
+	 */
+	public static function inited()
+	{
+		static::$isInited = true;
 	}
 }

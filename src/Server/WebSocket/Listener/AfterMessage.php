@@ -24,10 +24,6 @@ class AfterMessage implements IMessageEventListener
 	{
 		// 日志处理
 		App::getBean('Logger')->endRequest();
-		foreach(ServerManage::getServers() as $server)
-		{
-			$server->getBean('Logger')->endRequest();
-		}
 		// 释放请求的进程池资源
 		PoolManager::destroyCurrentContext();
 		// 销毁请求上下文

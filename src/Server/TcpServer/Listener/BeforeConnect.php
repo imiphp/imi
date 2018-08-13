@@ -1,8 +1,10 @@
 <?php
 namespace Imi\Server\TcpServer\Listener;
 
+use Imi\Worker;
 use Imi\ConnectContext;
 use Imi\RequestContext;
+use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\ConnectEventParam;
 use Imi\Server\Event\Listener\IConnectEventListener;
@@ -20,6 +22,11 @@ class BeforeConnect implements IConnectEventListener
 	 */
 	public function handle(ConnectEventParam $e)
 	{
+		if(!Worker::isInited())
+		{
+			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+			Coroutine::suspend();
+		}
 		// 上下文创建
 		RequestContext::create();
 		RequestContext::set('server', $e->server);

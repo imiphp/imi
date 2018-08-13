@@ -1,6 +1,8 @@
 <?php
 namespace Imi;
 
+use Imi\Config;
+use Imi\Util\File;
 use Imi\Event\Event;
 use Imi\Log\LogLevel;
 use Imi\Main\BaseMain;
@@ -66,6 +68,8 @@ abstract class App
 		static::$container = new Container;
 		// 初始化Main类
 		static::initMains();
+		// 清理bean类缓存
+		static::clearBeanCache();
 		// 注解处理
 		static::$annotation = Annotation::getInstance();
 		static::$annotation->init([
@@ -73,6 +77,25 @@ abstract class App
 		]);
 		Event::trigger('IMI.INITED');
 		static::$isInited = true;
+	}
+
+	/**
+	 * 清理bean类缓存
+	 *
+	 * @return void
+	 */
+	private static function clearBeanCache()
+	{
+		// 清除框架 Bean类 缓存
+		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
+		$path = File::path($path, 'imiBeanCache', 'imi');
+		foreach (File::enum($path) as $file)
+		{
+			if (is_file($file))
+			{
+				unlink($file);
+			}
+		}
 	}
 
 	/**
@@ -176,6 +199,19 @@ abstract class App
 		// 加载服务器注解
 		Annotation::getInstance()->init($appMains);
 		
+		// 日志初始化
+		if(static::$container->has('Logger'))
+		{
+			$logger = static::getBean('Logger');
+			foreach($appMains as $main)
+			{
+				foreach($main->getConfig()['beans']['Logger']['exHandlers'] ?? [] as $exHandler)
+				{
+					$logger->addExHandler($exHandler);
+				}
+			}
+		}
+
 		// 初始化
 		if(Coroutine::isIn())
 		{

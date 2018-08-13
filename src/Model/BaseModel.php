@@ -1,16 +1,21 @@
 <?php
 namespace Imi\Model;
 
-use Imi\Bean\BeanFactory;
-use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\Text;
+use Imi\Event\TEvent;
+use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
+use Imi\Model\Event\ModelEvents;
+use Imi\Util\Interfaces\IArrayable;
+use Imi\Util\LazyArrayObject;
 
 /**
  * 模型基类
  */
 abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
 {
+	use TEvent;
+
 	/**
 	 * 数据库原始字段名称
 	 * @var array
@@ -23,6 +28,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	 */
 	protected $__camelCache = [];
 
+	/**
+	 * 从存储中读取出来的原始数据
+	 *
+	 * @var array
+	 */
+	protected $__originValues = [];
+
 	public function __construct($data = [])
 	{
 		if(!ClassObject::isAnymous($this))
@@ -33,11 +45,27 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
 	public function __init($data = [])
 	{
+		$this->__originValues = $data;
 		$this->__fieldNames = ModelManager::getFieldNames($this);
+
+		$data = new LazyArrayObject($data);
+
+		// 初始化前
+		$this->trigger(ModelEvents::BEFORE_INIT, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+		], $this, \Imi\Model\Event\Param\InitEventParam::class);
+
 		foreach($data as $k => $v)
 		{
 			$this[$k] = $v;
 		}
+
+		// 初始化后
+		$this->trigger(ModelEvents::AFTER_INIT, [
+			'model'	=>	$this,
+			'data'	=>	$data,
+		], $this, \Imi\Model\Event\Param\InitEventParam::class);
 	}
 	
 	/**
@@ -93,6 +121,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 		$this[$name] = $value;
 	}
 
+	public function __isset($name)
+	{
+		return isset($this[$name]);
+	}
+
 	/**
 	 * 将当前对象作为数组返回
 	 * @return array
@@ -131,7 +164,21 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	{
         return $this->toArray();
 	}
-	
+
+	/**
+	 * 从一个数组赋值到当前模型
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public function set(array $data)
+	{
+		foreach($data as $k => $v)
+		{
+			$this[$k] = $v;
+		}
+	}
+
 	/**
 	 * 获取驼峰命名
 	 * @param string $name

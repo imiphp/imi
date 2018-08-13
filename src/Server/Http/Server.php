@@ -60,20 +60,32 @@ class Server extends Base
 		$server = $this->swoolePort ?? $this->swooleServer;
 
 		$server->on('request', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
-			$request = new Request($this, $swooleRequest);
-			$response = new Response($this, $swooleResponse);
-			$this->trigger('request', [
-				'request'	=>	&$request,
-				'response'	=>	&$response,
-			], $this, RequestEventParam::class);
+			try{
+				$request = new Request($this, $swooleRequest);
+				$response = new Response($this, $swooleResponse);
+				$this->trigger('request', [
+					'request'	=>	&$request,
+					'response'	=>	&$response,
+				], $this, RequestEventParam::class);
+			}
+			catch(\Throwable $ex)
+			{
+				App::getBean('ErrorLog')->onException($ex);
+			}
 		});
 
 		$server->on('close', function(\swoole_http_server $server, $fd, $reactorID){
-			$this->trigger('close', [
-				'server'	=>	$this,
-				'fd'		=>	$fd,
-				'reactorID'	=>	$reactorID,
-			], $this, CloseEventParam::class);
+			try{
+				$this->trigger('close', [
+					'server'	=>	$this,
+					'fd'		=>	$fd,
+					'reactorID'	=>	$reactorID,
+				], $this, CloseEventParam::class);
+			}
+			catch(\Throwable $ex)
+			{
+				App::getBean('ErrorLog')->onException($ex);
+			}
 		});
 	}
 }

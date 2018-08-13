@@ -21,6 +21,7 @@ class Init implements IEventListener
 	 */
 	public function handle(EventParam $e)
 	{
+		App::getBean('ErrorLog')->register();
 		foreach(Helper::getMains() as $main)
 		{
 			$config = $main->getConfig();
