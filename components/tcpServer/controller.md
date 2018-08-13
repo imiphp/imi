@@ -225,3 +225,17 @@ public function getFormatData();
  */
 public function getReactorID(): int;
 ```
+
+## 控制器类方法
+
+### encodeMessage
+
+```php
+/**
+ * 编码消息，把数据编码为发送给客户端的格式
+ *
+ * @param mixed $data
+ * @return mixed
+ */
+protected function encodeMessage($data)
+```

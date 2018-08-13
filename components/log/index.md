@@ -11,7 +11,7 @@ IMI 中的缓存，符合PSR-3规范。使用时需要先配置驱动和实例�
 ```php
 return [
 	'beans'	=>	[
-		'Log'	=>	[
+		'Logger'	=>	[
 			'exHandlers'	=>	[
 				[
 					'class'		=>	\Imi\Log\Handler\File::class,
@@ -51,7 +51,7 @@ return [
 ```php
 return [
 	'beans'	=>	[
-		'Log'	=>	[
+		'Logger'	=>	[
 			'exHandlers'	=>	[
 				[
 					'class'		=>	\Imi\Log\Handler\File::class,
@@ -80,7 +80,7 @@ return [
 ```php
 return [
 	'beans'	=>	[
-		'Log'	=>	[
+		'Logger'	=>	[
 			'coreHandlers'	=>	[
 				// 这里配置，或者清空
 			],
