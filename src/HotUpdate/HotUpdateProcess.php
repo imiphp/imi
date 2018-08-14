@@ -12,7 +12,7 @@ use Imi\Util\Args;
 
 /**
  * @Bean("hotUpdate")
- * @Process("hotUpdate")
+ * @Process(name="hotUpdate", unique=true)
  */
 class HotUpdateProcess extends BaseProcess
 {
