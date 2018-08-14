@@ -69,7 +69,6 @@ abstract class ProcessManager
 			// 执行任务
 			call_user_func([$processInstance, 'run'], $swooleProcess);
 			swoole_event_wait();
-			var_dump('over:' . $name);
 			if($processOption['Process']->unique)
 			{
 				static::unlockProcess($name);
