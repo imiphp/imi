@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
+use Imi\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
@@ -31,8 +32,7 @@ class WorkerInit implements IWorkerStartEventListener
 		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
 
 		// 清除当前 worker 进程的 Bean 类缓存
-		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		$path = File::path($path, 'imiBeanCache', $e->server->getSwooleServer()->worker_id);
+		$path = Imi::getWorkerClassCachePathByWorkerID($e->server->getSwooleServer()->worker_id);
 		foreach (File::enum($path) as $file)
 		{
 			if (is_file($file))

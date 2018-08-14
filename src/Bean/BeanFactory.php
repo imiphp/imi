@@ -7,6 +7,7 @@ use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
 use Imi\Bean\Parser\BeanParser;
+use Imi\Util\Imi;
 
 abstract class BeanFactory
 {
@@ -49,8 +50,15 @@ abstract class BeanFactory
 	 */
 	private static function getCacheFileName($className)
 	{
-		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		return File::path($path, 'imiBeanCache', Worker::getWorkerID() ?? 'imi', str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
+		$fileName = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
+		if(null === ($workerID = Worker::getWorkerID()))
+		{
+			return Imi::getImiClassCachePath($fileName);
+		}
+		else
+		{
+			return Imi::getWorkerClassCachePathByWorkerID($workerID, $fileName);
+		}
 	}
 
 	/**

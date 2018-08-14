@@ -15,6 +15,7 @@ use Imi\Cache\CacheManager;
 use Imi\Server\Http\Server;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
+use Imi\Util\Imi;
 
 abstract class App
 {
@@ -87,8 +88,7 @@ abstract class App
 	private static function clearBeanCache()
 	{
 		// 清除框架 Bean类 缓存
-		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		$path = File::path($path, 'imiBeanCache', 'imi');
+		$path = Imi::getImiClassCachePath();
 		foreach (File::enum($path) as $file)
 		{
 			if (is_file($file))

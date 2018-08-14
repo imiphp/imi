@@ -10,6 +10,7 @@ use Imi\Util\Coroutine;
 use Imi\Bean\BeanFactory;
 use Psr\Log\AbstractLogger;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\Imi;
 
 /**
  * @Bean("Logger")
@@ -92,8 +93,7 @@ class Logger extends AbstractLogger
 		{
 			$this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-        $path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		$this->beanCacheFilePath = File::path($path, 'imiBeanCache', '%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+		$this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
 		if($this->autoSaveInterval > 0)
 		{
 			$this->timerID = swoole_timer_tick($this->autoSaveInterval * 1000, function(){

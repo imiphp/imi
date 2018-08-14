@@ -2,6 +2,8 @@
 namespace Imi\Util;
 
 use Imi\App;
+use Imi\Config;
+use Imi\Worker;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\Parser\BeanParser;
@@ -220,4 +222,50 @@ abstract class Imi
 		}
 		return $value;
 	}
+
+	/**
+	 * 获取Bean类缓存根目录
+	 *
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getBeanClassCachePath(...$paths)
+	{
+		return File::path(Config::get('@app.beanClassCache', sys_get_temp_dir()), 'imiBeanCache', str_replace('\\', '-', App::getNamespace()), ...$paths);
+	}
+
+	/**
+	 * 获取IMI框架Bean类缓存目录
+	 *
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getImiClassCachePath(...$paths)
+	{
+		return File::path(static::getBeanClassCachePath(), 'imi', ...$paths);
+	}
+
+	/**
+	 * 获取Worker进程Bean类缓存目录
+	 *
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getWorkerClassCachePath(...$paths)
+	{
+		return static::getWorkerClassCachePathByWorkerID(Worker::getWorkerID(), ...$paths);
+	}
+
+	/**
+	 * 获取Worker进程Bean类缓存目录，手动传入workerID
+	 *
+	 * @param int $workerID
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getWorkerClassCachePathByWorkerID($workerID, ...$paths)
+	{
+		return File::path(static::getBeanClassCachePath(), $workerID, ...$paths);
+	}
+
 }

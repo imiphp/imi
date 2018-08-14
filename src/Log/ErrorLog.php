@@ -9,6 +9,7 @@ use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\Imi;
 
 /**
  * @Bean("ErrorLog")
@@ -30,8 +31,7 @@ class ErrorLog
 	public function register()
 	{
 		error_reporting(0);
-        $path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-        $this->beanCacheFilePath = File::path($path, 'imiBeanCache', 'imi', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+		$this->beanCacheFilePath = Imi::getImiClassCachePath(str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
 		register_shutdown_function([$this, 'onShutdown']);
 		set_error_handler([$this, 'onError']);
 	}
