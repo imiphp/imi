@@ -8,7 +8,6 @@ use Imi\Bean\BeanFactory;
 use Imi\Process\BaseProcess;
 use Imi\Bean\Annotation\Bean;
 use Imi\Process\Annotation\Process;
-use Imi\Util\Args;
 
 /**
  * @Bean("hotUpdate")
@@ -67,11 +66,8 @@ class HotUpdateProcess extends BaseProcess
 		go(function(){
 			echo 'hotUpdate process start', PHP_EOL;
 			$monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
-			$reloadCmd = 'php ' . $_SERVER['argv'][0] . ' server/reload';
-			if(null !== ($appNamespace = Args::get('appNamespace')))
-			{
-				$reloadCmd .= ' -appNamespace "' . $appNamespace . '"';
-			}
+			
+			$reloadCmd = Imi::getImiCmd('server', 'reload');
 			$time = 0;
 			while(true)
 			{

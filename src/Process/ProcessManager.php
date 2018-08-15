@@ -7,6 +7,7 @@ use Imi\Event\Event;
 use Imi\Bean\BeanFactory;
 use Imi\Process\Parser\ProcessParser;
 use Imi\Process\Exception\ProcessAlreadyRunException;
+use Imi\Util\Imi;
 
 /**
  * 进程管理类
@@ -138,7 +139,7 @@ abstract class ProcessManager
 	 */
 	public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
 	{
-		$cmd = 'php ' . $_SERVER['argv'][0] . ' process/start -name ' . $name;
+		$cmd = Imi::getImiCmd('process', 'start') . ' -name ' . $name;
 		if(null !== $redirectStdinStdout)
 		{
 			$cmd .= ' -redirectStdinStdout ' . $redirectStdinStdout;

@@ -4,6 +4,7 @@ namespace Imi\Util;
 use Imi\App;
 use Imi\Config;
 use Imi\Worker;
+use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\Parser\BeanParser;
@@ -268,4 +269,20 @@ abstract class Imi
 		return File::path(static::getBeanClassCachePath(), $workerID, ...$paths);
 	}
 
+	/**
+	 * 获取imi命令行
+	 *
+	 * @param string $toolName 工具名，如server
+	 * @param string $operation 操作名，如start
+	 * @return string
+	 */
+	public static function getImiCmd($toolName, $operation)
+	{
+		$cmd = 'php ' . $_SERVER['argv'][0] . ' ' . $toolName . '/' . $operation;
+		if(null !== ($appNamespace = Args::get('appNamespace')))
+		{
+			$cmd .= ' -appNamespace "' . $appNamespace . '"';
+		}
+		return $cmd;
+	}
 }
