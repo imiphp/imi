@@ -76,9 +76,9 @@ class Result implements IResult
 	}
 
 	/**
-	 * 返回一行数据，数组或对象
+	 * 返回一行数据，数组或对象，失败返回null
 	 * @param string $className 实体类名，为null则返回数组
-	 * @return mixed
+	 * @return mixed|null
 	 */
 	public function get($className = null)
 	{
@@ -87,6 +87,10 @@ class Result implements IResult
 			throw new \RuntimeException('Result is not success!');
 		}
 		$result = $this->statement->fetch();
+		if(false === $result)
+		{
+			return null;
+		}
 
 		if(null === $className)
 		{
@@ -115,9 +119,9 @@ class Result implements IResult
 	}
 
 	/**
-	 * 返回数组
+	 * 返回数组，失败返回null
 	 * @param string $className 实体类名，为null则数组每个成员为数组
-	 * @return array
+	 * @return array|null
 	 */
 	public function getArray($className = null)
 	{
@@ -126,6 +130,10 @@ class Result implements IResult
 			throw new \RuntimeException('Result is not success!');
 		}
 		$result = $this->statement->fetchAll();
+		if(false === $result)
+		{
+			return null;
+		}
 
 		if(null === $className)
 		{
