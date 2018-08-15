@@ -62,6 +62,7 @@ abstract class ProcessManager
 					throw new \RuntimeException('lock process lock file error');
 				}
 			}
+			App::initWorker();
 			// 进程开始事件
 			Event::trigger('IMI.PROCESS.BEGIN', [
 				'name'		=>	$name,
