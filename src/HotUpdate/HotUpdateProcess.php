@@ -64,7 +64,7 @@ class HotUpdateProcess extends BaseProcess
 			];
 		}
 		go(function(){
-			echo 'hotUpdate process start', PHP_EOL;
+			echo 'Process [hotUpdate] start', PHP_EOL;
 			$monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
 			
 			$reloadCmd = Imi::getImiCmd('server', 'reload');
