@@ -443,7 +443,10 @@ abstract class Model extends BaseModel
 		$result = new LazyArrayObject;
 		foreach(ModelManager::getFieldNames($class) as $name)
 		{
-			$result[$name] = $data[$name];
+			if(array_key_exists($name, $data))
+			{
+				$result[$name] = $data[$name];
+			}
 		}
 		return $result;
 	}
