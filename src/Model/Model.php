@@ -439,6 +439,10 @@ abstract class Model extends BaseModel
 		{
 			$object = $data;
 		}
+		if($data instanceof static)
+		{
+			$data = $data->toArray();
+		}
 		$class = BeanFactory::getObjectClass($object ?? static::class);
 		$result = new LazyArrayObject;
 		foreach(ModelManager::getFieldNames($class) as $name)
