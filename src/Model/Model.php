@@ -416,8 +416,8 @@ abstract class Model extends BaseModel
 			{
 				if(is_array($v))
 				{
-					$operation = array_unshift($v);
-					$query->where($k, $operation, $v[1]);
+					$operation = array_shift($v);
+					$query->where($k, $operation, $v[0]);
 				}
 				else
 				{
