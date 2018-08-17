@@ -248,11 +248,15 @@ abstract class App
 				}
 			}
 		}
+
 		// 缓存初始化
-		$caches = $main->getConfig()['caches'] ?? [];
-		foreach($caches as $name => $cache)
+		foreach($appMains as $main)
 		{
-			CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
+			$caches = $main->getConfig()['caches'] ?? [];
+			foreach($caches as $name => $cache)
+			{
+				CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
+			}
 		}
 	}
 }
