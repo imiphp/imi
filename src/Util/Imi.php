@@ -232,7 +232,13 @@ abstract class Imi
 	 */
 	public static function getBeanClassCachePath(...$paths)
 	{
-		return File::path(Config::get('@app.beanClassCache', sys_get_temp_dir()), 'imiBeanCache', str_replace('\\', '-', App::getNamespace()), ...$paths);
+		$main = Helper::getMain(App::getNamespace());
+		$beanClassCache = $main->getConfig()['beanClassCache'] ?? null;
+		if(null === $beanClassCache)
+		{
+			$beanClassCache = sys_get_temp_dir();
+		}
+		return File::path($beanClassCache, 'imiBeanCache', str_replace('\\', '-', App::getNamespace()), ...$paths);
 	}
 
 	/**

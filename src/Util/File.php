@@ -7,18 +7,16 @@ abstract class File
     /**
      * 枚举文件
      * @param string $dirPath
-     * @return \RecursiveIterator
+     * @return \Iterator
      */
     public static function enum($dirPath)
     {
         if (!is_dir($dirPath)) {
-            return;
+            return new \ArrayIterator([]);
         }
-        $iterator = new \RecursiveDirectoryIterator($dirPath);
+        $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
         $files = new \RecursiveIteratorIterator($iterator);
-        foreach ($files as $file) {
-            yield $file;
-        }
+        return $files;
     }
 
     /**
