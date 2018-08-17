@@ -451,6 +451,14 @@ abstract class Model extends BaseModel
 			{
 				$result[$name] = $data[$name];
 			}
+			else
+			{
+				$fieldName = Text::toCamelName($name);
+				if(array_key_exists($fieldName, $data))
+				{
+					$result[$name] = $data[$fieldName];
+				}
+			}
 		}
 		return $result;
 	}
