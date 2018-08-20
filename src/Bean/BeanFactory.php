@@ -30,7 +30,8 @@ abstract class BeanFactory
 			{
 				File::createDir($path);
 			}
-			File::writeFile($cacheFileName, '<?php ' . $tpl);
+			// 暂时改为file_put_contents，用Coroutine::writeFile会导致奇怪的问题，截止目前Swoole：4.0.4
+			file_put_contents($cacheFileName, '<?php ' . $tpl);
 		}
 
 		$object = include $cacheFileName;
