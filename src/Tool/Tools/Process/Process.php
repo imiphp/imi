@@ -8,6 +8,7 @@ use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Process\ProcessManager;
 use Imi\Tool\Annotation\Operation;
+use Imi\Process\ProcessPoolManager;
 
 /**
  * @Tool("process")
@@ -33,5 +34,25 @@ class Process
 		$process->start();
 		$result = \swoole_process::wait(true);
 		echo 'process exit! pid:', $result['pid'], ', code:', $result['code'], ', signal:', $result['signal'], PHP_EOL;
+	}
+
+	/**
+	 * 开启一个进程池，可以任意添加参数
+	 *
+	 * @Operation("pool")
+	 * 
+	 * @Arg(name="name", type=ArgType::STRING, required=true, comments="进程池名称，通过@ProcessPool注解定义")
+	 * @Arg(name="worker", type=ArgType::INT, default=null, comments="进程数量，不传则根据注解配置设定")
+	 * @Arg(name="ipcType", type=ArgType::INT, default=null, comments="进程间通信的模式，默认为0表示不使用任何进程间通信特性，不传则根据注解配置设定")
+	 * @Arg(name="msgQueueKey", type=ArgType::STRING, default=null, comments="消息队列键，不传则根据注解配置设定")
+	 * 
+	 * @return void
+	 */
+	public function pool($name, $worker, $ipcType, $msgQueueKey)
+	{
+		App::initWorker();
+		$args = Args::get();
+		$processPool = ProcessPoolManager::create($name, $worker, $args, $ipcType, $msgQueueKey);
+		$processPool->start();
 	}
 }
