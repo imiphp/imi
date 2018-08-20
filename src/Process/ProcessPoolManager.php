@@ -49,7 +49,7 @@ abstract class ProcessPoolManager
 		
 		$pool = new \Swoole\Process\Pool($workerNum, $ipcType, $msgQueueKey);
 
-		$pool->on('WorkerStart', function ($pool, $workerId) use($name, $processPoolOption, $args) {
+		$pool->on('WorkerStart', function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
 			$processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
 			App::initWorker();
 			// 进程开始事件
@@ -57,18 +57,26 @@ abstract class ProcessPoolManager
 				'name'			=>	$name,
 				'pool'			=>	$pool,
 				'workerId'		=>	$workerId,
+				'workerNum'		=>	$workerNum,
+				'args'			=>	$args,
+				'ipcType'		=>	$ipcType,
+				'msgQueueKey'	=>	$msgQueueKey,
 			]);
 			// 执行任务
-			call_user_func([$processInstance, 'run'], $pool, $workerId);
+			call_user_func([$processInstance, 'run'], $pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
 			swoole_event_wait();
 		});
 		
-		$pool->on('WorkerStop', function ($pool, $workerId) use($name) {
+		$pool->on('WorkerStop', function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey) {
 			// 进程结束事件
 			Event::trigger('IMI.PROCESS_POOL.PROCESS.END', [
 				'name'			=>	$name,
 				'pool'			=>	$pool,
 				'workerId'		=>	$workerId,
+				'workerNum'		=>	$workerNum,
+				'args'			=>	$args,
+				'ipcType'		=>	$ipcType,
+				'msgQueueKey'	=>	$msgQueueKey,
 			]);
 		});
 		

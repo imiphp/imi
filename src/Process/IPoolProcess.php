@@ -6,5 +6,17 @@ namespace Imi\Process;
  */
 interface IPoolProcess
 {
-	public function run(\Swoole\Process\Pool $pool, int $workerId);
+	/**
+	 * 进程执行
+	 *
+	 * @param \Swoole\Process\Pool $pool
+	 * @param integer $workerId
+	 * @param string $name
+	 * @param int $workerNum
+	 * @param array $args
+	 * @param int $ipcType
+	 * @param string $msgQueueKey
+	 * @return void
+	 */
+	public function run(\Swoole\Process\Pool $pool, int $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
 }
