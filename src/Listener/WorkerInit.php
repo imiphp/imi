@@ -39,10 +39,7 @@ class WorkerInit implements IWorkerStartEventListener
 
 		foreach(File::enum($path) as $file)
 		{
-			if (is_file($file))
-			{
-				unlink($file);
-			}
+			unlink((string)$file);
 		}
 
 		// 初始化 worker

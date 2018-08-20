@@ -23,6 +23,7 @@ class AnnotationLoader
 			$pathLength = strlen($path);
 			foreach(File::enumPHPFile($path) as $filePath)
 			{
+				$filePath = $filePath[0];
 				$diffPath = substr($filePath, $pathLength);
 				if(isset($diffPath[0]) && DIRECTORY_SEPARATOR === $diffPath[0])
 				{

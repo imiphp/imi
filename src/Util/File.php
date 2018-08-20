@@ -7,12 +7,12 @@ abstract class File
     /**
      * 枚举文件
      * @param string $dirPath
-     * @return \Iterator
+     * @return \RecursiveIteratorIterator|\ArrayIterator
      */
     public static function enum($dirPath)
     {
         if (!is_dir($dirPath)) {
-            return new \ArrayIterator([]);
+            return new \ArrayIterator();
         }
         $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
         $files = new \RecursiveIteratorIterator($iterator);
@@ -22,19 +22,17 @@ abstract class File
     /**
      * 枚举php文件
      * @param string $dirPath
-     * @return \RegexIterator
+     * @return \RegexIterator|ArrayIterator
      */
     public static function enumPHPFile($dirPath)
     {
         if (!is_dir($dirPath)) {
-            return;
+            return new \ArrayIterator();
         }
         $directory = new \RecursiveDirectoryIterator($dirPath);
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
-        foreach ($regex as $item) {
-            yield $item[0];
-        }
+        return $regex;
     }
 
     /**
