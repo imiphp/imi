@@ -87,7 +87,7 @@ abstract class CoroutineChannelManager
 	 */
 	public static function stats(string $name): array
 	{
-		return parent::stats($name);
+		return static::getInstance($name)->stats();
 	}
 
 	/**
