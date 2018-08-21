@@ -210,7 +210,8 @@ class Redis implements IHandler
 	{
 		return $this->useRedis(function($resource, $redis) use($key){
 			$redisKey = $this->getRedisKey($key);
-			return $redis->get($redisKey) ?? [];
+			$result = $redis->get($redisKey);
+			return $result ? $result : [];
 		});
 	}
 
