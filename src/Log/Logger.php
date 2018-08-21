@@ -166,9 +166,8 @@ class Logger extends AbstractLogger
 	 * 获取代码调用跟踪
 	 * @return array
 	 */
-	protected function getTrace()
+	protected function getTrace($backtrace)
 	{
-		$backtrace = debug_backtrace();
         $index = null;
         $hasNull = false;
         $beanCacheFilePath = sprintf($this->beanCacheFilePath, Worker::getWorkerID() ?? 'imi');
@@ -178,9 +177,9 @@ class Logger extends AbstractLogger
             {
                 if($hasNull)
                 {
-                    if($beanCacheFilePath === $item['file'])
+                    if($beanCacheFilePath === $item['file'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
                     {
-                        $index = $i + 1;
+                        $index = $i + 2;
                         break;
                     }
                 }
@@ -198,6 +197,37 @@ class Logger extends AbstractLogger
 	}
 
     /**
+     * 获取错误文件位置
+     *
+     * @return array
+     */
+    public function getErrorFile($backtrace)
+    {
+        $index = null;
+        $hasNull = false;
+        $beanCacheFilePath = sprintf($this->beanCacheFilePath, Worker::getWorkerID() ?? 'imi');
+        foreach($backtrace as $i => $item)
+        {
+            if(isset($item['file']))
+            {
+                if($hasNull)
+                {
+                    if($beanCacheFilePath === $item['file'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
+                    {
+                        $index = $i + 1;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+				$hasNull = true;
+            }
+        }
+        return [$backtrace[$index]['file'] ?? '', $backtrace[$index]['line'] ?? 0];
+    }
+
+    /**
      * 处理context
      *
      * @param array $context
@@ -205,9 +235,16 @@ class Logger extends AbstractLogger
      */
     private function parseContext($context)
     {
+		$debugBackTrace = debug_backtrace();
         if(!isset($context['trace']))
         {
-            $context['trace'] = $this->getTrace();
+            $context['trace'] = $this->getTrace($debugBackTrace);
+        }
+        if(!isset($context['errorFile']))
+        {
+            list($file, $line) = $this->getErrorFile($debugBackTrace);
+            $context['errorFile'] = $file;
+            $context['errorLine'] = $line;
         }
         return $context;
 	}
