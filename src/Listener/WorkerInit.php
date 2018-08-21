@@ -29,6 +29,9 @@ class WorkerInit implements IWorkerStartEventListener
 	 */
 	public function handle(WorkerStartEventParam $e)
 	{
+		// 随机数播种
+		mt_srand();
+
 		if(!$e->server->getSwooleServer()->taskworker)
 		{
 			// swoole 4.1.0 一键协程化

@@ -55,6 +55,8 @@ abstract class ProcessManager
 		$process = new \Swoole\Process(function(\Swoole\Process $swooleProcess) use($processInstance, $name, $processOption){
 			// 设置进程名称
 			$swooleProcess->name($name);
+			// 随机数播种
+			mt_srand();
 			if($processOption['Process']->unique)
 			{
 				if(!static::lockProcess($name))

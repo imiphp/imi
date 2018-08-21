@@ -50,6 +50,8 @@ abstract class ProcessPoolManager
 		$pool = new \Swoole\Process\Pool($workerNum, $ipcType, $msgQueueKey);
 
 		$pool->on('WorkerStart', function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
+			// 随机数播种
+			mt_srand();
 			$processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
 			App::initWorker();
 			// 进程开始事件
