@@ -29,6 +29,15 @@ class WorkerInit implements IWorkerStartEventListener
 	 */
 	public function handle(WorkerStartEventParam $e)
 	{
+		if(!$e->server->getSwooleServer()->taskworker)
+		{
+			// swoole 4.1.0 一键协程化
+			if(method_exists('\Swoole\Runtime', 'enableCoroutine') && (Helper::getMain(App::getNamespace())->getConfig()['enableCoroutine'] ?? true))
+			{
+				\Swoole\Runtime::enableCoroutine(true);
+			}
+		}
+
 		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
 
 		// 当前进程的 WorkerID 设置
