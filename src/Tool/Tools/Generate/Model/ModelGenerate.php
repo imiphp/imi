@@ -136,7 +136,7 @@ class ModelGenerate
 				'phpType'			=>	$this->dbFieldTypeToPhp($typeName),
 				'length'			=>	$length,
 				'accuracy'			=>	$accuracy,
-				'nullable'			=>	$field['Null'] !== 'YES',
+				'nullable'			=>	$field['Null'] === 'YES',
 				'default'			=>	$field['Default'],
 				'isPrimaryKey'		=>	$isPk,
 				'primaryKeyIndex'	=>	$isPk ? $idCount : -1,
