@@ -42,7 +42,8 @@ class Logger extends AbstractLogger
 					LogLevel::EMERGENCY,
 					LogLevel::ERROR,
 				],
-				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+				'length'	=>	1024,
 			],
 		]
 	];
