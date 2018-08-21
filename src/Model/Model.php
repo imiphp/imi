@@ -2,12 +2,13 @@
 namespace Imi\Model;
 
 use Imi\Db\Db;
+use Imi\Util\Text;
+use Imi\Event\Event;
 use Imi\Bean\BeanFactory;
+use Imi\Util\LazyArrayObject;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-use Imi\Util\LazyArrayObject;
-use Imi\Event\Event;
 
 /**
  * 常用的数据库模型
