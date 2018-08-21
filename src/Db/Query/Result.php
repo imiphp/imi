@@ -202,4 +202,24 @@ class Result implements IResult
 		}
 		return count($this->statement->fetchAll());
 	}
+
+	/**
+	 * 获取执行的SQL语句
+	 *
+	 * @return string
+	 */
+	public function getSql()
+	{
+		return $this->statement->getSql();
+	}
+
+	/**
+	 * 获取结果集对象
+	 *
+	 * @return \Imi\Db\Interfaces\IStatement
+	 */
+	public function getStatement(): IStatement
+	{
+		return $this->statement;
+	}
 }

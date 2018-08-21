@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Db\Query\Interfaces;
 
+use Imi\Db\Interfaces\IStatement;
+
 interface IResult
 {
 	/**
@@ -52,4 +54,18 @@ interface IResult
 	 * @return int
 	 */
 	public function getRowCount();
+
+	/**
+	 * 获取执行的SQL语句
+	 *
+	 * @return string
+	 */
+	public function getSql();
+
+	/**
+	 * 获取结果集对象
+	 *
+	 * @return \Imi\Db\Interfaces\IStatement
+	 */
+	public function getStatement(): IStatement;
 }
