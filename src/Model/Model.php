@@ -446,20 +446,29 @@ abstract class Model extends BaseModel
 		}
 		$class = BeanFactory::getObjectClass($object ?? static::class);
 		$result = new LazyArrayObject;
-		foreach(ModelManager::getFieldNames($class) as $name)
+		foreach(ModelManager::getFields($class) as $name => $column)
 		{
 			if(array_key_exists($name, $data))
 			{
-				$result[$name] = $data[$name];
+				$value = $data[$name];
 			}
 			else
 			{
 				$fieldName = Text::toCamelName($name);
 				if(array_key_exists($fieldName, $data))
 				{
-					$result[$name] = $data[$fieldName];
+					$value = $data[$fieldName];
+				}
+				else
+				{
+					$value = null;
 				}
 			}
+			if(null === $value && !$column->nullable)
+			{
+				continue;
+			}
+			$result[$name] = $value;
 		}
 		return $result;
 	}
