@@ -333,3 +333,94 @@ $result = Db::query()->bindValues([
 	':age'	=>	666,
 ])->execute('select * from tb_test where name = :name and age = :age');
 ```
+
+## Result 用法
+
+```php
+$result = Db::query()->table('tb_test')->select();
+```
+
+### 是否执行成功
+
+```php
+$success = $result->isSuccess(); // true/false
+```
+
+### 获取最后插入的ID
+
+用于获取新增记录的自增字段值
+
+```php
+$lastInsertId = $result->getLastInsertId(); // int
+```
+
+### 获取影响行数
+
+```php
+$rows = $result->getAffectedRows();
+```
+
+> update 时，如果没有值被改变，可能会返回0
+
+### 返回一行数据
+
+#### 返回数组
+
+```php
+$dataArray = $result->get();
+```
+
+#### 返回对象
+
+实例化这个类时，把数组传入构造方法
+
+```php
+$dataArray = $result->get(XXXModel::class);
+```
+
+### 返回数组列表
+
+#### 成员为数组
+
+```php
+$list = $result->getArray();
+```
+
+#### 成员为对象
+
+```php
+$list = $result->getArray(XXXModel::class);
+```
+
+### 获取一列
+
+```php
+$ids = Db::query()->field('id')->select()->getColumn();
+// 结果格式：[1, 2, 3]
+```
+
+### 获取标量结果
+
+```php
+$name = Db::query()->field('name')->where('id', '=', 1)->select()->getScalar();
+```
+
+### 获取记录行数
+
+得到取回多少条记录
+
+```php
+$rowCount = $result->getRowCount();
+```
+
+### 获取执行的SQL
+
+```php
+$sql = $result->getSql();
+```
+
+### 获取结果集
+
+```php
+$statement = $result->getStatement(); // \Imi\Db\Interfaces\IStatement
+```
