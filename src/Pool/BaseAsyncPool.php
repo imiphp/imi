@@ -46,10 +46,17 @@ abstract class BaseAsyncPool extends BasePool
 			}
 			else 
 			{
-				// 等待其他协程使用完成后释放连接
-				$read = [$this->queue];
-				$write = null;
-				$selectResult = Channel::select($read, $write, $this->config->getWaitTimeout() / 1000);
+				if(SWOOLE_VERSION < '4.0.3')
+				{
+					// 等待其他协程使用完成后释放连接
+					$read = [$this->queue];
+					$write = null;
+					$selectResult = Channel::select($read, $write, $this->config->getWaitTimeout() / 1000);
+				}
+				else
+				{
+					$selectResult = Channel::pop($this->config->getWaitTimeout() / 1000);
+				}
 				if(false === $selectResult)
 				{
 					throw new \RuntimeException('AsyncPool getResource timeout');
