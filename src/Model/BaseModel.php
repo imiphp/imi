@@ -98,6 +98,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
 	public function offsetSet($offset, $value)
 	{
+		// 数据库bit类型字段处理
+		$column = ModelManager::getPropertyAnnotation($this, $offset, 'Column');
+		if(null === $column)
+		{
+			$column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), 'Column');
+		}
+		if(null !== $column)
+		{
+			if('bit' === $column->type)
+			{
+				$value = (1 == $value || chr(1) == $value);
+			}
+		}
+
 		$methodName = 'set' . ucfirst($this->__getCamelName($offset));
 		if(!method_exists($this, $methodName))
 		{
