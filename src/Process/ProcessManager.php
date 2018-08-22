@@ -8,6 +8,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Process\Parser\ProcessParser;
 use Imi\Process\Exception\ProcessAlreadyRunException;
 use Imi\Util\Imi;
+use Imi\ServerManage;
 
 /**
  * 进程管理类
@@ -174,6 +175,22 @@ abstract class ProcessManager
 		go(function() use($name, $args, $redirectStdinStdout, $pipeType){
 			static::run($name, $args, $redirectStdinStdout, $pipeType);
 		});
+	}
+
+	/**
+	 * 挂靠Manager进程运行进程
+	 *
+	 * @param string $name
+	 * @param array $args
+	 * @param boolean $redirectStdinStdout
+	 * @param int $pipeType
+	 * @return void
+	 */
+	public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+	{
+		$process = static::create($name, $args, $redirectStdinStdout, $pipeType);
+		$server = ServerManage::getServer('main')->getSwooleServer();
+		$server->addProcess($process);
 	}
 
 	/**
