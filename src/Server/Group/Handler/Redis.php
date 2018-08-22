@@ -7,6 +7,9 @@ use Imi\Util\ArrayUtil;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 use Swoole\Coroutine\Redis as CoRedis;
+use Imi\Worker;
+use Imi\Log\Log;
+use Imi\ServerManage;
 
 /**
  * @Bean("GroupRedis")
@@ -74,30 +77,41 @@ class Redis implements IGroupHandler
 		{
 			return;
 		}
-		$this->useRedis(function($resource, $redis){
-			// 判断master进程pid
-			$this->masterPID = Swoole::getMasterPID();
-			$hasPing = $this->hasPing($redis);
-			$storeMasterPID = $redis->get($this->key);
-			if(null === $storeMasterPID)
-			{
-				// 没有存储master进程pid
-				$this->initRedis($redis, $storeMasterPID);
-			}
-			else if($this->masterPID != $storeMasterPID)
-			{
-				if($hasPing)
+		if(0 === Worker::getWorkerID())
+		{
+			$this->useRedis(function($resource, $redis){
+				// 判断master进程pid
+				$this->masterPID = Swoole::getMasterPID();
+				$storeMasterPID = $redis->get($this->key);
+				if(null === $storeMasterPID)
 				{
-					// 与master进程ID不等
-					throw new \RuntimeException('Server Group Redis repeat');
-				}
-				else
-				{
+					// 没有存储master进程pid
 					$this->initRedis($redis, $storeMasterPID);
 				}
-			}
-			$this->startPing($redis);
-		});
+				else if($this->masterPID != $storeMasterPID)
+				{
+					$hasPing = $this->hasPing($redis);
+					if($hasPing)
+					{
+						Log::warning('Redis server group key has been used, waiting...');
+						sleep($this->heartbeatTtl);
+						$hasPing = $this->hasPing($redis);
+					}
+					if($hasPing)
+					{
+						// 与master进程ID不等
+						Log::emergency('Redis server group key has been used');
+						ServerManage::getServer('main')->getSwooleServer()->shutdown();
+					}
+					else
+					{
+						$this->initRedis($redis, $storeMasterPID);
+						Log::info('Redis server group key init');
+					}
+				}
+				$this->startPing($redis);
+			});
+		}
 	}
 
 	/**
