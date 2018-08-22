@@ -76,7 +76,7 @@ class ModelGenerate
 				'fields'	=>	[],
 			];
 			$fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
-			$this->parseFields($fields, $data);
+			$this->parseFields($fields, $data, 'VIEW' === $table['TABLE_TYPE']);
 			$content = $this->renderTemplate($data);
 			File::writeFile($fileName, $content);
 		}
@@ -120,15 +120,23 @@ class ModelGenerate
 	 * 处理字段信息
 	 * @param array $fields
 	 * @param array $data
+	 * @param boolean $isView
 	 * @return void
 	 */
-	private function parseFields($fields, &$data)
+	private function parseFields($fields, &$data, $isView)
 	{
 		$idCount = 0;
-		foreach($fields as $field)
+		foreach($fields as $i => $field)
 		{
 			$this->parseFieldType($field['Type'], $typeName, $length, $accuracy);
-			$isPk = 'PRI' === $field['Key'];
+			if($isView && 0 === $i)
+			{
+				$isPk = true;
+			}
+			else
+			{
+				$isPk = 'PRI' === $field['Key'];
+			}
 			$data['fields'][] = [
 				'name'				=>	$field['Field'],
 				'varName'			=>	Text::toCamelName($field['Field']),
