@@ -46,7 +46,7 @@ class ModelGenerate
 							'BASE TABLE',
 							'VIEW',
 						])
-						->field('TABLE_NAME,TABLE_TYPE')
+						->field('TABLE_NAME', 'TABLE_TYPE')
 						->select()
 						->getArray();
 		// model保存路径
