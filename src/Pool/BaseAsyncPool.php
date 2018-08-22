@@ -37,6 +37,7 @@ abstract class BaseAsyncPool extends BasePool
 	 */
 	public function getResource(): IPoolResource
 	{
+		$selectResult = true;
 		if($this->getFree() <= 0)
 		{
 			if($this->getCount() < $this->config->getMaxResources())
@@ -62,10 +63,6 @@ abstract class BaseAsyncPool extends BasePool
 					throw new \RuntimeException('AsyncPool getResource timeout');
 				}
 			}
-		}
-		else
-		{
-			$selectResult = true;
 		}
 		if(true === $selectResult)
 		{
