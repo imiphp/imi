@@ -36,9 +36,5 @@ class OnManagerStart implements IManagerStartEventListener
 			'masterPID'		=>	Swoole::getMasterPID(),
 			'managerPID'	=>	Swoole::getManagerPID(),
 		]));
-		
-		// 热更新
-		$process = ProcessManager::create('hotUpdate');
-		$process->start();
 	}
 }
