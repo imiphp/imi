@@ -40,19 +40,20 @@ class ModelGenerate
 			$database = $query->execute('select database()')->getScalar();
 		}
 		// 表
-		$tables = $query->tableRaw('information_schema.TABLES')
+		$list = $query->tableRaw('information_schema.TABLES')
 						->where('TABLE_SCHEMA', '=', $database)
 						->whereIn('TABLE_TYPE', [
 							'BASE TABLE',
 							'VIEW',
 						])
-						->field('TABLE_NAME')
+						->field('TABLE_NAME,TABLE_TYPE')
 						->select()
-						->getColumn();
+						->getArray();
 		// model保存路径
 		$modelPath = Imi::getNamespacePath($namespace);
-		foreach($tables as $table)
+		foreach($list as $item)
 		{
+			$table = $item['TABLE_NAME'];
 			if(!$this->checkTable($table, $include, $exclude))
 			{
 				// 不符合$include和$exclude
@@ -76,7 +77,7 @@ class ModelGenerate
 				'fields'	=>	[],
 			];
 			$fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
-			$this->parseFields($fields, $data, 'VIEW' === $table['TABLE_TYPE']);
+			$this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
 			$content = $this->renderTemplate($data);
 			File::writeFile($fileName, $content);
 		}
