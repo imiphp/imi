@@ -26,8 +26,16 @@ class Logger extends AbstractLogger
 			'class'		=>	\Imi\Log\Handler\Console::class,
 			'options'	=>	[
 				'levels'	=>	[
-					LogLevel::DEBUG,
 					LogLevel::INFO,
+				],
+				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
+			],
+		],
+		[
+			'class'		=>	\Imi\Log\Handler\Console::class,
+			'options'	=>	[
+				'levels'	=>	[
+					LogLevel::DEBUG,
 					LogLevel::NOTICE,
 					LogLevel::WARNING,
 				],
@@ -75,13 +83,6 @@ class Logger extends AbstractLogger
     private $beanCacheFilePath;
 
 	/**
-	 * 自动保存间隔，单位：秒
-	 *
-	 * @var integer
-	 */
-	protected $autoSaveInterval = 10;
-
-	/**
 	 * 定时器ID
 	 *
 	 * @var int
@@ -95,13 +96,6 @@ class Logger extends AbstractLogger
 			$this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
 		$this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
-		if($this->autoSaveInterval > 0)
-		{
-			$this->timerID = swoole_timer_tick($this->autoSaveInterval * 1000, function(){
-				$this->endRequest();
-				$this->save();
-			});
-		}
 	}
 
 	public function __destruct()
@@ -127,26 +121,10 @@ class Logger extends AbstractLogger
 		$context = $this->parseContext($context);
 		$trace = $context['trace'];
         $logTime = time();
-		$this->records[] = new Record($level, $message, $context, $trace, $logTime);
-		if(!Coroutine::isIn())
+		$record = new Record($level, $message, $context, $trace, $logTime);
+		foreach($this->handlers as $handler)
 		{
-			$this->endRequest();
-		}
-	}
-
-	/**
-	 * 当请求结束时调用
-	 * @return void
-	 */
-	public function endRequest()
-	{
-		if(isset($this->records[0]))
-		{
-			foreach($this->handlers as $handler)
-			{
-				$handler->logBatch($this->records);
-			}
-			$this->records = [];
+			$handler->log($record);
 		}
 	}
 

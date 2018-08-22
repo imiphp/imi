@@ -102,7 +102,6 @@ class ErrorLog
 			]);
 		}
 		$logger = App::getBean('Logger');
-		$logger->endRequest();
 		$logger->save();
 		exit;
 	}
@@ -120,7 +119,6 @@ class ErrorLog
 			'errorFile'	=>	$ex->getFile(),
 			'errorLine'	=>	$ex->getLine(),
 		]);
-		App::getBean('Logger')->endRequest();
 		// 请求上下文处理
 		if(RequestContext::exsits())
 		{
