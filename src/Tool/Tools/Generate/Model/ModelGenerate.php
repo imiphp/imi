@@ -51,6 +51,7 @@ class ModelGenerate
 						->getArray();
 		// model保存路径
 		$modelPath = Imi::getNamespacePath($namespace);
+		File::createDir($modelPath);
 		foreach($list as $item)
 		{
 			$table = $item['TABLE_NAME'];
