@@ -44,7 +44,7 @@ class Driver implements IDb
 	 * 参数格式：
 	 * [
 	 * 'host' => 'MySQL IP地址',
-	 * 'user' => '数据用户',
+	 * 'username' => '数据用户',
 	 * 'password' => '数据库密码',
 	 * 'database' => '数据库名',
 	 * 'port'    => 'MySQL端口 默认3306 可选参数',
@@ -57,9 +57,13 @@ class Driver implements IDb
 	public function __construct($option = [])
 	{
 		$this->option = $option;
-		if(!isset($this->option['username']))
+		if(isset($this->option['username']))
 		{
-			$this->option['username'] = 'root';
+			$this->option['user'] = $this->option['username'];
+		}
+		else
+		{
+			$this->option['user'] = 'root';
 		}
 		if(!isset($option['password']))
 		{
