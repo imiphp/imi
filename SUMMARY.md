@@ -52,6 +52,7 @@
 * [后台任务](components/task/index.md)
 * [AOP](components/aop/index.md)
 * [进程](components/process/index.md)
+* [进程池](components/process-pool/index.md)
 * [热更新](components/hotupdate/index.md)
 * 服务器
 * [数据结构](components/struct/index.md)
