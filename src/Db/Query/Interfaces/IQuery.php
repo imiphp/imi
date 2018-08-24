@@ -39,7 +39,7 @@ interface IQuery
 	 * @param string $database 数据库名
 	 * @return static
 	 */
-	public function table(string $table, string $alias = null, string $database);
+	public function table(string $table, string $alias = null, string $database = null);
 
 	/**
 	 * 设置表名，使用SQL原生语句
