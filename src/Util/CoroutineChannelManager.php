@@ -67,11 +67,12 @@ abstract class CoroutineChannelManager
 	 * 当通道内有数据时自动将数据弹出并还原为PHP变量
 	 * 当通道内没有任何数据时pop会失败并返回false
 	 * @param string $name
+	 * @param float $timeout
 	 * @return mixed
 	 */
-	public static function pop(string $name)
+	public static function pop(string $name, $timeout = 0)
 	{
-		return static::getInstance($name)->pop();
+		return static::getInstance($name)->pop($timeout);
 	}
 	
 	/**
@@ -86,7 +87,7 @@ abstract class CoroutineChannelManager
 	 */
 	public static function stats(string $name): array
 	{
-		return parent::stats($name);
+		return static::getInstance($name)->stats();
 	}
 
 	/**

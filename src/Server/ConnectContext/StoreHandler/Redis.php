@@ -1,7 +1,10 @@
 <?php
 namespace Imi\Server\ConnectContext\StoreHandler;
 
+use Imi\Worker;
+use Imi\Log\Log;
 use Imi\Util\Swoole;
+use Imi\ServerManage;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
@@ -66,30 +69,41 @@ class Redis implements IHandler
 		{
 			return;
 		}
-		$this->useRedis(function($resource, $redis){
-			// 判断master进程pid
-			$this->masterPID = Swoole::getMasterPID();
-			$hasPing = $this->hasPing($redis);
-			$storeMasterPID = $redis->get($this->key);
-			if(null === $storeMasterPID)
-			{
-				// 没有存储master进程pid
-				$this->initRedis($redis, $storeMasterPID);
-			}
-			else if($this->masterPID != $storeMasterPID)
-			{
-				if($hasPing)
+		if(0 === Worker::getWorkerID())
+		{
+			$this->useRedis(function($resource, $redis){
+				// 判断master进程pid
+				$this->masterPID = Swoole::getMasterPID();
+				$storeMasterPID = $redis->get($this->key);
+				if(null === $storeMasterPID)
 				{
-					// 与master进程ID不等
-					throw new \RuntimeException('ConnectContextRedis repeat');
-				}
-				else
-				{
+					// 没有存储master进程pid
 					$this->initRedis($redis, $storeMasterPID);
 				}
-			}
-			$this->startPing($redis);
-		});
+				else if($this->masterPID != $storeMasterPID)
+				{
+					$hasPing = $this->hasPing($redis);
+					if($hasPing)
+					{
+						Log::warning('ConnectContextRedis key has been used, waiting...');
+						sleep($this->heartbeatTtl);
+						$hasPing = $this->hasPing($redis);
+					}
+					if($hasPing)
+					{
+						// 与master进程ID不等
+						Log::emergency('ConnectContextRedis key has been used');
+						ServerManage::getServer('main')->getSwooleServer()->shutdown();
+					}
+					else
+					{
+						$this->initRedis($redis, $storeMasterPID);
+						Log::info('ConnectContextRedis key init');
+					}
+				}
+				$this->startPing($redis);
+			});
+		}
 	}
 
 	/**
@@ -210,7 +224,8 @@ class Redis implements IHandler
 	{
 		return $this->useRedis(function($resource, $redis) use($key){
 			$redisKey = $this->getRedisKey($key);
-			return $redis->get($redisKey) ?? [];
+			$result = $redis->get($redisKey);
+			return $result ? $result : [];
 		});
 	}
 

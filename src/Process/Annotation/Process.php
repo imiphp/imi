@@ -36,4 +36,11 @@ class Process extends Base
 	 * @var int
 	 */
 	public $pipeType = 2;
+
+	/**
+	 * 该进程是否只允许存在一个实例
+	 *
+	 * @var boolean
+	 */
+	public $unique = false;
 }

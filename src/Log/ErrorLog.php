@@ -9,6 +9,7 @@ use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\Imi;
 
 /**
  * @Bean("ErrorLog")
@@ -30,8 +31,7 @@ class ErrorLog
 	public function register()
 	{
 		error_reporting(0);
-        $path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-        $this->beanCacheFilePath = File::path($path, 'imiBeanCache', 'imi', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+		$this->beanCacheFilePath = Imi::getImiClassCachePath(str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
 		register_shutdown_function([$this, 'onShutdown']);
 		set_error_handler([$this, 'onError']);
 	}
@@ -55,32 +55,29 @@ class ErrorLog
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
 			case E_RECOVERABLE_ERROR:
-				Log::error($errstr, [
-					'trace'	=>	$this->getTrace(),
-				]);
+				$method = 'error';
 				break;
 			case E_WARNING:
 			case E_CORE_WARNING:
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
-				Log::warning($errstr, [
-					'trace'	=>	$this->getTrace(),
-				]);
+				$method = 'warning';
 				break;
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				Log::notice($errstr, [
-					'trace'	=>	$this->getTrace(),
-				]);
+				$method = 'notice';
 				break;
 			case E_STRICT:
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				Log::info($errstr, [
-					'trace'	=>	$this->getTrace(),
-				]);
+				$method = 'info';
 				break;
 		}
+		Log::$method($errstr, [
+			'trace'		=>	$this->getTrace(),
+			'errorFile'	=>	$errfile,
+			'errorLine'	=>	$errline,
+		]);
 	}
 
 	/**
@@ -105,7 +102,6 @@ class ErrorLog
 			]);
 		}
 		$logger = App::getBean('Logger');
-		$logger->endRequest();
 		$logger->save();
 		exit;
 	}
@@ -119,9 +115,10 @@ class ErrorLog
 	{
 		// 日志处理
 		Log::error($ex->getMessage(), [
-			'trace'	=>	$ex->getTrace(),
+			'trace'		=>	$ex->getTrace(),
+			'errorFile'	=>	$ex->getFile(),
+			'errorLine'	=>	$ex->getLine(),
 		]);
-		App::getBean('Logger')->endRequest();
 		// 请求上下文处理
 		if(RequestContext::exsits())
 		{
@@ -139,7 +136,7 @@ class ErrorLog
 	{
 		$backtrace = debug_backtrace();
         $index = null;
-        $hasNull = false;
+		$hasNull = false;
         foreach($backtrace as $i => $item)
         {
             if(isset($item['file']))
@@ -148,7 +145,7 @@ class ErrorLog
                 {
                     if($this->beanCacheFilePath === $item['file'])
                     {
-                        $index = $i + 1;
+                        $index = $i + 2;
                         break;
                     }
                 }
@@ -157,7 +154,7 @@ class ErrorLog
             {
                 $hasNull = true;
             }
-        }
+		}
         if(null === $index)
         {
             return [];

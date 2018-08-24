@@ -7,6 +7,7 @@ use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
 use Imi\Bean\Parser\BeanParser;
+use Imi\Util\Imi;
 
 abstract class BeanFactory
 {
@@ -29,7 +30,15 @@ abstract class BeanFactory
 			{
 				File::createDir($path);
 			}
-			File::writeFile($cacheFileName, '<?php ' . $tpl);
+			if(SWOOLE_VERSION > '4.0.4')
+			{
+				File::writeFile($cacheFileName, '<?php ' . $tpl);
+			}
+			else
+			{
+				// 4.0.4及之前版本由于在AIO线程处理了信号，导致奇怪的问题，所以改为阻塞写入文件，性能影响其实也很低，只在第一次写入
+				file_put_contents($cacheFileName, '<?php ' . $tpl);
+			}
 		}
 
 		$object = include $cacheFileName;
@@ -49,8 +58,15 @@ abstract class BeanFactory
 	 */
 	private static function getCacheFileName($className)
 	{
-		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		return File::path($path, 'imiBeanCache', Worker::getWorkerID() ?? 'imi', str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php');
+		$fileName = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
+		if(null === ($workerID = Worker::getWorkerID()))
+		{
+			return Imi::getImiClassCachePath($fileName);
+		}
+		else
+		{
+			return Imi::getWorkerClassCachePathByWorkerID($workerID, $fileName);
+		}
 	}
 
 	/**
@@ -113,11 +129,14 @@ TPL;
 			$tpl .= <<<TPL
 	public function {$method->name}({$paramsTpls['define']}){$methodReturnType}
 	{
-		\$__args__ = [{$paramsTpls['args']}];{$paramsTpls['args_variadic']}
+		\$__args__ = func_get_args();
+		{$paramsTpls['set_args']}
 		return \$this->beanProxy->call(
 			'{$method->name}',
 			function({$paramsTpls['define']}){
-				return parent::{$method->name}({$paramsTpls['call']});
+				\$__args__ = func_get_args();
+				{$paramsTpls['set_args']}
+				return parent::{$method->name}(...\$__args__);
 			},
 			\$__args__
 		);
@@ -139,10 +158,11 @@ TPL;
 			'args'			=>	[],
 			'define'		=>	[],
 			'call'			=>	[],
+			'set_args'		=>	'',
 		];
-		foreach($method->getParameters() as $param)
+		foreach($method->getParameters() as $i => $param)
 		{
-			// 数组参数，支持引用传参
+			// 数组参数，支持可变传参
 			if(!$param->isVariadic())
 			{
 				$result['args'][] = static::getMethodParamArgsTpl($param);
@@ -151,8 +171,13 @@ TPL;
 			$result['define'][] = static::getMethodParamDefineTpl($param);
 			// 调用传参
 			$result['call'][] = static::getMethodParamCallTpl($param);
+			// 引用传参
+			if($param->isPassedByReference())
+			{
+				$result['set_args'] .= '$__args__[' . $i . '] = &$' . $param->name . ';';
+			}
 		}
-		foreach($result as &$item)
+		foreach($result as $key => &$item)
 		{
 			if(is_array($item))
 			{
@@ -164,23 +189,6 @@ TPL;
 		{
 			$result['call'] = '...func_get_args()';
 		}
-		// 可变参数
-		if(isset($param) && $param->isVariadic())
-		{
-			$result['args_variadic'] = static::getMethodArgsVariadicTpl($param);
-		}
-		else
-		{
-			$result['args_variadic'] = '';
-		}
-		$result['args_variadic'] .= <<<STR
-
-		if(!isset(\$__args__[func_num_args() - 1]))
-		{
-			\$__allArgs__ = func_get_args();
-			\$__args__ = array_merge(\$__args__, array_splice(\$__allArgs__, count(\$__args__)));
-		}
-STR;
 		return $result;
 	}
 
@@ -241,22 +249,6 @@ STR;
 	private static function getMethodParamCallTpl(\ReflectionParameter $param)
 	{
 		return ($param->isVariadic() ? '...' : '') . '$' . $param->name;
-	}
-
-	/**
-	 * 获取方法可变参数模版
-	 * @param \ReflectionParameter $param
-	 * @return string
-	 */
-	private static function getMethodArgsVariadicTpl(\ReflectionParameter $param)
-	{
-		return <<<TPL
-
-		foreach(\${$param->name} as \$__item__)
-		{
-			\$__args__[] = \$__item__;
-		}
-TPL;
 	}
 
 	/**

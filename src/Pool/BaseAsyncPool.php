@@ -37,6 +37,7 @@ abstract class BaseAsyncPool extends BasePool
 	 */
 	public function getResource(): IPoolResource
 	{
+		$selectResult = true;
 		if($this->getFree() <= 0)
 		{
 			if($this->getCount() < $this->config->getMaxResources())
@@ -46,17 +47,31 @@ abstract class BaseAsyncPool extends BasePool
 			}
 			else 
 			{
-				// 等待其他协程使用完成后释放连接
-				$read = [$this->queue];
-				$write = null;
-				$selectResult = Channel::select($read, $write, $this->config->getWaitTimeout() / 1000);
+				if(SWOOLE_VERSION < '4.0.3')
+				{
+					// 等待其他协程使用完成后释放连接
+					$read = [$this->queue];
+					$write = null;
+					$selectResult = Channel::select($read, $write, $this->config->getWaitTimeout() / 1000);
+				}
+				else
+				{
+					$selectResult = $this->queue->pop($this->config->getWaitTimeout() / 1000);
+				}
 				if(false === $selectResult)
 				{
 					throw new \RuntimeException('AsyncPool getResource timeout');
 				}
 			}
 		}
-		$resource = $this->queue->pop();
+		if(true === $selectResult)
+		{
+			$resource = $this->queue->pop();
+		}
+		else
+		{
+			$resource = $selectResult;
+		}
 		if(!$resource->checkState())
 		{
 			$resource->open();
@@ -84,13 +99,27 @@ abstract class BaseAsyncPool extends BasePool
 		}
 		$read = [$this->queue];
 		$write = null;
-		// Coroutine\Channel::select() 最小超时时间1毫秒
-		$result = Channel::select($read, $write, 0.001);
+		// Coroutine\Channel::select()/->pop() 最小超时时间1毫秒
+		if(SWOOLE_VERSION < '4.0.3')
+		{
+			$result = Channel::select($read, $write, 0.001);
+		}
+		else
+		{
+			$result = $this->queue->pop(0.001);
+		}
 		if(false === $result)
 		{
 			return false;
 		}
-		$resource = $this->queue->pop();
+		if(true === $result)
+		{
+			$resource = $this->queue->pop();
+		}
+		else
+		{
+			$resource = $result;
+		}
 		if(!$resource->checkState())
 		{
 			$resource->open();

@@ -40,19 +40,21 @@ class ModelGenerate
 			$database = $query->execute('select database()')->getScalar();
 		}
 		// 表
-		$tables = $query->tableRaw('information_schema.TABLES')
+		$list = $query->tableRaw('information_schema.TABLES')
 						->where('TABLE_SCHEMA', '=', $database)
 						->whereIn('TABLE_TYPE', [
 							'BASE TABLE',
 							'VIEW',
 						])
-						->field('TABLE_NAME')
+						->field('TABLE_NAME', 'TABLE_TYPE')
 						->select()
-						->getColumn();
+						->getArray();
 		// model保存路径
 		$modelPath = Imi::getNamespacePath($namespace);
-		foreach($tables as $table)
+		File::createDir($modelPath);
+		foreach($list as $item)
 		{
+			$table = $item['TABLE_NAME'];
 			if(!$this->checkTable($table, $include, $exclude))
 			{
 				// 不符合$include和$exclude
@@ -76,7 +78,7 @@ class ModelGenerate
 				'fields'	=>	[],
 			];
 			$fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
-			$this->parseFields($fields, $data);
+			$this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
 			$content = $this->renderTemplate($data);
 			File::writeFile($fileName, $content);
 		}
@@ -120,15 +122,23 @@ class ModelGenerate
 	 * 处理字段信息
 	 * @param array $fields
 	 * @param array $data
+	 * @param boolean $isView
 	 * @return void
 	 */
-	private function parseFields($fields, &$data)
+	private function parseFields($fields, &$data, $isView)
 	{
 		$idCount = 0;
-		foreach($fields as $field)
+		foreach($fields as $i => $field)
 		{
 			$this->parseFieldType($field['Type'], $typeName, $length, $accuracy);
-			$isPk = 'PRI' === $field['Key'];
+			if($isView && 0 === $i)
+			{
+				$isPk = true;
+			}
+			else
+			{
+				$isPk = 'PRI' === $field['Key'];
+			}
 			$data['fields'][] = [
 				'name'				=>	$field['Field'],
 				'varName'			=>	Text::toCamelName($field['Field']),
@@ -136,7 +146,7 @@ class ModelGenerate
 				'phpType'			=>	$this->dbFieldTypeToPhp($typeName),
 				'length'			=>	$length,
 				'accuracy'			=>	$accuracy,
-				'nullable'			=>	$field['Null'] !== 'YES',
+				'nullable'			=>	$field['Null'] === 'YES',
 				'default'			=>	$field['Default'],
 				'isPrimaryKey'		=>	$isPk,
 				'primaryKeyIndex'	=>	$isPk ? $idCount : -1,

@@ -22,8 +22,6 @@ class AfterReceive implements IReceiveEventListener
 	 */
 	public function handle(ReceiveEventParam $e)
 	{
-		// 日志处理
-		App::getBean('Logger')->endRequest();
 		// 释放请求的进程池资源
 		PoolManager::destroyCurrentContext();
 		// 销毁请求上下文

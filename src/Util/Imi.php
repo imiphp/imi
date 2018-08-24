@@ -2,6 +2,9 @@
 namespace Imi\Util;
 
 use Imi\App;
+use Imi\Config;
+use Imi\Worker;
+use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\Parser\BeanParser;
@@ -219,5 +222,73 @@ abstract class Imi
 			$value = $ref->getDefaultProperties()[$propertyName] ?? null;
 		}
 		return $value;
+	}
+
+	/**
+	 * 获取Bean类缓存根目录
+	 *
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getBeanClassCachePath(...$paths)
+	{
+		$main = Helper::getMain(App::getNamespace());
+		$beanClassCache = $main->getConfig()['beanClassCache'] ?? null;
+		if(null === $beanClassCache)
+		{
+			$beanClassCache = sys_get_temp_dir();
+		}
+		return File::path($beanClassCache, 'imiBeanCache', str_replace('\\', '-', App::getNamespace()), ...$paths);
+	}
+
+	/**
+	 * 获取IMI框架Bean类缓存目录
+	 *
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getImiClassCachePath(...$paths)
+	{
+		return File::path(static::getBeanClassCachePath(), 'imi', ...$paths);
+	}
+
+	/**
+	 * 获取Worker进程Bean类缓存目录
+	 *
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getWorkerClassCachePath(...$paths)
+	{
+		return static::getWorkerClassCachePathByWorkerID(Worker::getWorkerID(), ...$paths);
+	}
+
+	/**
+	 * 获取Worker进程Bean类缓存目录，手动传入workerID
+	 *
+	 * @param int $workerID
+	 * @param string ...$paths
+	 * @return string
+	 */
+	public static function getWorkerClassCachePathByWorkerID($workerID, ...$paths)
+	{
+		return File::path(static::getBeanClassCachePath(), $workerID, ...$paths);
+	}
+
+	/**
+	 * 获取imi命令行
+	 *
+	 * @param string $toolName 工具名，如server
+	 * @param string $operation 操作名，如start
+	 * @return string
+	 */
+	public static function getImiCmd($toolName, $operation)
+	{
+		$cmd = 'php ' . $_SERVER['argv'][0] . ' ' . $toolName . '/' . $operation;
+		if(null !== ($appNamespace = Args::get('appNamespace')))
+		{
+			$cmd .= ' -appNamespace "' . $appNamespace . '"';
+		}
+		return $cmd;
 	}
 }

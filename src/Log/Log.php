@@ -145,7 +145,18 @@ abstract class Log
 	public static function getTrace()
 	{
         $backtrace = debug_backtrace();
-        return array_splice($backtrace, 2);
+        return array_splice($backtrace, 3);
+    }
+
+    /**
+     * 获取错误文件位置
+     *
+     * @return array
+     */
+    public static function getErrorFile()
+    {
+        $backtrace = debug_backtrace(0, 3);
+        return [$backtrace[2]['file'] ?? '', $backtrace[2]['line'] ?? 0];
     }
     
     /**
@@ -159,6 +170,12 @@ abstract class Log
         if(!isset($context['trace']))
         {
             $context['trace'] = static::getTrace();
+        }
+        if(!isset($context['errorFile']))
+        {
+            list($file, $line) = static::getErrorFile();
+            $context['errorFile'] = $file;
+            $context['errorLine'] = $line;
         }
         return $context;
     }

@@ -2,12 +2,13 @@
 namespace Imi\Model;
 
 use Imi\Db\Db;
+use Imi\Util\Text;
+use Imi\Event\Event;
 use Imi\Bean\BeanFactory;
+use Imi\Util\LazyArrayObject;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-use Imi\Util\LazyArrayObject;
-use Imi\Event\Event;
 
 /**
  * 常用的数据库模型
@@ -416,8 +417,8 @@ abstract class Model extends BaseModel
 			{
 				if(is_array($v))
 				{
-					$operation = array_unshift($v);
-					$query->where($k, $operation, $v[1]);
+					$operation = array_shift($v);
+					$query->where($k, $operation, $v[0]);
 				}
 				else
 				{
@@ -439,11 +440,35 @@ abstract class Model extends BaseModel
 		{
 			$object = $data;
 		}
+		if($data instanceof static)
+		{
+			$data = $data->toArray();
+		}
 		$class = BeanFactory::getObjectClass($object ?? static::class);
 		$result = new LazyArrayObject;
-		foreach(ModelManager::getFieldNames($class) as $name)
+		foreach(ModelManager::getFields($class) as $name => $column)
 		{
-			$result[$name] = $data[$name];
+			if(array_key_exists($name, $data))
+			{
+				$value = $data[$name];
+			}
+			else
+			{
+				$fieldName = Text::toCamelName($name);
+				if(array_key_exists($fieldName, $data))
+				{
+					$value = $data[$fieldName];
+				}
+				else
+				{
+					$value = null;
+				}
+			}
+			if(null === $value && !$column->nullable)
+			{
+				continue;
+			}
+			$result[$name] = $value;
 		}
 		return $result;
 	}

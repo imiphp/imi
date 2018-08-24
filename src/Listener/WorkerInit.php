@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
+use Imi\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
@@ -28,21 +29,30 @@ class WorkerInit implements IWorkerStartEventListener
 	 */
 	public function handle(WorkerStartEventParam $e)
 	{
-		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
+		// 随机数播种
+		mt_srand();
 
-		// 清除当前 worker 进程的 Bean 类缓存
-		$path = Config::get('@app.beanClassCache', sys_get_temp_dir());
-		$path = File::path($path, 'imiBeanCache', $e->server->getSwooleServer()->worker_id);
-		foreach (File::enum($path) as $file)
+		if(!$e->server->getSwooleServer()->taskworker)
 		{
-			if (is_file($file))
+			// swoole 4.1.0 一键协程化
+			if(method_exists('\Swoole\Runtime', 'enableCoroutine') && (Helper::getMain(App::getNamespace())->getConfig()['enableCoroutine'] ?? true))
 			{
-				unlink($file);
+				\Swoole\Runtime::enableCoroutine(true);
 			}
 		}
 
+		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
+
 		// 当前进程的 WorkerID 设置
 		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
+
+		// 清除当前 worker 进程的 Bean 类缓存
+		$path = Imi::getWorkerClassCachePathByWorkerID(Worker::getWorkerID());
+
+		foreach(File::enum($path) as $file)
+		{
+			unlink((string)$file);
+		}
 
 		// 初始化 worker
 		App::initWorker();

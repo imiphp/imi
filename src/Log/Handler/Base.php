@@ -28,13 +28,7 @@ abstract class Base
 	 * 日志格式
 	 * @var string
 	 */
-	protected $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}';
-
-	/**
-	 * 最后一个调用跟踪格式
-	 * @var string
-	 */
-	protected $lastTraceFormat = '{file}: {line}, {call}';
+	protected $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}';
 
 	/**
 	 * 调用跟踪格式
@@ -169,15 +163,6 @@ abstract class Base
 	 */
 	public function parseMessage(\Imi\Log\Record $record): string
 	{
-		$find = $replace = [];
-		foreach ($record->getContext() as $key => $value)
-		{
-			if(is_scalar($value))
-			{
-				$find[] = '{' . $key . '}';
-				$replace[] = $value;
-			}
-		}
 		return str_replace($find, $replace, $record->getMessage());
 	}
 
@@ -189,20 +174,31 @@ abstract class Base
 	public function getLogString(\Imi\Log\Record $record)
 	{
 		$vars = [
-			'message'	=>	$this->parseMessage($record),
+			'message'	=>	$record->getMessage(),
 			'level'		=>	$record->getLevel(),
 			'timestamp'	=>	$record->getLogTime(),
 			'trace'		=>	$this->parseTrace($record),
-			'lastTrace'	=>	$this->parseLastTrace($record),
 		];
-		$logContent = $this->format;
-		foreach($vars as $name => $value)
+
+		$find = $replace = [];
+		foreach($vars as $key => $value)
 		{
 			if(is_scalar($value))
 			{
-				$logContent = str_replace('{' . $name . '}', (string)$value, $logContent);
+				$find[] = '{' . $key . '}';
+				$replace[] = $value;
 			}
 		}
+		foreach ($record->getContext() as $key => $value)
+		{
+			if(is_scalar($value))
+			{
+				$find[] = '{' . $key . '}';
+				$replace[] = $value;
+			}
+		}
+		$logContent = str_replace($find, $replace, $this->format);
+		
 		return $this->replaceDateTime($logContent, $record->getLogTime());
 	}
 
@@ -229,31 +225,6 @@ abstract class Base
 			$result[] = $line;
 		}
 		return implode(PHP_EOL, $result);
-	}
-
-	/**
-	 * 处理最后的代码调用跟踪
-	 * @param \Imi\Log\Record $record
-	 * @return string
-	 */
-	public function parseLastTrace(\Imi\Log\Record $record)
-	{
-		$trace = $record->getTrace();
-		if(!isset($trace[0]))
-		{
-			return '';
-		}
-		$vars = $trace[0];
-		$vars['call'] = $this->getTraceCall($vars);
-		$result = $this->lastTraceFormat;
-		foreach($vars as $name => $value)
-		{
-			if(is_scalar($value))
-			{
-				$result = str_replace('{' . $name . '}', (string)$value, $result);
-			}
-		}
-		return $result;
 	}
 
 	/**
