@@ -38,7 +38,7 @@ return [
 				'resource' => [
 					'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
 					'host' => '127.0.0.1',
-					'user' => 'root',
+					'username' => 'root',
 					'password' => 'root',
 					'database' => 'database',
 					// 'port'    => '3306',
@@ -58,7 +58,7 @@ return [
 				'resource'	=>	[
 					'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
 					'host'		=> '127.0.0.1',
-					'user'		=> 'root',
+					'username'		=> 'root',
 					'password'	=> 'root',
 					'database'	=> 'database',
 					// 'timeout' => '建立连接超时时间',
