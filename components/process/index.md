@@ -110,3 +110,20 @@ ProcessManager::run($name, $args = [], $redirectStdinStdout = null, $pipeType = 
  */
 ProcessManager::coRun($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
 ```
+
+### 运行进程，托管到 Manager 进程
+
+> 这个用法只能在IMI.SERVERS.CREATE.AFTER事件中使用！
+
+```php
+/**
+ * 挂靠Manager进程运行进程
+ *
+ * @param string $name
+ * @param array $args
+ * @param boolean $redirectStdinStdout
+ * @param int $pipeType
+ * @return void
+ */
+public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+```
