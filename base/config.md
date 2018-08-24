@@ -58,6 +58,8 @@ return [
 
 ```php
 return [
+    // Swoole >= 4.1.0可用，不设置默认为true，开启一键协程化
+    // 'enableCoroutine'    =>    true,
     // 主服务器配置
     'mainServer'	=>	[
         // 指定服务器命名空间
