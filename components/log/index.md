@@ -22,9 +22,7 @@ return [
 						// 日志缓存数量，当日志达到指定条数时，执行批量写入操作，减少对性能的影响，默认0，每次都写入
 						// 'logCacheNumber'	=>	0,
 						// 日志格式
-						// 'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {lastTrace}',
-						// 最后一个调用跟踪格式
-						// 'lastTraceFormat' => '{file}: {line}, {call}',
+						// 'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
 						// 调用跟踪格式
 						// 'traceFormat'	=>	'#{index}  {call} called at [{file}:{line}]',
 						/* 日志公共配置-结束 */
@@ -99,7 +97,6 @@ return [
 `level` 日志等级
 `timestamp` 日志时间戳，精度：秒
 `trace` 代码调用跟踪
-`lastTrace` 最后的代码调用跟踪位置
 
 ### lastTraceFormat
 
