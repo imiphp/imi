@@ -23,6 +23,13 @@ abstract class ModelManager
 	private static $keyRules = [];
 
 	/**
+	 * 字段缓存
+	 *
+	 * @var array
+	 */
+	private static $fields = [];
+
+	/**
 	 * 获取当前模型类的类注解
 	 * @param string|object $object
 	 * @param string $annotationClass
@@ -112,9 +119,7 @@ abstract class ModelManager
 	public static function getFields($object)
 	{
 		$objectClass = BeanFactory::getObjectClass($object);
-		$key = 'Model.fields.' . $objectClass;
-		$fields = RequestContext::get($key);
-		if(null === $fields)
+		if(!isset(static::$fields[$objectClass]))
 		{
 			$option = ModelParser::getInstance()->getData()[$objectClass] ?? [];
 			$fields = [];
@@ -122,9 +127,9 @@ abstract class ModelManager
 			{
 				$fields[$item['Column']->name] = $item['Column'];
 			}
-			RequestContext::set($key, $fields);
+			static::$fields[$objectClass] = $fields;
 		}
-		return $fields;
+		return static::$fields[$objectClass];
 	}
 
 	/**
