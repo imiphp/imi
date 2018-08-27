@@ -50,6 +50,13 @@ abstract class App
 	private static $isDebug = false;
 
 	/**
+	 * Composer ClassLoader
+	 *
+	 * @var \Composer\Autoload\ClassLoader
+	 */
+	private static $loader;
+
+	/**
 	 * 框架服务运行入口
 	 * @param string $namespace 应用命名空间
 	 * @return void
@@ -255,5 +262,26 @@ abstract class App
 				CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
 			}
 		}
+	}
+
+	/**
+	 * 设置 Composer ClassLoader
+	 *
+	 * @param \Composer\Autoload\ClassLoader $loader
+	 * @return void
+	 */
+	public static function setLoader(\Composer\Autoload\ClassLoader $loader)
+	{
+		static::$loader = $loader;
+	}
+
+	/**
+	 * 获取 Composer ClassLoader
+	 *
+	 * @return \Composer\Autoload\ClassLoader|null
+	 */
+	public static function getLoader()
+	{
+		return static::$loader;
 	}
 }
