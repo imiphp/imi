@@ -9,6 +9,7 @@ use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
+use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
 
 abstract class Tool
