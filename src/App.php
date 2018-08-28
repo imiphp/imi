@@ -193,12 +193,15 @@ abstract class App
 	}
 
 	/**
-	 * 初始化worker
+	 * 初始化 Worker，但不一定是 Worker 进程
 	 *
 	 * @return void
 	 */
 	public static function initWorker()
 	{
+		// Worker 进程初始化前置
+		Event::trigger('IMI.INIT.WORKER.BEFORE');
+
 		$appMains = MainHelper::getAppMains();
 		// 加载服务器注解
 		Annotation::getInstance()->init($appMains);
@@ -262,6 +265,9 @@ abstract class App
 				CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
 			}
 		}
+
+		// Worker 进程初始化后置
+		Event::trigger('IMI.INIT.WORKER.AFTER');
 	}
 
 	/**
