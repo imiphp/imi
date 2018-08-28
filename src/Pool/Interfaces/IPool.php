@@ -33,9 +33,9 @@ interface IPool
 
 	/**
 	 * 获取资源
-	 * @return IPoolResource
+	 * @return IPoolResource|null
 	 */
-	public function getResource(): IPoolResource;
+	public function getResource();
 
 	/**
 	 * 尝试获取资源，获取到则返回资源，没有获取到返回false
