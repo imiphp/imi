@@ -20,15 +20,32 @@ abstract class Config
 	 */
 	public static function addConfig($name, array $config)
 	{
-		if(isset(static::$configs[$name]))
+		$nameSplit = explode('.', $name);
+
+		$first = array_shift($nameSplit);
+		if(!isset(static::$configs[$first]))
 		{
-			return false;
+			static::$configs[$first] = new ArrayData([]);
 		}
-		static::$configs[$name] = new ArrayData($config);
-		if(static::$configs[$name]->exists('configs'))
+
+		if(isset($nameSplit[0]))
 		{
-			static::load($name, static::$configs[$name]->get('configs', []));
+			$configName = implode('.', $nameSplit);
+			static::$configs[$first]->set($configName, $config);
+			if(false !== ($configs = static::$configs[$first]->get($configName . '.configs')))
+			{
+				static::load($name, $configs);
+			}
 		}
+		else
+		{
+			static::$configs[$first]->set($config);
+			if(static::$configs[$first]->exists('configs'))
+			{
+				static::load($name, static::$configs[$first]->get('configs', []));
+			}
+		}
+
 		return true;
 	}
 

@@ -116,7 +116,7 @@ abstract class App
 		$servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
 		foreach($servers as $serverName => $item)
 		{
-			MainHelper::getMain($item['namespace'], 'server_' . $serverName);
+			MainHelper::getMain($item['namespace'], 'server.' . $serverName);
 		}
 	}
 
