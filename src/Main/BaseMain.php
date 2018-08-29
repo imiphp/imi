@@ -30,6 +30,7 @@ abstract class BaseMain implements IMain
 	{
 		$this->moduleName = $moduleName;
 		$this->loadConfig();
+		$this->loadComponents();
 		$this->__init();
 	}
 
@@ -98,5 +99,18 @@ abstract class BaseMain implements IMain
 	public function getModuleName(): string
 	{
 		return $this->moduleName;
+	}
+
+	/**
+	 * 加载组件
+	 *
+	 * @return void
+	 */
+	protected function loadComponents()
+	{
+		foreach(Config::addConfig('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
+		{
+			MainHelper::getMain($namespace, $componentName);
+		}
 	}
 }
