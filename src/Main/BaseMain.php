@@ -2,6 +2,7 @@
 namespace Imi\Main;
 
 use Imi\Config;
+use Imi\Main\Helper;
 
 /**
  * 主类基类
@@ -108,9 +109,9 @@ abstract class BaseMain implements IMain
 	 */
 	protected function loadComponents()
 	{
-		foreach(Config::addConfig('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
+		foreach(Config::get('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
 		{
-			MainHelper::getMain($namespace, $componentName);
+			Helper::getMain($namespace, $componentName);
 		}
 	}
 }
