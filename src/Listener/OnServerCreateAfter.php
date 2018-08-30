@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Listener;
 
+use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Process\ProcessManager;
@@ -19,6 +20,9 @@ class OnServerCreateAfter implements IEventListener
 	public function handle(EventParam $e)
 	{
 		// 热更新
-		ProcessManager::runWithManager('hotUpdate');
+		if(Config::get('@app.beans.hotUpdate.status', true))
+		{
+			ProcessManager::runWithManager('hotUpdate');
+		}
 	}
 }
