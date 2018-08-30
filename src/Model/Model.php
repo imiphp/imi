@@ -74,7 +74,7 @@ abstract class Model extends BaseModel
 		}
 
 		// 查找前
-		Event::trigger(ModelEvents::BEFORE_FIND, [
+		Event::trigger(static::class . ModelEvents::BEFORE_FIND, [
 			'ids'	=>	$ids,
 			'query'	=>	$query,
 		], null, \Imi\Model\Event\Param\BeforeFindEventParam::class);
@@ -82,7 +82,7 @@ abstract class Model extends BaseModel
 		$result = $query->select()->get();
 
 		// 查找后
-		Event::trigger(ModelEvents::AFTER_FIND, [
+		Event::trigger(static::class . ModelEvents::AFTER_FIND, [
 			'ids'	=>	$ids,
 			'model'	=>	$result,
 		], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
@@ -100,14 +100,14 @@ abstract class Model extends BaseModel
 		$query = static::parseWhere(static::query(), $where);
 
 		// 查询前
-		Event::trigger(ModelEvents::BEFORE_SELECT, [
+		Event::trigger(static::class . ModelEvents::BEFORE_SELECT, [
 			'query'	=>	$query,
 		], null, \Imi\Model\Event\Param\BeforeSelectEventParam::class);
 
 		$result = $query->select()->getArray();
 
 		// 查询后
-		Event::trigger(ModelEvents::AFTER_SELECT, [
+		Event::trigger(static::class . ModelEvents::AFTER_SELECT, [
 			'result'	=>	&$result,
 		], null, \Imi\Model\Event\Param\AfterSelectEventParam::class);
 
