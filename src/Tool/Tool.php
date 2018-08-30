@@ -116,7 +116,17 @@ abstract class Tool
 	 */
 	private static function init()
 	{
-		Annotation::getInstance()->init([Helper::getMain(App::getNamespace())]);
+		// 仅初始化项目及组件
+		$initMains = [Helper::getMain(App::getNamespace())];
+		foreach(Helper::getAppMains() as $mainName => $main)
+		{
+			foreach($main->getConfig()['components'] ?? [] as $componentName => $namespace)
+			{
+				$initMains[] = Helper::getMain($namespace);
+			}
+		}
+		Annotation::getInstance()->init($initMains);
+
 		RequestContext::create();
 		// 获取配置
 		$pools = $caches = [];
