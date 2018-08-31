@@ -18,75 +18,69 @@ abstract class Tool
 
 	public static function run()
 	{
-		try{
-			if(!isset($_SERVER['argv'][1]))
+		if(!isset($_SERVER['argv'][1]))
+		{
+			throw new \RuntimeException(sprintf('tool args error!'));
+		}
+		if(false === strpos($_SERVER['argv'][1], '/'))
+		{
+			throw new \RuntimeException(sprintf('tool name and operation not found!'));
+		}
+		static::init();
+		// cli参数初始化
+		Args::init(2);
+		// 工具名/操作名
+		list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+		// 获取回调
+		$callable = ToolParser::getInstance()->getCallable(static::$toolName, static::$toolOperation);
+		if(null === $callable)
+		{
+			throw new \RuntimeException(sprintf('tool %s does not exists!', $_SERVER['argv'][1]));
+		}
+		if(Args::get('h'))
+		{
+			// 帮助
+			$className = get_parent_class($callable[0]);
+			$refClass = new \ReflectionClass($className);
+			$required = [];
+			$other = [];
+			foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] ?? [] as $arg)
 			{
-				throw new \RuntimeException(sprintf('tool args error!'));
-			}
-			if(false === strpos($_SERVER['argv'][1], '/'))
-			{
-				throw new \RuntimeException(sprintf('tool name and operation not found!'));
-			}
-			static::init();
-			// cli参数初始化
-			Args::init(2);
-			// 工具名/操作名
-			list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
-			// 获取回调
-			$callable = ToolParser::getInstance()->getCallable(static::$toolName, static::$toolOperation);
-			if(null === $callable)
-			{
-				throw new \RuntimeException(sprintf('tool %s does not exists!', $_SERVER['argv'][1]));
-			}
-			if(Args::get('h'))
-			{
-				// 帮助
-				$className = get_parent_class($callable[0]);
-				$refClass = new \ReflectionClass($className);
-				$required = [];
-				$other = [];
-				foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$callable[1]]['Args'] ?? [] as $arg)
+				if($arg->required)
 				{
-					if($arg->required)
-					{
-						$required[] = $arg;
-					}
-					else
-					{
-						$other[] = $arg;
-					}
+					$required[] = $arg;
 				}
-				echo '工具名称：', static::$toolName, '/', static::$toolOperation, PHP_EOL, PHP_EOL;
-				echo static::parseComment($refClass->getMethod($callable[1])->getDocComment()), PHP_EOL;
-				if(isset($required[0]))
+				else
 				{
-					echo PHP_EOL, '必选参数：', PHP_EOL;
-					foreach($required as $arg)
-					{
-						echo '-', $arg->name, ' ', $arg->comments, PHP_EOL;
-					}
-				}
-				if(isset($other[0]))
-				{
-					echo PHP_EOL, '可选参数：', PHP_EOL;
-					foreach($other as $arg)
-					{
-						echo '-', $arg->name, ' ', $arg->comments, PHP_EOL;
-					}
+					$other[] = $arg;
 				}
 			}
-			else
+			echo '工具名称：', static::$toolName, '/', static::$toolOperation, PHP_EOL, PHP_EOL;
+			echo static::parseComment($refClass->getMethod($callable[1])->getDocComment()), PHP_EOL;
+			if(isset($required[0]))
 			{
-				// 执行参数
-				$args = static::getCallToolArgs($callable, static::$toolName, static::$toolOperation);
-				// 执行工具操作
-				call_user_func_array($callable, $args);
-				swoole_event_wait();
+				echo PHP_EOL, '必选参数：', PHP_EOL;
+				foreach($required as $arg)
+				{
+					echo '-', $arg->name, ' ', $arg->comments, PHP_EOL;
+				}
+			}
+			if(isset($other[0]))
+			{
+				echo PHP_EOL, '可选参数：', PHP_EOL;
+				foreach($other as $arg)
+				{
+					echo '-', $arg->name, ' ', $arg->comments, PHP_EOL;
+				}
 			}
 		}
-		catch(\Throwable $ex)
+		else
 		{
-			echo $ex->getMessage(), PHP_EOL;
+			// 执行参数
+			$args = static::getCallToolArgs($callable, static::$toolName, static::$toolOperation);
+			// 执行工具操作
+			call_user_func_array($callable, $args);
+			swoole_event_wait();
 		}
 	}
 
@@ -122,7 +116,11 @@ abstract class Tool
 		{
 			foreach($main->getConfig()['components'] ?? [] as $componentName => $namespace)
 			{
-				$initMains[] = Helper::getMain($namespace);
+				$componentMain = Helper::getMain($namespace);
+				if(null !== $componentMain)
+				{
+					$initMains[] = $componentMain;
+				}
 			}
 		}
 		Annotation::getInstance()->init($initMains);
