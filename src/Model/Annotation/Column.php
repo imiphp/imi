@@ -71,4 +71,11 @@ class Column extends Base
 	 * @var boolean
 	 */
 	public $isAutoIncrement = false;
+
+	/**
+	 * 虚拟字段，不参与数据库操作
+	 *
+	 * @var boolean
+	 */
+	public $virtual = false;
 }

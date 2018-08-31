@@ -476,6 +476,11 @@ abstract class Model extends BaseModel
 		$result = new LazyArrayObject;
 		foreach(ModelManager::getFields($class) as $name => $column)
 		{
+			// 虚拟字段不参与数据库操作
+			if($column->virtual)
+			{
+				continue;
+			}
 			if(array_key_exists($name, $data))
 			{
 				$value = $data[$name];
