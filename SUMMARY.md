@@ -61,6 +61,12 @@
   * [协程 Channel](components/struct/co-channel.md)
   * [MemoryTable](components/struct/memory-table.md)
 
+## 工具类
+
+* Args
+* ArrayUtil
+* Bit
+
 ## 开发者工具
 
 * [介绍](dev/intro.md)
