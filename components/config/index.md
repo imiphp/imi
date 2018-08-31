@@ -15,12 +15,12 @@ echo Config::get('@app.namespace'); // namespace 可以换为其它的节
 ### 读取主服务器配置
 
 ```php
-echo Config::get('@server_main.namespace'); // namespace 可以换为其它的节
+echo Config::get('@server.main.namespace'); // namespace 可以换为其它的节
 ```
 
 ### 读取子服务器配置
 
 ```php
 // 如子服务器名为abc，读取它下面的配置
-echo Config::get('@server_abc.namespace'); // namespace 可以换为其它的节
+echo Config::get('@server.abc.namespace'); // namespace 可以换为其它的节
 ```
