@@ -54,6 +54,7 @@
 * [进程](components/process/index.md)
 * [进程池](components/process-pool/index.md)
 * [热更新](components/hotupdate/index.md)
+* [Phar 支持](components/phar/index.md)
 * 服务器
 * [数据结构](components/struct/index.md)
   * [Atomic](components/struct/atomic.md)
