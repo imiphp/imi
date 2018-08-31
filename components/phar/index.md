@@ -7,3 +7,7 @@
 ```
 phar.readonly=Off
 ```
+
+`imi` 内置打包生成 phar 命令：`bin/build-phar`
+
+目前，默认（强制）生成为`imi/src/imi.phar`
