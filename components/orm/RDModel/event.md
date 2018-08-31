@@ -4,6 +4,10 @@
 
 | 事件名 | 常量 | 描述 |
 | ------ | ------ | ------ |
+| BeforeFind | ModelEvents::BEFORE_FIND | 查找前，Model::find()触发 |
+| AfterFind | ModelEvents::AFTER_FIND | 查找后，Model::find()触发 |
+| BeforeSelect | ModelEvents::BEFORE_SELECT | 查询前，Model::select()触发 |
+| AfterSelect | ModelEvents::AFTER_SELECT | 查询后，Model::select()触发 |
 | BeforeInit | ModelEvents::BEFORE_INIT | 初始化值前，newInstance()触发 |
 | AfterInit | ModelEvents::AFTER_INIT | 初始化值后，newInstance()触发 |
 | BeforeInsert | ModelEvents::BEFORE_INSERT | 插入前，insert()/save()触发 |
@@ -25,9 +29,9 @@
 
 ## 事件监听
 
-事件监听分两种，一种是仅限于对象的事件，另一种是静态方法触发的事件（批量操作）。
+事件监听分两种，一种是仅限于**对象的事件**，另一种是**静态方法触发的事件**（批量操作）。
 
-监听方式分两种：1、在类里写监听代码；2、定义监听类
+监听方式分两种：**1、在类里写监听代码**；**2、定义监听类**
 
 批量操作的事件监听，一般建议用监听类方式。对象的事件监听根据习惯选择即可。
 
