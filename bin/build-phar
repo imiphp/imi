@@ -1,0 +1,77 @@
+#!/usr/bin/env php
+<?php
+$imiPath = dirname(__DIR__) . '/';
+$pharFile = $imiPath . 'imi.phar';
+
+class FileRegexIterator implements Iterator
+{
+	private $iterator;
+
+	public function __construct(Iterator $iterator)
+	{
+		$this->iterator = $iterator;
+	}
+
+	public function current ()
+	{
+		return $this->iterator->current();
+	}
+
+	public function key ()
+	{
+		return $this->iterator->key();
+	}
+
+	public function next ()
+	{
+		do{
+			$this->iterator->next();
+			$current = $this->iterator->current();
+			if(false === $current)
+			{
+				return false;
+			}
+		}while($this->isDot($current));
+	}
+
+	public function rewind ()
+	{
+		$this->iterator->rewind();
+		if($this->isDot($this->iterator->current()))
+		{
+			$this->next();
+		}
+	}
+
+	public function valid ()
+	{
+		return $this->iterator->valid();
+	}
+
+	private function isDot($fileName)
+	{
+		$basename = basename($fileName);
+		return '.' === $basename || '..' === $basename;
+	}
+}
+
+if(is_file($pharFile))
+{
+	echo 'deleting file: ', $pharFile, PHP_EOL;
+	unlink($pharFile);
+}
+
+$phar = new Phar($pharFile);
+$phar->stopBuffering();
+echo 'building from directory: ', $imiPath, PHP_EOL;
+
+$directory = new \RecursiveDirectoryIterator($imiPath);
+$iterator = new \RecursiveIteratorIterator($directory);
+$regex = new \RegexIterator($iterator, '/^((?!(\/.git\/)).)*$/');
+$fileIterator = new FileRegexIterator($regex);
+
+$phar->buildFromIterator($fileIterator, $imiPath);
+
+$phar->setStub($phar->createDefaultStub('src/PharMain.php'));
+
+echo 'build OK!', PHP_EOL;
