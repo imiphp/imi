@@ -5,5 +5,9 @@ $isPhar = 'phar://' === @substr(__DIR__, 0, 7);
 
 if($isPhar)
 {
-    require dirname(__DIR__) . '/vendor/autoload.php';
+    $file = dirname(__DIR__) . '/vendor/autoload.php';
+    if(is_file($file))
+    {
+        require $file;
+    }
 }
