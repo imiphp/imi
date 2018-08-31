@@ -114,8 +114,12 @@ class Driver implements IDb
 	 */
 	public function beginTransaction(): bool
 	{
-		$this->inTransaction = true;
-		return $this->instance->begin();
+		$result = $this->instance->begin();
+		if($result)
+		{
+			$this->inTransaction = true;
+		}
+		return $result;
 	}
 
 	/**
