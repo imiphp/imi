@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Util;
 
+/**
+ * 随机生成一些东西的工具类
+ */
 abstract class Random
 {
 	/**

@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Util;
 
+/**
+ * 字符串工具类
+ */
 abstract class Text
 {
 	/**
