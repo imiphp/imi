@@ -72,4 +72,24 @@ abstract class ModelEvents
 	 * 批量删除后
 	 */
 	const AFTER_BATCH_DELETE = 'AfterBatchDelete';
+
+	/**
+	 * 查找前
+	 */
+	const BEFORE_FIND = 'BeforeFind';
+
+	/**
+	 * 查找后
+	 */
+	const AFTER_FIND = 'AfterFind';
+
+	/**
+	 * 查询前
+	 */
+	const BEFORE_SELECT = 'BeforeSelect';
+
+	/**
+	 * 查询后
+	 */
+	const AFTER_SELECT = 'AfterSelect';
 }

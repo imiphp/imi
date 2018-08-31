@@ -188,22 +188,60 @@ abstract class Imi
 	}
 
 	/**
-	 * 根据命名空间获取真实路径
+	 * 根据命名空间获取真实路径，返回null则为获取失败
 	 * @param string $namespace
-	 * @return string
+	 * @return string|null
 	 */
 	public static function getNamespacePath($namespace)
 	{
-		$appNamespace = App::getNamespace();
-		$appMain = Helper::getMain($appNamespace);
-		$refClass = new \ReflectionClass($appMain);
-		$path = dirname($refClass->getFileName());
-		$namespaceSubPath = substr($namespace, strlen($appNamespace));
-		return File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
+		if('\\' !== substr($namespace, -1, 1))
+		{
+			$namespace .= '\\';
+		}
+		$loader = App::getLoader();
+		if(null === $loader)
+		{
+			// Composer 加载器未赋值，则只能取Main类命名空间下的目录
+			foreach(Helper::getMains() as $main)
+			{
+				$mainNamespace = $main->getNamespace();
+				if('\\' !== substr($mainNamespace, -1, 1))
+				{
+					$mainNamespace .= '\\';
+				}
+				$len = strlen($mainNamespace);
+				if($mainNamespace === substr($namespace, 0, $len))
+				{
+					$namespaceSubPath = substr($namespace, $len);
+					$refClass = new \ReflectionClass($main);
+					$path = dirname($refClass->getFileName());
+					return File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
+				}
+			}
+		}
+		else
+		{
+			// 依靠 Composer PSR-4 配置的目录进行定位目录
+			$prefixDirsPsr4 = $loader->getPrefixesPsr4();
+			foreach($prefixDirsPsr4 as $keyNamespace => $paths)
+			{
+				$len = strlen($keyNamespace);
+				if(substr($namespace, 0, $len) === $keyNamespace)
+				{
+					if(isset($paths[1]))
+					{
+						return null;
+					}
+					return File::path($paths[0], str_replace('\\', DIRECTORY_SEPARATOR, substr($namespace, $len)));
+				}
+			}
+		}
+		return null;
 	}
 
 	/**
-	 * 获取类属性的值，支持传入Bean名称
+	 * 获取类属性的值，值为beans配置或默认配置，支持传入Bean名称
+	 * 构造方法赋值无法取出
 	 *
 	 * @param string $className
 	 * @param string $propertyName

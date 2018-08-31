@@ -72,7 +72,22 @@ abstract class Model extends BaseModel
 				}
 			}
 		}
-		return $query->select()->get();
+
+		// 查找前
+		Event::trigger(static::class . ModelEvents::BEFORE_FIND, [
+			'ids'	=>	$ids,
+			'query'	=>	$query,
+		], null, \Imi\Model\Event\Param\BeforeFindEventParam::class);
+
+		$result = $query->select()->get();
+
+		// 查找后
+		Event::trigger(static::class . ModelEvents::AFTER_FIND, [
+			'ids'	=>	$ids,
+			'model'	=>	$result,
+		], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -82,8 +97,21 @@ abstract class Model extends BaseModel
 	 */
 	public static function select($where = null)
 	{
-		$query = static::query();
-		return static::parseWhere($query, $where)->select()->getArray();
+		$query = static::parseWhere(static::query(), $where);
+
+		// 查询前
+		Event::trigger(static::class . ModelEvents::BEFORE_SELECT, [
+			'query'	=>	$query,
+		], null, \Imi\Model\Event\Param\BeforeSelectEventParam::class);
+
+		$result = $query->select()->getArray();
+
+		// 查询后
+		Event::trigger(static::class . ModelEvents::AFTER_SELECT, [
+			'result'	=>	&$result,
+		], null, \Imi\Model\Event\Param\AfterSelectEventParam::class);
+
+		return $result;
 	}
 
 	/**
@@ -448,6 +476,11 @@ abstract class Model extends BaseModel
 		$result = new LazyArrayObject;
 		foreach(ModelManager::getFields($class) as $name => $column)
 		{
+			// 虚拟字段不参与数据库操作
+			if($column->virtual)
+			{
+				continue;
+			}
 			if(array_key_exists($name, $data))
 			{
 				$value = $data[$name];

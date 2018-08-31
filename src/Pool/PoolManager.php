@@ -67,9 +67,9 @@ abstract class PoolManager
 	/**
 	 * 获取池子中的资源
 	 * @param string $name
-	 * @return IPoolResource
+	 * @return IPoolResource|null
 	 */
-	public static function getResource(string $name): IPoolResource
+	public static function getResource(string $name)
 	{
 		$resource = static::getInstance($name)->getResource();
 
@@ -84,9 +84,9 @@ abstract class PoolManager
 	/**
 	 * 获取请求上下文资源，一个请求上下文通过此方法，只能获取同一个资源
 	 * @param string $name
-	 * @return IPoolResource
+	 * @return IPoolResource|null
 	 */
-	public static function getRequestContextResource(string $name): IPoolResource
+	public static function getRequestContextResource(string $name)
 	{
 		$resource = RequestContext::get('poolResource.' . $name);
 		if(null === $resource)

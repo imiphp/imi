@@ -2,7 +2,7 @@
 namespace Imi\Util;
 
 /**
- * 位操作工具
+ * 位操作工具类
  */
 abstract class Bit
 {
@@ -14,6 +14,6 @@ abstract class Bit
 	 */
 	public static function has($value, $subValue)
 	{
-		return $value === $subValue || ($subValue === $value & $subValue);
+		return $value === $subValue || ($subValue === ($value & $subValue));
 	}
 }

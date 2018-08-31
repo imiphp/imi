@@ -33,9 +33,9 @@ abstract class BaseAsyncPool extends BasePool
 
 	/**
 	 * 获取资源
-	 * @return IPoolResource
+	 * @return IPoolResource|null
 	 */
-	public function getResource(): IPoolResource
+	public function getResource()
 	{
 		$selectResult = true;
 		if($this->getFree() <= 0)

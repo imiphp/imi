@@ -32,9 +32,9 @@ abstract class BaseSyncPool extends BasePool
 
 	/**
 	 * 获取资源
-	 * @return IPoolResource
+	 * @return IPoolResource|null
 	 */
-	public function getResource(): IPoolResource
+	public function getResource()
 	{
 		if($this->getFree() <= 0)
 		{

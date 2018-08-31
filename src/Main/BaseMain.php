@@ -2,6 +2,7 @@
 namespace Imi\Main;
 
 use Imi\Config;
+use Imi\Main\Helper;
 
 /**
  * 主类基类
@@ -30,6 +31,7 @@ abstract class BaseMain implements IMain
 	{
 		$this->moduleName = $moduleName;
 		$this->loadConfig();
+		$this->loadComponents();
 		$this->__init();
 	}
 
@@ -98,5 +100,18 @@ abstract class BaseMain implements IMain
 	public function getModuleName(): string
 	{
 		return $this->moduleName;
+	}
+
+	/**
+	 * 加载组件
+	 *
+	 * @return void
+	 */
+	protected function loadComponents()
+	{
+		foreach(Config::get('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
+		{
+			Helper::getMain($namespace, $componentName);
+		}
 	}
 }

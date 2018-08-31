@@ -50,6 +50,13 @@ abstract class App
 	private static $isDebug = false;
 
 	/**
+	 * Composer ClassLoader
+	 *
+	 * @var \Composer\Autoload\ClassLoader
+	 */
+	private static $loader;
+
+	/**
 	 * 框架服务运行入口
 	 * @param string $namespace 应用命名空间
 	 * @return void
@@ -109,7 +116,7 @@ abstract class App
 		$servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
 		foreach($servers as $serverName => $item)
 		{
-			MainHelper::getMain($item['namespace'], 'server_' . $serverName);
+			MainHelper::getMain($item['namespace'], 'server.' . $serverName);
 		}
 	}
 
@@ -186,12 +193,15 @@ abstract class App
 	}
 
 	/**
-	 * 初始化worker
+	 * 初始化 Worker，但不一定是 Worker 进程
 	 *
 	 * @return void
 	 */
 	public static function initWorker()
 	{
+		// Worker 进程初始化前置
+		Event::trigger('IMI.INIT.WORKER.BEFORE');
+
 		$appMains = MainHelper::getAppMains();
 		// 加载服务器注解
 		Annotation::getInstance()->init($appMains);
@@ -255,5 +265,29 @@ abstract class App
 				CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
 			}
 		}
+
+		// Worker 进程初始化后置
+		Event::trigger('IMI.INIT.WORKER.AFTER');
+	}
+
+	/**
+	 * 设置 Composer ClassLoader
+	 *
+	 * @param \Composer\Autoload\ClassLoader $loader
+	 * @return void
+	 */
+	public static function setLoader(\Composer\Autoload\ClassLoader $loader)
+	{
+		static::$loader = $loader;
+	}
+
+	/**
+	 * 获取 Composer ClassLoader
+	 *
+	 * @return \Composer\Autoload\ClassLoader|null
+	 */
+	public static function getLoader()
+	{
+		return static::$loader;
 	}
 }

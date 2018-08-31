@@ -44,7 +44,10 @@ class TransactionAop
 			catch(\Throwable $ex)
 			{
 				// 回滚事务
-				$db->rollBack();
+				if($db->inTransaction())
+				{
+					$db->rollBack();
+				}
 				throw $ex;
 			}
 		}

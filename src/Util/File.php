@@ -2,6 +2,9 @@
 
 namespace Imi\Util;
 
+/**
+ * 文件相关工具类
+ */
 abstract class File
 {
     /**
@@ -45,7 +48,16 @@ abstract class File
     {
         static $dsds = DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
         $result = implode(DIRECTORY_SEPARATOR, $args);
-        while(false !== strpos($result, $dsds))
+        $offset = strpos($result, '://');
+        if(false === $offset)
+        {
+            $offset = 0;
+        }
+        else
+        {
+            $offset += 3;
+        }
+        while(false !== strpos($result, $dsds, $offset))
         {
             $result = str_replace($dsds, DIRECTORY_SEPARATOR, $result);
         }

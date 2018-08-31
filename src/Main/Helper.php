@@ -13,13 +13,14 @@ abstract class Helper
 	/**
 	 * 获取主类实例对象
 	 * @param string $namespace
+	 * @param string $componentName
 	 * @return \Imi\Main\BaseMain
 	 */
-	public static function getMain($namespace, $serverName = null)
+	public static function getMain($namespace, $componentName = null)
 	{
 		if(null !== $namespace)
 		{
-			if(null === $serverName)
+			if(null === $componentName)
 			{
 				// 获取
 				if(isset(static::$mains[$namespace]))
@@ -40,17 +41,17 @@ abstract class Helper
 				}
 				else
 				{
-					return static::newInstance($namespace, $serverName);
+					return static::newInstance($namespace, $componentName);
 				}
 			}
 		}
-		else if(null !== $serverName)
+		else if(null !== $componentName)
 		{
-			if(!isset(static::$nameMap[$serverName], static::$mains[static::$nameMap[$serverName]]))
+			if(!isset(static::$nameMap[$componentName], static::$mains[static::$nameMap[$componentName]]))
 			{
 				return null;
 			}
-			return static::$mains[static::$nameMap[$serverName]];
+			return static::$mains[static::$nameMap[$componentName]];
 		}
 		else
 		{
@@ -78,13 +79,13 @@ abstract class Helper
 		return $mains;
 	}
 
-	private static function newInstance($namespace, $serverName)
+	private static function newInstance($namespace, $componentName)
 	{
 		$className = $namespace . '\\Main';
 		if(class_exists($className))
 		{
-			static::$mains[$namespace] = new $className($serverName);
-			static::$nameMap[$serverName] = $namespace;
+			static::$mains[$namespace] = new $className($componentName);
+			static::$nameMap[$componentName] = $namespace;
 			return static::$mains[$namespace];
 		}
 		else

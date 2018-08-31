@@ -1,25 +1,20 @@
 <?php
 namespace Imi\Util;
 
+/**
+ * 数组帮助类
+ */
 abstract class ArrayUtil
 {
 	/**
-	 * 从数组中移除一个元素
+	 * 从数组中移除一个或多个元素
 	 * @param array $array
 	 * @param mixed $value
 	 * @return array
 	 */
-	public static function remove($array, $value)
+	public static function remove($array, ...$value)
 	{
-		$index = array_search($array, $value);
-		if(false !== $index)
-		{
-			return array_splice($array, $index, 1);
-		}
-		else
-		{
-			return $array;
-		}
+		return array_diff($array, $value);
 	}
 
 	/**
@@ -63,18 +58,21 @@ abstract class ArrayUtil
 	 * @param array $array 原数组
 	 * @param string $column 列名
 	 * @param boolean $keepOld 是否保留列名，默认保留
+	 * @return array
 	 */
-	public static function columnToKey(&$array, $column, $keepOld = true)
+	public static function columnToKey($array, $column, $keepOld = true)
 	{
-		$s = count($array);
-		for($i = 0; $i < $s; ++$i)
+		$newArray = [];
+		foreach($array as $k => $row)
 		{
-			$array[$array[$i][$column]] = $array[$i];
+			$key = $row[$column];
 			if(!$keepOld)
 			{
-				unset($array[$i]);
+				unset($row[$column]);
 			}
+			$newArray[$key] = $row;
 		}
+		return $newArray;
 	}
 
 	/**
