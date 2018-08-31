@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Util;
 
+/**
+ * 命令行参数操作类
+ */
 abstract class Args
 {
 	/**
@@ -9,6 +12,12 @@ abstract class Args
 	 */
     private static $cliArgs;
 
+	/**
+	 * 初始化
+	 *
+	 * @param integer $argBegin 从第几个参数算
+	 * @return void
+	 */
     public static function init($argBegin = 1)
 	{
 		static::$cliArgs = [];

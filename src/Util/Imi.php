@@ -188,7 +188,7 @@ abstract class Imi
 	}
 
 	/**
-	 * 根据命名空间获取真实路径，返回null
+	 * 根据命名空间获取真实路径，返回null则为获取失败
 	 * @param string $namespace
 	 * @return string|null
 	 */
@@ -240,7 +240,8 @@ abstract class Imi
 	}
 
 	/**
-	 * 获取类属性的值，支持传入Bean名称
+	 * 获取类属性的值，值为beans配置或默认配置，支持传入Bean名称
+	 * 构造方法赋值无法取出
 	 *
 	 * @param string $className
 	 * @param string $propertyName
