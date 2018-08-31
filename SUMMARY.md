@@ -63,9 +63,17 @@
 
 ## 工具类
 
-* Args
-* ArrayUtil
-* Bit
+* [Imi](utils/Imi.md)
+* [Args](utils/Args.md)
+* [ArrayUtil](utils/ArrayUtil.md)
+* [Bit](utils/Bit.md)
+* [ClassObject](utils/ClassObject.md)
+* [Coroutine](utils/Coroutine.md)
+* [File](utils/File.md)
+* [ObjectArrayHelper](utils/ObjectArrayHelper.md)
+* [Random](utils/Random.md)
+* [Swoole](utils/Swoole.md)
+* [Text](utils/Text.md)
 
 ## 开发者工具
 
