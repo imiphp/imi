@@ -178,6 +178,16 @@ abstract class Imi
 	}
 
 	/**
+	 * 获取类命名空间
+	 * @param string $className
+	 * @return string
+	 */
+	public static function getClassNamespace(string $className)
+	{
+		return implode('\\', array_slice(explode('\\', $className), 0, -1));
+	}
+
+	/**
 	 * 获取类短名称
 	 * @param string $className
 	 * @return string

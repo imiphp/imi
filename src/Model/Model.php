@@ -9,12 +9,21 @@ use Imi\Util\LazyArrayObject;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Model\Event\Param\InitEventParam;
 
 /**
  * 常用的数据库模型
  */
 abstract class Model extends BaseModel
 {
+	public function __init($data = [])
+	{
+		$this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
+			ModelRelationManager::initModel($this);
+		});
+		parent::__init($data);
+	}
+
 	/**
 	 * 返回一个查询器
 	 * @param string|object $object

@@ -69,4 +69,21 @@ abstract class Text
 	{
 		return ucfirst(static::toCamelName($name));
 	}
+
+	/**
+	 * 转为下划线命名
+	 *
+	 * @param string $name
+	 * @param boolean $toLower
+	 * @return string
+	 */
+	public static function toUnderScoreCase($name, $toLower = true)
+	{
+		$result = trim(preg_replace('/[A-Z]/', '_\0', $name), '_');
+		if($toLower)
+		{
+			$result = strtolower($result);
+		}
+		return $result;
+	}
 }
