@@ -75,7 +75,7 @@ class Redis implements IHandler
 				// 判断master进程pid
 				$this->masterPID = Swoole::getMasterPID();
 				$storeMasterPID = $redis->get($this->key);
-				if(null === $storeMasterPID)
+				if(!$storeMasterPID)
 				{
 					// 没有存储master进程pid
 					$this->initRedis($redis, $storeMasterPID);
