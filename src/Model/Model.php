@@ -168,6 +168,9 @@ abstract class Model extends BaseModel
 			'result'=>	$result
 		], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
 
+		// 子模型插入
+		ModelRelationManager::insertModel($this);
+
 		return $result;
 	}
 

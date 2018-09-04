@@ -5,6 +5,10 @@ use Imi\Bean\Parser\BaseParser;
 use Imi\Model\Annotation\Relation\JoinTo;
 use Imi\Model\Annotation\Relation\JoinFrom;
 use Imi\Model\Annotation\Relation\OneToOne;
+use Imi\Model\Annotation\Relation\AutoDelete;
+use Imi\Model\Annotation\Relation\AutoInsert;
+use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Model\Annotation\Relation\AutoUpdate;
 
 
 class RelationParser extends BaseParser
@@ -30,6 +34,22 @@ class RelationParser extends BaseParser
 		else if($annotation instanceof JoinTo)
 		{
 			$this->data[$className]['properties'][$targetName]['JoinTo'] = $annotation;
+		}
+		else if($annotation instanceof AutoDelete)
+		{
+			$this->data[$className]['properties'][$targetName]['AutoDelete'] = $annotation;
+		}
+		else if($annotation instanceof AutoInsert)
+		{
+			$this->data[$className]['properties'][$targetName]['AutoInsert'] = $annotation;
+		}
+		else if($annotation instanceof AutoSave)
+		{
+			$this->data[$className]['properties'][$targetName]['AutoSave'] = $annotation;
+		}
+		else if($annotation instanceof AutoUpdate)
+		{
+			$this->data[$className]['properties'][$targetName]['AutoUpdate'] = $annotation;
 		}
 	}
 
