@@ -21,7 +21,7 @@ abstract class Imi
 	 */
 	public static function parseRule($rule)
 	{
-		return \str_replace('\\*', '.*', \preg_quote($rule));
+		return \str_replace('/', '\/', \str_replace('\\*', '.*', \preg_quote($rule)));
 	}
 
 	/**
