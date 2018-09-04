@@ -28,7 +28,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
 		$initFlagFile = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.app.init');
 		if(0 === Worker::getWorkerID())
 		{
-			Event::trigger('IMI.MAIN_SERVER.APP.INIT', [
+			Event::trigger('IMI.APP.INIT', [
 				
 			], $e->getTarget(), AppInitEventParam::class);
 
