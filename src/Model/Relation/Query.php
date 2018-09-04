@@ -72,7 +72,15 @@ abstract class Query
 			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
 		}
 
-		$rightModel = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->get();
+		if(null === $model->$leftField)
+		{
+			$rightModel = $modelClass::newInstance();
+		}
+		else
+		{
+			$rightModel = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->get();
+		}
+		
 
 		$model->$propertyName = $rightModel;
 	}
