@@ -6,7 +6,7 @@ use Imi\Util\Text;
 use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
-use Imi\Model\Annotation\Relation\OneToOne;
+use Imi\Model\Relation\Struct\OneToOne;
 
 
 abstract class Query
@@ -21,7 +21,7 @@ abstract class Query
 	 */
 	public static function init($model, $propertyName, $annotation)
 	{
-		if($annotation instanceof OneToOne)
+		if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
 		{
 			static::initByOneToOne($model, $propertyName, $annotation);
 		}
@@ -40,28 +40,7 @@ abstract class Query
 		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
 
-		$joinFrom = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinFrom');
-		$joinTo = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinTo');
-
 		$toModel = $annotation->model;
-
-		if($joinFrom)
-		{
-			$leftField = $joinFrom->field;
-		}
-		else
-		{
-			$leftField = ModelManager::getFirstId($model);
-		}
-
-		if($joinTo)
-		{
-			$rightField = $joinTo->field;
-		}
-		else
-		{
-			$rightField = Text::toUnderScoreCase(Imi::getClassShortName($className)) . '_id';
-		}
 
 		if(class_exists($annotation->model))
 		{
@@ -72,6 +51,10 @@ abstract class Query
 			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
 		}
 
+		$struct = new OneToOne($className, $propertyName);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
 		if(null === $model->$leftField)
 		{
 			$rightModel = $modelClass::newInstance();
@@ -79,8 +62,11 @@ abstract class Query
 		else
 		{
 			$rightModel = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->get();
+			if(null === $rightModel)
+			{
+				$rightModel = $modelClass::newInstance();
+			}
 		}
-		
 
 		$model->$propertyName = $rightModel;
 	}

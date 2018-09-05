@@ -5,6 +5,7 @@ use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Bean\BeanFactory;
 use Imi\Model\Relation\Query;
+use Imi\Model\Relation\Insert;
 use Imi\Model\Parser\RelationParser;
 
 abstract class ModelRelationManager
@@ -17,19 +18,13 @@ abstract class ModelRelationManager
 	 */
 	public static function initModel($model)
 	{
-		foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $propertyItem)
+		foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
 		{
 			if(null !== $model[$propertyName])
 			{
 				continue;
 			}
-			foreach($propertyItem as $type => $list)
-			{
-				foreach($list as $annotation)
-				{
-					Query::init($model, $propertyName, $annotation);
-				}
-			}
+			Query::init($model, $propertyName, $annotation);
 		}
 	}
 
@@ -41,41 +36,13 @@ abstract class ModelRelationManager
 	 */
 	public static function insertModel($model)
 	{
-		$relationParser = RelationParser::getInstance();
-		$className = BeanFactory::getObjectClass($model);
-		foreach($relationParser->getRelations($className) as $propertyName => $propertyItem)
+		foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
 		{
-			if(!$model->$propertyName)
+			if(null !== $model[$propertyName])
 			{
 				continue;
 			}
-			$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
-			if(!$autoInsert || $autoInsert->status)
-			{
-				$joinFrom = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinFrom');
-				$joinTo = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinTo');
-		
-				if($joinFrom)
-				{
-					$leftField = $joinFrom->field;
-				}
-				else
-				{
-					$leftField = ModelManager::getFirstId($model);
-				}
-		
-				if($joinTo)
-				{
-					$rightField = $joinTo->field;
-				}
-				else
-				{
-					$rightField = Text::toUnderScoreCase(Imi::getClassShortName($className)) . '_id';
-				}
-
-				$model->$propertyName->$rightField = $model->$leftField;
-				$model->$propertyName->insert();
-			}
+			Insert::parse($model, $propertyName, $annotation);
 		}
 	}
 

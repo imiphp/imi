@@ -25,7 +25,7 @@ class RelationParser extends BaseParser
 	{
 		if($annotation instanceof OneToOne)
 		{
-			$this->data[$className]['relations'][$targetName]['OneToOne'][] = $annotation;
+			$this->data[$className]['relations'][$targetName] = $annotation;
 		}
 		else if($annotation instanceof JoinFrom)
 		{
@@ -55,7 +55,7 @@ class RelationParser extends BaseParser
 
 	/**
 	 * 获取关联关系
-	 * ['propertyName'=>['OneToOne'=>[$annotation1, $annotation2...]]]
+	 * ['propertyName'=>annotation]
 	 *
 	 * @param string $className
 	 * @return array
