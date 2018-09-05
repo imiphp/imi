@@ -6,6 +6,7 @@ use Imi\Util\Text;
 use Imi\Bean\BeanFactory;
 use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Insert;
+use Imi\Model\Relation\Update;
 use Imi\Model\Parser\RelationParser;
 
 abstract class ModelRelationManager
@@ -38,11 +39,29 @@ abstract class ModelRelationManager
 	{
 		foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
 		{
-			if(null !== $model[$propertyName])
+			if(null === $model[$propertyName])
 			{
 				continue;
 			}
 			Insert::parse($model, $propertyName, $annotation);
+		}
+	}
+
+	/**
+	 * 更新模型
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @return void
+	 */
+	public static function updateModel($model)
+	{
+		foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
+		{
+			if(null === $model[$propertyName])
+			{
+				continue;
+			}
+			Update::parse($model, $propertyName, $annotation);
 		}
 	}
 

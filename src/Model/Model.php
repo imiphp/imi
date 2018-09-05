@@ -214,6 +214,9 @@ abstract class Model extends BaseModel
 			'result'=>	$result,
 		], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
 
+		// 子模型更新
+		ModelRelationManager::updateModel($this);
+
 		return $result;
 	}
 
