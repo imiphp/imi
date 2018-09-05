@@ -52,6 +52,13 @@ class QueryOption
 	public $having = [];
 
 	/**
+	 * 保存的数据
+	 *
+	 * @var array|\Imi\Db\Query\Raw[]
+	 */
+	public $saveData = [];
+
+	/**
 	 * 记录从第几个开始取出
 	 * @var int
 	 */

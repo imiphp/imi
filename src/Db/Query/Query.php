@@ -714,7 +714,7 @@ class Query implements IQuery
 	 * @param array $data
 	 * @return IResult
 	 */
-	public function insert($data): IResult
+	public function insert($data = null): IResult
 	{
 		$builder = new InsertBuilder($this);
 		$sql = $builder->build($data);
@@ -726,7 +726,7 @@ class Query implements IQuery
 	 * @param array $data
 	 * @return IResult
 	 */
-	public function update($data): IResult
+	public function update($data = null): IResult
 	{
 		$builder = new UpdateBuilder($this);
 		$sql = $builder->build($data);
@@ -854,5 +854,69 @@ class Query implements IQuery
 		++$index;
 		RequestContext::set('dbParamInc', $index);
 		return ':p' . dechex($index);
+	}
+
+	/**
+	 * 设置update/insert数据
+	 * 
+	 * @param array $data
+	 * @return static
+	 */
+	public function setData($data)
+	{
+		$this->option->saveData = $data;
+		return $this;
+	}
+
+	/**
+	 * 设置update/insert的字段
+	 *
+	 * @param stirng $fieldName
+	 * @param mixed $value
+	 * @return static
+	 */
+	public function setField($fieldName, $value)
+	{
+		$this->option->saveData[$fieldName] = $value;
+		return $this;
+	}
+
+	/**
+	 * 设置update/insert的字段，值为表达式，原样代入
+	 *
+	 * @param stirng $fieldName
+	 * @param string $exp
+	 * @return static
+	 */
+	public function setFieldExp($fieldName, $exp)
+	{
+		$this->option->saveData[$fieldName] = new Raw($exp);
+		return $this;
+	}
+
+	/**
+	 * 设置递增字段
+	 *
+	 * @param stirng $fieldName
+	 * @param float $incValue
+	 * @return static
+	 */
+	public function setFieldInc($fieldName, float $incValue = 1)
+	{
+		$this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' + ' . $incValue);
+		return $this;
+	}
+
+	/**
+	 * 设置递减字段
+	 *
+	 * @param stirng $fieldName
+	 * @param float $decValue
+	 * @return static
+	 */
+	public function setFieldDec($fieldName, float $decValue = 1)
+	{
+		$this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
+		return $this;
 	}
 }

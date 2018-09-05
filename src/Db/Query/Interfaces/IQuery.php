@@ -429,14 +429,14 @@ interface IQuery
 	 * @param array $data
 	 * @return IResult
 	 */
-	public function insert($data): IResult;
+	public function insert($data = null): IResult;
 
 	/**
 	 * 更新数据
 	 * @param array $data
 	 * @return IResult
 	 */
-	public function update($data): IResult;
+	public function update($data = null): IResult;
 
 	/**
 	 * 删除数据
@@ -493,4 +493,48 @@ interface IQuery
 	 * @return mixed
 	 */
 	public function aggregate($functionName, $fieldName);
+
+	/**
+	 * 设置update/insert数据
+	 * 
+	 * @param array $data
+	 * @return static
+	 */
+	public function setData($data);
+
+	/**
+	 * 设置update/insert的字段
+	 *
+	 * @param stirng $fieldName
+	 * @param mixed $value
+	 * @return static
+	 */
+	public function setField($fieldName, $value);
+
+	/**
+	 * 设置update/insert的字段，值为表达式，原样代入
+	 *
+	 * @param stirng $fieldName
+	 * @param string $exp
+	 * @return static
+	 */
+	public function setFieldExp($fieldName, $exp);
+
+	/**
+	 * 设置递增字段
+	 *
+	 * @param stirng $fieldName
+	 * @param float $incValue
+	 * @return static
+	 */
+	public function setFieldInc($fieldName, float $incValue = 1);
+
+	/**
+	 * 设置递减字段
+	 *
+	 * @param stirng $fieldName
+	 * @param float $decValue
+	 * @return static
+	 */
+	public function setFieldDec($fieldName, float $decValue = 1);
 }
