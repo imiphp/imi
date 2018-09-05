@@ -50,7 +50,6 @@ abstract class Update
 			$leftField = $struct->getLeftField();
 			$rightField = $struct->getRightField();
 
-			var_dump($leftField, $rightField, $model->$propertyName->toArray());
 			$model->$propertyName->$rightField = $model->$leftField;
 			$model->$propertyName->update();
 		}
