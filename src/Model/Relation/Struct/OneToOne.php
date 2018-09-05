@@ -35,7 +35,7 @@ class OneToOne
 		}
 		else
 		{
-			$this->leftField = ModelManager::getFirstId($model);
+			$this->leftField = ModelManager::getFirstId($className);
 		}
 
 		if($joinTo)

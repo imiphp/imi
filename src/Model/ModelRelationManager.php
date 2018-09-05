@@ -92,6 +92,6 @@ abstract class ModelRelationManager
 	public static function getRelationFieldNames($object)
 	{
 		$class = BeanFactory::getObjectClass($object);
-		return array_keys(RelationParser::getInstance()->getData()[$class]['properties'] ?? []);
+		return array_keys(RelationParser::getInstance()->getData()[$class]['relations'] ?? []);
 	}
 }
