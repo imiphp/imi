@@ -43,14 +43,17 @@ abstract class Delete
 		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
 		$autoDelete = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoDelete');
-		if(!$autoDelete || $autoDelete->status)
-		{
-			$struct = new OneToOne($className, $propertyName, $annotation);
-			$leftField = $struct->getLeftField();
-			$rightField = $struct->getRightField();
 
-			$model->$propertyName->$rightField = $model->$leftField;
-			$model->$propertyName->delete();
+		if(!$autoDelete || !$autoDelete->status)
+		{
+			return;
 		}
+
+		$struct = new OneToOne($className, $propertyName, $annotation);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
+		$model->$propertyName->$rightField = $model->$leftField;
+		$model->$propertyName->delete();
 	}
 }

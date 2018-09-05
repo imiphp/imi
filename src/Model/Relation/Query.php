@@ -42,7 +42,14 @@ abstract class Query
 	 */
 	public static function initByOneToOne($model, $propertyName, $annotation)
 	{
+		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
+
+		$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
+		if($autoSelect && !$autoSelect->status)
+		{
+			return;
+		}
 
 		if(class_exists($annotation->model))
 		{
@@ -83,7 +90,14 @@ abstract class Query
 	 */
 	public static function initByOneToMany($model, $propertyName, $annotation)
 	{
+		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
+		
+		$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
+		if($autoSelect && !$autoSelect->status)
+		{
+			return;
+		}
 
 		if(class_exists($annotation->model))
 		{
@@ -94,7 +108,7 @@ abstract class Query
 			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
 		}
 
-		$struct = new OneToOne($className, $propertyName, $annotation);
+		$struct = new OneToMany($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();
 		$rightField = $struct->getRightField();
 

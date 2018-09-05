@@ -49,15 +49,25 @@ abstract class Insert
 		$className = BeanFactory::getObjectClass($model);
 		$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
 		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
-		if((!$autoInsert || $autoInsert->status) && (!$autoSave || $autoSave->status))
-		{
-			$struct = new OneToOne($className, $propertyName, $annotation);
-			$leftField = $struct->getLeftField();
-			$rightField = $struct->getRightField();
 
-			$model->$propertyName->$rightField = $model->$leftField;
-			$model->$propertyName->insert();
+		if($autoInsert)
+		{
+			if(!$autoInsert->status)
+			{
+				return;
+			}
 		}
+		else if(!$autoSave || !$autoSave->status)
+		{
+			return;
+		}
+
+		$struct = new OneToOne($className, $propertyName, $annotation);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
+		$model->$propertyName->$rightField = $model->$leftField;
+		$model->$propertyName->insert();
 	}
 	
 	/**
@@ -77,23 +87,33 @@ abstract class Insert
 		$className = BeanFactory::getObjectClass($model);
 		$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
 		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
-		if((!$autoInsert || $autoInsert->status) && (!$autoSave || $autoSave->status))
-		{
-			$struct = new OneToOne($className, $propertyName, $annotation);
-			$leftField = $struct->getLeftField();
-			$rightField = $struct->getRightField();
-			$rightModel = $struct->getRightModel();
 
-			foreach($model->$propertyName as $index => $row)
+		if($autoInsert)
+		{
+			if(!$autoInsert->status)
 			{
-				if(!$row instanceof $rightModel)
-				{
-					$row = $rightModel::newInstance($row);
-					$model->$propertyName[$index] = $row;
-				}
-				$row[$rightField] = $model->$leftField;
-				$row->insert();
+				return;
 			}
+		}
+		else if(!$autoSave || !$autoSave->status)
+		{
+			return;
+		}
+
+		$struct = new OneToMany($className, $propertyName, $annotation);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+		$rightModel = $struct->getRightModel();
+
+		foreach($model->$propertyName as $index => $row)
+		{
+			if(!$row instanceof $rightModel)
+			{
+				$row = $rightModel::newInstance($row);
+				$model->$propertyName[$index] = $row;
+			}
+			$row[$rightField] = $model->$leftField;
+			$row->insert();
 		}
 	}
 }
