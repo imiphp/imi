@@ -450,4 +450,47 @@ interface IQuery
 	 * @return IResult
 	 */
 	public function execute($sql);
+
+	/**
+	 * 统计数量
+	 * @param string $field
+	 * @return int
+	 */
+	public function count($field = '*');
+
+	/**
+	 * 求和
+	 * @param string $field
+	 * @return float
+	 */
+	public function sum($field);
+
+	/**
+	 * 平均值
+	 * @param string $field
+	 * @return float
+	 */
+	public function avg($field);
+	
+	/**
+	 * 最大值
+	 * @param string $field
+	 * @return float
+	 */
+	public function max($field);
+	
+	/**
+	 * 最小值
+	 * @param string $field
+	 * @return float
+	 */
+	public function min($field);
+
+	/**
+	 * 聚合函数
+	 * @param string $functionName
+	 * @param string $fieldName
+	 * @return mixed
+	 */
+	public function aggregate($functionName, $fieldName);
 }
