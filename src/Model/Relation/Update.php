@@ -43,7 +43,8 @@ abstract class Update
 		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
 		$autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-		if(!$autoUpdate || $autoUpdate->status)
+		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+		if(!$autoUpdate || $autoUpdate->status || ($autoSave && $autoSave->status))
 		{
 			$struct = new OneToOne($className, $propertyName);
 			$leftField = $struct->getLeftField();

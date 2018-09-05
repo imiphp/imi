@@ -43,7 +43,8 @@ abstract class Insert
 		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
 		$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
-		if(!$autoInsert || $autoInsert->status)
+		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+		if(!$autoInsert || $autoInsert->status || ($autoSave && $autoSave->status))
 		{
 			$struct = new OneToOne($className, $propertyName);
 			$leftField = $struct->getLeftField();
