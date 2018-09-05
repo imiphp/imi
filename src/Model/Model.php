@@ -318,6 +318,9 @@ abstract class Model extends BaseModel
 			'result'=>	$result,
 		], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
 
+		// 子模型删除
+		ModelRelationManager::deleteModel($this);
+
 		return $result;
 	}
 

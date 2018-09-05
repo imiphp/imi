@@ -5,6 +5,7 @@ use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Bean\BeanFactory;
 use Imi\Model\Relation\Query;
+use Imi\Model\Relation\Delete;
 use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Update;
 use Imi\Model\Parser\RelationParser;
@@ -62,6 +63,24 @@ abstract class ModelRelationManager
 				continue;
 			}
 			Update::parse($model, $propertyName, $annotation);
+		}
+	}
+
+	/**
+	 * 删除模型
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @return void
+	 */
+	public static function deleteModel($model)
+	{
+		foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
+		{
+			if(null === $model[$propertyName])
+			{
+				continue;
+			}
+			Delete::parse($model, $propertyName, $annotation);
 		}
 	}
 
