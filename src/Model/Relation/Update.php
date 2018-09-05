@@ -34,7 +34,7 @@ abstract class Update
 	 * @param string $propertyName
 	 * @return void
 	 */
-	public static function parseByOneToOne($model, $propertyName)
+	public static function parseByOneToOne($model, $propertyName, $annotation)
 	{
 		if(!$model->$propertyName)
 		{
@@ -44,9 +44,9 @@ abstract class Update
 		$className = BeanFactory::getObjectClass($model);
 		$autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
 		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
-		if(!$autoUpdate || $autoUpdate->status || ($autoSave && $autoSave->status))
+		if((!$autoInsert || $autoInsert->status) && (!$autoSave || $autoSave->status))
 		{
-			$struct = new OneToOne($className, $propertyName);
+			$struct = new OneToOne($className, $propertyName, $annotation);
 			$leftField = $struct->getLeftField();
 			$rightField = $struct->getRightField();
 

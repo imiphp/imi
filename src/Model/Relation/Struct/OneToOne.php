@@ -10,8 +10,8 @@ class OneToOne
 {
 	use TLeftAndRight;
 	
-	public function __construct($className, $propertyName)
+	public function __construct($className, $propertyName, $annotation)
 	{
-		$this->initLeftAndRight($className, $propertyName);
+		$this->initLeftAndRight($className, $propertyName, $annotation);
 	}
 }

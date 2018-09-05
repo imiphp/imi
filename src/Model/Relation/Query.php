@@ -7,6 +7,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
+use Imi\Util\ArrayList;
 
 
 abstract class Query
@@ -52,7 +53,7 @@ abstract class Query
 			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
 		}
 
-		$struct = new OneToOne($className, $propertyName);
+		$struct = new OneToOne($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();
 		$rightField = $struct->getRightField();
 
@@ -93,20 +94,20 @@ abstract class Query
 			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
 		}
 
-		$struct = new OneToOne($className, $propertyName);
+		$struct = new OneToOne($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();
 		$rightField = $struct->getRightField();
 
 		if(null === $model->$leftField)
 		{
-			$list = [];
+			$list = new ArrayList($modelClass);
 		}
 		else
 		{
 			$list = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->getArray();
 			if(null === $list)
 			{
-				$list = [];
+				$list = new ArrayList($modelClass);
 			}
 		}
 

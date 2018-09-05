@@ -93,7 +93,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 		{
 			return null;
 		}
-		return call_user_func([$this, $methodName]);
+		$result = call_user_func([$this, $methodName]);
+		return $result;
 	}
 
 	public function offsetSet($offset, $value)

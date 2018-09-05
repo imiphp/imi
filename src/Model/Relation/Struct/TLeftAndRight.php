@@ -3,6 +3,7 @@ namespace Imi\Model\Relation\Struct;
 
 use Imi\Util\Imi;
 use Imi\Util\Text;
+use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 
@@ -22,9 +23,33 @@ trait TLeftAndRight
 	 */
 	private $rightField;
 
-	public function initLeftAndRight($className, $propertyName)
+	/**
+	 * 右侧模型类
+	 *
+	 * @var string
+	 */
+	private $rightModel;
+
+	/**
+	 * 初始化左右关联
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
+	 * @return void
+	 */
+	public function initLeftAndRight($className, $propertyName, $annotation)
 	{
 		$relationParser = RelationParser::getInstance();
+
+		if(class_exists($annotation->model))
+		{
+			$this->rightModel = $annotation->model;
+		}
+		else
+		{
+			$this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
+		}
 		
 		$joinFrom = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinFrom');
 		$joinTo = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinTo');
@@ -62,5 +87,15 @@ trait TLeftAndRight
 	public function getRightField()
 	{
 		return $this->rightField;
+	}
+
+	/**
+	 * Get 右侧模型类
+	 *
+	 * @return  string
+	 */ 
+	public function getRightModel()
+	{
+		return $this->rightModel;
 	}
 }

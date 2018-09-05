@@ -34,7 +34,7 @@ abstract class Delete
 	 * @param string $propertyName
 	 * @return void
 	 */
-	public static function parseByOneToOne($model, $propertyName)
+	public static function parseByOneToOne($model, $propertyName, $annotation)
 	{
 		if(!$model->$propertyName)
 		{
@@ -45,7 +45,7 @@ abstract class Delete
 		$autoDelete = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoDelete');
 		if(!$autoDelete || $autoDelete->status)
 		{
-			$struct = new OneToOne($className, $propertyName);
+			$struct = new OneToOne($className, $propertyName, $annotation);
 			$leftField = $struct->getLeftField();
 			$rightField = $struct->getRightField();
 
