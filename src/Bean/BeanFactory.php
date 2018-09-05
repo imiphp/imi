@@ -126,20 +126,22 @@ TPL;
 			}
 			$paramsTpls = static::getMethodParamTpls($method);
 			$methodReturnType = static::getMethodReturnType($method);
+			$returnsReference = $method->returnsReference() ? '&' : '';
 			$tpl .= <<<TPL
-	public function {$method->name}({$paramsTpls['define']}){$methodReturnType}
+	public function {$returnsReference}{$method->name}({$paramsTpls['define']}){$methodReturnType}
 	{
 		\$__args__ = func_get_args();
 		{$paramsTpls['set_args']}
-		return \$this->beanProxy->call(
+		\$__result__ = \$this->beanProxy->call(
 			'{$method->name}',
 			function({$paramsTpls['define']}){
 				\$__args__ = func_get_args();
 				{$paramsTpls['set_args']}
-				return parent::{$method->name}(...\$__args__);
+				return {$returnsReference}parent::{$method->name}(...\$__args__);
 			},
 			\$__args__
 		);
+		return \$__result__;
 	}
 
 TPL;
