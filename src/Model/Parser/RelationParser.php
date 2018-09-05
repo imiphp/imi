@@ -3,11 +3,12 @@ namespace Imi\Model\Parser;
 
 use Imi\Bean\Parser\BaseParser;
 use Imi\Model\Annotation\Relation\JoinTo;
+use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Annotation\Relation\JoinFrom;
 use Imi\Model\Annotation\Relation\OneToOne;
+use Imi\Model\Annotation\Relation\OneToMany;
 use Imi\Model\Annotation\Relation\AutoDelete;
 use Imi\Model\Annotation\Relation\AutoInsert;
-use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Annotation\Relation\AutoUpdate;
 
 
@@ -23,7 +24,7 @@ class RelationParser extends BaseParser
 	 */
 	public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
 	{
-		if($annotation instanceof OneToOne)
+		if($annotation instanceof OneToOne || $annotation instanceof OneToMany)
 		{
 			$this->data[$className]['relations'][$targetName] = $annotation;
 		}

@@ -25,6 +25,10 @@ abstract class Query
 		{
 			static::initByOneToOne($model, $propertyName, $annotation);
 		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+		{
+			static::initByOneToMany($model, $propertyName, $annotation);
+		}
 	}
 
 	/**
@@ -37,10 +41,7 @@ abstract class Query
 	 */
 	public static function initByOneToOne($model, $propertyName, $annotation)
 	{
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-
-		$toModel = $annotation->model;
 
 		if(class_exists($annotation->model))
 		{
@@ -69,5 +70,46 @@ abstract class Query
 		}
 
 		$model->$propertyName = $rightModel;
+	}
+
+	/**
+	 * 初始化一对多关系
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
+	 * @return void
+	 */
+	public static function initByOneToMany($model, $propertyName, $annotation)
+	{
+		$className = BeanFactory::getObjectClass($model);
+
+		if(class_exists($annotation->model))
+		{
+			$modelClass = $annotation->model;
+		}
+		else
+		{
+			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
+		}
+
+		$struct = new OneToOne($className, $propertyName);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
+		if(null === $model->$leftField)
+		{
+			$list = [];
+		}
+		else
+		{
+			$list = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->getArray();
+			if(null === $list)
+			{
+				$list = [];
+			}
+		}
+
+		$model->$propertyName = $list;
 	}
 }
