@@ -3,11 +3,12 @@ namespace Imi\Model\Relation;
 
 use Imi\Util\Imi;
 use Imi\Util\Text;
+use Imi\Util\ArrayList;
 use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
-use Imi\Util\ArrayList;
+use Imi\Model\Relation\Struct\OneToMany;
 
 
 abstract class Query
@@ -85,7 +86,7 @@ abstract class Query
 	 *
 	 * @param \Imi\Model\Model $model
 	 * @param string $propertyName
-	 * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
+	 * @param \Imi\Model\Annotation\Relation\OneToMany $annotation
 	 * @return void
 	 */
 	public static function initByOneToMany($model, $propertyName, $annotation)
@@ -112,19 +113,15 @@ abstract class Query
 		$leftField = $struct->getLeftField();
 		$rightField = $struct->getRightField();
 
-		if(null === $model->$leftField)
-		{
-			$list = new ArrayList($modelClass);
-		}
-		else
+		$model->$propertyName = new ArrayList($modelClass);
+		if(null !== $model->$leftField)
 		{
 			$list = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->getArray();
-			if(null === $list)
+			if(null !== $list)
 			{
-				$list = new ArrayList($modelClass);
+				$model->$propertyName->append(...$list);
 			}
 		}
 
-		$model->$propertyName = $list;
 	}
 }

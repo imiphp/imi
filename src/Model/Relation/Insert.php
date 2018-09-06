@@ -8,6 +8,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
+use Imi\Model\Relation\Struct\OneToMany;
 
 
 abstract class Insert
@@ -37,6 +38,7 @@ abstract class Insert
 	 *
 	 * @param \Imi\Model\Model $model
 	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
 	 * @return void
 	 */
 	public static function parseByOneToOne($model, $propertyName, $annotation)
@@ -75,6 +77,7 @@ abstract class Insert
 	 *
 	 * @param \Imi\Model\Model $model
 	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\OneToMany $annotation
 	 * @return void
 	 */
 	public static function parseByOneToMany($model, $propertyName, $annotation)

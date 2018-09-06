@@ -16,7 +16,7 @@ abstract class Delete
 	 *
 	 * @param \Imi\Model\Model $model
 	 * @param string $propertyName
-	 * @param \Imi\Bean\Annotation\Base $annotation
+	 * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
 	 * @return void
 	 */
 	public static function parse($model, $propertyName, $annotation)
@@ -32,6 +32,7 @@ abstract class Delete
 	 *
 	 * @param \Imi\Model\Model $model
 	 * @param string $propertyName
+	 * @param \Imi\Bean\Annotation\Base $annotation
 	 * @return void
 	 */
 	public static function parseByOneToOne($model, $propertyName, $annotation)

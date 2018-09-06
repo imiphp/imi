@@ -72,6 +72,26 @@ class RelationParser extends BaseParser
 	}
 
 	/**
+	 * 是否有关联关系
+	 * $propertyName 为null时则查询模型类是否有关联关系
+	 *
+	 * @param string $className
+	 * @param string $propertyName
+	 * @return boolean
+	 */
+	public function hasRelation($className, $propertyName = null)
+	{
+		if(null === $propertyName)
+		{
+			return isset($this->data[$className]['relations']);
+		}
+		else
+		{
+			return isset($this->data[$className]['relations'][$propertyName]);
+		}
+	}
+
+	/**
 	 * 获取属性注解
 	 *
 	 * @param string $className

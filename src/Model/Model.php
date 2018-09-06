@@ -10,6 +10,7 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Model\Event\Param\InitEventParam;
+use Imi\Model\Relation\Update;
 
 /**
  * 常用的数据库模型
@@ -228,25 +229,43 @@ abstract class Model extends BaseModel
 	 */
 	public static function updateBatch($data, $where = null): IResult
 	{
-		$query = static::query();
-		$updateData = static::parseSaveData($data);
-		$query = static::parseWhere($query, $where);
+		if(Update::hasUpdateRelation(static::class))
+		{
+			$query = Db::query()->table(ModelManager::getTable(static::class));
+			$query = static::parseWhere($query, $where);
 
-		// 更新前
-		Event::trigger(static::class . ModelEvents::BEFORE_BATCH_UPDATE, [
-			'data'	=>	$updateData,
-			'query'	=>	$query,
-		], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
-		
-		$result = $query->update($updateData);
+			$list = $query->select()->getArray();
+			
+			foreach($list as $row)
+			{
+				$model = static::newInstance($row);
+				$model->set($data);
+				$model->update();
+			}
+		}
+		else
+		{
+			$query = static::query();
+			$query = static::parseWhere($query, $where);
 
-		// 更新后
-		Event::trigger(static::class . ModelEvents::AFTER_BATCH_UPDATE, [
-			'data'	=>	$updateData,
-			'result'=>	$result,
-		], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+			$updateData = static::parseSaveData($data);
 
-		return $result;
+			// 更新前
+			Event::trigger(static::class . ModelEvents::BEFORE_BATCH_UPDATE, [
+				'data'	=>	$updateData,
+				'query'	=>	$query,
+			], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+			
+			$result = $query->update($updateData);
+	
+			// 更新后
+			Event::trigger(static::class . ModelEvents::AFTER_BATCH_UPDATE, [
+				'data'	=>	$updateData,
+				'result'=>	$result,
+			], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+	
+			return $result;
+		}
 	}
 
 	/**
