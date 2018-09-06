@@ -224,13 +224,4 @@ abstract class Update
 		return false;
 	}
 
-	// private static function parseByOneToManyRelation()
-	// {
-
-	// }
-
-	// private static function parseByOneToManyFast()
-	// {
-		
-	// }
 }
