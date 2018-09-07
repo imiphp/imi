@@ -174,6 +174,13 @@ abstract class Update
 		}
 	}
 
+	/**
+	 * 模型类（可指定字段）是否包含更新关联关系
+	 *
+	 * @param string $className
+	 * @param string $propertyName
+	 * @return boolean
+	 */
 	public static function hasUpdateRelation($className, $propertyName = null)
 	{
 		$relationParser = RelationParser::getInstance();
