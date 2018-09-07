@@ -20,7 +20,7 @@ class OneToMany extends Base
 
 	/**
 	 * 关联的模型类
-	 * 可以是包含命名空间的完整类库
+	 * 可以是包含命名空间的完整类名
 	 * 可以同命名空间下的类名
 	 *
 	 * @var string
