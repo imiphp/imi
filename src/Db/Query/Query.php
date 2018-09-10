@@ -837,7 +837,7 @@ class Query implements IQuery
 			}
 		}
 		$this->__init();
-		return new Result($result, $this->modelClass);
+		return new Result($stmt, $this->modelClass);
 	}
 
 	/**

@@ -41,7 +41,7 @@ class MysqlAspect
 	 * Statement 延迟收包
 	 * @PointCut(
 	 * 		allow={
-	 * 			"Imi\Db\Drivers\CoroutineMysql\Statement::execute",
+	 * 			"Imi\Db\Drivers\CoroutineMysql\Statement::__execute",
 	 * 		}
 	 * )
 	 * @Around
@@ -51,20 +51,7 @@ class MysqlAspect
 	{
 		$statement = $joinPoint->getTarget();
 		$client = $statement->getDb()->getInstance();
-		// 获取调用前的defer状态
-		$isDefer = $client->getDefer();
-		if(!$isDefer)
-		{
-			// 强制设为延迟收包
-			$client->setDefer(true);
-		}
-		// 调用原方法
-		$result = $joinPoint->proceed();
-		if(!$isDefer)
-		{
-			// 设为调用前状态
-			$client->setDefer(false);
-		}
+		$result = $this->parseDefer($joinPoint, $client);
 		if(false === $result)
 		{
 			throw new DbException('sql query error: [' . $statement->errorCode() . '] ' . $statement->errorInfo() . ' sql: ' . $statement->getSql());

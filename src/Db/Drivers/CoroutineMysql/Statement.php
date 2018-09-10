@@ -202,7 +202,7 @@ class Statement implements IStatement
 			return false;
 		}
 		$params = $this->getExecuteParams($inputParameters);
-		$result = $this->statement->execute($params);
+		$result = $this->__execute($params);
 		$this->binds = [];
 		if(false === $result)
 		{
@@ -210,20 +210,21 @@ class Statement implements IStatement
 		}
 		else
 		{
-			// 延迟收包支持
-			$dbInstance = $this->db->getInstance();
-			if($dbInstance->getDefer())
-			{
-				$result = $dbInstance->recv();
-			}
-			if(false === $result)
-			{
-				throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
-			}
 			$this->data = $result;
 			$this->cursor = 0;
 			return true;
 		}
+	}
+
+	/**
+	 * 让statement执行execute
+	 *
+	 * @param array $params
+	 * @return mixed
+	 */
+	protected function __execute($params)
+	{
+		return $this->statement->execute($params);
 	}
 
 	/**
