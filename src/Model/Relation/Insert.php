@@ -23,6 +23,27 @@ abstract class Insert
 	 */
 	public static function parse($model, $propertyName, $annotation)
 	{
+		if(!$model->$propertyName)
+		{
+			return;
+		}
+		$relationParser = RelationParser::getInstance();
+		$className = BeanFactory::getObjectClass($model);
+		$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
+		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+
+		if($autoInsert)
+		{
+			if(!$autoInsert->status)
+			{
+				return;
+			}
+		}
+		else if(!$autoSave || !$autoSave->status)
+		{
+			return;
+		}
+
 		if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
 		{
 			static::parseByOneToOne($model, $propertyName, $annotation);
@@ -43,26 +64,7 @@ abstract class Insert
 	 */
 	public static function parseByOneToOne($model, $propertyName, $annotation)
 	{
-		if(!$model->$propertyName)
-		{
-			return;
-		}
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-		$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
-		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
-
-		if($autoInsert)
-		{
-			if(!$autoInsert->status)
-			{
-				return;
-			}
-		}
-		else if(!$autoSave || !$autoSave->status)
-		{
-			return;
-		}
 
 		$struct = new OneToOne($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();
@@ -82,26 +84,7 @@ abstract class Insert
 	 */
 	public static function parseByOneToMany($model, $propertyName, $annotation)
 	{
-		if(!$model->$propertyName)
-		{
-			return;
-		}
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-		$autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
-		$autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
-
-		if($autoInsert)
-		{
-			if(!$autoInsert->status)
-			{
-				return;
-			}
-		}
-		else if(!$autoSave || !$autoSave->status)
-		{
-			return;
-		}
 
 		$struct = new OneToMany($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();

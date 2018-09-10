@@ -23,6 +23,15 @@ abstract class Query
 	 */
 	public static function init($model, $propertyName, $annotation)
 	{
+		$relationParser = RelationParser::getInstance();
+		$className = BeanFactory::getObjectClass($model);
+
+		$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
+		if($autoSelect && !$autoSelect->status)
+		{
+			return;
+		}
+
 		if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
 		{
 			static::initByOneToOne($model, $propertyName, $annotation);
@@ -30,6 +39,10 @@ abstract class Query
 		else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
 		{
 			static::initByOneToMany($model, $propertyName, $annotation);
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+		{
+			static::initByManyToMany($model, $propertyName, $annotation);
 		}
 	}
 
@@ -43,14 +56,7 @@ abstract class Query
 	 */
 	public static function initByOneToOne($model, $propertyName, $annotation)
 	{
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-
-		$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
-		if($autoSelect && !$autoSelect->status)
-		{
-			return;
-		}
 
 		if(class_exists($annotation->model))
 		{
@@ -91,14 +97,7 @@ abstract class Query
 	 */
 	public static function initByOneToMany($model, $propertyName, $annotation)
 	{
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-		
-		$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
-		if($autoSelect && !$autoSelect->status)
-		{
-			return;
-		}
 
 		if(class_exists($annotation->model))
 		{
@@ -124,4 +123,5 @@ abstract class Query
 		}
 
 	}
+
 }

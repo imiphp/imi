@@ -23,6 +23,18 @@ abstract class Delete
 	 */
 	public static function parse($model, $propertyName, $annotation)
 	{
+		if(!$model->$propertyName)
+		{
+			return;
+		}
+		$relationParser = RelationParser::getInstance();
+		$className = BeanFactory::getObjectClass($model);
+		$autoDelete = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoDelete');
+
+		if(!$autoDelete || !$autoDelete->status)
+		{
+			return;
+		}
 		if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
 		{
 			static::parseByOneToOne($model, $propertyName, $annotation);
@@ -43,18 +55,7 @@ abstract class Delete
 	 */
 	public static function parseByOneToOne($model, $propertyName, $annotation)
 	{
-		if(!$model->$propertyName)
-		{
-			return;
-		}
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-		$autoDelete = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoDelete');
-
-		if(!$autoDelete || !$autoDelete->status)
-		{
-			return;
-		}
 
 		$struct = new OneToOne($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();
@@ -74,19 +75,7 @@ abstract class Delete
 	 */
 	public static function parseByOneToMany($model, $propertyName, $annotation)
 	{
-		if(!$model->$propertyName)
-		{
-			return;
-		}
-		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
-
-		$autoDelete = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoDelete');
-
-		if(!$autoDelete || !$autoDelete->status)
-		{
-			return;
-		}
 
 		$struct = new OneToMany($className, $propertyName, $annotation);
 		$leftField = $struct->getLeftField();
