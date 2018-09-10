@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Db\Query;
 
+use Imi\Util\Defer;
 use Imi\Db\Query\Order;
 use Imi\RequestContext;
 use Imi\Db\Interfaces\IDb;
@@ -49,6 +50,13 @@ class Query implements IQuery
 	 * @var string
 	 */
 	private $modelClass;
+
+	/**
+	 * 设置延迟收包
+	 *
+	 * @var boolean
+	 */
+	private $defer = false;
 
 	public function __construct(IDb $db, $modelClass = null)
 	{
@@ -816,28 +824,24 @@ class Query implements IQuery
 	/**
 	 * 执行SQL语句
 	 * @param string $sql
-	 * @return IResult
+	 * @return IResult|Defer
 	 */
 	public function execute($sql)
 	{
-		if(empty($this->binds))
+		$stmt = $this->db->prepare($sql);
+		if($stmt)
 		{
-			$result = $this->db->query($sql);
-		}
-		else
-		{
-			$stmt = $this->db->prepare($sql);
-			if($stmt)
+			if($this->defer)
 			{
-				$result = $stmt->execute($this->binds) ? $stmt : false;
+				$defer = $stmt->deferExecute($this->binds);
 			}
 			else
 			{
-				$result = false;
+				$stmt->execute($this->binds) ? $stmt : false;
 			}
 		}
 		$this->__init();
-		return new Result($stmt, $this->modelClass);
+		return new Result($stmt, $this->modelClass, $defer ?? null);
 	}
 
 	/**
@@ -919,4 +923,17 @@ class Query implements IQuery
 		$this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
 		return $this;
 	}
+
+	/**
+	 * 设置是否延迟调用
+	 *
+	 * @param boolean $defer
+	 * @return static
+	 */
+	public function setDefer($defer = true)
+	{
+		$this->defer = $defer;
+		return $this;
+	}
+
 }

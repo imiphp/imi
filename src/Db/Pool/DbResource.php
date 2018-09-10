@@ -55,6 +55,7 @@ class DbResource extends BasePoolResource
 	 */
 	public function reset()
 	{
+		$this->db->getInstance()->setDefer(false);
 	}
 	
 	/**

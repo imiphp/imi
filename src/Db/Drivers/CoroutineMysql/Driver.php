@@ -1,18 +1,19 @@
 <?php
 namespace Imi\Db\Drivers\CoroutineMysql;
 
+use Imi\App;
+use Imi\Db\Drivers\Base;
+use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
+use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Pool\Interfaces\IPoolResource;
-use Imi\App;
-use Imi\Db\Exception\DbException;
-use Imi\Bean\BeanFactory;
 
 /**
  * Swoole协程MySQL驱动
  */
-class Driver implements IDb
+class Driver extends Base implements IDb
 {
 	use SqlParser;
 
@@ -108,17 +109,41 @@ class Driver implements IDb
 		return $this->instance;
 	}
 
+	protected function __beginTransaction()
+	{
+		$result = $this->instance->begin();
+		yield $result;
+		$result = yield;
+		if($result)
+		{
+			$this->inTransaction = true;
+		}
+		return $result;
+	}
+
 	/**
 	 * 启动一个事务
 	 * @return boolean
 	 */
 	public function beginTransaction(): bool
 	{
-		$result = $this->instance->begin();
-		if($result)
+		$generator = $this->__beginTransaction();
+		if(!$generator->valid())
 		{
-			$this->inTransaction = true;
+			return $generator->getReturn();
 		}
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
+	}
+
+	protected function __commit()
+	{
+		$this->inTransaction = false;
+		$result = $this->instance->commit();
+		yield $result;
+		$result = yield;
 		return $result;
 	}
 
@@ -128,8 +153,24 @@ class Driver implements IDb
 	 */
 	public function commit(): bool
 	{
+		$generator = $this->__commit();
+		if(!$generator->valid())
+		{
+			return $generator->getReturn();
+		}
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
+	}
+
+	protected function __rollBack()
+	{
 		$this->inTransaction = false;
-		return $this->instance->commit();
+		$result = $this->instance->rollback();
+		yield $result;
+		$result = yield;
+		return $result;
 	}
 
 	/**
@@ -138,8 +179,15 @@ class Driver implements IDb
 	 */
 	public function rollBack(): bool
 	{
-		$this->inTransaction = false;
-		return $this->instance->rollback();
+		$generator = $this->__rollBack();
+		if(!$generator->valid())
+		{
+			return $generator->getReturn();
+		}
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
 	}
 
 	/**
@@ -178,14 +226,11 @@ class Driver implements IDb
 		return $this->lastSql;
 	}
 	
-	/**
-	 * 执行一条 SQL 语句，并返回受影响的行数
-	 * @param string $sql
-	 * @return integer
-	 */
-	public function exec(string $sql): int
+	protected function __exec(string $sql)
 	{
 		$result = $this->instance->query($sql);
+		yield $result;
+		$result = yield;
 		if(false === $result)
 		{
 			return 0;
@@ -194,6 +239,24 @@ class Driver implements IDb
 		{
 			return $this->instance->affected_rows;
 		}
+	}
+
+	/**
+	 * 执行一条 SQL 语句，并返回受影响的行数
+	 * @param string $sql
+	 * @return integer
+	 */
+	public function exec(string $sql): int
+	{
+		$generator = $this->__exec($sql);
+		if(!$generator->valid())
+		{
+			return $generator->getReturn();
+		}
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
 	}
 
 	/**
@@ -236,6 +299,21 @@ class Driver implements IDb
 		return $this->instance->affected_rows;
 	}
 
+	protected function __prepare(string $sql, array $driverOptions = [])
+	{
+		// 处理支持 :xxx 参数格式
+		$this->lastSql = $sql;
+		$execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
+		$stmt = $this->instance->prepare($execSql);
+		yield $stmt;
+		$stmt = yield;
+		if(false === $stmt)
+		{
+			throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+		}
+		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
+	}
+
 	/**
 	 * 准备执行语句并返回一个语句对象
 	 * @param string $sql
@@ -245,15 +323,29 @@ class Driver implements IDb
 	 */
 	public function prepare(string $sql, array $driverOptions = [])
 	{
-		// 处理支持 :xxx 参数格式
+		$generator = $this->__prepare($sql, $driverOptions);
+		if(!$generator->valid())
+		{
+			return $generator->getReturn();
+		}
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
+	}
+
+	protected function __query(string $sql)
+	{
 		$this->lastSql = $sql;
-		$execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
-		$stmt = $this->instance->prepare($execSql);
+		$stmt = $this->instance->query($sql);
+		yield $stmt;
+		$stmt = yield;
 		if(false === $stmt)
 		{
-			throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
 		}
-		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
+		$data = $stmt->execute([]);
+		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, [], $data);
 	}
 
 	/**
@@ -264,13 +356,14 @@ class Driver implements IDb
 	 */
 	public function query(string $sql)
 	{
-		$this->lastSql = $sql;
-		$stmt = $this->instance->prepare($sql);
-		if(false === $stmt)
+		$generator = $this->__query($sql);
+		if(!$generator->valid())
 		{
-			throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+			return $generator->getReturn();
 		}
-		$data = $stmt->execute([]);
-		return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, [], $data);
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
 	}
 }
