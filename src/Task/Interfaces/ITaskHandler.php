@@ -13,7 +13,7 @@ interface ITaskHandler
 	 * @param integer $WorkerID
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID);
+	public function handle(TaskParam $param, \Imi\Server\Base $server, int $taskID, int $WorkerID);
 
 	/**
 	 * 任务结束时触发
