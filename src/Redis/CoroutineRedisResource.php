@@ -68,6 +68,7 @@ class CoroutineRedisResource extends BasePoolResource
 	 */
 	public function reset()
 	{
+		$this->redis->setDefer(false);
 		$this->redis->select($this->config['db'] ?? 0);
 	}
 
