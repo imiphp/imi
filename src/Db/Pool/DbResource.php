@@ -55,7 +55,10 @@ class DbResource extends BasePoolResource
 	 */
 	public function reset()
 	{
-		$this->db->getInstance()->setDefer(false);
+		if($this->db instanceof \Imi\Db\Drivers\CoroutineMysql\Driver)
+		{
+			$this->db->getInstance()->setDefer(false);
+		}
 	}
 	
 	/**
