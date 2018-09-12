@@ -9,9 +9,12 @@ use Imi\Model\Relation\Delete;
 use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Update;
 use Imi\Model\Parser\RelationParser;
+use Imi\Model\Annotation\Relation\ManyToMany;
 
 abstract class ModelRelationManager
 {
+	private static $relationFieldsNames = [];
+
 	/**
 	 * 初始化模型
 	 *
@@ -92,6 +95,19 @@ abstract class ModelRelationManager
 	public static function getRelationFieldNames($object)
 	{
 		$class = BeanFactory::getObjectClass($object);
-		return array_keys(RelationParser::getInstance()->getData()[$class]['relations'] ?? []);
+		if(!isset(static::$relationFieldsNames[$class]))
+		{
+			$relations = RelationParser::getInstance()->getData()[$class]['relations'] ?? [];
+			$result = array_keys($relations);
+			foreach($relations as $annotation)
+			{
+				if($annotation instanceof ManyToMany && $annotation->rightMany)
+				{
+					$result[] = $annotation->rightMany;
+				}
+			}
+			static::$relationFieldsNames[$class] = $result;
+		}
+		return static::$relationFieldsNames[$class];
 	}
 }

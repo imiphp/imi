@@ -11,6 +11,9 @@ use Imi\Model\Annotation\Relation\AutoDelete;
 use Imi\Model\Annotation\Relation\AutoInsert;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\AutoUpdate;
+use Imi\Model\Annotation\Relation\ManyToMany;
+use Imi\Model\Annotation\Relation\JoinToMiddle;
+use Imi\Model\Annotation\Relation\JoinFromMiddle;
 
 
 class RelationParser extends BaseParser
@@ -25,7 +28,7 @@ class RelationParser extends BaseParser
 	 */
 	public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
 	{
-		if($annotation instanceof OneToOne || $annotation instanceof OneToMany)
+		if($annotation instanceof OneToOne || $annotation instanceof OneToMany || $annotation instanceof ManyToMany)
 		{
 			$this->data[$className]['relations'][$targetName] = $annotation;
 		}
@@ -36,6 +39,14 @@ class RelationParser extends BaseParser
 		else if($annotation instanceof JoinTo)
 		{
 			$this->data[$className]['properties'][$targetName]['JoinTo'] = $annotation;
+		}
+		else if($annotation instanceof JoinFromMiddle)
+		{
+			$this->data[$className]['properties'][$targetName]['JoinFromMiddle'] = $annotation;
+		}
+		else if($annotation instanceof JoinToMiddle)
+		{
+			$this->data[$className]['properties'][$targetName]['JoinToMiddle'] = $annotation;
 		}
 		else if($annotation instanceof AutoSelect)
 		{
