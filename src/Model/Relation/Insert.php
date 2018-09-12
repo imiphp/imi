@@ -9,6 +9,7 @@ use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\ManyToMany;
 
 
 abstract class Insert
@@ -51,6 +52,10 @@ abstract class Insert
 		else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
 		{
 			static::parseByOneToMany($model, $propertyName, $annotation);
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+		{
+			static::parseByManyToMany($model, $propertyName, $annotation);
 		}
 	}
 
@@ -102,4 +107,34 @@ abstract class Insert
 			$row->insert();
 		}
 	}
+
+	/**
+	 * 处理多对多插入
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
+	 * @return void
+	 */
+	public static function parseByManyToMany($model, $propertyName, $annotation)
+	{
+		$className = BeanFactory::getObjectClass($model);
+
+		$struct = new ManyToMany($className, $propertyName, $annotation);
+		$middleModel = $struct->getMiddleModel();
+		$middleLeftField = $struct->getMiddleLeftField();
+		$leftField = $struct->getLeftField();
+
+		foreach($model->$propertyName as $index => $row)
+		{
+			if(!$row instanceof $middleModel)
+			{
+				$row = $middleModel::newInstance($row);
+				$model->$propertyName[$index] = $row;
+			}
+			$row[$middleLeftField] = $model->$leftField;
+			$row->insert();
+		}
+	}
+
 }
