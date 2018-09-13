@@ -43,7 +43,7 @@
 * [ORM](components/orm/index.md)
   * [数据库模型](components/orm/RDModel.md)
     * [模型事件](components/orm/RDModel/event.md)
-    * [模型关联]()
+    * [模型关联](components/orm/relation.md)
       * [介绍](components/orm/relation/index.md)
       * [一对一关联](components/orm/relation/oneToOne.md)
       * [一对多关联](components/orm/relation/oneToMany.md)
