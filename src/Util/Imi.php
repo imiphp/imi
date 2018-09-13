@@ -21,7 +21,7 @@ abstract class Imi
 	 */
 	public static function parseRule($rule)
 	{
-		return \str_replace('\\*', '.*', \preg_quote($rule));
+		return \str_replace('/', '\/', \str_replace('\\*', '.*', \preg_quote($rule)));
 	}
 
 	/**
@@ -175,6 +175,16 @@ abstract class Imi
 			}
 		});
 		return $result;
+	}
+
+	/**
+	 * 获取类命名空间
+	 * @param string $className
+	 * @return string
+	 */
+	public static function getClassNamespace(string $className)
+	{
+		return implode('\\', array_slice(explode('\\', $className), 0, -1));
 	}
 
 	/**

@@ -3,6 +3,7 @@ namespace Imi\Db\Drivers\PdoMysql;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
+use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 
@@ -11,7 +12,7 @@ use Imi\Db\Interfaces\IStatement;
  * 
  * @property-read string $queryString
  */
-class Statement implements IStatement
+class Statement extends BaseStatement implements IStatement
 {
 	/**
 	 * \PDOStatement

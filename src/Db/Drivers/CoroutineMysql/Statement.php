@@ -1,18 +1,19 @@
 <?php
 namespace Imi\Db\Drivers\CoroutineMysql;
 
+use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\LazyArrayObject;
+use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Bean\BeanFactory;
 
 /**
  * Swoole协程MySQL驱动Statement
  * 
  * @property-read string $queryString
  */
-class Statement implements IStatement
+class Statement extends BaseStatement implements IStatement
 {
 	/**
 	 * \Swoole\Coroutine\MySQL\Statement
@@ -197,12 +198,33 @@ class Statement implements IStatement
 	 */
 	public function execute(array $inputParameters = null): bool
 	{
+		$generator = $this->__execute($inputParameters);
+		if(!$generator->valid())
+		{
+			return $generator->getReturn();
+		}
+		$current = $generator->current();
+		$generator->next();
+		$generator->send($current);
+		return $generator->getReturn();
+	}
+
+	/**
+	 * 让statement执行execute
+	 *
+	 * @param array $params
+	 * @return mixed
+	 */
+	protected function __execute(array $inputParameters = null)
+	{
 		if($this->cursor >= 0)
 		{
 			return false;
 		}
 		$params = $this->getExecuteParams($inputParameters);
 		$result = $this->statement->execute($params);
+		yield $result;
+		$result = yield;
 		$this->binds = [];
 		if(false === $result)
 		{
@@ -210,16 +232,6 @@ class Statement implements IStatement
 		}
 		else
 		{
-			// 延迟收包支持
-			$dbInstance = $this->db->getInstance();
-			if($dbInstance->getDefer())
-			{
-				$result = $dbInstance->recv();
-			}
-			if(false === $result)
-			{
-				throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
-			}
 			$this->data = $result;
 			$this->cursor = 0;
 			return true;

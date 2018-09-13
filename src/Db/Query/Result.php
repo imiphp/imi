@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Db\Query;
 
+use Imi\Util\Defer;
 use Imi\Model\Model;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IStatement;
@@ -26,17 +27,39 @@ class Result implements IResult
 	 */
 	private $modelClass;
 
-	public function __construct($statement, $modelClass = null)
+	/**
+	 * 延迟收包
+	 *
+	 * @var Defer
+	 */
+	private $defer;
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param \Imi\Db\Interfaces\IStatement|\Imi\Util\Defer $statement
+	 * @param [type] $modelClass
+	 * @param Defer $defer
+	 */
+	public function __construct($statement, $modelClass = null, $defer = null)
 	{
 		$this->modelClass = $modelClass;
-		if($statement instanceof IStatement)
+		$this->defer = $defer;
+		if($defer instanceof Defer)
 		{
-			$this->statement = clone $statement;
-			$this->isSuccess = '' === $this->statement->errorInfo();
+			$this->statement = $statement;
 		}
 		else
 		{
-			$this->isSuccess = false;
+			if($statement instanceof IStatement)
+			{
+				$this->statement = clone $statement;
+				$this->isSuccess = '' === $this->statement->errorInfo();
+			}
+			else
+			{
+				$this->isSuccess = false;
+			}
 		}
 	}
 
@@ -46,6 +69,7 @@ class Result implements IResult
 	 */
 	public function isSuccess(): bool
 	{
+		$this->parseDefer();
 		return $this->isSuccess;
 	}
 
@@ -55,6 +79,7 @@ class Result implements IResult
 	 */
 	public function getLastInsertId()
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -68,6 +93,7 @@ class Result implements IResult
 	 */
 	public function getAffectedRows()
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -82,6 +108,7 @@ class Result implements IResult
 	 */
 	public function get($className = null)
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -125,6 +152,7 @@ class Result implements IResult
 	 */
 	public function getArray($className = null)
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -169,6 +197,7 @@ class Result implements IResult
 	 */
 	public function getColumn($column = 0)
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -183,6 +212,7 @@ class Result implements IResult
 	 */
 	public function getScalar($columnKey = 0)
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -196,6 +226,7 @@ class Result implements IResult
 	 */
 	public function getRowCount()
 	{
+		$this->parseDefer();
 		if(!$this->isSuccess)
 		{
 			throw new \RuntimeException('Result is not success!');
@@ -210,6 +241,7 @@ class Result implements IResult
 	 */
 	public function getSql()
 	{
+		$this->parseDefer();
 		return $this->statement->getSql();
 	}
 
@@ -220,6 +252,29 @@ class Result implements IResult
 	 */
 	public function getStatement(): IStatement
 	{
+		$this->parseDefer();
 		return $this->statement;
+	}
+
+	/**
+	 * 处理延迟收包
+	 *
+	 * @return void
+	 */
+	private function parseDefer()
+	{
+		if($this->defer instanceof Defer)
+		{
+			$this->defer->call();
+		}
+		if($this->statement instanceof IStatement)
+		{
+			$this->statement = clone $this->statement;
+			$this->isSuccess = '' === $this->statement->errorInfo();
+		}
+		else
+		{
+			$this->isSuccess = false;
+		}
 	}
 }

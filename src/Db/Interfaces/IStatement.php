@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Db\Interfaces;
 
+use Imi\Util\Defer;
 use Imi\Db\Interfaces\IDb;
 
 interface IStatement extends \Iterator
@@ -72,6 +73,13 @@ interface IStatement extends \Iterator
 	 * @return boolean
 	 */
 	public function execute(array $inputParameters = null): bool;
+
+	/**
+	 * 执行一条预处理语句，延迟执行
+	 * @param array $inputParameters
+	 * @return Defer
+	 */
+	public function deferExecute(array $inputParameters = null): Defer;
 
 	/**
 	 * 从结果集中获取下一行

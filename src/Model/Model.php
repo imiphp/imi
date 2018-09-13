@@ -9,12 +9,22 @@ use Imi\Util\LazyArrayObject;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Model\Event\Param\InitEventParam;
+use Imi\Model\Relation\Update;
 
 /**
  * 常用的数据库模型
  */
 abstract class Model extends BaseModel
 {
+	public function __init($data = [])
+	{
+		$this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
+			ModelRelationManager::initModel($this);
+		});
+		parent::__init($data);
+	}
+
 	/**
 	 * 返回一个查询器
 	 * @param string|object $object
@@ -159,6 +169,9 @@ abstract class Model extends BaseModel
 			'result'=>	$result
 		], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
 
+		// 子模型插入
+		ModelRelationManager::insertModel($this);
+
 		return $result;
 	}
 
@@ -202,6 +215,9 @@ abstract class Model extends BaseModel
 			'result'=>	$result,
 		], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
 
+		// 子模型更新
+		ModelRelationManager::updateModel($this);
+
 		return $result;
 	}
 
@@ -213,25 +229,43 @@ abstract class Model extends BaseModel
 	 */
 	public static function updateBatch($data, $where = null): IResult
 	{
-		$query = static::query();
-		$updateData = static::parseSaveData($data);
-		$query = static::parseWhere($query, $where);
+		if(Update::hasUpdateRelation(static::class))
+		{
+			$query = Db::query()->table(ModelManager::getTable(static::class));
+			$query = static::parseWhere($query, $where);
 
-		// 更新前
-		Event::trigger(static::class . ModelEvents::BEFORE_BATCH_UPDATE, [
-			'data'	=>	$updateData,
-			'query'	=>	$query,
-		], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
-		
-		$result = $query->update($updateData);
+			$list = $query->select()->getArray();
+			
+			foreach($list as $row)
+			{
+				$model = static::newInstance($row);
+				$model->set($data);
+				$model->update();
+			}
+		}
+		else
+		{
+			$query = static::query();
+			$query = static::parseWhere($query, $where);
 
-		// 更新后
-		Event::trigger(static::class . ModelEvents::AFTER_BATCH_UPDATE, [
-			'data'	=>	$updateData,
-			'result'=>	$result,
-		], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+			$updateData = static::parseSaveData($data);
 
-		return $result;
+			// 更新前
+			Event::trigger(static::class . ModelEvents::BEFORE_BATCH_UPDATE, [
+				'data'	=>	$updateData,
+				'query'	=>	$query,
+			], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+			
+			$result = $query->update($updateData);
+	
+			// 更新后
+			Event::trigger(static::class . ModelEvents::AFTER_BATCH_UPDATE, [
+				'data'	=>	$updateData,
+				'result'=>	$result,
+			], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
+	
+			return $result;
+		}
 	}
 
 	/**
@@ -302,6 +336,9 @@ abstract class Model extends BaseModel
 			'model'	=>	$this,
 			'result'=>	$result,
 		], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
+
+		// 子模型删除
+		ModelRelationManager::deleteModel($this);
 
 		return $result;
 	}

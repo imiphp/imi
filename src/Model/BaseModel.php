@@ -46,7 +46,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 	public function __init($data = [])
 	{
 		$this->__originValues = $data;
-		$this->__fieldNames = ModelManager::getFieldNames($this);
+		$this->__fieldNames = array_merge(ModelManager::getFieldNames($this), ModelRelationManager::getRelationFieldNames($this));
 
 		$data = new LazyArrayObject($data);
 
@@ -93,7 +93,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 		{
 			return null;
 		}
-		return call_user_func([$this, $methodName]);
+		$result = call_user_func([$this, $methodName]);
+		return $result;
 	}
 
 	public function offsetSet($offset, $value)

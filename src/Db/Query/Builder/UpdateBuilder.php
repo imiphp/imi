@@ -9,6 +9,10 @@ class UpdateBuilder extends BaseBuilder
 	{
 		$option = $this->query->getOption();
 		list($data) = $args;
+		if(null === $data)
+		{
+			$data = $this->query->getOption()->saveData;
+		}
 		$valueParams = [];
 		$sql = 'update ' . $option->table . ' set ';
 
@@ -16,10 +20,24 @@ class UpdateBuilder extends BaseBuilder
 		$setStrs = [];
 		foreach($data as $k => $v)
 		{
-			$valueParam = Query::getAutoParamName();
-			$valueParams[] = $valueParam;
-			$this->params[$valueParam] = $v;
-			$setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
+			if($v instanceof \Imi\Db\Query\Raw)
+			{
+				if(is_numeric($k))
+				{
+					$setStrs[] = (string)$v;
+				}
+				else
+				{
+					$setStrs[] = $this->parseKeyword($k) . ' = ' . $v;
+				}
+			}
+			else
+			{
+				$valueParam = Query::getAutoParamName();
+				$valueParams[] = $valueParam;
+				$this->params[$valueParam] = $v;
+				$setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
+			}
 		}
 
 		$sql .= implode(',', $setStrs)

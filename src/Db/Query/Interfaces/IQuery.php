@@ -429,14 +429,14 @@ interface IQuery
 	 * @param array $data
 	 * @return IResult
 	 */
-	public function insert($data): IResult;
+	public function insert($data = null): IResult;
 
 	/**
 	 * 更新数据
 	 * @param array $data
 	 * @return IResult
 	 */
-	public function update($data): IResult;
+	public function update($data = null): IResult;
 
 	/**
 	 * 删除数据
@@ -450,4 +450,99 @@ interface IQuery
 	 * @return IResult
 	 */
 	public function execute($sql);
+
+	/**
+	 * 统计数量
+	 * @param string $field
+	 * @return int
+	 */
+	public function count($field = '*');
+
+	/**
+	 * 求和
+	 * @param string $field
+	 * @return float
+	 */
+	public function sum($field);
+
+	/**
+	 * 平均值
+	 * @param string $field
+	 * @return float
+	 */
+	public function avg($field);
+	
+	/**
+	 * 最大值
+	 * @param string $field
+	 * @return float
+	 */
+	public function max($field);
+	
+	/**
+	 * 最小值
+	 * @param string $field
+	 * @return float
+	 */
+	public function min($field);
+
+	/**
+	 * 聚合函数
+	 * @param string $functionName
+	 * @param string $fieldName
+	 * @return mixed
+	 */
+	public function aggregate($functionName, $fieldName);
+
+	/**
+	 * 设置update/insert数据
+	 * 
+	 * @param array $data
+	 * @return static
+	 */
+	public function setData($data);
+
+	/**
+	 * 设置update/insert的字段
+	 *
+	 * @param stirng $fieldName
+	 * @param mixed $value
+	 * @return static
+	 */
+	public function setField($fieldName, $value);
+
+	/**
+	 * 设置update/insert的字段，值为表达式，原样代入
+	 *
+	 * @param stirng $fieldName
+	 * @param string $exp
+	 * @return static
+	 */
+	public function setFieldExp($fieldName, $exp);
+
+	/**
+	 * 设置递增字段
+	 *
+	 * @param stirng $fieldName
+	 * @param float $incValue
+	 * @return static
+	 */
+	public function setFieldInc($fieldName, float $incValue = 1);
+
+	/**
+	 * 设置递减字段
+	 *
+	 * @param stirng $fieldName
+	 * @param float $decValue
+	 * @return static
+	 */
+	public function setFieldDec($fieldName, float $decValue = 1);
+
+	/**
+	 * 设置是否延迟调用
+	 *
+	 * @param boolean $defer
+	 * @return static
+	 */
+	public function setDefer($defer = true);
 }

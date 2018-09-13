@@ -18,6 +18,7 @@ abstract class Tool
 
 	public static function run()
 	{
+		static::outImi();
 		if(!isset($_SERVER['argv'][1]))
 		{
 			throw new \RuntimeException(sprintf('tool args error!'));
@@ -220,4 +221,21 @@ abstract class Tool
 		return trim(preg_replace('/@.+\n/', '', preg_replace('/\/*\s*\*\s*\/*/', PHP_EOL, $content)));
 	}
 
+	/**
+	 * 输出 imi 图标
+	 *
+	 * @return void
+	 */
+	public static function outImi()
+	{
+		echo <<<STR
+ _               _ 
+(_)  _ __ ___   (_)
+| | | '_ ` _ \  | |
+| | | | | | | | | |
+|_| |_| |_| |_| |_|
+
+
+STR;
+	}
 }

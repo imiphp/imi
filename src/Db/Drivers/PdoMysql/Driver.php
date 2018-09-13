@@ -1,16 +1,17 @@
 <?php
 namespace Imi\Db\Drivers\PdoMysql;
 
+use Imi\Db\Drivers\Base;
+use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
-use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Exception\DbException;
-use Imi\Bean\BeanFactory;
+use Imi\Db\Interfaces\IStatement;
 
 /**
  * PDO MySQL驱动
  */
-class Driver implements IDb
+class Driver extends Base implements IDb
 {
 	use SqlParser;
 

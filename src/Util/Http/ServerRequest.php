@@ -193,7 +193,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * These values MAY be prepared from $_FILES or the message body during
      * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return array An array tree of UploadedFileInterface instances; an empty
+     * @return \Psr\Http\Message\UploadedFileInterface[] An array tree of UploadedFileInterface instances; an empty
      *     array MUST be returned if no data is present.
      */
     public function getUploadedFiles()
@@ -371,9 +371,9 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     protected function setUploadedFiles(self $object, array $files)
     {
         $object->files = [];
-        foreach($files as $file)
+        foreach($files as $key => $file)
         {
-            $object->files[] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+            $object->files[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
         }
         return $object;
     }

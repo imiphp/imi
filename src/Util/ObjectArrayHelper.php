@@ -156,4 +156,28 @@ abstract class ObjectArrayHelper
 		return null !== static::get($object, $name);
 	}
 
+	/**
+	 * 将第二纬某字段值放入到一个数组中
+	 * 功能类似array_column，这个方法也支持对象
+	 *
+	 * @param array $array
+	 * @param string $columnName
+	 * @return array
+	 */
+	public static function column($array, $columnName)
+	{
+		$result = [];
+		foreach($array as $row)
+		{
+			if(is_object($row))
+			{
+				$result[] = $row->$columnName;
+			}
+			else
+			{
+				$result[] = $row[$columnName];
+			}
+		}
+		return $result;
+	}
 }

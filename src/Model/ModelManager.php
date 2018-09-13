@@ -96,7 +96,7 @@ abstract class ModelManager
 	 * 获取当前模型主键
 	 * 如果是联合主键返回数组，否则为字符串
 	 * @param string|object $object
-	 * @return string|string[]
+	 * @return string|string[]|null
 	 */
 	public static function getId($object)
 	{
@@ -104,6 +104,32 @@ abstract class ModelManager
 		if(null !== $tableAnnotation)
 		{
 			return $tableAnnotation->id;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * 获取第一个主键
+	 *
+	 * @param [type] $object
+	 * @return string|null
+	 */
+	public static function getFirstId($object)
+	{
+		$tableAnnotation = static::getAnnotation($object, 'Table');
+		if(null !== $tableAnnotation)
+		{
+			if(is_array($tableAnnotation->id))
+			{
+				return reset($tableAnnotation->id);
+			}
+			else
+			{
+				return $tableAnnotation->id;
+			}
 		}
 		else
 		{
