@@ -9,6 +9,7 @@ use Imi\Util\Swoole;
 use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Listener;
 use Imi\Server\Event\Param\AppInitEventParam;
+use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
 
@@ -33,30 +34,19 @@ class AfterWorkerStart implements IWorkerStartEventListener
 			], $e->getTarget(), AppInitEventParam::class);
 
 			file_put_contents($initFlagFile, Swoole::getMasterPID());
-		}
-		else
-		{
-			while(true)
+
+			$server = $e->server->getSwooleServer();
+			// 触发当前进程的PipeMessage事件
+			Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
+				'server'	=>	$e->server,
+				'workerID'	=>	$e->workerID,
+				'message'	=>	'app.inited',
+			], $this, PipeMessageEventParam::class);
+			// 通知其它worker进程
+			for($i = 1; $i < $server->setting['worker_num']; ++$i)
 			{
-				if(is_file($initFlagFile) && file_get_contents($initFlagFile) == Swoole::getMasterPID())
-				{
-					break;
-				}
-				sleep(1);
+				$server->sendMessage('app.inited', $i);
 			}
 		}
-		// worker 初始化
-		Worker::inited();
-		foreach($GLOBALS['WORKER_START_END_RESUME_COIDS'] as $id)
-		{
-			Coroutine::resume($id);
-		}
-		unset($GLOBALS['WORKER_START_END_RESUME_COIDS']);
-
-		// 触发项目的workerstart事件
-		Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
-			'server'	=>	$e->server,
-			'workerID'	=>	$e->workerID,
-		], $e->getTarget(), WorkerStartEventParam::class);
 	}
 }
