@@ -1,4 +1,4 @@
-# 数据库操作
+# 数据库
 
 数据库连接池配置方式已经在连接池里讲过，这里就不重复了，直接说使用方法。
 
@@ -423,4 +423,24 @@ $sql = $result->getSql();
 
 ```php
 $statement = $result->getStatement(); // \Imi\Db\Interfaces\IStatement
+```
+
+## 延迟收包
+
+延迟收包的概念请查阅 Swoole 官方文档：https://wiki.swoole.com/wiki/page/587.html
+
+### 延迟收包示例
+
+如下代码所示，如果是传统方式调用，总耗时 2s 起，而使用延迟收包只需要 1s 多即可。
+
+```php
+$time = microtime(true);
+
+$db1 = Db::query(null, null, true)->setDefer();
+$db2 = Db::query(null, null, true)->setDefer();
+
+$defer1 = $db1->execute('select sleep(1)');
+$defer2 = $db2->execute('select sleep(1)');
+
+var_dump(microtime(true) - $time);
 ```
