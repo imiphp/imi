@@ -10,6 +10,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\ManyToMany;
 
 
 abstract class Update
@@ -52,6 +53,10 @@ abstract class Update
 		else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
 		{
 			static::parseByOneToMany($model, $propertyName, $annotation);
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+		{
+			static::parseByManyToMany($model, $propertyName, $annotation);
 		}
 	}
 
@@ -154,6 +159,78 @@ abstract class Update
 			foreach($model->$propertyName as $row)
 			{
 				$row->$rightField = $model->$leftField;
+				$row->save();
+			}
+		}
+	}
+
+	/**
+	 * 处理多对多更新
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
+	 * @return void
+	 */
+	public static function parseByManyToMany($model, $propertyName, $annotation)
+	{
+		$className = BeanFactory::getObjectClass($model);
+
+		$struct = new ManyToMany($className, $propertyName, $annotation);
+		$middleModel = $struct->getMiddleModel();
+		$middleLeftField = $struct->getMiddleLeftField();
+		$middleRightField = $struct->getMiddleRightField();
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
+		$relationParser = RelationParser::getInstance();
+		$autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
+		// 是否删除无关数据
+		if($autoUpdate)
+		{
+			$orphanRemoval = $autoUpdate->orphanRemoval;
+		}
+		else if($autoSave)
+		{
+			$orphanRemoval = $autoSave->orphanRemoval;
+		}
+		else
+		{
+			$orphanRemoval = false;
+		}
+
+		if($orphanRemoval)
+		{
+			// 删除无关联数据
+			$oldRightIDs = $middleModel::query()->where($middleLeftField, '=', $model->$leftField)->field($middleRightField)->select()->getColumn();
+
+			$updateIDs = [];
+			foreach($model->$propertyName as $row)
+			{
+				if(null !== $row->$middleRightField)
+				{
+					$updateIDs[] = $row->$middleRightField;
+				}
+				$row->$middleLeftField = $model->$leftField;
+				$row->save();
+			}
+
+			$deleteIDs = array_diff($oldRightIDs, $updateIDs);
+
+			if(isset($deleteIDs[0]))
+			{
+				// 批量删除
+				$middleModel::deleteBatch(function(IQuery $query) use($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs){
+					$query->where($middleLeftField, '=', $model->$leftField)->whereIn($middleRightField, $deleteIDs);
+				});
+			}
+		}
+		else
+		{
+			// 直接更新
+			foreach($model->$propertyName as $row)
+			{
+				$row->$middleLeftField = $model->$leftField;
 				$row->save();
 			}
 		}
