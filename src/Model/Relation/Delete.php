@@ -9,6 +9,7 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\ManyToMany;
 
 
 abstract class Delete
@@ -42,6 +43,10 @@ abstract class Delete
 		else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
 		{
 			static::parseByOneToMany($model, $propertyName, $annotation);
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+		{
+			static::parseByManyToMany($model, $propertyName, $annotation);
 		}
 	}
 
@@ -84,6 +89,28 @@ abstract class Delete
 
 		$rightModel::deleteBatch(function(IQuery $query) use($model, $leftField, $rightField){
 			$query->where($rightField, '=', $model->$leftField);
+		});
+	}
+
+	/**
+	 * 处理多对多删除
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
+	 * @return void
+	 */
+	public static function parseByManyToMany($model, $propertyName, $annotation)
+	{
+		$className = BeanFactory::getObjectClass($model);
+
+		$struct = new ManyToMany($className, $propertyName, $annotation);
+		$middleModel = $struct->getMiddleModel();
+		$middleLeftField = $struct->getMiddleLeftField();
+		$leftField = $struct->getLeftField();
+
+		$middleModel::deleteBatch(function(IQuery $query) use($model, $leftField, $middleLeftField){
+			$query->where($middleLeftField, '=', $model->$leftField);
 		});
 	}
 }
