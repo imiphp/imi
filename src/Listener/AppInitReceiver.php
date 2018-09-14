@@ -25,7 +25,6 @@ class AppInitReceiver implements IPipeMessageEventListener
 		{
 			// worker 初始化
 			Worker::inited();
-			fwrite(STDOUT, count($GLOBALS['WORKER_START_END_RESUME_COIDS']) . PHP_EOL);
 			foreach($GLOBALS['WORKER_START_END_RESUME_COIDS'] as $id)
 			{
 				Coroutine::resume($id);
