@@ -92,7 +92,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
 	public function valid()
 	{
-		return false !== current($this->list);
+		return null !== key($this->list);
 	}
 
 	/**

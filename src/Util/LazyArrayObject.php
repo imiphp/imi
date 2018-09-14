@@ -72,7 +72,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
 	public function valid()
 	{
-		return false !== current($this->data);
+		return null !== key($this->data);
 	}
 
 	public function __set($name, $value) 
