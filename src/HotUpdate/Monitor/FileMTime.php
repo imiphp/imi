@@ -18,12 +18,19 @@ class FileMTime extends BaseMonitor
 	{
 		foreach($this->excludePaths as $i => $path)
 		{
-			$this->excludePaths[$i] = realpath($path);
+			if(!$this->excludePaths[$i] = realpath($path))
+			{
+				unset($this->excludePaths[$i]);
+			}
 		}
 		$this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
 		foreach($this->includePaths as $i => $path)
 		{
-			$this->includePaths[$i] = $path = realpath($path);
+			if(!$this->includePaths[$i] = $path = realpath($path))
+			{
+				unset($this->includePaths[$i]);
+				continue;
+			}
 			$directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
 			$iterator = new \RecursiveIteratorIterator($directory);
 			if('' === $this->excludeRule)
@@ -43,6 +50,7 @@ class FileMTime extends BaseMonitor
 				}
 			}
 		}
+		var_dump($this->includePaths);
 	}
 
 	/**
