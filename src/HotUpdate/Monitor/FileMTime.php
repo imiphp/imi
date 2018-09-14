@@ -75,6 +75,7 @@ class FileMTime extends BaseMonitor
 				// 无排除规则处理
 				foreach($iterator as $fileName => $fileInfo)
 				{
+					$fileName = realpath($fileName);
 					if($this->parseCheckFile($fileName))
 					{
 						$changed = true;
@@ -88,7 +89,8 @@ class FileMTime extends BaseMonitor
 				$regex = new \RegexIterator($iterator, $rule, \RecursiveRegexIterator::GET_MATCH);
 				foreach ($regex as $item)
 				{
-					if($this->parseCheckFile($item[0]))
+					$fileName = realpath($item[0]);
+					if($this->parseCheckFile($fileName))
 					{
 						$changed = true;
 					}
