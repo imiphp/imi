@@ -50,7 +50,6 @@ class FileMTime extends BaseMonitor
 				}
 			}
 		}
-		var_dump($this->includePaths);
 	}
 
 	/**
