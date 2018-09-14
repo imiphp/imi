@@ -538,6 +538,11 @@ abstract class Model extends BaseModel
 			{
 				continue;
 			}
+			// bit类型转为0和1
+			if('bit' === $column->type)
+			{
+				$value = (int)$value;
+			}
 			$result[$name] = $value;
 		}
 		return $result;
