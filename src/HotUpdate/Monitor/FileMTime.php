@@ -16,9 +16,14 @@ class FileMTime extends BaseMonitor
 	 */
 	protected function init()
 	{
-		$this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
-		foreach($this->includePaths as $path)
+		foreach($this->excludePaths as $i => $path)
 		{
+			$this->excludePaths[$i] = realpath($path);
+		}
+		$this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
+		foreach($this->includePaths as $i => $path)
+		{
+			$this->includePaths[$i] = $path = realpath($path);
 			$directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
 			$iterator = new \RecursiveIteratorIterator($directory);
 			if('' === $this->excludeRule)
@@ -75,7 +80,6 @@ class FileMTime extends BaseMonitor
 				// 无排除规则处理
 				foreach($iterator as $fileName => $fileInfo)
 				{
-					$fileName = realpath($fileName);
 					if($this->parseCheckFile($fileName))
 					{
 						$changed = true;
@@ -89,8 +93,7 @@ class FileMTime extends BaseMonitor
 				$regex = new \RegexIterator($iterator, $rule, \RecursiveRegexIterator::GET_MATCH);
 				foreach ($regex as $item)
 				{
-					$fileName = realpath($item[0]);
-					if($this->parseCheckFile($fileName))
+					if($this->parseCheckFile($item[0]))
 					{
 						$changed = true;
 					}
