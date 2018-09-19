@@ -68,8 +68,8 @@ abstract class ProcessManager
             App::initWorker();
             // 进程开始事件
             Event::trigger('IMI.PROCESS.BEGIN', [
-                'name'        =>    $name,
-                'process'    =>    $swooleProcess,
+                'name'      => $name,
+                'process'   => $swooleProcess,
             ]);
             // 执行任务
             call_user_func([$processInstance, 'run'], $swooleProcess);
@@ -80,8 +80,8 @@ abstract class ProcessManager
             }
             // 进程结束事件
             Event::trigger('IMI.PROCESS.END', [
-                'name'        =>    $name,
-                'process'    =>    $swooleProcess,
+                'name'      => $name,
+                'process'   => $swooleProcess,
             ]);
         }, $redirectStdinStdout, $pipeType);
         return $process;
@@ -130,7 +130,7 @@ abstract class ProcessManager
      * 不返回\Swoole\Process对象实例
      * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
      * array(
-     *     'code' => 0,
+     *     'code'   => 0,
      *     'signal' => 0,
      *     'output' => '',
      * );
@@ -159,7 +159,7 @@ abstract class ProcessManager
      * 运行进程，创建一个协程执行进程，无法获取进程执行结果
      * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
      * array(
-     *     'code' => 0,
+     *     'code'   => 0,
      *     'signal' => 0,
      *     'output' => '',
      * );
@@ -213,8 +213,8 @@ abstract class ProcessManager
             return false;
         }
         static::$lockMap[$name] = [
-            'fileName'    =>    $fileName,
-            'fp'        =>    $fp,
+            'fileName'  => $fileName,
+            'fp'        => $fp,
         ];
         return true;
     }

@@ -33,8 +33,8 @@ class AppInitReceiver implements IPipeMessageEventListener
 
             // 触发项目的workerstart事件
             Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
-                'server'    =>    $e->server,
-                'workerID'    =>    Worker::getWorkerID(),
+                'server'    => $e->server,
+                'workerID'  => Worker::getWorkerID(),
             ], $e->getTarget(), WorkerStartEventParam::class);
 
             $e->stopPropagation();

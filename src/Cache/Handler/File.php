@@ -346,7 +346,7 @@ class File extends Base
     protected function writeExData($fileName, $ttl)
     {
         $data = [
-            'ttl'    =>    $ttl,
+            'ttl' => $ttl,
         ];
         FileUtil::writeFile($this->getExDataFileName($fileName), \Swoole\Serialize::pack($data));
     }

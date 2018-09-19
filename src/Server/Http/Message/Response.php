@@ -64,13 +64,13 @@ class Response extends \Imi\Util\Http\Response
     {
         $self = clone $this;
         $self->cookies[] = [
-            'key'        =>    $key,
-            'value'        =>    $value,
-            'expire'    =>    $expire,
-            'path'        =>    $path,
-            'domain'    =>    $domain,
-            'secure'    =>    $secure,
-            'httponly'    =>    $httponly,
+            'key'       => $key,
+            'value'     => $value,
+            'expire'    => $expire,
+            'path'      => $path,
+            'domain'    => $domain,
+            'secure'    => $secure,
+            'httponly'  => $httponly,
         ];
         return $self;
     }

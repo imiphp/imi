@@ -61,7 +61,7 @@ class HttpRouteInit implements IEventListener
                     {
                         $methodItem['routes'] = [
                             new Route([
-                                'url'    =>    $methodName,
+                                'url' => $methodName,
                             ])
                         ];
                     }
@@ -92,8 +92,8 @@ class HttpRouteInit implements IEventListener
                             $routeItem->url = $classAnnotation->prefix . $routeItem->url;
                         }
                         $route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
-                            'middlewares'    =>    $middlewares,
-                            'wsConfig'        =>    $methodItem['WSConfig'] ?? null,
+                            'middlewares'   => $middlewares,
+                            'wsConfig'      => $methodItem['WSConfig'] ?? null,
                         ]);
                     }
                 }
@@ -128,7 +128,7 @@ class HttpRouteInit implements IEventListener
                 $callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
             }
             $route->addRuleAnnotation($routeAnnotation, $callable, [
-                'middlewares'    =>    $routeOption['middlewares'] ?? [],
+                'middlewares' => $routeOption['middlewares'] ?? [],
             ]);
         }
     }

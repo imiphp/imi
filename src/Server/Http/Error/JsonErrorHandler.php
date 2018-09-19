@@ -26,18 +26,18 @@ class JsonErrorHandler implements IErrorHandler
         if($this->releaseShow || App::isDebug())
         {
             $data = [
-                'message'    =>    $throwable->getMessage(),
-                'code'        =>    $throwable->getCode(),
-                'file'        =>    $throwable->getFile(),
-                'line'        =>    $throwable->getLine(),
-                'trace'        =>    explode(PHP_EOL, $throwable->getTraceAsString()),
+                'message'   => $throwable->getMessage(),
+                'code'      => $throwable->getCode(),
+                'file'      => $throwable->getFile(),
+                'line'      => $throwable->getLine(),
+                'trace'     => explode(PHP_EOL, $throwable->getTraceAsString()),
             ];
         }
         else
         {
             $data = [
-                'success'    =>    false,
-                'message'    =>    'error',
+                'success' => false,
+                'message' => 'error',
             ];
         }
         RequestContext::get('response')

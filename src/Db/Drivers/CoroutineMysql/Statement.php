@@ -101,10 +101,10 @@ class Statement extends BaseStatement implements IStatement
     public function bindColumn($column, &$param, int $type = null, int $maxLen = null, $driverData = null): bool
     {
         $this->columnBinds[$column] = [
-            'param'        =>    &$param,
-            'type'        =>    $type,
-            'maxLen'    =>    $maxLen,
-            'driverData'=>    $driverData
+            'param'         => &$param,
+            'type'          => $type,
+            'maxLen'        => $maxLen,
+            'driverData'    => $driverData
         ];
         return true;
     }

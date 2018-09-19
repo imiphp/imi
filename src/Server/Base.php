@@ -127,7 +127,7 @@ abstract class Base
             $this->swooleServer->on('start', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.START', [
-                        'server'    =>    $this,
+                        'server' => $this,
                     ], $this, StartEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -139,7 +139,7 @@ abstract class Base
             $this->swooleServer->on('shutdown', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.SHUTDOWN', [
-                        'server'    =>    $this,
+                        'server' => $this,
                     ], $this, ShutdownEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -151,8 +151,8 @@ abstract class Base
             $this->swooleServer->on('WorkerStart', function(\swoole_server $server, int $workerID){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
-                        'server'    =>    $this,
-                        'workerID'    =>    $workerID,
+                        'server'    => $this,
+                        'workerID'  => $workerID,
                     ], $this, WorkerStartEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -164,8 +164,8 @@ abstract class Base
             $this->swooleServer->on('WorkerStop', function(\swoole_server $server, int $workerID){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
-                        'server'    =>    $this,
-                        'workerID'    =>    $workerID,
+                        'server'    => $this,
+                        'workerID'  => $workerID,
                     ], $this, WorkerStopEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -177,7 +177,7 @@ abstract class Base
             $this->swooleServer->on('ManagerStart', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.START', [
-                        'server'    =>    $this,
+                        'server' => $this,
                     ], $this, ManagerStartEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -189,7 +189,7 @@ abstract class Base
             $this->swooleServer->on('ManagerStop', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.STOP', [
-                        'server'    =>    $this,
+                        'server' => $this,
                     ], $this, ManagerStopEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -201,10 +201,10 @@ abstract class Base
             $this->swooleServer->on('task', function(\swoole_server $server, int $taskID, int $workerID, $data){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.TASK', [
-                        'server'    =>    $this,
-                        'taskID'    =>    $taskID,
-                        'workerID'    =>    $workerID,
-                        'data'        =>    $data,
+                        'server'    => $this,
+                        'taskID'    => $taskID,
+                        'workerID'  => $workerID,
+                        'data'      => $data,
                     ], $this, TaskEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -216,9 +216,9 @@ abstract class Base
             $this->swooleServer->on('finish', function(\swoole_server $server, int $taskID, $data){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.FINISH', [
-                        'server'    =>    $this,
-                        'taskID'    =>    $taskID,
-                        'data'        =>    $data,
+                        'server'    => $this,
+                        'taskID'    => $taskID,
+                        'data'      => $data,
                     ], $this, FinishEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -230,9 +230,9 @@ abstract class Base
             $this->swooleServer->on('PipeMessage', function(\swoole_server $server, int $workerID, $message){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                        'server'    =>    $this,
-                        'workerID'    =>    $workerID,
-                        'message'    =>    $message,
+                        'server'    => $this,
+                        'workerID'  => $workerID,
+                        'message'   => $message,
                     ], $this, PipeMessageEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -244,11 +244,11 @@ abstract class Base
             $this->swooleServer->on('WorkerError', function(\swoole_server $server, int $workerID, int $workerPid, int $exitCode, int $signal){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER_ERROR', [
-                        'server'    =>    $this,
-                        'workerID'    =>    $workerID,
-                        'workerPid'    =>    $workerPid,
-                        'exitCode'    =>    $exitCode,
-                        'signal'    =>    $signal,
+                        'server'    => $this,
+                        'workerID'  => $workerID,
+                        'workerPid' => $workerPid,
+                        'exitCode'  => $exitCode,
+                        'signal'    => $signal,
                     ], $this, WorkerErrorEventParam::class);
                 }
                 catch(\Throwable $ex)

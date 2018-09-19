@@ -56,10 +56,10 @@ class Server extends Base
     protected function getServerInitConfig()
     {
         return [
-            'host'        =>    isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
-            'port'        =>    isset($this->config['port']) ? $this->config['port'] : 8080,
-            'sockType'    =>    isset($this->config['sockType']) ? (SWOOLE_SOCK_TCP | $this->config['sockType']) : SWOOLE_SOCK_TCP,
-            'mode'        =>    isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
+            'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
+            'port'      => isset($this->config['port']) ? $this->config['port'] : 8080,
+            'sockType'  => isset($this->config['sockType']) ? (SWOOLE_SOCK_TCP | $this->config['sockType']) : SWOOLE_SOCK_TCP,
+            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
         ];
     }
 
@@ -74,9 +74,9 @@ class Server extends Base
         $server->on('connect', function(\swoole_server $server, $fd, $reactorID){
             try{
                 $this->trigger('connect', [
-                    'server'    =>    $this,
-                    'fd'        =>    $fd,
-                    'reactorID'    =>    $reactorID,
+                    'server'    => $this,
+                    'fd'        => $fd,
+                    'reactorID' => $reactorID,
                 ], $this, ConnectEventParam::class);
             }
             catch(\Throwable $ex)
@@ -88,10 +88,10 @@ class Server extends Base
         $server->on('receive', function(\swoole_server $server, $fd, $reactorID, $data){
             try{
                 $this->trigger('receive', [
-                    'server'    =>    $this,
-                    'fd'        =>    $fd,
-                    'reactorID'    =>    $reactorID,
-                    'data'        =>    $data,
+                    'server'    => $this,
+                    'fd'        => $fd,
+                    'reactorID' => $reactorID,
+                    'data'      => $data,
                 ], $this, ReceiveEventParam::class);
             }
             catch(\Throwable $ex)
@@ -103,9 +103,9 @@ class Server extends Base
         $server->on('close', function(\swoole_server $server, $fd, $reactorID){
             try{
                 $this->trigger('close', [
-                    'server'    =>    $this,
-                    'fd'        =>    $fd,
-                    'reactorID'    =>    $reactorID,
+                    'server'    => $this,
+                    'fd'        => $fd,
+                    'reactorID' => $reactorID,
                 ], $this, CloseEventParam::class);
             }
             catch(\Throwable $ex)
@@ -117,8 +117,8 @@ class Server extends Base
         $server->on('BufferFull', function(\swoole_server $server, $fd){
             try{
                 $this->trigger('bufferFull', [
-                    'server'    =>    $this,
-                    'fd'        =>    $fd,
+                    'server'    => $this,
+                    'fd'        => $fd,
                 ], $this, BufferEventParam::class);
             }
             catch(\Throwable $ex)
@@ -130,8 +130,8 @@ class Server extends Base
         $server->on('BufferEmpty', function(\swoole_server $server, $fd){
             try{
                 $this->trigger('bufferEmpty', [
-                    'server'    =>    $this,
-                    'fd'        =>    $fd,
+                    'server'    => $this,
+                    'fd'        => $fd,
                 ], $this, BufferEventParam::class);
             }
             catch(\Throwable $ex)

@@ -44,14 +44,14 @@ class Driver extends Base implements IDb
     /**
      * 参数格式：
      * [
-     * 'host' => 'MySQL IP地址',
-     * 'username' => '数据用户',
-     * 'password' => '数据库密码',
-     * 'database' => '数据库名',
-     * 'port'    => 'MySQL端口 默认3306 可选参数',
-     * 'timeout' => '建立连接超时时间',
-     * 'charset' => '字符集',
-     * 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+     * 'host'       => 'MySQL IP地址',
+     * 'username'   => '数据用户',
+     * 'password'   => '数据库密码',
+     * 'database'   => '数据库名',
+     * 'port'       => 'MySQL端口 默认3306 可选参数',
+     * 'timeout'    => '建立连接超时时间',
+     * 'charset'    => '字符集',
+     * 'strict_type'=> false, //开启严格模式，返回的字段将自动转为数字类型
      * ]
      * @param array $option
      */

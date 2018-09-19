@@ -30,9 +30,9 @@ class Init implements IEventListener
             if(isset($classOption['MemoryTable']))
             {
                 MemoryTableManager::addName($classOption['MemoryTable']->name, [
-                    'size'    =>    $classOption['MemoryTable']->size,
-                    'conflictProportion'    =>    $classOption['MemoryTable']->conflictProportion,
-                    'columns'    =>    $this->getMemoryTableColumns($classOption),
+                    'size'                  => $classOption['MemoryTable']->size,
+                    'conflictProportion'    => $classOption['MemoryTable']->conflictProportion,
+                    'columns'               => $this->getMemoryTableColumns($classOption),
                 ]);
             }
         }
@@ -48,9 +48,9 @@ class Init implements IEventListener
             {
                 list($type, $size) = $this->parseColumnTypeAndSize($propOption['Column']);
                 $columns[] = [
-                    'name'    =>    $propOption['Column']->name,
-                    'type'    =>    $type,
-                    'size'    =>    $size,
+                    'name' => $propOption['Column']->name,
+                    'type' => $type,
+                    'size' => $size,
                 ];
             }
         }

@@ -254,7 +254,7 @@ class Redis implements IGroupHandler
         if(!isset($this->groups[$groupName]))
         {
             $this->groups[$groupName] = [
-                'maxClient'        =>    $maxClients,
+                'maxClient' => $maxClients,
             ];
         }
     }

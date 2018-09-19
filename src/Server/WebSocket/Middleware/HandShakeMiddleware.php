@@ -45,9 +45,9 @@ class HandShakeMiddleware implements MiddlewareInterface
         $key = base64_encode(sha1($secWebSocketKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
 
         $headers = [
-            'Upgrade' => 'websocket',
-            'Connection' => 'Upgrade',
-            'Sec-WebSocket-Accept' => $key,
+            'Upgrade'               => 'websocket',
+            'Connection'            => 'Upgrade',
+            'Sec-WebSocket-Accept'  => $key,
             'Sec-WebSocket-Version' => '13',
         ];
 

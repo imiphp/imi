@@ -57,10 +57,10 @@ class Server extends Base
     protected function getServerInitConfig()
     {
         return [
-            'host'        =>    isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
-            'port'        =>    isset($this->config['port']) ? $this->config['port'] : 8080,
-            'sockType'    =>    isset($this->config['sockType']) ? $this->config['sockType'] : SWOOLE_SOCK_TCP,
-            'mode'        =>    isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
+            'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
+            'port'      => isset($this->config['port']) ? $this->config['port'] : 8080,
+            'sockType'  => isset($this->config['sockType']) ? $this->config['sockType'] : SWOOLE_SOCK_TCP,
+            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
         ];
     }
 
@@ -77,8 +77,8 @@ class Server extends Base
                 $request = new Request($this, $swooleRequest);
                 $response = new Response($this, $swooleResponse);
                 $this->trigger('handShake', [
-                    'request'    =>    &$request,
-                    'response'    =>    &$response,
+                    'request'   => &$request,
+                    'response'  => &$response,
                 ], $this, HandShakeEventParam::class);
             }
             catch(\Throwable $ex)
@@ -90,8 +90,8 @@ class Server extends Base
         $server->on('message', function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) {
             try{
                 $this->trigger('message', [
-                    'server'    =>    $this,
-                    'frame'        =>    $frame,
+                    'server'    => $this,
+                    'frame'     => $frame,
                 ], $this, MessageEventParam::class);
             }
             catch(\Throwable $ex)
@@ -103,9 +103,9 @@ class Server extends Base
         $server->on('close', function(\swoole_http_server $server, $fd, $reactorID){
             try{
                 $this->trigger('close', [
-                    'server'    =>    $this,
-                    'fd'        =>    $fd,
-                    'reactorID'    =>    $reactorID,
+                    'server'    => $this,
+                    'fd'        => $fd,
+                    'reactorID' => $reactorID,
                 ], $this, CloseEventParam::class);
             }
             catch(\Throwable $ex)

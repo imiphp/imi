@@ -62,10 +62,10 @@ class HttpRoute extends BaseRoute
                     {
                         $params = array_merge($params, $domainParams);
                         return [
-                            'params'        =>    $params,
-                            'callable'        =>    $this->parseCallable($params, $item['callable']),
-                            'middlewares'    =>    $item['middlewares'] ?? [],
-                            'wsConfig'        =>    $item['wsConfig'],
+                            'params'        => $params,
+                            'callable'      => $this->parseCallable($params, $item['callable']),
+                            'middlewares'   => $item['middlewares'] ?? [],
+                            'wsConfig'      => $item['wsConfig'],
                         ];
                     }
                 }
@@ -95,15 +95,15 @@ class HttpRoute extends BaseRoute
                     $params[$fieldName] = $matches[$i + 1][0];
                 }
                 $result = [
-                    'result'    =>    true,
-                    'params'    =>    $params,
+                    'result' => true,
+                    'params' => $params,
                 ];
             }
             else
             {
                 $result = [
-                    'result'    =>    false,
-                    'params'    =>    $params,
+                    'result' => false,
+                    'params' => $params,
                 ];
             }
             // 最大缓存数量处理

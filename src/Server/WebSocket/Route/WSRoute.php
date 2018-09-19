@@ -31,8 +31,8 @@ class WSRoute implements IRoute
             if($this->checkCondition($data, $item['annotation']))
             {
                 return [
-                    'callable'        =>    $this->parseCallable([], $item['callable']),
-                    'middlewares'    =>    $item['middlewares'] ?? [],
+                    'callable'      => $this->parseCallable([], $item['callable']),
+                    'middlewares'   => $item['middlewares'] ?? [],
                 ];
             }
         }
@@ -49,8 +49,8 @@ class WSRoute implements IRoute
     public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, $options = [])
     {
         $this->rules[$this->hashKey($annotation)] = array_merge([
-            'annotation'=>    $annotation,
-            'callable'    =>    $callable,
+            'annotation'=> $annotation,
+            'callable'  => $callable,
         ], $options);
     }
 

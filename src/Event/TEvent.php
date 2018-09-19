@@ -38,8 +38,8 @@ trait TEvent
         }
         // 数据映射
         $this->events[$name]->attach($callback, [
-            'callback'    =>    $callback,
-            'priority'    =>    $priority,
+            'callback' => $callback,
+            'priority' => $priority,
         ]);
         // 事件队列
         $this->eventQueue[$name]->insert($callback, $priority);
@@ -64,9 +64,9 @@ trait TEvent
         }
         // 数据映射
         $this->events[$name]->attach($callback, [
-            'callback'    =>    $callback,
-            'priority'    =>    $priority,
-            'one'        =>    true,
+            'callback'  => $callback,
+            'priority'  => $priority,
+            'one'       => true,
         ]);
         // 事件队列
         $this->eventQueue[$name]->insert($callback, $priority);

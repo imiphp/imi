@@ -24,12 +24,12 @@ abstract class BaseRoute implements IRoute
         if(null === $annotation)
         {
             $annotation = new \Imi\Server\Route\Annotation\Route([
-                'url'    =>    $url,
+                'url' => $url,
             ]);
         }
         $this->rules[$url][$this->hashKey($annotation)] = [
-            'annotation'=>    $annotation,
-            'callable'    =>    $callable,
+            'annotation'=> $annotation,
+            'callable'  => $callable,
         ];
     }
 
@@ -43,8 +43,8 @@ abstract class BaseRoute implements IRoute
     public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
     {
         $this->rules[$annotation->url][$this->hashKey($annotation)] = array_merge([
-            'annotation'=>    $annotation,
-            'callable'    =>    $callable,
+            'annotation'=> $annotation,
+            'callable'  => $callable,
         ], $options);
     }
 

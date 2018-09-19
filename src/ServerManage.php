@@ -48,9 +48,9 @@ abstract class ServerManage
     {
         // 创建服务器对象前置操作
         Event::trigger('IMI.SERVER.CREATE.BEFORE', [
-            'name'            =>    $name,
-            'config'        =>    $config,
-            'isSubServer'    =>    $isSubServer,
+            'name'          => $name,
+            'config'        => $config,
+            'isSubServer'   => $isSubServer,
         ]);
         // 服务器类名
         $serverClassName = 'Imi\Server\\' . $config['type'] . '\Server';
@@ -59,9 +59,9 @@ abstract class ServerManage
         static::$servers[$name] = $server;
         // 创建服务器对象前置后作
         Event::trigger('IMI.SERVER.CREATE.AFTER', [
-            'name'            =>    $name,
-            'config'        =>    $config,
-            'isSubServer'    =>    $isSubServer,
+            'name'          => $name,
+            'config'        => $config,
+            'isSubServer'   => $isSubServer,
         ]);
     }
 }

@@ -32,8 +32,8 @@ class ViewParser extends BaseParser
             {
                 case static::TARGET_CLASS:
                     $this->data[$className] = [
-                        'view'        =>    $annotation,
-                        'methods'    =>    [],
+                        'view'      => $annotation,
+                        'methods'   => [],
                     ];
                     break;
                 case static::TARGET_METHOD:
@@ -84,7 +84,7 @@ class ViewParser extends BaseParser
         else
         {
             $view = new View([
-                'template'    =>    File::path($shortClassName, $methodName),
+                'template' => File::path($shortClassName, $methodName),
             ]);
         }
         // baseDir

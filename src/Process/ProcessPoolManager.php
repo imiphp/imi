@@ -56,13 +56,13 @@ abstract class ProcessPoolManager
             App::initWorker();
             // 进程开始事件
             Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [
-                'name'            =>    $name,
-                'pool'            =>    $pool,
-                'workerId'        =>    $workerId,
-                'workerNum'        =>    $workerNum,
-                'args'            =>    $args,
-                'ipcType'        =>    $ipcType,
-                'msgQueueKey'    =>    $msgQueueKey,
+                'name'          => $name,
+                'pool'          => $pool,
+                'workerId'      => $workerId,
+                'workerNum'     => $workerNum,
+                'args'          => $args,
+                'ipcType'       => $ipcType,
+                'msgQueueKey'   => $msgQueueKey,
             ]);
             // 执行任务
             call_user_func([$processInstance, 'run'], $pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
@@ -72,13 +72,13 @@ abstract class ProcessPoolManager
         $pool->on('WorkerStop', function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey) {
             // 进程结束事件
             Event::trigger('IMI.PROCESS_POOL.PROCESS.END', [
-                'name'            =>    $name,
-                'pool'            =>    $pool,
-                'workerId'        =>    $workerId,
-                'workerNum'        =>    $workerNum,
-                'args'            =>    $args,
-                'ipcType'        =>    $ipcType,
-                'msgQueueKey'    =>    $msgQueueKey,
+                'name'          => $name,
+                'pool'          => $pool,
+                'workerId'      => $workerId,
+                'workerNum'     => $workerNum,
+                'args'          => $args,
+                'ipcType'       => $ipcType,
+                'msgQueueKey'   => $msgQueueKey,
             ]);
         });
         

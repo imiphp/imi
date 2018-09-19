@@ -23,18 +23,18 @@ class Logger extends AbstractLogger
      */
     protected $coreHandlers = [
         [
-            'class'        =>    \Imi\Log\Handler\Console::class,
-            'options'    =>    [
-                'levels'    =>    [
+            'class'     => \Imi\Log\Handler\Console::class,
+            'options'   => [
+                'levels'    => [
                     LogLevel::INFO,
                 ],
-                'format'    =>    '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
+                'format'    => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
             ],
         ],
         [
-            'class'        =>    \Imi\Log\Handler\Console::class,
-            'options'    =>    [
-                'levels'    =>    [
+            'class'     => \Imi\Log\Handler\Console::class,
+            'options'   => [
+                'levels' => [
                     LogLevel::DEBUG,
                     LogLevel::NOTICE,
                     LogLevel::WARNING,
@@ -42,16 +42,16 @@ class Logger extends AbstractLogger
             ],
         ],
         [
-            'class'        =>    \Imi\Log\Handler\Console::class,
-            'options'    =>    [
-                'levels'    =>    [
+            'class'     => \Imi\Log\Handler\Console::class,
+            'options'   => [
+                'levels' => [
                     LogLevel::ALERT,
                     LogLevel::CRITICAL,
                     LogLevel::EMERGENCY,
                     LogLevel::ERROR,
                 ],
-                'format'    =>    '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
-                'length'    =>    1024,
+                'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+                'length' => 1024,
             ],
         ]
     ];

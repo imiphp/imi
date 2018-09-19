@@ -23,8 +23,8 @@ class ProcessPoolParser extends BaseParser
                 new \RuntimeException(sprintf('process pool %s is exists', $annotation->name));
             }
             $this->data[$annotation->name] = [
-                'className'        =>    $className,
-                'ProcessPool'    =>    $annotation,
+                'className'     => $className,
+                'ProcessPool'   => $annotation,
             ];
         }
     }

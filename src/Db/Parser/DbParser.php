@@ -18,7 +18,7 @@ class DbParser extends BaseParser
         if($annotation instanceof \Imi\Db\Annotation\Transaction)
         {
             $this->data[$className][$targetName] = [
-                'Transaction'    =>    $annotation,
+                'Transaction' => $annotation,
             ];
         }
     }

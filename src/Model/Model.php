@@ -85,16 +85,16 @@ abstract class Model extends BaseModel
 
         // 查找前
         Event::trigger(static::class . ModelEvents::BEFORE_FIND, [
-            'ids'    =>    $ids,
-            'query'    =>    $query,
+            'ids'   => $ids,
+            'query' => $query,
         ], null, \Imi\Model\Event\Param\BeforeFindEventParam::class);
 
         $result = $query->select()->get();
 
         // 查找后
         Event::trigger(static::class . ModelEvents::AFTER_FIND, [
-            'ids'    =>    $ids,
-            'model'    =>    $result,
+            'ids'   => $ids,
+            'model' => $result,
         ], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
 
         return $result;
@@ -111,14 +111,14 @@ abstract class Model extends BaseModel
 
         // 查询前
         Event::trigger(static::class . ModelEvents::BEFORE_SELECT, [
-            'query'    =>    $query,
+            'query' => $query,
         ], null, \Imi\Model\Event\Param\BeforeSelectEventParam::class);
 
         $result = $query->select()->getArray();
 
         // 查询后
         Event::trigger(static::class . ModelEvents::AFTER_SELECT, [
-            'result'    =>    &$result,
+            'result' => &$result,
         ], null, \Imi\Model\Event\Param\AfterSelectEventParam::class);
 
         return $result;
@@ -144,9 +144,9 @@ abstract class Model extends BaseModel
 
         // 插入前
         $this->trigger(ModelEvents::BEFORE_INSERT, [
-            'model'    =>    $this,
-            'data'    =>    $data,
-            'query'    =>    $query,
+            'model' => $this,
+            'data'  => $data,
+            'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeInsertEventParam::class);
 
         $result = $query->insert($data);
@@ -164,9 +164,9 @@ abstract class Model extends BaseModel
 
         // 插入后
         $this->trigger(ModelEvents::AFTER_INSERT, [
-            'model'    =>    $this,
-            'data'    =>    $data,
-            'result'=>    $result
+            'model' => $this,
+            'data'  => $data,
+            'result'=> $result
         ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
 
         // 子模型插入
@@ -196,9 +196,9 @@ abstract class Model extends BaseModel
 
         // 更新前
         $this->trigger(ModelEvents::BEFORE_UPDATE, [
-            'model'    =>    $this,
-            'data'    =>    $data,
-            'query'    =>    $query,
+            'model' => $this,
+            'data'  => $data,
+            'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
 
         if(!isset($query->getOption()->where[0]))
@@ -210,9 +210,9 @@ abstract class Model extends BaseModel
 
         // 更新后
         $this->trigger(ModelEvents::AFTER_UPDATE, [
-            'model'    =>    $this,
-            'data'    =>    $data,
-            'result'=>    $result,
+            'model' => $this,
+            'data'  => $data,
+            'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
 
         // 子模型更新
@@ -252,16 +252,16 @@ abstract class Model extends BaseModel
 
             // 更新前
             Event::trigger(static::class . ModelEvents::BEFORE_BATCH_UPDATE, [
-                'data'    =>    $updateData,
-                'query'    =>    $query,
+                'data'  => $updateData,
+                'query' => $query,
             ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
             
             $result = $query->update($updateData);
     
             // 更新后
             Event::trigger(static::class . ModelEvents::AFTER_BATCH_UPDATE, [
-                'data'    =>    $updateData,
-                'result'=>    $result,
+                'data'  => $updateData,
+                'result'=> $result,
             ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
     
             return $result;
@@ -280,9 +280,9 @@ abstract class Model extends BaseModel
 
         // 保存前
         $this->trigger(ModelEvents::BEFORE_SAVE, [
-            'model'    =>    $this,
-            'data'    =>    $data,
-            'query'    =>    $query,
+            'model' => $this,
+            'data'  => $data,
+            'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
 
         if(isset($query->getOption()->where[0]))
@@ -302,9 +302,9 @@ abstract class Model extends BaseModel
 
         // 保存后
         $this->trigger(ModelEvents::AFTER_SAVE, [
-            'model'    =>    $this,
-            'data'    =>    $data,
-            'result'=>    $result,
+            'model' => $this,
+            'data'  => $data,
+            'result'=> $result,
         ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
 
         return $result;
@@ -321,8 +321,8 @@ abstract class Model extends BaseModel
 
         // 删除前
         $this->trigger(ModelEvents::BEFORE_DELETE, [
-            'model'    =>    $this,
-            'query'    =>    $query,
+            'model' => $this,
+            'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
 
         if(!isset($query->getOption()->where[0]))
@@ -333,8 +333,8 @@ abstract class Model extends BaseModel
 
         // 删除后
         $this->trigger(ModelEvents::AFTER_DELETE, [
-            'model'    =>    $this,
-            'result'=>    $result,
+            'model' => $this,
+            'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
 
         // 子模型删除
@@ -366,14 +366,14 @@ abstract class Model extends BaseModel
 
         // 删除前
         Event::trigger(static::class . ModelEvents::BEFORE_BATCH_DELETE, [
-            'query'    =>    $query,
+            'query' => $query,
         ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
 
         $result = $query->delete();
 
         // 删除后
         Event::trigger(static::class . ModelEvents::AFTER_BATCH_DELETE, [
-            'result'=>    $result,
+            'result'=> $result,
         ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
 
         return $result;

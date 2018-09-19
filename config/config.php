@@ -1,6 +1,6 @@
 <?php
 return [
-    'beanScan'    =>    [
+    'beanScan' => [
         'Imi\Bean',
         'Imi\Aop',
         'Imi\Annotation',
@@ -17,7 +17,7 @@ return [
         'Imi\Process',
         'Imi\HotUpdate',
     ],
-    'atomics'    =>    [
+    'atomics' => [
         'session'
     ]
 ];

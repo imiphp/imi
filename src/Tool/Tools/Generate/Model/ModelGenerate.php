@@ -80,13 +80,13 @@ class ModelGenerate
                 echo 'generating ', $table, '...', PHP_EOL;
             }
             $data = [
-                'namespace'    =>    $namespace,
-                'className'    =>    $className,
-                'table'        =>    [
-                    'name'    =>    $table,
-                    'id'    =>    [],
+                'namespace' => $namespace,
+                'className' => $className,
+                'table'     => [
+                    'name'  => $table,
+                    'id'    => [],
                 ],
-                'fields'    =>    [],
+                'fields'    => [],
             ];
             $fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
@@ -151,18 +151,18 @@ class ModelGenerate
                 $isPk = 'PRI' === $field['Key'];
             }
             $data['fields'][] = [
-                'name'                =>    $field['Field'],
-                'varName'            =>    Text::toCamelName($field['Field']),
-                'type'                =>    $typeName,
-                'phpType'            =>    $this->dbFieldTypeToPhp($typeName),
-                'length'            =>    $length,
-                'accuracy'            =>    $accuracy,
-                'nullable'            =>    $field['Null'] === 'YES',
-                'default'            =>    $field['Default'],
-                'isPrimaryKey'        =>    $isPk,
-                'primaryKeyIndex'    =>    $isPk ? $idCount : -1,
-                'isAutoIncrement'    =>    false !== strpos($field['Extra'], 'auto_increment'),
-                'comment'            =>    $field['Comment'],
+                'name'              => $field['Field'],
+                'varName'           => Text::toCamelName($field['Field']),
+                'type'              => $typeName,
+                'phpType'           => $this->dbFieldTypeToPhp($typeName),
+                'length'            => $length,
+                'accuracy'          => $accuracy,
+                'nullable'          => $field['Null'] === 'YES',
+                'default'           => $field['Default'],
+                'isPrimaryKey'      => $isPk,
+                'primaryKeyIndex'   => $isPk ? $idCount : -1,
+                'isAutoIncrement'   => false !== strpos($field['Extra'], 'auto_increment'),
+                'comment'           => $field['Comment'],
             ];
             if($isPk)
             {
@@ -225,13 +225,13 @@ class ModelGenerate
     private function dbFieldTypeToPhp($type)
     {
         static $map = [
-            'int'            =>    'int',
-            'smallint'        =>    'int',
-            'tinyint'        =>    'int',
-            'mediumint'        =>    'int',
-            'bigint'        =>    'int',
-            'bit'            =>    'boolean',
-            'year'            =>    'int',
+            'int'       => 'int',
+            'smallint'  => 'int',
+            'tinyint'   => 'int',
+            'mediumint' => 'int',
+            'bigint'    => 'int',
+            'bit'       => 'boolean',
+            'year'      => 'int',
         ];
         return $map[$type] ?? 'string';
     }

@@ -52,8 +52,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
-            'model'    =>    $this,
-            'data'    =>    $data,
+            'model' => $this,
+            'data'  => $data,
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
 
         foreach($data as $k => $v)
@@ -63,8 +63,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
         // 初始化后
         $this->trigger(ModelEvents::AFTER_INIT, [
-            'model'    =>    $this,
-            'data'    =>    $data,
+            'model' => $this,
+            'data'  => $data,
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
     }
     

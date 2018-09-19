@@ -23,8 +23,8 @@ class ModelParser extends BaseParser
         if($annotation instanceof Entity)
         {
             $this->data[$className] = [
-                'className'    =>    $className,
-                'Entity'    =>    $annotation,
+                'className' => $className,
+                'Entity'    => $annotation,
             ];
         }
         else if($annotation instanceof Table)

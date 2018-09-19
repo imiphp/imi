@@ -39,9 +39,9 @@ class AfterWorkerStart implements IWorkerStartEventListener
             $server = $e->server->getSwooleServer();
             // 触发当前进程的PipeMessage事件
             Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                'server'    =>    $e->server,
-                'workerID'    =>    $e->workerID,
-                'message'    =>    'app.inited',
+                'server'    => $e->server,
+                'workerID'  => $e->workerID,
+                'message'   => 'app.inited',
             ], $this, PipeMessageEventParam::class);
             // 通知其它worker进程
             for($i = 1; $i < $server->setting['worker_num']; ++$i)
@@ -53,9 +53,9 @@ class AfterWorkerStart implements IWorkerStartEventListener
         {
             // 热重启后，触发当前进程的PipeMessage事件
             Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                'server'    =>    $e->server,
-                'workerID'    =>    $e->workerID,
-                'message'    =>    'app.inited',
+                'server'    => $e->server,
+                'workerID'  => $e->workerID,
+                'message'   => 'app.inited',
             ], $this, PipeMessageEventParam::class);
         }
     }

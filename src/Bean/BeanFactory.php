@@ -157,10 +157,10 @@ TPL;
     private static function getMethodParamTpls(\ReflectionMethod $method)
     {
         $result = [
-            'args'            =>    [],
-            'define'        =>    [],
-            'call'            =>    [],
-            'set_args'        =>    '',
+            'args'      => [],
+            'define'    => [],
+            'call'      => [],
+            'set_args'  => '',
         ];
         foreach($method->getParameters() as $i => $param)
         {

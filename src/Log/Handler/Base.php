@@ -174,10 +174,10 @@ abstract class Base
     public function getLogString(\Imi\Log\Record $record)
     {
         $vars = [
-            'message'    =>    $record->getMessage(),
-            'level'        =>    $record->getLevel(),
-            'timestamp'    =>    $record->getLogTime(),
-            'trace'        =>    $this->parseTrace($record),
+            'message'       => $record->getMessage(),
+            'level'         => $record->getLevel(),
+            'timestamp'     => $record->getLogTime(),
+            'trace'         => $this->parseTrace($record),
         ];
 
         $find = $replace = [];

@@ -30,8 +30,8 @@ class ControllerParser extends BaseParser
             if(!isset($this->data[$className]))
             {
                 $this->data[$className] = [
-                    'annotation'=>    $annotation,
-                    'methods'    =>    [],
+                    'annotation'=> $annotation,
+                    'methods'   => [],
                 ];
             }
         }

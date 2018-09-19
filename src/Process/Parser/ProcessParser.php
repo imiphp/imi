@@ -23,8 +23,8 @@ class ProcessParser extends BaseParser
                 new \RuntimeException(sprintf('process %s is exists', $annotation->name));
             }
             $this->data[$annotation->name] = [
-                'className'    =>    $className,
-                'Process'    =>    $annotation,
+                'className' => $className,
+                'Process'   => $annotation,
             ];
         }
     }

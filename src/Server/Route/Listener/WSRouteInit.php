@@ -78,7 +78,7 @@ class WSRouteInit implements IEventListener
                     foreach($methodItem['routes'] as $routeItem)
                     {
                         $route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
-                            'middlewares'    =>    $middlewares,
+                            'middlewares' => $middlewares,
                         ]);
                     }
                 }
@@ -113,7 +113,7 @@ class WSRouteInit implements IEventListener
                 $callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
             }
             $route->addRuleAnnotation($routeAnnotation, $callable, [
-                'middlewares'    =>    $routeOption['middlewares'],
+                'middlewares' => $routeOption['middlewares'],
             ]);
         }
     }

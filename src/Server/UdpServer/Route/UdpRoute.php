@@ -30,8 +30,8 @@ class UdpRoute implements IRoute
             if($this->checkCondition($data, $item['annotation']))
             {
                 return [
-                    'callable'        =>    $this->parseCallable([], $item['callable']),
-                    'middlewares'    =>    $item['middlewares'] ?? [],
+                    'callable'      => $this->parseCallable([], $item['callable']),
+                    'middlewares'   => $item['middlewares'] ?? [],
                 ];
             }
         }
@@ -48,8 +48,8 @@ class UdpRoute implements IRoute
     public function addRuleAnnotation(UdpRouteAnnotation $annotation, $callable, $options = [])
     {
         $this->rules[$this->hashKey($annotation)] = array_merge([
-            'annotation'=>    $annotation,
-            'callable'    =>    $callable,
+            'annotation'=> $annotation,
+            'callable'  => $callable,
         ], $options);
     }
 

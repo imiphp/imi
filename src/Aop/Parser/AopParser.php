@@ -18,8 +18,8 @@ class AopParser extends BaseParser
         if($annotation instanceof \Imi\Aop\Annotation\Aspect)
         {
             $this->data[$className] = [
-                'className'    =>    $className,
-                'aspect'    =>    $annotation,
+                'className' => $className,
+                'aspect'    => $annotation,
             ];
         }
         else if($annotation instanceof \Imi\Aop\Annotation\PointCut)

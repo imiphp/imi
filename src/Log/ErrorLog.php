@@ -74,9 +74,9 @@ class ErrorLog
                 break;
         }
         Log::$method($errstr, [
-            'trace'        =>    $this->getTrace(),
-            'errorFile'    =>    $errfile,
-            'errorLine'    =>    $errline,
+            'trace'     => $this->getTrace(),
+            'errorFile' => $errfile,
+            'errorLine' => $errline,
         ]);
     }
 
@@ -98,7 +98,7 @@ class ErrorLog
         ]))
         {
             Log::error($e['message'], [
-                'trace'    =>    [],
+                'trace' => [],
             ]);
         }
         $logger = App::getBean('Logger');
@@ -115,9 +115,9 @@ class ErrorLog
     {
         // 日志处理
         Log::error($ex->getMessage(), [
-            'trace'        =>    $ex->getTrace(),
-            'errorFile'    =>    $ex->getFile(),
-            'errorLine'    =>    $ex->getLine(),
+            'trace'     => $ex->getTrace(),
+            'errorFile' => $ex->getFile(),
+            'errorLine' => $ex->getLine(),
         ]);
         // 请求上下文处理
         if(RequestContext::exsits())

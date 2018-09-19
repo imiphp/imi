@@ -80,9 +80,9 @@ class Group
         {
             RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
-                'server'        =>    RequestContext::getServer(),
-                'groupName'        =>    $this->groupName,
-                'fd'            =>    $fd,
+                'server'    => RequestContext::getServer(),
+                'groupName' => $this->groupName,
+                'fd'        => $fd,
             ]);
         }
     }
@@ -99,9 +99,9 @@ class Group
         {
             RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
-                'server'        =>    RequestContext::getServer(),
-                'groupName'        =>    $this->groupName,
-                'fd'            =>    $fd,
+                'server'    => RequestContext::getServer(),
+                'groupName' => $this->groupName,
+                'fd'        => $fd,
             ]);
         }
     }

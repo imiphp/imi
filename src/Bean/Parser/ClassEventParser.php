@@ -20,8 +20,8 @@ class ClassEventParser extends BaseParser
                 $this->data[$annotation->className][$annotation->eventName] = [];
             }
             $this->data[$annotation->className][$annotation->eventName][] = [
-                'className'        =>    $className,
-                'priority'        =>    $annotation->priority,
+                'className' => $className,
+                'priority'  => $annotation->priority,
             ];
         }
     }

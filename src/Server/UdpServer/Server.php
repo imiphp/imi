@@ -53,10 +53,10 @@ class Server extends Base
     protected function getServerInitConfig()
     {
         return [
-            'host'        =>    isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
-            'port'        =>    isset($this->config['port']) ? $this->config['port'] : 8080,
-            'sockType'    =>    isset($this->config['sockType']) ? (SWOOLE_SOCK_UDP | $this->config['sockType']) : SWOOLE_SOCK_UDP,
-            'mode'        =>    isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
+            'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
+            'port'      => isset($this->config['port']) ? $this->config['port'] : 8080,
+            'sockType'  => isset($this->config['sockType']) ? (SWOOLE_SOCK_UDP | $this->config['sockType']) : SWOOLE_SOCK_UDP,
+            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
         ];
     }
 
@@ -71,9 +71,9 @@ class Server extends Base
         $server->on('packet', function(\swoole_server $server, $data, $clientInfo){
             try{
                 $this->trigger('packet', [
-                    'server'    =>    $this,
-                    'data'        =>    $data,
-                    'clientInfo'=>    $clientInfo,
+                    'server'        => $this,
+                    'data'          => $data,
+                    'clientInfo'    => $clientInfo,
                 ], $this, PacketEventParam::class);
             }
             catch(\Throwable $ex)

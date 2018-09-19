@@ -18,9 +18,9 @@ class View
      * @var array
      */
     protected $coreHandlers = [
-        'html'    =>    \Imi\Server\View\Handler\Html::class,
-        'json'    =>    \Imi\Server\View\Handler\Json::class,
-        'xml'    =>    \Imi\Server\View\Handler\Xml::class,
+        'html'  => \Imi\Server\View\Handler\Html::class,
+        'json'  => \Imi\Server\View\Handler\Json::class,
+        'xml'   => \Imi\Server\View\Handler\Xml::class,
     ];
 
     /**

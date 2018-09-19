@@ -53,9 +53,9 @@ class Uri implements UriInterface
      * @var array
      */
     public static $schemePorts = [
-        'http'  =>  80,
-        'https' =>  443,
-        'ftp'   =>  21,
+        'http'  => 80,
+        'https' => 443,
+        'ftp'   => 21,
     ];
 
     public function __construct(string $uri = '')

@@ -22,8 +22,8 @@ trait TKeyword
                 $alias = null;
             }
             return [
-                'keywords'    =>    $matches['keywords'],
-                'alias'        =>    $alias,
+                'keywords'  => $matches['keywords'],
+                'alias'     => $alias,
             ];
         }
         else
