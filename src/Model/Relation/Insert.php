@@ -10,6 +10,7 @@ use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 
 abstract class Insert
@@ -56,6 +57,10 @@ abstract class Insert
 		else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
 		{
 			static::parseByManyToMany($model, $propertyName, $annotation);
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+		{
+			static::parseByPolymorphicOneToOne($model, $propertyName, $annotation);
 		}
 	}
 
@@ -137,4 +142,24 @@ abstract class Insert
 		}
 	}
 
+	/**
+	 * 处理多态一对一插入
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
+	 * @return void
+	 */
+	public static function parseByPolymorphicOneToOne($model, $propertyName, $annotation)
+	{
+		$className = BeanFactory::getObjectClass($model);
+
+		$struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
+		$model->$propertyName->$rightField = $model->$leftField;
+		$model->$propertyName->{$annotation->type} = $annotation->typeValue;
+		$model->$propertyName->insert();
+	}
 }
