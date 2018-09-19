@@ -14,23 +14,23 @@ use Imi\RequestContext;
  */
 class Dispatcher
 {
-	/**
-	 * 中间件数组
-	 * @var string[]
-	 */
-	protected $middlewares = [];
+    /**
+     * 中间件数组
+     * @var string[]
+     */
+    protected $middlewares = [];
 
-	public function dispatch($request)
-	{
-		$requestHandler = new RequestHandler($this->getMiddlewares());
-		$response = $requestHandler->handle($request);
-		$response->send();
-	}
+    public function dispatch($request)
+    {
+        $requestHandler = new RequestHandler($this->getMiddlewares());
+        $response = $requestHandler->handle($request);
+        $response->send();
+    }
 
-	protected function getMiddlewares()
-	{
-		return array_merge($this->middlewares, [
+    protected function getMiddlewares()
+    {
+        return array_merge($this->middlewares, [
 
-		]);
-	}
+        ]);
+    }
 }

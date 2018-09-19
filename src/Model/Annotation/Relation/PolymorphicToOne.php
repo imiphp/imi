@@ -12,47 +12,47 @@ use Imi\Bean\Annotation\Parser;
  */
 class PolymorphicToOne extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'model';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'model';
 
-	/**
-	 * 关联的模型类
-	 * 可以是包含命名空间的完整类名
-	 * 可以同命名空间下的类名
-	 *
-	 * @var string
-	 */
-	public $model;
+    /**
+     * 关联的模型类
+     * 可以是包含命名空间的完整类名
+     * 可以同命名空间下的类名
+     *
+     * @var string
+     */
+    public $model;
 
-	/**
-	 * 关联的模型用于关联的字段
-	 *
-	 * @var string
-	 */
-	public $modelField;
+    /**
+     * 关联的模型用于关联的字段
+     *
+     * @var string
+     */
+    public $modelField;
 
-	/**
-	 * 当前模型用户关联的字段
-	 *
-	 * @var string
-	 */
-	public $field;
+    /**
+     * 当前模型用户关联的字段
+     *
+     * @var string
+     */
+    public $field;
 
-	/**
-	 * 多态类型字段名
-	 *
-	 * @var string
-	 */
-	public $type;
+    /**
+     * 多态类型字段名
+     *
+     * @var string
+     */
+    public $type;
 
-	/**
-	 * 多态类型字段值
-	 *
-	 * @var mixed
-	 */
-	public $typeValue;
+    /**
+     * 多态类型字段值
+     *
+     * @var mixed
+     */
+    public $typeValue;
 
 }

@@ -6,5 +6,5 @@ use Psr\Http\Message\ServerRequestInterface;
 
 interface IHttpNotFoundHandler
 {
-	public function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface;
+    public function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface;
 }

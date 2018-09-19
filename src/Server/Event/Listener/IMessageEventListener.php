@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\MessageEventParam;
  */
 interface IMessageEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param MessageEventParam $e
-	 * @return void
-	 */
-	public function handle(MessageEventParam $e);
+    /**
+     * 事件处理方法
+     * @param MessageEventParam $e
+     * @return void
+     */
+    public function handle(MessageEventParam $e);
 }

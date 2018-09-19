@@ -6,19 +6,19 @@ namespace Imi\Util\Http\Consts;
  */
 abstract class RequestMethod
 {
-	const GET = 'GET';
+    const GET = 'GET';
 
-	const POST = 'POST';
+    const POST = 'POST';
 
-	const HEAD = 'HEAD';
+    const HEAD = 'HEAD';
 
-	const PUT = 'PUT';
+    const PUT = 'PUT';
 
-	const PATCH = 'PATCH';
+    const PATCH = 'PATCH';
 
-	const DELETE = 'DELETE';
+    const DELETE = 'DELETE';
 
-	const OPTIONS = 'OPTIONS';
+    const OPTIONS = 'OPTIONS';
 
-	const TRACE = 'TRACE';
+    const TRACE = 'TRACE';
 }

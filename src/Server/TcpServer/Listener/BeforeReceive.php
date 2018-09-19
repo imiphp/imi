@@ -17,26 +17,26 @@ use Imi\Server\Event\Listener\IReceiveEventListener;
  */
 class BeforeReceive implements IReceiveEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param ReceiveEventParam $e
-	 * @return void
-	 */
-	public function handle(ReceiveEventParam $e)
-	{
-		if(!Worker::isInited())
-		{
-			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-			Coroutine::suspend();
-		}
-		// 上下文创建
-		RequestContext::create();
-		RequestContext::set('fd', $e->fd);
-		RequestContext::set('server', $e->getTarget());
+    /**
+     * 事件处理方法
+     * @param ReceiveEventParam $e
+     * @return void
+     */
+    public function handle(ReceiveEventParam $e)
+    {
+        if(!Worker::isInited())
+        {
+            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+            Coroutine::suspend();
+        }
+        // 上下文创建
+        RequestContext::create();
+        RequestContext::set('fd', $e->fd);
+        RequestContext::set('server', $e->getTarget());
 
-		// 中间件
-		$dispatcher = RequestContext::getServerBean('TcpDispatcher');
-		$dispatcher->dispatch(new ReceiveData($e->fd, $e->reactorID, $e->data));
+        // 中间件
+        $dispatcher = RequestContext::getServerBean('TcpDispatcher');
+        $dispatcher->dispatch(new ReceiveData($e->fd, $e->reactorID, $e->data));
 
-	}
+    }
 }

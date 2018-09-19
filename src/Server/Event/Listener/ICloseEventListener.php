@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\CloseEventParam;
  */
 interface ICloseEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param CloseEventParam $e
-	 * @return void
-	 */
-	public function handle(CloseEventParam $e);
+    /**
+     * 事件处理方法
+     * @param CloseEventParam $e
+     * @return void
+     */
+    public function handle(CloseEventParam $e);
 }

@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\ReceiveEventParam;
  */
 interface IReceiveEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param ReceiveEventParam $e
-	 * @return void
-	 */
-	public function handle(ReceiveEventParam $e);
+    /**
+     * 事件处理方法
+     * @param ReceiveEventParam $e
+     * @return void
+     */
+    public function handle(ReceiveEventParam $e);
 }

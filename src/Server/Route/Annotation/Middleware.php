@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Parser;
  */
 class Middleware extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'middlewares';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'middlewares';
 
-	/**
-	 * 中间件类或数组
-	 * @var string|string[]
-	 */
-	public $middlewares;
+    /**
+     * 中间件类或数组
+     * @var string|string[]
+     */
+    public $middlewares;
 }

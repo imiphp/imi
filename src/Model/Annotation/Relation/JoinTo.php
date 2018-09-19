@@ -12,17 +12,17 @@ use Imi\Bean\Annotation\Parser;
  */
 class JoinTo extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'field';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'field';
 
-	/**
-	 * 字段名
-	 *
-	 * @var string
-	 */
-	public $field;
+    /**
+     * 字段名
+     *
+     * @var string
+     */
+    public $field;
 
 }

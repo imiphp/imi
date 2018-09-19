@@ -8,17 +8,17 @@ use Imi\Bean\Annotation\Bean;
  */
 class Console extends Base
 {
-	/**
-	 * 要限制输出的字符数量，为null则不限制
+    /**
+     * 要限制输出的字符数量，为null则不限制
      * 
-	 * @var int
-	 */
+     * @var int
+     */
     protected $length;
     
-	/**
-	 * 真正的保存操作实现
-	 * @return void
-	 */
+    /**
+     * 真正的保存操作实现
+     * @return void
+     */
     protected function __save()
     {
         foreach($this->records as $record)

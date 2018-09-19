@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\PipeMessageEventParam;
  */
 interface IPipeMessageEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param PipeMessageEventParam $e
-	 * @return void
-	 */
-	public function handle(PipeMessageEventParam $e);
+    /**
+     * 事件处理方法
+     * @param PipeMessageEventParam $e
+     * @return void
+     */
+    public function handle(PipeMessageEventParam $e);
 }

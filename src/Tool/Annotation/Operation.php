@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Parser;
  */
 class Operation extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'name';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'name';
 
-	/**
-	 * 操作名称
-	 * @var string
-	 */
-	public $name;
+    /**
+     * 操作名称
+     * @var string
+     */
+    public $name;
 }

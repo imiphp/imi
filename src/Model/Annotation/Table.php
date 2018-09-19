@@ -12,27 +12,27 @@ use Imi\Bean\Annotation\Parser;
  */
 class Table extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'name';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'name';
 
-	/**
-	 * 表名
-	 * @var string
-	 */
-	public $name;
+    /**
+     * 表名
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * 数据库连接池名称
-	 * @var string
-	 */
-	public $dbPoolName;
+    /**
+     * 数据库连接池名称
+     * @var string
+     */
+    public $dbPoolName;
 
-	/**
-	 * 主键，支持数组方式设置联合索引
-	 * @var string|array
-	 */
-	public $id;
+    /**
+     * 主键，支持数组方式设置联合索引
+     * @var string|array
+     */
+    public $id;
 }

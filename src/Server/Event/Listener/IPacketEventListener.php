@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\PacketEventParam;
  */
 interface IPacketEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param CloseEventParam $e
-	 * @return void
-	 */
-	public function handle(PacketEventParam $e);
+    /**
+     * 事件处理方法
+     * @param CloseEventParam $e
+     * @return void
+     */
+    public function handle(PacketEventParam $e);
 }

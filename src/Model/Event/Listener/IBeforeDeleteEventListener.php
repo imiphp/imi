@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeDeleteEventParam;
  */
 interface IBeforeDeleteEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeDeleteEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeDeleteEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeDeleteEventParam $e
+     * @return void
+     */
+    public function handle(BeforeDeleteEventParam $e);
 }

@@ -5,5 +5,5 @@ use Imi\Util\Format\IFormat;
 
 interface IParser extends IFormat
 {
-	
+    
 }

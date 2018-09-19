@@ -14,84 +14,84 @@ use Imi\Util\ClassObject;
  */
 class ViewParser extends BaseParser
 {
-	use TServerAnnotationParser;
-	
-	/**
-	 * 处理方法
-	 * @param \Imi\Bean\Annotation\Base $annotation 注解类
-	 * @param string $className 类名
-	 * @param string $target 注解目标类型（类/属性/方法）
-	 * @param string $targetName 注解目标名称
-	 * @return void
-	 */
-	public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
-	{
-		if($annotation instanceof View)
-		{
-			switch($target)
-			{
-				case static::TARGET_CLASS:
-					$this->data[$className] = [
-						'view'		=>	$annotation,
-						'methods'	=>	[],
-					];
-					break;
-				case static::TARGET_METHOD:
-					$this->data[$className]['methods'][$targetName]['view'] = $annotation;
-					break;
-			}
-		}
-	}
+    use TServerAnnotationParser;
+    
+    /**
+     * 处理方法
+     * @param \Imi\Bean\Annotation\Base $annotation 注解类
+     * @param string $className 类名
+     * @param string $target 注解目标类型（类/属性/方法）
+     * @param string $targetName 注解目标名称
+     * @return void
+     */
+    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
+    {
+        if($annotation instanceof View)
+        {
+            switch($target)
+            {
+                case static::TARGET_CLASS:
+                    $this->data[$className] = [
+                        'view'        =>    $annotation,
+                        'methods'    =>    [],
+                    ];
+                    break;
+                case static::TARGET_METHOD:
+                    $this->data[$className]['methods'][$targetName]['view'] = $annotation;
+                    break;
+            }
+        }
+    }
 
-	/**
-	 * 获取对应动作的视图注解
-	 * 
-	 * @param callable $callable
-	 * @return \Imi\Server\View\Annotation\View
-	 */
-	public function getByCallable($callable)
-	{
-		if(!is_array($callable))
-		{
-			return null;
-		}
-		list($object, $methodName) = $callable;
-		if(ClassObject::isAnymous($object))
-		{
-			$className = get_parent_class($object);
-		}
-		else
-		{
-			$className = get_class($object);
-		}
-		$shortClassName = Imi::getClassShortName($className);
-		if(isset($this->data[$className]['methods'][$methodName]['view']))
-		{
-			$view = clone $this->data[$className]['methods'][$methodName]['view'];
-		}
-		else if(isset($this->data[$className]['view']))
-		{
-			$view = clone $this->data[$className]['view'];
-			if(Text::isEmpty($view->baseDir))
-			{
-				$view->template = File::path(Text::isEmpty($view->template) ? $shortClassName : $view->template, $methodName);
-			}
-			else
-			{
-				$view->template = $methodName;
-			}
-		}
-		else
-		{
-			$view = new View([
-				'template'	=>	File::path($shortClassName, $methodName),
-			]);
-		}
-		// baseDir
-		if(null === $view->baseDir && isset($this->data[$className]['view']))
-		{
-			$view->baseDir = $this->data[$className]['view']->baseDir;
-		}
-		return $view;
-	}
+    /**
+     * 获取对应动作的视图注解
+     * 
+     * @param callable $callable
+     * @return \Imi\Server\View\Annotation\View
+     */
+    public function getByCallable($callable)
+    {
+        if(!is_array($callable))
+        {
+            return null;
+        }
+        list($object, $methodName) = $callable;
+        if(ClassObject::isAnymous($object))
+        {
+            $className = get_parent_class($object);
+        }
+        else
+        {
+            $className = get_class($object);
+        }
+        $shortClassName = Imi::getClassShortName($className);
+        if(isset($this->data[$className]['methods'][$methodName]['view']))
+        {
+            $view = clone $this->data[$className]['methods'][$methodName]['view'];
+        }
+        else if(isset($this->data[$className]['view']))
+        {
+            $view = clone $this->data[$className]['view'];
+            if(Text::isEmpty($view->baseDir))
+            {
+                $view->template = File::path(Text::isEmpty($view->template) ? $shortClassName : $view->template, $methodName);
+            }
+            else
+            {
+                $view->template = $methodName;
+            }
+        }
+        else
+        {
+            $view = new View([
+                'template'    =>    File::path($shortClassName, $methodName),
+            ]);
+        }
+        // baseDir
+        if(null === $view->baseDir && isset($this->data[$className]['view']))
+        {
+            $view->baseDir = $this->data[$className]['view']->baseDir;
+        }
+        return $view;
+    }
 }

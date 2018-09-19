@@ -6,41 +6,41 @@ use Psr\Http\Message\StreamInterface;
 
 class FileStream implements StreamInterface
 {
-	/**
-	 * 文件Uri
-	 * @var \Imi\Util\Uri
-	 */
-	protected $uri;
+    /**
+     * 文件Uri
+     * @var \Imi\Util\Uri
+     */
+    protected $uri;
 
-	/**
-	 * 流对象
-	 * @var resource
-	 */
-	protected $stream;
+    /**
+     * 流对象
+     * @var resource
+     */
+    protected $stream;
 
-	/**
-	 * 流访问类型
-	 * @var string
-	 */
-	protected $mode;
+    /**
+     * 流访问类型
+     * @var string
+     */
+    protected $mode;
 
-	public function __construct($uri, $mode = StreamMode::READ_WRITE)
-	{
-		if(! $uri instanceof Uri)
+    public function __construct($uri, $mode = StreamMode::READ_WRITE)
+    {
+        if(! $uri instanceof Uri)
         {
             $this->uri = new Uri($uri);
         }
         else if(null !== $uri)
         {
             $this->uri = $uri;
-		}
-		$this->mode = $mode;
-		$this->stream = fopen($this->uri, $this->mode);
-		if(false === $this->stream)
-		{
-			throw new \RuntimeException(sprintf('open stream %s error', (string)$this->uri));
-		}
-	}
+        }
+        $this->mode = $mode;
+        $this->stream = fopen($this->uri, $this->mode);
+        if(false === $this->stream)
+        {
+            throw new \RuntimeException(sprintf('open stream %s error', (string)$this->uri));
+        }
+    }
 
     /**
      * Reads all data from the stream into a string, from the beginning to end.
@@ -56,17 +56,17 @@ class FileStream implements StreamInterface
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
      * @return string
      */
-	public function __toString()
-	{
-		try{
-			$this->rewind();
-			return stream_get_contents($this->stream);
-		}
-		catch(\Throwable $ex)
-		{
-			return '';
-		}
-	}
+    public function __toString()
+    {
+        try{
+            $this->rewind();
+            return stream_get_contents($this->stream);
+        }
+        catch(\Throwable $ex)
+        {
+            return '';
+        }
+    }
 
     /**
      * Closes the stream and any underlying resources.
@@ -74,10 +74,10 @@ class FileStream implements StreamInterface
      * @return void
      */
     public function close()
-	{
-		fclose($this->stream);
-		$this->stream = null;
-	}
+    {
+        fclose($this->stream);
+        $this->stream = null;
+    }
 
     /**
      * Separates any underlying resources from the stream.
@@ -87,11 +87,11 @@ class FileStream implements StreamInterface
      * @return resource|null Underlying PHP stream, if any
      */
     public function detach()
-	{
-		$stream = $this->stream;
-		$this->stream = null;
-		return $stream;
-	}
+    {
+        $stream = $this->stream;
+        $this->stream = null;
+        return $stream;
+    }
 
     /**
      * Get the size of the stream if known.
@@ -99,14 +99,14 @@ class FileStream implements StreamInterface
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */
     public function getSize()
-	{
-		$stat = fstat($this->stream);
-		if(false === $stat)
-		{
-			throw new \RuntimeException('get stream size error');
-		}
-		return $stat['size'];
-	}
+    {
+        $stat = fstat($this->stream);
+        if(false === $stat)
+        {
+            throw new \RuntimeException('get stream size error');
+        }
+        return $stat['size'];
+    }
 
     /**
      * Returns the current position of the file read/write pointer
@@ -115,14 +115,14 @@ class FileStream implements StreamInterface
      * @throws \RuntimeException on error.
      */
     public function tell()
-	{
-		$result = ftell($this->stream);
-		if(false === $result)
-		{
-			throw \RuntimeException('stream tell error');
-		}
-		return $result;
-	}
+    {
+        $result = ftell($this->stream);
+        if(false === $result)
+        {
+            throw \RuntimeException('stream tell error');
+        }
+        return $result;
+    }
 
     /**
      * Returns true if the stream is at the end of the stream.
@@ -130,9 +130,9 @@ class FileStream implements StreamInterface
      * @return bool
      */
     public function eof()
-	{
-		return feof($this->stream);
-	}
+    {
+        return feof($this->stream);
+    }
 
     /**
      * Returns whether or not the stream is seekable.
@@ -140,9 +140,9 @@ class FileStream implements StreamInterface
      * @return bool
      */
     public function isSeekable()
-	{
-		return !!$this->getMetadata('seekable');
-	}
+    {
+        return !!$this->getMetadata('seekable');
+    }
 
     /**
      * Seek to a position in the stream.
@@ -157,12 +157,12 @@ class FileStream implements StreamInterface
      * @throws \RuntimeException on failure.
      */
     public function seek($offset, $whence = SEEK_SET)
-	{
-		if(-1 === fseek($this->stream, $offset, $whence))
-		{
-			throw new \RuntimeException('seek stream error');
-		}
-	}
+    {
+        if(-1 === fseek($this->stream, $offset, $whence))
+        {
+            throw new \RuntimeException('seek stream error');
+        }
+    }
 
     /**
      * Seek to the beginning of the stream.
@@ -175,12 +175,12 @@ class FileStream implements StreamInterface
      * @throws \RuntimeException on failure.
      */
     public function rewind()
-	{
-		if(!rewind($this->stream))
-		{
-			throw new \RuntimeException('rewind stream fail');
-		}
-	}
+    {
+        if(!rewind($this->stream))
+        {
+            throw new \RuntimeException('rewind stream fail');
+        }
+    }
 
     /**
      * Returns whether or not the stream is writable.
@@ -188,17 +188,17 @@ class FileStream implements StreamInterface
      * @return bool
      */
     public function isWritable()
-	{
-		return in_array($this->mode, [
-			StreamMode::WRITE_CLEAN,
-			StreamMode::WRITE_END,
-			StreamMode::CREATE_READ_WRITE,
-			StreamMode::CREATE_WRITE,
-			StreamMode::READ_WRITE,
-			StreamMode::READ_WRITE_CLEAN,
-			StreamMode::READ_WRITE_END,
-		]);
-	}
+    {
+        return in_array($this->mode, [
+            StreamMode::WRITE_CLEAN,
+            StreamMode::WRITE_END,
+            StreamMode::CREATE_READ_WRITE,
+            StreamMode::CREATE_WRITE,
+            StreamMode::READ_WRITE,
+            StreamMode::READ_WRITE_CLEAN,
+            StreamMode::READ_WRITE_END,
+        ]);
+    }
 
     /**
      * Write data to the stream.
@@ -208,14 +208,14 @@ class FileStream implements StreamInterface
      * @throws \RuntimeException on failure.
      */
     public function write($string)
-	{
-		$result = fwrite($this->stream, $string);
-		if(false === $result)
-		{
-			throw new \RuntimeException('write stream fail');
-		}
-		return $result;
-	}
+    {
+        $result = fwrite($this->stream, $string);
+        if(false === $result)
+        {
+            throw new \RuntimeException('write stream fail');
+        }
+        return $result;
+    }
 
     /**
      * Returns whether or not the stream is readable.
@@ -223,15 +223,15 @@ class FileStream implements StreamInterface
      * @return bool
      */
     public function isReadable()
-	{
-		return in_array($this->mode, [
-			StreamMode::READ_WRITE,
-			StreamMode::READ_WRITE_CLEAN,
-			StreamMode::READ_WRITE_END,
-			StreamMode::READONLY,
-			StreamMode::CREATE_READ_WRITE,
-		]);
-	}
+    {
+        return in_array($this->mode, [
+            StreamMode::READ_WRITE,
+            StreamMode::READ_WRITE_CLEAN,
+            StreamMode::READ_WRITE_END,
+            StreamMode::READONLY,
+            StreamMode::CREATE_READ_WRITE,
+        ]);
+    }
 
     /**
      * Read data from the stream.
@@ -244,14 +244,14 @@ class FileStream implements StreamInterface
      * @throws \RuntimeException if an error occurs.
      */
     public function read($length)
-	{
-		$result = fread($this->stream, $length);
-		if(false === $result)
-		{
-			throw new \RuntimeException('read stream error');
-		}
-		return $result;
-	}
+    {
+        $result = fread($this->stream, $length);
+        if(false === $result)
+        {
+            throw new \RuntimeException('read stream error');
+        }
+        return $result;
+    }
 
     /**
      * Returns the remaining contents in a string
@@ -261,14 +261,14 @@ class FileStream implements StreamInterface
      *     reading.
      */
     public function getContents()
-	{
-		$result = stream_get_contents($this->stream);
-		if(false === $result)
-		{
-			throw new \RuntimeException('stream getContents error');
-		}
-		return $result;
-	}
+    {
+        $result = stream_get_contents($this->stream);
+        if(false === $result)
+        {
+            throw new \RuntimeException('stream getContents error');
+        }
+        return $result;
+    }
 
     /**
      * Get stream metadata as an associative array or retrieve a specific key.
@@ -283,28 +283,28 @@ class FileStream implements StreamInterface
      *     value is found, or null if the key is not found.
      */
     public function getMetadata($key = null)
-	{
-		$result = stream_get_meta_data($this->stream);
-		if(!$result)
-		{
-			throw \RuntimeException('stream getMetadata error');
-		}
-		if(null === $key)
-		{
-			return $result;
-		}
-		else if(isset($result[$key]))
-		{
-			return $result[$key];
-		}
-		else
-		{
-			return null;
-		}
-	}
+    {
+        $result = stream_get_meta_data($this->stream);
+        if(!$result)
+        {
+            throw \RuntimeException('stream getMetadata error');
+        }
+        if(null === $key)
+        {
+            return $result;
+        }
+        else if(isset($result[$key]))
+        {
+            return $result[$key];
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public function getUri(): Uri
-	{
-		return $this->uri;
-	}
+    public function getUri(): Uri
+    {
+        return $this->uri;
+    }
 }

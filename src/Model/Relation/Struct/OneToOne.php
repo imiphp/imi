@@ -8,10 +8,10 @@ use Imi\Model\Parser\RelationParser;
 
 class OneToOne
 {
-	use TLeftAndRight;
-	
-	public function __construct($className, $propertyName, $annotation)
-	{
-		$this->initLeftAndRight($className, $propertyName, $annotation);
-	}
+    use TLeftAndRight;
+    
+    public function __construct($className, $propertyName, $annotation)
+    {
+        $this->initLeftAndRight($className, $propertyName, $annotation);
+    }
 }

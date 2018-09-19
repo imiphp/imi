@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\RequestEventParam;
  */
 interface IRequestEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param RequestEventParam $e
-	 * @return void
-	 */
-	public function handle(RequestEventParam $e);
+    /**
+     * 事件处理方法
+     * @param RequestEventParam $e
+     * @return void
+     */
+    public function handle(RequestEventParam $e);
 }

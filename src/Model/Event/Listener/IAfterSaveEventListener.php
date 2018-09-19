@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\AfterSaveEventParam;
  */
 interface IAfterSaveEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param AfterSaveEventParam $e
-	 * @return void
-	 */
-	public function handle(AfterSaveEventParam $e);
+    /**
+     * 事件处理方法
+     * @param AfterSaveEventParam $e
+     * @return void
+     */
+    public function handle(AfterSaveEventParam $e);
 }

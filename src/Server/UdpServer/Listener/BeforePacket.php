@@ -17,25 +17,25 @@ use Imi\Server\Event\Listener\IPacketEventListener;
  */
 class BeforePacket implements IPacketEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param PacketEventParam $e
-	 * @return void
-	 */
-	public function handle(PacketEventParam $e)
-	{
-		if(!Worker::isInited())
-		{
-			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-			Coroutine::suspend();
-		}
-		// 上下文创建
-		RequestContext::create();
-		RequestContext::set('clientInfo', $e->clientInfo);
-		RequestContext::set('server', $e->getTarget());
+    /**
+     * 事件处理方法
+     * @param PacketEventParam $e
+     * @return void
+     */
+    public function handle(PacketEventParam $e)
+    {
+        if(!Worker::isInited())
+        {
+            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+            Coroutine::suspend();
+        }
+        // 上下文创建
+        RequestContext::create();
+        RequestContext::set('clientInfo', $e->clientInfo);
+        RequestContext::set('server', $e->getTarget());
 
-		// 中间件
-		$dispatcher = RequestContext::getServerBean('UdpDispatcher');
-		$dispatcher->dispatch(new PacketData($e->data, $e->clientInfo));
-	}
+        // 中间件
+        $dispatcher = RequestContext::getServerBean('UdpDispatcher');
+        $dispatcher->dispatch(new PacketData($e->data, $e->clientInfo));
+    }
 }

@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\FinishEventParam;
  */
 interface IFinishEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param FinishEventParam $e
-	 * @return void
-	 */
-	public function handle(FinishEventParam $e);
+    /**
+     * 事件处理方法
+     * @param FinishEventParam $e
+     * @return void
+     */
+    public function handle(FinishEventParam $e);
 }

@@ -5,10 +5,10 @@ use Imi\Event\EventParam;
 
 class StartEventParam extends EventParam
 {
-	/**
-	 * 服务器对象
-	 * @var \Imi\Server\Base
-	 */
-	public $server;
+    /**
+     * 服务器对象
+     * @var \Imi\Server\Base
+     */
+    public $server;
 
 }

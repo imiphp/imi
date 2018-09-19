@@ -12,9 +12,9 @@ use Imi\Bean\Annotation\Parser;
  */
 class WSConfig extends Base
 {
-	/**
-	 * 处理器类
-	 * @var string
-	 */
-	public $parserClass;
+    /**
+     * 处理器类
+     * @var string
+     */
+    public $parserClass;
 }

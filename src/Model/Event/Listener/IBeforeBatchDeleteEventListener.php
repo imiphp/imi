@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeBatchDeleteEventParam;
  */
 interface IBeforeBatchDeleteEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeBatchDeleteEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeBatchDeleteEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeBatchDeleteEventParam $e
+     * @return void
+     */
+    public function handle(BeforeBatchDeleteEventParam $e);
 }

@@ -12,26 +12,26 @@ use Imi\Server\DataParser\DataParser;
  */
 class Dispatcher
 {
-	/**
-	 * 中间件数组
-	 * @var string[]
-	 */
-	protected $middlewares = [];
+    /**
+     * 中间件数组
+     * @var string[]
+     */
+    protected $middlewares = [];
 
-	public function dispatch(IFrame $frame)
-	{
-		$requestHandler = new MessageHandler($this->getMiddlewares());
-		$responseData = $requestHandler->handle($frame);
-		if(null !== $responseData)
-		{
-			RequestContext::getServer()->getSwooleServer()->push($frame->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
-		}
-	}
+    public function dispatch(IFrame $frame)
+    {
+        $requestHandler = new MessageHandler($this->getMiddlewares());
+        $responseData = $requestHandler->handle($frame);
+        if(null !== $responseData)
+        {
+            RequestContext::getServer()->getSwooleServer()->push($frame->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
+        }
+    }
 
-	protected function getMiddlewares()
-	{
-		return array_merge($this->middlewares, [
+    protected function getMiddlewares()
+    {
+        return array_merge($this->middlewares, [
 
-		]);
-	}
+        ]);
+    }
 }

@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\WorkerStartEventParam;
  */
 interface IWorkerStartEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param WorkerStartEventParam $e
-	 * @return void
-	 */
-	public function handle(WorkerStartEventParam $e);
+    /**
+     * 事件处理方法
+     * @param WorkerStartEventParam $e
+     * @return void
+     */
+    public function handle(WorkerStartEventParam $e);
 }

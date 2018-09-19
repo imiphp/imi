@@ -566,374 +566,374 @@ class Query implements IQuery
 
     /**
      * 设置记录从第几个开始取出
-	 * @param int $offset
-	 * @return static
-	 */
-	public function offset($offset)
-	{
-		$this->option->offset = $offset;
-		return $this;
-	}
-	
-	/**
-	 * 设置查询几条记录
-	 * @param int $offset
-	 * @return static
-	 */
-	public function limit($limit)
-	{
-		$this->option->limit = $limit;
-		return $this;
-	}
+     * @param int $offset
+     * @return static
+     */
+    public function offset($offset)
+    {
+        $this->option->offset = $offset;
+        return $this;
+    }
+    
+    /**
+     * 设置查询几条记录
+     * @param int $offset
+     * @return static
+     */
+    public function limit($limit)
+    {
+        $this->option->limit = $limit;
+        return $this;
+    }
 
-	/**
-	 * group by
-	 * @param string ...$groups
-	 * @return static
-	 */
-	public function group(...$groups)
-	{
-		foreach($groups as $item)
-		{
-			$group = new Group();
-			$group->setValue($item);
-			$this->option->group[] = $group;
-		}
-		return $this;
-	}
+    /**
+     * group by
+     * @param string ...$groups
+     * @return static
+     */
+    public function group(...$groups)
+    {
+        foreach($groups as $item)
+        {
+            $group = new Group();
+            $group->setValue($item);
+            $this->option->group[] = $group;
+        }
+        return $this;
+    }
 
-	/**
-	 * group by，使用SQL原生语句
-	 * @param string $raw
-	 * @return static
-	 */
-	public function groupRaw(string $raw)
-	{
-		$group = new Group();
-		$group->useRaw();
-		$group->setRawSQL($raw);
-		$this->option->group[] = $group;
-		return $this;
-	}
+    /**
+     * group by，使用SQL原生语句
+     * @param string $raw
+     * @return static
+     */
+    public function groupRaw(string $raw)
+    {
+        $group = new Group();
+        $group->useRaw();
+        $group->setRawSQL($raw);
+        $this->option->group[] = $group;
+        return $this;
+    }
 
-	/**
-	 * 设置 having 条件
-	 * @param string $fieldName
-	 * @param string $operation
-	 * @param mixed $value
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND)
-	{
-		$this->option->having[] = new Having($fieldName, $operation, $value, $logicalOperator);
-		return $this;
-	}
+    /**
+     * 设置 having 条件
+     * @param string $fieldName
+     * @param string $operation
+     * @param mixed $value
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND)
+    {
+        $this->option->having[] = new Having($fieldName, $operation, $value, $logicalOperator);
+        return $this;
+    }
 
-	/**
-	 * 设置 having 条件，用原生语句
-	 * @param string $raw
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND)
-	{
-		$having = new Having();
-		$having->useRaw();
-		$having->setRawSQL($raw);
-		$having->setLogicalOperator($logicalOperator);
-		$this->option->having[] = $having;
-		return $this;
-	}
+    /**
+     * 设置 having 条件，用原生语句
+     * @param string $raw
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND)
+    {
+        $having = new Having();
+        $having->useRaw();
+        $having->setRawSQL($raw);
+        $having->setLogicalOperator($logicalOperator);
+        $this->option->having[] = $having;
+        return $this;
+    }
 
-	/**
-	 * 设置 having 条件，传入回调，回调中的条件加括号
-	 * @param callable $callback
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND)
-	{
-		$this->option->having[] = new HavingBrackets($callback, $logicalOperator);
-		return $this;
-	}
+    /**
+     * 设置 having 条件，传入回调，回调中的条件加括号
+     * @param callable $callback
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND)
+    {
+        $this->option->having[] = new HavingBrackets($callback, $logicalOperator);
+        return $this;
+    }
 
-	/**
-	 * 设置 having 条件，使用 IHaving 结构
-	 * @param IHaving $having
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND)
-	{
-		$this->option->having[] = $having;
-		return $this;
-	}
+    /**
+     * 设置 having 条件，使用 IHaving 结构
+     * @param IHaving $having
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND)
+    {
+        $this->option->having[] = $having;
+        return $this;
+    }
 
-	/**
-	 * 绑定预处理参数
-	 * @param string|int $name
-	 * @param mixed $value
-	 * @param int $dataType
-	 * @return static
-	 */
-	public function bindValue($name, $value, $dataType = \PDO::PARAM_STR)
-	{
-		$this->binds[$name] = $value;
-		return $this;
-	}
+    /**
+     * 绑定预处理参数
+     * @param string|int $name
+     * @param mixed $value
+     * @param int $dataType
+     * @return static
+     */
+    public function bindValue($name, $value, $dataType = \PDO::PARAM_STR)
+    {
+        $this->binds[$name] = $value;
+        return $this;
+    }
 
-	/**
-	 * 批量绑定预处理参数
-	 * @param array $values
-	 * @return static
-	 */
-	public function bindValues($values)
-	{
-		foreach($values as $k => $v)
-		{
-			$this->binds[$k] = $v;
-		}
-		return $this;
-	}
+    /**
+     * 批量绑定预处理参数
+     * @param array $values
+     * @return static
+     */
+    public function bindValues($values)
+    {
+        foreach($values as $k => $v)
+        {
+            $this->binds[$k] = $v;
+        }
+        return $this;
+    }
 
-	/**
-	 * 获取绑定预处理参数关系
-	 * @return array
-	 */
-	public function getBinds()
-	{
-		return $this->binds;
-	}
+    /**
+     * 获取绑定预处理参数关系
+     * @return array
+     */
+    public function getBinds()
+    {
+        return $this->binds;
+    }
 
-	/**
-	 * 查询记录
-	 * @return IResult
-	 */
-	public function select(): IResult
-	{
-		$builder = new SelectBuilder($this);
-		$sql = $builder->build();
-		return $this->execute($sql);
-	}
+    /**
+     * 查询记录
+     * @return IResult
+     */
+    public function select(): IResult
+    {
+        $builder = new SelectBuilder($this);
+        $sql = $builder->build();
+        return $this->execute($sql);
+    }
 
-	/**
-	 * 插入记录
-	 * @param array $data
-	 * @return IResult
-	 */
-	public function insert($data = null): IResult
-	{
-		$builder = new InsertBuilder($this);
-		$sql = $builder->build($data);
-		return $this->execute($sql);
-	}
+    /**
+     * 插入记录
+     * @param array $data
+     * @return IResult
+     */
+    public function insert($data = null): IResult
+    {
+        $builder = new InsertBuilder($this);
+        $sql = $builder->build($data);
+        return $this->execute($sql);
+    }
 
-	/**
-	 * 更新记录
-	 * @param array $data
-	 * @return IResult
-	 */
-	public function update($data = null): IResult
-	{
-		$builder = new UpdateBuilder($this);
-		$sql = $builder->build($data);
-		return $this->execute($sql);
-	}
+    /**
+     * 更新记录
+     * @param array $data
+     * @return IResult
+     */
+    public function update($data = null): IResult
+    {
+        $builder = new UpdateBuilder($this);
+        $sql = $builder->build($data);
+        return $this->execute($sql);
+    }
 
-	/**
-	 * 删除记录
-	 * @return IResult
-	 */
-	public function delete(): IResult
-	{
-		$builder = new DeleteBuilder($this);
-		$sql = $builder->build();
-		$result = $this->execute($sql);
-		$this->__init();
-		return $result;
-	}
+    /**
+     * 删除记录
+     * @return IResult
+     */
+    public function delete(): IResult
+    {
+        $builder = new DeleteBuilder($this);
+        $sql = $builder->build();
+        $result = $this->execute($sql);
+        $this->__init();
+        return $result;
+    }
 
-	/**
-	 * 统计数量
-	 * @param string $field
-	 * @return int
-	 */
-	public function count($field = '*')
-	{
-		return $this->aggregate('count', $field);
-	}
+    /**
+     * 统计数量
+     * @param string $field
+     * @return int
+     */
+    public function count($field = '*')
+    {
+        return $this->aggregate('count', $field);
+    }
 
-	/**
-	 * 求和
-	 * @param string $field
-	 * @return float
-	 */
-	public function sum($field)
-	{
-		return $this->aggregate('sum', $field);
-	}
+    /**
+     * 求和
+     * @param string $field
+     * @return float
+     */
+    public function sum($field)
+    {
+        return $this->aggregate('sum', $field);
+    }
 
-	/**
-	 * 平均值
-	 * @param string $field
-	 * @return float
-	 */
-	public function avg($field)
-	{
-		return $this->aggregate('avg', $field);
-	}
-	
-	/**
-	 * 最大值
-	 * @param string $field
-	 * @return float
-	 */
-	public function max($field)
-	{
-		return $this->aggregate('max', $field);
-	}
-	
-	/**
-	 * 最小值
-	 * @param string $field
-	 * @return float
-	 */
-	public function min($field)
-	{
-		return $this->aggregate('min', $field);
-	}
+    /**
+     * 平均值
+     * @param string $field
+     * @return float
+     */
+    public function avg($field)
+    {
+        return $this->aggregate('avg', $field);
+    }
+    
+    /**
+     * 最大值
+     * @param string $field
+     * @return float
+     */
+    public function max($field)
+    {
+        return $this->aggregate('max', $field);
+    }
+    
+    /**
+     * 最小值
+     * @param string $field
+     * @return float
+     */
+    public function min($field)
+    {
+        return $this->aggregate('min', $field);
+    }
 
-	/**
-	 * 聚合函数
-	 * @param string $functionName
-	 * @param string $fieldName
-	 * @return mixed
-	 */
-	public function aggregate($functionName, $fieldName)
-	{
-		$field = new Field;
-		$field->useRaw();
-		$field->setRawSQL($functionName . '(' . $field->parseKeyword($fieldName). ')');
-		$this->option->field = [
-			$field
-		];
-		return $this->select()->getScalar();
-	}
+    /**
+     * 聚合函数
+     * @param string $functionName
+     * @param string $fieldName
+     * @return mixed
+     */
+    public function aggregate($functionName, $fieldName)
+    {
+        $field = new Field;
+        $field->useRaw();
+        $field->setRawSQL($functionName . '(' . $field->parseKeyword($fieldName). ')');
+        $this->option->field = [
+            $field
+        ];
+        return $this->select()->getScalar();
+    }
 
-	/**
-	 * 执行SQL语句
-	 * @param string $sql
-	 * @return IResult|Defer
-	 */
-	public function execute($sql)
-	{
-		$stmt = $this->db->prepare($sql);
-		if($stmt)
-		{
-			if($this->defer)
-			{
-				$defer = $stmt->deferExecute($this->binds);
-			}
-			else
-			{
-				$stmt->execute($this->binds) ? $stmt : false;
-			}
-		}
-		$this->__init();
-		return new Result($stmt, $this->modelClass, $defer ?? null);
-	}
+    /**
+     * 执行SQL语句
+     * @param string $sql
+     * @return IResult|Defer
+     */
+    public function execute($sql)
+    {
+        $stmt = $this->db->prepare($sql);
+        if($stmt)
+        {
+            if($this->defer)
+            {
+                $defer = $stmt->deferExecute($this->binds);
+            }
+            else
+            {
+                $stmt->execute($this->binds) ? $stmt : false;
+            }
+        }
+        $this->__init();
+        return new Result($stmt, $this->modelClass, $defer ?? null);
+    }
 
-	/**
-	 * 获取自动起名的参数名称
-	 * @return string
-	 */
-	public static function getAutoParamName()
-	{
-		$index = RequestContext::get('dbParamInc', 0);
-		if($index >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
-		{
-			$index = 0;
-		}
-		++$index;
-		RequestContext::set('dbParamInc', $index);
-		return ':p' . dechex($index);
-	}
+    /**
+     * 获取自动起名的参数名称
+     * @return string
+     */
+    public static function getAutoParamName()
+    {
+        $index = RequestContext::get('dbParamInc', 0);
+        if($index >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
+        {
+            $index = 0;
+        }
+        ++$index;
+        RequestContext::set('dbParamInc', $index);
+        return ':p' . dechex($index);
+    }
 
-	/**
-	 * 设置update/insert数据
-	 * 
-	 * @param array $data
-	 * @return static
-	 */
-	public function setData($data)
-	{
-		$this->option->saveData = $data;
-		return $this;
-	}
+    /**
+     * 设置update/insert数据
+     * 
+     * @param array $data
+     * @return static
+     */
+    public function setData($data)
+    {
+        $this->option->saveData = $data;
+        return $this;
+    }
 
-	/**
-	 * 设置update/insert的字段
-	 *
-	 * @param stirng $fieldName
-	 * @param mixed $value
-	 * @return static
-	 */
-	public function setField($fieldName, $value)
-	{
-		$this->option->saveData[$fieldName] = $value;
-		return $this;
-	}
+    /**
+     * 设置update/insert的字段
+     *
+     * @param stirng $fieldName
+     * @param mixed $value
+     * @return static
+     */
+    public function setField($fieldName, $value)
+    {
+        $this->option->saveData[$fieldName] = $value;
+        return $this;
+    }
 
-	/**
-	 * 设置update/insert的字段，值为表达式，原样代入
-	 *
-	 * @param stirng $fieldName
-	 * @param string $exp
-	 * @return static
-	 */
-	public function setFieldExp($fieldName, $exp)
-	{
-		$this->option->saveData[$fieldName] = new Raw($exp);
-		return $this;
-	}
+    /**
+     * 设置update/insert的字段，值为表达式，原样代入
+     *
+     * @param stirng $fieldName
+     * @param string $exp
+     * @return static
+     */
+    public function setFieldExp($fieldName, $exp)
+    {
+        $this->option->saveData[$fieldName] = new Raw($exp);
+        return $this;
+    }
 
-	/**
-	 * 设置递增字段
-	 *
-	 * @param stirng $fieldName
-	 * @param float $incValue
-	 * @return static
-	 */
-	public function setFieldInc($fieldName, float $incValue = 1)
-	{
-		$this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' + ' . $incValue);
-		return $this;
-	}
+    /**
+     * 设置递增字段
+     *
+     * @param stirng $fieldName
+     * @param float $incValue
+     * @return static
+     */
+    public function setFieldInc($fieldName, float $incValue = 1)
+    {
+        $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' + ' . $incValue);
+        return $this;
+    }
 
-	/**
-	 * 设置递减字段
-	 *
-	 * @param stirng $fieldName
-	 * @param float $decValue
-	 * @return static
-	 */
-	public function setFieldDec($fieldName, float $decValue = 1)
-	{
-		$this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
-		return $this;
-	}
+    /**
+     * 设置递减字段
+     *
+     * @param stirng $fieldName
+     * @param float $decValue
+     * @return static
+     */
+    public function setFieldDec($fieldName, float $decValue = 1)
+    {
+        $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
+        return $this;
+    }
 
-	/**
-	 * 设置是否延迟调用
-	 *
-	 * @param boolean $defer
-	 * @return static
-	 */
-	public function setDefer($defer = true)
-	{
-		$this->defer = $defer;
-		return $this;
-	}
+    /**
+     * 设置是否延迟调用
+     *
+     * @param boolean $defer
+     * @return static
+     */
+    public function setDefer($defer = true)
+    {
+        $this->defer = $defer;
+        return $this;
+    }
 
 }

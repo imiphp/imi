@@ -59,12 +59,12 @@ class Request extends ServerRequest
         return $this->swooleRequest;
     }
 
-	/**
-	 * 获取对应的服务器
-	 * @return \Imi\Server\Base
-	 */
-	public function getServerInstance(): \Imi\Server\Base
-	{
-		return $this->serverInstance;
-	}
+    /**
+     * 获取对应的服务器
+     * @return \Imi\Server\Base
+     */
+    public function getServerInstance(): \Imi\Server\Base
+    {
+        return $this->serverInstance;
+    }
 }

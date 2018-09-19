@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\InitEventParam;
  */
 interface IInitEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param InitEventParam $e
-	 * @return void
-	 */
-	public function handle(InitEventParam $e);
+    /**
+     * 事件处理方法
+     * @param InitEventParam $e
+     * @return void
+     */
+    public function handle(InitEventParam $e);
 }

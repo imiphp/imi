@@ -12,33 +12,33 @@ use Imi\Bean\Annotation\Parser;
  */
 class RedisEntity extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'poolName';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'poolName';
 
-	/**
-	 * redis 连接池名称
-	 * @var string
-	 */
-	public $poolName;
+    /**
+     * redis 连接池名称
+     * @var string
+     */
+    public $poolName;
 
-	/**
-	 * 第几个库，不传为null时使用连接池默认配置
-	 * @var int
-	 */
-	public $db = null;
+    /**
+     * 第几个库，不传为null时使用连接池默认配置
+     * @var int
+     */
+    public $db = null;
 
-	/**
-	 * 键，支持定义多个参数，格式：{key}
-	 * @var string
-	 */
-	public $key = '{key}';
+    /**
+     * 键，支持定义多个参数，格式：{key}
+     * @var string
+     */
+    public $key = '{key}';
 
-	/**
-	 * 数据默认的过期时间，null为永不过期
-	 * @var integer
-	 */
-	public $ttl = null;
+    /**
+     * 数据默认的过期时间，null为永不过期
+     * @var integer
+     */
+    public $ttl = null;
 }

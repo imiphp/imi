@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\ManagerStopEventParam;
  */
 interface IManagerStopEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param StopEventParam $e
-	 * @return void
-	 */
-	public function handle(ManagerStopEventParam $e);
+    /**
+     * 事件处理方法
+     * @param StopEventParam $e
+     * @return void
+     */
+    public function handle(ManagerStopEventParam $e);
 }

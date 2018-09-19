@@ -15,25 +15,25 @@ use Imi\Server\Event\Listener\IConnectEventListener;
  */
 class BeforeConnect implements IConnectEventListener
 {
-	/**
-	 * 默认的 WebSocket 握手
-	 * @param ConnectEventParam $e
-	 * @return void
-	 */
-	public function handle(ConnectEventParam $e)
-	{
-		if(!Worker::isInited())
-		{
-			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-			Coroutine::suspend();
-		}
-		// 上下文创建
-		RequestContext::create();
-		RequestContext::set('server', $e->server);
-		RequestContext::set('fd', $e->fd);
+    /**
+     * 默认的 WebSocket 握手
+     * @param ConnectEventParam $e
+     * @return void
+     */
+    public function handle(ConnectEventParam $e)
+    {
+        if(!Worker::isInited())
+        {
+            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+            Coroutine::suspend();
+        }
+        // 上下文创建
+        RequestContext::create();
+        RequestContext::set('server', $e->server);
+        RequestContext::set('fd', $e->fd);
 
-		// 连接上下文创建
-		ConnectContext::create();
-	}
+        // 连接上下文创建
+        ConnectContext::create();
+    }
 
 }
