@@ -60,13 +60,24 @@ class ModelGenerate
 				// 不符合$include和$exclude
 				continue;
 			}
-			echo 'generating ', $table, '...', PHP_EOL;
 			$className = $this->getClassName($table, $prefix);
 			$fileName = File::path($modelPath, $className . '.php');
-			if(is_file($fileName) && !$override)
+			if(is_file($fileName))
 			{
-				// 不覆盖
-				continue;
+				if($override)
+				{
+					echo 'override ', $table, '...', PHP_EOL;
+				}
+				else
+				{
+					// 不覆盖
+					echo 'skip ', $table, '...', PHP_EOL;
+					continue;
+				}
+			}
+			else
+			{
+				echo 'generating ', $table, '...', PHP_EOL;
 			}
 			$data = [
 				'namespace'	=>	$namespace,
