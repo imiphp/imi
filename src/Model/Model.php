@@ -344,6 +344,17 @@ abstract class Model extends BaseModel
 	}
 
 	/**
+	 * 查询指定关联
+	 *
+	 * @param string ...$names
+	 * @return void
+	 */
+	public function queryRelations(...$names)
+	{
+		ModelRelationManager::queryModelRelations($this, ...$names);
+	}
+
+	/**
 	 * 批量删除
 	 * @param array|callable $where
 	 * @return IResult

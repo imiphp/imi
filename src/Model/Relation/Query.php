@@ -10,6 +10,7 @@ use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\ManyToMany;
 
 
@@ -20,21 +21,32 @@ abstract class Query
 	 *
 	 * @param \Imi\Model\Model $model
 	 * @param string $propertyName
-	 * @param \Imi\Bean\Annotation\Base $annotation
+	 * @param \Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[] $annotation
+	 * @param boolean $forceInit 是否强制更新
 	 * @return void
 	 */
-	public static function init($model, $propertyName, $annotation)
+	public static function init($model, $propertyName, $annotation, $forceInit = false)
 	{
 		$relationParser = RelationParser::getInstance();
 		$className = BeanFactory::getObjectClass($model);
 
-		$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
-		if($autoSelect && !$autoSelect->status)
+		if(!$forceInit)
 		{
-			return;
+			$autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
+			if($autoSelect && !$autoSelect->status)
+			{
+				return;
+			}
 		}
 
-		if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+		if(is_array($annotation))
+		{
+			if(reset($annotation) instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
+			{
+				static::initByPolymorphicToOne($model, $propertyName, $annotation);
+			}
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
 		{
 			static::initByOneToOne($model, $propertyName, $annotation);
 		}
@@ -45,6 +57,10 @@ abstract class Query
 		else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
 		{
 			static::initByManyToMany($model, $propertyName, $annotation);
+		}
+		else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+		{
+			static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
 		}
 	}
 
@@ -178,6 +194,89 @@ abstract class Query
 				// 右侧表数据
 				static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
 
+			}
+		}
+	}
+
+	/**
+	 * 初始化多态一对一关系
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
+	 * @return void
+	 */
+	public static function initByPolymorphicOneToOne($model, $propertyName, $annotation)
+	{
+		$className = BeanFactory::getObjectClass($model);
+
+		if(class_exists($annotation->model))
+		{
+			$modelClass = $annotation->model;
+		}
+		else
+		{
+			$modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
+		}
+
+		$struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
+		$leftField = $struct->getLeftField();
+		$rightField = $struct->getRightField();
+
+		if(null === $model->$leftField)
+		{
+			$rightModel = $modelClass::newInstance();
+		}
+		else
+		{
+			$rightModel = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->select()->get();
+			if(null === $rightModel)
+			{
+				$rightModel = $modelClass::newInstance();
+			}
+		}
+
+		$model->$propertyName = $rightModel;
+	}
+
+	/**
+	 * 初始化多态，对应的实体模型
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string $propertyName
+	 * @param \Imi\Model\Annotation\Relation\PolymorphicToOne[] $annotation
+	 * @return void
+	 */
+	public static function initByPolymorphicToOne($model, $propertyName, $annotation)
+	{
+		foreach($annotation as $annotationItem)
+		{
+			if($model->{$annotationItem->type} == $annotationItem->typeValue)
+			{
+				$leftField = $annotationItem->modelField;
+				$rightField = $annotationItem->field;
+				if(class_exists($annotationItem->model))
+				{
+					$modelClass = $annotationItem->model;
+				}
+				else
+				{
+					$modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
+				}
+				if(null === $model->$rightField)
+				{
+					$leftModel = $modelClass::newInstance();
+				}
+				else
+				{
+					$leftModel = $modelClass::query()->where($leftField, '=', $model->$rightField)->select()->get();
+					if(null === $leftModel)
+					{
+						$leftModel = $modelClass::newInstance();
+					}
+				}
+				$model->$propertyName = $leftModel;
+				break;
 			}
 		}
 	}

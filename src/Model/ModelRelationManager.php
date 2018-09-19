@@ -34,6 +34,25 @@ abstract class ModelRelationManager
 	}
 
 	/**
+	 * 查询模型指定关联
+	 *
+	 * @param \Imi\Model\Model $model
+	 * @param string ...$names
+	 * @return void
+	 */
+	public static function queryModelRelations($model, ...$names)
+	{
+		$relations = RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model));
+		foreach($names as $name)
+		{
+			if(isset($relations[$name]))
+			{
+				Query::init($model, $name, $relations[$name], true);
+			}
+		}
+	}
+
+	/**
 	 * 插入模型
 	 *
 	 * @param \Imi\Model\Model $model

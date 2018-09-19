@@ -14,6 +14,8 @@ use Imi\Model\Annotation\Relation\AutoUpdate;
 use Imi\Model\Annotation\Relation\ManyToMany;
 use Imi\Model\Annotation\Relation\JoinToMiddle;
 use Imi\Model\Annotation\Relation\JoinFromMiddle;
+use Imi\Model\Annotation\Relation\PolymorphicToOne;
+use Imi\Model\Annotation\Relation\PolymorphicOneToOne;
 
 
 class RelationParser extends BaseParser
@@ -28,9 +30,13 @@ class RelationParser extends BaseParser
 	 */
 	public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
 	{
-		if($annotation instanceof OneToOne || $annotation instanceof OneToMany || $annotation instanceof ManyToMany)
+		if($annotation instanceof OneToOne || $annotation instanceof OneToMany || $annotation instanceof ManyToMany || $annotation instanceof PolymorphicOneToOne)
 		{
 			$this->data[$className]['relations'][$targetName] = $annotation;
+		}
+		else if($annotation instanceof PolymorphicToOne)
+		{
+			$this->data[$className]['relations'][$targetName][] = $annotation;
 		}
 		else if($annotation instanceof JoinFrom)
 		{
