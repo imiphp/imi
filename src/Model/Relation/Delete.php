@@ -11,6 +11,7 @@ use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
+use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 
 
 abstract class Delete
@@ -52,6 +53,10 @@ abstract class Delete
         else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
             static::parseByPolymorphicOneToOne($model, $propertyName, $annotation);
+        }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+        {
+            static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
     }
 
@@ -138,5 +143,27 @@ abstract class Delete
         $model->$propertyName->$rightField = $model->$leftField;
         $model->$propertyName->{$annotation->type} = $annotation->typeValue;
         $model->$propertyName->delete();
+    }
+    
+    /**
+     * 处理多态一对多删除
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
+     * @return void
+     */
+    public static function parseByPolymorphicOneToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        $struct = new PolymorphicOneToMany($className, $propertyName, $annotation);
+        $leftField = $struct->getLeftField();
+        $rightField = $struct->getRightField();
+        $rightModel = $struct->getRightModel();
+
+        $rightModel::deleteBatch(function(IQuery $query) use($model, $leftField, $rightField, $annotation){
+            $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+        });
     }
 }

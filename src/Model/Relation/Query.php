@@ -10,8 +10,9 @@ use Imi\Model\ModelManager;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
-use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToOne;
+use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 
 
 abstract class Query
@@ -61,6 +62,10 @@ abstract class Query
         else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
             static::initByPolymorphicOneToOne($model, $propertyName, $annotation);
+        }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+        {
+            static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
     }
 
@@ -237,6 +242,42 @@ abstract class Query
         }
 
         $model->$propertyName = $rightModel;
+    }
+
+    /**
+     * 初始化多态一对多关系
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
+     * @return void
+     */
+    public static function initByPolymorphicOneToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        if(class_exists($annotation->model))
+        {
+            $modelClass = $annotation->model;
+        }
+        else
+        {
+            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
+        }
+
+        $struct = new PolymorphicOneToMany($className, $propertyName, $annotation);
+        $leftField = $struct->getLeftField();
+        $rightField = $struct->getRightField();
+
+        $model->$propertyName = new ArrayList($modelClass);
+        if(null !== $model->$leftField)
+        {
+            $list = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->select()->getArray();
+            if(null !== $list)
+            {
+                $model->$propertyName->append(...$list);
+            }
+        }
     }
 
     /**

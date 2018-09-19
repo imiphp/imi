@@ -12,6 +12,7 @@ use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
+use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 
 
 abstract class Update
@@ -63,6 +64,10 @@ abstract class Update
         {
             static::parseByPolymorphicOneToOne($model, $propertyName, $annotation);
         }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+        {
+            static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
+        }
     }
 
     /**
@@ -104,6 +109,7 @@ abstract class Update
 
         $relationParser = RelationParser::getInstance();
         $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
+        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
         // 是否删除无关数据
         if($autoUpdate)
         {
@@ -190,6 +196,7 @@ abstract class Update
 
         $relationParser = RelationParser::getInstance();
         $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
+        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
         // 是否删除无关数据
         if($autoUpdate)
         {
@@ -317,5 +324,90 @@ abstract class Update
         $model->$propertyName->$rightField = $model->$leftField;
         $model->$propertyName->{$annotation->type} = $annotation->typeValue;
         $model->$propertyName->update();
+    }
+
+    /**
+     * 处理多态一对多更新
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
+     * @return void
+     */
+    public static function parseByPolymorphicOneToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        $struct = new PolymorphicOneToMany($className, $propertyName, $annotation);
+        $leftField = $struct->getLeftField();
+        $rightField = $struct->getRightField();
+        $rightModel = $struct->getRightModel();
+
+        $relationParser = RelationParser::getInstance();
+        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
+        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        // 是否删除无关数据
+        if($autoUpdate)
+        {
+            $orphanRemoval = $autoUpdate->orphanRemoval;
+        }
+        else if($autoSave)
+        {
+            $orphanRemoval = $autoSave->orphanRemoval;
+        }
+        else
+        {
+            $orphanRemoval = false;
+        }
+
+        if($orphanRemoval)
+        {
+            // 删除无关联数据
+            $pks = ModelManager::getId($rightModel);
+            if(is_array($pks))
+            {
+                if(isset($pks[1]))
+                {
+                    throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));
+                }
+                $pk = $pks[0];
+            }
+            else
+            {
+                $pk = $pks;
+            }
+
+            $oldIDs = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->field($pk)->select()->getColumn();
+
+            $updateIDs = [];
+            foreach($model->$propertyName as $row)
+            {
+                if(null !== $row->$pk)
+                {
+                    $updateIDs[] = $row->$pk;
+                }
+                $row->$rightField = $model->$leftField;
+                $row->save();
+            }
+
+            $deleteIDs = array_diff($oldIDs, $updateIDs);
+
+            if(isset($deleteIDs[0]))
+            {
+                // 批量删除
+                $rightModel::deleteBatch(function(IQuery $query) use($pk, $deleteIDs){
+                    $query->whereIn($pk, $deleteIDs);
+                });
+            }
+        }
+        else
+        {
+            // 直接更新
+            foreach($model->$propertyName as $row)
+            {
+                $row->$rightField = $model->$leftField;
+                $row->save();
+            }
+        }
     }
 }
