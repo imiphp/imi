@@ -40,4 +40,4 @@ class PolymorphicOneToOne extends Base
 	 * @var mixed
 	 */
 	public $typeValue;
-}	
+}

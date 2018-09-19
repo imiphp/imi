@@ -152,19 +152,19 @@ use Imi\Util\Defer;
  */
 class Redis extends \Swoole\Coroutine\Redis
 {
-	public function __call($name, $arguments)
-	{
-		if(isset($name[5]) && 'defer' === substr($name, 0, 5))
-		{
-			$this->setDefer(true);
-			$methodName = substr($name, 5);
-			$result = $this->$methodName(...$arguments);
-			$callable = function(){
-				return $this->recv();
-			};
-			$defer = new Defer($callable);
-			return $defer;
-		}
-		return false;
-	}
+    public function __call($name, $arguments)
+    {
+        if(isset($name[5]) && 'defer' === substr($name, 0, 5))
+        {
+            $this->setDefer(true);
+            $methodName = substr($name, 5);
+            $result = $this->$methodName(...$arguments);
+            $callable = function(){
+                return $this->recv();
+            };
+            $defer = new Defer($callable);
+            return $defer;
+        }
+        return false;
+    }
 }

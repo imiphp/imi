@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Parser;
  */
 class AfterThrowing extends Base
 {
-	/**
-	 * 允许捕获的异常类列表
-	 * @var array
-	 */
-	public $allow = [];
+    /**
+     * 允许捕获的异常类列表
+     * @var array
+     */
+    public $allow = [];
 
-	/**
-	 * 不允许捕获的异常类列表
-	 * @var array
-	 */
-	public $deny = [];
+    /**
+     * 不允许捕获的异常类列表
+     * @var array
+     */
+    public $deny = [];
 }

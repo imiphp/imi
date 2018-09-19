@@ -27,545 +27,545 @@ use Imi\Db\Query\Interfaces\IBaseWhere;
  */
 class Query implements IQuery
 {
-	/**
-	 * 操作记录
-	 * @var QueryOption
-	 */
-	private $option;
+    /**
+     * 操作记录
+     * @var QueryOption
+     */
+    private $option;
 
-	/**
-	 * 数据绑定
-	 * @var array
-	 */
-	private $binds = [];
+    /**
+     * 数据绑定
+     * @var array
+     */
+    private $binds = [];
 
-	/**
-	 * 数据库操作对象
-	 * @var IDb
-	 */
-	private $db;
+    /**
+     * 数据库操作对象
+     * @var IDb
+     */
+    private $db;
 
-	/**
-	 * 查询结果类的类名，为null则为数组
-	 * @var string
-	 */
-	private $modelClass;
+    /**
+     * 查询结果类的类名，为null则为数组
+     * @var string
+     */
+    private $modelClass;
 
-	/**
-	 * 设置延迟收包
-	 *
-	 * @var boolean
-	 */
-	private $defer = false;
+    /**
+     * 设置延迟收包
+     *
+     * @var boolean
+     */
+    private $defer = false;
 
-	public function __construct(IDb $db, $modelClass = null)
-	{
-		$this->db = $db;
-		$this->modelClass = $modelClass;
-	}
+    public function __construct(IDb $db, $modelClass = null)
+    {
+        $this->db = $db;
+        $this->modelClass = $modelClass;
+    }
 
-	public function __init()
-	{
-		$this->option = new QueryOption;
-	}
+    public function __init()
+    {
+        $this->option = new QueryOption;
+    }
 
-	/**
-	 * 获取所有操作的记录
-	 * @return QueryOption
-	 */
-	public function getOption(): QueryOption
-	{
-		return $this->option;
-	}
+    /**
+     * 获取所有操作的记录
+     * @return QueryOption
+     */
+    public function getOption(): QueryOption
+    {
+        return $this->option;
+    }
 
-	/**
-	 * 设置操作记录
-	 * @param QueryOption $options
-	 * @return static
-	 */
-	public function setOption(QueryOption $option)
-	{
-		$this->option = $option;
-		return $this;
-	}
+    /**
+     * 设置操作记录
+     * @param QueryOption $options
+     * @return static
+     */
+    public function setOption(QueryOption $option)
+    {
+        $this->option = $option;
+        return $this;
+    }
 
-	/**
-	 * 获取数据库操作对象
-	 * @return IDb
-	 */
-	public function getDb(): IDb
-	{
-		return $this->db;
-	}
+    /**
+     * 获取数据库操作对象
+     * @return IDb
+     */
+    public function getDb(): IDb
+    {
+        return $this->db;
+    }
 
-	/**
-	 * 设置表名
-	 * @param string $table 表名
-	 * @param string $alias 别名
-	 * @param string $database 数据库名
-	 * @return static
-	 */
-	public function table(string $table, string $alias = null, string $database = null)
-	{
-		$this->option->table->useRaw(false);
-		$this->option->table->setTable($table);
-		$this->option->table->setAlias($alias);
-		$this->option->table->setDatabase($database);
-		return $this;
-	}
+    /**
+     * 设置表名
+     * @param string $table 表名
+     * @param string $alias 别名
+     * @param string $database 数据库名
+     * @return static
+     */
+    public function table(string $table, string $alias = null, string $database = null)
+    {
+        $this->option->table->useRaw(false);
+        $this->option->table->setTable($table);
+        $this->option->table->setAlias($alias);
+        $this->option->table->setDatabase($database);
+        return $this;
+    }
 
-	/**
-	 * 设置表名，使用SQL原生语句
-	 * @param string $raw
-	 * @return static
-	 */
-	public function tableRaw(string $raw)
-	{
-		$this->option->table->useRaw(true);
-		$this->option->table->setRawSQL($raw);
-		return $this;
-	}
+    /**
+     * 设置表名，使用SQL原生语句
+     * @param string $raw
+     * @return static
+     */
+    public function tableRaw(string $raw)
+    {
+        $this->option->table->useRaw(true);
+        $this->option->table->setRawSQL($raw);
+        return $this;
+    }
 
-	/**
-	 * 设置表名，table()的别名
-	 * @param string $table 表名
-	 * @param string $alias 别名
-	 * @param string $database 数据库名
-	 * @return static
-	 */
-	public function from(string $table, string $alias = null, string $database = null)
-	{
-		return $this->table($table, $alias, $database);
-	}
+    /**
+     * 设置表名，table()的别名
+     * @param string $table 表名
+     * @param string $alias 别名
+     * @param string $database 数据库名
+     * @return static
+     */
+    public function from(string $table, string $alias = null, string $database = null)
+    {
+        return $this->table($table, $alias, $database);
+    }
 
-	/**
-	 * 设置表名，使用SQL原生语句
-	 * @param string $raw
-	 * @return static
-	 */
-	public function fromRaw(string $raw)
-	{
-		return $this->fromRaw($raw);
-	}
+    /**
+     * 设置表名，使用SQL原生语句
+     * @param string $raw
+     * @return static
+     */
+    public function fromRaw(string $raw)
+    {
+        return $this->fromRaw($raw);
+    }
 
-	/**
-	 * 设置 distinct
-	 * @param boolean $isDistinct 是否设置distinct
-	 * @return static
-	 */
-	public function distinct($isDistinct = true)
-	{
-		$this->option->distinct = $isDistinct;
-		return $this;
-	}
+    /**
+     * 设置 distinct
+     * @param boolean $isDistinct 是否设置distinct
+     * @return static
+     */
+    public function distinct($isDistinct = true)
+    {
+        $this->option->distinct = $isDistinct;
+        return $this;
+    }
 
-	/**
-	 * 指定查询字段
-	 * @param string|array|IField $fields 查询字段
-	 * @return static
-	 */
-	public function field(...$fields)
-	{
-		if(!isset($fields[1]) && is_array($fields[0]))
-		{
-			$this->option->field = array_merge($this->option->field, $fields[0]);
-		}
-		else
-		{
-			$this->option->field = array_merge($this->option->field, $fields);
-		}
-		return $this;
-	}
+    /**
+     * 指定查询字段
+     * @param string|array|IField $fields 查询字段
+     * @return static
+     */
+    public function field(...$fields)
+    {
+        if(!isset($fields[1]) && is_array($fields[0]))
+        {
+            $this->option->field = array_merge($this->option->field, $fields[0]);
+        }
+        else
+        {
+            $this->option->field = array_merge($this->option->field, $fields);
+        }
+        return $this;
+    }
 
-	/**
-	 * 指定查询字段，使用SQL原生语句
-	 * @param string $raw
-	 * @return static
-	 */
-	public function fieldRaw(string $raw)
-	{
-		$field = new Field();
-		$field->useRaw();
-		$field->setRawSQL($raw);
-		$this->option->field[] = $field;
-		return $this;
-	}
+    /**
+     * 指定查询字段，使用SQL原生语句
+     * @param string $raw
+     * @return static
+     */
+    public function fieldRaw(string $raw)
+    {
+        $field = new Field();
+        $field->useRaw();
+        $field->setRawSQL($raw);
+        $this->option->field[] = $field;
+        return $this;
+    }
 
-	/**
-	 * 设置 where 条件，一般用于 =、>、<、like 等
-	 * @param string $fieldName
-	 * @param string $operation
-	 * @param mixed $value
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND)
-	{
-		$this->option->where[] = new Where($fieldName, $operation, $value, $logicalOperator);
-		return $this;
-	}
+    /**
+     * 设置 where 条件，一般用于 =、>、<、like 等
+     * @param string $fieldName
+     * @param string $operation
+     * @param mixed $value
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND)
+    {
+        $this->option->where[] = new Where($fieldName, $operation, $value, $logicalOperator);
+        return $this;
+    }
 
-	/**
-	 * 设置 where 条件，用原生语句
-	 * @param string $raw
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND)
-	{
-		$where = new Where();
-		$where->useRaw();
-		$where->setRawSQL($raw);
-		$where->setLogicalOperator($logicalOperator);
-		$this->option->where[] = $where;
-		return $this;
-	}
+    /**
+     * 设置 where 条件，用原生语句
+     * @param string $raw
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND)
+    {
+        $where = new Where();
+        $where->useRaw();
+        $where->setRawSQL($raw);
+        $where->setLogicalOperator($logicalOperator);
+        $this->option->where[] = $where;
+        return $this;
+    }
 
-	/**
-	 * 设置 where 条件，传入回调，回调中的条件加括号
-	 * @param callable $callback
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND)
-	{
-		$this->option->where[] = new WhereBrackets($callback, $logicalOperator);
-		return $this;
-	}
+    /**
+     * 设置 where 条件，传入回调，回调中的条件加括号
+     * @param callable $callback
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND)
+    {
+        $this->option->where[] = new WhereBrackets($callback, $logicalOperator);
+        return $this;
+    }
 
-	/**
-	 * 设置 where 条件，使用 IBaseWhere 结构
-	 * @param IBaseWhere $where
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND)
-	{
-		$this->option->where[] = $where;
-		return $this;
-	}
+    /**
+     * 设置 where 条件，使用 IBaseWhere 结构
+     * @param IBaseWhere $where
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND)
+    {
+        $this->option->where[] = $where;
+        return $this;
+    }
 
-	/**
-	 * where between $begin end $end
-	 * @param string $fieldName
-	 * @param mixed $begin
-	 * @param mixed $end
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND)
-	{
-		return $this->where($fieldName, 'between', [$begin, $end], $logicalOperator);
-	}
+    /**
+     * where between $begin end $end
+     * @param string $fieldName
+     * @param mixed $begin
+     * @param mixed $end
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND)
+    {
+        return $this->where($fieldName, 'between', [$begin, $end], $logicalOperator);
+    }
 
-	/**
-	 * or where between $begin end $end
-	 * @param string $fieldName
-	 * @param mixed $begin
-	 * @param mixed $end
-	 * @return static
-	 */
-	public function orWhereBetween(string $fieldName, $begin, $end)
-	{
-		return $this->where($fieldName, 'between', [$begin, $end], LogicalOperator::OR);
-	}
+    /**
+     * or where between $begin end $end
+     * @param string $fieldName
+     * @param mixed $begin
+     * @param mixed $end
+     * @return static
+     */
+    public function orWhereBetween(string $fieldName, $begin, $end)
+    {
+        return $this->where($fieldName, 'between', [$begin, $end], LogicalOperator::OR);
+    }
 
-	/**
-	 * where not between $begin end $end
-	 * @param string $fieldName
-	 * @param mixed $begin
-	 * @param mixed $end
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND)
-	{
-		return $this->where($fieldName, 'not between', [$begin, $end], $logicalOperator);
-	}
+    /**
+     * where not between $begin end $end
+     * @param string $fieldName
+     * @param mixed $begin
+     * @param mixed $end
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND)
+    {
+        return $this->where($fieldName, 'not between', [$begin, $end], $logicalOperator);
+    }
 
-	/**
-	 * or where not between $begin end $end
-	 * @param string $fieldName
-	 * @param mixed $begin
-	 * @param mixed $end
-	 * @return static
-	 */
-	public function orWhereNotBetween(string $fieldName, $begin, $end)
-	{
-		return $this->where($fieldName, 'not between', [$begin, $end], LogicalOperator::OR);
-	}
+    /**
+     * or where not between $begin end $end
+     * @param string $fieldName
+     * @param mixed $begin
+     * @param mixed $end
+     * @return static
+     */
+    public function orWhereNotBetween(string $fieldName, $begin, $end)
+    {
+        return $this->where($fieldName, 'not between', [$begin, $end], LogicalOperator::OR);
+    }
 
-	/**
-	 * 设置 where or 条件
-	 * @param string $fieldName
-	 * @param string $operation
-	 * @param mixed $value
-	 * @return static
-	 */
-	public function orWhere(string $fieldName, string $operation, $value)
-	{
-		return $this->where($fieldName, $operation, $value, LogicalOperator::OR);
-	}
+    /**
+     * 设置 where or 条件
+     * @param string $fieldName
+     * @param string $operation
+     * @param mixed $value
+     * @return static
+     */
+    public function orWhere(string $fieldName, string $operation, $value)
+    {
+        return $this->where($fieldName, $operation, $value, LogicalOperator::OR);
+    }
 
-	/**
-	 * 设置 where or 条件，用原生语句
-	 * @param string $where
-	 * @return static
-	 */
-	public function orWhereRaw(string $where)
-	{
-		return $this->whereRaw($where, LogicalOperator::OR);
-	}
+    /**
+     * 设置 where or 条件，用原生语句
+     * @param string $where
+     * @return static
+     */
+    public function orWhereRaw(string $where)
+    {
+        return $this->whereRaw($where, LogicalOperator::OR);
+    }
 
-	/**
-	 * 设置 where or 条件，传入回调，回调中的条件加括号
-	 * @param callable $callback
-	 * @return static
-	 */
-	public function orWhereBrackets(callable $callback)
-	{
-		return $this->whereBrackets($callback, LogicalOperator::OR);
-	}
+    /**
+     * 设置 where or 条件，传入回调，回调中的条件加括号
+     * @param callable $callback
+     * @return static
+     */
+    public function orWhereBrackets(callable $callback)
+    {
+        return $this->whereBrackets($callback, LogicalOperator::OR);
+    }
 
-	/**
-	 * 设置 where or 条件，使用 IBaseWhere 结构
-	 * @param IBaseWhere $where
-	 * @return static
-	 */
-	public function orWhereStruct(IBaseWhere $where)
-	{
-		return $this->whereStruct($where, LogicalOperator::OR);
-	}
+    /**
+     * 设置 where or 条件，使用 IBaseWhere 结构
+     * @param IBaseWhere $where
+     * @return static
+     */
+    public function orWhereStruct(IBaseWhere $where)
+    {
+        return $this->whereStruct($where, LogicalOperator::OR);
+    }
 
-	/**
-	 * where field in (list)
-	 * @param string $fieldName
-	 * @param array $list
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND)
-	{
-		return $this->where($fieldName, 'in', $list, $logicalOperator);
-	}
+    /**
+     * where field in (list)
+     * @param string $fieldName
+     * @param array $list
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND)
+    {
+        return $this->where($fieldName, 'in', $list, $logicalOperator);
+    }
 
-	/**
-	 * or where field in (list)
-	 * @param string $fieldName
-	 * @param array $list
-	 * @return static
-	 */
-	public function orWhereIn(string $fieldName, $list)
-	{
-		return $this->where($fieldName, 'in', $list, LogicalOperator::OR);
-	}
+    /**
+     * or where field in (list)
+     * @param string $fieldName
+     * @param array $list
+     * @return static
+     */
+    public function orWhereIn(string $fieldName, $list)
+    {
+        return $this->where($fieldName, 'in', $list, LogicalOperator::OR);
+    }
 
-	/**
-	 * where field not in (list)
-	 * @param string $fieldName
-	 * @param array $list
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereNotIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND)
-	{
-		return $this->where($fieldName, 'not in', $list, $logicalOperator);
-	}
+    /**
+     * where field not in (list)
+     * @param string $fieldName
+     * @param array $list
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereNotIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND)
+    {
+        return $this->where($fieldName, 'not in', $list, $logicalOperator);
+    }
 
-	/**
-	 * or where field not in (list)
-	 * @param string $fieldName
-	 * @param array $list
-	 * @return static
-	 */
-	public function orWhereNotIn(string $fieldName, $list)
-	{
-		return $this->where($fieldName, 'not in', $list, LogicalOperator::OR);
-	}
+    /**
+     * or where field not in (list)
+     * @param string $fieldName
+     * @param array $list
+     * @return static
+     */
+    public function orWhereNotIn(string $fieldName, $list)
+    {
+        return $this->where($fieldName, 'not in', $list, LogicalOperator::OR);
+    }
 
-	/**
-	 * where field is null
-	 * @param string $fieldName
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
-	{
-		return $this->where($fieldName, 'is', null, $logicalOperator);
-	}
+    /**
+     * where field is null
+     * @param string $fieldName
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
+    {
+        return $this->where($fieldName, 'is', null, $logicalOperator);
+    }
 
-	/**
-	 * or where field is null
-	 * @param string $fieldName
-	 * @return static
-	 */
-	public function orWhereIsNull(string $fieldName)
-	{
-		return $this->where($fieldName, 'is', null, LogicalOperator::OR);
-	}
+    /**
+     * or where field is null
+     * @param string $fieldName
+     * @return static
+     */
+    public function orWhereIsNull(string $fieldName)
+    {
+        return $this->where($fieldName, 'is', null, LogicalOperator::OR);
+    }
 
-	/**
-	 * where field is not null
-	 * @param string $fieldName
-	 * @param string $logicalOperator
-	 * @return static
-	 */
-	public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
-	{
-		return $this->where($fieldName, 'is not', null, $logicalOperator);
-	}
+    /**
+     * where field is not null
+     * @param string $fieldName
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
+    {
+        return $this->where($fieldName, 'is not', null, $logicalOperator);
+    }
 
-	/**
-	 * or where field is not null
-	 * @param string $fieldName
-	 * @return static
-	 */
-	public function orWhereIsNotNull(string $fieldName)
-	{
-		return $this->where($fieldName, 'is not', null, LogicalOperator::OR);
-	}
+    /**
+     * or where field is not null
+     * @param string $fieldName
+     * @return static
+     */
+    public function orWhereIsNotNull(string $fieldName)
+    {
+        return $this->where($fieldName, 'is not', null, LogicalOperator::OR);
+    }
 
-	/**
-	 * join
-	 * @param string $table 表名
-	 * @param string $left 在 join b on a.id=b.id 中的 a.id
-	 * @param string $operation 在 join b on a.id=b.id 中的 =
-	 * @param string $right 在 join b on a.id=b.id 中的 b.id
-	 * @param string $tableAlias 表别名
-	 * @param IBaseWhere $where where条件
-	 * @param string $type join类型，默认left
-	 * @return static
-	 */
-	public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'left')
-	{
-		$this->option->join[] = new Join($table, $left, $operation, $right, $tableAlias, $where, $type);
-		return $this;
-	}
+    /**
+     * join
+     * @param string $table 表名
+     * @param string $left 在 join b on a.id=b.id 中的 a.id
+     * @param string $operation 在 join b on a.id=b.id 中的 =
+     * @param string $right 在 join b on a.id=b.id 中的 b.id
+     * @param string $tableAlias 表别名
+     * @param IBaseWhere $where where条件
+     * @param string $type join类型，默认left
+     * @return static
+     */
+    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'left')
+    {
+        $this->option->join[] = new Join($table, $left, $operation, $right, $tableAlias, $where, $type);
+        return $this;
+    }
 
-	/**
-	 * join，使用SQL原生语句
-	 * @param string $raw
-	 * @return static
-	 */
-	public function joinRaw(string $raw)
-	{
-		$join = new Join();
-		$join->useRaw();
-		$join->setRawSQL($raw);
-		$this->option->join[] = $join;
-		return $this;
-	}
+    /**
+     * join，使用SQL原生语句
+     * @param string $raw
+     * @return static
+     */
+    public function joinRaw(string $raw)
+    {
+        $join = new Join();
+        $join->useRaw();
+        $join->setRawSQL($raw);
+        $this->option->join[] = $join;
+        return $this;
+    }
 
-	/**
-	 * left join
-	 * @param string $table 表名
-	 * @param string $left 在 join b on a.id=b.id 中的 a.id
-	 * @param string $operation 在 join b on a.id=b.id 中的 =
-	 * @param string $right 在 join b on a.id=b.id 中的 b.id
-	 * @param string $tableAlias 表别名
-	 * @param IBaseWhere $where where条件
-	 * @return static
-	 */
-	public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
-	{
-		return $this->join($table, $left, $operation, $right, $tableAlias, $where);
-	}
+    /**
+     * left join
+     * @param string $table 表名
+     * @param string $left 在 join b on a.id=b.id 中的 a.id
+     * @param string $operation 在 join b on a.id=b.id 中的 =
+     * @param string $right 在 join b on a.id=b.id 中的 b.id
+     * @param string $tableAlias 表别名
+     * @param IBaseWhere $where where条件
+     * @return static
+     */
+    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
+    {
+        return $this->join($table, $left, $operation, $right, $tableAlias, $where);
+    }
 
-	/**
-	 * right join
-	 * @param string $table 表名
-	 * @param string $left 在 join b on a.id=b.id 中的 a.id
-	 * @param string $operation 在 join b on a.id=b.id 中的 =
-	 * @param string $right 在 join b on a.id=b.id 中的 b.id
-	 * @param string $tableAlias 表别名
-	 * @param IBaseWhere $where where条件
-	 * @return static
-	 */
-	public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
-	{
-		return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'right');
-	}
+    /**
+     * right join
+     * @param string $table 表名
+     * @param string $left 在 join b on a.id=b.id 中的 a.id
+     * @param string $operation 在 join b on a.id=b.id 中的 =
+     * @param string $right 在 join b on a.id=b.id 中的 b.id
+     * @param string $tableAlias 表别名
+     * @param IBaseWhere $where where条件
+     * @return static
+     */
+    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
+    {
+        return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'right');
+    }
 
-	/**
-	 * cross join
-	 * @param string $table 表名
-	 * @param string $left 在 join b on a.id=b.id 中的 a.id
-	 * @param string $operation 在 join b on a.id=b.id 中的 =
-	 * @param string $right 在 join b on a.id=b.id 中的 b.id
-	 * @param string $tableAlias 表别名
-	 * @param IBaseWhere $where where条件
-	 * @return static
-	 */
-	public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
-	{
-		return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'cross');
-	}
+    /**
+     * cross join
+     * @param string $table 表名
+     * @param string $left 在 join b on a.id=b.id 中的 a.id
+     * @param string $operation 在 join b on a.id=b.id 中的 =
+     * @param string $right 在 join b on a.id=b.id 中的 b.id
+     * @param string $tableAlias 表别名
+     * @param IBaseWhere $where where条件
+     * @return static
+     */
+    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
+    {
+        return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'cross');
+    }
 
-	/**
-	 * 排序
-	 * @param string $field
-	 * @param string $direction
-	 * @return static
-	 */
-	public function order(string $field, string $direction = 'asc')
-	{
-		$this->option->order[] = new Order($field, $direction);
-		return $this;
-	}
+    /**
+     * 排序
+     * @param string $field
+     * @param string $direction
+     * @return static
+     */
+    public function order(string $field, string $direction = 'asc')
+    {
+        $this->option->order[] = new Order($field, $direction);
+        return $this;
+    }
 
-	/**
-	 * 排序
-	 * 支持的写法：
-	 * 1. id desc, age asc
-	 * 2. ['id'=>'desc', 'age'] // 缺省asc
-	 * @param string|array $raw
-	 * @return static
-	 */
-	public function orderRaw($raw)
-	{
-		if(is_array($raw))
-		{
-			foreach($raw as $k => $v)
-			{
-				if(is_numeric($k))
-				{
-					$fieldName = $v;
-					$direction = 'asc';
-				}
-				else
-				{
-					$fieldName = $k;
-					$direction = $v;
-				}
-				$this->option->order[] = new Order($fieldName, $direction);
-			}
-		}
-		else
-		{
-			$order = new Order();
-			$order->useRaw();
-			$order->setRawSQL($raw);
-			$this->option->order[] = $order;
-		}
-		return $this;
-	}
+    /**
+     * 排序
+     * 支持的写法：
+     * 1. id desc, age asc
+     * 2. ['id'=>'desc', 'age'] // 缺省asc
+     * @param string|array $raw
+     * @return static
+     */
+    public function orderRaw($raw)
+    {
+        if(is_array($raw))
+        {
+            foreach($raw as $k => $v)
+            {
+                if(is_numeric($k))
+                {
+                    $fieldName = $v;
+                    $direction = 'asc';
+                }
+                else
+                {
+                    $fieldName = $k;
+                    $direction = $v;
+                }
+                $this->option->order[] = new Order($fieldName, $direction);
+            }
+        }
+        else
+        {
+            $order = new Order();
+            $order->useRaw();
+            $order->setRawSQL($raw);
+            $this->option->order[] = $order;
+        }
+        return $this;
+    }
 
-	/**
-	 * 设置分页
-	 * 传入当前页码和每页显示数量，自动计算offset和limit
-	 * @param int $page
-	 * @param int $show
-	 * @return static
-	 */
-	public function page($page, $show)
-	{
-		$this->option->offset = max((int)(($page - 1) * $show), 0);
-		$this->option->limit = $show;
-		return $this;
-	}
+    /**
+     * 设置分页
+     * 传入当前页码和每页显示数量，自动计算offset和limit
+     * @param int $page
+     * @param int $show
+     * @return static
+     */
+    public function page($page, $show)
+    {
+        $this->option->offset = max((int)(($page - 1) * $show), 0);
+        $this->option->limit = $show;
+        return $this;
+    }
 
-	/**
-	 * 设置记录从第几个开始取出
+    /**
+     * 设置记录从第几个开始取出
 	 * @param int $offset
 	 * @return static
 	 */

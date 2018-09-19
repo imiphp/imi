@@ -9,20 +9,20 @@ use Imi\Util\File;
  */
 class Main extends BaseMain
 {
-	public function __init()
-	{
-	}
+    public function __init()
+    {
+    }
 
-	/**
-	 * 加载配置
-	 * @return void
-	 */
-	public function loadConfig()
-	{
-		$fileName = File::path(dirname($this->getPath()), 'config/config.php');
-		if(is_file($fileName))
-		{
-			Config::addConfig('@' . $this->moduleName, include $fileName);
-		}
-	}
+    /**
+     * 加载配置
+     * @return void
+     */
+    public function loadConfig()
+    {
+        $fileName = File::path(dirname($this->getPath()), 'config/config.php');
+        if(is_file($fileName))
+        {
+            Config::addConfig('@' . $this->moduleName, include $fileName);
+        }
+    }
 }

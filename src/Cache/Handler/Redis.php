@@ -9,12 +9,12 @@ use Imi\Pool\PoolManager;
  */
 class Redis extends Base
 {
-	/**
-	 * Redis连接池名称
-	 * @var string
-	 */
-	protected $poolName;
-	
+    /**
+     * Redis连接池名称
+     * @var string
+     */
+    protected $poolName;
+    
     /**
      * Fetches a value from the cache.
      *
@@ -26,21 +26,21 @@ class Redis extends Base
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-	public function get($key, $default = null)
-	{
-		$this->checkKey($key);
-		$result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
-			return $redis->get($key);
-		});
-		if(null === $result)
-		{
-			return $default;
-		}
-		else
-		{
-			return $this->decode($result);
-		}
-	}
+    public function get($key, $default = null)
+    {
+        $this->checkKey($key);
+        $result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+            return $redis->get($key);
+        });
+        if(null === $result)
+        {
+            return $default;
+        }
+        else
+        {
+            return $this->decode($result);
+        }
+    }
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
@@ -57,12 +57,12 @@ class Redis extends Base
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function set($key, $value, $ttl = null)
-	{
-		$this->checkKey($key);
-		return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key, $value, $ttl){
-			return $redis->set($key, $this->encode($value), $ttl);
-		});
-	}
+    {
+        $this->checkKey($key);
+        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key, $value, $ttl){
+            return $redis->set($key, $this->encode($value), $ttl);
+        });
+    }
 
     /**
      * Delete an item from the cache by its unique key.
@@ -75,12 +75,12 @@ class Redis extends Base
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function delete($key)
-	{
-		$this->checkKey($key);
-		return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
-			return $redis->del($key) > 0;
-		});
-	}
+    {
+        $this->checkKey($key);
+        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+            return $redis->del($key) > 0;
+        });
+    }
 
     /**
      * Wipes clean the entire cache's keys.
@@ -88,11 +88,11 @@ class Redis extends Base
      * @return bool True on success and false on failure.
      */
     public function clear()
-	{
-		return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis){
-			return $redis->flushDB();
-		});
-	}
+    {
+        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis){
+            return $redis->flushDB();
+        });
+    }
 
     /**
      * Obtains multiple cache items by their unique keys.
@@ -107,25 +107,25 @@ class Redis extends Base
      *   or if any of the $keys are not a legal value.
      */
     public function getMultiple($keys, $default = null)
-	{
-		$this->checkArrayOrTraversable($keys);
-		$mgetResult = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($keys){
-			return $redis->mget($keys);
-		});
-		$result = [];
-		foreach($mgetResult as $i => $v)
-		{
-			if(null === $v)
-			{
-				$result[$keys[$i]] = $default;
-			}
-			else
-			{
-				$result[$keys[$i]] = $this->decode($v);
-			}
-		}
-		return $result;
-	}
+    {
+        $this->checkArrayOrTraversable($keys);
+        $mgetResult = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($keys){
+            return $redis->mget($keys);
+        });
+        $result = [];
+        foreach($mgetResult as $i => $v)
+        {
+            if(null === $v)
+            {
+                $result[$keys[$i]] = $default;
+            }
+            else
+            {
+                $result[$keys[$i]] = $this->decode($v);
+            }
+        }
+        return $result;
+    }
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
@@ -142,33 +142,33 @@ class Redis extends Base
      *   or if any of the $values are not a legal value.
      */
     public function setMultiple($values, $ttl = null)
-	{
-		$this->checkArrayOrTraversable($values);
-		if($values instanceof \Traversable)
-		{
-			$setValues = clone $values;
-		}
-		else
-		{
-			$setValues = $values;
-		}
-		foreach($setValues as $k => $v)
-		{
-			$setValues[$k] = $this->encode($v);
-		}
-		$result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($setValues, $ttl){
-			$result = $redis->mset($setValues);
-			if(null !== $ttl)
-			{
-				foreach($setValues as $k => $v)
-				{
-					$result = $result && $redis->expire($k, $ttl);
-				}
-			}
-			return $result;
-		});
-		return $result;
-	}
+    {
+        $this->checkArrayOrTraversable($values);
+        if($values instanceof \Traversable)
+        {
+            $setValues = clone $values;
+        }
+        else
+        {
+            $setValues = $values;
+        }
+        foreach($setValues as $k => $v)
+        {
+            $setValues[$k] = $this->encode($v);
+        }
+        $result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($setValues, $ttl){
+            $result = $redis->mset($setValues);
+            if(null !== $ttl)
+            {
+                foreach($setValues as $k => $v)
+                {
+                    $result = $result && $redis->expire($k, $ttl);
+                }
+            }
+            return $result;
+        });
+        return $result;
+    }
 
     /**
      * Deletes multiple cache items in a single operation.
@@ -182,12 +182,12 @@ class Redis extends Base
      *   or if any of the $keys are not a legal value.
      */
     public function deleteMultiple($keys)
-	{
-		$this->checkArrayOrTraversable($keys);
-		return (bool)PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($keys){
-			return $redis->del($keys);
-		});
-	}
+    {
+        $this->checkArrayOrTraversable($keys);
+        return (bool)PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($keys){
+            return $redis->del($keys);
+        });
+    }
 
     /**
      * Determines whether an item is present in the cache.
@@ -205,10 +205,10 @@ class Redis extends Base
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function has($key)
-	{
-		$this->checkKey($key);
-		return (bool)PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
-			return $redis->exists($key);
-		});
-	}
+    {
+        $this->checkKey($key);
+        return (bool)PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+            return $redis->exists($key);
+        });
+    }
 }

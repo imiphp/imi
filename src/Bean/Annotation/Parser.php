@@ -8,16 +8,16 @@ namespace Imi\Bean\Annotation;
  */
 class Parser extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'className';
-	
-	/**
-	 * 处理器类名
-	 * @var string
-	 */
-	public $className;
-	
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'className';
+    
+    /**
+     * 处理器类名
+     * @var string
+     */
+    public $className;
+    
 }

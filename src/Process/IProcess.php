@@ -6,5 +6,5 @@ namespace Imi\Process;
  */
 interface IProcess
 {
-	public function run(\Swoole\Process $process);
+    public function run(\Swoole\Process $process);
 }

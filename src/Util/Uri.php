@@ -5,47 +5,47 @@ use Psr\Http\Message\UriInterface;
 
 class Uri implements UriInterface
 {
-	/**
-	 * 协议，如：http
-	 * @var string
-	 */
-	protected $scheme;
+    /**
+     * 协议，如：http
+     * @var string
+     */
+    protected $scheme;
 
-	/**
-	 * 主机名
-	 * @var string
-	 */
-	protected $host;
+    /**
+     * 主机名
+     * @var string
+     */
+    protected $host;
 
-	/**
-	 * 端口号
-	 * @var int|null
-	 */
-	protected $port;
+    /**
+     * 端口号
+     * @var int|null
+     */
+    protected $port;
 
-	/**
-	 * 用户信息
-	 * 格式：用户名:密码
-	 * @var string
-	 */
-	protected $userInfo;
+    /**
+     * 用户信息
+     * 格式：用户名:密码
+     * @var string
+     */
+    protected $userInfo;
 
-	/**
-	 * 路径
-	 * @var string
-	 */
-	protected $path;
+    /**
+     * 路径
+     * @var string
+     */
+    protected $path;
 
-	/**
-	 * 查询参数，在?后的
-	 * @var string
-	 */
-	protected $query;
+    /**
+     * 查询参数，在?后的
+     * @var string
+     */
+    protected $query;
 
-	/**
-	 * 锚点，在#后的
-	 * @var string
-	 */
+    /**
+     * 锚点，在#后的
+     * @var string
+     */
     protected $fragment;
     
     /**
@@ -58,24 +58,24 @@ class Uri implements UriInterface
         'ftp'   =>  21,
     ];
 
-	public function __construct(string $uri = '')
-	{
-		$uriOption = parse_url($uri);
-		if(false === $uriOption)
-		{
-			throw new \InvalidArgumentException(sprintf('uri %s parse error', $uri));
-		}
-		$this->scheme = isset($uriOption['scheme']) ? $uriOption['scheme'] : '';
-		$this->host = isset($uriOption['host']) ? $uriOption['host'] : '';
-		$this->port = isset($uriOption['port']) ? $uriOption['port'] : null;
-		$this->userInfo = isset($uriOption['user']) ? $uriOption['user'] : '';
-		if(isset($uriOption['pass']))
-		{
-			$this->userInfo .= ':' . $uriOption['pass'];
-		}
-		$this->path = isset($uriOption['path']) ? $uriOption['path'] : '';
-		$this->query = isset($uriOption['query']) ? $uriOption['query'] : '';
-		$this->fragment = isset($uriOption['fragment']) ? $uriOption['fragment'] : '';
+    public function __construct(string $uri = '')
+    {
+        $uriOption = parse_url($uri);
+        if(false === $uriOption)
+        {
+            throw new \InvalidArgumentException(sprintf('uri %s parse error', $uri));
+        }
+        $this->scheme = isset($uriOption['scheme']) ? $uriOption['scheme'] : '';
+        $this->host = isset($uriOption['host']) ? $uriOption['host'] : '';
+        $this->port = isset($uriOption['port']) ? $uriOption['port'] : null;
+        $this->userInfo = isset($uriOption['user']) ? $uriOption['user'] : '';
+        if(isset($uriOption['pass']))
+        {
+            $this->userInfo .= ':' . $uriOption['pass'];
+        }
+        $this->path = isset($uriOption['path']) ? $uriOption['path'] : '';
+        $this->query = isset($uriOption['query']) ? $uriOption['query'] : '';
+        $this->fragment = isset($uriOption['fragment']) ? $uriOption['fragment'] : '';
     }
     
     /**
@@ -91,26 +91,26 @@ class Uri implements UriInterface
      */
     public static function makeUriString($host, $path, $query = '', $port = null, $scheme = 'http', $fragment = '', $userInfo = '')
     {
-		$uri = '';
-		// 协议
-		if('' !== $scheme)
-		{
-			$uri = $scheme . '://';
-		}
-		// 用户信息
-		if('' !== $userInfo)
-		{
-			$uri .= $userInfo . '@';
-		}
-		// 主机+端口
-		$uri .= $host. (null === $port ? '' : (':' . $port));
-		// 路径
-		$uri .= '/' . ltrim($path, '/');
-		// 查询参数
-		$uri .= ('' === $query ? '' : ('?' . $query));
-		// 锚点
+        $uri = '';
+        // 协议
+        if('' !== $scheme)
+        {
+            $uri = $scheme . '://';
+        }
+        // 用户信息
+        if('' !== $userInfo)
+        {
+            $uri .= $userInfo . '@';
+        }
+        // 主机+端口
+        $uri .= $host. (null === $port ? '' : (':' . $port));
+        // 路径
+        $uri .= '/' . ltrim($path, '/');
+        // 查询参数
+        $uri .= ('' === $query ? '' : ('?' . $query));
+        // 锚点
         $uri .= ('' === $fragment ? '' : ('#' . $fragment));
-		return $uri;
+        return $uri;
     }
 
     /**
@@ -143,10 +143,10 @@ class Uri implements UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
      * @return string The URI scheme.
      */
-	public function getScheme()
-	{
-		return $this->scheme;
-	}
+    public function getScheme()
+    {
+        return $this->scheme;
+    }
 
     /**
      * Retrieve the authority component of the URI.
@@ -167,18 +167,18 @@ class Uri implements UriInterface
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
     public function getAuthority()
-	{
-		$result = $this->host;
-		if('' !== $this->userInfo)
-		{
-			$result = $this->userInfo . '@' . $result;
-		}
-		if(null !== $this->port)
-		{
-			$result .= ':' . $this->port;
-		}
-		return $result;
-	}
+    {
+        $result = $this->host;
+        if('' !== $this->userInfo)
+        {
+            $result = $this->userInfo . '@' . $result;
+        }
+        if(null !== $this->port)
+        {
+            $result .= ':' . $this->port;
+        }
+        return $result;
+    }
 
     /**
      * Retrieve the user information component of the URI.
@@ -196,9 +196,9 @@ class Uri implements UriInterface
      * @return string The URI user information, in "username[:password]" format.
      */
     public function getUserInfo()
-	{
-		return $this->userInfo;
-	}
+    {
+        return $this->userInfo;
+    }
 
     /**
      * Retrieve the host component of the URI.
@@ -212,9 +212,9 @@ class Uri implements UriInterface
      * @return string The URI host.
      */
     public function getHost()
-	{
-		return $this->host;
-	}
+    {
+        return $this->host;
+    }
 
     /**
      * Retrieve the port component of the URI.
@@ -232,13 +232,13 @@ class Uri implements UriInterface
      * @return null|int The URI port.
      */
     public function getPort()
-	{
+    {
         if(null === $this->port && isset(static::$schemePorts[$this->scheme]))
         {
             return static::$schemePorts[$this->scheme];
         }
-		return $this->port;
-	}
+        return $this->port;
+    }
 
     /**
      * Retrieve the path component of the URI.
@@ -266,9 +266,9 @@ class Uri implements UriInterface
      * @return string The URI path.
      */
     public function getPath()
-	{
-		return $this->path;
-	}
+    {
+        return $this->path;
+    }
 
     /**
      * Retrieve the query string of the URI.
@@ -291,9 +291,9 @@ class Uri implements UriInterface
      * @return string The URI query string.
      */
     public function getQuery()
-	{
-		return $this->query;
-	}
+    {
+        return $this->query;
+    }
 
     /**
      * Retrieve the fragment component of the URI.
@@ -312,9 +312,9 @@ class Uri implements UriInterface
      * @return string The URI fragment.
      */
     public function getFragment()
-	{
-		return $this->fragment;
-	}
+    {
+        return $this->fragment;
+    }
 
     /**
      * Return an instance with the specified scheme.
@@ -332,15 +332,15 @@ class Uri implements UriInterface
      * @throws \InvalidArgumentException for invalid or unsupported schemes.
      */
     public function withScheme($scheme)
-	{
-		if(!is_string($scheme))
-		{
-			throw new \InvalidArgumentException('invalid or unsupported schemes');
-		}
-		$self = clone $this;
-		$self->scheme = $scheme;
-		return $self;
-	}
+    {
+        if(!is_string($scheme))
+        {
+            throw new \InvalidArgumentException('invalid or unsupported schemes');
+        }
+        $self = clone $this;
+        $self->scheme = $scheme;
+        return $self;
+    }
 
     /**
      * Return an instance with the specified user information.
@@ -357,15 +357,15 @@ class Uri implements UriInterface
      * @return static A new instance with the specified user information.
      */
     public function withUserInfo($user, $password = null)
-	{
-		$self = clone $this;
-		$self->userInfo = $user;
-		if(null !== $password)
-		{
-			$self->userInfo .= ':' . $password;
-		}
-		return $self;
-	}
+    {
+        $self = clone $this;
+        $self->userInfo = $user;
+        if(null !== $password)
+        {
+            $self->userInfo .= ':' . $password;
+        }
+        return $self;
+    }
 
     /**
      * Return an instance with the specified host.
@@ -380,11 +380,11 @@ class Uri implements UriInterface
      * @throws \InvalidArgumentException for invalid hostnames.
      */
     public function withHost($host)
-	{
-		$self = clone $this;
-		$self->host = $host;
-		return $self;
-	}
+    {
+        $self = clone $this;
+        $self->host = $host;
+        return $self;
+    }
 
     /**
      * Return an instance with the specified port.
@@ -404,11 +404,11 @@ class Uri implements UriInterface
      * @throws \InvalidArgumentException for invalid ports.
      */
     public function withPort($port)
-	{
-		$self = clone $this;
-		$self->port = $port;
-		return $self;
-	}
+    {
+        $self = clone $this;
+        $self->port = $port;
+        return $self;
+    }
 
     /**
      * Return an instance with the specified path.
@@ -433,11 +433,11 @@ class Uri implements UriInterface
      * @throws \InvalidArgumentException for invalid paths.
      */
     public function withPath($path)
-	{
-		$self = clone $this;
-		$self->path = $path;
-		return $self;
-	}
+    {
+        $self = clone $this;
+        $self->path = $path;
+        return $self;
+    }
 
     /**
      * Return an instance with the specified query string.
@@ -455,11 +455,11 @@ class Uri implements UriInterface
      * @throws \InvalidArgumentException for invalid query strings.
      */
     public function withQuery($query)
-	{
-		$self = clone $this;
-		$self->query = $query;
-		return $self;
-	}
+    {
+        $self = clone $this;
+        $self->query = $query;
+        return $self;
+    }
 
     /**
      * Return an instance with the specified URI fragment.
@@ -476,11 +476,11 @@ class Uri implements UriInterface
      * @return static A new instance with the specified fragment.
      */
     public function withFragment($fragment)
-	{
-		$self = clone $this;
-		$self->fragment = $fragment;
-		return $self;
-	}
+    {
+        $self = clone $this;
+        $self->fragment = $fragment;
+        return $self;
+    }
 
     /**
      * Return the string representation as a URI reference.
@@ -506,7 +506,7 @@ class Uri implements UriInterface
      * @return string
      */
     public function __toString()
-	{
+    {
         return static::makeUriString($this->host, $this->path, $this->query, $this->port, $this->scheme, $this->fragment, $this->userInfo);
     }
     

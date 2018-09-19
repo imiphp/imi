@@ -3,29 +3,29 @@ namespace Imi\Db\Consts;
 
 abstract class LogicalOperator
 {
-	const AND = 'and';
+    const AND = 'and';
 
-	const OR = 'or';
+    const OR = 'or';
 
-	const XOR = 'xor';
+    const XOR = 'xor';
 
-	const AND_NOT = 'and not';
+    const AND_NOT = 'and not';
 
-	const OR_NOT = 'or not';
+    const OR_NOT = 'or not';
 
-	const XOR_NOT = 'xor not';
+    const XOR_NOT = 'xor not';
 
-	const ALL = 'all';
+    const ALL = 'all';
 
-	const ANY = 'any';
+    const ANY = 'any';
 
-	const BETWEEN = 'between';
+    const BETWEEN = 'between';
 
-	const EXISTS = 'exists';
+    const EXISTS = 'exists';
 
-	const IN = 'in';
+    const IN = 'in';
 
-	const LIKE = 'like';
+    const LIKE = 'like';
 
-	const SOME = 'some';
+    const SOME = 'some';
 }

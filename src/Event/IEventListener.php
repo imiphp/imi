@@ -6,10 +6,10 @@ namespace Imi\Event;
  */
 interface IEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(EventParam $e);
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(EventParam $e);
 }

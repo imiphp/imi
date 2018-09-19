@@ -22,39 +22,39 @@ use Imi\Util\Imi;
  */
 class WorkerInit implements IWorkerStartEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(WorkerStartEventParam $e)
-	{
-		// 随机数播种
-		mt_srand();
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(WorkerStartEventParam $e)
+    {
+        // 随机数播种
+        mt_srand();
 
-		if(!$e->server->getSwooleServer()->taskworker)
-		{
-			// swoole 4.1.0 一键协程化
-			if(method_exists('\Swoole\Runtime', 'enableCoroutine') && (Helper::getMain(App::getNamespace())->getConfig()['enableCoroutine'] ?? true))
-			{
-				\Swoole\Runtime::enableCoroutine(true);
-			}
-		}
+        if(!$e->server->getSwooleServer()->taskworker)
+        {
+            // swoole 4.1.0 一键协程化
+            if(method_exists('\Swoole\Runtime', 'enableCoroutine') && (Helper::getMain(App::getNamespace())->getConfig()['enableCoroutine'] ?? true))
+            {
+                \Swoole\Runtime::enableCoroutine(true);
+            }
+        }
 
-		$GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
+        $GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
 
-		// 当前进程的 WorkerID 设置
-		Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
+        // 当前进程的 WorkerID 设置
+        Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
 
-		// 清除当前 worker 进程的 Bean 类缓存
-		$path = Imi::getWorkerClassCachePathByWorkerID(Worker::getWorkerID());
+        // 清除当前 worker 进程的 Bean 类缓存
+        $path = Imi::getWorkerClassCachePathByWorkerID(Worker::getWorkerID());
 
-		foreach(File::enum($path) as $file)
-		{
-			unlink((string)$file);
-		}
+        foreach(File::enum($path) as $file)
+        {
+            unlink((string)$file);
+        }
 
-		// 初始化 worker
-		App::initWorker();
-	}
+        // 初始化 worker
+        App::initWorker();
+    }
 }
