@@ -26,38 +26,47 @@ class AfterWorkerStart implements IWorkerStartEventListener
     public function handle(WorkerStartEventParam $e)
     {
         // 项目初始化事件
-        $initFlagFile = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.app.init');
-        $checkResult = null;
-        if(0 === Worker::getWorkerID() && !($checkResult = $this->checkInitFlagFile($initFlagFile)))
+        if(!$e->server->getSwooleServer()->taskworker)
         {
-            Event::trigger('IMI.APP.INIT', [
-                
-            ], $e->getTarget(), AppInitEventParam::class);
-
-            file_put_contents($initFlagFile, Swoole::getMasterPID());
-
-            $server = $e->server->getSwooleServer();
-            // 触发当前进程的PipeMessage事件
-            Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                'server'    => $e->server,
-                'workerID'  => $e->workerID,
-                'message'   => 'app.inited',
-            ], $this, PipeMessageEventParam::class);
-            // 通知其它worker进程
-            for($i = 1; $i < $server->setting['worker_num']; ++$i)
+            $initFlagFile = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.app.init');
+            $checkResult = null;
+            if(0 === Worker::getWorkerID() && !($checkResult = $this->checkInitFlagFile($initFlagFile)))
             {
-                $server->sendMessage('app.inited', $i);
+                Event::trigger('IMI.APP.INIT', [
+                    
+                ], $e->getTarget(), AppInitEventParam::class);
+    
+                file_put_contents($initFlagFile, Swoole::getMasterPID());
+    
+                $server = $e->server->getSwooleServer();
+                // 触发当前进程的PipeMessage事件
+                go(function() use($e){
+                    Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
+                        'server'    => $e->server,
+                        'workerID'  => $e->workerID,
+                        'message'   => 'app.inited',
+                    ], $this, PipeMessageEventParam::class);
+                });
+                // 通知其它worker进程
+                for($i = 1; $i < $server->setting['worker_num']; ++$i)
+                {
+                    $server->sendMessage('app.inited', $i);
+                }
+            }
+            else if($checkResult || (null === $checkResult && $this->checkInitFlagFile($initFlagFile)))
+            {
+                // 热重启后，触发当前进程的PipeMessage事件
+                go(function() use($e){
+                    Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
+                        'server'    => $e->server,
+                        'workerID'  => $e->workerID,
+                        'message'   => 'app.inited',
+                    ], $this, PipeMessageEventParam::class);
+                });
             }
         }
-        else if($checkResult || (null === $checkResult && $this->checkInitFlagFile($initFlagFile)))
-        {
-            // 热重启后，触发当前进程的PipeMessage事件
-            Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                'server'    => $e->server,
-                'workerID'  => $e->workerID,
-                'message'   => 'app.inited',
-            ], $this, PipeMessageEventParam::class);
-        }
+        // worker 初始化
+        Worker::inited();
     }
 
     /**

@@ -22,7 +22,7 @@ class BeforeConnect implements IConnectEventListener
      */
     public function handle(ConnectEventParam $e)
     {
-        if(!Worker::isInited())
+        if(!Worker::isWorkerStartAppComplete())
         {
             $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
             Coroutine::suspend();

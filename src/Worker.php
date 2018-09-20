@@ -1,6 +1,9 @@
 <?php
 namespace Imi;
 
+use Imi\Event\Event;
+use Imi\Server\Event\Param\WorkerStartEventParam;
+
 abstract class Worker
 {
     /**
@@ -16,6 +19,13 @@ abstract class Worker
      * @return boolean
      */
     private static $isInited = false;
+
+    /**
+     * IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕
+     *
+     * @var boolean
+     */
+    private static $workerStartAppComplete = false;
 
     /**
      * 此方法请勿手动调用，避免错乱！
@@ -59,5 +69,35 @@ abstract class Worker
     public static function inited()
     {
         static::$isInited = true;
+    }
+
+    /**
+     * 触发 IMI.MAIN_SERVER.WORKER.START.APP 事件
+     *
+     * @param \Imi\Server\Base $server
+     * @param mixed $target
+     * @return void
+     */
+    public static function workerStartApp($server, $target)
+    {
+        if(!static::$workerStartAppComplete)
+        {
+            // 触发项目的workerstart事件
+            Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
+                'server'    => $server,
+                'workerID'  => static::$workerID,
+            ], $target, WorkerStartEventParam::class);
+            static::$workerStartAppComplete = true;
+        }
+    }
+
+    /**
+     * 是否 IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕
+     *
+     * @return boolean
+     */
+    public static function isWorkerStartAppComplete()
+    {
+        return static::$workerStartAppComplete;
     }
 }

@@ -24,7 +24,7 @@ class BeforeMessage implements IMessageEventListener
      */
     public function handle(MessageEventParam $e)
     {
-        if(!Worker::isInited())
+        if(!Worker::isWorkerStartAppComplete())
         {
             $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
             Coroutine::suspend();
