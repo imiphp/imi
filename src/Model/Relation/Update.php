@@ -13,6 +13,7 @@ use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Relation\Struct\PolymorphicManyToMany;
 
 
 abstract class Update
@@ -67,6 +68,10 @@ abstract class Update
         else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
+        }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
         }
     }
 
@@ -387,6 +392,7 @@ abstract class Update
                     $updateIDs[] = $row->$pk;
                 }
                 $row->$rightField = $model->$leftField;
+                $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
 
@@ -406,6 +412,81 @@ abstract class Update
             foreach($model->$propertyName as $row)
             {
                 $row->$rightField = $model->$leftField;
+                $row->save();
+            }
+        }
+    }
+
+    /**
+     * 处理多态多对多更新
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
+     * @return void
+     */
+    public static function parseByPolymorphicManyToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
+        $middleModel = $struct->getMiddleModel();
+        $middleLeftField = $struct->getMiddleLeftField();
+        $middleRightField = $struct->getMiddleRightField();
+        $leftField = $struct->getLeftField();
+        $rightField = $struct->getRightField();
+
+        $relationParser = RelationParser::getInstance();
+        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
+        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        // 是否删除无关数据
+        if($autoUpdate)
+        {
+            $orphanRemoval = $autoUpdate->orphanRemoval;
+        }
+        else if($autoSave)
+        {
+            $orphanRemoval = $autoSave->orphanRemoval;
+        }
+        else
+        {
+            $orphanRemoval = false;
+        }
+
+        if($orphanRemoval)
+        {
+            // 删除无关联数据
+            $oldRightIDs = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField)->field($middleRightField)->select()->getColumn();
+
+            $updateIDs = [];
+            foreach($model->$propertyName as $row)
+            {
+                if(null !== $row->$middleRightField)
+                {
+                    $updateIDs[] = $row->$middleRightField;
+                }
+                $row->$middleLeftField = $model->$leftField;
+                $row->{$annotation->type} = $annotation->typeValue;
+                $row->save();
+            }
+
+            $deleteIDs = array_diff($oldRightIDs, $updateIDs);
+
+            if(isset($deleteIDs[0]))
+            {
+                // 批量删除
+                $middleModel::deleteBatch(function(IQuery $query) use($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation){
+                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField)->whereIn($middleRightField, $deleteIDs);
+                });
+            }
+        }
+        else
+        {
+            // 直接更新
+            foreach($model->$propertyName as $row)
+            {
+                $row->$middleLeftField = $model->$leftField;
+                $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
         }

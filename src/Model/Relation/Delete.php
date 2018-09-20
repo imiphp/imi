@@ -58,6 +58,10 @@ abstract class Delete
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
+        }
     }
 
     /**
@@ -164,6 +168,28 @@ abstract class Delete
 
         $rightModel::deleteBatch(function(IQuery $query) use($model, $leftField, $rightField, $annotation){
             $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+        });
+    }
+
+    /**
+     * 处理多态多对多删除
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
+     * @return void
+     */
+    public static function parseByPolymorphicManyToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        $struct = new ManyToMany($className, $propertyName, $annotation);
+        $middleModel = $struct->getMiddleModel();
+        $middleLeftField = $struct->getMiddleLeftField();
+        $leftField = $struct->getLeftField();
+
+        $middleModel::deleteBatch(function(IQuery $query) use($model, $leftField, $middleLeftField, $annotation){
+            $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField);
         });
     }
 }

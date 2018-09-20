@@ -13,6 +13,7 @@ use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Relation\Struct\PolymorphicManyToMany;
 
 
 abstract class Query
@@ -66,6 +67,10 @@ abstract class Query
         else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
             static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
+        }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
         }
     }
 
@@ -184,17 +189,15 @@ abstract class Query
         {
             $list = Db::query(ModelManager::getDbPoolName($className))
                         ->table($rightTable)
-                        // ->field($rightTable . '.*')
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
-                        ->where($struct->getMiddleLeftField(), '=', $model->$leftField)
+                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField)
                         ->select()
                         ->getArray();
             if(null !== $list)
             {
                 // 关联数据
                 static::appendMany($model->$propertyName, $list, $middleFields, $struct->getMiddleModel());
-                // $model->$propertyName->append(...$list);
 
                 // 右侧表数据
                 static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
@@ -318,6 +321,61 @@ abstract class Query
                 }
                 $model->$propertyName = $leftModel;
                 break;
+            }
+        }
+    }
+
+    /**
+     * 初始化多态多对多关系
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
+     * @return void
+     */
+    public static function initByPolymorphicManyToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        if(class_exists($annotation->model))
+        {
+            $modelClass = $annotation->model;
+        }
+        else
+        {
+            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
+        }
+
+        $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
+        $leftField = $struct->getLeftField();
+        $rightField = $struct->getRightField();
+        $middleTable = ModelManager::getTable($struct->getMiddleModel());
+        $rightTable = ModelManager::getTable($struct->getRightModel());
+
+        static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
+        $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
+        
+        $model->$propertyName = new ArrayList($struct->getMiddleModel());
+        $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
+        
+        if(null !== $model->$leftField)
+        {
+            $list = Db::query(ModelManager::getDbPoolName($className))
+                        ->table($rightTable)
+                        ->field(...$fields)
+                        ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
+                        ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
+                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField)
+                        ->select()
+                        ->getArray();
+            if(null !== $list)
+            {
+                // 关联数据
+                static::appendMany($model->$propertyName, $list, $middleFields, $struct->getMiddleModel());
+
+                // 右侧表数据
+                static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
+
             }
         }
     }

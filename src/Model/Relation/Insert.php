@@ -12,6 +12,7 @@ use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Relation\Struct\PolymorphicManyToMany;
 
 
 abstract class Insert
@@ -66,6 +67,10 @@ abstract class Insert
         else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
+        }
+        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        {
+            static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
         }
     }
 
@@ -193,6 +198,36 @@ abstract class Insert
                 $model->$propertyName[$index] = $row;
             }
             $row[$rightField] = $model->$leftField;
+            $row[$annotation->type] = $annotation->typeValue;
+            $row->insert();
+        }
+    }
+
+    /**
+     * 处理多态多对多插入
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
+     * @return void
+     */
+    public static function parseByPolymorphicManyToMany($model, $propertyName, $annotation)
+    {
+        $className = BeanFactory::getObjectClass($model);
+
+        $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
+        $middleModel = $struct->getMiddleModel();
+        $middleLeftField = $struct->getMiddleLeftField();
+        $leftField = $struct->getLeftField();
+
+        foreach($model->$propertyName as $index => $row)
+        {
+            if(!$row instanceof $middleModel)
+            {
+                $row = $middleModel::newInstance($row);
+                $model->$propertyName[$index] = $row;
+            }
+            $row[$middleLeftField] = $model->$leftField;
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }

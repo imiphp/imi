@@ -10,6 +10,7 @@ use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Update;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Annotation\Relation\ManyToMany;
+use Imi\Model\Annotation\Relation\PolymorphicManyToMany;
 
 abstract class ModelRelationManager
 {
@@ -120,7 +121,7 @@ abstract class ModelRelationManager
             $result = array_keys($relations);
             foreach($relations as $annotation)
             {
-                if($annotation instanceof ManyToMany && $annotation->rightMany)
+                if(($annotation instanceof ManyToMany || $annotation instanceof PolymorphicManyToMany) && $annotation->rightMany)
                 {
                     $result[] = $annotation->rightMany;
                 }
