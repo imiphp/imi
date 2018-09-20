@@ -59,7 +59,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
                 go(function() use($e){
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $e->server,
-                        'workerID'  => $e->workerID,
+                        'workerID'  => 0,
                         'message'   => 'app.inited',
                     ], $this, PipeMessageEventParam::class);
                 });
