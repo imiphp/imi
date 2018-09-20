@@ -5,12 +5,12 @@ use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 多态对应的实体模型
+ * 多态对应的实体模型列表
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Model\Parser\RelationParser")
  */
-class PolymorphicToOne extends Base
+class PolymorphicToMany extends Base
 {
     /**
      * 只传一个参数时的参数名
@@ -55,4 +55,12 @@ class PolymorphicToOne extends Base
      */
     public $typeValue;
 
+    /**
+     * 中间表模型
+     * 可以是包含命名空间的完整类名
+     * 可以同命名空间下的类名
+     *
+     * @var string
+     */
+    public $middle;
 }

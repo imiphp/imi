@@ -18,6 +18,7 @@ use Imi\Model\Annotation\Relation\PolymorphicToOne;
 use Imi\Model\Annotation\Relation\PolymorphicOneToOne;
 use Imi\Model\Annotation\Relation\PolymorphicOneToMany;
 use Imi\Model\Annotation\Relation\PolymorphicManyToMany;
+use Imi\Model\Annotation\Relation\PolymorphicToMany;
 
 
 class RelationParser extends BaseParser
@@ -32,7 +33,7 @@ class RelationParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
     {
-        if($annotation instanceof OneToOne || $annotation instanceof OneToMany || $annotation instanceof ManyToMany || $annotation instanceof PolymorphicOneToOne || $annotation instanceof PolymorphicOneToMany || $annotation instanceof PolymorphicManyToMany)
+        if($annotation instanceof OneToOne || $annotation instanceof OneToMany || $annotation instanceof ManyToMany || $annotation instanceof PolymorphicOneToOne || $annotation instanceof PolymorphicOneToMany || $annotation instanceof PolymorphicManyToMany || $annotation instanceof PolymorphicToMany)
         {
             $this->data[$className]['relations'][$targetName] = $annotation;
         }
