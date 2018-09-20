@@ -34,7 +34,7 @@
 
 **用法：**
 
-`@ManyToMany(middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表")`
+`@ManyToMany(model="关联表名", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表")`
 
 ### @JoinFrom
 
@@ -84,7 +84,9 @@
 
 `@AutoSelect(true)`
 
-`@AutoSelect(false)`
+是否总是显示该属性，如果为false，在为null时序列化为数组或json不显示该属性。默认为true
+
+`@AutoSelect(alwaysShow=false)`
 
 ### @AutoInsert
 
