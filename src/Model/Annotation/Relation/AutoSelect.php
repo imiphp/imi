@@ -25,4 +25,11 @@ class AutoSelect extends Base
      */
     public $status = true;
 
+    /**
+     * 是否总是显示该属性
+     * 如果为false，在为null时序列化为数组或json不显示该属性
+     *
+     * @var boolean
+     */
+    public $alwaysShow = true;
 }

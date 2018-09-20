@@ -8,6 +8,7 @@ use Imi\Util\ClassObject;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\LazyArrayObject;
+use Imi\Model\Parser\RelationParser;
 
 /**
  * 模型基类
@@ -147,7 +148,25 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function toArray(): array
     {
-        return \iterator_to_array($this);
+        $result = \iterator_to_array($this);
+        // 支持注解配置隐藏为null的关联属性
+        foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
+        {
+            if(null === $result[$name])
+            {
+                if(!isset($relationParser))
+                {
+                    $relationParser = RelationParser::getInstance();
+                    $className = BeanFactory::getObjectClass($this);
+                }
+                $autoSelect = $relationParser->getPropertyAnnotation($className, $name, 'AutoSelect');
+                if($autoSelect && !$autoSelect->alwaysShow)
+                {
+                    unset($result[$name]);
+                }
+            }
+        }
+        return $result;
     }
     
     public function current()
