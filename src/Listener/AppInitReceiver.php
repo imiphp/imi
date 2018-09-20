@@ -30,11 +30,14 @@ class AppInitReceiver implements IPipeMessageEventListener
             
             Worker::workerStartApp($e->server, $e->getTarget());
 
-            foreach($GLOBALS['WORKER_START_END_RESUME_COIDS'] as $id)
+            if(isset($GLOBALS['WORKER_START_END_RESUME_COIDS']))
             {
-                Coroutine::resume($id);
+                foreach($GLOBALS['WORKER_START_END_RESUME_COIDS'] as $id)
+                {
+                    Coroutine::resume($id);
+                }
+                unset($GLOBALS['WORKER_START_END_RESUME_COIDS']);
             }
-            unset($GLOBALS['WORKER_START_END_RESUME_COIDS']);
 
             $e->stopPropagation();
         }
