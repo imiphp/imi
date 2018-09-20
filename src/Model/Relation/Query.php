@@ -380,6 +380,15 @@ abstract class Query
         }
     }
 
+    /**
+     * 处理多对多查询用的字段，需要是"表名.字段名"，防止冲突
+     *
+     * @param string $middleModel
+     * @param string $rightModel
+     * @param array $middleFields
+     * @param array $rightFields
+     * @return void
+     */
     private static function parseManyToManyQueryFields($middleModel, $rightModel, &$middleFields, &$rightFields)
     {
         $middleFields = [];
@@ -399,6 +408,15 @@ abstract class Query
         }
     }
 
+    /**
+     * 合并多对多查询字段
+     *
+     * @param string $middleModel
+     * @param string $rightModel
+     * @param array $middleFields
+     * @param array $rightFields
+     * @return array
+     */
     private static function mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields)
     {
         $result = [];
