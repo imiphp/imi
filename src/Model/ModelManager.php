@@ -203,7 +203,7 @@ abstract class ModelManager
     /**
      * 获取当前模型类的Redis注解
      * @param string|object $object
-     * @return string
+     * @return \Imi\Model\Annotation\RedisEntity|null
      */
     public static function getRedisEntity($object)
     {
