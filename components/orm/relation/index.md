@@ -197,3 +197,19 @@
 `@AutoDelete(true)`
 
 `@AutoDelete(false)`
+
+## 方法
+
+### 查询指定关联
+
+使用关联模型时，你可以设置注解`@AutoSelect(false)`，让它不自动查询。在之后想要用到的时候，再手动查询。
+
+```php
+$model->queryRelations('属性名');
+
+// 也可以支持多个
+$model->queryRelations('属性名1', '属性名2');
+
+// 查询后可以这么获取结果
+$data = $model->属性名;
+```
