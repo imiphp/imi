@@ -34,7 +34,53 @@
 
 **用法：**
 
-`@ManyToMany(model="关联表名", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表")`
+`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表")`
+
+### @PolymorphicOneToOne
+
+多态一对一关系声明
+
+**用法：**
+
+`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值")`
+
+### @PolymorphicOneToMany
+
+多态一对多关系声明
+
+**用法：**
+
+`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值")`
+
+### @PolymorphicManyToMany
+
+多态多对多关系声明
+
+**用法：**
+
+`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值")`
+
+### @PolymorphicToOne
+
+用于多态一对一、一对多关联被关联的模型中使用，查询对应的左侧模型
+
+允许出现多个，会根据`type`和`typeValue`判断，选择合适的注解配置查询模型。
+
+**用法：**
+
+`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值")`
+
+### @PolymorphicToMany
+
+用于多态多对多关联被关联的模型中使用，查询对应的左侧模型列表
+
+需要和`@JoinToMiddle`、`@JoinFromMiddle`配合使用
+
+不允许出现多个！
+
+**用法：**
+
+`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值")`
 
 ### @JoinFrom
 
