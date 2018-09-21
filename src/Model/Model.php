@@ -5,12 +5,13 @@ use Imi\Db\Db;
 use Imi\Util\Text;
 use Imi\Event\Event;
 use Imi\Bean\BeanFactory;
+use Imi\Model\Relation\Query;
 use Imi\Util\LazyArrayObject;
+use Imi\Model\Relation\Update;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Model\Event\Param\InitEventParam;
-use Imi\Model\Relation\Update;
 
 /**
  * 常用的数据库模型
@@ -352,6 +353,20 @@ abstract class Model extends BaseModel
     public function queryRelations(...$names)
     {
         ModelRelationManager::queryModelRelations($this, ...$names);
+    }
+
+    /**
+     * 初始化关联属性
+     *
+     * @param string ...$names
+     * @return void
+     */
+    public function initRelations(...$names)
+    {
+        foreach($names as $name)
+        {
+            Query::initRelations($this, $name);
+        }
     }
 
     /**

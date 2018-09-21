@@ -436,6 +436,49 @@ abstract class Query
     }
 
     /**
+     * 初始化关联属性
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @return void
+     */
+    public static function initRelations($model, $propertyName)
+    {
+        $annotation = RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model))[$propertyName] ?? null;
+        if(null !== $annotation)
+        {
+            if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+            {
+                $model->$propertyName = ($annotation->model . '::newInstance')();
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+            {
+                $model->$propertyName = new ArrayList($annotation->model);
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+            {
+                $model->$propertyName = new ArrayList($annotation->middle);
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+            {
+                $model->$propertyName = ($annotation->model . '::newInstance')();
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+            {
+                $model->$propertyName = new ArrayList($annotation->model);
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+            {
+                $model->$propertyName = new ArrayList($annotation->middle);
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    /**
      * 处理多对多查询用的字段，需要是"表名.字段名"，防止冲突
      *
      * @param string $middleModel
