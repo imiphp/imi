@@ -353,7 +353,7 @@ $avatar->queryRelations('relationModel');
 $user = $avatar->relationModel;
 ```
 
-### 指定类型查询
+#### 指定类型查询
 
 ```php
 $avatar = Avatar::find(1);
@@ -361,7 +361,7 @@ $avatar->queryRelations('user');
 $user = $avatar->user;
 ```
 
-### 同时查询多个
+#### 同时查询多个
 
 ```php
 $avatar = Avatar::find(1);
