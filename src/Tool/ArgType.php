@@ -6,17 +6,17 @@ namespace Imi\Tool;
  */
 abstract class ArgType
 {
-	const STRING = 'string';
+    const STRING = 'string';
 
-	const INT = 'int';
+    const INT = 'int';
 
-	const FLOAT = 'float';
+    const FLOAT = 'float';
 
-	const DOUBLE = 'float';
+    const DOUBLE = 'float';
 
-	const BOOL = 'boolean';
+    const BOOL = 'boolean';
 
-	const BOOLEAN = 'boolean';
+    const BOOLEAN = 'boolean';
 
-	const ARRAY = 'array';
+    const ARRAY = 'array';
 }

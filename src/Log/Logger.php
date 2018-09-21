@@ -17,62 +17,62 @@ use Imi\Util\Imi;
  */
 class Logger extends AbstractLogger
 {
-	/**
-	 * 核心处理器
-	 * @var array
-	 */
-	protected $coreHandlers = [
-		[
-			'class'		=>	\Imi\Log\Handler\Console::class,
-			'options'	=>	[
-				'levels'	=>	[
-					LogLevel::INFO,
-				],
-				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
-			],
-		],
-		[
-			'class'		=>	\Imi\Log\Handler\Console::class,
-			'options'	=>	[
-				'levels'	=>	[
-					LogLevel::DEBUG,
-					LogLevel::NOTICE,
-					LogLevel::WARNING,
-				],
-			],
-		],
-		[
-			'class'		=>	\Imi\Log\Handler\Console::class,
-			'options'	=>	[
-				'levels'	=>	[
-					LogLevel::ALERT,
-					LogLevel::CRITICAL,
-					LogLevel::EMERGENCY,
-					LogLevel::ERROR,
-				],
-				'format'	=>	'{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
-				'length'	=>	1024,
-			],
-		]
-	];
+    /**
+     * 核心处理器
+     * @var array
+     */
+    protected $coreHandlers = [
+        [
+            'class'     => \Imi\Log\Handler\Console::class,
+            'options'   => [
+                'levels'    => [
+                    LogLevel::INFO,
+                ],
+                'format'    => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
+            ],
+        ],
+        [
+            'class'     => \Imi\Log\Handler\Console::class,
+            'options'   => [
+                'levels' => [
+                    LogLevel::DEBUG,
+                    LogLevel::NOTICE,
+                    LogLevel::WARNING,
+                ],
+            ],
+        ],
+        [
+            'class'     => \Imi\Log\Handler\Console::class,
+            'options'   => [
+                'levels' => [
+                    LogLevel::ALERT,
+                    LogLevel::CRITICAL,
+                    LogLevel::EMERGENCY,
+                    LogLevel::ERROR,
+                ],
+                'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+                'length' => 1024,
+            ],
+        ]
+    ];
 
-	/**
-	 * 扩展处理器
-	 * @var array
-	 */
-	protected $exHandlers = [];
+    /**
+     * 扩展处理器
+     * @var array
+     */
+    protected $exHandlers = [];
 
-	/**
-	 * 处理器对象数组
-	 *
-	 * @var \Imi\Log\Handler\Base[]
-	 */
-	protected $handlers = [];
+    /**
+     * 处理器对象数组
+     *
+     * @var \Imi\Log\Handler\Base[]
+     */
+    protected $handlers = [];
 
-	/**
-	 * 日志记录
-	 * @var \Imi\Log\Record[]
-	 */
+    /**
+     * 日志记录
+     * @var \Imi\Log\Record[]
+     */
     protected $records = [];
     
     /**
@@ -82,30 +82,30 @@ class Logger extends AbstractLogger
      */
     private $beanCacheFilePath;
 
-	/**
-	 * 定时器ID
-	 *
-	 * @var int
-	 */
-	private $timerID;
+    /**
+     * 定时器ID
+     *
+     * @var int
+     */
+    private $timerID;
 
-	public function __init()
-	{
-		foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
-		{
-			$this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
+    public function __init()
+    {
+        foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
+        {
+            $this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-		$this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
-	}
+        $this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+    }
 
-	public function __destruct()
-	{
-		if(null !== $this->timerID)
-		{
-			swoole_timer_clear($this->timerID);
-			$this->timerID = null;
-		}
-	}
+    public function __destruct()
+    {
+        if(null !== $this->timerID)
+        {
+            swoole_timer_clear($this->timerID);
+            $this->timerID = null;
+        }
+    }
 
     /**
      * Logs with an arbitrary level.
@@ -116,36 +116,36 @@ class Logger extends AbstractLogger
      *
      * @return void
      */
-	public function log($level, $message, array $context = array())
-	{
-		$context = $this->parseContext($context);
-		$trace = $context['trace'];
+    public function log($level, $message, array $context = array())
+    {
+        $context = $this->parseContext($context);
+        $trace = $context['trace'];
         $logTime = time();
-		$record = new Record($level, $message, $context, $trace, $logTime);
-		foreach($this->handlers as $handler)
-		{
-			$handler->log($record);
-		}
-	}
+        $record = new Record($level, $message, $context, $trace, $logTime);
+        foreach($this->handlers as $handler)
+        {
+            $handler->log($record);
+        }
+    }
 
-	/**
-	 * 强制保存所有日志
-	 * @return void
-	 */
-	public function save()
-	{
-		foreach($this->handlers as $handler)
-		{
-			$handler->save();
-		}
-	}
+    /**
+     * 强制保存所有日志
+     * @return void
+     */
+    public function save()
+    {
+        foreach($this->handlers as $handler)
+        {
+            $handler->save();
+        }
+    }
 
-	/**
-	 * 获取代码调用跟踪
-	 * @return array
-	 */
-	protected function getTrace($backtrace)
-	{
+    /**
+     * 获取代码调用跟踪
+     * @return array
+     */
+    protected function getTrace($backtrace)
+    {
         $index = null;
         $hasNull = false;
         $beanCacheFilePath = sprintf($this->beanCacheFilePath, Worker::getWorkerID() ?? 'imi');
@@ -171,8 +171,8 @@ class Logger extends AbstractLogger
         {
             return [];
         }
-		return array_splice($backtrace, $index);
-	}
+        return array_splice($backtrace, $index);
+    }
 
     /**
      * 获取错误文件位置
@@ -199,7 +199,7 @@ class Logger extends AbstractLogger
             }
             else
             {
-				$hasNull = true;
+                $hasNull = true;
             }
         }
         return [$backtrace[$index]['file'] ?? '', $backtrace[$index]['line'] ?? 0];
@@ -213,7 +213,7 @@ class Logger extends AbstractLogger
      */
     private function parseContext($context)
     {
-		$debugBackTrace = debug_backtrace();
+        $debugBackTrace = debug_backtrace();
         if(!isset($context['trace']))
         {
             $context['trace'] = $this->getTrace($debugBackTrace);
@@ -225,17 +225,17 @@ class Logger extends AbstractLogger
             $context['errorLine'] = $line;
         }
         return $context;
-	}
-	
-	/**
-	 * 增加扩展处理器
-	 *
-	 * @param array $exHandler
-	 * @return void
-	 */
-	public function addExHandler($exHandler)
-	{
-		$this->exHandlers = $exHandler;
-		$this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
-	}
+    }
+    
+    /**
+     * 增加扩展处理器
+     *
+     * @param array $exHandler
+     * @return void
+     */
+    public function addExHandler($exHandler)
+    {
+        $this->exHandlers = $exHandler;
+        $this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
+    }
 }

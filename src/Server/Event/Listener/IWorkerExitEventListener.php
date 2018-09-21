@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\WorkerExitEventParam;
  */
 interface IWorkerExitEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param WorkerExitEventParam $e
-	 * @return void
-	 */
-	public function handle(WorkerExitEventParam $e);
+    /**
+     * 事件处理方法
+     * @param WorkerExitEventParam $e
+     * @return void
+     */
+    public function handle(WorkerExitEventParam $e);
 }

@@ -12,5 +12,5 @@ use Imi\Bean\Annotation\Parser;
  */
 class Around extends Base
 {
-	
+    
 }

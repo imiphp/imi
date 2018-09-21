@@ -6,24 +6,24 @@ use Imi\Util\Http\Consts\StatusCode;
 
 class Response extends AbstractMessage implements ResponseInterface
 {
-	/**
-	 * 状态码
-	 * @var int
-	 */
-	protected $statusCode;
+    /**
+     * 状态码
+     * @var int
+     */
+    protected $statusCode;
 
-	/**
-	 * 状态码原因短语
-	 * @var string
-	 */
+    /**
+     * 状态码原因短语
+     * @var string
+     */
     protected $reasonPhrase;
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         parent::__construct('');
-		$this->statusCode = StatusCode::OK;
-		$this->reasonPhrase = StatusCode::getReasonPhrase($this->statusCode);
-	}
+        $this->statusCode = StatusCode::OK;
+        $this->reasonPhrase = StatusCode::getReasonPhrase($this->statusCode);
+    }
 
     /**
      * Gets the response status code.
@@ -33,10 +33,10 @@ class Response extends AbstractMessage implements ResponseInterface
      *
      * @return int Status code.
      */
-	public function getStatusCode()
-	{
-		return $this->statusCode;
-	}
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
 
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
@@ -58,20 +58,20 @@ class Response extends AbstractMessage implements ResponseInterface
      * @return static
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
-	public function withStatus($code, $reasonPhrase = '')
-	{
-		$self = clone $this;
-		$self->statusCode = $code;
-		if('' === $reasonPhrase)
-		{
-			$self->reasonPhrase = StatusCode::getReasonPhrase($code);
-		}
-		else
-		{
-			$self->reasonPhrase = $reasonPhrase;
-		}
-		return $self;
-	}
+    public function withStatus($code, $reasonPhrase = '')
+    {
+        $self = clone $this;
+        $self->statusCode = $code;
+        if('' === $reasonPhrase)
+        {
+            $self->reasonPhrase = StatusCode::getReasonPhrase($code);
+        }
+        else
+        {
+            $self->reasonPhrase = $reasonPhrase;
+        }
+        return $self;
+    }
 
     /**
      * Gets the response reason phrase associated with the status code.
@@ -86,8 +86,8 @@ class Response extends AbstractMessage implements ResponseInterface
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      * @return string Reason phrase; must return an empty string if none present.
      */
-	public function getReasonPhrase()
-	{
-		return $this->reasonPhrase;
-	}
+    public function getReasonPhrase()
+    {
+        return $this->reasonPhrase;
+    }
 }

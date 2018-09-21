@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\ConnectEventParam;
  */
 interface IConnectEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param ConnectEventParam $e
-	 * @return void
-	 */
-	public function handle(ConnectEventParam $e);
+    /**
+     * 事件处理方法
+     * @param ConnectEventParam $e
+     * @return void
+     */
+    public function handle(ConnectEventParam $e);
 }

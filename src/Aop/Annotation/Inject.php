@@ -13,20 +13,20 @@ use Imi\Bean\Annotation\Parser;
  */
 class Inject extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'name';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'name';
 
-	/**
-	 * Bean名称或类名
-	 */
-	public $name;
+    /**
+     * Bean名称或类名
+     */
+    public $name;
 
-	/**
-	 * Bean实例化参数
-	 * @var array
-	 */
-	public $args = [];
+    /**
+     * Bean实例化参数
+     * @var array
+     */
+    public $args = [];
 }

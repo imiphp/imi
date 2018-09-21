@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\WorkerStopEventParam;
  */
 interface IWorkerStopEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param WorkerStopEventParam $e
-	 * @return void
-	 */
-	public function handle(WorkerStopEventParam $e);
+    /**
+     * 事件处理方法
+     * @param WorkerStopEventParam $e
+     * @return void
+     */
+    public function handle(WorkerStopEventParam $e);
 }

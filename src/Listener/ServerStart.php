@@ -11,25 +11,25 @@ use Imi\ServerManage;
  */
 class ServerStart implements IStartEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param StartEventParam $e
-	 * @return void
-	 */
-	public function handle(StartEventParam $e)
-	{
-		echo 'Server start', PHP_EOL;
-		foreach(ServerManage::getServers() as $server)
-		{
-			if($server->isSubServer())
-			{
-				$serverPort = $server->getSwoolePort();
-			}
-			else
-			{
-				$serverPort = $server->getSwooleServer();
-			}
-			echo '[', $server->getConfig()['type'], '] ', $server->getName(), '; listen: ', $serverPort->host, ':', $serverPort->port, PHP_EOL;
-		}
-	}
+    /**
+     * 事件处理方法
+     * @param StartEventParam $e
+     * @return void
+     */
+    public function handle(StartEventParam $e)
+    {
+        echo 'Server start', PHP_EOL;
+        foreach(ServerManage::getServers() as $server)
+        {
+            if($server->isSubServer())
+            {
+                $serverPort = $server->getSwoolePort();
+            }
+            else
+            {
+                $serverPort = $server->getSwooleServer();
+            }
+            echo '[', $server->getConfig()['type'], '] ', $server->getName(), '; listen: ', $serverPort->host, ':', $serverPort->port, PHP_EOL;
+        }
+    }
 }

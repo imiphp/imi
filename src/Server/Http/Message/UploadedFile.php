@@ -57,7 +57,7 @@ class UploadedFile implements UploadedFileInterface
         $this->error = $error;
     }
 
-	/**
+    /**
      * Retrieve a stream representing the uploaded file.
      *
      * This method MUST return a StreamInterface instance, representing the
@@ -73,14 +73,14 @@ class UploadedFile implements UploadedFileInterface
      * @throws \RuntimeException in cases when no stream is available or can be
      *     created.
      */
-	public function getStream()
-	{
+    public function getStream()
+    {
         if(null === $this->stream)
         {
             $this->stream = new FileStream($this->tmpFileName);
         }
         return $this->stream;
-	}
+    }
 
     /**
      * Move the uploaded file to a new location.
@@ -115,7 +115,7 @@ class UploadedFile implements UploadedFileInterface
      *     the second or subsequent call to the method.
      */
     public function moveTo($targetPath)
-	{
+    {
         if(!is_string($targetPath))
         {
             throw \InvalidArgumentException('targetPath specified is invalid');
@@ -136,7 +136,7 @@ class UploadedFile implements UploadedFileInterface
         {
             throw new \RuntimeException(sprintf('file %s move to %s fail', $this->tmpFileName, $targetPath));
         }
-	}
+    }
     
     /**
      * Retrieve the file size.
@@ -148,9 +148,9 @@ class UploadedFile implements UploadedFileInterface
      * @return int|null The file size in bytes or null if unknown.
      */
     public function getSize()
-	{
-		return $this->size;
-	}
+    {
+        return $this->size;
+    }
     
     /**
      * Retrieve the error associated with the uploaded file.
@@ -167,9 +167,9 @@ class UploadedFile implements UploadedFileInterface
      * @return int One of PHP's UPLOAD_ERR_XXX constants.
      */
     public function getError()
-	{
-		return $this->error;
-	}
+    {
+        return $this->error;
+    }
     
     /**
      * Retrieve the filename sent by the client.
@@ -185,9 +185,9 @@ class UploadedFile implements UploadedFileInterface
      *     was provided.
      */
     public function getClientFilename()
-	{
-		return $this->fileName;
-	}
+    {
+        return $this->fileName;
+    }
     
     /**
      * Retrieve the media type sent by the client.
@@ -203,7 +203,7 @@ class UploadedFile implements UploadedFileInterface
      *     was provided.
      */
     public function getClientMediaType()
-	{
-		return $this->mediaType;
-	}
+    {
+        return $this->mediaType;
+    }
 }

@@ -12,39 +12,39 @@ use Imi\Bean\Annotation\Parser;
  */
 class Arg extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'name';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'name';
 
-	/**
-	 * 操作名称
-	 * @var string
-	 */
-	public $name;
+    /**
+     * 操作名称
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * 参数类型
-	 * @var string
-	 */
-	public $type;
+    /**
+     * 参数类型
+     * @var string
+     */
+    public $type;
 
-	/**
-	 * 默认值
-	 * @var mixed
-	 */
-	public $default;
+    /**
+     * 默认值
+     * @var mixed
+     */
+    public $default;
 
-	/**
-	 * 是否是必选参数
-	 * @var boolean
-	 */
-	public $required = false;
+    /**
+     * 是否是必选参数
+     * @var boolean
+     */
+    public $required = false;
 
-	/**
-	 * 注释
-	 * @var string
-	 */
-	public $comments = '';
+    /**
+     * 注释
+     * @var string
+     */
+    public $comments = '';
 }

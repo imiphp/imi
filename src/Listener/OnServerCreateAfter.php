@@ -12,17 +12,17 @@ use Imi\Bean\Annotation\Listener;
  */
 class OnServerCreateAfter implements IEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(EventParam $e)
-	{
-		// 热更新
-		if(Config::get('@app.beans.hotUpdate.status', true))
-		{
-			ProcessManager::runWithManager('hotUpdate');
-		}
-	}
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(EventParam $e)
+    {
+        // 热更新
+        if(Config::get('@app.beans.hotUpdate.status', true))
+        {
+            ProcessManager::runWithManager('hotUpdate');
+        }
+    }
 }

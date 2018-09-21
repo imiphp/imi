@@ -28,9 +28,9 @@ class HttpError
      */
     public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
     {
-		if(true === App::getBean('HttpErrorHandler')->handle($joinPoint->getThrowable()))
-		{
-			$joinPoint->cancelThrow();
-		}
+        if(true === App::getBean('HttpErrorHandler')->handle($joinPoint->getThrowable()))
+        {
+            $joinPoint->cancelThrow();
+        }
     }
 }

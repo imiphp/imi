@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\ShutdownEventParam;
  */
 interface IShutdownEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param ShutdownEventParam $e
-	 * @return void
-	 */
-	public function handle(ShutdownEventParam $e);
+    /**
+     * 事件处理方法
+     * @param ShutdownEventParam $e
+     * @return void
+     */
+    public function handle(ShutdownEventParam $e);
 }

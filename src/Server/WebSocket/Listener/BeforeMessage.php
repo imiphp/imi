@@ -17,26 +17,26 @@ use Imi\Server\Event\Listener\IMessageEventListener;
  */
 class BeforeMessage implements IMessageEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param MessageEventParam $e
-	 * @return void
-	 */
-	public function handle(MessageEventParam $e)
-	{
-		if(!Worker::isInited())
-		{
-			$GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-			Coroutine::suspend();
-		}
-		// 上下文创建
-		RequestContext::create();
-		RequestContext::set('fd', $e->frame->fd);
-		RequestContext::set('server', $e->getTarget());
+    /**
+     * 事件处理方法
+     * @param MessageEventParam $e
+     * @return void
+     */
+    public function handle(MessageEventParam $e)
+    {
+        if(!Worker::isWorkerStartAppComplete())
+        {
+            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
+            Coroutine::suspend();
+        }
+        // 上下文创建
+        RequestContext::create();
+        RequestContext::set('fd', $e->frame->fd);
+        RequestContext::set('server', $e->getTarget());
 
-		// 中间件
-		$dispatcher = RequestContext::getServerBean('WebSocketDispatcher');
-		$dispatcher->dispatch(new Frame($e->frame));
+        // 中间件
+        $dispatcher = RequestContext::getServerBean('WebSocketDispatcher');
+        $dispatcher->dispatch(new Frame($e->frame));
 
-	}
+    }
 }

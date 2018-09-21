@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\AfterFindEventParam;
  */
 interface IAfterFindEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param AfterFindEventParam $e
-	 * @return void
-	 */
-	public function handle(AfterFindEventParam $e);
+    /**
+     * 事件处理方法
+     * @param AfterFindEventParam $e
+     * @return void
+     */
+    public function handle(AfterFindEventParam $e);
 }

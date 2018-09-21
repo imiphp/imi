@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeFindEventParam;
  */
 interface IBeforeFindEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeFindEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeFindEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeFindEventParam $e
+     * @return void
+     */
+    public function handle(BeforeFindEventParam $e);
 }

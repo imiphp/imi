@@ -14,23 +14,23 @@ use Imi\Util\Imi;
  */
 class WorkerStart implements IWorkerStartEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(WorkerStartEventParam $e)
-	{
-		if(!$e->server->getSwooleServer()->taskworker)
-		{
-			RequestContext::create();
-			foreach(ServerManage::getServers() as $server)
-			{
-				RequestContext::set('server', $server);
-				$server->getBean('ConnectContextStore')->getHandler();
-				$server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
-			}
-			RequestContext::destroy();
-		}
-	}
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(WorkerStartEventParam $e)
+    {
+        if(!$e->server->getSwooleServer()->taskworker)
+        {
+            RequestContext::create();
+            foreach(ServerManage::getServers() as $server)
+            {
+                RequestContext::set('server', $server);
+                $server->getBean('ConnectContextStore')->getHandler();
+                $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
+            }
+            RequestContext::destroy();
+        }
+    }
 }

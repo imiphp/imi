@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\StartEventParam;
  */
 interface IStartEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param StartEventParam $e
-	 * @return void
-	 */
-	public function handle(StartEventParam $e);
+    /**
+     * 事件处理方法
+     * @param StartEventParam $e
+     * @return void
+     */
+    public function handle(StartEventParam $e);
 }

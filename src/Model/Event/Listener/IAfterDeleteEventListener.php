@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\AfterDeleteEventParam;
  */
 interface IAfterDeleteEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param AfterDeleteEventParam $e
-	 * @return void
-	 */
-	public function handle(AfterDeleteEventParam $e);
+    /**
+     * 事件处理方法
+     * @param AfterDeleteEventParam $e
+     * @return void
+     */
+    public function handle(AfterDeleteEventParam $e);
 }

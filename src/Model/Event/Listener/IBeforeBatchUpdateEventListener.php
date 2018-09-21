@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeBatchUpdateEventParam;
  */
 interface IBeforeBatchUpdateEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeBatchUpdateEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeBatchUpdateEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeBatchUpdateEventParam $e
+     * @return void
+     */
+    public function handle(BeforeBatchUpdateEventParam $e);
 }

@@ -12,13 +12,13 @@ use Imi\App;
  */
 class OnWorkerStop implements IWorkerStopEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param WorkerStopEventParam $e
-	 * @return void
-	 */
-	public function handle(WorkerStopEventParam $e)
-	{
-		App::getBean('Logger')->save();
-	}
+    /**
+     * 事件处理方法
+     * @param WorkerStopEventParam $e
+     * @return void
+     */
+    public function handle(WorkerStopEventParam $e)
+    {
+        App::getBean('Logger')->save();
+    }
 }

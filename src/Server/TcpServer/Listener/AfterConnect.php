@@ -13,15 +13,15 @@ use Imi\Server\Event\Listener\IConnectEventListener;
  */
 class AfterConnect implements IConnectEventListener
 {
-	/**
-	 * 默认的 WebSocket 握手
-	 * @param ConnectEventParam $e
-	 * @return void
-	 */
-	public function handle(ConnectEventParam $e)
-	{
-		// 释放请求上下文
-		RequestContext::destroy();
-	}
+    /**
+     * 默认的 WebSocket 握手
+     * @param ConnectEventParam $e
+     * @return void
+     */
+    public function handle(ConnectEventParam $e)
+    {
+        // 释放请求上下文
+        RequestContext::destroy();
+    }
 
 }

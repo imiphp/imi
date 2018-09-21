@@ -13,63 +13,63 @@ use Imi\Server\Http\Message\Response;
  */
 class Html implements IHandler
 {
-	/**
-	 * 模版文件根路径
-	 * @var string
-	 */
-	protected $templatePath;
+    /**
+     * 模版文件根路径
+     * @var string
+     */
+    protected $templatePath;
 
-	/**
-	 * 支持的模版文件扩展名，优先级按先后顺序
-	 * @var array
-	 */
-	protected $fileSuffixs = [
-		'tpl',
-		'html',
-		'php'
-	];
+    /**
+     * 支持的模版文件扩展名，优先级按先后顺序
+     * @var array
+     */
+    protected $fileSuffixs = [
+        'tpl',
+        'html',
+        'php'
+    ];
 
-	/**
-	 * 模版引擎处理类
-	 * @var string
-	 */
-	protected $templateEngine = \Imi\Server\View\Engine\Php::class;
+    /**
+     * 模版引擎处理类
+     * @var string
+     */
+    protected $templateEngine = \Imi\Server\View\Engine\Php::class;
 
-	public function handle(View $viewAnnotation, Response $response): Response
-	{
-		$fileName = $this->getTemplateFilePath($viewAnnotation);
+    public function handle(View $viewAnnotation, Response $response): Response
+    {
+        $fileName = $this->getTemplateFilePath($viewAnnotation);
 
-		if(!is_file($fileName))
-		{
-			return $response;
-		}
+        if(!is_file($fileName))
+        {
+            return $response;
+        }
 
-		$engine = RequestContext::getServerBean($this->templateEngine);
+        $engine = RequestContext::getServerBean($this->templateEngine);
 
-		return $engine->render($response, $fileName, $viewAnnotation->data);
-	}
+        return $engine->render($response, $fileName, $viewAnnotation->data);
+    }
 
-	/**
-	 * 获取模版文件真实路径，失败返回false
-	 * @param \Imi\Server\View\Annotation\View $viewAnnotation
-	 * @return string|boolean
-	 */
-	protected function getTemplateFilePath($viewAnnotation)
-	{
-		$fileName = realpath($viewAnnotation->template);
-		if(is_file($fileName))
-		{
-			return $fileName;
-		}
-		$fileName = File::path($this->templatePath, $viewAnnotation->baseDir ?? '', $viewAnnotation->template);
-		foreach($this->fileSuffixs as $suffix)
-		{
-			$tryFileName = $fileName . '.' . $suffix;
-			if(is_file($tryFileName))
-			{
-				return $tryFileName;
-			}
-		}
-		return false;
-	}
+    /**
+     * 获取模版文件真实路径，失败返回false
+     * @param \Imi\Server\View\Annotation\View $viewAnnotation
+     * @return string|boolean
+     */
+    protected function getTemplateFilePath($viewAnnotation)
+    {
+        $fileName = realpath($viewAnnotation->template);
+        if(is_file($fileName))
+        {
+            return $fileName;
+        }
+        $fileName = File::path($this->templatePath, $viewAnnotation->baseDir ?? '', $viewAnnotation->template);
+        foreach($this->fileSuffixs as $suffix)
+        {
+            $tryFileName = $fileName . '.' . $suffix;
+            if(is_file($tryFileName))
+            {
+                return $tryFileName;
+            }
+        }
+        return false;
+    }
 }

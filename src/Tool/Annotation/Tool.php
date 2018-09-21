@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Base;
  */
 class Tool extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'name';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'name';
 
-	/**
-	 * 工具名称
-	 * @var string
-	 */
-	public $name;
+    /**
+     * 工具名称
+     * @var string
+     */
+    public $name;
 }

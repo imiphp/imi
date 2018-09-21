@@ -6,5 +6,5 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 
 interface IMiddleware
 {
-	public function process(IReceiveData $data, IReceiveHandler $handler);
+    public function process(IReceiveData $data, IReceiveHandler $handler);
 }

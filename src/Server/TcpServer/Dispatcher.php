@@ -12,26 +12,26 @@ use Imi\Server\TcpServer\Message\IReceiveData;
  */
 class Dispatcher
 {
-	/**
-	 * 中间件数组
-	 * @var string[]
-	 */
-	protected $middlewares = [];
+    /**
+     * 中间件数组
+     * @var string[]
+     */
+    protected $middlewares = [];
 
-	public function dispatch(IReceiveData $data)
-	{
-		$requestHandler = new ReceiveHandler($this->getMiddlewares());
-		$responseData = $requestHandler->handle($data);
-		if(null !== $responseData)
-		{
-			RequestContext::getServer()->getSwooleServer()->send($data->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
-		}
-	}
+    public function dispatch(IReceiveData $data)
+    {
+        $requestHandler = new ReceiveHandler($this->getMiddlewares());
+        $responseData = $requestHandler->handle($data);
+        if(null !== $responseData)
+        {
+            RequestContext::getServer()->getSwooleServer()->send($data->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
+        }
+    }
 
-	protected function getMiddlewares()
-	{
-		return array_merge($this->middlewares, [
+    protected function getMiddlewares()
+    {
+        return array_merge($this->middlewares, [
 
-		]);
-	}
+        ]);
+    }
 }

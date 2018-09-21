@@ -12,9 +12,9 @@ use Imi\Bean\Annotation\Parser;
  */
 class Aspect extends Base
 {
-	/**
-	 * 优先级，越大越先执行
-	 * @var int
-	 */
-	public $priority = 0;
+    /**
+     * 优先级，越大越先执行
+     * @var int
+     */
+    public $priority = 0;
 }

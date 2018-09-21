@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\AfterSelectEventParam;
  */
 interface IAfterSelectEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param AfterSelectEventParam $e
-	 * @return void
-	 */
-	public function handle(AfterSelectEventParam $e);
+    /**
+     * 事件处理方法
+     * @param AfterSelectEventParam $e
+     * @return void
+     */
+    public function handle(AfterSelectEventParam $e);
 }

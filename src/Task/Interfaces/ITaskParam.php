@@ -3,9 +3,9 @@ namespace Imi\Task\Interfaces;
 
 interface ITaskParam
 {
-	/**
-	 * 获取数据
-	 * @return mixed
-	 */
-	public function getData();
+    /**
+     * 获取数据
+     * @return mixed
+     */
+    public function getData();
 }

@@ -15,16 +15,16 @@ use Imi\Server\Event\Listener\IMessageEventListener;
  */
 class AfterMessage implements IMessageEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param MessageEventParam $e
-	 * @return void
-	 */
-	public function handle(MessageEventParam $e)
-	{
-		// 释放请求的进程池资源
-		PoolManager::destroyCurrentContext();
-		// 销毁请求上下文
-		RequestContext::destroy();
-	}
+    /**
+     * 事件处理方法
+     * @param MessageEventParam $e
+     * @return void
+     */
+    public function handle(MessageEventParam $e)
+    {
+        // 释放请求的进程池资源
+        PoolManager::destroyCurrentContext();
+        // 销毁请求上下文
+        RequestContext::destroy();
+    }
 }

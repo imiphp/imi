@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeInsertEventParam;
  */
 interface IBeforeInsertEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeInsertEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeInsertEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeInsertEventParam $e
+     * @return void
+     */
+    public function handle(BeforeInsertEventParam $e);
 }

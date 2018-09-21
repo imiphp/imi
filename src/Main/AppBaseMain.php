@@ -8,16 +8,16 @@ use Imi\Config;
  */
 abstract class AppBaseMain extends BaseMain
 {
-	/**
-	 * 加载配置
-	 * @return void
-	 */
-	public function loadConfig()
-	{
-		parent::loadConfig();
-		foreach(Config::get('@' . $this->moduleName . '.configs', []) as $name => $fileName)
-		{
-			Config::addConfig($name, include $fileName);
-		}
-	}
+    /**
+     * 加载配置
+     * @return void
+     */
+    public function loadConfig()
+    {
+        parent::loadConfig();
+        foreach(Config::get('@' . $this->moduleName . '.configs', []) as $name => $fileName)
+        {
+            Config::addConfig($name, include $fileName);
+        }
+    }
 }

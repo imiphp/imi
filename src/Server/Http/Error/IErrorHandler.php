@@ -3,5 +3,5 @@ namespace Imi\Server\Http\Error;
 
 interface IErrorHandler
 {
-	public function handle(\Throwable $throwable): bool;
+    public function handle(\Throwable $throwable): bool;
 }

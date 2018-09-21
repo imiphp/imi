@@ -14,19 +14,19 @@ use Imi\Server\Event\Listener\ICloseEventListener;
  */
 class BeforeClose implements ICloseEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param CloseEventParam $e
-	 * @return void
-	 */
-	public function handle(CloseEventParam $e)
-	{
-		if(!RequestContext::exsits())
-		{
-			RequestContext::create();
-		}
-		RequestContext::set('fd', $e->fd);
-		RequestContext::set('server', $e->getTarget());
-		
-	}
+    /**
+     * 事件处理方法
+     * @param CloseEventParam $e
+     * @return void
+     */
+    public function handle(CloseEventParam $e)
+    {
+        if(!RequestContext::exsits())
+        {
+            RequestContext::create();
+        }
+        RequestContext::set('fd', $e->fd);
+        RequestContext::set('server', $e->getTarget());
+        
+    }
 }

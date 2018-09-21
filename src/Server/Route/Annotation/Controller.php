@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Parser;
  */
 class Controller extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'prefix';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'prefix';
 
-	/**
-	 * 路由前缀
-	 * @var string
-	 */
-	public $prefix;
+    /**
+     * 路由前缀
+     * @var string
+     */
+    public $prefix;
 }

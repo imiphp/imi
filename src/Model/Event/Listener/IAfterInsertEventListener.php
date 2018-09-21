@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\AfterInsertEventParam;
  */
 interface IAfterInsertEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param AfterInsertEventParam $e
-	 * @return void
-	 */
-	public function handle(AfterInsertEventParam $e);
+    /**
+     * 事件处理方法
+     * @param AfterInsertEventParam $e
+     * @return void
+     */
+    public function handle(AfterInsertEventParam $e);
 }

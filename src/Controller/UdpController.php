@@ -6,15 +6,15 @@ namespace Imi\Controller;
  */
 abstract class UdpController
 {
-	/**
-	 * 请求
-	 * @var \Imi\Server\Udp\Server
-	 */
-	public $server;
+    /**
+     * 请求
+     * @var \Imi\Server\Udp\Server
+     */
+    public $server;
 
-	/**
-	 * 桢
-	 * @var \Imi\Server\UdpServer\Message\IPacketData
-	 */
-	public $data;
+    /**
+     * 桢
+     * @var \Imi\Server\UdpServer\Message\IPacketData
+     */
+    public $data;
 }

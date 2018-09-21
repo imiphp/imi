@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\BufferEventParam;
  */
 interface IBufferEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BufferEventParam $e
-	 * @return void
-	 */
-	public function handle(BufferEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BufferEventParam $e
+     * @return void
+     */
+    public function handle(BufferEventParam $e);
 }

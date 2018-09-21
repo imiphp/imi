@@ -13,21 +13,21 @@ use Imi\Bean\Annotation\Parser;
  */
 class Task extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'name';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'name';
 
-	/**
-	 * 任务名称
-	 * @var string
-	 */
-	public $name;
+    /**
+     * 任务名称
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * 参数类
-	 * @var string
-	 */
-	public $paramClass = TaskParam::class;
+    /**
+     * 参数类
+     * @var string
+     */
+    public $paramClass = TaskParam::class;
 }

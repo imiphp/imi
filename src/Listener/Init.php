@@ -14,23 +14,23 @@ use Imi\Bean\Annotation\Listener;
  */
 class Init implements IEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(EventParam $e)
-	{
-		App::getBean('ErrorLog')->register();
-		foreach(Helper::getMains() as $main)
-		{
-			$config = $main->getConfig();
-			// 原子计数初始化
-			AtomicManager::setNames($config['atomics'] ?? []);
-			// 通道队列初始化
-			ChannelManager::setNames($config['channels'] ?? []);
-		}
-		AtomicManager::init();
-		ChannelManager::init();
-	}
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(EventParam $e)
+    {
+        App::getBean('ErrorLog')->register();
+        foreach(Helper::getMains() as $main)
+        {
+            $config = $main->getConfig();
+            // 原子计数初始化
+            AtomicManager::setNames($config['atomics'] ?? []);
+            // 通道队列初始化
+            ChannelManager::setNames($config['channels'] ?? []);
+        }
+        AtomicManager::init();
+        ChannelManager::init();
+    }
 }

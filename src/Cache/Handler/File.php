@@ -11,17 +11,17 @@ use Imi\Util\Stream\StreamMode;
  */
 class File extends Base
 {
-	/**
-	 * 缓存文件保存路径
-	 * @var string
-	 */
-	protected $savePath;
+    /**
+     * 缓存文件保存路径
+     * @var string
+     */
+    protected $savePath;
 
-	/**
-	 * 缓存文件名的处理回调，用于需要自定义的情况
-	 * @var callable
-	 */
-	protected $saveFileNameCallback;
+    /**
+     * 缓存文件名的处理回调，用于需要自定义的情况
+     * @var callable
+     */
+    protected $saveFileNameCallback;
 
     /**
      * Fetches a value from the cache.
@@ -34,47 +34,47 @@ class File extends Base
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-	public function get($key, $default = null)
-	{
-		$this->checkKey($key);
-		$fileName = $this->getFileName($key);
-		// 缓存文件不存在
-		if(!is_file($fileName))
-		{
-			return $default;
-		}
-		$fp = fopen($fileName, StreamMode::READONLY);
-		// 文件打开失败
-		if (false === $fp)
-		{
-			return $default;
-		}
-		// 加锁失败
-		if (!flock($fp, LOCK_SH))
-		{
-			fclose($fp);
-			return $default;
-		}
-		// 检查是否过期
-		if($this->checkExpire($fileName))
-		{
-			flock($fp, LOCK_UN);
-			fclose($fp);
-			return $default;
-		}
-		// 正常读入
-		if(Coroutine::isIn())
-		{
-			$content = Coroutine::fread($fp);
-		}
-		else
-		{
-			$content = FileUtil::readAll($fp);
-		}
-		flock($fp, LOCK_UN);
-		fclose($fp);
-		return $this->decode($content);
-	}
+    public function get($key, $default = null)
+    {
+        $this->checkKey($key);
+        $fileName = $this->getFileName($key);
+        // 缓存文件不存在
+        if(!is_file($fileName))
+        {
+            return $default;
+        }
+        $fp = fopen($fileName, StreamMode::READONLY);
+        // 文件打开失败
+        if (false === $fp)
+        {
+            return $default;
+        }
+        // 加锁失败
+        if (!flock($fp, LOCK_SH))
+        {
+            fclose($fp);
+            return $default;
+        }
+        // 检查是否过期
+        if($this->checkExpire($fileName))
+        {
+            flock($fp, LOCK_UN);
+            fclose($fp);
+            return $default;
+        }
+        // 正常读入
+        if(Coroutine::isIn())
+        {
+            $content = Coroutine::fread($fp);
+        }
+        else
+        {
+            $content = FileUtil::readAll($fp);
+        }
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        return $this->decode($content);
+    }
 
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
@@ -91,42 +91,42 @@ class File extends Base
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function set($key, $value, $ttl = null)
-	{
-		$this->checkKey($key);
-		$fileName = $this->getFileName($key);
-		// 自动建目录
-		$dir = dirname($fileName);
-		if(!is_dir($dir))
-		{
-			mkdir($dir, 0755, true);
-		}
-		// 打开文件
-		$fp = fopen($fileName, StreamMode::WRITE_CLEAN);
-		if (false === $fp)
-		{
-			return false;
-		}
-		// 加锁失败
-		if (!flock($fp, LOCK_EX))
-		{
-			fclose($fp);
-			return false;
-		}
-		// 写入缓存数据
-		if(Coroutine::isIn())
-		{
-			$content = Coroutine::fwrite($fp, $this->encode($value));
-		}
-		else
-		{
-			$content = fwrite($fp, $this->encode($value));
-		}
-		// 写入扩展数据
-		$this->writeExData($fileName, $ttl);
-		flock($fp, LOCK_UN);
-		fclose($fp);
-		return true;
-	}
+    {
+        $this->checkKey($key);
+        $fileName = $this->getFileName($key);
+        // 自动建目录
+        $dir = dirname($fileName);
+        if(!is_dir($dir))
+        {
+            mkdir($dir, 0755, true);
+        }
+        // 打开文件
+        $fp = fopen($fileName, StreamMode::WRITE_CLEAN);
+        if (false === $fp)
+        {
+            return false;
+        }
+        // 加锁失败
+        if (!flock($fp, LOCK_EX))
+        {
+            fclose($fp);
+            return false;
+        }
+        // 写入缓存数据
+        if(Coroutine::isIn())
+        {
+            $content = Coroutine::fwrite($fp, $this->encode($value));
+        }
+        else
+        {
+            $content = fwrite($fp, $this->encode($value));
+        }
+        // 写入扩展数据
+        $this->writeExData($fileName, $ttl);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        return true;
+    }
 
     /**
      * Delete an item from the cache by its unique key.
@@ -139,19 +139,19 @@ class File extends Base
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function delete($key)
-	{
-		$this->checkKey($key);
-		$fileName = $this->getFileName($key);
-		if(is_file($fileName))
-		{
-			unlink($fileName);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    {
+        $this->checkKey($key);
+        $fileName = $this->getFileName($key);
+        if(is_file($fileName))
+        {
+            unlink($fileName);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     /**
      * Wipes clean the entire cache's keys.
@@ -159,12 +159,12 @@ class File extends Base
      * @return bool True on success and false on failure.
      */
     public function clear()
-	{
-		foreach(FileUtil::enum($this->savePath) as $fileName)
-		{
-			unlink($fileName);
-		}
-	}
+    {
+        foreach(FileUtil::enum($this->savePath) as $fileName)
+        {
+            unlink($fileName);
+        }
+    }
 
     /**
      * Obtains multiple cache items by their unique keys.
@@ -179,15 +179,15 @@ class File extends Base
      *   or if any of the $keys are not a legal value.
      */
     public function getMultiple($keys, $default = null)
-	{
-		$this->checkArrayOrTraversable($keys);
-		$result = [];
-		foreach($keys as $key)
-		{
-			$result[] = $this->get($key, $default);
-		}
-		return $result;
-	}
+    {
+        $this->checkArrayOrTraversable($keys);
+        $result = [];
+        foreach($keys as $key)
+        {
+            $result[] = $this->get($key, $default);
+        }
+        return $result;
+    }
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
@@ -204,15 +204,15 @@ class File extends Base
      *   or if any of the $values are not a legal value.
      */
     public function setMultiple($values, $ttl = null)
-	{
-		$this->checkArrayOrTraversable($values);
-		$result = true;
-		foreach($values as $key => $value)
-		{
-			$result = $result && $this->set($key, $value, $ttl);
-		}
-		return $result;
-	}
+    {
+        $this->checkArrayOrTraversable($values);
+        $result = true;
+        foreach($values as $key => $value)
+        {
+            $result = $result && $this->set($key, $value, $ttl);
+        }
+        return $result;
+    }
 
     /**
      * Deletes multiple cache items in a single operation.
@@ -226,15 +226,15 @@ class File extends Base
      *   or if any of the $keys are not a legal value.
      */
     public function deleteMultiple($keys)
-	{
-		$this->checkArrayOrTraversable($keys);
-		$result = true;
-		foreach($keys as $key)
-		{
-			$result = $result && $this->delete($key, $value, $ttl);
-		}
-		return $result;
-	}
+    {
+        $this->checkArrayOrTraversable($keys);
+        $result = true;
+        foreach($keys as $key)
+        {
+            $result = $result && $this->delete($key, $value, $ttl);
+        }
+        return $result;
+    }
 
     /**
      * Determines whether an item is present in the cache.
@@ -252,102 +252,102 @@ class File extends Base
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function has($key)
-	{
-		$this->checkKey($key);
-		$fileName = $this->getFileName($key);
-		// 缓存文件不存在
-		if(!is_file($fileName))
-		{
-			return false;
-		}
-		$fp = fopen($fileName, StreamMode::READONLY);
-		// 文件打开失败
-		if (false === $fp)
-		{
-			return false;
-		}
-		// 加锁失败
-		if (!flock($fp, LOCK_SH))
-		{
-			fclose($fp);
-			return false;
-		}
-		$result = !$this->checkExpire($fileName);
-		flock($fp, LOCK_UN);
-		fclose($fp);
-		return $result;
-	}
+    {
+        $this->checkKey($key);
+        $fileName = $this->getFileName($key);
+        // 缓存文件不存在
+        if(!is_file($fileName))
+        {
+            return false;
+        }
+        $fp = fopen($fileName, StreamMode::READONLY);
+        // 文件打开失败
+        if (false === $fp)
+        {
+            return false;
+        }
+        // 加锁失败
+        if (!flock($fp, LOCK_SH))
+        {
+            fclose($fp);
+            return false;
+        }
+        $result = !$this->checkExpire($fileName);
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        return $result;
+    }
 
-	/**
-	 * 获取缓存文件名完整路径
-	 * @param string $key
-	 * @return string
-	 */
-	public function getFileName($key)
-	{
-		if(is_callable($this->saveFileNameCallback))
-		{
-			// 使用回调处理
-			return call_user_func($this->saveFileNameCallback, $this->savePath, $key);
-		}
-		else
-		{
-			// 默认处理使用MD5
-			return FileUtil::path($this->savePath, md5($key));
-		}
-	}
+    /**
+     * 获取缓存文件名完整路径
+     * @param string $key
+     * @return string
+     */
+    public function getFileName($key)
+    {
+        if(is_callable($this->saveFileNameCallback))
+        {
+            // 使用回调处理
+            return call_user_func($this->saveFileNameCallback, $this->savePath, $key);
+        }
+        else
+        {
+            // 默认处理使用MD5
+            return FileUtil::path($this->savePath, md5($key));
+        }
+    }
 
-	/**
-	 * 获取存储扩展数据的文件名
-	 * @param string $fileName
-	 * @return string
-	 */
-	public function getExDataFileName($fileName)
-	{
-		return $fileName . '.ex';
-	}
+    /**
+     * 获取存储扩展数据的文件名
+     * @param string $fileName
+     * @return string
+     */
+    public function getExDataFileName($fileName)
+    {
+        return $fileName . '.ex';
+    }
 
-	/**
-	 * 检查缓存文件是否过期
-	 * @param string $fileName
-	 * @return boolean
-	 */
-	protected function checkExpire($fileName)
-	{
-		if(!is_file($fileName))
-		{
-			return false;
-		}
-		$exDataFileName = $this->getExDataFileName($fileName);
-		$data = \Swoole\Serialize::unpack(FileUtil::readFile($exDataFileName));
-		if(null === $data['ttl'] ?? null)
-		{
-			return false;
-		}
-		$maxTime = time() - $data['ttl'];
-		if(filemtime($fileName) <= $maxTime)
-		{
-			unlink($fileName);
-			unlink($exDataFileName);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    /**
+     * 检查缓存文件是否过期
+     * @param string $fileName
+     * @return boolean
+     */
+    protected function checkExpire($fileName)
+    {
+        if(!is_file($fileName))
+        {
+            return false;
+        }
+        $exDataFileName = $this->getExDataFileName($fileName);
+        $data = \Swoole\Serialize::unpack(FileUtil::readFile($exDataFileName));
+        if(null === $data['ttl'] ?? null)
+        {
+            return false;
+        }
+        $maxTime = time() - $data['ttl'];
+        if(filemtime($fileName) <= $maxTime)
+        {
+            unlink($fileName);
+            unlink($exDataFileName);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	/**
-	 * 写入扩展数据
-	 * @param string $fileName
-	 * @param int $ttl
-	 * @return void
-	 */
-	protected function writeExData($fileName, $ttl)
-	{
-		$data = [
-			'ttl'	=>	$ttl,
-		];
-		FileUtil::writeFile($this->getExDataFileName($fileName), \Swoole\Serialize::pack($data));
-	}
+    /**
+     * 写入扩展数据
+     * @param string $fileName
+     * @param int $ttl
+     * @return void
+     */
+    protected function writeExData($fileName, $ttl)
+    {
+        $data = [
+            'ttl' => $ttl,
+        ];
+        FileUtil::writeFile($this->getExDataFileName($fileName), \Swoole\Serialize::pack($data));
+    }
 }

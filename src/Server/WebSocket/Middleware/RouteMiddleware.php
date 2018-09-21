@@ -12,28 +12,28 @@ use Imi\Server\WebSocket\IMessageHandler;
  */
 class RouteMiddleware implements IMiddleware
 {
-	/**
-	 * 处理方法
-	 *
-	 * @param IFrame $frame
-	 * @param IMessageHandler $handler
-	 * @return void
-	 */
+    /**
+     * 处理方法
+     *
+     * @param IFrame $frame
+     * @param IMessageHandler $handler
+     * @return void
+     */
     public function process(IFrame $frame, IMessageHandler $handler)
-	{
-		// 路由解析
-		$route = RequestContext::getServerBean('WSRoute');
-		$result = $route->parse($frame->getFormatData());
-		if(null === $result || !is_callable($result['callable']))
-		{
-			// 未找到匹配的命令，TODO:处理
-			
-		}
-		else
-		{
-			RequestContext::set('routeResult', $result);
-		}
-		return $handler->handle($frame);
-	}
+    {
+        // 路由解析
+        $route = RequestContext::getServerBean('WSRoute');
+        $result = $route->parse($frame->getFormatData());
+        if(null === $result || !is_callable($result['callable']))
+        {
+            // 未找到匹配的命令，TODO:处理
+            
+        }
+        else
+        {
+            RequestContext::set('routeResult', $result);
+        }
+        return $handler->handle($frame);
+    }
 
 }

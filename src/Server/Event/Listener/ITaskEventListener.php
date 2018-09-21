@@ -8,10 +8,10 @@ use Imi\Server\Event\Param\TaskEventParam;
  */
 interface ITaskEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param TaskEventParam $e
-	 * @return void
-	 */
-	public function handle(TaskEventParam $e);
+    /**
+     * 事件处理方法
+     * @param TaskEventParam $e
+     * @return void
+     */
+    public function handle(TaskEventParam $e);
 }

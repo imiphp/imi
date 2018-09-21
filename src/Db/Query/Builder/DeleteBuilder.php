@@ -3,19 +3,19 @@ namespace Imi\Db\Query\Builder;
 
 class DeleteBuilder extends BaseBuilder
 {
-	public function build(...$args)
-	{
-		$option = $this->query->getOption();
+    public function build(...$args)
+    {
+        $option = $this->query->getOption();
 
-		$sql = 'delete from ' . $option->table
-				. $this->parseWhere($option->where)
-				. $this->parseOrder($option->order)
-				. $this->parseLimit($option->offset, $option->limit)
-				;
+        $sql = 'delete from ' . $option->table
+                . $this->parseWhere($option->where)
+                . $this->parseOrder($option->order)
+                . $this->parseLimit($option->offset, $option->limit)
+                ;
 
-		
-		$this->query->bindValues($this->params);
+        
+        $this->query->bindValues($this->params);
 
-		return $sql;
-	}
+        return $sql;
+    }
 }

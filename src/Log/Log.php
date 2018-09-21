@@ -18,12 +18,12 @@ abstract class Log
      *
      * @return void
      */
-	public static function log($level, $message, array $context = array())
-	{
-		App::getBean('Logger')->log($level, $message, static::parseContext($context));
-	}
+    public static function log($level, $message, array $context = array())
+    {
+        App::getBean('Logger')->log($level, $message, static::parseContext($context));
+    }
 
-	/**
+    /**
      * System is unusable.
      *
      * @param string $message
@@ -138,12 +138,12 @@ abstract class Log
         App::getBean('Logger')->debug($message, static::parseContext($context));
     }
     
-	/**
-	 * 获取代码调用跟踪
-	 * @return array
-	 */
-	public static function getTrace()
-	{
+    /**
+     * 获取代码调用跟踪
+     * @return array
+     */
+    public static function getTrace()
+    {
         $backtrace = debug_backtrace();
         return array_splice($backtrace, 3);
     }

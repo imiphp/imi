@@ -6,5 +6,5 @@ use Imi\Server\Http\Message\Response;
 
 interface IHandler
 {
-	public function handle(View $viewAnnotation, Response $response): Response;
+    public function handle(View $viewAnnotation, Response $response): Response;
 }

@@ -12,28 +12,28 @@ use Imi\Bean\Annotation\Parser;
  */
 class ManyToMany extends Base
 {
-	/**
-	 * 关联的模型类
-	 * 可以是包含命名空间的完整类名
-	 * 可以同命名空间下的类名
-	 *
-	 * @var string
-	 */
-	public $model;
+    /**
+     * 关联的模型类
+     * 可以是包含命名空间的完整类名
+     * 可以同命名空间下的类名
+     *
+     * @var string
+     */
+    public $model;
 
-	/**
-	 * 中间表模型
-	 * 可以是包含命名空间的完整类名
-	 * 可以同命名空间下的类名
-	 *
-	 * @var string
-	 */
-	public $middle;
+    /**
+     * 中间表模型
+     * 可以是包含命名空间的完整类名
+     * 可以同命名空间下的类名
+     *
+     * @var string
+     */
+    public $middle;
 
-	/**
-	 * 属性名，赋值为关联的模型对象列表
-	 *
-	 * @var string
-	 */
-	public $rightMany;
+    /**
+     * 属性名，赋值为关联的模型对象列表
+     *
+     * @var string
+     */
+    public $rightMany;
 }

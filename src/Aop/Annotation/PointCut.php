@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Parser;
  */
 class PointCut extends Base
 {
-	/**
-	 * 允许的切入点
-	 * @var array
-	 */
-	public $allow = [];
+    /**
+     * 允许的切入点
+     * @var array
+     */
+    public $allow = [];
 
-	/**
-	 * 不允许的切入点，即使包含中有的，也可以被排除
-	 * @var array
-	 */
-	public $deny = [];
+    /**
+     * 不允许的切入点，即使包含中有的，也可以被排除
+     * @var array
+     */
+    public $deny = [];
 }

@@ -12,10 +12,10 @@ use Imi\Bean\Annotation\Parser;
  */
 class Transaction extends Base
 {
-	/**
-	 * 数据库连接池名，为null或默认都为默认连接池
-	 *
-	 * @var string|null
-	 */
-	public $dbPoolName = null;
+    /**
+     * 数据库连接池名，为null或默认都为默认连接池
+     *
+     * @var string|null
+     */
+    public $dbPoolName = null;
 }

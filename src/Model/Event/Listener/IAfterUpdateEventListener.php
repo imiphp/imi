@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\AfterUpdateEventParam;
  */
 interface IAfterUpdateEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param AfterUpdateEventParam $e
-	 * @return void
-	 */
-	public function handle(AfterUpdateEventParam $e);
+    /**
+     * 事件处理方法
+     * @param AfterUpdateEventParam $e
+     * @return void
+     */
+    public function handle(AfterUpdateEventParam $e);
 }

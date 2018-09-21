@@ -9,10 +9,10 @@ use Imi\Bean\Annotation\Bean;
  */
 class ErrorHandler implements IErrorHandler
 {
-	protected $handler = JsonErrorHandler::class;
+    protected $handler = JsonErrorHandler::class;
 
-	public function handle(\Throwable $throwable): bool
-	{
-		return App::getBean($this->handler)->handle($throwable);
-	}
+    public function handle(\Throwable $throwable): bool
+    {
+        return App::getBean($this->handler)->handle($throwable);
+    }
 }

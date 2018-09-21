@@ -10,109 +10,109 @@ use Imi\Pool\Interfaces\IPoolResource;
  */
 abstract class BaseSyncPool extends BasePool
 {
-	/**
-	 * 队列
-	 * @var \SplQueue
-	 */
-	protected $queue;
+    /**
+     * 队列
+     * @var \SplQueue
+     */
+    protected $queue;
 
-	public function __destruct()
-	{
-		
-	}
+    public function __destruct()
+    {
+        
+    }
 
-	/**
-	 * 初始化队列
-	 * @return void
-	 */
-	protected function initQueue()
-	{
-		$this->queue = new \SplQueue;
-	}
+    /**
+     * 初始化队列
+     * @return void
+     */
+    protected function initQueue()
+    {
+        $this->queue = new \SplQueue;
+    }
 
-	/**
-	 * 获取资源
-	 * @return IPoolResource|null
-	 */
-	public function getResource()
-	{
-		if($this->getFree() <= 0)
-		{
-			if($this->getCount() < $this->config->getMaxResources())
-			{
-				// 没有空闲连接，当前连接数少于最大连接数
-				$this->addResource();
-			}
-			else 
-			{
-				return null;
-			}
-		}
-		$resource = $this->queue->pop();
-		if(!$resource->checkState())
-		{
-			$resource->open();
-		}
-		return $resource;
-	}
+    /**
+     * 获取资源
+     * @return IPoolResource|null
+     */
+    public function getResource()
+    {
+        if($this->getFree() <= 0)
+        {
+            if($this->getCount() < $this->config->getMaxResources())
+            {
+                // 没有空闲连接，当前连接数少于最大连接数
+                $this->addResource();
+            }
+            else 
+            {
+                return null;
+            }
+        }
+        $resource = $this->queue->pop();
+        if(!$resource->checkState())
+        {
+            $resource->open();
+        }
+        return $resource;
+    }
 
-	/**
-	 * 尝试获取资源，获取到则返回资源，没有获取到返回false
-	 * @return IPoolResource|boolean
-	 */
-	public function tryGetResource()
-	{
-		if($this->getFree() <= 0)
-		{
-			if($this->getCount() < $this->config->getMaxResources())
-			{
-				// 没有空闲连接，当前连接数少于最大连接数
-				$this->addResource();
-			}
-			else 
-			{
-				return false;
-			}
-		}
-		$resource = $this->queue->pop();
-		if(!$resource->checkState())
-		{
-			$resource->open();
-		}
-		return $resource;
-	}
+    /**
+     * 尝试获取资源，获取到则返回资源，没有获取到返回false
+     * @return IPoolResource|boolean
+     */
+    public function tryGetResource()
+    {
+        if($this->getFree() <= 0)
+        {
+            if($this->getCount() < $this->config->getMaxResources())
+            {
+                // 没有空闲连接，当前连接数少于最大连接数
+                $this->addResource();
+            }
+            else 
+            {
+                return false;
+            }
+        }
+        $resource = $this->queue->pop();
+        if(!$resource->checkState())
+        {
+            $resource->open();
+        }
+        return $resource;
+    }
 
-	/**
-	 * 建立队列
-	 * @return void
-	 */
-	protected function buildQueue()
-	{
-		// 清空队列
-		$this->initQueue();
-		// 重新建立队列
-		foreach($this->pool as $item)
-		{
-			$this->queue->push($item->getResource());
-		}
-	}
-	
-	/**
-	 * 把资源加入队列
-	 * @param IPoolResource $resource
-	 * @return void
-	 */
-	protected function push(IPoolResource $resource)
-	{
-		$this->queue->push($resource);
-	}
+    /**
+     * 建立队列
+     * @return void
+     */
+    protected function buildQueue()
+    {
+        // 清空队列
+        $this->initQueue();
+        // 重新建立队列
+        foreach($this->pool as $item)
+        {
+            $this->queue->push($item->getResource());
+        }
+    }
+    
+    /**
+     * 把资源加入队列
+     * @param IPoolResource $resource
+     * @return void
+     */
+    protected function push(IPoolResource $resource)
+    {
+        $this->queue->push($resource);
+    }
 
-	/**
-	 * 获取当前池子中空闲资源总数
-	 * @return int
-	 */
-	public function getFree()
-	{
-		return $this->queue->count();
-	}
+    /**
+     * 获取当前池子中空闲资源总数
+     * @return int
+     */
+    public function getFree()
+    {
+        return $this->queue->count();
+    }
 }

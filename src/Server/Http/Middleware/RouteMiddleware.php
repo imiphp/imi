@@ -21,35 +21,35 @@ use Imi\Server\Http\Middleware\ActionMiddleware;
  */
 class RouteMiddleware implements MiddlewareInterface
 {
-	/**
-	 * 处理方法
-	 * @param ServerRequestInterface $request
-	 * @param RequestHandlerInterface $handler
-	 * @return ResponseInterface
-	 */
+    /**
+     * 处理方法
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-	{
-		// 获取Response对象
-		$response = $handler->handle($request);
-		RequestContext::set('response', $response);
-		// 路由解析
-		$route = RequestContext::getServerBean('HttpRoute');
-		$result = $route->parse($request);
-		if(null === $result || !is_callable($result['callable']))
-		{
-			// 未匹配到路由
-			$response = App::getBean('HttpNotFoundHandler')->handle($request, $response);
-			return $response;
-		}
-		else
-		{
-			RequestContext::set('routeResult', $result);
+    {
+        // 获取Response对象
+        $response = $handler->handle($request);
+        RequestContext::set('response', $response);
+        // 路由解析
+        $route = RequestContext::getServerBean('HttpRoute');
+        $result = $route->parse($request);
+        if(null === $result || !is_callable($result['callable']))
+        {
+            // 未匹配到路由
+            $response = App::getBean('HttpNotFoundHandler')->handle($request, $response);
+            return $response;
+        }
+        else
+        {
+            RequestContext::set('routeResult', $result);
 
-			$middlewares = $result['middlewares'];
-			$middlewares[] = ActionMiddleware::class;
-			$requestHandler = new RequestHandler($middlewares);
-			return $requestHandler->handle($request);
-		}
-	}
+            $middlewares = $result['middlewares'];
+            $middlewares[] = ActionMiddleware::class;
+            $requestHandler = new RequestHandler($middlewares);
+            return $requestHandler->handle($request);
+        }
+    }
 
 }

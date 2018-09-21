@@ -11,14 +11,14 @@ use Imi\Bean\Annotation\Listener;
  */
 class Init implements IEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param EventParam $e
-	 * @return void
-	 */
-	public function handle(EventParam $e)
-	{
-		Tool::run();
-	}
+    /**
+     * 事件处理方法
+     * @param EventParam $e
+     * @return void
+     */
+    public function handle(EventParam $e)
+    {
+        Tool::run();
+    }
 
 }

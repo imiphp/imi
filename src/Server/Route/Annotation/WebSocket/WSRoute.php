@@ -12,15 +12,15 @@ use Imi\Bean\Annotation\Parser;
  */
 class WSRoute extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'condition';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'condition';
 
-	/**
-	 * 条件
-	 * @var array
-	 */
-	public $condition = [];
+    /**
+     * 条件
+     * @var array
+     */
+    public $condition = [];
 }

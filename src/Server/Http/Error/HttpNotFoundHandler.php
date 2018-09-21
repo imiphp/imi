@@ -13,22 +13,22 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class HttpNotFoundHandler implements IHttpNotFoundHandler
 {
-	/**
-	 * 处理器类名，如果为null则使用默认处理
-	 *
-	 * @var string
-	 */
-	protected $handler = null;
+    /**
+     * 处理器类名，如果为null则使用默认处理
+     *
+     * @var string
+     */
+    protected $handler = null;
 
-	public function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-	{
-		if(null === $this->handler)
-		{
-			return $response->withStatus(StatusCode::NOT_FOUND);
-		}
-		else
-		{
-			return App::getBean($this->handler)->handle($request, $response);
-		}
-	}
+    public function handle(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        if(null === $this->handler)
+        {
+            return $response->withStatus(StatusCode::NOT_FOUND);
+        }
+        else
+        {
+            return App::getBean($this->handler)->handle($request, $response);
+        }
+    }
 }

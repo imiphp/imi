@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeSaveEventParam;
  */
 interface IBeforeSaveEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeSaveEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeSaveEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeSaveEventParam $e
+     * @return void
+     */
+    public function handle(BeforeSaveEventParam $e);
 }

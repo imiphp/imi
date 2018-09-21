@@ -12,10 +12,10 @@ use Imi\Bean\Annotation\Parser;
  */
 class UdpController extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'prefix';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'prefix';
 
 }

@@ -12,17 +12,17 @@ use Imi\Bean\Annotation\Parser;
  */
 class JoinToMiddle extends Base
 {
-	/**
-	 * 字段名
-	 *
-	 * @var string
-	 */
-	public $field;
+    /**
+     * 字段名
+     *
+     * @var string
+     */
+    public $field;
 
-	/**
-	 * 中间表模型字段
-	 *
-	 * @var string
-	 */
-	public $middleField;
+    /**
+     * 中间表模型字段
+     *
+     * @var string
+     */
+    public $middleField;
 }

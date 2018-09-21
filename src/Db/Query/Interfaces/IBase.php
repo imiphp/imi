@@ -3,31 +3,31 @@ namespace Imi\Db\Query\Interfaces;
 
 interface IBase
 {
-	/**
-	 * 获取是否使用原生语句
-	 * @return boolean
-	 */
-	public function isRaw(): bool;
+    /**
+     * 获取是否使用原生语句
+     * @return boolean
+     */
+    public function isRaw(): bool;
 
-	/**
-	 * 设置是否使用原生语句
-	 * @param boolean $isRaw
-	 * @return void
-	 */
-	public function useRaw($isRaw = true);
+    /**
+     * 设置是否使用原生语句
+     * @param boolean $isRaw
+     * @return void
+     */
+    public function useRaw($isRaw = true);
 
-	/**
-	 * 设置原生语句
-	 * @param string $rawSQL
-	 * @return void
-	 */
-	public function setRawSQL(string $rawSQL);
+    /**
+     * 设置原生语句
+     * @param string $rawSQL
+     * @return void
+     */
+    public function setRawSQL(string $rawSQL);
 
-	public function __toString();
-	
-	/**
-	 * 获取绑定的数据们
-	 * @return array
-	 */
-	public function getBinds();
+    public function __toString();
+    
+    /**
+     * 获取绑定的数据们
+     * @return array
+     */
+    public function getBinds();
 }

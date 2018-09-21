@@ -12,17 +12,17 @@ use Imi\Bean\Annotation\Parser;
  */
 class AutoInsert extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'status';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'status';
 
-	/**
-	 * 是否开启
-	 *
-	 * @var boolean
-	 */
-	public $status = true;
+    /**
+     * 是否开启
+     *
+     * @var boolean
+     */
+    public $status = true;
 
 }

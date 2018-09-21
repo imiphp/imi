@@ -8,10 +8,10 @@ use Imi\Model\Event\Param\BeforeSelectEventParam;
  */
 interface IBeforeSelectEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param BeforeSelectEventParam $e
-	 * @return void
-	 */
-	public function handle(BeforeSelectEventParam $e);
+    /**
+     * 事件处理方法
+     * @param BeforeSelectEventParam $e
+     * @return void
+     */
+    public function handle(BeforeSelectEventParam $e);
 }

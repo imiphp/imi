@@ -15,16 +15,16 @@ use Imi\Server\Event\Listener\IReceiveEventListener;
  */
 class AfterReceive implements IReceiveEventListener
 {
-	/**
-	 * 事件处理方法
-	 * @param ReceiveEventParam $e
-	 * @return void
-	 */
-	public function handle(ReceiveEventParam $e)
-	{
-		// 释放请求的进程池资源
-		PoolManager::destroyCurrentContext();
-		// 销毁请求上下文
-		RequestContext::destroy();
-	}
+    /**
+     * 事件处理方法
+     * @param ReceiveEventParam $e
+     * @return void
+     */
+    public function handle(ReceiveEventParam $e)
+    {
+        // 释放请求的进程池资源
+        PoolManager::destroyCurrentContext();
+        // 销毁请求上下文
+        RequestContext::destroy();
+    }
 }

@@ -12,23 +12,23 @@ use Imi\Bean\Annotation\Parser;
  */
 class AutoUpdate extends Base
 {
-	/**
-	 * 只传一个参数时的参数名
-	 * @var string
-	 */
-	protected $defaultFieldName = 'status';
+    /**
+     * 只传一个参数时的参数名
+     * @var string
+     */
+    protected $defaultFieldName = 'status';
 
-	/**
-	 * 是否开启
-	 *
-	 * @var boolean
-	 */
-	public $status = true;
-	
-	/**
-	 * save时，删除无关联数据
-	 *
-	 * @var boolean
-	 */
-	public $orphanRemoval = false;
+    /**
+     * 是否开启
+     *
+     * @var boolean
+     */
+    public $status = true;
+    
+    /**
+     * save时，删除无关联数据
+     *
+     * @var boolean
+     */
+    public $orphanRemoval = false;
 }
