@@ -5,7 +5,7 @@ use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 多态对应的实体模型列表
+ * 用于多态多对多关联被关联的模型中使用，查询对应的左侧模型列表
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Model\Parser\RelationParser")
