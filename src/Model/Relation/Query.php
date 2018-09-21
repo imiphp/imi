@@ -14,6 +14,7 @@ use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
+use Imi\Util\ClassObject;
 
 
 abstract class Query
@@ -449,27 +450,27 @@ abstract class Query
         {
             if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
             {
-                $model->$propertyName = ($annotation->model . '::newInstance')();
+                $model->$propertyName = (ClassObject::parseSameLevelClassName($annotation->model) . '::newInstance')();
             }
             else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
             {
-                $model->$propertyName = new ArrayList($annotation->model);
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->model));
             }
             else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
             {
-                $model->$propertyName = new ArrayList($annotation->middle);
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->middle));
             }
             else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
             {
-                $model->$propertyName = ($annotation->model . '::newInstance')();
+                $model->$propertyName = (ClassObject::parseSameLevelClassName($annotation->model) . '::newInstance')();
             }
             else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
             {
-                $model->$propertyName = new ArrayList($annotation->model);
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->model));
             }
             else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
             {
-                $model->$propertyName = new ArrayList($annotation->middle);
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->middle));
             }
             else
             {
