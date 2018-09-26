@@ -49,7 +49,7 @@ class Redis implements IGroupHandler
      * 
      * @var string
      */
-    protected $key = 'IMI.GROUP.KEY';
+    protected $key = 'imi:connect_group';
 
     /**
      * 心跳Timer的ID
@@ -82,7 +82,7 @@ class Redis implements IGroupHandler
             $this->useRedis(function($resource, $redis){
                 // 判断master进程pid
                 $this->masterPID = Swoole::getMasterPID();
-                $storeMasterPID = $redis->get($this->key);
+                $storeMasterPID = $redis->get($this->key . ':master_pid');
                 if(!$storeMasterPID)
                 {
                     // 没有存储master进程pid
@@ -123,28 +123,40 @@ class Redis implements IGroupHandler
      */
     private function initRedis($redis, $storeMasterPID = null)
     {
-        if(null !== $storeMasterPID && $redis->del($this->key))
+        if(null !== $storeMasterPID)
         {
-            return;
+            $redis->del($this->key . ':master_pid');
         }
-        if($redis->setnx($this->key, $this->masterPID))
+        if($redis->setnx($this->key. ':master_pid', $this->masterPID))
         {
-            // 初始化所有分组列表
-            $keys = $redis->keys($this->key . '.*');
-            foreach($keys as $key)
-            {
-                try{
-                    if($redis->scard($key) > 0)
-                    {
-                        $redis->del($key);
-                    }
-                }
-                catch(\Throwable $ex)
-                {
+            // 清空分组列表
+            $groupsKey = $this->getGroupsKey();
 
+            $it = null;
+            while(false !== ($list = $redis->sScan($groupsKey, $it, '*', 1000)))
+            {
+                foreach($list as $groupName)
+                {
+                    $redis->del($this->getGroupNameKey($groupName));
+                }
+                if(0 === $it)
+                {
+                    break;
                 }
             }
+
+            $redis->del($groupsKey);
         }
+    }
+
+    /**
+     * 获取存放组名的set键
+     *
+     * @return string
+     */
+    private function getGroupsKey(): string
+    {
+        return $this->key . ':groups';
     }
 
     /**
@@ -181,7 +193,7 @@ class Redis implements IGroupHandler
      */
     private function getPingKey()
     {
-        return $this->key . '-PING';
+        return $this->key . ':ping';
     }
 
     /**
@@ -253,6 +265,9 @@ class Redis implements IGroupHandler
     {
         if(!isset($this->groups[$groupName]))
         {
+            $this->useRedis(function($resource, $redis) use($groupName){
+                $redis->sAdd($this->getGroupsKey(), $groupName);
+            });
             $this->groups[$groupName] = [
                 'maxClient' => $maxClients,
             ];
@@ -270,10 +285,8 @@ class Redis implements IGroupHandler
         $this->useRedis(function($resource, $redis) use($groupName){
             $key = $this->getGroupNameKey($groupName);
             try{
-                if($redis->scard($key) > 0)
-                {
-                    $redis->del($key);
-                }
+                $redis->del($key);
+                $redis->sRem($this->getGroupsKey(), $groupName);
             }
             catch(\Throwable $ex)
             {
@@ -356,7 +369,7 @@ class Redis implements IGroupHandler
      */
     public function getGroupNameKey(string $groupName): string
     {
-        return $this->key . '.' . $groupName;
+        return $this->key . ':groups:' . $groupName;
     }
 
     /**

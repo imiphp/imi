@@ -34,7 +34,7 @@ class Redis implements IHandler
      * 
      * @var string
      */
-    protected $key = 'IMI.CONNECT.CONTEXT';
+    protected $key = 'imi:connect_context';
 
     /**
      * 心跳时间，单位：秒
@@ -74,7 +74,7 @@ class Redis implements IHandler
             $this->useRedis(function($resource, $redis){
                 // 判断master进程pid
                 $this->masterPID = Swoole::getMasterPID();
-                $storeMasterPID = $redis->get($this->key);
+                $storeMasterPID = $redis->get($this->key . ':master_pid');
                 if(!$storeMasterPID)
                 {
                     // 没有存储master进程pid
@@ -115,18 +115,14 @@ class Redis implements IHandler
      */
     private function initRedis($redis, $storeMasterPID = null)
     {
-        if(null !== $storeMasterPID && $redis->del($this->key))
+        if(null !== $storeMasterPID)
         {
-            return;
+            $redis->del($this->key . ':master_pid');
         }
-        if($redis->setnx($this->key, $this->masterPID))
+        if($redis->setnx($this->key . ':master_pid', $this->masterPID))
         {
-            // 初始化所有分组列表
-            $keys = $redis->keys($this->key . '.*');
-            foreach($keys as $key)
-            {
-                $redis->del($key);
-            }
+            // 清空存储列表
+            $redis->del($this->getStoreKey());
         }
     }
 
@@ -164,7 +160,7 @@ class Redis implements IHandler
      */
     private function getPingKey()
     {
-        return $this->key . '-PING';
+        return $this->key . ':ping';
     }
 
     /**
@@ -223,8 +219,7 @@ class Redis implements IHandler
     public function read(string $key): array
     {
         return $this->useRedis(function($resource, $redis) use($key){
-            $redisKey = $this->getRedisKey($key);
-            $result = $redis->get($redisKey);
+            $result = $redis->hget($this->getStoreKey(), $key);
             return $result ? $result : [];
         });
     }
@@ -239,8 +234,7 @@ class Redis implements IHandler
     public function save(string $key, array $data)
     {
         $this->useRedis(function($resource, $redis) use($key, $data){
-            $redisKey = $this->getRedisKey($key);
-            $redis->set($redisKey, $data);
+            $redis->hset($this->getStoreKey(), $key, $data);
         });
     }
 
@@ -253,8 +247,7 @@ class Redis implements IHandler
     public function destroy(string $key)
     {
         $this->useRedis(function($resource, $redis) use($key){
-            $redisKey = $this->getRedisKey($key);
-            $redis->del($redisKey);
+            $redis->hdel($this->getStoreKey(), $key);
         });
     }
 
@@ -267,20 +260,18 @@ class Redis implements IHandler
     public function exists(string $key)
     {
         return $this->useRedis(function($resource, $redis) use($key){
-            $redisKey = $this->getRedisKey($key);
-            return $redis->exists($redisKey);
+            return $redis->hexists($this->getStoreKey(), $key);
         });
     }
 
     /**
-     * 获取组名处理后的键名
+     * 获取存储hash键名
      *
-     * @param string $groupName
      * @return string
      */
-    private function getRedisKey(string $key): string
+    private function getStoreKey(): string
     {
-        return $this->key . '.' . $this->masterPID . '.' . $key;
+        return $this->key . ':store';
     }
 
     /**
