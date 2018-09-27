@@ -106,6 +106,43 @@ hello imi!
 
 返回值为`Imi\Server\Http\Message\UploadedFile数组`
 
+#### 获取 Server 信息
+
+```php
+var_dump($this->request->getServerParams());
+var_dump($this->request->getServerParam('path_info'));
+```
+
+输出：
+
+```php
+array(11) {
+  ["request_method"]=>
+  string(3) "GET"
+  ["request_uri"]=>
+  string(47) "/xxx.html"
+  ["path_info"]=>
+  string(47) "/xxx.html"
+  ["request_time"]=>
+  int(1538010416)
+  ["request_time_float"]=>
+  float(1538010417.6185)
+  ["server_port"]=>
+  int(8080)
+  ["remote_port"]=>
+  int(62687)
+  ["remote_addr"]=>
+  string(9) "127.0.0.1"
+  ["master_time"]=>
+  int(1538010416)
+  ["server_protocol"]=>
+  string(8) "HTTP/1.1"
+  ["server_software"]=>
+  string(18) "swoole-http-server"
+}
+string(47) "/xxx.html"
+```
+
 ### $response
 
 响应对象，遵循 PSR-7 标准。
