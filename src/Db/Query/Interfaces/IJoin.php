@@ -40,7 +40,7 @@ interface IJoin extends IBase
     public function getWhere(): IBaseWhere;
 
     /**
-     * join类型，默认left
+     * join类型，默认inner
      * @return string
      */
     public function getType(): string;

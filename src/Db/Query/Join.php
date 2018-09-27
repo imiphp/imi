@@ -49,12 +49,12 @@ class Join implements IJoin
     protected $where = null;
 
     /**
-     * join类型，默认left
+     * join类型，默认inner
      * @var string
      */
-    protected $type = 'left';
+    protected $type = 'inner';
 
-    public function __construct(string $table = null, string $left = null, string $operation = null, string $right = null, string $tableAlias = null, IBaseWhere $where = null, string $type = 'left')
+    public function __construct(string $table = null, string $left = null, string $operation = null, string $right = null, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner')
     {
         $this->table = $table;
         $this->left = $left;
@@ -120,7 +120,7 @@ class Join implements IJoin
     }
 
     /**
-     * join类型，默认left
+     * join类型，默认inner
      * @return string
      */
     public function getType(): string
