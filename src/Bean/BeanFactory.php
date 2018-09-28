@@ -215,6 +215,10 @@ TPL;
         $result = '';
         // 类型
         $paramType = $param->getType();
+        if(null !== $paramType && $param->allowsNull())
+        {
+            $paramType = '?' . $paramType;
+        }
         $result .= null === $paramType ? '' : ((string)$paramType . ' ');
         if($param->isPassedByReference())
         {
