@@ -2,12 +2,10 @@
 namespace Imi\Db\Drivers;
 
 use Imi\Db\Interfaces\IDb;
-use Imi\Resource\ResourceTrait;
 use Imi\Util\Defer;
 
 abstract class Base implements IDb
 {
-    use ResourceTrait;
     /**
      * 启动一个事务
      * @return Defer

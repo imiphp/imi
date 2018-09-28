@@ -1,10 +1,9 @@
 <?php
 namespace Imi\Db\Interfaces;
 
-use Imi\Resource\IResource;
 use Imi\Util\Defer;
 
-interface IDb extends IResource
+interface IDb
 {
     /**
      * 是否已连接

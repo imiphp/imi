@@ -9,22 +9,17 @@
 namespace Imi\Resource;
 
 
-trait
-ResourceTrait
+trait ResourceTrait
 {
     protected $hashcode = null;
 
-    public function hashcode() : string
+    public function hashcode(): string
     {
-        if($this->hashcode === null) {
+        if ($this->hashcode === null) {
             $this->hashcode = spl_object_hash($this);
         }
 
         return $this->hashcode;
     }
 
-    public function reset()
-    {
-        //todo:do reset resource flag
-    }
 }

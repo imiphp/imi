@@ -75,15 +75,11 @@ class Driver extends Base implements IDb
 
 	/**
 	 * 打开
-     * @param $callback
 	 * @return boolean
 	 */
-	public function open($callback = null)
+	public function open()
 	{
         $connected = $this->instance->connect($this->option);
-	    if(is_callable($callback)) {
-	        $callback($this);
-        }
 		return $connected;
 	}
 
