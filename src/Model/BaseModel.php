@@ -167,11 +167,39 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             }
         }
         // 禁止序列化支持
+        $serializables = ModelManager::getSerializables($this);
         foreach(ModelManager::getPropertys($this) as $propertyName => $item)
         {
-            if(isset($result[$propertyName], $item['Serializable']) && !$item['Serializable']->allow)
+            if(!isset($result[$propertyName]))
             {
-                unset($result[$propertyName]);
+                continue;
+            }
+            if(isset($item['Serializable']))
+            {
+                // 单独属性上的 @Serializable 注解
+                if(!$item['Serializable']->allow)
+                {
+                    unset($result[$propertyName]);
+                }
+            }
+            else if($serializables)
+            {
+                if(in_array($propertyName, $serializables->fields))
+                {
+                    // 在黑名单中的字段剔除
+                    if('deny' === $serializables->mode)
+                    {
+                        unset($result[$propertyName]);
+                    }
+                }
+                else
+                {
+                    // 不在白名单中的字段剔除
+                    if('allow' === $serializables->mode)
+                    {
+                        unset($result[$propertyName]);
+                    }
+                }
             }
         }
         return $result;

@@ -228,4 +228,23 @@ abstract class ModelManager
         $option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
         return $option['properties'] ?? [];
     }
+
+    /**
+     * 获取模型类的批量设置序列化注解
+     *
+     * @param string|object $object
+     * @return \Imi\Model\Annotation\Serializables
+     */
+    public static function getSerializables($object)
+    {
+        $annotation = static::getAnnotation($object, 'Serializables');
+        if(null !== $annotation)
+        {
+            return $annotation;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
