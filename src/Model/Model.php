@@ -22,7 +22,7 @@ abstract class Model extends BaseModel
     {
         $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
             ModelRelationManager::initModel($this);
-        });
+        }, PHP_INT_MAX);
         parent::__init($data);
     }
 

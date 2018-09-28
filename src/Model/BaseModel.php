@@ -5,10 +5,12 @@ use Imi\Util\Text;
 use Imi\Event\TEvent;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
+use Imi\Util\LazyArrayObject;
+use Imi\Util\ObjectArrayHelper;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
-use Imi\Util\LazyArrayObject;
 use Imi\Model\Parser\RelationParser;
+use Imi\Model\Event\Param\InitEventParam;
 
 /**
  * 模型基类
@@ -51,6 +53,26 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
         $data = new LazyArrayObject($data);
 
+        // 提取属性支持
+        $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
+            foreach(ModelManager::getExtractPropertys($this) as $propertyName => $annotations)
+            {
+                foreach($annotations as $annotation)
+                {
+                    if(null === $annotation->alias)
+                    {
+                        $list = explode('.', $annotation->fieldName);
+                        $setPropertyName = end($list);
+                    }
+                    else
+                    {
+                        $setPropertyName = $annotation->alias;
+                    }
+                    $this[$setPropertyName] = $value = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
+                }
+            }
+        }, PHP_INT_MAX - 1);
+
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
             'model' => $this,
@@ -87,7 +109,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return method_exists($this, $methodName) && null !== call_user_func([$this, $methodName]);
     }
 
-    public function offsetGet($offset)
+    public function &offsetGet($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
         if(!method_exists($this, $methodName))
@@ -127,7 +149,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         
     }
 
-    public function __get($name)
+    public function &__get($name)
     {
         return $this[$name];
     }
@@ -205,9 +227,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $result;
     }
     
-    public function current()
+    public function &current()
     {
-        return $this[$this->__getFieldName(current($this->__fieldNames))] ?? null;
+        $value = $this[$this->__getFieldName(current($this->__fieldNames))];
+        if(!$value)
+        {
+            $value = null;
+        }
+        return $value;
     }
 
     public function key()

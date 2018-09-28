@@ -151,7 +151,7 @@ abstract class ModelManager
             $fields = [];
             foreach($option['properties'] ?? [] as $name => $item)
             {
-                $fields[$item['Column']->name] = $item['Column'];
+                $fields[$item['Column']->name ?? $name] = $item['Column'];
             }
             static::$fields[$objectClass] = $fields;
         }
@@ -245,6 +245,25 @@ abstract class ModelManager
         else
         {
             return null;
+        }
+    }
+
+    /**
+     * 获取模型类的提取属性注解
+     *
+     * @param string|object $object
+     * @return array
+     */
+    public static function getExtractPropertys($object)
+    {
+        $list = static::getAnnotation($object, 'ExtractPropertys');
+        if(null !== $list)
+        {
+            return $list;
+        }
+        else
+        {
+            return [];
         }
     }
 }
