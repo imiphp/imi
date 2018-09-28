@@ -151,7 +151,10 @@ abstract class ModelManager
             $fields = [];
             foreach($option['properties'] ?? [] as $name => $item)
             {
-                $fields[$item['Column']->name ?? $name] = $item['Column'];
+                if(isset($item['Column']))
+                {
+                    $fields[$item['Column']->name ?? $name] = $item['Column'];
+                }
             }
             static::$fields[$objectClass] = $fields;
         }
