@@ -192,7 +192,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $serializables = ModelManager::getSerializables($this);
         foreach(ModelManager::getPropertys($this) as $propertyName => $item)
         {
-            if(!isset($result[$propertyName]))
+            if(!array_key_exists($propertyName, $result))
             {
                 continue;
             }
