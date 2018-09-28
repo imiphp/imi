@@ -1,22 +1,11 @@
 <?php
 namespace Imi\Db\Interfaces;
 
+use Imi\Resource\IResource;
 use Imi\Util\Defer;
 
-interface IDb
+interface IDb extends IResource
 {
-    /**
-     * 打开
-     * @return boolean
-     */
-    public function open();
-
-    /**
-     * 关闭
-     * @return void
-     */
-    public function close();
-
     /**
      * 是否已连接
      * @return boolean

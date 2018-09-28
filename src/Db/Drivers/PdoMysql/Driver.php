@@ -105,11 +105,19 @@ class Driver extends Base implements IDb
 
 	/**
 	 * 打开
+     * @param $callback
 	 * @return boolean
 	 */
-	public function open()
+	public function open($callback = null)
 	{
-		$this->instance = new \PDO($this->buildDSN(), $this->option['username'], $this->option['password'], $this->option['options']);
+        try {
+            $this->instance = new \PDO($this->buildDSN(), $this->option['username'], $this->option['password'], $this->option['options']);
+        }catch (\Exception $exception) {
+            return false;
+        }
+        if(is_callable($callback)) {
+            $callback($this);
+        }
 		return true;
 	}
 

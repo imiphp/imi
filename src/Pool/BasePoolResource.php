@@ -3,9 +3,11 @@ namespace Imi\Pool;
 
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Resource\ResourceTrait;
 
 abstract class BasePoolResource implements IPoolResource
 {
+    use ResourceTrait;
     /**
      * 池子实例
      * @var IPool
