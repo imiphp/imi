@@ -353,6 +353,16 @@ abstract class Model extends BaseModel
     public function queryRelations(...$names)
     {
         ModelRelationManager::queryModelRelations($this, ...$names);
+
+        // 提取属性支持
+        $propertyAnnotations = ModelManager::getExtractPropertys($this);
+        foreach($names as $name)
+        {
+            if(isset($propertyAnnotations[$name]))
+            {
+                $this->parseExtractProperty($name, $propertyAnnotations[$name]);
+            }
+        }
     }
 
     /**

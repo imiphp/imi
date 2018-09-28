@@ -57,19 +57,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
             foreach(ModelManager::getExtractPropertys($this) as $propertyName => $annotations)
             {
-                foreach($annotations as $annotation)
-                {
-                    if(null === $annotation->alias)
-                    {
-                        $list = explode('.', $annotation->fieldName);
-                        $setPropertyName = end($list);
-                    }
-                    else
-                    {
-                        $setPropertyName = $annotation->alias;
-                    }
-                    $this[$setPropertyName] = $value = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
-                }
+                $this->parseExtractProperty($propertyName, $annotations);
             }
         }, PHP_INT_MAX - 1);
 
@@ -303,6 +291,23 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         else
         {
             return $fieldName;
+        }
+    }
+
+    protected function parseExtractProperty($propertyName, $annotations)
+    {
+        foreach($annotations as $annotation)
+        {
+            if(null === $annotation->alias)
+            {
+                $list = explode('.', $annotation->fieldName);
+                $setPropertyName = end($list);
+            }
+            else
+            {
+                $setPropertyName = $annotation->alias;
+            }
+            $this[$setPropertyName] = $value = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
         }
     }
 }
