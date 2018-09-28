@@ -217,4 +217,15 @@ abstract class ModelManager
             return null;
         }
     }
+
+    /**
+     * 获取当前模型类的属性注解
+     * @param string|object $object
+     * @return array
+     */
+    public static function getPropertys($object)
+    {
+        $option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
+        return $option['properties'] ?? [];
+    }
 }
