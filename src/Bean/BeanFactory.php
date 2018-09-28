@@ -137,7 +137,7 @@ TPL;
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
                 {$paramsTpls['set_args']}
-                return {$returnsReference}parent::{$method->name}(...\$__args__);
+                return parent::{$method->name}(...\$__args__);
             },
             \$__args__
         );
