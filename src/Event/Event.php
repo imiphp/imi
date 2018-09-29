@@ -3,7 +3,7 @@ namespace Imi\Event;
 
 use Imi\Util\Traits\TSingleton;
 
-class Event implements IEvent
+class Event
 {
     use TEvent
     {

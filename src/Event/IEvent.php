@@ -12,7 +12,7 @@ interface IEvent
      * @param int $priority 优先级，越大越先执行
      * @return void
      */
-    public static function on($name, $callback, $priority = 0);
+    public function on($name, $callback, $priority = 0);
 
     /**
      * 监听事件，仅触发一次
@@ -21,7 +21,7 @@ interface IEvent
      * @param int $priority 优先级，越大越先执行
      * @return void
      */
-    public static function one($name, $callback, $priority = 0);
+    public function one($name, $callback, $priority = 0);
 
     /**
      * 取消事件监听
@@ -29,7 +29,7 @@ interface IEvent
      * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
      * @return void
      */
-    public static function off($name, $callback);
+    public function off($name, $callback);
 
     /**
      * 触发事件
@@ -39,5 +39,5 @@ interface IEvent
      * @param string $paramClass 参数类
      * @return void
      */
-    public static function trigger($name, $data = [], $target = null, $paramClass = EventParam::class);
+    public function trigger($name, $data = [], $target = null, $paramClass = EventParam::class);
 }
