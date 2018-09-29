@@ -31,7 +31,8 @@ abstract class BasePoolResource implements IPoolResource
 
     public function hashCode(): string
     {
-        if ($this->hashCode === null) {
+        if ($this->hashCode === null)
+        {
             $this->hashCode = spl_object_hash($this);
         }
 

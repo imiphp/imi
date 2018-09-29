@@ -1,10 +1,23 @@
 <?php
+
 namespace Imi\Db\Interfaces;
 
 use Imi\Util\Defer;
 
 interface IDb
 {
+    /**
+     * 打开
+     * @return boolean
+     */
+    public function open();
+
+    /**
+     * 关闭
+     * @return void
+     */
+    public function close();
+
     /**
      * 是否已连接
      * @return boolean
@@ -34,7 +47,7 @@ interface IDb
      * @return mixed
      */
     public function errorCode();
-    
+
     /**
      * 返回错误信息
      * @return array
@@ -49,22 +62,28 @@ interface IDb
 
     /**
      * 执行一条 SQL 语句，并返回受影响的行数
+     *
      * @param string $sql
+     *
      * @return integer
      */
     public function exec(string $sql): int;
 
     /**
      * 取回一个数据库连接的属性
+     *
      * @param mixed $attribute
+     *
      * @return mixed
      */
     public function getAttribute($attribute);
 
     /**
      * 设置属性
+     *
      * @param mixed $attribute
      * @param mixed $value
+     *
      * @return bool
      */
     public function setAttribute($attribute, $value);
@@ -77,7 +96,9 @@ interface IDb
 
     /**
      * 返回最后插入行的ID或序列值
+     *
      * @param string $name
+     *
      * @return string
      */
     public function lastInsertId(string $name = null);
@@ -87,18 +108,22 @@ interface IDb
      * @return int
      */
     public function rowCount(): int;
-    
+
     /**
      * 准备执行语句并返回一个语句对象
+     *
      * @param string $sql
-     * @param array $driverOptions
+     * @param array  $driverOptions
+     *
      * @return IStatement|bool
      */
     public function prepare(string $sql, array $driverOptions = []);
 
     /**
      * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
+     *
      * @param string $sql
+     *
      * @return IStatement|bool
      */
     public function query(string $sql);
@@ -129,22 +154,28 @@ interface IDb
 
     /**
      * 执行一条 SQL 语句，并返回受影响的行数
+     *
      * @param string $sql
+     *
      * @return Defer
      */
     public function deferExec(string $sql): Defer;
 
     /**
      * 准备执行语句并返回一个语句对象
+     *
      * @param string $sql
-     * @param array $driverOptions
+     * @param array  $driverOptions
+     *
      * @return Defer
      */
     public function deferPrepare(string $sql, array $driverOptions = []): Defer;
 
     /**
      * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
+     *
      * @param string $sql
+     *
      * @return Defer
      */
     public function deferQuery(string $sql): Defer;
