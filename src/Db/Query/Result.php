@@ -9,6 +9,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Model\Event\Param\AfterQueryEventParam;
 
 class Result implements IResult
 {
@@ -149,7 +150,7 @@ class Result implements IResult
                 $className = BeanFactory::getObjectClass($object);
                 $object->trigger(ModelEvents::AFTER_QUERY, [
                     'model'      =>  $object,
-                ], $object);
+                ], $object, AfterQueryEventParam::class);
             }
             return $object;
         }
@@ -200,7 +201,7 @@ class Result implements IResult
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [
                         'model'      =>  $object,
-                    ], $object);
+                    ], $object, AfterQueryEventParam::class);
                 }
                 $list[] = $object;
             }
