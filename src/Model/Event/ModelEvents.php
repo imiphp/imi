@@ -92,4 +92,10 @@ abstract class ModelEvents
      * 查询后
      */
     const AFTER_SELECT = 'AfterSelect';
+
+    /**
+     * 查询后事件
+     * 无论是Find、Select，还是通过Model::query()查询，都会触发该事件
+     */
+    const AFTER_QUERY = 'AfterQuery';
 }

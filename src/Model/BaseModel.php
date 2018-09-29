@@ -11,11 +11,12 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Model\Parser\RelationParser;
 use Imi\Model\Event\Param\InitEventParam;
+use Imi\Event\IEvent;
 
 /**
  * 模型基类
  */
-abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
+abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent
 {
     use TEvent;
 
