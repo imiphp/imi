@@ -13,7 +13,7 @@ class AfterFindEventParam extends EventParam
     public $ids;
 
     /**
-     * 查询器
+     * 模型
      *
      * @var \Imi\Model\BaseModel
      */
