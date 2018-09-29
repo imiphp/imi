@@ -1,13 +1,13 @@
 <?php
+
 namespace Imi\Pool;
 
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
-use Imi\Resource\ResourceTrait;
 
 abstract class BasePoolResource implements IPoolResource
 {
-    use ResourceTrait;
+    protected $hashCode = null;
     /**
      * 池子实例
      * @var IPool
@@ -28,4 +28,13 @@ abstract class BasePoolResource implements IPoolResource
         return $this->pool;
     }
 
+
+    public function hashCode(): string
+    {
+        if ($this->hashCode === null) {
+            $this->hashCode = spl_object_hash($this);
+        }
+
+        return $this->hashCode;
+    }
 }

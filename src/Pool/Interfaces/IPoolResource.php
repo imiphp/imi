@@ -1,22 +1,24 @@
 <?php
+
 namespace Imi\Pool\Interfaces;
 
-use Imi\Resource\IResource;
 
 /**
  * 池子资源接口
  */
-interface IPoolResource extends IResource
+interface IPoolResource
 {
     /**
-	 * 获取对象实例
-	 * @return mixed
-	 */
-	public function getInstance();
+     * 获取对象实例
+     * @return mixed
+     */
+    public function getInstance();
 
     /**
      * 打开
+     *
      * @param callable $callback
+     *
      * @return boolean
      */
     public function open($callback = null);
@@ -33,16 +35,22 @@ interface IPoolResource extends IResource
      */
     public function reset();
 
-	/**
-	 * 获取池子实例
-	 * @return IPool
-	 */
-	public function getPool(): IPool;
+    /**
+     * 获取池子实例
+     * @return IPool
+     */
+    public function getPool(): IPool;
 
 
-	/**
-	 * 检查资源是否可用
-	 * @return bool
-	 */
-	public function checkState(): bool;
+    /**
+     * 检查资源是否可用
+     * @return bool
+     */
+    public function checkState(): bool;
+
+    /**
+     * 获取hashcode
+     * @return string
+     */
+    public function hashCode(): string;
 }
