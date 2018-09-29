@@ -60,16 +60,13 @@ class Driver extends Base implements IDb
     public function __construct($option = [])
     {
         $this->option = $option;
-        if(isset($this->option['username']))
-        {
+        if(isset($this->option['username'])) {
             $this->option['user'] = $this->option['username'];
         }
-        else
-        {
+        else {
             $this->option['user'] = 'root';
         }
-        if(!isset($option['password']))
-        {
+        if(!isset($option['password'])) {
             $this->option['password'] = '';
         }
         $this->instance = new \Swoole\Coroutine\MySQL();
@@ -116,8 +113,7 @@ class Driver extends Base implements IDb
         $result = $this->instance->begin();
         yield $result;
         $result = yield;
-        if($result)
-        {
+        if($result) {
             $this->inTransaction = true;
         }
         return $result;
@@ -130,8 +126,7 @@ class Driver extends Base implements IDb
     public function beginTransaction(): bool
     {
         $generator = $this->__beginTransaction();
-        if(!$generator->valid())
-        {
+        if(!$generator->valid()) {
             return $generator->getReturn();
         }
         $current = $generator->current();
@@ -156,8 +151,7 @@ class Driver extends Base implements IDb
     public function commit(): bool
     {
         $generator = $this->__commit();
-        if(!$generator->valid())
-        {
+        if(!$generator->valid()) {
             return $generator->getReturn();
         }
         $current = $generator->current();
@@ -182,8 +176,7 @@ class Driver extends Base implements IDb
     public function rollBack(): bool
     {
         $generator = $this->__rollBack();
-        if(!$generator->valid())
-        {
+        if(!$generator->valid()) {
             return $generator->getReturn();
         }
         $current = $generator->current();
@@ -233,12 +226,10 @@ class Driver extends Base implements IDb
         $result = $this->instance->query($sql);
         yield $result;
         $result = yield;
-        if(false === $result)
-        {
+        if(false === $result) {
             return 0;
         }
-        else
-        {
+        else {
             return $this->instance->affected_rows;
         }
     }
@@ -253,8 +244,7 @@ class Driver extends Base implements IDb
     public function exec(string $sql): int
     {
         $generator = $this->__exec($sql);
-        if(!$generator->valid())
-        {
+        if(!$generator->valid()) {
             return $generator->getReturn();
         }
         $current = $generator->current();
@@ -317,8 +307,7 @@ class Driver extends Base implements IDb
         $stmt = $this->instance->prepare($execSql);
         yield $stmt;
         $stmt = yield;
-        if(false === $stmt)
-        {
+        if(false === $stmt) {
             throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
         }
         return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
@@ -336,8 +325,7 @@ class Driver extends Base implements IDb
     public function prepare(string $sql, array $driverOptions = [])
     {
         $generator = $this->__prepare($sql, $driverOptions);
-        if(!$generator->valid())
-        {
+        if(!$generator->valid()) {
             return $generator->getReturn();
         }
         $current = $generator->current();
@@ -352,8 +340,7 @@ class Driver extends Base implements IDb
         $stmt = $this->instance->query($sql);
         yield $stmt;
         $stmt = yield;
-        if(false === $stmt)
-        {
+        if(false === $stmt) {
             throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
         }
         $data = $stmt->execute([]);
@@ -371,8 +358,7 @@ class Driver extends Base implements IDb
     public function query(string $sql)
     {
         $generator = $this->__query($sql);
-        if(!$generator->valid())
-        {
+        if(!$generator->valid()) {
             return $generator->getReturn();
         }
         $current = $generator->current();
