@@ -18,8 +18,9 @@ abstract class PoolManager
     /**
      * 增加对象名称
      * @param string $name
+     * @param string $poolClassName
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
-     * @param [type] $resourceConfig
+     * @param array|null $resourceConfig
      * @return void
      */
     public static function addName(string $name, string $poolClassName, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)

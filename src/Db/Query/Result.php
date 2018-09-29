@@ -38,7 +38,7 @@ class Result implements IResult
      * Undocumented function
      *
      * @param \Imi\Db\Interfaces\IStatement|\Imi\Util\Defer $statement
-     * @param [type] $modelClass
+     * @param string|null $modelClass
      * @param Defer $defer
      */
     public function __construct($statement, $modelClass = null, $defer = null)

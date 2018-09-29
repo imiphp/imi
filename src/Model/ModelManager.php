@@ -114,7 +114,7 @@ abstract class ModelManager
     /**
      * 获取第一个主键
      *
-     * @param [type] $object
+     * @param string|object $object
      * @return string|null
      */
     public static function getFirstId($object)
