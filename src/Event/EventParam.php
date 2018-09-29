@@ -58,7 +58,7 @@ class EventParam
 
     /**
      * 获取数据
-     * @return data
+     * @return array
      */
     public function getData()
     {
