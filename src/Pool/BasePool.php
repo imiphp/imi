@@ -164,7 +164,7 @@ abstract class BasePool implements IPool
         $resource = $this->createResource();
         $resource->open();
         
-        $hash = $resource->hashCode();;
+        $hash = $resource->hashCode();
         $this->pool[$hash] = new PoolItem($resource);
 
         $this->push($resource);
