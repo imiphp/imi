@@ -58,16 +58,13 @@ class Driver extends Base implements IDb
     public function __construct($option = [])
     {
         $this->option = $option;
-        if(!isset($this->option['username']))
-        {
+        if(!isset($this->option['username'])) {
             $this->option['username'] = 'root';
         }
-        if(!isset($option['password']))
-        {
+        if(!isset($option['password'])) {
             $this->option['password'] = '';
         }
-        if(!isset($option['options']))
-        {
+        if(!isset($option['options'])) {
             $this->option['options'] = [];
         }
     }
@@ -78,8 +75,7 @@ class Driver extends Base implements IDb
      */
     protected function buildDSN()
     {
-        if(isset($this->option['dsn']))
-        {
+        if(isset($this->option['dsn'])) {
             return $this->option['dsn'];
         }
         return 'mysql:'
@@ -96,11 +92,9 @@ class Driver extends Base implements IDb
      */
     public function isConnected(): bool
     {
-        try
-        {
+        try {
             $this->instance->getAttribute(\PDO::ATTR_SERVER_INFO);
-        } catch (\PDOException $e)
-        {
+        } catch (\PDOException $e) {
             return false;
         }
         return true;
@@ -176,12 +170,9 @@ class Driver extends Base implements IDb
      */
     public function errorCode()
     {
-        if($this->lastStmt)
-        {
+        if($this->lastStmt) {
             return $this->lastStmt->errorCode();
-        }
-        else
-        {
+        } else {
             return $this->instance->errorCode();
         }
     }
@@ -192,12 +183,9 @@ class Driver extends Base implements IDb
      */
     public function errorInfo(): string
     {
-        if($this->lastStmt)
-        {
+        if($this->lastStmt) {
             return $this->lastStmt->errorInfo();
-        }
-        else
-        {
+        } else {
             $errorInfo = $this->instance->errorInfo();
             return !isset($errorInfo[0]) || 0 == $errorInfo[0] ? '' : implode(' ', $errorInfo);
         }
@@ -284,8 +272,7 @@ class Driver extends Base implements IDb
         // 处理支持 :xxx 参数格式
         $this->lastSql = $sql;
         $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
-        if(false === $this->lastStmt)
-        {
+        if(false === $this->lastStmt) {
             throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
         }
         return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
@@ -303,8 +290,7 @@ class Driver extends Base implements IDb
     {
         $this->lastSql = $sql;
         $this->lastStmt = $this->instance->query($sql);
-        if(false === $this->lastStmt)
-        {
+        if(false === $this->lastStmt) {
             throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
         }
         return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);

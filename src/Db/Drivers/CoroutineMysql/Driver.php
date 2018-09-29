@@ -62,8 +62,7 @@ class Driver extends Base implements IDb
         $this->option = $option;
         if(isset($this->option['username'])) {
             $this->option['user'] = $this->option['username'];
-        }
-        else {
+        } else {
             $this->option['user'] = 'root';
         }
         if(!isset($option['password'])) {
@@ -228,8 +227,7 @@ class Driver extends Base implements IDb
         $result = yield;
         if(false === $result) {
             return 0;
-        }
-        else {
+        } else {
             return $this->instance->affected_rows;
         }
     }

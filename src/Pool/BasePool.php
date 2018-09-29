@@ -202,8 +202,7 @@ abstract class BasePool implements IPool
     {
         if(App::isInited()) {
             $this->__startAutoGC();
-        }
-        else {
+        } else {
             Event::on('IMI.INITED', [$this, '__startAutoGC']);
         }
     }
