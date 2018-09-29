@@ -102,9 +102,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
         if(!method_exists($this, $methodName))
         {
-            return null;
+            $result = call_user_func([$this, $methodName]);
         }
-        $result = call_user_func([$this, $methodName]);
+        else
+        {
+            $result = null;
+        }
         return $result;
     }
 
