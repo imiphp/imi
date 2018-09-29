@@ -1,5 +1,4 @@
 <?php
-
 namespace Imi\Pool;
 
 use Imi\App;
@@ -43,7 +42,8 @@ abstract class BasePool implements IPool
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         $this->name = $name;
-        if(null !== $config) {
+        if(null !== $config)
+        {
             $this->config = $config;
         }
         $this->resourceConfig = $resourceConfig;
@@ -51,7 +51,8 @@ abstract class BasePool implements IPool
 
     public function __init()
     {
-        if(is_array($this->config)) {
+        if(is_array($this->config))
+        {
             $this->config = BeanFactory::newInstance(PoolConfig::class, $this->config);
         }
     }
@@ -73,7 +74,7 @@ abstract class BasePool implements IPool
     {
         return $this->config;
     }
-
+    
     /**
      * 打开池子
      * @return void
@@ -96,22 +97,22 @@ abstract class BasePool implements IPool
     public function close()
     {
         $this->stopAutoGC();
-        foreach ($this->pool as $item) {
+        foreach($this->pool as $item)
+        {
             $item->getResource()->close();
         }
     }
 
     /**
      * 释放资源占用
-     *
      * @param \Imi\Pool\Interfaces\IPoolResource $resource
-     *
      * @return void
      */
     public function release(IPoolResource $resource)
     {
         $hash = $resource->hashCode();
-        if(isset($this->pool[$hash])) {
+        if(isset($this->pool[$hash]))
+        {
             $this->pool[$hash]->release();
             $resource->reset();
             $this->push($resource);
@@ -125,14 +126,17 @@ abstract class BasePool implements IPool
     public function gc()
     {
         $hasGC = false;
-        foreach ($this->pool as $key => $item) {
-            if($item->isFree() && time() - $item->getCreateTime() >= $this->config->getMaxActiveTime()) {
+        foreach($this->pool as $key => $item)
+        {
+            if($item->isFree() && time() - $item->getCreateTime() >= $this->config->getMaxActiveTime())
+            {
                 $item->getResource()->close();
                 unset($this->pool[$key]);
                 $hasGC = true;
             }
         }
-        if($hasGC) {
+        if($hasGC)
+        {
             $this->fillMinResources();
             $this->buildQueue();
         }
@@ -145,7 +149,8 @@ abstract class BasePool implements IPool
     public function fillMinResources()
     {
         $count = $this->config->getMinResources() - count($this->pool);
-        for ($i = 0; $i < $count; ++$i) {
+        for($i = 0; $i < $count; ++$i)
+        {
             $this->addResource();
         }
     }
@@ -158,8 +163,8 @@ abstract class BasePool implements IPool
     {
         $resource = $this->createResource();
         $resource->open();
-
-        $hash = $resource->hashCode();
+        
+        $hash = $resource->hashCode();;
         $this->pool[$hash] = new PoolItem($resource);
 
         $this->push($resource);
@@ -187,9 +192,7 @@ abstract class BasePool implements IPool
 
     /**
      * 把资源加入队列
-     *
      * @param IPoolResource $resource
-     *
      * @return void
      */
     protected abstract function push(IPoolResource $resource);
@@ -200,9 +203,12 @@ abstract class BasePool implements IPool
      */
     public function startAutoGC()
     {
-        if(App::isInited()) {
+        if(App::isInited())
+        {
             $this->__startAutoGC();
-        } else {
+        }
+        else
+        {
             Event::on('IMI.INITED', [$this, '__startAutoGC']);
         }
     }
@@ -222,7 +228,8 @@ abstract class BasePool implements IPool
      */
     public function stopAutoGC()
     {
-        if(null !== $this->timerID) {
+        if(null !== $this->timerID)
+        {
             \swoole_timer_clear($this->timerID);
         }
     }
