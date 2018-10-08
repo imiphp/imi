@@ -222,10 +222,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function &current()
     {
         $value = $this[$this->__getFieldName(current($this->__fieldNames))];
-        if(!$value)
-        {
-            $value = null;
-        }
         return $value;
     }
 
