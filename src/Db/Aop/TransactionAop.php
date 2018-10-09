@@ -7,6 +7,7 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Db\Db;
+use Imi\Model\ModelManager;
 
 /**
  * @Aspect
@@ -32,7 +33,9 @@ class TransactionAop
         }
         else
         {
-            $db = Db::getInstance($transaction->dbPoolName);
+            $object = $joinPoint->getTarget();
+            $db = $this->getDb($transaction, $object);
+            
             try{
                 // 开启事务
                 $db->beginTransaction();
@@ -53,4 +56,23 @@ class TransactionAop
         }
     }
 
+    /**
+     * 获取数据库连接
+     *
+     * @param \Imi\Db\Annotation\Transaction $transaction
+     * @param object $object
+     * @return \Imi\Db\Interfaces\IDb
+     */
+    private function getDb($transaction, $object)
+    {
+        if($object instanceof \Imi\Model\Model)
+        {
+            $db = Db::getInstance(ModelManager::getDbPoolName($object));
+        }
+        else
+        {
+            $db = Db::getInstance($transaction->dbPoolName);
+        }
+        return $db;
+    }
 }
