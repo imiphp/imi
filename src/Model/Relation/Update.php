@@ -161,7 +161,7 @@ abstract class Update
 
             $deleteIDs = array_diff($oldIDs, $updateIDs);
 
-            if(isset($deleteIDs[0]))
+            if($deleteIDs)
             {
                 // 批量删除
                 $rightModel::deleteBatch(function(IQuery $query) use($pk, $deleteIDs){
@@ -234,7 +234,7 @@ abstract class Update
 
             $deleteIDs = array_diff($oldRightIDs, $updateIDs);
 
-            if(isset($deleteIDs[0]))
+            if($deleteIDs)
             {
                 // 批量删除
                 $middleModel::deleteBatch(function(IQuery $query) use($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs){
@@ -398,7 +398,7 @@ abstract class Update
 
             $deleteIDs = array_diff($oldIDs, $updateIDs);
 
-            if(isset($deleteIDs[0]))
+            if($deleteIDs)
             {
                 // 批量删除
                 $rightModel::deleteBatch(function(IQuery $query) use($pk, $deleteIDs){
@@ -472,7 +472,7 @@ abstract class Update
 
             $deleteIDs = array_diff($oldRightIDs, $updateIDs);
 
-            if(isset($deleteIDs[0]))
+            if($deleteIDs)
             {
                 // 批量删除
                 $middleModel::deleteBatch(function(IQuery $query) use($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation){
