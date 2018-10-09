@@ -76,13 +76,13 @@ abstract class PoolManager
     /**
      * 获取池子中的资源
      * @param string $name
-     * @return IPoolResource|null
+     * @return IPoolResource
      */
     public static function getResource(string $name)
     {
         $resource = static::getInstance($name)->getResource();
 
-        if(RequestContext::exsits())
+        if(RequestContext::exsits() && $resource)
         {
             static::pushResourceToRequestContext($resource);
         }

@@ -33,7 +33,7 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 获取资源
-     * @return IPoolResource|null
+     * @return IPoolResource
      */
     public function getResource()
     {
@@ -72,9 +72,9 @@ abstract class BaseAsyncPool extends BasePool
         {
             $resource = $selectResult;
         }
-        if(!$resource->checkState())
+        if(!$resource || (!$resource->checkState() && !$resource->open()))
         {
-            $resource->open();
+            throw new \RuntimeException('AsyncPool getResource failed');
         }
         return $resource;
     }
@@ -120,9 +120,9 @@ abstract class BaseAsyncPool extends BasePool
         {
             $resource = $result;
         }
-        if(!$resource->checkState())
+        if(!$resource->checkState() && !$resource->open())
         {
-            $resource->open();
+            throw new \RuntimeException('AsyncPool tryGetResource failed');
         }
         return $resource;
     }

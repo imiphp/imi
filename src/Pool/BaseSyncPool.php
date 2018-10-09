@@ -32,7 +32,7 @@ abstract class BaseSyncPool extends BasePool
 
     /**
      * 获取资源
-     * @return IPoolResource|null
+     * @return IPoolResource
      */
     public function getResource()
     {
@@ -49,9 +49,9 @@ abstract class BaseSyncPool extends BasePool
             }
         }
         $resource = $this->queue->pop();
-        if(!$resource->checkState())
+        if(!$resource || (!$resource->checkState() && !$resource->open()))
         {
-            $resource->open();
+            throw new \RuntimeException('SyncPool getResource failed');
         }
         return $resource;
     }
@@ -75,9 +75,9 @@ abstract class BaseSyncPool extends BasePool
             }
         }
         $resource = $this->queue->pop();
-        if(!$resource->checkState())
+        if(!$resource->checkState() && !$resource->open())
         {
-            $resource->open();
+            throw new \RuntimeException('SyncPool tryGetResource failed');
         }
         return $resource;
     }

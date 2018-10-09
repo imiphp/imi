@@ -33,7 +33,7 @@ interface IPool
 
     /**
      * 获取资源
-     * @return IPoolResource|null
+     * @return IPoolResource
      */
     public function getResource();
 
