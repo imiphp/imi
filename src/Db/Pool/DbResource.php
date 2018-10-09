@@ -60,6 +60,11 @@ class DbResource extends BasePoolResource
         {
             $this->db->getInstance()->setDefer(false);
         }
+        // 如果在事务中，则回滚
+        if($this->db->inTransaction())
+        {
+            $this->db->rollBack();
+        }
     }
     
     /**
