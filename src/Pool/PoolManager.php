@@ -52,9 +52,17 @@ abstract class PoolManager
     }
 
     /**
+     * 连接池是否存在
+     */
+    public static function exists(string $name)
+    {
+        return isset(static::$pools[$name]);
+    }
+
+    /**
      * 获取实例
      * @param string $name
-     * @return \Swoole\Atomic
+     * @return \Imi\Pool\Interfaces\IPool
      */
     public static function getInstance(string $name): IPool
     {
@@ -161,6 +169,17 @@ abstract class PoolManager
             $resource->getPool()->release($resource);
         }
         RequestContext::set('poolResources', []);
+    }
+
+    /**
+     * 请求上下文中是否存在资源
+     * @param string $name
+     * @return boolean
+     */
+    public static function hasRequestContextResource(string $name)
+    {
+        $resource = RequestContext::get('poolResource.' . $name);
+        return null !== $resource;
     }
 
     /**

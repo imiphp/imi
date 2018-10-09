@@ -21,6 +21,8 @@ use Imi\Db\Query\Builder\SelectBuilder;
 use Imi\Db\Query\Builder\UpdateBuilder;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
+use Imi\Db\Db;
+use Imi\Pool\PoolManager;
 
 /**
  * @Bean("Query")
@@ -46,6 +48,13 @@ class Query implements IQuery
     private $db;
 
     /**
+     * 连接池名称
+     *
+     * @var string
+     */
+    private $poolName;
+
+    /**
      * 查询结果类的类名，为null则为数组
      * @var string
      */
@@ -58,15 +67,44 @@ class Query implements IQuery
      */
     private $defer = false;
 
-    public function __construct(IDb $db, $modelClass = null)
+    /**
+     * 查询类型
+     *
+     * @var int
+     */
+    private $queryType;
+
+    /**
+     * 是否初始化时候就设定了查询类型
+     *
+     * @var boolean
+     */
+    private $isInitQueryType;
+
+    /**
+     * 是否初始化时候就设定了连接
+     *
+     * @var boolean
+     */
+    private $isInitDb;
+
+    public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
         $this->db = $db;
+        $this->isInitDb = null !== $this->db;
+        $this->poolName = $poolName;
         $this->modelClass = $modelClass;
+        $this->queryType = $queryType;
+        $this->isInitQueryType = null !== $queryType;
     }
 
     public function __init()
     {
         $this->option = new QueryOption;
+        if(!$this->isInitQueryType)
+        {
+            $this->queryType = null;
+        }
     }
 
     /**
@@ -714,6 +752,10 @@ class Query implements IQuery
     {
         $builder = new SelectBuilder($this);
         $sql = $builder->build();
+        if(!$this->isInitQueryType && !$this->isInTransaction())
+        {
+            $this->queryType = QueryType::READ;
+        }
         return $this->execute($sql);
     }
 
@@ -828,6 +870,14 @@ class Query implements IQuery
      */
     public function execute($sql)
     {
+        if(null === $this->queryType)
+        {
+            $this->queryType = QueryType::WRITE;
+        }
+        if(!$this->isInitDb)
+        {
+            $this->db = Db::getInstance($this->poolName, $this->queryType);
+        }
         $stmt = $this->db->prepare($sql);
         if($stmt)
         {
@@ -936,4 +986,27 @@ class Query implements IQuery
         return $this;
     }
 
+    /**
+     * 当前主库连接是否在事务中
+     *
+     * @return boolean
+     */
+    private function isInTransaction()
+    {
+        $poolName = $this->poolName;
+        if(null === $poolName)
+        {
+            $poolName = Db::getDefaultPoolName();
+        }
+        if(PoolManager::hasRequestContextResource($poolName))
+        {
+            $resource = PoolManager::getRequestContextResource($poolName);
+            $db = $resource->getInstance();
+            return $db->inTransaction();
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
