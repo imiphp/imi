@@ -866,7 +866,7 @@ class Query implements IQuery
     /**
      * 执行SQL语句
      * @param string $sql
-     * @return IResult|Defer
+     * @return IResult
      */
     public function execute($sql)
     {
@@ -877,6 +877,10 @@ class Query implements IQuery
         if(!$this->isInitDb)
         {
             $this->db = Db::getInstance($this->poolName, $this->queryType);
+        }
+        if(!$this->db)
+        {
+            return new Result(false);
         }
         $stmt = $this->db->prepare($sql);
         if($stmt)
