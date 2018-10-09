@@ -273,7 +273,7 @@ class Driver extends Base implements IDb
         $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
         if(false === $this->lastStmt)
         {
-            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
         }
         return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
     }
@@ -290,7 +290,7 @@ class Driver extends Base implements IDb
         $this->lastStmt = $this->instance->query($sql);
         if(false === $this->lastStmt)
         {
-            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
         }
         return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
     }
