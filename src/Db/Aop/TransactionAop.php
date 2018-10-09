@@ -55,15 +55,20 @@ class TransactionAop
                         }
                         break;
                     case TransactionType::AUTO:
-                        if(!$db->inTransaction())
+                        if($db->inTransaction())
+                        {
+                            $isBeginTransaction = false;
+                        }
+                        else
                         {
                             // 开启事务
+                            $isBeginTransaction = true;
                             $db->beginTransaction();
                         }
                         break;
                 }
                 $result = $joinPoint->proceed();
-                if($transaction->autoCommit && in_array($transaction->type, [TransactionType::NESTING, TransactionType::AUTO]))
+                if($transaction->autoCommit && (TransactionType::NESTING === $transaction->type || (TransactionType::AUTO === $transaction->type && $isBeginTransaction)))
                 {
                     // 提交事务
                     $db->commit();
