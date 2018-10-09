@@ -37,6 +37,10 @@ class TransactionAop
         {
             $object = $joinPoint->getTarget();
             $db = $this->getDb($transaction, $object);
+            if(!$db)
+            {
+                throw new \RuntimeException('@Transaction failed, get db failed');
+            }
             try{
                 switch($transaction->type)
                 {
@@ -83,7 +87,7 @@ class TransactionAop
      *
      * @param \Imi\Db\Annotation\Transaction $transaction
      * @param object $object
-     * @return \Imi\Db\Interfaces\IDb
+     * @return \Imi\Db\Interfaces\IDb|null
      */
     private function getDb($transaction, $object)
     {
