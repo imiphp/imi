@@ -63,7 +63,7 @@ class TransactionAop
                         break;
                 }
                 $result = $joinPoint->proceed();
-                if($transaction->autoCommit)
+                if($transaction->autoCommit && in_array($transaction->type, [TransactionType::NESTING, TransactionType::AUTO]))
                 {
                     // 提交事务
                     $db->commit();
