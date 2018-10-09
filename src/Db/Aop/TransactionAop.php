@@ -8,6 +8,8 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Db\Db;
 use Imi\Model\ModelManager;
+use Imi\Db\Annotation\TransactionType;
+use Imi\Bean\BeanFactory;
 
 /**
  * @Aspect
@@ -35,13 +37,33 @@ class TransactionAop
         {
             $object = $joinPoint->getTarget();
             $db = $this->getDb($transaction, $object);
-            
             try{
-                // 开启事务
-                $db->beginTransaction();
+                switch($transaction->type)
+                {
+                    case TransactionType::NESTING:
+                        // 开启事务
+                        $db->beginTransaction();
+                        break;
+                    case TransactionType::REQUIREMENT:
+                        if(!$db->inTransaction())
+                        {
+                            throw new \RuntimeException(sprintf('%s::%s can not run without transactional', BeanFactory::getObjectClass($object), $joinPoint->getMethod()));
+                        }
+                        break;
+                    case TransactionType::AUTO:
+                        if(!$db->inTransaction())
+                        {
+                            // 开启事务
+                            $db->beginTransaction();
+                        }
+                        break;
+                }
                 $result = $joinPoint->proceed();
-                // 提交事务
-                $db->commit();
+                if($transaction->autoCommit)
+                {
+                    // 提交事务
+                    $db->commit();
+                }
                 return $result;
             }
             catch(\Throwable $ex)
