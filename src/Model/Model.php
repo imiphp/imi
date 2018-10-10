@@ -95,7 +95,7 @@ abstract class Model extends BaseModel
         // 查找后
         Event::trigger(static::class . ModelEvents::AFTER_FIND, [
             'ids'   => $ids,
-            'model' => $result,
+            'model' => &$result,
         ], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
 
         return $result;
