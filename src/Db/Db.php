@@ -58,7 +58,7 @@ abstract class Db
      */
     public static function query($poolName = null, $modelClass = null, $queryType = null): IQuery
     {
-        return BeanFactory::newInstance(Query::class, $poolName, $modelClass, $queryType);
+        return BeanFactory::newInstance(Query::class, null, $modelClass, $poolName, $queryType);
     }
 
     /**
