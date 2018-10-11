@@ -70,7 +70,7 @@ abstract class BaseMain implements IMain
     {
         if(null === $this->namespace)
         {
-            $this->namespace = str_replace(DIRECTORY_SEPARATOR, '\\', dirname(str_replace('\\', DIRECTORY_SEPARATOR, get_called_class())));
+            $this->namespace = str_replace(DIRECTORY_SEPARATOR, '\\', dirname(str_replace('\\', DIRECTORY_SEPARATOR, static::class)));
         }
         return $this->namespace;
     }

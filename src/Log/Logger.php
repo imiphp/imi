@@ -95,7 +95,7 @@ class Logger extends AbstractLogger
         {
             $this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-        $this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+        $this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, self::class) . '.php');
     }
 
     public function __destruct()
