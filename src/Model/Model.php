@@ -78,7 +78,7 @@ abstract class Model extends BaseModel
             else
             {
                 // 主键值
-                $id = ModelManager::getId(static::class);
+                $id = ModelManager::getId(static::__getRealClassName());
                 if(is_string($id))
                 {
                     $id = [$id];
@@ -95,7 +95,7 @@ abstract class Model extends BaseModel
         }
 
         // 查找前
-        Event::trigger(static::class . ':' . ModelEvents::BEFORE_FIND, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_FIND, [
             'ids'   => $ids,
             'query' => $query,
         ], null, \Imi\Model\Event\Param\BeforeFindEventParam::class);
@@ -103,7 +103,7 @@ abstract class Model extends BaseModel
         $result = $query->select()->get();
 
         // 查找后
-        Event::trigger(static::class . ':' . ModelEvents::AFTER_FIND, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::AFTER_FIND, [
             'ids'   => $ids,
             'model' => &$result,
         ], null, \Imi\Model\Event\Param\AfterFindEventParam::class);
@@ -121,14 +121,14 @@ abstract class Model extends BaseModel
         $query = static::parseWhere(static::query(), $where);
 
         // 查询前
-        Event::trigger(static::class . ':' . ModelEvents::BEFORE_SELECT, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_SELECT, [
             'query' => $query,
         ], null, \Imi\Model\Event\Param\BeforeSelectEventParam::class);
 
         $result = $query->select()->getArray();
 
         // 查询后
-        Event::trigger(static::class . ':' . ModelEvents::AFTER_SELECT, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::AFTER_SELECT, [
             'result' => &$result,
         ], null, \Imi\Model\Event\Param\AfterSelectEventParam::class);
 
@@ -240,9 +240,10 @@ abstract class Model extends BaseModel
      */
     public static function updateBatch($data, $where = null): IResult
     {
-        if(Update::hasUpdateRelation(static::class))
+        $class = static::__getRealClassName();
+        if(Update::hasUpdateRelation($class))
         {
-            $query = Db::query()->table(ModelManager::getTable(static::class));
+            $query = Db::query()->table(ModelManager::getTable($class));
             $query = static::parseWhere($query, $where);
 
             $list = $query->select()->getArray();
@@ -262,7 +263,7 @@ abstract class Model extends BaseModel
             $updateData = static::parseSaveData($data);
 
             // 更新前
-            Event::trigger(static::class . ':' . ModelEvents::BEFORE_BATCH_UPDATE, [
+            Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_BATCH_UPDATE, [
                 'data'  => $updateData,
                 'query' => $query,
             ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
@@ -270,7 +271,7 @@ abstract class Model extends BaseModel
             $result = $query->update($updateData);
     
             // 更新后
-            Event::trigger(static::class . ':' . ModelEvents::AFTER_BATCH_UPDATE, [
+            Event::trigger(static::__getRealClassName() . ':' . ModelEvents::AFTER_BATCH_UPDATE, [
                 'data'  => $updateData,
                 'result'=> $result,
             ], null, \Imi\Model\Event\Param\BeforeBatchUpdateEventParam::class);
@@ -400,14 +401,14 @@ abstract class Model extends BaseModel
         $query = static::parseWhere($query, $where);
 
         // 删除前
-        Event::trigger(static::class . ':' . ModelEvents::BEFORE_BATCH_DELETE, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_BATCH_DELETE, [
             'query' => $query,
         ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
 
         $result = $query->delete();
 
         // 删除后
-        Event::trigger(static::class . ':' . ModelEvents::AFTER_BATCH_DELETE, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::AFTER_BATCH_DELETE, [
             'result'=> $result,
         ], null, \Imi\Model\Event\Param\BeforeBatchDeleteEventParam::class);
 
@@ -549,7 +550,7 @@ abstract class Model extends BaseModel
     private static function parseSaveData($data, $object = null)
     {
         // 处理前
-        Event::trigger(static::class . ':' . ModelEvents::BEFORE_PARSE_DATA, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_PARSE_DATA, [
             'data'   => &$data,
             'object' => &$object,
         ], null, \Imi\Model\Event\Param\BeforeParseDataEventParam::class);
@@ -602,7 +603,7 @@ abstract class Model extends BaseModel
         }
 
         // 处理后
-        Event::trigger(static::class . ':' . ModelEvents::AFTER_PARSE_DATA, [
+        Event::trigger(static::__getRealClassName() . ':' . ModelEvents::AFTER_PARSE_DATA, [
             'data'   => &$data,
             'object' => &$object,
             'result' => &$result,
