@@ -538,8 +538,8 @@ abstract class Model extends BaseModel
      */
     private static function parseSaveData($data, $object = null)
     {
-         // 查找前
-         Event::trigger(static::class . ':' . ModelEvents::BEFORE_PARSE_DATA, [
+        // 处理前
+        Event::trigger(static::class . ':' . ModelEvents::BEFORE_PARSE_DATA, [
             'data'   => &$data,
             'object' => &$object,
         ], null, \Imi\Model\Event\Param\BeforeParseDataEventParam::class);
@@ -584,7 +584,7 @@ abstract class Model extends BaseModel
             $result[$name] = $value;
         }
 
-        // 查找后
+        // 处理后
         Event::trigger(static::class . ':' . ModelEvents::AFTER_PARSE_DATA, [
             'data'   => &$data,
             'object' => &$object,
