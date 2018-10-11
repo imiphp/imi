@@ -98,4 +98,14 @@ abstract class ModelEvents
      * 无论是Find、Select，还是通过Model::query()查询，都会触发该事件
      */
     const AFTER_QUERY = 'AfterQuery';
+
+    /**
+     * 处理 save、insert、update 数据前
+     */
+    const BEFORE_PARSE_DATA = 'BeforeParseData';
+
+    /**
+     * 处理 save、insert、update 数据后
+     */
+    const AFTER_PARSE_DATA = 'AfterParseData';
 }

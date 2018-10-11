@@ -533,10 +533,17 @@ abstract class Model extends BaseModel
     /**
      * 处理保存的数据
      * @param array $data
+     * @param object|string $object
      * @return array
      */
     private static function parseSaveData($data, $object = null)
     {
+         // 查找前
+         Event::trigger(static::class . ':' . ModelEvents::BEFORE_PARSE_DATA, [
+            'data'   => &$data,
+            'object' => &$object,
+        ], null, \Imi\Model\Event\Param\BeforeParseDataEventParam::class);
+
         if(null === $object && is_object($data))
         {
             $object = $data;
@@ -576,6 +583,14 @@ abstract class Model extends BaseModel
             }
             $result[$name] = $value;
         }
+
+        // 查找后
+        Event::trigger(static::class . ':' . ModelEvents::AFTER_PARSE_DATA, [
+            'data'   => &$data,
+            'object' => &$object,
+            'result' => &$result,
+        ], null, \Imi\Model\Event\Param\AfterParseDataEventParam::class);
+
         return $result;
     }
 
