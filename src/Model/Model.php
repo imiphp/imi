@@ -8,6 +8,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Model\Relation\Query;
 use Imi\Util\LazyArrayObject;
 use Imi\Model\Relation\Update;
+use Imi\Util\Traits\TAnonymous;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
@@ -18,6 +19,8 @@ use Imi\Model\Event\Param\InitEventParam;
  */
 abstract class Model extends BaseModel
 {
+    use TAnonymous;
+
     public function __init($data = [])
     {
         $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
@@ -33,7 +36,14 @@ abstract class Model extends BaseModel
      */
     public static function query($object = null)
     {
-        $class = BeanFactory::getObjectClass($object ?? static::class);
+        if($object)
+        {
+            $class = BeanFactory::getObjectClass($object);
+        }
+        else
+        {
+            $class = static::__getRealClassName();
+        }
         return Db::query(ModelManager::getDbPoolName($class), $class)->table(ModelManager::getTable($class));
     }
 
@@ -552,7 +562,14 @@ abstract class Model extends BaseModel
         {
             $data = $data->toArray();
         }
-        $class = BeanFactory::getObjectClass($object ?? static::class);
+        if($object)
+        {
+            $class = BeanFactory::getObjectClass($object);
+        }
+        else
+        {
+            $class = static::__getRealClassName();
+        }
         $result = new LazyArrayObject;
         foreach(ModelManager::getFields($class) as $name => $column)
         {

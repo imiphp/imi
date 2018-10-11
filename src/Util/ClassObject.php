@@ -8,12 +8,16 @@ abstract class ClassObject
 {
     /**
      * 是否是匿名类对象
-     * @param object $object
+     * @param object|string $object
      * @return boolean
      */
     public static function isAnymous($object)
     {
-        $index = strpos(get_class($object), 'class@anonymous');
+        if(!is_string($object))
+        {
+            $object = get_class($object);
+        }
+        $index = strpos($object, 'class@anonymous');
         return false !== $index && $index >= 0;
     }
 
