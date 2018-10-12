@@ -28,6 +28,24 @@ Db::getInstance()->rollBack();
 
 这个注解可以加在任意方法上，在方法调用前开启事务，在方法中抛出异常时回滚事务，方法成功返回时提交事务。
 
+`@Transaction`
+
+`@Transaction(autoCommit="自动提交事务true/false，默认为true")`
+
+事务类型：
+
+事务嵌套（默认）
+
+`@Transaction(type=TransactionType::NESTING)`
+
+该方法必须在事务中被调用
+
+`@Transaction(type=TransactionType::REQUIREMENT)`
+
+如果当前不在事务中则开启事务
+
+`@Transaction(type=TransactionType::AUTO)`
+
 ### 指定表 (table/from)
 
 ```php

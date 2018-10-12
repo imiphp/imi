@@ -8,6 +8,12 @@
 
 喜闻乐见的对命名空间、类名无要求，只要按照规定写注解即可！
 
+`@Entity` 注解为定义实体类
+
+`@Table` 注解为定义数据表
+
+`@Column` 注解为定义字段
+
 具体定义看下面代码：
 
 ```php
@@ -156,6 +162,97 @@ class Test extends Model
 需要使用注解将表、字段属性全部标注。并且写上`get`和`set`方法，可以使用模型生成工具生成。
 
 模型中可以加入虚拟字段，通过注解`@Column(virtual=true)`，虚拟字段不参与数据库操作。
+
+## 模型注解
+
+### @Entity
+
+写在类上，定义类为实体模型类
+
+**用法：**
+
+`@Entity`
+
+序列化时不使用驼峰命名，使用原本的字段名：
+
+`@Entity(false)`
+
+### @Table
+
+写在类上，定义数据表
+
+**用法：**
+
+`@Table('tb_user')`
+
+指定数据库连接池：
+
+`@Table(name='tb_user', dbPoolName='指定数据库连接池名')`
+
+指定主键：
+
+`@Table(name='tb_user', id='id')`
+
+指定多个主键
+
+`@Table(name='tb_user', id={'id1', 'id2'})`
+
+### @Column
+
+写在属性上，定义字段列
+
+`@Column(name="字段名", type="字段类型", length="长度", nullable="是否允许为空true/false", accuracy="精度，小数位后几位", default="默认值", isPrimaryKey="是否为主键true/false", primaryKeyIndex="联合主键中的第几个，从0开始", isAutoIncrement="是否为自增字段true/false", virtual="虚拟字段，不参与数据库操作true/false")`
+
+### @Serializable
+
+写在属性上，序列化注解
+
+**用法：**
+
+禁止参与序列化（`toArray()`或`json_encode()`不包含该字段）：
+
+`@Serializable(false)`
+
+### @Serializables
+
+写在类上，批量设置序列化注解，优先级低于针对属性单独设置的`@Serializable`注解
+
+**用法：**
+
+白名单（序列化后只显示id、name字段）：
+
+`@Serializables(mode="allow", fields={"id", "name"})`
+
+黑名单（序列化后，排除id、name字段）
+
+`@Serializables(mode="deny", fields={"id", "name"})`
+
+### @ExtractProperty
+
+写在属性上，提取字段中的属性到当前模型
+
+**用法：**
+
+提取该属性中的`userId`值到当前模型中的`userId`：
+
+`@ExtractProperty("userId")`
+
+提取该属性中的`userId`值到当前模型中的`userId2`：
+
+`@ExtractProperty(fieldName="userId", alias="userId2")`
+
+支持多级提取到当前模型中的`userId2`：
+
+```php
+/**
+ * @ExtractProperty(fieldName="ex.userId", alias="userId2")
+ */
+protected $xxx = [
+	'ex'	=>	[
+		'userId'	=>	123,
+	],
+];
+```
 
 ## 模型操作
 
