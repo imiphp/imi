@@ -19,6 +19,8 @@ class ServerStart implements IStartEventListener
     public function handle(StartEventParam $e)
     {
         echo 'Server start', PHP_EOL;
+        $mainSwooleServer = ServerManage::getServer('main')->getSwooleServer();
+        echo 'WorkerNum: ', $mainSwooleServer->setting['worker_num'], ', TaskWorkerNum: ', $mainSwooleServer->setting['task_worker_num'], PHP_EOL;
         foreach(ServerManage::getServers() as $server)
         {
             if($server->isSubServer())
