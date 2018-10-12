@@ -88,7 +88,7 @@ abstract class Base implements IDb
         }
         else
         {
-            $callable = function(){
+            $callable = function() use ($methodName, $args){
                 return $this->$methodName(...$args);
             };
         }

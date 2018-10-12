@@ -14,6 +14,7 @@ use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
+use Imi\Util\ClassObject;
 
 
 abstract class Query
@@ -431,6 +432,50 @@ abstract class Query
                 // 右侧表数据
                 static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
 
+            }
+        }
+    }
+
+    /**
+     * 初始化关联属性
+     *
+     * @param \Imi\Model\Model $model
+     * @param string $propertyName
+     * @return void
+     */
+    public static function initRelations($model, $propertyName)
+    {
+        $className = BeanFactory::getObjectClass($model);
+        $annotation = RelationParser::getInstance()->getRelations($className)[$propertyName] ?? null;
+        if(null !== $annotation)
+        {
+            if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+            {
+                $model->$propertyName = (ClassObject::parseSameLevelClassName($annotation->model, $className) . '::newInstance')();
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+            {
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->model, $className));
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+            {
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->middle, $className));
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+            {
+                $model->$propertyName = (ClassObject::parseSameLevelClassName($annotation->model, $className) . '::newInstance')();
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+            {
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->model, $className));
+            }
+            else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+            {
+                $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->middle, $className));
+            }
+            else
+            {
+                return;
             }
         }
     }

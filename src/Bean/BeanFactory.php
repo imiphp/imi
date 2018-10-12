@@ -137,7 +137,7 @@ TPL;
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
                 {$paramsTpls['set_args']}
-                return {$returnsReference}parent::{$method->name}(...\$__args__);
+                return parent::{$method->name}(...\$__args__);
             },
             \$__args__
         );
@@ -215,6 +215,10 @@ TPL;
         $result = '';
         // 类型
         $paramType = $param->getType();
+        if(null !== $paramType && $param->allowsNull())
+        {
+            $paramType = '?' . $paramType;
+        }
         $result .= null === $paramType ? '' : ((string)$paramType . ' ');
         if($param->isPassedByReference())
         {

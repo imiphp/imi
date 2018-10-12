@@ -2,10 +2,14 @@
 namespace Imi\Db\Query;
 
 use Imi\Util\Defer;
+use Imi\Event\Event;
 use Imi\Model\Model;
+use Imi\Event\IEvent;
 use Imi\Bean\BeanFactory;
+use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Model\Event\Param\AfterQueryEventParam;
 
 class Result implements IResult
 {
@@ -38,7 +42,7 @@ class Result implements IResult
      * Undocumented function
      *
      * @param \Imi\Db\Interfaces\IStatement|\Imi\Util\Defer $statement
-     * @param [type] $modelClass
+     * @param string|null $modelClass
      * @param Defer $defer
      */
     public function __construct($statement, $modelClass = null, $defer = null)
@@ -141,6 +145,13 @@ class Result implements IResult
                     $object->$k = $v;
                 }
             }
+            if(is_subclass_of($object, IEvent::class))
+            {
+                $className = BeanFactory::getObjectClass($object);
+                $object->trigger(ModelEvents::AFTER_QUERY, [
+                    'model'      =>  $object,
+                ], $object, AfterQueryEventParam::class);
+            }
             return $object;
         }
     }
@@ -175,6 +186,7 @@ class Result implements IResult
         {
             $list = [];
             $isModelClass = is_subclass_of($className, Model::class);
+            $supportIEvent = is_subclass_of($className, IEvent::class);
             foreach($result as $item)
             {
                 if($isModelClass)
@@ -184,6 +196,12 @@ class Result implements IResult
                 else
                 {
                     $object = $item;
+                }
+                if($supportIEvent)
+                {
+                    $object->trigger(ModelEvents::AFTER_QUERY, [
+                        'model'      =>  $object,
+                    ], $object, AfterQueryEventParam::class);
                 }
                 $list[] = $object;
             }

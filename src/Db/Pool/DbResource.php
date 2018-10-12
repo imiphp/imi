@@ -29,6 +29,7 @@ class DbResource extends BasePoolResource
     public function open($callback = null)
     {
         $this->db->open();
+        return $this->db->isConnected();
     }
 
     /**
@@ -58,6 +59,11 @@ class DbResource extends BasePoolResource
         if($this->db instanceof \Imi\Db\Drivers\CoroutineMysql\Driver)
         {
             $this->db->getInstance()->setDefer(false);
+        }
+        // 如果在事务中，则回滚
+        if($this->db->inTransaction())
+        {
+            $this->db->rollBack();
         }
     }
     

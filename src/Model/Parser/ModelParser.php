@@ -7,6 +7,9 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\MemoryTable;
 use Imi\Model\Annotation\RedisEntity;
+use Imi\Model\Annotation\Serializable;
+use Imi\Model\Annotation\Serializables;
+use Imi\Model\Annotation\ExtractProperty;
 
 class ModelParser extends BaseParser
 {
@@ -42,6 +45,18 @@ class ModelParser extends BaseParser
         else if($annotation instanceof RedisEntity)
         {
             $this->data[$className]['RedisEntity'] = $annotation;
+        }
+        else if($annotation instanceof Serializable)
+        {
+            $this->data[$className]['properties'][$targetName]['Serializable'] = $annotation;
+        }
+        else if($annotation instanceof Serializables)
+        {
+            $this->data[$className]['Serializables'] = $annotation;
+        }
+        else if($annotation instanceof ExtractProperty)
+        {
+            $this->data[$className]['ExtractPropertys'][$targetName][] = $annotation;
         }
     }
 }

@@ -259,10 +259,10 @@ interface IQuery
      * @param string $right 在 join b on a.id=b.id 中的 b.id
      * @param string $tableAlias 表别名
      * @param IBaseWhere $where where条件
-     * @param string $type join类型，默认left
+     * @param string $type join类型，默认inner
      * @return static
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'left');
+    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner');
 
     /**
      * join，使用SQL原生语句

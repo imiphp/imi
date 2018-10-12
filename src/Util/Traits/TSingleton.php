@@ -31,7 +31,7 @@ trait TSingleton
     {
         if(static::isChildClassSingleton())
         {
-            $className = get_called_class();
+            $className = static::class;
             if(!isset(static::$instances[$className]))
             {
                 static::$instances[$className] = new static(...$args);

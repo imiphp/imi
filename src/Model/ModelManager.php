@@ -114,7 +114,7 @@ abstract class ModelManager
     /**
      * 获取第一个主键
      *
-     * @param [type] $object
+     * @param string|object $object
      * @return string|null
      */
     public static function getFirstId($object)
@@ -151,7 +151,10 @@ abstract class ModelManager
             $fields = [];
             foreach($option['properties'] ?? [] as $name => $item)
             {
-                $fields[$item['Column']->name] = $item['Column'];
+                if(isset($item['Column']))
+                {
+                    $fields[$item['Column']->name ?? $name] = $item['Column'];
+                }
             }
             static::$fields[$objectClass] = $fields;
         }
@@ -215,6 +218,55 @@ abstract class ModelManager
         else
         {
             return null;
+        }
+    }
+
+    /**
+     * 获取当前模型类的属性注解
+     * @param string|object $object
+     * @return array
+     */
+    public static function getPropertys($object)
+    {
+        $option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
+        return $option['properties'] ?? [];
+    }
+
+    /**
+     * 获取模型类的批量设置序列化注解
+     *
+     * @param string|object $object
+     * @return \Imi\Model\Annotation\Serializables
+     */
+    public static function getSerializables($object)
+    {
+        $annotation = static::getAnnotation($object, 'Serializables');
+        if(null !== $annotation)
+        {
+            return $annotation;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * 获取模型类的提取属性注解
+     *
+     * @param string|object $object
+     * @return array
+     */
+    public static function getExtractPropertys($object)
+    {
+        $list = static::getAnnotation($object, 'ExtractPropertys');
+        if(null !== $list)
+        {
+            return $list;
+        }
+        else
+        {
+            return [];
         }
     }
 }

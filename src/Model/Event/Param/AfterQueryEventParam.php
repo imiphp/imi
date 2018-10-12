@@ -3,15 +3,8 @@ namespace Imi\Model\Event\Param;
 
 use Imi\Event\EventParam;
 
-class AfterFindEventParam extends EventParam
+class AfterQueryEventParam extends EventParam
 {
-    /**
-     * 主键值们
-     * 
-     * @var array
-     */
-    public $ids;
-
     /**
      * 模型
      *

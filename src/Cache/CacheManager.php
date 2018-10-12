@@ -16,8 +16,8 @@ abstract class CacheManager
     /**
      * 增加对象名称
      * @param string $name
-     * @param \Imi\Pool\Interfaces\IPoolConfig $config
-     * @param [type] $resourceConfig
+     * @param string $handlerClass
+     * @param array $option
      * @return void
      */
     public static function addName(string $name, string $handlerClass, array $option = [])

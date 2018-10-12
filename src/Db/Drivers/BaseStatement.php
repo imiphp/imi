@@ -42,7 +42,7 @@ abstract class BaseStatement implements IStatement
         }
         else
         {
-            $callable = function(){
+            $callable = function() use ($methodName, $args){
                 return $this->$methodName(...$args);
             };
         }

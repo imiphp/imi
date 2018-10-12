@@ -31,7 +31,7 @@ class ErrorLog
     public function register()
     {
         error_reporting(0);
-        $this->beanCacheFilePath = Imi::getImiClassCachePath(str_replace('\\', DIRECTORY_SEPARATOR, __CLASS__) . '.php');
+        $this->beanCacheFilePath = Imi::getImiClassCachePath(str_replace('\\', DIRECTORY_SEPARATOR, self::class) . '.php');
         register_shutdown_function([$this, 'onShutdown']);
         set_error_handler([$this, 'onError']);
     }

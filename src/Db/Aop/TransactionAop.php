@@ -7,6 +7,9 @@ use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Db\Db;
+use Imi\Model\ModelManager;
+use Imi\Db\Annotation\TransactionType;
+use Imi\Bean\BeanFactory;
 
 /**
  * @Aspect
@@ -32,13 +35,44 @@ class TransactionAop
         }
         else
         {
-            $db = Db::getInstance($transaction->dbPoolName);
+            $object = $joinPoint->getTarget();
+            $db = $this->getDb($transaction, $object);
+            if(!$db)
+            {
+                throw new \RuntimeException('@Transaction failed, get db failed');
+            }
             try{
-                // 开启事务
-                $db->beginTransaction();
+                switch($transaction->type)
+                {
+                    case TransactionType::NESTING:
+                        // 开启事务
+                        $db->beginTransaction();
+                        break;
+                    case TransactionType::REQUIREMENT:
+                        if(!$db->inTransaction())
+                        {
+                            throw new \RuntimeException(sprintf('%s::%s can not run without transactional', BeanFactory::getObjectClass($object), $joinPoint->getMethod()));
+                        }
+                        break;
+                    case TransactionType::AUTO:
+                        if($db->inTransaction())
+                        {
+                            $isBeginTransaction = false;
+                        }
+                        else
+                        {
+                            // 开启事务
+                            $isBeginTransaction = true;
+                            $db->beginTransaction();
+                        }
+                        break;
+                }
                 $result = $joinPoint->proceed();
-                // 提交事务
-                $db->commit();
+                if($transaction->autoCommit && (TransactionType::NESTING === $transaction->type || (TransactionType::AUTO === $transaction->type && $isBeginTransaction)))
+                {
+                    // 提交事务
+                    $db->commit();
+                }
                 return $result;
             }
             catch(\Throwable $ex)
@@ -53,4 +87,23 @@ class TransactionAop
         }
     }
 
+    /**
+     * 获取数据库连接
+     *
+     * @param \Imi\Db\Annotation\Transaction $transaction
+     * @param object $object
+     * @return \Imi\Db\Interfaces\IDb|null
+     */
+    private function getDb($transaction, $object)
+    {
+        if($object instanceof \Imi\Model\Model)
+        {
+            $db = Db::getInstance(ModelManager::getDbPoolName($object));
+        }
+        else
+        {
+            $db = Db::getInstance($transaction->dbPoolName);
+        }
+        return $db;
+    }
 }

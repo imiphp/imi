@@ -3,7 +3,6 @@ namespace Imi\Redis;
 
 use Imi\Util\Defer;
 
-
 /**
  * @method mixed deferSet(...$args)
  * @method mixed deferSetBit(...$args)
@@ -152,6 +151,8 @@ use Imi\Util\Defer;
  */
 class Redis extends \Swoole\Coroutine\Redis
 {
+    use TFixSwoole;
+
     public function __call($name, $arguments)
     {
         if(isset($name[5]) && 'defer' === substr($name, 0, 5))
@@ -167,4 +168,5 @@ class Redis extends \Swoole\Coroutine\Redis
         }
         return false;
     }
+
 }

@@ -7,34 +7,34 @@ class EventParam
      * 事件名称
      * @var string
      */
-    protected $eventName;
+    protected $__eventName;
 
     /**
      * 触发该事件的对象
      * @var object
      */
-    protected $target;
+    protected $__target;
 
     /**
      * 数据
      * @var array
      */
-    protected $data = [];
+    protected $__data = [];
 
     /**
      * 阻止事件继续传播
      * @var boolean
      */
-    protected $stopPropagation = false;
+    protected $__stopPropagation = false;
 
     public function __construct($eventName, $data = [], $target = null)
     {
-        $this->eventName = $eventName;
-        $this->target = $target;
-        $this->data = $data;
-        foreach($data as $key => $value)
+        $this->__eventName = $eventName;
+        $this->__target = $target;
+        $this->__data = $data;
+        foreach($data as $key => &$value)
         {
-            $this->$key = $value;
+            $this->$key = &$value;
         }
     }
 
@@ -44,7 +44,7 @@ class EventParam
      */
     public function getEventName()
     {
-        return $this->eventName;
+        return $this->__eventName;
     }
 
     /**
@@ -53,16 +53,16 @@ class EventParam
      */
     public function getTarget()
     {
-        return $this->target;
+        return $this->__target;
     }
 
     /**
      * 获取数据
-     * @return data
+     * @return array
      */
     public function getData()
     {
-        return $this->data;
+        return $this->__data;
     }
 
     /**
@@ -71,7 +71,7 @@ class EventParam
      */
     public function stopPropagation($isStop = true)
     {
-        $this->stopPropagation = $isStop;
+        $this->__stopPropagation = $isStop;
     }
 
     /**
@@ -80,6 +80,6 @@ class EventParam
      */
     public function isPropagationStopped()
     {
-        return $this->stopPropagation;
+        return $this->__stopPropagation;
     }
 }

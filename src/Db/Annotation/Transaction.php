@@ -18,4 +18,19 @@ class Transaction extends Base
      * @var string|null
      */
     public $dbPoolName = null;
+
+    /**
+     * 事务类型
+     * 默认为嵌套
+     *
+     * @var string
+     */
+    public $type = TransactionType::NESTING;
+
+    /**
+     * 自动提交事务
+     *
+     * @var boolean
+     */
+    public $autoCommit = true;
 }

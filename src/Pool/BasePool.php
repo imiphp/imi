@@ -110,7 +110,7 @@ abstract class BasePool implements IPool
      */
     public function release(IPoolResource $resource)
     {
-        $hash = spl_object_hash($resource);
+        $hash = $resource->hashCode();
         if(isset($this->pool[$hash]))
         {
             $this->pool[$hash]->release();
@@ -164,7 +164,7 @@ abstract class BasePool implements IPool
         $resource = $this->createResource();
         $resource->open();
         
-        $hash = spl_object_hash($resource);
+        $hash = $resource->hashCode();
         $this->pool[$hash] = new PoolItem($resource);
 
         $this->push($resource);

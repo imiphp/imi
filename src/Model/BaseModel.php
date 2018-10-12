@@ -5,15 +5,18 @@ use Imi\Util\Text;
 use Imi\Event\TEvent;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
+use Imi\Util\LazyArrayObject;
+use Imi\Util\ObjectArrayHelper;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
-use Imi\Util\LazyArrayObject;
 use Imi\Model\Parser\RelationParser;
+use Imi\Model\Event\Param\InitEventParam;
+use Imi\Event\IEvent;
 
 /**
  * 模型基类
  */
-abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
+abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent
 {
     use TEvent;
 
@@ -51,6 +54,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
         $data = new LazyArrayObject($data);
 
+        // 提取属性支持
+        $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
+            foreach(ModelManager::getExtractPropertys($this) as $propertyName => $annotations)
+            {
+                $this->parseExtractProperty($propertyName, $annotations);
+            }
+        }, PHP_INT_MAX - 1);
+
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
             'model' => $this,
@@ -87,14 +98,17 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return method_exists($this, $methodName) && null !== call_user_func([$this, $methodName]);
     }
 
-    public function offsetGet($offset)
+    public function &offsetGet($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
-        if(!method_exists($this, $methodName))
+        if(method_exists($this, $methodName))
         {
-            return null;
+            $result = call_user_func([$this, $methodName]);
         }
-        $result = call_user_func([$this, $methodName]);
+        else
+        {
+            $result = null;
+        }
         return $result;
     }
 
@@ -127,7 +141,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         
     }
 
-    public function __get($name)
+    public function &__get($name)
     {
         return $this[$name];
     }
@@ -166,12 +180,49 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 }
             }
         }
+        // 禁止序列化支持
+        $serializables = ModelManager::getSerializables($this);
+        foreach(ModelManager::getPropertys($this) as $propertyName => $item)
+        {
+            if(!array_key_exists($propertyName, $result))
+            {
+                continue;
+            }
+            if(isset($item['Serializable']))
+            {
+                // 单独属性上的 @Serializable 注解
+                if(!$item['Serializable']->allow)
+                {
+                    unset($result[$propertyName]);
+                }
+            }
+            else if($serializables)
+            {
+                if(in_array($propertyName, $serializables->fields))
+                {
+                    // 在黑名单中的字段剔除
+                    if('deny' === $serializables->mode)
+                    {
+                        unset($result[$propertyName]);
+                    }
+                }
+                else
+                {
+                    // 不在白名单中的字段剔除
+                    if('allow' === $serializables->mode)
+                    {
+                        unset($result[$propertyName]);
+                    }
+                }
+            }
+        }
         return $result;
     }
     
-    public function current()
+    public function &current()
     {
-        return $this[$this->__getFieldName(current($this->__fieldNames))] ?? null;
+        $value = $this[$this->__getFieldName(current($this->__fieldNames))];
+        return $value;
     }
 
     public function key()
@@ -240,6 +291,23 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         else
         {
             return $fieldName;
+        }
+    }
+
+    protected function parseExtractProperty($propertyName, $annotations)
+    {
+        foreach($annotations as $annotation)
+        {
+            if(null === $annotation->alias)
+            {
+                $list = explode('.', $annotation->fieldName);
+                $setPropertyName = end($list);
+            }
+            else
+            {
+                $setPropertyName = $annotation->alias;
+            }
+            $this[$setPropertyName] = $value = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
         }
     }
 }

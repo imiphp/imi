@@ -19,7 +19,7 @@ class Redis extends Base
      * Redis中存储的key前缀，可以用于多系统session的分离
      * @var string
      */
-    protected $keyPrefix = 'imi.';
+    protected $keyPrefix = 'imi:';
 
     /**
      * 销毁session数据

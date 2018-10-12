@@ -149,6 +149,10 @@ trait TEvent
 
     private function getTriggerCallbacks($name)
     {
+        if(!isset($this->events[$name]))
+        {
+            $this->events[$name] = new KVStorage;
+        }
         if(isset($this->eventQueue[$name]))
         {
             $callbacks = clone $this->eventQueue[$name];
@@ -164,6 +168,11 @@ trait TEvent
             {
                 foreach($option[$name] as $callback)
                 {
+                    // 数据映射
+                    $this->events[$name]->attach($callback['className'], [
+                        'callback' => $callback['className'],
+                        'priority' => $callback['priority'],
+                    ]);
                     $callbacks->insert($callback['className'], $callback['priority']);
                 }
             }

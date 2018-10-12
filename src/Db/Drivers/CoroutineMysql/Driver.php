@@ -309,7 +309,7 @@ class Driver extends Base implements IDb
         $stmt = yield;
         if(false === $stmt)
         {
-            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $sql);
+            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
         }
         return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
     }

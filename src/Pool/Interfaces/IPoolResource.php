@@ -1,10 +1,12 @@
 <?php
 namespace Imi\Pool\Interfaces;
 
+use Imi\Util\Interfaces\IHashCode;
+
 /**
  * 池子资源接口
  */
-interface IPoolResource
+interface IPoolResource extends IHashCode
 {
     /**
      * 打开
