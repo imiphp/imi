@@ -19,6 +19,7 @@ abstract class Tool
     public static function run()
     {
         static::outImi();
+        static::outStartupInfo();
         if(!isset($_SERVER['argv'][1]))
         {
             throw new \RuntimeException(sprintf('tool args error!'));
@@ -237,5 +238,19 @@ abstract class Tool
 
 
 STR;
+    }
+
+    /**
+     * 输出启动信息
+     *
+     * @return void
+     */
+    public static function outStartupInfo()
+    {
+        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL
+        , 'PHP: v', PHP_VERSION, PHP_EOL
+        , 'Swoole: v', SWOOLE_VERSION, PHP_EOL
+        , 'Timezone: ', date_default_timezone_get(), PHP_EOL
+        , PHP_EOL;
     }
 }
