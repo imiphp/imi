@@ -51,7 +51,7 @@ abstract class BaseSyncPool extends BasePool
         $resource = $this->queue->pop();
         if(!$resource || (!$resource->checkState() && !$resource->open()))
         {
-            throw new \RuntimeException('SyncPool getResource failed');
+            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
         }
         return $resource;
     }
@@ -77,7 +77,7 @@ abstract class BaseSyncPool extends BasePool
         $resource = $this->queue->pop();
         if(!$resource->checkState() && !$resource->open())
         {
-            throw new \RuntimeException('SyncPool tryGetResource failed');
+            throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
         }
         return $resource;
     }
