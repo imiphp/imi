@@ -225,7 +225,8 @@ abstract class Imi
                     $namespaceSubPath = substr($namespace, $len);
                     $refClass = new \ReflectionClass($main);
                     $path = dirname($refClass->getFileName());
-                    return File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
+                    $result = File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
+                    break;
                 }
             }
         }
@@ -242,8 +243,21 @@ abstract class Imi
                     {
                         return null;
                     }
-                    return File::path($paths[0], str_replace('\\', DIRECTORY_SEPARATOR, substr($namespace, $len)));
+                    $result = File::path($paths[0], str_replace('\\', DIRECTORY_SEPARATOR, substr($namespace, $len)));
+                    break;
                 }
+            }
+        }
+        if(isset($result))
+        {
+            $realPath = realpath($result);
+            if(false === $realPath)
+            {
+                return $result;
+            }
+            else
+            {
+                return $realPath;
             }
         }
         return null;
