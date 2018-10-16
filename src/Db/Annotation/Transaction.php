@@ -3,6 +3,7 @@ namespace Imi\Db\Annotation;
 
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
+use Imi\Db\Annotation\RollbackType;
 
 /**
  * 列字段注解
@@ -33,4 +34,20 @@ class Transaction extends Base
      * @var boolean
      */
     public $autoCommit = true;
+
+    /**
+     * 回滚类型
+     * 默认为回滚所有
+     *
+     * @var string
+     */
+    public $rollbackType = RollbackType::ALL;
+
+    /**
+     * 回滚层数，默认为1
+     * 当 $rollbackType 为 RollbackType::PART 时有效
+     *
+     * @var integer
+     */
+    public $rollbackLevels = 1;
 }

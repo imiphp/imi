@@ -37,10 +37,19 @@ interface IDb
     public function commit(): bool;
 
     /**
-     * 回滚一个事务
+     * 回滚事务
+     * 支持设置回滚事务层数，如果不设置则为全部回滚
+     * @param int $levels
      * @return boolean
      */
-    public function rollBack(): bool;
+    public function rollBack($levels = null): bool;
+
+    /**
+     * 获取事务层数
+     *
+     * @return int
+     */
+    public function getTransactionLevels(): int;
 
     /**
      * 返回错误码

@@ -8,6 +8,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Transaction\TTransaction;
 use Imi\Pool\Interfaces\IPoolResource;
 
 /**
@@ -16,6 +17,11 @@ use Imi\Pool\Interfaces\IPoolResource;
 class Driver extends Base implements IDb
 {
     use SqlParser;
+    use TTransaction {
+        beginTransaction as protected __tBeginTransaction;
+        commit as protected __tCommit;
+        rollBack as protected __tRollBack;
+    }
 
     /**
      * 连接对象
@@ -118,7 +124,7 @@ class Driver extends Base implements IDb
         {
             $this->inTransaction = true;
         }
-        return $result;
+        return (bool)$result;
     }
 
     /**
@@ -127,15 +133,25 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        $generator = $this->__beginTransaction();
-        if(!$generator->valid())
+        if(!$this->inTransaction())
         {
-            return $generator->getReturn();
+            $generator = $this->__beginTransaction();
+            if(!$generator->valid())
+            {
+                return $generator->getReturn();
+            }
+            $current = $generator->current();
+            $generator->next();
+            $generator->send($current);
+            $result = $generator->getReturn();
+            if(!$result)
+            {
+                return $result;
+            }
         }
-        $current = $generator->current();
-        $generator->next();
-        $generator->send($current);
-        return $generator->getReturn();
+        $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
+        $this->__tBeginTransaction();
+        return true;
     }
 
     protected function __commit()
@@ -153,6 +169,7 @@ class Driver extends Base implements IDb
      */
     public function commit(): bool
     {
+        $this->__tCommit();
         $generator = $this->__commit();
         if(!$generator->valid())
         {
@@ -164,30 +181,42 @@ class Driver extends Base implements IDb
         return $generator->getReturn();
     }
 
-    protected function __rollBack()
+    protected function __rollBack($levels)
     {
         $this->inTransaction = false;
         $result = $this->instance->rollback();
         yield $result;
         $result = yield;
-        return $result;
+        return (bool)$result;
     }
 
     /**
-     * 回滚一个事务
+     * 回滚事务
+     * 支持设置回滚事务层数，如果不设置则为全部回滚
+     * @param int $levels
      * @return boolean
      */
-    public function rollBack(): bool
+    public function rollBack($levels = null): bool
     {
-        $generator = $this->__rollBack();
-        if(!$generator->valid())
+        $this->__tRollBack($levels);
+        if(null === $levels)
         {
+            $this->__tRollBack($levels);
+            $generator = $this->__rollBack($levels);
+            if(!$generator->valid())
+            {
+                return $generator->getReturn();
+            }
+            $current = $generator->current();
+            $generator->next();
+            $generator->send($current);
             return $generator->getReturn();
         }
-        $current = $generator->current();
-        $generator->next();
-        $generator->send($current);
-        return $generator->getReturn();
+        else
+        {
+            $this->exec('ROLLBACK TO P' . $this->getTransactionLevels());
+            return true;
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Traits\SqlParser;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Transaction\TTransaction;
 
 /**
  * PDO MySQL驱动
@@ -14,6 +15,11 @@ use Imi\Db\Interfaces\IStatement;
 class Driver extends Base implements IDb
 {
     use SqlParser;
+    use TTransaction {
+        beginTransaction as protected __tBeginTransaction;
+        commit as protected __tCommit;
+        rollBack as protected __tRollBack;
+    }
 
     /**
      * 连接对象
@@ -137,7 +143,17 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        return $this->instance->beginTransaction();
+        if(!$this->inTransaction())
+        {
+            $result = $this->instance->beginTransaction();
+            if(!$result)
+            {
+                return $result;
+            }
+        }
+        $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
+        $this->__tBeginTransaction();
+        return true;
     }
 
     /**
@@ -146,16 +162,27 @@ class Driver extends Base implements IDb
      */
     public function commit(): bool
     {
-        return $this->instance->commit();
+        return $this->__tCommit() && $this->instance->commit();
     }
 
     /**
-     * 回滚一个事务
+     * 回滚事务
+     * 支持设置回滚事务层数，如果不设置则为全部回滚
+     * @param int $levels
      * @return boolean
      */
-    public function rollBack(): bool
+    public function rollBack($levels = null): bool
     {
-        return $this->instance->rollback();
+        $this->__tRollBack($levels);
+        if(null === $levels)
+        {
+            return $this->instance->rollback();
+        }
+        else
+        {
+            $this->exec('ROLLBACK TO P' . ($this->getTransactionLevels()));
+            return true;
+        }
     }
 
     /**

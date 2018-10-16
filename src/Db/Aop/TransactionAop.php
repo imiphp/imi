@@ -10,6 +10,7 @@ use Imi\Db\Db;
 use Imi\Model\ModelManager;
 use Imi\Db\Annotation\TransactionType;
 use Imi\Bean\BeanFactory;
+use Imi\Db\Annotation\RollbackType;
 
 /**
  * @Aspect
@@ -26,7 +27,7 @@ class TransactionAop
      * @Around
      * @return mixed
      */
-    public function defer(AroundJoinPoint $joinPoint)
+    public function parseTransaction(AroundJoinPoint $joinPoint)
     {
         $transaction = DbParser::getInstance()->getMethodTransaction(get_parent_class($joinPoint->getTarget()), $joinPoint->getMethod());
         if(null === $transaction)
@@ -42,6 +43,7 @@ class TransactionAop
                 throw new \RuntimeException('@Transaction failed, get db failed');
             }
             try{
+                $isBeginTransaction = !$db->inTransaction();
                 switch($transaction->type)
                 {
                     case TransactionType::NESTING:
@@ -55,20 +57,15 @@ class TransactionAop
                         }
                         break;
                     case TransactionType::AUTO:
-                        if($db->inTransaction())
-                        {
-                            $isBeginTransaction = false;
-                        }
-                        else
+                        if($isBeginTransaction)
                         {
                             // 开启事务
-                            $isBeginTransaction = true;
                             $db->beginTransaction();
                         }
                         break;
                 }
                 $result = $joinPoint->proceed();
-                if($transaction->autoCommit && (TransactionType::NESTING === $transaction->type || (TransactionType::AUTO === $transaction->type && $isBeginTransaction)))
+                if($isBeginTransaction && $transaction->autoCommit && (TransactionType::NESTING === $transaction->type || TransactionType::AUTO === $transaction->type))
                 {
                     // 提交事务
                     $db->commit();
@@ -80,7 +77,15 @@ class TransactionAop
                 // 回滚事务
                 if($db->inTransaction())
                 {
-                    $db->rollBack();
+                    switch($transaction->rollbackType)
+                    {
+                        case RollbackType::ALL:
+                            $db->rollBack();
+                            break;
+                        case RollbackType::PART:
+                            $db->rollBack($transaction->rollbackLevels);
+                            break;
+                    }
                 }
                 throw $ex;
             }
