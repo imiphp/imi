@@ -6,7 +6,7 @@ use Imi\Bean\Annotation\Parser;
 use Imi\Db\Annotation\RollbackType;
 
 /**
- * 列字段注解
+ * 事务注解
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Db\Parser\DbParser")
