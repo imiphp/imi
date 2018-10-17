@@ -4,12 +4,15 @@ namespace Imi\Bean;
 use Imi\Bean\Parser\BaseParser;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Imi\Event\TEvent;
 
 /**
  * 注解处理类
  */
 class AnnotationParser
 {
+    use TEvent;
+
     /**
      * 处理后的数据
      * @var array
@@ -55,6 +58,9 @@ class AnnotationParser
 
         // 执行处理器
         $this->doParser($className);
+
+        // 触发完成事件
+        $this->trigger('parseComplete.' . $className);
     }
 
     /**
@@ -214,11 +220,20 @@ class AnnotationParser
             foreach($this->data[$className]['class'] as $annotation)
             {
                 $annotationClassName = get_class($annotation);
-                if(!$this->hasParser($annotationClassName))
+                if($this->hasParser($annotationClassName))
                 {
-                    continue;
+                    $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
                 }
-                $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
+                else
+                {
+                    $this->one('parseComplete.' . $annotationClassName, function() use($annotationClassName, $annotation, $className){
+                        $annotationClassName = get_class($annotation);
+                        if($this->hasParser($annotationClassName))
+                        {
+                            $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
+                        }
+                    });
+                }
             }
         }
         // 属性
@@ -229,11 +244,20 @@ class AnnotationParser
                 foreach($annotations as $annotation)
                 {
                     $annotationClassName = get_class($annotation);
-                    if(!$this->hasParser($annotationClassName))
+                    if($this->hasParser($annotationClassName))
                     {
-                        continue;
+                        $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
                     }
-                    $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
+                    else
+                    {
+                        $this->one('parseComplete.' . $annotationClassName, function() use($annotationClassName, $annotation, $className, $propName){
+                            $annotationClassName = get_class($annotation);
+                            if($this->hasParser($annotationClassName))
+                            {
+                                $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -245,11 +269,20 @@ class AnnotationParser
                 foreach($annotations as $annotation)
                 {
                     $annotationClassName = get_class($annotation);
-                    if(!$this->hasParser($annotationClassName))
+                    if($this->hasParser($annotationClassName))
                     {
-                        continue;
+                        $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
                     }
-                    $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
+                    else
+                    {
+                        $this->one('parseComplete.' . $annotationClassName, function() use($annotationClassName, $annotation, $className, $methodName){
+                            $annotationClassName = get_class($annotation);
+                            if($this->hasParser($annotationClassName))
+                            {
+                                $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
+                            }
+                        });
+                    }
                 }
             }
         }
