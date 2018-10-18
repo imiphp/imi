@@ -384,8 +384,9 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     protected function parseParsedBody()
     {
+        $contentType = $this->getHeaderLine(RequestHeader::CONTENT_TYPE);
         // post
-        if('POST' === $this->method && in_array($this->getHeaderLine(RequestHeader::CONTENT_TYPE), [
+        if('POST' === $this->method && in_array($contentType, [
             MediaType::APPLICATION_FORM_URLENCODED,
             MediaType::MULTIPART_FORM_DATA,
         ]))
@@ -393,7 +394,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
             $this->parsedBody = $this->post;
         }
         // json
-        else if(in_array($this->getHeaderLine(RequestHeader::CONTENT_TYPE), [
+        else if(in_array($contentType, [
             MediaType::APPLICATION_JSON,
             MediaType::APPLICATION_JSON_UTF8,
         ]))
@@ -401,7 +402,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
             $this->parsedBody = json_decode($this->body, true);
         }
         // xml
-        else if(in_array($this->getHeaderLine(RequestHeader::CONTENT_TYPE), [
+        else if(in_array($contentType, [
             MediaType::TEXT_XML,
             MediaType::APPLICATION_ATOM_XML,
             MediaType::APPLICATION_RSS_XML,

@@ -117,9 +117,9 @@ abstract class AbstractMessage implements MessageInterface
     public function hasHeader($name)
     {
         $lowerName = strtolower($name);
-        if(isset($object->headerNames[$lowerName]))
+        if(isset($this->headerNames[$lowerName]))
         {
-            $name = $object->headerNames[$lowerName];
+            $name = $this->headerNames[$lowerName];
         }
         return isset($this->headers[$name]);
     }
@@ -141,9 +141,9 @@ abstract class AbstractMessage implements MessageInterface
     public function getHeader($name)
     {
         $lowerName = strtolower($name);
-        if(isset($object->headerNames[$lowerName]))
+        if(isset($this->headerNames[$lowerName]))
         {
-            $name = $object->headerNames[$lowerName];
+            $name = $this->headerNames[$lowerName];
         }
         if(isset($this->headers[$name]))
         {
@@ -177,9 +177,9 @@ abstract class AbstractMessage implements MessageInterface
     public function getHeaderLine($name)
     {
         $lowerName = strtolower($name);
-        if(isset($object->headerNames[$lowerName]))
+        if(isset($this->headerNames[$lowerName]))
         {
-            $name = $object->headerNames[$lowerName];
+            $name = $this->headerNames[$lowerName];
         }
         if(!isset($this->headers[$name]))
         {
@@ -229,13 +229,13 @@ abstract class AbstractMessage implements MessageInterface
     {
         $self = clone $this;
         $lowerName = strtolower($name);
-        if(isset($object->headerNames[$lowerName]))
+        if(isset($self->headerNames[$lowerName]))
         {
-            $name = $object->headerNames[$lowerName];
+            $name = $self->headerNames[$lowerName];
         }
         else
         {
-            $object->headerNames[$lowerName] = $name;
+            $self->headerNames[$lowerName] = $name;
         }
         if(is_string($value))
         {
@@ -275,9 +275,9 @@ abstract class AbstractMessage implements MessageInterface
     {
         $self = clone $this;
         $lowerName = strtolower($name);
-        if(isset($object->headerNames[$lowerName]))
+        if(isset($self->headerNames[$lowerName]))
         {
-            $name = $object->headerNames[$lowerName];
+            $name = $self->headerNames[$lowerName];
         }
         if(isset($self->headers[$name]))
         {
