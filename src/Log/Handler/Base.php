@@ -2,6 +2,8 @@
 namespace Imi\Log\Handler;
 
 use Imi\Log\Record;
+use Imi\App;
+use Imi\Log\TraceMinimum;
 
 abstract class Base
 {
@@ -35,6 +37,15 @@ abstract class Base
      * @var string
      */
     protected $traceFormat = '#{index}  {call} called at [{file}:{line}]';
+
+    /**
+     * [实验性功能]
+     * 是否精简调用跟踪
+     * 可能会删去匿名类调用、AOP调用跟踪
+     *
+     * @var boolean
+     */
+    protected $traceMinimum = false;
 
     /**
      * date()函数支持的格式
@@ -210,7 +221,12 @@ abstract class Base
     public function parseTrace(\Imi\Log\Record $record)
     {
         $result = [];
-        foreach($record->getTrace() as $index => $vars)
+        $trace = $record->getTrace();
+        if($this->traceMinimum)
+        {
+            $trace = App::getBean(TraceMinimum::class)->parse($trace);
+        }
+        foreach($trace as $index => $vars)
         {
             $vars['call'] = $this->getTraceCall($vars);
             $vars['index'] = $index;
