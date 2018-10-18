@@ -101,7 +101,7 @@ class File extends Base
                 $fileName .= '(' . $this->currentFileIndex . ')';
             }
             $fileName .= $this->currentFileExt;
-        }while(filesize($fileName) >= $this->maxSize);
+        }while(is_file($fileName) && filesize($fileName) >= $this->maxSize);
         return $fileName;
     }
 }
