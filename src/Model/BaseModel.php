@@ -54,14 +54,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
         $data = new LazyArrayObject($data);
 
-        // 提取属性支持
-        $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
-            foreach(ModelManager::getExtractPropertys($this) as $propertyName => $annotations)
-            {
-                $this->parseExtractProperty($propertyName, $annotations);
-            }
-        }, PHP_INT_MAX - 1);
-
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
             'model' => $this,
@@ -134,6 +126,21 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             return;
         }
         call_user_func([$this, $methodName], $value);
+
+        if(is_array($value) || is_object($value))
+        {
+            // 提取字段中的属性到当前模型
+            $extractProperties = ModelManager::getExtractPropertys($this);
+            if(
+                (($name = $offset) && isset($extractProperties[$name]))
+                || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
+                || (($name = Text::toCamelName($offset)) && isset($extractProperties[$name]))
+            )
+            {
+                $this->parseExtractProperty($name, $extractProperties[$name]);
+            }
+        }
+
     }
 
     public function offsetUnset($offset)
