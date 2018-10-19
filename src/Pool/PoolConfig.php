@@ -40,6 +40,13 @@ class PoolConfig implements IPoolConfig
      */
     protected $waitTimeout = 3000;
 
+    /**
+     * 资源配置模式
+     *
+     * @var int
+     */
+    protected $resourceConfigMode = ResourceConfigMode::TURN;
+
     public function __construct($option = [])
     {
         foreach($option as $k => $v)
@@ -91,20 +98,6 @@ class PoolConfig implements IPoolConfig
     public function getWaitTimeout()
     {
         return $this->waitTimeout;
-    }
-
-    /**
-     * Set 池子名称
-     *
-     * @param string $name 池子名称
-     *
-     * @return static
-     */ 
-    public function setName(string $name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -172,6 +165,29 @@ class PoolConfig implements IPoolConfig
     public function setWaitTimeout($waitTimeout)
     {
         $this->waitTimeout = $waitTimeout;
+
+        return $this;
+    }
+
+    /**
+     * 获取资源配置模式
+     *
+     * @return int
+     */
+    public function getResourceConfigMode()
+    {
+        return $this->resourceConfigMode;
+    }
+
+    /**
+     * 设置资源配置模式
+     *
+     * @param int $resourceConfigMode
+     * @return static
+     */
+    public function setResourceConfigMode($resourceConfigMode)
+    {
+        $this->resourceConfigMode = $resourceConfigMode;
 
         return $this;
     }

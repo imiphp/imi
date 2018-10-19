@@ -30,6 +30,6 @@ class CoroutineRedisPool extends BaseAsyncPool
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $db = BeanFactory::newInstance($this->handlerClass);
-        return new CoroutineRedisResource($this, $db, $this->resourceConfig);
+        return new CoroutineRedisResource($this, $db, $this->getNextResourceConfig());
     }
 }

@@ -6,6 +6,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Event\Event;
+use Imi\Util\ArrayUtil;
 
 abstract class BasePool implements IPool
 {
@@ -39,6 +40,13 @@ abstract class BasePool implements IPool
      */
     protected $timerID;
 
+    /**
+     * 当前配置序号
+     *
+     * @var integer
+     */
+    protected $configIndex = -1;
+
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         $this->name = $name;
@@ -46,7 +54,14 @@ abstract class BasePool implements IPool
         {
             $this->config = $config;
         }
-        $this->resourceConfig = $resourceConfig;
+        if(ArrayUtil::isAssoc($resourceConfig))
+        {
+            $this->resourceConfig = [$resourceConfig];
+        }
+        else
+        {
+            $this->resourceConfig = $resourceConfig;
+        }
     }
 
     public function __init()
@@ -259,5 +274,29 @@ abstract class BasePool implements IPool
     public function getUsed()
     {
         return $this->getCount() - $this->getFree();
+    }
+
+    /**
+     * 获取下一个资源配置
+     *
+     * @return void
+     */
+    protected function getNextResourceConfig()
+    {
+        switch($this->config->getResourceConfigMode())
+        {
+            case ResourceConfigMode::RANDOM:
+                $index = mt_rand(0, count($this->resourceConfig) - 1);
+                break;
+            default:
+                $maxIndex = count($this->resourceConfig) - 1;
+                if(++$this->configIndex > $maxIndex)
+                {
+                    $this->configIndex = 0;
+                }
+                $index = $this->configIndex;
+                break;
+        }
+        return $this->resourceConfig[$index];
     }
 }

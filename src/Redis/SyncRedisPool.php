@@ -30,6 +30,6 @@ class SyncRedisPool extends BaseSyncPool
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $db = BeanFactory::newInstance($this->handlerClass);
-        return new SyncRedisResource($this, $db, $this->resourceConfig);
+        return new SyncRedisResource($this, $db, $this->getNextResourceConfig());
     }
 }
