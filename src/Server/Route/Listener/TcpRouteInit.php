@@ -7,8 +7,11 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Server\Route\RouteCallable;
-use Imi\Server\Route\Parser\TcpControllerParser;
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Server\Route\Annotation\Tcp\TcpAction;
+use Imi\Server\Route\Parser\TcpControllerParser;
+use Imi\Server\Route\Annotation\Tcp\TcpMiddleware;
 
 /**
  * TCP 服务器路由初始化
@@ -42,7 +45,7 @@ class TcpRouteInit implements IEventListener
                 $classAnnotation = $classItem['annotation'];
                 // 类中间件
                 $classMiddlewares = [];
-                foreach($classItem['middlewares'] ?? [] as $middleware)
+                foreach(AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
                 {
                     if(is_array($middleware->middlewares))
                     {
@@ -53,15 +56,16 @@ class TcpRouteInit implements IEventListener
                         $classMiddlewares[] = $middleware->middlewares;
                     }
                 }
-                foreach($classItem['methods'] as $methodName => $methodItem)
+                foreach(AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
                 {
-                    if(!isset($methodItem['routes']))
+                    $routes = AnnotationManager::getMethodAnnotations($className, $methodName, TcpRoute::class);
+                    if(!isset($routes[0]))
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
-                    foreach($methodItem['middlewares'] ?? [] as $middleware)
+                    foreach(AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
                     {
                         if(is_array($middleware->middlewares))
                         {
@@ -75,7 +79,7 @@ class TcpRouteInit implements IEventListener
                     // 最终中间件
                     $middlewares = array_unique(array_merge($classMiddlewares, $methodMiddlewares));
                     
-                    foreach($methodItem['routes'] as $routeItem)
+                    foreach($routes as $routeItem)
                     {
                         $route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
                             'middlewares' => $middlewares,

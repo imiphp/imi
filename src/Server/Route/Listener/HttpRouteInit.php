@@ -11,6 +11,10 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Parser\ControllerParser;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Server\Route\Annotation\Middleware;
+use Imi\Server\Route\Annotation\Action;
+use Imi\Server\Route\Annotation\WebSocket\WSConfig;
 
 /**
  * http服务器路由初始化
@@ -44,7 +48,7 @@ class HttpRouteInit implements IEventListener
                 $classAnnotation = $classItem['annotation'];
                 // 类中间件
                 $classMiddlewares = [];
-                foreach($classItem['middlewares'] ?? [] as $middleware)
+                foreach(AnnotationManager::getClassAnnotations($className, Middleware::class) ?? [] as $middleware)
                 {
                     if(is_array($middleware->middlewares))
                     {
@@ -55,11 +59,16 @@ class HttpRouteInit implements IEventListener
                         $classMiddlewares[] = $middleware->middlewares;
                     }
                 }
-                foreach($classItem['methods'] as $methodName => $methodItem)
+                foreach(AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $actionAnnotations)
                 {
-                    if(!isset($methodItem['routes']))
+                    $routeAnnotations = AnnotationManager::getMethodAnnotations($className, $methodName, Route::class);
+                    if(isset($routeAnnotations[0]))
                     {
-                        $methodItem['routes'] = [
+                        $routes = $routeAnnotations;
+                    }
+                    else
+                    {
+                        $routes = [
                             new Route([
                                 'url' => $methodName,
                             ])
@@ -67,7 +76,7 @@ class HttpRouteInit implements IEventListener
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
-                    foreach($methodItem['middlewares'] ?? [] as $middleware)
+                    foreach(AnnotationManager::getMethodAnnotations($className, $methodName, Middleware::class) ?? [] as $middleware)
                     {
                         if(is_array($middleware->middlewares))
                         {
@@ -81,7 +90,7 @@ class HttpRouteInit implements IEventListener
                     // 最终中间件
                     $middlewares = array_unique(array_merge($classMiddlewares, $methodMiddlewares));
                     
-                    foreach($methodItem['routes'] as $routeItem)
+                    foreach($routes as $routeItem)
                     {
                         if(null === $routeItem->url)
                         {
@@ -93,7 +102,7 @@ class HttpRouteInit implements IEventListener
                         }
                         $route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
                             'middlewares'   => $middlewares,
-                            'wsConfig'      => $methodItem['WSConfig'] ?? null,
+                            'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
                         ]);
                     }
                 }
