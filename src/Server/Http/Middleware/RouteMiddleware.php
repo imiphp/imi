@@ -9,7 +9,6 @@ use Imi\Controller\HttpController;
 use Imi\Server\Http\RequestHandler;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
-use Imi\Server\View\Parser\ViewParser;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
