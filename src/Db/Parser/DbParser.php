@@ -15,23 +15,7 @@ class DbParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
     {
-        if($annotation instanceof \Imi\Db\Annotation\Transaction)
-        {
-            $this->data[$className][$targetName] = [
-                'Transaction' => $annotation,
-            ];
-        }
+        
     }
 
-    /**
-     * 获取方法事务注解
-     *
-     * @param string $className
-     * @param string $methodName
-     * @return \Imi\Db\Annotation\Transaction|null
-     */
-    public function getMethodTransaction($className, $methodName)
-    {
-        return $this->data[$className][$methodName]['Transaction'] ?? null;
-    }
 }
