@@ -22,7 +22,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 class Imi
 {
     /**
-     * 开启服务
+     * 获取预加载信息
      * 
      * @Operation("getPreloadData")
      * 
