@@ -6,7 +6,6 @@ use Imi\Worker;
 use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
-use Imi\Bean\Parser\BeanParser;
 use Imi\Util\Imi;
 
 abstract class BeanFactory

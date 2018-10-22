@@ -3,9 +3,9 @@ namespace Imi\Aop\Listener;
 
 use Imi\Main\Helper;
 use Imi\Event\EventParam;
-use Imi\Aop\Parser\AopParser;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * @Listener(eventName="IMI.INITED",priority=PHP_INT_MAX)
@@ -33,14 +33,15 @@ class ImiInit implements IEventListener
      */
     private function parseConfigs($configs)
     {
-        $aopParser = AopParser::getInstance();
         foreach($configs as $className => $classConfig)
         {
             // 类
-            $aopParser->parse(new \Imi\Aop\Annotation\Aspect(), $className, AopParser::TARGET_CLASS, $className);
+            AnnotationManager::addClassAnnotations($className, new \Imi\Aop\Annotation\Aspect());
+            
             // 方法
             foreach($classConfig['methods'] ?? [] as $methodName => $methodConfig)
             {
+                $annotations = [];
                 foreach($methodConfig as $annotationName => $annotationArgs)
                 {
                     if(class_exists($annotationName))
@@ -51,12 +52,15 @@ class ImiInit implements IEventListener
                     {
                         $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
                     }
-                    $aopParser->parse(new $annotationClassName($annotationArgs), $className, AopParser::TARGET_METHOD, $methodName);
+                    $annotations[] = new $annotationClassName($annotationArgs);
                 }
+                AnnotationManager::addMethodAnnotations($className, $methodName, ...$annotations);
             }
+
             // 属性
             foreach($classConfig['properties'] ?? [] as $propName => $propConfig)
             {
+                $annotations = [];
                 foreach($propConfig as $annotationName => $annotationArgs)
                 {
                     if(class_exists($annotationName))
@@ -67,8 +71,9 @@ class ImiInit implements IEventListener
                     {
                         $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
                     }
-                    $aopParser->parse(new $annotationClassName($annotationArgs), $className, AopParser::TARGET_PROPERTY, $propName);
+                    $annotations[] = new $annotationClassName($annotationArgs);
                 }
+                AnnotationManager::addPropertyAnnotations($className, $propName, ...$annotations);
             }
         }
     }

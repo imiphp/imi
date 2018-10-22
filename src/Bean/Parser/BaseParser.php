@@ -27,6 +27,11 @@ abstract class BaseParser implements IParser
      * @var array
      */
     protected $data = [];
+
+    private function __construct($data = [])
+    {
+        $this->data = $data;
+    }
     
     /**
      * 获取数据

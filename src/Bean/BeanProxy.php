@@ -8,13 +8,16 @@ use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
 use Imi\RequestContext;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Aop\Parser\AopParser;
-use Imi\Bean\Annotation\Inject;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Util\Coroutine;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Aop\Annotation\Aspect;
+use Imi\Aop\Annotation\PointCut;
+use Imi\Aop\Annotation\Inject;
+use Imi\Aop\Annotation\RequestInject;
 
 class BeanProxy
 {
@@ -83,13 +86,27 @@ class BeanProxy
             return;
         }
         static::$aspects[$className] = new \SplPriorityQueue;
-        $aopData = AopParser::getInstance()->getData();
-        foreach($aopData as $option)
+
+        $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
+        foreach($aspects as $item)
         {
             // 判断是否属于当前类的切面
-            if($this->isAspectCurrentClass($option))
+            $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+            foreach($pointCutsSet as $methodName => $pointCuts)
             {
-                static::$aspects[$className]->insert($option, $option['aspect']->priority);
+                $pointCut = reset($pointCuts);
+                foreach($pointCut->allow as $allowItem)
+                {
+                    if(Imi::checkClassRule($allowItem, $className))
+                    {
+                        static::$aspects[$className]->insert([
+                            'class'     =>  $item['class'],
+                            'method'    =>  $methodName,
+                            'pointCut'  =>  $pointCut,
+                        ], $item['annotation']->priority);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -102,11 +119,12 @@ class BeanProxy
     private function injectProps()
     {
         $className = $this->refClass->getParentClass()->getName();
-        list($annotations, $configs) = static::getInjects($className);
+        list($injects, $configs) = static::getInjects($className);
 
         // @inject()和@requestInject()注入
-        foreach($annotations as $propName => $annotation)
+        foreach($injects as $propName => $annotations)
         {
+            $annotation = reset($annotations);
             $propRef = $this->refClass->getProperty($propName);
             $propRef->setAccessible(true);
             $propRef->setValue($this->object, static::getInjectValueByAnnotation($annotation));
@@ -133,34 +151,18 @@ class BeanProxy
      */
     public static function getInjectValueByAnnotation($annotation)
     {
-        if(isset($annotation['requestInject']) && Coroutine::isIn())
+        if($annotation instanceof RequestInject && Coroutine::isIn())
         {
-            return RequestContext::getBean($annotation['requestInject']->name, ...$annotation['requestInject']->args);
+            return RequestContext::getBean($annotation->name, ...$annotation->args);
         }
-        else if(isset($annotation['inject']))
+        else if($annotation instanceof Inject)
         {
-            return App::getBean($annotation['inject']->name, ...$annotation['inject']->args);
+            return App::getBean($annotation->name, ...$annotation->args);
         }
         else
         {
             return null;
         }
-    }
-
-    /**
-     * 获取注入属性的注解们
-     *
-     * @param string $className
-     * @return array
-     */
-    public static function getInjectAnnotations($className)
-    {
-        $aopData = AopParser::getInstance()->getData();
-        if(!isset($aopData[$className]))
-        {
-            return [];
-        }
-        return $aopData[$className]['property'];
     }
 
     /**
@@ -206,16 +208,16 @@ class BeanProxy
      */
     public static function getInjects($className)
     {
-        $annotations = static::getInjectAnnotations($className);
+        $injects = AnnotationManager::getPropertiesAnnotations($className, Inject::class);
         $configs = static::getConfigInjects($className);
         foreach(array_keys($configs) as $key)
         {
-            if(isset($annotations[$key]))
+            if(isset($injects[$key]))
             {
-                unset($annotations[$key]);
+                unset($injects[$key]);
             }
         }
-        return [$annotations, $configs];
+        return [$injects, $configs];
     }
 
     /**
@@ -412,38 +414,37 @@ class BeanProxy
         $list = clone static::$aspects[$className];
         foreach($list as $option)
         {
-            $aspectClassName = $option['className'];
-            foreach($option['method'] as $methodName => $methodOption)
+            $aspectClassName = $option['class'];
+            $methodName = $option['method'];
+            $pointCut = $option['pointCut'];
+            $allowResult = false;
+            foreach($pointCut->allow as $rule)
             {
-                if(!isset($methodOption[$pointType]) || !$methodOption[$pointType])
+                $allowResult = Imi::checkClassMethodRule($rule, $className, $method);
+                if($allowResult)
                 {
-                    continue;
+                    break;
                 }
-                $allowResult = false;
-                foreach($methodOption['pointCut']->allow as $rule)
+            }
+            if($allowResult)
+            {
+                $denyResult = false;
+                foreach($pointCut->deny as $rule)
                 {
-                    $allowResult = Imi::checkClassMethodRule($rule, $className, $method);
-                    if($allowResult)
+                    $denyResult = Imi::checkClassMethodRule($rule, $className, $method);
+                    if($denyResult)
                     {
                         break;
                     }
                 }
-                if($allowResult)
+                if($denyResult)
                 {
-                    $denyResult = false;
-                    foreach($methodOption['pointCut']->deny as $rule)
-                    {
-                        $denyResult = Imi::checkClassMethodRule($rule, $className, $method);
-                        if($denyResult)
-                        {
-                            break;
-                        }
-                    }
-                    if($denyResult)
-                    {
-                        continue;
-                    }
-                    call_user_func($callback, $aspectClassName, $methodName, $methodOption[$pointType]);
+                    continue;
+                }
+                $point = AnnotationManager::getMethodAnnotations($aspectClassName, $methodName, 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType))[0] ?? null;
+                if(null !== $point)
+                {
+                    call_user_func($callback, $aspectClassName, $methodName, $point);
                 }
             }
         }
@@ -463,13 +464,17 @@ class BeanProxy
         {
             return $configs[$propertyName];
         }
-        else if(isset($annotations[$propertyName]))
-        {
-            return static::getInjectValueByAnnotation($annotations[$propertyName]);
-        }
         else
         {
-            return null;
+            $annotation = $annotations[0] ?? null;
+            if($annotation)
+            {
+                return static::getInjectValueByAnnotation($annotation);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
     
