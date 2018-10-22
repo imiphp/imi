@@ -2,16 +2,19 @@
 namespace Imi\Model;
 
 use Imi\Util\Text;
+use Imi\Event\IEvent;
 use Imi\Event\TEvent;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
+use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Model\Parser\RelationParser;
+use Imi\Model\Annotation\Serializable;
 use Imi\Model\Event\Param\InitEventParam;
-use Imi\Event\IEvent;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * 模型基类
@@ -107,10 +110,10 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function offsetSet($offset, $value)
     {
         // 数据库bit类型字段处理
-        $column = ModelManager::getPropertyAnnotation($this, $offset, 'Column');
+        $column = ModelManager::getPropertyAnnotation($this, $offset, Column::class);
         if(null === $column)
         {
-            $column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), 'Column');
+            $column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), Column::class);
         }
         if(null !== $column)
         {
@@ -170,6 +173,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function toArray(): array
     {
         $result = \iterator_to_array($this);
+        $className = BeanFactory::getObjectClass($this);
         // 支持注解配置隐藏为null的关联属性
         foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
         {
@@ -178,7 +182,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 if(!isset($relationParser))
                 {
                     $relationParser = RelationParser::getInstance();
-                    $className = BeanFactory::getObjectClass($this);
                 }
                 $autoSelect = $relationParser->getPropertyAnnotation($className, $name, 'AutoSelect');
                 if($autoSelect && !$autoSelect->alwaysShow)
@@ -189,17 +192,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         // 禁止序列化支持
         $serializables = ModelManager::getSerializables($this);
-        $properties = ModelManager::getPropertys($this);
+        $serializableSets = AnnotationManager::getPropertiesAnnotations($className, Serializable::class);
         foreach($result as $propertyName => $value)
         {
-            if(!array_key_exists($propertyName, $result))
-            {
-                continue;
-            }
-            if(isset($properties[$propertyName]['Serializable']))
+            if(isset($serializableSets[$propertyName]))
             {
                 // 单独属性上的 @Serializable 注解
-                if(!$properties[$propertyName]['Serializable']->allow)
+                if(!$serializableSets[$propertyName][0]->allow)
                 {
                     unset($result[$propertyName]);
                 }

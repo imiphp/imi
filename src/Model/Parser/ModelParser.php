@@ -23,40 +23,6 @@ class ModelParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
     {
-        if($annotation instanceof Entity)
-        {
-            $this->data[$className] = [
-                'className' => $className,
-                'Entity'    => $annotation,
-            ];
-        }
-        else if($annotation instanceof Table)
-        {
-            $this->data[$className]['Table'] = $annotation;
-        }
-        else if($annotation instanceof Column)
-        {
-            $this->data[$className]['properties'][$targetName]['Column'] = $annotation;
-        }
-        else if($annotation instanceof MemoryTable)
-        {
-            $this->data[$className]['MemoryTable'] = $annotation;
-        }
-        else if($annotation instanceof RedisEntity)
-        {
-            $this->data[$className]['RedisEntity'] = $annotation;
-        }
-        else if($annotation instanceof Serializable)
-        {
-            $this->data[$className]['properties'][$targetName]['Serializable'] = $annotation;
-        }
-        else if($annotation instanceof Serializables)
-        {
-            $this->data[$className]['Serializables'] = $annotation;
-        }
-        else if($annotation instanceof ExtractProperty)
-        {
-            $this->data[$className]['ExtractPropertys'][$targetName][] = $annotation;
-        }
+        
     }
 }

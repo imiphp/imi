@@ -6,7 +6,13 @@ use Imi\RequestContext;
 use Imi\Bean\BeanFactory;
 use Imi\Util\ClassObject;
 use Imi\Model\Key\KeyRule;
-use Imi\Model\Parser\ModelParser;
+use Imi\Model\Annotation\Table;
+use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\RedisEntity;
+use Imi\Model\Annotation\Serializables;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\ExtractProperty;
+use Imi\Model\Annotation\Column;
 
 abstract class ModelManager
 {
@@ -37,9 +43,7 @@ abstract class ModelManager
      */
     public static function getAnnotation($object, $annotationClass)
     {
-        $option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
-        $key = Imi::getClassShortName($annotationClass);
-        return $option[$key] ?? null;
+        return AnnotationManager::getClassAnnotations(BeanFactory::getObjectClass($object), $annotationClass)[0] ?? null;
     }
 
     /**
@@ -51,9 +55,7 @@ abstract class ModelManager
      */
     public static function getPropertyAnnotation($object, $propertyName, $annotationClass)
     {
-        $option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
-        $key = Imi::getClassShortName($annotationClass);
-        return $option['properties'][$propertyName][$key] ?? null;
+        return AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null;
     }
 
     /**
@@ -63,7 +65,7 @@ abstract class ModelManager
      */
     public static function getTable($object)
     {
-        $tableAnnotation = static::getAnnotation($object, 'Table');
+        $tableAnnotation = static::getAnnotation($object, Table::class);
         if(null !== $tableAnnotation)
         {
             return $tableAnnotation->name;
@@ -81,7 +83,7 @@ abstract class ModelManager
      */
     public static function getDbPoolName($object)
     {
-        $tableAnnotation = static::getAnnotation($object, 'Table');
+        $tableAnnotation = static::getAnnotation($object, Table::class);
         if(null !== $tableAnnotation)
         {
             return $tableAnnotation->dbPoolName;
@@ -100,7 +102,7 @@ abstract class ModelManager
      */
     public static function getId($object)
     {
-        $tableAnnotation = static::getAnnotation($object, 'Table');
+        $tableAnnotation = static::getAnnotation($object, Table::class);
         if(null !== $tableAnnotation)
         {
             return $tableAnnotation->id;
@@ -119,7 +121,7 @@ abstract class ModelManager
      */
     public static function getFirstId($object)
     {
-        $tableAnnotation = static::getAnnotation($object, 'Table');
+        $tableAnnotation = static::getAnnotation($object, Table::class);
         if(null !== $tableAnnotation)
         {
             if(is_array($tableAnnotation->id))
@@ -147,14 +149,12 @@ abstract class ModelManager
         $objectClass = BeanFactory::getObjectClass($object);
         if(!isset(static::$fields[$objectClass]))
         {
-            $option = ModelParser::getInstance()->getData()[$objectClass] ?? [];
+            $annotationsSet = AnnotationManager::getPropertiesAnnotations($objectClass, Column::class);
             $fields = [];
-            foreach($option['properties'] ?? [] as $name => $item)
+            foreach($annotationsSet as $propertyName => $annotations)
             {
-                if(isset($item['Column']))
-                {
-                    $fields[$item['Column']->name ?? $name] = $item['Column'];
-                }
+                $annotation = $annotations[0];
+                $fields[$annotation->name ?? $propertyName] = $annotation;
             }
             static::$fields[$objectClass] = $fields;
         }
@@ -181,7 +181,7 @@ abstract class ModelManager
         $class = BeanFactory::getObjectClass($object);
         if(!isset(static::$isCamelCache[$class]))
         {
-            static::$isCamelCache[$class] = static::getAnnotation($object, 'Entity')->camel;
+            static::$isCamelCache[$class] = static::getAnnotation($object, Entity::class)->camel;
         }
         return static::$isCamelCache[$class];
     }
@@ -196,7 +196,7 @@ abstract class ModelManager
         $class = BeanFactory::getObjectClass($object);
         if(!isset(static::$keyRules[$class]))
         {
-            $key = static::getAnnotation($object, 'RedisEntity')->key;
+            $key = static::getAnnotation($object, RedisEntity::class)->key;
             preg_match_all('/{([^}]+)}/', $key, $matches);
             static::$keyRules[$class] = new KeyRule($key, $matches[1]);
         }
@@ -210,7 +210,7 @@ abstract class ModelManager
      */
     public static function getRedisEntity($object)
     {
-        $annotation = static::getAnnotation($object, 'RedisEntity');
+        $annotation = static::getAnnotation($object, RedisEntity::class);
         if(null !== $annotation)
         {
             return $annotation;
@@ -222,17 +222,6 @@ abstract class ModelManager
     }
 
     /**
-     * 获取当前模型类的属性注解
-     * @param string|object $object
-     * @return array
-     */
-    public static function getPropertys($object)
-    {
-        $option = ModelParser::getInstance()->getData()[BeanFactory::getObjectClass($object)] ?? [];
-        return $option['properties'] ?? [];
-    }
-
-    /**
      * 获取模型类的批量设置序列化注解
      *
      * @param string|object $object
@@ -240,7 +229,7 @@ abstract class ModelManager
      */
     public static function getSerializables($object)
     {
-        $annotation = static::getAnnotation($object, 'Serializables');
+        $annotation = static::getAnnotation($object, Serializables::class);
         if(null !== $annotation)
         {
             return $annotation;
@@ -259,7 +248,7 @@ abstract class ModelManager
      */
     public static function getExtractPropertys($object)
     {
-        $list = static::getAnnotation($object, 'ExtractPropertys');
+        $list = static::getAnnotation($object, ExtractProperty::class);
         if(null !== $list)
         {
             return $list;

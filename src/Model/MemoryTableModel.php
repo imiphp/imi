@@ -2,6 +2,7 @@
 namespace Imi\Model;
 
 use Imi\Util\MemoryTableManager;
+use Imi\Model\Annotation\MemoryTable;
 
 /**
  * Swoole Table 模型
@@ -21,7 +22,7 @@ abstract class MemoryTableModel extends BaseModel
      */
     public static function find($key)
     {
-        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, 'MemoryTable');
+        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if(null === $memoryTableAnnotation)
         {
             return null;
@@ -41,7 +42,7 @@ abstract class MemoryTableModel extends BaseModel
      */
     public static function select()
     {
-        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, 'MemoryTable');
+        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if(null === $memoryTableAnnotation)
         {
             return null;
@@ -56,7 +57,7 @@ abstract class MemoryTableModel extends BaseModel
      */
     public function save()
     {
-        $memoryTableAnnotation = ModelManager::getAnnotation($this, 'MemoryTable');
+        $memoryTableAnnotation = ModelManager::getAnnotation($this, MemoryTable::class);
         if(null === $memoryTableAnnotation)
         {
             return null;
@@ -70,7 +71,7 @@ abstract class MemoryTableModel extends BaseModel
      */
     public function delete()
     {
-        $memoryTableAnnotation = ModelManager::getAnnotation($this, 'MemoryTable');
+        $memoryTableAnnotation = ModelManager::getAnnotation($this, MemoryTable::class);
         if(null === $memoryTableAnnotation)
         {
             return null;
@@ -85,7 +86,7 @@ abstract class MemoryTableModel extends BaseModel
      */
     public static function deleteBatch(...$keys)
     {
-        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, 'MemoryTable');
+        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if(null === $memoryTableAnnotation)
         {
             return null;
@@ -106,7 +107,7 @@ abstract class MemoryTableModel extends BaseModel
      */
     public static function count()
     {
-        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, 'MemoryTable');
+        $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if(null === $memoryTableAnnotation)
         {
             return null;
