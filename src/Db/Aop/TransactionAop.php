@@ -11,6 +11,8 @@ use Imi\Model\ModelManager;
 use Imi\Db\Annotation\TransactionType;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Annotation\RollbackType;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Db\Annotation\Transaction;
 
 /**
  * @Aspect
@@ -29,7 +31,7 @@ class TransactionAop
      */
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {
-        $transaction = DbParser::getInstance()->getMethodTransaction(get_parent_class($joinPoint->getTarget()), $joinPoint->getMethod());
+        $transaction = AnnotationManager::getMethodAnnotations(get_parent_class($joinPoint->getTarget()), $joinPoint->getMethod(), Transaction::class)[0] ?? null;
         if(null === $transaction)
         {
             return $joinPoint->proceed();
