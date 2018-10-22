@@ -6,10 +6,12 @@ use Imi\Util\Text;
 use Imi\Model\BaseModel;
 use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
-use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Model\Annotation\Relation\AutoInsert;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
@@ -31,10 +33,9 @@ abstract class Insert
         {
             return;
         }
-        $relationParser = RelationParser::getInstance();
         $className = BeanFactory::getObjectClass($model);
-        $autoInsert = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoInsert');
-        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        $autoInsert = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoInsert::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;;
 
         if($autoInsert)
         {

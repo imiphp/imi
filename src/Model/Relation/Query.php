@@ -6,15 +6,17 @@ use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Util\ArrayList;
 use Imi\Bean\BeanFactory;
+use Imi\Util\ClassObject;
 use Imi\Model\ModelManager;
-use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
-use Imi\Util\ClassObject;
+use Imi\Model\Annotation\Relation\RelationBase;
 
 
 abstract class Query
@@ -30,12 +32,11 @@ abstract class Query
      */
     public static function init($model, $propertyName, $annotation, $forceInit = false)
     {
-        $relationParser = RelationParser::getInstance();
         $className = BeanFactory::getObjectClass($model);
 
         if(!$forceInit)
         {
-            $autoSelect = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSelect');
+            $autoSelect = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSelect::class)[0] ?? null;
             if($autoSelect && !$autoSelect->status)
             {
                 return;
@@ -446,7 +447,7 @@ abstract class Query
     public static function initRelations($model, $propertyName)
     {
         $className = BeanFactory::getObjectClass($model);
-        $annotation = RelationParser::getInstance()->getRelations($className)[$propertyName] ?? null;
+        $annotation = AnnotationManager::getPropertyAnnotations($className, $propertyName, RelationBase::class)[0] ?? null;
         if(null !== $annotation)
         {
             if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)

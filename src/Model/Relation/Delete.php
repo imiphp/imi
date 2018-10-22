@@ -6,12 +6,13 @@ use Imi\Util\Text;
 use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\AutoDelete;
 
 
 abstract class Delete
@@ -30,9 +31,8 @@ abstract class Delete
         {
             return;
         }
-        $relationParser = RelationParser::getInstance();
         $className = BeanFactory::getObjectClass($model);
-        $autoDelete = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoDelete');
+        $autoDelete = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoDelete::class)[0] ?? null;
 
         if(!$autoDelete || !$autoDelete->status)
         {

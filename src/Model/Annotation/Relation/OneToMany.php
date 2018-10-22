@@ -10,7 +10,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Model\Parser\RelationParser")
  */
-class OneToMany extends Base
+class OneToMany extends RelationBase
 {
     /**
      * 只传一个参数时的参数名

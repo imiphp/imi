@@ -8,9 +8,10 @@ use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Delete;
 use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Update;
-use Imi\Model\Parser\RelationParser;
 use Imi\Model\Annotation\Relation\ManyToMany;
 use Imi\Model\Annotation\Relation\PolymorphicManyToMany;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\RelationBase;
 
 abstract class ModelRelationManager
 {
@@ -24,12 +25,13 @@ abstract class ModelRelationManager
      */
     public static function initModel($model)
     {
-        foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
+        foreach(AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
             if(null !== $model[$propertyName])
             {
                 continue;
             }
+            $annotation = $annotations[0];
             Query::init($model, $propertyName, $annotation);
         }
     }
@@ -43,12 +45,12 @@ abstract class ModelRelationManager
      */
     public static function queryModelRelations($model, ...$names)
     {
-        $relations = RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model));
+        $relations = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class);
         foreach($names as $name)
         {
             if(isset($relations[$name]))
             {
-                Query::init($model, $name, $relations[$name], true);
+                Query::init($model, $name, $relations[$name][0], true);
             }
         }
     }
@@ -61,12 +63,13 @@ abstract class ModelRelationManager
      */
     public static function insertModel($model)
     {
-        foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
+        foreach(AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
             if(null === $model[$propertyName])
             {
                 continue;
             }
+            $annotation = $annotations[0];
             Insert::parse($model, $propertyName, $annotation);
         }
     }
@@ -79,12 +82,13 @@ abstract class ModelRelationManager
      */
     public static function updateModel($model)
     {
-        foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
+        foreach(AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
             if(null === $model[$propertyName])
             {
                 continue;
             }
+            $annotation = $annotations[0];
             Update::parse($model, $propertyName, $annotation);
         }
     }
@@ -97,12 +101,13 @@ abstract class ModelRelationManager
      */
     public static function deleteModel($model)
     {
-        foreach(RelationParser::getInstance()->getRelations(BeanFactory::getObjectClass($model)) as $propertyName => $annotation)
+        foreach(AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
             if(null === $model[$propertyName])
             {
                 continue;
             }
+            $annotation = $annotations[0];
             Delete::parse($model, $propertyName, $annotation);
         }
     }
@@ -117,10 +122,11 @@ abstract class ModelRelationManager
         $class = BeanFactory::getObjectClass($object);
         if(!isset(static::$relationFieldsNames[$class]))
         {
-            $relations = RelationParser::getInstance()->getData()[$class]['relations'] ?? [];
+            $relations = AnnotationManager::getPropertiesAnnotations($class, RelationBase::class);
             $result = array_keys($relations);
-            foreach($relations as $annotation)
+            foreach($relations as $annotations)
             {
+                $annotation = $annotations[0];
                 if(($annotation instanceof ManyToMany || $annotation instanceof PolymorphicManyToMany) && $annotation->rightMany)
                 {
                     $result[] = $annotation->rightMany;

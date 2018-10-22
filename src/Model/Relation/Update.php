@@ -11,9 +11,13 @@ use Imi\Model\Parser\RelationParser;
 use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Model\Annotation\Relation\AutoUpdate;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
+use Imi\Model\Annotation\Relation\RelationBase;
 
 
 abstract class Update
@@ -32,10 +36,9 @@ abstract class Update
         {
             return;
         }
-        $relationParser = RelationParser::getInstance();
         $className = BeanFactory::getObjectClass($model);
-        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
         if($autoUpdate)
         {
@@ -112,9 +115,8 @@ abstract class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
-        $relationParser = RelationParser::getInstance();
-        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if($autoUpdate)
         {
@@ -199,9 +201,8 @@ abstract class Update
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $relationParser = RelationParser::getInstance();
-        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if($autoUpdate)
         {
@@ -262,19 +263,20 @@ abstract class Update
      */
     public static function hasUpdateRelation($className, $propertyName = null)
     {
-        $relationParser = RelationParser::getInstance();
-        $relations = $relationParser->getRelations($className);
-        if(null === $relations)
+        $relations = AnnotationManager::getPropertiesAnnotations($className, RelationBase::class);
+
+        if(empty($relations))
         {
             return false;
         }
 
         if(null === $propertyName)
         {
-            foreach($relations as $name => $annotation)
+            foreach($relations as $name => $annotations)
             {
-                $autoUpdate = $relationParser->getPropertyAnnotation($className, $name, 'AutoUpdate');
-                $autoSave = $relationParser->getPropertyAnnotation($className, $name, 'AutoSave');
+                $annotation = $annotations[0];
+                $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $name, AutoUpdate::class)[0] ?? null;
+                $autoSave = AnnotationManager::getPropertyAnnotations($className, $name, AutoSave::class)[0] ?? null;
         
                 if($autoUpdate)
                 {
@@ -291,8 +293,8 @@ abstract class Update
         }
         else
         {
-            $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-            $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+            $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+            $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
     
             if($autoUpdate)
             {
@@ -348,9 +350,8 @@ abstract class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
-        $relationParser = RelationParser::getInstance();
-        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if($autoUpdate)
         {
@@ -436,9 +437,8 @@ abstract class Update
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $relationParser = RelationParser::getInstance();
-        $autoUpdate = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoUpdate');
-        $autoSave = $relationParser->getPropertyAnnotation($className, $propertyName, 'AutoSave');
+        $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if($autoUpdate)
         {

@@ -5,7 +5,9 @@ use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Bean\BeanFactory;
 use Imi\Model\ModelManager;
-use Imi\Model\Parser\RelationParser;
+use Imi\Model\Annotation\Relation\JoinTo;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\JoinFrom;
 
 trait TLeftAndRight
 {
@@ -40,8 +42,6 @@ trait TLeftAndRight
      */
     public function initLeftAndRight($className, $propertyName, $annotation)
     {
-        $relationParser = RelationParser::getInstance();
-
         if(class_exists($annotation->model))
         {
             $this->rightModel = $annotation->model;
@@ -51,8 +51,8 @@ trait TLeftAndRight
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
         
-        $joinFrom = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinFrom');
-        $joinTo = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinTo');
+        $joinFrom = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFrom::class)[0] ?? null;
+        $joinTo = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinTo::class)[0] ?? null;
 
         if($joinFrom)
         {

@@ -4,7 +4,7 @@ namespace Imi\Model\Relation\Struct;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Model\ModelManager;
-use Imi\Model\Parser\RelationParser;
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Relation\JoinToMiddle;
 use Imi\Model\Annotation\Relation\JoinFromMiddle;
 
@@ -62,8 +62,6 @@ class PolymorphicManyToMany
      */
     public function __construct($className, $propertyName, $annotation)
     {
-        $relationParser = RelationParser::getInstance();
-
         if(class_exists($annotation->model))
         {
             $this->rightModel = $annotation->model;
@@ -73,13 +71,13 @@ class PolymorphicManyToMany
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
-        $joinToMiddle = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinToMiddle');
+        $joinToMiddle =  AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinToMiddle::class)[0] ?? null;
         if(!$joinToMiddle instanceof JoinToMiddle)
         {
             throw new \RuntimeException(sprintf('%s->%s has no @JoinToMiddle', $className, $propertyName));
         }
 
-        $joinFromMiddle = $relationParser->getPropertyAnnotation($className, $propertyName, 'JoinFromMiddle');
+        $joinFromMiddle =  AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFromMiddle::class)[0] ?? null;
         if(!$joinFromMiddle instanceof JoinFromMiddle)
         {
             throw new \RuntimeException(sprintf('%s->%s has no @JoinFromMiddle', $className, $propertyName));

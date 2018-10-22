@@ -4,7 +4,6 @@ namespace Imi\Model\Relation\Struct;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Model\ModelManager;
-use Imi\Model\Parser\RelationParser;
 
 class OneToMany
 {

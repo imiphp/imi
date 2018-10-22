@@ -11,10 +11,10 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
-use Imi\Model\Parser\RelationParser;
 use Imi\Model\Annotation\Serializable;
 use Imi\Model\Event\Param\InitEventParam;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Relation\AutoSelect;
 
 /**
  * 模型基类
@@ -179,11 +179,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             if(null === $result[$name])
             {
-                if(!isset($relationParser))
-                {
-                    $relationParser = RelationParser::getInstance();
-                }
-                $autoSelect = $relationParser->getPropertyAnnotation($className, $name, 'AutoSelect');
+                $autoSelect = AnnotationManager::getPropertyAnnotations($className, $name, AutoSelect::class)[0] ?? null;
                 if($autoSelect && !$autoSelect->alwaysShow)
                 {
                     unset($result[$name]);

@@ -10,7 +10,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Model\Parser\RelationParser")
  */
-class PolymorphicManyToMany extends Base
+class PolymorphicManyToMany extends RelationBase
 {
     /**
      * 关联的模型类
