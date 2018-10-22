@@ -8,11 +8,15 @@ use Imi\Util\AtomicManager;
 use Imi\Util\ChannelManager;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
-use Imi\Model\Parser\ModelParser;
 use Imi\Util\MemoryTableManager;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\MemoryTable;
+use Imi\Model\Annotation\Column;
+use Imi\Tool\Tool;
+use Imi\Util\Imi;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED",priority=1)
  */
 class Init implements IEventListener
 {
@@ -23,63 +27,30 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
+        if('server' !== Tool::getToolName() || 'start' !== Tool::getToolOperation())
+        {
+            return;
+        }
+
+        $result = exec(Imi::getImiCmd('imi', 'getPreloadData'));
+        $set = json_decode($result, true);
+        if(!$set)
+        {
+            return;
+        }
+
         // 初始化 MemoryTable
-        $data = ModelParser::getInstance()->getData();
-        foreach($data as $className => $classOption)
+        foreach($set['MemoryTable'] as $item)
         {
-            if(isset($classOption['MemoryTable']))
-            {
-                MemoryTableManager::addName($classOption['MemoryTable']->name, [
-                    'size'                  => $classOption['MemoryTable']->size,
-                    'conflictProportion'    => $classOption['MemoryTable']->conflictProportion,
-                    'columns'               => $this->getMemoryTableColumns($classOption),
-                ]);
-            }
+            $memoryTableAnnotation = new MemoryTable($item['annotation']);
+            MemoryTableManager::addName($memoryTableAnnotation->name, [
+                'size'                  => $memoryTableAnnotation->size,
+                'conflictProportion'    => $memoryTableAnnotation->conflictProportion,
+                'columns'               => $item['columns'],
+            ]);
         }
+
         MemoryTableManager::init();
-    }
-
-    protected function getMemoryTableColumns($classOption)
-    {
-        $columns = [];
-        foreach($classOption['properties'] as $name => $propOption)
-        {
-            if(isset($propOption['Column']))
-            {
-                list($type, $size) = $this->parseColumnTypeAndSize($propOption['Column']);
-                $columns[] = [
-                    'name' => $propOption['Column']->name,
-                    'type' => $type,
-                    'size' => $size,
-                ];
-            }
-        }
-        return $columns;
-    }
-
-    protected function parseColumnTypeAndSize($column)
-    {
-        $type = $column->type;
-        switch($type)
-        {
-            case 'string':
-                $type = \Swoole\Table::TYPE_STRING;
-                $size = $column->length;
-                break;
-            case 'int':
-                $type = \Swoole\Table::TYPE_INT;
-                $size = $column->length;
-                if(!in_array($size, [1, 2, 4, 8]))
-                {
-                    $size = 4;
-                }
-                break;
-            case 'float':
-                $type = \Swoole\Table::TYPE_FLOAT;
-                $size = 8;
-                break;
-        }
-        return [$type, $size];
     }
 
 }

@@ -7,9 +7,9 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
 /**
- * @Listener(eventName="IMI.INITED", priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED")
  */
-class Init implements IEventListener
+class Run implements IEventListener
 {
     /**
      * 事件处理方法
@@ -18,7 +18,7 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        Tool::initTool();
+        Tool::run();
     }
 
 }

@@ -2,7 +2,6 @@
 namespace Imi\Model;
 
 use Imi\Util\MemoryTableManager;
-use Imi\Model\Parser\ModelParser;
 
 /**
  * Swoole Table 模型

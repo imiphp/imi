@@ -16,7 +16,7 @@ abstract class Tool
 {
     private static $toolName, $toolOperation;
 
-    public static function run()
+    public static function initTool()
     {
         static::outImi();
         static::outStartupInfo();
@@ -33,6 +33,10 @@ abstract class Tool
         Args::init(2);
         // 工具名/操作名
         list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+    }
+
+    public static function run()
+    {
         // 获取回调
         $callable = ToolParser::getInstance()->getCallable(static::$toolName, static::$toolOperation);
         if(null === $callable)

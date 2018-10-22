@@ -18,6 +18,7 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\Annotation\Inject;
 use Imi\Aop\Annotation\RequestInject;
+use Imi\Bean\Annotation\Bean;
 
 class BeanProxy
 {
@@ -183,6 +184,7 @@ class BeanProxy
         {
             $beanName = $className;
         }
+
         $beanProperties = null;
         // 优先从服务器bean配置获取
         try{

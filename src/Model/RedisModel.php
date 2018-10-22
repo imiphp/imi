@@ -3,7 +3,6 @@ namespace Imi\Model;
 
 use Imi\Pool\PoolManager;
 use Imi\Util\MemoryTableManager;
-use Imi\Model\Parser\ModelParser;
 
 /**
  * Redis 模型
