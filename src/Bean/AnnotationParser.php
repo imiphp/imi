@@ -5,6 +5,7 @@ use Imi\Bean\Parser\BaseParser;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Imi\Event\TEvent;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * 注解处理类
@@ -235,6 +236,7 @@ class AnnotationParser
                     });
                 }
             }
+            AnnotationManager::addClassAnnotations($className, ...$this->data[$className]['class']);
         }
         // 属性
         if(isset($this->data[$className]['prop']))
@@ -259,6 +261,7 @@ class AnnotationParser
                         });
                     }
                 }
+                AnnotationManager::addPropertyAnnotations($className, $propName, ...$annotations);
             }
         }
         // 方法
@@ -284,6 +287,7 @@ class AnnotationParser
                         });
                     }
                 }
+                AnnotationManager::addMethodAnnotations($className, $methodName, ...$annotations);
             }
         }
     }
