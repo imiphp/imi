@@ -29,15 +29,7 @@ abstract class BeanFactory
             {
                 File::createDir($path);
             }
-            if(SWOOLE_VERSION > '4.0.4')
-            {
-                File::writeFile($cacheFileName, '<?php ' . $tpl);
-            }
-            else
-            {
-                // 4.0.4及之前版本由于在AIO线程处理了信号，导致奇怪的问题，所以改为阻塞写入文件，性能影响其实也很低，只在第一次写入
-                file_put_contents($cacheFileName, '<?php ' . $tpl);
-            }
+            file_put_contents($cacheFileName, '<?php ' . $tpl);
         }
 
         $object = include $cacheFileName;
