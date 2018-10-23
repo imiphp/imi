@@ -17,7 +17,7 @@ class BeforeHandShake implements IHandShakeEventListener
 {
     /**
      * 默认的 WebSocket 握手
-     * @param RequestEventParam $e
+     * @param HandShakeEventParam $e
      * @return void
      */
     public function handle(HandShakeEventParam $e)

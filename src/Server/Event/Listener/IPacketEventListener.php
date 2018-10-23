@@ -10,7 +10,7 @@ interface IPacketEventListener
 {
     /**
      * 事件处理方法
-     * @param CloseEventParam $e
+     * @param PacketEventParam $e
      * @return void
      */
     public function handle(PacketEventParam $e);
