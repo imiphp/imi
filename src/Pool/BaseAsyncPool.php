@@ -60,7 +60,7 @@ abstract class BaseAsyncPool extends BasePool
                 }
                 if(false === $selectResult)
                 {
-                    throw new \RuntimeException('AsyncPool getResource timeout');
+                    throw new \RuntimeException(sprintf('AsyncPool [%s] getResource timeout', $this->getName()));
                 }
             }
         }
