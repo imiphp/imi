@@ -16,6 +16,7 @@ use Imi\Server\Http\Server;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Imi;
+use Imi\Util\Random;
 
 abstract class App
 {
@@ -77,6 +78,8 @@ abstract class App
         // 初始化Main类
         static::initMains();
         // 清理bean类缓存
+        $subPath = Random::letterAndNumber(32, 32);
+        Imi::setBeanClassCacheSubPath($subPath);
         static::clearBeanCache();
         // 注解处理
         static::$annotation = Annotation::getInstance();
@@ -143,6 +146,14 @@ abstract class App
         }
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
+
+        // 清除框架 Bean类 缓存
+        $path = Imi::getBeanClassCachePath();
+        foreach (File::enum($path) as $file)
+        {
+            unlink($file);
+        }
+        Imi::setBeanClassCacheSubPath(null);
     }
 
     /**

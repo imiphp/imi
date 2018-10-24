@@ -15,6 +15,13 @@ use Imi\Bean\Parser\BeanParser;
 abstract class Imi
 {
     /**
+     * Bean类缓存子目录
+     *
+     * @var string|null
+     */
+    private static $beanClassCacheSubPath;
+
+    /**
      * 处理规则，暂只支持通配符*
      * @param string $rule
      * @return string
@@ -287,6 +294,17 @@ abstract class Imi
     }
 
     /**
+     * 设置Bean类缓存子目录
+     *
+     * @param string|null $subPath
+     * @return void
+     */
+    public static function setBeanClassCacheSubPath($subPath)
+    {
+        static::$beanClassCacheSubPath = $subPath;
+    }
+
+    /**
      * 获取Bean类缓存根目录
      *
      * @param string ...$paths
@@ -299,6 +317,10 @@ abstract class Imi
         if(null === $beanClassCache)
         {
             $beanClassCache = sys_get_temp_dir();
+        }
+        if(null !== static::$beanClassCacheSubPath)
+        {
+            array_unshift($paths, static::$beanClassCacheSubPath);
         }
         return File::path($beanClassCache, 'imiBeanCache', str_replace('\\', '-', App::getNamespace()), ...$paths);
     }

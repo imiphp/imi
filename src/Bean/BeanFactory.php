@@ -3,13 +3,24 @@ namespace Imi\Bean;
 
 use Imi\Config;
 use Imi\Worker;
+use Imi\Util\Imi;
 use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
-use Imi\Util\Imi;
+use Imi\Aop\Annotation\Aspect;
+use Imi\Aop\Annotation\PointCut;
+use Imi\Bean\Annotation\AnnotationManager;
+use \Swoole\Coroutine;
 
 abstract class BeanFactory
 {
+    /**
+     * 协程文件锁集合
+     *
+     * @var array
+     */
+    public static $fileLockMap = [];
+
     /**
      * 实例化
      * @param string $class
@@ -18,21 +29,52 @@ abstract class BeanFactory
      */
     public static function newInstance($class, ...$args)
     {
-        $ref = new \ReflectionClass($class);
-
         $cacheFileName = static::getCacheFileName($class);
-        if(!is_file($cacheFileName))
+
+        if(null === Worker::getWorkerID())
         {
-            $tpl = static::getTpl($ref);
-            $path = dirname($cacheFileName);
-            if(!is_dir($path))
+            if(!is_file($cacheFileName))
             {
-                File::createDir($path);
+                $tpl = static::getTpl(new \ReflectionClass($class));
+                $path = dirname($cacheFileName);
+                if(!is_dir($path))
+                {
+                    File::createDir($path);
+                }
+                file_put_contents($cacheFileName, '<?php ' . $tpl);
             }
-            file_put_contents($cacheFileName, '<?php ' . $tpl);
+        }
+        else
+        {
+            if(isset(static::$fileLockMap[$class]))
+            {
+                static::$fileLockMap[$class][] = Coroutine::getuid();
+                Coroutine::suspend();
+            }
+            static::$fileLockMap[$class] = [];
+            if(!is_file($cacheFileName))
+            {
+                $tpl = static::getTpl(new \ReflectionClass($class));
+                $path = dirname($cacheFileName);
+                if(!is_dir($path))
+                {
+                    File::createDir($path);
+                }
+                file_put_contents($cacheFileName, '<?php ' . $tpl);
+            }
         }
 
         $object = include $cacheFileName;
+
+        if(isset(static::$fileLockMap[$class]))
+        {
+            $coids = static::$fileLockMap[$class];
+            static::$fileLockMap[$class] = null;
+            foreach($coids as $coid)
+            {
+                Coroutine::resume($coid);
+            }
+        }
 
         if(method_exists($object, '__init'))
         {
@@ -111,7 +153,7 @@ TPL;
         $tpl = '';
         foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
         {
-            if($method->isStatic() || '__construct' === $method->name || $method->isFinal())
+            if($method->isStatic() || '__construct' === $method->name || $method->isFinal() || (null !== Worker::getWorkerID() && !static::hasAop($method)))
             {
                 continue;
             }
@@ -284,5 +326,34 @@ TPL;
         {
             return (string)$object;
         }
+    }
+
+    /**
+     * 是否有Aop注入当前方法
+     *
+     * @param \ReflectionMethod $method
+     * @return boolean
+     */
+    private static function hasAop($method)
+    {
+        $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
+        $className = $method->getDeclaringClass()->getName();
+        foreach($aspects as $item)
+        {
+            // 判断是否属于当前类的切面
+            $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+            foreach($pointCutsSet as $methodName => $pointCuts)
+            {
+                $pointCut = reset($pointCuts);
+                foreach($pointCut->allow as $allowItem)
+                {
+                    if(Imi::checkClassRule($allowItem, $className))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

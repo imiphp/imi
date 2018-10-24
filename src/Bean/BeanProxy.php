@@ -61,7 +61,6 @@ class BeanProxy
      */
     public function call($method, $callback, $args)
     {
-        echo $this->refClass->getParentClass()->getName() . ':' . $method . '()', PHP_EOL;
         try{
             // 先尝试环绕
             if($this->parseAround($method, $args, $result, $callback))
