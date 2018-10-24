@@ -52,6 +52,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
                 {
                     $server->sendMessage('app.inited', $i);
                 }
+                echo 'App Inited', PHP_EOL;
             }
             else if($checkResult || (null === $checkResult && $this->checkInitFlagFile($initFlagFile)))
             {
