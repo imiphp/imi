@@ -248,7 +248,7 @@ abstract class ModelManager
      */
     public static function getExtractPropertys($object)
     {
-        $list = static::getAnnotation($object, ExtractProperty::class);
+        $list = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($object), ExtractProperty::class);
         if(null !== $list)
         {
             return $list;
