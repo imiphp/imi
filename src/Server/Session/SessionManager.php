@@ -33,12 +33,6 @@ class SessionManager
     private $handler;
 
     /**
-     * Session处理类
-     * @var string
-     */
-    protected $handlerClass = \Imi\Server\Session\Handler\File::class;
-
-    /**
      * session id
      * @var string
      */
@@ -49,6 +43,26 @@ class SessionManager
      * @var array
      */
     private $data = [];
+
+    /**
+     * 是否对Session数据有修改
+     *
+     * @var boolean
+     */
+    private $isChanged = false;
+
+    /**
+     * 当前是否是新的会话
+     *
+     * @var boolean
+     */
+    private $isNewSession;
+
+    /**
+     * Session处理类
+     * @var string
+     */
+    protected $handlerClass = \Imi\Server\Session\Handler\File::class;
 
     public function __construct(SessionConfig $config = null)
     {
@@ -69,7 +83,8 @@ class SessionManager
             throw new \RuntimeException('Session can not repeated start');
         }
         $this->handler = RequestContext::getServerBean($this->handlerClass);
-        if(null === $sessionID)
+        $this->isNewSession = null === $sessionID;
+        if($this->isNewSession)
         {
             $this->id = $this->handler->createSessionID();
         }
@@ -116,7 +131,10 @@ class SessionManager
      */
     public function commit()
     {
-        $this->save();
+        if($this->isChanged)
+        {
+            $this->save();
+        }
         $this->close();
     }
 
@@ -203,6 +221,7 @@ class SessionManager
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::set($this->data, $name, $value);
+        $this->isChanged = true;
     }
 
     /**
@@ -214,6 +233,7 @@ class SessionManager
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::remove($this->data, $name);
+        $this->isChanged = true;
     }
 
     /**
@@ -227,6 +247,7 @@ class SessionManager
         $name = $this->parseName($name);
         $value = $this->get($name, $default);
         $this->delete($name);
+        $this->isChanged = true;
         return $value;
     }
     
@@ -238,6 +259,7 @@ class SessionManager
     public function clear()
     {
         $this->data = [];
+        $this->isChanged = true;
     }
 
     /**
@@ -266,4 +288,24 @@ class SessionManager
         }
     }
     
+    /**
+     * 是否修改了Session数据
+     *
+     * @return boolean
+     */
+    public function isChanged()
+    {
+        return $this->isChanged;
+    }
+
+    /**
+     * 当前是否是新的会话
+     *
+     * @return boolean
+     */ 
+    public function isNewSession()
+    {
+        return $this->isNewSession;
+    }
+
 }
