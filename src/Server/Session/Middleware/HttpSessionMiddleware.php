@@ -37,7 +37,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
             // 执行其它中间件
             $response = $handler->handle($request);
 
-            if(null === $sessionID)
+            if($this->sessionManager->isNewSession() && $this->sessionManager->isChanged())
             {
                 // 发送cookie
                 $response = $this->sendCookie($response);
