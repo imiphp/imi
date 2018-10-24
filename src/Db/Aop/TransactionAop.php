@@ -1,18 +1,19 @@
 <?php
 namespace Imi\Db\Aop;
 
+use Imi\Db\Db;
+use Imi\Aop\PointCutType;
+use Imi\Bean\BeanFactory;
 use Imi\Db\Parser\DbParser;
+use Imi\Model\ModelManager;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
-use Imi\Db\Db;
-use Imi\Model\ModelManager;
-use Imi\Db\Annotation\TransactionType;
-use Imi\Bean\BeanFactory;
-use Imi\Db\Annotation\RollbackType;
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Db\Annotation\Transaction;
+use Imi\Db\Annotation\RollbackType;
+use Imi\Db\Annotation\TransactionType;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * @Aspect
@@ -22,8 +23,9 @@ class TransactionAop
     /**
      * 自动事务支持
      * @PointCut(
+     *         type=PointCutType::ANNOTATION,
      *         allow={
-     *             "*::*",
+     *             Transaction::class
      *         }
      * )
      * @Around

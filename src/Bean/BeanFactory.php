@@ -11,6 +11,7 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\Annotation\AnnotationManager;
 use \Swoole\Coroutine;
+use Imi\Aop\PointCutType;
 
 abstract class BeanFactory
 {
@@ -338,6 +339,7 @@ TPL;
     {
         $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
         $className = $method->getDeclaringClass()->getName();
+        $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
         foreach($aspects as $item)
         {
             // 判断是否属于当前类的切面
@@ -345,12 +347,29 @@ TPL;
             foreach($pointCutsSet as $methodName => $pointCuts)
             {
                 $pointCut = reset($pointCuts);
-                foreach($pointCut->allow as $allowItem)
+                switch($pointCut->type)
                 {
-                    if(Imi::checkClassRule($allowItem, $className))
-                    {
-                        return true;
-                    }
+                    case PointCutType::METHOD:
+                        foreach($pointCut->allow as $allowItem)
+                        {
+                            if(Imi::checkClassRule($allowItem, $className))
+                            {
+                                return true;
+                            }
+                        }
+                        break;
+                    case PointCutType::ANNOTATION:
+                        foreach($pointCut->allow as $allowItem)
+                        {
+                            foreach($methodAnnotations as $annotation)
+                            {
+                                if($annotation instanceof $allowItem)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        break;
                 }
             }
         }
