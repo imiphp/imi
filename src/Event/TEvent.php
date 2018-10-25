@@ -147,36 +147,39 @@ trait TEvent
         }
     }
 
+    /**
+     * 获取事件触发回调列表
+     *
+     * @param string $name
+     * @return array
+     */
     private function getTriggerCallbacks($name)
     {
         if(!isset($this->events[$name]))
         {
             $this->events[$name] = new KVStorage;
         }
-        if(isset($this->eventQueue[$name]))
+        if(!isset($this->eventQueue[$name]))
         {
-            $callbacks = clone $this->eventQueue[$name];
-        }
-        else
-        {
-            $callbacks = new \SplPriorityQueue;
-        }
-        $data = ClassEventParser::getInstance()->getData();
-        foreach($data as $className => $option)
-        {
-            if($this instanceof $className && isset($option[$name]))
+            $this->eventQueue[$name] = new \SplPriorityQueue;
+            $data = ClassEventParser::getInstance()->getData();
+            foreach($data as $className => $option)
             {
-                foreach($option[$name] as $callback)
+                if($this instanceof $className && isset($option[$name]))
                 {
-                    // 数据映射
-                    $this->events[$name]->attach($callback['className'], [
-                        'callback' => $callback['className'],
-                        'priority' => $callback['priority'],
-                    ]);
-                    $callbacks->insert($callback['className'], $callback['priority']);
+                    foreach($option[$name] as $callback)
+                    {
+                        // 数据映射
+                        $this->events[$name]->attach($callback['className'], [
+                            'callback' => $callback['className'],
+                            'priority' => $callback['priority'],
+                        ]);
+                        $this->eventQueue[$name]->insert($callback['className'], $callback['priority']);
+                    }
                 }
             }
         }
+        $callbacks = clone $this->eventQueue[$name];
         return $callbacks;
     }
 
