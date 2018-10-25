@@ -23,12 +23,12 @@ class Annotation
      * 处理器
      * @var AnnotationParser
      */
-    private $paser;
+    private $parser;
 
     public function __construct()
     {
         $this->loader = new AnnotationLoader;
-        $this->paser = new AnnotationParser;
+        $this->parser = new AnnotationParser;
     }
 
     /**
@@ -55,7 +55,27 @@ class Annotation
      */
     public function getData()
     {
-        return $this->paser->getData();
+        return $this->parser->getData();
+    }
+
+    /**
+     * 获取加载器
+     *
+     * @return AnnotationLoader
+     */
+    public function getLoader()
+    {
+        return $this->loader;
+    }
+
+    /**
+     * 获取处理器
+     *
+     * @return AnnotationParser
+     */
+    public function getParser()
+    {
+        return $this->parser;
     }
 
     /**
@@ -66,7 +86,8 @@ class Annotation
     private function loadModuleAnnotations($namespace)
     {
         $this->loader->loadModuleAnnotations($namespace, function($fileNamespace){
-            $this->paser->parse($fileNamespace);
+            $this->parser->parse($fileNamespace);
         });
     }
+
 }

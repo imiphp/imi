@@ -28,6 +28,8 @@ class Process
      */
     public function start($name, $redirectStdinStdout, $pipeType)
     {
+        // 加载服务器注解
+        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         App::initWorker();
         $args = Args::get();
         $process = ProcessManager::create($name, $args, $redirectStdinStdout, $pipeType);
@@ -50,6 +52,8 @@ class Process
      */
     public function pool($name, $worker, $ipcType, $msgQueueKey)
     {
+        // 加载服务器注解
+        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         App::initWorker();
         $args = Args::get();
         $processPool = ProcessPoolManager::create($name, $worker, $args, $ipcType, $msgQueueKey);

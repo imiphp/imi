@@ -15,6 +15,9 @@ use Imi\Model\Annotation\Column;
 use Imi\Tool\Annotation\Operation;
 use Imi\Model\Annotation\MemoryTable;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Util\Imi as ImiUtil;
+use Imi\Bean\Annotation;
+use \Imi\Main\Helper as MainHelper;
 
 /**
  * @Tool("imi")
@@ -24,22 +27,32 @@ class Imi
     /**
      * 获取预加载信息
      * 
-     * @Operation("getPreloadData")
+     * @Operation("buildRuntime")
      * 
      * @return void
      */
-    public function getPreloadData()
+    public function buildRuntime()
     {
-        App::initWorker();
+        // 加载服务器注解
+        Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        $runtimeInfo = App::getRuntimeInfo();
         $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'Class');
-        $memoryTableColumns = [];
         foreach($annotationsSet as &$item)
         {
             $item['columns'] = $this->getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
         }
-        echo json_encode([
-            'MemoryTable'    =>  $annotationsSet,
-        ]);
+        $runtimeInfo->memoryTable = $annotationsSet;
+        $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getData();
+        $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
+        $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
+        $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
+        $runtimeInfo->parsersData = [];
+        foreach(array_unique($runtimeInfo->annotationParserParsers) as $parserClass)
+        {
+            $parser = $parserClass::getInstance();
+            $runtimeInfo->parsersData[$parserClass] = $parser->getData();
+        }
+        file_put_contents(ImiUtil::getRuntimeFilePath(), \Swoole\Serialize::pack($runtimeInfo));
     }
 
     /**

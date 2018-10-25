@@ -17,6 +17,7 @@ use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Imi;
 use Imi\Util\Random;
+use Imi\Bean\Annotation\AnnotationManager;
 
 abstract class App
 {
@@ -58,6 +59,13 @@ abstract class App
     private static $loader;
 
     /**
+     * 运行时数据
+     *
+     * @var RuntimeInfo
+     */
+    private static $runtimeInfo;
+
+    /**
      * 框架服务运行入口
      * @param string $namespace 应用命名空间
      * @return void
@@ -74,6 +82,7 @@ abstract class App
      */
     private static function initFramework()
     {
+        static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
         // 初始化Main类
         static::initMains();
@@ -213,9 +222,17 @@ abstract class App
         // Worker 进程初始化前置
         Event::trigger('IMI.INIT.WORKER.BEFORE');
 
+        Annotation::getInstance()->getParser()->setData(static::$runtimeInfo->annotationParserData);
+        Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
+        AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);
+        AnnotationManager::setAnnotationRelation(static::$runtimeInfo->annotationManagerAnnotationRelation);
+        foreach(static::$runtimeInfo->parsersData as $parserClass => $data)
+        {
+            $parser = $parserClass::getInstance();
+            $parser->setData($data);
+        }
+
         $appMains = MainHelper::getAppMains();
-        // 加载服务器注解
-        Annotation::getInstance()->init($appMains);
         
         // 日志初始化
         if(static::$container->has('Logger'))
@@ -300,5 +317,26 @@ abstract class App
     public static function getLoader()
     {
         return static::$loader;
+    }
+
+    /**
+     * 获取运行时数据
+     *
+     * @return RuntimeInfo
+     */
+    public static function getRuntimeInfo()
+    {
+        return static::$runtimeInfo;
+    }
+
+    /**
+     * 从文件加载运行时数据
+     *
+     * @param string $fileName
+     * @return void
+     */
+    public static function loadRuntimeInfo($fileName)
+    {
+        static::$runtimeInfo = \Swoole\Serialize::unpack(file_get_contents($fileName));
     }
 }

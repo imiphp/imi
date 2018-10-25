@@ -77,6 +77,8 @@ class HotUpdateProcess extends BaseProcess
                 // 检查文件是否有修改
                 if($monitor->isChanged())
                 {
+                    echo 'Prepare reloading...', PHP_EOL;
+                    exec(Imi::getImiCmd('imi', 'buildRuntime'));
                     // 清除各种缓存
                     $this->clearCache();
                     // 执行重新加载

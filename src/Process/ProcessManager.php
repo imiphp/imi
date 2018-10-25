@@ -65,6 +65,8 @@ abstract class ProcessManager
                     throw new \RuntimeException('lock process lock file error');
                 }
             }
+            // 加载服务器注解
+            \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
             App::initWorker();
             // 进程开始事件
             Event::trigger('IMI.PROCESS.BEGIN', [

@@ -53,6 +53,8 @@ abstract class ProcessPoolManager
             // 随机数播种
             mt_srand();
             $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
+            // 加载服务器注解
+            \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
             App::initWorker();
             // 进程开始事件
             Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [

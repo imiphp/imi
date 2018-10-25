@@ -2,6 +2,8 @@
 namespace Imi\Listener;
 
 use Imi\App;
+use Imi\Util\Imi;
+use Imi\Tool\Tool;
 use Imi\Main\Helper;
 use Imi\Event\EventParam;
 use Imi\Util\AtomicManager;
@@ -10,7 +12,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED",priority=1023)
  */
 class Init implements IEventListener
 {
@@ -21,6 +23,11 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
+        if('server' === Tool::getToolName() && 'start' === Tool::getToolOperation())
+        {
+            exec(Imi::getImiCmd('imi', 'buildRuntime'));
+            App::loadRuntimeInfo(Imi::getRuntimeFilePath());
+        }
         App::getBean('ErrorLog')->register();
         foreach(Helper::getMains() as $main)
         {

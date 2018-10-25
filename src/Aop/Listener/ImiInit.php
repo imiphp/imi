@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Bean\Annotation\AnnotationManager;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED",priority=1024)
  */
 class ImiInit implements IEventListener
 {

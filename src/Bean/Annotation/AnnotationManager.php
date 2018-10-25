@@ -39,6 +39,27 @@ abstract class AnnotationManager
     }
 
     /**
+     * 设置关联关系数据
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function setAnnotationRelation($data)
+    {
+        static::$annotationRelation = $data;
+    }
+
+    /**
+     * 获取关联关系数据
+     *
+     * @return array
+     */
+    public static function getAnnotationRelation()
+    {
+        return static::$annotationRelation;
+    }
+
+    /**
      * 增加类注解
      *
      * @param string $className

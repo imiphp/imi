@@ -375,4 +375,14 @@ abstract class Imi
         }
         return $cmd;
     }
+
+    /**
+     * 获取运行时文件路径
+     *
+     * @return string
+     */
+    public static function getRuntimeFilePath()
+    {
+        return File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.runtime');
+    }
 }

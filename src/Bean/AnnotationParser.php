@@ -195,6 +195,17 @@ class AnnotationParser
     }
 
     /**
+     * 设置处理器数据
+     *
+     * @param array $parsers
+     * @return void
+     */
+    public function setParsers($parsers)
+    {
+        $this->parsers = $parsers;
+    }
+
+    /**
      * 获取注解处理器
      * @param string $className
      * @return \Imi\Bean\Parser\BaseParser
@@ -202,6 +213,16 @@ class AnnotationParser
     public function getParser(string $className)
     {
         return $this->parsers[$className]::getInstance();
+    }
+
+    /**
+     * 获取所有处理器数据
+     *
+     * @return array
+     */
+    public function getParsers()
+    {
+        return $this->parsers;
     }
 
     /**
@@ -299,5 +320,16 @@ class AnnotationParser
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * 设置数据
+     *
+     * @param array $data
+     * @return void
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 }

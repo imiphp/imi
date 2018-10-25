@@ -2,21 +2,22 @@
 namespace Imi\Model\Listener;
 
 use Imi\App;
+use Imi\Util\Imi;
+use Imi\Tool\Tool;
 use Imi\Main\Helper;
+use Imi\Bean\Annotation;
 use Imi\Event\EventParam;
 use Imi\Util\AtomicManager;
 use Imi\Util\ChannelManager;
 use Imi\Event\IEventListener;
-use Imi\Bean\Annotation\Listener;
-use Imi\Util\MemoryTableManager;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Model\Annotation\MemoryTable;
 use Imi\Model\Annotation\Column;
-use Imi\Tool\Tool;
-use Imi\Util\Imi;
+use Imi\Util\MemoryTableManager;
+use Imi\Bean\Annotation\Listener;
+use Imi\Model\Annotation\MemoryTable;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=1)
+ * @Listener(eventName="IMI.INITED", priority=1)
  */
 class Init implements IEventListener
 {
@@ -32,17 +33,12 @@ class Init implements IEventListener
             return;
         }
 
-        $result = exec(Imi::getImiCmd('imi', 'getPreloadData'));
-        $set = json_decode($result, true);
-        if(!$set)
-        {
-            return;
-        }
+        $runtimeInfo = App::getRuntimeInfo();
 
         // 初始化 MemoryTable
-        foreach($set['MemoryTable'] as $item)
+        foreach($runtimeInfo->memoryTable as $item)
         {
-            $memoryTableAnnotation = new MemoryTable($item['annotation']);
+            $memoryTableAnnotation = $item['annotation'];
             MemoryTableManager::addName($memoryTableAnnotation->name, [
                 'size'                  => $memoryTableAnnotation->size,
                 'conflictProportion'    => $memoryTableAnnotation->conflictProportion,

@@ -43,6 +43,17 @@ abstract class BaseParser implements IParser
     }
 
     /**
+     * 设置数据
+     *
+     * @param array $data
+     * @return void
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
      * 是否子类作为单独实例
      * @return boolean
      */
