@@ -28,19 +28,6 @@ abstract class Worker
     private static $workerStartAppComplete = false;
 
     /**
-     * 此方法请勿手动调用，避免错乱！
-     * 设置当前 worker 进程的 ID
-     * 注意，不是进程ID
-     *
-     * @param int $workerID
-     * @return void
-     */
-    public static function setWorkerID($workerID)
-    {
-        static::$workerID = $workerID;
-    }
-
-    /**
      * 获取当前 worker 进程的 ID
      * 注意，不是进程ID
      *
@@ -48,6 +35,18 @@ abstract class Worker
      */
     public static function getWorkerID()
     {
+        if(null === static::$workerID)
+        {
+            $main = ServerManage::getServer('main');
+            if($main)
+            {
+                $workerID = $main->getSwooleServer()->worker_id;
+                if($workerID > -1)
+                {
+                    static::$workerID = $workerID;
+                }
+            }
+        }
         return static::$workerID;
     }
 

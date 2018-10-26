@@ -43,9 +43,6 @@ class WorkerInit implements IWorkerStartEventListener
 
         $GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
 
-        // 当前进程的 WorkerID 设置
-        Worker::setWorkerID($e->server->getSwooleServer()->worker_id);
-
         // 清除当前 worker 进程的 Bean 类缓存
         $path = Imi::getWorkerClassCachePathByWorkerID(Worker::getWorkerID());
 
