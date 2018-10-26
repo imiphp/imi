@@ -305,6 +305,16 @@ abstract class Imi
     }
 
     /**
+     * 获取Bean类缓存子目录
+     *
+     * @return string
+     */
+    public static function getBeanClassCacheSubPath()
+    {
+        return static::$beanClassCacheSubPath;
+    }
+
+    /**
      * 获取Bean类缓存根目录
      *
      * @param string ...$paths

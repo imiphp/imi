@@ -87,9 +87,10 @@ abstract class App
         // 初始化Main类
         static::initMains();
         // 清理bean类缓存
+        // static::clearBeanCache();
+        // 设置临时子目录
         $subPath = Random::letterAndNumber(32, 32);
         Imi::setBeanClassCacheSubPath($subPath);
-        static::clearBeanCache();
         // 注解处理
         static::$annotation = Annotation::getInstance();
         static::$annotation->init([
@@ -107,7 +108,10 @@ abstract class App
     private static function clearBeanCache()
     {
         // 清除框架 Bean类 缓存
+        $subPath = Imi::getBeanClassCacheSubPath();
+        Imi::setBeanClassCacheSubPath(null);
         $path = Imi::getImiClassCachePath();
+        Imi::setBeanClassCacheSubPath($subPath);
         foreach (File::enumAll($path) as $file)
         {
             if(is_file($file))
@@ -177,6 +181,7 @@ abstract class App
             }
         }
         rmdir($path);
+        static::clearBeanCache();
         Imi::setBeanClassCacheSubPath(null);
     }
 
