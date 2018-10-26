@@ -49,9 +49,16 @@ class WorkerInit implements IWorkerStartEventListener
         // 清除当前 worker 进程的 Bean 类缓存
         $path = Imi::getWorkerClassCachePathByWorkerID(Worker::getWorkerID());
 
-        foreach(File::enum($path) as $file)
+        foreach(File::enumAll($path) as $file)
         {
-            unlink((string)$file);
+            if(is_file($file))
+            {
+                unlink($file);
+            }
+            else if(is_dir($file))
+            {
+                rmdir($file);
+            }
         }
 
         // 初始化 worker

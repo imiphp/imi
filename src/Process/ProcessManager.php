@@ -250,7 +250,7 @@ abstract class ProcessManager
      */
     private static function getLockFileName($name)
     {
-        $path = File::path(sys_get_temp_dir(), str_replace('\\', '-', App::getNamespace()), 'processLock');
+        $path = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()), 'processLock');
         if(!is_dir($path))
         {
             File::createDir($path);

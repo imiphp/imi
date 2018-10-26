@@ -316,7 +316,7 @@ abstract class Imi
         $beanClassCache = $main->getConfig()['beanClassCache'] ?? null;
         if(null === $beanClassCache)
         {
-            $beanClassCache = sys_get_temp_dir();
+            $beanClassCache = static::getRuntimePath();
         }
         if(null !== static::$beanClassCacheSubPath)
         {
@@ -377,12 +377,20 @@ abstract class Imi
     }
 
     /**
-     * 获取运行时文件路径
+     * 获取运行时目录路径
      *
-     * @return string
+     * @param string ...$path
+     * @return void
      */
-    public static function getRuntimeFilePath()
+    public static function getRuntimePath(...$path)
     {
-        return File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.runtime');
+        $parentPath = Config::get('@app.runtimePath');
+        if(null === $parentPath)
+        {
+            $parentPath = File::path(dirname($_SERVER['SCRIPT_NAME'], 2), 'runtime');
+        }
+        File::createDir($parentPath);
+        return File::path($parentPath, ...$path);
     }
+
 }

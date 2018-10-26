@@ -160,9 +160,16 @@ class File extends Base
      */
     public function clear()
     {
-        foreach(FileUtil::enum($this->savePath) as $fileName)
+        foreach(FileUtil::enumAll($this->savePath) as $fileName)
         {
-            unlink($fileName);
+            if(is_file($fileName))
+            {
+                unlink($fileName);
+            }
+            else if(is_dir($fileName))
+            {
+                rmdir($fileName);
+            }
         }
     }
 

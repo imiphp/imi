@@ -103,7 +103,6 @@ class ErrorLog
         }
         $logger = App::getBean('Logger');
         $logger->save();
-        exit;
     }
 
     /**

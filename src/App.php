@@ -108,9 +108,16 @@ abstract class App
     {
         // 清除框架 Bean类 缓存
         $path = Imi::getImiClassCachePath();
-        foreach (File::enum($path) as $file)
+        foreach (File::enumAll($path) as $file)
         {
-            unlink($file);
+            if(is_file($file))
+            {
+                unlink($file);
+            }
+            else if(is_dir($file))
+            {
+                rmdir($file);
+            }
         }
     }
 
@@ -158,10 +165,18 @@ abstract class App
 
         // 清除框架 Bean类 缓存
         $path = Imi::getBeanClassCachePath();
-        foreach (File::enum($path) as $file)
+        foreach (File::enumAll($path) as $file)
         {
-            unlink($file);
+            if(is_file($file))
+            {
+                unlink($file);
+            }
+            else if(is_dir($file))
+            {
+                rmdir($file);
+            }
         }
+        rmdir($path);
         Imi::setBeanClassCacheSubPath(null);
     }
 

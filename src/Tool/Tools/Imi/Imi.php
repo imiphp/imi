@@ -52,7 +52,7 @@ class Imi
             $parser = $parserClass::getInstance();
             $runtimeInfo->parsersData[$parserClass] = $parser->getData();
         }
-        file_put_contents(ImiUtil::getRuntimeFilePath(), \Swoole\Serialize::pack($runtimeInfo));
+        file_put_contents(\Imi\Util\Imi::getRuntimePath('runtime.cache'), \Swoole\Serialize::pack($runtimeInfo));
     }
 
     /**

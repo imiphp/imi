@@ -26,7 +26,7 @@ class Init implements IEventListener
         if('server' === Tool::getToolName() && 'start' === Tool::getToolOperation())
         {
             exec(Imi::getImiCmd('imi', 'buildRuntime'));
-            App::loadRuntimeInfo(Imi::getRuntimeFilePath());
+            App::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
         }
         App::getBean('ErrorLog')->register();
         foreach(Helper::getMains() as $main)

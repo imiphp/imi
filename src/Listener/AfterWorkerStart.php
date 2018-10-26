@@ -3,6 +3,7 @@ namespace Imi\Listener;
 
 use Imi\App;
 use Imi\Worker;
+use Imi\Util\Imi;
 use Imi\Util\File;
 use Imi\Event\Event;
 use Imi\Util\Swoole;
@@ -28,7 +29,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
         // 项目初始化事件
         if(!$e->server->getSwooleServer()->taskworker)
         {
-            $initFlagFile = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.app.init');
+            $initFlagFile = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.app.init');
             $checkResult = null;
             if(0 === Worker::getWorkerID() && !($checkResult = $this->checkInitFlagFile($initFlagFile)))
             {

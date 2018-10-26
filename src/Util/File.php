@@ -23,6 +23,22 @@ abstract class File
     }
 
     /**
+     * 遍历文件和目录
+     *
+     * @param string $dirPath
+     * @return \RecursiveIteratorIterator|\ArrayIterator
+     */
+    public static function enumAll($dirPath)
+    {
+        if (!is_dir($dirPath)) {
+            return new \ArrayIterator();
+        }
+        $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
+        $files = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
+        return $files;
+    }
+
+    /**
      * 枚举php文件
      * @param string $dirPath
      * @return \RegexIterator|ArrayIterator

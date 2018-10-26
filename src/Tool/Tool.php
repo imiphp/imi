@@ -2,7 +2,9 @@
 namespace Imi\Tool;
 
 use Imi\App;
+use Imi\Util\Imi;
 use Imi\Util\Args;
+use Imi\Util\File;
 use Imi\Main\Helper;
 use Imi\RequestContext;
 use Imi\Bean\Annotation;
@@ -11,6 +13,7 @@ use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
+use Imi\Event\Event;
 
 abstract class Tool
 {
@@ -88,6 +91,23 @@ abstract class Tool
             call_user_func_array($callable, $args);
             swoole_event_wait();
         }
+        
+        register_shutdown_function(function(){
+            // 清除 Bean 缓存
+            $path = Imi::getBeanClassCachePath();
+            foreach (File::enumAll($path) as $file)
+            {
+                if(is_file($file))
+                {
+                    unlink($file);
+                }
+                else if(is_dir($file))
+                {
+                    rmdir($file);
+                }
+            }
+            rmdir($path);
+        }); 
     }
 
     /**

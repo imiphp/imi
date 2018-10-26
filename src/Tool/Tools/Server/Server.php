@@ -2,16 +2,17 @@
 namespace Imi\Tool\Tools\Server;
 
 use Imi\App;
+use Imi\Util\Imi;
+use Imi\Util\File;
 use Imi\ServerManage;
 use Imi\Tool\ArgType;
-use Imi\Tool\Annotation\Arg;
-use Imi\Tool\Annotation\Tool;
-use Imi\Tool\Annotation\Operation;
 use Swoole\Coroutine;
-use Imi\Util\File;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
+use Imi\Tool\Annotation\Arg;
+use Imi\Tool\Annotation\Tool;
+use Imi\Tool\Annotation\Operation;
 
 /**
  * @Tool("server")
@@ -44,7 +45,7 @@ class Server
     public function stop()
     {
         go(function(){
-            $fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.pid');
+            $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
             if(!is_file($fileName))
             {
                 exit(sprintf('pid file %s is not exists', $fileName));
@@ -74,7 +75,7 @@ class Server
     public function reload()
     {
         go(function(){
-            $fileName = File::path(dirname($_SERVER['SCRIPT_NAME']), str_replace('\\', '-', App::getNamespace()) . '.pid');
+            $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
             if(!is_file($fileName))
             {
                 exit(sprintf('pid file %s is not exists', $fileName));
