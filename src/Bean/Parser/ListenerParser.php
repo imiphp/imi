@@ -30,6 +30,10 @@ class ListenerParser extends BaseParser
      */
     public function setData($data)
     {
+        foreach($this->data as $args)
+        {
+            Event::off(...$args);
+        }
         $this->data = $data;
         foreach($this->data as $args)
         {

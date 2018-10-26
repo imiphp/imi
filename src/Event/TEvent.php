@@ -20,6 +20,13 @@ trait TEvent
     private $eventQueue = [];
 
     /**
+     * 事件更改记录
+     *
+     * @var array
+     */
+    private $eventChangeRecords = [];
+
+    /**
      * 事件监听
      * @param string $name 事件名称
      * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
@@ -32,17 +39,12 @@ trait TEvent
         {
             $this->events[$name] = new KVStorage;
         }
-        if(!isset($this->eventQueue[$name]))
-        {
-            $this->eventQueue[$name] = new \SplPriorityQueue;
-        }
         // 数据映射
         $this->events[$name]->attach($callback, [
             'callback' => $callback,
             'priority' => $priority,
         ]);
-        // 事件队列
-        $this->eventQueue[$name]->insert($callback, $priority);
+        $this->eventChangeRecords[$name] = true;
     }
 
     /**
@@ -58,18 +60,13 @@ trait TEvent
         {
             $this->events[$name] = new KVStorage;
         }
-        if(!isset($this->eventQueue[$name]))
-        {
-            $this->eventQueue[$name] = new \SplPriorityQueue;
-        }
         // 数据映射
         $this->events[$name]->attach($callback, [
             'callback'  => $callback,
             'priority'  => $priority,
             'one'       => true,
         ]);
-        // 事件队列
-        $this->eventQueue[$name]->insert($callback, $priority);
+        $this->eventChangeRecords[$name] = true;
     }
 
     /**
@@ -84,8 +81,7 @@ trait TEvent
         {
             // 数据映射
             $this->events[$name]->detach($callback);
-            // 重建事件队列
-            $this->rebuildEventQueue($name);
+            $this->eventChangeRecords[$name] = true;
         }
     }
 
@@ -143,7 +139,7 @@ trait TEvent
         // 仅触发一次的处理
         if($hasOne)
         {
-            $this->rebuildEventQueue($name);
+            $this->eventChangeRecords[$name] = true;
         }
     }
 
@@ -161,7 +157,7 @@ trait TEvent
         }
         if(!isset($this->eventQueue[$name]))
         {
-            $this->eventQueue[$name] = new \SplPriorityQueue;
+            $this->rebuildEventQueue($name);
             $data = ClassEventParser::getInstance()->getData();
             foreach($data as $className => $option)
             {
@@ -179,6 +175,10 @@ trait TEvent
                 }
             }
         }
+        else if(isset($this->eventChangeRecords[$name]))
+        {
+            $this->rebuildEventQueue($name);
+        }
         $callbacks = clone $this->eventQueue[$name];
         return $callbacks;
     }
@@ -190,9 +190,11 @@ trait TEvent
     private function rebuildEventQueue($name)
     {
         $this->eventQueue[$name] = new \SplPriorityQueue;
-        foreach($this->events[$name] as $event)
+        foreach($this->events[$name] as $object)
         {
+            $event = $this->events[$name][$object];
             $this->eventQueue[$name]->insert($event['callback'], $event['priority']);
         }
+        $this->eventChangeRecords[$name] = null;
     }
 }
