@@ -10,6 +10,8 @@
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.0.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![Hiredis Version](https://img.shields.io/badge/hiredis-%3E=0.1-brightgreen.svg)](https://github.com/redis/hiredis)
 [![IMI Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
+[![Backers on Open Collective](https://opencollective.com/IMI/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/IMI/sponsors/badge.svg)](#sponsors) 
 [![IMI License](https://img.shields.io/github/license/Yurunsoft/imi.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
 
 ## 介绍
@@ -114,3 +116,33 @@ PHP 7 来了，强类型的支持加入，增强了 PHP 的可维护性并提升
 PHP 进入 Swoole 时代，我本着学习 Swoole 并且尝试能否开发一个基于 Swoole 的框架的想法，接触了解到了 EasySwoole 和 Swoft。
 
 喜闻乐见的是，我先参考了一下这两个框架的文档和用法，再简单看了一下源代码。我决定还是先从 Swoole 看起，实战是最可以锻炼人的。于是我走上了 IMI 开发的不归路……
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/undefined/undefinedgraphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/IMI#backer)]
+
+<a href="https://opencollective.com/IMI#backers" target="_blank"><img src="https://opencollective.com/IMI/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/IMI#sponsor)]
+
+<a href="https://opencollective.com/IMI/sponsor/0/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/1/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/2/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/3/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/4/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/5/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/6/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/7/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/8/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/IMI/sponsor/9/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/9/avatar.svg"></a>
+
+
