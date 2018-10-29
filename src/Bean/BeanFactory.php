@@ -154,7 +154,7 @@ TPL;
         $tpl = '';
         foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
         {
-            if($method->isStatic() || '__construct' === $method->name || $method->isFinal() || (null !== Worker::getWorkerID() && !static::hasAop($method)))
+            if($method->isStatic() || '__construct' === $method->name || $method->isFinal() || !static::hasAop($ref, $method))
             {
                 continue;
             }
@@ -332,13 +332,14 @@ TPL;
     /**
      * 是否有Aop注入当前方法
      *
+     * @param \ReflectionClass $class
      * @param \ReflectionMethod $method
      * @return boolean
      */
-    private static function hasAop($method)
+    private static function hasAop($class, $method)
     {
         $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
-        $className = $method->getDeclaringClass()->getName();
+        $className = $class->getName();
         $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
         foreach($aspects as $item)
         {
