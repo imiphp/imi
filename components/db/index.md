@@ -46,6 +46,10 @@ Db::getInstance()->rollBack();
 
 `@Transaction(type=TransactionType::AUTO)`
 
+部分回滚：
+
+`@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1")`
+
 ### 指定表 (table/from)
 
 ```php

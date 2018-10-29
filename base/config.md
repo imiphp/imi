@@ -60,6 +60,8 @@ return [
 return [
     // Swoole >= 4.1.0可用，不设置默认为true，开启一键协程化
     // 'enableCoroutine'    =>    true,
+    // runtime目录设置，默认可不设置，为临时目录
+    // 'runtimePath'   =>  '/tmp/imidemo-runtime/',
     // 主服务器配置
     'mainServer'	=>	[
         // 指定服务器命名空间

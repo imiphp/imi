@@ -33,6 +33,10 @@ return [
 						// 'maxActiveTime' => 3600,
 						// 等待资源最大超时时间，单位：毫秒
 						// 'waitTimeout' => 3000,
+						// 负载均衡-轮流
+						// 'resourceConfigMode' => ResourceConfigMode::TURN,
+						// 负载均衡-随机
+						// 'resourceConfigMode' => ResourceConfigMode::RANDOM,
 					],
 				],
 				'resource' => [
@@ -55,15 +59,28 @@ return [
 						// 同上
 					],
 				],
+				// resource也可以定义多个连接
 				'resource'	=>	[
-					'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
-					'host'		=> '127.0.0.1',
-					'username'		=> 'root',
-					'password'	=> 'root',
-					'database'	=> 'database',
-					// 'timeout' => '建立连接超时时间',
-					// 'charset' => '',
-					// 'options' => [], // PDO连接选项
+					[
+						'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
+						'host'		=> '127.0.0.1',
+						'username'		=> 'root',
+						'password'	=> 'root',
+						'database'	=> 'database',
+						// 'timeout' => '建立连接超时时间',
+						// 'charset' => '',
+						// 'options' => [], // PDO连接选项
+					],
+					[
+						'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
+						'host'		=> '127.0.0.2',
+						'username'		=> 'root',
+						'password'	=> 'root',
+						'database'	=> 'database',
+						// 'timeout' => '建立连接超时时间',
+						// 'charset' => '',
+						// 'options' => [], // PDO连接选项
+					]
 				],
 			],
 		],
