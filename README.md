@@ -120,7 +120,7 @@ PHP 进入 Swoole 时代，我本着学习 Swoole 并且尝试能否开发一个
 ## Contributors
 
 This project exists thanks to all the people who contribute. 
-<a href="https://github.com/undefined/undefinedgraphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/Yurunsoft/IMI/graphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
 
 
 ## Backers
