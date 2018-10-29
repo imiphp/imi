@@ -102,11 +102,10 @@ class Driver extends Base implements IDb
     public function isConnected(): bool
     {
         try{
-            $this->instance->getAttribute(\PDO::ATTR_SERVER_INFO);
-        } catch (\PDOException $e) {
-            return false;
+            return false !== $this->instance->getAttribute(\PDO::ATTR_SERVER_INFO);
+        } catch (\Throwable $e) {
         }
-        return true;
+        return false;
     }
 
     /**
