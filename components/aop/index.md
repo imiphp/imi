@@ -94,7 +94,7 @@ IMI 支持的通知点有：
 
 ## 使用方法
 
-### 注解注入
+### 使用注解注入方法
 
 监听池子的资源获取和释放：
 
@@ -144,6 +144,33 @@ after Imi\Redis\CoroutineRedisPool::release(): 1/1
 方法中写`@PointCut`表示指定切入点，支持通配符
 
 `@After`代表在该方法调用后触发
+
+### 注入带有注解的方法
+
+可参考`imi\src\Db\Aop\TransactionAop.php`文件：
+
+```php
+/**
+ * @Aspect
+ */
+class TransactionAop
+{
+    /**
+     * 自动事务支持
+     * @PointCut(
+     *         type=PointCutType::ANNOTATION,
+     *         allow={
+     *             Transaction::class
+     *         }
+     * )
+     * @Around
+     * @return mixed
+     */
+    public function parseTransaction(AroundJoinPoint $joinPoint)
+    {
+	}
+}
+```
 
 ### 配置注入
 
