@@ -151,7 +151,7 @@ abstract class ObjectArrayHelper
      * @param string $name
      * @return boolean
      */
-    public static function exists(&$object, $name)
+    public static function exists($object, $name)
     {
         return null !== static::get($object, $name);
     }
