@@ -256,7 +256,12 @@ abstract class Validator implements IValidator
                     break;
             }
         }
-        $result = call_user_func_array($annotation->callable, $args);
+        $callable = $annotation->callable;
+        if(is_array($callable) && isset($callable[0]) && '$this' === $callable[0])
+        {
+            $callable[0] = $this;
+        }
+        $result = call_user_func_array($callable, $args);
         if($annotation->inverseResult)
         {
             return !$result;
