@@ -9,7 +9,7 @@ use Imi\Validate\Annotation\Condition;
 /**
  * 验证器类
  */
-abstract class Validator implements IValidator
+class Validator implements IValidator
 {
     use TAnonymous;
 
