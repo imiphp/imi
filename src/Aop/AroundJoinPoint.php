@@ -19,8 +19,12 @@ class AroundJoinPoint extends JoinPoint
      * 调用下一个方法
      * @return mixed
      */
-    public function proceed()
+    public function proceed($args = null)
     {
-        return call_user_func($this->nextProceed, $this->getArgs());
+        if(null === $args)
+        {
+            $args = $this->getArgs();
+        }
+        return call_user_func($this->nextProceed, $args);
     }
 }
