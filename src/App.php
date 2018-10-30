@@ -239,6 +239,8 @@ abstract class App
      */
     public static function initWorker()
     {
+        App::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
+
         // Worker 进程初始化前置
         Event::trigger('IMI.INIT.WORKER.BEFORE');
 
