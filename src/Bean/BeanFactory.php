@@ -30,56 +30,56 @@ abstract class BeanFactory
      */
     public static function newInstance($class, ...$args)
     {
-        $cacheFileName = static::getCacheFileName($class);
+        $isCurrentLock = false;
+        try{
+            $cacheFileName = static::getCacheFileName($class);
 
-        if(null === Worker::getWorkerID())
-        {
-            if(!is_file($cacheFileName))
+            if(null === Worker::getWorkerID())
             {
-                $tpl = static::getTpl(new \ReflectionClass($class));
-                $path = dirname($cacheFileName);
-                if(!is_dir($path))
+                if(!is_file($cacheFileName))
                 {
-                    File::createDir($path);
+                    $tpl = static::getTpl(new \ReflectionClass($class));
+                    $path = dirname($cacheFileName);
+                    if(!is_dir($path))
+                    {
+                        File::createDir($path);
+                    }
+                    file_put_contents($cacheFileName, '<?php ' . $tpl);
                 }
-                file_put_contents($cacheFileName, '<?php ' . $tpl);
             }
-        }
-        else
-        {
-            if(isset(static::$fileLockMap[$class]))
+            else
             {
-                static::$fileLockMap[$class][] = Coroutine::getuid();
-                Coroutine::suspend();
-            }
-            static::$fileLockMap[$class] = [];
-            if(!is_file($cacheFileName))
-            {
-                $tpl = static::getTpl(new \ReflectionClass($class));
-                $path = dirname($cacheFileName);
-                if(!is_dir($path))
+                if(isset(static::$fileLockMap[$class]))
                 {
-                    File::createDir($path);
+                    static::$fileLockMap[$class][] = Coroutine::getuid();
+                    Coroutine::suspend();
                 }
-                file_put_contents($cacheFileName, '<?php ' . $tpl);
+                $isCurrentLock = true;
+                static::$fileLockMap[$class] = [];
+                if(!is_file($cacheFileName))
+                {
+                    $tpl = static::getTpl(new \ReflectionClass($class));
+                    $path = dirname($cacheFileName);
+                    if(!is_dir($path))
+                    {
+                        File::createDir($path);
+                    }
+                    file_put_contents($cacheFileName, '<?php ' . $tpl);
+                }
             }
+
+            $object = include $cacheFileName;
         }
-
-        $object = include $cacheFileName;
-
-        if(isset(static::$fileLockMap[$class]))
-        {
-            $coids = static::$fileLockMap[$class];
-            static::$fileLockMap[$class] = null;
-            foreach($coids as $coid)
+        finally{
+            if($isCurrentLock && isset(static::$fileLockMap[$class]))
             {
-                Coroutine::resume($coid);
+                $coids = static::$fileLockMap[$class];
+                static::$fileLockMap[$class] = null;
+                foreach($coids as $coid)
+                {
+                    Coroutine::resume($coid);
+                }
             }
-        }
-
-        if(method_exists($object, '__init'))
-        {
-            $object->__init(...$args);
         }
         return $object;
     }
@@ -120,10 +120,47 @@ abstract class BeanFactory
             $paramsTpls = static::getMethodParamTpls($constructMethod);
             $constructDefine = $paramsTpls['define'];
             $construct = "parent::__construct({$paramsTpls['call']});";
+            if(static::hasAop($ref, '__construct'))
+            {
+                $aopConstruct = <<<TPL
+        \$__args__ = func_get_args();
+        {$paramsTpls['set_args']}
+        \$__result__ = \$this->beanProxy->call(
+            '__construct',
+            function({$paramsTpls['define']}){
+                \$__args__ = func_get_args();
+                {$paramsTpls['set_args']}
+                return parent::__construct(...\$__args__);
+            },
+            \$__args__
+        );
+
+TPL;
+            }
+            else
+            {
+                $aopConstruct = $construct;
+            }
         }
         else
         {
             $constructDefine = '...$args';
+            $aopConstruct = '';
+        }
+        if($ref->hasMethod('__init'))
+        {
+            if(isset($paramsTpls['call']))
+            {
+                $aopConstruct .= <<<TPL
+        \$this->__init({$paramsTpls['call']});
+TPL;
+            }
+            else
+            {
+                $aopConstruct .= <<<TPL
+        \$this->__init();
+TPL;
+            }
         }
         // 匿名类模版定义
         $tpl = <<<TPL
@@ -133,8 +170,8 @@ return new class(...\$args) extends \\{$class}
 
     public function __construct({$constructDefine})
     {
-        {$construct}
         \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
+        {$aopConstruct}
     }
 
 {$methodsTpl}
@@ -340,37 +377,82 @@ TPL;
     {
         $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
         $className = $class->getName();
-        $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
-        foreach($aspects as $item)
+        if('__construct' === $method)
         {
-            // 判断是否属于当前类的切面
-            $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
-            foreach($pointCutsSet as $methodName => $pointCuts)
+            foreach($aspects as $item)
             {
-                $pointCut = reset($pointCuts);
-                switch($pointCut->type)
+                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                foreach($pointCutsSet as $methodName => $pointCuts)
                 {
-                    case PointCutType::METHOD:
-                        foreach($pointCut->allow as $allowItem)
+                    foreach($pointCuts as $pointCut)
+                    {
+                        switch($pointCut->type)
                         {
-                            if(Imi::checkClassRule($allowItem, $className))
-                            {
-                                return true;
-                            }
-                        }
-                        break;
-                    case PointCutType::ANNOTATION:
-                        foreach($pointCut->allow as $allowItem)
-                        {
-                            foreach($methodAnnotations as $annotation)
-                            {
-                                if($annotation instanceof $allowItem)
+                            case PointCutType::CONSTRUCT:
+                                // 构造方法
+                                foreach($pointCut->allow as $allowItem)
                                 {
-                                    return true;
+                                    if(Imi::checkRuleMatch($allowItem, $className))
+                                    {
+                                        return true;
+                                    }
                                 }
-                            }
+                                break;
+                            case PointCutType::ANNOTATION_CONSTRUCT:
+                                // 注解构造方法
+                                $classAnnotations = AnnotationManager::getClassAnnotations($className);
+                                foreach($pointCut->allow as $allowItem)
+                                {
+                                    foreach($classAnnotations as $annotation)
+                                    {
+                                        if($annotation instanceof $allowItem)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                                break;
                         }
-                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
+            foreach($aspects as $item)
+            {
+                // 判断是否属于当前类的切面
+                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                foreach($pointCutsSet as $methodName => $pointCuts)
+                {
+                    foreach($pointCuts as $pointCut)
+                    {
+                        switch($pointCut->type)
+                        {
+                            case PointCutType::METHOD:
+                                foreach($pointCut->allow as $allowItem)
+                                {
+                                    if(Imi::checkClassRule($allowItem, $className))
+                                    {
+                                        return true;
+                                    }
+                                }
+                                break;
+                            case PointCutType::ANNOTATION:
+                                foreach($pointCut->allow as $allowItem)
+                                {
+                                    foreach($methodAnnotations as $annotation)
+                                    {
+                                        if($annotation instanceof $allowItem)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
                 }
             }
         }

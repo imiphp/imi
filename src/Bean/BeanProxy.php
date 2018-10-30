@@ -112,35 +112,81 @@ class BeanProxy
             $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
             foreach($aspects as $item)
             {
-                // 判断是否属于当前类的切面
+                // 判断是否属于当前类方法的切面
                 $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
                 foreach($pointCutsSet as $methodName => $pointCuts)
                 {
-                    $pointCut = reset($pointCuts);
-
-                    switch($pointCut->type)
+                    foreach($pointCuts as $pointCut)
                     {
-                        case PointCutType::METHOD:
-                            foreach($pointCut->allow as $allowItem)
-                            {
-                                if(Imi::checkClassRule($allowItem, $className))
-                                {
-                                    static::$aspects[$className]->insert([
-                                        'class'     =>  $item['class'],
-                                        'method'    =>  $methodName,
-                                        'pointCut'  =>  $pointCut,
-                                    ], $item['annotation']->priority);
-                                    break;
-                                }
-                            }
-                            break;
-                        case PointCutType::ANNOTATION:
-                            foreach($this->refClass->getMethods() as $method)
-                            {
-                                $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
+                        switch($pointCut->type)
+                        {
+                            case PointCutType::METHOD:
                                 foreach($pointCut->allow as $allowItem)
                                 {
-                                    foreach($methodAnnotations as $annotation)
+                                    if(Imi::checkClassRule($allowItem, $className))
+                                    {
+                                        static::$aspects[$className]->insert([
+                                            'class'     =>  $item['class'],
+                                            'method'    =>  $methodName,
+                                            'pointCut'  =>  $pointCut,
+                                        ], $item['annotation']->priority);
+                                        break;
+                                    }
+                                }
+                                break;
+                            case PointCutType::ANNOTATION:
+                                foreach($this->refClass->getMethods() as $method)
+                                {
+                                    $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
+                                    foreach($pointCut->allow as $allowItem)
+                                    {
+                                        foreach($methodAnnotations as $annotation)
+                                        {
+                                            if($annotation instanceof $allowItem)
+                                            {
+                                                static::$aspects[$className]->insert([
+                                                    'class'     =>  $item['class'],
+                                                    'method'    =>  $methodName,
+                                                    'pointCut'  =>  $pointCut,
+                                                ], $item['annotation']->priority);
+                                                break 3;
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+                // 判断是否属于当前类的切面
+                $pointCuts = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                foreach($pointCuts as $methodName => $pointCuts)
+                {
+                    foreach($pointCuts as $pointCut)
+                    {
+                        switch($pointCut->type)
+                        {
+                            case PointCutType::CONSTRUCT:
+                                // 构造方法
+                                foreach($pointCut->allow as $allowItem)
+                                {
+                                    if(Imi::checkRuleMatch($allowItem, $className))
+                                    {
+                                        static::$aspects[$className]->insert([
+                                            'class'     =>  $item['class'],
+                                            'method'    =>  $methodName,
+                                            'pointCut'  =>  $pointCut,
+                                        ], $item['annotation']->priority);
+                                        break;
+                                    }
+                                }
+                                break;
+                            case PointCutType::ANNOTATION_CONSTRUCT:
+                                // 注解构造方法
+                                $classAnnotations = AnnotationManager::getClassAnnotations($className);
+                                foreach($pointCut->allow as $allowItem)
+                                {
+                                    foreach($classAnnotations as $annotation)
                                     {
                                         if($annotation instanceof $allowItem)
                                         {
@@ -149,12 +195,12 @@ class BeanProxy
                                                 'method'    =>  $methodName,
                                                 'pointCut'  =>  $pointCut,
                                             ], $item['annotation']->priority);
-                                            break 3;
+                                            break 2;
                                         }
                                     }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
                 }
             }
@@ -478,6 +524,13 @@ class BeanProxy
                             }
                         }
                         break;
+                    case PointCutType::CONSTRUCT:
+                    case PointCutType::ANNOTATION_CONSTRUCT:
+                        if('__construct' === $method)
+                        {
+                            $allowResult = true;
+                        }
+                        break;
                 }
                 if($allowResult)
                 {
@@ -522,6 +575,7 @@ class BeanProxy
                 }
             }
         }
+        
         foreach($aspectCache[$className][$method][$pointType] as $item)
         {
             call_user_func($callback, ...$item);
