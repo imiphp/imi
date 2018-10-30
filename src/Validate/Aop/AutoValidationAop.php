@@ -1,10 +1,12 @@
 <?php
 namespace Imi\Validate\Aop;
 
+use Imi\Aop\JoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\BeanFactory;
 use Imi\Validate\Validator;
 use Imi\Aop\AroundJoinPoint;
+use Imi\Aop\Annotation\After;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
@@ -16,7 +18,43 @@ use Imi\Bean\Annotation\AnnotationManager;
 class AutoValidationAop
 {
     /**
-     * 自动事务支持
+     * 类构造方法-自动验证支持
+     * @PointCut(
+     *         type=PointCutType::ANNOTATION_CONSTRUCT,
+     *         allow={
+     *             \Imi\Validate\Annotation\AutoValidation::class
+     *         }
+     * )
+     * @After
+     * @return mixed
+     */
+    public function validateConstruct(JoinPoint $joinPoint)
+    {
+        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
+
+        $annotations = AnnotationManager::getClassAnnotations($className);
+        if(isset($annotations[0]))
+        {
+            $data = [];
+            foreach($joinPoint->getTarget() as $name => $value)
+            {
+                $data[$name] = $value;
+            }
+
+            $validator = new Validator($data, $annotations);
+            if(!$validator->validate())
+            {
+                throw new \InvalidArgumentException(sprintf('%s:__construct() Parameter verification is incorrect: %s', $className, $validator->getMessage()));
+            }
+        }
+        else
+        {
+            $data = null;
+        }
+    }
+
+    /**
+     * 方法调用-自动验证支持
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
@@ -26,7 +64,7 @@ class AutoValidationAop
      * @Around
      * @return mixed
      */
-    public function validate(AroundJoinPoint $joinPoint)
+    public function validateMethod(AroundJoinPoint $joinPoint)
     {
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
         $methodName = $joinPoint->getMethod();
@@ -47,12 +85,16 @@ class AutoValidationAop
                 }
             }
             $data = array_combine($paramNames, $args);
-    
+
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
             {
                 throw new \InvalidArgumentException(sprintf('%s:%s() Parameter verification is incorrect: %s', $className, $methodName, $validator->getMessage()));
             }
+        }
+        else
+        {
+            $data = null;
         }
 
         $joinPoint->proceed($data);
