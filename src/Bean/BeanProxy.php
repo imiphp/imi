@@ -102,8 +102,6 @@ class BeanProxy
     private function init()
     {
         $this->refClass = new \ReflectionClass($this->object);
-        // 属性注入
-        $this->injectProps();
         $className = $this->refClass->getParentClass()->getName();
         // 每个类只需处理一次
         if(!isset(static::$aspects[$className]))
@@ -212,7 +210,7 @@ class BeanProxy
      *
      * @return void
      */
-    private function injectProps()
+    public function injectProps()
     {
         $className = $this->refClass->getParentClass()->getName();
         list($injects, $configs) = static::getInjects($className);

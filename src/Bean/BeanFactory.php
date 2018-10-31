@@ -172,6 +172,7 @@ return new class(...\$args) extends \\{$class}
     {
         \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
         {$aopConstruct}
+        \$this->beanProxy->injectProps();
     }
 
 {$methodsTpl}
