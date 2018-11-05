@@ -71,6 +71,17 @@ class BeanProxy
     }
 
     /**
+     * 修改指向对象
+     *
+     * @param object $object
+     * @return void
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+    }
+
+    /**
      * 魔术方法
      * @param string $method
      * @param array $args
@@ -400,9 +411,17 @@ class BeanProxy
 
         foreach($aroundAspectDoList as $aroundAspectDo)
         {
-            $joinPoint = new AroundJoinPoint('around', $method, $args, $this->object, $this, (null === $nextJoinPoint ? function() use($method, $args, $callback){
+            $joinPoint = new AroundJoinPoint('around', $method, $args, $this->object, $this, (null === $nextJoinPoint ? function($inArgs = null) use($method, &$args, $callback){
+                if(null !== $inArgs)
+                {
+                    $args = $inArgs;
+                }
                 return $this->callOrigin($method, $args, $callback);
-            } : function() use($nextAroundAspectDo, $nextJoinPoint){
+            } : function($inArgs = null) use($nextAroundAspectDo, $nextJoinPoint, &$args){
+                if(null !== $inArgs)
+                {
+                    $args = $inArgs;
+                }
                 return call_user_func($nextAroundAspectDo, $nextJoinPoint);
             }));
             $nextJoinPoint = $joinPoint;

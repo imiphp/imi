@@ -1,11 +1,15 @@
 <?php
 namespace Imi\Controller;
 
+use Imi\Util\TBeanClone;
+
 /**
  * TCP 控制器
  */
 abstract class TcpController
 {
+    use TBeanClone;
+    
     /**
      * 请求
      * @var \Imi\Server\Tcp\Server

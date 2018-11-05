@@ -169,7 +169,7 @@ TPL;
         $tpl = <<<TPL
 return new class(...\$args) extends \\{$class}
 {
-    private \$beanProxy;
+    protected \$beanProxy;
 
     public function __construct({$constructDefine})
     {
