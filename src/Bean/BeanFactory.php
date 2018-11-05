@@ -147,6 +147,9 @@ TPL;
             $constructDefine = '...$args';
             $aopConstruct = '';
         }
+        $aopConstruct .= <<<TPL
+\$this->beanProxy->injectProps();
+TPL;
         if($ref->hasMethod('__init'))
         {
             if(isset($paramsTpls['call']))
@@ -172,7 +175,6 @@ return new class(...\$args) extends \\{$class}
     {
         \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
         {$aopConstruct}
-        \$this->beanProxy->injectProps();
     }
 
 {$methodsTpl}
