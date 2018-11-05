@@ -83,7 +83,6 @@ class AutoValidationAop
             $data = null;
         }
 
-        var_dump($data);
         return $joinPoint->proceed($data);
     }
 
