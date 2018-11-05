@@ -25,7 +25,20 @@ class Init implements IEventListener
     {
         if('server' === Tool::getToolName() && 'start' === Tool::getToolOperation())
         {
-            exec(Imi::getImiCmd('imi', 'buildRuntime'));
+            while(true)
+            {
+                $result = exec(Imi::getImiCmd('imi', 'buildRuntime'));
+                $result = json_decode($result);
+                if(true === $result)
+                {
+                    break;
+                }
+                else
+                {
+                    echo $result, PHP_EOL;
+                    sleep(1);
+                }
+            }
             App::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
         }
         App::getBean('ErrorLog')->register();

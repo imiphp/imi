@@ -33,6 +33,15 @@ class Imi
      */
     public function buildRuntime()
     {
+        ob_start();
+        register_shutdown_function(function(){
+            $result = ob_get_clean();
+            if('' === $result)
+            {
+                $result = true;
+            }
+            echo json_encode($result);
+        });
         // 加载服务器注解
         Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         $runtimeInfo = App::getRuntimeInfo();

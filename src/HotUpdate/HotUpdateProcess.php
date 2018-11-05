@@ -78,7 +78,20 @@ class HotUpdateProcess extends BaseProcess
                 if($monitor->isChanged())
                 {
                     echo 'Prepare reloading...', PHP_EOL;
-                    exec(Imi::getImiCmd('imi', 'buildRuntime'));
+                    while(true)
+                    {
+                        $result = exec(Imi::getImiCmd('imi', 'buildRuntime'));
+                        $result = json_decode($result);
+                        if(true === $result)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            echo $result, PHP_EOL;
+                            sleep(1);
+                        }
+                    }
                     // 清除各种缓存
                     $this->clearCache();
                     // 执行重新加载
