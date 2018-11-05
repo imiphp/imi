@@ -99,6 +99,8 @@ class ErrorLog
         {
             Log::error($e['message'], [
                 'trace' => [],
+                'errorFile'  =>  $e['file'],
+                'errorLine'  =>  $e['line'],
             ]);
         }
         $logger = App::getBean('Logger');
