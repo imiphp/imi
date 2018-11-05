@@ -44,7 +44,9 @@ class AutoValidationAop
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
             {
-                throw new \InvalidArgumentException(sprintf('%s:__construct() Parameter verification is incorrect: %s', $className, $validator->getMessage()));
+                $rule = $validator->getFailRule();
+                $exception = $rule->exception;
+                throw new $exception(sprintf('%s:__construct() Parameter verification is incorrect: %s', $className, $validator->getMessage()), $rule->exCode);
             }
         }
         else
@@ -89,7 +91,9 @@ class AutoValidationAop
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
             {
-                throw new \InvalidArgumentException(sprintf('%s:%s() Parameter verification is incorrect: %s', $className, $methodName, $validator->getMessage()));
+                $rule = $validator->getFailRule();
+                $exception = $rule->exception;
+                throw new $exception(sprintf('%s:%s() Parameter verification is incorrect: %s', $className, $methodName, $validator->getMessage()), $rule->exCode);
             }
         }
         else

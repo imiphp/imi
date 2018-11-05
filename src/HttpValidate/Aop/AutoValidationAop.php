@@ -61,7 +61,9 @@ class AutoValidationAop
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
             {
-                throw new \InvalidArgumentException($validator->getMessage());
+                $rule = $validator->getFailRule();
+                $exception = $rule->exception;
+                throw new $exception($validator->getMessage(), $rule->exCode);
             }
 
             foreach($annotations as $annotation)

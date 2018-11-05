@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Validate\Annotation;
 
+use Imi\Config;
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
@@ -61,4 +62,30 @@ class Condition extends Base
      */
     public $args;
 
+    /**
+     * 异常类
+     *
+     * @var string
+     */
+    public $exception = null;
+
+    /**
+     * 异常编码
+     *
+     * @var integer
+     */
+    public $exCode = 0;
+
+    public function __construct($data = [])
+    {
+        parent::__construct($data);
+        if(null === $this->exception)
+        {
+            $this->exception = Config::get('@app.validation.exception', \InvalidArgumentException::class);
+        }
+        if(null === $this->exCode)
+        {
+            $this->exCode = Config::get('@app.validation.exCode', 0);
+        }
+    }
 }

@@ -35,6 +35,20 @@ class Validator implements IValidator
     protected $results;
 
     /**
+     * 第一条失败的规则
+     *
+     * @var \Imi\Validate\Annotation\Condition
+     */
+    protected $failRule;
+
+    /**
+     * 验证失败的规则列表
+     *
+     * @var array
+     */
+    protected $failRules;
+
+    /**
      * 校验规则
      *
      * @var \Imi\Validate\Annotation\Condition[]
@@ -185,9 +199,11 @@ class Validator implements IValidator
                     $result = false;
                     $message = $this->buildMessage($data, $annotation);
                     $this->results[$annotation->name][] = $message;
+                    $this->failRules[$annotation->name][] = $annotation;
                     if(null === $this->message)
                     {
                         $this->message = $message;
+                        $this->failRule = $annotation;
                     }
                     if($break)
                     {
@@ -270,5 +286,25 @@ class Validator implements IValidator
         {
             return $result;
         }
+    }
+
+    /**
+     * Get 第一条失败的规则
+     *
+     * @return  \Imi\Validate\Annotation\Condition
+     */ 
+    public function getFailRule()
+    {
+        return $this->failRule;
+    }
+
+    /**
+     * Get 验证失败的规则列表
+     *
+     * @return  array
+     */ 
+    public function getFailRules()
+    {
+        return $this->failRules;
     }
 }
