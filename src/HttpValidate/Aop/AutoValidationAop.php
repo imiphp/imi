@@ -56,6 +56,7 @@ class AutoValidationAop
 
             $data['$get'] = $controller->request->get();
             $data['$post'] = $controller->request->post();
+            $data['$body'] = $controller->request->getParsedBody();
 
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
@@ -75,7 +76,7 @@ class AutoValidationAop
                 }
             }
 
-            unset($data['$get'], $data['$post']);
+            unset($data['$get'], $data['$post'], $data['$body']);
 
         }
         else

@@ -20,6 +20,7 @@ class ExtractData extends Base
      * 支持：
      * $get.id
      * $post.content
+     * $body.name
      *
      * @var string
      */
