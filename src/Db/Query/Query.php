@@ -870,32 +870,35 @@ class Query implements IQuery
      */
     public function execute($sql)
     {
-        if(null === $this->queryType)
-        {
-            $this->queryType = QueryType::WRITE;
-        }
-        if(!$this->isInitDb)
-        {
-            $this->db = Db::getInstance($this->poolName, $this->queryType);
-        }
-        if(!$this->db)
-        {
-            return new Result(false);
-        }
-        $stmt = $this->db->prepare($sql);
-        if($stmt)
-        {
-            if($this->defer)
+        try{
+            if(null === $this->queryType)
             {
-                $defer = $stmt->deferExecute($this->binds);
+                $this->queryType = QueryType::WRITE;
             }
-            else
+            if(!$this->isInitDb)
             {
-                $stmt->execute($this->binds) ? $stmt : false;
+                $this->db = Db::getInstance($this->poolName, $this->queryType);
             }
+            if(!$this->db)
+            {
+                return new Result(false);
+            }
+            $stmt = $this->db->prepare($sql);
+            if($stmt)
+            {
+                if($this->defer)
+                {
+                    $defer = $stmt->deferExecute($this->binds);
+                }
+                else
+                {
+                    $stmt->execute($this->binds) ? $stmt : false;
+                }
+            }
+            return new Result($stmt, $this->modelClass, $defer ?? null);
+        } finally {
+            $this->__init();
         }
-        $this->__init();
-        return new Result($stmt, $this->modelClass, $defer ?? null);
     }
 
     /**
