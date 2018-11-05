@@ -97,7 +97,7 @@ class AutoValidationAop
             $data = null;
         }
 
-        $joinPoint->proceed($data);
+        return $joinPoint->proceed($data);
     }
 
 }
