@@ -4,6 +4,7 @@ namespace Imi\Db\Pool;
 use Imi\Db\Interfaces\IDb;
 use Imi\Pool\BasePoolResource;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * 数据库连接池的资源
@@ -28,6 +29,7 @@ class DbResource extends BasePoolResource
      */
     public function open($callback = null)
     {
+        StatementManager::clear($this->db);
         $this->db->open();
         return $this->db->isConnected();
     }

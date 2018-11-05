@@ -10,6 +10,7 @@ use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Transaction\TTransaction;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * Swoole协程MySQL驱动
@@ -330,17 +331,33 @@ class Driver extends Base implements IDb
 
     protected function __prepare(string $sql, array $driverOptions = [])
     {
-        // 处理支持 :xxx 参数格式
-        $this->lastSql = $sql;
-        $execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
-        $stmt = $this->instance->prepare($execSql);
-        yield $stmt;
-        $stmt = yield;
-        if(false === $stmt)
+        $isCache = !isset($driverOptions['IMI_NO_CACHE']) || $driverOptions['IMI_NO_CACHE'];
+        if($isCache && $stmtCache = StatementManager::get($this, $sql))
         {
-            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
+            yield true;
+            yield;
+            $stmt = $stmtCache['statement'];
+            $params = $stmtCache['params'];
         }
-        return BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
+        else
+        {
+            // 处理支持 :xxx 参数格式
+            $this->lastSql = $sql;
+            $execSql = $this->parseSqlNameParamsToQuestionMark($sql, $params);
+            $stmt = $this->instance->prepare($execSql);
+            yield $stmt;
+            $stmt = yield;
+            if(false === $stmt)
+            {
+                throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
+            }
+        }
+        $result = BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
+        if($isCache && !StatementManager::get($this, $sql))
+        {
+            StatementManager::set($result, $params);
+        }
+        return $result;
     }
 
     /**

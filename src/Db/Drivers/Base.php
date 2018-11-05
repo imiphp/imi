@@ -3,9 +3,12 @@ namespace Imi\Db\Drivers;
 
 use Imi\Db\Interfaces\IDb;
 use Imi\Util\Defer;
+use Imi\Util\Traits\THashCode;
 
 abstract class Base implements IDb
 {
+    use THashCode;
+
     /**
      * 启动一个事务
      * @return Defer

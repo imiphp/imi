@@ -8,6 +8,8 @@ use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\App;
 use Imi\ServerManage;
 use Imi\Pool\PoolManager;
+use Imi\Db\Pool\DbResource;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * request事件后置处理
@@ -22,6 +24,14 @@ class AfterRequest implements IRequestEventListener
      */
     public function handle(RequestEventParam $e)
     {
+        // 释放正在被使用的数据库 Statement
+        foreach(RequestContext::get('poolResources', []) as $resource)
+        {
+            if($resource instanceof DbResource)
+            {
+                StatementManager::unUsingAll($resource->getInstance());
+            }
+        }
         // 释放请求的进程池资源
         PoolManager::destroyCurrentContext();
         // 销毁请求上下文

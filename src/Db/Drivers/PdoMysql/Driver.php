@@ -8,6 +8,7 @@ use Imi\Db\Traits\SqlParser;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Transaction\TTransaction;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * PDO MySQL驱动
@@ -294,14 +295,27 @@ class Driver extends Base implements IDb
      */
     public function prepare(string $sql, array $driverOptions = [])
     {
-        // 处理支持 :xxx 参数格式
-        $this->lastSql = $sql;
-        $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
-        if(false === $this->lastStmt)
+        $isCache = !isset($driverOptions['IMI_NO_CACHE']) || $driverOptions['IMI_NO_CACHE'];
+        if($isCache && $stmtCache = StatementManager::get($this, $sql))
         {
-            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
+            $this->lastStmt = $stmtCache['statement'];
         }
-        return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
+        else
+        {
+            // 处理支持 :xxx 参数格式
+            $this->lastSql = $sql;
+            $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
+            if(false === $this->lastStmt)
+            {
+                throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
+            }
+        }
+        $result = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
+        if($isCache && !StatementManager::get($this, $sql))
+        {
+            StatementManager::set($result);
+        }
+        return $result;
     }
 
     /**

@@ -3,8 +3,9 @@
 namespace Imi\Db\Interfaces;
 
 use Imi\Util\Defer;
+use Imi\Util\Interfaces\IHashCode;
 
-interface IDb
+interface IDb extends IHashCode
 {
     /**
      * 打开

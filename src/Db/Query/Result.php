@@ -57,7 +57,7 @@ class Result implements IResult
         {
             if($statement instanceof IStatement)
             {
-                $this->statement = clone $statement;
+                $this->statement = $statement;
                 $this->isSuccess = '' === $this->statement->errorInfo();
             }
             else
@@ -65,6 +65,13 @@ class Result implements IResult
                 $this->isSuccess = false;
             }
         }
+    }
+
+    public function __destruct()
+    {
+        // 手动 gc statement
+        $this->statement = null;
+        gc_collect_cycles();
     }
 
     /**
@@ -287,7 +294,6 @@ class Result implements IResult
         }
         if($this->statement instanceof IStatement)
         {
-            $this->statement = clone $this->statement;
             $this->isSuccess = '' === $this->statement->errorInfo();
         }
         else

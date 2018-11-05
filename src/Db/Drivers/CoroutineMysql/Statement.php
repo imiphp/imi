@@ -7,6 +7,7 @@ use Imi\Util\LazyArrayObject;
 use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * Swoole协程MySQL驱动Statement
@@ -78,6 +79,11 @@ class Statement extends BaseStatement implements IStatement
         $this->data = $data;
         $this->cursor = null === $data ? -1 : 0;
         $this->fetchAllParser = new StatementFetchAllParser;
+    }
+
+    public function __destruct()
+    {
+        StatementManager::unUsing($this->db, $this->sql);
     }
 
     /**
