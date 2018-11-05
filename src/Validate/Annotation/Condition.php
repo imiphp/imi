@@ -74,7 +74,7 @@ class Condition extends Base
      *
      * @var integer
      */
-    public $exCode = 0;
+    public $exCode = null;
 
     public function __construct($data = [])
     {
