@@ -69,6 +69,7 @@ class PoolItem
      */
     public function lock()
     {
+        ++$this->usageCount;
         $this->isFree = false;
     }
 
