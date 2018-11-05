@@ -17,6 +17,7 @@ return [
         'Imi\Process',
         'Imi\HotUpdate',
         'Imi\Validate',
+        'Imi\HttpValidate',
     ],
     'atomics' => [
         'session'
