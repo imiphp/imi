@@ -52,7 +52,7 @@ class AutoValidationAop
                 }
                 $paramNameRelation[$param->name] = $i;
             }
-            $params = array_combine($paramNames, $args);
+            $data = array_combine($paramNames, $args);
 
             $data['$get'] = $controller->request->get();
             $data['$post'] = $controller->request->post();
