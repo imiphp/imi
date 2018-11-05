@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Util;
+namespace Imi\Util\Traits;
 
 trait TBeanClone
 {

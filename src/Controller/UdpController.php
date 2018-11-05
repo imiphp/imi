@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Controller;
 
-use Imi\Util\TBeanClone;
+use Imi\Util\Traits\TBeanClone;
 
 /**
  * UDP 控制器

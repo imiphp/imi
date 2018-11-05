@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Controller;
 
-use Imi\Util\TBeanClone;
+use Imi\Util\Traits\TBeanClone;
 
 /**
  * WebSocket 控制器
