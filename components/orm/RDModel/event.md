@@ -11,11 +11,11 @@
 | BeforeInit | ModelEvents::BEFORE_INIT | 初始化值前，newInstance()触发 |
 | AfterInit | ModelEvents::AFTER_INIT | 初始化值后，newInstance()触发 |
 | BeforeInsert | ModelEvents::BEFORE_INSERT | 插入前，insert()/save()触发 |
-| AfterInsert | ModelEvents::AFTER_INSERT | 插入前，insert()/save()触发 |
+| AfterInsert | ModelEvents::AFTER_INSERT | 插入后，insert()/save()触发 |
 | BeforeUpdate | ModelEvents::BEFORE_UPDATE | 更新前，update()/save()触发 |
-| AfterUpdate | ModelEvents::AFTER_UPDATE | 更新前，update()/save()触发 |
+| AfterUpdate | ModelEvents::AFTER_UPDATE | 更新后，update()/save()触发 |
 | BeforeDelete | ModelEvents::BEFORE_DELETE | 删除前，delete()触发 |
-| AfterDelete | ModelEvents::AFTER_DELETE | 删除前，delete()触发 |
+| AfterDelete | ModelEvents::AFTER_DELETE | 删除后，delete()触发 |
 | BeforeSave | ModelEvents::BEFORE_SAVE | 保存前，先于插入前和更新前触发 |
 | AfterSave | ModelEvents::AFTER_SAVE | 保存后，后于插入后和更新后触发 |
 | BeforeBatchUpdate | ModelEvents::BEFORE_BATCH_UPDATE | 批量更新前 |
