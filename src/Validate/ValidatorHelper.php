@@ -41,7 +41,7 @@ class ValidatorHelper
         // 小数精度
         if(null !== $accuracy)
         {
-            return preg_match('/^\d+\.\d{1,' . ((int)$accuracy) . '}$/', $value) > 0;
+            return preg_match('/^-?\d+\.\d{1,' . ((int)$accuracy) . '}$/', $value) > 0;
         }
         return true;
     }
@@ -94,7 +94,7 @@ class ValidatorHelper
         // 小数精度
         if(null !== $accuracy)
         {
-            return preg_match('/^\d+(\.\d{1,' . ((int)$accuracy) . '})?$/', $value) > 0;
+            return preg_match('/^-?\d+(\.\d{1,' . ((int)$accuracy) . '})?$/', $value) > 0;
         }
         return true;
     }
