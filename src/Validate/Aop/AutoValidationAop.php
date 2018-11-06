@@ -33,6 +33,18 @@ class AutoValidationAop
         $className = BeanFactory::getObjectClass($joinPoint->getTarget());
 
         $annotations = AnnotationManager::getClassAnnotations($className);
+        $propertyAnnotations = AnnotationManager::getPropertiesAnnotations($className);
+
+        foreach($propertyAnnotations as $propertyName => $tAnnotations)
+        {
+            foreach($tAnnotations as $annotation)
+            {
+                $annotation = clone $annotation;
+                $annotation->name = $propertyName;
+                $annotations[] = $annotation;
+            }
+        }
+
         if(isset($annotations[0]))
         {
             $data = [];
