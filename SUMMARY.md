@@ -8,6 +8,12 @@
 * [开始一个新项目](base/new.md)
 * [配置文件](base/config.md)
 
+## 框架核心
+
+* [生命周期](core/lifeCycle.md)
+* [容器](core/container.md)
+* [事件](core/events.md)
+
 ## 功能组件
 
 * [配置读写](components/config/index.md)
@@ -41,18 +47,18 @@
     * [不使用中间件](components/udpServer/noMiddleware.md)
 * [连接池](components/pool/index.md)
 * [ORM](components/orm/index.md)
-  * [数据库模型](components/orm/RDModel.md)
-    * [模型事件](components/orm/RDModel/event.md)
-    * [模型关联](components/orm/relation.md)
-      * [介绍](components/orm/relation/index.md)
-      * [一对一关联](components/orm/relation/oneToOne.md)
-      * [一对多关联](components/orm/relation/oneToMany.md)
-      * [多对多关联](components/orm/relation/manyToMany.md)
-      * [多态一对一关联](components/orm/relation/polymorphicOneToOne.md)
-      * [多态一对多关联](components/orm/relation/polymorphicOneToMany.md)
-      * [多态多对多关联](components/orm/relation/polymorphicManyToMany.md)
-  * [内存表模型](components/orm/MemoryTableModel.md)
-  * [Redis 模型](components/orm/RedisModel.md)
+* [数据库模型](components/orm/RDModel.md)
+  * [模型事件](components/orm/RDModel/event.md)
+  * [模型关联](components/orm/relation.md)
+    * [介绍](components/orm/relation/index.md)
+    * [一对一关联](components/orm/relation/oneToOne.md)
+    * [一对多关联](components/orm/relation/oneToMany.md)
+    * [多对多关联](components/orm/relation/manyToMany.md)
+    * [多态一对一关联](components/orm/relation/polymorphicOneToOne.md)
+    * [多态一对多关联](components/orm/relation/polymorphicOneToMany.md)
+    * [多态多对多关联](components/orm/relation/polymorphicManyToMany.md)
+* [内存表模型](components/orm/MemoryTableModel.md)
+* [Redis 模型](components/orm/RedisModel.md)
 * [数据库](components/db/index.md)
 * [Redis](components/redis/index.md)
 * [缓存](components/cache/index.md)
