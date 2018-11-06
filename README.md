@@ -71,7 +71,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 - [PHP](https://php.net/) >= 7.1
 - [Composer](https://getcomposer.org/)
 - [Swoole](https://www.swoole.com/) >= 4.0.0 (必须启用协程，如使用 Redis 请开启)
-- [Hiredis](https://github.com/redis/hiredis/releases) (需要在安装 Swoole 之前装)
+- [Hiredis](https://github.com/redis/hiredis/releases) (Swoole >= 4.2.6，无需独立编译)
 
 ## 版权信息
 
