@@ -36,7 +36,7 @@ $object = \Imi\RequestContext::getBean('XXX');
 
 `getBean()`时可以传带有完整命名空间的类名，或者别名，我们可以通过`@Bean`注解来定义别名。
 
-你也可以在类里定义一个`__init()`方法，imi 作为第二个构造方法。
+你也可以在类里定义一个`__init()`方法，imi 将它作为第二个构造方法。
 
 执行顺序：`__construct -> injectProps -> __init`
 
