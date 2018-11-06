@@ -13,6 +13,7 @@
 * [生命周期](core/lifeCycle.md)
 * [容器](core/container.md)
 * [事件](core/events.md)
+* [中间件](core/middleware.md)
 
 ## 功能组件
 
