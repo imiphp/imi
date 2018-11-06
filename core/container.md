@@ -36,6 +36,12 @@ $object = \Imi\RequestContext::getBean('XXX');
 
 `getBean()`时可以传带有完整命名空间的类名，或者别名，我们可以通过`@Bean`注解来定义别名。
 
+你也可以在类里定义一个`__init()`方法，imi 作为第二个构造方法。
+
+执行顺序：`__construct -> injectProps -> __init`
+
+`injectProps` 即为属性注入，具体请看章节：[AOP](/components/aop/index.html)
+
 定义：
 
 ```php
@@ -46,6 +52,15 @@ namespace Test;
  */
 class ABCDEFG
 {
+    public function __construct($id)
+    {
+        echo 'first', PHP_EOL;
+    }
+
+    public function __init($id)
+    {
+        echo 'second first', PHP_EOL;
+    }
 }
 ```
 
