@@ -128,7 +128,18 @@ class Validator implements IValidator
         $className = static::__getRealClassName();
         if(!isset(self::$annotationRules[$className]))
         {
-            return self::$annotationRules[$className] = AnnotationManager::getClassAnnotations($className);
+            self::$annotationRules[$className] = AnnotationManager::getClassAnnotations($className);
+
+            $propertyAnnotations = AnnotationManager::getPropertiesAnnotations($className);
+            foreach($propertyAnnotations as $propertyName => $tAnnotations)
+            {
+                foreach($tAnnotations as $annotation)
+                {
+                    $annotation = clone $annotation;
+                    $annotation->name = $propertyName;
+                    self::$annotationRules[$className][] = $annotation;
+                }
+            }
         }
         return self::$annotationRules[$className];
     }
