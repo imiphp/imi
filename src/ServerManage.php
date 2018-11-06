@@ -57,7 +57,7 @@ abstract class ServerManage
         // 主服务器实例对象
         $server = App::getBean($serverClassName, $name, $config, $isSubServer);
         static::$servers[$name] = $server;
-        // 创建服务器对象前置后作
+        // 创建服务器对象后置操作
         Event::trigger('IMI.SERVER.CREATE.AFTER', [
             'name'          => $name,
             'config'        => $config,
