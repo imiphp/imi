@@ -7,6 +7,7 @@ use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
 use Imi\Util\Imi;
 use Imi\Util\File;
+use Imi\App;
 
 /**
  * @Tool("dev")
@@ -27,8 +28,9 @@ class Development
     {
         if(null === $path)
         {
-            $path = File::path(dirname(Imi::getNamespacePath('Imi')), 'ide-helper');
+            $path = File::path(dirname(Imi::getNamespacePath(App::getNamespace())), 'ide-helper');
         }
+        var_dump($path);
         foreach($name as $extName)
         {
             echo 'generating ', $extName, '...', PHP_EOL;
