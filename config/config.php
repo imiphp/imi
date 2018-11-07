@@ -18,6 +18,7 @@ return [
         'Imi\HotUpdate',
         'Imi\Validate',
         'Imi\HttpValidate',
+        'Imi\Enum',
     ],
     'atomics' => [
         'session'

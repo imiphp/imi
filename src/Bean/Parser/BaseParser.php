@@ -23,6 +23,11 @@ abstract class BaseParser implements IParser
     const TARGET_METHOD = 'method';
 
     /**
+     * 注解目标-常量
+     */
+    const TARGET_CONST = 'const';
+
+    /**
      * 数据
      * @var array
      */

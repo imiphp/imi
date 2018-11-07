@@ -145,6 +145,35 @@ abstract class AnnotationManager
     }
 
     /**
+     * 增加常量注解
+     *
+     * @param string $className
+     * @param string $constantName
+     * @param \Imi\Bean\Annotation\Base ...$annotations
+     * @return void
+     */
+    public static function addConstantAnnotations($className, $constantName, ...$annotations)
+    {
+        if(isset(static::$annotations[$className]['Constants'][$constantName]))
+        {
+            static::$annotations[$className]['Constants'][$constantName] = array_merge(static::$annotations[$className]['Properties'][$constantName], $annotations);
+        }
+        else
+        {
+            static::$annotations[$className]['Constants'][$constantName] = $annotations;
+        }
+        foreach($annotations as $annotation)
+        {
+            static::$annotationRelation[get_class($annotation)]['Constant'][] = [
+                'type'      =>  'Constant',
+                'class'     =>  $className,
+                'constant'  =>  $constantName,
+                'annotation'=>  $annotation,
+            ];
+        }
+    }
+
+    /**
      * 获取注解使用点
      *
      * @param string $annotationClassName 注解类名
@@ -266,6 +295,39 @@ abstract class AnnotationManager
     }
 
     /**
+     * 获取指定常量注解
+     * 可选，是否只获取指定类型注解
+     *
+     * @param string $className
+     * @param string $constantName
+     * @param string|null $annotationClassName
+     * @return void
+     */
+    public static function getConstantAnnotations($className, $constantName, $annotationClassName = null)
+    {
+        if(!isset(static::$annotations[$className]['Constants'][$constantName]))
+        {
+            return [];
+        }
+        if(null === $annotationClassName)
+        {
+            return static::$annotations[$className]['Constants'][$constantName];
+        }
+        else
+        {
+            $result = [];
+            foreach(static::$annotations[$className]['Constants'][$constantName] as $annotation)
+            {
+                if($annotation instanceof $annotationClassName)
+                {
+                    $result[] = $annotation;
+                }
+            }
+            return $result;
+        }
+    }
+
+    /**
      * 获取一个类中所有包含指定注解的方法
      *
      * @param string $className
@@ -313,6 +375,33 @@ abstract class AnnotationManager
                 if($annotation instanceof $annotationClassName)
                 {
                     $result[$propertyName][] = $annotation;
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * 获取一个类中所有包含指定注解的常量
+     *
+     * @param string $className
+     * @param string $annotationClassName
+     * @return array
+     */
+    public static function getConstantsAnnotations($className, $annotationClassName = null)
+    {
+        if(null === $annotationClassName)
+        {
+            return static::$annotations[$className]['Constants'] ?? [];
+        }
+        $result = [];
+        foreach(static::$annotations[$className]['Constants'] ?? [] as $constantName => $annotations)
+        {
+            foreach($annotations as $annotation)
+            {
+                if($annotation instanceof $annotationClassName)
+                {
+                    $result[$constantName][] = $annotation;
                 }
             }
         }
