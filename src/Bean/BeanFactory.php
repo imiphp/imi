@@ -311,7 +311,7 @@ TPL;
         {
             if($param->isDefaultValueAvailable())
             {
-                $result .= ' = ' . json_encode($param->getDefaultValue(), JSON_UNESCAPED_SLASHES);
+                $result .= ' = ' . var_export($param->getDefaultValue(), true);
             }
             else
             {
