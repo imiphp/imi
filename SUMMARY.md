@@ -78,6 +78,7 @@
   * [Channel](components/struct/channel.md)
   * [协程 Channel](components/struct/co-channel.md)
   * [MemoryTable](components/struct/memory-table.md)
+  * [枚举](components/struct/enum.md)
 
 ## 工具类
 
