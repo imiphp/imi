@@ -30,7 +30,6 @@ class Development
         {
             $path = File::path(dirname(Imi::getNamespacePath(App::getNamespace())), 'ide-helper');
         }
-        var_dump($path);
         foreach($name as $extName)
         {
             echo 'generating ', $extName, '...', PHP_EOL;
