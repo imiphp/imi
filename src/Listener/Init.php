@@ -27,7 +27,7 @@ class Init implements IEventListener
         {
             while(true)
             {
-                $result = exec(Imi::getImiCmd('imi', 'buildRuntime'));
+                $result = exec(Imi::getImiCmd('imi', 'buildRuntime'), $output);
                 $result = json_decode($result);
                 if(true === $result)
                 {
@@ -35,7 +35,14 @@ class Init implements IEventListener
                 }
                 else
                 {
-                    echo $result, PHP_EOL;
+                    if(null === $result)
+                    {
+                        echo implode(PHP_EOL, $output), PHP_EOL;
+                    }
+                    else
+                    {
+                        echo $result, PHP_EOL;
+                    }
                     sleep(1);
                 }
             }
