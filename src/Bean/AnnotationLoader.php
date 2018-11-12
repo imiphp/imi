@@ -3,6 +3,7 @@ namespace Imi\Bean;
 
 use Imi\Util\File;
 use Imi\Main\Helper as MainHelper;
+use Imi\Util\Imi;
 
 /**
  * 注解加载类
@@ -71,11 +72,18 @@ class AnnotationLoader
                 $tNamespace = implode('\\', $namespaceSplit);
                 if(isset($this->loaded[$tNamespace]))
                 {
-                    $path = $this->loaded[$tNamespace] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_reverse($pops));
-                    // 回调
-                    call_user_func($callback, $namespace, $path);
-                    break;
+                    $path = Imi::getNamespacePath($tNamespace);
                 }
+                else if($path = Imi::getNamespacePath($tNamespace))
+                {
+                }
+                else
+                {
+                    continue;
+                }
+                $path .= DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_reverse($pops));
+                call_user_func($callback, $namespace, $path);
+                break;
             }while(isset($namespaceSplit[0]));
             // 未能成功加载抛出异常
             if(!isset($namespaceSplit[0]))
