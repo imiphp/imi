@@ -27,8 +27,6 @@ class AppInitReceiver implements IPipeMessageEventListener
             {
                 Coroutine::sleep(0.01);
             }
-            
-            Worker::workerStartApp($e->server, $e->getTarget());
 
             if(isset($GLOBALS['WORKER_START_END_RESUME_COIDS']))
             {

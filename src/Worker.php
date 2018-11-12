@@ -68,6 +68,8 @@ abstract class Worker
     public static function inited()
     {
         static::$isInited = true;
+        $mainServer = ServerManage::getServer('main');
+        static::workerStartApp($mainServer, $mainServer);
     }
 
     /**
