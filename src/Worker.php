@@ -101,4 +101,14 @@ abstract class Worker
     {
         return static::$workerStartAppComplete;
     }
+
+    /**
+     * 是否为 task 进程
+     *
+     * @return boolean
+     */
+    public static function isTask()
+    {
+        return ServerManage::getServer('main')->getSwooleServer()->taskworker;
+    }
 }
