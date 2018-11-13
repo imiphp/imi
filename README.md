@@ -40,7 +40,9 @@ IMI 框架底层开发使用了强类型，易维护，性能更强。支持 Aop
 - [x] Redis 模型
 - [x] 日志 (PSR-3 / File + Console)
 - [x] 缓存 (PSR-16 / File + Redis)
+- [x] 验证器 (Valitation)
 - [x] Task 异步任务
+- [x] 进程/进程池
 - [x] 命令行开发辅助工具
 - [x] 业务代码热更新
 
