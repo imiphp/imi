@@ -110,6 +110,10 @@ abstract class Db
                 {
                     $namespace = null;
                 }
+                else
+                {
+                    return $defaultPool;
+                }
             }
             catch(\Throwable $ex)
             {
