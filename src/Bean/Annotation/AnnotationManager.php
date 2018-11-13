@@ -156,7 +156,7 @@ abstract class AnnotationManager
     {
         if(isset(static::$annotations[$className]['Constants'][$constantName]))
         {
-            static::$annotations[$className]['Constants'][$constantName] = array_merge(static::$annotations[$className]['Properties'][$constantName], $annotations);
+            static::$annotations[$className]['Constants'][$constantName] = array_merge(static::$annotations[$className]['Constants'][$constantName], $annotations);
         }
         else
         {
