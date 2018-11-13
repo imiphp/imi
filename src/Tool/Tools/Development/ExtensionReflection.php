@@ -77,6 +77,11 @@ CODE;
                 $args[] = $this->getMethodParamDefine($param);
                 $comments[] = '@var ' . ($param->getType() ?? 'mixed') . ' $' . $param->name;
             }
+            $return = $function->getReturnType();
+            if(null !== $return)
+            {
+                $comments[] = '@return ' . $return;
+            }
             $args = implode(', ', $args);
             if([] === $comments)
             {
@@ -207,6 +212,11 @@ CODE;
                 // 方法参数定义
                 $args[] = $this->getMethodParamDefine($param);
                 $comments[] = '@var ' . ($param->getType() ?? 'mixed') . ' $' . $param->name;
+            }
+            $return = $method->getReturnType();
+            if(null !== $return)
+            {
+                $comments[] = '@return ' . $return;
             }
             $args = implode(', ', $args);
             if([] === $comments)
