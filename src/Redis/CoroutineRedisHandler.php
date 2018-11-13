@@ -149,7 +149,7 @@ use Imi\Util\Defer;
  * @method mixed deferEvalSha(...$args)
  * @method mixed deferScript(...$args)
  */
-class Redis extends \Swoole\Coroutine\Redis
+class CoroutineRedisHandler extends \Swoole\Coroutine\Redis
 {
     use TFixSwoole;
 
