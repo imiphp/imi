@@ -25,6 +25,16 @@ class Route extends Base
     public $url;
 
     /**
+     * 忽略请求地址大小写
+     * null-取HttpRoute中默认值
+     * true-忽略大小写
+     * false-严格判断
+     *
+     * @var boolean|null
+     */
+    public $ignoreCase;
+
+    /**
      * 请求方法
      * 必须是这些请求方法之一才可以被调用
      * 可以是单个方法的字符串，也可以是字符串数组

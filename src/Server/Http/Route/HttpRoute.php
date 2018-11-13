@@ -39,6 +39,13 @@ class HttpRoute extends BaseRoute
     protected $urlCacheNumber = 1024;
 
     /**
+     * 忽略 URL 规则大小写
+     *
+     * @var boolean
+     */
+    protected $ignoreCase = false;
+
+    /**
      * 路由解析处理
      * @param Request $request
      * @return array
@@ -47,11 +54,13 @@ class HttpRoute extends BaseRoute
     {
         foreach($this->rules as $url => $items)
         {
-            if($this->checkUrl($request, $url, $params))
+            $result = $this->checkUrl($request, $url, $params);
+            if($result['result'] || $result['resultIgnoreCase'])
             {
                 foreach($items as $item)
                 {
                     if(
+                        ($result['result'] || ($this->ignoreCase || $item['annotation']->ignoreCase)) &&
                         $this->checkMethod($request, $item['annotation']->method) &&
                         $this->checkDomain($request, $item['annotation']->domain, $domainParams) &&
                         $this->checkParamsGet($request, $item['annotation']->paramsGet) &&
@@ -79,7 +88,7 @@ class HttpRoute extends BaseRoute
      * @param Request $request
      * @param string $url
      * @param array $params url路由中的自定义参数
-     * @return boolean
+     * @return array
      */
     private function checkUrl(Request $request, string $url, &$params)
     {
@@ -106,6 +115,24 @@ class HttpRoute extends BaseRoute
                     'params' => $params,
                 ];
             }
+            if($result['result'])
+            {
+                $result['resultIgnoreCase'] = true;
+            }
+            // 正则加i忽略大小写
+            else if(preg_match_all($rule . 'i', $pathInfo, $matches) > 0)
+            {
+                foreach($fields as $i => $fieldName)
+                {
+                    $params[$fieldName] = $matches[$i + 1][0];
+                }
+                $result['resultIgnoreCase'] = true;
+                $result['params'] = $params;
+            }
+            else
+            {
+                $result['resultIgnoreCase'] = false;
+            }
             // 最大缓存数量处理
             if($this->urlCheckCacheCount >= $this->urlCacheNumber)
             {
@@ -116,7 +143,7 @@ class HttpRoute extends BaseRoute
             ++$this->urlCheckCacheCount;
         }
         $params = $this->urlCheckCache[$pathInfo][$url]['params'];
-        return $this->urlCheckCache[$pathInfo][$url]['result'];
+        return $this->urlCheckCache[$pathInfo][$url];
     }
 
     /**
