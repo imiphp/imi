@@ -244,16 +244,6 @@ abstract class App
         // Worker 进程初始化前置
         Event::trigger('IMI.INIT.WORKER.BEFORE');
 
-        Annotation::getInstance()->getParser()->setData(static::$runtimeInfo->annotationParserData);
-        Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
-        AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);
-        AnnotationManager::setAnnotationRelation(static::$runtimeInfo->annotationManagerAnnotationRelation);
-        foreach(static::$runtimeInfo->parsersData as $parserClass => $data)
-        {
-            $parser = $parserClass::getInstance();
-            $parser->setData($data);
-        }
-
         $appMains = MainHelper::getAppMains();
         
         // 日志初始化
@@ -360,5 +350,14 @@ abstract class App
     public static function loadRuntimeInfo($fileName)
     {
         static::$runtimeInfo = \Swoole\Serialize::unpack(file_get_contents($fileName));
+        Annotation::getInstance()->getParser()->setData(static::$runtimeInfo->annotationParserData);
+        Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
+        AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);
+        AnnotationManager::setAnnotationRelation(static::$runtimeInfo->annotationManagerAnnotationRelation);
+        foreach(static::$runtimeInfo->parsersData as $parserClass => $data)
+        {
+            $parser = $parserClass::getInstance();
+            $parser->setData($data);
+        }
     }
 }
