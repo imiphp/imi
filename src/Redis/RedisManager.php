@@ -9,7 +9,7 @@ use Imi\Pool\PoolManager;
 abstract class RedisManager
 {
     /**
-     * 获取新的数据库连接实例
+     * 获取新的 Redis 连接实例
      * @param string $poolName 连接池名称
      * @return \Swoole\Coroutine\Redis
      */
@@ -19,7 +19,7 @@ abstract class RedisManager
     }
 
     /**
-     * 获取数据库连接实例，每个RequestContext中共用一个
+     * 获取 Redis 连接实例，每个RequestContext中共用一个
      * @param string $poolName 连接池名称
      * @return \Swoole\Coroutine\Redis|null
      */
@@ -29,7 +29,7 @@ abstract class RedisManager
     }
 
     /**
-     * 释放数据库连接实例
+     * 释放 Redis 连接实例
      * @param \Swoole\Coroutine\Redis $redis
      * @return void
      */
