@@ -6,6 +6,22 @@ Redis 连接池配置方式已经在连接池里讲过，这里就不重复了�
 
 与原生 Redis 类操作方式基本一致，这里无需多说。
 
+## 获取对象
+
+```php
+$redis = RedisManager::getInstance();
+$redis->set('imi:redis:test', date('Y-m-d H:i:s'));
+$datetime = $redis->get('imi:redis:test');
+```
+
+## 便捷操作
+
+```php
+use \Imi\Redis\Redis;
+Redis::set('imi:redis:test', date('Y-m-d H:i:s'));
+$datetime = Redis::get('imi:redis:test');
+```
+
 ## 延迟收包
 
 延迟收包的概念请查阅 Swoole 官方文档：https://wiki.swoole.com/wiki/page/587.html
