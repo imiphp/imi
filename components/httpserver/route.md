@@ -26,6 +26,8 @@ return [
 		'HttpRoute'	=>	[
 			// url匹配缓存数量，默认1024
 			'urlCacheNumber'	=>	1024,
+			// 全局忽略 URL 路由大小写
+			// 'ignoreCase'		=>	true,
 		],
 	],
 ];
@@ -58,6 +60,7 @@ return [
 | paramsPost | 判断`POST`参数，用法同`paramsGet` |
 | header | 判断请求头，用法同`paramsGet` |
 | requestMime | 请求的mime类型判断<br>判断请求头中的Content-Type中是否包含这些mime类型之一<br>支持字符串和字符串数组<br> |
+| ignoreCase | 忽略请求地址大小写<br>null-取HttpRoute中默认值<br>true-忽略大小写<br>false-严格判断 |
 
 ### @Action
 
