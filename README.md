@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://raw.githubusercontent.com/Yurunsoft/IMI/dev/logo.png" alt="imi" />
+        <img src="https://raw.githubusercontent.com/Yurunsoft/IMI/dev/res/logo.png" alt="imi" />
     </a>
 </p>
 
@@ -28,33 +28,21 @@ IMI 框架底层开发使用了强类型，易维护，性能更强。支持 Aop
 
 ### 功能组件
 
-- [x] Aop (注解 / 配置文件)
-- [x] Container (PSR-11)
-- [x] 注解
-- [x] 全局事件/类事件
-- [x] HttpServer
-- [x] HttpRequest/HttpResponse (PSR-7)
-- [x] Http 中间件、注解路由、配置文件路由 (PSR-15)
-- [x] Session (File + Redis)
-- [x] View (html + json + xml)
+- [x] Server (Http/Websocket/Tcp/Udp)
+- [x] 容器 (PSR-11)
+- [x] Aop 注入
+- [x] Http 中间件 (PSR-15)
+- [x] MySQL 连接池 (协程&同步，主从，负载均衡)
+- [x] Redis 连接池 (协程&同步，负载均衡)
+- [x] Db 连贯操作
+- [x] 关系型数据库 模型
+- [x] 跨进程共享内存表 模型
+- [x] Redis 模型
 - [x] 日志 (PSR-3 / File + Console)
 - [x] 缓存 (PSR-16 / File + Redis)
-- [x] Redis 连接池
-- [x] 协程 MySQL 连接池
-- [x] PDO 连接池
-- [ ] 协程 PostgreSQL 连接池
-- [x] Db 连贯操作
-- [x] 关系型数据库 模型 ORM
-- [x] 跨进程共享内存表 模型 ORM
-- [x] Redis 模型 ORM
 - [x] Task 异步任务
 - [x] 命令行开发辅助工具
-- [ ] 图形化管理工具
 - [x] 业务代码热更新
-- [ ] RPC 远程调用
-- [x] WebSocket 服务开发
-- [x] TCP 服务开发
-- [x] UDP 服务开发
 
 > 日志、缓存都支持：多驱动 + 多实例 + 统一操作入口
 > 
@@ -145,4 +133,8 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/IMI/sponsor/8/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/IMI/sponsor/9/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/9/avatar.svg"></a>
 
+## 捐赠
 
+<img src="https://raw.githubusercontent.com/Yurunsoft/IMI/dev/res/pay.png"/>
+
+开源不求盈利，多少都是心意，生活不易，随缘随缘……
