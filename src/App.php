@@ -86,8 +86,6 @@ abstract class App
         static::$container = new Container;
         // 初始化Main类
         static::initMains();
-        // 清理bean类缓存
-        // static::clearBeanCache();
         // 设置临时子目录
         $subPath = Random::letterAndNumber(32, 32);
         Imi::setBeanClassCacheSubPath($subPath);
