@@ -5,6 +5,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Server\Event\Param\StartEventParam;
 use Imi\Server\Event\Listener\IStartEventListener;
 use Imi\ServerManage;
+use Imi\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.START")
@@ -18,6 +19,7 @@ class ServerStart implements IStartEventListener
      */
     public function handle(StartEventParam $e)
     {
+        cli_set_process_title(Imi::getProcessName('master'));
         echo 'Server start', PHP_EOL;
         $mainSwooleServer = ServerManage::getServer('main')->getSwooleServer();
         echo 'WorkerNum: ', $mainSwooleServer->setting['worker_num'], ', TaskWorkerNum: ', $mainSwooleServer->setting['task_worker_num'], PHP_EOL;

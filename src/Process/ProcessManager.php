@@ -55,7 +55,10 @@ abstract class ProcessManager
         $processInstance = BeanFactory::newInstance($processOption['className'], $args);
         $process = new \Swoole\Process(function(\Swoole\Process $swooleProcess) use($processInstance, $name, $processOption){
             // 设置进程名称
-            $swooleProcess->name($name);
+            // $swooleProcess->name($name);
+            cli_set_process_title(Imi::getProcessName('process', [
+                'processName'   =>  $name,
+            ]));
             // 随机数播种
             mt_srand();
             if($processOption['Process']->unique)

@@ -8,6 +8,7 @@ use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\Parser\BeanParser;
+use Imi\Tool\Tool;
 
 /**
  * 框架里杂七杂八的各种工具方法
@@ -403,4 +404,69 @@ abstract class Imi
         return File::path($parentPath, ...$path);
     }
 
+    /**
+     * 获取 imi 进程名
+     * 返回false则失败
+     *
+     * @param string $type
+     * @param array $data
+     * @return string|boolean
+     */
+    public static function getProcessName($type, $data = [])
+    {
+        static $defaults = [
+            'master'        =>  'imi:master:{namespace}',
+            'manager'       =>  'imi:manager:{namespace}',
+            'worker'        =>  'imi:worker-{workerId}:{namespace}',
+            'taskWorker'    =>  'imi:taskWorker-{workerId}:{namespace}',
+            'process'       =>  'imi:process-{processName}:{namespace}',
+            'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
+            'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
+        ];
+        if(!isset($defaults[$type]))
+        {
+            return false;
+        }
+        $rule = Config::get('@app.process.' . $type, $defaults[$type]);
+        $data['namespace'] = App::getNamespace();
+        switch($type)
+        {
+            case 'master':
+                break;
+            case 'manager':
+                break;
+            case 'worker':
+                $data['workerId'] = Worker::getWorkerID();
+                break;
+            case 'taskWorker':
+                $data['workerId'] = Worker::getWorkerID();
+                break;
+            case 'process':
+                if(!isset($data['processName']))
+                {
+                    return false;
+                }
+                break;
+            case 'processPool':
+                if(!isset($data['processPoolName'], $data['workerId']))
+                {
+                    return false;
+                }
+                break;
+            case 'tool':
+                $data['toolName'] = Tool::getToolName();
+                $data['toolOperation'] = Tool::getToolOperation();
+                break;
+        }
+        $result = $rule;
+        foreach($data as $k => $v)
+        {
+            if(!is_scalar($v))
+            {
+                continue;
+            }
+            $result = str_replace('{' . $k . '}', $v, $result);
+        }
+        return $result;
+    }
 }

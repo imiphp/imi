@@ -36,6 +36,7 @@ abstract class Tool
         Args::init(2);
         // 工具名/操作名
         list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+        cli_set_process_title(Imi::getProcessName('tool'));
     }
 
     public static function run()
