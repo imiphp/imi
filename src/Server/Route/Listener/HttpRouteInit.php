@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Server\Route\Annotation\Middleware;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\WebSocket\WSConfig;
+use Imi\RequestContext;
 
 /**
  * http服务器路由初始化
@@ -42,6 +43,8 @@ class HttpRouteInit implements IEventListener
         $controllerParser = ControllerParser::getInstance();
         foreach(ServerManage::getServers() as $name => $server)
         {
+            RequestContext::create();
+            RequestContext::set('server', $server);
             $route = $server->getBean('HttpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -107,6 +110,7 @@ class HttpRouteInit implements IEventListener
                     }
                 }
             }
+            RequestContext::destroy();
         }
     }
 
