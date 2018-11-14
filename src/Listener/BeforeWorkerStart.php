@@ -20,7 +20,7 @@ use Imi\Util\Imi;
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
  */
-class WorkerInit implements IWorkerStartEventListener
+class BeforeWorkerStart implements IWorkerStartEventListener
 {
     /**
      * 事件处理方法
@@ -32,13 +32,18 @@ class WorkerInit implements IWorkerStartEventListener
         // 随机数播种
         mt_srand();
 
-        if(!$e->server->getSwooleServer()->taskworker)
+        if($e->server->getSwooleServer()->taskworker)
+        {
+            cli_set_process_title(Imi::getProcessName('taskWorker'));
+        }
+        else
         {
             // swoole 4.1.0 一键协程化
             if(method_exists('\Swoole\Runtime', 'enableCoroutine') && (Helper::getMain(App::getNamespace())->getConfig()['enableCoroutine'] ?? true))
             {
                 \Swoole\Runtime::enableCoroutine(true);
             }
+            cli_set_process_title(Imi::getProcessName('worker'));
         }
 
         $GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
