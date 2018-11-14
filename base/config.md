@@ -62,6 +62,16 @@ return [
     // 'enableCoroutine'    =>    true,
     // runtime目录设置，默认可不设置，为临时目录
     // 'runtimePath'   =>  '/tmp/imidemo-runtime/',
+    // 定义进程名规则
+    // 'process'   =>  [
+    //     'master'        =>  'imi:master:{namespace}',
+    //     'manager'       =>  'imi:manager:{namespace}',
+    //     'worker'        =>  'imi:worker-{workerId}:{namespace}',
+    //     'taskWorker'    =>  'imi:taskWorker-{workerId}:{namespace}',
+    //     'process'       =>  'imi:process-{processName}:{namespace}',
+    //     'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
+    //     'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
+    // ],
     // 主服务器配置
     'mainServer'	=>	[
         // 指定服务器命名空间
