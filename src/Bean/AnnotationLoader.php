@@ -72,7 +72,7 @@ class AnnotationLoader
                 $tNamespace = implode('\\', $namespaceSplit);
                 if(isset($this->loaded[$tNamespace]))
                 {
-                    $path = Imi::getNamespacePath($tNamespace);
+                    $path = $this->loaded[$tNamespace];
                 }
                 else if($path = Imi::getNamespacePath($tNamespace))
                 {
