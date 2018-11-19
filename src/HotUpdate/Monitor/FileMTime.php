@@ -126,12 +126,20 @@ class FileMTime extends BaseMonitor
      */
     protected function parseCheckFile($fileName)
     {
-        $changed = false;
-        $mtime = filemtime($fileName);
-        if(isset($this->files[$fileName]))
+        $isFile = is_file($fileName);
+        if($isFile)
         {
-            // 判断文件修改时间
-            if($this->files[$fileName]['mtime'] !== $mtime)
+            $changed = false;
+            $mtime = filemtime($fileName);
+            if(isset($this->files[$fileName]))
+            {
+                // 判断文件修改时间
+                if($this->files[$fileName]['mtime'] !== $mtime)
+                {
+                    $changed = true;
+                }
+            }
+            else
             {
                 $changed = true;
             }
@@ -141,8 +149,8 @@ class FileMTime extends BaseMonitor
             $changed = true;
         }
         $this->files[$fileName] = [
-            'exists'    => true,
-            'mtime'        => $mtime,
+            'exists'    => $isFile,
+            'mtime'     => $mtime,
         ];
         return $changed;
     }
