@@ -88,7 +88,6 @@ abstract class App
         static::initMains();
         // 设置临时子目录
         $subPath = Random::letterAndNumber(32, 32);
-        Imi::setBeanClassCacheSubPath($subPath);
         // 注解处理
         static::$annotation = Annotation::getInstance();
         static::$annotation->init([
@@ -96,31 +95,6 @@ abstract class App
         ]);
         Event::trigger('IMI.INITED');
         static::$isInited = true;
-    }
-
-    /**
-     * 清理bean类缓存
-     *
-     * @return void
-     */
-    private static function clearBeanCache()
-    {
-        // 清除框架 Bean类 缓存
-        $subPath = Imi::getBeanClassCacheSubPath();
-        Imi::setBeanClassCacheSubPath(null);
-        $path = Imi::getImiClassCachePath();
-        Imi::setBeanClassCacheSubPath($subPath);
-        foreach (File::enumAll($path) as $file)
-        {
-            if(is_file($file))
-            {
-                unlink($file);
-            }
-            else if(is_dir($file))
-            {
-                rmdir($file);
-            }
-        }
     }
 
     /**
@@ -164,23 +138,6 @@ abstract class App
         }
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
-
-        // 清除框架 Bean类 缓存
-        $path = Imi::getBeanClassCachePath();
-        foreach (File::enumAll($path) as $file)
-        {
-            if(is_file($file))
-            {
-                unlink($file);
-            }
-            else if(is_dir($file))
-            {
-                rmdir($file);
-            }
-        }
-        rmdir($path);
-        static::clearBeanCache();
-        Imi::setBeanClassCacheSubPath(null);
     }
 
     /**

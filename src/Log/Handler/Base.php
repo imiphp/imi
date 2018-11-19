@@ -41,7 +41,7 @@ abstract class Base
     /**
      * [实验性功能]
      * 是否精简调用跟踪
-     * 可能会删去匿名类调用、AOP调用跟踪
+     * 可能会删去Bean类调用、AOP调用跟踪
      *
      * @var boolean
      */

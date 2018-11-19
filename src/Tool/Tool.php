@@ -93,22 +93,6 @@ abstract class Tool
             swoole_event_wait();
         }
         
-        register_shutdown_function(function(){
-            // 清除 Bean 缓存
-            $path = Imi::getBeanClassCachePath();
-            foreach (File::enumAll($path) as $file)
-            {
-                if(is_file($file))
-                {
-                    unlink($file);
-                }
-                else if(is_dir($file))
-                {
-                    rmdir($file);
-                }
-            }
-            rmdir($path);
-        }); 
     }
 
     /**

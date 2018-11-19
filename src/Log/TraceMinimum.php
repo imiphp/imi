@@ -2,6 +2,8 @@
 namespace Imi\Log;
 
 use Imi\Util\Imi;
+use Imi\Bean\IBean;
+use Imi\Bean\BeanFactory;
 
 
 class TraceMinimum
@@ -21,16 +23,16 @@ class TraceMinimum
     private $eachIndex;
 
     /**
-     * 是否正在查找匿名类真正的调用追踪
+     * 是否正在查找真正的调用追踪
      *
      * @var boolean
      */
-    private $isFindingAnonymousRealCall = false;
+    private $isFindingBeanRealCall = false;
     
     /**
-     * 匿名类调用的真实类名
+     * 调用的真实类名
      */
-    private $anonymousRealCallFileName = '';
+    private $beanRealCallRealClassName = '';
 
     /**
      * trace精简处理
@@ -46,11 +48,11 @@ class TraceMinimum
         for($this->eachIndex = $traceCount - 1; $this->eachIndex >= 0; --$this->eachIndex)
         {
             $traceLine = $trace[$this->eachIndex];
-            if($this->isFindingAnonymousRealCall)
+            if($this->isFindingBeanRealCall)
             {
                 if($this->isKeep($traceLine))
                 {
-                    $this->isFindingAnonymousRealCall = false;
+                    $this->isFindingBeanRealCall = false;
                 }
                 else
                 {
@@ -59,17 +61,21 @@ class TraceMinimum
             }
             else
             {
-                if(isset($traceLine['class']) && 0 === strpos($traceLine['class'], 'class@anonymous'))
+                if(isset($traceLine['class']))
                 {
-                    $this->anonymousRealCallFileName = $this->getAnonymousRealCallFileName();
-                    if(null === $this->anonymousRealCallFileName)
+                    $ref = new \ReflectionClass($traceLine['class']);
+                    if($ref->implementsInterface(IBean::class))
                     {
-                        continue;
+                        $this->beanRealCallRealClassName = $this->getBeanRealCallRealClassName();
+                        if(null === $this->beanRealCallRealClassName)
+                        {
+                            continue;
+                        }
+                        $this->isFindingBeanRealCall = true;
+                        unset($trace[$this->eachIndex]);
+                        --$this->eachIndex;
+                        unset($trace[$this->eachIndex]);
                     }
-                    $this->isFindingAnonymousRealCall = true;
-                    unset($trace[$this->eachIndex]);
-                    --$this->eachIndex;
-                    unset($trace[$this->eachIndex]);
                 }
             }
         }
@@ -83,46 +89,22 @@ class TraceMinimum
      */
     private function isKeep()
     {
-        return isset($this->trace[$this->eachIndex]['file']) && $this->trace[$this->eachIndex]['file'] === $this->anonymousRealCallFileName;
+        return isset($this->trace[$this->eachIndex]['class']) && $this->trace[$this->eachIndex]['class'] === $this->beanRealCallRealClassName;
     }
 
     /**
-     * 获取匿名类调用的真实文件名
+     * 获取调用的真实文件名
      *
      * @return string
      */
-    private function getAnonymousRealCallFileName()
+    private function getBeanRealCallRealClassName()
     {
         $nextTraceLine = $this->trace[$this->eachIndex - 1] ?? null;
         if(null === $nextTraceLine)
         {
             return null;
         }
-        return $nextTraceLine['file'] ?? null;
+        return $nextTraceLine['class'] ? BeanFactory::getObjectClass($nextTraceLine['class']) : null;
     }
 
-    /**
-     * 根据文件名获取trace行的类名
-     *
-     * @param string $traceLine
-     * @return void
-     */
-    private function getCallClassName($traceLine)
-    {
-        if(!isset($traceLine['file']))
-        {
-            return null;
-        }
-        $beanCachePath = Imi::getBeanClassCachePath();
-        $pattern = '/' . preg_quote($beanCachePath, '/') . '\/([0-9]+\/)?(\S+)/';
-        if(preg_match($pattern, $traceLine['file'], $matches) > 0)
-        {
-            $pathInfo = pathinfo($matches[2]);
-            return str_replace(DIRECTORY_SEPARATOR, '\\', $pathInfo['dirname']) . '\\' . $pathInfo['filename'];
-        }
-        else
-        {
-            return null;
-        }
-    }
 }

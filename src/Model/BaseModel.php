@@ -15,6 +15,7 @@ use Imi\Model\Annotation\Serializable;
 use Imi\Model\Event\Param\InitEventParam;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Relation\AutoSelect;
+use Imi\Bean\IBean;
 
 /**
  * 模型基类
@@ -44,7 +45,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __construct($data = [])
     {
-        if(!ClassObject::isAnymous($this))
+        if(!$this instanceof IBean)
         {
             $this->__init();
         }

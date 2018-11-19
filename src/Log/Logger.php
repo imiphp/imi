@@ -11,12 +11,15 @@ use Imi\Bean\BeanFactory;
 use Psr\Log\AbstractLogger;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Imi;
+use Imi\Util\Traits\TBeanRealClass;
 
 /**
  * @Bean("Logger")
  */
 class Logger extends AbstractLogger
 {
+    use TBeanRealClass;
+
     /**
      * 核心处理器
      * @var array
@@ -76,13 +79,6 @@ class Logger extends AbstractLogger
     protected $records = [];
     
     /**
-     * 当前类在缓存中的文件路径
-     *
-     * @var string
-     */
-    private $beanCacheFilePath;
-
-    /**
      * 定时器ID
      *
      * @var int
@@ -95,7 +91,6 @@ class Logger extends AbstractLogger
         {
             $this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-        $this->beanCacheFilePath = Imi::getBeanClassCachePath('%s', str_replace('\\', DIRECTORY_SEPARATOR, self::class) . '.php');
     }
 
     public function __destruct()
@@ -148,23 +143,13 @@ class Logger extends AbstractLogger
     {
         $index = null;
         $hasNull = false;
-        $beanCacheFilePath = sprintf($this->beanCacheFilePath, Worker::getWorkerID() ?? 'imi');
+        $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
-            if(isset($item['file']))
+            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
             {
-                if($hasNull)
-                {
-                    if($beanCacheFilePath === $item['file'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
-                    {
-                        $index = $i + 2;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                $hasNull = true;
+                $index = $i + 2;
+                break;
             }
         }
         if(null === $index)
@@ -183,23 +168,13 @@ class Logger extends AbstractLogger
     {
         $index = null;
         $hasNull = false;
-        $beanCacheFilePath = sprintf($this->beanCacheFilePath, Worker::getWorkerID() ?? 'imi');
+        $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
-            if(isset($item['file']))
+            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
             {
-                if($hasNull)
-                {
-                    if($beanCacheFilePath === $item['file'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
-                    {
-                        $index = $i + 1;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                $hasNull = true;
+                $index = $i + 1;
+                break;
             }
         }
         return [$backtrace[$index]['file'] ?? '', $backtrace[$index]['line'] ?? 0];

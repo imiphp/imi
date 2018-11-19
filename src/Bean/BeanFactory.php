@@ -16,11 +16,18 @@ use Imi\Aop\PointCutType;
 abstract class BeanFactory
 {
     /**
-     * 协程文件锁集合
+     * 计数器
+     *
+     * @var integer
+     */
+    private static $counter = 0;
+
+    /**
+     * 类名映射
      *
      * @var array
      */
-    public static $fileLockMap = [];
+    private static $classNameMap = [];
 
     /**
      * 实例化
@@ -30,86 +37,34 @@ abstract class BeanFactory
      */
     public static function newInstance($class, ...$args)
     {
-        $isCurrentLock = false;
-        try{
-            $cacheFileName = static::getCacheFileName($class);
-
-            if(null === Worker::getWorkerID())
-            {
-                if(!is_file($cacheFileName))
-                {
-                    $tpl = static::getTpl(new \ReflectionClass($class));
-                    $path = dirname($cacheFileName);
-                    if(!is_dir($path))
-                    {
-                        File::createDir($path);
-                    }
-                    file_put_contents($cacheFileName, '<?php ' . $tpl);
-                }
-            }
-            else
-            {
-                if(isset(static::$fileLockMap[$class]))
-                {
-                    static::$fileLockMap[$class][] = Coroutine::getuid();
-                    Coroutine::suspend();
-                }
-                $isCurrentLock = true;
-                static::$fileLockMap[$class] = [];
-                if(!is_file($cacheFileName))
-                {
-                    $tpl = static::getTpl(new \ReflectionClass($class));
-                    $path = dirname($cacheFileName);
-                    if(!is_dir($path))
-                    {
-                        File::createDir($path);
-                    }
-                    file_put_contents($cacheFileName, '<?php ' . $tpl);
-                }
-            }
-
-            $object = include $cacheFileName;
+        if(!isset(static::$classNameMap[$class]))
+        {
+            $ref = new \ReflectionClass($class);
+            $className = static::getNewClassName($ref->getShortName());
+            $tpl = static::getTpl($ref, $className);
+            eval($tpl);
+            static::$classNameMap[$class] = $className;
         }
-        finally{
-            if($isCurrentLock && isset(static::$fileLockMap[$class]))
-            {
-                $coids = static::$fileLockMap[$class];
-                static::$fileLockMap[$class] = null;
-                foreach($coids as $coid)
-                {
-                    Coroutine::resume($coid);
-                }
-            }
-        }
-        return $object;
+        return new static::$classNameMap[$class](...$args);
     }
 
     /**
-     * 获取类缓存文件名
+     * 获取新的类名
      *
-     * @param string $className
      * @return string
      */
-    private static function getCacheFileName($className)
+    private static function getNewClassName($className)
     {
-        $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
-        if(null === ($workerID = Worker::getWorkerID()))
-        {
-            return Imi::getImiClassCachePath($fileName);
-        }
-        else
-        {
-            return Imi::getWorkerClassCachePathByWorkerID($workerID, $fileName);
-        }
+        return $className . '__Bean__' . (++static::$counter);
     }
 
     /**
      * 获取类模版
      * @param \ReflectionClass $ref
-     * @param mixed ...$args
+     * @param string $newClassName
      * @return string
      */
-    private static function getTpl($ref)
+    private static function getTpl($ref, $newClassName)
     {
         $class = $ref->getName();
         $methodsTpl = static::getMethodsTpl($ref, $class);
@@ -165,9 +120,9 @@ TPL;
 TPL;
             }
         }
-        // 匿名类模版定义
+        // 类模版定义
         $tpl = <<<TPL
-return new class(...\$args) extends \\{$class}
+class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 {
     protected \$beanProxy;
 
@@ -354,7 +309,7 @@ TPL;
     {
         if(is_object($object))
         {
-            if(ClassObject::isAnymous($object))
+            if($object instanceof IBean)
             {
                 return get_parent_class($object);
             }

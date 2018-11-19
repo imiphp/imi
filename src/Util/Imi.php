@@ -16,13 +16,6 @@ use Imi\Tool\Tool;
 abstract class Imi
 {
     /**
-     * Bean类缓存子目录
-     *
-     * @var string|null
-     */
-    private static $beanClassCacheSubPath;
-
-    /**
      * 处理规则，暂只支持通配符*
      * @param string $rule
      * @return string
@@ -292,82 +285,6 @@ abstract class Imi
             $value = $ref->getDefaultProperties()[$propertyName] ?? null;
         }
         return $value;
-    }
-
-    /**
-     * 设置Bean类缓存子目录
-     *
-     * @param string|null $subPath
-     * @return void
-     */
-    public static function setBeanClassCacheSubPath($subPath)
-    {
-        static::$beanClassCacheSubPath = $subPath;
-    }
-
-    /**
-     * 获取Bean类缓存子目录
-     *
-     * @return string
-     */
-    public static function getBeanClassCacheSubPath()
-    {
-        return static::$beanClassCacheSubPath;
-    }
-
-    /**
-     * 获取Bean类缓存根目录
-     *
-     * @param string ...$paths
-     * @return string
-     */
-    public static function getBeanClassCachePath(...$paths)
-    {
-        $main = Helper::getMain(App::getNamespace());
-        $beanClassCache = $main->getConfig()['beanClassCache'] ?? null;
-        if(null === $beanClassCache)
-        {
-            $beanClassCache = static::getRuntimePath();
-        }
-        if(null !== static::$beanClassCacheSubPath)
-        {
-            array_unshift($paths, static::$beanClassCacheSubPath);
-        }
-        return File::path($beanClassCache, 'imiBeanCache', str_replace('\\', '-', App::getNamespace()), ...$paths);
-    }
-
-    /**
-     * 获取IMI框架Bean类缓存目录
-     *
-     * @param string ...$paths
-     * @return string
-     */
-    public static function getImiClassCachePath(...$paths)
-    {
-        return File::path(static::getBeanClassCachePath(), 'imi', ...$paths);
-    }
-
-    /**
-     * 获取Worker进程Bean类缓存目录
-     *
-     * @param string ...$paths
-     * @return string
-     */
-    public static function getWorkerClassCachePath(...$paths)
-    {
-        return static::getWorkerClassCachePathByWorkerID(Worker::getWorkerID(), ...$paths);
-    }
-
-    /**
-     * 获取Worker进程Bean类缓存目录，手动传入workerID
-     *
-     * @param int $workerID
-     * @param string ...$paths
-     * @return string
-     */
-    public static function getWorkerClassCachePathByWorkerID($workerID, ...$paths)
-    {
-        return File::path(static::getBeanClassCachePath(), $workerID, ...$paths);
     }
 
     /**

@@ -48,21 +48,6 @@ class BeforeWorkerStart implements IWorkerStartEventListener
 
         $GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
 
-        // 清除当前 worker 进程的 Bean 类缓存
-        $path = Imi::getWorkerClassCachePathByWorkerID(Worker::getWorkerID());
-
-        foreach(File::enumAll($path) as $file)
-        {
-            if(is_file($file))
-            {
-                unlink($file);
-            }
-            else if(is_dir($file))
-            {
-                rmdir($file);
-            }
-        }
-
         // 初始化 worker
         App::initWorker();
     }

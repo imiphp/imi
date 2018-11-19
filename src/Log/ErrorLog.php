@@ -10,18 +10,14 @@ use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Imi;
+use Imi\Util\Traits\TBeanRealClass;
 
 /**
  * @Bean("ErrorLog")
  */
 class ErrorLog
 {
-    /**
-     * 当前类在缓存中的文件路径
-     *
-     * @var string
-     */
-    private $beanCacheFilePath;
+    use TBeanRealClass;
 
     /**
      * 注册错误监听
@@ -31,7 +27,6 @@ class ErrorLog
     public function register()
     {
         error_reporting(0);
-        $this->beanCacheFilePath = Imi::getImiClassCachePath(str_replace('\\', DIRECTORY_SEPARATOR, self::class) . '.php');
         register_shutdown_function([$this, 'onShutdown']);
         set_error_handler([$this, 'onError']);
     }
@@ -138,22 +133,13 @@ class ErrorLog
         $backtrace = debug_backtrace();
         $index = null;
         $hasNull = false;
+        $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
-            if(isset($item['file']))
+            if($realClassName === $item['class'])
             {
-                if($hasNull)
-                {
-                    if($this->beanCacheFilePath === $item['file'])
-                    {
-                        $index = $i + 2;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                $hasNull = true;
+                $index = $i + 2;
+                break;
             }
         }
         if(null === $index)

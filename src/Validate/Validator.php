@@ -2,7 +2,7 @@
 namespace Imi\Validate;
 
 use Imi\Util\ObjectArrayHelper;
-use Imi\Util\Traits\TAnonymous;
+use Imi\Util\Traits\TBeanRealClass;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Validate\Annotation\Condition;
 
@@ -11,7 +11,7 @@ use Imi\Validate\Annotation\Condition;
  */
 class Validator implements IValidator
 {
-    use TAnonymous;
+    use TBeanRealClass;
 
     /**
      * 验证器中的数据

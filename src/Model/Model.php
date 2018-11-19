@@ -8,7 +8,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Model\Relation\Query;
 use Imi\Util\LazyArrayObject;
 use Imi\Model\Relation\Update;
-use Imi\Util\Traits\TAnonymous;
+use Imi\Util\Traits\TBeanRealClass;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
@@ -19,7 +19,7 @@ use Imi\Model\Event\Param\InitEventParam;
  */
 abstract class Model extends BaseModel
 {
-    use TAnonymous;
+    use TBeanRealClass;
 
     public function __init($data = [])
     {

@@ -9,6 +9,7 @@ use Imi\Util\Text;
 use Imi\Util\Imi;
 use Imi\Util\ClassObject;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\IBean;
 
 /**
  * 视图注解处理器
@@ -42,7 +43,7 @@ class ViewParser extends BaseParser
             return null;
         }
         list($object, $methodName) = $callable;
-        if(ClassObject::isAnymous($object))
+        if($object instanceof IBean)
         {
             $className = get_parent_class($object);
         }
