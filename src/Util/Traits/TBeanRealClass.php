@@ -7,22 +7,32 @@ use Imi\Util\ClassObject;
 
 trait TBeanRealClass
 {
-    protected static $realClassName;
+    /**
+     * 真实类名集合
+     *
+     * @var array
+     */
+    public static $realClassNames;
 
+    /**
+     * 获取当前Bean类真实类名
+     *
+     * @return string
+     */
     protected static function __getRealClassName()
     {
-        if(null === static::$realClassName)
+        if(!isset(TBeanRealClass::$realClassNames[static::class]))
         {
             $ref = new \ReflectionClass(static::class);
             if($ref->implementsInterface(IBean::class))
             {
-                static::$realClassName = $ref->getParentClass()->getName();
+                TBeanRealClass::$realClassNames[static::class] = $ref->getParentClass()->getName();
             }
             else
             {
-                static::$realClassName = $ref->getName();
+                TBeanRealClass::$realClassNames[static::class] = $ref->getName();
             }
         }
-        return static::$realClassName;
+        return TBeanRealClass::$realClassNames[static::class];
     }
 }
