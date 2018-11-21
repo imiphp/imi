@@ -315,6 +315,10 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = array()): array
     {
+        if(!is_array($this->data))
+        {
+            return [];
+        }
         return $this->fetchAllParser->parseAll($this->data, $fetchStyle, $fetchArgument, $ctorArgs);
     }
 
