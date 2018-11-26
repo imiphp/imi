@@ -52,4 +52,12 @@ class Lockable extends Base
      */
     public $options = [];
 
+    /**
+     * 当获得锁后执行的回调。该回调返回非 null 则不执行加锁后的方法，本回调的返回值将作为返回值
+     * 一般用于防止缓存击穿，获得锁后再做一次检测
+     * 如果为{"$this", "methodName"}格式，$this将会被替换为当前类，方法必须为 public 或 protected
+     * 
+     * @var callable
+     */
+    public $afterLock;
 }

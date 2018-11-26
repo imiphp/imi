@@ -33,7 +33,12 @@ class LockAop
      */
     public function parseLock(AroundJoinPoint $joinPoint)
     {
-        $lockable = AnnotationManager::getMethodAnnotations(get_parent_class($joinPoint->getTarget()), $joinPoint->getMethod(), Lockable::class)[0] ?? null;
+        $class = get_parent_class($joinPoint->getTarget());
+
+        // Lockable 注解
+        $lockable = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), Lockable::class)[0] ?? null;
+
+        // Lock 类型
         if(null === $lockable->type)
         {
             $type = Config::get('@currentServer.lock.defaultType', 'RedisLock');
@@ -43,6 +48,7 @@ class LockAop
             $type = $lockable->type;
         }
 
+        // options
         $options = $lockable->options;
         if(!isset($options['waitTimeout']))
         {
@@ -53,14 +59,31 @@ class LockAop
             $options['lockExpire'] = $lockable->lockExpire;
         }
 
+        // Lock 对象
         $locker = App::getBean($type, $this->getId($joinPoint, $lockable), $options);
 
-        if(!$locker->lock(function() use($joinPoint){
-            $joinPoint->proceed();
-        }))
+        // afterLock 处理
+        $afterLock = $lockable->afterLock;
+        if(is_array($afterLock) && isset($afterLock[0]) && '$this' === $afterLock[0])
+        {
+            // 用反射实现调用 protected 方法
+            $refMethod = new \ReflectionMethod($class . '::' . $afterLock[1]);
+            $afterLock = $refMethod->getClosure($joinPoint->getTarget());
+        }
+        $afterLockCallable = function() use($afterLock, &$result){
+            $result = $afterLock();
+            return null !== $result;
+        };
+
+        if(!$locker->lock(function() use($joinPoint, &$result){
+            // 执行原方法
+            $result = $joinPoint->proceed();
+        }, $afterLockCallable))
         {
             throw new LockFailException(sprintf('get lock failed, id:%s', $locker->getId()));
         }
+
+        return $result;
     }
 
     /**
