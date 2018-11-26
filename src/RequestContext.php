@@ -107,9 +107,9 @@ abstract class RequestContext
 
     /**
      * 获取当前的服务器对象
-     * @return \Imi\Server\Base
+     * @return \Imi\Server\Base|null
      */
-    public static function getServer(): Base
+    public static function getServer()
     {
         return static::get('server');
     }

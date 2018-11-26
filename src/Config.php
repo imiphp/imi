@@ -2,6 +2,7 @@
 namespace Imi;
 
 use Imi\Util\Imi;
+use Imi\Main\Helper;
 use Imi\Util\ArrayData;
 
 abstract class Config
@@ -78,7 +79,7 @@ abstract class Config
      * @param string $name
      * @return boolean
      */
-    public function removeConfig($name)
+    public static function removeConfig($name)
     {
         if(isset(static::$configs[$name]))
         {
@@ -130,19 +131,27 @@ abstract class Config
         if (isset($names[0]))
         {
             $first = array_shift($names);
+            if($isCurrentServer = (RequestContext::exsits() && null !== ($server = RequestContext::getServer())) && '@currentServer' === $first)
+            {
+                $first = '@server';
+                array_unshift($names, $server->getName());
+            }
             if(isset(static::$configs[$first]))
             {
+                $result = static::$configs[$first]->get($names, null);
+            }
+            if(isset($result))
+            {
+                return $result;
+            }
+            else if($isCurrentServer)
+            {
+                $first = '@app';
+                array_shift($names);
                 return static::$configs[$first]->get($names, $default);
             }
-            else
-            {
-                return $default;
-            }
         }
-        else
-        {
-            return $default;
-        }
+        return $default;
     }
 
     /**
