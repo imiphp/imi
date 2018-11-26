@@ -44,7 +44,9 @@ abstract class BaseMain implements IMain
         $fileName = $this->getPath() . DIRECTORY_SEPARATOR . 'config/config.php';
         if(is_file($fileName))
         {
-            Config::addConfig('@' . $this->moduleName, include $fileName);
+            $name = '@' . $this->moduleName;
+            Config::removeConfig($name);
+            Config::addConfig($name, include $fileName);
         }
     }
 
@@ -107,7 +109,7 @@ abstract class BaseMain implements IMain
      *
      * @return void
      */
-    protected function loadComponents()
+    public function loadComponents()
     {
         foreach(Config::get('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
         {

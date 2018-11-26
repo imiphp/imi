@@ -32,6 +32,13 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         // 随机数播种
         mt_srand();
 
+        // 重新加载项目配置及组件
+        foreach(Helper::getAppMains() as $main)
+        {
+            $main->loadConfig();
+            $main->loadComponents();
+        }
+
         if($e->server->getSwooleServer()->taskworker)
         {
             cli_set_process_title(Imi::getProcessName('taskWorker'));
