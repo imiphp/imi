@@ -10,6 +10,7 @@ use Imi\Db\Query\Query;
 use Imi\Main\Helper;
 use Imi\App;
 use Imi\Db\Query\QueryType;
+use Imi\Config;
 
 abstract class Db
 {
@@ -100,31 +101,7 @@ abstract class Db
      */
     public static function getDefaultPoolName($queryType = QueryType::WRITE)
     {
-        $namespace = null;
-        if(RequestContext::exsits())
-        {
-            try{
-                $namespace = RequestContext::getServer()->getConfig()['namespace'];
-                $defaultPool = Helper::getMain($namespace)->getConfig()['db']['defaultPool'] ?? null;
-                if(null === $defaultPool)
-                {
-                    $namespace = null;
-                }
-                else
-                {
-                    return $defaultPool;
-                }
-            }
-            catch(\Throwable $ex)
-            {
-                $namespace = null;
-            }
-        }
-        if(null === $namespace)
-        {
-            $namespace = App::getNamespace();
-        }
-        $poolName = Helper::getMain($namespace)->getConfig()['db']['defaultPool'] ?? null;
+        $poolName = Config::get('@currentServer.db.defaultPool');
         if(null !== $poolName)
         {
             $poolName = static::parsePoolName($poolName, $queryType);

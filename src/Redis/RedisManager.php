@@ -2,6 +2,7 @@
 namespace Imi\Redis;
 
 use Imi\App;
+use Imi\Config;
 use Imi\Main\Helper;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
@@ -64,31 +65,6 @@ abstract class RedisManager
      */
     public static function getDefaultPoolName()
     {
-        $namespace = null;
-        if(RequestContext::exsits())
-        {
-            try{
-                $namespace = RequestContext::getServer()->getConfig()['namespace'];
-                $defaultPool = Helper::getMain($namespace)->getConfig()['redis']['defaultPool'] ?? null;
-                if(null === $defaultPool)
-                {
-                    $namespace = null;
-                }
-                else
-                {
-                    return $defaultPool;
-                }
-            }
-            catch(\Throwable $ex)
-            {
-                $namespace = null;
-            }
-        }
-        if(null === $namespace)
-        {
-            $namespace = App::getNamespace();
-        }
-        $poolName = Helper::getMain($namespace)->getConfig()['redis']['defaultPool'] ?? null;
-        return $poolName;
+        return Config::get('@currentServer.redis.defaultPool');;
     }
 }
