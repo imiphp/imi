@@ -1,6 +1,10 @@
 <?php
 namespace Imi\Redis;
 
+use Imi\Pool\PoolManager;
+use Imi\Config;
+
+
 /**
  * Redis 快捷操作类
  * @method static mixed append($key, $value)
@@ -218,6 +222,15 @@ abstract class Redis
 {
     public static function __callStatic($name, $arguments)
     {
-        return RedisManager::getInstance()->$name(...$arguments);
+        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        {
+            return RedisManager::getInstance()->$name(...$arguments);
+        }
+        else
+        {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($arguments) {
+                return $redis->$name(...$arguments);
+            });
+        }
     }
 }
