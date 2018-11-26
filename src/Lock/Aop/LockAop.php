@@ -72,16 +72,32 @@ class LockAop
      */
     private function getId(AroundJoinPoint $joinPoint, Lockable $lockable)
     {
+        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
+        $method = $joinPoint->getMethod();
         $_args = $joinPoint->getArgs();
-        $methodRef = new \ReflectionMethod(get_class($joinPoint->getTarget()), $joinPoint->getMethod());
+        $methodRef = new \ReflectionMethod($className, $method);
         $args = [];
         foreach($methodRef->getParameters() as $i => $param)
         {
             $args[$param->name] = $_args[$i];
         }
-        return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args){
-            return ObjectArrayHelper::get($args, $matches[1]);
-        }, $lockable->id);
+        if(null === $lockable->id)
+        {
+            return md5(
+                $className
+                . '::'
+                . $method
+                . '('
+                . serialize($args)
+                . ')'
+            );
+        }
+        else
+        {
+            return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args){
+                return ObjectArrayHelper::get($args, $matches[1]);
+            }, $lockable->id);
+        }
     }
 
 }
