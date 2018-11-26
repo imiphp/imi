@@ -63,17 +63,20 @@ class LockAop
         $locker = App::getBean($type, $this->getId($joinPoint, $lockable), $options);
 
         // afterLock 处理
-        $afterLock = $lockable->afterLock;
+        $afterLockCallable = $afterLock = $lockable->afterLock;
         if(is_array($afterLock) && isset($afterLock[0]) && '$this' === $afterLock[0])
         {
             // 用反射实现调用 protected 方法
             $refMethod = new \ReflectionMethod($class . '::' . $afterLock[1]);
             $afterLock = $refMethod->getClosure($joinPoint->getTarget());
         }
-        $afterLockCallable = function() use($afterLock, &$result){
-            $result = $afterLock();
-            return null !== $result;
-        };
+        if(null !== $afterLock)
+        {
+            $afterLockCallable = function() use($afterLock, &$result){
+                $result = $afterLock();
+                return null !== $result;
+            };
+        }
 
         if(!$locker->lock(function() use($joinPoint, &$result){
             // 执行原方法
