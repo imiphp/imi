@@ -19,6 +19,7 @@ return [
         'Imi\Validate',
         'Imi\HttpValidate',
         'Imi\Enum',
+        'Imi\Lock',
     ],
     'atomics' => [
         'session'
