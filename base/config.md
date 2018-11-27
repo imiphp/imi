@@ -45,12 +45,27 @@ return [
     	// 数据库默认连接池名
     	'defaultPool'	=>	'maindb',
     ],
+    'redis' =>  [
+        // 当使用 Redis::xxx() 快捷操作时：
+        // true: RedisManager::getInstance()->xxx()，当一个请求结束时才释放
+        // false: PoolManager::use()，每次去池子里竞争连接，用完释放
+        'quickFromRequestContext'   =>  true,
+        'defaultPool'   =>  '默认连接池名',
+    ],
     // 连接池配置，详见对应章节
     'pools'	=>	[
     ],
-    // 缓存配置，详见对应章节
+    // 缓存器配置，详见对应章节
     'caches'	=>	[
-    ]
+    ],
+    // 缓存配置
+    'cache'  =>  [
+        'default'   =>  '默认缓存配置名',
+    ],
+    'lock'  =>  [
+        // 指定默认Lock使用哪个处理器
+        'defaultType'   =>  'RedisLock',
+    ],
 ];
 ```
 
