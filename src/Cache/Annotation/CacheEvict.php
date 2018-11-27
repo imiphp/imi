@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Parser;
 /**
  * 缓存驱逐注解
  * 
- * 方法体执行前，将指定缓存清除
+ * 方法体执行时，将指定缓存清除
  * 
  * @Annotation
  * @Target("METHOD")
