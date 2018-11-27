@@ -6,6 +6,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
 use Imi\Util\Stream\StreamMode;
 use Imi\Util\DateTime;
+use Imi\Config;
 
 /**
  * @Bean("FileCache")
@@ -64,7 +65,7 @@ class File extends Base
             return $default;
         }
         // 正常读入
-        if(Coroutine::isIn())
+        if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
         {
             $content = Coroutine::fread($fp);
         }
@@ -114,7 +115,7 @@ class File extends Base
             return false;
         }
         // 写入缓存数据
-        if(Coroutine::isIn())
+        if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
         {
             $content = Coroutine::fwrite($fp, $this->encode($value));
         }
