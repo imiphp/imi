@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\Parser;
  * 锁注解
  * 
  * @Annotation
- * @Target("METHOD")
+ * @Target({"METHOD", "ANNOTATION"})
  * @Parser("Imi\Lock\Annotation\Parser\LockParser")
  */
 class Lockable extends Base
