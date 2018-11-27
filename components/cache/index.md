@@ -47,7 +47,7 @@ return [
 
 > 文件缓存不支持分布式存储，请慎重选择！
 
-## 使用
+## 手动使用
 
 ### 写入缓存
 
@@ -115,3 +115,81 @@ Imi\Cache\CacheManager::has('缓存名称', 'key');
 ```php
 Imi\Cache\CacheManager::clear('缓存名称');
 ```
+
+## 注解使用
+
+除了手动控制缓存读写，你还可以使用注解来做，真的炒鸡方便哦！
+
+首先来认识一下 `imi` 中的缓存注解吧！
+
+### @Cacheable
+
+调用方法前检测是否存在缓存，如果存在直接返回；不存在则执行方法体，然后将返回值存入缓存
+
+**用法：**
+
+基本用法：
+
+`@Cacheable(name="缓存器名，为null则取cache.default配置", key="缓存键名，支持{id}、{data.name}形式，代入参数，如果为null，则使用类名+方法名+全部参数，序列化后hash", ttl="超时时间，单位秒")`
+
+防止缓存击穿：
+
+```php
+/*
+ * @Cacheable(
+ *   key="index:{page}",
+ *   ttl=10,
+ *   lockable=@Lockable(
+ *     id="index:{page}",
+ *     waitTimeout=999999,
+ *   ),
+ *   preventBreakdown=true,
+ * )
+ */
+```
+
+`lockable` 用法请参考 [Lock](/components/lock/index.html)
+
+`preventBreakdown` 如果设为 `true`，会在获得锁后，尝试获取缓存，如果缓存存在则不再执行方法体
+
+如果 `preventBreakdown` 设为 `true`，并且`lockable`中也设定了`afterLock`，优先级为：`afterLock > 缓存检测`
+
+### @CacheEvict
+
+缓存驱逐注解，方法体执行时，将指定缓存清除
+
+**用法：**
+
+在方法执行前删除缓存：
+
+`@CacheEvict(name="同上", key="同上", beforeInvocation=true)`
+
+在方法执行后删除缓存：
+
+`@CacheEvict(name="同上", key="同上")`
+
+### @CachePut
+
+方法体执行后，将返回值存入缓存
+
+**用法：**
+
+将方法返回值全部写入缓存：
+
+`@CachePut(name="同上", key="同上", ttl="同上")`
+
+将方法返回值的一部分写入缓存：
+
+`@CachePut(name="同上", key="同上", ttl="同上", value="a.b")`
+
+上面的注解，如果方法返回值为：
+
+```php
+[
+    'a' =>  [
+        'b' =>  123,
+    ],
+]
+```
+
+则会将`123`写入缓存。
