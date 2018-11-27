@@ -5,6 +5,7 @@ use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\File as FileUtil;
 use Imi\Util\Stream\StreamMode;
+use Imi\Util\DateTime;
 
 /**
  * @Bean("FileCache")
@@ -121,6 +122,11 @@ class File extends Base
         {
             $content = fwrite($fp, $this->encode($value));
         }
+        // ttl 支持 \DateInterval 格式
+        if($ttl instanceof \DateInterval)
+        {
+            $ttl = DateTime::getSecondsByInterval($ttl);
+        }
         // 写入扩展数据
         $this->writeExData($fileName, $ttl);
         flock($fp, LOCK_UN);
@@ -214,6 +220,11 @@ class File extends Base
     {
         $this->checkArrayOrTraversable($values);
         $result = true;
+        // ttl 支持 \DateInterval 格式
+        if($ttl instanceof \DateInterval)
+        {
+            $ttl = DateTime::getSecondsByInterval($ttl);
+        }
         foreach($values as $key => $value)
         {
             $result = $result && $this->set($key, $value, $ttl);

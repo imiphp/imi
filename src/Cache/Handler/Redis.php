@@ -1,8 +1,9 @@
 <?php
 namespace Imi\Cache\Handler;
 
-use Imi\Bean\Annotation\Bean;
+use Imi\Util\DateTime;
 use Imi\Pool\PoolManager;
+use Imi\Bean\Annotation\Bean;
 
 /**
  * @Bean("RedisCache")
@@ -59,6 +60,11 @@ class Redis extends Base
     public function set($key, $value, $ttl = null)
     {
         $this->checkKey($key);
+        // ttl 支持 \DateInterval 格式
+        if($ttl instanceof \DateInterval)
+        {
+            $ttl = DateTime::getSecondsByInterval($ttl);
+        }
         return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key, $value, $ttl){
             return $redis->set($key, $this->encode($value), $ttl);
         });
@@ -155,6 +161,11 @@ class Redis extends Base
         foreach($setValues as $k => $v)
         {
             $setValues[$k] = $this->encode($v);
+        }
+        // ttl 支持 \DateInterval 格式
+        if($ttl instanceof \DateInterval)
+        {
+            $ttl = DateTime::getSecondsByInterval($ttl);
         }
         $result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($setValues, $ttl){
             $result = $redis->mset($setValues);
