@@ -60,14 +60,14 @@ trait TLockableParser
         {
             $afterLockCallable = function() use($lockableAfterLock, &$result){
                 $result = $lockableAfterLock();
-                return null !== $result;
+                return $result;
             };
         }
 
         if(null !== $afterLock)
         {
             $firstAfterLockCallable = $afterLockCallable;
-            $afterLockCallable = function() use($firstAfterLockCallable, $afterLock){
+            $afterLockCallable = function() use($firstAfterLockCallable, $afterLock, &$result){
                 if(null !== $firstAfterLockCallable)
                 {
                     $result = $firstAfterLockCallable();
