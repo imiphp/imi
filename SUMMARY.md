@@ -66,6 +66,7 @@
 * [缓存](components/cache/index.md)
 * [日志](components/log/index.md)
 * [验证器](components/validation/index.md)
+* [锁](components/lock/index.md)
 * [事件监听](components/event/index.md)
 * [后台任务](components/task/index.md)
 * [AOP](components/aop/index.md)

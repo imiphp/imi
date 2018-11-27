@@ -1,0 +1,164 @@
+# 锁
+
+锁（Lock），在并发处理，防止冲突的场景非常常用。
+
+在 imi 中，你可以使用注解，或者自己实例化Lock类来实现加锁处理。
+
+目前 imi 中仅内置支持 `RedisLock`，它支持分布式，当然你也可以实现`Imi\Lock\Handler\ILockHandler`接口，来实现其他方式的锁。
+
+## 实例化使用
+
+### 顺序用法
+
+```php
+$redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
+    'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
+    'db'        =>  1, // Redis 几号库，默认0
+    'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
+    'keyPrefix' =>  'imi:lock:', // Redis key 前置
+]);
+
+if($redisLock->lock())
+{
+    // 加锁后的处理
+
+    // 解锁
+    $redisLock->unlock();
+}
+else
+{
+    // 加锁失败的处理
+}
+```
+
+### 回调用法
+
+```php
+$redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
+    'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
+    'db'        =>  1, // Redis 几号库，默认0
+    'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
+    'keyPrefix' =>  'imi:lock:', // Redis key 前置
+]);
+
+// 执行后自动解锁
+$result = $redisLock->lock(function(){
+    // 执行任务
+}, function(){
+    // return 非null则不执行任务
+    // 一般用于防止缓存击穿
+});
+
+if($result)
+{
+    // 加锁并执行成功
+}
+else
+{
+    // 加锁失败
+}
+```
+
+## 注解使用
+
+`@Lockable`
+
+支持参数：
+
+```php
+/**
+ * 锁ID
+ * 支持{id}、{data.name}形式，代入参数
+ * 如果为null，则使用类名+方法名+全部参数，序列化后hash
+ *
+ * @var string|null
+ */
+public $id;
+
+/**
+ * 锁类型，如：RedisLock
+ * 为null则使用默认锁类型（@currentServer.lock.defaultType）
+ *
+ * @var string|null
+ */
+public $type;
+
+/**
+ * 等待锁超时时间，单位：毫秒，0为不限制
+ * 
+ * @var int
+ */
+public $waitTimeout = 3000;
+
+/**
+ * 锁超时时间，单位：毫秒
+ * 
+ * @var int
+ */
+public $lockExpire = 3000;
+
+/**
+ * 锁初始化参数
+ *
+ * @var array
+ */
+public $options = [];
+
+/**
+ * 当获得锁后执行的回调。该回调返回非 null 则不执行加锁后的方法，本回调的返回值将作为返回值
+ * 一般用于防止缓存击穿，获得锁后再做一次检测
+ * 如果为{"$this", "methodName"}格式，$this将会被替换为当前类，方法必须为 public 或 protected
+ * 
+ * @var callable
+ */
+public $afterLock;
+```
+
+### 用法示例
+
+最简单的锁：
+
+只指定id，其它全部默认值
+
+```php
+@Lockable(id="锁ID")
+```
+
+定义执行任务前的操作：
+
+```php
+class Test
+{
+    /**
+     * @Lockable(id="锁ID", afterLock={"$this", "check"})
+     */
+    public function index()
+    {
+        return 1;
+    }
+
+    protected function check()
+    {
+        return 2;
+    }
+
+    /**
+     * @Lockable(id="锁ID", afterLock={"$this", "check"})
+     */
+    public function index2()
+    {
+        return 3;
+    }
+
+    protected function check2()
+    {
+        
+    }
+}
+
+$result = App::getBean('Test')->index();
+echo $result, PHP_EOL; // 2
+
+$result = App::getBean('Test')->index2();
+echo $result, PHP_EOL; // 3
+```
