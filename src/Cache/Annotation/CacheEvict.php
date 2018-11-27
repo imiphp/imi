@@ -33,4 +33,10 @@ class CacheEvict extends Base
      */
     public $key;
 
+    /**
+     * 在方法执行前删除缓存，默认为false
+     *
+     * @var boolean
+     */
+    public $beforeInvocation = false;
 }
