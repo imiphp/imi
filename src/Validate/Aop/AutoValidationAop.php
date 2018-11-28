@@ -4,6 +4,7 @@ namespace Imi\Validate\Aop;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\BeanFactory;
+use Imi\Util\ClassObject;
 use Imi\Validate\Validator;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\After;
@@ -86,19 +87,7 @@ class AutoValidationAop
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName);
         if(isset($annotations[0]))
         {
-            $methodRef = new \ReflectionMethod($className, $methodName);
-            $args = $joinPoint->getArgs();
-            $argCount = count($args);
-            $paramNames = [];
-            foreach($methodRef->getParameters() as $i => $param)
-            {
-                $paramNames[] = $param->name;
-                if($i >= $argCount - 1)
-                {
-                    break;
-                }
-            }
-            $data = array_combine($paramNames, $args);
+            $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
 
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
@@ -107,6 +96,8 @@ class AutoValidationAop
                 $exception = $rule->exception;
                 throw new $exception(sprintf('%s:%s() Parameter verification is incorrect: %s', $className, $methodName, $validator->getMessage()), $rule->exCode);
             }
+
+            $data = array_values($data);
         }
         else
         {

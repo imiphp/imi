@@ -9,26 +9,6 @@ use Imi\Cache\Annotation\CachePut;
 trait TCacheAopHelper
 {
     /**
-     * 获取方法参数数组，key=>value
-     *
-     * @param JoinPoint $joinPoint
-     * @return array
-     */
-    protected function getArgs(JoinPoint $joinPoint)
-    {
-        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
-        $method = $joinPoint->getMethod();
-        $_args = $joinPoint->getArgs();
-        $methodRef = new \ReflectionMethod($className, $method);
-        $args = [];
-        foreach($methodRef->getParameters() as $i => $param)
-        {
-            $args[$param->name] = $_args[$i];
-        }
-        return $args;
-    }
-
-    /**
      * 获取缓存key
      *
      * @param \Imi\Aop\JoinPoint $joinPoint

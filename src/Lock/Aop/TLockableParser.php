@@ -6,6 +6,7 @@ use Imi\Config;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Lock\Annotation\Lockable;
 use Imi\Lock\Exception\LockFailException;
+use Imi\Util\ClassObject;
 
 trait TLockableParser
 {
@@ -103,13 +104,7 @@ trait TLockableParser
      */
     private function getLockerId($class, $method, $args, Lockable $lockable)
     {
-        $_args = $args;
-        $methodRef = new \ReflectionMethod($class, $method);
-        $args = [];
-        foreach($methodRef->getParameters() as $i => $param)
-        {
-            $args[$param->name] = $_args[$i];
-        }
+        $args = ClassObject::convertArgsToKV($class, $method, $args);
         if(null === $lockable->id)
         {
             return md5(

@@ -3,15 +3,16 @@ namespace Imi\Cache\Aop;
 
 use Imi\Config;
 use Imi\Aop\PointCutType;
+use Imi\Util\ClassObject;
 use Imi\Cache\CacheManager;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Lock\Aop\TLockableParser;
+use Imi\Cache\Annotation\CachePut;
 use Imi\Cache\Annotation\Cacheable;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Cache\Annotation\CachePut;
 
 /**
  * @Aspect(priority=1024)
@@ -39,7 +40,7 @@ class CacheableAop
         $cacheable = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), Cacheable::class)[0] ?? null;
 
         // 方法参数
-        $args = $this->getArgs($joinPoint);
+        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
 
         // 缓存名
         $name = $cacheable->name;

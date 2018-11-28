@@ -11,6 +11,7 @@ use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Cache\Annotation\CacheEvict;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Util\ClassObject;
 
 /**
  * @Aspect(priority=1023)
@@ -40,13 +41,12 @@ class CacheEvictAop
         $cacheEvicts = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), CacheEvict::class);
 
         // 方法参数
-        $args = $this->getArgs($joinPoint);
+        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
         
         foreach($cacheEvicts as $index => $cacheEvict)
         {
             if($cacheEvict->beforeInvocation)
             {
-                var_dump('before', $cacheEvict);
                 $this->deleteCache($cacheEvict, $joinPoint, $args);
                 unset($cacheEvicts[$index]);
             }
@@ -56,7 +56,6 @@ class CacheEvictAop
 
         foreach($cacheEvicts as $cacheEvict)
         {
-            var_dump('after', $cacheEvict);
             $this->deleteCache($cacheEvict, $joinPoint, $args);
         }
         

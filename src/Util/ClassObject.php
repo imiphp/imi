@@ -41,4 +41,48 @@ abstract class ClassObject
             return Imi::getClassNamespace($sameLevelClass) . '\\' . $className;
         }
     }
+
+    /**
+     * 将方法的参数处理成 kv 数组
+     *
+     * @param string $class
+     * @param string $method
+     * @param array $args
+     * @param boolean $keepNotExistArgs 保留不存在的参数，如果保留则值则取默认值，没有默认值则为null
+     * @return array
+     */
+    public static function convertArgsToKV($class, $method, $args, $keepNotExistArgs = true)
+    {
+        $methodRef = new \ReflectionMethod($class, $method);
+
+        $result = [];
+    
+        foreach($methodRef->getParameters() as $i => $param)
+        {
+            if(isset($args[$i]))
+            {
+                $result[$param->name] = $args[$i];
+            }
+            else if($keepNotExistArgs)
+            {
+                $result[$param->name] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+            }
+            else
+            {
+                break;
+            }
+        }
+    
+        if(isset($args[$i + 1]))
+        {
+            $result[$param->name] = [$result[$param->name]];
+            $count = count($args);
+            for($i += 1; $i < $count; ++$i)
+            {
+                $result[$param->name][] = $args[$i];
+            }
+        }
+    
+        return $result;
+    }
 }

@@ -13,6 +13,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\HttpValidate\Annotation\ExtractData;
 use Imi\Util\ObjectArrayHelper;
+use Imi\Util\ClassObject;
 
 /**
  * @Aspect
@@ -39,20 +40,7 @@ class AutoValidationAop
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName);
         if(isset($annotations[0]))
         {
-            $methodRef = new \ReflectionMethod($className, $methodName);
-            $args = $joinPoint->getArgs();
-            $argCount = count($args);
-            $paramNames = [];
-            $paramNameRelation = [];
-            foreach($methodRef->getParameters() as $i => $param)
-            {
-                if($i < $argCount)
-                {
-                    $paramNames[] = $param->name;
-                }
-                $paramNameRelation[$param->name] = $i;
-            }
-            $data = array_combine($paramNames, $args);
+            $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
 
             $data['$get'] = $controller->request->get();
             $data['$post'] = $controller->request->post();
@@ -71,15 +59,16 @@ class AutoValidationAop
                 if($annotation instanceof ExtractData)
                 {
                     list($key, $name) = explode('.', $annotation->name, 2);
-                    if(isset($paramNameRelation[$annotation->to]))
+                    if(array_key_exists($annotation->to, $data))
                     {
-                        $data[$paramNameRelation[$annotation->to]] = ObjectArrayHelper::get($data[$key], $name);
+                        $data[$annotation->to] = ObjectArrayHelper::get($data[$key], $name);
                     }
                 }
             }
 
             unset($data['$get'], $data['$post'], $data['$body']);
 
+            $data = array_values($data);
         }
         else
         {
