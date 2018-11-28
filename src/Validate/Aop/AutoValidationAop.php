@@ -94,7 +94,7 @@ class AutoValidationAop
             {
                 $rule = $validator->getFailRule();
                 $exception = $rule->exception;
-                throw new $exception(sprintf('%s:%s() Parameter verification is incorrect: %s', $className, $methodName, $validator->getMessage()), $rule->exCode);
+                throw new $exception($validator->getMessage(), $rule->exCode);
             }
 
             $data = array_values($data);
