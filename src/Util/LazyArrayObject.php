@@ -21,12 +21,12 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function offsetExists($offset)
     {
-        return isset($this->data[$offset]);
+        return array_key_exists($offset, $this->data);
     }
 
     public function &offsetGet($offset)
     {
-        if(isset($this->data[$offset]))
+        if(array_key_exists($offset, $this->data))
         {
             $value = &$this->data[$offset];
         }
@@ -44,7 +44,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function offsetUnset($offset)
     {
-        if(isset($this->data[$offset]))
+        if(array_key_exists($offset, $this->data))
         {
             unset($this->data[$offset]);
         }
@@ -82,25 +82,17 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function &__get($name)
     {
-        if(isset($this->data[$name]))
-        {
-            $value = &$this->data[$name];
-        }
-        else
-        {
-            $value = null;
-        }
-        return $value;
+        return $this[$name];
     }
 
     public function __isset($name)
     {
-        return isset($this->data[$name]);
+        return array_key_exists($name, $this->data);
     }
 
     public function __unset($name)
     {
-        if(isset($this->data[$name]))
+        if(array_key_exists($name, $this->data))
         {
             unset($this->data[$name]);
         }
