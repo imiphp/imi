@@ -131,10 +131,21 @@ abstract class Config
         if (isset($names[0]))
         {
             $first = array_shift($names);
-            if($isCurrentServer = (RequestContext::exsits() && null !== ($server = RequestContext::getServer())) && '@currentServer' === $first)
+            if('@currentServer' === $first)
             {
-                $first = '@server';
-                array_unshift($names, $server->getName());
+                if($isCurrentServer = (RequestContext::exsits() && null !== ($server = RequestContext::getServer())))
+                {
+                    $first = '@server';
+                    array_unshift($names, $server->getName());
+                }
+                else
+                {
+                    $first = '@app';
+                }
+            }
+            else
+            {
+                $isCurrentServer = false;
             }
             if(isset(static::$configs[$first]))
             {
