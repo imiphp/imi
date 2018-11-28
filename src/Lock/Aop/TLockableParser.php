@@ -124,7 +124,15 @@ trait TLockableParser
         else
         {
             return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args){
-                return ObjectArrayHelper::get($args, $matches[1]);
+                $value = ObjectArrayHelper::get($args, $matches[1]);
+                if(is_scalar($value))
+                {
+                    return $value;
+                }
+                else
+                {
+                    return md5(serialize($value));
+                }
             }, $lockable->id);
         }
     }
