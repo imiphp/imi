@@ -1,10 +1,14 @@
 <?php
 namespace Imi\Bean\Annotation;
 
+use Imi\Config;
+use Imi\Util\LazyArrayObject;
+use Imi\Config\Annotation\ConfigValue;
+
 /**
  * 注解基类
  */
-abstract class Base
+abstract class Base extends LazyArrayObject
 {
     /**
      * 只传一个参数时的参数名
@@ -14,15 +18,48 @@ abstract class Base
 
     public function __construct($data = [])
     {
-        if(null !== $this->defaultFieldName && isset($data['value']) && 1 === count($data))
+        parent::__construct([]);
+
+        if(null !== $this->defaultFieldName && array_key_exists('value', $data) && 1 === count($data))
         {
             // 只传一个参数处理
             $this->{$this->defaultFieldName} = $data['value'];
-            return;
         }
-        foreach($data as $k => $v)
+        else
         {
-            $this->$k = $v;
+            foreach($data as $k => $v)
+            {
+                $this->$k = $v;
+            }
+        }
+        
+        $refClass = new \ReflectionClass($this);
+        
+        foreach($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
+        {
+            $value = $this->{$property->name};
+            unset($this->{$property->name});
+            $this->{$property->name} = $value;
+        }
+
+    }
+    
+    public function &offsetGet($offset)
+    {
+        $value = parent::offsetGet($offset);
+        if($value instanceof ConfigValue)
+        {
+            return Config::get($value->name);
+        }
+        return $value;
+    }
+
+    public function __wakeup()
+    {
+        $refClass = new \ReflectionClass($this);
+        foreach($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
+        {
+            unset($this->{$property->name});
         }
     }
 }
