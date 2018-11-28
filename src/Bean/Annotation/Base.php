@@ -49,7 +49,7 @@ abstract class Base extends LazyArrayObject
         $value = parent::offsetGet($offset);
         if($value instanceof ConfigValue)
         {
-            return Config::get($value->name);
+            $value = Config::get($value->name);
         }
         return $value;
     }
