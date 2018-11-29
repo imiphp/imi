@@ -1,17 +1,19 @@
 <?php
 namespace Imi\Aop\Annotation;
 
-use Imi\Bean\Annotation\Base;
+use Imi\App;
+use Imi\RequestContext;
+use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Parser;
 
 /**
  * 属性注入
  * 使用：App::getBean()
  * @Annotation
- * @Target("PROPERTY")
+ * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
  */
-class Inject extends Base
+class Inject extends BaseInjectValue
 {
     /**
      * 只传一个参数时的参数名
@@ -29,4 +31,25 @@ class Inject extends Base
      * @var array
      */
     public $args = [];
+
+    /**
+     * 获取注入值的真实值
+     *
+     * @return mixed
+     */
+    public function getRealValue()
+    {
+        if($this instanceof RequestInject && Coroutine::isIn())
+        {
+            return RequestContext::getBean($this->name, ...$this->args);
+        }
+        else if($this instanceof Inject)
+        {
+            return App::getBean($this->name, ...$this->args);
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

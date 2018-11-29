@@ -232,7 +232,7 @@ class BeanProxy
             $annotation = reset($annotations);
             $propRef = $this->refClass->getProperty($propName);
             $propRef->setAccessible(true);
-            $propRef->setValue($this->object, static::getInjectValueByAnnotation($annotation));
+            $propRef->setValue($this->object, $annotation->getRealValue());
         }
 
         // 配置注入
@@ -245,28 +245,6 @@ class BeanProxy
             }
             $propRef->setAccessible(true);
             $propRef->setValue($this->object, $value);
-        }
-    }
-
-    /**
-     * 根据注解获取注入值
-     *
-     * @param \Imi\Aop\Annotation\Inject $annotation
-     * @return mixed
-     */
-    public static function getInjectValueByAnnotation($annotation)
-    {
-        if($annotation instanceof RequestInject && Coroutine::isIn())
-        {
-            return RequestContext::getBean($annotation->name, ...$annotation->args);
-        }
-        else if($annotation instanceof Inject)
-        {
-            return App::getBean($annotation->name, ...$annotation->args);
-        }
-        else
-        {
-            return null;
         }
     }
 
@@ -618,7 +596,7 @@ class BeanProxy
             $annotation = $annotations[0] ?? null;
             if($annotation)
             {
-                return static::getInjectValueByAnnotation($annotation);
+                return $annotation->getRealValue();
             }
             else
             {
