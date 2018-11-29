@@ -33,11 +33,11 @@ class JoinPoint
      */
     private $_this;
 
-    public function __construct($type, $method, $args, $target, $_this)
+    public function __construct($type, $method, &$args, $target, $_this)
     {
         $this->type = $type;
         $this->method = $method;
-        $this->args = $args;
+        $this->args = &$args;
         $this->target = $target;
         $this->_this = $_this;
     }

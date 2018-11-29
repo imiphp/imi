@@ -372,7 +372,7 @@ class BeanProxy
      * @param mixed $returnValue
      * @return boolean
      */
-    private function parseAround($method, $args, &$returnValue, $callback)
+    private function parseAround($method, &$args, &$returnValue, $callback)
     {
         $aroundAspectDoList = [];
         $this->doAspect($method, 'around', function($aspectClassName, $methodName) use(&$aroundAspectDoList){
