@@ -41,7 +41,7 @@ class StatementFetchAllParser
             {
                 case \PDO::FETCH_COLUMN:
                     $item = $this->fetchParser->parseRow($row, \PDO::FETCH_BOTH);
-                    $result[] = $item[$fetchArgument] ?? null;
+                    $result[] = $item[$fetchArgument ?? 0] ?? null;
                     break;
                 default:
                     $result[] = $this->fetchParser->parseRow($row, $fetchStyle);
