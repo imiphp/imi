@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\HttpValidate\Annotation\ExtractData;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\ClassObject;
+use Imi\Server\Session\Session;
 
 /**
  * @Aspect
@@ -45,6 +46,13 @@ class AutoValidationAop
             $data['$get'] = $controller->request->get();
             $data['$post'] = $controller->request->post();
             $data['$body'] = $controller->request->getParsedBody();
+            $data['$headers'] = [];
+            foreach ($controller->request->getHeaders() as $name => $values)
+            {
+                $data['$headers'][$name] = implode(', ', $values);
+            }
+            $data['$cookie'] = $controller->request->getCookieParams();
+            $data['$session'] = Session::get();
 
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
@@ -66,7 +74,7 @@ class AutoValidationAop
                 }
             }
 
-            unset($data['$get'], $data['$post'], $data['$body']);
+            unset($data['$get'], $data['$post'], $data['$body'], $data['$headers'], $data['$cookie'], $data['$session']);
 
             $data = array_values($data);
         }
