@@ -39,17 +39,6 @@ class Inject extends BaseInjectValue
      */
     public function getRealValue()
     {
-        if($this instanceof RequestInject && Coroutine::isIn())
-        {
-            return RequestContext::getBean($this->name, ...$this->args);
-        }
-        else if($this instanceof Inject)
-        {
-            return App::getBean($this->name, ...$this->args);
-        }
-        else
-        {
-            return null;
-        }
+        return App::getBean($this->name, ...$this->args);
     }
 }

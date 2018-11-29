@@ -12,5 +12,20 @@ use Imi\Bean\Annotation\Parser;
  */
 class RequestInject extends Inject
 {
-    
+    /**
+     * 获取注入值的真实值
+     *
+     * @return mixed
+     */
+    public function getRealValue()
+    {
+        if(Coroutine::isIn())
+        {
+            return RequestContext::getBean($this->name, ...$this->args);
+        }
+        else
+        {
+            return App::getBean($this->name, ...$this->args);
+        }
+    }
 }
