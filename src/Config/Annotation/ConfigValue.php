@@ -1,7 +1,8 @@
 <?php
 namespace Imi\Config\Annotation;
 
-use Imi\Bean\Annotation\Base;
+use Imi\Config;
+use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
  * 从配置中读取值
@@ -12,7 +13,7 @@ use Imi\Bean\Annotation\Base;
  * @Target("ANNOTATION")
  * @Parser("Imi\Config\Annotation\Parser\ConfigParser")
  */
-class ConfigValue extends Base
+class ConfigValue extends BaseInjectValue
 {
     /**
      * 只传一个参数时的参数名
@@ -26,5 +27,15 @@ class ConfigValue extends Base
      * @var string
      */
     public $name;
+
+    /**
+     * 获取注入值的真实值
+     *
+     * @return mixed
+     */
+    public function getRealValue()
+    {
+        return Config::get($this->name);
+    }
 
 }

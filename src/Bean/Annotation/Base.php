@@ -1,9 +1,8 @@
 <?php
 namespace Imi\Bean\Annotation;
 
-use Imi\Config;
 use Imi\Util\LazyArrayObject;
-use Imi\Config\Annotation\ConfigValue;
+use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
  * 注解基类
@@ -47,9 +46,9 @@ abstract class Base extends LazyArrayObject
     public function &offsetGet($offset)
     {
         $value = parent::offsetGet($offset);
-        if($value instanceof ConfigValue)
+        if($value instanceof BaseInjectValue)
         {
-            $value = Config::get($value->name);
+            $value = $value->getRealValue();
         }
         return $value;
     }
