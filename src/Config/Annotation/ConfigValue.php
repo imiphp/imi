@@ -29,13 +29,20 @@ class ConfigValue extends BaseInjectValue
     public $name;
 
     /**
+     * 配置不存在时，返回的默认值
+     *
+     * @var mixed
+     */
+    public $default;
+
+    /**
      * 获取注入值的真实值
      *
      * @return mixed
      */
     public function getRealValue()
     {
-        return Config::get($this->name);
+        return Config::get($this->name, $this->default);
     }
 
 }
