@@ -2,8 +2,6 @@
 namespace Imi\Aop\Annotation;
 
 use Imi\App;
-use Imi\RequestContext;
-use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Parser;
 
 /**
