@@ -1,16 +1,11 @@
 <?php
 namespace Imi\Controller;
 
-use Imi\Util\Traits\TBeanClone;
-
 /**
  * WebSocket 控制器
  */
 abstract class WebSocketController
 {
-    
-    use TBeanClone;
-    
     /**
      * 请求
      * @var \Imi\Server\WebSocket\Server

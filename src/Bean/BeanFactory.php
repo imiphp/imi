@@ -120,6 +120,7 @@ TPL;
 TPL;
             }
         }
+        $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
         $tpl = <<<TPL
 class {$newClassName} extends {$class} implements \Imi\Bean\IBean
@@ -132,6 +133,12 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
         {$aopConstruct}
     }
 
+    public function __clone()
+    {
+        \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
+        \$this->beanProxy->injectProps();
+        {$parentClone}
+    }
 {$methodsTpl}
 };
 TPL;

@@ -1,15 +1,11 @@
 <?php
 namespace Imi\Controller;
 
-use Imi\Util\Traits\TBeanClone;
-
 /**
  * UDP 控制器
  */
 abstract class UdpController
 {
-    use TBeanClone;
-    
     /**
      * 请求
      * @var \Imi\Server\Udp\Server
