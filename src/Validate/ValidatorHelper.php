@@ -382,7 +382,6 @@ class ValidatorHelper
      */
     public static function compare($valueLeft, $operation, $valueRight)
     {
-        var_dump($valueLeft, $operation, $valueRight);
         static $operations = [
             '==',
             '!=',
