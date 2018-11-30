@@ -1,6 +1,13 @@
 <?php
 namespace Imi\Util\Format;
 
+/**
+ * Swoole 内置序列化
+ * 
+ * 由于Swoole 官方不再维护序列化功能，所以将在 imi 1.0 正式版发布时弃用
+ * 
+ * @deprecated unknown
+ */
 class SwooleSerialize implements IFormat
 {
     /**

@@ -304,7 +304,7 @@ abstract class App
      */
     public static function loadRuntimeInfo($fileName)
     {
-        static::$runtimeInfo = \Swoole\Serialize::unpack(file_get_contents($fileName));
+        static::$runtimeInfo = unserialize(file_get_contents($fileName));
         Annotation::getInstance()->getParser()->setData(static::$runtimeInfo->annotationParserData);
         Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
         AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);

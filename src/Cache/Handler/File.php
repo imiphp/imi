@@ -338,7 +338,7 @@ class File extends Base
             return false;
         }
         $exDataFileName = $this->getExDataFileName($fileName);
-        $data = \Swoole\Serialize::unpack(FileUtil::readFile($exDataFileName));
+        $data = unserialize(FileUtil::readFile($exDataFileName));
         if(null === $data['ttl'] ?? null)
         {
             return false;
@@ -367,6 +367,6 @@ class File extends Base
         $data = [
             'ttl' => $ttl,
         ];
-        FileUtil::writeFile($this->getExDataFileName($fileName), \Swoole\Serialize::pack($data));
+        FileUtil::writeFile($this->getExDataFileName($fileName), serialize($data));
     }
 }
