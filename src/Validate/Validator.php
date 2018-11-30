@@ -268,19 +268,42 @@ class Validator implements IValidator
     protected function validateByAnnotation($data, $annotation)
     {
         $args = [];
-        foreach($annotation->args as $argName)
+        foreach($annotation->args as $arg)
         {
-            switch($argName)
+            if(!is_string($arg))
             {
-                case ':data':
-                    $args[] = $data;
-                    break;
-                case ':value':
+                $args[] = $arg;
+                continue;
+            }
+            if(preg_match('/\{:([^\}]+)\}/', $arg, $matches) > 0)
+            {
+                $argName = $matches[1];
+                if('value' === $argName)
+                {
                     $args[] = ObjectArrayHelper::get($data, $annotation->name);
-                    break;
-                default:
-                    $args[] = $annotation->$argName;
-                    break;
+                    continue;
+                }
+                $list = explode('.', $argName, 2);
+                if('data' === $list[0])
+                {
+                    if(isset($list[1]))
+                    {
+                        $args[] = ObjectArrayHelper::get($data, $list[1]);
+                    }
+                    else
+                    {
+                        $args[] = $data;
+                    }
+                }
+            }
+            else if(preg_match('/\{([^\}]+)\}/', $arg, $matches) > 0)
+            {
+                $argName = $matches[1];
+                $args[] = $annotation->$argName;
+            }
+            else
+            {
+                $args[] = $arg;
             }
         }
         $callable = $annotation->callable;

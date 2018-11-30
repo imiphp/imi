@@ -33,7 +33,7 @@ class InList extends Condition
      * @var array
      */
     public $args = [
-        ':value',
-        'list',
+        '{:value}',
+        '{list}',
     ];
 }

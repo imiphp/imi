@@ -40,8 +40,8 @@ class Integer extends Condition
      * @var array
      */
     public $args = [
-        ':value',
-        'min',
-        'max',
+        '{:value}',
+        '{min}',
+        '{max}',
     ];
 }

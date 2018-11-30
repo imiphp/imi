@@ -47,9 +47,9 @@ class Number extends Condition
      * @var array
      */
     public $args = [
-        ':value',
-        'min',
-        'max',
-        'accuracy',
+        '{:value}',
+        '{min}',
+        '{max}',
+        '{accuracy}',
     ];
 }

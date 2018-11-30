@@ -60,7 +60,7 @@ class Condition extends Base
      *
      * @var array
      */
-    public $args = [':value'];
+    public $args = ['{:value}'];
 
     /**
      * 异常类
