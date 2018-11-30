@@ -371,6 +371,34 @@ class ValidatorHelper
     {
         return $value != $num;
     }
+
+    /**
+     * 比较
+     *
+     * @param string $valueLeft
+     * @param string $operation
+     * @param string $valueRight
+     * @return void
+     */
+    public static function compare($valueLeft, $operation, $valueRight)
+    {
+        var_dump($valueLeft, $operation, $valueRight);
+        static $operations = [
+            '==',
+            '!=',
+            '===',
+            '!==',
+            '<',
+            '<=',
+            '>',
+            '>=',
+        ];
+        if(!in_array($operation, $operations))
+        {
+            throw new \InvalidArgumentException(sprintf('unsupport operation %s', $operation));
+        }
+        return eval('return $valueLeft ' . $operation . ' $valueRight;');
+    }
     
     /**
      * 值在范围内

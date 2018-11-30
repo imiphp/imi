@@ -5,6 +5,7 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Traits\TBeanRealClass;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Validate\Annotation\Condition;
+use Imi\Validate\Annotation\ValidateValue;
 
 /**
  * 验证器类
@@ -282,40 +283,12 @@ class Validator implements IValidator
         $args = [];
         foreach($annotation->args as $arg)
         {
-            if(!is_string($arg))
+            $value = $this->getArgValue($data, $arg, $annotation);
+            if($value instanceof ValidateValue)
             {
-                $args[] = $arg;
+                $value = $this->getArgValue($data, $value->value, $annotation, false);
             }
-            else if(preg_match('/\{:([^\}]+)\}/', $arg, $matches) > 0)
-            {
-                $argName = $matches[1];
-                if('value' === $argName)
-                {
-                    $args[] = ObjectArrayHelper::get($data, $annotation->name);
-                    continue;
-                }
-                $list = explode('.', $argName, 2);
-                if('data' === $list[0])
-                {
-                    if(isset($list[1]))
-                    {
-                        $args[] = ObjectArrayHelper::get($data, $list[1]);
-                    }
-                    else
-                    {
-                        $args[] = $data;
-                    }
-                }
-            }
-            else if(preg_match('/\{([^\}]+)\}/', $arg, $matches) > 0)
-            {
-                $argName = $matches[1];
-                $args[] = ObjectArrayHelper::get($annotation, $argName);
-            }
-            else
-            {
-                $args[] = $arg;
-            }
+            $args[] = $value;
         }
         $callable = $annotation->callable;
         if(is_array($callable) && isset($callable[0]) && '$this' === $callable[0])
@@ -330,6 +303,52 @@ class Validator implements IValidator
         else
         {
             return $result;
+        }
+    }
+
+    /**
+     * 获取参数值
+     *
+     * @param array|object $data
+     * @param mixed $arg
+     * @param \Imi\Validate\Annotation\Condition $annotation
+     * @param boolean $includeAnnotationProperty
+     * @return mixed
+     */
+    protected function getArgValue($data, $arg, $annotation, $includeAnnotationProperty = true)
+    {
+        if(!is_string($arg))
+        {
+            return $arg;
+        }
+        else if(preg_match('/\{:([^\}]+)\}/', $arg, $matches) > 0)
+        {
+            $argName = $matches[1];
+            if('value' === $argName)
+            {
+                return ObjectArrayHelper::get($data, $annotation->name);
+            }
+            $list = explode('.', $argName, 2);
+            if('data' === $list[0])
+            {
+                if(isset($list[1]))
+                {
+                    return ObjectArrayHelper::get($data, $list[1]);
+                }
+                else
+                {
+                    return $data;
+                }
+            }
+        }
+        else if($includeAnnotationProperty && preg_match('/\{([^\}]+)\}/', $arg, $matches) > 0)
+        {
+            $argName = $matches[1];
+            return ObjectArrayHelper::get($annotation, $argName);
+        }
+        else
+        {
+            return $arg;
         }
     }
 
