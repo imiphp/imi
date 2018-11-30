@@ -53,6 +53,7 @@ class AutoValidationAop
             }
             $data['$cookie'] = $controller->request->getCookieParams();
             $data['$session'] = Session::get();
+            $data['$this'] = $controller;
 
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
@@ -74,7 +75,7 @@ class AutoValidationAop
                 }
             }
 
-            unset($data['$get'], $data['$post'], $data['$body'], $data['$headers'], $data['$cookie'], $data['$session']);
+            unset($data['$get'], $data['$post'], $data['$body'], $data['$headers'], $data['$cookie'], $data['$session'], $data['$this']);
 
             $data = array_values($data);
         }

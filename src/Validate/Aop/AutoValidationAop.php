@@ -88,6 +88,7 @@ class AutoValidationAop
         if(isset($annotations[0]))
         {
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
+            $data['$this'] = $joinPoint->getTarget();
 
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())
@@ -97,6 +98,7 @@ class AutoValidationAop
                 throw new $exception($validator->getMessage(), $rule->exCode);
             }
 
+            unset($data['$this']);
             $data = array_values($data);
         }
         else
