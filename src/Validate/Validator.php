@@ -244,17 +244,29 @@ class Validator implements IValidator
         {
             $message = str_replace('{:value}', ObjectArrayHelper::get($data, $annotation->name), $message);
         }
-        foreach($annotation as $name => $value)
-        {
-            if(is_scalar($value))
+        $message = preg_replace_callback('/\{([^\}]+)\}/', function($matches){
+            $name = $matches[1];
+            if(isset($name[0]) && ':' === $name[0])
             {
-                $message = str_replace('{' . $name . '}', $value, $message);
+                $name = substr($name, 1);
+                $list = explode('.', $argName, 2);
+                if('data' === $list[0])
+                {
+                    if(isset($list[1]))
+                    {
+                        return ObjectArrayHelper::get($data, $list[1]);
+                    }
+                    else
+                    {
+                        return $data;
+                    }
+                }
             }
             else
             {
-                $message = str_replace('{' . $name . '}', '', $message);
+                return ObjectArrayHelper::get($annotation, $name);
             }
-        }
+        }, $message);
         return $message;
     }
 
@@ -273,9 +285,8 @@ class Validator implements IValidator
             if(!is_string($arg))
             {
                 $args[] = $arg;
-                continue;
             }
-            if(preg_match('/\{:([^\}]+)\}/', $arg, $matches) > 0)
+            else if(preg_match('/\{:([^\}]+)\}/', $arg, $matches) > 0)
             {
                 $argName = $matches[1];
                 if('value' === $argName)
@@ -299,7 +310,7 @@ class Validator implements IValidator
             else if(preg_match('/\{([^\}]+)\}/', $arg, $matches) > 0)
             {
                 $argName = $matches[1];
-                $args[] = $annotation->$argName;
+                $args[] = ObjectArrayHelper::get($annotation, $argName);
             }
             else
             {
