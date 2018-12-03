@@ -192,12 +192,17 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
                 {
                     $item = clone $item;
                 }
+                $unsetKeys = [];
                 foreach($item as $field => $value)
                 {
                     if(!in_array($field, $this->fields))
                     {
-                        unset($item[$field]);
+                        $unsetKeys[] = $field;
                     }
+                }
+                foreach($unsetKeys as $key)
+                {
+                    unset($item[$key]);
                 }
                 $result[] = $item;
             }
