@@ -22,7 +22,10 @@ class Dotenv extends \Dotenv\Dotenv
         {
             $this->loader->clearEnvironmentVariable($name);
         }
-        $this->overload();
+        if(is_file($this->filePath))
+        {
+            $this->overload();
+        }
         foreach($_ENV as $name => $value)
         {
             Config::set($name, $value);
