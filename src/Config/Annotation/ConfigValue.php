@@ -2,6 +2,7 @@
 namespace Imi\Config\Annotation;
 
 use Imi\Config;
+use Imi\Bean\Annotation\Parser;
 use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
