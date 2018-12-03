@@ -187,7 +187,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         // 支持注解配置隐藏为null的关联属性
         foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
         {
-            if(null === $result[$name])
+            if(array_key_exists($name, $result) && null === $result[$name])
             {
                 $autoSelect = AnnotationManager::getPropertyAnnotations($className, $name, AutoSelect::class)[0] ?? null;
                 if($autoSelect && !$autoSelect->alwaysShow)
