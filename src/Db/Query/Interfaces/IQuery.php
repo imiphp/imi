@@ -439,6 +439,14 @@ interface IQuery
     public function update($data = null): IResult;
 
     /**
+     * 替换数据（Replace）
+     *
+     * @param array $data
+     * @return IResult
+     */
+    public function replace($data = null): IResult;
+
+    /**
      * 删除数据
      * @return IResult
      */
@@ -495,15 +503,15 @@ interface IQuery
     public function aggregate($functionName, $fieldName);
 
     /**
-     * 设置update/insert数据
+     * 设置update/insert/replace数据
      * 
-     * @param array $data
+     * @param array|\Imi\Db\Query\Raw[]|\Imi\Db\Query\Interfaces\IQuery $data
      * @return static
      */
     public function setData($data);
 
     /**
-     * 设置update/insert的字段
+     * 设置update/insert/replace的字段
      *
      * @param stirng $fieldName
      * @param mixed $value
@@ -512,7 +520,7 @@ interface IQuery
     public function setField($fieldName, $value);
 
     /**
-     * 设置update/insert的字段，值为表达式，原样代入
+     * 设置update/insert/replace的字段，值为表达式，原样代入
      *
      * @param stirng $fieldName
      * @param string $exp

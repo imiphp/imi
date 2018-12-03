@@ -54,7 +54,7 @@ class QueryOption
     /**
      * 保存的数据
      *
-     * @var array|\Imi\Db\Query\Raw[]
+     * @var array|\Imi\Db\Query\Raw[]|\Imi\Db\Query\Interfaces\IQuery
      */
     public $saveData = [];
 

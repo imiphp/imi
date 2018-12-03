@@ -1,9 +1,11 @@
 <?php
 namespace Imi\Db\Query;
 
+use Imi\Db\Db;
 use Imi\Util\Defer;
 use Imi\Db\Query\Order;
 use Imi\RequestContext;
+use Imi\Pool\PoolManager;
 use Imi\Db\Interfaces\IDb;
 use Imi\Bean\Annotation\Bean;
 use Imi\Db\Query\Where\Where;
@@ -21,8 +23,7 @@ use Imi\Db\Query\Builder\SelectBuilder;
 use Imi\Db\Query\Builder\UpdateBuilder;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
-use Imi\Db\Db;
-use Imi\Pool\PoolManager;
+use Imi\Db\Query\Builder\ReplaceBuilder;
 
 /**
  * @Bean("Query")
@@ -784,6 +785,19 @@ class Query implements IQuery
     }
 
     /**
+     * 替换数据（Replace）
+     *
+     * @param array $data
+     * @return IResult
+     */
+    public function replace($data = null): IResult
+    {
+        $builder = new ReplaceBuilder($this);
+        $sql = $builder->build($data);
+        return $this->execute($sql);
+    }
+
+    /**
      * 删除记录
      * @return IResult
      */
@@ -918,9 +932,9 @@ class Query implements IQuery
     }
 
     /**
-     * 设置update/insert数据
+     * 设置update/insert/replace数据
      * 
-     * @param array $data
+     * @param array|\Imi\Db\Query\Raw[]|\Imi\Db\Query\Interfaces\IQuery $data
      * @return static
      */
     public function setData($data)
@@ -930,7 +944,7 @@ class Query implements IQuery
     }
 
     /**
-     * 设置update/insert的字段
+     * 设置update/insert/replace的字段
      *
      * @param stirng $fieldName
      * @param mixed $value
@@ -943,7 +957,7 @@ class Query implements IQuery
     }
 
     /**
-     * 设置update/insert的字段，值为表达式，原样代入
+     * 设置update/insert/replace的字段，值为表达式，原样代入
      *
      * @param stirng $fieldName
      * @param string $exp
