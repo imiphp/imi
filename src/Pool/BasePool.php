@@ -54,7 +54,7 @@ abstract class BasePool implements IPool
         {
             $this->config = $config;
         }
-        if(ArrayUtil::isAssoc($resourceConfig))
+        if(!is_array($resourceConfig) || ArrayUtil::isAssoc($resourceConfig))
         {
             $this->resourceConfig = [$resourceConfig];
         }

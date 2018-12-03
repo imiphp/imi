@@ -5,9 +5,12 @@ use Imi\App;
 use Imi\Util\Random;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\BaseSyncPool;
+use Imi\Pool\TUriResourceConfig;
 
 class SyncRedisPool extends BaseSyncPool
 {
+    use TUriResourceConfig;
+
     /**
      * 数据库操作类
      * @var mixed
@@ -17,10 +20,7 @@ class SyncRedisPool extends BaseSyncPool
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         parent::__construct($name, $config, $resourceConfig);
-        if(isset($resourceConfig['handlerClass']))
-        {
-            $this->handlerClass = $resourceConfig['handlerClass'];
-        }
+        $this->initUriResourceConfig();
     }
 
     /**
@@ -29,7 +29,8 @@ class SyncRedisPool extends BaseSyncPool
      */
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
-        $db = BeanFactory::newInstance($this->handlerClass);
-        return new SyncRedisResource($this, $db, $this->getNextResourceConfig());
+        $config = $this->getNextResourceConfig();
+        $db = BeanFactory::newInstance($config['handlerClass'] ?? $this->handlerClass);
+        return new SyncRedisResource($this, $db, $config);
     }
 }
