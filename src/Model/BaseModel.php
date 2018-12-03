@@ -149,7 +149,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function offsetUnset($offset)
     {
-        
+        $index = array_search($offset, $this->__fieldNames);
+        if(false !== $index)
+        {
+            unset($this->__fieldNames[$index]);
+        }
     }
 
     public function &__get($name)
@@ -165,6 +169,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function __isset($name)
     {
         return isset($this[$name]);
+    }
+
+    public function __unset($name)
+    {
+        unset($this[$name]);
     }
 
     /**
