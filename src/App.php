@@ -223,7 +223,7 @@ abstract class App
                 CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
         
                 // 异步池子初始化
-                $pools = $main->getConfig()['pools'] ?? [];
+                $pools = array_merge(Config::get('@app.pools', []), $main->getConfig()['pools'] ?? []);
                 foreach($pools as $name => $pool)
                 {
                     if(isset($pool['async']))
@@ -239,7 +239,7 @@ abstract class App
             foreach($appMains as $main)
             {
                 // 同步池子初始化
-                $pools = $main->getConfig()['pools'] ?? [];
+                $pools = array_merge(Config::get('@app.pools', []), $main->getConfig()['pools'] ?? []);
                 foreach($pools as $name => $pool)
                 {
                     if(isset($pool['sync']))
@@ -254,7 +254,7 @@ abstract class App
         // 缓存初始化
         foreach($appMains as $main)
         {
-            $caches = $main->getConfig()['caches'] ?? [];
+            $caches = array_merge(Config::get('@app.caches', []), $main->getConfig()['caches'] ?? []);
             foreach($caches as $name => $cache)
             {
                 CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
