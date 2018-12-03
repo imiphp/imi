@@ -34,8 +34,6 @@ abstract class BaseBuilder implements IBuilder
         $this->query = $query;
     }
     
-
-
     /**
      * distinct
      * @param boolean $distinct
