@@ -297,20 +297,7 @@ abstract class Model extends BaseModel
             'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
 
-        if(isset($query->getOption()->where[0]))
-        {
-            $selectResult = $query->select();
-            if($selectResult->getRowCount() > 0)
-            {
-                // 更新
-                $result = $this->update($data);
-            }
-        }
-        if(!isset($result))
-        {
-            // 插入
-            $result = $this->insert($data);
-        }
+        $result = $query->replace($data);
 
         // 保存后
         $this->trigger(ModelEvents::AFTER_SAVE, [
