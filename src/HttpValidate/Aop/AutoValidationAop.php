@@ -65,13 +65,9 @@ class AutoValidationAop
 
             foreach($annotations as $annotation)
             {
-                if($annotation instanceof ExtractData)
+                if($annotation instanceof ExtractData && array_key_exists($annotation->to, $data))
                 {
-                    list($key, $name) = explode('.', $annotation->name, 2);
-                    if(array_key_exists($annotation->to, $data))
-                    {
-                        $data[$annotation->to] = ObjectArrayHelper::get($data[$key], $name);
-                    }
+                    $data[$annotation->to] = ObjectArrayHelper::get($data, $annotation->name);
                 }
             }
 
