@@ -6,6 +6,7 @@ use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
 use Imi\Server\Http\Message\UploadedFile;
 use Psr\Http\Message\ServerRequestInterface;
+use Imi\Config;
 
 class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInterface
 {
@@ -399,7 +400,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
             MediaType::APPLICATION_JSON_UTF8,
         ]))
         {
-            $this->parsedBody = json_decode($this->body, true);
+            $this->parsedBody = json_decode($this->body, !Config::get('@currentServer.jsonBodyIsObject', false));
         }
         // xml
         else if(in_array($contentType, [
