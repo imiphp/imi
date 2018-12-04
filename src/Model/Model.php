@@ -530,7 +530,7 @@ abstract class Model extends BaseModel
 
     /**
      * 处理保存的数据
-     * @param array $data
+     * @param object|array $data
      * @param object|string $object
      * @return array
      */
@@ -542,13 +542,18 @@ abstract class Model extends BaseModel
             'object' => &$object,
         ], null, \Imi\Model\Event\Param\BeforeParseDataEventParam::class);
 
-        if(null === $object && is_object($data))
+        if(is_object($data))
         {
-            $object = $data;
-        }
-        if($data instanceof static)
-        {
-            $data = $data->toArray();
+            if(null === $object)
+            {
+                $object = $data;
+            }
+            $_data = [];
+            foreach($data as $k => $v)
+            {
+                $_data[$k] = $v;
+            }
+            $data = $_data;
         }
         if($object)
         {
