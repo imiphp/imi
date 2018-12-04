@@ -43,7 +43,7 @@ class ConstValue extends BaseInjectValue
      */
     public function getRealValue()
     {
-        return defined($this->name) ? constant($this->name) : $default;
+        return defined($this->name) ? constant($this->name) : $this->default;
     }
 
 }
