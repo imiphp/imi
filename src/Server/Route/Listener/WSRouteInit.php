@@ -77,7 +77,7 @@ class WSRouteInit implements IEventListener
                         }
                     }
                     // 最终中间件
-                    $middlewares = array_unique(array_merge($classMiddlewares, $methodMiddlewares));
+                    $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
                     
                     foreach($routes as $routeItem)
                     {
