@@ -18,7 +18,7 @@ class SyncRedisResource extends BasePoolResource
      */
     private $config;
 
-    public function __construct(\Imi\Pool\Interfaces\IPool $pool, \Redis $redis, $config)
+    public function __construct(\Imi\Pool\Interfaces\IPool $pool, RedisHandler $redis, $config)
     {
         parent::__construct($pool);
         $this->redis = $redis;
