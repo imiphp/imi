@@ -300,7 +300,7 @@ interface {$className}
 }
 
 CODE;
-        $path = $this->savePath . '/interfaces/' . dirname(str_replace('\\', '/', $class->getNamespaceName())) . '/';
+        $path = $this->savePath . '/interfaces/' . str_replace('\\', '/', $class->getNamespaceName()) . '/';
         if(!is_dir($path))
         {
             mkdir($path, 0777, true);
@@ -337,7 +337,7 @@ trait {$className}
 }
 
 CODE;
-        $path = $this->savePath . '/traits/' . dirname(str_replace('\\', '/', $class->getNamespaceName())) . '/';
+        $path = $this->savePath . '/traits/' . str_replace('\\', '/', $class->getNamespaceName()) . '/';
         if(!is_dir($path))
         {
             mkdir($path, 0777, true);
@@ -374,7 +374,7 @@ class {$className}
 }
 
 CODE;
-        $path = $this->savePath . '/classes/' . dirname(str_replace('\\', '/', $class->getNamespaceName())) . '/';
+        $path = $this->savePath . '/classes/' . str_replace('\\', '/', $class->getNamespaceName()) . '/';
         if(!is_dir($path))
         {
             mkdir($path, 0777, true);
