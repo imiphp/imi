@@ -110,7 +110,7 @@ class Redis extends BaseLock
     protected function __tryLock()
     {
         return PoolManager::use($this->poolName, function($resource, $redis){
-            return 1 == $redis->eval(<<<SCRIPT
+            return 1 == $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
 local ttl     = ARGV[2]
@@ -145,7 +145,7 @@ SCRIPT
     public function unlock()
     {
         return PoolManager::use($this->poolName, function($resource, $redis){
-            return 1 == $redis->eval(<<<SCRIPT
+            return 1 == $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
 local db      = ARGV[1]
