@@ -82,7 +82,7 @@ class HotUpdateProcess extends BaseProcess
                     $result = json_decode($result);
                     if(true !== $result)
                     {
-                        echo $result, PHP_EOL;
+                        echo $result, PHP_EOL, 'build runtime fail!', PHP_EOL;
                         continue;
                     }
                     // 清除各种缓存
