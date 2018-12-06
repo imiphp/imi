@@ -30,7 +30,7 @@ class Redis extends Base
     public function get($key, $default = null)
     {
         $this->checkKey($key);
-        $result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
             return $redis->get($key);
         });
         if(null === $result)
@@ -65,7 +65,7 @@ class Redis extends Base
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key, $value, $ttl){
+        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
             return $redis->set($key, $this->encode($value), $ttl);
         });
     }
@@ -83,7 +83,7 @@ class Redis extends Base
     public function delete($key)
     {
         $this->checkKey($key);
-        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
             return $redis->del($key) > 0;
         });
     }
@@ -95,7 +95,7 @@ class Redis extends Base
      */
     public function clear()
     {
-        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis){
+        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
             return $redis->flushDB();
         });
     }
@@ -115,7 +115,7 @@ class Redis extends Base
     public function getMultiple($keys, $default = null)
     {
         $this->checkArrayOrTraversable($keys);
-        $mgetResult = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($keys){
+        $mgetResult = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
             return $redis->mget($keys);
         });
         $result = [];
@@ -167,7 +167,7 @@ class Redis extends Base
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        $result = PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($setValues, $ttl){
+        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($setValues, $ttl){
             $result = $redis->mset($setValues);
             if(null !== $ttl)
             {
@@ -195,7 +195,7 @@ class Redis extends Base
     public function deleteMultiple($keys)
     {
         $this->checkArrayOrTraversable($keys);
-        return (bool)PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($keys){
+        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
             return $redis->del($keys);
         });
     }
@@ -218,7 +218,7 @@ class Redis extends Base
     public function has($key)
     {
         $this->checkKey($key);
-        return (bool)PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($key){
+        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
             return $redis->exists($key);
         });
     }

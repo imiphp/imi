@@ -31,7 +31,7 @@ abstract class RedisManager
 
     /**
      * 释放 Redis 连接实例
-     * @param \Swoole\Coroutine\Redis $redis
+     * @param \Imi\Redis\RedisHandler $redis
      * @return void
      */
     public static function release($redis)

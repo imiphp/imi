@@ -28,7 +28,7 @@ class Redis extends Base
      */
     public function destroy($sessionID)
     {
-        PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($sessionID){
+        PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID){
             $redis->del($this->getKey($sessionID));
         });
     }
@@ -50,7 +50,7 @@ class Redis extends Base
      */
     public function read($sessionID)
     {
-        return PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($sessionID, &$result){
+        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID, &$result){
             return $redis->get($this->getKey($sessionID));
         });
     }
@@ -64,7 +64,7 @@ class Redis extends Base
      */
     public function write($sessionID, $sessionData, $maxLifeTime)
     {
-        PoolManager::use($this->poolName, function($resource, \Swoole\Coroutine\Redis $redis) use($sessionID, $sessionData, $maxLifeTime){
+        PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID, $sessionData, $maxLifeTime){
             $redis->set($this->getKey($sessionID), $sessionData, $maxLifeTime);
         });
     }
