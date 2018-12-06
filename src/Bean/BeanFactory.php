@@ -140,7 +140,7 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
         {$parentClone}
     }
 {$methodsTpl}
-};
+}
 TPL;
         return $tpl;
     }
