@@ -134,7 +134,7 @@ class UploadedFile implements UploadedFileInterface
         }
         if(!$this->isMoved)
         {
-            throw new \RuntimeException(sprintf('file %s move to %s fail', $this->tmpFileName, $targetPath));
+            throw new \RuntimeException(sprintf('file %s move to %s failed', $this->tmpFileName, $targetPath));
         }
     }
     

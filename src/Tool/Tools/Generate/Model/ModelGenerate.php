@@ -66,18 +66,18 @@ class ModelGenerate
             {
                 if($override)
                 {
-                    echo 'override ', $table, '...', PHP_EOL;
+                    echo 'Override ', $table, '...', PHP_EOL;
                 }
                 else
                 {
                     // 不覆盖
-                    echo 'skip ', $table, '...', PHP_EOL;
+                    echo 'Skip ', $table, '...', PHP_EOL;
                     continue;
                 }
             }
             else
             {
-                echo 'generating ', $table, '...', PHP_EOL;
+                echo 'Generating ', $table, '...', PHP_EOL;
             }
             $data = [
                 'namespace' => $namespace,
@@ -93,7 +93,7 @@ class ModelGenerate
             $content = $this->renderTemplate($data);
             File::writeFile($fileName, $content);
         }
-        echo 'complete', PHP_EOL;
+        echo 'Complete', PHP_EOL;
     }
 
     /**

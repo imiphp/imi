@@ -178,7 +178,7 @@ class FileStream implements StreamInterface
     {
         if(!rewind($this->stream))
         {
-            throw new \RuntimeException('rewind stream fail');
+            throw new \RuntimeException('rewind stream failed');
         }
     }
 
@@ -212,7 +212,7 @@ class FileStream implements StreamInterface
         $result = fwrite($this->stream, $string);
         if(false === $result)
         {
-            throw new \RuntimeException('write stream fail');
+            throw new \RuntimeException('write stream failed');
         }
         return $result;
     }

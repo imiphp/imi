@@ -32,7 +32,7 @@ class Development
         }
         foreach($name as $extName)
         {
-            echo 'generating ', $extName, '...', PHP_EOL;
+            echo 'Generating ', $extName, '...', PHP_EOL;
             $extensionReflection = new ExtensionReflection($extName);
             $extensionReflection->save(File::path($path, $extName));
         }

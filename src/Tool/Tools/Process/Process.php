@@ -35,7 +35,7 @@ class Process
         $process = ProcessManager::create($name, $args, $redirectStdinStdout, $pipeType);
         $process->start();
         $result = \swoole_process::wait(true);
-        echo 'process exit! pid:', $result['pid'], ', code:', $result['code'], ', signal:', $result['signal'], PHP_EOL;
+        echo 'Process exit! pid:', $result['pid'], ', code:', $result['code'], ', signal:', $result['signal'], PHP_EOL;
     }
 
     /**

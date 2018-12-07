@@ -60,7 +60,7 @@ class Server
             }
             else
             {
-                echo 'pid does not exists!', PHP_EOL;
+                echo 'Pid does not exists!', PHP_EOL;
             }
         });
     }
@@ -90,7 +90,7 @@ class Server
             }
             else
             {
-                echo 'pid does not exists!', PHP_EOL;
+                echo 'Pid does not exists!', PHP_EOL;
             }
         });
     }

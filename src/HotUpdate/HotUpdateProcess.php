@@ -77,12 +77,12 @@ class HotUpdateProcess extends BaseProcess
                 // 检查文件是否有修改
                 if($monitor->isChanged())
                 {
-                    echo 'building runtime...', PHP_EOL;
+                    echo 'Building runtime...', PHP_EOL;
                     $result = exec(Imi::getImiCmd('imi', 'buildRuntime'));
                     $result = json_decode($result);
                     if(true !== $result)
                     {
-                        echo $result, PHP_EOL, 'build runtime fail!', PHP_EOL;
+                        echo $result, PHP_EOL, 'Build runtime failed!', PHP_EOL;
                         continue;
                     }
                     // 清除各种缓存
