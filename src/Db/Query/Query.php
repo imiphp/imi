@@ -5,6 +5,7 @@ use Imi\Db\Db;
 use Imi\Util\Defer;
 use Imi\Db\Query\Order;
 use Imi\RequestContext;
+use Imi\Util\Pagination;
 use Imi\Pool\PoolManager;
 use Imi\Db\Interfaces\IDb;
 use Imi\Bean\Annotation\Bean;
@@ -593,13 +594,14 @@ class Query implements IQuery
      * 设置分页
      * 传入当前页码和每页显示数量，自动计算offset和limit
      * @param int $page
-     * @param int $show
+     * @param int $count
      * @return static
      */
-    public function page($page, $show)
+    public function page($page, $count)
     {
-        $this->option->offset = max((int)(($page - 1) * $show), 0);
-        $this->option->limit = $show;
+        $pagination = new Pagination($page, $count);
+        $this->option->offset = $pagination->getLimitOffset();
+        $this->option->limit = $count;
         return $this;
     }
 
