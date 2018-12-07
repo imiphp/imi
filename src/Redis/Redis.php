@@ -233,4 +233,26 @@ abstract class Redis
             });
         }
     }
+
+    /**
+     * 使用回调来使用池子中的资源，无需手动释放
+     * 回调有 1 个参数：$instance(操作实例对象，\Imi\Redis\RedisHandler 类型)
+     * 本方法返回值为回调的返回值
+     *
+     * @param callable $callable
+     * @return mixed
+     */
+    public static function use($callable)
+    {
+        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        {
+            return $callable(RedisManager::getInstance());
+        }
+        else
+        {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($callable) {
+                return $callable($redis);
+            });
+        }
+    }
 }
