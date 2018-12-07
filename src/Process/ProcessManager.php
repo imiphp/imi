@@ -42,7 +42,7 @@ abstract class ProcessManager
         }
         if($processOption['Process']->unique && static::isRunning($name))
         {
-            throw new ProcessAlreadyRunException(sprintf('process %s already run', $name));
+            throw new ProcessAlreadyRunException(sprintf('Process %s already run', $name));
         }
         if(null === $redirectStdinStdout)
         {

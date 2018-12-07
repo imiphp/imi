@@ -48,7 +48,7 @@ class Server
             $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
             if(!is_file($fileName))
             {
-                exit(sprintf('pid file %s is not exists', $fileName));
+                exit(sprintf('Pid file %s is not exists', $fileName));
             }
             $pid = json_decode(File::readFile($fileName), true);
             if($pid > 0)
@@ -78,7 +78,7 @@ class Server
             $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
             if(!is_file($fileName))
             {
-                exit(sprintf('pid file %s is not exists', $fileName));
+                exit(sprintf('Pid file %s is not exists', $fileName));
             }
             $pid = json_decode(File::readFile($fileName), true);
             if($pid > 0)

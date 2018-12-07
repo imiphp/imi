@@ -52,7 +52,7 @@ abstract class CacheManager
     {
         if(!isset(static::$handlers[$name]))
         {
-            throw new \RuntimeException(sprintf('getInstance failed, %s is not found', $name));
+            throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
         return static::$handlers[$name];
     }

@@ -87,7 +87,7 @@ trait TLockableParser
             $result = $taskCallable();
         }, $afterLockCallable))
         {
-            throw new LockFailException(sprintf('get lock failed, id:%s', $locker->getId()));
+            throw new LockFailException(sprintf('Get lock failed, id:%s', $locker->getId()));
         }
 
         return $result;

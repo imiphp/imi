@@ -82,7 +82,7 @@ class AnnotationParser
         // 是注解类的情况下，Parser类不需要指定@Parser()处理器
         else if($ref->isSubclassOf('Imi\Bean\Annotation\Base') && $ref->getName() !== 'Imi\Bean\Annotation\Parser')
         {
-            throw new \Exception(sprintf('annotation %s has no @Parser()', $ref->getName()));
+            throw new \Exception(sprintf('Annotation %s has no @Parser()', $ref->getName()));
         }
     }
 
@@ -213,7 +213,7 @@ class AnnotationParser
         }
         if(!$hasParser)
         {
-            throw new \Exception(sprintf('annotation %s has no @Parser()', $className));
+            throw new \Exception(sprintf('Annotation %s has no @Parser()', $className));
         }
     }
 

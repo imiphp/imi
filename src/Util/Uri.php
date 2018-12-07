@@ -63,7 +63,7 @@ class Uri implements UriInterface
         $uriOption = parse_url($uri);
         if(false === $uriOption)
         {
-            throw new \InvalidArgumentException(sprintf('uri %s parse error', $uri));
+            throw new \InvalidArgumentException(sprintf('Uri %s parse error', $uri));
         }
         $this->scheme = isset($uriOption['scheme']) ? $uriOption['scheme'] : '';
         $this->host = isset($uriOption['host']) ? $uriOption['host'] : '';

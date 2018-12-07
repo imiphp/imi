@@ -25,11 +25,11 @@ abstract class Tool
         static::outStartupInfo();
         if(!isset($_SERVER['argv'][1]))
         {
-            throw new \RuntimeException(sprintf('tool args error!'));
+            throw new \RuntimeException(sprintf('Tool args error!'));
         }
         if(false === strpos($_SERVER['argv'][1], '/'))
         {
-            throw new \RuntimeException(sprintf('tool name and operation not found!'));
+            throw new \RuntimeException(sprintf('Tool name and operation not found!'));
         }
         static::init();
         // cli参数初始化
@@ -45,7 +45,7 @@ abstract class Tool
         $callable = ToolParser::getInstance()->getCallable(static::$toolName, static::$toolOperation);
         if(null === $callable)
         {
-            throw new \RuntimeException(sprintf('tool %s does not exists!', $_SERVER['argv'][1]));
+            throw new \RuntimeException(sprintf('Tool %s does not exists!', $_SERVER['argv'][1]));
         }
         if(Args::get('h'))
         {

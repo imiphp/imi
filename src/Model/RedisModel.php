@@ -141,7 +141,7 @@ abstract class RedisModel extends BaseModel
             {
                 if(!isset($condition[$paramName]))
                 {
-                    throw new \Exception(sprintf('generateKey param %s does not exists', $paramName));
+                    throw new \Exception(sprintf('GenerateKey param %s does not exists', $paramName));
                 }
                 $result = str_replace('{' . $paramName . '}', $condition[$paramName], $result);
             }

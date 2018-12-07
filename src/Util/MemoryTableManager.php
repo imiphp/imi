@@ -105,7 +105,7 @@ abstract class MemoryTableManager
         }
         if(!isset(static::$tables[$name]))
         {
-            throw new \RuntimeException(sprintf('getInstance failed, %s is not found', $name));
+            throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
         return static::$tables[$name];
     }

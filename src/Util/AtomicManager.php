@@ -95,7 +95,7 @@ abstract class AtomicManager
         }
         if(!isset(static::$atomics[$name]))
         {
-            throw new \RuntimeException(sprintf('getInstance failed, %s is not found', $name));
+            throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
         return static::$atomics[$name];
     }

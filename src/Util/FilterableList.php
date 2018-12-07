@@ -224,7 +224,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         }
         else
         {
-            throw new \InvalidArgumentException(sprintf('unknow mode %s', $this->mode));
+            throw new \InvalidArgumentException(sprintf('Unknow mode %s', $this->mode));
         }
         return $result;
     }
