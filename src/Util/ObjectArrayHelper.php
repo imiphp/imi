@@ -180,4 +180,44 @@ abstract class ObjectArrayHelper
         }
         return $result;
     }
+
+    /**
+     * 过滤属性
+     * 
+     * $mode只允许取值为：allow/deny
+     *
+     * @param array|object $object
+     * @param array $fields
+     * @param string $mode
+     * @return void
+     */
+    public static function filter(&$object, array $fields, $mode = 'allow')
+    {
+        if('allow' === $mode)
+        {
+            $unsetKeys = [];
+            foreach($object as $field => $value)
+            {
+                if(!in_array($field, $fields))
+                {
+                    $unsetKeys[] = $field;
+                }
+            }
+            foreach($unsetKeys as $key)
+            {
+                static::remove($object, $key);
+            }
+        }
+        else if('deny' === $mode)
+        {
+            foreach($fields as $field)
+            {
+                static::remove($object, $field);
+            }
+        }
+        else
+        {
+            throw new \InvalidArgumentException(sprintf('Unknow mode %s', $mode));
+        }
+    }
 }

@@ -184,47 +184,14 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
             return $list;
         }
         $result = [];
-        if('allow' === $this->mode)
+        foreach($list as $item)
         {
-            foreach($list as $item)
+            if(is_object($item))
             {
-                if(is_object($item))
-                {
-                    $item = clone $item;
-                }
-                $unsetKeys = [];
-                foreach($item as $field => $value)
-                {
-                    if(!in_array($field, $this->fields))
-                    {
-                        $unsetKeys[] = $field;
-                    }
-                }
-                foreach($unsetKeys as $key)
-                {
-                    unset($item[$key]);
-                }
-                $result[] = $item;
+                $item = clone $item;
             }
-        }
-        else if('deny' === $this->mode)
-        {
-            foreach($list as $item)
-            {
-                if(is_object($item))
-                {
-                    $item = clone $item;
-                }
-                foreach($this->fields as $field)
-                {
-                    ObjectArrayHelper::remove($item, $field);
-                    $result[] = $item;
-                }
-            }
-        }
-        else
-        {
-            throw new \InvalidArgumentException(sprintf('Unknow mode %s', $this->mode));
+            ObjectArrayHelper::filter($item, $this->fields, $this->mode);
+            $result[] = $item;
         }
         return $result;
     }
