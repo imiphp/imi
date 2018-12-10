@@ -3,7 +3,7 @@ use Imi\App;
 use Imi\Util\Args;
 use Imi\Util\File;
 
-Args::init();
+Args::init(2);
 
 $namespace = Args::get('appNamespace');
 if(null === $namespace)

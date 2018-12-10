@@ -18,6 +18,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Bean\Annotation;
 use \Imi\Main\Helper as MainHelper;
+use Imi\Util\Args;
 
 /**
  * @Tool("imi")
@@ -25,43 +26,94 @@ use \Imi\Main\Helper as MainHelper;
 class Imi
 {
     /**
-     * 获取预加载信息
+     * 构建框架预加载缓存
      * 
-     * @Operation("buildRuntime")
+     * 构建后有助于提升性能
+     * 
+     * @Operation("buildImiRuntime")
      * 
      * @return void
      */
-    public function buildRuntime()
+    public function buildImiRuntime()
+    {
+        $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
+        ImiUtil::buildRuntime(\Imi\Util\Imi::getRuntimePath('imi-runtime.cache'));
+        echo 'Build imi runtime complete', PHP_EOL;
+    }
+
+    /**
+     * 清除框架预加载缓存
+     * 
+     * @Operation("clearImiRuntime")
+     * 
+     * @return void
+     */
+    public function clearImiRuntime()
+    {
+        $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
+        if(is_file($file))
+        {
+            unlink($file);
+            echo 'Clear imi runtime complete', PHP_EOL;
+        }
+        else
+        {
+            echo 'Imi runtime does not exists', PHP_EOL;
+        }
+    }
+
+    /**
+     * 构建项目预加载缓存
+     * 
+     * @Operation("buildRuntime")
+     * 
+     * @Arg(name="format", type=ArgType::STRING, comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
+     * 
+     * @return void
+     */
+    public function buildRuntime($format)
     {
         ob_start();
-        register_shutdown_function(function(){
+        register_shutdown_function(function() use($format){
             $result = ob_get_clean();
             if('' === $result)
             {
-                $result = true;
+                $result = 'Build app runtime complete' . PHP_EOL;
             }
-            echo json_encode($result);
+            if('json' === $format)
+            {
+                echo json_encode($result);
+            }
+            else
+            {
+                echo $result;
+            }
         });
+        
         // 加载服务器注解
         Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
-        $runtimeInfo = App::getRuntimeInfo();
-        $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'Class');
-        foreach($annotationsSet as &$item)
+        ImiUtil::buildRuntime();
+    }
+
+    /**
+     * 清除项目预加载缓存
+     * 
+     * @Operation("clearRuntime")
+     * 
+     * @return void
+     */
+    public function clearRuntime()
+    {
+        $file = \Imi\Util\Imi::getRuntimePath('runtime.cache');
+        if(is_file($file))
         {
-            $item['columns'] = $this->getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
+            unlink($file);
+            echo 'Clear app runtime complete', PHP_EOL;
         }
-        $runtimeInfo->memoryTable = $annotationsSet;
-        $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getData();
-        $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
-        $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
-        $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
-        $runtimeInfo->parsersData = [];
-        foreach(array_unique($runtimeInfo->annotationParserParsers) as $parserClass)
+        else
         {
-            $parser = $parserClass::getInstance();
-            $runtimeInfo->parsersData[$parserClass] = $parser->getData();
+            echo 'App runtime does not exists', PHP_EOL;
         }
-        file_put_contents(\Imi\Util\Imi::getRuntimePath('runtime.cache'), serialize($runtimeInfo));
     }
 
     /**

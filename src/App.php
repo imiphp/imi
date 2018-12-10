@@ -18,6 +18,7 @@ use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Imi;
 use Imi\Util\Random;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Util\Args;
 
 abstract class App
 {
@@ -90,9 +91,23 @@ abstract class App
         $subPath = Random::letterAndNumber(32, 32);
         // 注解处理
         static::$annotation = Annotation::getInstance();
-        static::$annotation->init([
-            MainHelper::getMain('Imi', 'Imi'),
-        ]);
+        // 框架运行时缓存支持
+        if('server/start' === $_SERVER['argv'][1])
+        {
+            $result = false;
+        }
+        else
+        {
+            // 尝试加载
+            $result = App::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime.cache'));
+        }
+        if(!$result)
+        {
+            // 不使用缓存时去扫描
+            static::$annotation->init([
+                MainHelper::getMain('Imi', 'Imi'),
+            ]);
+        }
         Event::trigger('IMI.INITED');
         static::$isInited = true;
     }
@@ -300,10 +315,14 @@ abstract class App
      * 从文件加载运行时数据
      *
      * @param string $fileName
-     * @return void
+     * @return boolean
      */
     public static function loadRuntimeInfo($fileName)
     {
+        if(!is_file($fileName))
+        {
+            return false;
+        }
         static::$runtimeInfo = unserialize(file_get_contents($fileName));
         Annotation::getInstance()->getParser()->setData(static::$runtimeInfo->annotationParserData);
         Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
@@ -314,5 +333,6 @@ abstract class App
             $parser = $parserClass::getInstance();
             $parser->setData($data);
         }
+        return true;
     }
 }

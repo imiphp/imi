@@ -27,9 +27,11 @@ class Init implements IEventListener
         {
             while(true)
             {
-                $result = exec(Imi::getImiCmd('imi', 'buildRuntime'), $output);
+                $result = exec(Imi::getImiCmd('imi', 'buildRuntime', [
+                    'format'    =>  'json',
+                ]), $output);
                 $result = json_decode($result);
-                if(true === $result)
+                if('Build app runtime complete' === trim($result))
                 {
                     break;
                 }

@@ -4,11 +4,15 @@ namespace Imi\Util;
 use Imi\App;
 use Imi\Config;
 use Imi\Worker;
+use Imi\Tool\Tool;
 use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
+use Imi\Bean\Annotation;
 use Imi\Bean\Parser\BeanParser;
-use Imi\Tool\Tool;
+use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\MemoryTable;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * 框架里杂七杂八的各种工具方法
@@ -292,14 +296,26 @@ abstract class Imi
      *
      * @param string $toolName 工具名，如server
      * @param string $operation 操作名，如start
+     * @param array $args 参数
      * @return string
      */
-    public static function getImiCmd($toolName, $operation)
+    public static function getImiCmd($toolName, $operation, $args = [])
     {
         $cmd = 'php ' . $_SERVER['argv'][0] . ' ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
+        }
+        foreach($args as $k => $v)
+        {
+            if(is_numeric($k))
+            {
+                $cmd .= ' -' . $v;
+            }
+            else
+            {
+                $cmd .= ' -' . $k . ' "' . $v . '"';
+            }
         }
         return $cmd;
     }
@@ -385,5 +401,37 @@ abstract class Imi
             $result = str_replace('{' . $k . '}', $v, $result);
         }
         return $result;
+    }
+
+    /**
+     * 构建运行时缓存
+     *
+     * @param string $runtimeFile 如果为空则默认为runtime.cache
+     * @return void
+     */
+    public static function buildRuntime($runtimeFile = null)
+    {
+        $runtimeInfo = App::getRuntimeInfo();
+        $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'Class');
+        foreach($annotationsSet as &$item)
+        {
+            $item['columns'] = $this->getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
+        }
+        $runtimeInfo->memoryTable = $annotationsSet;
+        $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getData();
+        $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
+        $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
+        $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
+        $runtimeInfo->parsersData = [];
+        foreach(array_unique($runtimeInfo->annotationParserParsers) as $parserClass)
+        {
+            $parser = $parserClass::getInstance();
+            $runtimeInfo->parsersData[$parserClass] = $parser->getData();
+        }
+        if(null === $runtimeFile)
+        {
+            $runtimeFile = \Imi\Util\Imi::getRuntimePath('runtime.cache');
+        }
+        file_put_contents($runtimeFile, serialize($runtimeInfo));
     }
 }
