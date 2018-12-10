@@ -6,9 +6,26 @@ use Imi\Util\File;
 
 class FileMTime extends BaseMonitor
 {
+    /**
+     * 文件记录集合
+     *
+     * @var array
+     */
     private $files = [];
 
+    /**
+     * 排除规则
+     *
+     * @var array
+     */
     private $excludeRule;
+
+    /**
+     * 更改的文件们
+     *
+     * @var string
+     */
+    private $changedFiles = [];
 
     /**
      * 初始化
@@ -77,6 +94,7 @@ class FileMTime extends BaseMonitor
             $item['exists'] = false;
             return $item;
         }, $this->files);
+        $this->changedFiles = [];
         // 包含的路径中检测
         foreach($this->includePaths as $path)
         {
@@ -89,6 +107,7 @@ class FileMTime extends BaseMonitor
                 {
                     if($this->parseCheckFile($fileName))
                     {
+                        $this->changedFiles[] = $fileName;
                         $changed = true;
                     }
                 }
@@ -102,6 +121,7 @@ class FileMTime extends BaseMonitor
                 {
                     if($this->parseCheckFile($item[0]))
                     {
+                        $this->changedFiles[] = $item[0];
                         $changed = true;
                     }
                 }
@@ -113,10 +133,21 @@ class FileMTime extends BaseMonitor
             if(!$option['exists'])
             {
                 unset($this->files[$fileName]);
+                $this->changedFiles[] = $fileName;
                 $changed = true;
             }
         }
         return $changed;
+    }
+
+    /**
+     * 获取变更的文件们
+     *
+     * @return array
+     */
+    public function getChangedFiles(): array
+    {
+        return $this->changedFiles;
     }
 
     /**

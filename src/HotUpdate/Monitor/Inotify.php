@@ -26,6 +26,13 @@ class Inotify extends BaseMonitor
     protected $mask = IN_MODIFY | IN_MOVE | IN_CREATE | IN_DELETE;
 
     /**
+     * 更改的文件们
+     *
+     * @var string
+     */
+    private $changedFiles = [];
+
+    /**
      * 初始化
      * @return void
      */
@@ -36,6 +43,7 @@ class Inotify extends BaseMonitor
             throw new \RuntimeException('the extension inotify is not installed');
         }
         $this->handler = \inotify_init();
+        stream_set_blocking($this->handler, 0);
 
         $this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
         foreach($this->includePaths as $path)
@@ -76,10 +84,14 @@ class Inotify extends BaseMonitor
      */
     public function isChanged(): bool
     {
-        $result = \inotify_read($this->handler);
-        foreach($result as $item)
-        {
-            if(Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO))
+        $this->changedFiles = [];
+        do{
+            $readResult = \inotify_read($this->handler);
+            if(false === $readResult)
+            {
+                return $result ?? false;
+            }
+            foreach($readResult as $item)
             {
                 $key = array_search($item['wd'], $this->paths);
                 if(false === $key)
@@ -87,13 +99,31 @@ class Inotify extends BaseMonitor
                     continue;
                 }
                 $filePath = File::path($key, $item['name']);
-                if(is_dir($filePath) && !$this->isExclude($filePath))
+                $filePathIsDir = is_dir($filePath);
+                if(!$filePathIsDir)
                 {
-                    $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                    $this->changedFiles[] = $filePath;
+                }
+                if(Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO))
+                {
+                    if($filePathIsDir && !$this->isExclude($filePath))
+                    {
+                        $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                    }
                 }
             }
-        }
-        return isset($result[0]);
+            $result = isset($readResult[0]);
+        }while(true);
+    }
+
+    /**
+     * 获取变更的文件们
+     *
+     * @return array
+     */
+    public function getChangedFiles(): array
+    {
+        return array_values(array_unique($this->changedFiles));
     }
 
     /**

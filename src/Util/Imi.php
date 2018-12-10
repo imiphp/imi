@@ -418,7 +418,7 @@ abstract class Imi
             $item['columns'] = $this->getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
-        $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getData();
+        $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getData(), Annotation::getInstance()->getParser()->getFileMap()];
         $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
         $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
         $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
@@ -433,5 +433,26 @@ abstract class Imi
             $runtimeFile = \Imi\Util\Imi::getRuntimePath('runtime.cache');
         }
         file_put_contents($runtimeFile, serialize($runtimeInfo));
+    }
+
+    /**
+     * 增量更新运行时缓存
+     *
+     * @param array $files
+     * @return void
+     */
+    public static function incrUpdateRuntime($files)
+    {
+        AnnotationManager::setAnnotations([]);
+        AnnotationManager::setAnnotationRelation([]);
+
+        foreach(App::getRuntimeInfo()->parsersData as $parserClass => $data)
+        {
+            $parser = $parserClass::getInstance();
+            $parser->setData([]);
+        }
+
+        $parser = Annotation::getInstance()->getParser();
+        $parser->parseIncr($files);
     }
 }

@@ -15,4 +15,11 @@ interface IMonitor
      * @return boolean
      */
     public function isChanged(): bool;
+
+    /**
+     * 获取变更的文件们
+     *
+     * @return array
+     */
+    public function getChangedFiles(): array;
 }

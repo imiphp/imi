@@ -51,12 +51,21 @@ class HotUpdateProcess extends BaseProcess
      */
     protected $status = true;
 
+    /**
+     * 构建运行时临时文件
+     *
+     * @var string
+     */
+    protected $buildRunTimeTmpFile;
+
     public function run(\Swoole\Process $process)
     {
         if(!$this->status)
         {
             return;
         }
+        $this->buildRunTimeTmpFile = tempnam(sys_get_temp_dir(), 'imi-build-runtime-');
+        file_put_contents($this->buildRunTimeTmpFile, '');
         if(null === $this->defaultPath)
         {
             $this->defaultPath = [
@@ -77,10 +86,12 @@ class HotUpdateProcess extends BaseProcess
                 // 检查文件是否有修改
                 if($monitor->isChanged())
                 {
+                    file_put_contents($this->buildRunTimeTmpFile, implode("\n", $monitor->getChangedFiles()));
                     echo 'Building runtime...', PHP_EOL;
                     $beginTime = microtime(true);
                     $result = exec(Imi::getImiCmd('imi', 'buildRuntime', [
                         'format'            =>  'json',
+                        'changedFilesFile'  =>  $this->buildRunTimeTmpFile,
                     ]));
                     $result = json_decode($result);
                     if('Build app runtime complete' !== trim($result))
@@ -92,7 +103,7 @@ class HotUpdateProcess extends BaseProcess
                     $this->clearCache();
                     // 执行重新加载
                     Coroutine::exec($reloadCmd);
-                    echo 'Building time use: ', microtime(true) - $beginTime, ' s', PHP_EOL;
+                    echo 'Building time use: ', microtime(true) - $beginTime, ' sec', PHP_EOL;
                 }
             }
         });

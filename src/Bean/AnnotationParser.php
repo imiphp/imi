@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Imi\Event\TEvent;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Util\Imi;
 
 /**
  * 注解处理类
@@ -25,6 +26,13 @@ class AnnotationParser
      * @var array
      */
     private $parsers = [];
+
+    /**
+     * 文件数据映射
+     *
+     * @var array
+     */
+    private $fileMap = [];
 
     /**
      * 注解读取器
@@ -60,6 +68,10 @@ class AnnotationParser
         // 处理注解的处理器
         $this->parseAnnotationParsers($className);
 
+    }
+
+    public function execParse($className)
+    {
         // 执行处理器
         $this->doParser($className);
 
@@ -77,7 +89,7 @@ class AnnotationParser
         $annotations = $this->reader->getClassAnnotations($ref);
         if($this->checkAnnotations($annotations))
         {
-            $this->data[$ref->getName()]['class'] = $annotations;
+            $this->data[$ref->getName()]['class'] = $this->fileMap[$ref->getFileName()][$ref->getName()]['class'] = &$annotations;
         }
         // 是注解类的情况下，Parser类不需要指定@Parser()处理器
         else if($ref->isSubclassOf('Imi\Bean\Annotation\Base') && $ref->getName() !== 'Imi\Bean\Annotation\Parser')
@@ -110,7 +122,7 @@ class AnnotationParser
         $annotations = $this->reader->getMethodAnnotations($method);
         if($this->checkAnnotations($annotations))
         {
-            $this->data[$ref->getName()]['method'][$method->getName()] = $annotations;
+            $this->data[$ref->getName()]['method'][$method->getName()] = $this->fileMap[$ref->getFileName()][$ref->getName()]['method'][$method->getName()] = &$annotations;
         }
     }
 
@@ -138,7 +150,7 @@ class AnnotationParser
         $annotations = $this->reader->getPropertyAnnotations($prop);
         if($this->checkAnnotations($annotations))
         {
-            $this->data[$ref->getName()]['prop'][$prop->getName()] = $annotations;
+            $this->data[$ref->getName()]['prop'][$prop->getName()] = $this->fileMap[$ref->getFileName()][$ref->getName()]['prop'][$prop->getName()] = &$annotations;
         }
     }
 
@@ -168,7 +180,7 @@ class AnnotationParser
         $annotations = $this->reader->getConstantAnnotations($const);
         if($this->checkAnnotations($annotations))
         {
-            $this->data[$ref->getName()]['const'][$const->getName()] = $annotations;
+            $this->data[$ref->getName()]['const'][$const->getName()] = $this->fileMap[$ref->getFileName()][$ref->getName()]['const'][$const->getName()] = &$annotations;
         }
     }
 
@@ -390,5 +402,62 @@ class AnnotationParser
     public function setData($data)
     {
         $this->data = $data;
+    }
+
+    /**
+     * Get 文件数据映射
+     *
+     * @return array
+     */ 
+    public function getFileMap()
+    {
+        return $this->fileMap;
+    }
+
+    /**
+     * Set 文件数据映射
+     *
+     * @param array $fileMap 文件数据映射
+     *
+     * @return void
+     */ 
+    public function setFileMap(array $fileMap)
+    {
+        $this->fileMap = $fileMap;
+    }
+
+    /**
+     * 处理增量更新
+     *
+     * @param string $files
+     * @return void
+     */
+    public function parseIncr($files)
+    {
+        foreach($files as $file)
+        {
+            if(isset($this->fileMap[$file]))
+            {
+                unset($this->fileMap[$file]);
+            }
+            $content = file_get_contents($file);
+            if(preg_match('/namespace ([^;]+);/', $content, $matches) <= 0)
+            {
+                continue;
+            }
+            $namespace = trim($matches[1]);
+            try {
+                $className = $namespace . '\\' . basename($file, '.php');
+                $this->parse($className);
+            }
+            catch(\Throwable $th) {
+
+            }
+        }
+
+        foreach($this->data as $className => $item)
+        {
+            $this->execParse($className);
+        }
     }
 }

@@ -67,11 +67,12 @@ class Imi
      * 
      * @Operation("buildRuntime")
      * 
-     * @Arg(name="format", type=ArgType::STRING, comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
+     * @Arg(name="format", type=ArgType::STRING, default="", comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
+     * @Arg(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * 
      * @return void
      */
-    public function buildRuntime($format)
+    public function buildRuntime($format, $changedFilesFile)
     {
         ob_start();
         register_shutdown_function(function() use($format){
@@ -90,8 +91,16 @@ class Imi
             }
         });
         
-        // 加载服务器注解
-        Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        if(null !== $changedFilesFile && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
+        {
+            $files = explode("\n", file_get_contents($changedFilesFile));
+            ImiUtil::incrUpdateRuntime($files);
+        }
+        else
+        {
+            // 加载服务器注解
+            Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        }
         ImiUtil::buildRuntime();
     }
 

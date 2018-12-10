@@ -14,7 +14,7 @@ class RuntimeInfo
     public $memoryTable = [];
 
     /**
-     * AnnotationParser->$data
+     * AnnotationParser->$data & AnnotationParser->$fileMap
      *
      * @var array
      */

@@ -87,6 +87,7 @@ class Annotation
     {
         $this->loader->loadModuleAnnotations($namespace, function($fileNamespace){
             $this->parser->parse($fileNamespace);
+            $this->parser->execParse($fileNamespace);
         });
     }
 

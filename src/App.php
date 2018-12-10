@@ -324,7 +324,9 @@ abstract class App
             return false;
         }
         static::$runtimeInfo = unserialize(file_get_contents($fileName));
-        Annotation::getInstance()->getParser()->setData(static::$runtimeInfo->annotationParserData);
+        $data = static::$runtimeInfo->annotationParserData;
+        Annotation::getInstance()->getParser()->setData($data[0]);
+        Annotation::getInstance()->getParser()->setFileMap($data[1]);
         Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
         AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);
         AnnotationManager::setAnnotationRelation(static::$runtimeInfo->annotationManagerAnnotationRelation);

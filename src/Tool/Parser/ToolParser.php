@@ -25,7 +25,7 @@ class ToolParser extends BaseParser
         }
         else if($annotation instanceof Operation)
         {
-            if(isset($this->data['class'][$className]['Methods'][$targetName]['Operation']))
+            if(isset($this->data['class'][$className]['Methods'][$targetName]['Operation']) && $this->data['class'][$className]['Methods'][$targetName]['Operation'] != $annotation)
             {
                 throw new \RuntimeException(sprintf('Tool %s/%s is already exists!', isset($this->data['class'][$className]['Tool']) ? $this->data['class'][$className]['Tool']->name : $className, $annotation->name));
             }
