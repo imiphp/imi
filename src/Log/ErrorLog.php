@@ -82,24 +82,28 @@ class ErrorLog
      */
     public function onShutdown()
     {
-        $e = error_get_last();
-        if (in_array($e['type'], [
-            E_ERROR,
-            E_PARSE,
-            E_CORE_ERROR,
-            E_COMPILE_ERROR,
-            E_USER_ERROR,
-            E_RECOVERABLE_ERROR
-        ]))
-        {
-            Log::error($e['message'], [
-                'trace' => [],
-                'errorFile'  =>  $e['file'],
-                'errorLine'  =>  $e['line'],
-            ]);
+        try {
+            $e = error_get_last();
+            if (in_array($e['type'], [
+                E_ERROR,
+                E_PARSE,
+                E_CORE_ERROR,
+                E_COMPILE_ERROR,
+                E_USER_ERROR,
+                E_RECOVERABLE_ERROR
+            ]))
+            {
+                Log::error($e['message'], [
+                    'trace' => [],
+                    'errorFile'  =>  $e['file'],
+                    'errorLine'  =>  $e['line'],
+                ]);
+            }
+            $logger = App::getBean('Logger');
+            $logger->save();
+        } catch(\Throwable $th) {
+            echo $th->getMessage(), ' ', $th->getFile(), ':', $th->getLine(), PHP_EOL;
         }
-        $logger = App::getBean('Logger');
-        $logger->save();
     }
 
     /**
