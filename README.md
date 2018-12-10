@@ -86,7 +86,7 @@ IMI 遵循 Apache2 开源协议发布，并提供免费使用。
 * 完善注释
 * bug修复
 * 功能开发
-* 文档编写（https://github.com/Yurunsoft/imidoc）
+* 文档编写（<https://github.com/Yurunsoft/imidoc>）
 * 教程、博客分享
 
 > 最新代码以 `dev` 分支为准，提交 `PR` 也请合并至 `dev` 分支！
@@ -112,13 +112,11 @@ PHP 进入 Swoole 时代，我本着学习 Swoole 并且尝试能否开发一个
 This project exists thanks to all the people who contribute. 
 <a href="https://github.com/Yurunsoft/IMI/graphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
 
-
 ## Backers
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/IMI#backer)]
 
 <a href="https://opencollective.com/IMI#backers" target="_blank"><img src="https://opencollective.com/IMI/backers.svg?width=890"></a>
-
 
 ## Sponsors
 
