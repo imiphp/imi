@@ -443,16 +443,21 @@ abstract class Imi
      */
     public static function incrUpdateRuntime($files)
     {
+        $parser = Annotation::getInstance()->getParser();
+        $parser->parseIncr($files);
+
         AnnotationManager::setAnnotations([]);
         AnnotationManager::setAnnotationRelation([]);
 
         foreach(App::getRuntimeInfo()->parsersData as $parserClass => $data)
         {
-            $parser = $parserClass::getInstance();
-            $parser->setData([]);
+            $parserObject = $parserClass::getInstance();
+            $parserObject->setData([]);
         }
 
-        $parser = Annotation::getInstance()->getParser();
-        $parser->parseIncr($files);
+        foreach($parser->getData() as $className => $item)
+        {
+            $parser->execParse($className);
+        }
     }
 }

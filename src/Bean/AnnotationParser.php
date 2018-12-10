@@ -446,18 +446,11 @@ class AnnotationParser
                 continue;
             }
             $namespace = trim($matches[1]);
-            try {
-                $className = $namespace . '\\' . basename($file, '.php');
+            $className = $namespace . '\\' . basename($file, '.php');
+            if(class_exists($className))
+            {
                 $this->parse($className);
             }
-            catch(\Throwable $th) {
-
-            }
-        }
-
-        foreach($this->data as $className => $item)
-        {
-            $this->execParse($className);
         }
     }
 }
