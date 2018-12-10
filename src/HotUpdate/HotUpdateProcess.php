@@ -78,9 +78,12 @@ class HotUpdateProcess extends BaseProcess
                 if($monitor->isChanged())
                 {
                     echo 'Building runtime...', PHP_EOL;
-                    $result = exec(Imi::getImiCmd('imi', 'buildRuntime'));
+                    $beginTime = microtime(true);
+                    $result = exec(Imi::getImiCmd('imi', 'buildRuntime', [
+                        'format'            =>  'json',
+                    ]));
                     $result = json_decode($result);
-                    if(true !== $result)
+                    if('Build app runtime complete' !== trim($result))
                     {
                         echo $result, PHP_EOL, 'Build runtime failed!', PHP_EOL;
                         continue;
@@ -89,6 +92,7 @@ class HotUpdateProcess extends BaseProcess
                     $this->clearCache();
                     // 执行重新加载
                     Coroutine::exec($reloadCmd);
+                    echo 'Building time use: ', microtime(true) - $beginTime, ' s', PHP_EOL;
                 }
             }
         });
