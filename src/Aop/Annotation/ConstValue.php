@@ -23,14 +23,14 @@ class ConstValue extends BaseInjectValue
     protected $defaultFieldName = 'name';
 
     /**
-     * 配置名，支持@app、@currentServer等用法
+     * 常量名
      *
      * @var string
      */
     public $name;
 
     /**
-     * 配置不存在时，返回的默认值
+     * 常量不存在时，返回的默认值
      *
      * @var mixed
      */

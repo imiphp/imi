@@ -5,7 +5,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 属性注入
+ * 对象注入
  * 使用：App::getBean()
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})

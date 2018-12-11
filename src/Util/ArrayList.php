@@ -3,6 +3,9 @@ namespace Imi\Util;
 
 use Imi\Util\Interfaces\IArrayable;
 
+/**
+ * 限定成员类型的数组列表
+ */
 class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
 {
     /**
