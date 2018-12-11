@@ -172,6 +172,8 @@ class TransactionAop
 }
 ```
 
+> 无论这个注解在方法上出现了几次，都只会触发一次注入处理
+
 ### 配置注入
 
 #### 实现代码
@@ -359,3 +361,20 @@ class TestClass
 $testClass = App::getBean('Test\TestClass');
 $testClass->test();
 ```
+
+### 方法参数注入
+
+```php
+/**
+ * @InjectArg(name="a", value="123")
+ * @InjectArg(name="b", value=@Inject("\ImiDemo\HttpDemo\MainServer\Model\User"))
+ *
+ * @return void
+ */
+public function test($a, $b)
+{
+	var_dump($a, $b);
+}
+```
+
+可以直接注入值，也可以使用值注入注解。

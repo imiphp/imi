@@ -60,3 +60,25 @@ ObjectArrayHelper::remove($data, 'a.b.c2');
 ```php
 var_dump(ObjectArrayHelper::exists($data, 'a.b.c2'));
 ```
+
+### filter
+
+过滤属性
+
+```php
+$data = [
+	'id'	=>	1,
+	'name'	=>	'imi',
+];
+// $data = new stdClass;
+// $data->id = 1;
+// $data->name = 'imi';
+
+// 以上两个都支持
+
+// 只保留 name 字段
+var_dump(ObjectArrayHelper::filter($data, ['name']));
+
+// 剔除 name 字段
+var_dump(ObjectArrayHelper::filter($data, ['name'], 'deny'));
+```

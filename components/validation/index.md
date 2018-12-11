@@ -39,6 +39,7 @@ public $inverseResult = false;
  * 当验证条件不符合时的信息
  * 
  * 支持代入{:value}原始值
+ * 支持代入{:data.xxx}所有数据中的某项
  * 支持以{name}这样的形式，代入注解参数值
  *
  * @var string
@@ -54,10 +55,16 @@ public $callable;
 
 /**
  * 参数名数组
+ * 
+ * 支持代入{:value}原始值
+ * 支持代入{:data}所有数据
+ * 支持代入{:data.xxx}所有数据中的某项
+ * 支持以{name}这样的形式，代入注解参数值
+ * 如果没有{}，则原样传值
  *
  * @var array
  */
-public $args;
+public $args = ['{:value}'];
 
 /**
  * 异常类
@@ -74,11 +81,13 @@ public $exception = null;
 public $exCode = null;
 ```
 
-`callable` 是回调，支持`is_int`或`XXX::check`写法
+`callable` 是回调，支持`is_int`或`XXX::check`写法。也可以使用`@callback`注解。你还可以使用`{"$this", "methodName"}`方式指定当前对象中的方法，当然这个方法必须是`public`或`protected`。
 
 `args` 是回调方法参数，如：`{":value"}`，即为将验证值；`{:data}`，即为代入整个数据数组或对象。代入第1个参数。
 
-你也可以传入多个参数，如：`{":value", 'name'}`，其中`name`代表将当前字段名代入，其它参数同理。
+你也可以传入多个参数，如：`{"{:value}", '{name}'}`，其中`name`代表将当前字段名代入，其它参数同理。
+
+你还可以使用`{":data.$this.xxx"}` 指定当前对象的属性。
 
 `inverseResult` 参数为`true`时，会对验证回调方法结果取反后，判断是否为true
 
@@ -184,6 +193,22 @@ public $exCode = null;
 $result = in_array($value, [1, 2, 3]);
 ```
 
+### @Compare
+
+比较验证注解
+
+`@Compare(name="参数名", value="被比较值", operation="比较符，如：==")`
+
+`value` 可以直接传值，也可以配合 `@ValidateValue` 注解使用。
+
+`operation` 允许使用：`==、!=、===、!==、<、<=、>、>=`
+
+### @ValidateValue
+
+指定验证时的值注解
+
+`@Compare(name="id", value=@ValidateValue("{:data.id}"), operation="=="`
+
 ## 自动验证
 
 注解：`@AutoValidation`
@@ -206,7 +231,7 @@ imi 支持在类、属性上使用 `@AutoValidation` 注解，当构造方法执
  * @Required(name="required", message="{name}为必须参数")
  * @Number(name="number", min=0.01, max=999.99, accuracy=2, message="数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
  * @Text(name="text", min=6, max=12, message="{name}参数长度必须>={min} && <={max}")
- * @Condition(name="my", callable="\ImiDemo\HttpDemo\MainServer\Validator\Test::myValidate", args={":value"}, message="{name}值必须为1")
+ * @Condition(name="my", callable="\ImiDemo\HttpDemo\MainServer\Validator\Test::myValidate", args={"{:value}"}, message="{name}值必须为1")
  */
 class Test
 {
@@ -269,7 +294,7 @@ public function test222($id, $name)
  * @Required(name="required", message="{name}为必须参数")
  * @Number(name="number", min=0.01, max=999.99, accuracy=2, message="数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
  * @Text(name="text", min=6, max=12, message="{name}参数长度必须>={min} && <={max}")
- * @Condition(name="my", callable="\ImiDemo\HttpDemo\MainServer\Validator\Test::myValidate", args={":value"}, message="{name}值必须为1")
+ * @Condition(name="my", callable="\ImiDemo\HttpDemo\MainServer\Validator\Test::myValidate", args={"{:value}"}, message="{name}值必须为1")
  */
 class Test extends Validator
 {

@@ -92,8 +92,11 @@ return [
 可以选用的序列化类：
 
 JSON:`\Imi\Util\Format\Json::class`
+
 PHP序列化:`\Imi\Util\Format\PhpSerialize::class`
-Swoole 序列化:`\Imi\Util\Format\SwooleSerialize::class`
+
+<del>Swoole 序列化:`\Imi\Util\Format\SwooleSerialize::class`</del> (不再推荐，以后版本会停止支持)
+
 PHP Session 序列化:`\Imi\Util\Format\PhpSession::class`
 
 ## 使用

@@ -27,7 +27,11 @@ return [
 ];
 ```
 
+> 文件缓存不支持分布式存储，请慎重选择！
+
 ### Redis 缓存
+
+> 使用 redis 的 set 和 get 方法，支持 ttl
 
 ```php
 return [
@@ -45,7 +49,28 @@ return [
 ];
 ```
 
-> 文件缓存不支持分布式存储，请慎重选择！
+### Redis Hash 缓存
+
+> 使用 redis 的 hash，即 hset 和 hget 方法，不支持ttl
+
+```php
+return [
+	'caches'	=>	[
+		// 缓存名称
+		'alias1'	=>	[
+			// 缓存驱动类
+			'handlerClass'	=>	\Imi\Cache\Handler\RedisHash::class,
+			// 驱动实例配置
+			'option'		=>	[
+				'poolName'	=>	'连接池名称',
+				'separator' =>	'分隔符，分隔 hash key和 member，默认为->',
+			],
+		],
+	],
+];
+```
+
+`RedisHash` 缓存使用时需要注意，key格式为`hashkey->member`，即为`$redis->hget('hashkey', 'member')`
 
 ## 手动使用
 
@@ -130,7 +155,7 @@ Imi\Cache\CacheManager::clear('缓存名称');
 
 基本用法：
 
-`@Cacheable(name="缓存器名，为null则取cache.default配置", key="缓存键名，支持{id}、{data.name}形式，代入参数，如果为null，则使用类名+方法名+全部参数，序列化后hash", ttl="超时时间，单位秒")`
+`@Cacheable(name="缓存器名，为null则取cache.default配置", key="缓存键名，支持{id}、{data.name}形式，代入参数，如果为null，则使用类名+方法名+全部参数，序列化后hash", ttl="超时时间，单位秒", lockable="Lock 注解，在调用方法体前后加锁")`
 
 防止缓存击穿：
 

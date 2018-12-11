@@ -18,7 +18,6 @@ imi 是基于 Swoole 开发的框架，所以最好先了解 Swoole，以便了�
 ### worker 进程
 
 * Swoole WorkerStart 事件
-* 清除容器中的类缓存文件
 * 加载运行时缓存
 * 初始化日志相关
 * 初始化连接池

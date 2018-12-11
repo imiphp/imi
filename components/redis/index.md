@@ -9,9 +9,28 @@ Redis 连接池配置方式已经在连接池里讲过，这里就不重复了�
 ## 获取对象
 
 ```php
+use \Imi\Redis\RedisManager;
 $redis = RedisManager::getInstance();
 $redis->set('imi:redis:test', date('Y-m-d H:i:s'));
 $datetime = $redis->get('imi:redis:test');
+```
+
+## 获取新对象
+
+每次调用都尝试从连接池中获取新的对象，要注意每次用完需要手动释放！
+
+```php
+use \Imi\Redis\RedisManager;
+$redis = RedisManager::getNewInstance();
+// $redis = RedisManager::getNewInstance($poolName);
+RedisManager::release($redis);
+```
+
+## 获取默认连接池名称
+
+```php
+use \Imi\Redis\RedisManager;
+echo RedisManager::getDefaultPoolName();
 ```
 
 ## 便捷操作

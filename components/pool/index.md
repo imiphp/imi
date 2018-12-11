@@ -136,6 +136,12 @@ return [
 					// 'charset' => '',
 					// 'options' => [], // PDO连接选项
 				],
+				// uri 写法
+				// 'resource'  =>  [
+                //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
+                //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
+                // ],
+                // 'resource'  =>  'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60;tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
 			],
 		]
 	],
@@ -177,9 +183,8 @@ return [
 						// 同上
 					],
 				],
-				'resource'	=>	[
-					// 同上
-				],
+				// uri方式，以分号;分隔多个，参数使用query参数格式，特殊字符需要转码
+				'resource'  =>  'tcp://192.168.0.222&timeout=60;tcp://192.168.0.222',
 			],
 		]
 	],

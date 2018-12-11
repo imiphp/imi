@@ -1,12 +1,14 @@
- 配置文件
+# 配置文件
 
 在每个`Main`所在目录下的`config/config.php`配置文件，会在该`Main`被实例化时加载。
 
 如果你不知道`Main`是什么，请看上一章：[《开始一个新项目》](/base/new.html)
 
+imi 还支持你在项目根目录下，建立一个`.env`文件，在里面设置运行环境配置。
+
 ## 配置文件结构
 
-## 共有结构
+### 共有结构
 
 ```php
 <?php
@@ -66,6 +68,8 @@ return [
         // 指定默认Lock使用哪个处理器
         'defaultType'   =>  'RedisLock',
     ],
+    // 当post body为json时，转为对象还是数组，默认为false数组
+    // 'jsonBodyIsObject'  =>  false,
 ];
 ```
 
@@ -116,4 +120,14 @@ return [
         ]
     ],
 ];
+```
+
+### .env
+
+在 `.env` 中的配置方式，和`Config::set()`写法类似，支持`@app`等写法。
+
+如下，是设置连接池的uri例子：
+
+```
+@app.pools.maindb.async.resource = "tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60"
 ```

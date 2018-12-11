@@ -323,6 +323,17 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
 // $result使用方法同上
 ```
 
+### 替换数据
+
+```php
+// replace into tb_test set id = 1, name = 'yurun', age = 666
+$result = Db::query()->table('tb_test')->replace([
+	'id'	=>	1,
+	'name'	=>	'yurun',
+	'age'	=>	666,
+]);
+```
+
 ### 删除记录
 
 ```php
