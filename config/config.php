@@ -1,6 +1,7 @@
 <?php
 return [
     'beanScan' => [
+        'Imi\Config',
         'Imi\Bean',
         'Imi\Aop',
         'Imi\Annotation',
@@ -20,7 +21,6 @@ return [
         'Imi\HttpValidate',
         'Imi\Enum',
         'Imi\Lock',
-        'Imi\Config',
     ],
     'atomics' => [
         'session'
