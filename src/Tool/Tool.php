@@ -169,7 +169,7 @@ abstract class Tool
     {
         $className = get_parent_class($callable[0]);
         $methodRef = new \ReflectionMethod($className, $callable[1]);
-        $annotations = ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'];
+        $annotations = ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'] ?? [];
         $args = [];
         foreach($methodRef->getParameters() as $param)
         {
