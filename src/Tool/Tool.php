@@ -169,10 +169,16 @@ abstract class Tool
     {
         $className = get_parent_class($callable[0]);
         $methodRef = new \ReflectionMethod($className, $callable[1]);
+        $annotations = ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'];
         $args = [];
-        foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'] ?? [] as $annotation)
+        foreach($methodRef->getParameters() as $param)
         {
-            if(Args::exists($annotation->name))
+            $annotation = $annotations[$param->name] ?? null;
+            if(null === $annotation)
+            {
+                $value = $param->isOptional() ? $param->getDefaultValue() : null;
+            }
+            else if(Args::exists($annotation->name))
             {
                 $value = static::parseArgValue(Args::get($annotation->name), $annotation);
             }
