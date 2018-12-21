@@ -64,7 +64,7 @@ class HotUpdateProcess extends BaseProcess
         {
             return;
         }
-        $this->changedFilesFile = ImiUtil::getRuntimePath('changedFilesFile');
+        $this->changedFilesFile = Imi::getRuntimePath('changedFilesFile');
         file_put_contents($this->changedFilesFile, '');
         if(null === $this->defaultPath)
         {
