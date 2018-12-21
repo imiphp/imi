@@ -19,6 +19,7 @@ use Imi\Util\Imi as ImiUtil;
 use Imi\Bean\Annotation;
 use \Imi\Main\Helper as MainHelper;
 use Imi\Util\Args;
+use Imi\Util\Text;
 
 /**
  * @Tool("imi")
@@ -91,7 +92,7 @@ class Imi
             }
         });
         
-        if(null !== $changedFilesFile && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
+        if(!Text::isEmpty($changedFilesFile) && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
