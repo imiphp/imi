@@ -38,6 +38,12 @@ class UdpRouteInit implements IEventListener
         $controllerParser = UdpControllerParser::getInstance();
         foreach(ServerManage::getServers() as $name => $server)
         {
+            if(!$server instanceof \Imi\Server\UdpServer\Server)
+            {
+                continue;
+            }
+            RequestContext::create();
+            RequestContext::set('server', $server);
             $route = $server->getBean('UdpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -86,6 +92,7 @@ class UdpRouteInit implements IEventListener
                     }
                 }
             }
+            RequestContext::destroy();
         }
     }
 

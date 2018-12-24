@@ -43,6 +43,10 @@ class HttpRouteInit implements IEventListener
         $controllerParser = ControllerParser::getInstance();
         foreach(ServerManage::getServers() as $name => $server)
         {
+            if(!$server instanceof \Imi\Server\Http\Server)
+            {
+                continue;
+            }
             RequestContext::create();
             RequestContext::set('server', $server);
             $route = $server->getBean('HttpRoute');

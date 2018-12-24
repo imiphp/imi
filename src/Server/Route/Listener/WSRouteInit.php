@@ -39,6 +39,12 @@ class WSRouteInit implements IEventListener
         $controllerParser = WSControllerParser::getInstance();
         foreach(ServerManage::getServers() as $name => $server)
         {
+            if(!$server instanceof \Imi\Server\WebSocket\Server)
+            {
+                continue;
+            }
+            RequestContext::create();
+            RequestContext::set('server', $server);
             $route = $server->getBean('WSRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -87,6 +93,7 @@ class WSRouteInit implements IEventListener
                     }
                 }
             }
+            RequestContext::destroy();
         }
     }
 
