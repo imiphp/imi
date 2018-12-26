@@ -3,6 +3,7 @@ namespace Imi\Server\Route\Listener;
 
 use Imi\Main\Helper;
 use Imi\ServerManage;
+use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
