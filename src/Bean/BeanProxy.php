@@ -279,7 +279,7 @@ class BeanProxy
         // 全局bean配置
         if(null === $beanProperties)
         {
-            $beanProperties = Config::get('beans.' . $beanName, []);
+            $beanProperties = Config::get('@app.beans.' . $beanName, []);
         }
         return $beanProperties ?? [];
     }
