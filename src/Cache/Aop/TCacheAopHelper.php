@@ -31,11 +31,11 @@ trait TCacheAopHelper
         }
         else
         {
-            return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args){
+            return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args, $cacheable){
                 $argName = $matches[1];
                 if(':args' === $argName)
                 {
-                    return serialize($args);
+                    return ($cacheable->hashMethod)(serialize($args));
                 }
                 else
                 {
@@ -46,7 +46,7 @@ trait TCacheAopHelper
                     }
                     else
                     {
-                        return md5(serialize($value));
+                        return ($cacheable->hashMethod)(serialize($value));
                     }
                 }
             }, $cacheable->key);

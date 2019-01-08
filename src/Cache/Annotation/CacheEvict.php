@@ -40,4 +40,12 @@ class CacheEvict extends Base
      * @var boolean
      */
     public $beforeInvocation = false;
+
+    /**
+     * 可以指定 hash 方法，默认为：md5
+     *
+     * @var string
+     */
+    public $hashMethod = 'md5';
+
 }

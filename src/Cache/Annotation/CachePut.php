@@ -49,4 +49,12 @@ class CachePut extends Base
      * @var int
      */
     public $ttl;
+
+    /**
+     * 可以指定 hash 方法，默认为：md5
+     *
+     * @var string
+     */
+    public $hashMethod = 'md5';
+
 }
