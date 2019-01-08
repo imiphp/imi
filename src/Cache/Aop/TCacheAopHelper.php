@@ -32,14 +32,22 @@ trait TCacheAopHelper
         else
         {
             return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args){
-                $value = ObjectArrayHelper::get($args, $matches[1]);
-                if(is_scalar($value))
+                $argName = $matches[1];
+                if(':args' === $argName)
                 {
-                    return $value;
+                    return serialize($args);
                 }
                 else
                 {
-                    return md5(serialize($value));
+                    $value = ObjectArrayHelper::get($args, $argName);
+                    if(is_scalar($value))
+                    {
+                        return $value;
+                    }
+                    else
+                    {
+                        return md5(serialize($value));
+                    }
                 }
             }, $cacheable->key);
         }
