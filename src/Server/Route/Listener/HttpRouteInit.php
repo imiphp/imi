@@ -43,7 +43,7 @@ class HttpRouteInit implements IEventListener
         $controllerParser = ControllerParser::getInstance();
         foreach(ServerManage::getServers() as $name => $server)
         {
-            if(!$server instanceof \Imi\Server\Http\Server)
+            if(!$server instanceof \Imi\Server\Http\Server && !$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
@@ -126,7 +126,7 @@ class HttpRouteInit implements IEventListener
     {
         foreach(ServerManage::getServers() as $name => $server)
         {
-            if(!$server instanceof \Imi\Server\Http\Server)
+            if(!$server instanceof \Imi\Server\Http\Server && !$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
