@@ -24,7 +24,10 @@ class Dispatcher
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
         $response = $requestHandler->handle($request);
-        $response->send();
+        if(!$response->isEnded())
+        {
+            $response->send();
+        }
     }
 
     protected function getMiddlewares()
