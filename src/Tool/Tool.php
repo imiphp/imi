@@ -2,6 +2,7 @@
 namespace Imi\Tool;
 
 use Imi\App;
+use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Args;
 use Imi\Util\File;
@@ -13,7 +14,6 @@ use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
-use Imi\Event\Event;
 
 abstract class Tool
 {
@@ -119,6 +119,15 @@ abstract class Tool
      */
     private static function init()
     {
+        // 跳过初始化的工具
+        foreach(Config::get('@Imi.skipInitTools') as $tool)
+        {
+            if(static::$toolName === $tool[0] && static::$toolOperation === $tool[1])
+            {
+                return;
+            }
+        }
+
         // 仅初始化项目及组件
         $initMains = [Helper::getMain(App::getNamespace())];
         foreach(Helper::getAppMains() as $mainName => $main)

@@ -24,5 +24,10 @@ return [
     ],
     'atomics' => [
         'session'
-    ]
+    ],
+    // 跳过初始化的工具
+    'skipInitTools' =>  [
+        ['Imi', 'buildImiRuntime'],
+        ['Imi', 'clearImiRuntime'],
+    ],
 ];
