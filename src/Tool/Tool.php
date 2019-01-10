@@ -31,9 +31,9 @@ abstract class Tool
         {
             throw new \RuntimeException(sprintf('Tool name and operation not found!'));
         }
-        static::init();
         // 工具名/操作名
         list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+        static::init();
         cli_set_process_title(Imi::getProcessName('tool'));
     }
 
