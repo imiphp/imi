@@ -20,7 +20,7 @@ class PoolConfig implements IPoolConfig
      * 池子中最少资源数
      * @var integer
      */
-    protected $minResources = 2;
+    protected $minResources = 1;
 
     /**
      * 获取资源回收时间间隔，单位：秒
