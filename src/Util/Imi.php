@@ -301,7 +301,7 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        if($_SERVER['SCRIPT_FILENAME'] === $_SERVER['_'])
+        if(isset($_SERVER['_']) && $_SERVER['SCRIPT_FILENAME'] === $_SERVER['_'])
         {
             $cmd = $_SERVER['_'];
         }
