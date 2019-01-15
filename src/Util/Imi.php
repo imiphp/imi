@@ -301,7 +301,7 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        $cmd = 'php ' . $_SERVER['argv'][0] . ' ' . $toolName . '/' . $operation;
+        $cmd = ($_SERVER['_'] ?? 'php') . ' ' . $_SERVER['argv'][0] . ' ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
