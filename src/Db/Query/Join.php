@@ -14,7 +14,7 @@ class Join implements IJoin
 
     /**
      * 表名
-     * @var string
+     * @var \Imi\Db\Query\Table
      */
     protected $table;
 
@@ -37,12 +37,6 @@ class Join implements IJoin
     protected $right;
 
     /**
-     * 表别名
-     * @var string
-     */
-    protected $tableAlias = null;
-
-    /**
      * where条件
      * @var \Imi\Db\Query\Interfaces\IBaseWhere
      */
@@ -56,11 +50,15 @@ class Join implements IJoin
 
     public function __construct(string $table = null, string $left = null, string $operation = null, string $right = null, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner')
     {
-        $this->table = $table;
+        $this->table = new Table();
+        $this->table->setValue($table);
+        if(null !== $tableAlias)
+        {
+            $this->table->setAlias($tableAlias);
+        }
         $this->left = $left;
         $this->operation = $operation;
         $this->right = $right;
-        $this->tableAlias = $tableAlias;
         $this->where = $where;
         $this->type = $type;
     }
@@ -107,7 +105,7 @@ class Join implements IJoin
      */
     public function getTableAlias(): string
     {
-        return $this->tableAlias;
+        return $this->table->getAlias();
     }
 
     /**
@@ -175,7 +173,7 @@ class Join implements IJoin
      */
     public function setTableAlias(string $tableAlias)
     {
-        $this->tableAlias = $tableAlias;
+        $this->table->setAlias($tableAlias);
     }
 
     /**
@@ -204,7 +202,7 @@ class Join implements IJoin
         {
             return $this->rawSQL;
         }
-        $result = $this->type . ' join ' . $this->parseKeyword($this->table . ' ' . $this->tableAlias) . ' on ' . $this->parseKeyword($this->left) . $this->operation . $this->parseKeyword($this->right);
+        $result = $this->type . ' join ' . $this->table . ' on ' . $this->parseKeyword($this->left) . $this->operation . $this->parseKeyword($this->right);
         if($this->where instanceof IBaseWhere)
         {
             $result .= ' ' . $this->where;
