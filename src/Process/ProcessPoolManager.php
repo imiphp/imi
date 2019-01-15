@@ -50,10 +50,10 @@ abstract class ProcessPoolManager
         $pool = new \Swoole\Process\Pool($workerNum, $ipcType, $msgQueueKey);
 
         $pool->on('WorkerStart', function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
-            cli_set_process_title(Imi::getProcessName('processPool', [
+            Imi::setProcessName('processPool', [
                 'processPoolName'   =>  $name,
                 'workerId'          =>  $workerId,
-            ]));
+            ]);
             // 随机数播种
             mt_srand();
             $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);

@@ -346,6 +346,23 @@ abstract class Imi
     }
 
     /**
+     * 设置当前进程名
+     *
+     * @param string $type
+     * @param array $data
+     * @return void
+     */
+    public static function setProcessName($type, $data = [])
+    {
+        if('Darwin' === PHP_OS)
+        {
+            // 苹果 MacOS 不允许设置进程名
+            return;
+        }
+        cli_set_process_title(static::getProcessName($type, $data));
+    }
+
+    /**
      * 获取 imi 进程名
      * 返回false则失败
      *
