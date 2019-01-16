@@ -77,7 +77,7 @@ class Database implements IDatabase
     public function setValue($value)
     {
         $matches = $this->parseKeywordText($value);
-        if(isset($matches['keywords'], $matches['alias']))
+        if(isset($matches['keywords']))
         {
             if(isset($matches['keywords'][0]))
             {
