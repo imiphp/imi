@@ -121,4 +121,22 @@ class Pagination
     {
         return $this->limitEndOffset;
     }
+
+    /**
+     * 根据记录数计算总页数
+     *
+     * @param int $records
+     * @return int
+     */
+    public function calcPageCount($records)
+    {
+        if(0 === $records % $this->count)
+        {
+            return $records / $this->count;
+        }
+        else
+        {
+            return ((int)($records / $this->count)) + 1;
+        }
+    }
 }
