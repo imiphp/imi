@@ -2,11 +2,11 @@
 namespace Imi\Pool;
 
 use Imi\App;
+use Imi\Worker;
+use Imi\Util\ArrayUtil;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
-use Imi\Event\Event;
-use Imi\Util\ArrayUtil;
 
 abstract class BasePool implements IPool
 {
@@ -46,6 +46,13 @@ abstract class BasePool implements IPool
      * @var integer
      */
     protected $configIndex = -1;
+
+    /**
+     * 正在添加中的资源数量
+     *
+     * @var integer
+     */
+    protected $addingResources = 0;
 
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
@@ -176,15 +183,20 @@ abstract class BasePool implements IPool
      */
     protected function addResource()
     {
-        $resource = $this->createResource();
-        $resource->open();
-        
-        $hash = $resource->hashCode();
-        $this->pool[$hash] = new PoolItem($resource);
+        try {
+            ++$this->addingResources;
+            $resource = $this->createResource();
+            $resource->open();
 
-        $this->push($resource);
+            $hash = $resource->hashCode();
+            $this->pool[$hash] = new PoolItem($resource);
 
-        return $resource;
+            $this->push($resource);
+
+            return $resource;
+        } finally {
+            --$this->addingResources;
+        }
     }
 
     /**
@@ -218,13 +230,9 @@ abstract class BasePool implements IPool
      */
     public function startAutoGC()
     {
-        if(App::isInited())
+        if(null !== Worker::getWorkerID())
         {
             $this->__startAutoGC();
-        }
-        else
-        {
-            Event::on('IMI.INITED', [$this, '__startAutoGC']);
         }
     }
 
@@ -264,7 +272,7 @@ abstract class BasePool implements IPool
      */
     public function getCount()
     {
-        return count($this->pool);
+        return count($this->pool) + $this->addingResources;
     }
 
     /**
