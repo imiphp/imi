@@ -108,8 +108,8 @@ abstract class App
                 MainHelper::getMain('Imi', 'Imi'),
             ]);
         }
-        Event::trigger('IMI.INITED');
         static::$isInited = true;
+        Event::trigger('IMI.INITED');
     }
 
     /**
@@ -232,48 +232,51 @@ abstract class App
         // 初始化
         if(Coroutine::isIn())
         {
+            $pools = Config::get('@app.pools', []);
             foreach($appMains as $main)
             {
                 // 协程通道队列初始化
                 CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
         
                 // 异步池子初始化
-                $pools = array_merge(Config::get('@app.pools', []), $main->getConfig()['pools'] ?? []);
-                foreach($pools as $name => $pool)
+                $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
+            }
+            foreach($pools as $name => $pool)
+            {
+                if(isset($pool['async']))
                 {
-                    if(isset($pool['async']))
-                    {
-                        $pool = $pool['async'];
-                        PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
-                    }
+                    $pool = $pool['async'];
+                    PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
                 }
             }
         }
         else
         {
+            $pools = Config::get('@app.pools', []);
             foreach($appMains as $main)
             {
                 // 同步池子初始化
-                $pools = array_merge(Config::get('@app.pools', []), $main->getConfig()['pools'] ?? []);
-                foreach($pools as $name => $pool)
+                $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
+            }
+            foreach($pools as $name => $pool)
+            {
+                if(isset($pool['sync']))
                 {
-                    if(isset($pool['sync']))
-                    {
-                        $pool = $pool['sync'];
-                        PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
-                    }
+                    $pool = $pool['sync'];
+                    PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
                 }
             }
         }
 
         // 缓存初始化
+        $caches = Config::get('@app.caches', []);
         foreach($appMains as $main)
         {
-            $caches = array_merge(Config::get('@app.caches', []), $main->getConfig()['caches'] ?? []);
-            foreach($caches as $name => $cache)
-            {
-                CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
-            }
+            $caches = array_merge($caches, $main->getConfig()['caches'] ?? []);
+        }
+        foreach($caches as $name => $cache)
+        {
+            CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
         }
 
         // Worker 进程初始化后置
