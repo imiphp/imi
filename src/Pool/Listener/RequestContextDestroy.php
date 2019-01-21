@@ -18,7 +18,6 @@ class RequestContextDestroy implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        var_dump('IMI.REQUEST_CONTENT.DESTROY');
         PoolManager::destroyCurrentContext();
     }
 }
