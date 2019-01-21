@@ -3,7 +3,6 @@ namespace Imi\Task\Listener;
 
 use Imi\Task\TaskInfo;
 use Imi\RequestContext;
-use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Server\Event\Param\TaskEventParam;
 use Imi\Server\Event\Listener\ITaskEventListener;
@@ -33,8 +32,6 @@ class MainServer implements ITaskEventListener
             throw $ex;
         }
         finally{
-            // 释放请求的进程池资源
-            PoolManager::destroyCurrentContext();
             RequestContext::destroy();
         }
     }
