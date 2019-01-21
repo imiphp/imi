@@ -1,8 +1,9 @@
 <?php
 namespace Imi\Db\Statement;
 
-use Imi\Db\Interfaces\IStatement;
+use Imi\RequestContext;
 use Imi\Db\Interfaces\IDb;
+use Imi\Db\Interfaces\IStatement;
 
 abstract class StatementManager
 {
@@ -17,15 +18,14 @@ abstract class StatementManager
      * 设置statement缓存
      *
      * @param IStatement $statement
-     * @param array $params
+     * @param bool $using
      * @return void
      */
-    public static function set(IStatement $statement, $params = [])
+    public static function set(IStatement $statement, bool $using)
     {
         static::$statements[$statement->getDb()->hashCode()][$statement->getSql()] = [
-            'statement'     =>  $statement->getInstance(),
-            'params'        =>  $params,
-            'using'         =>  false,
+            'statement'     =>  $statement,
+            'using'         =>  $using,
         ];
     }
 
@@ -53,7 +53,25 @@ abstract class StatementManager
             return false;
         }
         static::$statements[$hashCode][$sql]['using'] = true;
-        return static::$statements[$hashCode][$sql];
+        $statement = static::$statements[$hashCode][$sql];
+        if(RequestContext::exsits())
+        {
+            $statementCaches = RequestContext::get('statementCaches', []);
+            $statementCaches[] = $statement['statement'];
+            RequestContext::set('statementCaches', $statementCaches);
+        }
+        return $statement;
+    }
+
+    /**
+     * 将statement设为可用
+     *
+     * @param IStatement $statement
+     * @return void
+     */
+    public static function unUsingStatement(IStatement $statement)
+    {
+        return static::unUsing($statement->getDb(), $statement->getSql());
     }
 
     /**
@@ -143,4 +161,19 @@ abstract class StatementManager
     {
         static::$statements = [];
     }
+
+    /**
+     * 释放请求上下文
+     *
+     * @return void
+     */
+    public static function destoryRequestContext()
+    {
+        $statementCaches = RequestContext::get('statementCaches', []);
+        foreach($statementCaches as $statement)
+        {
+            static::unUsingStatement($statement);
+        }
+    }
+
 }

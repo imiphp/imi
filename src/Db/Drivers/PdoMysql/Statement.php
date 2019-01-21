@@ -6,6 +6,7 @@ use Imi\Util\LazyArrayObject;
 use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * PDO MySQL驱动Statement
@@ -36,6 +37,14 @@ class Statement extends BaseStatement implements IStatement
     {
         $this->db = $db;
         $this->statement = $statement;
+    }
+
+    public function __destruct()
+    {
+        if($this->db && $this->statement)
+        {
+            StatementManager::unUsing($this->db, $this->statement->queryString);
+        }
     }
 
     /**

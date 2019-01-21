@@ -170,8 +170,7 @@ abstract class BasePool implements IPool
      */
     public function fillMinResources()
     {
-        $count = $this->config->getMinResources() - count($this->pool);
-        for($i = 0; $i < $count; ++$i)
+        while($this->config->getMinResources() - $this->getCount() > 0)
         {
             $this->addResource();
         }
