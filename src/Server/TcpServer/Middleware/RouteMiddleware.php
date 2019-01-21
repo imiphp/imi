@@ -36,7 +36,7 @@ class RouteMiddleware implements IMiddleware
             $middlewares = $result['middlewares'];
             $middlewares[] = ActionMiddleware::class;
             $handler = new ReceiveHandler($middlewares);
-            return $handler->handle($frame);
+            return $handler->handle($data);
         }
         return $handler->handle($data);
     }

@@ -8,7 +8,7 @@ abstract class TcpController
 {
     /**
      * 请求
-     * @var \Imi\Server\Tcp\Server
+     * @var \Imi\Server\TcpServer\Server
      */
     public $server;
 
