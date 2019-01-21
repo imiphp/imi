@@ -27,6 +27,12 @@ abstract class StatementManager
             'statement'     =>  $statement,
             'using'         =>  $using,
         ];
+        if($using && RequestContext::exsits())
+        {
+			$statementCaches = RequestContext::get('statementCaches', []);
+			$statementCaches[] = $statement;
+			RequestContext::set('statementCaches', $statementCaches);
+        }
     }
 
     /**

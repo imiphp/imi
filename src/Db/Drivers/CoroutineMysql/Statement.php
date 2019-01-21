@@ -226,10 +226,6 @@ class Statement extends BaseStatement implements IStatement
      */
     protected function __execute(array $inputParameters = null)
     {
-        if($this->cursor >= 0)
-        {
-            return false;
-        }
         $params = $this->getExecuteParams($inputParameters);
         $result = $this->statement->execute($params);
         yield $result;
