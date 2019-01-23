@@ -436,11 +436,64 @@ abstract class Imi
      */
     public static function buildRuntime($runtimeFile = null)
     {
+        /**
+         * 处理列类型和大小
+         *
+         * @param \Imi\Model\Annotation\Column $column
+         * @return [$type, $size]
+         */
+        $parseColumnTypeAndSize = function($column) {
+            $type = $column->type;
+            switch($type)
+            {
+                case 'string':
+                    $type = \Swoole\Table::TYPE_STRING;
+                    $size = $column->length;
+                    break;
+                case 'int':
+                    $type = \Swoole\Table::TYPE_INT;
+                    $size = $column->length;
+                    if(!in_array($size, [1, 2, 4, 8]))
+                    {
+                        $size = 4;
+                    }
+                    break;
+                case 'float':
+                    $type = \Swoole\Table::TYPE_FLOAT;
+                    $size = 8;
+                    break;
+            }
+            return [$type, $size];
+        };
+        
+        /**
+         * 获取内存表列
+         *
+         * @param array $columnAnnotationsSet
+         * @return array
+         */
+        $getMemoryTableColumns = function($columnAnnotationsSet) use($parseColumnTypeAndSize) {
+            $columns = [];
+
+            foreach($columnAnnotationsSet as $propertyName => $annotations)
+            {
+                $columnAnnotation = $annotations[0];
+                list($type, $size) = $parseColumnTypeAndSize($columnAnnotation);
+                $columns[] = [
+                    'name' => $columnAnnotation->name,
+                    'type' => $type,
+                    'size' => $size,
+                ];
+            }
+            
+            return $columns;
+        };
+
         $runtimeInfo = App::getRuntimeInfo();
         $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'Class');
         foreach($annotationsSet as &$item)
         {
-            $item['columns'] = $this->getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
+            $item['columns'] = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
         $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getData(), Annotation::getInstance()->getParser()->getFileMap()];
