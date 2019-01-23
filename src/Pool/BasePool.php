@@ -148,9 +148,14 @@ abstract class BasePool implements IPool
     public function gc()
     {
         $hasGC = false;
+        $maxActiveTime = $this->config->getMaxActiveTime();
+        $maxUsedTime = $this->config->getMaxUsedTime();
         foreach($this->pool as $key => $item)
         {
-            if($item->isFree() && time() - $item->getCreateTime() >= $this->config->getMaxActiveTime())
+            if(
+                (null !== $maxActiveTime && $item->isFree() && time() - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
+                || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && time() - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
+                )
             {
                 $item->getResource()->close();
                 unset($this->pool[$key]);

@@ -94,4 +94,21 @@ interface IPoolConfig
      * @return static
      */
     public function setResourceConfigMode($resourceConfigMode);
+
+    /**
+     * Get 每次获取资源最长使用时间
+     *
+     * @return float|null
+     */ 
+    public function getMaxUsedTime();
+
+    /**
+     * Set 每次获取资源最长使用时间
+     *
+     * @param float|null $maxUsedTime 为 null 则不限制
+     *
+     * @return static
+     */ 
+    public function setMaxUsedTime($maxUsedTime);
+
 }
