@@ -87,7 +87,7 @@ class PoolConfig implements IPoolConfig
 
     /**
      * 获取资源回收时间间隔，单位：秒
-     * @return int
+     * @return int|null
      */
     public function getGCInterval()
     {
@@ -143,7 +143,7 @@ class PoolConfig implements IPoolConfig
     /**
      * Set 资源回收时间间隔，单位：秒
      *
-     * @param integer $gcInterval 获取资源回收时间间隔，单位：秒
+     * @param integer|null $gcInterval 获取资源回收时间间隔，单位：秒
      *
      * @return static
      */ 

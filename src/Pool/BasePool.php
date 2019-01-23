@@ -246,7 +246,11 @@ abstract class BasePool implements IPool
      */
     private function __startAutoGC()
     {
-        $this->timerID = \swoole_timer_tick($this->config->getGCInterval() * 1000, [$this, 'gc']);
+        $gcInterval = $this->config->getGCInterval();
+        if(null !== $gcInterval)
+        {
+            $this->timerID = \swoole_timer_tick($gcInterval * 1000, [$this, 'gc']);
+        }
     }
 
     /**
