@@ -339,7 +339,7 @@ abstract class Imi
         $parentPath = Config::get('@app.runtimePath');
         if(null === $parentPath)
         {
-            $parentPath = File::path(sys_get_temp_dir(), str_replace('\\', '-', App::getNamespace()) . '-runtime');
+            $parentPath = File::path(Imi::getNamespacePath(App::getNamespace()), '.runtime');
         }
         File::createDir($parentPath);
         return File::path($parentPath, ...$path);
