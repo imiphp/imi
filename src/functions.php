@@ -10,12 +10,23 @@ use Imi\RequestContext;
  */
 function imigo(callable $callable)
 {
-    return go(function() use($callable){
+    return go(imiCallable($callable));
+}
+
+/**
+ * 为传入的回调自动创建和销毁上下文，并返回新的回调
+ *
+ * @param callable $callable
+ * @return callable
+ */
+function imiCallable(callable $callable)
+{
+    return function() use($callable){
         try {
             RequestContext::create();
             return $callable();
         } finally {
             RequestContext::destroy();
         }
-    });
+    };
 }
