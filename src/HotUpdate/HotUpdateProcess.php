@@ -72,6 +72,7 @@ class HotUpdateProcess extends BaseProcess
                 Imi::getNamespacePath(App::getNamespace()),
             ];
         }
+        $this->excludePaths[] = Imi::getRuntimePath();
         go(function(){
             echo 'Process [hotUpdate] start', PHP_EOL;
             $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
