@@ -51,7 +51,15 @@ class WorkerStartEventParam extends EventParam
 
 ### IMI.SERVER.CREATE.AFTER
 
-创建服务器对象前置后作
+创建服务器对象前置后作，主服务器+子服务器，每个创建后都会触发！
+
+事件参数：
+
+无
+
+### IMI.SERVERS.CREATE.AFTER
+
+创建服务器对象前置后作，只会触发一次！
 
 事件参数：
 
