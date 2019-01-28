@@ -139,7 +139,7 @@ $list = MTest::select();
 
 ```php
 $model = MTest::newInstance();
-$model->setKey('abc');
+$model->__setKey('abc');
 $model->setStr('aaa');
 $model->setInt(123);
 $model->setFloat(4.56);
@@ -178,5 +178,5 @@ $model->getKey();
 
 ```php
 $model = MTest::find('abc');
-$model->setKey('def');
+$model->__setKey('def');
 ```
