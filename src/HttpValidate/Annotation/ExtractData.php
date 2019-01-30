@@ -32,4 +32,11 @@ class ExtractData extends Base
      * @var string
      */
     public $to;
+
+    /**
+     * 参数不存在时的默认值
+     *
+     * @var mixed
+     */
+    public $default;
 }
