@@ -2,41 +2,17 @@
 namespace Imi\HttpValidate\Annotation;
 
 use Imi\Bean\Annotation;
-use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 导出数据
+ * 导出数据，兼容写法，不推荐使用该注解类
+ * 
+ * 请使用注解类：Imi\Server\Http\Annotation\ExtractData
  * 
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
  */
-class ExtractData extends Base
+class ExtractData extends \Imi\Server\Http\Annotation\ExtractData
 {
-    /**
-     * 导出数据名称
-     * 
-     * 支持：
-     * $get.id
-     * $post.content
-     * $body.name
-     *
-     * @var string
-     */
-    public $name;
-
-    /**
-     * 导出数据到的参数名
-     *
-     * @var string
-     */
-    public $to;
-
-    /**
-     * 参数不存在时的默认值
-     *
-     * @var mixed
-     */
-    public $default;
 }
