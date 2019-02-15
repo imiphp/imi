@@ -16,7 +16,7 @@ use Imi\Util\ClassObject;
 class InjectArgAop
 {
     /**
-     * 自动事务支持
+     * 方法参数注入
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
