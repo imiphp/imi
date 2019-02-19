@@ -95,14 +95,15 @@ class ModelGenerate
             $fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
             
-            if(true === $override || 'base' === $override)
+            $baseFileName = File::path($baseModelPath, $className . 'Base.php');
+            if(!is_file($baseFileName) || true === $override || 'base' === $override)
             {
                 echo 'Generating ', $table, ' BaseClass...', PHP_EOL;
                 $baseContent = $this->renderTemplate('base-template', $data);
-                file_put_contents(File::path($baseModelPath, $className . 'Base.php'), $baseContent);
+                file_put_contents($baseFileName, $baseContent);
             }
 
-            if(true === $override || 'model' === $override)
+            if(!is_file($fileName) || true === $override || 'model' === $override)
             {
                 echo 'Generating ', $table, ' Class...', PHP_EOL;
                 $content = $this->renderTemplate('template', $data);
