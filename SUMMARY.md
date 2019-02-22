@@ -87,6 +87,7 @@
 
 ## 工具类
 
+* [全局函数](utils/functions.md)
 * [Imi](utils/Imi.md)
 * [Args](utils/Args.md)
 * [ArrayUtil](utils/ArrayUtil.md)
