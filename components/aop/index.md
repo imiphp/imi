@@ -261,6 +261,8 @@ class Test
 	 */
 	public function before(JoinPoint $joinPoint)
 	{
+		// 修改参数
+		// $joinPoint->setArgs(/*参数数组*/);
 		echo 'getScore()-before', PHP_EOL;
 	}
 

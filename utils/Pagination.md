@@ -38,6 +38,16 @@
 
 获取结束的偏移量，如 `limit 20, 10` 中的 `30`
 
+### calcPageCount
+
+根据记录数计算总页数
+
+```php
+$records = 101;
+$page = new \Imi\Util\Pagination(1, 10);
+$pagination->calcPageCount($records); // 11
+```
+
 ## 例子
 
 ```php

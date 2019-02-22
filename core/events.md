@@ -149,6 +149,18 @@ string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $
 \Imi\Server\Base $server, string $groupName, int $fd
 ```
 
+### IMI.REQUEST_CONTENT.CREATE
+
+请求上下文创建事件
+
+事件参数：无
+
+### IMI.REQUEST_CONTENT.DESTROY
+
+请求上下文销毁事件
+
+事件参数：无
+
 ## Swoole Server 全局事件
 
 ### IMI.MAIN_SERVER.START

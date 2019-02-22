@@ -166,3 +166,16 @@ $array = [1, 'b'=>2, 3];
 // true
 var_dump(ArrayUtil::isAssoc($array));
 ```
+
+### random
+
+随机获得数组中的值，返回一个保持键值对应的数组
+
+```php
+$array = [1, 2, 3];
+// 返回随机的数组，如：[k1=>v1]，第二个参数缺省默认为1
+var_dump(ArrayUtil::random($array));
+
+// 返回随机的数组，如：[k1=>v1, k2=>v2]
+var_dump(ArrayUtil::random($array, 2));
+```

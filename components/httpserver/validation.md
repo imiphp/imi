@@ -12,6 +12,8 @@
 
 还有一个`@ExtractData`注解，它可以把`get/post/body`中的参数导出到`action`方法的参数中。
 
+`@ExtractData`注解可以独立使用，不依赖`@HttpValidation`注解，但只能在控制器中使用。
+
 如下方法所示：
 
 ```php

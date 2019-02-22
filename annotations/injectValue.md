@@ -61,3 +61,28 @@ imi 中有一类注解，他们支持将值动态注入到注解属性中，当�
  * )
  */
 ```
+
+### @DbInject
+
+注入数据库对象
+
+| 属性名称 | 说明 |
+| ------------ | ------------ 
+| name | 连接池名，如果为`null`则取配置`@app.db.defaultPool` |
+| queryType | 查询类型，影响读写分离逻辑。可选：`QueryType::READ`/`QueryType::WRITE`，默认为`QueryType::WRITE` |
+
+### @RedisInject
+
+注入Redis对象
+
+| 属性名称 | 说明 |
+| ------------ | ------------ 
+| name | 连接池名，如果为`null`则取配置`@app.redis.defaultPool` |
+
+### @PoolResource
+
+注入连接池资源
+
+| 属性名称 | 说明 |
+| ------------ | ------------ 
+| name | 连接池名 |

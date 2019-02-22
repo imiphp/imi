@@ -11,7 +11,7 @@
 `-prefix` 传值则去除该表前缀
 `-include` 要包含的表名，以半角逗号分隔
 `-exclude` 要排除的表名，以半角逗号分隔
-`-override` 是否覆盖已存在的文件，请慎重！(`true`/`false`)
+`-override` 是否覆盖已存在的文件，请慎重！`true`-全覆盖;`false`-不覆盖;`base`-覆盖基类;`model`-覆盖模型类;默认缺省状态为`false`
 
 示例：
 
