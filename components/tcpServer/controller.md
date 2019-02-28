@@ -105,6 +105,24 @@ $this->server->groupCall('组名', 'push', ['success'=>true]);
 
 当然，并不是每个请求都需要有响应数据，什么都不`return`或者`return null`就是不响应数据。
 
+## 指定连接发送数据
+
+以下代码写在控制器的代码中，总而言之，如果你要推送消息，你得拿到`SwooleServer`对象。
+
+```php
+// $server 对象是 \Swoole\Server类型
+$server = $this->server->getSwooleServer();
+// 指定连接
+$fd = 19260817;
+$data = 'hello imi';
+
+// 原样发送数据
+$server->send($fd, $data);
+
+// 使用预定义的编码器，编码后发送数据
+$server->send($fd, $this->encodeMessage($data));
+```
+
 ## 类属性
 
 ### $server
