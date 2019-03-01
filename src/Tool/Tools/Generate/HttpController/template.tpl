@@ -13,14 +13,14 @@ use Imi\Server\Route\Annotation\Controller;
  */
 class <?= $name ?> extends HttpController
 {
-	/**
-	 * index
-	 * 
-	 * @Action
-	 * @return void
-	 */
-	public function index()
-	{
-		return ['success'=>true];
-	}
+    /**
+     * index
+     * 
+     * @Action
+     * @return void
+     */
+    public function index()
+    {
+        return ['success'=>true];
+    }
 }
