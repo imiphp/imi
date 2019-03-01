@@ -207,7 +207,7 @@ public function groupCall(string $groupName, string $methodName, ...$args);
  */
 public function getGroups(): array;
 ```
-### $frame
+### $data
 
 #### 方法
 
@@ -229,19 +229,12 @@ public function getData();
 
 ```php
 /**
- * 获取格式化后的数据，一般是数组或对象
- * @return mixed
+ * 获取客户端信息
+ * @return array
  */
-public function getFormatData();
-```
+public function getClientInfo();
 
-```php
-/**
- * 获取Reactor线程ID
- *
- * @return int
- */
-public function getReactorID(): int;
+// 格式同：https://wiki.swoole.com/wiki/page/477.html
 ```
 
 ## 控制器类方法
