@@ -59,7 +59,7 @@ STR
      * @return array|boolean
      */
     public function scan(&$i_iterator, $str_pattern = null, $i_count = null)
-	{
+    {
         $argStrs = ['ARGV[1]'];
         $args = [$i_iterator];
 
@@ -93,7 +93,7 @@ STR
 
         $i_iterator = (int)$result[0];
         return 0 === $i_iterator && [] === $result[1] ? false : $result[1];
-	}
+    }
 
     /**
      * sscan
@@ -210,7 +210,7 @@ STR
      * @return void
      */
     public function migrate($host, $port, $key, $db, $timeout, $copy = null, $replace = null)
-	{
+    {
         $argStrs = [];
         $args = [$host, $port, $key, $db, $timeout];
 
