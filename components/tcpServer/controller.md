@@ -229,12 +229,19 @@ public function getData();
 
 ```php
 /**
- * 获取客户端信息
- * @return array
+ * 获取格式化后的数据，一般是数组或对象
+ * @return mixed
  */
-public function getClientInfo();
+public function getFormatData();
+```
 
-// 格式同：https://wiki.swoole.com/wiki/page/477.html
+```php
+/**
+ * 获取Reactor线程ID
+ *
+ * @return int
+ */
+public function getReactorID(): int;
 ```
 
 ## 控制器类方法
