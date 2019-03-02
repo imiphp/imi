@@ -69,6 +69,16 @@ class Group
     }
 
     /**
+     * 获得组处理器对象
+     *
+     * @return \Imi\Server\Group\Handler\IGroupHandler
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+    /**
      * 加入组
      * 
      * @param int $fd
