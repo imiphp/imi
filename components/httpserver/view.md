@@ -152,6 +152,7 @@ return $this->response->write('hello world');
 ```php
 return new \Imi\Server\View\Annotation\View([
 	'template'	=>	'index',
+	'renderType'=>	'html',
 	'data'		=>	[
 		'name'	=>	'imi',
 	],
