@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Pool;
 
-use Swoole\Channel;
 use Imi\Pool\Interfaces\IPoolResource;
 
 /**
