@@ -87,7 +87,9 @@ abstract class Tool
             // 执行参数
             $args = static::getCallToolArgs($callable, static::$toolName, static::$toolOperation);
             // 执行工具操作
-            call_user_func_array($callable, $args);
+            imigo(function() use($callable, $args) {
+                call_user_func_array($callable, $args);
+            });
             swoole_event_wait();
         }
         
