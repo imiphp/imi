@@ -6,6 +6,19 @@ use Imi\Enum\Annotation\Parser\EnumParser;
 abstract class BaseEnum
 {
     /**
+     * 根据值，获取常量名，失败返回null
+     *
+     * @param mixed $value
+     * @return string|null
+     */
+    public static function getName($value)
+    {
+        $map = EnumParser::getInstance()->getMap(static::class);
+        $key = array_search($value, $map);
+        return $key ?? null;
+    }
+
+    /**
      * 获取值
      *
      * @param string $name

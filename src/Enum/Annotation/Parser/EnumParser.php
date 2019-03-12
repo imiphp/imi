@@ -19,21 +19,32 @@ class EnumParser extends BaseParser
         if($annotation instanceof EnumItem)
         {
             $value = constant($className . '::' . $targetName);
-            $this->data['names'][$className][] = $targetName;
+            $this->data['map'][$className][$targetName] = $value;
             $this->data['EnumItem'][$className][$value] = $annotation;
         }
     }
 
     /**
-     * 获得常量文本
+     * 获得枚举项
      *
      * @param string $className
      * @param mixed $value
-     * @return string
+     * @return \Imi\Enum\Annotation\EnumItem
      */
     public function getEnumItem($className, $value)
     {
         return $this->data['EnumItem'][$className][$value] ?? null;
+    }
+
+    /**
+     * 获取常量名=>值集合
+     *
+     * @param string $className
+     * @return string[]
+     */
+    public function getMap($className)
+    {
+        return $this->data['map'][$className] ?? [];
     }
 
     /**
@@ -44,7 +55,7 @@ class EnumParser extends BaseParser
      */
     public function getNames($className)
     {
-        return $this->data['names'][$className] ?? [];
+        return array_keys($this->data['map'][$className] ?? []);
     }
 
     /**
