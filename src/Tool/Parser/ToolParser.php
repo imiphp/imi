@@ -70,4 +70,33 @@ class ToolParser extends BaseParser
             return null;
         }
     }
+
+    /**
+     * 获取工具类名和方法名
+     * 
+     * 返回格式：[
+     *     'class'  =>  '',
+     *     'method' =>  '',
+     * ]
+     *
+     * @param string $tool
+     * @param string $operation
+     * @return array|null
+     */
+    public function getToolClassAndMethod($tool, $operation)
+    {
+        if(isset($this->data['tool'][$tool][$operation]))
+        {
+            $callable = $this->data['tool'][$tool][$operation];
+            return [
+                'class'     =>  $callable[0],
+                'method'    =>  $callable[1],
+            ];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

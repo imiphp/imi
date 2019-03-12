@@ -66,7 +66,7 @@ class Imi
     /**
      * 构建项目预加载缓存
      * 
-     * @Operation("buildRuntime")
+     * @Operation(name="buildRuntime", co=false)
      * 
      * @Arg(name="format", type=ArgType::STRING, default="", comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
      * @Arg(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")

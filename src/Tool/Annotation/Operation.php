@@ -23,4 +23,11 @@ class Operation extends Base
      * @var string
      */
     public $name;
+
+    /**
+     * 自动开启协程
+     *
+     * @var boolean
+     */
+    public $co = true;
 }
