@@ -6,11 +6,12 @@ use Imi\RequestContext;
  * 启动一个协程，自动创建和销毁上下文
  *
  * @param callable $callable
+ * @param mixed $args
  * @return void
  */
-function imigo(callable $callable)
+function imigo(callable $callable, ...$args)
 {
-    return go(imiCallable($callable));
+    return go(imiCallable($callable)(...$args));
 }
 
 /**
@@ -21,10 +22,10 @@ function imigo(callable $callable)
  */
 function imiCallable(callable $callable)
 {
-    return function() use($callable){
+    return function(...$args) use($callable){
         try {
             RequestContext::create();
-            return $callable();
+            return $callable(...$args);
         } finally {
             RequestContext::destroy();
         }
