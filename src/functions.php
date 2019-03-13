@@ -11,7 +11,9 @@ use Imi\RequestContext;
  */
 function imigo(callable $callable, ...$args)
 {
-    return go(imiCallable($callable)(...$args));
+    return go(function() use($callable, $args){
+        imiCallable($callable)(...$args);
+    });
 }
 
 /**
