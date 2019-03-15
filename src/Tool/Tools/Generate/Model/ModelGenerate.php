@@ -223,7 +223,8 @@ class ModelGenerate
 
     /**
      * 渲染模版
-     * @param string $data
+     * @param string $template
+     * @param array $data
      * @return string
      */
     private function renderTemplate($template, $data)
