@@ -241,6 +241,7 @@ class ModelGenerate
      */
     private function dbFieldTypeToPhp($type)
     {
+        $firstType = explode(' ', $type)[0];
         static $map = [
             'int'       => 'int',
             'smallint'  => 'int',
@@ -249,7 +250,10 @@ class ModelGenerate
             'bigint'    => 'int',
             'bit'       => 'boolean',
             'year'      => 'int',
+            'double'    =>  'double',
+            'float'     =>  'double',
+            'decimal'   =>  'double',
         ];
-        return $map[$type] ?? 'string';
+        return $map[$firstType] ?? 'string';
     }
 }
