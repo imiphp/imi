@@ -103,7 +103,7 @@ namespace Imi\Redis;
  * @method mixed ping()
  * @method mixed pipeline()
  * @method mixed psetex($key, $expire, $value)
- * @method mixed psubscribe(array $patterns)
+ * @method mixed psubscribe(array $patterns, callable $callable = null)
  * @method mixed pttl($key)
  * @method mixed publish($channel, $message)
  * @method mixed pubsub($cmd, ...$args)
@@ -151,7 +151,7 @@ namespace Imi\Redis;
  * @method mixed sortDesc($key, $pattern = null, $get = null, $start = null, $end = null, $getList = null)
  * @method mixed sortDescAlpha($key, $pattern = null, $get = null, $start = null, $end = null, $getList = null)
  * @method mixed strlen($key)
- * @method mixed subscribe(array $channels)
+ * @method mixed subscribe(array $channels, callable $callable = null)
  * @method mixed swapdb($srcdb, $dstdb)
  * @method mixed time()
  * @method mixed ttl($key)
@@ -275,6 +275,90 @@ class RedisHandler
     public function sscan($str_key, &$i_iterator, $str_pattern = null, $i_count = null)
     {
         return $this->redis->sscan($str_key, $i_iterator, $str_pattern, $i_count);
+    }
+
+    /**
+     * 让swoole协程 Redis 也支持第二个参数传入回调
+     *
+     * @param array $channels
+     * @param callable $callable
+     * @return mixed
+     */
+    public function subscribe(array $channels, callable $callable = null)
+    {
+        if($this->redis instanceof \Swoole\Coroutine\Redis)
+        {
+            $result = $this->redis->subscribe($channels);
+            if($result && null !== $callable)
+            {
+                while ($recvResult = $this->redis->recv())
+                {
+                    list($type, $chan, $msg) = $recvResult;
+                    switch($type)
+                    {
+                        case 'subscribe':
+                            // 频道订阅成功消息，订阅几个频道就有几条
+                            break;
+                        case 'unsubscribe':
+                            if($msg == 0)
+                            {
+                                break 2;
+                            }
+                            break;
+                        case 'message':
+                            $callable($this, $chan, $msg);
+                            break;
+                    }
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            return $this->redis->subscribe($channels, $callable);
+        }
+    }
+
+    /**
+     * 让swoole协程 Redis 也支持第二个参数传入回调
+     *
+     * @param array $channels
+     * @param callable $callable
+     * @return mixed
+     */
+    public function psubscribe(array $patterns, callable $callable = null)
+    {
+        if($this->redis instanceof \Swoole\Coroutine\Redis)
+        {
+            $result = $this->redis->psubscribe($patterns);
+            if($result && null !== $callable)
+            {
+                while ($recvResult = $this->redis->recv())
+                {
+                    list($type, $chan, $msg) = $recvResult;
+                    switch($type)
+                    {
+                        case 'psubscribe':
+                            // 频道订阅成功消息，订阅几个频道就有几条
+                            break;
+                        case 'punsubscribe':
+                            if($msg == 0)
+                            {
+                                break 2;
+                            }
+                            break;
+                        case 'pmessage':
+                            $callable($this, $chan, $msg);
+                            break;
+                    }
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            return $this->redis->psubscribe($patterns, $callable);
+        }
     }
 
     /**
