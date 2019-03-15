@@ -73,7 +73,7 @@ abstract class ProcessPoolManager
             // 执行任务
             call_user_func([$processInstance, 'run'], $pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
             swoole_event_wait();
-        }));
+        }, true));
         
         $pool->on('WorkerStop', imiCallable(function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey) {
             // 进程结束事件
@@ -86,7 +86,7 @@ abstract class ProcessPoolManager
                 'ipcType'       => $ipcType,
                 'msgQueueKey'   => $msgQueueKey,
             ]);
-        }));
+        }, true));
         
         return $pool;
 

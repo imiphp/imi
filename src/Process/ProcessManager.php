@@ -87,7 +87,7 @@ abstract class ProcessManager
                 'name'      => $name,
                 'process'   => $swooleProcess,
             ]);
-        }), $redirectStdinStdout, $pipeType);
+        }, true), $redirectStdinStdout, $pipeType);
         return $process;
     }
 
