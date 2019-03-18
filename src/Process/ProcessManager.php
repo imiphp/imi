@@ -188,13 +188,14 @@ abstract class ProcessManager
      * @param array $args
      * @param boolean $redirectStdinStdout
      * @param int $pipeType
-     * @return void
+     * @return \Swoole\Process
      */
     public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
         $process = static::create($name, $args, $redirectStdinStdout, $pipeType);
         $server = ServerManage::getServer('main')->getSwooleServer();
         $server->addProcess($process);
+        return $process;
     }
 
     /**
