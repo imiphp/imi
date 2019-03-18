@@ -148,9 +148,14 @@ abstract class BasePool implements IPool
     public function gc()
     {
         $hasGC = false;
+        $maxActiveTime = $this->config->getMaxActiveTime();
+        $maxUsedTime = $this->config->getMaxUsedTime();
         foreach($this->pool as $key => $item)
         {
-            if($item->isFree() && time() - $item->getCreateTime() >= $this->config->getMaxActiveTime())
+            if(
+                (null !== $maxActiveTime && $item->isFree() && time() - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
+                || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && time() - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
+                )
             {
                 $item->getResource()->close();
                 unset($this->pool[$key]);
@@ -170,8 +175,7 @@ abstract class BasePool implements IPool
      */
     public function fillMinResources()
     {
-        $count = $this->config->getMinResources() - count($this->pool);
-        for($i = 0; $i < $count; ++$i)
+        while($this->config->getMinResources() - $this->getCount() > 0)
         {
             $this->addResource();
         }
@@ -242,7 +246,11 @@ abstract class BasePool implements IPool
      */
     private function __startAutoGC()
     {
-        $this->timerID = \swoole_timer_tick($this->config->getGCInterval() * 1000, [$this, 'gc']);
+        $gcInterval = $this->config->getGCInterval();
+        if(null !== $gcInterval)
+        {
+            $this->timerID = \swoole_timer_tick($gcInterval * 1000, [$this, 'gc']);
+        }
     }
 
     /**

@@ -62,7 +62,12 @@ abstract class MemoryTableModel extends BaseModel
         {
             return null;
         }
-        MemoryTableManager::set($memoryTableAnnotation->name, $this->__key, $this->toArray());
+        $data = [];
+        foreach($this->__fieldNames as $fieldName)
+        {
+            $data[$fieldName] = $this[$fieldName];
+        }
+        MemoryTableManager::set($memoryTableAnnotation->name, $this->__key, $data);
     }
     
     /**

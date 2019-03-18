@@ -14,6 +14,8 @@ use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Tool\Annotation\Operation;
 
 abstract class Tool
 {
@@ -86,8 +88,23 @@ abstract class Tool
         {
             // 执行参数
             $args = static::getCallToolArgs($callable, static::$toolName, static::$toolOperation);
+            $result = ToolParser::getInstance()->getToolClassAndMethod(static::$toolName, static::$toolOperation);
+            if(!$result)
+            {
+                throw new \RuntimeException(sprintf('Tool %s/%s does not exists!', static::$toolName, static::$toolOperation));
+            }
+            $operationAnnotation = AnnotationManager::getMethodAnnotations($result['class'], $result['method'], Operation::class)[0];
             // 执行工具操作
-            call_user_func_array($callable, $args);
+            if($operationAnnotation->co)
+            {
+                imigo(function() use($callable, $args) {
+                    call_user_func_array($callable, $args);
+                });
+            }
+            else
+            {
+                call_user_func_array($callable, $args);
+            }
             swoole_event_wait();
         }
         

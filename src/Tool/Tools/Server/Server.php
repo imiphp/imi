@@ -22,7 +22,7 @@ class Server
     /**
      * 开启服务
      * 
-     * @Operation("start")
+     * @Operation(name="start", co=false)
      * 
      * @return void
      */

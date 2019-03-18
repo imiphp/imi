@@ -28,11 +28,21 @@ class ModelGenerate
      * @Arg(name="prefix", type=ArgType::STRING, default="", comments="传值则去除该表前缀")
      * @Arg(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
      * @Arg(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
-     * @Arg(name="override", type=ArgType::BOOLEAN, default=false, comments="是否覆盖已存在的文件，请慎重！(true/false)")
+     * @Arg(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false")
      * @return void
      */
     public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override)
     {
+        $override = (string)$override;
+        switch($override)
+        {
+            case 'base':
+                break;
+            case 'model':
+                break;
+            default:
+                $override = (bool)json_decode($override);
+        }
         $query = Db::query($poolName);
         // 数据库
         if(null === $database)
@@ -52,6 +62,8 @@ class ModelGenerate
         // model保存路径
         $modelPath = Imi::getNamespacePath($namespace);
         File::createDir($modelPath);
+        $baseModelPath = $modelPath . '/Base';
+        File::createDir($baseModelPath);
         foreach($list as $item)
         {
             $table = $item['TABLE_NAME'];
@@ -64,20 +76,12 @@ class ModelGenerate
             $fileName = File::path($modelPath, $className . '.php');
             if(is_file($fileName))
             {
-                if($override)
-                {
-                    echo 'Override ', $table, '...', PHP_EOL;
-                }
-                else
+                if(false === $override)
                 {
                     // 不覆盖
                     echo 'Skip ', $table, '...', PHP_EOL;
                     continue;
                 }
-            }
-            else
-            {
-                echo 'Generating ', $table, '...', PHP_EOL;
             }
             $data = [
                 'namespace' => $namespace,
@@ -90,8 +94,21 @@ class ModelGenerate
             ];
             $fields = $query->bindValue(':table', $table)->execute('show full columns from ' . $table)->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
-            $content = $this->renderTemplate($data);
-            File::writeFile($fileName, $content);
+            
+            $baseFileName = File::path($baseModelPath, $className . 'Base.php');
+            if(!is_file($baseFileName) || true === $override || 'base' === $override)
+            {
+                echo 'Generating ', $table, ' BaseClass...', PHP_EOL;
+                $baseContent = $this->renderTemplate('base-template', $data);
+                file_put_contents($baseFileName, $baseContent);
+            }
+
+            if(!is_file($fileName) || true === $override || 'model' === $override)
+            {
+                echo 'Generating ', $table, ' Class...', PHP_EOL;
+                $content = $this->renderTemplate('template', $data);
+                file_put_contents($fileName, $content);
+            }
         }
         echo 'Complete', PHP_EOL;
     }
@@ -206,14 +223,15 @@ class ModelGenerate
 
     /**
      * 渲染模版
-     * @param string $data
+     * @param string $template
+     * @param array $data
      * @return string
      */
-    private function renderTemplate($data)
+    private function renderTemplate($template, $data)
     {
         extract($data);
         ob_start();
-        include __DIR__ . '/template.tpl';
+        include __DIR__ . '/' . $template . '.tpl';
         return ob_get_clean();
     }
 
@@ -224,6 +242,7 @@ class ModelGenerate
      */
     private function dbFieldTypeToPhp($type)
     {
+        $firstType = explode(' ', $type)[0];
         static $map = [
             'int'       => 'int',
             'smallint'  => 'int',
@@ -232,7 +251,10 @@ class ModelGenerate
             'bigint'    => 'int',
             'bit'       => 'boolean',
             'year'      => 'int',
+            'double'    =>  'double',
+            'float'     =>  'double',
+            'decimal'   =>  'double',
         ];
-        return $map[$type] ?? 'string';
+        return $map[$firstType] ?? 'string';
     }
 }

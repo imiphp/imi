@@ -326,9 +326,9 @@ class BeanProxy
      * @param array $args
      * @return void
      */
-    private function parseBefore($method, $args)
+    private function parseBefore($method, &$args)
     {
-        $this->doAspect($method, 'before', function($aspectClassName, $methodName) use($method, $args){
+        $this->doAspect($method, 'before', function($aspectClassName, $methodName) use($method, &$args){
             $joinPoint = new JoinPoint('before', $method, $args, $this->object, $this);
             call_user_func([new $aspectClassName, $methodName], $joinPoint);
         });

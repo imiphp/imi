@@ -7,7 +7,6 @@ use Imi\Worker;
 use Imi\Log\Log;
 use Imi\Util\File;
 use Imi\RequestContext;
-use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Imi;
 use Imi\Util\Traits\TBeanRealClass;
@@ -122,8 +121,6 @@ class ErrorLog
         // 请求上下文处理
         if(RequestContext::exsits())
         {
-            // 释放请求的进程池资源
-            PoolManager::destroyCurrentContext();
             RequestContext::destroy();
         }
     }

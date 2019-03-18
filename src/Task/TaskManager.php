@@ -66,7 +66,7 @@ abstract class TaskManager
     {
         $task = TaskParser::getInstance()->getTask($name);
         $paramClass = $task['Task']->paramClass;
-        return static::nPostWait(new TaskInfo(new $task['className'], new $paramClass($data)), $timeout, $workerID);
+        return static::postWait(new TaskInfo(new $task['className'], new $paramClass($data)), $timeout, $workerID);
     }
 
     /**

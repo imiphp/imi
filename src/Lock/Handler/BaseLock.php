@@ -10,10 +10,10 @@ abstract class BaseLock implements ILockHandler
      */
     protected $id;
 
-	/**
-	 * 是否已加锁
-	 * @var bool
-	 */
+    /**
+     * 是否已加锁
+     * @var bool
+     */
     protected $isLocked = false;
 
     /**
