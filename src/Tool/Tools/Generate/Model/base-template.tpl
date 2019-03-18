@@ -7,7 +7,6 @@ use Imi\Model\Annotation\Column;
 
 /**
  * <?= $className ?>Base
-
 <?php foreach($fields as $field):?>
  * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?>
 
