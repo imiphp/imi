@@ -34,7 +34,7 @@ function imiCallable(callable $callable, bool $withGo = false)
             }
             return $callable(...$args);
         } finally {
-            if($hasRequestContext)
+            if(!$hasRequestContext && RequestContext::exsits())
             {
                 RequestContext::destroy();
             }
