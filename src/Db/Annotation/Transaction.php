@@ -26,7 +26,7 @@ class Transaction extends Base
      *
      * @var string
      */
-    public $type = TransactionType::NESTING;
+    public $type = TransactionType::AUTO;
 
     /**
      * 自动提交事务
