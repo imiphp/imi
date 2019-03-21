@@ -286,6 +286,81 @@ class Query implements IQuery
     }
 
     /**
+     * 设置 where 条件，支持语法如下：
+     * 
+     * [
+     *      'id'	=>	1,
+     *      'or'	=>	[
+     *          'id'	=>	2,
+     *      ],
+     *      'title'	    =>	['like', '%test%'],
+     *      'age'	    =>	['>', 18],
+     *      'age'  =>  ['between', 19, 29]
+     * ]
+     * 
+     * SQL: id = 1 or (id = 2) and title like '%test%' and age > 18 and age between 19 and 29
+     *
+     * @param array $condition
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND)
+    {
+        foreach($condition as $key => $value)
+        {
+            if(null === LogicalOperator::getText(strtolower($key)))
+            {
+                // 条件 k => v
+                if(is_array($value))
+                {
+                    $operator = strtolower($value[0] ?? '');
+                    switch($operator)
+                    {
+                        case 'between':
+                            if(!isset($value[2]))
+                            {
+                                throw new \RuntimeException('Between must have 3 params');
+                            }
+                            return $this->whereBetween($key, $value[1], $value[2], $logicalOperator);
+                        case 'not between':
+                            if(!isset($value[2]))
+                            {
+                                throw new \RuntimeException('Not between must have 3 params');
+                            }
+                            return $this->whereNotBetween($key, $value[1], $value[2], $logicalOperator);
+                        case 'in':
+                            if(!isset($value[1]))
+                            {
+                                throw new \RuntimeException('In must have 3 params');
+                            }
+                            return $this->whereIn($key, $value[1], $logicalOperator);
+                        case 'not in':
+                            if(!isset($value[1]))
+                            {
+                                throw new \RuntimeException('Not in must have 3 params');
+                            }
+                            return $this->whereNotIn($key, $value[1], $logicalOperator);
+                        default:
+                            $this->where($key, $operator, $value[1], $logicalOperator);
+                            break;
+                    }
+                }
+                else
+                {
+                    $this->where($key, '=', $value, $logicalOperator);
+                }
+                $logicalOperator = LogicalOperator::AND;
+            }
+            else
+            {
+                // 逻辑运算符
+                $this->whereEx($value, $key);
+            }
+        }
+        return $this;
+    }
+
+    /**
      * where between $begin end $end
      * @param string $fieldName
      * @param mixed $begin
@@ -375,6 +450,17 @@ class Query implements IQuery
     public function orWhereStruct(IBaseWhere $where)
     {
         return $this->whereStruct($where, LogicalOperator::OR);
+    }
+
+    /**
+     * 设置 where or 条件，支持语法参考 whereEx 方法
+     *
+     * @param array $condition
+     * @return static
+     */
+    public function orWhereEx(array $condition)
+    {
+        return $this->whereEx($condition, LogicalOperator::OR);
     }
 
     /**

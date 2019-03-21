@@ -120,6 +120,27 @@ interface IQuery
     public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND);
 
     /**
+     * 设置 where 条件，支持语法如下：
+     * 
+     * [
+     *      'id'	=>	1,
+     *      'or'	=>	[
+     *          'id'	=>	2,
+     *      ],
+     *      'title'	    =>	['like', '%test%'],
+     *      'age'	    =>	['>', 18],
+     *      'age'  =>  ['between', 19, 29]
+     * ]
+     * 
+     * SQL: id = 1 or (id = 2) and title like '%test%' and age > 18 and age between 19 and 29
+     *
+     * @param array $condition
+     * @param string $logicalOperator
+     * @return static
+     */
+    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND);
+
+    /**
      * where between $begin end $end
      * @param string $fieldName
      * @param mixed $begin
@@ -186,6 +207,14 @@ interface IQuery
      * @return static
      */
     public function orWhereStruct(IBaseWhere $where);
+
+    /**
+     * 设置 where or 条件，支持语法参考 whereEx 方法
+     *
+     * @param array $condition
+     * @return static
+     */
+    public function orWhereEx(array $condition);
 
     /**
      * where field in (list)
