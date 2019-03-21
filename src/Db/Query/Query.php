@@ -306,58 +306,65 @@ class Query implements IQuery
      */
     public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND)
     {
-        foreach($condition as $key => $value)
-        {
-            if(null === LogicalOperator::getText(strtolower($key)))
+        $func = function($condition) use(&$func){
+            $result = [];
+            foreach($condition as $key => $value)
             {
-                // 条件 k => v
-                if(is_array($value))
+                if(null === LogicalOperator::getText(strtolower($key)))
                 {
-                    $operator = strtolower($value[0] ?? '');
-                    switch($operator)
+                    // 条件 k => v
+                    if(is_array($value))
                     {
-                        case 'between':
-                            if(!isset($value[2]))
-                            {
-                                throw new \RuntimeException('Between must have 3 params');
-                            }
-                            return $this->whereBetween($key, $value[1], $value[2], $logicalOperator);
-                        case 'not between':
-                            if(!isset($value[2]))
-                            {
-                                throw new \RuntimeException('Not between must have 3 params');
-                            }
-                            return $this->whereNotBetween($key, $value[1], $value[2], $logicalOperator);
-                        case 'in':
-                            if(!isset($value[1]))
-                            {
-                                throw new \RuntimeException('In must have 3 params');
-                            }
-                            return $this->whereIn($key, $value[1], $logicalOperator);
-                        case 'not in':
-                            if(!isset($value[1]))
-                            {
-                                throw new \RuntimeException('Not in must have 3 params');
-                            }
-                            return $this->whereNotIn($key, $value[1], $logicalOperator);
-                        default:
-                            $this->where($key, $operator, $value[1], $logicalOperator);
-                            break;
+                        $operator = strtolower($value[0] ?? '');
+                        switch($operator)
+                        {
+                            case 'between':
+                                if(!isset($value[2]))
+                                {
+                                    throw new \RuntimeException('Between must have 3 params');
+                                }
+                                $result[] = new Where($key, 'between', [$value[1], $value[2]]);
+                            case 'not between':
+                                if(!isset($value[2]))
+                                {
+                                    throw new \RuntimeException('Not between must have 3 params');
+                                }
+                                $result[] = new Where($key, 'not between', [$value[1], $value[2]]);
+                            case 'in':
+                                if(!isset($value[1]))
+                                {
+                                    throw new \RuntimeException('In must have 3 params');
+                                }
+                                $result[] = new Where($key, 'in', $value[1]);
+                            case 'not in':
+                                if(!isset($value[1]))
+                                {
+                                    throw new \RuntimeException('Not in must have 3 params');
+                                }
+                                $result[] = new Where($key, 'not in', $value[1]);
+                            default:
+                                $result[] = new Where($key, $operator, $value[1]);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        $result[] = new Where($key, '=', $value);
                     }
                 }
                 else
                 {
-                    $this->where($key, '=', $value, $logicalOperator);
+                    // 逻辑运算符
+                    $result[] = new WhereBrackets(function() use($func, $value){
+                        return $func($value);
+                    }, $key);
                 }
-                $logicalOperator = LogicalOperator::AND;
             }
-            else
-            {
-                // 逻辑运算符
-                $this->whereEx($value, $key);
-            }
-        }
-        return $this;
+            return $result;
+        };
+        return $this->whereBrackets(function() use($condition, $func){
+            return $func($condition);
+        }, $logicalOperator);
     }
 
     /**

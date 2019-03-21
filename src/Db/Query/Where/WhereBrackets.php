@@ -80,7 +80,31 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
             return $this->rawSQL;
         }
         $callResult = call_user_func($this->callback);
-        if($callResult instanceof IBaseWhere)
+        if(is_array($callResult))
+        {
+            $result = '(';
+            foreach($callResult as $i => $callResultItem)
+            {
+                if($callResultItem instanceof IBaseWhere)
+                {
+                    if(0 === $i)
+                    {
+                        $result .= $callResultItem->toStringWithoutLogic() . ' ';
+                    }
+                    else
+                    {
+                        $result .= $callResultItem . ' ';
+                    }
+                    $this->binds = array_merge($this->binds, $callResultItem->getBinds());
+                }
+                else
+                {
+                    $result .= $callResultItem . ' ';
+                }
+            }
+            return $result . ')';
+        }
+        else if($callResult instanceof IBaseWhere)
         {
             $result = '(' . $callResult . ')';
             $this->binds = $callResult->getBinds();
