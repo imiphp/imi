@@ -115,6 +115,26 @@ Db::query()->where('id', '=', 1, 'or');
 Db::query()->orWhere('id', '=', 1);
 ```
 
+#### TP 风格 where
+
+```php
+// select * from `tb_test` where (`id` = 1 or (`id` = 2 ) and `title` like '%test%' and `age` > 18 and (`id` = 2 or (`id` = 3 ) ) )
+Db::query()->from('tb_test')->whereEx([
+	'id'	=>	1,
+	'or'	=>	[
+		'id'	=>	2,
+	],
+	'title'	=>	['like', '%test%'],
+	'age'	=>	['>', 18],
+	'and'   =>  [
+		'id'    =>  2,
+		'or'    =>  [
+			'id'    =>  3,
+		]
+	]
+]);
+```
+
 #### whereRaw
 
 ```php
