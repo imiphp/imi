@@ -33,7 +33,7 @@ abstract class BaseEnum
      * 获取文本
      *
      * @param mixed $value
-     * @return string
+     * @return string|null
      */
     public static function getText($value)
     {
@@ -78,4 +78,5 @@ abstract class BaseEnum
     {
         return EnumParser::getInstance()->getValues(static::class);
     }
+
 }

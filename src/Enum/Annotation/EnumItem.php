@@ -19,7 +19,7 @@ class EnumItem extends Base
      *
      * @var string
      */
-    public $text;
+    public $text = '';
 
     /**
      * 只传一个参数时的参数名
