@@ -28,7 +28,20 @@ abstract class BaseBuilder implements IBuilder
      * @var array
      */
     protected $params = [];
-    
+
+    /**
+     * 生成SQL语句
+     *
+     * @param IQuery $query
+     * @param mixed $args
+     * @return string
+     */
+    public static function buildSql(IQuery $query, ...$args)
+    {
+        $builder = new static($query);
+        return $builder->build(...$args);
+    }
+
     public function __construct(IQuery $query)
     {
         $this->query = $query;
