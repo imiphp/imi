@@ -8,7 +8,7 @@ use Imi\Model\Annotation\Column;
 /**
  * <?= $className ?>Base
 <?php foreach($fields as $field):?>
- * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?>
+ * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= '' === $field['comment'] ? '' : $field['comment'] ?>
 
 <?php endforeach;?>
  */
