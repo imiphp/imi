@@ -81,13 +81,46 @@ public $exception = null;
 public $exCode = null;
 ```
 
-`callable` 是回调，支持`is_int`或`XXX::check`写法。也可以使用`@callback`注解。你还可以使用`{"$this", "methodName"}`方式指定当前对象中的方法，当然这个方法必须是`public`或`protected`。
+`callable` 是验证回调，支持：
 
-`args` 是回调方法参数，如：`{":value"}`，即为将验证值；`{:data}`，即为代入整个数据数组或对象。代入第1个参数。
+* `"is_int"`、
+* `"XXX::check"`、
+* `{@Inject("BeanName"), "methodName"}`
+* `{"$this", "methodName"}`指定当前对象中的方法，但Http验证器中无法使用。
+* 方法必须是`public`或`protected`。
 
-你也可以传入多个参数，如：`{"{:value}", '{name}'}`，其中`name`代表将当前字段名代入，其它参数同理。
+`args` 是回调方法参数，例子：
 
-你还可以使用`{":data.$this.xxx"}` 指定当前对象的属性。
+```php
+class TestValidate
+{
+    public $abc = 'imi niubi!';
+
+    /**
+     * @AutoValidation
+     * @Condition(name="argName", @callable({"$this", "validate"}), args={"{:value}", "{:data}", "{name}", "{:data.a}", {":data.$this.abc"}})
+     */
+    public function test($a, $b)
+    {
+
+    }
+
+    /**
+     * 本方法参数，由 @Condition 的 args 决定
+     * $value 是当前验证参数对应的值，也就是 test() 方法中，$a 参数值
+     * $data 是集合了 test() 方法中所有参数的数组
+     * 你可以用 $data['b'] 获取 $b 参数值
+     * $name 代表是 @Condition 中的 name 参数，同理可以取到注解中的其它参数值
+     * $a 就是指定传入 test() 方法中 $a 参数值
+     * $vvv 就是指定 test() 方法所在类对象中的 $abc 属性值
+     */
+    public function validate($value, $data, $name, $a, $vvv)
+    {
+        var_dump($value, $data, $name, $a, $vvv);
+        return true;
+    }
+}
+```
 
 `inverseResult` 参数为`true`时，会对验证回调方法结果取反后，判断是否为true
 
