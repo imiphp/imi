@@ -360,22 +360,26 @@ $result = Db::query()->table('tb_test')->replace([
 // score 递增 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-					 ->setFieldInc('score');
+					 ->setFieldInc('score')
+					 ->update();
 
 // score 递增 10
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-					 ->setFieldInc('score', 10);
+					 ->setFieldInc('score', 10)
+					 ->update();
 
 // score 递减 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-					 ->setFieldDec('score');
+					 ->setFieldDec('score')
+					 ->update();
 
 // score 递减 10
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-                     ->setFieldDec('score', 10);
+                     ->setFieldDec('score', 10)
+					 ->update();
 ```
 
 ### update/insert/replace时使用表达式
@@ -384,7 +388,8 @@ $result = Db::query()->table('tb_test')
 // update tb_test set score = score + 1 where id = 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-                     ->setFieldExp('score', 'score + 1');
+                     ->setFieldExp('score', 'score + 1')
+					 ->update();
 ```
 
 ### 删除记录
