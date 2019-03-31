@@ -36,11 +36,21 @@ abstract class ConnectContext
 
     /**
      * 判断当前请求上下文是否存在
+     * @deprecated 1.0
      * @return boolean
      */
     public static function exsits()
     {
-        if(RequestContext::exsits())
+        return static::exists();
+    }
+
+    /**
+     * 判断当前请求上下文是否存在
+     * @return boolean
+     */
+    public static function exists()
+    {
+        if(RequestContext::exists())
         {
             $key = static::getContextKey();
             return isset(static::$context[$key]) || RequestContext::getServerBean('ConnectContextStore')->exists($key);

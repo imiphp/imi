@@ -82,7 +82,7 @@ abstract class PoolManager
     {
         $resource = static::getInstance($name)->getResource();
 
-        if(RequestContext::exsits() && $resource)
+        if(RequestContext::exists() && $resource)
         {
             static::pushResourceToRequestContext($resource);
         }
@@ -130,7 +130,7 @@ abstract class PoolManager
     public static function releaseResource(IPoolResource $resource)
     {
         $resource->getPool()->release($resource);
-        if(RequestContext::exsits())
+        if(RequestContext::exists())
         {
             static::removeResourceFromRequestContext($resource);
         }

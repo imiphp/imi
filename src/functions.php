@@ -26,7 +26,7 @@ function imigo(callable $callable, ...$args)
 function imiCallable(callable $callable, bool $withGo = false)
 {
     $resultCallable = function(...$args) use($callable){
-        $hasRequestContext = RequestContext::exsits();
+        $hasRequestContext = RequestContext::exists();
         try {
             if(!$hasRequestContext)
             {
@@ -34,7 +34,7 @@ function imiCallable(callable $callable, bool $withGo = false)
             }
             return $callable(...$args);
         } finally {
-            if(!$hasRequestContext && RequestContext::exsits())
+            if(!$hasRequestContext && RequestContext::exists())
             {
                 RequestContext::destroy();
             }

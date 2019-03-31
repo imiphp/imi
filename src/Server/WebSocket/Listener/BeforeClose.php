@@ -21,7 +21,7 @@ class BeforeClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
-        if(!RequestContext::exsits())
+        if(!RequestContext::exists())
         {
             RequestContext::create();
         }

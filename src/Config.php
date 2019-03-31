@@ -133,7 +133,7 @@ abstract class Config
             $first = array_shift($names);
             if('@currentServer' === $first)
             {
-                if($isCurrentServer = (RequestContext::exsits() && null !== ($server = RequestContext::getServer())))
+                if($isCurrentServer = (RequestContext::exists() && null !== ($server = RequestContext::getServer())))
                 {
                     $first = '@server';
                     array_unshift($names, $server->getName());

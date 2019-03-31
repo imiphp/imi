@@ -34,7 +34,7 @@ abstract class Base implements CacheInterface
         {
             return $data;
         }
-        else if(RequestContext::exsits() && null !== RequestContext::getServer())
+        else if(RequestContext::exists() && null !== RequestContext::getServer())
         {
             return RequestContext::getServerBean($this->formatHandlerClass)->encode($data);
         }
@@ -55,7 +55,7 @@ abstract class Base implements CacheInterface
         {
             return $data;
         }
-        else if(RequestContext::exsits() && null !== RequestContext::getServer())
+        else if(RequestContext::exists() && null !== RequestContext::getServer())
         {
             return RequestContext::getServerBean($this->formatHandlerClass)->decode($data);
         }

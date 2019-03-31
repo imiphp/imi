@@ -119,7 +119,7 @@ class ErrorLog
             'errorLine' => $ex->getLine(),
         ]);
         // 请求上下文处理
-        if(RequestContext::exsits())
+        if(RequestContext::exists())
         {
             RequestContext::destroy();
         }
