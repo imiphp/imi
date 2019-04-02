@@ -118,11 +118,6 @@ class ErrorLog
             'errorFile' => $ex->getFile(),
             'errorLine' => $ex->getLine(),
         ]);
-        // 请求上下文处理
-        if(RequestContext::exists())
-        {
-            RequestContext::destroy();
-        }
     }
 
     /**

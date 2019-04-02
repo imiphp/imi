@@ -1,6 +1,7 @@
 <?php
 
 use Imi\RequestContext;
+use Imi\App;
 
 /**
  * 启动一个协程，自动创建和销毁上下文
@@ -33,6 +34,8 @@ function imiCallable(callable $callable, bool $withGo = false)
                 RequestContext::create();
             }
             return $callable(...$args);
+        } catch(\Throwable $th) {
+            App::getBean('ErrorLog')->onException($th);
         } finally {
             if(!$hasRequestContext && RequestContext::exists())
             {
