@@ -128,7 +128,6 @@ class ErrorLog
     {
         $backtrace = debug_backtrace();
         $index = null;
-        $hasNull = false;
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
