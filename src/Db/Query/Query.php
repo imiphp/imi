@@ -25,6 +25,7 @@ use Imi\Db\Query\Builder\UpdateBuilder;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Builder\ReplaceBuilder;
+use Imi\Db\Query\Builder\BatchInsertBuilder;
 
 /**
  * @Bean("Query")
@@ -863,6 +864,21 @@ class Query implements IQuery
     public function insert($data = null): IResult
     {
         $builder = new InsertBuilder($this);
+        $sql = $builder->build($data);
+        return $this->execute($sql);
+    }
+
+    
+    /**
+     * 批量插入数据
+     * 以第 0 个成员作为字段标准
+     *
+     * @param array $data
+     * @return IResult
+     */
+    public function batchInsert($data = null): IResult
+    {
+        $builder = new BatchInsertBuilder($this);
         $sql = $builder->build($data);
         return $this->execute($sql);
     }

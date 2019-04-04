@@ -461,6 +461,15 @@ interface IQuery
     public function insert($data = null): IResult;
 
     /**
+     * 批量插入数据
+     * 以第 0 个成员作为字段标准
+     *
+     * @param array $data
+     * @return IResult
+     */
+    public function batchInsert($data = null): IResult;
+
+    /**
      * 更新数据
      * @param array $data
      * @return IResult
