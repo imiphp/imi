@@ -13,32 +13,51 @@ trait TKeyword
      */
     public function parseKeywordText($string)
     {
-        $pattern = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
-        if(preg_match_all($pattern, str_replace(BaseBuilder::DELIMITED_IDENTIFIERS, '', $string), $matches) > 0)
+        $split = explode('->', $string);
+        static $pattern = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
+        if(preg_match_all($pattern, str_replace(BaseBuilder::DELIMITED_IDENTIFIERS, '', $split[0]), $matches) > 0)
         {
-            $alias = end($matches['alias']);
-            if(!$alias)
+            if(isset($split[1]))
             {
-                $alias = null;
+                if(preg_match_all($pattern, str_replace(BaseBuilder::DELIMITED_IDENTIFIERS, '', $split[1]), $matches2) > 0)
+                {
+                    $alias = end($matches2['alias']);
+                    if(!$alias)
+                    {
+                        $alias = null;
+                    }
+                    return [
+                        'keywords'      => $matches['keywords'],
+                        'alias'         => $alias,
+                        'jsonKeywords'  => $matches2['keywords'] ?? null,
+                    ];
+                }
             }
-            return [
-                'keywords'  => $matches['keywords'],
-                'alias'     => $alias,
-            ];
+            else
+            {
+                $alias = end($matches['alias']);
+                if(!$alias)
+                {
+                    $alias = null;
+                }
+                return [
+                    'keywords'      => $matches['keywords'],
+                    'alias'         => $alias,
+                    'jsonKeywords'  => $matches['jsonKeywords'] ?? null,
+                ];
+            }
         }
-        else
-        {
-            return [];
-        }
+        return [];
     }
 
     /**
      * 从数组拼装为有分隔标识符的关键字
      * @param array $keywords
-     * @param string $alias
+     * @param string|null $alias
+     * @param array|null jsonKeywords
      * @return void
      */
-    public function parseKeywordToText($keywords, $alias = null)
+    public function parseKeywordToText($keywords, $alias = null, $jsonKeywords = null)
     {
         foreach($keywords as $k => $v)
         {
@@ -52,6 +71,10 @@ trait TKeyword
         if($isLastStar)
         {
             $result = str_replace(BaseBuilder::DELIMITED_IDENTIFIERS . '*' . BaseBuilder::DELIMITED_IDENTIFIERS, '*', $result);
+        }
+        if(null !== $jsonKeywords)
+        {
+            $result .= '->"$.' . implode('.', $jsonKeywords) . '"';
         }
         if(!Text::isEmpty($alias))
         {
@@ -68,6 +91,6 @@ trait TKeyword
     public function parseKeyword($string)
     {
         $matches = $this->parseKeywordText($string);
-        return $this->parseKeywordToText($matches['keywords'], $matches['alias']);
+        return $this->parseKeywordToText($matches['keywords'], $matches['alias'], $matches['jsonKeywords']);
     }
 }
