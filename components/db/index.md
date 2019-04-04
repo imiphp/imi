@@ -201,6 +201,14 @@ Db::query()->whereIsNotNull('age', 'or');
 Db::query()->orWhereIsNotNull('age');
 ```
 
+#### JSON 字段支持
+
+看如下代码，`data`为`json`类型字段，查询`json`对象中的`member.age`为`11`的记录
+
+```php
+Db::query()->where('data->member.age', '=', 11)->select();
+```
+
 ### join
 
 ```php
