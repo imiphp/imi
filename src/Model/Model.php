@@ -591,6 +591,15 @@ abstract class Model extends BaseModel
             {
                 continue;
             }
+            switch($column->type)
+            {
+                case 'json':
+                    if(null !== $value)
+                    {
+                        $value = json_encode($value);
+                    }
+                    break;
+            }
             $result[$name] = $value;
         }
 

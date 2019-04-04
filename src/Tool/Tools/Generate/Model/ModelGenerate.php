@@ -254,6 +254,7 @@ class ModelGenerate
             'double'    =>  'double',
             'float'     =>  'double',
             'decimal'   =>  'double',
+            'json'      =>  \Imi\Util\LazyArrayObject::class,
         ];
         return $map[$firstType] ?? 'string';
     }

@@ -64,8 +64,22 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             'data'  => $data,
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
 
+        $fieldAnnotations = ModelManager::getFields($this);
         foreach($data as $k => $v)
         {
+            if(isset($fieldAnnotations[$k]))
+            {
+                switch($fieldAnnotations[$k]->type)
+                {
+                    case 'json':
+                        $value = json_decode($v, true);
+                        if(is_array($value))
+                        {
+                            $v = new LazyArrayObject($value);
+                        }
+                        break;
+                }
+            }
             $this[$k] = $v;
         }
 
