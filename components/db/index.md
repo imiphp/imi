@@ -331,6 +331,18 @@ $result->getLastInsertId(); // 获取最后插入的ID
 $result->getAffectedRows(); // 获取影响行数
 ```
 
+### 批量插入
+
+```php
+$result = Db::query()->from('test')->batchInsert([
+	['name'=>'a'],
+	['name'=>'b'],
+	['name'=>'c'],
+]);
+$result->isSuccess(); // SQL是否执行成功
+$result->getAffectedRows(); // 获取影响行数
+```
+
 ### 更新记录
 
 ```php
