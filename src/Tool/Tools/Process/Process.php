@@ -18,7 +18,7 @@ class Process
     /**
      * 开启一个进程，可以任意添加参数
      * 
-     * @Operation("start")
+     * @Operation(name="start", co=false)
      *
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
      * @Arg(name="redirectStdinStdout", type=ArgType::STRING, default=null, comments="重定向子进程的标准输入和输出。启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。")
@@ -41,7 +41,7 @@ class Process
     /**
      * 开启一个进程池，可以任意添加参数
      *
-     * @Operation("pool")
+     * @Operation(name="pool", co=false)
      * 
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="进程池名称，通过@ProcessPool注解定义")
      * @Arg(name="worker", type=ArgType::INT, default=null, comments="进程数量，不传则根据注解配置设定")
