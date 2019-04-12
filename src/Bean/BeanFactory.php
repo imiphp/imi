@@ -87,7 +87,7 @@ abstract class BeanFactory
                   ->injectProps();
         if($ref->hasMethod('__init'))
         {
-            $ref->getMethod('__init')->invoke($object, $args);
+            $ref->getMethod('__init')->invoke($object, ...$args);
         }
     }
 
