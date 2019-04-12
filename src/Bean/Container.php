@@ -57,11 +57,11 @@ class Container implements ContainerInterface
         
         if(isset($data[$id]))
         {
-            $object = BeanFactory::newInstance($data[$id]['className'], ...$params);
+            $object = BeanFactory::newInstanceNoInit($data[$id]['className'], ...$params);
         }
         else if(class_exists($id))
         {
-            $object = BeanFactory::newInstance($id, ...$params);
+            $object = BeanFactory::newInstanceNoInit($id, ...$params);
         }
         else
         {
@@ -73,6 +73,9 @@ class Container implements ContainerInterface
         {
             $this->singletonObjects[$id] = $object;
         }
+
+        BeanFactory::initInstance($object, $params);
+
         return $object;
     }
 

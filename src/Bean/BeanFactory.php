@@ -45,7 +45,50 @@ abstract class BeanFactory
             eval($tpl);
             static::$classNameMap[$class] = $className;
         }
+        $object = new static::$classNameMap[$class](...$args);
+        static::initInstance($object, $args);
+        return $object;
+    }
+
+    /**
+     * 实例化，但不初始化
+     *
+     * @param string $class
+     * @param mixed ...$args
+     * @return void
+     */
+    public static function newInstanceNoInit($class, ...$args)
+    {
+        if(!isset(static::$classNameMap[$class]))
+        {
+            $ref = new \ReflectionClass($class);
+            $className = static::getNewClassName($ref->getShortName());
+            $tpl = static::getTpl($ref, $className);
+            eval($tpl);
+            static::$classNameMap[$class] = $className;
+        }
         return new static::$classNameMap[$class](...$args);
+    }
+
+    /**
+     * 初始化Bean对象
+     *
+     * @param object $object
+     * @param array $args
+     * @param \ReflectionClass $ref
+     * @return void
+     */
+    public static function initInstance($object, $args = [])
+    {
+        $ref = new \ReflectionClass($object);
+        $beanProxy = $ref->getProperty('beanProxy');
+        $beanProxy->setAccessible(true);
+        $beanProxy->getValue($object)
+                  ->injectProps();
+        if($ref->hasMethod('__init'))
+        {
+            $ref->getMethod('__init')->invoke($object, $args);
+        }
     }
 
     /**
@@ -102,24 +145,24 @@ TPL;
             $constructDefine = '...$args';
             $aopConstruct = '';
         }
-        $aopConstruct .= <<<TPL
-\$this->beanProxy->injectProps();
-TPL;
-        if($ref->hasMethod('__init'))
-        {
-            if(isset($paramsTpls['call']))
-            {
-                $aopConstruct .= <<<TPL
-        \$this->__init({$paramsTpls['call']});
-TPL;
-            }
-            else
-            {
-                $aopConstruct .= <<<TPL
-        \$this->__init();
-TPL;
-            }
-        }
+//         $aopConstruct .= <<<TPL
+// \$this->beanProxy->injectProps();
+// TPL;
+//         if($ref->hasMethod('__init'))
+//         {
+//             if(isset($paramsTpls['call']))
+//             {
+//                 $aopConstruct .= <<<TPL
+//         \$this->__init({$paramsTpls['call']});
+// TPL;
+//             }
+//             else
+//             {
+//                 $aopConstruct .= <<<TPL
+//         \$this->__init();
+// TPL;
+//             }
+//         }
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
         $tpl = <<<TPL
