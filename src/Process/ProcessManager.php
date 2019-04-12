@@ -52,8 +52,7 @@ abstract class ProcessManager
         {
             $pipeType = $processOption['Process']->pipeType;
         }
-        $processInstance = BeanFactory::newInstance($processOption['className'], $args);
-        $process = new \Swoole\Process(imiCallable(function(\Swoole\Process $swooleProcess) use($processInstance, $name, $processOption){
+        $process = new \Swoole\Process(imiCallable(function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
             // 设置进程名称
             Imi::setProcessName('process', [
                 'processName'   =>  $name,
@@ -76,6 +75,7 @@ abstract class ProcessManager
                 'process'   => $swooleProcess,
             ]);
             // 执行任务
+            $processInstance = BeanFactory::newInstance($processOption['className'], $args);
             call_user_func([$processInstance, 'run'], $swooleProcess);
             swoole_event_wait();
             if($processOption['Process']->unique)
