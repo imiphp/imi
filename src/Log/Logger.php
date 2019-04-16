@@ -142,7 +142,6 @@ class Logger extends AbstractLogger
     protected function getTrace($backtrace)
     {
         $index = null;
-        $hasNull = false;
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
@@ -167,7 +166,6 @@ class Logger extends AbstractLogger
     public function getErrorFile($backtrace)
     {
         $index = null;
-        $hasNull = false;
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {

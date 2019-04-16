@@ -145,9 +145,9 @@ abstract class Tool
 
         // 仅初始化项目及组件
         $initMains = [Helper::getMain(App::getNamespace())];
-        foreach(Helper::getAppMains() as $mainName => $main)
+        foreach(Helper::getAppMains() as $main)
         {
-            foreach($main->getConfig()['components'] ?? [] as $componentName => $namespace)
+            foreach($main->getConfig()['components'] ?? [] as $namespace)
             {
                 $componentMain = Helper::getMain($namespace);
                 if(null !== $componentMain)

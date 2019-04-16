@@ -232,7 +232,7 @@ class CoroutineRedisHandler extends \Swoole\Coroutine\Redis
         {
             $this->setDefer(true);
             $methodName = substr($name, 5);
-            $result = $this->$methodName(...$arguments);
+            $this->$methodName(...$arguments);
             $callable = function(){
                 return $this->recv();
             };

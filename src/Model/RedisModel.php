@@ -115,7 +115,7 @@ abstract class RedisModel extends BaseModel
         {
             if(!isset($this[$paramName]))
             {
-                throw new \Exception(sprintf('__getKey param %s does not exists', $paramName));
+                throw new \RuntimeException(sprintf('__getKey param %s does not exists', $paramName));
             }
             $result = str_replace('{' . $paramName . '}', $this[$paramName], $result);
         }
@@ -141,7 +141,7 @@ abstract class RedisModel extends BaseModel
             {
                 if(!isset($condition[$paramName]))
                 {
-                    throw new \Exception(sprintf('GenerateKey param %s does not exists', $paramName));
+                    throw new \RuntimeException(sprintf('GenerateKey param %s does not exists', $paramName));
                 }
                 $result = str_replace('{' . $paramName . '}', $condition[$paramName], $result);
             }

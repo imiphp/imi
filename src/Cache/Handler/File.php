@@ -117,11 +117,11 @@ class File extends Base
         // 写入缓存数据
         if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
         {
-            $content = Coroutine::fwrite($fp, $this->encode($value));
+            Coroutine::fwrite($fp, $this->encode($value));
         }
         else
         {
-            $content = fwrite($fp, $this->encode($value));
+            fwrite($fp, $this->encode($value));
         }
         // ttl 支持 \DateInterval 格式
         if($ttl instanceof \DateInterval)
@@ -250,7 +250,7 @@ class File extends Base
         $result = true;
         foreach($keys as $key)
         {
-            $result = $result && $this->delete($key, $value, $ttl);
+            $result = $result && $this->delete($key);
         }
         return $result;
     }

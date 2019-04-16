@@ -59,12 +59,9 @@ abstract class ProcessManager
             ]);
             // 随机数播种
             mt_srand();
-            if($processOption['Process']->unique)
+            if($processOption['Process']->unique && !static::lockProcess($name))
             {
-                if(!static::lockProcess($name))
-                {
-                    throw new \RuntimeException('lock process lock file error');
-                }
+                throw new \RuntimeException('lock process lock file error');
             }
             // 加载服务器注解
             \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
@@ -147,7 +144,7 @@ abstract class ProcessManager
      */
     public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
-        $cmd = Imi::getImiCmd('process', 'start') . ' -name ' . $name;
+        $cmd = Imi::getImiCmd('process', 'start', $args) . ' -name ' . $name;
         if(null !== $redirectStdinStdout)
         {
             $cmd .= ' -redirectStdinStdout ' . $redirectStdinStdout;

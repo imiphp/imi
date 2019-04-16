@@ -28,7 +28,7 @@ class TcpRouteInit implements IEventListener
     public function handle(EventParam $e)
     {
         $this->parseAnnotations($e);
-        $this->parseConfigs($e);
+        $this->parseConfigs();
     }
 
     /**
@@ -49,7 +49,6 @@ class TcpRouteInit implements IEventListener
             $route = $server->getBean('TcpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
-                $classAnnotation = $classItem['annotation'];
                 // 类中间件
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
@@ -102,16 +101,16 @@ class TcpRouteInit implements IEventListener
      * 处理配置文件路由
      * @return void
      */
-    private function parseConfigs(EventParam $e)
+    private function parseConfigs()
     {
-        foreach(ServerManage::getServers() as $name => $server)
+        foreach(ServerManage::getServers() as $server)
         {
             if(!$server instanceof \Imi\Server\TcpServer\Server)
             {
                 continue;
             }
             $route = $server->getBean('TcpRoute');
-            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
+            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
                 $routeAnnotation = new TcpRoute($routeOption['route'] ?? []);
                 if(isset($routeOption['callback']))

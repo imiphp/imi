@@ -33,7 +33,7 @@ trait TServerAnnotationParser
             $namespace .= '\\';
         }
         $result = [];
-        foreach(AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'Class') as $className => $option)
+        foreach(AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'Class') as $option)
         {
             if(Text::startwith($option['class'], $namespace))
             {

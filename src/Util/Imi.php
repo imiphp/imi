@@ -475,7 +475,7 @@ abstract class Imi
         $getMemoryTableColumns = function($columnAnnotationsSet) use($parseColumnTypeAndSize) {
             $columns = [];
 
-            foreach($columnAnnotationsSet as $propertyName => $annotations)
+            foreach($columnAnnotationsSet as $annotations)
             {
                 $columnAnnotation = $annotations[0];
                 list($type, $size) = $parseColumnTypeAndSize($columnAnnotation);

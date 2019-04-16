@@ -1017,7 +1017,7 @@ class Query implements IQuery
                 }
                 else
                 {
-                    $stmt->execute($this->binds) ? $stmt : false;
+                    $stmt->execute($this->binds);
                 }
             }
             return new Result($stmt, $this->modelClass, $defer ?? null);
@@ -1057,7 +1057,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace的字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param mixed $value
      * @return static
      */
@@ -1070,7 +1070,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param string $exp
      * @return static
      */
@@ -1083,7 +1083,7 @@ class Query implements IQuery
     /**
      * 设置递增字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param float $incValue
      * @return static
      */
@@ -1096,7 +1096,7 @@ class Query implements IQuery
     /**
      * 设置递减字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param float $decValue
      * @return static
      */

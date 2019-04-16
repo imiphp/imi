@@ -130,12 +130,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), Column::class);
         }
-        if(null !== $column)
+        else if('bit' === $column->type)
         {
-            if('bit' === $column->type)
-            {
-                $value = (1 == $value || chr(1) == $value);
-            }
+            $value = (1 == $value || chr(1) == $value);
         }
 
         $methodName = 'set' . ucfirst($this->__getCamelName($offset));
@@ -334,7 +331,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 $setPropertyName = $annotation->alias;
             }
-            $this[$setPropertyName] = $value = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
+            $this[$setPropertyName] = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
         }
     }
 }

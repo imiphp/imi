@@ -22,11 +22,13 @@ abstract class ConnectContext
 
     /**
      * 销毁当前请求的上下文
+     * 
+     * @param int|null $fd
      * @return void
      */
-    public static function destroy($fd)
+    public static function destroy($fd = null)
     {
-        $key = static::getContextKey();
+        $key = static::getContextKey($fd);
         if(isset(static::$context[$key]))
         {
             unset(static::$context[$key]);
@@ -108,10 +110,11 @@ abstract class ConnectContext
     /**
      * 获取上下文的key
      *
+     * @param int|null $fd
      * @return string
      */
-    private static function getContextKey()
+    private static function getContextKey($fd = null)
     {
-        return RequestContext::getServer()->getName() . '-' . RequestContext::get('fd');
+        return RequestContext::getServer()->getName() . '-' . ($fd ?? RequestContext::get('fd'));
     }
 }

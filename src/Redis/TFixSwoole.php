@@ -47,7 +47,7 @@ STR
         }
 
         $i_iterator = (int)$result[0];
-        return 0 === $i_iterator && [] === $result[1] ? false : $result[1];
+        return 0 === $i_iterator && ([] === $result[1] ? false : $result[1]);
     }
 
     /**
@@ -92,7 +92,7 @@ STR
         }
 
         $i_iterator = (int)$result[0];
-        return 0 === $i_iterator && [] === $result[1] ? false : $result[1];
+        return 0 === $i_iterator && ([] === $result[1] ? false : $result[1]);
     }
 
     /**

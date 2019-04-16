@@ -23,12 +23,6 @@ use Imi\Util\Args;
 abstract class App
 {
     /**
-     * 注解类
-     * @var \Imi\Bean\Annotation
-     */
-    private static $annotation;
-
-    /**
      * 应用命名空间
      * @var string
      */
@@ -94,8 +88,6 @@ abstract class App
         static::$container = new Container;
         // 初始化Main类
         static::initMains();
-        // 设置临时子目录
-        $subPath = Random::letterAndNumber(32, 32);
         // 注解处理
         static::$annotation = Annotation::getInstance();
         // 框架运行时缓存支持
@@ -151,7 +143,7 @@ abstract class App
         $mainServer = Config::get('@app.mainServer');
         if(null === $mainServer)
         {
-            throw new \Exception('config.mainServer not found');
+            throw new \RuntimeException('config.mainServer not found');
         }
         // 主服务器
         ServerManage::createServer('main', $mainServer);

@@ -74,14 +74,11 @@ class ModelGenerate
             }
             $className = $this->getClassName($table, $prefix);
             $fileName = File::path($modelPath, $className . '.php');
-            if(is_file($fileName))
+            if(false === $override && is_file($fileName))
             {
-                if(false === $override)
-                {
-                    // 不覆盖
-                    echo 'Skip ', $table, '...', PHP_EOL;
-                    continue;
-                }
+                // 不覆盖
+                echo 'Skip ', $table, '...', PHP_EOL;
+                continue;
             }
             $data = [
                 'namespace' => $namespace,

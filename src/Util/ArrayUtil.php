@@ -63,7 +63,7 @@ abstract class ArrayUtil
     public static function columnToKey($array, $column, $keepOld = true)
     {
         $newArray = [];
-        foreach($array as $k => $row)
+        foreach($array as $row)
         {
             $key = $row[$column];
             if(!$keepOld)

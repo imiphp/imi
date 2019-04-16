@@ -110,7 +110,7 @@ abstract class BeanFactory
     private static function getTpl($ref, $newClassName)
     {
         $class = $ref->getName();
-        $methodsTpl = static::getMethodsTpl($ref, $class);
+        $methodsTpl = static::getMethodsTpl($ref);
         $construct = '';
         $constructMethod = $ref->getConstructor();
         if(null !== $constructMethod)
@@ -145,24 +145,6 @@ TPL;
             $constructDefine = '...$args';
             $aopConstruct = '';
         }
-//         $aopConstruct .= <<<TPL
-// \$this->beanProxy->injectProps();
-// TPL;
-//         if($ref->hasMethod('__init'))
-//         {
-//             if(isset($paramsTpls['call']))
-//             {
-//                 $aopConstruct .= <<<TPL
-//         \$this->__init({$paramsTpls['call']});
-// TPL;
-//             }
-//             else
-//             {
-//                 $aopConstruct .= <<<TPL
-//         \$this->__init();
-// TPL;
-//             }
-//         }
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
         $tpl = <<<TPL
@@ -191,10 +173,9 @@ TPL;
     /**
      * 获取方法模版
      * @param \ReflectionClass $ref
-     * @param string $class
      * @return string
      */
-    private static function getMethodsTpl($ref, $class)
+    private static function getMethodsTpl($ref)
     {
         $tpl = '';
         foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
@@ -258,7 +239,7 @@ TPL;
                 $result['set_args'] .= '$__args__[' . $i . '] = &$' . $param->name . ';';
             }
         }
-        foreach($result as $key => &$item)
+        foreach($result as &$item)
         {
             if(is_array($item))
             {
@@ -390,7 +371,7 @@ TPL;
             foreach($aspects as $item)
             {
                 $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
-                foreach($pointCutsSet as $methodName => $pointCuts)
+                foreach($pointCutsSet as $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
                     {

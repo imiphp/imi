@@ -171,15 +171,6 @@ abstract class Query
     {
         $className = BeanFactory::getObjectClass($model);
 
-        if(class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
-
         $struct = new ManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
@@ -300,6 +291,7 @@ abstract class Query
      */
     public static function initByPolymorphicToOne($model, $propertyName, $annotation)
     {
+        $modelClassName = BeanFactory::getObjectClass($model);
         foreach($annotation as $annotationItem)
         {
             if($model->{$annotationItem->type} == $annotationItem->typeValue)
@@ -312,7 +304,7 @@ abstract class Query
                 }
                 else
                 {
-                    $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
+                    $modelClass = $modelClassName . '\\' . $annotationItem->model;
                 }
                 if(null === $model->$rightField)
                 {
@@ -343,15 +335,6 @@ abstract class Query
     public static function initByPolymorphicToMany($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        if(class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
 
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
@@ -393,15 +376,6 @@ abstract class Query
     public static function initByPolymorphicManyToMany($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        if(class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
 
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
