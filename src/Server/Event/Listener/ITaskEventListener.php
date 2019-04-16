@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\Event\Listener;
 
+use Imi\Server\Event\Param\TaskCoEventParam;
 use Imi\Server\Event\Param\TaskEventParam;
 
 /**

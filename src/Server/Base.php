@@ -22,7 +22,7 @@ use Imi\Server\Event\Param\ManagerStartEventParam;
 abstract class Base
 {
     use TEvent, TServerGroup;
-    
+
     /**
      * swoole 服务器对象
      * @var \swoole_server
@@ -135,7 +135,7 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
+
             $this->swooleServer->on('shutdown', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.SHUTDOWN', [
@@ -147,7 +147,7 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
+
             $this->swooleServer->on('WorkerStart', function(\swoole_server $server, int $workerID){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
@@ -160,7 +160,7 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
+
             $this->swooleServer->on('WorkerStop', function(\swoole_server $server, int $workerID){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
@@ -173,7 +173,7 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
+
             $this->swooleServer->on('ManagerStart', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.START', [
@@ -185,7 +185,7 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
+
             $this->swooleServer->on('ManagerStop', function(\swoole_server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.STOP', [
@@ -197,22 +197,44 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
-            $this->swooleServer->on('task', function(\swoole_server $server, int $taskID, int $workerID, $data){
-                try{
-                    Event::trigger('IMI.MAIN_SERVER.TASK', [
-                        'server'    => $this,
-                        'taskID'    => $taskID,
-                        'workerID'  => $workerID,
-                        'data'      => $data,
-                    ], $this, TaskEventParam::class);
-                }
-                catch(\Throwable $ex)
-                {
-                    App::getBean('ErrorLog')->onException($ex);
-                }
-            });
-    
+
+            if(isset($this->config['configs']['enable_coroutine']) && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['enable_coroutine'] === true && $this->config['configs']['task_enable_coroutine'] === true)
+            {
+                $this->swooleServer->on('task', function(\swoole_server $server, \swoole_server_task $task){
+                    try{
+                        Event::trigger('IMI.MAIN_SERVER.TASK', [
+                            'server'   => $this,
+                            'taskID'   => $task->id,
+                            'workerID' => $task->worker_id,
+                            'data'     => $task->data,
+                            'flags'    => $task->flags,
+                        ], $this, TaskEventParam::class);
+                    }
+                    catch(\Throwable $ex)
+                    {
+                        App::getBean('ErrorLog')->onException($ex);
+                    }
+                });
+            }
+            else
+            {
+                $this->swooleServer->on('task', function(\swoole_server $server, int $taskID, int $workerID, $data) {
+                    try
+                    {
+                        Event::trigger('IMI.MAIN_SERVER.TASK', [
+                            'server'   => $this,
+                            'taskID'   => $taskID,
+                            'workerID' => $workerID,
+                            'data'     => $data,
+                        ], $this, TaskEventParam::class);
+                    }
+                    catch (\Throwable $ex)
+                    {
+                        App::getBean('ErrorLog')->onException($ex);
+                    }
+                });
+            }
+
             $this->swooleServer->on('finish', function(\swoole_server $server, int $taskID, $data){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.FINISH', [
@@ -226,7 +248,7 @@ abstract class Base
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
-    
+
             $this->swooleServer->on('PipeMessage', function(\swoole_server $server, int $workerID, $message){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
