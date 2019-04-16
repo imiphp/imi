@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Task\Listener;
 
+use Imi\Event\EventParam;
+use Imi\Server\Event\Param\TaskCoEventParam;
 use Imi\Task\TaskInfo;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Listener;
@@ -14,17 +16,31 @@ class MainServer implements ITaskEventListener
 {
     /**
      * 事件处理方法
-     * @param TaskEventParam $e
+     * @param EventParam $e
      * @return void
      */
-    public function handle(TaskEventParam $e)
+    public function handle($e)
     {
         RequestContext::create();
         try{
-            $taskInfo = $e->data;
-            if($taskInfo instanceof TaskInfo)
-            {
-                call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);
+            if($e instanceof TaskCoEventParam){
+                /**
+                 * @var $e TaskCoEventParam
+                 */
+                $taskInfo = $e->task->data;
+                if($taskInfo instanceof TaskInfo)
+                {
+                    call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->task->id, $e->task->worker_id);
+                }
+            }else{
+                /**
+                 * @var $e TaskEventParam
+                 */
+                $taskInfo = $e->data;
+                if($taskInfo instanceof TaskInfo)
+                {
+                    call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);
+                }
             }
         }
         catch(\Throwable $ex)
