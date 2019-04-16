@@ -74,6 +74,8 @@ abstract class App
     public static function run($namespace)
     {
         static::$namespace = $namespace;
+        static::outImi();
+        static::outStartupInfo();
         static::initFramework();
     }
 
@@ -83,6 +85,11 @@ abstract class App
      */
     private static function initFramework()
     {
+        if(!isset($_SERVER['argv'][1]))
+        {
+            echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
+            return;
+        }
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
         // 初始化Main类
@@ -340,4 +347,37 @@ abstract class App
         }
         return true;
     }
+
+    /**
+     * 输出 imi 图标
+     *
+     * @return void
+     */
+    public static function outImi()
+    {
+        echo <<<STR
+ _               _ 
+(_)  _ __ ___   (_)
+| | | '_ ` _ \  | |
+| | | | | | | | | |
+|_| |_| |_| |_| |_|
+
+
+STR;
+    }
+
+    /**
+     * 输出启动信息
+     *
+     * @return void
+     */
+    public static function outStartupInfo()
+    {
+        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL
+        , 'PHP: v', PHP_VERSION, PHP_EOL
+        , 'Swoole: v', SWOOLE_VERSION, PHP_EOL
+        , 'Timezone: ', date_default_timezone_get(), PHP_EOL
+        , PHP_EOL;
+    }
+
 }
