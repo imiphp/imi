@@ -2,6 +2,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Swoole\Server\Task;
 
 class TaskEventParam extends EventParam
 {
@@ -28,4 +29,16 @@ class TaskEventParam extends EventParam
      * @var mixed
      */
     public $data;
+
+    /**
+     * 是否为协程环境
+     * @var bool
+     */
+    public $co;
+
+    /**
+     * 任务对象
+     * @var Task
+     */
+    public $task;
 }

@@ -11,8 +11,8 @@ interface ITaskEventListener
 {
     /**
      * 事件处理方法
-     * @param TaskCoEventParam|TaskEventParam $e
+     * @param TaskEventParam $e
      * @return void
      */
-    public function handle($e);
+    public function handle(TaskEventParam $e);
 }

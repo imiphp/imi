@@ -1,8 +1,6 @@
 <?php
 namespace Imi\Task\Listener;
 
-use Imi\Event\EventParam;
-use Imi\Server\Event\Param\TaskCoEventParam;
 use Imi\Task\TaskInfo;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Listener;
@@ -16,31 +14,24 @@ class MainServer implements ITaskEventListener
 {
     /**
      * 事件处理方法
-     * @param EventParam $e
+     * @param TaskEventParam $e
      * @return void
      */
-    public function handle($e)
+    public function handle(TaskEventParam $e)
     {
         RequestContext::create();
         try{
-            if($e instanceof TaskCoEventParam){
-                /**
-                 * @var $e TaskCoEventParam
-                 */
+            if($e->co === true){
                 $taskInfo = $e->task->data;
-                if($taskInfo instanceof TaskInfo)
-                {
-                    call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->task->id, $e->task->worker_id);
-                }
+                $e->taskID = $e->task->id;
+                $e->workerID = $e->task->worker_id;
             }else{
-                /**
-                 * @var $e TaskEventParam
-                 */
                 $taskInfo = $e->data;
-                if($taskInfo instanceof TaskInfo)
-                {
-                    call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);
-                }
+            }
+
+            if($taskInfo instanceof TaskInfo)
+            {
+                call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);
             }
         }
         catch(\Throwable $ex)
