@@ -2,7 +2,6 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
-use Swoole\Server\Task;
 
 class TaskEventParam extends EventParam
 {
@@ -31,14 +30,8 @@ class TaskEventParam extends EventParam
     public $data;
 
     /**
-     * 是否为协程环境
-     * @var bool
+     * 任务的类型 taskwait,task,taskCo,taskWaitMulti 可能使用不同的 flags
+     * @var mixed
      */
-    public $co;
-
-    /**
-     * 任务对象
-     * @var Task
-     */
-    public $task;
+    public $flags;
 }

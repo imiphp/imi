@@ -21,14 +21,7 @@ class MainServer implements ITaskEventListener
     {
         RequestContext::create();
         try{
-            if($e->co === true){
-                $taskInfo = $e->task->data;
-                $e->taskID = $e->task->id;
-                $e->workerID = $e->task->worker_id;
-            }else{
-                $taskInfo = $e->data;
-            }
-
+            $taskInfo = $e->data;
             if($taskInfo instanceof TaskInfo)
             {
                 call_user_func([$taskInfo->getTaskHandler(), 'handle'], $taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);

@@ -203,9 +203,11 @@ abstract class Base
                 $this->swooleServer->on('task', function(\swoole_server $server, \swoole_server_task $task){
                     try{
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
-                            'co'        => true,
-                            'server'    => $this,
-                            'task'      => $task,
+                            'server'   => $this,
+                            'taskID'   => $task->id,
+                            'workerID' => $task->worker_id,
+                            'data'     => $task->data,
+                            'flags'    => $task->flags,
                         ], $this, TaskEventParam::class);
                     }
                     catch(\Throwable $ex)
@@ -220,7 +222,6 @@ abstract class Base
                     try
                     {
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
-                            'co'       => false,
                             'server'   => $this,
                             'taskID'   => $taskID,
                             'workerID' => $workerID,
