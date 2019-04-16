@@ -28,7 +28,7 @@ class Pagination
     private $limitOffset;
 
     /**
-     * 结束的偏移量（limitOffset + count）
+     * 结束的偏移量（limitOffset + count - 1）
      *
      * @var int
      */
@@ -99,7 +99,7 @@ class Pagination
     private function calc()
     {
         $this->limitOffset = max((int)(($this->page - 1) * $this->count), 0);
-        $this->limitEndOffset = $this->limitOffset + $this->count;
+        $this->limitEndOffset = $this->limitOffset + $this->count - 1;
     }
 
     /**
@@ -113,7 +113,7 @@ class Pagination
     }
 
     /**
-     * Get 结束的偏移量（limitOffset + count）
+     * Get 结束的偏移量（limitOffset + count - 1）
      *
      * @return int
      */ 
