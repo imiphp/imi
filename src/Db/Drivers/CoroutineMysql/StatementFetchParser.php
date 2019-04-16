@@ -62,7 +62,6 @@ class StatementFetchParser
                 return $object;
             default:
                 throw new \InvalidArgumentException('Statement fetch $fetchStyle can not use ' . $fetchStyle);
-                break;
         }
     }
 }

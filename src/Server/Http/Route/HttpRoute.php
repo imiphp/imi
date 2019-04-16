@@ -240,7 +240,6 @@ class HttpRoute extends BaseRoute
         return Imi::checkCompareRules($params, function($name) use($request){
             return $request->get($name);
         });
-        return true;
     }
     
     /**

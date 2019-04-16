@@ -20,7 +20,7 @@ class ProcessParser extends BaseParser
         {
             if(isset($this->data[$annotation->name]))
             {
-                new \RuntimeException(sprintf('Process %s is exists', $annotation->name));
+                throw new \RuntimeException(sprintf('Process %s is exists', $annotation->name));
             }
             $this->data[$annotation->name] = [
                 'className' => $className,

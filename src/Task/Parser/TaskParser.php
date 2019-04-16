@@ -20,7 +20,7 @@ class TaskParser extends BaseParser
         {
             if(isset($this->data[$annotation->name]))
             {
-                new \RuntimeException(sprintf('Task %s is exists', $annotation->name));
+                throw new \RuntimeException(sprintf('Task %s is exists', $annotation->name));
             }
             $this->data[$annotation->name] = [
                 'className' => $className,

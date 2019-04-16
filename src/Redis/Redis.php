@@ -228,7 +228,7 @@ abstract class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($arguments) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($name, $arguments) {
                 return $redis->$name(...$arguments);
             });
         }
