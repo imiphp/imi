@@ -74,7 +74,7 @@ class AnnotationLoader
                 {
                     $path = $this->loaded[$tNamespace];
                 }
-                else if($path != Imi::getNamespacePath($tNamespace))
+                else if(!($path = Imi::getNamespacePath($tNamespace)))
                 {
                     continue;
                 }
