@@ -413,7 +413,7 @@ TPL;
             {
                 // 判断是否属于当前类的切面
                 $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
-                foreach($pointCutsSet as $methodName => $pointCuts)
+                foreach($pointCutsSet as $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
                     {
