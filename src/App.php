@@ -88,8 +88,6 @@ abstract class App
         static::$container = new Container;
         // 初始化Main类
         static::initMains();
-        // 注解处理
-        static::$annotation = Annotation::getInstance();
         // 框架运行时缓存支持
         if('server/start' === $_SERVER['argv'][1])
         {
@@ -103,7 +101,7 @@ abstract class App
         if(!$result)
         {
             // 不使用缓存时去扫描
-            static::$annotation->init([
+            Annotation::getInstance()->init([
                 MainHelper::getMain('Imi', 'Imi'),
             ]);
         }

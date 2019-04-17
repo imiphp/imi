@@ -63,6 +63,13 @@ class BeanProxy
      */
     private $isWorker;
 
+    /**
+     * 类名
+     *
+     * @var string
+     */
+    private $className;
+
     public function __construct($object)
     {
         $this->isWorker = null !== Worker::getWorkerID();
@@ -113,11 +120,19 @@ class BeanProxy
     private function init()
     {
         $this->refClass = new \ReflectionClass($this->object);
-        $className = $this->refClass->getParentClass()->getName();
-        // 每个类只需处理一次
-        if(!isset(static::$aspects[$className]))
+        $parentClass = $this->refClass->getParentClass();
+        if($parentClass)
         {
-            static::$aspects[$className] = new \SplPriorityQueue;
+            $this->className = $parentClass->getName();
+        }
+        else
+        {
+            $this->className = $this->refClass->getName();
+        }
+        // 每个类只需处理一次
+        if(!isset(static::$aspects[$this->className]))
+        {
+            static::$aspects[$this->className] = new \SplPriorityQueue;
             $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
             foreach($aspects as $item)
             {
@@ -132,9 +147,9 @@ class BeanProxy
                             case PointCutType::METHOD:
                                 foreach($pointCut->allow as $allowItem)
                                 {
-                                    if(Imi::checkClassRule($allowItem, $className))
+                                    if(Imi::checkClassRule($allowItem, $this->className))
                                     {
-                                        static::$aspects[$className]->insert([
+                                        static::$aspects[$this->className]->insert([
                                             'class'     =>  $item['class'],
                                             'method'    =>  $methodName,
                                             'pointCut'  =>  $pointCut,
@@ -146,14 +161,14 @@ class BeanProxy
                             case PointCutType::ANNOTATION:
                                 foreach($this->refClass->getMethods() as $method)
                                 {
-                                    $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
+                                    $methodAnnotations = AnnotationManager::getMethodAnnotations($this->className, $method->getName());
                                     foreach($pointCut->allow as $allowItem)
                                     {
                                         foreach($methodAnnotations as $annotation)
                                         {
                                             if($annotation instanceof $allowItem)
                                             {
-                                                static::$aspects[$className]->insert([
+                                                static::$aspects[$this->className]->insert([
                                                     'class'     =>  $item['class'],
                                                     'method'    =>  $methodName,
                                                     'pointCut'  =>  $pointCut,
@@ -179,9 +194,9 @@ class BeanProxy
                                 // 构造方法
                                 foreach($pointCut->allow as $allowItem)
                                 {
-                                    if(Imi::checkRuleMatch($allowItem, $className))
+                                    if(Imi::checkRuleMatch($allowItem, $this->className))
                                     {
-                                        static::$aspects[$className]->insert([
+                                        static::$aspects[$this->className]->insert([
                                             'class'     =>  $item['class'],
                                             'method'    =>  $methodName,
                                             'pointCut'  =>  $pointCut,
@@ -192,14 +207,14 @@ class BeanProxy
                                 break;
                             case PointCutType::ANNOTATION_CONSTRUCT:
                                 // 注解构造方法
-                                $classAnnotations = AnnotationManager::getClassAnnotations($className);
+                                $classAnnotations = AnnotationManager::getClassAnnotations($this->className);
                                 foreach($pointCut->allow as $allowItem)
                                 {
                                     foreach($classAnnotations as $annotation)
                                     {
                                         if($annotation instanceof $allowItem)
                                         {
-                                            static::$aspects[$className]->insert([
+                                            static::$aspects[$this->className]->insert([
                                                 'class'     =>  $item['class'],
                                                 'method'    =>  $methodName,
                                                 'pointCut'  =>  $pointCut,
@@ -223,8 +238,7 @@ class BeanProxy
      */
     public function injectProps()
     {
-        $className = $this->refClass->getParentClass()->getName();
-        list($injects, $configs) = static::getInjects($className);
+        list($injects, $configs) = static::getInjects($this->className);
 
         // @inject()和@requestInject()注入
         foreach($injects as $propName => $annotations)
@@ -474,7 +488,6 @@ class BeanProxy
      */
     private function doAspect($method, $pointType, $callback)
     {
-        $className = $this->refClass->getParentClass()->getName();
         if($this->isWorker)
         {
             $aspectCache = &static::$workerAspectCache;
@@ -483,11 +496,11 @@ class BeanProxy
         {
             $aspectCache = &static::$aspectCache;
         }
-        if(!isset($aspectCache[$className][$method][$pointType]))
+        if(!isset($aspectCache[$this->className][$method][$pointType]))
         {
-            $aspectCache[$className][$method][$pointType] = [];
-            $list = clone static::$aspects[$className];
-            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method);
+            $aspectCache[$this->className][$method][$pointType] = [];
+            $list = clone static::$aspects[$this->className];
+            $methodAnnotations = AnnotationManager::getMethodAnnotations($this->className, $method);
             foreach($list as $option)
             {
                 $aspectClassName = $option['class'];
@@ -499,7 +512,7 @@ class BeanProxy
                     case PointCutType::METHOD:
                         foreach($pointCut->allow as $rule)
                         {
-                            $allowResult = Imi::checkClassMethodRule($rule, $className, $method);
+                            $allowResult = Imi::checkClassMethodRule($rule, $this->className, $method);
                             if($allowResult)
                             {
                                 break;
@@ -536,7 +549,7 @@ class BeanProxy
                         case PointCutType::METHOD:
                             foreach($pointCut->deny as $rule)
                             {
-                                $denyResult = Imi::checkClassMethodRule($rule, $className, $method);
+                                $denyResult = Imi::checkClassMethodRule($rule, $this->className, $method);
                                 if($denyResult)
                                 {
                                     break;
@@ -565,13 +578,13 @@ class BeanProxy
                     $point = AnnotationManager::getMethodAnnotations($aspectClassName, $methodName, 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType))[0] ?? null;
                     if(null !== $point)
                     {
-                        $aspectCache[$className][$method][$pointType][] = [$aspectClassName, $methodName, $point];
+                        $aspectCache[$this->className][$method][$pointType][] = [$aspectClassName, $methodName, $point];
                     }
                 }
             }
         }
         
-        foreach($aspectCache[$className][$method][$pointType] as $item)
+        foreach($aspectCache[$this->className][$method][$pointType] as $item)
         {
             call_user_func($callback, ...$item);
         }
