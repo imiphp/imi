@@ -130,7 +130,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), Column::class);
         }
-        else if('bit' === $column->type)
+        if(null !== $column && 'bit' === $column->type)
         {
             $value = (1 == $value || chr(1) == $value);
         }
