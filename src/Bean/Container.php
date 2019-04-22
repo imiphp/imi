@@ -47,13 +47,14 @@ class Container implements ContainerInterface
         
         // 实现传递实例化参数
         $params = func_get_args();
-        array_shift($params);
         // 单例中有数据，且无实例化参数时直接返回单例
-        if(isset($this->singletonObjects[$id]) && !isset($params[0]))
+        if(isset($this->singletonObjects[$id]) && !isset($params[1]))
         {
             return $this->singletonObjects[$id];
         }
         $data = $this->beanParser->getData();
+
+        unset($params[0]);
         
         if(isset($data[$id]))
         {

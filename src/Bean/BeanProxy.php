@@ -308,7 +308,7 @@ class BeanProxy
     {
         $injects = AnnotationManager::getPropertiesAnnotations($className, Inject::class);
         $configs = static::getConfigInjects($className);
-        foreach(array_keys($configs) as $key)
+        foreach($configs as $key => $value)
         {
             if(isset($injects[$key]))
             {

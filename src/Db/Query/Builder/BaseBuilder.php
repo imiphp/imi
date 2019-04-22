@@ -121,7 +121,7 @@ abstract class BaseBuilder implements IBuilder
             $result[] = $item->toStringWithoutLogic();
             $this->params = array_merge($this->params, $item->getBinds());
         }
-        array_shift($result);
+        unset($result[0]);
         $result = implode(' ', $result);
         if('' !== $result)
         {
@@ -211,7 +211,7 @@ abstract class BaseBuilder implements IBuilder
             $result[] = $item->toStringWithoutLogic();
             $this->params = array_merge($this->params, $item->getBinds());
         }
-        array_shift($result);
+        unset($result[0]);
         $result = implode(' ', $result);
         if('' !== $result)
         {
