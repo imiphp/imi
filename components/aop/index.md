@@ -364,6 +364,60 @@ $testClass = App::getBean('Test\TestClass');
 $testClass->test();
 ```
 
+### 非 Bean 类使用属性注入
+
+imi 提供了一个 `Imi\Bean\Traits\TAutoInject` 来让非 `Bean` 类也能够使用属性注入。也就是直接`new`对象，也可以自动注入属性。当然，这个类的命名空间必须在`beanScan`中配置，能被扫描到才可以正常注入。
+
+无构造方法的类：
+
+```php
+namespace Test;
+
+use Imi\Aop\Annotation\Inject;
+
+class Test
+{
+	use Imi\Bean\Traits\TAutoInject;
+
+	/**
+	 * @Inject("XXX")
+	 */
+	public $xxx;
+}
+
+$test = new Test;
+$test->xxx; // 会被自动注入，不用手动初始化
+```
+
+有构造方法的类：
+
+```php
+namespace Test;
+
+use Imi\Aop\Annotation\Inject;
+
+class Test
+{
+	use Imi\Bean\Traits\TAutoInject;
+
+	/**
+	 * @Inject("XXX")
+	 */
+	public $xxx;
+
+	private $value;
+
+	public function __construct()
+	{
+        $this->__autoInject(); // 手动调用 __autoInject() 方法
+		$this->value = 123;
+	}
+}
+
+$test = new Test;
+$test->xxx; // 会被自动注入，不用手动初始化
+```
+
 ### 方法参数注入
 
 ```php
