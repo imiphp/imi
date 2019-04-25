@@ -22,7 +22,7 @@ class CallableValue extends BaseInjectValue
      * 回调
      * @var string
      */
-    protected $callable;
+    public $callable;
 
     /**
      * 获取注入值的真实值
