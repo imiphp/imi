@@ -119,7 +119,7 @@ redis.call('select', db)
 local lockSet = redis.call('setnx', key, content)
 if lockSet == 1 then
 redis.call('pexpire', key, ttl)
-else 
+else
 local value = redis.call('get', key)
 if(value == content) then
 lockSet = 1;

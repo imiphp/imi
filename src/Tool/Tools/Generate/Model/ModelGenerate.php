@@ -230,11 +230,11 @@ class ModelGenerate
     }
     /**
      * 处理类似varchar(32)和decimal(10,2)格式的字段类型
-     * @param string $text 
-     * @param string $typeName 
-     * @param int $length 
-     * @param int $accuracy 
-     * @return bool 
+     * @param string $text
+     * @param string $typeName
+     * @param int $length
+     * @param int $accuracy
+     * @return bool
      */
     public function parseFieldType($text, &$typeName, &$length, &$accuracy)
     {

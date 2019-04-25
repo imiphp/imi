@@ -401,17 +401,17 @@ class ValidatorHelper
     
     /**
      * 值在范围内
-     * @param numeric $value            
-     * @param array $param            
+     * @param numeric $value
+     * @param array $list
      * @return boolean
      */
-    public static function in($value, $nums)
+    public static function in($value, $list)
     {
-        if (! is_array($nums))
+        if (! is_array($list))
         {
-            $nums = explode(',', $nums);
+            $list = explode(',', $list);
         }
-        return in_array($value, $nums);
+        return in_array($value, $list);
     }
     
     /**
@@ -420,13 +420,13 @@ class ValidatorHelper
      * @param array $param            
      * @return boolean
      */
-    public static function notIn($value, $nums)
+    public static function notIn($value, $list)
     {
-        if (! is_array($nums))
+        if (! is_array($list))
         {
-            $nums = explode(',', $nums);
+            $list = explode(',', $list);
         }
-        return ! in_array($value, $nums);
+        return ! in_array($value, $list);
     }
     
     /**

@@ -77,8 +77,8 @@ abstract class ArrayUtil
 
     /**
      * 判断数组是否为关联数组
-     * @param array $array 
-     * @return bool 
+     * @param array $array
+     * @return bool
      */
     public static function isAssoc($array)
     {  

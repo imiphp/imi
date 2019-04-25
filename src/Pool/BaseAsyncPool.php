@@ -45,7 +45,7 @@ abstract class BaseAsyncPool extends BasePool
                 // 没有空闲连接，当前连接数少于最大连接数
                 $this->addResource();
             }
-            else 
+            else
             {
                 if(SWOOLE_VERSION < '4.0.3')
                 {

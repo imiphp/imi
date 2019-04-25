@@ -22,7 +22,7 @@ class ReplaceBuilder extends BaseBuilder
             $sql .= $builder->build();
             $this->query->bindValues($data->getBinds());
         }
-        else 
+        else
         {
             // set后面的field=value
             $setStrs = [];
