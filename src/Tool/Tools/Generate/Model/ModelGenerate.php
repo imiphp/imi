@@ -79,6 +79,11 @@ class ModelGenerate
                         ->getArray();
         // model保存路径
         $modelPath = Imi::getNamespacePath($namespace);
+        if(null === $modelPath)
+        {
+            echo 'Namespace ', $namespace, ' cannot found', PHP_EOL;
+            exit;
+        }
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
@@ -96,6 +101,11 @@ class ModelGenerate
                 $configItem = $configData['relation'][$table];
                 $modelNamespace = $configItem['namespace'];
                 $path = Imi::getNamespacePath($modelNamespace);
+                if(null === $path)
+                {
+                    echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
+                    exit;
+                }
                 File::createDir($path);
                 $basePath = $path . '/Base';
                 File::createDir($basePath);
