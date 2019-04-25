@@ -94,7 +94,7 @@ class BeanProxy
      * @param array $args
      * @return mixed
      */
-    public function call($method, $callback, $args)
+    public function call($method, $callback, &$args)
     {
         try{
             // 先尝试环绕
@@ -324,11 +324,11 @@ class BeanProxy
      * @param array $args
      * @return mixed
      */
-    private function callOrigin($method, $args, $callback)
+    private function callOrigin($method, &$args, $callback)
     {
         $this->parseBefore($method, $args);
         // 原始方法调用
-        $result = call_user_func_array($callback, $args);
+        $result = $callback(...$args);
         $this->parseAfter($method, $args);
         $this->parseAfterReturning($method, $args, $result);
         return $result;
@@ -344,7 +344,8 @@ class BeanProxy
     {
         $this->doAspect($method, 'before', function($aspectClassName, $methodName) use($method, &$args){
             $joinPoint = new JoinPoint('before', $method, $args, $this->object, $this);
-            call_user_func([new $aspectClassName, $methodName], $joinPoint);
+            $object = new $aspectClassName;
+            $object->$methodName($joinPoint);
         });
     }
 
@@ -354,11 +355,12 @@ class BeanProxy
      * @param array $args
      * @return void
      */
-    private function parseAfter($method, $args)
+    private function parseAfter($method, &$args)
     {
-        $this->doAspect($method, 'after', function($aspectClassName, $methodName) use($method, $args){
+        $this->doAspect($method, 'after', function($aspectClassName, $methodName) use($method, &$args){
             $joinPoint = new JoinPoint('after', $method, $args, $this->object, $this);
-            call_user_func([new $aspectClassName, $methodName], $joinPoint);
+            $object = new $aspectClassName;
+            $object->$methodName($joinPoint);
         });
     }
 
@@ -369,12 +371,13 @@ class BeanProxy
      * @param mixed $returnValue
      * @return void
      */
-    private function parseAfterReturning($method, $args, &$returnValue)
+    private function parseAfterReturning($method, &$args, &$returnValue)
     {
-        $this->doAspect($method, 'afterReturning', function($aspectClassName, $methodName) use($method, $args, &$returnValue){
+        $this->doAspect($method, 'afterReturning', function($aspectClassName, $methodName) use($method, &$args, &$returnValue){
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $this->object, $this);
             $joinPoint->setReturnValue($returnValue);
-            call_user_func([new $aspectClassName, $methodName], $joinPoint);
+            $object = new $aspectClassName;
+            $object->$methodName($joinPoint);
             $returnValue = $joinPoint->getReturnValue();
         });
     }
@@ -414,12 +417,12 @@ class BeanProxy
                 {
                     $args = $inArgs;
                 }
-                return call_user_func($nextAroundAspectDo, $nextJoinPoint);
+                return $nextAroundAspectDo($nextJoinPoint);
             }));
             $nextJoinPoint = $joinPoint;
             $nextAroundAspectDo = $aroundAspectDo;
         }
-        $returnValue = call_user_func($nextAroundAspectDo, $nextJoinPoint);
+        $returnValue = $nextAroundAspectDo($nextJoinPoint);
         return true;
     }
 
@@ -430,10 +433,10 @@ class BeanProxy
      * @param \Throwable $throwable
      * @return void
      */
-    private function parseAfterThrowing($method, $args, \Throwable $throwable)
+    private function parseAfterThrowing($method, &$args, \Throwable $throwable)
     {
         $isCancelThrow = false;
-        $this->doAspect($method, 'afterThrowing', function($aspectClassName, $methodName, AfterThrowing $annotation) use($method, $args, $throwable, &$isCancelThrow){
+        $this->doAspect($method, 'afterThrowing', function($aspectClassName, $methodName, AfterThrowing $annotation) use($method, &$args, $throwable, &$isCancelThrow){
             // 验证异常是否捕获
             if(isset($annotation->allow[0]) || isset($annotation->deny[0]))
             {
@@ -466,7 +469,8 @@ class BeanProxy
             }
             // 处理
             $joinPoint = new AfterThrowingJoinPoint('afterThrowing', $method, $args, $this->object, $this, $throwable);
-            call_user_func([new $aspectClassName, $methodName], $joinPoint);
+            $object = new $aspectClassName;
+            $object->$methodName($joinPoint);
             if(!$isCancelThrow && $joinPoint->isCancelThrow())
             {
                 $isCancelThrow = true;
@@ -586,7 +590,7 @@ class BeanProxy
         
         foreach($aspectCache[$this->className][$method][$pointType] as $item)
         {
-            call_user_func($callback, ...$item);
+            $callback(...$item);
         }
     }
 

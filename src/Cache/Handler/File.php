@@ -307,7 +307,7 @@ class File extends Base
         if(is_callable($this->saveFileNameCallback))
         {
             // 使用回调处理
-            return call_user_func($this->saveFileNameCallback, $this->savePath, $key);
+            return ($this->saveFileNameCallback)($this->savePath, $key);
         }
         else
         {

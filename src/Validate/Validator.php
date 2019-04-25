@@ -295,7 +295,7 @@ class Validator implements IValidator
         {
             $callable[0] = $this;
         }
-        $result = call_user_func_array($callable, $args);
+        $result = $callable(...$args);
         if($annotation->inverseResult)
         {
             return !$result;

@@ -149,7 +149,7 @@ abstract class PoolManager
         $resource = static::getResource($name);
         $result = null;
         try{
-            $result = call_user_func($callback, $resource, $resource->getInstance());
+            $result = $callback($resource, $resource->getInstance());
         }
         finally{
             static::releaseResource($resource);

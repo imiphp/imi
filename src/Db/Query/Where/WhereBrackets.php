@@ -79,7 +79,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         {
             return $this->rawSQL;
         }
-        $callResult = call_user_func($this->callback);
+        $callResult = ($this->callback)();
         if(is_array($callResult))
         {
             $result = '(';

@@ -71,7 +71,7 @@ abstract class ProcessPoolManager
                 'msgQueueKey'   => $msgQueueKey,
             ]);
             // 执行任务
-            call_user_func([$processInstance, 'run'], $pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
+            $processInstance->run($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
             swoole_event_wait();
         }, true));
         

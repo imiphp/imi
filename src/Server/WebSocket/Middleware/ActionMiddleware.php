@@ -37,7 +37,7 @@ class ActionMiddleware implements IMiddleware
             $result['callable'][0]->frame = $frame;
         }
         // 执行动作
-        $actionResult = call_user_func($result['callable'], $frame->getFormatData());
+        $actionResult = ($result['callable'])($frame->getFormatData());
 
         RequestContext::set('wsResult', $actionResult);
 

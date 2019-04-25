@@ -48,7 +48,7 @@ abstract class TaskManager
     {
         $server = ServerManage::getServer('main')->getSwooleServer();
         $result = $server->taskwait($taskInfo, $timeout, $workerID);
-        call_user_func([$taskInfo->getTaskHandler(), 'finish'], $server, -1, $result);
+        $taskInfo->getTaskHandler()->finish($server, -1, $result);
         return $result;
     }
 
@@ -96,7 +96,7 @@ abstract class TaskManager
         $result = $server->taskCo($tasks, $timeout);
         foreach($result as $i => $item)
         {
-            call_user_func([$tasks[$i]->getTaskHandler(), 'finish'], $server, -1, $item);
+            $tasks[$i]->getTaskHandler()->finish($server, -1, $item);
         }
         return $result;
     }

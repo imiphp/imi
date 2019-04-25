@@ -117,11 +117,11 @@ trait TEvent
             switch($type)
             {
                 case 'callback':
-                    call_user_func_array($callback, [$param]);
+                    $callback($param);
                     break;
                 case 'class':
                     $obj = BeanFactory::newInstance($callback);
-                    call_user_func_array([$obj, 'handle'], [$param]);
+                    $obj->handle($param);
                     break;
             }
             // 仅触发一次

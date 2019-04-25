@@ -96,12 +96,12 @@ abstract class Tool
             if($operationAnnotation->co)
             {
                 imigo(function() use($callable, $args) {
-                    call_user_func_array($callable, $args);
+                    $callable(...$args);
                 });
             }
             else
             {
-                call_user_func_array($callable, $args);
+                $callable(...$args);
             }
             swoole_event_wait();
         }

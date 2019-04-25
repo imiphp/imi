@@ -201,6 +201,7 @@ TPL;
             },
             \$__args__
         );
+        {$paramsTpls['set_args_back']}
         return \$__result__;
     }
 
@@ -221,6 +222,7 @@ TPL;
             'define'    => [],
             'call'      => [],
             'set_args'  => '',
+            'set_args_back'  => '',
         ];
         foreach($method->getParameters() as $i => $param)
         {
@@ -237,6 +239,7 @@ TPL;
             if($param->isPassedByReference())
             {
                 $result['set_args'] .= '$__args__[' . $i . '] = &$' . $param->name . ';';
+                $result['set_args_back'] .= '$' . $param->name . ' = $__args__[' . $i . '];';
             }
         }
         foreach($result as &$item)

@@ -22,6 +22,6 @@ class Defer
      */
     public function call()
     {
-        return call_user_func($this->callable);
+        return ($this->callable)();
     }
 }

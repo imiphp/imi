@@ -62,7 +62,7 @@ abstract class Model extends BaseModel
         if(is_callable($ids[0]))
         {
             // 回调传入条件
-            call_user_func($ids[0], $query);
+            ($ids[0])($query);
         }
         else
         {
@@ -465,9 +465,9 @@ abstract class Model extends BaseModel
         if(null !== $queryCallable)
         {
             // 回调传入条件
-            call_user_func($queryCallable, $query);
+            $queryCallable($query);
         }
-        return call_user_func([$query, $functionName], $fieldName);
+        return $query->$functionName($fieldName);
     }
 
     /**
@@ -508,7 +508,7 @@ abstract class Model extends BaseModel
         if(is_callable($where))
         {
             // 回调传入条件
-            call_user_func($where, $query);
+            $where($query);
         }
         else
         {
