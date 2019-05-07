@@ -254,7 +254,18 @@ STR
      */
     public function hscan($str_key, &$i_iterator, $str_pattern = null, $i_count = null)
     {
-        return $this->xxxScan('hscan', $str_key, $i_iterator, $str_pattern, $i_count);
+        $list = $this->xxxScan('hscan', $str_key, $i_iterator, $str_pattern, $i_count);
+        if(false === $list)
+        {
+            return false;
+        }
+        $result = [];
+        $length = count($list);
+        for($i = 0; $i < $length; $i += 2)
+        {
+            $result[$list[$i]] = $list[$i + 1];
+        }
+        return $result;
     }
 
     /**
