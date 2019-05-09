@@ -27,13 +27,14 @@ function imigo(callable $callable, ...$args)
  */
 function imiCallable(callable $callable, bool $withGo = false)
 {
-    $resultCallable = function(...$args) use($callable){
+    $server = RequestContext::exists() ? RequestContext::get('server') : null;
+    $resultCallable = function(...$args) use($callable, $server){
         $hasRequestContext = RequestContext::exists();
         try {
             if(!$hasRequestContext)
             {
                 RequestContext::create();
-                RequestContext::set('server', ServerManage::getServer('main'));
+                RequestContext::set('server', $server);
             }
             return $callable(...$args);
         } catch(\Throwable $th) {
