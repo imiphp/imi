@@ -2,6 +2,7 @@
 
 use Imi\RequestContext;
 use Imi\App;
+use Imi\ServerManage;
 
 /**
  * 启动一个协程，自动创建和销毁上下文
@@ -32,6 +33,7 @@ function imiCallable(callable $callable, bool $withGo = false)
             if(!$hasRequestContext)
             {
                 RequestContext::create();
+                RequestContext::set('server', ServerManage::getServer('main'));
             }
             return $callable(...$args);
         } catch(\Throwable $th) {
