@@ -53,6 +53,13 @@ class PoolConfig implements IPoolConfig
     protected $maxUsedTime;
 
     /**
+     * 当前请求上下文资源检查状态间隔，单位：支持小数的秒
+     *
+     * @var double
+     */
+    protected $requestResourceCheckInterval = 3;
+
+    /**
      * 资源配置模式
      *
      * @var int
@@ -225,6 +232,28 @@ class PoolConfig implements IPoolConfig
     {
         $this->maxUsedTime = $maxUsedTime;
 
+        return $this;
+    }
+
+    /**
+     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒
+     *
+     * @return double
+     */
+    public function getRequestResourceCheckInterval()
+    {
+        return $this->requestResourceCheckInterval;
+    }
+
+    /**
+     * 设置当前请求上下文资源检查状态间隔，单位：支持小数的秒
+     *
+     * @param double $value
+     * @return static
+     */
+    public function setRequestResourceCheckInterval($value)
+    {
+        $this->requestResourceCheckInterval = $value;
         return $this;
     }
 

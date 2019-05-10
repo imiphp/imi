@@ -14,6 +14,13 @@ abstract class PoolManager
      * @var \Imi\Pool\Interfaces\IPool[]
      */
     protected static $pools = [];
+
+    /**
+     * 最后获取资源时间
+     *
+     * @var array
+     */
+    protected static $lastGetResourceTime = [];
     
     /**
      * 增加对象名称
@@ -87,6 +94,7 @@ abstract class PoolManager
             static::pushResourceToRequestContext($resource);
         }
 
+        static::$lastGetResourceTime[$name] = microtime(true);
         return $resource;
     }
 
@@ -98,6 +106,11 @@ abstract class PoolManager
     public static function getRequestContextResource(string $name)
     {
         $resource = RequestContext::get('poolResource.' . $name);
+        if(null !== $resource && microtime(true) - static::$lastGetResourceTime[$name] > $resource->getPool()->getConfig()->getRequestResourceCheckInterval() && !$resource->checkState())
+        {
+            $resource->getPool()->release($resource);
+            $resource = null;
+        }
         if(null === $resource)
         {
             $resource = static::getResource($name);
