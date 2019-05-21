@@ -6,7 +6,6 @@ use Imi\RequestContext;
 use Imi\Util\ArrayUtil;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
-use Swoole\Coroutine\Redis as CoRedis;
 use Imi\Worker;
 use Imi\Log\Log;
 use Imi\ServerManage;
