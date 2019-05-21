@@ -584,11 +584,4 @@ interface IQuery
      */
     public function setFieldDec($fieldName, float $decValue = 1);
 
-    /**
-     * 设置是否延迟调用
-     *
-     * @param boolean $defer
-     * @return static
-     */
-    public function setDefer($defer = true);
 }

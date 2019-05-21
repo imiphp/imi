@@ -2,7 +2,6 @@
 namespace Imi\Db\Query;
 
 use Imi\Db\Db;
-use Imi\Util\Defer;
 use Imi\Db\Query\Order;
 use Imi\RequestContext;
 use Imi\Util\Pagination;
@@ -62,13 +61,6 @@ class Query implements IQuery
      * @var string
      */
     private $modelClass;
-
-    /**
-     * 设置延迟收包
-     *
-     * @var boolean
-     */
-    private $defer = false;
 
     /**
      * 查询类型
@@ -1011,16 +1003,9 @@ class Query implements IQuery
             $stmt = $this->db->prepare($sql);
             if($stmt)
             {
-                if($this->defer)
-                {
-                    $defer = $stmt->deferExecute($this->binds);
-                }
-                else
-                {
-                    $stmt->execute($this->binds);
-                }
+                $stmt->execute($this->binds);
             }
-            return new Result($stmt, $this->modelClass, $defer ?? null);
+            return new Result($stmt, $this->modelClass);
         } finally {
             $this->__init();
         }
@@ -1103,18 +1088,6 @@ class Query implements IQuery
     public function setFieldDec($fieldName, float $decValue = 1)
     {
         $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
-        return $this;
-    }
-
-    /**
-     * 设置是否延迟调用
-     *
-     * @param boolean $defer
-     * @return static
-     */
-    public function setDefer($defer = true)
-    {
-        $this->defer = $defer;
         return $this;
     }
 
