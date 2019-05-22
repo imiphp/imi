@@ -46,6 +46,16 @@ abstract class BaseBuilder implements IBuilder
     {
         $this->query = $query;
     }
+
+    /**
+     * 生成SQL语句
+     * @param mixed $args
+     * @return string
+     */
+    public function build(...$args)
+    {
+        $this->params = [];
+    }
     
     /**
      * distinct
@@ -145,15 +155,15 @@ abstract class BaseBuilder implements IBuilder
         else if(null === $offset)
         {
             $limitName = Query::getAutoParamName();
-            $this->params[$limitName] = $limit;
+            $this->params[$limitName] = (int)$limit;
             return ' limit ' . $limitName;
         }
         else
         {
             $offsetName = Query::getAutoParamName();
-            $this->params[$offsetName] = $offset;
+            $this->params[$offsetName] = (int)$offset;
             $limitName = Query::getAutoParamName();
-            $this->params[$limitName] = $limit;
+            $this->params[$limitName] = (int)$limit;
             return ' limit ' . $offsetName . ',' . $limitName;
         }
     }

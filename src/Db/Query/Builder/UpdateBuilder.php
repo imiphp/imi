@@ -7,6 +7,7 @@ class UpdateBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
         list($data) = $args;
         if(null === $data)

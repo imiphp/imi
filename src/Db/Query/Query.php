@@ -1003,7 +1003,9 @@ class Query implements IQuery
             $stmt = $this->db->prepare($sql);
             if($stmt)
             {
-                $stmt->execute($this->binds);
+                $binds = $this->binds;
+                $this->binds = [];
+                $stmt->execute($binds);
             }
             return new Result($stmt, $this->modelClass);
         } finally {

@@ -128,6 +128,7 @@ class Where extends BaseWhere implements IWhere
 
     public function toStringWithoutLogic()
     {
+        $this->binds = [];
         if($this->isRaw)
         {
             return $this->rawSQL;

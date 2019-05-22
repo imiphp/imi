@@ -9,6 +9,7 @@ class SelectBuilder extends BaseBuilder
      */
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
         $sql = 'select ' . $this->parseDistinct($option->distinct)
                 . $this->parseField($option->field)

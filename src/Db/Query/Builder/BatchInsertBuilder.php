@@ -10,6 +10,7 @@ class BatchInsertBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
         list($list) = $args;
         if(null === $list)
