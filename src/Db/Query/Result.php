@@ -203,7 +203,15 @@ class Result implements IResult
         {
             throw new \RuntimeException('Result is not success!');
         }
-        return $this->statement->fetchAll(\PDO::FETCH_COLUMN, $column);
+        if(is_numeric($column))
+        {
+            return $this->statement->fetchAll(\PDO::FETCH_COLUMN, $column);
+        }
+        else
+        {
+            $list = $this->statement->fetchAll();
+            return array_column($list, $column);
+        }
     }
 
     /**
