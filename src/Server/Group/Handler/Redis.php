@@ -138,7 +138,7 @@ class Redis implements IGroupHandler
                 {
                     $redis->del($this->getGroupNameKey($groupName));
                 }
-                if(0 === $it)
+                if(0 == $it)
                 {
                     break;
                 }
