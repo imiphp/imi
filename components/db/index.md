@@ -135,6 +135,32 @@ return [
 ];
 ```
 
+## 直接操作 Db 对象
+
+```php
+// 获取新的数据库连接实例
+$db = Db::getNewInstance();
+// 读库
+$db = Db::getNewInstance($poolName, QueryType::READ);
+// 写库
+$db = Db::getNewInstance($poolName, QueryType::WRITE);
+
+// 获取数据库连接实例，每个RequestContext中共用一个
+$db = Db::getInstance();
+// 读库
+$db = Db::getInstance($poolName, QueryType::READ);
+// 写库
+$db = Db::getInstance($poolName, QueryType::WRITE);
+
+// 释放连接，回归连接池
+Db::release($db);
+
+$returnValue = Db::use(function(IDb $db){
+	// 操作 $db
+	return 'imi';
+}); // imi
+```
+
 ## 连贯操作
 
 IMI 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
@@ -146,6 +172,8 @@ $query = Db::query();
 
 ### 事务
 
+手动控制事务：
+
 ```php
 // 开启事务
 Db::getInstance()->beginTransaction();
@@ -153,6 +181,26 @@ Db::getInstance()->beginTransaction();
 Db::getInstance()->commit();
 // 回滚事务
 Db::getInstance()->rollBack();
+```
+
+获取连接顺带自动开启/提交/回滚事务：
+
+```php
+Db::transUse(function(IDb $db){
+
+});
+Db::transUse(function(IDb $db){
+
+}, $poolName, QueryType::WRITE);
+```
+
+获取连接后，想要使用某个连接，执行事务操作，自动开启/提交/回滚事务：
+
+```php
+$db = Db::getInstance();
+Db::trans($db, function(IDb $db){
+
+});
 ```
 
 **自动事务处理**
@@ -667,24 +715,4 @@ $sql = $result->getSql();
 
 ```php
 $statement = $result->getStatement(); // \Imi\Db\Interfaces\IStatement
-```
-
-## 延迟收包
-
-延迟收包的概念请查阅 Swoole 官方文档：https://wiki.swoole.com/wiki/page/587.html
-
-### 延迟收包示例
-
-如下代码所示，如果是传统方式调用，总耗时 2s 起，而使用延迟收包只需要 1s 多即可。
-
-```php
-$time = microtime(true);
-
-$db1 = Db::query(null, null, true)->setDefer();
-$db2 = Db::query(null, null, true)->setDefer();
-
-$defer1 = $db1->execute('select sleep(1)');
-$defer2 = $db2->execute('select sleep(1)');
-
-var_dump(microtime(true) - $time);
 ```
