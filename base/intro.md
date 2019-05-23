@@ -1,14 +1,14 @@
 # 介绍
 
-IMI 是基于 Swoole 开发的协程 PHP 开发框架，完美支持 Http、WebSocket、TCP、UDP 开发，拥有常驻内存、协程异步非阻塞IO等优点。
+imi 是基于 PHP 协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP 应用开发。
 
-IMI 框架文档丰富，上手容易，致力于让开发者跟使用传统 MVC 框架一样顺手。
+由 Swoole 提供强力驱动，Swoole 拥有常驻内存、协程非阻塞 IO 等特性。
 
-IMI 框架底层开发使用了强类型，易维护，性能更强。支持 Aop ，支持使用注解和配置文件注入，完全遵守 PSR-3、4、7、11、15、16 标准规范。
+框架遵守 PSR 标准规范，提供 AOP、注解、连接池、请求上下文管理、ORM模型等常用组件。
 
-框架的扩展性强，开发者可以根据实际需求，自行开发相关驱动进行扩展。不止于框架本身提供的功能和组件！
+imi 的模型支持关联关系的定义，增删改查一把梭！
 
-QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题会有人解答和修复。
+QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
 
 ### 为什么要用 Swoole？
 

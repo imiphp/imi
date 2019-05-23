@@ -10,6 +10,8 @@
 
 本文档的版权归`IMI开发团队`所有，本文档及其描述的内容受有关法律的版权保护，对本文档内容的任何形式的非法复制，泄露或散布，将导致相应的法律责任。
 
+QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
+
 ## 本文档协作地址
 
 码云 Gitee：https://gitee.com/yurunsoft/imidoc
