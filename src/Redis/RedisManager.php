@@ -50,7 +50,7 @@ abstract class RedisManager
      * @param int $queryType
      * @return string
      */
-    private static function parsePoolName($poolName = null)
+    public static function parsePoolName($poolName = null)
     {
         if(null === $poolName)
         {
