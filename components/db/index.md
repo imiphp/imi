@@ -2,6 +2,139 @@
 
 数据库连接池配置方式已经在连接池里讲过，这里就不重复了，直接说使用方法。
 
+## 连接池配置
+
+```php
+<?php
+return [
+	'pools' => [
+        // 连接池名称
+		'alias1' => [
+            // 同步池子，task进程使用
+			'sync' => [
+				'pool' => [
+					'class' => \Imi\Db\Pool\SyncDbPool::class,
+					'config' => [
+                        // 池子中最多资源数
+						// 'maxResources' => 10,
+						// 池子中最少资源数
+						// 'minResources' => 2,
+						// 资源回收时间间隔，单位：秒
+						// 'gcInterval' => 60,
+						// 获取资源最大存活时间，单位：秒
+						// 'maxActiveTime' => 3600,
+						// 等待资源最大超时时间，单位：毫秒
+						// 'waitTimeout' => 3000,
+						// 负载均衡-轮流
+						// 'resourceConfigMode' => ResourceConfigMode::TURN,
+						// 负载均衡-随机
+						// 'resourceConfigMode' => ResourceConfigMode::RANDOM,
+					],
+				],
+				'resource' => [
+					'host' => '127.0.0.1',
+					'username' => 'root',
+					'password' => 'root',
+					'database' => 'database',
+					// 'port'    => '3306',
+					// 'timeout' => '建立连接超时时间',
+					// 'charset' => '',
+					// 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+				],
+			],
+            // 异步池子，worker进程使用
+			'async' => [
+				'pool'	=>	[
+					'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
+					'config'	=>	[
+						// 同上
+					],
+				],
+				// resource也可以定义多个连接
+				'resource'	=>	[
+					[
+						'host'		=> '127.0.0.1',
+						'username'		=> 'root',
+						'password'	=> 'root',
+						'database'	=> 'database',
+						// 'timeout' => '建立连接超时时间',
+						// 'charset' => '',
+						// 'options' => [], // PDO连接选项
+					],
+					[
+						'host'		=> '127.0.0.2',
+						'username'		=> 'root',
+						'password'	=> 'root',
+						'database'	=> 'database',
+						// 'timeout' => '建立连接超时时间',
+						// 'charset' => '',
+						// 'options' => [], // PDO连接选项
+					]
+				],
+			],
+		],
+		// 从库配置
+		// 原连接池名后加.slave即为从库配置，非必设
+		// 如果配置了，默认查询走从库，增删改走主库
+		// 如果在事务中，默认都走主库
+		'alias1.slave' => [
+            // 同步池子，task进程使用
+			'sync' => [
+				'pool' => [
+					'class' => \Imi\Db\Pool\SyncDbPool::class,
+					'config' => [
+                        // 池子中最多资源数
+						// 'maxResources' => 10,
+						// 池子中最少资源数
+						// 'minResources' => 2,
+						// 资源回收时间间隔，单位：秒
+						// 'gcInterval' => 60,
+						// 获取资源最大存活时间，单位：秒
+						// 'maxActiveTime' => 3600,
+						// 等待资源最大超时时间，单位：毫秒
+						// 'waitTimeout' => 3000,
+					],
+				],
+				'resource' => [
+					'host' => '127.0.0.1',
+					'username' => 'root',
+					'password' => 'root',
+					'database' => 'database',
+					// 'port'    => '3306',
+					// 'timeout' => '建立连接超时时间',
+					// 'charset' => '',
+					// 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+				],
+			],
+            // 异步池子，worker进程使用
+			'async' => [
+				'pool'	=>	[
+					'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
+					'config'	=>	[
+						// 同上
+					],
+				],
+				'resource'	=>	[
+					'host'		=> '127.0.0.1',
+					'username'		=> 'root',
+					'password'	=> 'root',
+					'database'	=> 'database',
+					// 'timeout' => '建立连接超时时间',
+					// 'charset' => '',
+					// 'options' => [], // PDO连接选项
+				],
+				// uri 写法
+				// 'resource'  =>  [
+                //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
+                //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
+                // ],
+                // 'resource'  =>  'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60;tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
+			],
+		]
+	],
+];
+```
+
 ## 连贯操作
 
 IMI 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
