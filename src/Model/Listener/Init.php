@@ -8,7 +8,6 @@ use Imi\Main\Helper;
 use Imi\Bean\Annotation;
 use Imi\Event\EventParam;
 use Imi\Util\AtomicManager;
-use Imi\Util\ChannelManager;
 use Imi\Event\IEventListener;
 use Imi\Model\Annotation\Column;
 use Imi\Util\MemoryTableManager;
