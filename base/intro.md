@@ -10,6 +10,14 @@ IMI 框架底层开发使用了强类型，易维护，性能更强。支持 Aop
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题会有人解答和修复。
 
+### 为什么要用 Swoole？
+
+https://wiki.swoole.com/
+
+https://my.oschina.net/yurun/blog/1831238
+
+https://my.oschina.net/yurun/blog/3034196
+
 ### 功能组件
 
 - [x] Server (Http/Websocket/Tcp/Udp)
