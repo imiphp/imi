@@ -103,7 +103,7 @@
 * [Text](utils/Text.md)
 * [Pagination](utils/Pagination.md)
 * [DateTime](utils/DateTime.md)
-* [KVStorage](utils/KVStorage.ms)
+* [KVStorage](utils/KVStorage.md)
 
 ## 注解
 
