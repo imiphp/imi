@@ -130,3 +130,13 @@ Log::notice('日志内容');
 Log::info('日志内容');
 Log::debug('日志内容');
 ```
+
+直接记录异常日志：
+
+```php
+try {
+	throw new \RuntimeException('test');
+} catch(\Throwable $th) {
+	App::getBean('ErrorLog')->onException($th);
+}
+```

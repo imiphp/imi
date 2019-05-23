@@ -40,7 +40,6 @@ return [
 					],
 				],
 				'resource' => [
-					'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
 					'host' => '127.0.0.1',
 					'username' => 'root',
 					'password' => 'root',
@@ -62,7 +61,6 @@ return [
 				// resource也可以定义多个连接
 				'resource'	=>	[
 					[
-						'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
 						'host'		=> '127.0.0.1',
 						'username'		=> 'root',
 						'password'	=> 'root',
@@ -72,7 +70,6 @@ return [
 						// 'options' => [], // PDO连接选项
 					],
 					[
-						'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
 						'host'		=> '127.0.0.2',
 						'username'		=> 'root',
 						'password'	=> 'root',
@@ -107,7 +104,6 @@ return [
 					],
 				],
 				'resource' => [
-					'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
 					'host' => '127.0.0.1',
 					'username' => 'root',
 					'password' => 'root',
@@ -127,7 +123,6 @@ return [
 					],
 				],
 				'resource'	=>	[
-					'dbClass'	=> \Imi\Db\Drivers\CoroutineMysql\Driver::class,
 					'host'		=> '127.0.0.1',
 					'username'		=> 'root',
 					'password'	=> 'root',

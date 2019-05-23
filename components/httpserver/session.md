@@ -12,35 +12,35 @@ IMI 的 Http Session 目前内嵌支持文件和 Redis 两种存储方式，当�
 return [
 	'beans'	=>	[
 		'SessionManager'	=>	[
-			// 指定Session存储驱动类
+			// 指定 Session 存储驱动类
 			'handlerClass'	=>	\Imi\Server\Session\Handler\File::class,
 		],
 		'SessionConfig'	=>	[
 			// session 名称，默认为imisid
-			// 'name'	=>	'',
+			'name'	=>	'imisid',
 			// 每次请求完成后触发垃圾回收的概率，默认为1%，可取值0~1.0，概率为0%~100%
-			// 'gcProbability'	=>	0.1,
+			'gcProbability'	=>	0.01,
 			// 最大存活时间，默认30天，单位秒
-			// 'maxLifeTime'=>	0.1,
+			'maxLifeTime'=>	86400 * 30,
 			// session 前缀
-			// 'prefix' => 'imi',
+			'prefix' => null,
 		],
 		'SessionCookie'	=>	[
 			// Cookie 的 生命周期，以秒为单位。
-			'lifetime'	=>	86400 * 30,
+			'lifetime'	=>	0,
 			// 此 cookie 的有效 路径。 on the domain where 设置为“/”表示对于本域上所有的路径此 cookie 都可用。
-			// 'path'		=>	'',
+			'path'		=>	'/',
 			// Cookie 的作用 域。 例如：“www.php.net”。 如果要让 cookie 在所有的子域中都可用，此参数必须以点（.）开头，例如：“.php.net”。
-			// 'domain'	=>	'',
+			'domain'	=>	'',
 			// 设置为 TRUE 表示 cookie 仅在使用 安全 链接时可用。
-			// 'secure'	=>	false,
+			'secure'	=>	false,
 			// 设置为 TRUE 表示 PHP 发送 cookie 的时候会使用 httponly 标记。
-			// 'httponly'	=>	false,
+			'httponly'	=>	false,
 		],
-		// 中间件
+		// 配置中间件
 		'HttpDispatcher'	=>	[
 			'middlewares'	=>	[
-				// 中间件
+				// Session 中间件
 				\Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
 			],
 		],
@@ -84,7 +84,7 @@ return [
 ```php
 'beans'	=>	[
 	'SessionFile'	=>	[
-		'formatHandlerClass'	=>	\Imi\Util\Format\SwooleSerialize::class,
+		'formatHandlerClass'	=>	\Imi\Util\Format\PhpSerialize::class,
 	]
 ]
 ```
@@ -95,9 +95,7 @@ JSON:`\Imi\Util\Format\Json::class`
 
 PHP序列化:`\Imi\Util\Format\PhpSerialize::class`
 
-<del>Swoole 序列化:`\Imi\Util\Format\SwooleSerialize::class`</del> (不再推荐，以后版本会停止支持)
-
-PHP Session 序列化:`\Imi\Util\Format\PhpSession::class`
+PHP Session 序列化:`\Imi\Util\Format\PhpSession::class` （兼容 php-fpm 默认的 Session 存储格式）
 
 ## 使用
 

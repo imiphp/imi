@@ -27,7 +27,7 @@ return [
 			// url匹配缓存数量，默认1024
 			'urlCacheNumber'	=>	1024,
 			// 全局忽略 URL 路由大小写
-			// 'ignoreCase'		=>	true,
+			'ignoreCase'		=>	false,
 		],
 	],
 ];

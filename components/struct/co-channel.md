@@ -6,7 +6,7 @@
 
 ## 配置方式
 
-在配置文件中加入以下节
+在项目配置文件中加入以下节
 ```php
 'coroutineChannels'    =>    [
     // 定义名为name1的，通道占用的内存的尺寸为64kb
@@ -49,12 +49,5 @@ $result 格式如下：
 
 // 关闭通道。并唤醒所有等待读写的协程。
 CoroutineChannelManager::close('name1');
-
-// 通道读写检测
-// $channel1和2 都是 Swoole\Coroutine\Channel 对象
-$read = [$channel1];
-$write = [$channel2];
-// Coroutine\Channel::select() 最小超时时间1毫秒
-$result = CoroutineChannelManager::select('name1', $read, $write, 0.001);
 
 ```

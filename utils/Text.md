@@ -75,3 +75,15 @@ echo Text::toCamelName('admin_user_age'), PHP_EOL;
 // AdminUserAge
 echo Text::toPascalName('admin_user_age'), PHP_EOL;
 ```
+
+### toUnderScoreCase
+
+转为下划线命名
+
+```php
+// admin_user_age
+echo Text::toUnderScoreCase('AdminUserAge'), PHP_EOL;
+
+// Admin_User_Age
+echo Text::toUnderScoreCase('AdminUserAge', false), PHP_EOL;
+```

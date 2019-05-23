@@ -24,52 +24,6 @@ return [
     'beanScan'	=>	[
     	'ImiDemo\WebSocketDemo\Listener',
     ],
-    // 配置方式注入类属性，可被注入的属性一般是public和protected
-    'beans'    =>    [
-        // 类名或类注解中定义的@Bean("名称")
-        'hotUpdate'	=>	[
-		// 'status'	=>	false, // 关闭热更新去除注释，不设置即为开启，建议生产环境关闭
-
-		// --- 文件修改时间监控 ---
-		// 'monitorClass'	=>	\Imi\HotUpdate\Monitor\FileMTime::class,
-		// 'timespan'	=>	1, // 检测时间间隔，单位：秒
-
-		// --- Inotify 扩展监控 ---
-		// 'monitorClass'	=>	\Imi\HotUpdate\Monitor\Inotify::class,
-		// 'timespan'	=>	0, // 检测时间间隔，单位：秒，使用扩展建议设为0性能更佳
-
-		// 'includePaths'	=>	[], // 要包含的路径数组
-		// 'excludePaths'	=>	[], // 要排除的路径数组，支持通配符*
-		// 'defaultPath'	=>	[], // 设为数组则覆盖默认的监控路径
-	],
-    ],
-    'db'	=>	[
-    	// 数据库默认连接池名
-    	'defaultPool'	=>	'maindb',
-    ],
-    'redis' =>  [
-        // 当使用 Redis::xxx() 快捷操作时：
-        // true: RedisManager::getInstance()->xxx()，当一个请求结束时才释放
-        // false: PoolManager::use()，每次去池子里竞争连接，用完释放
-        'quickFromRequestContext'   =>  true,
-        'defaultPool'   =>  '默认连接池名',
-    ],
-    // 连接池配置，详见对应章节
-    'pools'	=>	[
-    ],
-    // 缓存器配置，详见对应章节
-    'caches'	=>	[
-    ],
-    // 缓存配置
-    'cache'  =>  [
-        'default'   =>  '默认缓存配置名',
-    ],
-    'lock'  =>  [
-        // 指定默认Lock使用哪个处理器
-        'defaultType'   =>  'RedisLock',
-    ],
-    // 当post body为json时，转为对象还是数组，默认为false数组
-    // 'jsonBodyIsObject'  =>  false,
 ];
 ```
 
@@ -78,20 +32,20 @@ return [
 ```php
 return [
     // Swoole >= 4.1.0可用，不设置默认为true，开启一键协程化
-    // 'enableCoroutine'    =>    true,
+    'enableCoroutine'    =>    true,
     // runtime目录设置，默认可不设置，为当前项目下的.runtime目录
     // 注意，多个项目不可设置为相同目录！
-    // 'runtimePath'   =>  '/tmp/imidemo-runtime/',
+    'runtimePath'   =>  '/tmp/imidemo-runtime/',
     // 定义进程名规则
-    // 'process'   =>  [
-    //     'master'        =>  'imi:master:{namespace}',
-    //     'manager'       =>  'imi:manager:{namespace}',
-    //     'worker'        =>  'imi:worker-{workerId}:{namespace}',
-    //     'taskWorker'    =>  'imi:taskWorker-{workerId}:{namespace}',
-    //     'process'       =>  'imi:process-{processName}:{namespace}',
-    //     'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
-    //     'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
-    // ],
+    'process'   =>  [
+        'master'        =>  'imi:master:{namespace}',
+        'manager'       =>  'imi:manager:{namespace}',
+        'worker'        =>  'imi:worker-{workerId}:{namespace}',
+        'taskWorker'    =>  'imi:taskWorker-{workerId}:{namespace}',
+        'process'       =>  'imi:process-{processName}:{namespace}',
+        'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
+        'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
+    ],
     // 主服务器配置
     'mainServer'	=>	[
         // 指定服务器命名空间
@@ -99,17 +53,17 @@ return [
         // 服务器类型，暂时仅支持Type::HTTP
         'type'		=>	Type::HTTP,
         // 监听的IP地址，可选
-        // 'host'		=>	'0.0.0.0',
+        'host'		=>	'0.0.0.0',
         // 监听的端口
         'port'		=>	8080,
         // 参考 swoole mode，可选
-        // 'mode'		=>	SWOOLE_BASE,
+        'mode'		=>	SWOOLE_BASE,
         // 参考 swoole sockType，可选
-        // 'sockType'	=>	SWOOLE_SOCK_TCP,
+        'sockType'	=>	SWOOLE_SOCK_TCP,
         // 服务器配置，参数用法同\Swoole\Server->set($configs)
         'configs'	=>	[
-            'reactor_num'	=> 8,
-            'worker_num'	=> 8,
+            'reactor_num'	    => 8,
+            'worker_num'	    => 8,
             'task_worker_num'	=> 16,
         ],
     ],
@@ -131,4 +85,24 @@ return [
 
 ```
 @app.pools.maindb.async.resource = "tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60"
+```
+
+数组的支持：
+
+```
+@app.a.0.id = 1
+@app.a.0.name = name1
+@app.a.1.id = 2
+@app.a.1.name = name2
+```
+
+同：
+
+```php
+[
+    'a' =>  [
+        ['id'=>1, 'name'=>'name1'],
+        ['id'=>2, 'name'=>'name2'],
+    ]
+]
 ```

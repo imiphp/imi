@@ -36,7 +36,7 @@
 
 ### getLimitEndOffset
 
-获取结束的偏移量，如 `limit 20, 10` 中的 `30`
+获取结束的偏移量，如 `limit 20, 10` 中的 `29`
 
 ### calcPageCount
 
