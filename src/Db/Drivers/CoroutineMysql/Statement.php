@@ -83,7 +83,10 @@ class Statement extends BaseStatement implements IStatement
 
     public function __destruct()
     {
-        StatementManager::unUsing($this->db, $this->sql);
+        if($this->db)
+        {
+            StatementManager::unUsing($this->db, $this->sql);
+        }
     }
 
     /**
@@ -223,10 +226,6 @@ class Statement extends BaseStatement implements IStatement
      */
     protected function __execute(array $inputParameters = null)
     {
-        if($this->cursor >= 0)
-        {
-            return false;
-        }
         $params = $this->getExecuteParams($inputParameters);
         $result = $this->statement->execute($params);
         yield $result;

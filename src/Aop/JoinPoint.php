@@ -86,4 +86,17 @@ class JoinPoint
     {
         return $this->_this;
     }
+
+    /**
+     * 修改请求参数
+     *
+     * @param array $args 请求参数
+     *
+     * @return voie
+     */ 
+    public function setArgs(array $args)
+    {
+        $this->args = $args;
+    }
+
 }

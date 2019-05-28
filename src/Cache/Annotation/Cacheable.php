@@ -27,6 +27,7 @@ class Cacheable extends Base
     /**
      * 缓存键名
      * 支持{id}、{data.name}形式，代入参数
+     * 支持{:args}代入所有方法参数的 hash 值
      * 如果为null，则使用类名+方法名+全部参数，序列化后hash
      *
      * @var string
@@ -58,4 +59,12 @@ class Cacheable extends Base
      * @var boolean
      */
     public $preventBreakdown = false;
+
+    /**
+     * 可以指定 hash 方法，默认为：md5
+     *
+     * @var string
+     */
+    public $hashMethod = 'md5';
+
 }

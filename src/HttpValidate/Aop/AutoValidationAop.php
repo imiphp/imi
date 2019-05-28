@@ -4,17 +4,15 @@ namespace Imi\HttpValidate\Aop;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\PointCutType;
 use Imi\Bean\BeanFactory;
+use Imi\Util\ClassObject;
 use Imi\Validate\Validator;
-use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\After;
-use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
+use Imi\Aop\Annotation\Before;
+use Imi\Server\Session\Session;
+use Imi\Util\ObjectArrayHelper;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\HttpValidate\Annotation\ExtractData;
-use Imi\Util\ObjectArrayHelper;
-use Imi\Util\ClassObject;
-use Imi\Server\Session\Session;
 
 /**
  * @Aspect
@@ -29,10 +27,10 @@ class AutoValidationAop
      *             \Imi\HttpValidate\Annotation\HttpValidation::class
      *         }
      * )
-     * @Around
+     * @Before
      * @return mixed
      */
-    public function validateHttp(AroundJoinPoint $joinPoint)
+    public function validateHttp(JoinPoint $joinPoint)
     {
         $controller = $joinPoint->getTarget();
         $className = BeanFactory::getObjectClass($controller);
@@ -63,14 +61,6 @@ class AutoValidationAop
                 throw new $exception($validator->getMessage(), $rule->exCode);
             }
 
-            foreach($annotations as $annotation)
-            {
-                if($annotation instanceof ExtractData && array_key_exists($annotation->to, $data))
-                {
-                    $data[$annotation->to] = ObjectArrayHelper::get($data, $annotation->name);
-                }
-            }
-
             unset($data['$get'], $data['$post'], $data['$body'], $data['$headers'], $data['$cookie'], $data['$session'], $data['$this']);
 
             $data = array_values($data);
@@ -80,7 +70,7 @@ class AutoValidationAop
             $data = null;
         }
 
-        return $joinPoint->proceed($data);
+        $joinPoint->setArgs($data);
     }
 
 }

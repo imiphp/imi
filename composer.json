@@ -16,6 +16,9 @@
     "autoload": {
         "psr-4" : {
             "Imi\\" : "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     }
 }

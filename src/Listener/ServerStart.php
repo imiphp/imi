@@ -19,7 +19,7 @@ class ServerStart implements IStartEventListener
      */
     public function handle(StartEventParam $e)
     {
-        cli_set_process_title(Imi::getProcessName('master'));
+        Imi::setProcessName('master');
         echo 'Server start', PHP_EOL;
         $mainSwooleServer = ServerManage::getServer('main')->getSwooleServer();
         echo 'WorkerNum: ', $mainSwooleServer->setting['worker_num'], ', TaskWorkerNum: ', $mainSwooleServer->setting['task_worker_num'], PHP_EOL;

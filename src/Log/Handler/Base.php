@@ -24,7 +24,7 @@ abstract class Base
      * 当日志达到指定条数时，执行批量写入操作，减少对性能的影响
      * @var int
      */
-    protected $logCacheNumber = 0;
+    protected $logCacheNumber = 1;
 
     /**
      * 日志格式
@@ -131,7 +131,7 @@ abstract class Base
      */
     public function trySave()
     {
-        if(isset($this->records[$this->logCacheNumber]))
+        if(isset($this->records[$this->logCacheNumber - 1]))
         {
             $this->save();
         }

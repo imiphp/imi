@@ -41,7 +41,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
     
                 $server = $e->server->getSwooleServer();
                 // 触发当前进程的PipeMessage事件
-                go(function() use($e){
+                imigo(function() use($e){
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $e->server,
                         'workerID'  => $e->workerID,
@@ -58,7 +58,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
             else if($checkResult || (null === $checkResult && $this->checkInitFlagFile($initFlagFile)))
             {
                 // 热重启后，触发当前进程的PipeMessage事件
-                go(function() use($e){
+                imigo(function() use($e){
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $e->server,
                         'workerID'  => 0,

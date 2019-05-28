@@ -72,8 +72,8 @@ abstract class ClassObject
                 break;
             }
         }
-    
-        if($param->isVariadic())
+
+        if($param && $param->isVariadic())
         {
             $result[$param->name] = [$result[$param->name]];
             if(isset($args[$i + 1]))

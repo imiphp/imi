@@ -217,6 +217,13 @@ use Imi\Util\Defer;
  */
 class CoroutineRedisHandler extends \Swoole\Coroutine\Redis
 {
+    /**
+     * 是否使用序列化
+     *
+     * @var boolean
+     */
+    private $__serialize;
+
     use TFixSwoole;
 
     public function __call($name, $arguments)
@@ -235,4 +242,21 @@ class CoroutineRedisHandler extends \Swoole\Coroutine\Redis
         return false;
     }
 
+    public function connect($host, $port = null, $serialize = null)
+    {
+        $this->__serialize = $serialize;
+        return parent::connect($host, $port, $serialize);
+    }
+
+    public function _serialize($value)
+    {
+        if($this->__serialize)
+        {
+            return serialize($value);
+        }
+        else
+        {
+            return $value;
+        }
+    }
 }

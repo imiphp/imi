@@ -2,6 +2,7 @@
 namespace Imi\Tool;
 
 use Imi\App;
+use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Args;
 use Imi\Util\File;
@@ -13,7 +14,6 @@ use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
-use Imi\Event\Event;
 
 abstract class Tool
 {
@@ -31,10 +31,10 @@ abstract class Tool
         {
             throw new \RuntimeException(sprintf('Tool name and operation not found!'));
         }
-        static::init();
         // 工具名/操作名
         list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
-        cli_set_process_title(Imi::getProcessName('tool'));
+        static::init();
+        Imi::setProcessName('tool');
     }
 
     public static function run()
@@ -119,6 +119,15 @@ abstract class Tool
      */
     private static function init()
     {
+        // 跳过初始化的工具
+        foreach(Config::get('@Imi.skipInitTools') as $tool)
+        {
+            if(static::$toolName === $tool[0] && static::$toolOperation === $tool[1])
+            {
+                return;
+            }
+        }
+
         // 仅初始化项目及组件
         $initMains = [Helper::getMain(App::getNamespace())];
         foreach(Helper::getAppMains() as $mainName => $main)
@@ -169,10 +178,16 @@ abstract class Tool
     {
         $className = get_parent_class($callable[0]);
         $methodRef = new \ReflectionMethod($className, $callable[1]);
+        $annotations = ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'] ?? [];
         $args = [];
-        foreach(ToolParser::getInstance()->getData()['class'][$className]['Methods'][$methodRef->name]['Args'] ?? [] as $annotation)
+        foreach($methodRef->getParameters() as $param)
         {
-            if(Args::exists($annotation->name))
+            $annotation = $annotations[$param->name] ?? null;
+            if(null === $annotation)
+            {
+                $value = $param->isOptional() ? $param->getDefaultValue() : null;
+            }
+            else if(Args::exists($annotation->name))
             {
                 $value = static::parseArgValue(Args::get($annotation->name), $annotation);
             }

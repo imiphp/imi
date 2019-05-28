@@ -9,6 +9,16 @@ use Imi\Bean\BeanFactory;
 abstract class BaseStatement implements IStatement
 {
     /**
+     * 关闭
+     *
+     * @return void
+     */
+    public function close()
+    {
+        StatementManager::remove($this->getDb(), $this->getSql());
+    }
+
+    /**
      * 执行一条预处理语句，延迟执行
      * @param array $inputParameters
      * @return Defer

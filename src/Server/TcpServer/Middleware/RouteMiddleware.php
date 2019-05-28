@@ -3,6 +3,7 @@ namespace Imi\Server\TcpServer\Middleware;
 
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\TcpServer\ReceiveHandler;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
@@ -31,6 +32,11 @@ class RouteMiddleware implements IMiddleware
         else
         {
             RequestContext::set('routeResult', $result);
+
+            $middlewares = $result['middlewares'];
+            $middlewares[] = ActionMiddleware::class;
+            $handler = new ReceiveHandler($middlewares);
+            return $handler->handle($data);
         }
         return $handler->handle($data);
     }

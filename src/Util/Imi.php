@@ -301,7 +301,15 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        $cmd = 'php ' . $_SERVER['argv'][0] . ' ' . $toolName . '/' . $operation;
+        if(isset($_SERVER['_']) && $_SERVER['SCRIPT_FILENAME'] === $_SERVER['_'])
+        {
+            $cmd = $_SERVER['_'];
+        }
+        else
+        {
+            $cmd = ($_SERVER['_'] ?? 'php') . ' ' . $_SERVER['argv'][0];
+        }
+        $cmd .= ' ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
@@ -331,10 +339,27 @@ abstract class Imi
         $parentPath = Config::get('@app.runtimePath');
         if(null === $parentPath)
         {
-            $parentPath = File::path(sys_get_temp_dir(), str_replace('\\', '-', App::getNamespace()) . '-runtime');
+            $parentPath = File::path(Imi::getNamespacePath(App::getNamespace()), '.runtime');
         }
         File::createDir($parentPath);
         return File::path($parentPath, ...$path);
+    }
+
+    /**
+     * 设置当前进程名
+     *
+     * @param string $type
+     * @param array $data
+     * @return void
+     */
+    public static function setProcessName($type, $data = [])
+    {
+        if('Darwin' === PHP_OS)
+        {
+            // 苹果 MacOS 不允许设置进程名
+            return;
+        }
+        cli_set_process_title(static::getProcessName($type, $data));
     }
 
     /**
@@ -411,11 +436,64 @@ abstract class Imi
      */
     public static function buildRuntime($runtimeFile = null)
     {
+        /**
+         * 处理列类型和大小
+         *
+         * @param \Imi\Model\Annotation\Column $column
+         * @return [$type, $size]
+         */
+        $parseColumnTypeAndSize = function($column) {
+            $type = $column->type;
+            switch($type)
+            {
+                case 'string':
+                    $type = \Swoole\Table::TYPE_STRING;
+                    $size = $column->length;
+                    break;
+                case 'int':
+                    $type = \Swoole\Table::TYPE_INT;
+                    $size = $column->length;
+                    if(!in_array($size, [1, 2, 4, 8]))
+                    {
+                        $size = 4;
+                    }
+                    break;
+                case 'float':
+                    $type = \Swoole\Table::TYPE_FLOAT;
+                    $size = 8;
+                    break;
+            }
+            return [$type, $size];
+        };
+        
+        /**
+         * 获取内存表列
+         *
+         * @param array $columnAnnotationsSet
+         * @return array
+         */
+        $getMemoryTableColumns = function($columnAnnotationsSet) use($parseColumnTypeAndSize) {
+            $columns = [];
+
+            foreach($columnAnnotationsSet as $propertyName => $annotations)
+            {
+                $columnAnnotation = $annotations[0];
+                list($type, $size) = $parseColumnTypeAndSize($columnAnnotation);
+                $columns[] = [
+                    'name' => $columnAnnotation->name,
+                    'type' => $type,
+                    'size' => $size,
+                ];
+            }
+            
+            return $columns;
+        };
+
         $runtimeInfo = App::getRuntimeInfo();
         $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'Class');
         foreach($annotationsSet as &$item)
         {
-            $item['columns'] = $this->getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
+            $item['columns'] = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
         $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getData(), Annotation::getInstance()->getParser()->getFileMap()];

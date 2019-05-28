@@ -19,6 +19,7 @@ use Imi\Util\Imi as ImiUtil;
 use Imi\Bean\Annotation;
 use \Imi\Main\Helper as MainHelper;
 use Imi\Util\Args;
+use Imi\Util\Text;
 
 /**
  * @Tool("imi")
@@ -91,7 +92,7 @@ class Imi
             }
         });
         
-        if(null !== $changedFilesFile && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
+        if(!Text::isEmpty($changedFilesFile) && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
@@ -125,58 +126,4 @@ class Imi
         }
     }
 
-    /**
-     * 获取内存表列
-     *
-     * @param array $columnAnnotationsSet
-     * @return array
-     */
-    protected function getMemoryTableColumns($columnAnnotationsSet)
-    {
-        $columns = [];
-
-        foreach($columnAnnotationsSet as $propertyName => $annotations)
-        {
-            $columnAnnotation = $annotations[0];
-            list($type, $size) = $this->parseColumnTypeAndSize($columnAnnotation);
-            $columns[] = [
-                'name' => $columnAnnotation->name,
-                'type' => $type,
-                'size' => $size,
-            ];
-        }
-        
-        return $columns;
-    }
-
-    /**
-     * 处理列类型和大小
-     *
-     * @param \Imi\Model\Annotation\Column $column
-     * @return [$type, $size]
-     */
-    protected function parseColumnTypeAndSize($column)
-    {
-        $type = $column->type;
-        switch($type)
-        {
-            case 'string':
-                $type = \Swoole\Table::TYPE_STRING;
-                $size = $column->length;
-                break;
-            case 'int':
-                $type = \Swoole\Table::TYPE_INT;
-                $size = $column->length;
-                if(!in_array($size, [1, 2, 4, 8]))
-                {
-                    $size = 4;
-                }
-                break;
-            case 'float':
-                $type = \Swoole\Table::TYPE_FLOAT;
-                $size = 8;
-                break;
-        }
-        return [$type, $size];
-    }
 }
