@@ -84,27 +84,4 @@ abstract class ArrayUtil
     {  
         return array_keys($array) !== range(0, count($array) - 1);  
     }
-
-    /**
-     * 随机获得数组中的值，返回一个保持键值对应的数组
-     *
-     * @param array $array
-     * @param int $number
-     * @return array
-     */
-    public static function random($array, $number = 1)
-    {
-        $result = [];
-        $keys = array_rand($array, $number);
-        foreach($keys as $key)
-        {
-            if(!isset($array[$key]))
-            {
-                break;
-            }
-            $result[$key] = $array[$key];
-        }
-        return $result;
-    }
-
 }

@@ -3,7 +3,6 @@ namespace Imi\Server\Route\Listener;
 
 use Imi\Main\Helper;
 use Imi\ServerManage;
-use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
@@ -40,12 +39,6 @@ class WSRouteInit implements IEventListener
         $controllerParser = WSControllerParser::getInstance();
         foreach(ServerManage::getServers() as $name => $server)
         {
-            if(!$server instanceof \Imi\Server\WebSocket\Server)
-            {
-                continue;
-            }
-            RequestContext::create();
-            RequestContext::set('server', $server);
             $route = $server->getBean('WSRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -94,7 +87,6 @@ class WSRouteInit implements IEventListener
                     }
                 }
             }
-            RequestContext::destroy();
         }
     }
 
@@ -104,28 +96,29 @@ class WSRouteInit implements IEventListener
      */
     private function parseConfigs(EventParam $e)
     {
-        foreach(ServerManage::getServers() as $name => $server)
+        $server = $e->getTarget();
+        if($server instanceof \Imi\Server\WebSocket\Server)
         {
-            if(!$server instanceof \Imi\Server\WebSocket\Server)
-            {
-                continue;
-            }
             $route = $server->getBean('WSRoute');
-            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
+        }
+        else
+        {
+            return;
+        }
+        foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
+        {
+            $routeAnnotation = new Route($routeOption['route'] ?? []);
+            if(isset($routeOption['callback']))
             {
-                $routeAnnotation = new WSRoute($routeOption['route'] ?? []);
-                if(isset($routeOption['callback']))
-                {
-                    $callable = $routeOption['callback'];
-                }
-                else
-                {
-                    $callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
-                }
-                $route->addRuleAnnotation($routeAnnotation, $callable, [
-                    'middlewares' => $routeOption['middlewares'],
-                ]);
+                $callable = $routeOption['callback'];
             }
+            else
+            {
+                $callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
+            }
+            $route->addRuleAnnotation($routeAnnotation, $callable, [
+                'middlewares' => $routeOption['middlewares'],
+            ]);
         }
     }
 }

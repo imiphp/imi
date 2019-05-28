@@ -32,11 +32,6 @@ class RouteMiddleware implements IMiddleware
         else
         {
             RequestContext::set('routeResult', $result);
-
-            $middlewares = $result['middlewares'];
-            $middlewares[] = ActionMiddleware::class;
-            $handler = new MessageHandler($middlewares);
-            return $handler->handle($frame);
         }
         return $handler->handle($frame);
     }

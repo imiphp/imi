@@ -125,10 +125,6 @@ class Driver extends Base implements IDb
      */
     public function close()
     {
-        if(null !== $this->lastStmt)
-        {
-            $this->lastStmt = null;
-        }
         $this->instance = null;
     }
 
@@ -302,7 +298,7 @@ class Driver extends Base implements IDb
         $isCache = !isset($driverOptions['IMI_NO_CACHE']) || $driverOptions['IMI_NO_CACHE'];
         if($isCache && $stmtCache = StatementManager::get($this, $sql))
         {
-            $stmt = $stmtCache['statement'];
+            $this->lastStmt = $stmtCache['statement'];
         }
         else
         {
@@ -313,22 +309,13 @@ class Driver extends Base implements IDb
             {
                 throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
-            if($isCache)
-            {
-                $stmtCache = StatementManager::get($this, $sql);
-                if($stmtCache)
-                {
-                    StatementManager::unUsingStatement($stmtCache['statement']);
-                }
-                else
-                {
-                    StatementManager::set($stmt, true);
-                }
-            }
         }
-
-        return $stmt;
+        $result = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
+        if($isCache && !StatementManager::get($this, $sql))
+        {
+            StatementManager::set($result);
+        }
+        return $result;
     }
 
     /**

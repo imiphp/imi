@@ -4,7 +4,6 @@ namespace Imi\Cache\Handler;
 use Imi\RequestContext;
 use Psr\SimpleCache\CacheInterface;
 use Imi\Cache\InvalidArgumentException;
-use Imi\App;
 
 abstract class Base implements CacheInterface
 {
@@ -34,13 +33,9 @@ abstract class Base implements CacheInterface
         {
             return $data;
         }
-        else if(RequestContext::exsits() && null !== RequestContext::getServer())
-        {
-            return RequestContext::getServerBean($this->formatHandlerClass)->encode($data);
-        }
         else
         {
-            return App::getBean($this->formatHandlerClass)->encode($data);
+            return RequestContext::getServerBean($this->formatHandlerClass)->encode($data);
         }
     }
 
@@ -55,13 +50,9 @@ abstract class Base implements CacheInterface
         {
             return $data;
         }
-        else if(RequestContext::exsits() && null !== RequestContext::getServer())
-        {
-            return RequestContext::getServerBean($this->formatHandlerClass)->decode($data);
-        }
         else
         {
-            return App::getBean($this->formatHandlerClass)->decode($data);
+            return RequestContext::getServerBean($this->formatHandlerClass)->decode($data);
         }
     }
     

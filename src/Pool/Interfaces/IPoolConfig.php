@@ -20,7 +20,7 @@ interface IPoolConfig
 
     /**
      * 获取资源回收时间间隔，单位：秒
-     * @return int|null
+     * @return int
      */
     public function getGCInterval();
 
@@ -64,7 +64,7 @@ interface IPoolConfig
     /**
      * Set 资源回收时间间隔，单位：秒
      *
-     * @param integer|null $gcInterval 获取资源回收时间间隔，单位：秒
+     * @param integer $gcInterval 获取资源回收时间间隔，单位：秒
      *
      * @return static
      */ 
@@ -94,21 +94,4 @@ interface IPoolConfig
      * @return static
      */
     public function setResourceConfigMode($resourceConfigMode);
-
-    /**
-     * Get 每次获取资源最长使用时间
-     *
-     * @return float|null
-     */ 
-    public function getMaxUsedTime();
-
-    /**
-     * Set 每次获取资源最长使用时间
-     *
-     * @param float|null $maxUsedTime 为 null 则不限制
-     *
-     * @return static
-     */ 
-    public function setMaxUsedTime($maxUsedTime);
-
 }

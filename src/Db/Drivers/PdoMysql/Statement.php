@@ -6,7 +6,6 @@ use Imi\Util\LazyArrayObject;
 use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Statement\StatementManager;
 
 /**
  * PDO MySQL驱动Statement
@@ -37,14 +36,6 @@ class Statement extends BaseStatement implements IStatement
     {
         $this->db = $db;
         $this->statement = $statement;
-    }
-
-    public function __destruct()
-    {
-        if($this->db && $this->statement)
-        {
-            StatementManager::unUsing($this->db, $this->statement->queryString);
-        }
     }
 
     /**
@@ -149,21 +140,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function execute(array $inputParameters = null): bool
     {
-        if(null !== $inputParameters)
-        {
-            foreach($inputParameters as $k => $v)
-            {
-                if(is_numeric($k))
-                {
-                    $this->statement->bindValue($k + 1, $v, $this->getDataTypeByValue($v));
-                }
-                else
-                {
-                    $this->statement->bindValue($k, $v, $this->getDataTypeByValue($v));
-                }
-            }
-        }
-        $result = $this->statement->execute();
+        $result = $this->statement->execute($inputParameters);
         if(!$result)
         {
             throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
@@ -307,28 +284,5 @@ class Statement extends BaseStatement implements IStatement
     public function valid()
     {
         return false !== $this->current();
-    }
-
-    /**
-     * 根据值类型获取PDO数据类型
-     *
-     * @param mixed $value
-     * @return int
-     */
-    protected function getDataTypeByValue($value)
-    {
-        if(null === $value)
-        {
-            return \PDO::PARAM_NULL;
-        }
-        if(is_bool($value))
-        {
-            return \PDO::PARAM_BOOL;
-        }
-        if(is_int($value))
-        {
-            return \PDO::PARAM_INT;
-        }
-        return \PDO::PARAM_STR;
     }
 }

@@ -1,7 +1,6 @@
 <?php
 return [
     'beanScan' => [
-        'Imi\Config',
         'Imi\Bean',
         'Imi\Aop',
         'Imi\Annotation',
@@ -21,13 +20,9 @@ return [
         'Imi\HttpValidate',
         'Imi\Enum',
         'Imi\Lock',
+        'Imi\Config',
     ],
     'atomics' => [
         'session'
-    ],
-    // 跳过初始化的工具
-    'skipInitTools' =>  [
-        ['imi', 'buildImiRuntime'],
-        ['imi', 'clearImiRuntime'],
-    ],
+    ]
 ];

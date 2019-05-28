@@ -20,37 +20,25 @@ class PoolConfig implements IPoolConfig
      * 池子中最少资源数
      * @var integer
      */
-    protected $minResources = 1;
+    protected $minResources = 2;
 
     /**
-     * 资源回收时间间隔，单位：秒
+     * 获取资源回收时间间隔，单位：秒
      * @var integer
      */
     protected $gcInterval = 60;
 
     /**
-     * 资源最大存活时间，单位：秒
-     * 
-     * 为 null 则不限制
-     * 
-     * @var integer|null
+     * 获取资源最大存活时间，单位：秒
+     * @var integer
      */
-    protected $maxActiveTime;
+    protected $maxActiveTime = 3600;
 
     /**
      * 等待资源最大超时时间，单位：毫秒
      * @var integer
      */
     protected $waitTimeout = 3000;
-
-    /**
-     * 每次获取资源最长使用时间，单位：秒
-     * 
-     * 为 null 则不限制
-     * 
-     * @var float|null
-     */
-    protected $maxUsedTime;
 
     /**
      * 资源配置模式
@@ -87,7 +75,7 @@ class PoolConfig implements IPoolConfig
 
     /**
      * 获取资源回收时间间隔，单位：秒
-     * @return int|null
+     * @return int
      */
     public function getGCInterval()
     {
@@ -143,7 +131,7 @@ class PoolConfig implements IPoolConfig
     /**
      * Set 资源回收时间间隔，单位：秒
      *
-     * @param integer|null $gcInterval 获取资源回收时间间隔，单位：秒
+     * @param integer $gcInterval 获取资源回收时间间隔，单位：秒
      *
      * @return static
      */ 
@@ -203,29 +191,4 @@ class PoolConfig implements IPoolConfig
 
         return $this;
     }
-
-    /**
-     * Get 每次获取资源最长使用时间
-     *
-     * @return float|null
-     */ 
-    public function getMaxUsedTime()
-    {
-        return $this->maxUsedTime;
-    }
-
-    /**
-     * Set 每次获取资源最长使用时间
-     *
-     * @param float|null $maxUsedTime 为 null 则不限制
-     *
-     * @return static
-     */ 
-    public function setMaxUsedTime($maxUsedTime)
-    {
-        $this->maxUsedTime = $maxUsedTime;
-
-        return $this;
-    }
-
 }

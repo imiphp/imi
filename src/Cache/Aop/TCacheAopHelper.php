@@ -31,23 +31,15 @@ trait TCacheAopHelper
         }
         else
         {
-            return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args, $cacheable){
-                $argName = $matches[1];
-                if(':args' === $argName)
+            return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args){
+                $value = ObjectArrayHelper::get($args, $matches[1]);
+                if(is_scalar($value))
                 {
-                    return ($cacheable->hashMethod)(serialize($args));
+                    return $value;
                 }
                 else
                 {
-                    $value = ObjectArrayHelper::get($args, $argName);
-                    if(is_scalar($value))
-                    {
-                        return $value;
-                    }
-                    else
-                    {
-                        return ($cacheable->hashMethod)(serialize($value));
-                    }
+                    return md5(serialize($value));
                 }
             }, $cacheable->key);
         }

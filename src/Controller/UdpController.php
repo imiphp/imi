@@ -8,7 +8,7 @@ abstract class UdpController
 {
     /**
      * 请求
-     * @var \Imi\Server\UdpServer\Server
+     * @var \Imi\Server\Udp\Server
      */
     public $server;
 

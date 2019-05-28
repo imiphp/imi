@@ -26,7 +26,7 @@ trait SqlParser
         }, $sql);
 
         // 匹配 :xxx 参数
-        $i = 0;
+        $i = 1;
         $sql = preg_replace_callback('/(\?|:\w+)/', function($matches) use(&$params, &$i){
             if('?' === $matches[1])
             {

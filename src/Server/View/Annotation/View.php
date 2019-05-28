@@ -36,7 +36,7 @@ class View extends Base
      * 渲染类型
      * @var string
      */
-    public $renderType = 'json';
+    public $renderType = 'html';
 
     /**
      * 附加数据

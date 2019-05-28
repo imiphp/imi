@@ -6,7 +6,6 @@ use Imi\Bean\Parser\BaseParser;
 use Imi\Tool\Annotation\Operation;
 use Imi\App;
 use Imi\Tool\Annotation\Arg;
-use Imi\Event\Event;
 
 class ToolParser extends BaseParser
 {
@@ -23,7 +22,6 @@ class ToolParser extends BaseParser
         if($annotation instanceof Tool)
         {
             $this->data['class'][$className]['Tool'] = $annotation;
-            Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className);
         }
         else if($annotation instanceof Operation)
         {
@@ -32,18 +30,7 @@ class ToolParser extends BaseParser
                 throw new \RuntimeException(sprintf('Tool %s/%s is already exists!', isset($this->data['class'][$className]['Tool']) ? $this->data['class'][$className]['Tool']->name : $className, $annotation->name));
             }
             $this->data['class'][$className]['Methods'][$targetName]['Operation'] = $annotation;
-            if(isset($this->data['class'][$className]['Tool']))
-            {
-                $this->data['tool'][$this->data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
-            }
-            else
-            {
-                $operation = $annotation;
-                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, function() use($className, $operation, $targetName){
-                    $this->data['tool'][$this->data['class'][$className]['Tool']->name][$operation->name] = [$className, $targetName];
-                });
-            }
-            
+            $this->data['tool'][$this->data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
         }
         else if($annotation instanceof Arg)
         {

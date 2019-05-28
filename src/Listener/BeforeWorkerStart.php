@@ -41,7 +41,7 @@ class BeforeWorkerStart implements IWorkerStartEventListener
 
         if($e->server->getSwooleServer()->taskworker)
         {
-            Imi::setProcessName('taskWorker');
+            cli_set_process_title(Imi::getProcessName('taskWorker'));
         }
         else
         {
@@ -50,7 +50,7 @@ class BeforeWorkerStart implements IWorkerStartEventListener
             {
                 \Swoole\Runtime::enableCoroutine(true);
             }
-            Imi::setProcessName('worker');
+            cli_set_process_title(Imi::getProcessName('worker'));
         }
 
         $GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];

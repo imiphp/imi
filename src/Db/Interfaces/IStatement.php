@@ -7,13 +7,6 @@ use Imi\Db\Interfaces\IDb;
 interface IStatement extends \Iterator
 {
     /**
-     * 关闭
-     *
-     * @return void
-     */
-    public function close();
-
-    /**
      * 绑定一列到一个 PHP 变量
      * @param mixed $column
      * @param mixed $param

@@ -4,6 +4,7 @@ namespace Imi\Server\WebSocket\Listener;
 use Imi\App;
 use Imi\ServerManage;
 use Imi\RequestContext;
+use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\MessageEventParam;
 use Imi\Server\Event\Listener\IMessageEventListener;
@@ -21,6 +22,8 @@ class AfterMessage implements IMessageEventListener
      */
     public function handle(MessageEventParam $e)
     {
+        // 释放请求的进程池资源
+        PoolManager::destroyCurrentContext();
         // 销毁请求上下文
         RequestContext::destroy();
     }

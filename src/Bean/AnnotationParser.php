@@ -440,10 +440,6 @@ class AnnotationParser
             {
                 unset($this->fileMap[$file]);
             }
-            if(!is_file($file))
-            {
-                continue;
-            }
             $content = file_get_contents($file);
             if(preg_match('/namespace ([^;]+);/', $content, $matches) <= 0)
             {

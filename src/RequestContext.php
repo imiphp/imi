@@ -4,7 +4,6 @@ namespace Imi;
 use Imi\Util\Coroutine;
 use Imi\Server\Base;
 use Imi\Bean\Container;
-use Imi\Event\Event;
 
 abstract class RequestContext
 {
@@ -20,7 +19,6 @@ abstract class RequestContext
         if(!isset(static::$context[$coID]))
         {
             static::$context[$coID] = [];
-            Event::trigger('IMI.REQUEST_CONTENT.CREATE');
         }
         else
         {
@@ -37,7 +35,6 @@ abstract class RequestContext
         $coID = Coroutine::getuid();
         if(isset(static::$context[$coID]))
         {
-            Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
             unset(static::$context[$coID]);
         }
         else

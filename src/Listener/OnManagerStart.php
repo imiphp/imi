@@ -28,7 +28,7 @@ class OnManagerStart implements IManagerStartEventListener
      */
     public function handle(ManagerStartEventParam $e)
     {
-        Imi::setProcessName('manager');
+        cli_set_process_title(Imi::getProcessName('manager'));
 
         // 随机数播种
         mt_srand();

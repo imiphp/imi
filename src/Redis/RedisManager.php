@@ -65,6 +65,6 @@ abstract class RedisManager
      */
     public static function getDefaultPoolName()
     {
-        return Config::get('@currentServer.redis.defaultPool');
+        return Config::get('@currentServer.redis.defaultPool');;
     }
 }

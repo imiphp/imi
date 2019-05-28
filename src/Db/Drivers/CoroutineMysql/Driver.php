@@ -337,6 +337,7 @@ class Driver extends Base implements IDb
             yield true;
             yield;
             $stmt = $stmtCache['statement'];
+            $params = $stmtCache['params'];
         }
         else
         {
@@ -350,22 +351,13 @@ class Driver extends Base implements IDb
             {
                 throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
-            if($isCache)
-            {
-                $stmtCache = StatementManager::get($this, $sql);
-                if($stmtCache)
-                {
-                    StatementManager::unUsingStatement($stmtCache['statement']);
-                }
-                else
-                {
-                    StatementManager::set($stmt, true);
-                }
-            }
         }
-
-        return $stmt;
+        $result = BeanFactory::newInstance(Statement::class, $this, $stmt, $sql, $params);
+        if($isCache && !StatementManager::get($this, $sql))
+        {
+            StatementManager::set($result, $params);
+        }
+        return $result;
     }
 
     /**

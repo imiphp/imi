@@ -40,7 +40,6 @@ class DbResource extends BasePoolResource
      */
     public function close()
     {
-        StatementManager::clear($this->db);
         $this->db->close();
     }
 

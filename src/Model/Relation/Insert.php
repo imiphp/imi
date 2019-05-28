@@ -35,7 +35,7 @@ abstract class Insert
         }
         $className = BeanFactory::getObjectClass($model);
         $autoInsert = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoInsert::class)[0] ?? null;
-        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
+        $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;;
 
         if($autoInsert)
         {

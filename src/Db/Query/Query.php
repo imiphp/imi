@@ -508,7 +508,7 @@ class Query implements IQuery
      */
     public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
     {
-        return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'left');
+        return $this->join($table, $left, $operation, $right, $tableAlias, $where);
     }
 
     /**

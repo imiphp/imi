@@ -2,11 +2,11 @@
 namespace Imi\Pool;
 
 use Imi\App;
-use Imi\Worker;
-use Imi\Util\ArrayUtil;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Event\Event;
+use Imi\Util\ArrayUtil;
 
 abstract class BasePool implements IPool
 {
@@ -46,13 +46,6 @@ abstract class BasePool implements IPool
      * @var integer
      */
     protected $configIndex = -1;
-
-    /**
-     * 正在添加中的资源数量
-     *
-     * @var integer
-     */
-    protected $addingResources = 0;
 
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
@@ -148,14 +141,9 @@ abstract class BasePool implements IPool
     public function gc()
     {
         $hasGC = false;
-        $maxActiveTime = $this->config->getMaxActiveTime();
-        $maxUsedTime = $this->config->getMaxUsedTime();
         foreach($this->pool as $key => $item)
         {
-            if(
-                (null !== $maxActiveTime && $item->isFree() && time() - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
-                || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && time() - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
-                )
+            if($item->isFree() && time() - $item->getCreateTime() >= $this->config->getMaxActiveTime())
             {
                 $item->getResource()->close();
                 unset($this->pool[$key]);
@@ -175,7 +163,8 @@ abstract class BasePool implements IPool
      */
     public function fillMinResources()
     {
-        while($this->config->getMinResources() - $this->getCount() > 0)
+        $count = $this->config->getMinResources() - count($this->pool);
+        for($i = 0; $i < $count; ++$i)
         {
             $this->addResource();
         }
@@ -187,20 +176,15 @@ abstract class BasePool implements IPool
      */
     protected function addResource()
     {
-        try {
-            ++$this->addingResources;
-            $resource = $this->createResource();
-            $resource->open();
+        $resource = $this->createResource();
+        $resource->open();
+        
+        $hash = $resource->hashCode();
+        $this->pool[$hash] = new PoolItem($resource);
 
-            $hash = $resource->hashCode();
-            $this->pool[$hash] = new PoolItem($resource);
+        $this->push($resource);
 
-            $this->push($resource);
-
-            return $resource;
-        } finally {
-            --$this->addingResources;
-        }
+        return $resource;
     }
 
     /**
@@ -234,9 +218,13 @@ abstract class BasePool implements IPool
      */
     public function startAutoGC()
     {
-        if(null !== Worker::getWorkerID())
+        if(App::isInited())
         {
             $this->__startAutoGC();
+        }
+        else
+        {
+            Event::on('IMI.INITED', [$this, '__startAutoGC']);
         }
     }
 
@@ -246,11 +234,7 @@ abstract class BasePool implements IPool
      */
     private function __startAutoGC()
     {
-        $gcInterval = $this->config->getGCInterval();
-        if(null !== $gcInterval)
-        {
-            $this->timerID = \swoole_timer_tick($gcInterval * 1000, [$this, 'gc']);
-        }
+        $this->timerID = \swoole_timer_tick($this->config->getGCInterval() * 1000, [$this, 'gc']);
     }
 
     /**
@@ -280,7 +264,7 @@ abstract class BasePool implements IPool
      */
     public function getCount()
     {
-        return count($this->pool) + $this->addingResources;
+        return count($this->pool);
     }
 
     /**

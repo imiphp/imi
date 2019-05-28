@@ -30,24 +30,10 @@ class PoolItem
      */
     protected $createTime = 0;
 
-    /**
-     * 最后一次使用的时间戳
-     *
-     * @var integer
-     */
-    protected $lastUseTime = 0;
-
-    /**
-     * 最后一次被释放的时间戳
-     *
-     * @var integer
-     */
-    protected $lastReleaseTime = 0;
-
     public function __construct(\Imi\Pool\Interfaces\IPoolResource $resource)
     {
         $this->resource = $resource;
-        $this->createTime = microtime(true);
+        $this->createTime = time();
     }
 
     /**
@@ -85,7 +71,6 @@ class PoolItem
     {
         ++$this->usageCount;
         $this->isFree = false;
-        $this->lastUseTime = microtime(true);
     }
 
     /**
@@ -95,7 +80,6 @@ class PoolItem
     public function release()
     {
         $this->isFree = true;
-        $this->lastReleaseTime = microtime(true);
     }
 
     /**
@@ -107,25 +91,4 @@ class PoolItem
     {
         return $this->createTime;
     }
-
-    /**
-     * Get 最后一次使用的时间戳
-     *
-     * @return  integer
-     */ 
-    public function getLastUseTime()
-    {
-        return $this->lastUseTime;
-    }
-
-    /**
-     * Get 最后一次被释放的时间戳
-     *
-     * @return  integer
-     */ 
-    public function getLastReleaseTime()
-    {
-        return $this->lastReleaseTime;
-    }
-
 }

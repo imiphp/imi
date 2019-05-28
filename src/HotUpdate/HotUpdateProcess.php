@@ -52,11 +52,11 @@ class HotUpdateProcess extends BaseProcess
     protected $status = true;
 
     /**
-     * 热更新检测，更改的文件列表，储存在的文件名
+     * 构建运行时临时文件
      *
      * @var string
      */
-    protected $changedFilesFile;
+    protected $buildRunTimeTmpFile;
 
     public function run(\Swoole\Process $process)
     {
@@ -64,15 +64,14 @@ class HotUpdateProcess extends BaseProcess
         {
             return;
         }
-        $this->changedFilesFile = Imi::getRuntimePath('changedFilesFile');
-        file_put_contents($this->changedFilesFile, '');
+        $this->buildRunTimeTmpFile = tempnam(sys_get_temp_dir(), 'imi-build-runtime-');
+        file_put_contents($this->buildRunTimeTmpFile, '');
         if(null === $this->defaultPath)
         {
             $this->defaultPath = [
                 Imi::getNamespacePath(App::getNamespace()),
             ];
         }
-        $this->excludePaths[] = Imi::getRuntimePath();
         go(function(){
             echo 'Process [hotUpdate] start', PHP_EOL;
             $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
@@ -87,12 +86,12 @@ class HotUpdateProcess extends BaseProcess
                 // 检查文件是否有修改
                 if($monitor->isChanged())
                 {
-                    file_put_contents($this->changedFilesFile, implode("\n", $monitor->getChangedFiles()));
+                    file_put_contents($this->buildRunTimeTmpFile, implode("\n", $monitor->getChangedFiles()));
                     echo 'Building runtime...', PHP_EOL;
                     $beginTime = microtime(true);
                     $result = exec(Imi::getImiCmd('imi', 'buildRuntime', [
                         'format'            =>  'json',
-                        'changedFilesFile'  =>  $this->changedFilesFile,
+                        'changedFilesFile'  =>  $this->buildRunTimeTmpFile,
                     ]));
                     $result = json_decode($result);
                     if('Build app runtime complete' !== trim($result))

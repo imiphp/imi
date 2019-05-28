@@ -7,6 +7,7 @@ use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\App;
 use Imi\ServerManage;
+use Imi\Pool\PoolManager;
 use Imi\Db\Pool\DbResource;
 use Imi\Db\Statement\StatementManager;
 
@@ -31,6 +32,8 @@ class AfterRequest implements IRequestEventListener
                 StatementManager::unUsingAll($resource->getInstance());
             }
         }
+        // 释放请求的进程池资源
+        PoolManager::destroyCurrentContext();
         // 销毁请求上下文
         RequestContext::destroy();
     }

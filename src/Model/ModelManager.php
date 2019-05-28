@@ -181,7 +181,7 @@ abstract class ModelManager
         $class = BeanFactory::getObjectClass($object);
         if(!isset(static::$isCamelCache[$class]))
         {
-            static::$isCamelCache[$class] = static::getAnnotation($object, Entity::class)->camel ?? true;
+            static::$isCamelCache[$class] = static::getAnnotation($object, Entity::class)->camel;
         }
         return static::$isCamelCache[$class];
     }

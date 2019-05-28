@@ -1,13 +1,12 @@
 <?php
 namespace Imi\Util\Http;
 
-use Imi\Config;
 use Imi\Util\Uri;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
-use Imi\Util\Http\Consts\RequestMethod;
 use Imi\Server\Http\Message\UploadedFile;
 use Psr\Http\Message\ServerRequestInterface;
+use Imi\Config;
 
 class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInterface
 {

@@ -81,9 +81,9 @@ abstract class Base
         {
             $this->createServer();
         }
-        if(!empty($this->config['configs']))
+        if(!empty($config['configs']))
         {
-            ($this->swoolePort ?? $this->swooleServer)->set($this->config['configs']);
+            ($this->swoolePort ?? $this->swooleServer)->set($config['configs']);
         }
         $this->bindEvents();
     }

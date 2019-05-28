@@ -245,12 +245,12 @@ class Validator implements IValidator
         {
             $message = str_replace('{:value}', ObjectArrayHelper::get($data, $annotation->name), $message);
         }
-        $message = preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($annotation){
+        $message = preg_replace_callback('/\{([^\}]+)\}/', function($matches){
             $name = $matches[1];
             if(isset($name[0]) && ':' === $name[0])
             {
                 $name = substr($name, 1);
-                $list = explode('.', $name, 2);
+                $list = explode('.', $argName, 2);
                 if('data' === $list[0])
                 {
                     if(isset($list[1]))
