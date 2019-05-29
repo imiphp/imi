@@ -49,6 +49,20 @@ class Redis implements IHandler
      * @var int
      */
     protected $heartbeatTtl = 8;
+
+    /**
+     * 数据写入前编码回调
+     *
+     * @var callable
+     */
+    protected $dataEncode = null;
+
+    /**
+     * 数据读出后处理回调
+     *
+     * @var callable
+     */
+    protected $dataDecode = null;
     
     /**
      * 心跳Timer的ID
@@ -220,7 +234,21 @@ class Redis implements IHandler
     {
         return $this->useRedis(function($resource, $redis) use($key){
             $result = $redis->hget($this->getStoreKey(), $key);
-            return $result ? $result : [];
+            if($result)
+            {
+                if($this->dataDecode)
+                {
+                    return ($this->dataDecode)($result);
+                }
+                else
+                {
+                    return $result;
+                }
+            }
+            else
+            {
+                return [];
+            }
         });
     }
 
@@ -234,6 +262,10 @@ class Redis implements IHandler
     public function save(string $key, array $data)
     {
         $this->useRedis(function($resource, $redis) use($key, $data){
+            if($this->dataEncode)
+            {
+                $data = ($this->dataEncode)($data);
+            }
             $redis->hset($this->getStoreKey(), $key, $data);
         });
     }
