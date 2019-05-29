@@ -72,6 +72,7 @@ class RedisResource extends BasePoolResource
     public function reset()
     {
         $this->redis->select($this->config['db'] ?? 0);
+        $this->redis->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
     }
     
     /**
