@@ -7,6 +7,9 @@
 ```php
 <?php
 return [
+	'db'	=>	[
+		'defaultPool'	=>	'alias1', // 默认连接池
+	],
 	'pools' => [
         // 连接池名称
 		'alias1' => [
