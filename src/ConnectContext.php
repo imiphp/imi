@@ -58,12 +58,12 @@ abstract class ConnectContext
         if(isset(static::$context[$fd]))
         {
             unset(static::$context[$fd]);
-            static::unregisterChanageEvent($fd);
         }
         RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
         if(!$fdBeginNull)
         {
             static::triggerChangeEvent($fd);
+            static::unregisterChanageEvent($fd);
         }
     }
 
@@ -174,13 +174,13 @@ abstract class ConnectContext
         {
             return;
         }
-        static::$eventCallables[$fd] = function(PipeMessageEventParam $param) use($fd) {
+        static::$eventCallables[$fd] = imiCallable(function(PipeMessageEventParam $param) use($fd) {
             if($param->message instanceof ConnectContextChangeEventParam && $fd == $param->message->getFd())
             {
                 static::$context[$fd] = ServerManage::getServer($param->message->getServerName())->getBean('ConnectContextStore')->read($fd);
                 $param->stopPropagation();
             }
-        };
+        });
         $fdRelation = FdRelation::newInstance();
         $fdRelation->__setKey($fd);
         $fdRelation->setWorkerId(Worker::getWorkerID());
@@ -220,19 +220,11 @@ abstract class ConnectContext
         $fdRelation = FdRelation::find($fd);
         if(!$fdRelation)
         {
-            throw new \RuntimeException(sprintf('Can not find fd(%s) relation', $fd));
+            return;
         }
         $message = new ConnectContextChangeEventParam($fd, $fdRelation->getServerName());
         $server = ServerManage::getServer($fdRelation->getServerName());
-        if($workerId = Worker::getWorkerID() == $fdRelation->getWorkerId())
-        {
-            Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                'server'    => $server,
-                'workerID'  => $workerId,
-                'message'   => $message,
-            ], null, PipeMessageEventParam::class);
-        }
-        else
+        if(Worker::getWorkerID() != $fdRelation->getWorkerId())
         {
             RequestContext::getServer()->getSwooleServer()->sendMessage($message, $fdRelation->getWorkerId());
         }
