@@ -13,8 +13,9 @@ use Imi\ServerManage;
  */
 function imigo(callable $callable, ...$args)
 {
-    return go(function() use($callable, $args){
-        imiCallable($callable)(...$args);
+    $newCallable = imiCallable($callable);
+    return go(function() use($newCallable, $args){
+        $newCallable(...$args);
     });
 }
 
