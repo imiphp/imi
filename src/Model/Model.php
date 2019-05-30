@@ -32,9 +32,11 @@ abstract class Model extends BaseModel
     /**
      * 返回一个查询器
      * @param string|object $object
+     * @param string|null $poolName 连接池名，为null则取默认
+     * @param int|null $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      * @return \Imi\Db\Query\Interfaces\IQuery
      */
-    public static function query($object = null)
+    public static function query($object = null, $poolName = null, $queryType = null)
     {
         if($object)
         {
@@ -44,7 +46,7 @@ abstract class Model extends BaseModel
         {
             $class = static::__getRealClassName();
         }
-        return Db::query(ModelManager::getDbPoolName($class), $class)->table(ModelManager::getTable($class));
+        return BeanFactory::newInstance(ModelQuery::class, null, $class, $poolName, $queryType);
     }
 
     /**

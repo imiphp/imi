@@ -35,53 +35,53 @@ class Query implements IQuery
      * 操作记录
      * @var QueryOption
      */
-    private $option;
+    protected $option;
 
     /**
      * 数据绑定
      * @var array
      */
-    private $binds = [];
+    protected $binds = [];
 
     /**
      * 数据库操作对象
      * @var IDb
      */
-    private $db;
+    protected $db;
 
     /**
      * 连接池名称
      *
      * @var string
      */
-    private $poolName;
+    protected $poolName;
 
     /**
      * 查询结果类的类名，为null则为数组
      * @var string
      */
-    private $modelClass;
+    protected $modelClass;
 
     /**
      * 查询类型
      *
      * @var int
      */
-    private $queryType;
+    protected $queryType;
 
     /**
      * 是否初始化时候就设定了查询类型
      *
      * @var boolean
      */
-    private $isInitQueryType;
+    protected $isInitQueryType;
 
     /**
      * 是否初始化时候就设定了连接
      *
      * @var boolean
      */
-    private $isInitDb;
+    protected $isInitDb;
 
     public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
