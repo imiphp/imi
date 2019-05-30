@@ -1,43 +1,74 @@
 <?php
 namespace Imi;
 
+use Imi\ServerManage;
 use Imi\RequestContext;
+use Imi\Server\ConnectContext\Model\FdRelation;
+use Imi\Server\Event\Param\PipeMessageEventParam;
+use Imi\Server\ConnectContext\ConnectContextChangeEventParam;
+use Imi\Event\Event;
 
 abstract class ConnectContext
 {
+    /**
+     * 上下文数据
+     *
+     * @var array
+     */
     private static $context = [];
 
     /**
-     * 为当前请求创建上下文
+     * 事件回调们
+     *
+     * @var array
+     */
+    private static $eventCallables = [];
+
+    /**
+     * 为当前连接创建上下文
      * @return void
      */
     public static function create()
     {
-        $key = static::getContextKey();
-        if(!isset(static::$context[$key]))
+        $fd = RequestContext::get('fd');
+        if(!isset(static::$context[$fd]))
         {
-            static::$context[$key] = RequestContext::getServerBean('ConnectContextStore')->read($key);
+            static::$context[$fd] = RequestContext::getServerBean('ConnectContextStore')->read($fd);
+            static::registerChangeEvent($fd);
         }
     }
 
     /**
-     * 销毁当前请求的上下文
+     * 销毁当前连接的上下文
      * 
      * @param int|null $fd
      * @return void
      */
     public static function destroy($fd = null)
     {
-        $key = static::getContextKey($fd);
-        if(isset(static::$context[$key]))
+        if($fd)
         {
-            unset(static::$context[$key]);
+            $fdBeginNull = false;
         }
-        RequestContext::getServerBean('ConnectContextStore')->destroy($key);
+        else
+        {
+            $fd = RequestContext::get('fd');
+            $fdBeginNull = true;
+        }
+        if(isset(static::$context[$fd]))
+        {
+            unset(static::$context[$fd]);
+            static::unregisterChanageEvent($fd);
+        }
+        RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
+        if(!$fdBeginNull)
+        {
+            static::triggerChangeEvent($fd);
+        }
     }
 
     /**
-     * 判断当前请求上下文是否存在
+     * 判断当前连接上下文是否存在
      * @deprecated 1.0
      * @return boolean
      */
@@ -47,15 +78,19 @@ abstract class ConnectContext
     }
 
     /**
-     * 判断当前请求上下文是否存在
+     * 判断当前连接上下文是否存在
+     * @param int|null $fd
      * @return boolean
      */
-    public static function exists()
+    public static function exists($fd = null)
     {
         if(RequestContext::exists())
         {
-            $key = static::getContextKey();
-            return isset(static::$context[$key]) || RequestContext::getServerBean('ConnectContextStore')->exists($key);
+            if(!$fd)
+            {
+                $fd = RequestContext::get('fd');
+            }
+            return isset(static::$context[$fd]) || RequestContext::getServerBean('ConnectContextStore')->exists($fd);
         }
         else
         {
@@ -67,54 +102,140 @@ abstract class ConnectContext
      * 获取上下文数据
      * @param string $name
      * @param mixed $default
+     * @param int|null $fd
      * @return mixed
      */
-    public static function get($name, $default = null)
+    public static function get($name, $default = null, $fd = null)
     {
-        $key = static::getContextKey();
-        if(!isset(static::$context[$key]))
+        if($fd)
         {
-            static::$context[$key] = RequestContext::getServerBean('ConnectContextStore')->read($key);
+            return RequestContext::getServerBean('ConnectContextStore')->read($fd)[$name] ?? $default;
         }
-        return static::$context[$key][$name] ?? $default;
+        else
+        {
+            $fd = RequestContext::get('fd');
+            if(!isset(static::$context[$fd]))
+            {
+                static::$context[$fd] = RequestContext::getServerBean('ConnectContextStore')->read($fd);
+            }
+            return static::$context[$fd][$name] ?? $default;
+        }
     }
 
     /**
      * 设置上下文数据
      * @param string $name
      * @param mixed $value
+     * @param int|null $fd
      * @return void
      */
-    public static function set($name, $value)
+    public static function set($name, $value, $fd = null)
     {
-        $key = static::getContextKey();
         $store = RequestContext::getServerBean('ConnectContextStore');
-        if(!isset(static::$context[$key]))
+        
+        if($fd)
         {
-            static::$context[$key] = $store->read($key);
+            $data = $store->read($fd);
+            $data[$name] = $value;
+            $store->save($fd, $data);
+            static::triggerChangeEvent($fd);
         }
-        static::$context[$key][$name] = $value;
-        $store->save($key, static::$context[$key]);
+        else
+        {
+            $fd = RequestContext::get('fd');
+            if(!isset(static::$context[$fd]))
+            {
+                static::$context[$fd] = $store->read($fd);
+            }
+            static::$context[$fd][$name] = $value;
+            $store->save($fd, static::$context[$fd]);
+        }
     }
 
     /**
      * 获取当前上下文
+     * @param int|null $fd
      * @return array
      */
-    public static function getContext()
+    public static function getContext($fd = null)
     {
-        $key = static::getContextKey();
-        return static::$context[$key] ?? null;
+        return static::$context[$fd] ?? null;
     }
 
     /**
-     * 获取上下文的key
+     * 注册改变事件
      *
-     * @param int|null $fd
-     * @return string
+     * @param int $fd
+     * @return void
      */
-    private static function getContextKey($fd = null)
+    private static function registerChangeEvent($fd)
     {
-        return RequestContext::getServer()->getName() . '-' . ($fd ?? RequestContext::get('fd'));
+        if(isset(static::$eventCallables[$fd]))
+        {
+            return;
+        }
+        static::$eventCallables[$fd] = function(PipeMessageEventParam $param) use($fd) {
+            if($param->message instanceof ConnectContextChangeEventParam && $fd == $param->message->getFd())
+            {
+                static::$context[$fd] = ServerManage::getServer($param->message->getServerName())->getBean('ConnectContextStore')->read($fd);
+                $param->stopPropagation();
+            }
+        };
+        $fdRelation = FdRelation::newInstance();
+        $fdRelation->__setKey($fd);
+        $fdRelation->setWorkerId(Worker::getWorkerID());
+        $fdRelation->setServerName(RequestContext::getServer()->getName());
+        $fdRelation->save();
+        Event::on('IMI.MAIN_SERVER.PIPE_MESSAGE', static::$eventCallables[$fd]);
     }
+
+    /**
+     * 卸载改变事件
+     *
+     * @param int $fd
+     * @return void
+     */
+    private static function unregisterChanageEvent($fd)
+    {
+        if(isset(static::$eventCallables[$fd]))
+        {
+            $fdRelation = FdRelation::find($fd);
+            if($fdRelation)
+            {
+                $fdRelation->delete();
+            }
+            Event::off('IMI.MAIN_SERVER.PIPE_MESSAGE', static::$eventCallables[$fd]);
+            unset(static::$eventCallables[$fd]);
+        }
+    }
+
+    /**
+     * 触发更改事件
+     *
+     * @param int $fd
+     * @return void
+     */
+    private static function triggerChangeEvent($fd)
+    {
+        $fdRelation = FdRelation::find($fd);
+        if(!$fdRelation)
+        {
+            throw new \RuntimeException(sprintf('Can not find fd(%s) relation', $fd));
+        }
+        $message = new ConnectContextChangeEventParam($fd, $fdRelation->getServerName());
+        $server = ServerManage::getServer($fdRelation->getServerName());
+        if($workerId = Worker::getWorkerID() == $fdRelation->getWorkerId())
+        {
+            Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
+                'server'    => $server,
+                'workerID'  => $workerId,
+                'message'   => $message,
+            ], null, PipeMessageEventParam::class);
+        }
+        else
+        {
+            RequestContext::getServer()->getSwooleServer()->sendMessage($message, $fdRelation->getWorkerId());
+        }
+    }
+
 }
