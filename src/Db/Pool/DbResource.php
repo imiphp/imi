@@ -27,7 +27,7 @@ class DbResource extends BasePoolResource
      * 打开
      * @return boolean
      */
-    public function open($callback = null)
+    public function open()
     {
         StatementManager::clear($this->db);
         $this->db->open();

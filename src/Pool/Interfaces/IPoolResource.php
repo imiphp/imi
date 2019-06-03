@@ -10,14 +10,12 @@ interface IPoolResource extends IHashCode
 {
     /**
      * 打开
-     * @param callable $callback
      * @return boolean
      */
-    public function open($callback = null);
+    public function open();
 
     /**
      * 关闭
-     * @param callable $callback
      * @return void
      */
     public function close();
