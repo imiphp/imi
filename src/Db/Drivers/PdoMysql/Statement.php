@@ -47,14 +47,6 @@ class Statement extends BaseStatement implements IStatement
         $this->lastInsertId = (int)$this->db->lastInsertId();
     }
 
-    public function __destruct()
-    {
-        if($this->db && $this->statement)
-        {
-            StatementManager::unUsing($this->db, $this->statement->queryString);
-        }
-    }
-
     /**
      * 获取数据库操作对象
      * @return IDb
@@ -157,6 +149,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function execute(array $inputParameters = null): bool
     {
+        $this->statement->closeCursor();
         if(null !== $inputParameters)
         {
             foreach($inputParameters as $k => $v)

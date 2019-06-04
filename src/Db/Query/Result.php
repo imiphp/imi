@@ -8,6 +8,7 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Model\Event\Param\AfterQueryEventParam;
+use Imi\Db\Statement\StatementManager;
 
 class Result implements IResult
 {
@@ -51,9 +52,7 @@ class Result implements IResult
 
     public function __destruct()
     {
-        // 手动 gc statement
-        $this->statement = null;
-        gc_collect_cycles();
+        StatementManager::unUsingStatement($this->statement);
     }
 
     /**
