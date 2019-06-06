@@ -47,7 +47,6 @@ abstract class RedisManager
      * 处理连接池 名称
      *
      * @param string $poolName
-     * @param int $queryType
      * @return string
      */
     public static function parsePoolName($poolName = null)
