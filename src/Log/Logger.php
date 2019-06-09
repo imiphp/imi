@@ -97,7 +97,7 @@ class Logger extends AbstractLogger
     {
         if(null !== $this->timerID)
         {
-            swoole_timer_clear($this->timerID);
+            \Swoole\Timer::clear($this->timerID);
             $this->timerID = null;
         }
     }

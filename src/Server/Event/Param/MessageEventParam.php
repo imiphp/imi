@@ -13,7 +13,7 @@ class MessageEventParam extends EventParam
 
     /**
      * swoole 数据帧对象
-     * @var \swoole_websocket_frame
+     * @var \Swoole\WebSocket\Frame
      */
     public $frame;
 }

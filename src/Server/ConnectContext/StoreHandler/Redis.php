@@ -151,7 +151,7 @@ class Redis implements IHandler
         if($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerID = \swoole_timer_tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
+            $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
         }
     }
 
@@ -220,7 +220,7 @@ class Redis implements IHandler
     {
         if(null !== $this->timerID)
         {
-            \swoole_timer_clear($this->timerID);
+            \Swoole\Timer::clear($this->timerID);
         }
     }
 

@@ -24,7 +24,7 @@ class Server extends Base
     protected function createServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \swoole_websocket_server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \Swoole\WebSocket\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
     }
 
     /**
@@ -60,7 +60,7 @@ class Server extends Base
     {
         $server = $this->swoolePort ?? $this->swooleServer;
 
-        $server->on('handShake', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
+        $server->on('handShake', function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
             try{
                 $request = new Request($this, $swooleRequest);
                 $response = new Response($this, $swooleResponse);
@@ -75,7 +75,7 @@ class Server extends Base
             }
         });
 
-        $server->on('message', function (\swoole_websocket_server $server, \swoole_websocket_frame $frame) {
+        $server->on('message', function (\Swoole\WebSocket\Server $server, \Swoole\WebSocket\Frame $frame) {
             try{
                 $this->trigger('message', [
                     'server'    => $this,
@@ -88,7 +88,7 @@ class Server extends Base
             }
         });
 
-        $server->on('close', function(\swoole_http_server $server, $fd, $reactorID){
+        $server->on('close', function(\Swoole\Http\Server $server, $fd, $reactorID){
             try{
                 $this->trigger('close', [
                     'server'    => $this,

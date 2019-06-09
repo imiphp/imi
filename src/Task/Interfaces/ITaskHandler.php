@@ -17,7 +17,7 @@ interface ITaskHandler
 
     /**
      * 任务结束时触发
-     * @param \swoole_server $server
+     * @param \Swoole\Server $server
      * @param int $taskId
      * @param mixed $data
      * @return void

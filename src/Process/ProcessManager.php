@@ -74,7 +74,7 @@ abstract class ProcessManager
             // 执行任务
             $processInstance = BeanFactory::newInstance($processOption['className'], $args);
             $processInstance->run($swooleProcess);
-            swoole_event_wait();
+            \Swoole\Event::wait();
             if($processOption['Process']->unique)
             {
                 static::unlockProcess($name);
