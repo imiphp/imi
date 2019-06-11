@@ -63,8 +63,8 @@ class Redis extends Base
      */
     public function write($sessionID, $sessionData)
     {
-        PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID, $sessionData, $maxLifeTime){
-            $redis->set($this->getKey($sessionID), $sessionData, $maxLifeTime);
+        PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID, $sessionData){
+            $redis->set($this->getKey($sessionID), $sessionData, $this->getMaxLifeTime());
         });
     }
 
