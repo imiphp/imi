@@ -59,10 +59,9 @@ class Redis extends Base
      * 写入session
      * @param string $sessionID
      * @param string $sessionData
-     * @param string $maxLifeTime
      * @return void
      */
-    public function write($sessionID, $sessionData, $maxLifeTime)
+    public function write($sessionID, $sessionData)
     {
         PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID, $sessionData, $maxLifeTime){
             $redis->set($this->getKey($sessionID), $sessionData, $maxLifeTime);
@@ -77,5 +76,13 @@ class Redis extends Base
     public function getKey($sessionID)
     {
         return $this->keyPrefix . $sessionID;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxLifeTime(): int
+    {
+        return $this->maxLifeTime;
     }
 }

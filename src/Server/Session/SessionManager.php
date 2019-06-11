@@ -83,6 +83,7 @@ class SessionManager
             throw new \RuntimeException('Session can not repeated start');
         }
         $this->handler = RequestContext::getServerBean($this->handlerClass);
+        $this->handler->setMaxLifeTime($this->config->maxLifeTime);
         $this->isNewSession = null === $sessionID;
         if($this->isNewSession)
         {
@@ -123,7 +124,7 @@ class SessionManager
      */
     public function save()
     {
-        $this->handler->write($this->id, $this->handler->encode($this->data), $this->config->maxLifeTime);
+        $this->handler->write($this->id, $this->handler->encode($this->data));
     }
 
     /**

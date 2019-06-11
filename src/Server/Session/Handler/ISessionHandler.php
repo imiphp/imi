@@ -4,7 +4,7 @@ namespace Imi\Server\Session\Handler;
 /**
  * Session处理器接口
  */
-interface ISessionHandler
+interface ISessionHandler extends \SessionHandlerInterface
 {
     /**
      * 销毁session数据
@@ -31,10 +31,9 @@ interface ISessionHandler
      * 写入session
      * @param string $sessionID
      * @param string $sessionData
-     * @param string $maxLifeTime
      * @return void
      */
-    public function write($sessionID, $sessionData, $maxLifeTime);
+    public function write($sessionID, $sessionData);
 
     /**
      * 生成SessionID
@@ -55,4 +54,18 @@ interface ISessionHandler
      * @return array
      */
     public function decode($data): array;
+
+    /**
+     * 设置gc时间
+     * @param $maxLifeTime
+     *
+     * @return bool
+     */
+    public function setMaxLifeTime($maxLifeTime):bool;
+
+    /**
+     * 获取gc时间
+     * @return int
+     */
+    public function getMaxLifeTime():int;
 }

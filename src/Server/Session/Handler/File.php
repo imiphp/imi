@@ -78,12 +78,11 @@ class File extends Base
      * 写入session
      * @param string $sessionID
      * @param string $sessionData
-     * @param string $maxLifeTime
      * @return void
      */
-    public function write($sessionID, $sessionData, $maxLifeTime)
+    public function write($sessionID, $sessionData)
     {
-        Coroutine::writeFile($this->getFileName($sessionID), $sessionData, LOCK_EX);
+        Coroutine::writeFile($this->getFileName($sessionID), $sessionData, $this->getMaxLifeTime());
     }
 
     /**
@@ -94,5 +93,13 @@ class File extends Base
     public function getFileName($sessionID)
     {
         return FileUtil::path($this->savePath, $sessionID . '.session');
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxLifeTime(): int
+    {
+        return $this->maxLifeTime === 0 ? LOCK_EX : $this->maxLifeTime;
     }
 }

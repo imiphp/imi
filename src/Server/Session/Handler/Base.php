@@ -14,6 +14,12 @@ abstract class Base implements ISessionHandler
     protected $formatHandlerClass = PhpSerialize::class;
 
     /**
+     * 超时时间,应从外部注入
+     * @var int
+     */
+    protected $maxLifeTime = 0;
+
+    /**
      * 生成SessionID
      * @return string
      */
@@ -48,5 +54,49 @@ abstract class Base implements ISessionHandler
             $result = [];
         }
         return $result;
+    }
+
+    /**
+     * Close the session
+     * @link  http://php.net/manual/en/sessionhandlerinterface.close.php
+     * @return bool <p>
+     * The return value (usually TRUE on success, FALSE on failure).
+     * Note this value is returned internally to PHP for processing.
+     * </p>
+     * @since 5.4.0
+     */
+    public function close()
+    {
+        return true;
+    }
+
+    /**
+     * Initialize session
+     * @link  http://php.net/manual/en/sessionhandlerinterface.open.php
+     *
+     * @param string $save_path The path where to store/retrieve the session.
+     * @param string $name      The session name.
+     *
+     * @return bool <p>
+     * The return value (usually TRUE on success, FALSE on failure).
+     * Note this value is returned internally to PHP for processing.
+     * </p>
+     * @since 5.4.0
+     */
+    public function open($save_path, $name)
+    {
+        return true;
+    }
+
+    /**
+     *
+     * @param $maxLifeTime
+     *
+     * @return bool
+     */
+    public function setMaxLifeTime($maxLifeTime):bool
+    {
+        $this->maxLifeTime = $maxLifeTime;
+        return true;
     }
 }
