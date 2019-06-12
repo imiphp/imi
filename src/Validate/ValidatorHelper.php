@@ -181,18 +181,7 @@ class ValidatorHelper
     {
         return preg_match('/^(((\d{3,4}-)?(\d{7,8}){1}(-\d{2,4})?)|((\d{3,4}-)?(\d{3,4}){1}(-\d{3,4})))$/', $str) > 0;
     }
-
-    /**
-     * 检测中国手机电话号码格式
-     * @access public static
-     * @param $str
-     * @return bool
-     */
-    public static function mobile($str)
-    {
-        return preg_match('/^(1(([35789][0-9])|(47)))\d{8}$/', $str) > 0;
-    }
-
+    
     /**
      * 检测是否符合中国固话或手机格式，支持400、800等
      * @param string $str            
@@ -297,9 +286,8 @@ class ValidatorHelper
     
     /**
      * 在两个数之间，不包含这2个数字
-     * @param float $value
-     * @param float $max
-     * @param float $min
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function between($value, $min, $max)
@@ -309,10 +297,8 @@ class ValidatorHelper
     
     /**
      * 在两个数之间，包含这2个数字
-     *
-     * @param float $value
-     * @param float $max
-     * @param float $min
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function betweenEqual($value, $min, $max)
@@ -322,8 +308,8 @@ class ValidatorHelper
 
     /**
      * 小于
-     * @param float $value
-     * @param float $num
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function lt($value, $num)
@@ -333,8 +319,8 @@ class ValidatorHelper
     
     /**
      * 小于等于
-     * @param float $value
-     * @param float $num
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function ltEqual($value, $num)
@@ -344,8 +330,8 @@ class ValidatorHelper
     
     /**
      * 大于
-     * @param float $value
-     * @param float $num
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function gt($value, $num)
@@ -355,8 +341,8 @@ class ValidatorHelper
     
     /**
      * 大于等于
-     * @param float $value
-     * @param float $num
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function gtEqual($value, $num)
@@ -366,8 +352,8 @@ class ValidatorHelper
     
     /**
      * 等于
-     * @param float $value
-     * @param float $num
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function equal($value, $num)
@@ -377,8 +363,8 @@ class ValidatorHelper
     
     /**
      * 不等于
-     * @param float $value
-     * @param float $num
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function unequal($value, $num)
@@ -392,52 +378,31 @@ class ValidatorHelper
      * @param string $valueLeft
      * @param string $operation
      * @param string $valueRight
-     * @return bool
+     * @return void
      */
     public static function compare($valueLeft, $operation, $valueRight)
     {
-        //eval is not safe、abandoned
-        switch ($operation) {
-            case '==':
-                return $valueLeft == $valueRight;
-            case '!=':
-                return $valueLeft != $valueRight;
-            case '===':
-                return $valueLeft === $valueRight;
-            case '!==':
-                return $valueLeft !== $valueRight;
-            case '<':
-                return $valueLeft < $valueRight;
-            case '<=':
-                return $valueLeft <= $valueRight;
-            case '>':
-                return $valueLeft > $valueRight;
-            case '>=':
-                return $valueLeft >= $valueRight;
-            default:
-                throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation));
+        static $operations = [
+            '==',
+            '!=',
+            '===',
+            '!==',
+            '<',
+            '<=',
+            '>',
+            '>=',
+        ];
+        if(!in_array($operation, $operations))
+        {
+            throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation));
         }
-        //        static $operations = [
-        //            '==',
-        //            '!=',
-        //            '===',
-        //            '!==',
-        //            '<',
-        //            '<=',
-        //            '>',
-        //            '>=',
-        //        ];
-        //        if(!in_array($operation, $operations))
-        //        {
-        //            throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation));
-        //        }
-        //return eval('return $valueLeft ' . $operation . ' $valueRight;');
+        return eval('return $valueLeft ' . $operation . ' $valueRight;');
     }
     
     /**
      * 值在范围内
-     * @param float $value
-     * @param mixed $list array | string(1,2,3)
+     * @param numeric $value
+     * @param array $list
      * @return boolean
      */
     public static function in($value, $list)
@@ -451,8 +416,8 @@ class ValidatorHelper
     
     /**
      * 值不在范围内
-     * @param float $value
-     * @param mixed $list array | string(1,2,3)
+     * @param numeric $value            
+     * @param array $param            
      * @return boolean
      */
     public static function notIn($value, $list)
