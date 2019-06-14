@@ -31,7 +31,7 @@ class RedisResource extends BasePoolResource
      */
     public function open()
     {
-        $result = $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['timeout'] ?? 2147483647);
+        $result = $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['timeout'] ?? null);
         if(isset($this->config['password']))
         {
             $result = $result && $this->redis->auth($this->config['password']);
