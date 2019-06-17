@@ -146,6 +146,22 @@ class Uri implements UriInterface
     }
 
     /**
+     * 获取域名
+     * 格式：host[:port]
+     * @param \Psr\Http\Message\UriInterface $uri
+     * @return string
+     */
+    public static function getDomain(UriInterface $uri)
+    {
+        $result = $uri->host;
+        if(null !== $uri->port)
+        {
+            $result .= ':' . $uri->port;
+        }
+        return $result;
+    }
+
+    /**
      * Retrieve the scheme component of the URI.
      *
      * If no scheme is present, this method MUST return an empty string.
@@ -521,19 +537,5 @@ class Uri implements UriInterface
     {
         return static::makeUriString($this->host, $this->path, $this->query, $this->port, $this->scheme, $this->fragment, $this->userInfo);
     }
-    
-    /**
-     * 获取域名
-     * 格式：host[:port]
-     * @return string
-     */
-    public function getDomain()
-    {
-        $result = $this->host;
-        if(null !== $this->port)
-        {
-            $result .= ':' . $this->port;
-        }
-        return $result;
-    }
+
 }
