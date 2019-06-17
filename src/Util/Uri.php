@@ -140,7 +140,7 @@ class Uri implements UriInterface
         $port = $uri->getPort();
         if(!$port)
         {
-            $port = static::$schemePorts[$port] ?? null;
+            $port = static::$schemePorts[$uri->getScheme()] ?? null;
         }
         return $port;
     }
