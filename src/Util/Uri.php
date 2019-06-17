@@ -52,7 +52,7 @@ class Uri implements UriInterface
      * 协议标准端口
      * @var array
      */
-    public static $schemePorts = [
+    protected static $schemePorts = [
         'http'  => 80,
         'https' => 443,
         'ftp'   => 21,
@@ -127,6 +127,22 @@ class Uri implements UriInterface
     public static function makeUri($host, $path, $query = '', $port = 80, $scheme = 'http', $fragment = '', $userInfo = '')
     {
         return new static(static::makeUriString($host, $path, $query, $port, $scheme, $fragment, $userInfo));
+    }
+
+    /**
+     * 获取连接到服务器的端口
+     *
+     * @param \Psr\Http\Message\UriInterface $uri
+     * @return void
+     */
+    public static function getServerPort(UriInterface $uri)
+    {
+        $port = $uri->getPort();
+        if(!$port)
+        {
+            $port = static::$schemePorts[$port] ?? null;
+        }
+        return $port;
     }
 
     /**
@@ -233,10 +249,6 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
-        if(null === $this->port && isset(static::$schemePorts[$this->scheme]))
-        {
-            return static::$schemePorts[$this->scheme];
-        }
         return $this->port;
     }
 
