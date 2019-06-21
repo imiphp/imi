@@ -54,6 +54,8 @@ abstract class ProcessPoolManager
                 'processPoolName'   =>  $name,
                 'workerId'          =>  $workerId,
             ]);
+            // 强制开启进程协程化
+            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
             $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);

@@ -57,6 +57,8 @@ abstract class ProcessManager
             Imi::setProcessName('process', [
                 'processName'   =>  $name,
             ]);
+            // 强制开启进程协程化
+            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
             if($processOption['Process']->unique && !static::lockProcess($name))
