@@ -1,26 +1,22 @@
 <?php
 namespace Imi\Bean;
 
-use Imi\App;
 use Imi\Config;
+use Imi\Worker;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
 use Imi\RequestContext;
-use Imi\Util\Coroutine;
 use Imi\Aop\PointCutType;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Bean\Annotation\Bean;
 use Imi\Aop\Annotation\Aspect;
-use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Aop\Annotation\AfterThrowing;
-use Imi\Aop\Annotation\RequestInject;
+use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Worker;
 
 class BeanProxy
 {
@@ -306,7 +302,7 @@ class BeanProxy
      */
     public static function getInjects($className)
     {
-        $injects = AnnotationManager::getPropertiesAnnotations($className, Inject::class);
+        $injects = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
         $configs = static::getConfigInjects($className);
         foreach($configs as $key => $value)
         {
