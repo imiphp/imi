@@ -1,10 +1,16 @@
 language: php
 
 php:
-  - 7.1
+  - '7.1'
+  - '7.2'
+  - '7.3'
 
 install:
+  - php ./travis/install.php -nproc $(nproc) -version-name $(phpenv version-name)
+
+before_script:
+  - phpenv config-rm xdebug.ini
   - composer update
 
 script:
-  - php test/test.php
+  - composer test

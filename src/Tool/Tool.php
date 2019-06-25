@@ -132,7 +132,7 @@ abstract class Tool
      * 初始化
      * @return void
      */
-    private static function init()
+    public static function init()
     {
         // 跳过初始化的工具
         foreach(Config::get('@Imi.skipInitTools') as $tool)

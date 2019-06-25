@@ -3,3 +3,4 @@
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /res export-ignore
+/travis export-ignore
