@@ -7,7 +7,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
 /**
  * 回调注解，返回该回调的返回值
  * @Annotation
- * @Target("ANNOTATION")
+ * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class CallableValue extends BaseInjectValue

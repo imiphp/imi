@@ -6,7 +6,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
 /**
  * 回调注解
  * @Annotation
- * @Target("ANNOTATION")
+ * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class Callback extends BaseInjectValue
