@@ -18,7 +18,7 @@ class AfterAop
      * @After
      * @PointCut(
      *     allow={
-     *         "Imi\Test\Aop\Classes\TestAfterAopClass::test"
+     *         "Imi\Test\Aop\Classes\TestAfterClass::test"
      *     }
      * )
      *
