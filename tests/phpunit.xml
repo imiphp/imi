@@ -14,4 +14,8 @@
             <file>*.php</file>
         </testsuite>
     </testsuites>
+    <listeners>
+        <listener class="Imi\Test\PHPUintListener\ImiListener" file="tests/unit/PHPUintListener/ImiListener.php">
+        </listener>
+    </listeners>
 </phpunit>

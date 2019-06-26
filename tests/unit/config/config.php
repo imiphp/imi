@@ -4,6 +4,7 @@ return [
     ],
     // bean扫描目录
     'beanScan'    =>    [
+        'Imi\Test\Tests',
         'Imi\Test\Aop',
         'Imi\Test\Inject',
     ],
