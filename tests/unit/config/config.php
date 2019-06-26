@@ -8,6 +8,7 @@ return [
         'Imi\Test\Aop',
         'Imi\Test\Inject',
         'Imi\Test\Event',
+        'Imi\Test\Enum',
     ],
     'beans'    =>    [
     ],
