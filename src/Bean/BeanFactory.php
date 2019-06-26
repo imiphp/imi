@@ -84,7 +84,7 @@ abstract class BeanFactory
         $beanProxy = $ref->getProperty('beanProxy');
         $beanProxy->setAccessible(true);
         $beanProxy->getValue($object)
-                  ->injectProps();
+                  ->injectProps($object);
         if($ref->hasMethod('__init'))
         {
             $ref->getMethod('__init')->invoke($object, ...$args);
@@ -124,6 +124,7 @@ abstract class BeanFactory
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
         \$__result__ = \$this->beanProxy->call(
+            \$this,
             '__construct',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
@@ -161,7 +162,7 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
     public function __clone()
     {
         \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
-        \$this->beanProxy->injectProps();
+        \$this->beanProxy->injectProps(\$this);
         {$parentClone}
     }
 {$methodsTpl}
@@ -193,6 +194,7 @@ TPL;
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
         \$__result__ = \$this->beanProxy->call(
+            \$this,
             '{$method->name}',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
