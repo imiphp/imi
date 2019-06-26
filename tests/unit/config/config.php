@@ -13,4 +13,5 @@ return [
     'beans'    =>    [
     ],
     'imi'   =>  'very six',
+    'yurun' =>  '',
 ];

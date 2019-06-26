@@ -16,6 +16,7 @@ use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Tool\Annotation\Operation;
+use Imi\Event\Event;
 
 abstract class Tool
 {
@@ -23,18 +24,25 @@ abstract class Tool
 
     public static function initTool()
     {
-        if(!isset($_SERVER['argv'][1]))
+        $skip = false;
+        Event::trigger('IMI.INIT_TOOL', [
+            'skip'  =>  &$skip,
+        ]);
+        if(!$skip)
         {
-            throw new \RuntimeException(sprintf('Tool args error!'));
+            if(!isset($_SERVER['argv'][1]))
+            {
+                throw new \RuntimeException(sprintf('Tool args error!'));
+            }
+            if(false === strpos($_SERVER['argv'][1], '/'))
+            {
+                throw new \RuntimeException(sprintf('Tool name and operation not found!'));
+            }
+            // 工具名/操作名
+            list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+            static::init();
+            Imi::setProcessName('tool');
         }
-        if(false === strpos($_SERVER['argv'][1], '/'))
-        {
-            throw new \RuntimeException(sprintf('Tool name and operation not found!'));
-        }
-        // 工具名/操作名
-        list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
-        static::init();
-        Imi::setProcessName('tool');
     }
 
     public static function run()

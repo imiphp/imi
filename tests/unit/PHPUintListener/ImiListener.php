@@ -90,14 +90,18 @@ class ImiListener implements TestListener
     {
         if(!$this->isLoadedImi)
         {
-            Event::on('IMI.INITED', function(EventParam $param){
-                $param->stopPropagation();
+            Event::on('IMI.INIT_TOOL', function(EventParam $param){
+                $data = $param->getData();
+                $data['skip'] = true;
                 Tool::init();
                 $this->isLoadedImi = true;
-                echo 'imi inited!', PHP_EOL;
-            }, PHP_INT_MAX);
+            });
+            Event::on('IMI.INITED', function(EventParam $param){
+                $param->stopPropagation();
+            }, 1);
             echo 'init imi...', PHP_EOL;
             App::run('Imi\Test');
+            echo 'imi inited!', PHP_EOL;
         }
         if(method_exists($test, '__autoInject'))
         {
