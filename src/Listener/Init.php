@@ -11,7 +11,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=1023)
+ * @Listener(eventName="IMI.INITED",priority=19940300)
  */
 class Init implements IEventListener
 {

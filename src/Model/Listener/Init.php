@@ -16,7 +16,7 @@ use Imi\Model\Annotation\MemoryTable;
 use Imi\Bean\Annotation\AnnotationManager;
 
 /**
- * @Listener(eventName="IMI.INITED", priority=1)
+ * @Listener(eventName="IMI.INITED", priority=19940280)
  */
 class Init implements IEventListener
 {
