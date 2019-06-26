@@ -178,6 +178,7 @@ class FileMTime extends BaseMonitor
         else
         {
             $changed = true;
+            $mtime = 0;
         }
         $this->files[$fileName] = [
             'exists'    => $isFile,
