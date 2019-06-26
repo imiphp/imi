@@ -74,4 +74,47 @@ class EventTest extends BaseTest
         Assert::assertNull($return);
     }
 
+    public function testListener()
+    {
+        $return = null;
+        Event::trigger('IMITEST.EVENT.D', [
+            'name'  =>  'imi',
+            'return'=>  &$return,
+        ], $this);
+        Assert::assertEquals(19260817, $return);
+    }
+
+    public function testClassListener1()
+    {
+        $testClass = new \Imi\Test\Event\Classes\TestClass;
+        $result = $testClass->test1();
+        Assert::assertEquals(19260817, $result);
+    }
+
+    public function testClassListener2()
+    {
+        $testClass = new \Imi\Test\Event\Classes\TestClass;
+        $testClass->on('test2', function(EventParam $e) use($testClass){
+            Assert::assertEquals('test2', $e->getEventName());
+            Assert::assertEquals($testClass, $e->getTarget());
+            $data = $e->getData();
+            Assert::assertEquals('imi', $data['name']);
+            $data['return'] = 19260817;
+        });
+        $result = $testClass->test2();
+        Assert::assertEquals(19260817, $result);
+    }
+
+    public function testClassListenerOff()
+    {
+        $testClass = new \Imi\Test\Event\Classes\TestClass;
+        $callable = function(EventParam $e) {
+            Assert::assertTrue(false);
+        };
+        $testClass->on('test3', $callable);
+        $testClass->off('test3', $callable);
+        $result = $testClass->test3();
+        Assert::assertNull($result);
+    }
+
 }
