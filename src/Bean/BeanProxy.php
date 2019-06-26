@@ -116,15 +116,7 @@ class BeanProxy
     private function init()
     {
         $this->refClass = new \ReflectionClass($this->object);
-        $parentClass = $this->refClass->getParentClass();
-        if($parentClass)
-        {
-            $this->className = $parentClass->getName();
-        }
-        else
-        {
-            $this->className = $this->refClass->getName();
-        }
+        $this->className = BeanFactory::getObjectClass($this->object);
         // 每个类只需处理一次
         if(!isset(static::$aspects[$this->className]))
         {
