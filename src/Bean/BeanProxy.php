@@ -291,6 +291,7 @@ class BeanProxy
 
     /**
      * 正常请求
+     * @param object $object
      * @param string $method
      * @param array $args
      * @return mixed
@@ -307,6 +308,7 @@ class BeanProxy
 
     /**
      * 处理前置
+     * @param object $object
      * @param string $method
      * @param array $args
      * @return void
@@ -322,6 +324,7 @@ class BeanProxy
 
     /**
      * 处理后置
+     * @param object $object
      * @param string $method
      * @param array $args
      * @return void
@@ -337,6 +340,7 @@ class BeanProxy
 
     /**
      * 处理返回值
+     * @param object $object
      * @param string $method
      * @param array $args
      * @param mixed $returnValue
@@ -355,6 +359,7 @@ class BeanProxy
 
     /**
      * 处理环绕
+     * @param object $object
      * @param string $method
      * @param array $args
      * @param mixed $returnValue
@@ -399,6 +404,7 @@ class BeanProxy
 
     /**
      * 处理异常
+     * @param object $object
      * @param string $method
      * @param array $args
      * @param \Throwable $throwable

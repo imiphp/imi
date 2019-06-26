@@ -23,7 +23,7 @@ class FileMTime extends BaseMonitor
     /**
      * 更改的文件们
      *
-     * @var string
+     * @var array
      */
     private $changedFiles = [];
 
