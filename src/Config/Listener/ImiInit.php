@@ -7,8 +7,8 @@ use Imi\Bean\Annotation\Listener;
 use Imi\App;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=PHP_INT_MAX)
- * @Listener(eventName="IMI.INIT.WORKER.BEFORE",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @Listener(eventName="IMI.INIT.WORKER.BEFORE",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class ImiInit implements IEventListener
 {

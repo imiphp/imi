@@ -8,7 +8,7 @@ use Imi\Server\Event\Listener\IWorkerStopEventListener;
 use Imi\App;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.STOP",priority=PHP_INT_MIN)
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.STOP",priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class OnWorkerStop implements IWorkerStopEventListener
 {

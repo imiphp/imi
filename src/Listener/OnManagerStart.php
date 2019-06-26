@@ -17,7 +17,7 @@ use Imi\Server\Event\Param\ManagerStartEventParam;
 use Imi\Server\Event\Listener\IManagerStartEventListener;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class OnManagerStart implements IManagerStartEventListener
 {

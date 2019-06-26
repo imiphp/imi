@@ -10,7 +10,7 @@ use Imi\Server\Event\Listener\ICloseEventListener;
 
 /**
  * Close事件前置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="close",priority=PHP_INT_MAX)
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="close",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforeClose implements ICloseEventListener
 {

@@ -7,7 +7,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
 /**
- * @Listener(eventName="IMI.INITED", priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.INITED", priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class Init implements IEventListener
 {
