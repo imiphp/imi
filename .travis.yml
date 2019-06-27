@@ -8,8 +8,6 @@ matrix:
     env: SWOOLE_VERSION="v4.3.5"
   - php: '7.3'
     env: SWOOLE_VERSION="v4.3.5"
-  - php: '7.4'
-    env: SWOOLE_VERSION="v4.3.5"
   - php: 'nightly'
     env: SWOOLE_VERSION="v4.3.5"
   - php: '7.1'
@@ -18,8 +16,6 @@ matrix:
     env: SWOOLE_VERSION="master"
   - php: '7.3'
     env: SWOOLE_VERSION="master"
-  - php: '7.4'
-    env: SWOOLE_VERSION="master"
   - php: 'nightly'
     env: SWOOLE_VERSION="master"
   - php: '7.1'
@@ -27,15 +23,12 @@ matrix:
   - php: '7.2'
     env: SWOOLE_VERSION="v4.4.0-beta"
   - php: '7.3'
-    env: SWOOLE_VERSION="v4.4.0-beta"
-  - php: '7.4'
     env: SWOOLE_VERSION="v4.4.0-beta"
   - php: 'nightly'
     env: SWOOLE_VERSION="v4.4.0-beta"
   allow_failures:
   - env: SWOOLE_VERSION="master"
   - env: SWOOLE_VERSION="v4.4.0-beta"
-  - php: '7.4'
   - php: nightly
 
 services:
