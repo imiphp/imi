@@ -27,7 +27,8 @@ matrix:
   - php: 'nightly'
     env: SWOOLE_VERSION="v4.4.0-beta"
   allow_failures:
-  - env: SWOOLE_VERSION="master" SWOOLE_VERSION="v4.4.0-beta"
+  - env: SWOOLE_VERSION="master"
+  - env: SWOOLE_VERSION="v4.4.0-beta"
   - php: nightly
 
 services:
