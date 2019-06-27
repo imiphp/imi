@@ -9,13 +9,13 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Aop">
-            <directory>unit/Tests</directory>
+        <testsuite name="Components">
+            <directory>unit/Component/Tests</directory>
             <file>*.php</file>
         </testsuite>
     </testsuites>
     <listeners>
-        <listener class="Imi\Test\PHPUintListener\ImiListener" file="tests/unit/PHPUintListener/ImiListener.php">
+        <listener class="Imi\Test\Component\PHPUintListener\ImiListener" file="tests/unit/Component/PHPUintListener/ImiListener.php">
         </listener>
     </listeners>
 </phpunit>
