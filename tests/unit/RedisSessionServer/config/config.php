@@ -1,7 +1,7 @@
 <?php
 return [
     // 项目根命名空间
-    'namespace'    =>    'Imi\Test\HttpServer',
+    'namespace'    =>    'Imi\Test\RedisSessionServer',
 
     // 配置文件
     'configs'    =>    [
@@ -10,7 +10,7 @@ return [
 
     // 扫描目录
     'beanScan'    =>    [
-        'Imi\Test\HttpServer\Listener',
+        'Imi\Test\RedisSessionServer\Listener',
     ],
 
     // 组件命名空间
@@ -19,10 +19,10 @@ return [
 
     // 主服务器配置
     'mainServer'    =>    [
-        'namespace'    =>    'Imi\Test\HttpServer\ApiServer',
+        'namespace'    =>    'Imi\Test\RedisSessionServer\ApiServer',
         'type'        =>    Imi\Server\Type::HTTP,
         'host'        =>    '127.0.0.1',
-        'port'        =>    13000,
+        'port'        =>    13001,
         'configs'    =>    [
             
         ],
@@ -96,6 +96,36 @@ return [
                 'resource'    =>    [
                     'host'        => '127.0.0.1',
                     'port'        =>    6379,
+                ]
+            ],
+        ],
+        'redisSession'    =>    [
+            'sync'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'          => '127.0.0.1',
+                    'port'          => 6379,
+                    'serialize'     => false,
+                ]
+            ],
+            'async'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'          => '127.0.0.1',
+                    'port'          => 6379,
+                    'serialize'     => false,
                 ]
             ],
         ],

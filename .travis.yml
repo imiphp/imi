@@ -5,6 +5,9 @@ php:
   - '7.2'
   - '7.3'
 
+services:
+  - redis-server
+
 install:
   - php ./travis/install.php -nproc $(nproc) -version-name $(phpenv version-name)
 

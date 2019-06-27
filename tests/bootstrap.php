@@ -21,11 +21,31 @@ function checkHttpServerStatus()
     return $serverStarted;
 }
 
+function checkRedisSessionServerStatus()
+{
+    $serverStarted = false;
+    for($i = 0; $i < 60; ++$i)
+    {
+        sleep(1);
+        if('imi' === @file_get_contents('http://127.0.0.1:13001/'))
+        {
+            $serverStarted = true;
+            break;
+        }
+    }
+    return $serverStarted;
+}
+
 $servers = [
     'HttpServer'    =>  [
         'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
         'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
         'checkStatus'   => 'checkHttpServerStatus',
+    ],
+    'RedisSessionServer'    =>  [
+        'start'         => __DIR__ . '/unit/RedisSessionServer/bin/start.sh',
+        'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
+        'checkStatus'   => 'checkRedisSessionServerStatus',
     ],
 ];
 
