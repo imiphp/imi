@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Test\Component;
+namespace Imi\Test;
 
 use PHPUnit\Framework\TestCase;
 

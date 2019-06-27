@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\Component\BaseTest;
+use Imi\Test\BaseTest;
 use Imi\App;
 
 class AopTest extends BaseTest

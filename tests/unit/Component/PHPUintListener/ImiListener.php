@@ -72,7 +72,7 @@ class ImiListener implements TestListener
      */
     public function startTestSuite(TestSuite $suite): void
     {
-        var_dump('startTestSuite', $suite->getName());
+        
     }
 
     /**

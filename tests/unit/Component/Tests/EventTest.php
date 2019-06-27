@@ -2,7 +2,7 @@
 namespace Imi\Test\Component\Tests;
 
 use Imi\Event\Event;
-use Imi\Test\Component\BaseTest;
+use Imi\Test\BaseTest;
 use Imi\Event\EventParam;
 use PHPUnit\Framework\Assert;
 
