@@ -42,7 +42,7 @@ return [
                     'class'        =>    \Imi\Db\Pool\SyncDbPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    1,
+                        'minResources'    =>    0,
                     ],
                 ],
                 'resource'    =>    [
@@ -59,7 +59,7 @@ return [
                     'class'        =>    \Imi\Db\Pool\CoroutineDbPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    1,
+                        'minResources'    =>    0,
                     ],
                 ],
                 'resource'    =>    [
@@ -77,7 +77,7 @@ return [
                     'class'        =>    \Imi\Redis\SyncRedisPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    1,
+                        'minResources'    =>    0,
                     ],
                 ],
                 'resource'    =>    [
@@ -90,7 +90,7 @@ return [
                     'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    1,
+                        'minResources'    =>    0,
                     ],
                 ],
                 'resource'    =>    [
@@ -105,7 +105,7 @@ return [
                     'class'        =>    \Imi\Redis\SyncRedisPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    1,
+                        'minResources'    =>    0,
                     ],
                 ],
                 'resource'    =>    [
@@ -119,7 +119,7 @@ return [
                     'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    1,
+                        'minResources'    =>    0,
                     ],
                 ],
                 'resource'    =>    [
