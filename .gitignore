@@ -3,3 +3,4 @@
 /ide-helper
 .runtime
 *.log
+.session

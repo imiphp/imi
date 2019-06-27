@@ -10,23 +10,21 @@ return [
         'Imi\Test\HttpServer\Modules',
     ],
     'beans'    =>    [
-        // 'SessionManager'    =>    [
-        //     'handlerClass'    =>    \Imi\Server\Session\Handler\Redis::class,
-        // ],
-        // 'SessionConfig'    =>    [
+        'SessionManager'    =>    [
+            'handlerClass'    =>    \Imi\Server\Session\Handler\File::class,
+        ],
+        'SessionFile'    =>    [
+            'savePath'    =>    dirname(__DIR__, 2) . '/.session/',
+        ],
+        'SessionConfig'    =>    [
 
-        // ],
-        // 'SessionCookie'    =>    [
-        //     'lifetime'    =>    86400 * 30,
-        // ],
-        // 'SessionRedis'    =>    [
-        //     'poolName'              => 'redisSession',
-        //     'formatHandlerClass'    => \Imi\Util\Format\Json::class,
-        //     'keyPrefix'             => 'session:',
-        // ],
+        ],
+        'SessionCookie'    =>    [
+            'lifetime'    =>    86400 * 30,
+        ],
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [
-                // \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
+                \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
                 \Imi\Test\HttpServer\ApiServer\Middleware\PoweredBy::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
