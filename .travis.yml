@@ -9,6 +9,7 @@ services:
   - redis-server
 
 install:
+  - pecl install redis && echo "extension=redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - php ./travis/install.php -nproc $(nproc) -version-name $(phpenv version-name)
 
 before_script:
