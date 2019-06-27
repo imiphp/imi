@@ -8,7 +8,7 @@ matrix:
       env: SWOOLE_VERSION="4.3.5"
     - php: '7.3'
       env: SWOOLE_VERSION="4.3.5"
-    - php: 'master'
+    - php: 'nightly'
       env: SWOOLE_VERSION="4.3.5"
     - php: '7.1'
       env: SWOOLE_VERSION="master"
@@ -16,7 +16,7 @@ matrix:
       env: SWOOLE_VERSION="master"
     - php: '7.3'
       env: SWOOLE_VERSION="master"
-    - php: 'master'
+    - php: 'nightly'
       env: SWOOLE_VERSION="master"
     - php: '7.1'
       env: SWOOLE_VERSION="4.4.0-beta"
@@ -24,12 +24,11 @@ matrix:
       env: SWOOLE_VERSION="4.4.0-beta"
     - php: '7.3'
       env: SWOOLE_VERSION="4.4.0-beta"
-    - php: 'master'
+    - php: 'nightly'
       env: SWOOLE_VERSION="4.4.0-beta"
   allow_failures:
-    - env: SWOOLE_VERSION="4.4.0-beta"
-    - env: SWOOLE_VERSION="master"
-    - php: master
+    - env: SWOOLE_VERSION="4.4.0-beta" SWOOLE_VERSION="master"
+    - php: nightly
 
 services:
   - redis-server
