@@ -24,7 +24,7 @@ return [
         'host'        =>    '127.0.0.1',
         'port'        =>    13000,
         'configs'    =>    [
-            
+            'worker_num'    =>  1,
         ],
     ],
 
