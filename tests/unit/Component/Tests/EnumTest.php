@@ -5,6 +5,9 @@ use Imi\Test\BaseTest;
 use Imi\Test\Component\Enum\TestEnum;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @testdox Enum
+ */
 class EnumTest extends BaseTest
 {
     public function test()

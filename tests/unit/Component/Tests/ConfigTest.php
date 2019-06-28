@@ -5,6 +5,9 @@ use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 use Imi\Config;
 
+/**
+ * @testdox Config
+ */
 class ConfigTest extends BaseTest
 {
     public function testGet()

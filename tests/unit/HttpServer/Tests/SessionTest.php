@@ -4,6 +4,9 @@ namespace Imi\Test\HttpServer\Tests;
 use Yurun\Util\HttpRequest;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @testdox HttpSession FileHandler
+ */
 class SessionTest extends BaseTest
 {
     public function testSetGetDelete()

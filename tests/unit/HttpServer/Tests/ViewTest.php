@@ -4,6 +4,9 @@ namespace Imi\Test\HttpServer\Tests;
 use Yurun\Util\HttpRequest;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @testdox Http View
+ */
 class ViewTest extends BaseTest
 {
     public function testHtml()

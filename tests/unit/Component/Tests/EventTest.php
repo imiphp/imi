@@ -6,6 +6,9 @@ use Imi\Test\BaseTest;
 use Imi\Event\EventParam;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @testdox Event
+ */
 class EventTest extends BaseTest
 {
     public function testNormal()

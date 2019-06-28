@@ -11,6 +11,7 @@ return [
     // 扫描目录
     'beanScan'    =>    [
         'Imi\Test\HttpServer\Listener',
+        'Imi\Test\HttpServer\Task',
     ],
 
     // 组件命名空间
@@ -24,7 +25,8 @@ return [
         'host'        =>    '127.0.0.1',
         'port'        =>    13000,
         'configs'    =>    [
-            'worker_num'    =>  1,
+            'worker_num'        =>  1,
+            'task_worker_num'   =>  1,
         ],
     ],
 

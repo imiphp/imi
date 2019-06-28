@@ -10,6 +10,7 @@ use Imi\Bean\Traits\TAutoInject;
 
 /**
  * @Bean
+ * @testdox Inject
  */
 class InjectTest extends BaseTest
 {

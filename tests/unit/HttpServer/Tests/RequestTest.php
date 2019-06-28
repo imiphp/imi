@@ -3,6 +3,9 @@ namespace Imi\Test\HttpServer\Tests;
 
 use Yurun\Util\HttpRequest;
 
+/**
+ * @testdox HttpRequest
+ */
 class RequestTest extends BaseTest
 {
     /**

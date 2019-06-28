@@ -15,8 +15,34 @@ class ImiListener implements TestListener
 {
     private $isLoadedImi = false;
 
+    /**
+     * @var \PHPUnit\Framework\TestSuite
+     */
+    private $suite;
+
+    /**
+     *
+     * @var \PHPUnit\Util\TestDox\NamePrettifier
+     */
+    private $namePrettifier;
+
+    private $success;
+
+    private $errorMessage;
+
+    private $messageColor;
+
+    private $isOb = false;
+    
+    const COLOR_RED = 1;
+
+    const COLOR_GREEN = 2;
+
+    const COLOR_YELLOW = 3;
+
     public function __construct()
     {
+        $this->namePrettifier = new \PHPUnit\Util\TestDox\NamePrettifier;
     }
 
     /**
@@ -24,7 +50,10 @@ class ImiListener implements TestListener
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
-
+        $this->errorMessage = 'Error: ' . PHP_EOL . $t->getMessage() . PHP_EOL;
+        $this->messageColor = static::COLOR_RED;
+        $this->success = false;
+        $this->startOb();
     }
 
     /**
@@ -32,7 +61,10 @@ class ImiListener implements TestListener
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        
+        $this->errorMessage = 'Warning: ' . PHP_EOL . $e->getMessage() . PHP_EOL;
+        $this->messageColor = static::COLOR_YELLOW;
+        $this->success = false;
+        $this->startOb();
     }
 
     /**
@@ -40,7 +72,10 @@ class ImiListener implements TestListener
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        
+        $this->errorMessage = 'Failure: ' . PHP_EOL . $e->getMessage() . PHP_EOL;
+        $this->messageColor = static::COLOR_RED;
+        $this->success = false;
+        $this->startOb();
     }
 
     /**
@@ -48,7 +83,10 @@ class ImiListener implements TestListener
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
-        
+        $this->errorMessage = 'IncompleteTest: ' . PHP_EOL . $t->getMessage() . PHP_EOL;
+        $this->messageColor = static::COLOR_YELLOW;
+        $this->success = false;
+        $this->startOb();
     }
 
     /**
@@ -56,7 +94,10 @@ class ImiListener implements TestListener
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
-        
+        $this->errorMessage = 'RiskyTest: ' . PHP_EOL . $t->getMessage() . PHP_EOL;
+        $this->messageColor = static::COLOR_YELLOW;
+        $this->success = false;
+        $this->startOb();
     }
 
     /**
@@ -64,7 +105,10 @@ class ImiListener implements TestListener
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
-        
+        $this->errorMessage = 'SkippedTest: ' . PHP_EOL . $t->getMessage() . PHP_EOL;
+        $this->messageColor = null;
+        $this->success = false;
+        $this->startOb();
     }
 
     /**
@@ -72,7 +116,7 @@ class ImiListener implements TestListener
      */
     public function startTestSuite(TestSuite $suite): void
     {
-        
+        $this->suite = $suite;
     }
 
     /**
@@ -80,7 +124,7 @@ class ImiListener implements TestListener
      */
     public function endTestSuite(TestSuite $suite): void
     {
-
+        $this->stopOb();
     }
 
     /**
@@ -109,6 +153,9 @@ class ImiListener implements TestListener
             $methodRef->setAccessible(true);
             $methodRef->invoke($test);
         }
+        $this->stopOb();
+        echo PHP_EOL, 'TEST ', $this->namePrettifier->prettifyTestClass($this->suite->getName()), ' ', $this->namePrettifier->prettifyTestCase($test);
+        $this->success = true;
     }
 
     /**
@@ -116,7 +163,52 @@ class ImiListener implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
-        
+        $this->stopOb();
+        echo ' ', round(($time * 1000), 3) . 'ms ';
+        if($this->success)
+        {
+            $this->write('√', static::COLOR_GREEN);
+        }
+        else
+        {
+            $this->write($this->errorMessage, $this->messageColor);
+        }
+        $this->startOb();
     }
 
+    private function write($message, $color = null)
+    {
+        switch($color)
+        {
+            case static::COLOR_RED:
+                echo "\033[31m {$message} \033[0m";
+                break;
+            case static::COLOR_GREEN:
+                echo "\033[32m {$message} \033[0m";
+                break;
+            case static::COLOR_YELLOW:
+                echo "\033[33m {$message} \033[0m";
+                break;
+            default:
+                echo $message;
+        }
+    }
+
+    private function startOb()
+    {
+        if(!$this->isOb)
+        {
+            ob_start();
+            $this->isOb = true;
+        }
+    }
+
+    private function stopOb()
+    {
+        if($this->isOb)
+        {
+            ob_end_clean();
+            $this->isOb = false;
+        }
+    }
 }

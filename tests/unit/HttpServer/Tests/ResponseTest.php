@@ -4,6 +4,9 @@ namespace Imi\Test\HttpServer\Tests;
 use Yurun\Util\HttpRequest;
 use Imi\Util\Http\Consts\StatusCode;
 
+/**
+ * @testdox HttpResponse
+ */
 class ResponseTest extends BaseTest
 {
     /**

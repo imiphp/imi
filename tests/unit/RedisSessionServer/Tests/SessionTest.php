@@ -4,6 +4,9 @@ namespace Imi\Test\RedisSessionServer\Tests;
 use Yurun\Util\HttpRequest;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @testdox HttpSession RedisHandler
+ */
 class SessionTest extends BaseTest
 {
     public function testSetGetDelete()

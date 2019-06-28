@@ -4,6 +4,9 @@ namespace Imi\Test\Component\Tests;
 use Imi\Test\BaseTest;
 use Imi\App;
 
+/**
+ * @testdox Aop
+ */
 class AopTest extends BaseTest
 {
     /**
