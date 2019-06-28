@@ -51,6 +51,8 @@ imi 的模型支持关联关系的定义，增删改查一把梭！
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
 
+首次运行测试脚本：`composer install-test`
+
 运行测试脚本：`composer test`
 
 ## 运行环境
