@@ -7,8 +7,8 @@ use Imi\Pool\Interfaces\IPoolResource;
 class RedisResource extends BasePoolResource
 {
     /**
-     * db对象
-     * @var \Redis
+     * Redis 对象
+     * @var \Imi\Redis\RedisHandler
      */
     private $redis;
 

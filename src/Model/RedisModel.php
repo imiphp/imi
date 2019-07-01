@@ -152,7 +152,7 @@ abstract class RedisModel extends BaseModel
     /**
      * 获取Redis操作对象
      * @param RedisModel $redisModel
-     * @return \Redis
+     * @return \Imi\Redis\RedisHandler
      */
     public static function __getRedis(RedisModel $redisModel = null)
     {

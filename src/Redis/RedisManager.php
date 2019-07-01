@@ -12,7 +12,7 @@ abstract class RedisManager
     /**
      * 获取新的 Redis 连接实例
      * @param string $poolName 连接池名称
-     * @return \Redis
+     * @return \Imi\Redis\RedisHandler
      */
     public static function getNewInstance($poolName = null)
     {
@@ -22,7 +22,7 @@ abstract class RedisManager
     /**
      * 获取 Redis 连接实例，每个RequestContext中共用一个
      * @param string $poolName 连接池名称
-     * @return \Redis|null
+     * @return \Imi\Redis\RedisHandler|null
      */
     public static function getInstance($poolName = null)
     {
