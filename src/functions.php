@@ -14,9 +14,9 @@ use Imi\ServerManage;
 function imigo(callable $callable, ...$args)
 {
     $newCallable = imiCallable($callable);
-    return go(function() use($newCallable, $args){
+    return go(function(...$args) use($newCallable){
         $newCallable(...$args);
-    });
+    }, ...$args);
 }
 
 /**
@@ -50,9 +50,9 @@ function imiCallable(callable $callable, bool $withGo = false)
     if($withGo)
     {
         return function(...$args) use($resultCallable){
-            return go(function() use($args, $resultCallable){
+            return go(function(...$args) use($resultCallable){
                 return $resultCallable(...$args);
-            });
+            }, ...$args);
         };
     }
     else
