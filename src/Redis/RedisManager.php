@@ -16,7 +16,10 @@ abstract class RedisManager
      */
     public static function getNewInstance($poolName = null)
     {
-        return PoolManager::getResource(static::parsePoolName($poolName))->getInstance();
+        $resource = PoolManager::getResource(static::parsePoolName($poolName));
+        $redis = $resource->getInstance();
+        RequestContext::set('poolResources.' . spl_object_hash($redis), $resource);
+        return $redis;
     }
 
     /**
