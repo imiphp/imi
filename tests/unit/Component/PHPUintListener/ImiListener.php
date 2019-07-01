@@ -124,7 +124,13 @@ class ImiListener implements TestListener
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        $this->stopOb();
+        $content = ob_get_clean();
+        $this->isOb = false;
+        if(isset($content[0]) && '.' === $content[0])
+        {
+            $content = substr($content, 1);
+        }
+        echo $content;
     }
 
     /**
@@ -163,7 +169,7 @@ class ImiListener implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
-        $this->stopOb();
+        $this->stopOb(1);
         echo ' ', round(($time * 1000), 3) . 'ms ';
         if($this->success)
         {
@@ -203,11 +209,19 @@ class ImiListener implements TestListener
         }
     }
 
-    private function stopOb()
+    private function stopOb($skipLength = null)
     {
         if($this->isOb)
         {
-            ob_end_clean();
+            if($skipLength)
+            {
+                $content = ob_get_clean();
+                echo substr($content, $skipLength);
+            }
+            else
+            {
+                ob_end_clean();
+            }
             $this->isOb = false;
         }
     }
