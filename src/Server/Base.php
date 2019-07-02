@@ -200,7 +200,7 @@ abstract class Base
 
             if(isset($this->config['configs']['enable_coroutine']) && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['enable_coroutine'] === true && $this->config['configs']['task_enable_coroutine'] === true)
             {
-                $this->swooleServer->on('task', function(\Swoole\Server $server, \Swoole\Server_task $task){
+                $this->swooleServer->on('task', function(\Swoole\Server $server, \Swoole\Server\Task $task){
                     try{
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
                             'server'   => $this,
