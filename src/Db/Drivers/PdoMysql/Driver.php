@@ -247,6 +247,7 @@ class Driver extends Base implements IDb
      */
     public function exec(string $sql): int
     {
+        $this->lastSql = $sql;
         return $this->instance->exec($sql);
     }
 
