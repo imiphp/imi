@@ -44,7 +44,7 @@ abstract class BaseSyncPool extends BasePool
             }
             else
             {
-                return null;
+                throw new \RuntimeException(sprintf('SyncPool [%s] Maximum number of resources', $this->getName()));
             }
         }
         $resource = $this->queue->pop();
