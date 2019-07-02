@@ -42,7 +42,7 @@ install:
 
 before_script:
   - phpenv config-rm xdebug.ini
-  - tests/db/install-db.sh
+  - sh tests/db/install-db.sh
 
 script:
   - composer install-test
