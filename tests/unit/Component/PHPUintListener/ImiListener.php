@@ -10,6 +10,8 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\AssertionFailedError;
+use Imi\Pool\PoolManager;
+use Imi\Db\Interfaces\IDb;
 
 class ImiListener implements TestListener
 {
@@ -124,13 +126,16 @@ class ImiListener implements TestListener
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        $content = ob_get_clean();
-        $this->isOb = false;
-        if(isset($content[0]) && '.' === $content[0])
+        if($this->isOb)
         {
-            $content = substr($content, 1);
+            $content = ob_get_clean();
+            $this->isOb = false;
+            if(isset($content[0]) && '.' === $content[0])
+            {
+                $content = substr($content, 1);
+            }
+            echo $content;
         }
-        echo $content;
     }
 
     /**
@@ -148,6 +153,15 @@ class ImiListener implements TestListener
             });
             Event::on('IMI.INITED', function(EventParam $param){
                 $param->stopPropagation();
+                PoolManager::use('maindb', function($resource, IDb $db){
+                    $truncateList = [
+                        'tb_article',
+                    ];
+                    foreach($truncateList as $table)
+                    {
+                        $db->exec('TRUNCATE ' . $table);
+                    }
+                });
             }, 1);
             echo 'init imi...', PHP_EOL;
             App::run('Imi\Test\Component');
@@ -159,7 +173,6 @@ class ImiListener implements TestListener
             $methodRef->setAccessible(true);
             $methodRef->invoke($test);
         }
-        $this->stopOb();
         echo PHP_EOL, 'TEST ', $this->namePrettifier->prettifyTestClass($this->suite->getName()), ' ', $this->namePrettifier->prettifyTestCase($test);
         $this->success = true;
     }
