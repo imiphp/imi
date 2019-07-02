@@ -25,7 +25,14 @@ class MainServer implements ITaskEventListener
             if($taskInfo instanceof TaskInfo)
             {
                 $result = $taskInfo->getTaskHandler()->handle($taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);
-                $e->server->getSwooleServer()->finish($result);
+                if($e->task)
+                {
+                    $e->task->finish($result);
+                }
+                else
+                {
+                    $e->server->getSwooleServer()->finish($result);
+                }
             }
         }
         catch(\Throwable $ex)

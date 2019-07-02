@@ -34,4 +34,12 @@ class TaskEventParam extends EventParam
      * @var mixed
      */
     public $flags;
+
+    /**
+     * task 对象，只有 task_enable_coroutine 为 true 时可用
+     *
+     * @var \Swoole\Server\Task
+     */
+    public $task;
+
 }

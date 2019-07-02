@@ -210,6 +210,7 @@ abstract class Base
                             'workerID' => $task->worker_id,
                             'data'     => $task->data,
                             'flags'    => $task->flags,
+                            'task'     => $task,
                         ], $this, TaskEventParam::class);
                     }
                     catch(\Throwable $ex)
