@@ -1,9 +1,10 @@
 <?php
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\BaseTest;
 use Imi\App;
 use Imi\Db\Db;
+use Imi\Test\BaseTest;
+use Imi\Db\Interfaces\IDb;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -111,6 +112,52 @@ class DbTest extends BaseTest
         $db->rollBack();
         Assert::assertNotTrue($db->inTransaction());
 
+        $stmt = $db->prepare('select * from tb_article where id = ?');
+        $stmt->bindValue(1, $id);
+        Assert::assertTrue($stmt->execute());
+        Assert::assertEquals([], $stmt->fetchAll());
+    }
+
+    public function testTransUseCommit()
+    {
+        $id = null;
+        Db::transUse(function(IDb $db) use(&$id){
+            Assert::assertTrue($db->inTransaction());
+            $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
+            Assert::assertEquals(1, $result);
+            $id = $db->lastInsertId();
+        });
+
+        $db = Db::getInstance();
+        $stmt = $db->prepare('select * from tb_article where id = ?');
+        $stmt->bindValue(1, $id);
+        Assert::assertTrue($stmt->execute());
+        Assert::assertEquals([
+            [
+                'id'        =>  $id . '',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ]
+        ], $stmt->fetchAll());
+    }
+
+    public function testTransUseRollback()
+    {
+        $id = null;
+        try {
+            Db::transUse(function(IDb $db) use(&$id){
+                Assert::assertTrue($db->inTransaction());
+                $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
+                Assert::assertEquals(1, $result);
+                $id = $db->lastInsertId();
+                throw new \RuntimeException('gg');
+            });
+        } catch(\Throwable $th) {
+            Assert::assertEquals('gg', $th->getMessage());
+        }
+
+        $db = Db::getInstance();
         $stmt = $db->prepare('select * from tb_article where id = ?');
         $stmt->bindValue(1, $id);
         Assert::assertTrue($stmt->execute());
