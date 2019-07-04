@@ -4,3 +4,4 @@
 /.gitignore export-ignore
 /res export-ignore
 /travis export-ignore
+/tests export-ignore
