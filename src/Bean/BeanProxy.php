@@ -251,21 +251,7 @@ class BeanProxy
         {
             $beanName = $className;
         }
-
-        $beanProperties = null;
-        // 优先从服务器bean配置获取
-        try{
-            $beanProperties = Config::get('@server.' . RequestContext::getServer()->getName() . '.beans.' . $beanName, null);
-        }
-        catch(\Throwable $ex)
-        {
-            $beanProperties = null;
-        }
-        // 全局bean配置
-        if(null === $beanProperties)
-        {
-            $beanProperties = Config::get('@app.beans.' . $beanName, []);
-        }
+        $beanProperties = Config::get('@currentServer.beans.' . $beanName, []);
         return $beanProperties ?? [];
     }
 
