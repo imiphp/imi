@@ -168,16 +168,6 @@ abstract class Base
     }
 
     /**
-     * 处理日志消息
-     * @param \Imi\Log\Record $record
-     * @return string
-     */
-    public function parseMessage(\Imi\Log\Record $record): string
-    {
-        return str_replace($find, $replace, $record->getMessage());
-    }
-
-    /**
      * 获取日志字符串
      * @param \Imi\Log\Record $record
      * @return string

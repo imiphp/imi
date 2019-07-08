@@ -208,7 +208,11 @@ class Logger extends AbstractLogger
      */
     public function addExHandler($exHandler)
     {
-        $this->exHandlers = $exHandler;
+        if(in_array($exHandler, $this->exHandlers))
+        {
+            return; // 防止重复添加
+        }
+        $this->exHandlers[] = $exHandler;
         $this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
     }
 }
