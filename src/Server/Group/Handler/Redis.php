@@ -1,14 +1,15 @@
 <?php
 namespace Imi\Server\Group\Handler;
 
+use Imi\Worker;
+use Imi\Log\Log;
+use Imi\Event\Event;
 use Imi\Util\Swoole;
+use Imi\ServerManage;
 use Imi\RequestContext;
 use Imi\Util\ArrayUtil;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
-use Imi\Worker;
-use Imi\Log\Log;
-use Imi\ServerManage;
 
 /**
  * @Bean("GroupRedis")

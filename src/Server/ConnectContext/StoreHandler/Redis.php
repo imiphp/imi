@@ -3,6 +3,7 @@ namespace Imi\Server\ConnectContext\StoreHandler;
 
 use Imi\Worker;
 use Imi\Log\Log;
+use Imi\Event\Event;
 use Imi\Util\Swoole;
 use Imi\ServerManage;
 use Imi\RequestContext;
