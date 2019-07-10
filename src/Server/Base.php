@@ -18,6 +18,7 @@ use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\WorkerErrorEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Param\ManagerStartEventParam;
+use Imi\Server\Event\Param\WorkerExitEventParam;
 
 abstract class Base
 {
@@ -167,6 +168,19 @@ abstract class Base
                         'server'    => $this,
                         'workerID'  => $workerID,
                     ], $this, WorkerStopEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+
+            $this->swooleServer->on('WorkerExit', function(\Swoole\Server $server, int $workerID){
+                try{
+                    Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [
+                        'server'    => $this,
+                        'workerID'  => $workerID,
+                    ], $this, WorkerExitEventParam::class);
                 }
                 catch(\Throwable $ex)
                 {
