@@ -60,7 +60,7 @@ before_script:
   - sh tests/db/install-db.sh
 
 script:
-  - composer install-test
+  - composer install-test-no-dev
 
 env:
   global:
