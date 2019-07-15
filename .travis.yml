@@ -36,7 +36,7 @@ services:
 
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
-      wget http://pecl.php.net/get/redis-5.0.1.tgz
+      wget http://pecl.php.net/get/redis-5.0.1.tgz;
       printf "yes\nyes\n" | pecl install redis-5.0.1.tgz;
     fi
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
