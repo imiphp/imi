@@ -83,6 +83,13 @@ class Query implements IQuery
      */
     protected $isInitDb;
 
+    /**
+     * 数据库字段自增
+     *
+     * @var integer
+     */
+    protected $dbParamInc = 0;
+
     public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
         $this->db = $db;
@@ -95,6 +102,7 @@ class Query implements IQuery
 
     public function __init()
     {
+        $this->dbParamInc = 1;
         $this->option = new QueryOption;
         if(!$this->isInitQueryType)
         {
@@ -118,6 +126,7 @@ class Query implements IQuery
      */
     public function setOption(QueryOption $option)
     {
+        $this->dbParamInc = 1;
         $this->option = $option;
         return $this;
     }
@@ -1017,16 +1026,14 @@ class Query implements IQuery
      * 获取自动起名的参数名称
      * @return string
      */
-    public static function getAutoParamName()
+    public function getAutoParamName()
     {
-        $index = RequestContext::get('dbParamInc', 0);
-        if($index >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
+        if($this->dbParamInc >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
         {
-            $index = 0;
+            $this->dbParamInc = 0;
         }
-        ++$index;
-        RequestContext::set('dbParamInc', $index);
-        return ':p' . dechex($index);
+        ++$this->dbParamInc;
+        return ':p' . dechex($this->dbParamInc);
     }
 
     /**

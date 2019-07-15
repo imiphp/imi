@@ -39,7 +39,7 @@ class BatchInsertBuilder extends BaseBuilder
             $valueParams = [];
             foreach($fields as $field)
             {
-                $valueParam = Query::getAutoParamName();
+                $valueParam = $this->query->getAutoParamName();
                 $valueParams[] = $valueParam;
                 $this->params[$valueParam] = ObjectArrayHelper::get($data, $field);
             }

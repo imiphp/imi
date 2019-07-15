@@ -1,11 +1,11 @@
 <?php
 namespace Imi\Db\Query\Where;
 
-class BaseWhere
+abstract class BaseWhere
 {
     public function __toString()
     {
-        return $this->logicalOperator . ' ' . $this->toStringWithoutLogic();
+        throw new \RuntimeException(sprintf('%s object can not be used as string', __CLASS__));
     }
 
 }

@@ -34,7 +34,7 @@ class UpdateBuilder extends BaseBuilder
             }
             else
             {
-                $valueParam = Query::getAutoParamName();
+                $valueParam = $this->query->getAutoParamName();
                 $valueParams[] = $valueParam;
                 $this->params[$valueParam] = $v;
                 $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;

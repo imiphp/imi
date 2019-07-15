@@ -584,4 +584,5 @@ interface IQuery
      */
     public function setFieldDec($fieldName, float $decValue = 1);
 
+    public function getAutoParamName();
 }
