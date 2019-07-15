@@ -36,7 +36,8 @@ services:
 
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
-      printf "yes\nyes\n" | pecl install redis;
+      wget http://pecl.php.net/get/redis-5.0.1.tgz
+      printf "yes\nyes\n" | pecl install redis-5.0.1.tgz;
     fi
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - wget https://github.com/swoole/swoole-src/archive/$SWOOLE_VERSION.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j && make install && cd -
