@@ -16,7 +16,7 @@ matrix:
   - php: '7.3'
     env: SWOOLE_VERSION="master"
   - php: '7.4snapshot'
-    env: SWOOLE_VERSION="master"
+    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
   - php: '7.1'
@@ -43,7 +43,7 @@ install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
       wget https://github.com/phpredis/phpredis/archive/develop.zip;
       unzip develop.zip;
-      cd phpredis;
+      cd phpredis-develop;
       phpize;
       ./configure;
       make && make install;
