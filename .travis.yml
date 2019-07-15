@@ -39,6 +39,11 @@ addons:
     packages:
     - unzip
 
+before_install:
+  - wget http://phar.phpunit.cn/phpunit.phar
+  - chmod +x phpunit.phar
+  - sudo mv phpunit.phar /usr/local/sbin/phpunit
+
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
       wget https://github.com/phpredis/phpredis/archive/develop.zip;
