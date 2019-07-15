@@ -41,7 +41,7 @@ class AnnotationLoader
                 }
                 $fileNamespace = $ns . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $diffPath . basename($filePath, '.php'));
                 // 回调
-                $callback($fileNamespace);
+                call_user_func($callback, $fileNamespace);
             }
         });
     }
@@ -74,18 +74,21 @@ class AnnotationLoader
                 {
                     $path = $this->loaded[$tNamespace];
                 }
-                else if(!($path = Imi::getNamespacePath($tNamespace)))
+                else if($path = Imi::getNamespacePath($tNamespace))
+                {
+                }
+                else
                 {
                     continue;
                 }
                 $path .= DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, array_reverse($pops));
-                $callback($namespace, $path);
+                call_user_func($callback, $namespace, $path);
                 break;
             }while(isset($namespaceSplit[0]));
             // 未能成功加载抛出异常
             if(!isset($namespaceSplit[0]))
             {
-                throw new \RuntimeException('can not load annotations: ' . $namespace);
+                throw new \Exception('can not load annotations: ' . $namespace);
             }
         }
         else

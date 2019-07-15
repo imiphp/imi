@@ -23,6 +23,12 @@ use Imi\Util\Args;
 abstract class App
 {
     /**
+     * 注解类
+     * @var \Imi\Bean\Annotation
+     */
+    private static $annotation;
+
+    /**
      * 应用命名空间
      * @var string
      */
@@ -68,8 +74,6 @@ abstract class App
     public static function run($namespace)
     {
         static::$namespace = $namespace;
-        static::outImi();
-        static::outStartupInfo();
         static::initFramework();
     }
 
@@ -79,15 +83,14 @@ abstract class App
      */
     private static function initFramework()
     {
-        if(!isset($_SERVER['argv'][1]))
-        {
-            echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
-            return;
-        }
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
         // 初始化Main类
         static::initMains();
+        // 设置临时子目录
+        $subPath = Random::letterAndNumber(32, 32);
+        // 注解处理
+        static::$annotation = Annotation::getInstance();
         // 框架运行时缓存支持
         if('server/start' === $_SERVER['argv'][1])
         {
@@ -101,7 +104,7 @@ abstract class App
         if(!$result)
         {
             // 不使用缓存时去扫描
-            Annotation::getInstance()->init([
+            static::$annotation->init([
                 MainHelper::getMain('Imi', 'Imi'),
             ]);
         }
@@ -123,10 +126,7 @@ abstract class App
         $servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
         foreach($servers as $serverName => $item)
         {
-            if($item)
-            {
-                MainHelper::getMain($item['namespace'], 'server.' . $serverName);
-            }
+            MainHelper::getMain($item['namespace'], 'server.' . $serverName);
         }
     }
 
@@ -141,7 +141,7 @@ abstract class App
         $mainServer = Config::get('@app.mainServer');
         if(null === $mainServer)
         {
-            throw new \RuntimeException('config.mainServer not found');
+            throw new \Exception('config.mainServer not found');
         }
         // 主服务器
         ServerManage::createServer('main', $mainServer);
@@ -340,37 +340,4 @@ abstract class App
         }
         return true;
     }
-
-    /**
-     * 输出 imi 图标
-     *
-     * @return void
-     */
-    public static function outImi()
-    {
-        echo <<<STR
- _               _ 
-(_)  _ __ ___   (_)
-| | | '_ ` _ \  | |
-| | | | | | | | | |
-|_| |_| |_| |_| |_|
-
-
-STR;
-    }
-
-    /**
-     * 输出启动信息
-     *
-     * @return void
-     */
-    public static function outStartupInfo()
-    {
-        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL
-        , 'PHP: v', PHP_VERSION, PHP_EOL
-        , 'Swoole: v', SWOOLE_VERSION, PHP_EOL
-        , 'Timezone: ', date_default_timezone_get(), PHP_EOL
-        , PHP_EOL;
-    }
-
 }

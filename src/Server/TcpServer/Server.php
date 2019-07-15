@@ -17,13 +17,25 @@ use Imi\Server\Event\Param\ReceiveEventParam;
 class Server extends Base
 {
     /**
+     * 构造方法
+     * @param string $name
+     * @param array $config
+     * @param \swoole_server $serverInstance
+     * @param bool $subServer 是否为子服务器
+     */
+    public function __construct($name, $config, $isSubServer = false)
+    {
+        parent::__construct($name, $config, $isSubServer);
+    }
+
+    /**
      * 创建 swoole 服务器对象
      * @return void
      */
     protected function createServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \swoole_server($config['host'], $config['port'], $config['mode'], $config['sockType']);
     }
 
     /**
@@ -60,7 +72,7 @@ class Server extends Base
     {
         $server = $this->swoolePort ?? $this->swooleServer;
 
-        $server->on('connect', function(\Swoole\Server $server, $fd, $reactorID){
+        $server->on('connect', function(\swoole_server $server, $fd, $reactorID){
             try{
                 $this->trigger('connect', [
                     'server'    => $this,
@@ -74,7 +86,7 @@ class Server extends Base
             }
         });
         
-        $server->on('receive', function(\Swoole\Server $server, $fd, $reactorID, $data){
+        $server->on('receive', function(\swoole_server $server, $fd, $reactorID, $data){
             try{
                 $this->trigger('receive', [
                     'server'    => $this,
@@ -89,7 +101,7 @@ class Server extends Base
             }
         });
         
-        $server->on('close', function(\Swoole\Server $server, $fd, $reactorID){
+        $server->on('close', function(\swoole_server $server, $fd, $reactorID){
             try{
                 $this->trigger('close', [
                     'server'    => $this,
@@ -103,7 +115,7 @@ class Server extends Base
             }
         });
 
-        $server->on('BufferFull', function(\Swoole\Server $server, $fd){
+        $server->on('BufferFull', function(\swoole_server $server, $fd){
             try{
                 $this->trigger('bufferFull', [
                     'server'    => $this,
@@ -116,7 +128,7 @@ class Server extends Base
             }
         });
 
-        $server->on('BufferEmpty', function(\Swoole\Server $server, $fd){
+        $server->on('BufferEmpty', function(\swoole_server $server, $fd){
             try{
                 $this->trigger('bufferEmpty', [
                     'server'    => $this,

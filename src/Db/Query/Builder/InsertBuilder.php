@@ -9,7 +9,6 @@ class InsertBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
-        parent::build(...$args);
         $option = $this->query->getOption();
         list($data) = $args;
         if(null === $data)
@@ -38,7 +37,7 @@ class InsertBuilder extends BaseBuilder
                 else
                 {
                     $fields[] = $this->parseKeyword($k);
-                    $valueParam = $this->query->getAutoParamName();
+                    $valueParam = Query::getAutoParamName();
                     $valueParams[] = $valueParam;
                     $this->params[$valueParam] = $v;
                 }
@@ -56,7 +55,7 @@ class InsertBuilder extends BaseBuilder
                 }
                 else
                 {
-                    $valueParam = $this->query->getAutoParamName();
+                    $valueParam = Query::getAutoParamName();
                     $valueParams[] = $valueParam;
                     $this->params[$valueParam] = $v;
                 }

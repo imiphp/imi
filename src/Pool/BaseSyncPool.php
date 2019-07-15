@@ -42,9 +42,9 @@ abstract class BaseSyncPool extends BasePool
                 // 没有空闲连接，当前连接数少于最大连接数
                 $this->addResource();
             }
-            else
+            else 
             {
-                throw new \RuntimeException(sprintf('SyncPool [%s] Maximum number of resources', $this->getName()));
+                return null;
             }
         }
         $resource = $this->queue->pop();

@@ -1,15 +1,15 @@
 <?php
 namespace Imi\Server\Group\Handler;
 
-use Imi\Worker;
-use Imi\Log\Log;
-use Imi\Event\Event;
 use Imi\Util\Swoole;
-use Imi\ServerManage;
 use Imi\RequestContext;
 use Imi\Util\ArrayUtil;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
+use Swoole\Coroutine\Redis as CoRedis;
+use Imi\Worker;
+use Imi\Log\Log;
+use Imi\ServerManage;
 
 /**
  * @Bean("GroupRedis")
@@ -139,7 +139,7 @@ class Redis implements IGroupHandler
                 {
                     $redis->del($this->getGroupNameKey($groupName));
                 }
-                if(0 == $it)
+                if(0 === $it)
                 {
                     break;
                 }
@@ -170,11 +170,7 @@ class Redis implements IGroupHandler
         if($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
-                \Swoole\Timer::clear($this->timerID);
-                $this->timerID = null;
-            }, \Imi\Util\ImiPriority::IMI_MIN);
+            $this->timerID = \swoole_timer_tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
         }
     }
 
@@ -243,7 +239,7 @@ class Redis implements IGroupHandler
     {
         if(null !== $this->timerID)
         {
-            \Swoole\Timer::clear($this->timerID);
+            \swoole_timer_clear($this->timerID);
         }
     }
 

@@ -8,7 +8,7 @@ class Response extends \Imi\Util\Http\Response
 {
     /**
      * swoole响应对象
-     * @var \Swoole\Http\Response
+     * @var \swoole_http_response
      */
     protected $swooleResponse;
 
@@ -42,7 +42,7 @@ class Response extends \Imi\Util\Http\Response
      */
     protected $serverInstance;
     
-    public function __construct(\Imi\Server\Base $server, \Swoole\Http\Response $response)
+    public function __construct(\Imi\Server\Base $server, \swoole_http_response $response)
     {
         $this->swooleResponse = $response;
         $this->serverInstance = $server;
@@ -180,9 +180,9 @@ class Response extends \Imi\Util\Http\Response
 
     /**
      * 获取swoole响应对象
-     * @return \Swoole\Http\Response
+     * @return \swoole_http_response
      */
-    public function getSwooleResponse(): \Swoole\Http\Response
+    public function getSwooleResponse(): \swoole_http_response
     {
         return $this->swooleResponse;
     }

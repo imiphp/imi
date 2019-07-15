@@ -158,7 +158,7 @@ abstract class Config
             else if($isCurrentServer)
             {
                 $first = '@app';
-                unset($names[0]);
+                array_shift($names);
                 return static::$configs[$first]->get($names, $default);
             }
         }

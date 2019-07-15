@@ -25,18 +25,16 @@ abstract class Model extends BaseModel
     {
         $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
             ModelRelationManager::initModel($this);
-        }, \Imi\Util\ImiPriority::IMI_MAX);
+        }, PHP_INT_MAX);
         parent::__init($data);
     }
 
     /**
      * 返回一个查询器
      * @param string|object $object
-     * @param string|null $poolName 连接池名，为null则取默认
-     * @param int|null $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      * @return \Imi\Db\Query\Interfaces\IQuery
      */
-    public static function query($object = null, $poolName = null, $queryType = null)
+    public static function query($object = null)
     {
         if($object)
         {
@@ -46,7 +44,7 @@ abstract class Model extends BaseModel
         {
             $class = static::__getRealClassName();
         }
-        return BeanFactory::newInstance(ModelQuery::class, null, $class, $poolName, $queryType);
+        return Db::query(ModelManager::getDbPoolName($class), $class)->table(ModelManager::getTable($class));
     }
 
     /**
@@ -64,7 +62,7 @@ abstract class Model extends BaseModel
         if(is_callable($ids[0]))
         {
             // 回调传入条件
-            ($ids[0])($query);
+            call_user_func($ids[0], $query);
         }
         else
         {
@@ -467,9 +465,9 @@ abstract class Model extends BaseModel
         if(null !== $queryCallable)
         {
             // 回调传入条件
-            $queryCallable($query);
+            call_user_func($queryCallable, $query);
         }
-        return $query->$functionName($fieldName);
+        return call_user_func([$query, $functionName], $fieldName);
     }
 
     /**
@@ -510,7 +508,7 @@ abstract class Model extends BaseModel
         if(is_callable($where))
         {
             // 回调传入条件
-            $where($query);
+            call_user_func($where, $query);
         }
         else
         {

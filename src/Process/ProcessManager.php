@@ -57,13 +57,14 @@ abstract class ProcessManager
             Imi::setProcessName('process', [
                 'processName'   =>  $name,
             ]);
-            // 强制开启进程协程化
-            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
-            if($processOption['Process']->unique && !static::lockProcess($name))
+            if($processOption['Process']->unique)
             {
-                throw new \RuntimeException('lock process lock file error');
+                if(!static::lockProcess($name))
+                {
+                    throw new \RuntimeException('lock process lock file error');
+                }
             }
             // 加载服务器注解
             \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
@@ -75,8 +76,8 @@ abstract class ProcessManager
             ]);
             // 执行任务
             $processInstance = BeanFactory::newInstance($processOption['className'], $args);
-            $processInstance->run($swooleProcess);
-            \Swoole\Event::wait();
+            call_user_func([$processInstance, 'run'], $swooleProcess);
+            swoole_event_wait();
             if($processOption['Process']->unique)
             {
                 static::unlockProcess($name);
@@ -146,7 +147,7 @@ abstract class ProcessManager
      */
     public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
-        $cmd = Imi::getImiCmd('process', 'start', $args) . ' -name ' . $name;
+        $cmd = Imi::getImiCmd('process', 'start') . ' -name ' . $name;
         if(null !== $redirectStdinStdout)
         {
             $cmd .= ' -redirectStdinStdout ' . $redirectStdinStdout;

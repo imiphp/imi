@@ -159,7 +159,7 @@ abstract class File
             return true;
         }
         $dir = dirname($file);
-        self::createDir($dir, $mode);
+        self::createDir($dir);
         $fh = @fopen($file, 'a');
         if ($fh) {
             fclose($fh);

@@ -8,7 +8,7 @@ use Imi\Server\Event\Listener\IManagerStopEventListener;
 use Imi\App;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.STOP",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.STOP",priority=PHP_INT_MIN)
  */
 class OnManagerStop implements IManagerStopEventListener
 {

@@ -11,7 +11,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Util\ClassObject;
 
 /**
- * @Aspect(Imi\Util\ImiPriority::IMI_MAX)
+ * @Aspect(PHP_INT_MAX)
  */
 class InjectArgAop
 {

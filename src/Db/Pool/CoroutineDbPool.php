@@ -26,6 +26,6 @@ class CoroutineDbPool extends BaseAsyncPool
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $config = $this->getNextResourceConfig();
-        return new DbResource($this, BeanFactory::newInstance($config['dbClass'] ?? \Imi\Db\Drivers\PdoMysql\Driver::class, $config));
+        return new DbResource($this, BeanFactory::newInstance($config['dbClass'] ?? \Imi\Db\Drivers\CoroutineMysql\Driver::class, $config));
     }
 }

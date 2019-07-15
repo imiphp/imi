@@ -111,18 +111,4 @@ interface IPoolConfig
      */ 
     public function setMaxUsedTime($maxUsedTime);
 
-    /**
-     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒
-     *
-     * @return double
-     */
-    public function getRequestResourceCheckInterval();
-
-    /**
-     * 设置当前请求上下文资源检查状态间隔，单位：支持小数的秒
-     *
-     * @param double $value
-     * @return static
-     */
-    public function setRequestResourceCheckInterval($value);
 }

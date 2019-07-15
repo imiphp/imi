@@ -44,7 +44,7 @@ class ActionMiddleware implements MiddlewareInterface
             $result['callable'][0]->response = $response;
         }
         // 执行动作
-        $actionResult = ($result['callable'])(...$this->prepareActionParams($request, $result));
+        $actionResult = call_user_func_array($result['callable'], $this->prepareActionParams($request, $result));
         if($isObject)
         {
             // 获得控制器中的Response

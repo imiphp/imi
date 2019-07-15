@@ -84,7 +84,7 @@ abstract class BeanFactory
         $beanProxy = $ref->getProperty('beanProxy');
         $beanProxy->setAccessible(true);
         $beanProxy->getValue($object)
-                  ->injectProps($object);
+                  ->injectProps();
         if($ref->hasMethod('__init'))
         {
             $ref->getMethod('__init')->invoke($object, ...$args);
@@ -110,7 +110,7 @@ abstract class BeanFactory
     private static function getTpl($ref, $newClassName)
     {
         $class = $ref->getName();
-        $methodsTpl = static::getMethodsTpl($ref);
+        $methodsTpl = static::getMethodsTpl($ref, $class);
         $construct = '';
         $constructMethod = $ref->getConstructor();
         if(null !== $constructMethod)
@@ -124,7 +124,6 @@ abstract class BeanFactory
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
         \$__result__ = \$this->beanProxy->call(
-            \$this,
             '__construct',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
@@ -146,6 +145,24 @@ TPL;
             $constructDefine = '...$args';
             $aopConstruct = '';
         }
+//         $aopConstruct .= <<<TPL
+// \$this->beanProxy->injectProps();
+// TPL;
+//         if($ref->hasMethod('__init'))
+//         {
+//             if(isset($paramsTpls['call']))
+//             {
+//                 $aopConstruct .= <<<TPL
+//         \$this->__init({$paramsTpls['call']});
+// TPL;
+//             }
+//             else
+//             {
+//                 $aopConstruct .= <<<TPL
+//         \$this->__init();
+// TPL;
+//             }
+//         }
         $parentClone = $ref->hasMethod('__clone') ? 'parent::__clone();' : '';
         // 类模版定义
         $tpl = <<<TPL
@@ -162,7 +179,7 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
     public function __clone()
     {
         \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
-        \$this->beanProxy->injectProps(\$this);
+        \$this->beanProxy->injectProps();
         {$parentClone}
     }
 {$methodsTpl}
@@ -174,9 +191,10 @@ TPL;
     /**
      * 获取方法模版
      * @param \ReflectionClass $ref
+     * @param string $class
      * @return string
      */
-    private static function getMethodsTpl($ref)
+    private static function getMethodsTpl($ref, $class)
     {
         $tpl = '';
         foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
@@ -194,7 +212,6 @@ TPL;
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
         \$__result__ = \$this->beanProxy->call(
-            \$this,
             '{$method->name}',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
@@ -203,7 +220,6 @@ TPL;
             },
             \$__args__
         );
-        {$paramsTpls['set_args_back']}
         return \$__result__;
     }
 
@@ -224,7 +240,6 @@ TPL;
             'define'    => [],
             'call'      => [],
             'set_args'  => '',
-            'set_args_back'  => '',
         ];
         foreach($method->getParameters() as $i => $param)
         {
@@ -241,10 +256,9 @@ TPL;
             if($param->isPassedByReference())
             {
                 $result['set_args'] .= '$__args__[' . $i . '] = &$' . $param->name . ';';
-                $result['set_args_back'] .= '$' . $param->name . ' = $__args__[' . $i . '];';
             }
         }
-        foreach($result as &$item)
+        foreach($result as $key => &$item)
         {
             if(is_array($item))
             {
@@ -280,10 +294,6 @@ TPL;
         $result = '';
         // 类型
         $paramType = $param->getType();
-        if($paramType)
-        {
-            $paramType = $paramType->getName();
-        }
         if(null !== $paramType && $param->allowsNull())
         {
             $paramType = '?' . $paramType;
@@ -380,7 +390,7 @@ TPL;
             foreach($aspects as $item)
             {
                 $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
-                foreach($pointCutsSet as $pointCuts)
+                foreach($pointCutsSet as $methodName => $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
                     {
@@ -422,7 +432,7 @@ TPL;
             {
                 // 判断是否属于当前类的切面
                 $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
-                foreach($pointCutsSet as $pointCuts)
+                foreach($pointCutsSet as $methodName => $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
                     {

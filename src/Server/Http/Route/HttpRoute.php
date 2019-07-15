@@ -8,7 +8,6 @@ use Imi\Server\Route\BaseRoute;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
 use Imi\Server\Route\RouteCallable;
-use Imi\Util\Uri;
 
 /**
  * @Bean("HttpRoute")
@@ -213,7 +212,7 @@ class HttpRoute extends BaseRoute
         foreach($domain as $rule)
         {
             $rule = $this->parseRule($rule, $fields);
-            if(preg_match_all($rule, Uri::getDomain($request->getUri()), $matches) > 0)
+            if(preg_match_all($rule, $request->getUri()->getDomain(), $matches) > 0)
             {
                 $params = [];
                 foreach($fields as $i => $fieldName)
@@ -241,6 +240,7 @@ class HttpRoute extends BaseRoute
         return Imi::checkCompareRules($params, function($name) use($request){
             return $request->get($name);
         });
+        return true;
     }
     
     /**

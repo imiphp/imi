@@ -11,17 +11,4 @@ abstract class Coroutine extends \Swoole\Coroutine
     {
         return static::getuid() > -1;
     }
-
-    /**
-     * 创建一个新的协程，并立即执行。
-     *
-     * @param callable $callable
-     * @param mixed ...$params
-     * @return int|boolean
-     */
-    public static function create(callable $callable, ...$params)
-    {
-        return imigo($callable, ...$params);
-    }
-
 }

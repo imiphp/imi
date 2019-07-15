@@ -27,13 +27,4 @@ class OneToMany extends RelationBase
      */
     public $model;
 
-    /**
-     * 排序规则字符串
-     *
-     * 例：age desc, id desc
-     * 
-     * @var string
-     */
-    public $order;
-
 }

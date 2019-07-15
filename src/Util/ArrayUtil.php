@@ -63,7 +63,7 @@ abstract class ArrayUtil
     public static function columnToKey($array, $column, $keepOld = true)
     {
         $newArray = [];
-        foreach($array as $row)
+        foreach($array as $k => $row)
         {
             $key = $row[$column];
             if(!$keepOld)
@@ -77,8 +77,8 @@ abstract class ArrayUtil
 
     /**
      * 判断数组是否为关联数组
-     * @param array $array
-     * @return bool
+     * @param array $array 
+     * @return bool 
      */
     public static function isAssoc($array)
     {  

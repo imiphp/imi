@@ -12,7 +12,6 @@ use Psr\Log\AbstractLogger;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Imi;
 use Imi\Util\Traits\TBeanRealClass;
-use Imi\Event\Event;
 
 /**
  * @Bean("Logger")
@@ -79,15 +78,28 @@ class Logger extends AbstractLogger
      */
     protected $records = [];
     
+    /**
+     * 定时器ID
+     *
+     * @var int
+     */
+    private $timerID;
+
     public function __init()
     {
         foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
         {
             $this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-        Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
-            $this->save();
-        }, \Imi\Util\ImiPriority::IMI_MIN + 1);
+    }
+
+    public function __destruct()
+    {
+        if(null !== $this->timerID)
+        {
+            swoole_timer_clear($this->timerID);
+            $this->timerID = null;
+        }
     }
 
     /**
@@ -130,6 +142,7 @@ class Logger extends AbstractLogger
     protected function getTrace($backtrace)
     {
         $index = null;
+        $hasNull = false;
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
@@ -154,6 +167,7 @@ class Logger extends AbstractLogger
     public function getErrorFile($backtrace)
     {
         $index = null;
+        $hasNull = false;
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
@@ -196,11 +210,7 @@ class Logger extends AbstractLogger
      */
     public function addExHandler($exHandler)
     {
-        if(in_array($exHandler, $this->exHandlers))
-        {
-            return; // 防止重复添加
-        }
-        $this->exHandlers[] = $exHandler;
+        $this->exHandlers = $exHandler;
         $this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
     }
 }

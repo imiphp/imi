@@ -22,7 +22,7 @@ class Php implements IEngine
             include $__renderFileName;
         };
         ob_start();
-        $closure($fileName, $data);
+        call_user_func($closure, $fileName, $data);
         return $response->write(ob_get_clean());
     }
 }

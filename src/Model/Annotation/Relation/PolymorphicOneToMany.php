@@ -40,14 +40,4 @@ class PolymorphicOneToMany extends RelationBase
      * @var mixed
      */
     public $typeValue;
-    
-    /**
-     * 排序规则字符串
-     *
-     * 例：age desc, id desc
-     * 
-     * @var string
-     */
-    public $order;
-
 }

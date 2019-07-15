@@ -2,6 +2,7 @@
 
 namespace Imi\Db\Interfaces;
 
+use Imi\Util\Defer;
 use Imi\Util\Interfaces\IHashCode;
 
 interface IDb extends IHashCode
@@ -143,4 +144,49 @@ interface IDb extends IHashCode
      */
     public function getInstance();
 
+    /**
+     * 启动一个事务
+     * @return Defer
+     */
+    public function deferBeginTransaction(): Defer;
+
+    /**
+     * 提交一个事务
+     * @return Defer
+     */
+    public function deferCommit(): Defer;
+
+    /**
+     * 回滚一个事务
+     * @return Defer
+     */
+    public function deferRollBack(): Defer;
+
+    /**
+     * 执行一条 SQL 语句，并返回受影响的行数
+     *
+     * @param string $sql
+     *
+     * @return Defer
+     */
+    public function deferExec(string $sql): Defer;
+
+    /**
+     * 准备执行语句并返回一个语句对象
+     *
+     * @param string $sql
+     * @param array $driverOptions
+     *
+     * @return Defer
+     */
+    public function deferPrepare(string $sql, array $driverOptions = []): Defer;
+
+    /**
+     * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
+     *
+     * @param string $sql
+     *
+     * @return Defer
+     */
+    public function deferQuery(string $sql): Defer;
 }

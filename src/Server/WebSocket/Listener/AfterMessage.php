@@ -10,7 +10,7 @@ use Imi\Server\Event\Listener\IMessageEventListener;
 
 /**
  * Message事件后置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="message",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="message",priority=PHP_INT_MIN)
  */
 class AfterMessage implements IMessageEventListener
 {

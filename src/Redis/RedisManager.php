@@ -12,20 +12,17 @@ abstract class RedisManager
     /**
      * 获取新的 Redis 连接实例
      * @param string $poolName 连接池名称
-     * @return \Imi\Redis\RedisHandler
+     * @return \Swoole\Coroutine\Redis
      */
     public static function getNewInstance($poolName = null)
     {
-        $resource = PoolManager::getResource(static::parsePoolName($poolName));
-        $redis = $resource->getInstance();
-        RequestContext::set('poolResources.' . spl_object_hash($redis), $resource);
-        return $redis;
+        return PoolManager::getResource(static::parsePoolName($poolName))->getInstance();
     }
 
     /**
      * 获取 Redis 连接实例，每个RequestContext中共用一个
      * @param string $poolName 连接池名称
-     * @return \Imi\Redis\RedisHandler|null
+     * @return \Swoole\Coroutine\Redis|null
      */
     public static function getInstance($poolName = null)
     {
@@ -50,9 +47,10 @@ abstract class RedisManager
      * 处理连接池 名称
      *
      * @param string $poolName
+     * @param int $queryType
      * @return string
      */
-    public static function parsePoolName($poolName = null)
+    private static function parsePoolName($poolName = null)
     {
         if(null === $poolName)
         {

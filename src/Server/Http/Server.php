@@ -23,7 +23,7 @@ class Server extends Base
     protected function createServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \swoole_http_server($config['host'], $config['port'], $config['mode'], $config['sockType']);
     }
 
     /**
@@ -59,7 +59,7 @@ class Server extends Base
     {
         $server = $this->swoolePort ?? $this->swooleServer;
 
-        $server->on('request', function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+        $server->on('request', function(\swoole_http_request $swooleRequest, \swoole_http_response $swooleResponse){
             try{
                 $request = new Request($this, $swooleRequest);
                 $response = new Response($this, $swooleResponse);
@@ -74,7 +74,7 @@ class Server extends Base
             }
         });
 
-        $server->on('close', function(\Swoole\Http\Server $server, $fd, $reactorID){
+        $server->on('close', function(\swoole_http_server $server, $fd, $reactorID){
             try{
                 $this->trigger('close', [
                     'server'    => $this,

@@ -54,8 +54,6 @@ abstract class ProcessPoolManager
                 'processPoolName'   =>  $name,
                 'workerId'          =>  $workerId,
             ]);
-            // 强制开启进程协程化
-            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
             $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
@@ -73,8 +71,8 @@ abstract class ProcessPoolManager
                 'msgQueueKey'   => $msgQueueKey,
             ]);
             // 执行任务
-            $processInstance->run($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
-            \Swoole\Event::wait();
+            call_user_func([$processInstance, 'run'], $pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
+            swoole_event_wait();
         }, true));
         
         $pool->on('WorkerStop', imiCallable(function ($pool, $workerId) use($name, $workerNum, $args, $ipcType, $msgQueueKey) {

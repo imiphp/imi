@@ -1,9 +1,9 @@
 <?php
 namespace Imi\Server\Session\Handler;
 
-use Imi\RequestContext;
 use Imi\Util\AtomicManager;
-use Imi\Util\Format\PhpSerialize;
+use Imi\Util\Format\SwooleSerialize;
+use Imi\RequestContext;
 
 abstract class Base implements ISessionHandler
 {
@@ -11,7 +11,7 @@ abstract class Base implements ISessionHandler
      * 数据格式化处理类
      * @var string
      */
-    protected $formatHandlerClass = PhpSerialize::class;
+    protected $formatHandlerClass = SwooleSerialize::class;
 
     /**
      * 生成SessionID

@@ -13,7 +13,7 @@ use Imi\Server\Event\Listener\IMessageEventListener;
 
 /**
  * Message事件前置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="message",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="message",priority=PHP_INT_MAX)
  */
 class BeforeMessage implements IMessageEventListener
 {

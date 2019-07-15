@@ -37,6 +37,7 @@ class Imi
      */
     public function buildImiRuntime()
     {
+        $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
         ImiUtil::buildRuntime(\Imi\Util\Imi::getRuntimePath('imi-runtime.cache'));
         echo 'Build imi runtime complete', PHP_EOL;
     }

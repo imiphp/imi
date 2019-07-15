@@ -103,6 +103,23 @@ abstract class CoroutineChannelManager
     }
 
     /**
+     * 通道读写检测。类似于socket_select和stream_select可以检测channel是否可进行读写。
+     * 当$read或$write数组中有部分channel对象处于可读或可写状态，select会立即返回，不会产生协程调度。当数组中没有任何channel可读或可写时，将挂起当前协程，并设置定时器。当其中一个通道可读或可写时，将重新唤醒当前协程。
+     * select操作只检测channel列表的可读或可写状态，但并不会读写channel，在select调用返回后，可遍历$read和$write数组，执行pop和push方法，完成通道读写操作。
+     * 成功返回true，底层会修改$read、$write数组，$read和$write中的元素，即是可读或可写的channel
+     * 超时或传入的参数错误，如$read和$write中有非channel对象，底层返回false
+     * @param string $name
+     * @param array $read 数组引用类型，元素为channel对象，读操作检测，可以为null
+     * @param array $write 数组引用类型，元素为channel对象，写操作检测，可以为null
+     * @param float $timeout 浮点型，超时设置，单位为秒，最小粒度为0.001秒，即1ms。默认为0，表示永不超时。
+     * @return mixed
+     */
+    public static function select(string $name, array &$read, array &$write, float $timeout = 0)
+    {
+        return static::getInstance($name)->select($name, $read, $write, $timeout);
+    }
+
+    /**
      * 获取实例
      * @param string $name
      * @return \Swoole\Atomic

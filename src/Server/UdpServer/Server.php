@@ -14,13 +14,25 @@ use Imi\Server\Event\Param\PacketEventParam;
 class Server extends Base
 {
     /**
+     * 构造方法
+     * @param string $name
+     * @param array $config
+     * @param \swoole_server $serverInstance
+     * @param bool $subServer 是否为子服务器
+     */
+    public function __construct($name, $config, $isSubServer = false)
+    {
+        parent::__construct($name, $config, $isSubServer);
+    }
+
+    /**
      * 创建 swoole 服务器对象
      * @return void
      */
     protected function createServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->swooleServer = new \swoole_server($config['host'], $config['port'], $config['mode'], $config['sockType']);
     }
 
     /**
@@ -57,7 +69,7 @@ class Server extends Base
     {
         $server = $this->swoolePort ?? $this->swooleServer;
 
-        $server->on('packet', function(\Swoole\Server $server, $data, $clientInfo){
+        $server->on('packet', function(\swoole_server $server, $data, $clientInfo){
             try{
                 $this->trigger('packet', [
                     'server'        => $this,

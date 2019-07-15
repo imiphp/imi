@@ -36,14 +36,4 @@ class ManyToMany extends RelationBase
      * @var string
      */
     public $rightMany;
-
-    /**
-     * 排序规则字符串
-     *
-     * 例：age desc, id desc
-     * 
-     * @var string
-     */
-    public $order;
-
 }

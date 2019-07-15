@@ -12,7 +12,7 @@ use Imi\Db\Statement\StatementManager;
 
 /**
  * request事件后置处理
- * @ClassEventListener(className="Imi\Server\Http\Server",eventName="request",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @ClassEventListener(className="Imi\Server\Http\Server",eventName="request",priority=PHP_INT_MIN)
  */
 class AfterRequest implements IRequestEventListener
 {

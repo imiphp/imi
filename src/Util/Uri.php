@@ -52,7 +52,7 @@ class Uri implements UriInterface
      * 协议标准端口
      * @var array
      */
-    protected static $schemePorts = [
+    public static $schemePorts = [
         'http'  => 80,
         'https' => 443,
         'ftp'   => 21,
@@ -127,38 +127,6 @@ class Uri implements UriInterface
     public static function makeUri($host, $path, $query = '', $port = 80, $scheme = 'http', $fragment = '', $userInfo = '')
     {
         return new static(static::makeUriString($host, $path, $query, $port, $scheme, $fragment, $userInfo));
-    }
-
-    /**
-     * 获取连接到服务器的端口
-     *
-     * @param \Psr\Http\Message\UriInterface $uri
-     * @return void
-     */
-    public static function getServerPort(UriInterface $uri)
-    {
-        $port = $uri->getPort();
-        if(!$port)
-        {
-            $port = static::$schemePorts[$uri->getScheme()] ?? null;
-        }
-        return $port;
-    }
-
-    /**
-     * 获取域名
-     * 格式：host[:port]
-     * @param \Psr\Http\Message\UriInterface $uri
-     * @return string
-     */
-    public static function getDomain(UriInterface $uri)
-    {
-        $result = $uri->host;
-        if(null !== $uri->port)
-        {
-            $result .= ':' . $uri->port;
-        }
-        return $result;
     }
 
     /**
@@ -265,6 +233,10 @@ class Uri implements UriInterface
      */
     public function getPort()
     {
+        if(null === $this->port && isset(static::$schemePorts[$this->scheme]))
+        {
+            return static::$schemePorts[$this->scheme];
+        }
         return $this->port;
     }
 
@@ -537,5 +509,19 @@ class Uri implements UriInterface
     {
         return static::makeUriString($this->host, $this->path, $this->query, $this->port, $this->scheme, $this->fragment, $this->userInfo);
     }
-
+    
+    /**
+     * 获取域名
+     * 格式：host[:port]
+     * @return string
+     */
+    public function getDomain()
+    {
+        $result = $this->host;
+        if(null !== $this->port)
+        {
+            $result .= ':' . $this->port;
+        }
+        return $result;
+    }
 }

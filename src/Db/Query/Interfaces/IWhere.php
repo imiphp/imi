@@ -54,5 +54,4 @@ interface IWhere extends IBaseWhere
      * @return void
      */
     public function setLogicalOperator(string $logicalOperator);
-
 }

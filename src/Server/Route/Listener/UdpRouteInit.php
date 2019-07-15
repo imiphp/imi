@@ -27,7 +27,7 @@ class UdpRouteInit implements IEventListener
     public function handle(EventParam $e)
     {
         $this->parseAnnotations($e);
-        $this->parseConfigs();
+        $this->parseConfigs($e);
     }
 
     /**
@@ -101,16 +101,16 @@ class UdpRouteInit implements IEventListener
      * 处理配置文件路由
      * @return void
      */
-    private function parseConfigs()
+    private function parseConfigs(EventParam $e)
     {
-        foreach(ServerManage::getServers() as $server)
+        foreach(ServerManage::getServers() as $name => $server)
         {
             if(!$server instanceof \Imi\Server\UdpServer\Server)
             {
                 continue;
             }
             $route = $server->getBean('UdpRoute');
-            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
             {
                 $routeAnnotation = new UdpRoute($routeOption['route'] ?? []);
                 if(isset($routeOption['callback']))

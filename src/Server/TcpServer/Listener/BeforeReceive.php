@@ -13,7 +13,7 @@ use Imi\Server\Event\Listener\IReceiveEventListener;
 
 /**
  * Receive事件前置处理
- * @ClassEventListener(className="Imi\Server\TcpServer\Server",eventName="receive",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @ClassEventListener(className="Imi\Server\TcpServer\Server",eventName="receive",priority=PHP_INT_MAX)
  */
 class BeforeReceive implements IReceiveEventListener
 {

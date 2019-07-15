@@ -105,7 +105,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function offsetExists($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
-        return method_exists($this, $methodName) && null !== $this->$methodName();
+        return method_exists($this, $methodName) && null !== call_user_func([$this, $methodName]);
     }
 
     public function &offsetGet($offset)
@@ -113,7 +113,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
         if(method_exists($this, $methodName))
         {
-            $result = $this->$methodName();
+            $result = call_user_func([$this, $methodName]);
         }
         else
         {
@@ -130,9 +130,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), Column::class);
         }
-        if(null !== $column && 'bit' === $column->type)
+        if(null !== $column)
         {
-            $value = (1 == $value || chr(1) == $value);
+            if('bit' === $column->type)
+            {
+                $value = (1 == $value || chr(1) == $value);
+            }
         }
 
         $methodName = 'set' . ucfirst($this->__getCamelName($offset));
@@ -140,7 +143,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             return;
         }
-        $this->$methodName($value);
+        call_user_func([$this, $methodName], $value);
 
         if(is_array($value) || is_object($value))
         {
@@ -331,7 +334,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 $setPropertyName = $annotation->alias;
             }
-            $this[$setPropertyName] = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
+            $this[$setPropertyName] = $value = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
         }
     }
 }

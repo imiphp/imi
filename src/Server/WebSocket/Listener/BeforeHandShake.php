@@ -11,7 +11,7 @@ use Imi\Server\Event\Listener\IHandShakeEventListener;
 
 /**
  * HandShake事件前置处理
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="handShake",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="handShake",priority=PHP_INT_MAX)
  */
 class BeforeHandShake implements IHandShakeEventListener
 {

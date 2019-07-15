@@ -1,5 +1,0 @@
-#!/usr/bin/env php
-<?php
-ini_set('date.timezone', date_default_timezone_get());
-
-require dirname(__DIR__) . '/vendor/bin/phpunit';

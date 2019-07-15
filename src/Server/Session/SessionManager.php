@@ -91,8 +91,7 @@ class SessionManager
         else
         {
             $this->id = $sessionID;
-            $data = $this->handler->read($this->id);
-            $this->data = $this->handler->decode($data);
+            $this->data = $this->handler->decode($this->handler->read($this->id));
         }
         $this->isStart = true;
     }

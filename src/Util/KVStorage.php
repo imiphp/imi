@@ -6,6 +6,13 @@ namespace Imi\Util;
  */
 class KVStorage extends \SplObjectStorage
 {
+/**
+     * object hash => 真实
+     *
+     * @var array
+     */
+    private static $map = [];
+
     /**
      * scalar resource => object object
      *

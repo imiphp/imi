@@ -28,7 +28,7 @@ class Inotify extends BaseMonitor
     /**
      * 更改的文件们
      *
-     * @var string[]
+     * @var string
      */
     private $changedFiles = [];
 
@@ -85,7 +85,6 @@ class Inotify extends BaseMonitor
     public function isChanged(): bool
     {
         $this->changedFiles = [];
-        $result = null;
         do{
             $readResult = \inotify_read($this->handler);
             if(false === $readResult)
@@ -105,9 +104,12 @@ class Inotify extends BaseMonitor
                 {
                     $this->changedFiles[] = $filePath;
                 }
-                if((Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
+                if(Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO))
                 {
-                    $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                    if($filePathIsDir && !$this->isExclude($filePath))
+                    {
+                        $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                    }
                 }
             }
             $result = isset($readResult[0]);

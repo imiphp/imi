@@ -33,18 +33,18 @@ class Statement extends BaseStatement implements IStatement
      */
     protected $db;
 
-    /**
-     * 最后插入ID
-     *
-     * @var int
-     */
-    protected $lastInsertId;
-
     public function __construct(IDb $db, $statement)
     {
         $this->db = $db;
         $this->statement = $statement;
-        $this->lastInsertId = (int)$this->db->lastInsertId();
+    }
+
+    public function __destruct()
+    {
+        if($this->db && $this->statement)
+        {
+            StatementManager::unUsing($this->db, $this->statement->queryString);
+        }
     }
 
     /**
@@ -149,7 +149,6 @@ class Statement extends BaseStatement implements IStatement
      */
     public function execute(array $inputParameters = null): bool
     {
-        $this->statement->closeCursor();
         if(null !== $inputParameters)
         {
             foreach($inputParameters as $k => $v)
@@ -169,7 +168,6 @@ class Statement extends BaseStatement implements IStatement
         {
             throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
         }
-        $this->lastInsertId = (int)$this->db->lastInsertId();
         return $result;
     }
 
@@ -265,7 +263,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function lastInsertId(string $name = null)
     {
-        return $this->lastInsertId;
+        return $this->db->lastInsertId($name);
     }
 
     /**

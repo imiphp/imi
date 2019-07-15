@@ -31,7 +31,7 @@ class HttpRouteInit implements IEventListener
     public function handle(EventParam $e)
     {
         $this->parseAnnotations($e);
-        $this->parseConfigs();
+        $this->parseConfigs($e);
     }
 
     /**
@@ -122,16 +122,16 @@ class HttpRouteInit implements IEventListener
      * 处理配置文件路由
      * @return void
      */
-    private function parseConfigs()
+    private function parseConfigs(EventParam $e)
     {
-        foreach(ServerManage::getServers() as $server)
+        foreach(ServerManage::getServers() as $name => $server)
         {
             if(!$server instanceof \Imi\Server\Http\Server && !$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
             $route = $server->getBean('HttpRoute');
-            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
             {
                 $routeAnnotation = new Route($routeOption['route'] ?? []);
                 if(isset($routeOption['callback']))

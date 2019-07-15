@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Db\Query;
 
+use Imi\Util\Defer;
+use Imi\Event\Event;
 use Imi\Model\Model;
 use Imi\Event\IEvent;
 use Imi\Bean\BeanFactory;
@@ -8,7 +10,6 @@ use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Model\Event\Param\AfterQueryEventParam;
-use Imi\Db\Statement\StatementManager;
 
 class Result implements IResult
 {
@@ -31,36 +32,46 @@ class Result implements IResult
     private $modelClass;
 
     /**
-     * 记录列表
+     * 延迟收包
      *
-     * @var array
+     * @var Defer
      */
-    private $statementRecords = [];
+    private $defer;
 
     /**
      * Undocumented function
      *
-     * @param \Imi\Db\Interfaces\IStatement $statement
+     * @param \Imi\Db\Interfaces\IStatement|\Imi\Util\Defer $statement
      * @param string|null $modelClass
+     * @param Defer $defer
      */
-    public function __construct($statement, $modelClass = null)
+    public function __construct($statement, $modelClass = null, $defer = null)
     {
         $this->modelClass = $modelClass;
-        if($statement instanceof IStatement)
+        $this->defer = $defer;
+        if($defer instanceof Defer)
         {
             $this->statement = $statement;
-            $this->isSuccess = '' === $this->statement->errorInfo();
-            $this->statementRecords = $this->statement->fetchAll();
         }
         else
         {
-            $this->isSuccess = false;
+            if($statement instanceof IStatement)
+            {
+                $this->statement = $statement;
+                $this->isSuccess = '' === $this->statement->errorInfo();
+            }
+            else
+            {
+                $this->isSuccess = false;
+            }
         }
     }
 
     public function __destruct()
     {
-        StatementManager::unUsingStatement($this->statement);
+        // 手动 gc statement
+        $this->statement = null;
+        gc_collect_cycles();
     }
 
     /**
@@ -69,6 +80,7 @@ class Result implements IResult
      */
     public function isSuccess(): bool
     {
+        $this->parseDefer();
         return $this->isSuccess;
     }
 
@@ -78,6 +90,7 @@ class Result implements IResult
      */
     public function getLastInsertId()
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
@@ -91,6 +104,7 @@ class Result implements IResult
      */
     public function getAffectedRows()
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
@@ -105,12 +119,13 @@ class Result implements IResult
      */
     public function get($className = null)
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
-        $record = $this->statementRecords[0] ?? null;
-        if(!$record)
+        $result = $this->statement->fetch();
+        if(false === $result)
         {
             return null;
         }
@@ -121,18 +136,18 @@ class Result implements IResult
         }
         if(null === $className)
         {
-            return $record;
+            return $result;
         }
         else
         {
             if(is_subclass_of($className, Model::class))
             {
-                $object = BeanFactory::newInstance($className, $record);
+                $object = BeanFactory::newInstance($className, $result);
             }
             else
             {
                 $object = BeanFactory::newInstance($className);
-                foreach($record as $k => $v)
+                foreach($result as $k => $v)
                 {
                     $object->$k = $v;
                 }
@@ -155,9 +170,15 @@ class Result implements IResult
      */
     public function getArray($className = null)
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
+        }
+        $result = $this->statement->fetchAll();
+        if(false === $result)
+        {
+            return null;
         }
 
         if(null === $className)
@@ -166,14 +187,14 @@ class Result implements IResult
         }
         if(null === $className)
         {
-            return $this->statementRecords;
+            return $result;
         }
         else
         {
             $list = [];
             $isModelClass = is_subclass_of($className, Model::class);
             $supportIEvent = is_subclass_of($className, IEvent::class);
-            foreach($this->statementRecords as $item)
+            foreach($result as $item)
             {
                 if($isModelClass)
                 {
@@ -201,23 +222,12 @@ class Result implements IResult
      */
     public function getColumn($column = 0)
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
-        if(isset($this->statementRecords[0]))
-        {
-            if(is_numeric($column))
-            {
-                $keys = array_keys($this->statementRecords[0]);
-                return array_column($this->statementRecords, $keys[$column]);
-            }
-            else
-            {
-                return array_column($this->statementRecords, $column);
-            }
-        }
-        return [];
+        return $this->statement->fetchAll(\PDO::FETCH_COLUMN, $column);
     }
 
     /**
@@ -227,24 +237,12 @@ class Result implements IResult
      */
     public function getScalar($columnKey = 0)
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
-        $record = $this->statementRecords[0] ?? null;
-        if($record)
-        {
-            if(is_numeric($columnKey))
-            {
-                $keys = array_keys($record);
-                return $record[$keys[$columnKey]];
-            }
-            else
-            {
-                return $record[$columnKey];
-            }
-        }
-        return null;
+        return $this->statement->fetchColumn();
     }
     
     /**
@@ -253,11 +251,12 @@ class Result implements IResult
      */
     public function getRowCount()
     {
+        $this->parseDefer();
         if(!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
-        return count($this->statementRecords);
+        return count($this->statement->fetchAll());
     }
 
     /**
@@ -267,6 +266,7 @@ class Result implements IResult
      */
     public function getSql()
     {
+        $this->parseDefer();
         return $this->statement->getSql();
     }
 
@@ -277,7 +277,28 @@ class Result implements IResult
      */
     public function getStatement(): IStatement
     {
+        $this->parseDefer();
         return $this->statement;
     }
 
+    /**
+     * 处理延迟收包
+     *
+     * @return void
+     */
+    private function parseDefer()
+    {
+        if($this->defer instanceof Defer)
+        {
+            $this->defer->call();
+        }
+        if($this->statement instanceof IStatement)
+        {
+            $this->isSuccess = '' === $this->statement->errorInfo();
+        }
+        else
+        {
+            $this->isSuccess = false;
+        }
+    }
 }

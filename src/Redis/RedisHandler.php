@@ -216,7 +216,7 @@ class RedisHandler
     /**
      * redis 对象
      *
-     * @var \Redis
+     * @var \Redis|\Swoole\Coroutine\Redis
      */
     private $redis;
 
@@ -233,11 +233,132 @@ class RedisHandler
     /**
      * 获取 Redis 对象实例
      *
-     * @return \Redis
+     * @return \Redis|\Swoole\Coroutine\Redis
      */
     public function getInstance()
     {
         return $this->redis;
+    }
+
+    /**
+     * 获取最后错误信息
+     *
+     * @return string
+     */
+    public function getLastError()
+    {
+        if($this->redis instanceof \Swoole\Coroutine\Redis)
+        {
+            return $this->redis->errMsg;
+        }
+        else
+        {
+            return $this->redis->getLastError();
+        }
+    }
+
+    public function hscan($str_key, &$i_iterator, $str_pattern = null, $i_count = null)
+    {
+        return $this->redis->hscan($str_key, $i_iterator, $str_pattern, $i_count);
+    }
+
+    public function scan(&$i_iterator, $str_pattern = null, $i_count = null)
+    {
+        return $this->redis->scan($i_iterator, $str_pattern, $i_count);
+    }
+
+    public function zscan($str_key, &$i_iterator, $str_pattern = null, $i_count = null)
+    {
+        return $this->redis->zscan($str_key, $i_iterator, $str_pattern, $i_count);
+    }
+
+    public function sscan($str_key, &$i_iterator, $str_pattern = null, $i_count = null)
+    {
+        return $this->redis->sscan($str_key, $i_iterator, $str_pattern, $i_count);
+    }
+
+    /**
+     * 让swoole协程 Redis 也支持第二个参数传入回调
+     *
+     * @param array $channels
+     * @param callable $callable
+     * @return mixed
+     */
+    public function subscribe(array $channels, callable $callable = null)
+    {
+        if($this->redis instanceof \Swoole\Coroutine\Redis)
+        {
+            $result = $this->redis->subscribe($channels);
+            if($result && null !== $callable)
+            {
+                while ($recvResult = $this->redis->recv())
+                {
+                    list($type, $chan, $msg) = $recvResult;
+                    switch($type)
+                    {
+                        case 'subscribe':
+                            // 频道订阅成功消息，订阅几个频道就有几条
+                            break;
+                        case 'unsubscribe':
+                            if($msg == 0)
+                            {
+                                break 2;
+                            }
+                            break;
+                        case 'message':
+                            $callable($this, $chan, $msg);
+                            break;
+                    }
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            return $this->redis->subscribe($channels, $callable);
+        }
+    }
+
+    /**
+     * 让swoole协程 Redis 也支持第二个参数传入回调
+     *
+     * @param array $channels
+     * @param callable $callable
+     * @return mixed
+     */
+    public function psubscribe(array $patterns, callable $callable = null)
+    {
+        if($this->redis instanceof \Swoole\Coroutine\Redis)
+        {
+            $result = $this->redis->psubscribe($patterns);
+            if($result && null !== $callable)
+            {
+                while ($recvResult = $this->redis->recv())
+                {
+                    list($type, $chan, $msg) = $recvResult;
+                    switch($type)
+                    {
+                        case 'psubscribe':
+                            // 频道订阅成功消息，订阅几个频道就有几条
+                            break;
+                        case 'punsubscribe':
+                            if($msg == 0)
+                            {
+                                break 2;
+                            }
+                            break;
+                        case 'pmessage':
+                            $callable($this, $chan, $msg);
+                            break;
+                    }
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            return $this->redis->psubscribe($patterns, $callable);
+        }
     }
 
     /**

@@ -180,10 +180,13 @@ class Group
         {
             // 执行结果
             $result[$fd] = $itemResult = $server->$name($fd, ...$arguments);
-            if($methodIsCheck && false === $itemResult && in_array($server->getLastError(), $clientCloseErrors))
+            if($methodIsCheck && false === $itemResult)
             {
-                // 客户端关闭的错误，直接把该客户端T出全部组
-                $fdMap->leaveAll($fd);
+                if(in_array($server->getLastError(), $clientCloseErrors))
+                {
+                    // 客户端关闭的错误，直接把该客户端T出全部组
+                    $fdMap->leaveAll($fd);
+                }
             }
         }
         return $result;

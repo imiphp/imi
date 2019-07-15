@@ -23,7 +23,7 @@ class FileMTime extends BaseMonitor
     /**
      * 更改的文件们
      *
-     * @var array
+     * @var string
      */
     private $changedFiles = [];
 
@@ -178,7 +178,6 @@ class FileMTime extends BaseMonitor
         else
         {
             $changed = true;
-            $mtime = 0;
         }
         $this->files[$fileName] = [
             'exists'    => $isFile,

@@ -8,7 +8,7 @@ class Request extends ServerRequest
 {
     /**
      * swoole的http请求对象
-     * @var \Swoole\Http\Request
+     * @var \swoole_http_request
      */
     protected $swooleRequest;
 
@@ -18,7 +18,7 @@ class Request extends ServerRequest
      */
     protected $serverInstance;
 
-    public function __construct(\Imi\Server\Base $server, \Swoole\Http\Request $request)
+    public function __construct(\Imi\Server\Base $server, \swoole_http_request $request)
     {
         $this->swooleRequest = $request;
         $this->serverInstance = $server;
@@ -52,9 +52,9 @@ class Request extends ServerRequest
 
     /**
      * 获取swoole的请求对象
-     * @return \Swoole\Http\Request
+     * @return \swoole_http_request
      */
-    public function getSwooleRequest(): \Swoole\Http\Request
+    public function getSwooleRequest(): \swoole_http_request
     {
         return $this->swooleRequest;
     }

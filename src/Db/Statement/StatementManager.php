@@ -93,16 +93,6 @@ abstract class StatementManager
         if(isset(static::$statements[$hashCode][$sql]))
         {
             static::$statements[$hashCode][$sql]['using'] = false;
-            if(RequestContext::exists())
-            {
-                $statementCaches = RequestContext::get('statementCaches', []);
-                $i = array_search(static::$statements[$hashCode][$sql]['statement'], $statementCaches);
-                if(false !== $i)
-                {
-                    unset($statementCaches[$i]);
-                    RequestContext::set('statementCaches', $statementCaches);
-                }
-            }
         }
     }
 

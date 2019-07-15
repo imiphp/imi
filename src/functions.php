@@ -2,7 +2,6 @@
 
 use Imi\RequestContext;
 use Imi\App;
-use Imi\ServerManage;
 
 /**
  * 启动一个协程，自动创建和销毁上下文
@@ -13,10 +12,9 @@ use Imi\ServerManage;
  */
 function imigo(callable $callable, ...$args)
 {
-    $newCallable = imiCallable($callable);
-    return go(function(...$args) use($newCallable){
-        $newCallable(...$args);
-    }, ...$args);
+    return go(function() use($callable, $args){
+        imiCallable($callable)(...$args);
+    });
 }
 
 /**
@@ -28,14 +26,12 @@ function imigo(callable $callable, ...$args)
  */
 function imiCallable(callable $callable, bool $withGo = false)
 {
-    $server = RequestContext::exists() ? RequestContext::get('server') : null;
-    $resultCallable = function(...$args) use($callable, $server){
+    $resultCallable = function(...$args) use($callable){
         $hasRequestContext = RequestContext::exists();
         try {
             if(!$hasRequestContext)
             {
                 RequestContext::create();
-                RequestContext::set('server', $server);
             }
             return $callable(...$args);
         } catch(\Throwable $th) {
@@ -50,9 +46,9 @@ function imiCallable(callable $callable, bool $withGo = false)
     if($withGo)
     {
         return function(...$args) use($resultCallable){
-            return go(function(...$args) use($resultCallable){
+            return go(function() use($args, $resultCallable){
                 return $resultCallable(...$args);
-            }, ...$args);
+            });
         };
     }
     else

@@ -247,7 +247,6 @@ class Driver extends Base implements IDb
      */
     public function exec(string $sql): int
     {
-        $this->lastSql = $sql;
         return $this->instance->exec($sql);
     }
 
@@ -300,14 +299,7 @@ class Driver extends Base implements IDb
      */
     public function prepare(string $sql, array $driverOptions = [])
     {
-        if(isset($driverOptions['IMI_NO_CACHE']))
-        {
-            $isCache = $driverOptions['IMI_NO_CACHE'];
-        }
-        else
-        {
-            $isCache = !isset($this->option['IMI_NO_CACHE']) || $this->option['IMI_NO_CACHE'];
-        }
+        $isCache = !isset($driverOptions['IMI_NO_CACHE']) || $driverOptions['IMI_NO_CACHE'];
         if($isCache && $stmtCache = StatementManager::get($this, $sql))
         {
             $stmt = $stmtCache['statement'];

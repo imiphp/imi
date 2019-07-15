@@ -11,7 +11,7 @@ use Imi\Util\Coroutine;
 
 /**
  * request事件前置处理
- * @ClassEventListener(className="Imi\Server\Http\Server",eventName="request",priority=Imi\Util\ImiPriority::IMI_MAX)
+ * @ClassEventListener(className="Imi\Server\Http\Server",eventName="request",priority=PHP_INT_MAX)
  */
 class BeforeRequest implements IRequestEventListener
 {

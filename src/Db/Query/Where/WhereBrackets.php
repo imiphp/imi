@@ -6,7 +6,6 @@ use Imi\Db\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IWhere;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IWhereBrackets;
-use Imi\Db\Query\Interfaces\IQuery;
 
 class WhereBrackets extends BaseWhere implements IWhereBrackets
 {
@@ -74,19 +73,13 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         $this->logicalOperator = $logicalOperator;
     }
 
-    /**
-     * 获取无逻辑的字符串
-     *
-     * @param IQuery $query
-     * @return string
-     */
-    public function toStringWithoutLogic(IQuery $query)
+    public function toStringWithoutLogic()
     {
         if($this->isRaw)
         {
             return $this->rawSQL;
         }
-        $callResult = ($this->callback)();
+        $callResult = call_user_func($this->callback);
         if(is_array($callResult))
         {
             $result = '(';
@@ -96,7 +89,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
                 {
                     if(0 === $i)
                     {
-                        $result .= $callResultItem->toStringWithoutLogic($query) . ' ';
+                        $result .= $callResultItem->toStringWithoutLogic() . ' ';
                     }
                     else
                     {

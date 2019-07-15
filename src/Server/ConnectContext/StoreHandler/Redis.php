@@ -3,7 +3,6 @@ namespace Imi\Server\ConnectContext\StoreHandler;
 
 use Imi\Worker;
 use Imi\Log\Log;
-use Imi\Event\Event;
 use Imi\Util\Swoole;
 use Imi\ServerManage;
 use Imi\RequestContext;
@@ -50,20 +49,6 @@ class Redis implements IHandler
      * @var int
      */
     protected $heartbeatTtl = 8;
-
-    /**
-     * 数据写入前编码回调
-     *
-     * @var callable
-     */
-    protected $dataEncode = null;
-
-    /**
-     * 数据读出后处理回调
-     *
-     * @var callable
-     */
-    protected $dataDecode = null;
     
     /**
      * 心跳Timer的ID
@@ -152,11 +137,7 @@ class Redis implements IHandler
         if($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
-                \Swoole\Timer::clear($this->timerID);
-                $this->timerID = null;
-            }, \Imi\Util\ImiPriority::IMI_MIN);
+            $this->timerID = \swoole_timer_tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
         }
     }
 
@@ -225,7 +206,7 @@ class Redis implements IHandler
     {
         if(null !== $this->timerID)
         {
-            \Swoole\Timer::clear($this->timerID);
+            \swoole_timer_clear($this->timerID);
         }
     }
 
@@ -239,21 +220,7 @@ class Redis implements IHandler
     {
         return $this->useRedis(function($resource, $redis) use($key){
             $result = $redis->hget($this->getStoreKey(), $key);
-            if($result)
-            {
-                if($this->dataDecode)
-                {
-                    return ($this->dataDecode)($result);
-                }
-                else
-                {
-                    return $result;
-                }
-            }
-            else
-            {
-                return [];
-            }
+            return $result ? $result : [];
         });
     }
 
@@ -267,10 +234,6 @@ class Redis implements IHandler
     public function save(string $key, array $data)
     {
         $this->useRedis(function($resource, $redis) use($key, $data){
-            if($this->dataEncode)
-            {
-                $data = ($this->dataEncode)($data);
-            }
             $redis->hset($this->getStoreKey(), $key, $data);
         });
     }
