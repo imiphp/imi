@@ -1,3 +1,4 @@
+sudo: required
 language: php
 
 matrix:
@@ -8,8 +9,6 @@ matrix:
     env: SWOOLE_VERSION="v4.3.5"
   - php: '7.3'
     env: SWOOLE_VERSION="v4.3.5"
-  - php: 'nightly'
-    env: SWOOLE_VERSION="v4.3.5" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
   - php: '7.1'
     env: SWOOLE_VERSION="master"
   - php: '7.2'
@@ -26,8 +25,6 @@ matrix:
     env: SWOOLE_VERSION="v4.4.0"
   - php: '7.3'
     env: SWOOLE_VERSION="v4.4.0"
-  - php: 'nightly'
-    env: SWOOLE_VERSION="v4.4.0" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
   allow_failures:
   - env: SWOOLE_VERSION="master"
   - php: nightly
