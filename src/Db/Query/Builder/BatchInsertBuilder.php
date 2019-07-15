@@ -10,6 +10,7 @@ class BatchInsertBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
         list($list) = $args;
         if(null === $list)
@@ -38,7 +39,7 @@ class BatchInsertBuilder extends BaseBuilder
             $valueParams = [];
             foreach($fields as $field)
             {
-                $valueParam = Query::getAutoParamName();
+                $valueParam = $this->query->getAutoParamName();
                 $valueParams[] = $valueParam;
                 $this->params[$valueParam] = ObjectArrayHelper::get($data, $field);
             }

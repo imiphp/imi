@@ -228,7 +228,7 @@ abstract class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($arguments) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($name, $arguments) {
                 return $redis->$name(...$arguments);
             });
         }
@@ -240,17 +240,18 @@ abstract class Redis
      * 本方法返回值为回调的返回值
      *
      * @param callable $callable
+     * @param string $poolName
      * @return mixed
      */
-    public static function use($callable)
+    public static function use($callable, $poolName = null)
     {
         if(Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
-            return $callable(RedisManager::getInstance());
+            return $callable(RedisManager::getInstance($poolName));
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($callable) {
+            return PoolManager::use(RedisManager::parsePoolName($poolName), function($resource, $redis) use($callable) {
                 return $callable($redis);
             });
         }

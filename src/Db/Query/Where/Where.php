@@ -1,11 +1,12 @@
 <?php
 namespace Imi\Db\Query\Where;
 
+use Imi\Db\Query\Query;
 use Imi\Db\Query\Traits\TRaw;
 use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Consts\LogicalOperator;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhere;
-use Imi\Db\Query\Query;
 
 class Where extends BaseWhere implements IWhere
 {
@@ -126,8 +127,15 @@ class Where extends BaseWhere implements IWhere
         $this->logicalOperator = $logicalOperator;
     }
 
-    public function toStringWithoutLogic()
+    /**
+     * 获取无逻辑的字符串
+     *
+     * @param IQuery $query
+     * @return string
+     */
+    public function toStringWithoutLogic(IQuery $query)
     {
+        $this->binds = [];
         if($this->isRaw)
         {
             return $this->rawSQL;
@@ -137,8 +145,8 @@ class Where extends BaseWhere implements IWhere
         {
             case 'between':
             case 'not between':
-                $begin = Query::getAutoParamName();
-                $end = Query::getAutoParamName();
+                $begin = $query->getAutoParamName();
+                $end = $query->getAutoParamName();
                 $result .= "{$begin} and {$end}";
                 $this->binds[$begin] = $this->value[0];
                 $this->binds[$end] = $this->value[1];
@@ -149,14 +157,14 @@ class Where extends BaseWhere implements IWhere
                 $valueNames = [];
                 foreach($this->value as $value)
                 {
-                    $paramName = Query::getAutoParamName();
+                    $paramName = $query->getAutoParamName();
                     $valueNames[] = $paramName;
                     $this->binds[$paramName] = $value;
                 }
                 $result .= implode(',', $valueNames) . ')';
                 break;
             default:
-                $value = Query::getAutoParamName();
+                $value = $query->getAutoParamName();
                 $result .= $value;
                 $this->binds[$value] = $this->value;
                 break;
@@ -172,4 +180,5 @@ class Where extends BaseWhere implements IWhere
     {
         return $this->binds;
     }
+
 }

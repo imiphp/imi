@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Bean\Annotation\AnnotationManager;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=1024)
+ * @Listener(eventName="IMI.INITED",priority=19940290)
  */
 class ImiInit implements IEventListener
 {

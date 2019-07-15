@@ -27,7 +27,7 @@ class DbResource extends BasePoolResource
      * 打开
      * @return boolean
      */
-    public function open($callback = null)
+    public function open()
     {
         StatementManager::clear($this->db);
         $this->db->open();
@@ -59,10 +59,6 @@ class DbResource extends BasePoolResource
      */
     public function reset()
     {
-        if($this->db instanceof \Imi\Db\Drivers\CoroutineMysql\Driver)
-        {
-            $this->db->getInstance()->setDefer(false);
-        }
         // 如果在事务中，则回滚
         if($this->db->inTransaction())
         {

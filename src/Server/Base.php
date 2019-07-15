@@ -18,6 +18,7 @@ use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\WorkerErrorEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Param\ManagerStartEventParam;
+use Imi\Server\Event\Param\WorkerExitEventParam;
 
 abstract class Base
 {
@@ -25,7 +26,7 @@ abstract class Base
 
     /**
      * swoole 服务器对象
-     * @var \swoole_server
+     * @var \Swoole\Server
      */
     protected $swooleServer;
 
@@ -64,7 +65,7 @@ abstract class Base
      * 构造方法
      * @param string $name
      * @param array $config
-     * @param \swoole_server $serverInstance
+     * @param \Swoole\Server $serverInstance
      * @param bool $subServer 是否为子服务器
      */
     public function __construct($name, $config, $isSubServer = false)
@@ -90,7 +91,7 @@ abstract class Base
 
     /**
      * 获取 swoole 服务器对象
-     * @return \swoole_server
+     * @return \Swoole\Server
      */
     public function getSwooleServer()
     {
@@ -124,7 +125,7 @@ abstract class Base
     {
         if(!$this->isSubServer)
         {
-            $this->swooleServer->on('start', function(\swoole_server $server){
+            $this->swooleServer->on('start', function(\Swoole\Server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.START', [
                         'server' => $this,
@@ -136,7 +137,7 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('shutdown', function(\swoole_server $server){
+            $this->swooleServer->on('shutdown', function(\Swoole\Server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.SHUTDOWN', [
                         'server' => $this,
@@ -148,7 +149,7 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerStart', function(\swoole_server $server, int $workerID){
+            $this->swooleServer->on('WorkerStart', function(\Swoole\Server $server, int $workerID){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
                         'server'    => $this,
@@ -161,7 +162,7 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerStop', function(\swoole_server $server, int $workerID){
+            $this->swooleServer->on('WorkerStop', function(\Swoole\Server $server, int $workerID){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
                         'server'    => $this,
@@ -174,7 +175,20 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('ManagerStart', function(\swoole_server $server){
+            $this->swooleServer->on('WorkerExit', function(\Swoole\Server $server, int $workerID){
+                try{
+                    Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [
+                        'server'    => $this,
+                        'workerID'  => $workerID,
+                    ], $this, WorkerExitEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+
+            $this->swooleServer->on('ManagerStart', function(\Swoole\Server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.START', [
                         'server' => $this,
@@ -186,7 +200,7 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('ManagerStop', function(\swoole_server $server){
+            $this->swooleServer->on('ManagerStop', function(\Swoole\Server $server){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.MANAGER.STOP', [
                         'server' => $this,
@@ -198,9 +212,11 @@ abstract class Base
                 }
             });
 
-            if(isset($this->config['configs']['enable_coroutine']) && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['enable_coroutine'] === true && $this->config['configs']['task_enable_coroutine'] === true)
+            if(
+                (!isset($this->config['configs']['enable_coroutine']) || $this->config['configs']['enable_coroutine'])
+                && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['task_enable_coroutine'])
             {
-                $this->swooleServer->on('task', function(\swoole_server $server, \swoole_server_task $task){
+                $this->swooleServer->on('task', function(\Swoole\Server $server, \Swoole\Server\Task $task){
                     try{
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
                             'server'   => $this,
@@ -208,6 +224,7 @@ abstract class Base
                             'workerID' => $task->worker_id,
                             'data'     => $task->data,
                             'flags'    => $task->flags,
+                            'task'     => $task,
                         ], $this, TaskEventParam::class);
                     }
                     catch(\Throwable $ex)
@@ -218,7 +235,7 @@ abstract class Base
             }
             else
             {
-                $this->swooleServer->on('task', function(\swoole_server $server, int $taskID, int $workerID, $data) {
+                $this->swooleServer->on('task', function(\Swoole\Server $server, int $taskID, int $workerID, $data) {
                     try
                     {
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
@@ -235,7 +252,7 @@ abstract class Base
                 });
             }
 
-            $this->swooleServer->on('finish', function(\swoole_server $server, int $taskID, $data){
+            $this->swooleServer->on('finish', function(\Swoole\Server $server, int $taskID, $data){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.FINISH', [
                         'server'    => $this,
@@ -249,7 +266,7 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('PipeMessage', function(\swoole_server $server, int $workerID, $message){
+            $this->swooleServer->on('PipeMessage', function(\Swoole\Server $server, int $workerID, $message){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $this,
@@ -263,7 +280,7 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerError', function(\swoole_server $server, int $workerID, int $workerPid, int $exitCode, int $signal){
+            $this->swooleServer->on('WorkerError', function(\Swoole\Server $server, int $workerID, int $workerPid, int $exitCode, int $signal){
                 try{
                     Event::trigger('IMI.MAIN_SERVER.WORKER_ERROR', [
                         'server'    => $this,

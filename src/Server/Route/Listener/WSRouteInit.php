@@ -28,7 +28,7 @@ class WSRouteInit implements IEventListener
     public function handle(EventParam $e)
     {
         $this->parseAnnotations($e);
-        $this->parseConfigs($e);
+        $this->parseConfigs();
     }
 
     /**
@@ -102,16 +102,16 @@ class WSRouteInit implements IEventListener
      * 处理配置文件路由
      * @return void
      */
-    private function parseConfigs(EventParam $e)
+    private function parseConfigs()
     {
-        foreach(ServerManage::getServers() as $name => $server)
+        foreach(ServerManage::getServers() as $server)
         {
             if(!$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
             $route = $server->getBean('WSRoute');
-            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $url => $routeOption)
+            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
                 $routeAnnotation = new WSRoute($routeOption['route'] ?? []);
                 if(isset($routeOption['callback']))

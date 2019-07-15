@@ -10,7 +10,7 @@ use Imi\Server\Event\Listener\IReceiveEventListener;
 
 /**
  * Receive事件后置处理
- * @ClassEventListener(className="Imi\Server\TcpServer\Server",eventName="receive",priority=PHP_INT_MIN)
+ * @ClassEventListener(className="Imi\Server\TcpServer\Server",eventName="receive",priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class AfterReceive implements IReceiveEventListener
 {

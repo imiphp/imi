@@ -8,7 +8,6 @@ use Imi\Main\Helper;
 use Imi\Bean\Annotation;
 use Imi\Event\EventParam;
 use Imi\Util\AtomicManager;
-use Imi\Util\ChannelManager;
 use Imi\Event\IEventListener;
 use Imi\Model\Annotation\Column;
 use Imi\Util\MemoryTableManager;
@@ -17,7 +16,7 @@ use Imi\Model\Annotation\MemoryTable;
 use Imi\Bean\Annotation\AnnotationManager;
 
 /**
- * @Listener(eventName="IMI.INITED", priority=1)
+ * @Listener(eventName="IMI.INITED", priority=19940280)
  */
 class Init implements IEventListener
 {

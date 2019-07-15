@@ -7,6 +7,7 @@ use Imi\Util\ArrayUtil;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Event\Event;
 
 abstract class BasePool implements IPool
 {
@@ -249,7 +250,10 @@ abstract class BasePool implements IPool
         $gcInterval = $this->config->getGCInterval();
         if(null !== $gcInterval)
         {
-            $this->timerID = \swoole_timer_tick($gcInterval * 1000, [$this, 'gc']);
+            $this->timerID = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
+            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
+                $this->stopAutoGC();
+            }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
 
@@ -261,7 +265,7 @@ abstract class BasePool implements IPool
     {
         if(null !== $this->timerID)
         {
-            \swoole_timer_clear($this->timerID);
+            \Swoole\Timer::clear($this->timerID);
         }
     }
 

@@ -140,6 +140,10 @@ CODE;
         $result = '';
         // 类型
         $paramType = $param->getType();
+        if($paramType)
+        {
+            $paramType = $paramType->getName();
+        }
         if(null !== $paramType && $param->allowsNull())
         {
             $paramType = '?' . $paramType;

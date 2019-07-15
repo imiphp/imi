@@ -18,7 +18,7 @@ use Imi\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Util\Imi;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=PHP_INT_MAX)
+ * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforeWorkerStart implements IWorkerStartEventListener
 {

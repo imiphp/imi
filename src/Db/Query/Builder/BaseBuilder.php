@@ -46,6 +46,16 @@ abstract class BaseBuilder implements IBuilder
     {
         $this->query = $query;
     }
+
+    /**
+     * 生成SQL语句
+     * @param mixed $args
+     * @return string
+     */
+    public function build(...$args)
+    {
+        $this->params = [];
+    }
     
     /**
      * distinct
@@ -118,10 +128,10 @@ abstract class BaseBuilder implements IBuilder
         foreach($where as $item)
         {
             $result[] = $item->getLogicalOperator();
-            $result[] = $item->toStringWithoutLogic();
+            $result[] = $item->toStringWithoutLogic($this->query);
             $this->params = array_merge($this->params, $item->getBinds());
         }
-        array_shift($result);
+        unset($result[0]);
         $result = implode(' ', $result);
         if('' !== $result)
         {
@@ -144,16 +154,16 @@ abstract class BaseBuilder implements IBuilder
         }
         else if(null === $offset)
         {
-            $limitName = Query::getAutoParamName();
-            $this->params[$limitName] = $limit;
+            $limitName = $this->query->getAutoParamName();
+            $this->params[$limitName] = (int)$limit;
             return ' limit ' . $limitName;
         }
         else
         {
-            $offsetName = Query::getAutoParamName();
-            $this->params[$offsetName] = $offset;
-            $limitName = Query::getAutoParamName();
-            $this->params[$limitName] = $limit;
+            $offsetName = $this->query->getAutoParamName();
+            $this->params[$offsetName] = (int)$offset;
+            $limitName = $this->query->getAutoParamName();
+            $this->params[$limitName] = (int)$limit;
             return ' limit ' . $offsetName . ',' . $limitName;
         }
     }
@@ -208,10 +218,10 @@ abstract class BaseBuilder implements IBuilder
         foreach($having as $item)
         {
             $result[] = $item->getLogicalOperator();
-            $result[] = $item->toStringWithoutLogic();
+            $result[] = $item->toStringWithoutLogic($this->query);
             $this->params = array_merge($this->params, $item->getBinds());
         }
-        array_shift($result);
+        unset($result[0]);
         $result = implode(' ', $result);
         if('' !== $result)
         {

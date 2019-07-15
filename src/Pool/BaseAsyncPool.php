@@ -45,19 +45,9 @@ abstract class BaseAsyncPool extends BasePool
                 // 没有空闲连接，当前连接数少于最大连接数
                 $this->addResource();
             }
-            else 
+            else
             {
-                if(SWOOLE_VERSION < '4.0.3')
-                {
-                    // 等待其他协程使用完成后释放连接
-                    $read = [$this->queue];
-                    $write = null;
-                    $selectResult = Channel::select($read, $write, $this->config->getWaitTimeout() / 1000);
-                }
-                else
-                {
-                    $selectResult = $this->queue->pop($this->config->getWaitTimeout() / 1000);
-                }
+                $selectResult = $this->queue->pop($this->config->getWaitTimeout() / 1000);
                 if(false === $selectResult)
                 {
                     throw new \RuntimeException(sprintf('AsyncPool [%s] getResource timeout', $this->getName()));
@@ -100,14 +90,7 @@ abstract class BaseAsyncPool extends BasePool
         $read = [$this->queue];
         $write = null;
         // Coroutine\Channel::select()/->pop() 最小超时时间1毫秒
-        if(SWOOLE_VERSION < '4.0.3')
-        {
-            $result = Channel::select($read, $write, 0.001);
-        }
-        else
-        {
-            $result = $this->queue->pop(0.001);
-        }
+        $result = $this->queue->pop(0.001);
         if(false === $result)
         {
             return false;

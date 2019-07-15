@@ -79,4 +79,14 @@ abstract class BaseEnum
         return EnumParser::getInstance()->getValues(static::class);
     }
 
+    /**
+     * 获取键值对应数组
+     *
+     * @return array
+     */
+    public static function getMap()
+    {
+        return EnumParser::getInstance()->getMap(static::class);
+    }
+
 }

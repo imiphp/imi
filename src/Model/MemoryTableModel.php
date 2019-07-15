@@ -32,8 +32,9 @@ abstract class MemoryTableModel extends BaseModel
         {
             return null;
         }
-        $data['__key'] = $key;
-        return static::newInstance($data);
+        $object = static::newInstance($data);
+        $object->__setKey($key);
+        return $object;
     }
 
     /**

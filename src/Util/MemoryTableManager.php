@@ -33,7 +33,7 @@ abstract class MemoryTableManager
             $table = new \Swoole\Table($option['size'] ?? 1024, $option['conflictProportion'] ?? 0.2);
             foreach($option['columns'] as $column)
             {
-                $table->column($column['name'], $column['type'] ?? swoole_table::TYPE_STRING, $column['size'] ?? 0);
+                $table->column($column['name'], $column['type'] ?? \Swoole\Table::TYPE_STRING, $column['size'] ?? 0);
             }
             if(!$table->create())
             {

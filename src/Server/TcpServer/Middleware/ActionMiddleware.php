@@ -37,7 +37,7 @@ class ActionMiddleware implements IMiddleware
             $result['callable'][0]->data = $data;
         }
         // 执行动作
-        $actionResult = call_user_func($result['callable'], $data->getFormatData());
+        $actionResult = ($result['callable'])($data->getFormatData());
 
         RequestContext::set('tcpResult', $actionResult);
 

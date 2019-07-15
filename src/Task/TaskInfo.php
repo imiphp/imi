@@ -8,13 +8,13 @@ class TaskInfo
 {
     /**
      * 任务执行器
-     * @var ITaskHandler
+     * @var \Imi\Task\Interfaces\ITaskHandler
      */
     private $taskHandler;
     
     /**
      * 任务参数
-     * @var ITaskParam
+     * @var \Imi\Task\Interfaces\ITaskParam
      */
     private $param;
 
@@ -26,6 +26,7 @@ class TaskInfo
 
     /**
      * Get the value of taskHandler
+     * @return \Imi\Task\Interfaces\ITaskHandler
      */ 
     public function getTaskHandler()
     {
@@ -34,6 +35,7 @@ class TaskInfo
 
     /**
      * Get the value of param
+     * @return \Imi\Task\Interfaces\ITaskParam
      */ 
     public function getParam()
     {

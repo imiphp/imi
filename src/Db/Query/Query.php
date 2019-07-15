@@ -2,7 +2,6 @@
 namespace Imi\Db\Query;
 
 use Imi\Db\Db;
-use Imi\Util\Defer;
 use Imi\Db\Query\Order;
 use Imi\RequestContext;
 use Imi\Util\Pagination;
@@ -36,60 +35,60 @@ class Query implements IQuery
      * 操作记录
      * @var QueryOption
      */
-    private $option;
+    protected $option;
 
     /**
      * 数据绑定
      * @var array
      */
-    private $binds = [];
+    protected $binds = [];
 
     /**
      * 数据库操作对象
      * @var IDb
      */
-    private $db;
+    protected $db;
 
     /**
      * 连接池名称
      *
      * @var string
      */
-    private $poolName;
+    protected $poolName;
 
     /**
      * 查询结果类的类名，为null则为数组
      * @var string
      */
-    private $modelClass;
-
-    /**
-     * 设置延迟收包
-     *
-     * @var boolean
-     */
-    private $defer = false;
+    protected $modelClass;
 
     /**
      * 查询类型
      *
      * @var int
      */
-    private $queryType;
+    protected $queryType;
 
     /**
      * 是否初始化时候就设定了查询类型
      *
      * @var boolean
      */
-    private $isInitQueryType;
+    protected $isInitQueryType;
 
     /**
      * 是否初始化时候就设定了连接
      *
      * @var boolean
      */
-    private $isInitDb;
+    protected $isInitDb;
+
+    /**
+     * 数据库字段自增
+     *
+     * @var integer
+     */
+    protected $dbParamInc = 0;
 
     public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
@@ -103,6 +102,7 @@ class Query implements IQuery
 
     public function __init()
     {
+        $this->dbParamInc = 1;
         $this->option = new QueryOption;
         if(!$this->isInitQueryType)
         {
@@ -126,6 +126,7 @@ class Query implements IQuery
      */
     public function setOption(QueryOption $option)
     {
+        $this->dbParamInc = 1;
         $this->option = $option;
         return $this;
     }
@@ -1011,16 +1012,11 @@ class Query implements IQuery
             $stmt = $this->db->prepare($sql);
             if($stmt)
             {
-                if($this->defer)
-                {
-                    $defer = $stmt->deferExecute($this->binds);
-                }
-                else
-                {
-                    $stmt->execute($this->binds) ? $stmt : false;
-                }
+                $binds = $this->binds;
+                $this->binds = [];
+                $stmt->execute($binds);
             }
-            return new Result($stmt, $this->modelClass, $defer ?? null);
+            return new Result($stmt, $this->modelClass);
         } finally {
             $this->__init();
         }
@@ -1030,16 +1026,14 @@ class Query implements IQuery
      * 获取自动起名的参数名称
      * @return string
      */
-    public static function getAutoParamName()
+    public function getAutoParamName()
     {
-        $index = RequestContext::get('dbParamInc', 0);
-        if($index >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
+        if($this->dbParamInc >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
         {
-            $index = 0;
+            $this->dbParamInc = 0;
         }
-        ++$index;
-        RequestContext::set('dbParamInc', $index);
-        return ':p' . dechex($index);
+        ++$this->dbParamInc;
+        return ':p' . dechex($this->dbParamInc);
     }
 
     /**
@@ -1057,7 +1051,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace的字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param mixed $value
      * @return static
      */
@@ -1070,7 +1064,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param string $exp
      * @return static
      */
@@ -1083,7 +1077,7 @@ class Query implements IQuery
     /**
      * 设置递增字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param float $incValue
      * @return static
      */
@@ -1096,25 +1090,13 @@ class Query implements IQuery
     /**
      * 设置递减字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param float $decValue
      * @return static
      */
     public function setFieldDec($fieldName, float $decValue = 1)
     {
         $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
-        return $this;
-    }
-
-    /**
-     * 设置是否延迟调用
-     *
-     * @param boolean $defer
-     * @return static
-     */
-    public function setDefer($defer = true)
-    {
-        $this->defer = $defer;
         return $this;
     }
 

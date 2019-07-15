@@ -29,9 +29,10 @@ class ModelGenerate
      * @Arg(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
      * @Arg(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
      * @Arg(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false")
+     * @Arg(name="config", type=ArgType::STRING, default=true, comments="配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true")
      * @return void
      */
-    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override)
+    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config)
     {
         $override = (string)$override;
         switch($override)
@@ -42,6 +43,23 @@ class ModelGenerate
                 break;
             default:
                 $override = (bool)json_decode($override);
+        }
+        if(in_array($config, ['true', 'false']))
+        {
+            $config = (bool)json_decode($config);
+        }
+        if(true === $config)
+        {
+            $configData = Config::get('@app.tools.generate/model');
+        }
+        else if(is_string($config))
+        {
+            $configData = include $config;
+            $configData = $configData['tools']['generate/model'];
+        }
+        else
+        {
+            $configData = null;
         }
         $query = Db::query($poolName);
         // 数据库
@@ -61,6 +79,11 @@ class ModelGenerate
                         ->getArray();
         // model保存路径
         $modelPath = Imi::getNamespacePath($namespace);
+        if(null === $modelPath)
+        {
+            echo 'Namespace ', $namespace, ' cannot found', PHP_EOL;
+            exit;
+        }
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
@@ -73,18 +96,35 @@ class ModelGenerate
                 continue;
             }
             $className = $this->getClassName($table, $prefix);
-            $fileName = File::path($modelPath, $className . '.php');
-            if(is_file($fileName))
+            if(isset($configData['relation'][$table]))
             {
-                if(false === $override)
+                $configItem = $configData['relation'][$table];
+                $modelNamespace = $configItem['namespace'];
+                $path = Imi::getNamespacePath($modelNamespace);
+                if(null === $path)
                 {
-                    // 不覆盖
-                    echo 'Skip ', $table, '...', PHP_EOL;
-                    continue;
+                    echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
+                    exit;
                 }
+                File::createDir($path);
+                $basePath = $path . '/Base';
+                File::createDir($basePath);
+                $fileName = File::path($path, $className . '.php');
+            }
+            else
+            {
+                $modelNamespace = $namespace;
+                $fileName = File::path($modelPath, $className . '.php');
+                $basePath = $baseModelPath;
+            }
+            if(false === $override && is_file($fileName))
+            {
+                // 不覆盖
+                echo 'Skip ', $table, '...', PHP_EOL;
+                continue;
             }
             $data = [
-                'namespace' => $namespace,
+                'namespace' => $modelNamespace,
                 'className' => $className,
                 'table'     => [
                     'name'  => $table,
@@ -95,7 +135,7 @@ class ModelGenerate
             $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`' , $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
             
-            $baseFileName = File::path($baseModelPath, $className . 'Base.php');
+            $baseFileName = File::path($basePath, $className . 'Base.php');
             if(!is_file($baseFileName) || true === $override || 'base' === $override)
             {
                 echo 'Generating ', $table, ' BaseClass...', PHP_EOL;
@@ -190,11 +230,11 @@ class ModelGenerate
     }
     /**
      * 处理类似varchar(32)和decimal(10,2)格式的字段类型
-     * @param string $text 
-     * @param string $typeName 
-     * @param int $length 
-     * @param int $accuracy 
-     * @return bool 
+     * @param string $text
+     * @param string $typeName
+     * @param int $length
+     * @param int $accuracy
+     * @return bool
      */
     public function parseFieldType($text, &$typeName, &$length, &$accuracy)
     {

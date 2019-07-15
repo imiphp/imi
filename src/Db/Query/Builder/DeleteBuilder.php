@@ -5,6 +5,7 @@ class DeleteBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
 
         $sql = 'delete from ' . $option->table

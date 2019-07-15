@@ -150,7 +150,12 @@ abstract class Query
         $model->$propertyName = new ArrayList($modelClass);
         if(null !== $model->$leftField)
         {
-            $list = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->getArray();
+            $query = $modelClass::query()->where($rightField, '=', $model->$leftField);
+            if($annotation->order)
+            {
+                $query->orderRaw($annotation->order);
+            }
+            $list = $query->select()->getArray();
             if(null !== $list)
             {
                 $model->$propertyName->append(...$list);
@@ -171,15 +176,6 @@ abstract class Query
     {
         $className = BeanFactory::getObjectClass($model);
 
-        if(class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
-
         $struct = new ManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
@@ -194,13 +190,17 @@ abstract class Query
         
         if(null !== $model->$leftField)
         {
-            $list = Db::query(ModelManager::getDbPoolName($className))
+            $query = Db::query(ModelManager::getDbPoolName($className))
                         ->table($rightTable)
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
-                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField)
-                        ->select()
-                        ->getArray();
+                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField);
+            if($annotation->order)
+            {
+                $query->orderRaw($annotation->order);
+            }
+            $list = $query->select()
+                          ->getArray();
             if(null !== $list)
             {
                 // 关联数据
@@ -282,7 +282,12 @@ abstract class Query
         $model->$propertyName = new ArrayList($modelClass);
         if(null !== $model->$leftField)
         {
-            $list = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->select()->getArray();
+            $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+            if($annotation->order)
+            {
+                $query->orderRaw($annotation->order);
+            }
+            $list = $query->select()->getArray();
             if(null !== $list)
             {
                 $model->$propertyName->append(...$list);
@@ -300,6 +305,7 @@ abstract class Query
      */
     public static function initByPolymorphicToOne($model, $propertyName, $annotation)
     {
+        $modelClassName = BeanFactory::getObjectClass($model);
         foreach($annotation as $annotationItem)
         {
             if($model->{$annotationItem->type} == $annotationItem->typeValue)
@@ -312,7 +318,7 @@ abstract class Query
                 }
                 else
                 {
-                    $modelClass = Imi::getClassNamespace($className) . '\\' . $annotationItem->model;
+                    $modelClass = $modelClassName . '\\' . $annotationItem->model;
                 }
                 if(null === $model->$rightField)
                 {
@@ -344,15 +350,6 @@ abstract class Query
     {
         $className = BeanFactory::getObjectClass($model);
 
-        if(class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
-
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
@@ -366,14 +363,18 @@ abstract class Query
         
         if(null !== $model->$leftField)
         {
-            $list = Db::query(ModelManager::getDbPoolName($className))
+            $query = Db::query(ModelManager::getDbPoolName($className))
                         ->table($rightTable)
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleLeftField(), '=', $rightTable . '.' . $rightField)
                         ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
-                        ->where($middleTable . '.' . $struct->getMiddleRightField(), '=', $model->$leftField)
-                        ->select()
-                        ->getArray();
+                        ->where($middleTable . '.' . $struct->getMiddleRightField(), '=', $model->$leftField);
+            if($annotation->order)
+            {
+                $query->orderRaw($annotation->order);
+            }
+            $list = $query->select()
+                          ->getArray();
             if(null !== $list)
             {
                 // 关联数据
@@ -393,15 +394,6 @@ abstract class Query
     public static function initByPolymorphicManyToMany($model, $propertyName, $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
-
-        if(class_exists($annotation->model))
-        {
-            $modelClass = $annotation->model;
-        }
-        else
-        {
-            $modelClass = Imi::getClassNamespace($className) . '\\' . $annotation->model;
-        }
 
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();

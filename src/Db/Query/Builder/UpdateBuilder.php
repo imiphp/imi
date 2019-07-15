@@ -7,6 +7,7 @@ class UpdateBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
         list($data) = $args;
         if(null === $data)
@@ -33,7 +34,7 @@ class UpdateBuilder extends BaseBuilder
             }
             else
             {
-                $valueParam = Query::getAutoParamName();
+                $valueParam = $this->query->getAutoParamName();
                 $valueParams[] = $valueParam;
                 $this->params[$valueParam] = $v;
                 $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;

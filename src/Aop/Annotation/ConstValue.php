@@ -11,7 +11,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * 支持在注解中为属性动态赋值
  * 
  * @Annotation
- * @Target("ANNOTATION")
+ * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class ConstValue extends BaseInjectValue

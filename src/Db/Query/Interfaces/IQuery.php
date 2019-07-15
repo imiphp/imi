@@ -551,7 +551,7 @@ interface IQuery
     /**
      * 设置update/insert/replace的字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param mixed $value
      * @return static
      */
@@ -560,7 +560,7 @@ interface IQuery
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param string $exp
      * @return static
      */
@@ -569,7 +569,7 @@ interface IQuery
     /**
      * 设置递增字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param float $incValue
      * @return static
      */
@@ -578,17 +578,11 @@ interface IQuery
     /**
      * 设置递减字段
      *
-     * @param stirng $fieldName
+     * @param string $fieldName
      * @param float $decValue
      * @return static
      */
     public function setFieldDec($fieldName, float $decValue = 1);
 
-    /**
-     * 设置是否延迟调用
-     *
-     * @param boolean $defer
-     * @return static
-     */
-    public function setDefer($defer = true);
+    public function getAutoParamName();
 }

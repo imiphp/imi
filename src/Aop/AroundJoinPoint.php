@@ -25,6 +25,10 @@ class AroundJoinPoint extends JoinPoint
         {
             $args = $this->getArgs();
         }
-        return call_user_func($this->nextProceed, $args);
+        $result = ($this->nextProceed)($args);
+        
+        $this->args = $args;
+
+        return $result;
     }
 }

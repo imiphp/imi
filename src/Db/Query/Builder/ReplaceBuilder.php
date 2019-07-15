@@ -9,6 +9,7 @@ class ReplaceBuilder extends BaseBuilder
 {
     public function build(...$args)
     {
+        parent::build(...$args);
         $option = $this->query->getOption();
         list($data) = $args;
         if(null === $data)
@@ -22,7 +23,7 @@ class ReplaceBuilder extends BaseBuilder
             $sql .= $builder->build();
             $this->query->bindValues($data->getBinds());
         }
-        else 
+        else
         {
             // set后面的field=value
             $setStrs = [];
@@ -41,8 +42,7 @@ class ReplaceBuilder extends BaseBuilder
                 }
                 else
                 {
-                    $valueParam = Query::getAutoParamName();
-                    $valueParams[] = $valueParam;
+                    $valueParam = $this->query->getAutoParamName();
                     $this->params[$valueParam] = $v;
                     $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
                 }

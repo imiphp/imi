@@ -16,6 +16,7 @@ use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Parser\ToolParser;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Tool\Annotation\Operation;
+use Imi\Event\Event;
 
 abstract class Tool
 {
@@ -23,20 +24,25 @@ abstract class Tool
 
     public static function initTool()
     {
-        static::outImi();
-        static::outStartupInfo();
-        if(!isset($_SERVER['argv'][1]))
+        $skip = false;
+        Event::trigger('IMI.INIT_TOOL', [
+            'skip'  =>  &$skip,
+        ]);
+        if(!$skip)
         {
-            throw new \RuntimeException(sprintf('Tool args error!'));
+            if(!isset($_SERVER['argv'][1]))
+            {
+                throw new \RuntimeException(sprintf('Tool args error!'));
+            }
+            if(false === strpos($_SERVER['argv'][1], '/'))
+            {
+                throw new \RuntimeException(sprintf('Tool name and operation not found!'));
+            }
+            // 工具名/操作名
+            list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+            static::init();
+            Imi::setProcessName('tool');
         }
-        if(false === strpos($_SERVER['argv'][1], '/'))
-        {
-            throw new \RuntimeException(sprintf('Tool name and operation not found!'));
-        }
-        // 工具名/操作名
-        list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
-        static::init();
-        Imi::setProcessName('tool');
     }
 
     public static function run()
@@ -98,14 +104,14 @@ abstract class Tool
             if($operationAnnotation->co)
             {
                 imigo(function() use($callable, $args) {
-                    call_user_func_array($callable, $args);
+                    $callable(...$args);
                 });
             }
             else
             {
-                call_user_func_array($callable, $args);
+                $callable(...$args);
             }
-            swoole_event_wait();
+            \Swoole\Event::wait();
         }
         
     }
@@ -134,7 +140,7 @@ abstract class Tool
      * 初始化
      * @return void
      */
-    private static function init()
+    public static function init()
     {
         // 跳过初始化的工具
         foreach(Config::get('@Imi.skipInitTools') as $tool)
@@ -147,9 +153,9 @@ abstract class Tool
 
         // 仅初始化项目及组件
         $initMains = [Helper::getMain(App::getNamespace())];
-        foreach(Helper::getAppMains() as $mainName => $main)
+        foreach(Helper::getAppMains() as $main)
         {
-            foreach($main->getConfig()['components'] ?? [] as $componentName => $namespace)
+            foreach($main->getConfig()['components'] ?? [] as $namespace)
             {
                 $componentMain = Helper::getMain($namespace);
                 if(null !== $componentMain)
@@ -261,35 +267,4 @@ abstract class Tool
         return trim(preg_replace('/@.+\n/', '', preg_replace('/\/*\s*\*\s*\/*/', PHP_EOL, $content)));
     }
 
-    /**
-     * 输出 imi 图标
-     *
-     * @return void
-     */
-    public static function outImi()
-    {
-        echo <<<STR
- _               _ 
-(_)  _ __ ___   (_)
-| | | '_ ` _ \  | |
-| | | | | | | | | |
-|_| |_| |_| |_| |_|
-
-
-STR;
-    }
-
-    /**
-     * 输出启动信息
-     *
-     * @return void
-     */
-    public static function outStartupInfo()
-    {
-        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL
-        , 'PHP: v', PHP_VERSION, PHP_EOL
-        , 'Swoole: v', SWOOLE_VERSION, PHP_EOL
-        , 'Timezone: ', date_default_timezone_get(), PHP_EOL
-        , PHP_EOL;
-    }
 }

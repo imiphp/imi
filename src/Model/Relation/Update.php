@@ -199,7 +199,6 @@ abstract class Update
         $middleLeftField = $struct->getMiddleLeftField();
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
-        $rightField = $struct->getRightField();
 
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
@@ -274,7 +273,6 @@ abstract class Update
         {
             foreach($relations as $name => $annotations)
             {
-                $annotation = $annotations[0];
                 $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $name, AutoUpdate::class)[0] ?? null;
                 $autoSave = AnnotationManager::getPropertyAnnotations($className, $name, AutoSave::class)[0] ?? null;
         
@@ -435,7 +433,6 @@ abstract class Update
         $middleLeftField = $struct->getMiddleLeftField();
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
-        $rightField = $struct->getRightField();
 
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
