@@ -16,6 +16,8 @@ matrix:
     env: SWOOLE_VERSION="master"
   - php: '7.3'
     env: SWOOLE_VERSION="master"
+  - php: '7.4snapshot'
+    env: SWOOLE_VERSION="master"
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
   - php: '7.1'
@@ -29,15 +31,22 @@ matrix:
   allow_failures:
   - env: SWOOLE_VERSION="master"
   - php: nightly
+  - php: 7.4snapshot
 
 services:
   - redis-server
   - mysql
 
+before_install:
+  - apt install unzip
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
-      wget http://pecl.php.net/get/redis-5.0.1.tgz;
-      printf "yes\nyes\n" | pecl install redis-5.0.1.tgz;
+      wget https://github.com/phpredis/phpredis/archive/develop.zip;
+      unzip develop.zip;
+      cd phpredis;
+      phpize;
+      ./configure;
+      make && make install;
     fi
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - wget https://github.com/swoole/swoole-src/archive/$SWOOLE_VERSION.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j && make install && cd -
