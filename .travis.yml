@@ -39,11 +39,6 @@ addons:
     packages:
     - unzip
 
-before_install:
-  - wget http://phar.phpunit.cn/phpunit.phar
-  - chmod +x phpunit.phar
-  - sudo mv phpunit.phar /usr/local/sbin/phpunit
-
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
       wget https://github.com/phpredis/phpredis/archive/develop.zip;
@@ -63,6 +58,7 @@ before_script:
       phpenv config-rm xdebug.ini;
     fi
   - sh tests/db/install-db.sh
+  - curl -sSfL -o ~/.phpenv/versions/hhvm/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
 
 script:
   - composer install-test-no-dev
