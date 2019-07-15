@@ -34,8 +34,11 @@ services:
   - redis-server
   - mysql
 
-before_install:
-  - apt install unzip
+addons:
+  apt:
+    packages:
+    - unzip
+
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
       wget https://github.com/phpredis/phpredis/archive/develop.zip;
