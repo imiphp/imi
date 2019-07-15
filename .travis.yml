@@ -19,16 +19,15 @@ matrix:
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false
   - php: '7.1'
-    env: SWOOLE_VERSION="v4.4.0-beta"
+    env: SWOOLE_VERSION="v4.4.0"
   - php: '7.2'
-    env: SWOOLE_VERSION="v4.4.0-beta"
+    env: SWOOLE_VERSION="v4.4.0"
   - php: '7.3'
-    env: SWOOLE_VERSION="v4.4.0-beta"
+    env: SWOOLE_VERSION="v4.4.0"
   - php: 'nightly'
-    env: SWOOLE_VERSION="v4.4.0-beta" DISABLE_XDEBUG=false
+    env: SWOOLE_VERSION="v4.4.0" DISABLE_XDEBUG=false
   allow_failures:
   - env: SWOOLE_VERSION="master"
-  - env: SWOOLE_VERSION="v4.4.0-beta"
   - php: nightly
 
 services:
