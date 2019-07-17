@@ -28,6 +28,7 @@ class Server
      */
     public function start()
     {
+        Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
         RequestContext::destroy();
         PoolManager::clearPools();
         CacheManager::clearPools();
@@ -44,25 +45,9 @@ class Server
      */
     public function stop()
     {
-        go(function(){
-            $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
-            if(!is_file($fileName))
-            {
-                exit(sprintf('Pid file %s is not exists', $fileName));
-            }
-            $pid = json_decode(File::readFile($fileName), true);
-            if($pid > 0)
-            {
-                $cmd = 'kill ' . $pid['masterPID'];
-                echo $cmd, PHP_EOL;
-                $result = Coroutine::exec($cmd);
-                echo 'code:', $result['code'], ', signal:', $result['signal'], ', output:', $result['output'], PHP_EOL;
-            }
-            else
-            {
-                echo 'Pid does not exists!', PHP_EOL;
-            }
-        });
+        $result = Imi::stopServer();
+        echo $result['cmd'], PHP_EOL;
+        echo 'code:', $result['result']['code'], ', signal:', $result['result']['signal'], ', output:', $result['result']['output'], PHP_EOL;
     }
 
     /**
@@ -74,24 +59,8 @@ class Server
      */
     public function reload()
     {
-        go(function(){
-            $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
-            if(!is_file($fileName))
-            {
-                exit(sprintf('Pid file %s is not exists', $fileName));
-            }
-            $pid = json_decode(File::readFile($fileName), true);
-            if($pid > 0)
-            {
-                $cmd = 'kill -USR1 ' . $pid['managerPID'];
-                echo $cmd, PHP_EOL;
-                $result = Coroutine::exec($cmd);
-                echo 'code:', $result['code'], ', signal:', $result['signal'], ', output:', $result['output'], PHP_EOL;
-            }
-            else
-            {
-                echo 'Pid does not exists!', PHP_EOL;
-            }
-        });
+        $result = Imi::reloadServer();
+        echo $result['cmd'], PHP_EOL;
+        echo 'code:', $result['result']['code'], ', signal:', $result['result']['signal'], ', output:', $result['result']['output'], PHP_EOL;
     }
 }

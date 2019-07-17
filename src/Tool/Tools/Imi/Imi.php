@@ -32,12 +32,17 @@ class Imi
      * 构建后有助于提升性能
      * 
      * @Operation("buildImiRuntime")
+     * @Arg(name="file", type=ArgType::STRING, default=null, comments="可以指定生成到目标文件")
      * 
      * @return void
      */
-    public function buildImiRuntime()
+    public function buildImiRuntime($file)
     {
-        ImiUtil::buildRuntime(\Imi\Util\Imi::getRuntimePath('imi-runtime.cache'));
+        if(null === $file)
+        {
+            $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
+        }
+        ImiUtil::buildRuntime($file);
         echo 'Build imi runtime complete', PHP_EOL;
     }
 

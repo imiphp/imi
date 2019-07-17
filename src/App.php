@@ -93,9 +93,14 @@ abstract class App
         {
             $result = false;
         }
+        else if($file = Args::get('imi-runtime'))
+        {
+            // 尝试加载指定 runtime
+            $result = App::loadRuntimeInfo($file);
+        }
         else
         {
-            // 尝试加载
+            // 尝试加载默认 runtime
             $result = App::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime.cache'));
         }
         if(!$result)

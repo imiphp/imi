@@ -538,4 +538,61 @@ abstract class Imi
             $parser->execParse($className);
         }
     }
+
+    /**
+     * 停止服务器
+     *
+     * @return void
+     */
+    public static function stopServer()
+    {
+        $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
+        if(!is_file($fileName))
+        {
+            throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
+        }
+        $return = [];
+        $pid = json_decode(file_get_contents($fileName), true);
+        if($pid > 0)
+        {
+            $cmd = 'kill ' . $pid['masterPID'];
+            $return['cmd'] = $cmd;
+            $result = `$cmd`;
+            $return['result'] = $result;
+            return $return;
+        }
+        else
+        {
+            throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
+        }
+    }
+
+    /**
+     * 重新加载服务器
+     *
+     * @return void
+     */
+    public static function reloadServer()
+    {
+        $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
+        if(!is_file($fileName))
+        {
+            throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
+        }
+        $return = [];
+        $pid = json_decode(file_get_contents($fileName), true);
+        if($pid > 0)
+        {
+            $cmd = 'kill -USR1 ' . $pid['masterPID'];
+            $return['cmd'] = $cmd;
+            $result = `$cmd`;
+            $return['result'] = $result;
+            return $return;
+        }
+        else
+        {
+            throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
+        }
+    }
+
 }

@@ -77,10 +77,13 @@ class FileMTime extends BaseMonitor
      */
     protected function parseInitFile($fileName)
     {
-        $this->files[$fileName] = [
-            'exists'    => true,
-            'mtime'        => filemtime($fileName),
-        ];
+        if(is_file($fileName))
+        {
+            $this->files[$fileName] = [
+                'exists'    => true,
+                'mtime'        => filemtime($fileName),
+            ];
+        }
     }
 
     /**
@@ -180,11 +183,18 @@ class FileMTime extends BaseMonitor
             $changed = true;
             $mtime = 0;
         }
-        $this->files[$fileName] = [
-            'exists'    => $isFile,
-            'mtime'     => $mtime,
-        ];
-        return $changed;
+        if(isset($this->files[$fileName]) || $isFile)
+        {
+            $this->files[$fileName] = [
+                'exists'    => $isFile,
+                'mtime'     => $mtime,
+            ];
+            return $changed;
+        }
+        else
+        {
+            return false;
+        }
     }
     
 }

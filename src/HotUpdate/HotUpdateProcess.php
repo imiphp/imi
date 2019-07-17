@@ -76,8 +76,6 @@ class HotUpdateProcess extends BaseProcess
         go(function(){
             echo 'Process [hotUpdate] start', PHP_EOL;
             $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
-            
-            $reloadCmd = Imi::getImiCmd('server', 'reload');
             $time = 0;
             while(true)
             {
@@ -87,12 +85,15 @@ class HotUpdateProcess extends BaseProcess
                 // 检查文件是否有修改
                 if($monitor->isChanged())
                 {
-                    file_put_contents($this->changedFilesFile, implode("\n", $monitor->getChangedFiles()));
+                    $changedFiles = $monitor->getChangedFiles();
+                    echo 'Found ', count($changedFiles) , ' changed Files:', PHP_EOL, implode(PHP_EOL, $changedFiles), PHP_EOL;
+                    file_put_contents($this->changedFilesFile, implode("\n", $changedFiles));
                     echo 'Building runtime...', PHP_EOL;
                     $beginTime = microtime(true);
                     $result = exec(Imi::getImiCmd('imi', 'buildRuntime', [
                         'format'            =>  'json',
                         'changedFilesFile'  =>  $this->changedFilesFile,
+                        'imi-runtime'       =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
                     ]));
                     $result = json_decode($result);
                     if('Build app runtime complete' !== trim($result))
@@ -103,7 +104,8 @@ class HotUpdateProcess extends BaseProcess
                     // 清除各种缓存
                     $this->clearCache();
                     // 执行重新加载
-                    Coroutine::exec($reloadCmd);
+                    echo 'Reloading server...', PHP_EOL;
+                    $reloadResult = Imi::reloadServer();
                     echo 'Building time use: ', microtime(true) - $beginTime, ' sec', PHP_EOL;
                 }
             }
