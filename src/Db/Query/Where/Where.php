@@ -32,12 +32,6 @@ class Where extends BaseWhere implements IWhere
     protected $value;
 
     /**
-     * 逻辑运算符
-     * @var string
-     */
-    protected $logicalOperator;
-
-    /**
      * 绑定的数据们
      * @var array
      */

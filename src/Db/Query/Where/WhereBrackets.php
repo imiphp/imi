@@ -19,12 +19,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
     protected $callback;
 
     /**
-     * 逻辑运算符
-     * @var string
-     */
-    protected $logicalOperator;
-
-    /**
      * 绑定的数据们
      * @var array
      */
@@ -100,7 +94,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
                     }
                     else
                     {
-                        $result .= $callResultItem . ' ';
+                        $result .= $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query) . ' ';
                     }
                     $this->binds = array_merge($this->binds, $callResultItem->getBinds());
                 }
@@ -116,6 +110,10 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
             $result = '(' . $callResult . ')';
             $this->binds = $callResult->getBinds();
             return $result;
+        }
+        else if($callResult instanceof IBaseWhere)
+        {
+            return $callResult->toStringWithoutLogic($query);
         }
         else
         {
