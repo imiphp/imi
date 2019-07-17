@@ -153,4 +153,17 @@ class QueryCurdTest extends BaseTest
         Assert::assertNull($record);
     }
 
+    public function testWhereEx()
+    {
+        $query = Db::query();
+        $record = $query->from('tb_article')->whereEx([
+            'id'    =>  1,
+        ])->select()->get();
+        Assert::assertEquals([
+            'id'        =>  '1',
+            'title'     =>  'title',
+            'content'   =>  'content',
+            'time'      =>  '2019-06-21 00:00:00',
+        ], $record);
+    }
 }
