@@ -28,7 +28,6 @@ class Server
      */
     public function start()
     {
-        Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
         RequestContext::destroy();
         PoolManager::clearPools();
         CacheManager::clearPools();

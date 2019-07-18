@@ -109,7 +109,12 @@ abstract class App
             Annotation::getInstance()->init([
                 MainHelper::getMain('Imi', 'Imi'),
             ]);
+            if('server/start' === $_SERVER['argv'][1])
+            {
+                Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
+            }
         }
+        unset($result);
         static::$isInited = true;
         Event::trigger('IMI.INITED');
     }
