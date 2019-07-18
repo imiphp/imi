@@ -4,7 +4,6 @@ namespace Imi\Db\Drivers\PdoMysql;
 use Imi\Db\Drivers\Base;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IDb;
-use Imi\Db\Traits\SqlParser;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Transaction\TTransaction;
@@ -15,7 +14,6 @@ use Imi\Db\Statement\StatementManager;
  */
 class Driver extends Base implements IDb
 {
-    use SqlParser;
     use TTransaction {
         beginTransaction as protected __tBeginTransaction;
         commit as protected __tCommit;
@@ -314,7 +312,6 @@ class Driver extends Base implements IDb
         }
         else
         {
-            // 处理支持 :xxx 参数格式
             $this->lastSql = $sql;
             $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
             if(false === $this->lastStmt)

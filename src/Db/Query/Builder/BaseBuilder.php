@@ -3,14 +3,12 @@ namespace Imi\Db\Query\Builder;
 
 use Imi\Db\Query\Field;
 use Imi\Db\Query\Query;
-use Imi\Db\Traits\SqlParser;
 use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Interfaces\IQuery;
 
 abstract class BaseBuilder implements IBuilder
 {
     use TKeyword;
-    use SqlParser;
     
     /**
      * 分隔标识符，解决保留字问题
