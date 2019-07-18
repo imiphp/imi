@@ -92,6 +92,7 @@ abstract class StatementManager
         $hashCode = $db->hashCode();
         if(isset(static::$statements[$hashCode][$sql]))
         {
+            static::$statements[$hashCode][$sql]['statement']->closeCursor();
             static::$statements[$hashCode][$sql]['using'] = false;
             if(RequestContext::exists())
             {
@@ -116,6 +117,7 @@ abstract class StatementManager
     {
         foreach(static::$statements[$db->hashCode()] as &$item)
         {
+            $item['statement']->closeCursor();
             $item['using'] = false;
         }
     }
