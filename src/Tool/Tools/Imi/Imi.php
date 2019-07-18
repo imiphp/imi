@@ -74,10 +74,11 @@ class Imi
      * 
      * @Arg(name="format", type=ArgType::STRING, default="", comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
      * @Arg(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
+     * @Arg(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
      * 
      * @return void
      */
-    public function buildRuntime($format, $changedFilesFile)
+    public function buildRuntime($format, $changedFilesFile, $confirm)
     {
         ob_start();
         register_shutdown_function(function() use($format){
@@ -95,7 +96,14 @@ class Imi
                 echo $result;
             }
         });
-        
+
+        if($confirm)
+        {
+            do {
+                $input = fread(STDIN, 1);
+            } while(false === $input || 'y' === $input);
+        }
+
         if(!Text::isEmpty($changedFilesFile) && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
