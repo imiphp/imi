@@ -90,7 +90,7 @@ class Inotify extends BaseMonitor
             $readResult = \inotify_read($this->handler);
             if(false === $readResult)
             {
-                return $result ?? false;
+                return isset($this->changedFiles[0]);
             }
             foreach($readResult as $item)
             {
