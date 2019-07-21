@@ -29,7 +29,6 @@ class DbResource extends BasePoolResource
      */
     public function open()
     {
-        StatementManager::clear($this->db);
         $this->db->open();
         return $this->db->isConnected();
     }
@@ -40,7 +39,6 @@ class DbResource extends BasePoolResource
      */
     public function close()
     {
-        StatementManager::clear($this->db);
         $this->db->close();
     }
 

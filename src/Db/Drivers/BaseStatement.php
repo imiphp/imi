@@ -2,6 +2,7 @@
 namespace Imi\Db\Drivers;
 
 use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Statement\StatementManager;
 
 
 abstract class BaseStatement implements IStatement

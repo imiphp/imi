@@ -75,6 +75,11 @@ class Driver extends Base implements IDb
         }
     }
 
+    public function __destruct()
+    {
+        $this->close();
+    }
+
     /**
      * 构建DNS字符串
      * @return string
@@ -123,6 +128,7 @@ class Driver extends Base implements IDb
      */
     public function close()
     {
+        StatementManager::clear($this);
         if(null !== $this->lastStmt)
         {
             $this->lastStmt = null;
