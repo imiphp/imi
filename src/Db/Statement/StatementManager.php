@@ -115,10 +115,22 @@ abstract class StatementManager
      */
     public static function unUsingAll(IDb $db)
     {
+        if($requestContext = RequestContext::exists())
+        {
+            $statementCaches = RequestContext::get('statementCaches', []);
+        }
         foreach(static::$statements[$db->hashCode()] as &$item)
         {
+            if($requestContext && false !== $i = array_search($item['statement'], $statementCaches))
+            {
+                unset($statementCaches[$i]);
+            }
             $item['statement']->closeCursor();
             $item['using'] = false;
+        }
+        if($requestContext)
+        {
+            RequestContext::set('statementCaches', $statementCaches);
         }
     }
 
@@ -142,6 +154,7 @@ abstract class StatementManager
      */
     public static function remove(IDb $db, string $sql)
     {
+        static::unUsing($db, $sql);
         $hashCode = $db->hashCode();
         if(isset(static::$statements[$hashCode][$sql]))
         {
@@ -157,7 +170,26 @@ abstract class StatementManager
      */
     public static function clear(IDb $db)
     {
-        static::$statements[$db->hashCode()] = [];
+        if($requestContext = RequestContext::exists())
+        {
+            $statementCaches = RequestContext::get('statementCaches', []);
+        }
+        $statements = static::$statements[$db->hashCode()] ?? [];
+        foreach($statements as $item)
+        {
+            if($requestContext && false !== $i = array_search($item['statement'], $statementCaches))
+            {
+                unset($statementCaches[$i]);
+            }
+        }
+        if($requestContext)
+        {
+            RequestContext::set('statementCaches', $statementCaches);
+        }
+        if($statements)
+        {
+            unset(static::$statements[$db->hashCode()]);
+        }
     }
 
     /**
@@ -178,6 +210,10 @@ abstract class StatementManager
     public static function clearAll()
     {
         static::$statements = [];
+        if(RequestContext::exists())
+        {
+            RequestContext::set('statementCaches', []);
+        }
     }
 
     /**
