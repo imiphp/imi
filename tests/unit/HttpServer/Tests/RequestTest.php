@@ -2,6 +2,8 @@
 namespace Imi\Test\HttpServer\Tests;
 
 use Yurun\Util\HttpRequest;
+use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
+use Imi\Util\Http\Consts\MediaType;
 
 /**
  * @testdox HttpRequest
@@ -76,6 +78,65 @@ class RequestTest extends BaseTest
         $data = $response->json(true);
         $this->assertEquals($time, isset($data['headers']['time']) ? $data['headers']['time'] : null);
         $this->assertEquals($hash, isset($data['headers']['hash']) ? $data['headers']['hash'] : null);
+    }
+
+    /**
+     * Upload single file
+     *
+     * @return void
+     */
+    public function testUploadSingle()
+    {
+        $http = new HttpRequest;
+        $file = new UploadedFile('file', MediaType::TEXT_HTML, __FILE__);
+        $http->content([
+            $file,
+        ]);
+        $response = $http->post($this->host . 'upload');
+        $data = $response->json(true);
+
+        $this->assertTrue(isset($data['file']));
+        $file = $data['file'];
+        $content = file_get_contents(__FILE__);
+        $this->assertEquals('file', $file['clientFilename']);
+        $this->assertEquals(MediaType::TEXT_HTML, $file['clientMediaType']);
+        $this->assertEquals(strlen($content), $file['size']);
+        $this->assertEquals(md5($content), $file['hash']);
+    }
+
+    /**
+     * Upload multi files
+     *
+     * @return void
+     */
+    public function testUploadMulti()
+    {
+        $http = new HttpRequest;
+        $file2Path = __DIR__ . '/1.txt';
+        $file1 = new UploadedFile('file1', MediaType::TEXT_HTML, __FILE__);
+        $file2 = new UploadedFile('file2', MediaType::TEXT_PLAIN, $file2Path);
+        $http->content([
+            $file1,
+            $file2,
+        ]);
+        $response = $http->post($this->host . 'upload');
+        $data = $response->json(true);
+
+        $this->assertTrue(isset($data['file1']));
+        $file = $data['file1'];
+        $content = file_get_contents(__FILE__);
+        $this->assertEquals('file1', $file['clientFilename']);
+        $this->assertEquals(MediaType::TEXT_HTML, $file['clientMediaType']);
+        $this->assertEquals(strlen($content), $file['size']);
+        $this->assertEquals(md5($content), $file['hash']);
+
+        $this->assertTrue(isset($data['file2']));
+        $file = $data['file2'];
+        $content = file_get_contents($file2Path);
+        $this->assertEquals('file2', $file['clientFilename']);
+        $this->assertEquals(MediaType::TEXT_PLAIN, $file['clientMediaType']);
+        $this->assertEquals(strlen($content), $file['size']);
+        $this->assertEquals(md5($content), $file['hash']);
     }
 
 }

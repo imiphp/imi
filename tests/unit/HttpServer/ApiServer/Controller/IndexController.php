@@ -142,4 +142,26 @@ class IndexController extends HttpController
         $this->response = $this->response->sendFile(__FILE__);
     }
 
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function upload()
+    {
+        $files = $this->request->getUploadedFiles();
+        $result = [];
+        foreach($files as $k => $file)
+        {
+            $result[$k] = [
+                'clientFilename'    => $file->getClientFilename(),
+                'clientMediaType'   => $file->getClientMediaType(),
+                'error'             => $file->getError(),
+                'size'              => $file->getSize(),
+                'hash'              => md5($file->getStream()),
+            ];
+        }
+        return $result;
+    }
+
 }
