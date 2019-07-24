@@ -29,7 +29,6 @@ class DbResource extends BasePoolResource
      */
     public function open()
     {
-        $this->db->close();
         $this->db->open();
         return $this->db->isConnected();
     }
