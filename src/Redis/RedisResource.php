@@ -44,6 +44,10 @@ class RedisResource extends BasePoolResource
         {
             $result = $result && $this->redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
         }
+        foreach($this->config['options'] ?? [] as $key => $value)
+        {
+            $this->redis->setOption($key, $value);
+        }
         return $result;
     }
 
