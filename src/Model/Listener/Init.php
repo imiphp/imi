@@ -14,6 +14,7 @@ use Imi\Util\MemoryTableManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Model\Annotation\MemoryTable;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Config;
 
 /**
  * @Listener(eventName="IMI.INITED", priority=19940280)
@@ -34,7 +35,7 @@ class Init implements IEventListener
 
         $runtimeInfo = App::getRuntimeInfo();
 
-        // 初始化 MemoryTable
+        // 初始化内存表模型
         foreach($runtimeInfo->memoryTable as $item)
         {
             $memoryTableAnnotation = $item['annotation'];
@@ -43,6 +44,11 @@ class Init implements IEventListener
                 'conflictProportion'    => $memoryTableAnnotation->conflictProportion,
                 'columns'               => $item['columns'],
             ]);
+        }
+        // 初始化配置中的内存表
+        foreach(Config::get('@app.memoryTable', []) as $name => $item)
+        {
+            MemoryTableManager::addName($name, $item);
         }
 
         MemoryTableManager::init();
