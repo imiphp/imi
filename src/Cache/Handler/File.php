@@ -198,7 +198,7 @@ class File extends Base
         $result = [];
         foreach($keys as $key)
         {
-            $result[] = $this->get($key, $default);
+            $result[$key] = $this->get($key, $default);
         }
         return $result;
     }
