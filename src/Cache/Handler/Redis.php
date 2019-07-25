@@ -33,7 +33,7 @@ class Redis extends Base
         $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
             return $redis->get($key);
         });
-        if(null === $result)
+        if(false === $result)
         {
             return $default;
         }
@@ -65,7 +65,7 @@ class Redis extends Base
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
+        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
             return $redis->set($key, $this->encode($value), $ttl);
         });
     }
@@ -83,7 +83,7 @@ class Redis extends Base
     public function delete($key)
     {
         $this->checkKey($key);
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
+        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
             return $redis->del($key) > 0;
         });
     }
@@ -95,7 +95,7 @@ class Redis extends Base
      */
     public function clear()
     {
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
+        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
             return $redis->flushDB();
         });
     }
@@ -121,7 +121,7 @@ class Redis extends Base
         $result = [];
         foreach($mgetResult as $i => $v)
         {
-            if(null === $v)
+            if(false === $v)
             {
                 $result[$keys[$i]] = $default;
             }
@@ -178,7 +178,7 @@ class Redis extends Base
             }
             return $result;
         });
-        return $result;
+        return (bool)$result;
     }
 
     /**

@@ -18,6 +18,13 @@ class RedisHash extends Base
     protected $poolName;
 
     /**
+     * 默认缺省的 hash key
+     *
+     * @var string
+     */
+    protected $defaultHashKey = 'imi:RedisHashCache';
+
+    /**
      * 分隔符，分隔 hash key和 member
      *
      * @var string
@@ -41,7 +48,7 @@ class RedisHash extends Base
         $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member){
             return $redis->hGet($key, $member);
         });
-        if(null === $result)
+        if(false === $result)
         {
             return $default;
         }
@@ -66,7 +73,7 @@ class RedisHash extends Base
     public function set($key, $value, $ttl = null)
     {
         $this->parseKey($key, $member);
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member, $value){
+        return false !== PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member, $value){
             return $redis->hSet($key, $member, $this->encode($value));
         });
     }
@@ -83,7 +90,7 @@ class RedisHash extends Base
      */
     public function delete($key)
     {
-        $this->parseKey($key, $member, true);
+        $this->parseKey($key, $member);
         return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member){
             if(null === $member)
             {
@@ -103,7 +110,7 @@ class RedisHash extends Base
      */
     public function clear()
     {
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
+        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
             return $redis->flushDB();
         });
     }
@@ -154,7 +161,7 @@ SCRIPT;
         $result = [];
         foreach($list as $i => $v)
         {
-            if(null === $v)
+            if(false === $v)
             {
                 $result[$keys[$i]] = $default;
             }
@@ -206,10 +213,10 @@ SCRIPT;
             $setValues[$k]['value'][] = $this->encode($v);
         }
 
-        $result = (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($script, $setValues){
+        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($script, $setValues){
             foreach($setValues as $key => $item)
             {
-                $result = $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), count($item['member']) + 1);
+                $result = false !== $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), count($item['member']) + 1);
                 if(!$result)
                 {
                     return $result;
@@ -217,7 +224,7 @@ SCRIPT;
             }
             return true;
         });
-        return $result;
+        return (bool)$result;
     }
 
     /**
@@ -296,19 +303,24 @@ SCRIPT;
      * @param boolean $allowNoMember 是否允许没有 $member，默认false
      * @return void
      */
-    protected function parseKey(&$key, &$member, $allowNoMember = false)
+    protected function parseKey(&$key, &$member)
     {
         if(!is_string($key))
         {
             throw new InvalidArgumentException('invalid key: ' . $key);
         }
         $list = explode($this->separator, $key);
-        if(!$allowNoMember && !isset($list[1]))
+
+        if(isset($list[1]))
         {
-            throw new InvalidArgumentException('RedisHashCache $key must have a dot(.)');
+            $key = $list[0];
+            $member = $list[1];
         }
-        $key = $list[0];
-        $member = $list[1] ?? null;
+        else
+        {
+            $key = $this->defaultHashKey;
+            $member = $list[0];
+        }
     }
 
 }
