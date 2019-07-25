@@ -183,6 +183,6 @@ abstract class AtomicManager
      */
     public static function wakeup(string $name, int $n = 1)
     {
-        static::getInstance($name)->wakeup($n);
+        return static::getInstance($name)->wakeup($n);
     }
 }
