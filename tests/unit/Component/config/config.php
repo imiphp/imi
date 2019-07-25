@@ -121,6 +121,38 @@ return [
                 ]
             ],
         ],
+        'redis_cache'    =>    [
+            'sync'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'        => '127.0.0.1',
+                    'port'        =>    6379,
+                    'serialize'   =>    false,
+                    'db'          =>    1,
+                ]
+            ],
+            'async'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'        => '127.0.0.1',
+                    'port'        =>    6379,
+                    'serialize'   =>    false,
+                    'db'          =>    1,
+                ]
+            ],
+        ],
     ],
     // db 配置
     'db' =>  [
@@ -131,5 +163,37 @@ return [
     'redis' =>  [
         // 数默认连接池名
         'defaultPool'   =>  'redis_test',
+    ],
+    // 缓存
+    'caches'    =>  [
+        'file1'  =>  [
+            'handlerClass'  =>  \Imi\Cache\Handler\File::class,
+            'option'    =>  [
+                'savePath'    =>    dirname(__DIR__) . '/.runtime/cache/',
+            ],
+        ],
+        'file2'  =>  [
+            'handlerClass'  =>  \Imi\Cache\Handler\File::class,
+            'option'    =>  [
+                'savePath'    =>    dirname(__DIR__) . '/.runtime/cache/',
+                // 保存文件名处理回调，一般可以不写
+                'saveFileNameCallback'    =>    function($savePath, $key){
+                    return \Imi\Util\File::path($savePath, sha1($key));
+                },
+            ],
+        ],
+        'redis' =>  [
+            'handlerClass'  =>    \Imi\Cache\Handler\Redis::class,
+            'option'        =>    [
+                'poolName'    =>    'redis_cache',
+            ],
+        ],
+        'redisHash' =>  [
+            'handlerClass'  =>    \Imi\Cache\Handler\RedisHash::class,
+            'option'        =>    [
+                'poolName'  =>    'redis_cache',
+                'separator' =>    '->',
+            ],
+        ],
     ],
 ];
