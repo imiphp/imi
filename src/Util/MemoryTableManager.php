@@ -1,6 +1,9 @@
 <?php
 namespace Imi\Util;
 
+use Imi\Util\MemoryTable\IMemoryTableOption;
+use Imi\Lock\Lock;
+
 /**
  * 跨进程共享内存表
  */
@@ -30,16 +33,38 @@ abstract class MemoryTableManager
         }
         foreach(static::$tables as $name => $option)
         {
-            $table = new \Swoole\Table($option['size'] ?? 1024, $option['conflictProportion'] ?? 0.2);
-            foreach($option['columns'] as $column)
+            if(is_string($option))
             {
-                $table->column($column['name'], $column['type'] ?? \Swoole\Table::TYPE_STRING, $column['size'] ?? 0);
+                if(!is_subclass_of($option, IMemoryTableOption::class))
+                {
+                    throw new \RuntimeException(sprintf('class %s must implements interface %s', $option, IMemoryTableOption::class));
+                }
+                $option = [
+                    'class' =>  $option,
+                ];
             }
-            if(!$table->create())
+            if(is_array($option))
             {
-                throw new \RuntimeException('MemoryTableManager create table failed');
+                if(isset($option['class']))
+                {
+                    $object = new $option['class'];
+                    $option = $object->getOption($option);
+                }
+                $table = new \Swoole\Table($option['size'] ?? 1024, $option['conflictProportion'] ?? 0.2);
+                foreach($option['columns'] as $column)
+                {
+                    $table->column($column['name'], $column['type'] ?? \Swoole\Table::TYPE_STRING, $column['size'] ?? 0);
+                }
+                if(!$table->create())
+                {
+                    throw new \RuntimeException('MemoryTableManager create table failed');
+                }
+                static::$tables[$name]['instance'] = $table;
             }
-            static::$tables[$name] = $table;
+            else
+            {
+                throw new \RuntimeException('MemoryTable option error');
+            }
         }
         static::$isInited = true;
     }
@@ -103,11 +128,11 @@ abstract class MemoryTableManager
         {
             throw new \RuntimeException('getInstance failed, MemoryTableManager is not initialized');
         }
-        if(!isset(static::$tables[$name]))
+        if(!isset(static::$tables[$name]['instance']))
         {
             throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
-        return static::$tables[$name];
+        return static::$tables[$name]['instance'];
     }
 
     /**
@@ -190,4 +215,37 @@ abstract class MemoryTableManager
     {
         return static::getInstance($name)->count();
     }
+
+    /**
+     * 加锁操作
+     *
+     * @param string $name 表名
+     * @param callable $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
+     * @return boolean
+     */
+    public static function lock(string $name, $taskCallable = null, $afterLockCallable = null)
+    {
+        if(!isset(static::$tables[$name]['lockId']))
+        {
+            throw new \RuntimeException(sprintf('MemoryTable %s has no [lockId] option', $name));
+        }
+        return Lock::lock(static::$tables[$name]['lockId'], $taskCallable, $afterLockCallable);
+    }
+
+    /**
+     * 解锁
+     *
+     * @param string $name 表名
+     * @return boolean
+     */
+    public static function unlock(string $name)
+    {
+        if(!isset(static::$tables[$name]['lockId']))
+        {
+            throw new \RuntimeException(sprintf('MemoryTable %s has no [lockId] option', $name));
+        }
+        return Lock::unlock(static::$tables[$name]['lockId']);
+    }
+
 }
