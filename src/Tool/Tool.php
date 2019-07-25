@@ -186,7 +186,7 @@ abstract class Tool
         // 缓存初始化
         foreach($caches as $name => $cache)
         {
-            CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
+            CacheManager::addName($name, $cache['handlerClass'], $cache['option'] ?? []);
         }
     }
 
