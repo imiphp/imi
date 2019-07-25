@@ -152,6 +152,11 @@ class File extends Base
         if(is_file($fileName))
         {
             unlink($fileName);
+            $fileName = $this->getExDataFileName($key);
+            if(is_file($fileName))
+            {
+                unlink($fileName);
+            }
             return true;
         }
         else
@@ -178,6 +183,7 @@ class File extends Base
                 rmdir($fileName);
             }
         }
+        return true;
     }
 
     /**
