@@ -338,7 +338,7 @@ class File extends Base
             return false;
         }
         $exDataFileName = $this->getExDataFileName($fileName);
-        $data = unserialize(FileUtil::readFile($exDataFileName));
+        $data = unserialize(file_get_contents($exDataFileName));
         if(null === $data['ttl'] ?? null)
         {
             return false;
@@ -367,6 +367,6 @@ class File extends Base
         $data = [
             'ttl' => $ttl,
         ];
-        FileUtil::writeFile($this->getExDataFileName($fileName), serialize($data));
+        file_put_contents($this->getExDataFileName($fileName), serialize($data));
     }
 }

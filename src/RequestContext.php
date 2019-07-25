@@ -48,16 +48,6 @@ abstract class RequestContext
 
     /**
      * 判断当前请求上下文是否存在
-     * @deprecated 1.0
-     * @return boolean
-     */
-    public static function exsits()
-    {
-        return static::exists();
-    }
-
-    /**
-     * 判断当前请求上下文是否存在
      * @return boolean
      */
     public static function exists()

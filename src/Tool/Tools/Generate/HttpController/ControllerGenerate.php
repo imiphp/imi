@@ -1,13 +1,12 @@
 <?php
 namespace Imi\Tool\Tools\Generate\HttpController;
 
+use Imi\Util\Imi;
 use Imi\Util\File;
 use Imi\Tool\ArgType;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
-use Imi\Util\Imi;
-use Imi\Tool\Parser\ToolParser;
 
 /**
  * @Tool("generate")
@@ -47,7 +46,7 @@ class ControllerGenerate
             // 不覆盖
             return;
         }
-        File::writeFile($fileName, $content);
+        file_put_contents($fileName, $content);
     }
 
     /**

@@ -129,7 +129,7 @@ abstract class ProcessManager
     }
 
     /**
-     * 运行进程，同步阻塞等待进程执行返回
+     * 运行进程，协程挂起等待进程执行返回
      * 不返回\Swoole\Process对象实例
      * 执行失败返回false，执行成功返回数组，包含了进程退出的状态码、信号、输出内容。
      * array(
