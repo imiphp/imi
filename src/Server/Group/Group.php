@@ -55,6 +55,13 @@ class Group
      */
     protected $handler;
 
+    /**
+     * 是否启用逻辑分组
+     *
+     * @var bool
+     */
+    protected $status = true;
+
     public function __construct(\Imi\Server\Base $server, string $groupName, int $maxClients = -1)
     {
         $this->server = $server;
