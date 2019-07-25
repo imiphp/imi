@@ -1,40 +1,20 @@
 <?php
 namespace Imi;
 
-use Imi\ServerManage;
 use Imi\RequestContext;
-use Imi\Server\ConnectContext\Model\FdRelation;
-use Imi\Server\Event\Param\PipeMessageEventParam;
-use Imi\Server\ConnectContext\ConnectContextChangeEventParam;
-use Imi\Event\Event;
 
 abstract class ConnectContext
 {
-    /**
-     * 上下文数据
-     *
-     * @var array
-     */
-    private static $context = [];
-
-    /**
-     * 事件回调们
-     *
-     * @var array
-     */
-    private static $eventCallables = [];
-
     /**
      * 为当前连接创建上下文
      * @return void
      */
     public static function create()
     {
-        $fd = RequestContext::get('fd');
-        if(!isset(static::$context[$fd]))
+        $data = static::get();
+        if(!$data && $fd = RequestContext::get('fd'))
         {
-            static::$context[$fd] = RequestContext::getServerBean('ConnectContextStore')->read($fd);
-            static::registerChangeEvent($fd);
+            static::set('fd', $fd, $fd);
         }
     }
 
@@ -46,35 +26,10 @@ abstract class ConnectContext
      */
     public static function destroy($fd = null)
     {
-        if($fd)
+        if(!$fd)
         {
-            $fdBeginNull = false;
+            RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
         }
-        else
-        {
-            $fd = RequestContext::get('fd');
-            $fdBeginNull = true;
-        }
-        if(isset(static::$context[$fd]))
-        {
-            unset(static::$context[$fd]);
-        }
-        RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
-        if(!$fdBeginNull)
-        {
-            static::triggerChangeEvent($fd);
-            static::unregisterChanageEvent($fd);
-        }
-    }
-
-    /**
-     * 判断当前连接上下文是否存在
-     * @deprecated 1.0
-     * @return boolean
-     */
-    public static function exsits()
-    {
-        return static::exists();
     }
 
     /**
@@ -100,25 +55,25 @@ abstract class ConnectContext
 
     /**
      * 获取上下文数据
-     * @param string $name
+     * @param string|null $name
      * @param mixed $default
      * @param int|null $fd
      * @return mixed
      */
-    public static function get($name, $default = null, $fd = null)
+    public static function get($name = null, $default = null, $fd = null)
     {
-        if($fd)
+        if(!$fd)
         {
-            return RequestContext::getServerBean('ConnectContextStore')->read($fd)[$name] ?? $default;
+            $fd = RequestContext::get('fd');
+        }
+        $data = RequestContext::getServerBean('ConnectContextStore')->read($fd);
+        if(null === $name)
+        {
+            return $data;
         }
         else
         {
-            $fd = RequestContext::get('fd');
-            if(!isset(static::$context[$fd]))
-            {
-                static::$context[$fd] = RequestContext::getServerBean('ConnectContextStore')->read($fd);
-            }
-            return static::$context[$fd][$name] ?? $default;
+            return $data[$name] ?? $default;
         }
     }
 
@@ -131,25 +86,40 @@ abstract class ConnectContext
      */
     public static function set($name, $value, $fd = null)
     {
-        $store = RequestContext::getServerBean('ConnectContextStore');
-        
-        if($fd)
+        if(!$fd)
         {
+            $fd = RequestContext::get('fd');
+        }
+        $store = RequestContext::getServerBean('ConnectContextStore');
+        $store->lock(function() use($store, $name, $value, $fd){
             $data = $store->read($fd);
             $data[$name] = $value;
             $store->save($fd, $data);
-            static::triggerChangeEvent($fd);
-        }
-        else
+        });
+    }
+
+    /**
+     * 使用回调并且自动加锁进行操作，回调用返回数据会保存进连接上下文
+     *
+     * @param callable $callable
+     * @param int|null $fd
+     * @return void
+     */
+    public static function use($callable, $fd = null)
+    {
+        if(!$fd)
         {
             $fd = RequestContext::get('fd');
-            if(!isset(static::$context[$fd]))
-            {
-                static::$context[$fd] = $store->read($fd);
-            }
-            static::$context[$fd][$name] = $value;
-            $store->save($fd, static::$context[$fd]);
         }
+        $store = RequestContext::getServerBean('ConnectContextStore');
+        $store->lock(function() use($callable, $store, $fd){
+            $data = $store->read($fd);
+            $result = $callable($data);
+            if($result)
+            {
+                $store->save($fd, $result);
+            }
+        });
     }
 
     /**
@@ -159,75 +129,7 @@ abstract class ConnectContext
      */
     public static function getContext($fd = null)
     {
-        return static::$context[$fd] ?? null;
-    }
-
-    /**
-     * 注册改变事件
-     *
-     * @param int $fd
-     * @return void
-     */
-    private static function registerChangeEvent($fd)
-    {
-        if(isset(static::$eventCallables[$fd]))
-        {
-            return;
-        }
-        static::$eventCallables[$fd] = imiCallable(function(PipeMessageEventParam $param) use($fd) {
-            if($param->message instanceof ConnectContextChangeEventParam && $fd == $param->message->getFd())
-            {
-                static::$context[$fd] = ServerManage::getServer($param->message->getServerName())->getBean('ConnectContextStore')->read($fd);
-                $param->stopPropagation();
-            }
-        });
-        $fdRelation = FdRelation::newInstance();
-        $fdRelation->__setKey($fd);
-        $fdRelation->setWorkerId(Worker::getWorkerID());
-        $fdRelation->setServerName(RequestContext::getServer()->getName());
-        $fdRelation->save();
-        Event::on('IMI.MAIN_SERVER.PIPE_MESSAGE', static::$eventCallables[$fd]);
-    }
-
-    /**
-     * 卸载改变事件
-     *
-     * @param int $fd
-     * @return void
-     */
-    private static function unregisterChanageEvent($fd)
-    {
-        if(isset(static::$eventCallables[$fd]))
-        {
-            $fdRelation = FdRelation::find($fd);
-            if($fdRelation)
-            {
-                $fdRelation->delete();
-            }
-            Event::off('IMI.MAIN_SERVER.PIPE_MESSAGE', static::$eventCallables[$fd]);
-            unset(static::$eventCallables[$fd]);
-        }
-    }
-
-    /**
-     * 触发更改事件
-     *
-     * @param int $fd
-     * @return void
-     */
-    private static function triggerChangeEvent($fd)
-    {
-        $fdRelation = FdRelation::find($fd);
-        if(!$fdRelation)
-        {
-            return;
-        }
-        $message = new ConnectContextChangeEventParam($fd, $fdRelation->getServerName());
-        $server = ServerManage::getServer($fdRelation->getServerName());
-        if(Worker::getWorkerID() != $fdRelation->getWorkerId())
-        {
-            RequestContext::getServer()->getSwooleServer()->sendMessage($message, $fdRelation->getWorkerId());
-        }
+        return static::get(null, null, $fd);
     }
 
 }

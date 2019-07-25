@@ -64,6 +64,27 @@ class StoreHandler implements IHandler
     }
 
     /**
+     * 加锁
+     *
+     * @param callable $callable
+     * @return boolean
+     */
+    public function lock($callable = null)
+    {
+        return $this->getHandler()->lock($callable);
+    }
+
+    /**
+     * 解锁
+     *
+     * @return boolean
+     */
+    public function unlock()
+    {
+        return $this->getHandler()->unlock();
+    }
+
+    /**
      * 获取处理器
      *
      * @return \Imi\Server\ConnectContext\StoreHandler\IHandler

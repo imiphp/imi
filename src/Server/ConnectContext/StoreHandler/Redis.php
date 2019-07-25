@@ -3,6 +3,7 @@ namespace Imi\Server\ConnectContext\StoreHandler;
 
 use Imi\Worker;
 use Imi\Log\Log;
+use Imi\Lock\Lock;
 use Imi\Event\Event;
 use Imi\Util\Swoole;
 use Imi\ServerManage;
@@ -66,6 +67,13 @@ class Redis implements IHandler
     protected $dataDecode = null;
     
     /**
+     * 锁 ID
+     *
+     * @var string
+     */
+    protected $lockId;
+
+    /**
      * 心跳Timer的ID
      *
      * @var int
@@ -83,6 +91,10 @@ class Redis implements IHandler
         if(null === $this->redisPool)
         {
             return;
+        }
+        if(!$this->lockId)
+        {
+            throw new \RuntimeException('ConnectContextRedis lockId must be set');
         }
         if(0 === Worker::getWorkerID())
         {
@@ -323,6 +335,27 @@ class Redis implements IHandler
             $redis->select($this->redisDb);
             return $callback($resource, $redis);
         });
+    }
+    
+    /**
+     * 加锁
+     *
+     * @param callable $callable
+     * @return boolean
+     */
+    public function lock($callable = null)
+    {
+        return Lock::lock($this->lockId, $callable);
+    }
+
+    /**
+     * 解锁
+     *
+     * @return boolean
+     */
+    public function unlock()
+    {
+        return Lock::unlock($this->lockId);
     }
 
 }

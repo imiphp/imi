@@ -39,4 +39,19 @@ interface IHandler
      */
     public function exists(string $key);
 
+    /**
+     * 加锁
+     *
+     * @param callable $callable
+     * @return boolean
+     */
+    public function lock($callable = null);
+
+    /**
+     * 解锁
+     *
+     * @return boolean
+     */
+    public function unlock();
+
 }
