@@ -75,6 +75,7 @@ return [
 			'option'		=>	[
 				'poolName'	=>	'连接池名称',
 				'separator' =>	'分隔符，分隔 hash key和 member，默认为->',
+				'defaultHashKey'	=>	'imi:RedisHashCache', // 默认缺省的 hash key
 			],
 		],
 	],
