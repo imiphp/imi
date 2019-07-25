@@ -30,7 +30,7 @@ abstract class BaseCacheTest extends BaseTest
         }
         Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 1));
         Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
-        sleep(1);
+        usleep(1100000);
         Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
     }
 
@@ -63,7 +63,7 @@ abstract class BaseCacheTest extends BaseTest
         Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values, 1));
         $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
         Assert::assertEquals($values, $getValues);
-        sleep(1);
+        usleep(1100000);
         Assert::assertEquals([
             'k1'    =>  'none',
             'k2'    =>  'none',
@@ -72,10 +72,6 @@ abstract class BaseCacheTest extends BaseTest
 
     public function testDelete()
     {
-        if('redisHash' === $this->cacheName)
-        {
-            // sleep(1000);
-        }
         Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb'));
         Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
         Assert::assertTrue(CacheManager::delete($this->cacheName, 'imi'));
