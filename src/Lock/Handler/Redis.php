@@ -9,7 +9,7 @@ use Imi\Pool\PoolManager;
 use Imi\Redis\RedisManager;
 
 /**
- * Redis + Lua 实现的锁，需要 Redis >= 2.6.0
+ * Redis + Lua 实现的分布式锁，需要 Redis >= 2.6.0
  * 
  * Lua脚本来自：https://blog.csdn.net/hry2015/article/details/74937375
  * 
@@ -71,11 +71,11 @@ class Redis extends BaseLock
     }
 
     /**
-     * 加锁，会阻塞/挂起协程
+     * 加锁，会挂起协程
      *
      * @return boolean
      */
-    protected function __lock()
+    protected function __lock(): bool
     {
         $beginTime = microtime(true);
         do {
@@ -107,7 +107,7 @@ class Redis extends BaseLock
      *
      * @return boolean
      */
-    protected function __tryLock()
+    protected function __tryLock(): bool
     {
         return PoolManager::use($this->poolName, function($resource, $redis){
             return 1 == $redis->evalEx(<<<SCRIPT
@@ -142,7 +142,7 @@ SCRIPT
      *
      * @return boolean
      */
-    public function unlock()
+    protected function __unlock(): bool
     {
         return PoolManager::use($this->poolName, function($resource, $redis){
             return 1 == $redis->evalEx(<<<SCRIPT
