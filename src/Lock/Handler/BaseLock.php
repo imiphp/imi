@@ -105,11 +105,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
-        if(null === $taskCallable)
-        {
-            return true;
-        }
-        else
+        if(null !== $taskCallable)
         {
             try {
                 $taskCallable();
@@ -119,6 +115,7 @@ abstract class BaseLock implements ILockHandler
                 $this->unlock();
             }
         }
+        return true;
     }
 
     /**
