@@ -57,11 +57,12 @@ trait TLockableParser
             $refMethod = new \ReflectionMethod($class . '::' . $lockableAfterLock[1]);
             $lockableAfterLock = $refMethod->getClosure($object);
         }
+        $result = null;
         if(null !== $lockableAfterLock)
         {
             $afterLockCallable = function() use($lockableAfterLock, &$result){
                 $result = $lockableAfterLock();
-                return $result;
+                return null !== $result;
             };
         }
 
@@ -74,7 +75,7 @@ trait TLockableParser
                     $result = $firstAfterLockCallable();
                     if(null !== $result)
                     {
-                        return $result;
+                        return true;
                     }
                 }
                 $result = $afterLock();
