@@ -114,7 +114,7 @@ class MemoryTable implements IHandler
     {
         if($this->lockId)
         {
-            return Lock::lock($this->tableName, $callable);
+            return Lock::lock($this->lockId, $callable);
         }
         else
         {
