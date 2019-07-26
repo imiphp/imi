@@ -11,6 +11,7 @@ return [
         'Imi\Test\Component\Enum',
         'Imi\Test\Component\Redis',
         'Imi\Test\Component\Db',
+        'Imi\Test\Component\Cache',
     ],
     'beans'    =>    [
     ],
@@ -164,12 +165,17 @@ return [
         // 数默认连接池名
         'defaultPool'   =>  'redis_test',
     ],
+    // 缓存配置
+    'cache' =>  [
+        'default'   =>  'file1',
+    ],
     // 缓存
     'caches'    =>  [
         'file1'  =>  [
             'handlerClass'  =>  \Imi\Cache\Handler\File::class,
             'option'    =>  [
                 'savePath'    =>    dirname(__DIR__) . '/.runtime/cache/',
+                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
             ],
         ],
         'file2'  =>  [
@@ -180,12 +186,14 @@ return [
                 'saveFileNameCallback'    =>    function($savePath, $key){
                     return \Imi\Util\File::path($savePath, sha1($key));
                 },
+                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
             ],
         ],
         'redis' =>  [
             'handlerClass'  =>    \Imi\Cache\Handler\Redis::class,
             'option'        =>    [
                 'poolName'    =>    'redis_cache',
+                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
             ],
         ],
         'redisHash' =>  [
@@ -193,6 +201,7 @@ return [
             'option'        =>    [
                 'poolName'  =>    'redis_cache',
                 'separator' =>    '->',
+                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
             ],
         ],
     ],
