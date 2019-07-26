@@ -61,7 +61,7 @@ before_script:
   - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
 
 script:
-  - composer install-test-no-dev
+  - ./tests/phpunit -phpunit ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit
 
 env:
   global:

@@ -31,8 +31,6 @@
     },
     "scripts": {
       "test": "php ./tests/phpunit -c ./tests/phpunit.xml",
-      "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test",
-      "test-no-dev": "phpunit -c ./tests/phpunit.xml",
-      "install-test-no-dev": "php ./.travis/composer-no-phpunit.php && php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test-no-dev"
+      "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
     }
 }
