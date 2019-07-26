@@ -143,15 +143,18 @@ class ImiListener implements TestListener
                 $this->isLoadedImi = true;
             });
             Event::on('IMI.INITED', function(EventParam $param){
-                $param->stopPropagation();
-                PoolManager::use('maindb', function($resource, IDb $db){
-                    $truncateList = [
-                        'tb_article',
-                    ];
-                    foreach($truncateList as $table)
-                    {
-                        $db->exec('TRUNCATE ' . $table);
-                    }
+                App::initWorker();
+                go(function() use($param){
+                    $param->stopPropagation();
+                    PoolManager::use('maindb', function($resource, IDb $db){
+                        $truncateList = [
+                            'tb_article',
+                        ];
+                        foreach($truncateList as $table)
+                        {
+                            $db->exec('TRUNCATE ' . $table);
+                        }
+                    });
                 });
             }, 1);
             echo 'init imi...', PHP_EOL;
