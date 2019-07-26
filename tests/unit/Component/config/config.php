@@ -209,6 +209,7 @@ return [
     // atmoic 配置
     'atomics'    =>  [
         'atomicLock'   =>  1,
+        'test'
     ],
     // 锁
     'lock'  =>[
