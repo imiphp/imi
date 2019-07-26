@@ -344,6 +344,10 @@ class File extends Base
             return false;
         }
         $exDataFileName = $this->getExDataFileName($fileName);
+        if(!is_file($exDataFileName))
+        {
+            return false;
+        }
         $data = unserialize(file_get_contents($exDataFileName));
         if(null === $data['ttl'] ?? null)
         {
