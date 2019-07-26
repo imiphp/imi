@@ -122,6 +122,24 @@ return [
                 ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
                 ['name' => 'quantity', 'type' => \Swoole\Table::TYPE_INT],
             ],
+            'lockId'    =>  'atomic',
         ],
+    ],
+
+    // 锁
+    'lock'  =>[
+        'list'  =>  [
+            'atomic' =>  [
+                'class' =>  'AtomicLock',
+                'options'   =>  [
+                    'atomicName'    =>  'atomicLock',
+                ],
+            ],
+        ],
+    ],
+
+    // atmoic 配置
+    'atomics'    =>  [
+        'atomicLock'   =>  1,
     ],
 ];

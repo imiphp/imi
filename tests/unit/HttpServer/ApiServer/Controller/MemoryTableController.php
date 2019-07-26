@@ -116,4 +116,52 @@ class MemoryTableController extends HttpController
         ];
     }
 
+    /**
+     * 设置行的数据
+     * @Action
+     * @return void
+     */
+    public function lockCallableSetAndGet()
+    {
+        $result = null;
+        MemoryTableManager::lock('t1', function() use(&$result) {
+            $key = '1';
+            $row = [
+                'name'  =>  'imi',
+            ];
+            $result = [
+                'setResult' =>  MemoryTableManager::set('t1', $key, $row),
+                'getField'  =>  MemoryTableManager::get('t1', $key, 'name'),
+                'getRow'    =>  MemoryTableManager::get('t1', $key),
+            ];
+        });
+        return $result;
+    }
+
+    /**
+     * 设置行的数据
+     * @Action
+     * @return void
+     */
+    public function lockSetAndGet()
+    {
+        MemoryTableManager::lock('t1');
+        $result = null;
+        try {
+            $key = '1';
+            $row = [
+                'name'  =>  'imi',
+            ];
+            $result = [
+                'setResult' =>  MemoryTableManager::set('t1', $key, $row),
+                'getField'  =>  MemoryTableManager::get('t1', $key, 'name'),
+                'getRow'    =>  MemoryTableManager::get('t1', $key),
+            ];
+        } catch(\Throwable $th) {
+            throw $th;
+        } finally {
+            MemoryTableManager::unlock('t1');
+        }
+        return $result;
+    }
 }

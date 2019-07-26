@@ -74,4 +74,30 @@ class MemoryTableTest extends BaseTest
         Assert::assertEquals(4, $data['count'] ?? null);
     }
 
+    public function testLockCallbleSetAndGet()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/lockCallableSetAndGet');
+        $data = $response->json(true);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertEquals('imi', $data['getField'] ?? null);
+        Assert::assertEquals([
+            'name'      =>  'imi',
+            'quantity'  =>  0,
+        ], $data['getRow'] ?? null);
+    }
+
+    public function testLockSetAndGet()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/lockSetAndGet');
+        $data = $response->json(true);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertEquals('imi', $data['getField'] ?? null);
+        Assert::assertEquals([
+            'name'      =>  'imi',
+            'quantity'  =>  0,
+        ], $data['getRow'] ?? null);
+    }
+
 }
