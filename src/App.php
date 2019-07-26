@@ -240,6 +240,7 @@ abstract class App
         }
 
         // 初始化
+        PoolManager::clearPools();
         if(Coroutine::isIn())
         {
             $pools = Config::get('@app.pools', []);
@@ -279,6 +280,7 @@ abstract class App
         }
 
         // 缓存初始化
+        CacheManager::clearPools();
         $caches = Config::get('@app.caches', []);
         foreach($appMains as $main)
         {
