@@ -28,6 +28,7 @@ return [
 			// 驱动实例配置
 			'option'		=>	[
 				'savePath'	=>	'文件缓存保存路径',
+				'formatHandlerClass'	=>	'', // 数据读写修改器
 				// 保存文件名处理回调，一般可以不写
 				// 'saveFileNameCallback'	=>	function($savePath, $key){
 				// 	return '';
@@ -54,6 +55,7 @@ return [
 			// 驱动实例配置
 			'option'		=>	[
 				'poolName'	=>	'连接池名称',
+				'formatHandlerClass'	=>	'', // 数据读写修改器
 			],
 		],
 	],
@@ -76,6 +78,7 @@ return [
 				'poolName'	=>	'连接池名称',
 				'separator' =>	'分隔符，分隔 hash key和 member，默认为->',
 				'defaultHashKey'	=>	'imi:RedisHashCache', // 默认缺省的 hash key
+				'formatHandlerClass'	=>	'', // 数据读写修改器
 			],
 		],
 	],
@@ -83,6 +86,8 @@ return [
 ```
 
 `RedisHash` 缓存使用时需要注意，key格式为`hashkey->member`，即为`$redis->hget('hashkey', 'member')`
+
+`formatHandlerClass` 可选：`Imi\Util\Format\Json`、`Imi\Util\Format\PhpSerialize`，或者可以自行实现`Imi\Util\Format\IFormat`接口
 
 ## 手动使用
 

@@ -143,7 +143,7 @@ class Test
     }
 
     /**
-     * @Lockable(id="锁ID", afterLock={"$this", "check"})
+     * @Lockable(id="锁ID", afterLock={"$this", "check2"})
      */
     public function index2()
     {
