@@ -64,7 +64,7 @@ before_script:
   - php --ri swoole
 
 script:
-  - ./tests/phpunit -phpunit ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit
+  - ./tests/phpunit -phpunit ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit -c ./tests/phpunit.xml
 
 env:
   global:
