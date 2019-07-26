@@ -7,7 +7,7 @@ use Imi\Util\AtomicManager;
 use Swoole\Timer;
 
 /**
- * Atomic 实现的多进程单机锁
+ * Atomic 实现的多进程单机锁，注意会阻塞进程，只推荐在自定义进程、进程池中使用
  * 
  * @Bean("AtomicLock")
  */
@@ -35,7 +35,7 @@ class Atomic extends BaseLock
     private $timeoutTimerId = null;
 
     /**
-     * 加锁，会挂起协程
+     * 加锁，会阻塞进程
      *
      * @return boolean
      */

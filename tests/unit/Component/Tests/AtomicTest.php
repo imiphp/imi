@@ -6,7 +6,7 @@ use Imi\Util\AtomicManager;
 use PHPUnit\Framework\Assert;
 
 /**
- * @testdox Aop
+ * @testdox Atomic
  */
 class AtomicTest extends BaseTest
 {
@@ -34,4 +34,13 @@ class AtomicTest extends BaseTest
         Assert::assertEquals(97, AtomicManager::sub('test', 2));
         Assert::assertEquals(97, AtomicManager::get('test'));
     }
+
+    public function testCmpset()
+    {
+        AtomicManager::set('test', 1);
+        Assert::assertFalse(AtomicManager::cmpset('test', 0, 2));
+        Assert::assertTrue(AtomicManager::cmpset('test', 1, 2));
+        Assert::assertEquals(2, AtomicManager::get('test'));
+    }
+
 }
