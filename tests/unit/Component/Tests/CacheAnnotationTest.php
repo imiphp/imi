@@ -22,11 +22,13 @@ class CacheAnnotationTest extends BaseTest
         $test = App::getBean('TestCacheAnnotation');
         $id = 1;
         $result = $test->testCacheableTTL($id);
+
+        $result2 = $test->testCacheableTTL($id);
+
         Assert::assertTrue(isset($result['id']));
         Assert::assertTrue(isset($result['time']));
         Assert::assertEquals($id, $result['id']);
 
-        $result2 = $test->testCacheableTTL($id);
         Assert::assertTrue(isset($result2['id']));
         Assert::assertTrue(isset($result2['time']));
         Assert::assertEquals($result['time'], $result2['time']);
