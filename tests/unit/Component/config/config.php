@@ -12,6 +12,7 @@ return [
         'Imi\Test\Component\Redis',
         'Imi\Test\Component\Db',
         'Imi\Test\Component\Cache',
+        'Imi\Test\Component\Lock',
     ],
     'beans'    =>    [
     ],
@@ -202,6 +203,25 @@ return [
                 'poolName'  =>    'redis_cache',
                 'separator' =>    '->',
                 'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
+            ],
+        ],
+    ],
+    // atmoic 配置
+    'atomics'    =>  [
+        'atomicLock'   =>  1,
+    ],
+    // 锁
+    'lock'  =>[
+        'list'  =>  [
+            'redis' =>  [
+                'class' =>  'RedisLock',
+                'poolName'  =>  'redis_test',
+            ],
+            'atomic' =>  [
+                'class' =>  'AtomicLock',
+                'options'   =>  [
+                    'atomicName'    =>  'atomicLock',
+                ],
             ],
         ],
     ],
