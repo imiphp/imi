@@ -1,0 +1,77 @@
+<?php
+namespace Imi\Test\HttpServer\Tests;
+
+use Yurun\Util\HttpRequest;
+use PHPUnit\Framework\Assert;
+
+/**
+ * @testdox MemoryTable
+ */
+class MemoryTableTest extends BaseTest
+{
+    public function testSetAndGet()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/setAndGet');
+        $data = $response->json(true);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertEquals('imi', $data['getField'] ?? null);
+        Assert::assertEquals([
+            'name'      =>  'imi',
+            'quantity'  =>  0,
+        ], $data['getRow'] ?? null);
+    }
+
+    public function testDel()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/del');
+        $data = $response->json(true);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertEquals([
+            'name'      =>  'yurun',
+            'quantity'  =>  0,
+        ], $data['getRow1'] ?? null);
+        Assert::assertTrue($data['delResult'] ?? null);
+        Assert::assertFalse($data['getRow2']);
+    }
+
+    public function testExist()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/exist');
+        $data = $response->json(true);
+        Assert::assertFalse($data['existResult1'] ?? null);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertTrue($data['existResult2'] ?? null);
+    }
+
+    public function testIncr()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/incr');
+        $data = $response->json(true);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertEquals(1, $data['incrResult'] ?? null);
+        Assert::assertEquals(1, $data['getQuantity'] ?? null);
+    }
+
+    public function testDecr()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/decr');
+        $data = $response->json(true);
+        Assert::assertTrue($data['setResult'] ?? null);
+        Assert::assertEquals(-1, $data['decrResult'] ?? null);
+        Assert::assertEquals(-1, $data['getQuantity'] ?? null);
+    }
+
+    public function testCount()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'memoryTable/count');
+        $data = $response->json(true);
+        Assert::assertEquals(4, $data['count'] ?? null);
+    }
+
+}

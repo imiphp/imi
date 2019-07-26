@@ -140,9 +140,9 @@ abstract class MemoryTableManager
      * @param string $name 表名
      * @param string $key
      * @param mixed $value
-     * @return void
+     * @return bool
      */
-    public static function set(string $name, string $key, $value)
+    public static function set(string $name, string $key, $value): bool
     {
         return static::getInstance($name)->set($key, $value);
     }
@@ -165,7 +165,7 @@ abstract class MemoryTableManager
      * @param string $key $key对应的数据不存在，将返回false
      * @return boolean
      */
-    public static function del(string $name, string $key)
+    public static function del(string $name, string $key): bool
     {
         return static::getInstance($name)->del($key);
     }
@@ -176,7 +176,7 @@ abstract class MemoryTableManager
      * @param string $key $key对应的数据不存在，将返回false
      * @return boolean
      */
-    public static function exist(string $name, string $key)
+    public static function exist(string $name, string $key): bool
     {
         return static::getInstance($name)->exist($key);
     }
@@ -185,24 +185,26 @@ abstract class MemoryTableManager
      * 原子自增
      * @param string $name 表名
      * @param string $key
+     * @param string $column
      * @param int|float $incrby 增量，默认为1。如果列为整形，$incrby必须为int型，如果列为浮点型，$incrby必须为float类型
-     * @return boolean
+     * @return number
      */
-    public static function incr(string $name, string $key, $incrby = 1)
+    public static function incr(string $name, string $key, string $column, $incrby = 1)
     {
-        return static::getInstance($name)->incr($key, $incrby);
+        return static::getInstance($name)->incr($key, $column, $incrby);
     }
 
     /**
      * 原子自减
      * @param string $name 表名
      * @param string $key
+     * @param string $column
      * @param int|float $incrby 减量，默认为1。如果列为整形，$incrby必须为int型，如果列为浮点型，$incrby必须为float类型
-     * @return boolean
+     * @return number
      */
-    public static function decr(string $name, string $key, $incrby = 1)
+    public static function decr(string $name, string $key, string $column, $incrby = 1)
     {
-        return static::getInstance($name)->decr($key, $incrby);
+        return static::getInstance($name)->decr($key, $column, $incrby);
     }
     
     /**
@@ -211,7 +213,7 @@ abstract class MemoryTableManager
      * @param string $name 表名
      * @return int
      */
-    public static function count(string $name)
+    public static function count(string $name): int
     {
         return static::getInstance($name)->count();
     }
@@ -224,7 +226,7 @@ abstract class MemoryTableManager
      * @param callable $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
      * @return boolean
      */
-    public static function lock(string $name, $taskCallable = null, $afterLockCallable = null)
+    public static function lock(string $name, $taskCallable = null, $afterLockCallable = null): bool
     {
         if(!isset(static::$tables[$name]['lockId']))
         {
@@ -239,7 +241,7 @@ abstract class MemoryTableManager
      * @param string $name 表名
      * @return boolean
      */
-    public static function unlock(string $name)
+    public static function unlock(string $name): bool
     {
         if(!isset(static::$tables[$name]['lockId']))
         {

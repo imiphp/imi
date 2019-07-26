@@ -114,4 +114,14 @@ return [
         // 数默认连接池名
         'defaultPool'   =>  'redis',
     ],
+
+    // 内存表配置
+    'memoryTable'   =>  [
+        't1'    =>  [
+            'columns'   =>  [
+                ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
+                ['name' => 'quantity', 'type' => \Swoole\Table::TYPE_INT],
+            ],
+        ],
+    ],
 ];
