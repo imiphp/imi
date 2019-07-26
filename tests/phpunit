@@ -1,12 +1,18 @@
 #!/usr/bin/env php
 <?php
 require dirname(__DIR__) . '/vendor/autoload.php';
-use Imi\Util\Args;
 ini_set('date.timezone', date_default_timezone_get());
-Args::init(1);
 go(function(){
     try {
-        require Args::get('phpunit', dirname(__DIR__) . '/vendor/bin/phpunit');
+        if($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
+        {
+            require $phpunitPath;
+            PHPUnit\TextUI\Command::main();
+        }
+        else
+        {
+            require dirname(__DIR__) . '/vendor/bin/phpunit';
+        }
     } catch (\Swoole\ExitException $e) {
         
     }
