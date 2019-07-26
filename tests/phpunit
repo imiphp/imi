@@ -3,17 +3,19 @@
 require dirname(__DIR__) . '/vendor/autoload.php';
 ini_set('date.timezone', date_default_timezone_get());
 go(function(){
-    try {
-        if($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
-        {
-            require $phpunitPath;
-            PHPUnit\TextUI\Command::main();
+    go(function(){
+        try {
+            if($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
+            {
+                require $phpunitPath;
+                PHPUnit\TextUI\Command::main();
+            }
+            else
+            {
+                require dirname(__DIR__) . '/vendor/bin/phpunit';
+            }
+        } catch (\Swoole\ExitException $e) {
+            
         }
-        else
-        {
-            require dirname(__DIR__) . '/vendor/bin/phpunit';
-        }
-    } catch (\Swoole\ExitException $e) {
-        
-    }
+    });
 });
