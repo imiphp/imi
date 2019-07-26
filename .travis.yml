@@ -59,6 +59,9 @@ before_script:
     fi
   - sh tests/db/install-db.sh
   - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
+  - composer update
+  - cd ./tests && composer update && cd ../
+  - php --ri swoole
 
 script:
   - ./tests/phpunit -phpunit ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit
