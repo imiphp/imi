@@ -21,7 +21,6 @@ class AfterConnect implements IConnectEventListener
     public function handle(ConnectEventParam $e)
     {
         // 释放请求上下文
-        RequestContext::destroy();
     }
 
 }

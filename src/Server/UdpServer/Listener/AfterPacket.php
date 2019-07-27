@@ -21,6 +21,5 @@ class AfterPacket implements IPacketEventListener
      */
     public function handle(PacketEventParam $e)
     {
-        RequestContext::destroy();
     }
 }

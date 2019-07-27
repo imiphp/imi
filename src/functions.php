@@ -30,22 +30,12 @@ function imiCallable(callable $callable, bool $withGo = false)
 {
     $server = RequestContext::exists() ? RequestContext::get('server') : null;
     $resultCallable = function(...$args) use($callable, $server){
-        $hasRequestContext = RequestContext::exists();
-        try {
-            if(!$hasRequestContext)
-            {
-                RequestContext::create();
-                RequestContext::set('server', $server);
-            }
-            return $callable(...$args);
-        } catch(\Throwable $th) {
-            App::getBean('ErrorLog')->onException($th);
-        } finally {
-            if(!$hasRequestContext && RequestContext::exists())
-            {
-                RequestContext::destroy();
-            }
+        if(!RequestContext::exists())
+        {
+            RequestContext::create();
+            RequestContext::set('server', $server);
         }
+        return $callable(...$args);
     };
     if($withGo)
     {

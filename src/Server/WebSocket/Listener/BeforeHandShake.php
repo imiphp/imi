@@ -46,8 +46,6 @@ class BeforeHandShake implements IHandShakeEventListener
         unset($routeResult['callable']);
         ConnectContext::set('httpRouteResult', $routeResult);
 
-        // 释放请求上下文
-        RequestContext::destroy();
     }
 
 }

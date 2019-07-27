@@ -22,6 +22,5 @@ class AfterReceive implements IReceiveEventListener
     public function handle(ReceiveEventParam $e)
     {
         // 销毁请求上下文
-        RequestContext::destroy();
     }
 }

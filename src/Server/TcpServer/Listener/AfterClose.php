@@ -25,6 +25,5 @@ class AfterClose implements ICloseEventListener
         $e->getTarget()->getBean('FdMap')->leaveAll($e->fd);
 
         ConnectContext::destroy($e->fd);
-        RequestContext::destroy();
     }
 }

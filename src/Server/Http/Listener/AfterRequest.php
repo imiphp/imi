@@ -31,7 +31,5 @@ class AfterRequest implements IRequestEventListener
                 StatementManager::unUsingAll($resource->getInstance());
             }
         }
-        // 销毁请求上下文
-        RequestContext::destroy();
     }
 }

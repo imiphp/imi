@@ -5,6 +5,7 @@ use Imi\Util\Coroutine;
 use Imi\Server\Base;
 use Imi\Bean\Container;
 use Imi\Event\Event;
+use Imi\Exception\RequestContextException;
 
 abstract class RequestContext
 {
@@ -20,11 +21,21 @@ abstract class RequestContext
         if(!isset(static::$context[$coID]))
         {
             static::$context[$coID] = [];
+            if($coID > -1)
+            {
+                defer(function(){
+                    try {
+                        RequestContext::destroy();
+                    } catch(RequestContextException $rce) {
+
+                    }
+                });
+            }
             Event::trigger('IMI.REQUEST_CONTENT.CREATE');
         }
         else
         {
-            throw new \RuntimeException('Create context failed, cannot create a duplicate context');
+            throw new RequestContextException(sprintf('Create context failed, cannot create a duplicate context in cid %s', $coID));
         }
     }
 
@@ -42,7 +53,7 @@ abstract class RequestContext
         }
         else
         {
-            throw new \RuntimeException('Destroy context failed, current context is not found');
+            throw new RequestContextException('Destroy context failed, current context is not found');
         }
     }
 
@@ -66,7 +77,7 @@ abstract class RequestContext
         $coID = Coroutine::getuid();
         if(!isset(static::$context[$coID]))
         {
-            throw new \RuntimeException('get context data failed, current context is not found');
+            throw new RequestContextException('get context data failed, current context is not found');
         }
         if(isset(static::$context[$coID][$name]))
         {
@@ -89,7 +100,7 @@ abstract class RequestContext
         $coID = Coroutine::getuid();
         if(!isset(static::$context[$coID]))
         {
-            throw new \RuntimeException('set context data failed, current context is not found');
+            throw new RequestContextException('set context data failed, current context is not found');
         }
         static::$context[$coID][$name] = $value;
     }
@@ -103,7 +114,7 @@ abstract class RequestContext
         $coID = Coroutine::getuid();
         if(!isset(static::$context[$coID]))
         {
-            throw new \RuntimeException('get context failed, current context is not found');
+            throw new RequestContextException('get context failed, current context is not found');
         }
         return static::$context[$coID];
     }
