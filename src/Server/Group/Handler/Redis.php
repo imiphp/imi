@@ -9,6 +9,7 @@ use Imi\ServerManage;
 use Imi\RequestContext;
 use Imi\Util\ArrayUtil;
 use Imi\Pool\PoolManager;
+use Imi\Util\AtomicManager;
 use Imi\Bean\Annotation\Bean;
 
 /**
@@ -111,6 +112,11 @@ class Redis implements IGroupHandler
                 }
                 $this->startPing($redis);
             });
+            AtomicManager::wakeup('imi.GroupRedisLock', Worker::getWorkerNum());
+        }
+        else
+        {
+            AtomicManager::wait('imi.GroupRedisLock');
         }
     }
 

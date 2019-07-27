@@ -23,7 +23,9 @@ return [
         'Imi\Lock',
     ],
     'atomics' => [
-        'session'
+        'session',
+        'imi.ConnectContextRedisLock',
+        'imi.GroupRedisLock',
     ],
     // 跳过初始化的工具
     'skipInitTools' =>  [

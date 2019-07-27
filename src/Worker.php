@@ -28,6 +28,20 @@ abstract class Worker
     private static $workerStartAppComplete = false;
 
     /**
+     * Worker 进程数量
+     *
+     * @var int
+     */
+    private static $workerNum;
+
+    /**
+     * task 进程数量
+     *
+     * @var int
+     */
+    private static $taskWorkerNum;
+
+    /**
      * 获取当前 worker 进程的 ID
      * 注意，不是进程ID
      *
@@ -55,7 +69,7 @@ abstract class Worker
      *
      * @return boolean
      */
-    public static function isInited()
+    public static function isInited(): bool
     {
         return static::$isInited;
     }
@@ -97,7 +111,7 @@ abstract class Worker
      *
      * @return boolean
      */
-    public static function isWorkerStartAppComplete()
+    public static function isWorkerStartAppComplete(): bool
     {
         return static::$workerStartAppComplete;
     }
@@ -107,8 +121,37 @@ abstract class Worker
      *
      * @return boolean
      */
-    public static function isTask()
+    public static function isTask(): bool
     {
         return ServerManage::getServer('main')->getSwooleServer()->taskworker;
     }
+
+    /**
+     * 获取 Worker 进程数量
+     *
+     * @return int
+     */
+    public static function getWorkerNum(): int
+    {
+        if(!static::$workerNum)
+        {
+            static::$workerNum = ServerManage::getServer('main')->getSwooleServer()->setting['worker_num'];
+        }
+        return static::$workerNum;
+    }
+
+    /**
+     * 获取 task 进程数量
+     *
+     * @return int
+     */
+    public static function getTaskWorkerNum(): int
+    {
+        if(!static::$taskWorkerNum)
+        {
+            static::$taskWorkerNum = ServerManage::getServer('main')->getSwooleServer()->setting['task_worker_num'];
+        }
+        return static::$taskWorkerNum;
+    }
+
 }

@@ -10,6 +10,7 @@ use Imi\ServerManage;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\AtomicManager;
 
 /**
  * 连接上下文存储处理器-Redis
@@ -130,7 +131,9 @@ class Redis implements IHandler
                 }
                 $this->startPing($redis);
             });
+            AtomicManager::wakeup('imi.ConnectContextRedisLock', Worker::getWorkerNum());
         }
+        AtomicManager::wait('imi.ConnectContextRedisLock');
     }
 
     /**
