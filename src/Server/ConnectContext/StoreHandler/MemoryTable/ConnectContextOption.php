@@ -24,7 +24,6 @@ class ConnectContextOption implements IMemoryTableOption
             $option['size'] = 65536;
         }
         $option['columns'] = [
-            ['name' => 'fd', 'type' => \Swoole\Table::TYPE_INT, 'size' => 4],
             ['name' => 'data', 'type' => \Swoole\Table::TYPE_STRING, 'size' => $option['dataLength'] ?? 1024],
         ];
         return $option;
