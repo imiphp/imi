@@ -28,8 +28,9 @@ abstract class ConnectContext
     {
         if(!$fd)
         {
-            RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
+            $fd = RequestContext::get('fd');
         }
+        RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
     }
 
     /**
