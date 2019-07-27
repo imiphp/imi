@@ -34,12 +34,12 @@ class BeforeHandShake implements IHandShakeEventListener
         RequestContext::set('response', $e->response);
         RequestContext::set('fd', $e->request->getSwooleRequest()->fd);
 
+        // 连接上下文创建
+        ConnectContext::create();
+
         // 中间件
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
         $dispatcher->dispatch($e->request, $e->response);
-
-        // 连接上下文创建
-        ConnectContext::create();
 
         // http 路由解析结果
         $routeResult = RequestContext::get('routeResult');
