@@ -4,51 +4,59 @@
 
 在 imi 中，你可以使用注解，或者自己实例化Lock类来实现加锁处理。
 
-目前 imi 中仅内置支持 `RedisLock`，它支持分布式，当然你也可以实现`Imi\Lock\Handler\ILockHandler`接口，来实现其他方式的锁。
+除了内置的锁驱动外，你可以实现`Imi\Lock\Handler\ILockHandler`接口，来实现其他方式的锁。
 
-## 实例化使用
+## 配置用法
 
-### 顺序用法
+> 需要在配置中预定义
+
+### 配置说明
 
 ```php
-$redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
-    'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
-    'db'        =>  1, // Redis 几号库，默认0
-    'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
-    'keyPrefix' =>  'imi:lock:', // Redis key 前置
-]);
+// 锁
+'lock'  =>[
+    'list'  =>  [
+        // 锁 ID => 配置
+        'redis' =>  [
+            'class' =>  'RedisLock', // Handler 类 Bean 名或完整类名
+            'options'   =>  [
+                // Handler 类所需配置
+                'poolName'  =>  'redis_test',
+            ],
+        ],
+    ],
+],
+```
 
-if($redisLock->lock())
-{
-    // 加锁后的处理
+### 使用说明
 
-    // 解锁
-    $redisLock->unlock();
-}
-else
+顺序用法：
+
+```php
+use Imi\Lock\Lock;
+$lockId = ''; // 你定义的ID
+if(Lock::lock($lockId))
 {
-    // 加锁失败的处理
+    try {
+        // 干一些事情
+    } catch(\Throwable $th) {
+        throw $th;
+    } finally {
+        Lock::unlock($lockId);
+    }
 }
 ```
 
-### 回调用法
+回调用法（无需手动释放锁）：
 
 ```php
-$redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
-    'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
-    'db'        =>  1, // Redis 几号库，默认0
-    'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
-    'keyPrefix' =>  'imi:lock:', // Redis key 前置
-]);
-
-// 执行后自动解锁
-$result = $redisLock->lock(function(){
+$result = Lock::lock($lockId, function(){
     // 执行任务
 }, function(){
     // return 非null则不执行任务
     // 一般用于防止缓存击穿
+    // 这个回调可以不传
 });
-
 if($result)
 {
     // 加锁并执行成功
@@ -59,9 +67,18 @@ else
 }
 ```
 
+获取 Handler 对象：
+
+```php
+$lock = Lock::getInstance($lockId);
+$lock->lock(); // 使用方法参考下面的“实例化使用方法”
+```
+
 ## 注解使用
 
 `@Lockable`
+
+> 无需在配置中预定义
 
 支持参数：
 
@@ -161,4 +178,59 @@ echo $result, PHP_EOL; // 2
 
 $result = App::getBean('Test')->index2();
 echo $result, PHP_EOL; // 3
+```
+
+## 实例化使用方法
+
+> 无需在配置中预定义
+
+### 顺序用法
+
+```php
+$redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
+    'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
+    'db'        =>  1, // Redis 几号库，默认0
+    'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
+    'keyPrefix' =>  'imi:lock:', // Redis key 前置
+]);
+
+if($redisLock->lock())
+{
+    // 加锁后的处理
+
+    // 解锁
+    $redisLock->unlock();
+}
+else
+{
+    // 加锁失败的处理
+}
+```
+
+### 回调用法
+
+```php
+$redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
+    'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
+    'db'        =>  1, // Redis 几号库，默认0
+    'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
+    'keyPrefix' =>  'imi:lock:', // Redis key 前置
+]);
+
+// 执行后自动解锁
+$result = $redisLock->lock(function(){
+    // 执行任务
+}, function(){
+    // return 非null则不执行任务
+    // 一般用于防止缓存击穿
+});
+
+if($result)
+{
+    // 加锁并执行成功
+}
+else
+{
+    // 加锁失败
+}
 ```
