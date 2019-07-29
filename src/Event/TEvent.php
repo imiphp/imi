@@ -147,7 +147,7 @@ trait TEvent
      * 获取事件触发回调列表
      *
      * @param string $name
-     * @return array
+     * @return \SplPriorityQueue
      */
     private function getTriggerCallbacks($name)
     {
