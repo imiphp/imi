@@ -216,7 +216,9 @@ return [
         'list'  =>  [
             'redis' =>  [
                 'class' =>  'RedisLock',
-                'poolName'  =>  'redis_test',
+                'options'   =>  [
+                    'poolName'  =>  'redis_test',
+                ],
             ],
             'atomic' =>  [
                 'class' =>  'AtomicLock',

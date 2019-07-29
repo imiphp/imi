@@ -179,7 +179,7 @@ abstract class AtomicManager
      * 被唤醒的进程返回后，会将原子计数设置为0，这时可以再次调用wakeup唤醒其他正在wait的进程
      * @param string $name 原子计数对象名称
      * @param integer $n
-     * @return void
+     * @return bool
      */
     public static function wakeup(string $name, int $n = 1)
     {
