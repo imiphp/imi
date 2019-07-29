@@ -20,7 +20,7 @@ class Dispatcher
      */
     protected $middlewares = [];
 
-    public function dispatch($request)
+    public function dispatch($request): Response
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
         $response = $requestHandler->handle($request);
@@ -28,12 +28,11 @@ class Dispatcher
         {
             $response->send();
         }
+        return $response;
     }
 
     protected function getMiddlewares()
     {
-        return array_merge($this->middlewares, [
-
-        ]);
+        return $this->middlewares;
     }
 }
