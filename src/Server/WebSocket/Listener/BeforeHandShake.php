@@ -5,6 +5,8 @@ use Imi\Worker;
 use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Util\Coroutine;
+use Imi\Util\Http\Consts\StatusCode;
+use Imi\Server\Event\Param\OpenEventParam;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\HandShakeEventParam;
 use Imi\Server\Event\Listener\IHandShakeEventListener;
@@ -39,13 +41,23 @@ class BeforeHandShake implements IHandShakeEventListener
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $dispatcher->dispatch($e->request, $e->response);
-
-        // http 路由解析结果
-        $routeResult = RequestContext::get('routeResult');
-        unset($routeResult['callable']);
-        ConnectContext::set('httpRouteResult', $routeResult);
-
+        $response = $dispatcher->dispatch($e->request, $e->response);
+        if(StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
+        {
+            $server = $e->getTarget();
+            $request = $e->request;
+            $server->trigger('open', [
+                'server'   => &$server,
+                'request'  => &$request,
+            ], $this, OpenEventParam::class);
+        }
+        else
+        {
+            // http 路由解析结果
+            $routeResult = RequestContext::get('routeResult');
+            unset($routeResult['callable']);
+            ConnectContext::set('httpRouteResult', $routeResult);
+        }
     }
 
 }
