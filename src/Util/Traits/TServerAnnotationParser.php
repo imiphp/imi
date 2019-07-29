@@ -33,11 +33,12 @@ trait TServerAnnotationParser
             $namespace .= '\\';
         }
         $result = [];
-        foreach(AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'Class') as $option)
+        foreach(AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'class') as $option)
         {
-            if(Text::startwith($option['class'], $namespace))
+            $class = $option->getClass();
+            if(Text::startwith($class, $namespace))
             {
-                $result[$option['class']] = $option;
+                $result[$class] = $option;
             }
         }
         $this->cache[$serverName] = $result;

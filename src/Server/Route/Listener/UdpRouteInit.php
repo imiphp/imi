@@ -48,7 +48,7 @@ class UdpRouteInit implements IEventListener
             $route = $server->getBean('UdpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
-                $classAnnotation = $classItem['annotation'];
+                $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) ?? [] as $middleware)

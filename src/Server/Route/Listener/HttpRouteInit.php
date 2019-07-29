@@ -52,7 +52,7 @@ class HttpRouteInit implements IEventListener
             $route = $server->getBean('HttpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
-                $classAnnotation = $classItem['annotation'];
+                $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, Middleware::class) ?? [] as $middleware)

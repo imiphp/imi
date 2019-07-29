@@ -84,6 +84,7 @@ abstract class App
             echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
             return;
         }
+        AnnotationManager::init();
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
         // 初始化Main类

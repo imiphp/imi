@@ -38,11 +38,11 @@ class Init implements IEventListener
         // 初始化内存表模型
         foreach($runtimeInfo->memoryTable as $item)
         {
-            $memoryTableAnnotation = $item['annotation'];
+            $memoryTableAnnotation = $item->getAnnotation();
             MemoryTableManager::addName($memoryTableAnnotation->name, [
                 'size'                  => $memoryTableAnnotation->size,
                 'conflictProportion'    => $memoryTableAnnotation->conflictProportion,
-                'columns'               => $item['columns'],
+                'columns'               => $item->columns,
             ]);
         }
         // 初始化配置中的内存表

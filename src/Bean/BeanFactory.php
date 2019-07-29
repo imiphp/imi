@@ -379,7 +379,7 @@ TPL;
         {
             foreach($aspects as $item)
             {
-                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item->getClass(), PointCut::class);
                 foreach($pointCutsSet as $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
@@ -421,7 +421,7 @@ TPL;
             foreach($aspects as $item)
             {
                 // 判断是否属于当前类的切面
-                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item->getClass(), PointCut::class);
                 foreach($pointCutsSet as $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)

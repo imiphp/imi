@@ -108,7 +108,7 @@ class BeanProxy
             foreach($aspects as $item)
             {
                 // 判断是否属于当前类方法的切面
-                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item->getClass(), PointCut::class);
                 foreach($pointCutsSet as $methodName => $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
@@ -121,10 +121,10 @@ class BeanProxy
                                     if(Imi::checkClassRule($allowItem, $this->className))
                                     {
                                         static::$aspects[$this->className]->insert([
-                                            'class'     =>  $item['class'],
+                                            'class'     =>  $item->getClass(),
                                             'method'    =>  $methodName,
                                             'pointCut'  =>  $pointCut,
-                                        ], $item['annotation']->priority);
+                                        ], $item->getAnnotation()->priority);
                                         break;
                                     }
                                 }
@@ -140,10 +140,10 @@ class BeanProxy
                                             if($annotation instanceof $allowItem)
                                             {
                                                 static::$aspects[$this->className]->insert([
-                                                    'class'     =>  $item['class'],
+                                                    'class'     =>  $item->getClass(),
                                                     'method'    =>  $methodName,
                                                     'pointCut'  =>  $pointCut,
-                                                ], $item['annotation']->priority);
+                                                ], $item->getAnnotation()->priority);
                                                 break 3;
                                             }
                                         }
@@ -154,7 +154,7 @@ class BeanProxy
                     }
                 }
                 // 判断是否属于当前类的切面
-                $pointCuts = AnnotationManager::getMethodsAnnotations($item['class'], PointCut::class);
+                $pointCuts = AnnotationManager::getMethodsAnnotations($item->getClass(), PointCut::class);
                 foreach($pointCuts as $methodName => $pointCuts)
                 {
                     foreach($pointCuts as $pointCut)
@@ -168,10 +168,10 @@ class BeanProxy
                                     if(Imi::checkRuleMatch($allowItem, $this->className))
                                     {
                                         static::$aspects[$this->className]->insert([
-                                            'class'     =>  $item['class'],
+                                            'class'     =>  $item->getClass(),
                                             'method'    =>  $methodName,
                                             'pointCut'  =>  $pointCut,
-                                        ], $item['annotation']->priority);
+                                        ], $item->getAnnotation()->priority);
                                         break;
                                     }
                                 }
@@ -186,10 +186,10 @@ class BeanProxy
                                         if($annotation instanceof $allowItem)
                                         {
                                             static::$aspects[$this->className]->insert([
-                                                'class'     =>  $item['class'],
+                                                'class'     =>  $item->getClass(),
                                                 'method'    =>  $methodName,
                                                 'pointCut'  =>  $pointCut,
-                                            ], $item['annotation']->priority);
+                                            ], $item->getAnnotation()->priority);
                                             break 2;
                                         }
                                     }

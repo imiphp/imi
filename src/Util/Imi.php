@@ -490,10 +490,11 @@ abstract class Imi
         };
 
         $runtimeInfo = App::getRuntimeInfo();
-        $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'Class');
+        $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'class');
         foreach($annotationsSet as &$item)
         {
-            $item['columns'] = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item['class'], Column::class)) ?? [];
+            $item = clone $item;
+            $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
         $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getData(), Annotation::getInstance()->getParser()->getFileMap()];
@@ -524,8 +525,7 @@ abstract class Imi
         $parser = Annotation::getInstance()->getParser();
         $parser->parseIncr($files);
 
-        AnnotationManager::setAnnotations([]);
-        AnnotationManager::setAnnotationRelation([]);
+        AnnotationManager::init();
 
         foreach(App::getRuntimeInfo()->parsersData as $parserClass => $data)
         {

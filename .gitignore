@@ -4,3 +4,4 @@
 .runtime
 *.log
 .session
+/.idea
