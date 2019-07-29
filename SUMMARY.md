@@ -34,7 +34,7 @@
 * [HTTP 控制器](components/websocketServer/httpController.md)
 * [WebSocket 控制器](components/websocketServer/websocketController.md)
 * [中间件](components/websocketServer/middleware.md)
-* [会话数据](components/websocketServer/session.md)
+* [连接上下文](components/websocketServer/session.md)
 * [连接分组](components/websocketServer/group.md)
 * [不使用中间件](components/websocketServer/noMiddleware.md)
 
@@ -42,7 +42,7 @@
 
 * [TCP 控制器](components/tcpServer/controller.md)
 * [中间件](components/tcpServer/middleware.md)
-* [会话数据](components/tcpServer/session.md)
+* [连接上下文](components/tcpServer/session.md)
 * [连接分组](components/tcpServer/group.md)
 * [不使用中间件](components/tcpServer/noMiddleware.md)
 
