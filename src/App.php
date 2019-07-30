@@ -346,7 +346,7 @@ abstract class App
         {
             $data = static::$runtimeInfo->annotationParserData;
             Annotation::getInstance()->getParser()->setClasses($data[0]);
-            Annotation::getInstance()->getParser()->setFileMap($data[1]);
+            Annotation::getInstance()->getParser()->setFiles($data[1]);
             Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
         }
         AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);

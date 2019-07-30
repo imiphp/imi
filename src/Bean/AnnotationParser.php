@@ -28,11 +28,11 @@ class AnnotationParser
     private $parsers = [];
 
     /**
-     * 文件数据映射
+     * 文件映射
      *
      * @var array
      */
-    private $fileMap = [];
+    private $files = [];
 
     /**
      * 注解读取器
@@ -91,7 +91,7 @@ class AnnotationParser
         if($this->checkAnnotations($annotations))
         {
             $this->classes[$className] = 1;
-            $this->fileMap[$ref->getFileName()][$className]['class'] = &$annotations;
+            $this->files[$ref->getFileName()] = 1;
             AnnotationManager::setClassAnnotations($className, ...$annotations);
         }
         // 是注解类的情况下，Parser类不需要指定@Parser()处理器
@@ -127,7 +127,7 @@ class AnnotationParser
         if($this->checkAnnotations($annotations))
         {
             $this->classes[$className] = 1;
-            $this->fileMap[$ref->getFileName()][$className]['method'][$method->getName()] = &$annotations;
+            $this->files[$ref->getFileName()] = 1;
             AnnotationManager::setMethodAnnotations($className, $method->getName(), ...$annotations);
         }
     }
@@ -158,7 +158,7 @@ class AnnotationParser
         if($this->checkAnnotations($annotations))
         {
             $this->classes[$className] = 1;
-            $this->fileMap[$ref->getFileName()][$className]['prop'][$prop->getName()] = &$annotations;
+            $this->files[$ref->getFileName()] = 1;
             AnnotationManager::setPropertyAnnotations($className, $prop->getName(), ...$annotations);
         }
     }
@@ -191,7 +191,7 @@ class AnnotationParser
         if($this->checkAnnotations($annotations))
         {
             $this->classes[$className] = 1;
-            $this->fileMap[$ref->getFileName()][$className]['const'][$const->getName()] = &$annotations;
+            $this->files[$ref->getFileName()] = 1;
             AnnotationManager::setConstantAnnotations($className, $const->getName(), ...$annotations);
         }
     }
@@ -406,21 +406,21 @@ class AnnotationParser
      *
      * @return array
      */ 
-    public function getFileMap()
+    public function getFiles()
     {
-        return $this->fileMap;
+        return $this->files;
     }
 
     /**
      * Set 文件数据映射
      *
-     * @param array $fileMap 文件数据映射
+     * @param array $files 文件数据映射
      *
      * @return void
      */ 
-    public function setFileMap(array $fileMap)
+    public function setFiles(array $files)
     {
-        $this->fileMap = $fileMap;
+        $this->files = $files;
     }
 
     /**
@@ -433,9 +433,9 @@ class AnnotationParser
     {
         foreach($files as $file)
         {
-            if(isset($this->fileMap[$file]))
+            if(isset($this->files[$file]))
             {
-                unset($this->fileMap[$file]);
+                unset($this->files[$file]);
             }
             if(!is_file($file))
             {

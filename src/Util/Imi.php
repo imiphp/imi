@@ -497,7 +497,7 @@ abstract class Imi
             $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
-        $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getClasses(), Annotation::getInstance()->getParser()->getFileMap()];
+        $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getClasses(), Annotation::getInstance()->getParser()->getFiles()];
         $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
         $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
         $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
