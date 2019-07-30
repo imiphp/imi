@@ -220,7 +220,7 @@ abstract class App
      */
     public static function initWorker()
     {
-        App::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
+        App::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'), true);
 
         // Worker 进程初始化前置
         Event::trigger('IMI.INIT.WORKER.BEFORE');
@@ -329,27 +329,37 @@ abstract class App
 
     /**
      * 从文件加载运行时数据
+     * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据
      *
      * @param string $fileName
+     * @param bool $minimumAvailable
      * @return boolean
      */
-    public static function loadRuntimeInfo($fileName)
+    public static function loadRuntimeInfo($fileName, $minimumAvailable = false)
     {
         if(!is_file($fileName))
         {
             return false;
         }
         static::$runtimeInfo = unserialize(file_get_contents($fileName));
-        $data = static::$runtimeInfo->annotationParserData;
-        Annotation::getInstance()->getParser()->setClasses($data[0]);
-        Annotation::getInstance()->getParser()->setFileMap($data[1]);
-        Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
+        if(!$minimumAvailable)
+        {
+            $data = static::$runtimeInfo->annotationParserData;
+            Annotation::getInstance()->getParser()->setClasses($data[0]);
+            Annotation::getInstance()->getParser()->setFileMap($data[1]);
+            Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
+        }
         AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);
         AnnotationManager::setAnnotationRelation(static::$runtimeInfo->annotationManagerAnnotationRelation);
         foreach(static::$runtimeInfo->parsersData as $parserClass => $data)
         {
             $parser = $parserClass::getInstance();
             $parser->setData($data);
+        }
+        Event::trigger('IMI.LOAD_RUNTIME_INFO');
+        if($minimumAvailable)
+        {
+            static::$runtimeInfo = null;
         }
         return true;
     }

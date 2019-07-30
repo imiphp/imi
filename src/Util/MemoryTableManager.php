@@ -250,4 +250,14 @@ abstract class MemoryTableManager
         return Lock::unlock(static::$tables[$name]['lockId']);
     }
 
+
+    /**
+     * 是否已初始化过
+     *
+     * @return boolean
+     */ 
+    public static function isInited()
+    {
+        return static::$isInited;
+    }
 }

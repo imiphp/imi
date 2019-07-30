@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Config;
 
 /**
- * @Listener(eventName="IMI.INITED", priority=19940280)
+ * @Listener(eventName="IMI.LOAD_RUNTIME_INFO")
  */
 class Init implements IEventListener
 {
@@ -28,7 +28,7 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        if('server' !== Tool::getToolName() || 'start' !== Tool::getToolOperation())
+        if('server' !== Tool::getToolName() || 'start' !== Tool::getToolOperation() || MemoryTableManager::isInited())
         {
             return;
         }

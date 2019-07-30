@@ -536,8 +536,6 @@ abstract class Imi
             $parser->execParse($className);
         }
 
-        // var_dump(AnnotationManager::getMethodAnnotations(\Imi\Test\WebSocketServer\MainServer\Controller\TestController::class, 'login'));
-        // var_dump(AnnotationManager::getMethodsAnnotations(\Imi\Test\WebSocketServer\MainServer\Controller\TestController::class, \Imi\Server\Route\Annotation\WebSocket\WSRoute::class));
     }
 
     /**
