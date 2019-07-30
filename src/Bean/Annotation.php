@@ -50,15 +50,6 @@ class Annotation
     }
 
     /**
-     * 获取原始数据
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->parser->getData();
-    }
-
-    /**
      * 获取加载器
      *
      * @return AnnotationLoader

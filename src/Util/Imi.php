@@ -497,7 +497,7 @@ abstract class Imi
             $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
-        $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getData(), Annotation::getInstance()->getParser()->getFileMap()];
+        $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getClasses(), Annotation::getInstance()->getParser()->getFileMap()];
         $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
         $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
         $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
@@ -525,18 +525,19 @@ abstract class Imi
         $parser = Annotation::getInstance()->getParser();
         $parser->parseIncr($files);
 
-        AnnotationManager::init();
-
         foreach(App::getRuntimeInfo()->parsersData as $parserClass => $data)
         {
             $parserObject = $parserClass::getInstance();
             $parserObject->setData([]);
         }
 
-        foreach($parser->getData() as $className => $item)
+        foreach($parser->getClasses() as $className)
         {
             $parser->execParse($className);
         }
+
+        // var_dump(AnnotationManager::getMethodAnnotations(\Imi\Test\WebSocketServer\MainServer\Controller\TestController::class, 'login'));
+        // var_dump(AnnotationManager::getMethodsAnnotations(\Imi\Test\WebSocketServer\MainServer\Controller\TestController::class, \Imi\Server\Route\Annotation\WebSocket\WSRoute::class));
     }
 
     /**
