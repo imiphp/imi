@@ -178,6 +178,7 @@ class AnnotationRelation
             }
             $this->classRelations[$annotationClassName] = array_values($this->classRelations[$annotationClassName]);
         }
+        $this->allRelations[$annotationClassName] = null;
     }
 
     /**
@@ -201,6 +202,7 @@ class AnnotationRelation
             }
             $this->methodRelations[$annotationClassName] = array_values($this->methodRelations[$annotationClassName]);
         }
+        $this->allRelations[$annotationClassName] = null;
     }
 
     /**
@@ -224,6 +226,7 @@ class AnnotationRelation
             }
             $this->propertyRelations[$annotationClassName] = array_values($this->propertyRelations[$annotationClassName]);
         }
+        $this->allRelations[$annotationClassName] = null;
     }
     
     /**
@@ -247,5 +250,6 @@ class AnnotationRelation
             }
             $this->constantRelations[$annotationClassName] = array_values($this->constantRelations[$annotationClassName]);
         }
+        $this->allRelations[$annotationClassName] = null;
     }
 }
