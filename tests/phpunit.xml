@@ -21,6 +21,10 @@
             <directory>unit/RedisSessionServer/Tests</directory>
             <file>*.php</file>
         </testsuite>
+        <testsuite name="WebSocketServer">
+            <directory>unit/WebSocketServer/Tests</directory>
+            <file>*.php</file>
+        </testsuite>
     </testsuites>
     <listeners>
         <listener class="Imi\Test\Component\PHPUintListener\ImiListener" file="tests/unit/Component/PHPUintListener/ImiListener.php">
