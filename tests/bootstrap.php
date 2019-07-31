@@ -59,6 +59,27 @@ function startServer()
         return $serverStarted;
     }
     
+    function checkTCPServerStatus()
+    {
+        $serverStarted = false;
+        for($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            try {
+                $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+                if(@socket_connect($sock, '127.0.0.1', 13003))
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            } catch(\Throwable $th) {
+                throw $th;
+            } finally {
+                socket_close($sock);
+            }
+        }
+        return $serverStarted;
+    }
     
     $servers = [
         'HttpServer'    =>  [
@@ -75,6 +96,11 @@ function startServer()
             'start'         => __DIR__ . '/unit/WebSocketServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/WebSocketServer/bin/stop.sh',
             'checkStatus'   => 'checkWebSocketServerStatus',
+        ],
+        'TCPServer'    =>  [
+            'start'         => __DIR__ . '/unit/TCPServer/bin/start.sh',
+            'stop'          => __DIR__ . '/unit/TCPServer/bin/stop.sh',
+            'checkStatus'   => 'checkTCPServerStatus',
         ],
     ];
     

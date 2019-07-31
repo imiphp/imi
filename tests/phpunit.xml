@@ -25,6 +25,10 @@
             <directory>unit/WebSocketServer/Tests</directory>
             <file>*.php</file>
         </testsuite>
+        <testsuite name="TCPServer">
+            <directory>unit/TCPServer/Tests</directory>
+            <file>*.php</file>
+        </testsuite>
     </testsuites>
     <listeners>
         <listener class="Imi\Test\Component\PHPUintListener\ImiListener" file="tests/unit/Component/PHPUintListener/ImiListener.php">
