@@ -7,9 +7,9 @@
 ```php
 return [
 	'beans'	=>	[
-		'TcpDispatcher'	=>	[
+		'UdpDispatcher'	=>	[
 			'middlewares'	=>	[
-				\Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
+				\Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -30,7 +30,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Server\TcpServer\Route\RouteItem
+ * @var \Imi\Server\UdpServer\Route\RouteItem
  */
 public $routeItem;
 
@@ -55,7 +55,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Server\Route\Annotation\Tcp\TcpRoute
+ * @var \Imi\Server\Route\Annotation\Udp\UdpRoute
  */
 public $annotation;
 

@@ -7,9 +7,9 @@
 ```php
 return [
 	'beans'	=>	[
-		'TcpDispatcher'	=>	[
+		'WebSocketDispatcher'	=>	[
 			'middlewares'	=>	[
-				\Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
+				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -17,6 +17,12 @@ return [
 ```
 
 通过配置注入形式，实现非常灵活的配置，你甚至可以自己另外实现路由中间件，而不用被框架自带的中间件所影响，用哪些中间件都在你的掌控之中！
+
+## 获取握手请求路由解析结果
+
+```php
+$httpRouteResult = ConnectContext::get('routeResult');
+```
 
 ## 获取当前路由解析结果 (`routeResult`)
 
@@ -30,7 +36,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Server\TcpServer\Route\RouteItem
+ * @var \Imi\Server\WebSocket\Route\RouteItem
  */
 public $routeItem;
 
@@ -55,7 +61,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Server\Route\Annotation\Tcp\TcpRoute
+ * @var \Imi\Server\Route\Annotation\WebSocket\WSRoute
  */
 public $annotation;
 

@@ -163,3 +163,73 @@ return [
 	]
 ];
 ```
+
+## 获取当前路由解析结果 (`routeResult`)
+
+```php
+$routeResult = RequestContext::get('routeResult');
+```
+
+`$routeResult` 定义：
+
+```php
+/**
+ * 路由配置项
+ *
+ * @var \Imi\Server\UdpServer\Route\RouteItem
+ */
+public $routeItem;
+
+/**
+ * 参数
+ *
+ * @var array
+ */
+public $params;
+
+/**
+ * 回调
+ *
+ * @var callable
+ */
+public $callable;
+```
+
+`$routeResult->routeItem` 定义：
+
+```php
+/**
+ * 注解
+ *
+ * @var \Imi\Server\Route\Annotation\Route
+ */
+public $annotation;
+
+/**
+ * 回调
+ *
+ * @var callable|\Imi\Server\Route\RouteCallable
+ */
+public $callable;
+
+/**
+ * 中间件列表
+ *
+ * @var array
+ */
+public $middlewares = [];
+
+/**
+ * WebSocket 配置
+ *
+ * @var array
+ */
+public $wsConfig = [];
+
+/**
+ * 其它配置项
+ *
+ * @var array
+ */
+public $options;
+```

@@ -32,6 +32,7 @@
 
 * [HTTP 路由](components/websocketServer/httpRoute.md)
 * [HTTP 控制器](components/websocketServer/httpController.md)
+* [WebSocket 路由](components/websocketServer/route.md)
 * [WebSocket 控制器](components/websocketServer/websocketController.md)
 * [中间件](components/websocketServer/middleware.md)
 * [连接上下文](components/websocketServer/session.md)
@@ -40,6 +41,7 @@
 
 ## TCP 服务
 
+* [路由](components/tcpServer/route.md)
 * [TCP 控制器](components/tcpServer/controller.md)
 * [中间件](components/tcpServer/middleware.md)
 * [连接上下文](components/tcpServer/session.md)
@@ -48,6 +50,7 @@
 
 ## UDP 服务
 
+* [路由](components/udpServer/route.md)
 * [UDP 控制器](components/udpServer/controller.md)
 * [中间件](components/udpServer/middleware.md)
 * [不使用中间件](components/udpServer/noMiddleware.md)
