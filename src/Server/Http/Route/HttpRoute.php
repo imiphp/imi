@@ -4,7 +4,6 @@ namespace Imi\Server\Http\Route;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Route\BaseRoute;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
 use Imi\Server\Route\RouteCallable;
@@ -13,8 +12,15 @@ use Imi\Util\Uri;
 /**
  * @Bean("HttpRoute")
  */
-class HttpRoute extends BaseRoute
+class HttpRoute
 {
+    /**
+     * 路由规则
+     * url => \Imi\Server\Route\Annotation\Route[]
+     * @var array
+     */
+    protected $rules = [];
+
     /**
      * url规则缓存
      * @var array
@@ -45,6 +51,70 @@ class HttpRoute extends BaseRoute
      * @var boolean
      */
     protected $ignoreCase = false;
+
+    /**
+     * 增加路由规则
+     * @param string $url url规则
+     * @param mixed $callable 回调
+     * @param \Imi\Server\Route\Annotation\Route $annotation 路由定义注解，可选
+     * @return void
+     */
+    public function addRule(string $url, $callable, \Imi\Server\Route\Annotation\Route $annotation = null)
+    {
+        if(null === $annotation)
+        {
+            $annotation = new \Imi\Server\Route\Annotation\Route([
+                'url' => $url,
+            ]);
+        }
+        $this->rules[$url][spl_object_hash($annotation)] = [
+            'annotation'=> $annotation,
+            'callable'  => $callable,
+        ];
+    }
+
+    /**
+     * 增加路由规则，直接使用注解方式
+     * @param \Imi\Server\Route\Annotation\Route $annotation
+     * @param mixed $callable
+     * @param array $options
+     * @return void
+     */
+    public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
+    {
+        $this->rules[$annotation->url][spl_object_hash($annotation)] = array_merge([
+            'annotation'=> $annotation,
+            'callable'  => $callable,
+        ], $options);
+    }
+
+    /**
+     * 清空路由规则
+     * @return void
+     */
+    public function clearRules()
+    {
+        $this->rules = [];
+    }
+
+    /**
+     * 路由规则是否存在
+     * @param \Imi\Server\Route\Annotation\Route $rule
+     * @return boolean
+     */
+    public function existsRule(RouteAnnotation $rule)
+    {
+        return isset($this->rules[$rule->url][spl_object_hash($rule)]);
+    }
+
+    /**
+     * 获取路由规则
+     * @return array
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
 
     /**
      * 路由解析处理

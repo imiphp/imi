@@ -47,7 +47,7 @@ class UdpRoute implements IRoute
      */
     public function addRuleAnnotation(UdpRouteAnnotation $annotation, $callable, $options = [])
     {
-        $this->rules[$this->hashKey($annotation)] = array_merge([
+        $this->rules[spl_object_hash($annotation)] = array_merge([
             'annotation'=> $annotation,
             'callable'  => $callable,
         ], $options);
@@ -69,7 +69,7 @@ class UdpRoute implements IRoute
      */
     public function existsRule(UdpRouteAnnotation $rule)
     {
-        return isset($this->rules[$this->hashKey($rule)]);
+        return isset($this->rules[spl_object_hash($rule)]);
     }
 
     /**
@@ -79,16 +79,6 @@ class UdpRoute implements IRoute
     public function getRules()
     {
         return $this->rules;
-    }
-
-    /**
-     * 对key做hash
-     * @param mixed $key
-     * @return boolean
-     */
-    private function hashKey($key)
-    {
-        return md5(serialize($key));
     }
 
     /**

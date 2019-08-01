@@ -48,7 +48,7 @@ class WSRoute implements IRoute
      */
     public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, $options = [])
     {
-        $this->rules[$this->hashKey($annotation)] = array_merge([
+        $this->rules[spl_object_hash($annotation)] = array_merge([
             'annotation'=> $annotation,
             'callable'  => $callable,
         ], $options);
@@ -70,7 +70,7 @@ class WSRoute implements IRoute
      */
     public function existsRule(WSRouteAnnotation $rule)
     {
-        return isset($this->rules[$this->hashKey($rule)]);
+        return isset($this->rules[spl_object_hash($rule)]);
     }
 
     /**
@@ -80,16 +80,6 @@ class WSRoute implements IRoute
     public function getRules()
     {
         return $this->rules;
-    }
-
-    /**
-     * 对key做hash
-     * @param mixed $key
-     * @return boolean
-     */
-    private function hashKey($key)
-    {
-        return md5(serialize($key));
     }
 
     /**
