@@ -80,6 +80,37 @@ function startServer()
         }
         return $serverStarted;
     }
+
+    function checkUDPServerStatus()
+    {
+        $serverStarted = false;
+        for($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            try {
+                $handle = @stream_socket_client("udp://127.0.0.1:13004", $errno, $errstr);
+                if(
+                    $handle
+                    && stream_set_timeout($handle, 1)
+                    && fwrite($handle, json_encode([
+                        'action'    =>  'hello',
+                        'format'    =>  'Y',
+                        'time'      =>  time(),
+                    ])) > 0
+                    && '{' === fread($handle, 1)
+                )
+                {
+                    $serverStarted = true;
+                    break;
+                }
+            } catch(\Throwable $th) {
+                throw $th;
+            } finally {
+                fclose($handle);
+            }
+        }
+        return $serverStarted;
+    }
     
     $servers = [
         'HttpServer'    =>  [
@@ -101,6 +132,11 @@ function startServer()
             'start'         => __DIR__ . '/unit/TCPServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/TCPServer/bin/stop.sh',
             'checkStatus'   => 'checkTCPServerStatus',
+        ],
+        'UDPServer'    =>  [
+            'start'         => __DIR__ . '/unit/UDPServer/bin/start.sh',
+            'stop'          => __DIR__ . '/unit/UDPServer/bin/stop.sh',
+            'checkStatus'   => 'checkUDPServerStatus',
         ],
     ];
     

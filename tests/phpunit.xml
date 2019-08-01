@@ -29,6 +29,10 @@
             <directory>unit/TCPServer/Tests</directory>
             <file>*.php</file>
         </testsuite>
+        <testsuite name="UDPServer">
+            <directory>unit/UDPServer/Tests</directory>
+            <file>*.php</file>
+        </testsuite>
     </testsuites>
     <listeners>
         <listener class="Imi\Test\Component\PHPUintListener\ImiListener" file="tests/unit/Component/PHPUintListener/ImiListener.php">
