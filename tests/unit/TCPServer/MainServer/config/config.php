@@ -17,6 +17,7 @@ return [
         'GroupRedis'    =>    [
             'redisPool'    =>    'redis',
             'key'        =>    'IMITEST.TCP.GROUP',
+            'redisDb'   =>  2,
         ],
     ],
 ];

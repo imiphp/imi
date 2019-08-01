@@ -144,12 +144,6 @@ class HttpRoute
                     {
                         $params = array_merge($result->params, $domainParams);
                         return new RouteResult($item, $result, $params);
-                        // return [
-                        //     'params'        => $params,
-                        //     'callable'      => $this->parseCallable($params, $item->callable),
-                        //     'middlewares'   => $item->middlewares,
-                        //     'wsConfig'      => $item->wsConfig,
-                        // ];
                     }
                 }
             }

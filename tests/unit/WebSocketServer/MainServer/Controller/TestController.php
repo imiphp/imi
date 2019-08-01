@@ -26,16 +26,6 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getFd());
-        // $func = function(){};
-        // Event::on('test', $func);
-        // $time = microtime(true);
-        // for($i = 0; $i < 10000; ++$i)
-        // {
-        //     Event::trigger('test');
-        // }
-        // var_dump(microtime(true) - $time);
-        // Event::off('test', $func);
-        var_dump(1);
         return ['success'=>true];
     }
 

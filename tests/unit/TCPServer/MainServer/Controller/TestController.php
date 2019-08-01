@@ -21,7 +21,6 @@ class TestController extends \Imi\Controller\TcpController
      */
     public function login($data)
     {
-        $server = $this->server->getSwooleServer();
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->data->getFd());
         return ['action'=>'login', 'success'=>true];
