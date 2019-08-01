@@ -9,6 +9,9 @@ use Yurun\Util\YurunHttp;
  */
 class WSTest extends BaseTest
 {
+    /**
+     * @testdox test
+     */
     public function test()
     {
         $this->go(function(){

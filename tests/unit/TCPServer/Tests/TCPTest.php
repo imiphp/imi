@@ -8,6 +8,9 @@ use Imi\Util\Uri;
  */
 class TCPTest extends BaseTest
 {
+    /**
+     * @testdox test
+     */
     public function test()
     {
         $this->go(function(){
