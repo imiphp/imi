@@ -14,26 +14,22 @@ class WSRoute implements IRoute
 {
     /**
      * 路由规则
-     * url => Imi\Server\Route\Annotation\WebSocket\WSRoute[]
-     * @var array
+     * @var \Imi\Server\WebSocket\Route\RouteItem[]
      */
     protected $rules = [];
 
     /**
      * 路由解析处理
      * @param mixed $data
-     * @return array
+     * @return \Imi\Server\WebSocket\Route\RouteResult
      */
     public function parse($data)
     {
         foreach($this->rules as $item)
         {
-            if($this->checkCondition($data, $item['annotation']))
+            if($this->checkCondition($data, $item->annotation))
             {
-                return [
-                    'callable'      => $this->parseCallable([], $item['callable']),
-                    'middlewares'   => $item['middlewares'] ?? [],
-                ];
+                return new RouteResult($item);
             }
         }
         return null;
@@ -48,10 +44,12 @@ class WSRoute implements IRoute
      */
     public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, $options = [])
     {
-        $this->rules[spl_object_hash($annotation)] = array_merge([
-            'annotation'=> $annotation,
-            'callable'  => $callable,
-        ], $options);
+        $routeItem = new RouteItem($annotation, $callable, $options);
+        if(isset($options['middlewares']))
+        {
+            $routeItem->middlewares = $options['middlewares'];
+        }
+        $this->rules[spl_object_hash($annotation)] = $routeItem;
     }
 
     /**
@@ -75,7 +73,7 @@ class WSRoute implements IRoute
 
     /**
      * 获取路由规则
-     * @return array
+     * @return \Imi\Server\WebSocket\Route\RouteItem[]
      */
     public function getRules()
     {
@@ -104,21 +102,4 @@ class WSRoute implements IRoute
         return true;
     }
 
-    /**
-     * 处理回调
-     * @param array $params
-     * @param mixed $callable
-     * @return callable
-     */
-    private function parseCallable($params, $callable)
-    {
-        if($callable instanceof RouteCallable)
-        {
-            return $callable->getCallable($params);
-        }
-        else
-        {
-            return $callable;
-        }
-    }
 }

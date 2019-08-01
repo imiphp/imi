@@ -28,16 +28,16 @@ class ActionMiddleware implements IMiddleware
             return $handler->handle($frame);
         }
         // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($result['callable']) && isset($result['callable'][0]) && $result['callable'][0] instanceof WebSocketController;
+        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof WebSocketController;
         if($isObject)
         {
             // 复制一份控制器对象
-            $result['callable'][0] = clone $result['callable'][0];
-            $result['callable'][0]->server = RequestContext::getServer();
-            $result['callable'][0]->frame = $frame;
+            $result->callable[0] = clone $result->callable[0];
+            $result->callable[0]->server = RequestContext::getServer();
+            $result->callable[0]->frame = $frame;
         }
         // 执行动作
-        $actionResult = ($result['callable'])($frame->getFormatData());
+        $actionResult = ($result->callable)($frame->getFormatData());
 
         RequestContext::set('wsResult', $actionResult);
 
