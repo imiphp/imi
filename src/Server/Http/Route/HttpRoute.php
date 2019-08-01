@@ -16,8 +16,7 @@ class HttpRoute
 {
     /**
      * 路由规则
-     * url => \Imi\Server\Route\Annotation\Route[]
-     * @var array
+     * @var \Imi\Server\Http\Route\RouteItem[][]
      */
     protected $rules = [];
 
@@ -29,7 +28,7 @@ class HttpRoute
 
     /**
      * 检查URL是否匹配的缓存
-     * @var array
+     * @var \Imi\Server\Http\Route\UrlCheckResult[][]
      */
     private $urlCheckCache = [];
 
@@ -67,10 +66,7 @@ class HttpRoute
                 'url' => $url,
             ]);
         }
-        $this->rules[$url][spl_object_hash($annotation)] = [
-            'annotation'=> $annotation,
-            'callable'  => $callable,
-        ];
+        $this->rules[$url][spl_object_hash($annotation)] = new RouteItem($annotation, $callable);
     }
 
     /**
@@ -82,10 +78,16 @@ class HttpRoute
      */
     public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
     {
-        $this->rules[$annotation->url][spl_object_hash($annotation)] = array_merge([
-            'annotation'=> $annotation,
-            'callable'  => $callable,
-        ], $options);
+        $routeItem = new RouteItem($annotation, $callable, $options);
+        if(isset($options['middlewares']))
+        {
+            $routeItem->middlewares = $options['middlewares'];
+        }
+        if(isset($options['wsConfig']))
+        {
+            $routeItem->wsConfig = $options['wsConfig'];
+        }
+        $this->rules[$annotation->url][spl_object_hash($annotation)] = $routeItem;
     }
 
     /**
@@ -119,34 +121,35 @@ class HttpRoute
     /**
      * 路由解析处理
      * @param Request $request
-     * @return array
+     * @return \Imi\Server\Http\Route\RouteResult|null
      */
     public function parse(Request $request)
     {
         foreach($this->rules as $url => $items)
         {
-            $result = $this->checkUrl($request, $url, $params);
-            if($result['result'] || $result['resultIgnoreCase'])
+            $result = $this->checkUrl($request, $url);
+            if($result->result || $result->resultIgnoreCase)
             {
                 foreach($items as $item)
                 {
                     if(
-                        ($result['result'] || ($this->ignoreCase || $item['annotation']->ignoreCase)) &&
-                        $this->checkMethod($request, $item['annotation']->method) &&
-                        $this->checkDomain($request, $item['annotation']->domain, $domainParams) &&
-                        $this->checkParamsGet($request, $item['annotation']->paramsGet) &&
-                        $this->checkParamsPost($request, $item['annotation']->paramsPost) &&
-                        $this->checkHeader($request, $item['annotation']->header) &&
-                        $this->checkRequestMime($request, $item['annotation']->requestMime)
+                        ($result->result || ($this->ignoreCase || $item->annotation->ignoreCase)) &&
+                        $this->checkMethod($request, $item->annotation->method) &&
+                        $this->checkDomain($request, $item->annotation->domain, $domainParams) &&
+                        $this->checkParamsGet($request, $item->annotation->paramsGet) &&
+                        $this->checkParamsPost($request, $item->annotation->paramsPost) &&
+                        $this->checkHeader($request, $item->annotation->header) &&
+                        $this->checkRequestMime($request, $item->annotation->requestMime)
                     )
                     {
-                        $params = array_merge($params, $domainParams);
-                        return [
-                            'params'        => $params,
-                            'callable'      => $this->parseCallable($params, $item['callable']),
-                            'middlewares'   => $item['middlewares'] ?? [],
-                            'wsConfig'      => $item['wsConfig'],
-                        ];
+                        $params = array_merge($result->params, $domainParams);
+                        return new RouteResult($item, $result, $params);
+                        // return [
+                        //     'params'        => $params,
+                        //     'callable'      => $this->parseCallable($params, $item->callable),
+                        //     'middlewares'   => $item->middlewares,
+                        //     'wsConfig'      => $item->wsConfig,
+                        // ];
                     }
                 }
             }
@@ -159,36 +162,26 @@ class HttpRoute
      * @param Request $request
      * @param string $url
      * @param array $params url路由中的自定义参数
-     * @return array
+     * @return \Imi\Server\Http\Route\UrlCheckResult
      */
-    private function checkUrl(Request $request, string $url, &$params)
+    private function checkUrl(Request $request, string $url)
     {
         $pathInfo = $request->getServerParam('path_info');
         if(!isset($this->urlCheckCache[$pathInfo][$url]))
         {
             $rule = $this->parseRule($url, $fields);
             $params = [];
-            if(preg_match_all($rule, $pathInfo, $matches) > 0)
+            if($result = preg_match_all($rule, $pathInfo, $matches) > 0)
             {
                 foreach($fields as $i => $fieldName)
                 {
                     $params[$fieldName] = $matches[$i + 1][0];
                 }
-                $result = [
-                    'result' => true,
-                    'params' => $params,
-                ];
             }
-            else
+            $result = new UrlCheckResult($result, $params);
+            if($result->result)
             {
-                $result = [
-                    'result' => false,
-                    'params' => $params,
-                ];
-            }
-            if($result['result'])
-            {
-                $result['resultIgnoreCase'] = true;
+                $result->resultIgnoreCase = true;
             }
             // 正则加i忽略大小写
             else if(preg_match_all($rule . 'i', $pathInfo, $matches) > 0)
@@ -197,12 +190,12 @@ class HttpRoute
                 {
                     $params[$fieldName] = $matches[$i + 1][0];
                 }
-                $result['resultIgnoreCase'] = true;
-                $result['params'] = $params;
+                $result->resultIgnoreCase = true;
+                $result->params = $params;
             }
             else
             {
-                $result['resultIgnoreCase'] = false;
+                $result->resultIgnoreCase = false;
             }
             // 最大缓存数量处理
             if($this->urlCheckCacheCount >= $this->urlCacheNumber)
@@ -213,7 +206,6 @@ class HttpRoute
             $this->urlCheckCache[$pathInfo][$url] = $result;
             ++$this->urlCheckCacheCount;
         }
-        $params = $this->urlCheckCache[$pathInfo][$url]['params'];
         return $this->urlCheckCache[$pathInfo][$url];
     }
 
@@ -360,24 +352,6 @@ class HttpRoute
             return true;
         }
         return Imi::checkCompareValues($requestMime, $request->getHeaderLine('Content-Type'));
-    }
-
-    /**
-     * 处理回调
-     * @param array $params
-     * @param mixed $callable
-     * @return callable
-     */
-    private function parseCallable($params, $callable)
-    {
-        if($callable instanceof RouteCallable)
-        {
-            return $callable->getCallable($params);
-        }
-        else
-        {
-            return $callable;
-        }
     }
 
     /**

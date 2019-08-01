@@ -34,21 +34,21 @@ class ActionMiddleware implements MiddlewareInterface
             throw new \RuntimeException('RequestContent not found routeResult');
         }
         // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($result['callable']) && isset($result['callable'][0]) && $result['callable'][0] instanceof HttpController;
+        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
         if($isObject)
         {
             // 复制一份控制器对象
-            $result['callable'][0] = clone $result['callable'][0];
+            $result->callable[0] = clone $result->callable[0];
             // 传入Request和Response对象
-            $result['callable'][0]->request = $request;
-            $result['callable'][0]->response = $response;
+            $result->callable[0]->request = $request;
+            $result->callable[0]->response = $response;
         }
         // 执行动作
-        $actionResult = ($result['callable'])(...$this->prepareActionParams($request, $result));
+        $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
         if($isObject)
         {
             // 获得控制器中的Response
-            $response = $result['callable'][0]->response;
+            $response = $result->callable[0]->response;
         }
         // 视图
         if($actionResult instanceof \Imi\Server\View\Annotation\View)
@@ -63,7 +63,7 @@ class ActionMiddleware implements MiddlewareInterface
         else
         {
             // 获取对应动作的视图注解
-            $viewAnnotation = clone ViewParser::getInstance()->getByCallable($result['callable']);
+            $viewAnnotation = clone ViewParser::getInstance()->getByCallable($result->callable);
             if(null !== $viewAnnotation)
             {
                 if(is_array($actionResult))
@@ -99,13 +99,13 @@ class ActionMiddleware implements MiddlewareInterface
     {
         // 根据动作回调类型获取反射
         try{
-            if(is_array($routeResult['callable']))
+            if(is_array($routeResult->callable))
             {
-                $ref = new \ReflectionMethod($routeResult['callable'][0], $routeResult['callable'][1]);
+                $ref = new \ReflectionMethod($routeResult->callable[0], $routeResult->callable[1]);
             }
-            else if(!$routeResult['callable'] instanceof \Closure)
+            else if(!$routeResult->callable instanceof \Closure)
             {
-                $ref = new \ReflectionFunction($routeResult['callable']);
+                $ref = new \ReflectionFunction($routeResult->callable);
             }
             else
             {
@@ -119,10 +119,10 @@ class ActionMiddleware implements MiddlewareInterface
         $result = [];
         foreach($ref->getParameters() as $param)
         {
-            if(isset($routeResult['params'][$param->name]))
+            if(isset($routeResult->params[$param->name]))
             {
                 // 路由解析出来的参数
-                $result[] = $routeResult['params'][$param->name];
+                $result[] = $routeResult->params[$param->name];
             }
             else if($request->hasPost($param->name))
             {
