@@ -71,8 +71,11 @@ class Group
 
     public function __init()
     {
-        $this->handler = RequestContext::getServerBean($this->groupHandler);
-        $this->handler->createGroup($this->groupName, $this->maxClients);
+        if($this->status)
+        {
+            $this->handler = RequestContext::getServerBean($this->groupHandler);
+            $this->handler->createGroup($this->groupName, $this->maxClients);
+        }
     }
 
     /**
