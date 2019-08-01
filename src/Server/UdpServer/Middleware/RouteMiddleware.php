@@ -24,7 +24,7 @@ class RouteMiddleware implements IMiddleware
         // 路由解析
         $route = RequestContext::getServerBean('UdpRoute');
         $result = $route->parse($data->getFormatData());
-        if(null === $result || !is_callable($result['callable']))
+        if(null === $result || !is_callable($result->callable))
         {
             // 未找到匹配的命令，TODO:处理
             
@@ -33,7 +33,7 @@ class RouteMiddleware implements IMiddleware
         {
             RequestContext::set('routeResult', $result);
 
-            $middlewares = $result['middlewares'];
+            $middlewares = $result->routeItem->middlewares;
             $middlewares[] = ActionMiddleware::class;
             $handler = new PacketHandler($middlewares);
             return $handler->handle($data);
