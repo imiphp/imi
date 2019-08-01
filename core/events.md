@@ -18,6 +18,10 @@
 
 无
 
+### IMI.LOAD_RUNTIME_INFO
+
+加载 runtime 事件，在此事件中，绝对可以使用 `App::getRuntimeInfo()` 获取到数据。
+
 ### IMI.MAIN_SERVER.WORKER.START.APP
 
 在项目中监听 WorkerStart 事件
