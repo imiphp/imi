@@ -16,6 +16,7 @@ return [
         ],
         'GroupRedis'    =>    [
             'redisPool'    =>    'redis',
+            'redisDb'   =>  2,
         ],
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [
