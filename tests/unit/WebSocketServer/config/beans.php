@@ -59,7 +59,4 @@ return [
     'ConnectContextMemoryTable' =>  [
         'tableName' =>  'connectContext',
     ],
-    'ServerGroup'   =>  [
-        'status'    =>  false,
-    ],
 ];

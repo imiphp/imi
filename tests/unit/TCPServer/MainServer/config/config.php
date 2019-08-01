@@ -18,9 +18,5 @@ return [
             'redisPool'    =>    'redis',
             'key'        =>    'IMITEST.TCP.GROUP',
         ],
-        'ConnectContextRedis'    =>    [
-            'redisPool'    =>    'redis',
-            'key'        =>    'IMITEST.TCP.CONNECT_CONTEXT',
-        ],
     ],
 ];
