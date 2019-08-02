@@ -142,7 +142,7 @@ abstract class Log
      * 获取代码调用跟踪
      * @return array
      */
-    public static function getTrace()
+    private static function getTrace()
     {
         $backtrace = debug_backtrace();
         return array_splice($backtrace, 3);
@@ -153,7 +153,7 @@ abstract class Log
      *
      * @return array
      */
-    public static function getErrorFile()
+    private static function getErrorFile()
     {
         $backtrace = debug_backtrace(0, 3);
         return [$backtrace[2]['file'] ?? '', $backtrace[2]['line'] ?? 0];
