@@ -50,3 +50,20 @@ function imiCallable(callable $callable, bool $withGo = false)
         return $resultCallable;
     }
 }
+
+/**
+ * getenv() 函数的封装，支持默认值
+ * 
+ * @param string $varname
+ * @param mixed $default
+ * @param bool $localOnly
+ */
+function imiGetEnv($varname = null, $default = null, $localOnly = false)
+{
+    $result = getenv($varname, $localOnly);
+    if(false === $result)
+    {
+        return $default;
+    }
+    return $result;
+}
