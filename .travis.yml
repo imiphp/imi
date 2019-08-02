@@ -65,7 +65,7 @@ before_script:
   - php --ri swoole
 
 script:
-  - ./tests/phpunit -c ./tests/phpunit.xml
+  - travis_retry ./tests/phpunit -c ./tests/phpunit.xml
 
 env:
   global:
