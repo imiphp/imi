@@ -1,4 +1,16 @@
 <?php
+if(!class_exists('Imi\App'))
+{
+    $fileName = dirname(__DIR__) . '/vendor/autoload.php';
+    if(!is_file($fileName))
+    {
+        echo 'No file vendor/autoload.php', PHP_EOL;
+        exit;
+    }
+    require $fileName;
+    unset($fileName);
+}
+
 use Imi\App;
 use Imi\Util\Args;
 use Imi\Util\File;
@@ -15,6 +27,7 @@ if(null === $namespace)
         exit;
     }
     $namespace = $config['namespace'];
+    unset($config);
 }
 
 App::run($namespace);
