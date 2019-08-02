@@ -34,8 +34,8 @@ return [
                 ],
                 'resource'    =>    [
                     'host'        => '127.0.0.1',
-                    'username'    => testEnv('MYSQL_SERVER_USERNAME', 'root'),
-                    'password'    => testEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
                     'charset'     => 'utf8mb4',
                 ],
@@ -51,8 +51,8 @@ return [
                 ],
                 'resource'    =>    [
                     'host'        => '127.0.0.1',
-                    'username'    => testEnv('MYSQL_SERVER_USERNAME', 'root'),
-                    'password'    => testEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
                     'charset'     => 'utf8mb4',
                 ],
@@ -71,8 +71,8 @@ return [
                 ],
                 'resource'    =>    [
                     'host'        => '127.0.0.1',
-                    'username'    => testEnv('MYSQL_SERVER_USERNAME', 'root'),
-                    'password'    => testEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
                     'charset'     => 'utf8mb4',
                 ],
@@ -88,8 +88,8 @@ return [
                 ],
                 'resource'    =>    [
                     'host'        => '127.0.0.1',
-                    'username'    => testEnv('MYSQL_SERVER_USERNAME', 'root'),
-                    'password'    => testEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
                     'charset'     => 'utf8mb4',
                 ],
