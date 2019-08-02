@@ -13,6 +13,7 @@ return [
         'Imi\Test\Component\Db',
         'Imi\Test\Component\Cache',
         'Imi\Test\Component\Lock',
+        'Imi\Test\Component\Model',
     ],
     'beans'    =>    [
     ],

@@ -149,6 +149,7 @@ class ImiListener implements TestListener
                     PoolManager::use('maindb', function($resource, IDb $db){
                         $truncateList = [
                             'tb_article',
+                            'tb_member',
                         ];
                         foreach($truncateList as $table)
                         {
