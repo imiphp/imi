@@ -300,6 +300,20 @@ abstract class Model extends BaseModel
         ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
 
         $result = $query->replace($data);
+        if($result->isSuccess())
+        {
+            foreach(ModelManager::getFields($this) as $name => $column)
+            {
+                if($column->isAutoIncrement)
+                {
+                    if(null === $this[$name])
+                    {
+                        $this[$name] = $result->getLastInsertId();
+                    }
+                    break;
+                }
+            }
+        }
 
         // 保存后
         $this->trigger(ModelEvents::AFTER_SAVE, [
