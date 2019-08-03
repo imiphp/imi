@@ -50,7 +50,7 @@ function startServer()
         {
             sleep(1);
             @file_get_contents('http://127.0.0.1:13002/');
-            if(isset($http_response_header) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            if(isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
             {
                 $serverStarted = true;
                 break;
