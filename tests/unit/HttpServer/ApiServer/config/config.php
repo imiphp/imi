@@ -8,6 +8,7 @@ return [
     'beanScan'    =>    [
         'Imi\Test\HttpServer\ApiServer\Controller',
         'Imi\Test\HttpServer\Modules',
+        'Imi\Test\HttpServer\OutsideController',
     ],
     'beans'    =>    [
         'SessionManager'    =>    [

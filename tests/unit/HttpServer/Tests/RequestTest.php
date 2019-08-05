@@ -139,4 +139,17 @@ class RequestTest extends BaseTest
         $this->assertEquals(md5($content), $file['hash']);
     }
 
+    /**
+     * 控制器不在服务器目录下的测试
+     *
+     * @return void
+     */
+    public function testOutsideController()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'testOutside');
+        $data = $response->json(true);
+        $this->assertEquals('testOutside', $data['action'] ?? null);
+    }
+
 }

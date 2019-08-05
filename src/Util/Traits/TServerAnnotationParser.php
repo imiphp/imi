@@ -4,6 +4,7 @@ namespace Imi\Util\Traits;
 use Imi\Util\Text;
 use Imi\ServerManage;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Config;
 
 /**
  * 注解处理器按服务器名获取
@@ -27,18 +28,26 @@ trait TServerAnnotationParser
         {
             return $this->cache[$serverName];
         }
-        $namespace = ServerManage::getServer($serverName)->getConfig()['namespace'];
-        if('\\' !== substr($namespace, -1, 1))
+        $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
+        foreach($namespaces as &$namespace)
         {
-            $namespace .= '\\';
+            if('\\' !== substr($namespace, -1, 1))
+            {
+                $namespace .= '\\';
+            }
         }
+        unset($namespace);
         $result = [];
         foreach(AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'class') as $option)
         {
             $class = $option->getClass();
-            if(Text::startwith($class, $namespace))
+            foreach($namespaces as $namespace)
             {
-                $result[$class] = $option;
+                if(Text::startwith($class, $namespace))
+                {
+                    $result[$class] = $option;
+                    continue 2;
+                }
             }
         }
         $this->cache[$serverName] = $result;
