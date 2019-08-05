@@ -145,7 +145,7 @@ SCRIPT
     protected function __unlock(): bool
     {
         return PoolManager::use($this->poolName, function($resource, $redis){
-            return 1 == $redis->evalEx(<<<SCRIPT
+            return false !== $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
 local db      = ARGV[1]

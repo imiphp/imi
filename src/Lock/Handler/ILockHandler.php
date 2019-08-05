@@ -64,4 +64,11 @@ interface ILockHandler
      */ 
     public function getLockExpire(): int;
 
+    /**
+     * 获取获得锁的协程ID
+     *
+     * @return int
+     */
+    public function getLockCoId(): int;
+
 }

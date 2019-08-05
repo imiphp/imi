@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Lock\Handler;
 
+use Imi\Util\Coroutine;
+
 abstract class BaseLock implements ILockHandler
 {
     /**
@@ -29,6 +31,13 @@ abstract class BaseLock implements ILockHandler
      * @var int
      */
     protected $lockExpire = 3000;
+
+    /**
+     * 获得锁的协程ID
+     *
+     * @var integer
+     */
+    private $lockCoId = -1;
     
     public function __construct($id, $options = [])
     {
@@ -67,6 +76,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
+        $this->lockCoId = Coroutine::getuid();
         if(null === $taskCallable)
         {
             return true;
@@ -105,6 +115,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
+        $this->lockCoId = Coroutine::getuid();
         if(null !== $taskCallable)
         {
             try {
@@ -134,6 +145,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = false;
+        $this->lockCoId = -1;
         return true;
     }
 
@@ -144,7 +156,7 @@ abstract class BaseLock implements ILockHandler
      */
     public function isLocked(): bool
     {
-        return $this->isLocked;
+        return $this->isLocked && $this->lockCoId === Coroutine::getuid();
     }
 
     /**
@@ -211,4 +223,15 @@ abstract class BaseLock implements ILockHandler
     {
         return $this->lockExpire;
     }
+
+    /**
+     * 获取获得锁的协程ID
+     *
+     * @return int
+     */
+    public function getLockCoId(): int
+    {
+        return $this->lockCoId;
+    }
+
 }
