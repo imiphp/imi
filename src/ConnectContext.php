@@ -92,11 +92,15 @@ abstract class ConnectContext
             $fd = RequestContext::get('fd');
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $store->lock(function() use($store, $name, $value, $fd){
+        $result = $store->lock(function() use($store, $name, $value, $fd){
             $data = $store->read($fd);
             $data[$name] = $value;
             $store->save($fd, $data);
         });
+        if(!$result)
+        {
+            throw new \RuntimeException('ConnectContext lock fail');
+        }
     }
 
     /**
