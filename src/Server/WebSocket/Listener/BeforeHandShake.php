@@ -44,19 +44,17 @@ class BeforeHandShake implements IHandShakeEventListener
         $response = $dispatcher->dispatch($e->request, $e->response);
         if(StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
         {
+            // http 路由解析结果
+            $routeResult = RequestContext::get('routeResult');
+            $routeResult->callable = null;
+            ConnectContext::set('httpRouteResult', $routeResult);
+
             $server = $e->getTarget();
             $request = $e->request;
             $server->trigger('open', [
                 'server'   => &$server,
                 'request'  => &$request,
             ], $this, OpenEventParam::class);
-        }
-        else
-        {
-            // http 路由解析结果
-            $routeResult = RequestContext::get('routeResult');
-            $routeResult->callable = null;
-            ConnectContext::set('httpRouteResult', $routeResult);
         }
     }
 
