@@ -46,6 +46,7 @@ class BeforeHandShake implements IHandShakeEventListener
         {
             // http 路由解析结果
             $routeResult = RequestContext::get('routeResult');
+            $routeResult->routeItem->callable = null;
             $routeResult->callable = null;
             ConnectContext::set('httpRouteResult', $routeResult);
 

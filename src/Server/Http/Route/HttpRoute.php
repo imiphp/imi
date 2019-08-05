@@ -143,7 +143,7 @@ class HttpRoute
                     )
                     {
                         $params = array_merge($result->params, $domainParams);
-                        return new RouteResult($item, $result, $params);
+                        return new RouteResult(clone $item, $result, $params);
                     }
                 }
             }
