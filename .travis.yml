@@ -68,7 +68,7 @@ script:
   - ./tests/phpunit -c ./tests/phpunit.xml
 
 after_failure:
-  - php ./travis/output-server-log.php
+  - php ./.travis/output-server-log.php
 
 env:
   global:
