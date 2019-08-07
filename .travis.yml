@@ -67,6 +67,9 @@ before_script:
 script:
   - ./tests/phpunit -c ./tests/phpunit.xml
 
+after_failure:
+  - php ./travis/output-server-log.php
+
 env:
   global:
     - MYSQL_SERVER_USERNAME: root
