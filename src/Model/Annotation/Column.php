@@ -78,4 +78,15 @@ class Column extends Base
      * @var boolean
      */
     public $virtual = false;
+
+    /**
+     * save/update 模型时是否将当前时间写入该字段
+     * 支持 date/time/datetime/timestamp/year/int/bigint
+     * 当字段为 int 类型，写入秒级时间戳
+     * 当字段为 bigint 类型，写入毫秒级时间戳
+     *
+     * @var boolean
+     */
+    public $updateTime = false;
+
 }

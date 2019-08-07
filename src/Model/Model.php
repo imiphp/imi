@@ -147,7 +147,7 @@ abstract class Model extends BaseModel
     {
         if(null === $data)
         {
-            $data = static::parseSaveData($this);
+            $data = static::parseSaveData($this, 'insert');
         }
         else if(!$data instanceof \ArrayAccess)
         {
@@ -200,7 +200,7 @@ abstract class Model extends BaseModel
         $query = $this->parseWhereId($query);
         if(null === $data)
         {
-            $data = static::parseSaveData($this);
+            $data = static::parseSaveData($this, 'update');
         }
         else if(!$data instanceof \ArrayAccess)
         {
@@ -262,7 +262,7 @@ abstract class Model extends BaseModel
             $query = static::query();
             $query = static::parseWhere($query, $where);
 
-            $updateData = static::parseSaveData($data);
+            $updateData = static::parseSaveData($data, 'update');
 
             // 更新前
             Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_BATCH_UPDATE, [
@@ -290,7 +290,7 @@ abstract class Model extends BaseModel
     {
         $query = static::query($this);
         $query = $this->parseWhereId($query);
-        $data = static::parseSaveData($this);
+        $data = static::parseSaveData($this, 'save');
 
         // 保存前
         $this->trigger(ModelEvents::BEFORE_SAVE, [
@@ -547,10 +547,11 @@ abstract class Model extends BaseModel
     /**
      * 处理保存的数据
      * @param object|array $data
+     * @param string $type
      * @param object|string $object
      * @return array
      */
-    private static function parseSaveData($data, $object = null)
+    private static function parseSaveData($data, $type, $object = null)
     {
         // 处理前
         Event::trigger(static::__getRealClassName() . ':' . ModelEvents::BEFORE_PARSE_DATA, [
@@ -580,6 +581,8 @@ abstract class Model extends BaseModel
             $class = static::__getRealClassName();
         }
         $result = new LazyArrayObject;
+        $canUpdateTime = 'save' === $type || 'update' === $type;
+        $objectIsObject = is_object($object);
         foreach(ModelManager::getFields($class) as $name => $column)
         {
             // 虚拟字段不参与数据库操作
@@ -587,7 +590,39 @@ abstract class Model extends BaseModel
             {
                 continue;
             }
-            if(array_key_exists($name, $data))
+            // 字段自动更新时间
+            if($canUpdateTime && $column->updateTime)
+            {
+                switch($column->type)
+                {
+                    case 'date':
+                        $value = date('Y-m-d');
+                        break;
+                    case 'time':
+                        $value = date('H:i:s');
+                        break;
+                    case 'datetime':
+                    case 'timestamp':
+                        $value = date('Y-m-d H:i:s');
+                        break;
+                    case 'int':
+                        $value = time();
+                        break;
+                    case 'bigint':
+                        $value = (int)(microtime(true) * 1000);
+                        break;
+                    case 'year':
+                        $value = date('Y');
+                        break;
+                    default:
+                        throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $column->name, $column->type));
+                }
+                if($objectIsObject)
+                {
+                    $object->{$column->name} = $value;
+                }
+            }
+            else if(array_key_exists($name, $data))
             {
                 $value = $data[$name];
             }
@@ -621,9 +656,9 @@ abstract class Model extends BaseModel
 
         // 处理后
         Event::trigger(static::__getRealClassName() . ':' . ModelEvents::AFTER_PARSE_DATA, [
-            'data'   => &$data,
-            'object' => &$object,
-            'result' => &$result,
+            'data'   => &$data,     // 待处理的原始数据
+            'object' => &$object,   // 模型对象，注意可能为 null
+            'result' => &$result,   // 最终保存的数据
         ], null, \Imi\Model\Event\Param\AfterParseDataEventParam::class);
 
         return $result;

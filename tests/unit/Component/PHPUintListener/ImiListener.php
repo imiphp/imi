@@ -150,6 +150,7 @@ class ImiListener implements TestListener
                         $truncateList = [
                             'tb_article',
                             'tb_member',
+                            'tb_update_time',
                         ];
                         foreach($truncateList as $table)
                         {
