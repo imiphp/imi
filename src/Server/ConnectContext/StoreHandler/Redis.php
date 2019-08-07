@@ -11,6 +11,7 @@ use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\AtomicManager;
+use Imi\App;
 
 /**
  * 连接上下文存储处理器-Redis
@@ -37,7 +38,7 @@ class Redis implements IHandler
      * 
      * @var string
      */
-    protected $key = 'imi:connect_context';
+    protected $key;
 
     /**
      * 心跳时间，单位：秒
@@ -89,6 +90,10 @@ class Redis implements IHandler
 
     public function __init()
     {
+        if(null === $this->key)
+        {
+            $this->key = 'imi:' . App::getNamespace() . ':connect_context';
+        }
         if(null === $this->redisPool)
         {
             return;

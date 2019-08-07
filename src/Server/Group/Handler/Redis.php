@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\Group\Handler;
 
+use Imi\App;
 use Imi\Worker;
 use Imi\Log\Log;
 use Imi\Event\Event;
@@ -50,7 +51,7 @@ class Redis implements IGroupHandler
      * 
      * @var string
      */
-    protected $key = 'imi:connect_group';
+    protected $key;
 
     /**
      * 心跳Timer的ID
@@ -74,6 +75,10 @@ class Redis implements IGroupHandler
 
     public function __init()
     {
+        if(null === $this->key)
+        {
+            $this->key = 'imi:' . App::getNamespace() . ':connect_group';
+        }
         if(null === $this->redisPool)
         {
             return;
