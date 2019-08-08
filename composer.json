@@ -29,6 +29,9 @@
             "Imi\\Test\\": "tests/unit/"
         }
     },
+    "bin": [
+        "bin/imi"
+    ],
     "scripts": {
       "test": "php ./tests/phpunit -c ./tests/phpunit.xml",
       "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
