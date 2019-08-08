@@ -150,6 +150,51 @@ class HotUpdateProcess extends BaseProcess
      */
     private function initBuildRuntime()
     {
+        $this->closeBuildRuntime();
+        $cmd = Imi::getImiCmd('imi', 'buildRuntime', [
+            'format'            =>  'json',
+            'changedFilesFile'  =>  $this->changedFilesFile,
+            'imi-runtime'       =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
+            'confirm'           =>  true,
+        ]);
+        static $descriptorspec = [
+            ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
+            ['pipe', 'w'],  // 标准输出，子进程向此管道中写入数据
+        ];
+        $this->buildRuntimeHandler = proc_open($cmd, $descriptorspec, $this->buildRuntimePipes);
+        if(false === $this->buildRuntimeHandler)
+        {
+            throw new \RuntimeException(sprintf('Open "%s" failed', $cmd));
+        }
+    }
+
+    /**
+     * 开始构建 runtime
+     *
+     * @return void
+     */
+    private function beginBuildRuntime()
+    {
+        $writeContent = "y\n";
+        if(strlen($writeContent) !== fwrite($this->buildRuntimePipes[0], $writeContent))
+        {
+            throw new \RuntimeException('Send to buildRuntime process failed');
+        }
+        $content = '';
+        while($tmp = fgets($this->buildRuntimePipes[1]))
+        {
+            $content = $tmp;
+        }
+        return json_decode($content, true);
+    }
+
+    /**
+     * 关闭 runtime 进程
+     *
+     * @return void
+     */
+    private function closeBuildRuntime()
+    {
         if(null !== $this->buildRuntimePipes)
         {
             foreach($this->buildRuntimePipes as $pipe)
@@ -162,33 +207,5 @@ class HotUpdateProcess extends BaseProcess
         {
             proc_close($this->buildRuntimeHandler);
         }
-        $cmd = Imi::getImiCmd('imi', 'buildRuntime', [
-            'format'            =>  'json',
-            'changedFilesFile'  =>  $this->changedFilesFile,
-            'imi-runtime'       =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
-            'confirm'           =>  true,
-        ]);
-        static $descriptorspec = [
-            ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
-            ['pipe', 'w'],  // 标准输出，子进程向此管道中写入数据
-        ];
-        $this->buildRuntimeHandler = proc_open($cmd, $descriptorspec, $this->buildRuntimePipes);
     }
-
-    /**
-     * 开始构建 runtime
-     *
-     * @return void
-     */
-    private function beginBuildRuntime()
-    {
-        fwrite($this->buildRuntimePipes[0], "y\n");
-        $content = '';
-        while($tmp = fgets($this->buildRuntimePipes[1]))
-        {
-            $content = $tmp;
-        }
-        return json_decode($content, true);
-    }
-
 }
