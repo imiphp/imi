@@ -23,7 +23,9 @@ class TCPTest extends BaseTest
                 'username'  => $name,
             ]) . "\r\n";
             $this->assertEquals(strlen($sendContent), $client->send($sendContent));
-            $this->assertEquals('{"action":"login","success":true}' . "\r\n", $client->recv());
+            $result = $client->recv();
+            $errCode = (false === $result ? $client->errCode : '');
+            $this->assertEquals('{"action":"login","success":true}' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
 
             $time = time();
             $sendContent = json_encode([
@@ -31,7 +33,9 @@ class TCPTest extends BaseTest
                 'message'   => $time,
             ]) . "\r\n";
             $this->assertEquals(strlen($sendContent), $client->send($sendContent));
-            $this->assertEquals('{"action":"send","message":"' . $name . ':' . $time . '"}' . "\r\n", $client->recv());
+            $result = $client->recv();
+            $errCode = (false === $result ? $client->errCode : '');
+            $this->assertEquals('{"action":"send","message":"' . $name . ':' . $time . '"}' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
 
             $client->close();
         });
