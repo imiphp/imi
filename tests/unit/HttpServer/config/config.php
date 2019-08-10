@@ -32,6 +32,12 @@ return [
 
     // 子服务器（端口监听）配置
     'subServers'        =>    [
+        'SessionTest'   =>  [
+            'namespace'    =>    'Imi\Test\HttpServer\SessionTestServer',
+            'type'        =>    Imi\Server\Type::HTTP,
+            'host'        =>    '127.0.0.1',
+            'port'        =>    13005,
+        ]
     ],
 
     // 连接池配置
