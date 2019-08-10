@@ -20,7 +20,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
      *
      * @var callable
      */
-    protected $sessionIDHandle = null;
+    protected $sessionIdHandler = null;
 
     /**
      * Process an incoming server request and return a response, optionally delegating
@@ -31,8 +31,8 @@ class HttpSessionMiddleware implements MiddlewareInterface
         $sessionManager = RequestContext::getBean('SessionManager');
 
         $sessionID = '';
-        if($this->sessionIDHandle !== null && is_callable($this->sessionIDHandle)){
-            $sessionID = call_user_func($this->sessionIDHandle,$request);
+        if(null !== $this->sessionIdHandler && is_callable($this->sessionIdHandler)) {
+            $sessionID = ($this->sessionIdHandler)($request);
         }
         $sessionID = $sessionID ?: $request->getCookie($sessionManager->getName());
 
