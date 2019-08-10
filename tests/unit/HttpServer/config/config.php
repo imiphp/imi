@@ -48,9 +48,10 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'username'    => 'root',
-                    'password'    => 'root',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
+                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'mysql',
                     'charset'     => 'utf8mb4',
                 ],
@@ -65,9 +66,10 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'username'    => 'root',
-                    'password'    => 'root',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
+                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'mysql',
                     'charset'     => 'utf8mb4',
                 ],
@@ -83,8 +85,9 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'port'        =>    6379,
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                 ]
             ],
             'async'    =>    [
@@ -96,8 +99,9 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'port'        =>    6379,
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                 ]
             ],
         ],

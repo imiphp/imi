@@ -34,7 +34,8 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
                     'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
@@ -51,7 +52,8 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
                     'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
@@ -71,7 +73,8 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
                     'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
@@ -88,7 +91,8 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
                     'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                     'database'    => 'db_imi_test',
@@ -106,8 +110,9 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'port'        =>    6379,
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                 ]
             ],
             'async'    =>    [
@@ -119,8 +124,9 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'port'        =>    6379,
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                 ]
             ],
         ],
@@ -134,8 +140,9 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'port'        =>    6379,
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                     'serialize'   =>    false,
                     'db'          =>    1,
                 ]
@@ -149,8 +156,9 @@ return [
                     ],
                 ],
                 'resource'    =>    [
-                    'host'        => '127.0.0.1',
-                    'port'        =>    6379,
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                     'serialize'   =>    false,
                     'db'          =>    1,
                 ]

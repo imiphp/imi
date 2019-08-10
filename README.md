@@ -51,9 +51,33 @@ imi 的模型支持关联关系的定义，增删改查一把梭！
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
 
-首次运行测试脚本：`composer install-test`
+## 关于测试脚本
 
-运行测试脚本：`composer test`
+### 环境要求
+
+Redis、MySQL
+
+### 首次运行测试
+
+* 创建 `db_imi_test` 数据库，将 `tests/db/db.sql` 导入到数据库
+
+* 配置系统环境变量，如果默认值跟你的一样就无需配置了
+
+名称 | 描述 | 默认值
+-|-|-
+MYSQL_SERVER_HOST | MySQL 主机名 | 127.0.0.1 |
+MYSQL_SERVER_PORT | MySQL 端口 | 3306 |
+MYSQL_SERVER_USERNAME | MySQL 用户名 | root |
+MYSQL_SERVER_PASSWORD | MySQL 密码 | root |
+REDIS_SERVER_HOST | Redis 主机名 | 127.0.0.1 |
+REDIS_SERVER_PORT | Redis 端口 | 6379 |
+REDIS_SERVER_PASSWORD | Redis 密码 |  |
+
+配置命令：`export NAME=VALUE`
+
+* 首次运行测试脚本：`composer install-test`
+
+* 首次之后再运行测试的命令：`composer test`
 
 ## 运行环境
 
