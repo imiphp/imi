@@ -16,13 +16,25 @@ use Imi\Server\Http\Message\Response;
 class HttpSessionMiddleware implements MiddlewareInterface
 {
     /**
+     * SessionID处理器
+     *
+     * @var callable
+     */
+    protected $sessionIDHandle = null;
+
+    /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $sessionManager = RequestContext::getBean('SessionManager');
-        $sessionID = $request->getCookie($sessionManager->getName());
+
+        $sessionID = '';
+        if($this->sessionIDHandle !== null && is_callable($this->sessionIDHandle)){
+            $sessionID = call_user_func($this->sessionIDHandle,$request);
+        }
+        $sessionID = $sessionID ?: $request->getCookie($sessionManager->getName());
 
         // 开启session
         $this->start($sessionManager, $sessionID);
