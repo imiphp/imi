@@ -72,6 +72,7 @@ class IndexController extends HttpController
             'cookie'    =>  $this->request->getCookieParams(),
             'headers'   =>  MessageUtil::headersToStringList($this->request->getHeaders()),
             'server'    =>  $this->request->getServerParams(),
+            'request'   =>  $this->request->request(),
         ];
     }
 
