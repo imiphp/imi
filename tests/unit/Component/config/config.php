@@ -144,7 +144,7 @@ return [
                     'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
                     'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
                     'serialize'   =>    false,
-                    'db'          =>    1,
+                    'db'          =>    imiGetEnv('REDIS_CACHE_DB', 1),
                 ]
             ],
             'async'    =>    [

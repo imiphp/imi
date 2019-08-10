@@ -72,6 +72,7 @@ MYSQL_SERVER_PASSWORD | MySQL 密码 | root |
 REDIS_SERVER_HOST | Redis 主机名 | 127.0.0.1 |
 REDIS_SERVER_PORT | Redis 端口 | 6379 |
 REDIS_SERVER_PASSWORD | Redis 密码 |  |
+REDIS_CACHE_DB | Redis 缓存用的 `db`，该 `db` 会被清空数据，请慎重设置 | 1 |
 
 配置命令：`export NAME=VALUE`
 
