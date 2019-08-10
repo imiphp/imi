@@ -52,7 +52,9 @@ class CustomSessionIdTest extends BaseTest
         $http = new HttpRequest;
         $http->header('X-Session-ID', $sessionId);
 
-        $http->get($this->host . 'session/sendSms');
+        $response = $http->get($this->host . 'session/sendSms');
+        $sessionId = $response->getCookie('imisid');
+        Assert::assertNull($sessionId);
 
         $response = $http->get($this->host . 'session/verifySms?vcode=1234');
         $data = $response->json(true);
