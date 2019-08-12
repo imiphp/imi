@@ -36,9 +36,9 @@ class Json implements IHandler
      */
     protected $depth = 512;
 
-    public function handle(View $viewAnnotation, Response $response): Response
+    public function handle($data, array $options, Response $response): Response
     {
         return $response->withAddedHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
-                        ->write(\json_encode($viewAnnotation->data, $this->options, $this->depth));
+                        ->write(\json_encode($data, $this->options, $this->depth));
     }
 }

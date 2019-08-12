@@ -35,34 +35,34 @@ class View
      */
     protected $data = [];
 
-    public function render(ViewAnnotation $view, Response $response = null): Response
+    public function render($renderType, $data, $options, Response $response = null): Response
     {
-        if(is_array($view->data))
+        if(is_array($data))
         {
-            $view->data = array_merge($this->data, $view->data);
+            $data = array_merge($this->data, $data);
         }
         if(null === $response)
         {
             $response = RequestContext::get('response');
         }
-        if(isset($this->exHandlers[$view->renderType]))
+        if(isset($this->exHandlers[$renderType]))
         {
-            return $this->handle($this->exHandlers[$view->renderType], $view, $response);
+            return $this->handle($this->exHandlers[$renderType], $data, $options, $response);
         }
-        else if(isset($this->coreHandlers[$view->renderType]))
+        else if(isset($this->coreHandlers[$renderType]))
         {
-            return $this->handle($this->coreHandlers[$view->renderType], $view, $response);
+            return $this->handle($this->coreHandlers[$renderType], $data, $options, $response);
         }
         else
         {
-            throw new \RuntimeException('Unsupport View renderType: ' . $view->renderType);
+            throw new \RuntimeException('Unsupport View renderType: ' . $renderType);
         }
         return $response;
     }
 
-    protected function handle($handlerClass, ViewAnnotation $view, Response $response = null): Response
+    protected function handle($handlerClass, $data, $options, Response $response = null): Response
     {
         $handler = RequestContext::getServerBean($handlerClass);
-        return $handler->handle($view, $response);
+        return $handler->handle($data, $options, $response);
     }
 }

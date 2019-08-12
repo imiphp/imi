@@ -35,9 +35,9 @@ class Html implements IHandler
      */
     protected $templateEngine = \Imi\Server\View\Engine\Php::class;
 
-    public function handle(View $viewAnnotation, Response $response): Response
+    public function handle($data, array $options, Response $response): Response
     {
-        $fileName = $this->getTemplateFilePath($viewAnnotation);
+        $fileName = $this->getTemplateFilePath($options);
 
         if(!is_file($fileName))
         {
@@ -46,22 +46,22 @@ class Html implements IHandler
 
         $engine = RequestContext::getServerBean($this->templateEngine);
 
-        return $engine->render($response, $fileName, $viewAnnotation->data);
+        return $engine->render($response, $fileName, $data);
     }
 
     /**
      * 获取模版文件真实路径，失败返回false
-     * @param \Imi\Server\View\Annotation\View $viewAnnotation
+     * @param array $options
      * @return string|boolean
      */
-    protected function getTemplateFilePath($viewAnnotation)
+    protected function getTemplateFilePath(array $options)
     {
-        $fileName = realpath($viewAnnotation->template);
+        $fileName = realpath($options['template']);
         if(is_file($fileName))
         {
             return $fileName;
         }
-        $fileName = File::path($this->templatePath, $viewAnnotation->baseDir ?? '', $viewAnnotation->template);
+        $fileName = File::path($this->templatePath, $options['baseDir'] ?? '', $options['template']);
         foreach($this->fileSuffixs as $suffix)
         {
             $tryFileName = $fileName . '.' . $suffix;

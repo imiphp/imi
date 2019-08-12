@@ -83,7 +83,8 @@ class ActionMiddleware implements MiddlewareInterface
         {
             // 视图渲染
             $view = RequestContext::getServerBean('View');
-            $response = $view->render($viewAnnotation, $response);
+            $options = $viewAnnotation->toArray();
+            $response = $view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $response);
         }
 
         return $response;
