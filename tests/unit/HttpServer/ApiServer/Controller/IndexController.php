@@ -48,6 +48,18 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     * @View(renderType="html", baseDir="index/")
+     * @return void
+     */
+    public function html2($time)
+    {
+        return [
+            'time'  =>  date('Y-m-d H:i:s', $time),
+        ];
+    }
+
+    /**
+     * @Action
      *
      * @return void
      */

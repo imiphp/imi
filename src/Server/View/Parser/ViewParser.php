@@ -66,8 +66,13 @@ class ViewParser extends BaseParser
             }
             else
             {
+                $view = clone $view;
                 $isClassView = true;
             }
+        }
+        else
+        {
+            $view = clone $view;
         }
 
         // baseDir
@@ -78,6 +83,11 @@ class ViewParser extends BaseParser
             {
                 $view->baseDir = $classView->baseDir;
             }
+        }
+        // template
+        if(null === $view->template)
+        {
+            $view->template = $methodName;
         }
         return $view;
     }
