@@ -4,14 +4,23 @@ use Imi\Util\Args;
 use Imi\Util\File;
 
 $imi = new class{
+    private $appPath;    
+
     public function run()
     {
         if(!class_exists('Imi\App'))
         {
-            $fileName = $_SERVER['PWD'] . '/vendor/autoload.php';
-            if(!is_file($fileName))
+            $paths = [
+                $_SERVER['PWD'],
+                dirname(__DIR__),
+            ];
+            foreach($paths as $path)
             {
-                $fileName = dirname(__DIR__) . '/vendor/autoload.php';
+                $fileName = $path . '/vendor/autoload.php';
+                if(is_file($fileName))
+                {
+                    break;
+                }
             }
             if(!is_file($fileName))
             {
@@ -28,7 +37,7 @@ $imi = new class{
         $namespace = Args::get('appNamespace');
         if(null === $namespace)
         {
-            $config = include File::path(dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');
+            $config = include File::path($path ?? dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');
             if(!isset($config['namespace']))
             {
                 echo 'Has no namespace, please add arg: -appNamespace "Your App Namespace"', PHP_EOL;
