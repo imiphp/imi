@@ -417,21 +417,6 @@ class ValidatorHelper
             default:
                 throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation));
         }
-        //        static $operations = [
-        //            '==',
-        //            '!=',
-        //            '===',
-        //            '!==',
-        //            '<',
-        //            '<=',
-        //            '>',
-        //            '>=',
-        //        ];
-        //        if(!in_array($operation, $operations))
-        //        {
-        //            throw new \InvalidArgumentException(sprintf('Unsupport operation %s', $operation));
-        //        }
-        //return eval('return $valueLeft ' . $operation . ' $valueRight;');
     }
     
     /**
@@ -464,6 +449,28 @@ class ValidatorHelper
         return ! in_array($value, $list);
     }
     
+    /**
+     * 值在枚举值范围内
+     * @param float $value
+     * @param string $enumClass
+     * @return boolean
+     */
+    public static function inEnum($value, $enumClass)
+    {
+        return in_array($value, $enumClass::getValues());
+    }
+
+    /**
+     * 值不在枚举值范围内
+     * @param float $value
+     * @param string $enumClass
+     * @return boolean
+     */
+    public static function notInEnum($value, $enumClass)
+    {
+        return !in_array($value, $enumClass::getValues());
+    }
+
     /**
      * 检测中国居民身份证，支持15位和18位
      * @access public static
