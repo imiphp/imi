@@ -14,6 +14,7 @@ return [
         'Imi\Test\Component\Cache',
         'Imi\Test\Component\Lock',
         'Imi\Test\Component\Model',
+        'Imi\Test\Component\Validate',
     ],
     'beans'    =>    [
     ],
