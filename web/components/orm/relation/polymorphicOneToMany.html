@@ -1,0 +1,481 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>多态一对多关联-IMI Doc - mddoc</title>
+    <!-- jQuery-->
+    <script src="../../../statics/plugin/jquery/jquery-1.12.0.min.js"></script>
+	<!-- layui -->
+    <link rel="stylesheet" href="../../../statics/plugin/layui/css/layui.css" />
+    <script src="../../../statics/plugin/layui/layui.all.js"></script>
+	<!-- zTree -->
+    <link rel="stylesheet" href="../../../statics/plugin/zTree/css/zTreeStyle/zTreeStyle.css" />
+    <script src="../../../statics/plugin/zTree/js/jquery.ztree.core.js"></script>
+	<!-- SyntaxHighlighter -->
+	<script src="../../../statics/plugin/SyntaxHighlighter/shCore.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="../../../statics/plugin/SyntaxHighlighter/shCoreDefault.css"/>
+	<!-- 自定义 -->
+    <link rel="stylesheet" href="../../../statics/css/style.css" />
+    <script src="../../../statics/js/home.js"></script>
+	<link rel="stylesheet" href="../../../statics/css/docView.css" />
+    <script src="../../../statics/js/docView.js"></script>
+</head>
+<body>
+	<!-- top-begin -->
+	<div id="navbar">
+		<ul class="layui-nav" lay-filter="">
+			<div class="navRight">
+				<li class="layui-nav-item" lay-unselect>
+					<a id="btn-about" href="javascript:;">关于</a>
+				</li>
+			</div>
+		</ul>
+		<div class="nav-menu">
+			<a href="../../../" class="logo">IMI Doc</a>
+			<a href="javascript:;" id="navMenuLeft"><i class="layui-icon">&#xe658;</i></a>
+			<a href="javascript:;" id="navMenuRight"><i class="layui-icon">&#xe61a;</i></a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<script>
+	function openMenuLeft()
+	{
+		$('#leftbar').addClass('show-item');
+		$('#navMenuLeft').addClass('active');
+	}
+	function closeMenuLeft()
+	{
+		$('#leftbar').removeClass('show-item');
+		$('#navMenuLeft').removeClass('active');
+	}
+	$('#navMenuLeft').click(function(){
+		var isShow = $('#leftbar').hasClass('show-item');
+		if(isShow)
+		{
+			closeMenuLeft();
+		}
+		else
+		{
+			closeMenuRight();
+			openMenuLeft();
+		}
+	});
+	function openMenuRight()
+	{
+		$('#navbar > .layui-nav').addClass('show-item')
+		$('#navMenuRight').addClass('active').find('i').html('&#xe619;');
+	}
+	function closeMenuRight()
+	{
+		$('#navbar > .layui-nav').removeClass('show-item')
+		$('#navMenuRight').removeClass('active').find('i').html('&#xe61a;');
+	}
+	$('#navMenuRight').click(function(){
+		var isShow = $('#navbar > .layui-nav').hasClass('show-item');
+		if(isShow)
+		{
+			closeMenuRight();
+		}
+		else
+		{
+			closeMenuLeft();
+			openMenuRight();
+		}
+	});
+	</script>
+	<!-- top-end -->
+
+	<!-- left-begin -->
+	<div id="leftbar" class="layui-nav-side">
+		<div class="layui-tab layui-tab-brief" style="margin-top:0">
+			<ul class="layui-tab-title">
+				<li class="layui-this"><i class="layui-icon">&#xe705;</i> 目录</li>
+				<li><i class="layui-icon">&#xe615;</i> 搜索</li>
+			</ul>
+			<div class="layui-tab-content" style="padding:0;overflow-y: auto;position: relative;padding-top: 12px;box-sizing: border-box;">
+				<div class="layui-tab-item layui-show">
+					<ul id="treeDirectory" class="ztree showIcon"></ul>
+				</div>
+				<div class="layui-tab-item">
+					<div class="searchBox">
+						<div id="searchForm">
+							<div class="inputBox">
+								<input type="text" id="search-keyword" name="keyword" placeholder="搜索关键词" class="layui-input"/>
+								<i class="layui-icon input-icon">&#xe615;</i>
+							</div>
+						</div>
+						<ul id="treeSearch" class="ztree">
+						</ul>
+						<div class="searchResultNone">
+							<i class="layui-icon">&#xe615;</i>
+							<p>未搜索到结果</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="copyright noScroll">mddoc</div>
+		</div>
+	</div>
+	<script id="searchListTemplate" type="text/html">
+		{{#  layui.each(d, function(index, item){ }}
+		<li>
+			<a href="{{ item.url }}"><span>{{ item.title }}</span></a>
+		</li>
+		{{#  }) }}
+	</script>
+	<!-- left-end -->
+
+	<div id="body">
+		<div id="content_body" name="content_body" style="width:100%;height:100%;border:none;overflow: auto;">
+            <div id="article-content" class="markdown-body">
+				<script>
+					function parseCatalogItem(item)
+					{
+						item.url = new Array(3 + 1).join('../') + item.url;
+						return item;
+					}
+					document.title = '多态一对多关联-IMI Doc - mddoc';
+					var currentCatalog = parseCatalogItem({"id":59,"parent_id":53,"title":"\u591a\u6001\u4e00\u5bf9\u591a\u5173\u8054","mdFileName":"components\/orm\/relation\/polymorphicOneToMany.md","url":"components\/orm\/relation\/polymorphicOneToMany.html","level":3});
+					var catalogList = [{"id":1,"parent_id":0,"title":"\u57fa\u7840\u5165\u95e8","level":0},{"id":2,"parent_id":1,"title":"\u5e8f\u8a00","mdFileName":"README.md","url":"index.html","level":1},{"id":3,"parent_id":1,"title":"\u4ecb\u7ecd","mdFileName":"base\/intro.md","url":"base\/intro.html","level":1},{"id":4,"parent_id":1,"title":"\u73af\u5883\u8981\u6c42","mdFileName":"base\/env.md","url":"base\/env.html","level":1},{"id":5,"parent_id":1,"title":"\u5f00\u59cb\u4e00\u4e2a\u65b0\u9879\u76ee","mdFileName":"base\/new.md","url":"base\/new.html","level":1},{"id":6,"parent_id":1,"title":"\u914d\u7f6e\u6587\u4ef6","mdFileName":"base\/config.md","url":"base\/config.html","level":1},{"id":7,"parent_id":0,"title":"\u6846\u67b6\u6838\u5fc3","level":0},{"id":8,"parent_id":7,"title":"\u751f\u547d\u5468\u671f","mdFileName":"core\/lifeCycle.md","url":"core\/lifeCycle.html","level":1},{"id":9,"parent_id":7,"title":"\u5bb9\u5668","mdFileName":"core\/container.md","url":"core\/container.html","level":1},{"id":10,"parent_id":7,"title":"\u4e8b\u4ef6","mdFileName":"core\/events.md","url":"core\/events.html","level":1},{"id":11,"parent_id":7,"title":"\u4e2d\u95f4\u4ef6","mdFileName":"core\/middleware.md","url":"core\/middleware.html","level":1},{"id":12,"parent_id":7,"title":"\u8fdb\u7a0b\u540d\u79f0\u7ba1\u7406","mdFileName":"core\/processNameManager.md","url":"core\/processNameManager.html","level":1},{"id":13,"parent_id":0,"title":"Http \u670d\u52a1","level":0},{"id":14,"parent_id":13,"title":"\u8def\u7531","mdFileName":"components\/httpserver\/route.md","url":"components\/httpserver\/route.html","level":1},{"id":15,"parent_id":13,"title":"\u4e2d\u95f4\u4ef6","mdFileName":"components\/httpserver\/middleware.md","url":"components\/httpserver\/middleware.html","level":1},{"id":16,"parent_id":13,"title":"\u63a7\u5236\u5668","mdFileName":"components\/httpserver\/controller.md","url":"components\/httpserver\/controller.html","level":1},{"id":17,"parent_id":13,"title":"RESTful","mdFileName":"components\/httpserver\/restful.md","url":"components\/httpserver\/restful.html","level":1},{"id":18,"parent_id":13,"title":"Session","mdFileName":"components\/httpserver\/session.md","url":"components\/httpserver\/session.html","level":1},{"id":19,"parent_id":13,"title":"\u89c6\u56fe","mdFileName":"components\/httpserver\/view.md","url":"components\/httpserver\/view.html","level":1},{"id":20,"parent_id":13,"title":"\u9519\u8bef\u5f02\u5e38\u5904\u7406","mdFileName":"components\/httpserver\/error.md","url":"components\/httpserver\/error.html","level":1},{"id":21,"parent_id":13,"title":"404\u5904\u7406","mdFileName":"components\/httpserver\/404.md","url":"components\/httpserver\/404.html","level":1},{"id":22,"parent_id":13,"title":"HTTP \u9a8c\u8bc1\u5668","mdFileName":"components\/httpserver\/validation.md","url":"components\/httpserver\/validation.html","level":1},{"id":23,"parent_id":0,"title":"WebSocket \u670d\u52a1","level":0},{"id":24,"parent_id":23,"title":"HTTP \u8def\u7531","mdFileName":"components\/websocketServer\/httpRoute.md","url":"components\/websocketServer\/httpRoute.html","level":1},{"id":25,"parent_id":23,"title":"HTTP \u63a7\u5236\u5668","mdFileName":"components\/websocketServer\/httpController.md","url":"components\/websocketServer\/httpController.html","level":1},{"id":26,"parent_id":23,"title":"WebSocket \u8def\u7531","mdFileName":"components\/websocketServer\/route.md","url":"components\/websocketServer\/route.html","level":1},{"id":27,"parent_id":23,"title":"WebSocket \u63a7\u5236\u5668","mdFileName":"components\/websocketServer\/websocketController.md","url":"components\/websocketServer\/websocketController.html","level":1},{"id":28,"parent_id":23,"title":"\u4e2d\u95f4\u4ef6","mdFileName":"components\/websocketServer\/middleware.md","url":"components\/websocketServer\/middleware.html","level":1},{"id":29,"parent_id":23,"title":"\u8fde\u63a5\u4e0a\u4e0b\u6587","mdFileName":"components\/websocketServer\/session.md","url":"components\/websocketServer\/session.html","level":1},{"id":30,"parent_id":23,"title":"\u8fde\u63a5\u5206\u7ec4","mdFileName":"components\/websocketServer\/group.md","url":"components\/websocketServer\/group.html","level":1},{"id":31,"parent_id":23,"title":"\u4e0d\u4f7f\u7528\u4e2d\u95f4\u4ef6","mdFileName":"components\/websocketServer\/noMiddleware.md","url":"components\/websocketServer\/noMiddleware.html","level":1},{"id":32,"parent_id":0,"title":"TCP \u670d\u52a1","level":0},{"id":33,"parent_id":32,"title":"\u8def\u7531","mdFileName":"components\/tcpServer\/route.md","url":"components\/tcpServer\/route.html","level":1},{"id":34,"parent_id":32,"title":"TCP \u63a7\u5236\u5668","mdFileName":"components\/tcpServer\/controller.md","url":"components\/tcpServer\/controller.html","level":1},{"id":35,"parent_id":32,"title":"\u4e2d\u95f4\u4ef6","mdFileName":"components\/tcpServer\/middleware.md","url":"components\/tcpServer\/middleware.html","level":1},{"id":36,"parent_id":32,"title":"\u8fde\u63a5\u4e0a\u4e0b\u6587","mdFileName":"components\/tcpServer\/session.md","url":"components\/tcpServer\/session.html","level":1},{"id":37,"parent_id":32,"title":"\u8fde\u63a5\u5206\u7ec4","mdFileName":"components\/tcpServer\/group.md","url":"components\/tcpServer\/group.html","level":1},{"id":38,"parent_id":32,"title":"\u4e0d\u4f7f\u7528\u4e2d\u95f4\u4ef6","mdFileName":"components\/tcpServer\/noMiddleware.md","url":"components\/tcpServer\/noMiddleware.html","level":1},{"id":39,"parent_id":0,"title":"UDP \u670d\u52a1","level":0},{"id":40,"parent_id":39,"title":"\u8def\u7531","mdFileName":"components\/udpServer\/route.md","url":"components\/udpServer\/route.html","level":1},{"id":41,"parent_id":39,"title":"UDP \u63a7\u5236\u5668","mdFileName":"components\/udpServer\/controller.md","url":"components\/udpServer\/controller.html","level":1},{"id":42,"parent_id":39,"title":"\u4e2d\u95f4\u4ef6","mdFileName":"components\/udpServer\/middleware.md","url":"components\/udpServer\/middleware.html","level":1},{"id":43,"parent_id":39,"title":"\u4e0d\u4f7f\u7528\u4e2d\u95f4\u4ef6","mdFileName":"components\/udpServer\/noMiddleware.md","url":"components\/udpServer\/noMiddleware.html","level":1},{"id":44,"parent_id":0,"title":"\u529f\u80fd\u7ec4\u4ef6","level":0},{"id":45,"parent_id":44,"title":"\u914d\u7f6e\u8bfb\u5199","mdFileName":"components\/config\/index.md","url":"components\/config\/index.html","level":1},{"id":46,"parent_id":44,"title":"\u8fde\u63a5\u6c60","mdFileName":"components\/pool\/index.md","url":"components\/pool\/index.html","level":1},{"id":47,"parent_id":44,"title":"\u6570\u636e\u5e93\u64cd\u4f5c","mdFileName":"components\/db\/index.md","url":"components\/db\/index.html","level":1},{"id":48,"parent_id":44,"title":"ORM","mdFileName":"components\/orm\/index.md","url":"components\/orm\/index.html","level":1},{"id":49,"parent_id":48,"title":"\u4f7f\u7528\u8bf4\u660e","mdFileName":"components\/orm\/index.md","url":"components\/orm\/index.html","level":2},{"id":50,"parent_id":48,"title":"\u6570\u636e\u8868\u6a21\u578b","mdFileName":"components\/orm\/RDModel.md","url":"components\/orm\/RDModel.html","level":2},{"id":51,"parent_id":50,"title":"\u4f7f\u7528\u65b9\u6cd5","mdFileName":"components\/orm\/RDModel.md","url":"components\/orm\/RDModel.html","level":3},{"id":52,"parent_id":50,"title":"\u6a21\u578b\u4e8b\u4ef6","mdFileName":"components\/orm\/RDModel\/event.md","url":"components\/orm\/RDModel\/event.html","level":3},{"id":53,"parent_id":48,"title":"\u6a21\u578b\u5173\u8054","mdFileName":"components\/orm\/relation\/index.md","url":"components\/orm\/relation\/index.html","level":2},{"id":54,"parent_id":53,"title":"\u4f7f\u7528\u8bf4\u660e","mdFileName":"components\/orm\/relation\/index.md","url":"components\/orm\/relation\/index.html","level":3},{"id":55,"parent_id":53,"title":"\u4e00\u5bf9\u4e00\u5173\u8054","mdFileName":"components\/orm\/relation\/oneToOne.md","url":"components\/orm\/relation\/oneToOne.html","level":3},{"id":56,"parent_id":53,"title":"\u4e00\u5bf9\u591a\u5173\u8054","mdFileName":"components\/orm\/relation\/oneToMany.md","url":"components\/orm\/relation\/oneToMany.html","level":3},{"id":57,"parent_id":53,"title":"\u591a\u5bf9\u591a\u5173\u8054","mdFileName":"components\/orm\/relation\/manyToMany.md","url":"components\/orm\/relation\/manyToMany.html","level":3},{"id":58,"parent_id":53,"title":"\u591a\u6001\u4e00\u5bf9\u4e00\u5173\u8054","mdFileName":"components\/orm\/relation\/polymorphicOneToOne.md","url":"components\/orm\/relation\/polymorphicOneToOne.html","level":3},{"id":59,"parent_id":53,"title":"\u591a\u6001\u4e00\u5bf9\u591a\u5173\u8054","mdFileName":"components\/orm\/relation\/polymorphicOneToMany.md","url":"components\/orm\/relation\/polymorphicOneToMany.html","level":3},{"id":60,"parent_id":53,"title":"\u591a\u6001\u591a\u5bf9\u591a\u5173\u8054","mdFileName":"components\/orm\/relation\/polymorphicManyToMany.md","url":"components\/orm\/relation\/polymorphicManyToMany.html","level":3},{"id":61,"parent_id":44,"title":"Redis","mdFileName":"components\/redis\/index.md","url":"components\/redis\/index.html","level":1},{"id":62,"parent_id":44,"title":"Redis \u6a21\u578b","mdFileName":"components\/orm\/RedisModel.md","url":"components\/orm\/RedisModel.html","level":1},{"id":63,"parent_id":44,"title":"\u5185\u5b58\u8868\u6a21\u578b","mdFileName":"components\/orm\/MemoryTableModel.md","url":"components\/orm\/MemoryTableModel.html","level":1},{"id":64,"parent_id":44,"title":"\u7f13\u5b58","mdFileName":"components\/cache\/index.md","url":"components\/cache\/index.html","level":1},{"id":65,"parent_id":64,"title":"\u4f7f\u7528\u8bf4\u660e","mdFileName":"components\/cache\/index.md","url":"components\/cache\/index.html","level":2},{"id":66,"parent_id":64,"title":"File","mdFileName":"components\/cache\/file.md","url":"components\/cache\/file.html","level":2},{"id":67,"parent_id":64,"title":"Redis","mdFileName":"components\/cache\/redis.md","url":"components\/cache\/redis.html","level":2},{"id":68,"parent_id":64,"title":"RedisHash","mdFileName":"components\/cache\/redisHash.md","url":"components\/cache\/redisHash.html","level":2},{"id":69,"parent_id":44,"title":"\u65e5\u5fd7","mdFileName":"components\/log\/index.md","url":"components\/log\/index.html","level":1},{"id":70,"parent_id":44,"title":"\u9a8c\u8bc1\u5668","mdFileName":"components\/validation\/index.md","url":"components\/validation\/index.html","level":1},{"id":71,"parent_id":44,"title":"Lock \u9501","mdFileName":"components\/lock\/index.md","url":"components\/lock\/index.html","level":1},{"id":72,"parent_id":71,"title":"\u4f7f\u7528\u65b9\u6cd5","mdFileName":"components\/lock\/index.md","url":"components\/lock\/index.html","level":2},{"id":73,"parent_id":71,"title":"RedisLock","mdFileName":"components\/lock\/redis.md","url":"components\/lock\/redis.html","level":2},{"id":74,"parent_id":71,"title":"AtomicLock","mdFileName":"components\/lock\/atomic.md","url":"components\/lock\/atomic.html","level":2},{"id":75,"parent_id":44,"title":"\u4e8b\u4ef6\u76d1\u542c","mdFileName":"components\/event\/index.md","url":"components\/event\/index.html","level":1},{"id":76,"parent_id":44,"title":"\u540e\u53f0\u4efb\u52a1","mdFileName":"components\/task\/index.md","url":"components\/task\/index.html","level":1},{"id":77,"parent_id":44,"title":"AOP","mdFileName":"components\/aop\/index.md","url":"components\/aop\/index.html","level":1},{"id":78,"parent_id":44,"title":"\u8fdb\u7a0b","mdFileName":"components\/process\/index.md","url":"components\/process\/index.html","level":1},{"id":79,"parent_id":44,"title":"\u8fdb\u7a0b\u6c60","mdFileName":"components\/process-pool\/index.md","url":"components\/process-pool\/index.html","level":1},{"id":80,"parent_id":44,"title":"\u70ed\u66f4\u65b0","mdFileName":"components\/hotupdate\/index.md","url":"components\/hotupdate\/index.html","level":1},{"id":81,"parent_id":44,"title":"Phar \u652f\u6301","mdFileName":"components\/phar\/index.md","url":"components\/phar\/index.html","level":1},{"id":82,"parent_id":0,"title":"\u6570\u636e\u7ed3\u6784","level":0},{"id":83,"parent_id":82,"title":"Atomic","mdFileName":"components\/struct\/atomic.md","url":"components\/struct\/atomic.html","level":1},{"id":84,"parent_id":82,"title":"Channel","mdFileName":"components\/struct\/co-channel.md","url":"components\/struct\/co-channel.html","level":1},{"id":85,"parent_id":82,"title":"MemoryTable","mdFileName":"components\/struct\/memory-table.md","url":"components\/struct\/memory-table.html","level":1},{"id":86,"parent_id":82,"title":"Enum","mdFileName":"components\/struct\/enum.md","url":"components\/struct\/enum.html","level":1},{"id":87,"parent_id":82,"title":"ArrayData","mdFileName":"components\/struct\/ArrayData.md","url":"components\/struct\/ArrayData.html","level":1},{"id":88,"parent_id":82,"title":"LazyArrayObject","mdFileName":"components\/struct\/LazyArrayObject.md","url":"components\/struct\/LazyArrayObject.html","level":1},{"id":89,"parent_id":82,"title":"ArrayList","mdFileName":"components\/struct\/ArrayList.md","url":"components\/struct\/ArrayList.html","level":1},{"id":90,"parent_id":82,"title":"FilterableList","mdFileName":"components\/struct\/FilterableList.md","url":"components\/struct\/FilterableList.html","level":1},{"id":91,"parent_id":0,"title":"\u5de5\u5177\u7c7b","level":0},{"id":92,"parent_id":91,"title":"\u5168\u5c40\u51fd\u6570","mdFileName":"utils\/functions.md","url":"utils\/functions.html","level":1},{"id":93,"parent_id":91,"title":"Imi","mdFileName":"utils\/Imi.md","url":"utils\/Imi.html","level":1},{"id":94,"parent_id":91,"title":"Args","mdFileName":"utils\/Args.md","url":"utils\/Args.html","level":1},{"id":95,"parent_id":91,"title":"ArrayUtil","mdFileName":"utils\/ArrayUtil.md","url":"utils\/ArrayUtil.html","level":1},{"id":96,"parent_id":91,"title":"Bit","mdFileName":"utils\/Bit.md","url":"utils\/Bit.html","level":1},{"id":97,"parent_id":91,"title":"ClassObject","mdFileName":"utils\/ClassObject.md","url":"utils\/ClassObject.html","level":1},{"id":98,"parent_id":91,"title":"Coroutine","mdFileName":"utils\/Coroutine.md","url":"utils\/Coroutine.html","level":1},{"id":99,"parent_id":91,"title":"File","mdFileName":"utils\/File.md","url":"utils\/File.html","level":1},{"id":100,"parent_id":91,"title":"ObjectArrayHelper","mdFileName":"utils\/ObjectArrayHelper.md","url":"utils\/ObjectArrayHelper.html","level":1},{"id":101,"parent_id":91,"title":"Random","mdFileName":"utils\/Random.md","url":"utils\/Random.html","level":1},{"id":102,"parent_id":91,"title":"Swoole","mdFileName":"utils\/Swoole.md","url":"utils\/Swoole.html","level":1},{"id":103,"parent_id":91,"title":"Text","mdFileName":"utils\/Text.md","url":"utils\/Text.html","level":1},{"id":104,"parent_id":91,"title":"Pagination","mdFileName":"utils\/Pagination.md","url":"utils\/Pagination.html","level":1},{"id":105,"parent_id":91,"title":"DateTime","mdFileName":"utils\/DateTime.md","url":"utils\/DateTime.html","level":1},{"id":106,"parent_id":91,"title":"KVStorage","mdFileName":"utils\/KVStorage.md","url":"utils\/KVStorage.html","level":1},{"id":107,"parent_id":91,"title":"ServerManage","mdFileName":"utils\/ServerManage.md","url":"utils\/ServerManage.html","level":1},{"id":108,"parent_id":0,"title":"\u6ce8\u89e3","level":0},{"id":109,"parent_id":108,"title":"\u6ce8\u5165\u503c\u6ce8\u89e3","mdFileName":"annotations\/injectValue.md","url":"annotations\/injectValue.html","level":1},{"id":110,"parent_id":108,"title":"\u65b9\u6cd5\u53c2\u6570\u8fc7\u6ee4\u5668","mdFileName":"annotations\/filterArg.md","url":"annotations\/filterArg.html","level":1},{"id":111,"parent_id":0,"title":"\u5f00\u53d1\u8005\u5de5\u5177","level":0},{"id":112,"parent_id":111,"title":"\u4ecb\u7ecd","mdFileName":"dev\/intro.md","url":"dev\/intro.html","level":1},{"id":113,"parent_id":111,"title":"\u670d\u52a1\u5668\u5de5\u5177","mdFileName":"dev\/server.md","url":"dev\/server.html","level":1},{"id":114,"parent_id":111,"title":"\u751f\u6210\u5de5\u5177","mdFileName":"dev\/generate.md","url":"dev\/generate.html","level":1},{"id":115,"parent_id":114,"title":"\u6a21\u578b\u751f\u6210","mdFileName":"dev\/generate\/model.md","url":"dev\/generate\/model.html","level":2},{"id":116,"parent_id":114,"title":"\u63a7\u5236\u5668\u751f\u6210","mdFileName":"dev\/generate\/controller.md","url":"dev\/generate\/controller.html","level":2},{"id":117,"parent_id":111,"title":"\u8fdb\u7a0b\u5de5\u5177","mdFileName":"dev\/process.md","url":"dev\/process.html","level":1},{"id":118,"parent_id":0,"title":"\u8fdb\u9636\u5f00\u53d1","level":0},{"id":119,"parent_id":118,"title":"\u6027\u80fd\u4f18\u5316","mdFileName":"adv\/performance.md","url":"adv\/performance.html","level":1},{"id":120,"parent_id":118,"title":"\u53c2\u4e0e\u6846\u67b6\u5f00\u53d1","mdFileName":"adv\/devp.md","url":"adv\/devp.html","level":1}];
+					for(var i = 0; i < catalogList.length; ++i)
+					{
+						if(void 0 !== catalogList[i].url)
+						{
+							catalogList[i] = parseCatalogItem(catalogList[i]);
+						}
+					}
+					initTree(catalogList);
+				</script>
+                <h1>多态一对多关联</h1><p>比如我们有一张文章表，一张书籍表，一张评论表。文章和书籍的评论记录都在同一张评论表中。</p><pre><code class="php">mysql&gt; desc tb_article;
++---------+------------------+------+-----+---------+----------------+
+| Field   | Type             | Null | Key | Default | Extra          |
++---------+------------------+------+-----+---------+----------------+
+| id      | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| title   | varchar(32)      | NO   |     | NULL    |                |
+| content | text             | NO   |     | NULL    |                |
++---------+------------------+------+-----+---------+----------------+
+
+mysql&gt; desc tb_book;
++-------+------------------+------+-----+---------+----------------+
+| Field | Type             | Null | Key | Default | Extra          |
++-------+------------------+------+-----+---------+----------------+
+| id    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| title | varchar(32)      | NO   |     | NULL    |                |
++-------+------------------+------+-----+---------+----------------+
+
+mysql&gt; desc tb_comment;
++-------------+------------------+------+-----+---------+----------------+
+| Field       | Type             | Null | Key | Default | Extra          |
++-------------+------------------+------+-----+---------+----------------+
+| id          | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| content     | text             | NO   |     | NULL    |                |
+| type        | tinyint(4)       | NO   |     | NULL    |                |
+| relation_id | int(10) unsigned | NO   |     | NULL    |                |
++-------------+------------------+------+-----+---------+----------------+</code></pre><p>具体示例代码可以看imi-demo项目，下面仅为简单展示。</p><p>具体示例代码可以看imi-demo项目，下面仅为简单展示。</p><p>具体示例代码可以看imi-demo项目，下面仅为简单展示。</p><h2>定义</h2><p>一对多关联会用到的注解：</p><p><code>@PolymorphicOneToMany</code>、<code>@PolymorphicToOne</code>、<code>@JoinFrom</code>、<code>@JoinTo</code>、<code>@AutoSelect</code>、<code>@AutoInsert</code>、<code>@AutoUpdate</code>、<code>@AutoSave</code>、<code>@AutoDelete</code></p><p>如 imi-demo 中代码所示，<code>Article</code>定义了一个<code>$comments</code>属性，这个属性关联<code>Comment</code>模型。</p><p><code>Article</code>中<code>id</code>与<code>Comment</code>中<code>relation_id</code>关联，并且<code>type</code>为<code>1</code>的才关联。</p><h3>Article 模型</h3><pre><code class="php">/**
+ * Article
+ * @Entity
+ * @Table(name=&quot;tb_article&quot;, id={&quot;id&quot;})
+ * @property int $id
+ * @property string $title
+ * @property string $content
+ * @property \Imi\Util\ArrayList $comments
+ * @property \Imi\Util\ArrayList $taggables
+ * @property \Imi\Util\ArrayList $tags
+ */
+class Article extends Model
+{
+    /**
+     * id
+     * @Column(name=&quot;id&quot;, type=&quot;int&quot;, length=10, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * 获取 id
+     *
+     * @return int
+     */ 
+    public function getId()
+    {
+        return $this-&gt;id;
+    }
+
+    /**
+     * 赋值 id
+     * @param int $id id
+     * @return static
+     */ 
+    public function setId($id)
+    {
+        $this-&gt;id = $id;
+        return $this;
+    }
+
+    /**
+     * title
+     * @Column(name=&quot;title&quot;, type=&quot;varchar&quot;, length=32, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * 获取 title
+     *
+     * @return string
+     */ 
+    public function getTitle()
+    {
+        return $this-&gt;title;
+    }
+
+    /**
+     * 赋值 title
+     * @param string $title title
+     * @return static
+     */ 
+    public function setTitle($title)
+    {
+        $this-&gt;title = $title;
+        return $this;
+    }
+
+    /**
+     * content
+     * @Column(name=&quot;content&quot;, type=&quot;text&quot;, length=0, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @var string
+     */
+    protected $content;
+
+    /**
+     * 获取 content
+     *
+     * @return string
+     */ 
+    public function getContent()
+    {
+        return $this-&gt;content;
+    }
+
+    /**
+     * 赋值 content
+     * @param string $content content
+     * @return static
+     */ 
+    public function setContent($content)
+    {
+        $this-&gt;content = $content;
+        return $this;
+    }
+
+    /**
+     * 评论
+     * 
+     * @PolymorphicOneToMany(model=ImiDemo\HttpDemo\MainServer\Model\Comment::class, type=&quot;type&quot;, typeValue=1)
+     * @JoinTo(&quot;relation_id&quot;)
+     * @AutoSave(orphanRemoval=true)
+     * @AutoDelete
+     *
+     * @var \Imi\Util\ArrayList
+     */
+    protected $comments;
+
+    /**
+     * Get 评论
+     *
+     * @return  \ImiDemo\HttpDemo\MainServer\Model\Comment[]
+     */ 
+    public function getComments()
+    {
+        return $this-&gt;comments;
+    }
+
+    /**
+     * Set 评论
+     *
+     * @param  \ImiDemo\HttpDemo\MainServer\Model\Comment[]  $comments  评论
+     *
+     * @return  self
+     */ 
+    public function setComments($comments)
+    {
+        $this-&gt;comments = $comments;
+
+        return $this;
+    }
+    
+}</code></pre><p>主要参考<code>$comments</code>上的注解，与多态一对多一样。</p><h3>Comment 模型</h3><pre><code class="php">/**
+ * Comment
+ * @Entity
+ * @Table(name=&quot;tb_comment&quot;, id={&quot;id&quot;})
+ * @property int $id
+ * @property string $content
+ * @property int $type
+ * @property int $relationId
+ */
+class Comment extends Model
+{
+    /**
+     * id
+     * @Column(name=&quot;id&quot;, type=&quot;int&quot;, length=10, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * 获取 id
+     *
+     * @return int
+     */ 
+    public function getId()
+    {
+        return $this-&gt;id;
+    }
+
+    /**
+     * 赋值 id
+     * @param int $id id
+     * @return static
+     */ 
+    public function setId($id)
+    {
+        $this-&gt;id = $id;
+        return $this;
+    }
+
+    /**
+     * content
+     * @Column(name=&quot;content&quot;, type=&quot;text&quot;, length=0, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @var string
+     */
+    protected $content;
+
+    /**
+     * 获取 content
+     *
+     * @return string
+     */ 
+    public function getContent()
+    {
+        return $this-&gt;content;
+    }
+
+    /**
+     * 赋值 content
+     * @param string $content content
+     * @return static
+     */ 
+    public function setContent($content)
+    {
+        $this-&gt;content = $content;
+        return $this;
+    }
+
+    /**
+     * type
+     * @Column(name=&quot;type&quot;, type=&quot;tinyint&quot;, length=4, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @var int
+     */
+    protected $type;
+
+    /**
+     * 获取 type
+     *
+     * @return int
+     */ 
+    public function getType()
+    {
+        return $this-&gt;type;
+    }
+
+    /**
+     * 赋值 type
+     * @param int $type type
+     * @return static
+     */ 
+    public function setType($type)
+    {
+        $this-&gt;type = $type;
+        return $this;
+    }
+
+    /**
+     * relation_id
+     * @Column(name=&quot;relation_id&quot;, type=&quot;int&quot;, length=10, accuracy=0, nullable=false, default=&quot;&quot;, isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @var int
+     */
+    protected $relationId;
+
+    /**
+     * 获取 relationId
+     *
+     * @return int
+     */ 
+    public function getRelationId()
+    {
+        return $this-&gt;relationId;
+    }
+
+    /**
+     * 赋值 relationId
+     * @param int $relationId relation_id
+     * @return static
+     */ 
+    public function setRelationId($relationId)
+    {
+        $this-&gt;relationId = $relationId;
+        return $this;
+    }
+
+}</code></pre><h2>查询</h2><blockquote>常见的增删改查就不写了，和一对多关联一样用法</blockquote><h3>评论模型反查文章模型</h3><p>注解及用法与一对一相同</p>			</div>
+		</div>
+	</div>
+
+	<script>
+		$(function(){
+			var leftBarTimeout = null;
+			$('#leftbar').hover(function(e){
+				if(null !== leftBarTimeout)
+				{
+					clearTimeout(leftBarTimeout);
+					leftBarTimeout = null;
+				}
+				if(e.type === 'mouseenter')
+				{
+					$('.left-show-hide').fadeIn(250);
+				}
+				else if($('#leftbar').css('left') == '0px')
+				{
+					$('.left-show-hide').fadeOut(500);
+				}
+			});
+		});
+		function showLeftbar()
+		{
+			$('#leftbar').css('left', 0);
+			$('#body').css('padding-left','');
+			$('.left-show-hide > i.layui-icon').html('&#xe603;');
+		}
+		function hideLeftbar()
+		{
+			$('#leftbar').css('left', '-240px');
+			$('#body').css('padding-left',0);
+			$('.left-show-hide > i.layui-icon').html('&#xe602;');
+			$('.left-show-hide').fadeIn(250);
+		}
+		$('.left-show-hide').click(function(){
+			if($('#leftbar').css('left') == '0px')
+			{
+				hideLeftbar();
+			}
+			else
+			{
+				showLeftbar();
+			}
+		})
+	</script>
+    <script src="../../../statics/js/mddoc-search.js"></script>
+</body>
+</html>

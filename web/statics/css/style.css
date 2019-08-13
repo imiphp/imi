@@ -1,0 +1,194 @@
+.clear{
+    clear:both;
+}
+.center{
+    text-align:center;
+}
+.pull-left {
+    float: left !important;
+}
+.pull-right {
+    float: right !important;
+}
+#navbar{
+    background-color: #393D49;
+    height:60px;
+    padding: 0 10px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+}
+#navbar .layui-nav{
+    border-radius: 0;
+}
+#navbar .logo{
+    float: left;
+    font-size: 1.625rem;
+    color: #fff;
+    line-height: 60px;
+}
+#leftbar{
+	width:260px;
+	top: 60px;
+	border-radius: 0;
+    transition: left 0.5s ease;
+    -webkit-transition: left 0.5s ease;
+    -moz-transition: left 0.5s ease;
+    -ms-transition: left 0.5s ease;
+    -o-transition: left 0.5s ease;
+    overflow-x: visible;
+    border-right:1px solid #eee;
+    background-color:#fafafa;
+}
+#leftbar .copyright {
+    color: #fff;
+    text-align: center;
+    line-height: 24px;
+    background: rgba(255,255,255,0.1);
+}
+#leftbar .copyright.noScroll{
+	bottom: 0;
+    position: absolute;
+    width: 100%;
+}
+#leftbar > li > a > i.layui-icon{
+	font-size: 1.625rem;
+    vertical-align: top;
+    margin-right: 10px;
+}
+#leftbar > li > dl > dd > a > i.layui-icon{
+	font-size: 1.125rem;
+    vertical-align: top;
+    margin-right: 10px;
+}
+#leftbar > li > dl > dd > a{
+	padding-left: 30px;
+}
+.left-show-hide{
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-100%);
+    padding: 0;
+    height: 64px;
+    width: 18px;
+    background-color: #393D49;
+    color: #F0F0F0;
+    border: none;
+    border-radius: 0;
+    opacity: 1;
+    display:none;
+}
+.left-show-hide:hover{
+    color:#fff;
+}
+.left-show-hide > .layui-icon{
+    font-size:14px;
+}
+#body {
+    padding-left: 260px;
+    width: 100%;
+    padding-top: 60px;
+    position: absolute;
+    transition: left 0.5s ease;
+    -webkit-transition: left 0.5s ease;
+    -moz-transition: left 0.5s ease;
+    -ms-transition: left 0.5s ease;
+    -o-transition: left 0.5s ease;
+    height: 100%;
+    box-sizing: border-box;
+    top: 0;
+}
+.navRight{
+    float:right;
+}
+#navMenuLeft, #navMenuRight{
+    display:none;
+    color:#fff;
+    line-height: 60px;
+}
+#navMenuLeft{
+    float:left;
+}
+#navMenuRight{
+    float:right;
+}
+#navMenuLeft.active > i, #navMenuRight.active > i{
+    color: #5FB878
+}
+#navMenuLeft > i, #navMenuRight > i{
+    font-size:1.625rem;
+}
+.inputBox{
+    position: relative;
+}
+.inputBox .input-icon{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 6px;
+    color:#c2c2c2;
+    pointer-events: none;
+}
+.inputBox .layui-input:focus + .input-icon{
+    color:#000
+}
+@media screen and (max-width: 768px)
+{
+	#leftbar{
+		left:-260px !important;
+	}
+	#leftbar.show-item{
+		left:0 !important;
+    }
+    #navbar{
+        text-align: center;
+    }
+    #navbar .logo{
+        float:none;
+        margin-left:0;
+        display: inline-block;
+    }
+    #navbar .layui-nav{
+        top: 0px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        transition: top 0.5s ease;
+        -webkit-transition: top 0.5s ease;
+        -moz-transition: top 0.5s ease;
+        -ms-transition: top 0.5s ease;
+        -o-transition: top 0.5s ease;
+        z-index:999;
+    }
+    #navMenuLeft, #navMenuRight{
+        display:block;
+    }
+	#body{
+		padding-left:0
+    }
+    #navbar > .layui-nav.show-item{
+        top:60px;
+    }
+    #navbar > .layui-nav > .navRight{
+        width: 100%;
+    }
+    #navbar > .layui-nav > .navRight .layui-nav-item{
+        width: 100%;
+        text-align: left;
+    }
+    .nav-menu{
+        z-index:1000;
+        background: inherit;
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    .left-show-hide{
+        display:none !important;
+    }
+}
