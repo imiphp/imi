@@ -167,4 +167,37 @@ abstract class File
         }
         return false;
     }
+
+    /**
+     * 判断是否为空目录
+     *
+     * @param string $dir
+     * @return boolean
+     */
+    public static function isEmptyDir($dir)
+    {
+        try {
+            $handler = @opendir($dir);
+            if(!$handler)
+            {
+                return true;
+            }
+            while ($file = readdir($handler))
+            {
+                if('.' !== $file && '..' !== $file)
+                {
+                    return false;
+                }
+            }
+        } catch(\Throwable $th) {
+            throw $th;
+        } finally {
+            if($handler)
+            {
+                closedir($handler);
+            }
+        }
+        return true;
+    }
+
 }
