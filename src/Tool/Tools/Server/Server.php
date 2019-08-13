@@ -46,7 +46,6 @@ class Server
     {
         $result = Imi::stopServer();
         echo $result['cmd'], PHP_EOL;
-        echo 'code:', $result['result']['code'], ', signal:', $result['result']['signal'], ', output:', $result['result']['output'], PHP_EOL;
     }
 
     /**
@@ -60,6 +59,5 @@ class Server
     {
         $result = Imi::reloadServer();
         echo $result['cmd'], PHP_EOL;
-        echo 'code:', $result['result']['code'], ', signal:', $result['result']['signal'], ', output:', $result['result']['output'], PHP_EOL;
     }
 }
