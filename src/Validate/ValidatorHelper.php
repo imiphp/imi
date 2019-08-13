@@ -43,7 +43,7 @@ class ValidatorHelper
         {
             return preg_match('/^-?\d+\.\d{1,' . ((int)$accuracy) . '}$/', $value) > 0;
         }
-        return true;
+        return is_numeric($value) && false !== strpos($value, '.');
     }
 
     /**
@@ -96,7 +96,7 @@ class ValidatorHelper
         {
             return preg_match('/^-?\d+(\.\d{1,' . ((int)$accuracy) . '})?$/', $value) > 0;
         }
-        return true;
+        return is_numeric($value);
     }
 
     /**
@@ -211,7 +211,7 @@ class ValidatorHelper
      */
     public static function postcode($str)
     {
-        return preg_match('/\d{6}/', $str) > 0;
+        return preg_match('/^\d{6}$/', $str) > 0;
     }
     
     /**
