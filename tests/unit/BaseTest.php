@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
-    protected function go($callable)
+    protected function go($callable, $finally = null)
     {
         $throwable = null;
         $end = false;
@@ -20,6 +20,10 @@ abstract class BaseTest extends TestCase
         while(!$end)
         {
             \Swoole\Event::dispatch();
+        }
+        if($finally)
+        {
+            $finally();
         }
         if($throwable)
         {
