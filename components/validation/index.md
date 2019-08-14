@@ -240,7 +240,7 @@ $result = in_array($value, [1, 2, 3]);
 
 指定验证时的值注解
 
-`@Compare(name="id", value=@ValidateValue("{:data.id}"), operation="=="`
+`@Compare(name="id", value=@ValidateValue("{:data.id}"), operation="==")`
 
 ## 自动验证
 
