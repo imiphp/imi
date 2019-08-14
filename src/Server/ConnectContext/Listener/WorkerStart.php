@@ -1,13 +1,14 @@
 <?php
 namespace Imi\Server\ConnectContext\Listener;
 
+use Imi\Worker;
+use Imi\Util\Imi;
 use Imi\ServerManage;
+use Imi\Bean\BeanProxy;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Listener;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
-use Imi\Bean\BeanProxy;
-use Imi\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START")
@@ -21,7 +22,7 @@ class WorkerStart implements IWorkerStartEventListener
      */
     public function handle(WorkerStartEventParam $e)
     {
-        if(!$e->server->getSwooleServer()->taskworker)
+        if(!$e->server->getSwooleServer()->taskworker && 0 === Worker::getWorkerID())
         {
             RequestContext::create();
             foreach(ServerManage::getServers() as $server)
