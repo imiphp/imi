@@ -45,9 +45,15 @@ imi 的模型支持关联关系的定义，增删改查一把梭！
 
 ## 开始使用
 
-[完全开发手册](https://doc.imiphp.com)
+创建 Http Server 项目：`composer create-project imiphp/project-http`
 
-[新项目 Demo](https://gitee.com/yurunsoft/empty-imi-demo)
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket`
+
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp`
+
+创建 UDP Server 项目：`composer create-project imiphp/project-udp`
+
+[完全开发手册](https://doc.imiphp.com)
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
 
@@ -90,7 +96,7 @@ REDIS_CACHE_DB | Redis 缓存用的 `db`，该 `db` 会被清空数据，请慎�
 
 ## 版权信息
 
-IMI 遵循 Apache2 开源协议发布，并提供免费使用。
+IMI 遵循 木兰宽松许可证(Mulan PSL v1) 开源协议发布，并提供免费使用。
 
 ## 鸣谢
 
@@ -101,11 +107,14 @@ IMI 遵循 Apache2 开源协议发布，并提供免费使用。
 - [swoft/swoole-ide-helper](https://github.com/swoft-cloud/swoole-ide-helper) (为 IDE 提供代码提示)
 - [Swoole](https://www.swoole.com/) (没有 Swoole 就没有 IMI)
 
-## 寻找有缘人
+## Contributors
 
-想要加入我们吗？开源项目不能只靠一两个人，而是要靠大家的努力来完善~
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/Yurunsoft/IMI/graphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
 
-我们需要你的加入，你可以做的事（包括但不限于以下）：
+你想出现在上图中吗？
+
+你可以做的事（包括但不限于以下）：
 
 * 纠正拼写、错别字
 * 完善注释
@@ -116,31 +125,7 @@ IMI 遵循 Apache2 开源协议发布，并提供免费使用。
 
 > 最新代码以 `dev` 分支为准，提交 `PR` 也请合并至 `dev` 分支！
 
-## Contributors
-
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/Yurunsoft/IMI/graphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
-
-## Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/IMI#backer)]
-
-<a href="https://opencollective.com/IMI#backers" target="_blank"><img src="https://opencollective.com/IMI/backers.svg?width=890"></a>
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/IMI#sponsor)]
-
-<a href="https://opencollective.com/IMI/sponsor/0/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/1/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/2/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/3/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/4/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/5/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/6/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/7/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/8/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/IMI/sponsor/9/website" target="_blank"><img src="https://opencollective.com/IMI/sponsor/9/avatar.svg"></a>
+提交 `Pull Request` 到本仓库，你就有机会成为 imi 的作者之一！
 
 ## 捐赠
 
