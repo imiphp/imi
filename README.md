@@ -8,10 +8,10 @@
 [![Travis](https://img.shields.io/travis/Yurunsoft/IMI.svg)](https://travis-ci.org/Yurunsoft/IMI)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
-[![IMI Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
+[![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
 [![Backers on Open Collective](https://opencollective.com/IMI/backers/badge.svg)](#backers) 
 [![Sponsors on Open Collective](https://opencollective.com/IMI/sponsors/badge.svg)](#sponsors) 
-[![IMI License](https://img.shields.io/github/license/Yurunsoft/imi.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
+[![imi License](https://img.shields.io/github/license/Yurunsoft/imi.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
 
 ## 介绍
 
@@ -96,16 +96,16 @@ REDIS_CACHE_DB | Redis 缓存用的 `db`，该 `db` 会被清空数据，请慎�
 
 ## 版权信息
 
-IMI 遵循 木兰宽松许可证(Mulan PSL v1) 开源协议发布，并提供免费使用。
+imi 遵循 木兰宽松许可证(Mulan PSL v1) 开源协议发布，并提供免费使用。
 
 ## 鸣谢
 
-感谢以下开源项目 (按字母顺序排列) 为 IMI 提供强力支持！
+感谢以下开源项目 (按字母顺序排列) 为 imi 提供强力支持！
 
 - [doctrine/annotations](https://github.com/doctrine/annotations) (PHP 注解处理类库)
-- [PHP](https://php.net/) (没有 PHP 就没有 IMI)
+- [PHP](https://php.net/) (没有 PHP 就没有 imi)
 - [swoft/swoole-ide-helper](https://github.com/swoft-cloud/swoole-ide-helper) (为 IDE 提供代码提示)
-- [Swoole](https://www.swoole.com/) (没有 Swoole 就没有 IMI)
+- [Swoole](https://www.swoole.com/) (没有 Swoole 就没有 imi)
 
 ## Contributors
 
