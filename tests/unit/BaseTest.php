@@ -31,4 +31,10 @@ abstract class BaseTest extends TestCase
         }
     }
 
+    protected function php($phpFile, $args = '')
+    {
+        $cmd = PHP_BINARY . " {$phpFile} {$args}";
+        return `{$cmd}`;
+    }
+
 }
