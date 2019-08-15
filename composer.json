@@ -1,7 +1,7 @@
 {
     "name": "yurunsoft/imi",
     "type": "library",
-    "license": "Mulan-PSL-v1",
+    "license": "Apache-2.0",
     "description": "基于 Swoole 开发的协程 PHP 开发框架，常驻内存、协程异步，致力于丰富框架文档，上手容易，让开发者跟使用传统 MVC 框架一样顺手",
     "require": {
         "php": ">=7.1.0",
