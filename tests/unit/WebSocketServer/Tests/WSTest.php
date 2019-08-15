@@ -33,6 +33,8 @@ class WSTest extends BaseTest
             $recv = $client->recv();
             $this->assertEquals('test:' . $time, $recv);
             $client->close();
+        }, function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
