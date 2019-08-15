@@ -35,6 +35,7 @@ class ArrayData implements \ArrayAccess
         }
         return true;
     }
+
     /**
      * 设置数据
      * @param string $name            
@@ -65,6 +66,7 @@ class ArrayData implements \ArrayAccess
         $data[$last] = $value;
         return true;
     }
+
     /**
      * 获取数据
      * @param string $name            
@@ -128,6 +130,7 @@ class ArrayData implements \ArrayAccess
             return $default;
         }
     }
+
     /**
      * 删除数据
      * @param string $name            
@@ -162,6 +165,7 @@ class ArrayData implements \ArrayAccess
         }
         return true;
     }
+
     /**
      * 清空数据
      */
@@ -169,6 +173,7 @@ class ArrayData implements \ArrayAccess
     {
         $this->data = array ();
     }
+
     /**
      * 获取数据的数量
      * @return int
@@ -177,6 +182,7 @@ class ArrayData implements \ArrayAccess
     {
         return count($this->data);
     }
+
     /**
      * 键名对应的值是否存在
      * @param string $name            
