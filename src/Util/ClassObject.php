@@ -28,7 +28,7 @@ abstract class ClassObject
      *
      * @param string $className
      * @param string $sameLevelClass
-     * @return void
+     * @return string
      */
     public static function parseSameLevelClassName($className, $sameLevelClass)
     {
