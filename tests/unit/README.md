@@ -2,7 +2,11 @@
 
 HttpServer: `13000`
 
+HttpServer-nginx: `13010`
+
 HttpServer-SessionTest: `13005`
+
+HttpServer-SessionTest-nginx: `13015`
 
 RedisSessionServer: `13001`
 

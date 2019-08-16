@@ -8,6 +8,15 @@ abstract class BaseTest extends \Imi\Test\BaseTest
      *
      * @var string
      */
-    protected $host = 'http://127.0.0.1:13000/';
+    protected $host;
 
+    /**
+     * @param string $name
+     * @param string $dataName
+     */
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->host = imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/');
+    }
 }

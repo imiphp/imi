@@ -10,11 +10,14 @@ use PHPUnit\Framework\Assert;
 class CustomSessionIdTest extends BaseTest
 {
     /**
-     * 请求主机
-     *
-     * @var string
+     * @param string $name
+     * @param string $dataName
      */
-    protected $host = 'http://127.0.0.1:13005/';
+    public function __construct($name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->host = imiGetEnv('HTTP_SESSION_TEST_SERVER_HOST', 'http://127.0.0.1:13005/');
+    }
 
     public function testSetGetDelete()
     {

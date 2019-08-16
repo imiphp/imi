@@ -38,6 +38,7 @@ addons:
   apt:
     packages:
     - unzip
+    - nginx
 
 install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
@@ -54,6 +55,9 @@ install:
   - echo "extension = swoole.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 before_script:
+  - sudo cp $TRAVIS_BUILD_DIR/.travis/default.vhost /etc/nginx/sites-available/default.vhost
+  - sudo ln -s /etc/nginx/sites-available/default.vhost /etc/nginx/sites-enabled/default.vhost
+  - sudo service nginx reload
   - if [[ $DISABLE_XDEBUG != false ]]; then
       phpenv config-rm xdebug.ini;
     fi
@@ -74,3 +78,5 @@ env:
   global:
     - MYSQL_SERVER_USERNAME: root
     - MYSQL_SERVER_PASSWORD:
+    - HTTP_SERVER_HOST: http://127.0.0.1:13010/
+    - HTTP_SESSION_TEST_SERVER_HOST: http://127.0.0.1:13015/

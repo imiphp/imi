@@ -19,7 +19,7 @@ function startServer()
         for($i = 0; $i < 60; ++$i)
         {
             sleep(1);
-            if('imi' === @file_get_contents('http://127.0.0.1:13000/'))
+            if('imi' === @file_get_contents(imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/')))
             {
                 $serverStarted = true;
                 break;
