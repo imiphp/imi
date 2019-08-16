@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Test\HttpServer\Tests;
 
+use Yurun\Util\YurunHttp;
 use Yurun\Util\HttpRequest;
 use PHPUnit\Framework\Assert;
 
@@ -21,51 +22,61 @@ class CustomSessionIdTest extends BaseTest
 
     public function testSetGetDelete()
     {
-        $http = new HttpRequest;
-        $response = $http->get($this->host . 'session/login');
-        $sessionId = $response->getCookie('imisid');
-        Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+        $this->go(function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
+            $http = new HttpRequest;
+            $response = $http->get($this->host . 'session/login');
+            $sessionId = $response->getCookie('imisid');
+            Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
 
-        $http = new HttpRequest;
-        $http->header('X-Session-ID', $sessionId);
-        $response = $http->get($this->host . 'session/status');
-        $data = $response->json(true);
-        Assert::assertTrue(isset($data['isLogin']) && $data['isLogin'], 'fail:' . $response->errno() . ':' . $response->error());
-        Assert::assertEquals('admin', $data['username'], 'fail:' . $response->errno() . ':' . $response->error());
+            $http = new HttpRequest;
+            $http->header('X-Session-ID', $sessionId);
+            $response = $http->get($this->host . 'session/status');
+            $data = $response->json(true);
+            Assert::assertTrue(isset($data['isLogin']) && $data['isLogin'], 'fail:' . $response->errno() . ':' . $response->error());
+            Assert::assertEquals('admin', $data['username'], 'fail:' . $response->errno() . ':' . $response->error());
 
-        $http->get($this->host . 'session/logout');
+            $http->get($this->host . 'session/logout');
 
-        $response = $http->get($this->host . 'session/status');
-        $data = $response->json(true);
-        Assert::assertTrue(isset($data['isLogin']) && !$data['isLogin'], 'fail:' . $response->errno() . ':' . $response->error());
-        Assert::assertArrayNotHasKey('username', $data, 'fail:' . $response->errno() . ':' . $response->error());
+            $response = $http->get($this->host . 'session/status');
+            $data = $response->json(true);
+            Assert::assertTrue(isset($data['isLogin']) && !$data['isLogin'], 'fail:' . $response->errno() . ':' . $response->error());
+            Assert::assertArrayNotHasKey('username', $data, 'fail:' . $response->errno() . ':' . $response->error());
+        }, function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
+        });
 
     }
 
     public function testOnce()
     {
-        $http = new HttpRequest;
+        $this->go(function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
+            $http = new HttpRequest;
 
-        $response = $http->get($this->host . 'session/verifySms?vcode=1234');
-        $data = $response->json(true);
-        Assert::assertTrue(isset($data['success']) && !$data['success'], 'fail:' . $response->errno() . ':' . $response->error());
-        $sessionId = $response->getCookie('imisid');
-        Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+            $response = $http->get($this->host . 'session/verifySms?vcode=1234');
+            $data = $response->json(true);
+            Assert::assertTrue(isset($data['success']) && !$data['success'], 'fail:' . $response->errno() . ':' . $response->error());
+            $sessionId = $response->getCookie('imisid');
+            Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
 
-        $http = new HttpRequest;
-        $http->header('X-Session-ID', $sessionId);
+            $http = new HttpRequest;
+            $http->header('X-Session-ID', $sessionId);
 
-        $response = $http->get($this->host . 'session/sendSms');
-        $sessionId = $response->getCookie('imisid');
-        Assert::assertNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+            $response = $http->get($this->host . 'session/sendSms');
+            $sessionId = $response->getCookie('imisid');
+            Assert::assertNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
 
-        $response = $http->get($this->host . 'session/verifySms?vcode=1234');
-        $data = $response->json(true);
-        Assert::assertTrue(isset($data['success']) && $data['success'], 'fail:' . $response->errno() . ':' . $response->error());
+            $response = $http->get($this->host . 'session/verifySms?vcode=1234');
+            $data = $response->json(true);
+            Assert::assertTrue(isset($data['success']) && $data['success'], 'fail:' . $response->errno() . ':' . $response->error());
 
-        $response = $http->get($this->host . 'session/verifySms?vcode=1234');
-        $data = $response->json(true);
-        Assert::assertTrue(isset($data['success']) && !$data['success'], 'fail:' . $response->errno() . ':' . $response->error());
+            $response = $http->get($this->host . 'session/verifySms?vcode=1234');
+            $data = $response->json(true);
+            Assert::assertTrue(isset($data['success']) && !$data['success'], 'fail:' . $response->errno() . ':' . $response->error());
+        }, function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
+        });
     }
 
 }
