@@ -132,17 +132,23 @@ return [
                 ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
                 ['name' => 'quantity', 'type' => \Swoole\Table::TYPE_INT],
             ],
-            'lockId'    =>  'atomic',
+            'lockId'    =>  'memoryTableLock',
         ],
     ],
 
     // 锁
     'lock'  =>[
         'list'  =>  [
-            'atomic' =>  [
-                'class' =>  'AtomicLock',
+            // 'atomic' =>  [
+            //     'class' =>  'AtomicLock',
+            //     'options'   =>  [
+            //         'atomicName'    =>  'atomicLock',
+            //     ],
+            // ],
+            'memoryTableLock' =>  [
+                'class' =>  'RedisLock',
                 'options'   =>  [
-                    'atomicName'    =>  'atomicLock',
+                    'poolName'  =>  'redis',
                 ],
             ],
         ],
