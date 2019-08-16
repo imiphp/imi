@@ -7,14 +7,39 @@ namespace Imi\Util;
 abstract class ArrayUtil
 {
     /**
-     * 从数组中移除一个或多个元素
+     * 从数组中移除一个或多个元素，重新组织为连续的键
      * @param array $array
      * @param mixed $value
      * @return array
      */
     public static function remove($array, ...$value)
     {
-        return array_diff($array, $value);
+        foreach($value as $item)
+        {
+            while(false !== ($index = array_search($item, $array)))
+            {
+                unset($array[$index]);
+            }
+        }
+        return array_values($array);
+    }
+
+    /**
+     * 从数组中移除一个或多个元素，保持原有键
+     * @param array $array
+     * @param mixed $value
+     * @return array
+     */
+    public static function removeKeepKey($array, ...$value)
+    {
+        foreach($value as $item)
+        {
+            while(false !== ($index = array_search($item, $array)))
+            {
+                unset($array[$index]);
+            }
+        }
+        return $array;
     }
 
     /**
