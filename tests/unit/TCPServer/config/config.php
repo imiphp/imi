@@ -81,15 +81,14 @@ return [
     'memoryTable'   =>  [
         'connectContext'    =>  [
             'class' =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
-            'lockId'=>  'redis',
+            'lockId'=>  'redisConnectContextLock',
         ],
     ],
 
     // 锁配置
     'lock'  =>  [
-        'default' =>  'redis',
         'list'  =>  [
-            'redis' =>  [
+            'redisConnectContextLock' =>  [
                 'class' =>  'RedisLock',
                 'options'   =>  [
                     'poolName'  =>  'redis',

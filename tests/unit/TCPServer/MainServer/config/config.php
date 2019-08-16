@@ -11,6 +11,7 @@ return [
     'beans'    =>    [
         'TcpDispatcher'    =>    [
             'middlewares'    =>    [
+                \Imi\Test\TCPServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
             ],
         ],
@@ -18,6 +19,12 @@ return [
             'redisPool'    =>    'redis',
             'key'        =>    'IMITEST.TCP.GROUP',
             'redisDb'   =>  2,
+        ],
+        'ConnectContextStore'   =>  [
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        ],
+        'ConnectContextMemoryTable' =>  [
+            'tableName' =>  'connectContext',
         ],
     ],
 ];
