@@ -6,7 +6,7 @@ use Imi\Util\Interfaces\IArrayable;
 /**
  * 限定成员类型的数组列表
  */
-class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
+class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, \Countable
 {
     /**
      * 限定的数组列表成员类型
@@ -161,4 +161,5 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
     {
         return count($this->list);
     }
+
 }

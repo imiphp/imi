@@ -4,7 +4,7 @@ namespace Imi\Util;
 /**
  * 数组数据基类
  */
-class ArrayData implements \ArrayAccess
+class ArrayData implements \ArrayAccess, \Countable
 {
     /**
      * 数据
@@ -179,6 +179,16 @@ class ArrayData implements \ArrayAccess
      * @return int
      */
     public function length()
+    {
+        return count($this->data);
+    }
+
+    /**
+     * 获取数据的数量
+     *
+     * @return int
+     */
+    public function count()
     {
         return count($this->data);
     }
