@@ -136,6 +136,12 @@ class ImiListener implements TestListener
     {
         if(!$this->isLoadedImi)
         {
+            if(version_compare(SWOOLE_VERSION, '4.4.4', '>='))
+            {
+                \swoole_async_set([
+                    'max_thread_num'    =>  4,
+                ]);
+            }
             Event::on('IMI.INIT_TOOL', function(EventParam $param){
                 $data = $param->getData();
                 $data['skip'] = true;

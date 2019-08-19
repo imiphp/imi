@@ -13,7 +13,7 @@ abstract class AppBaseMain extends \Imi\Main\AppBaseMain
         AnnotationReader::addGlobalIgnoredName('testdox');
         if(Coroutine::getuid() < 0 && version_compare(SWOOLE_VERSION, '4.4.4', '>='))
         {
-            \Swoole\Async::set([
+            \swoole_async_set([
                 'max_thread_num'    =>  4,
             ]);
         }
