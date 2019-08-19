@@ -6,6 +6,13 @@ use Imi\App;
 
 App::setLoader($loader);
 
+if(version_compare(SWOOLE_VERSION, '4.4.4', '>='))
+{
+    \swoole_async_set([
+        'max_thread_num'    =>  4,
+    ]);
+}
+
 /**
  * 开启服务器
  *
