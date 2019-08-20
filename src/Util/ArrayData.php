@@ -121,7 +121,7 @@ class ArrayData implements \ArrayAccess, \Countable
                 return $default;
             }
         }
-        if (count($name) > 0)
+        if (isset($name[0]))
         {
             return $result;
         }
