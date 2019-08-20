@@ -157,7 +157,7 @@ abstract class Imi
         if(isset($rule[0]) && '!' === $rule[0])
         {
             // 不等
-            return $value !== $rule;
+            return $value !== substr($rule, 1);
         }
         else
         {
