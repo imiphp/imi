@@ -15,8 +15,12 @@ return [
         'Imi\Test\Component\Lock',
         'Imi\Test\Component\Model',
         'Imi\Test\Component\Validate',
+        'Imi\Test\Component\Util\Imi',
     ],
     'beans'    =>    [
+        'TestPropertyClass' =>  [
+            'b' =>  'bbb',
+        ],
     ],
     'imi'   =>  'very six',
     'yurun' =>  '',
