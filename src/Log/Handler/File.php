@@ -55,7 +55,7 @@ class File extends Base
         $this->parseDate();
         foreach($this->records as $record)
         {
-            file_put_contents($this->getFileName(), $this->getLogString($record) . PHP_EOL, FILE_APPEND);
+            file_put_contents($this->getFileName(), $this->getLogString($record) . PHP_EOL, FILE_APPEND | LOCK_NB);
         }
     }
     
