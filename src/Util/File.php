@@ -73,9 +73,9 @@ abstract class File
         {
             $offset += 3;
         }
-        while(false !== strpos($result, $dsds, $offset))
+        while(false !== ($position = strpos($result, $dsds, $offset)))
         {
-            $result = str_replace($dsds, DIRECTORY_SEPARATOR, $result);
+            $result = substr_replace($result, DIRECTORY_SEPARATOR, $position, 2);
         }
         return $result;
     }
@@ -95,36 +95,6 @@ abstract class File
     }
 
     /**
-     * 读取文件所有内容，优先使用协程，如果不支持则使用传统阻塞方式
-     * @param string $fileName
-     * @return string
-     */
-    public static function readFile($fileName)
-    {
-        if (Coroutine::isIn()) {
-            return Coroutine::readFile($fileName);
-        } else {
-            return file_get_contents($fileName);
-        }
-    }
-
-    /**
-     * 写入文件，优先使用协程，如果不支持则使用传统阻塞方式
-     * @param string $fileName
-     * @param string $content
-     * @param integer $flags
-     * @return boolean
-     */
-    public static function writeFile($fileName, $content, $flags = 0)
-    {
-        if (Coroutine::isIn()) {
-            return Coroutine::writeFile($fileName, $content, $flags);
-        } else {
-            return false !== file_put_contents($fileName, $content, $flags);
-        }
-    }
-
-    /**
      * 创建一个目录
      * author:lovefc
      * @param $dir 目录路径
@@ -133,14 +103,23 @@ abstract class File
      */
     public static function createDir($dir, $mode = 0775)
     {
-        if (empty($dir)) return false;
-        if (!is_dir($dir)) {
-            if(@mkdir($dir, $mode, true)){
+        if (empty($dir))
+        {
+            return false;
+        }
+        if (!is_dir($dir))
+        {
+            if(@mkdir($dir, $mode, true))
+            {
                 return true;
-            }else{
+            }
+            else
+            {
                 return false;
             }
-        } else {
+        }
+        else
+        {
            return true;
         }
     }
@@ -154,14 +133,19 @@ abstract class File
      */
     public static function createFile($file, $mode = 0775)
     {
-        if (empty($file)) return false;
-        if (is_file($file)) {
+        if (empty($file))
+        {
+            return false;
+        }
+        if (is_file($file))
+        {
             return true;
         }
         $dir = dirname($file);
         self::createDir($dir, $mode);
         $fh = @fopen($file, 'a');
-        if ($fh) {
+        if ($fh)
+        {
             fclose($fh);
             return true;
         }
@@ -198,6 +182,41 @@ abstract class File
             }
         }
         return true;
+    }
+
+    /**
+     * 递归删除目录及目录中所有文件
+     *
+     * @param string $dir
+     * @return boolean
+     */
+    public static function deleteDir($dir)
+    {
+        $dh = opendir($dir);
+        while ($file = readdir($dh))
+        {
+            if('.' !== $file && '..' !== $file)
+            {
+                $fullpath = $dir . '/' . $file;
+                if(is_dir($fullpath))
+                {
+                    self::deleteDir($fullpath);
+                }
+                else
+                {
+                    unlink($fullpath);
+                }
+            }
+        }
+        closedir($dh);
+        if(rmdir($dir))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
