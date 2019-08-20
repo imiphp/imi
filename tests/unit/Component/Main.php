@@ -3,6 +3,8 @@ namespace Imi\Test\Component;
 
 use Imi\Test\AppBaseMain;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Imi\Util\File;
+use Imi\Util\Imi;
 
 class Main extends AppBaseMain
 {
@@ -10,6 +12,11 @@ class Main extends AppBaseMain
     {
         // 这里可以做一些初始化操作，如果需要的话
         parent::__init();
+        $path = Imi::getRuntimePath('test');
+        if(is_dir($path))
+        {
+            File::deleteDir($path);
+        }
     }
 
 }
