@@ -15,5 +15,14 @@ return [
                 \Imi\Server\UdpServer\Middleware\ActionMiddleware::class,
             ],
         ],
+        'ConnectContextStore'   =>  [
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        ],
+        'ConnectContextMemoryTable' =>  [
+            'tableName' =>  'connectContext',
+        ],
+        'ServerGroup'   =>  [
+            'status'    =>  false,
+        ],
     ],
 ];

@@ -27,5 +27,11 @@ return [
         'ConnectContextRedis'    =>    [
             'redisPool'    =>    'redis',
         ],
+        'ConnectContextStore'   =>  [
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        ],
+        'ConnectContextMemoryTable' =>  [
+            'tableName' =>  'connectContext',
+        ],
     ],
 ];
