@@ -67,6 +67,7 @@ function startServer()
             sleep(1);
             try {
                 $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+                socket_set_timeout($sock, 1);
                 if(@socket_connect($sock, '127.0.0.1', 13003))
                 {
                     $serverStarted = true;
