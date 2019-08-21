@@ -26,7 +26,8 @@ abstract class Random
      */
     public static function number($min = PHP_INT_MIN, $max = PHP_INT_MAX, $precision = 2)
     {
-        return round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
+        $value = round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
+        return Digital::scientificToNum($value, $precision);
     }
 
     /**
