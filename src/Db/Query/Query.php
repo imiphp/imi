@@ -308,6 +308,9 @@ class Query implements IQuery
      */
     public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND)
     {
+        if(!$condition){
+            return $this;
+        }
         $func = function($condition) use(&$func){
             $result = [];
             foreach($condition as $key => $value)
@@ -326,24 +329,28 @@ class Query implements IQuery
                                     throw new \RuntimeException('Between must have 3 params');
                                 }
                                 $result[] = new Where($key, 'between', [$value[1], $value[2]]);
+                                break;
                             case 'not between':
                                 if(!isset($value[2]))
                                 {
                                     throw new \RuntimeException('Not between must have 3 params');
                                 }
                                 $result[] = new Where($key, 'not between', [$value[1], $value[2]]);
+                                break;
                             case 'in':
                                 if(!isset($value[1]))
                                 {
                                     throw new \RuntimeException('In must have 3 params');
                                 }
                                 $result[] = new Where($key, 'in', $value[1]);
+                                break;
                             case 'not in':
                                 if(!isset($value[1]))
                                 {
                                     throw new \RuntimeException('Not in must have 3 params');
                                 }
                                 $result[] = new Where($key, 'not in', $value[1]);
+                                break;
                             default:
                                 $result[] = new Where($key, $operator, $value[1]);
                                 break;
