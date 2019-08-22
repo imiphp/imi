@@ -102,7 +102,7 @@ class Query implements IQuery
 
     public function __init()
     {
-        $this->dbParamInc = 1;
+        $this->dbParamInc = 0;
         $this->option = new QueryOption;
         if(!$this->isInitQueryType)
         {
@@ -126,7 +126,7 @@ class Query implements IQuery
      */
     public function setOption(QueryOption $option)
     {
-        $this->dbParamInc = 1;
+        $this->dbParamInc = 0;
         $this->option = $option;
         return $this;
     }
