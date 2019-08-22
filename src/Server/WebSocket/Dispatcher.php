@@ -31,7 +31,7 @@ class Dispatcher
     protected function getMiddlewares()
     {
         return array_merge($this->middlewares, [
-
+            \Imi\Server\WebSocket\Middleware\ActionWrapMiddleware::class,
         ]);
     }
 }

@@ -6,8 +6,8 @@ use Imi\Controller\WebSocketController;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute;
 use Imi\Server\Route\Annotation\WebSocket\WSAction;
 use Imi\Server\Route\Annotation\WebSocket\WSController;
-use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
 use Imi\Event\Event;
+use Imi\RequestContext;
 
 /**
  * 数据收发测试
@@ -26,7 +26,7 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getFd());
-        return ['success'=>true];
+        return ['success'=>true, 'middlewareData' => RequestContext::get('middlewareData')];
     }
 
     /**
@@ -34,7 +34,6 @@ class TestController extends WebSocketController
      *
      * @WSAction
      * @WSRoute({"action"="send"})
-     * @WSMiddleware(Imi\Test\WebSocketServer\MainServer\Middleware\Test::class)
      * @param 
      * @return void
      */
