@@ -15,7 +15,7 @@ class ActionWrapMiddleware implements IMiddleware
     /**
      * 处理方法
      *
-     * @param IReceiveData $frame
+     * @param IReceiveData $data
      * @param IReceiveHandler $handler
      * @return void
      */
