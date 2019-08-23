@@ -1,19 +1,20 @@
 <?php
 namespace Imi\Test\UDPServer\MainServer\Middleware;
 
+use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\UDPServer\IReceiveHandler;
-use Imi\Server\UDPServer\Message\IReceiveData;
-use Imi\Server\UDPServer\Middleware\IMiddleware;
+use Imi\Server\UdpServer\IPacketHandler;
+use Imi\Server\UdpServer\Message\IPacketData;
+use Imi\Server\UdpServer\Middleware\IMiddleware;
 
 /**
  * @Bean
  */
 class Test implements IMiddleware
 {
-    public function process(IReceiveData $data, IReceiveHandler $handler)
+    public function process(IPacketData $data, IPacketHandler $handler)
     {
-        var_dump('test middleware');
+        RequestContext::set('middlewareData', 'imi');
         return $handler->handle($data, $handler);
     }
 }

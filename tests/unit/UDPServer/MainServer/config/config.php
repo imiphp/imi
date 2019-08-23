@@ -12,7 +12,7 @@ return [
         'UdpDispatcher'    =>    [
             'middlewares'    =>    [
                 \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
-                \Imi\Server\UdpServer\Middleware\ActionMiddleware::class,
+                \Imi\Test\UDPServer\MainServer\Middleware\Test::class,
             ],
         ],
         'ConnectContextStore'   =>  [

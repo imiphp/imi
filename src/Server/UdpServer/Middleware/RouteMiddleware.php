@@ -32,11 +32,6 @@ class RouteMiddleware implements IMiddleware
         else
         {
             RequestContext::set('routeResult', $result);
-
-            $middlewares = $result->routeItem->middlewares;
-            $middlewares[] = ActionMiddleware::class;
-            $handler = new PacketHandler($middlewares);
-            return $handler->handle($data);
         }
         return $handler->handle($data);
     }
