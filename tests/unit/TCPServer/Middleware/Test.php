@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Test\TCPServer\MainServer\Middleware;
+namespace Imi\Test\TCPServer\Middleware;
 
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
@@ -15,6 +15,6 @@ class Test implements IMiddleware
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {
         RequestContext::set('middlewareData', 'imi');
-        return $handler->handle($data, $handler);
+        return $handler->handle($data);
     }
 }

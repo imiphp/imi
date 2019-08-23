@@ -13,6 +13,7 @@ return [
             'middlewares'    =>    [
                 \Imi\Test\TCPServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
+                \Imi\Test\TCPServer\MainServer\Middleware\Test::class,
             ],
         ],
         'GroupRedis'    =>    [
