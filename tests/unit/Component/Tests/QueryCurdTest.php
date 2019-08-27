@@ -59,6 +59,95 @@ class QueryCurdTest extends BaseTest
         Assert::assertEquals(2, $record);
     }
 
+    public function testPaginate()
+    {
+        $expectedData = [
+            'list'  =>  [
+                [
+                    'id'        =>  '1',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+                [
+                    'id'        =>  '2',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+            ],
+            'limit'         =>  2,
+            'total'         =>  3,
+            'page_count'    =>  2,
+        ];
+        $query = Db::query();
+        $result = $query->from('tb_article')->paginate(1, 2);
+        $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
+        $this->assertEqualsCanonicalizing(json_encode($expectedData), json_encode($result));
+        $this->assertEqualsCanonicalizing([
+            [
+                'id'        =>  '1',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+            [
+                'id'        =>  '2',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+        ], $result->getList());
+        $this->assertEquals(3, $result->getTotal());
+        $this->assertEquals(2, $result->getLimit());
+        $this->assertEquals(2, $result->getPageCount());
+    }
+
+    public function testPaginateNoTotal()
+    {
+        $expectedData = [
+            'list'  =>  [
+                [
+                    'id'        =>  '1',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+                [
+                    'id'        =>  '2',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+            ],
+            'limit'         =>  2,
+        ];
+        $query = Db::query();
+        $result = $query->from('tb_article')->paginate(1, 2, [
+            'total' =>  false,
+        ]);
+        var_dump($result->toArray());
+        $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
+        $this->assertEqualsCanonicalizing(json_encode($expectedData), json_encode($result));
+        $this->assertEqualsCanonicalizing([
+            [
+                'id'        =>  '1',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+            [
+                'id'        =>  '2',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+        ], $result->getList());
+        $this->assertNull($result->getTotal());
+        $this->assertEquals(2, $result->getLimit());
+        $this->assertNull($result->getPageCount());
+    }
+
     public function testInsert()
     {
         $data = [

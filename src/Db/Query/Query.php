@@ -25,6 +25,7 @@ use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Builder\ReplaceBuilder;
 use Imi\Db\Query\Builder\BatchInsertBuilder;
+use Imi\Db\Query\Interfaces\IPaginateResult;
 
 /**
  * @Bean("Query")
@@ -862,6 +863,33 @@ class Query implements IQuery
             $this->queryType = QueryType::READ;
         }
         return $this->execute($sql);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param boolean $status 设置为true时，查询结果会返回为分页格式
+     * @param array $options
+     * @return \Imi\Db\Query\Interfaces\IPaginateResult
+     */
+    public function paginate($page, $count, $options = []): IPaginateResult
+    {
+        $this->page($page, $count);
+        $pagination = new Pagination($page, $count);
+        if($options['total'] ?? true)
+        {
+            $option = clone $this->option;
+            $queryType = $this->queryType;
+            $total = (int)$this->count();
+            $this->option = $option;
+            $this->queryType = $queryType;
+        }
+        else
+        {
+            $total = null;
+        }
+        $statement = $this->select();
+        return new PaginateResult($statement, $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
     }
 
     /**

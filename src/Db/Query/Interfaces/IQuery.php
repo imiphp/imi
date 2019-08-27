@@ -7,6 +7,7 @@ use Imi\Db\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IHaving;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Interfaces\IBaseWhere;
+use Imi\Db\Query\Interfaces\IPaginateResult;
 
 /**
  * 查询器接口
@@ -452,6 +453,15 @@ interface IQuery
      * @return IResult
      */
     public function select(): IResult;
+
+    /**
+     * 分页查询
+     *
+     * @param boolean $status 设置为true时，查询结果会返回为分页格式
+     * @param array $options
+     * @return \Imi\Db\Query\Interfaces\IPaginateResult
+     */
+    public function paginate($page, $count, $options = []): IPaginateResult;
 
     /**
      * 插入数据
