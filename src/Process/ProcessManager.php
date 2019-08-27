@@ -52,7 +52,7 @@ abstract class ProcessManager
         {
             $pipeType = $processOption['Process']->pipeType;
         }
-        $process = new \Swoole\Process(imiCallable(function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
+        $process = new \Swoole\Process(function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
             // 设置进程名称
             Imi::setProcessName('process', [
                 'processName'   =>  $name,
@@ -61,32 +61,34 @@ abstract class ProcessManager
             \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
-            if($processOption['Process']->unique && !static::lockProcess($name))
-            {
-                throw new \RuntimeException('lock process lock file error');
-            }
-            // 加载服务器注解
-            \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
-            App::initWorker();
-            // 进程开始事件
-            Event::trigger('IMI.PROCESS.BEGIN', [
-                'name'      => $name,
-                'process'   => $swooleProcess,
-            ]);
-            // 执行任务
-            $processInstance = BeanFactory::newInstance($processOption['className'], $args);
-            $processInstance->run($swooleProcess);
+            imigo(function() use($swooleProcess, $args, $name, $processOption){
+                if($processOption['Process']->unique && !static::lockProcess($name))
+                {
+                    throw new \RuntimeException('lock process lock file error');
+                }
+                // 加载服务器注解
+                \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+                App::initWorker();
+                // 进程开始事件
+                Event::trigger('IMI.PROCESS.BEGIN', [
+                    'name'      => $name,
+                    'process'   => $swooleProcess,
+                ]);
+                // 执行任务
+                $processInstance = BeanFactory::newInstance($processOption['className'], $args);
+                $processInstance->run($swooleProcess);
+                if($processOption['Process']->unique)
+                {
+                    static::unlockProcess($name);
+                }
+                // 进程结束事件
+                Event::trigger('IMI.PROCESS.END', [
+                    'name'      => $name,
+                    'process'   => $swooleProcess,
+                ]);
+            });
             \Swoole\Event::wait();
-            if($processOption['Process']->unique)
-            {
-                static::unlockProcess($name);
-            }
-            // 进程结束事件
-            Event::trigger('IMI.PROCESS.END', [
-                'name'      => $name,
-                'process'   => $swooleProcess,
-            ]);
-        }, true), $redirectStdinStdout, $pipeType);
+        }, $redirectStdinStdout, $pipeType);
         return $process;
     }
 
