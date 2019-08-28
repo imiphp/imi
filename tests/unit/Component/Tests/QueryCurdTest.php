@@ -126,7 +126,6 @@ class QueryCurdTest extends BaseTest
         $result = $query->from('tb_article')->paginate(1, 2, [
             'total' =>  false,
         ]);
-        var_dump($result->toArray());
         $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
         $this->assertEqualsCanonicalizing(json_encode($expectedData), json_encode($result));
         $this->assertEqualsCanonicalizing([
