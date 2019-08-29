@@ -29,8 +29,6 @@ class Imi
     /**
      * 构建框架预加载缓存
      * 
-     * 构建后有助于提升性能
-     * 
      * @Operation("buildImiRuntime")
      * @Arg(name="file", type=ArgType::STRING, default=null, comments="可以指定生成到目标文件")
      * 
