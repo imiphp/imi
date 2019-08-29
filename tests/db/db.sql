@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 28/08/2019 17:20:25
+ Date: 29/08/2019 16:32:25
 */
 
 SET NAMES utf8mb4;
@@ -49,7 +49,7 @@ CREATE TABLE `tb_tree`  (
   `parent_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tb_tree
@@ -61,7 +61,8 @@ INSERT INTO `tb_tree` VALUES (4, 1, 'a-1');
 INSERT INTO `tb_tree` VALUES (5, 1, 'a-2');
 INSERT INTO `tb_tree` VALUES (6, 4, 'a-1-1');
 INSERT INTO `tb_tree` VALUES (7, 4, 'a-1-2');
-INSERT INTO `tb_tree` VALUES (8, 6, 'a-1-1-1');
+INSERT INTO `tb_tree` VALUES (8, 2, 'b-1');
+INSERT INTO `tb_tree` VALUES (9, 2, 'b-2');
 
 -- ----------------------------
 -- Table structure for tb_update_time
