@@ -51,15 +51,27 @@ hello imi!
 
 `public function post($name = null, $default = null)`
 
+#### 获取 REQUEST 参数
+
+request 数据包含 get/post/cookie
+
+`public function request($name = null, $default = null)`
+
 当`$name`为`null`时，返回全部
 
 #### 是否存在 GET 参数
 
 `public function hasGet($name)`
 
-#### 是否存在 POST参数
+#### 是否存在 POST 参数
 
 `public function hasPost($name)`
+
+#### 是否存在 REQUEST 参数
+
+request 数据包含 get/post/cookie
+
+`public function hasRequest($name)`
 
 #### 获取所有 Cookie
 

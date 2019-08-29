@@ -46,3 +46,10 @@ function test($a)
 }
 test($callable);
 ```
+
+### imiGetEnv
+
+getenv() 函数的封装，支持默认值
+
+定义：`imiGetEnv($varname = null, $default = null, $localOnly = false);`
+

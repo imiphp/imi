@@ -64,6 +64,7 @@
   * [使用说明](components/orm/index.md)
   * [数据表模型](components/orm/RDModel.md)
     * [使用方法](components/orm/RDModel.md)
+    * [树形表模型](components/orm/TreeModel.md)
     * [模型事件](components/orm/RDModel/event.md)
   * [模型关联](components/orm/relation/index.md)
     * [使用说明](components/orm/relation/index.md)

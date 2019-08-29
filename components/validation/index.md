@@ -242,6 +242,12 @@ $result = in_array($value, [1, 2, 3]);
 
 `@Compare(name="id", value=@ValidateValue("{:data.id}"), operation="==")`
 
+### @InEnum
+
+用于验证值是否存在于枚举列表中
+
+`@InEnum(name="type", enum="EnumClass")`
+
 ## 自动验证
 
 注解：`@AutoValidation`

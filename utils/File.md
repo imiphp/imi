@@ -52,26 +52,6 @@ echo File::readAll($fp);
 fclose($fp);
 ```
 
-### readFile
-
-读取文件所有内容，优先使用协程，如果不支持则使用传统阻塞方式
-
-```php
-echo File::readFile(__FILE__);
-```
-
-### writeFile
-
-写入文件，优先使用协程，如果不支持则使用传统阻塞方式
-
-```php
-// 写入文件
-File::writeFile('a.txt', '123');
-
-// 追加进文件
-File::writeFile('a.txt', '456', FILE_APPEND);
-```
-
 ### createDir
 
 创建一个目录
@@ -94,4 +74,20 @@ File::createFile('a/b/c.txt');
 
 // 创建文件，目录不存在则自动创建，权限为0777
 File::createFile('a/b/c.txt', 0777);
+```
+
+### isEmptyDir
+
+判断是否为空目录
+
+```php
+File::isEmptyDir(__DIR__);
+```
+
+### deleteDir
+
+递归删除目录及目录中所有文件
+
+```php
+File::deleteDir('xxx');
 ```
