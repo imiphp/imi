@@ -54,7 +54,6 @@ trait TTreeModel
 
     /**
      * 获取关联列表
-     * 注意：每个成员都是数组，不再是模型对象
      *
      * @param \Imi\Db\Query\Interfaces\IQuery $query
      * @return array
