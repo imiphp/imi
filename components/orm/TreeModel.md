@@ -10,10 +10,13 @@
 <?php
 namespace Imi\Test\Component\Model;
 
+use Imi\Model\Model;
+use Imi\Model\Tree\TTreeModel;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Tree\Annotation\TreeModel;
+use Imi\Test\Component\Model\Base\TreeBase;
 
 /**
  * Tree
@@ -23,6 +26,8 @@ use Imi\Model\Tree\Annotation\TreeModel;
  */
 class Tree extends TreeBase // TreeBase 为通过 generate/model 工具生成出来的基类
 {
+    use TTreeModel;
+
     /**
      * 子节点集合
      * 
