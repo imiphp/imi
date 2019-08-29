@@ -4,6 +4,7 @@ namespace Imi\Test\Component\Tests;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\UpdateTime;
+use Imi\Test\Component\Model\ReferenceGetterTestModel;
 
 /**
  * @testdox Model
@@ -176,6 +177,16 @@ class ModelTest extends BaseTest
     {
         $record = UpdateTime::find(1);
         $this->assertUpdateTime($record, 'update');
+    }
+
+    public function testModelReferenceGetter()
+    {
+        $model = ReferenceGetterTestModel::newInstance();
+        $this->assertEquals([], $model->list);
+        $model->list[] = 1;
+        $this->assertEquals([1], $model->list);
+        $model['list'][] = 2;
+        $this->assertEquals([1, 2], $model['list']);
     }
 
 }

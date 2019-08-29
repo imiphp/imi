@@ -43,6 +43,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected $__originValues = [];
 
+    /**
+     * 方法引用
+     *
+     * @var array
+     */
+    protected static $__methodReference = [];
+
     public function __construct($data = [])
     {
         if(!$this instanceof IBean)
@@ -113,7 +120,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
         if(method_exists($this, $methodName))
         {
-            $result = $this->$methodName();
+            $class = BeanFactory::getObjectClass($this);
+            if(!isset(self::$__methodReference[$class][$methodName]))
+            {
+                $refMethod = new \ReflectionMethod($this, $methodName);
+                self::$__methodReference[$class][$methodName] = $refMethod->returnsReference();
+            }
+            if(self::$__methodReference[$class][$methodName])
+            {
+                return $this->$methodName();
+            }
+            else
+            {
+                $result = $this->$methodName();
+            }
         }
         else
         {
