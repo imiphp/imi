@@ -152,7 +152,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 || (($name = Text::toCamelName($offset)) && isset($extractProperties[$name]))
             )
             {
-                $this->parseExtractProperty($name, $extractProperties[$name]);
+                $this->__parseExtractProperty($name, $extractProperties[$name]);
             }
         }
 
@@ -302,6 +302,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $this->__camelCache[$name];
     }
 
+    /**
+     * 获取字段名
+     *
+     * @param string $fieldName
+     * @return void
+     */
     protected function __getFieldName($fieldName)
     {
         if(false === $fieldName)
@@ -318,7 +324,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    protected function parseExtractProperty($propertyName, $annotations)
+    /**
+     * 处理导出属性
+     *
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\ExtractProperty[] $annotations
+     * @return void
+     */
+    protected function __parseExtractProperty($propertyName, $annotations)
     {
         foreach($annotations as $annotation)
         {
