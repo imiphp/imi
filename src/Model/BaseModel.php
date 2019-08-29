@@ -34,7 +34,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * 驼峰缓存
      * @var array
      */
-    protected $__camelCache = [];
+    protected static $__camelCache = [];
 
     /**
      * 从存储中读取出来的原始数据
@@ -295,11 +295,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected function __getCamelName($name)
     {
-        if(!isset($this->__camelCache[$name]))
+        if(!isset(self::$__camelCache[$name]))
         {
-            $this->__camelCache[$name] = Text::toCamelName($name);
+            self::$__camelCache[$name] = Text::toCamelName($name);
         }
-        return $this->__camelCache[$name];
+        return self::$__camelCache[$name];
     }
 
     /**
