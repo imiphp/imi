@@ -2,11 +2,13 @@
 
 ## 项目初始化
 
-请使用 git 克隆下面的项目
+创建 Http Server 项目：`composer create-project imiphp/project-http`
 
-* 空项目：https://gitee.com/yurunsoft/empty-imi-demo
+创建 WebSocket Server 项目：`composer create-project imiphp/project-websocket`
 
-* 功能Demo：https://gitee.com/yurunsoft/imi-demo
+创建 TCP Server 项目：`composer create-project imiphp/project-tcp`
+
+创建 UDP Server 项目：`composer create-project imiphp/project-udp`
 
 > 如何运行请看上面项目中的`README.md`
 

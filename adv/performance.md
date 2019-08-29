@@ -17,5 +17,3 @@ imi 为性能做了以下努力：
 ---
 
 上面提到的`框架核心运行时缓存`需要在开发时手动生成，并且如果更新框架需要手动进行清除并重新生成。
-
-请参考 [imi-demo](https://gitee.com/yurunsoft/imi-demo) 中的 `HttpDemo/bin/buildImiRuntime` 和 `HttpDemo/bin/clearImiRuntime`

@@ -12,6 +12,12 @@
 
 QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
 
+官方网站：https://www.imiphp.com/
+
+Github：https://github.com/Yurunsoft/IMI
+
+码云：https://gitee.com/yurunsoft/IMI
+
 ## 本文档协作地址
 
 码云 Gitee：https://gitee.com/yurunsoft/imidoc

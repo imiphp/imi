@@ -18,5 +18,3 @@ IMI 目前提供了命令行生成工具，方便开发者，减少重复无谓�
 
 
 `项目路径/config/config.php`中`namespace`设置为项目命名空间即可。
-
-可以参考`imi-demo`示例项目
