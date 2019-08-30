@@ -32,130 +32,130 @@ use Imi\Model\Annotation\Entity;
  */
 class Test extends Model
 {
-	/**
-	 * ID
-	 * 字段id，类型int，长度10，是主键，第0个主键，是自增字段
-	 * @Column(name="id", type="int", length=10, isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-	 * @var int
-	 */
-	protected $id;
+    /**
+     * ID
+     * 字段id，类型int，长度10，是主键，第0个主键，是自增字段
+     * @Column(name="id", type="int", length=10, isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
+     * @var int
+     */
+    protected $id;
 
-	/**
-	 * aaa
-	 * @Column(name="a", type="string", length=255, isPrimaryKey=true, primaryKeyIndex=1)
-	 * @var string
-	 */
-	protected $a;
+    /**
+     * aaa
+     * @Column(name="a", type="string", length=255, isPrimaryKey=true, primaryKeyIndex=1)
+     * @var string
+     */
+    protected $a;
 
-	/**
-	 * bbb
-	 * @Column(name="b", type="string", length=255)
-	 * @var string
-	 */
-	protected $b;
+    /**
+     * bbb
+     * @Column(name="b", type="string", length=255)
+     * @var string
+     */
+    protected $b;
 
-	/**
-	 * ccc
-	 * @Column(name="c", type="string", length=255)
-	 * @var string
-	 */
-	protected $c;
+    /**
+     * ccc
+     * @Column(name="c", type="string", length=255)
+     * @var string
+     */
+    protected $c;
 
-	/**
-	 * Get iD
-	 *
-	 * @return  int
-	 */ 
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * Get iD
+     *
+     * @return  int
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Set iD
-	 *
-	 * @param  int  $id  ID
-	 *
-	 * @return  self
-	 */ 
-	public function setId(int $id)
-	{
-		$this->id = $id;
+    /**
+     * Set iD
+     *
+     * @param  int  $id  ID
+     *
+     * @return  self
+     */ 
+    public function setId(int $id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get aaa
-	 *
-	 * @return  string
-	 */ 
-	public function getA()
-	{
-		return $this->a;
-	}
+    /**
+     * Get aaa
+     *
+     * @return  string
+     */ 
+    public function getA()
+    {
+        return $this->a;
+    }
 
-	/**
-	 * Set aaa
-	 *
-	 * @param  string  $a  aaa
-	 *
-	 * @return  self
-	 */ 
-	public function setA(string $a)
-	{
-		$this->a = $a;
+    /**
+     * Set aaa
+     *
+     * @param  string  $a  aaa
+     *
+     * @return  self
+     */ 
+    public function setA(string $a)
+    {
+        $this->a = $a;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get bbb
-	 *
-	 * @return  string
-	 */ 
-	public function getB()
-	{
-		return $this->b;
-	}
+    /**
+     * Get bbb
+     *
+     * @return  string
+     */ 
+    public function getB()
+    {
+        return $this->b;
+    }
 
-	/**
-	 * Set bbb
-	 *
-	 * @param  string  $b  bbb
-	 *
-	 * @return  self
-	 */ 
-	public function setB(string $b)
-	{
-		$this->b = $b;
+    /**
+     * Set bbb
+     *
+     * @param  string  $b  bbb
+     *
+     * @return  self
+     */ 
+    public function setB(string $b)
+    {
+        $this->b = $b;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get ccc
-	 *
-	 * @return  string
-	 */ 
-	public function getC()
-	{
-		return $this->c;
-	}
+    /**
+     * Get ccc
+     *
+     * @return  string
+     */ 
+    public function getC()
+    {
+        return $this->c;
+    }
 
-	/**
-	 * Set ccc
-	 *
-	 * @param  string  $c  ccc
-	 *
-	 * @return  self
-	 */ 
-	public function setC(string $c)
-	{
-		$this->c = $c;
+    /**
+     * Set ccc
+     *
+     * @param  string  $c  ccc
+     *
+     * @return  self
+     */ 
+    public function setC(string $c)
+    {
+        $this->c = $c;
 
-		return $this;
-	}
+        return $this;
+    }
 }
 ```
 
@@ -252,9 +252,9 @@ class Test extends Model
  * @ExtractProperty(fieldName="ex.userId", alias="userId2")
  */
 protected $xxx = [
-	'ex'	=>	[
-		'userId'	=>	123,
-	],
+    'ex'	=>	[
+        'userId'	=>	123,
+    ],
 ];
 ```
 
@@ -280,18 +280,58 @@ $list = TestModel::select();
 
 // 带 where 条件的查询，id = 1
 $list = TestModel::select([
-	'id'	=>	1
+    'id'	=>	1
 ]);
 
 // where 回调条件
 $list = TestModel::select(function(IQuery $query){
-	$query->where('id', '=', 1);
+    $query->where('id', '=', 1);
 });
 
 // 查询器查询
 $list = TestModel::query()->where('id', '=', 1)->select()->getArray();
 
 // 以上所有 $list 都是 TestModel[] 类型
+```
+
+### 分页查询带扩展字段
+
+查询总记录数、总页数：
+
+```php
+$page = 1;
+$count = 10;
+$data = TestModel::query()->paginate($page, $count);
+
+$result->getList(); // 列表数据
+$result->getTotal(); // 总记录数
+$result->getLimit(); // $count === 10
+$result->getPageCount(); // 总页数
+
+var_dump(json_encode($result)); // 支持序列化
+// 数据格式如下：
+[
+    'list'          => [],
+    'total'         => 100,
+    'limit'         => 10,
+    'page_count'    => 10,
+]
+```
+
+不查询总记录数、总页数：
+
+```php
+$page = 1;
+$count = 10;
+$data = TestModel::query()->paginate($page, $count, [
+    'total' =>  false,
+]);
+var_dump(json_encode($result)); // 支持序列化
+// 数据格式如下：
+[
+    'list'          => [],
+    'limit'         => 10,
+]
 ```
 
 ### 聚合函数
@@ -326,7 +366,7 @@ $result = $testModel->update();
 ```php
 // update tb_test set a = 'abc' where id > 5
 TestModel::updateBatch([
-	'a'	=>	'abc',
+    'a'	=>	'abc',
 ], 'id > 5');
 ```
 
@@ -350,7 +390,7 @@ $result = $testModel->delete();
 ```php
 // delete tb_test set a = 'abc' where id > 5
 TestModel::deleteBatch([
-	'a'	=>	'abc',
+    'a'	=>	'abc',
 ], 'id > 5');
 ```
 
@@ -365,16 +405,16 @@ $testModel = TestModel::query()->where()->join()->select()->get();
 
 ```php
 $testModel = TestModel::newInstance([
-	'a'	=>	'abc',
-	'b'	=>	'def',
+    'a'	=>	'abc',
+    'b'	=>	'def',
 ]);
 ```
 第二种方法：
 ```php
 $testModel = TestModel::newInstance();
 $testModel->set([
-	'a'	=>	'abc',
-	'b'	=>	'def',
+    'a'	=>	'abc',
+    'b'	=>	'def',
 ]);
 ```
 

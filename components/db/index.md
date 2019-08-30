@@ -7,134 +7,134 @@
 ```php
 <?php
 return [
-	'db'	=>	[
-		'defaultPool'	=>	'alias1', // 默认连接池
-	],
-	'pools' => [
+    'db'    => [
+        'defaultPool'   => 'alias1', // 默认连接池
+    ],
+    'pools' => [
         // 连接池名称
-		'alias1' => [
+        'alias1' => [
             // 同步池子，task进程使用
-			'sync' => [
-				'pool' => [
-					'class' => \Imi\Db\Pool\SyncDbPool::class,
-					'config' => [
+            'sync' => [
+                'pool' => [
+                    'class' => \Imi\Db\Pool\SyncDbPool::class,
+                    'config' => [
                         // 池子中最多资源数
-						// 'maxResources' => 10,
-						// 池子中最少资源数
-						// 'minResources' => 2,
-						// 资源回收时间间隔，单位：秒
-						// 'gcInterval' => 60,
-						// 获取资源最大存活时间，单位：秒
-						// 'maxActiveTime' => 3600,
-						// 等待资源最大超时时间，单位：毫秒
-						// 'waitTimeout' => 3000,
-						// 负载均衡-轮流
-						// 'resourceConfigMode' => ResourceConfigMode::TURN,
-						// 负载均衡-随机
-						// 'resourceConfigMode' => ResourceConfigMode::RANDOM,
-					],
-				],
-				'resource' => [
-					'host' => '127.0.0.1',
-					'username' => 'root',
-					'password' => 'root',
-					'database' => 'database',
-					// 'port'    => '3306',
-					// 'timeout' => '建立连接超时时间',
-					// 'charset' => '',
-					// 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
-				],
-			],
+                        // 'maxResources' => 10,
+                        // 池子中最少资源数
+                        // 'minResources' => 2,
+                        // 资源回收时间间隔，单位：秒
+                        // 'gcInterval' => 60,
+                        // 获取资源最大存活时间，单位：秒
+                        // 'maxActiveTime' => 3600,
+                        // 等待资源最大超时时间，单位：毫秒
+                        // 'waitTimeout' => 3000,
+                        // 负载均衡-轮流
+                        // 'resourceConfigMode' => ResourceConfigMode::TURN,
+                        // 负载均衡-随机
+                        // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
+                    ],
+                ],
+                'resource' => [
+                    'host' => '127.0.0.1',
+                    'username' => 'root',
+                    'password' => 'root',
+                    'database' => 'database',
+                    // 'port'    => '3306',
+                    // 'timeout' => '建立连接超时时间',
+                    // 'charset' => '',
+                    // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+                ],
+            ],
             // 异步池子，worker进程使用
-			'async' => [
-				'pool'	=>	[
-					'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
-					'config'	=>	[
-						// 同上
-					],
-				],
-				// resource也可以定义多个连接
-				'resource'	=>	[
-					[
-						'host'		=> '127.0.0.1',
-						'username'		=> 'root',
-						'password'	=> 'root',
-						'database'	=> 'database',
-						// 'timeout' => '建立连接超时时间',
-						// 'charset' => '',
-						// 'options' => [], // PDO连接选项
-					],
-					[
-						'host'		=> '127.0.0.2',
-						'username'		=> 'root',
-						'password'	=> 'root',
-						'database'	=> 'database',
-						// 'timeout' => '建立连接超时时间',
-						// 'charset' => '',
-						// 'options' => [], // PDO连接选项
-					]
-				],
-			],
-		],
-		// 从库配置
-		// 原连接池名后加.slave即为从库配置，非必设
-		// 如果配置了，默认查询走从库，增删改走主库
-		// 如果在事务中，默认都走主库
-		'alias1.slave' => [
+            'async' => [
+                'pool'	=>	[
+                    'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
+                    'config'	=>	[
+                        // 同上
+                    ],
+                ],
+                // resource也可以定义多个连接
+                'resource'	=>	[
+                    [
+                        'host'		=> '127.0.0.1',
+                        'username'		=> 'root',
+                        'password'	=> 'root',
+                        'database'	=> 'database',
+                        // 'timeout' => '建立连接超时时间',
+                        // 'charset' => '',
+                        // 'options' => [], // PDO连接选项
+                    ],
+                    [
+                        'host'		=> '127.0.0.2',
+                        'username'		=> 'root',
+                        'password'	=> 'root',
+                        'database'	=> 'database',
+                        // 'timeout' => '建立连接超时时间',
+                        // 'charset' => '',
+                        // 'options' => [], // PDO连接选项
+                    ]
+                ],
+            ],
+        ],
+        // 从库配置
+        // 原连接池名后加.slave即为从库配置，非必设
+        // 如果配置了，默认查询走从库，增删改走主库
+        // 如果在事务中，默认都走主库
+        'alias1.slave' => [
             // 同步池子，task进程使用
-			'sync' => [
-				'pool' => [
-					'class' => \Imi\Db\Pool\SyncDbPool::class,
-					'config' => [
+            'sync' => [
+                'pool' => [
+                    'class' => \Imi\Db\Pool\SyncDbPool::class,
+                    'config' => [
                         // 池子中最多资源数
-						// 'maxResources' => 10,
-						// 池子中最少资源数
-						// 'minResources' => 2,
-						// 资源回收时间间隔，单位：秒
-						// 'gcInterval' => 60,
-						// 获取资源最大存活时间，单位：秒
-						// 'maxActiveTime' => 3600,
-						// 等待资源最大超时时间，单位：毫秒
-						// 'waitTimeout' => 3000,
-					],
-				],
-				'resource' => [
-					'host' => '127.0.0.1',
-					'username' => 'root',
-					'password' => 'root',
-					'database' => 'database',
-					// 'port'    => '3306',
-					// 'timeout' => '建立连接超时时间',
-					// 'charset' => '',
-					// 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
-				],
-			],
+                        // 'maxResources' => 10,
+                        // 池子中最少资源数
+                        // 'minResources' => 2,
+                        // 资源回收时间间隔，单位：秒
+                        // 'gcInterval' => 60,
+                        // 获取资源最大存活时间，单位：秒
+                        // 'maxActiveTime' => 3600,
+                        // 等待资源最大超时时间，单位：毫秒
+                        // 'waitTimeout' => 3000,
+                    ],
+                ],
+                'resource' => [
+                    'host' => '127.0.0.1',
+                    'username' => 'root',
+                    'password' => 'root',
+                    'database' => 'database',
+                    // 'port'    => '3306',
+                    // 'timeout' => '建立连接超时时间',
+                    // 'charset' => '',
+                    // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+                ],
+            ],
             // 异步池子，worker进程使用
-			'async' => [
-				'pool'	=>	[
-					'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
-					'config'	=>	[
-						// 同上
-					],
-				],
-				'resource'	=>	[
-					'host'		=> '127.0.0.1',
-					'username'		=> 'root',
-					'password'	=> 'root',
-					'database'	=> 'database',
-					// 'timeout' => '建立连接超时时间',
-					// 'charset' => '',
-					// 'options' => [], // PDO连接选项
-				],
-				// uri 写法
-				// 'resource'  =>  [
+            'async' => [
+                'pool'	=>	[
+                    'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
+                    'config'	=>	[
+                        // 同上
+                    ],
+                ],
+                'resource'	=>	[
+                    'host'		=> '127.0.0.1',
+                    'username'		=> 'root',
+                    'password'	=> 'root',
+                    'database'	=> 'database',
+                    // 'timeout' => '建立连接超时时间',
+                    // 'charset' => '',
+                    // 'options' => [], // PDO连接选项
+                ],
+                // uri 写法
+                // 'resource'  =>  [
                 //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
                 //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
                 // ],
                 // 'resource'  =>  'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60;tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-			],
-		]
-	],
+            ],
+        ]
+    ],
 ];
 ```
 
@@ -159,8 +159,8 @@ $db = Db::getInstance($poolName, QueryType::WRITE);
 Db::release($db);
 
 $returnValue = Db::use(function(IDb $db){
-	// 操作 $db
-	return 'imi';
+    // 操作 $db
+    return 'imi';
 }); // imi
 ```
 
@@ -304,18 +304,18 @@ Db::query()->orWhere('id', '=', 1);
 ```php
 // select * from `tb_test` where (`id` = 1 or (`id` = 2 ) and `title` like '%test%' and `age` > 18 and (`id` = 2 or (`id` = 3 ) ) )
 Db::query()->from('tb_test')->whereEx([
-	'id'	=>	1,
-	'or'	=>	[
-		'id'	=>	2,
-	],
-	'title'	=>	['like', '%test%'],
-	'age'	=>	['>', 18],
-	'and'   =>  [
-		'id'    =>  2,
-		'or'    =>  [
-			'id'    =>  3,
-		]
-	]
+    'id'	=>	1,
+    'or'	=>	[
+        'id'	=>	2,
+    ],
+    'title'	=>	['like', '%test%'],
+    'age'	=>	['>', 18],
+    'and'   =>  [
+        'id'    =>  2,
+        'or'    =>  [
+            'id'    =>  3,
+        ]
+    ]
 ]);
 ```
 
@@ -334,18 +334,18 @@ Db::query()->orWhereRaw('id >= 1');
 ```php
 // where id = 1 or (age < 14)
 Db::query()->where('id', '=', 1)->whereBrackets(function(){
-	// 直接返回字符串
-	return 'age < 14';
+    // 直接返回字符串
+    return 'age < 14';
 }, 'or');
 
 // where id = 1 or (age < 14)
 Db::query()->where('id', '=', 1)->whereBrackets(function(){
-	// 直接返回字符串
-	return new \Imi\Db\Query\Where\Where('age', '<', 14);
+    // 直接返回字符串
+    return new \Imi\Db\Query\Where\Where('age', '<', 14);
 }, 'or');
 Db::query()->where('id', '=', 1)->orWhereBrackets(function(){
-	// 直接返回字符串
-	return new \Imi\Db\Query\Where\Where('age', '<', 14);
+    // 直接返回字符串
+    return new \Imi\Db\Query\Where\Where('age', '<', 14);
 });
 ```
 
@@ -458,6 +458,46 @@ Db::query()->offset(10)->limit(1);
 Db::query()->limit(1);
 ```
 
+### 分页查询带扩展字段
+
+查询总记录数、总页数：
+
+```php
+$page = 1;
+$count = 10;
+$data = Db::query()->from('xxxtable')->paginate($page, $count);
+
+$result->getList(); // 列表数据
+$result->getTotal(); // 总记录数
+$result->getLimit(); // $count === 10
+$result->getPageCount(); // 总页数
+
+var_dump(json_encode($result)); // 支持序列化
+// 数据格式如下：
+[
+    'list'          => [],
+    'total'         => 100,
+    'limit'         => 10,
+    'page_count'    => 10,
+]
+```
+
+不查询总记录数、总页数：
+
+```php
+$page = 1;
+$count = 10;
+$data = Db::query()->from('xxxtable')->paginate($page, $count, [
+    'total' =>  false,
+]);
+var_dump(json_encode($result)); // 支持序列化
+// 数据格式如下：
+[
+    'list'          => [],
+    'limit'         => 10,
+]
+```
+
 ## 查询执行
 
 ### 查询记录
@@ -509,13 +549,13 @@ Db::query()->table('tb_test')->aggregate('test', 'id');
 ```php
 // insert into tb_test(name, age) values('yurun', 666)
 $result = Db::query()->table('tb_test')->insert([
-	'name'	=>	'yurun',
-	'age'	=>	666,
+    'name'	=>	'yurun',
+    'age'	=>	666,
 ]);
 
 // insert into tb_test values('yurun', 666)
 $result = Db::query()->table('tb_test')->insert([
-	'yurun',666,
+    'yurun',666,
 ]);
 
 $result->isSuccess(); // SQL是否执行成功
@@ -527,9 +567,9 @@ $result->getAffectedRows(); // 获取影响行数
 
 ```php
 $result = Db::query()->from('test')->batchInsert([
-	['name'=>'a'],
-	['name'=>'b'],
-	['name'=>'c'],
+    ['name'=>'a'],
+    ['name'=>'b'],
+    ['name'=>'c'],
 ]);
 $result->isSuccess(); // SQL是否执行成功
 $result->getAffectedRows(); // 获取影响行数
@@ -540,8 +580,8 @@ $result->getAffectedRows(); // 获取影响行数
 ```php
 // update tb_test set name = 'yurun', age = 666 where id = 1
 $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
-	'name'	=>	'yurun',
-	'age'	=>	666,
+    'name'	=>	'yurun',
+    'age'	=>	666,
 ]);
 
 // $result使用方法同上
@@ -552,9 +592,9 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
 ```php
 // replace into tb_test set id = 1, name = 'yurun', age = 666
 $result = Db::query()->table('tb_test')->replace([
-	'id'	=>	1,
-	'name'	=>	'yurun',
-	'age'	=>	666,
+    'id'	=>	1,
+    'name'	=>	'yurun',
+    'age'	=>	666,
 ]);
 ```
 
@@ -564,26 +604,26 @@ $result = Db::query()->table('tb_test')->replace([
 // score 递增 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-					 ->setFieldInc('score')
-					 ->update();
+                     ->setFieldInc('score')
+                     ->update();
 
 // score 递增 10
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-					 ->setFieldInc('score', 10)
-					 ->update();
+                     ->setFieldInc('score', 10)
+                     ->update();
 
 // score 递减 1
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
-					 ->setFieldDec('score')
-					 ->update();
+                     ->setFieldDec('score')
+                     ->update();
 
 // score 递减 10
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
                      ->setFieldDec('score', 10)
-					 ->update();
+                     ->update();
 ```
 
 ### update/insert/replace时使用表达式
@@ -593,7 +633,7 @@ $result = Db::query()->table('tb_test')
 $result = Db::query()->table('tb_test')
                      ->where('id', '=', 1)
                      ->setFieldExp('score', 'score + 1')
-					 ->update();
+                     ->update();
 ```
 
 ### 删除记录
@@ -624,8 +664,8 @@ $result = Db::query()->whereRaw('id = :val')->bindValue(':val', 123);
 
 // 批量绑定
 $result = Db::query()->bindValues([
-	':name'	=>	'yurun',
-	':age'	=>	666,
+    ':name'	=>	'yurun',
+    ':age'	=>	666,
 ])->execute('select * from tb_test where name = :name and age = :age');
 ```
 
