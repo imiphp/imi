@@ -106,6 +106,12 @@ class AnnotationParser
             }
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
+                $parentClassName = $parentClass->getName();
+                if(!isset($this->classes[$parentClassName]))
+                {
+                    $this->parse($parentClassName);
+                    $this->execParse($parentClassName);
+                }
                 if(is_string($annotation->annotation))
                 {
                     $inheritAnnotationClasses = [$annotation->annotation];
@@ -115,7 +121,7 @@ class AnnotationParser
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
                 $inheritAnnotations = [];
-                foreach(AnnotationManager::getClassAnnotations($parentClass->getName()) as $annotation)
+                foreach(AnnotationManager::getClassAnnotations($parentClassName) as $annotation)
                 {
                     if(null === $inheritAnnotationClasses)
                     {
@@ -187,6 +193,12 @@ class AnnotationParser
             }
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
+                $parentClassName = $parentClass->getName();
+                if(!isset($this->classes[$parentClassName]))
+                {
+                    $this->parse($parentClassName);
+                    $this->execParse($parentClassName);
+                }
                 if(is_string($annotation->annotation))
                 {
                     $inheritAnnotationClasses = [$annotation->annotation];
@@ -196,7 +208,7 @@ class AnnotationParser
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
                 $inheritAnnotations = [];
-                foreach(AnnotationManager::getMethodAnnotations($parentClass->getName(), $methodName) as $annotation)
+                foreach(AnnotationManager::getMethodAnnotations($parentClassName, $methodName) as $annotation)
                 {
                     if(null === $inheritAnnotationClasses)
                     {
@@ -261,6 +273,12 @@ class AnnotationParser
             }
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
+                $parentClassName = $parentClass->getName();
+                if(!isset($this->classes[$parentClassName]))
+                {
+                    $this->parse($parentClassName);
+                    $this->execParse($parentClassName);
+                }
                 if(is_string($annotation->annotation))
                 {
                     $inheritAnnotationClasses = [$annotation->annotation];
@@ -270,7 +288,7 @@ class AnnotationParser
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
                 $inheritAnnotations = [];
-                foreach(AnnotationManager::getPropertyAnnotations($parentClass->getName(), $propertyName) as $annotation)
+                foreach(AnnotationManager::getPropertyAnnotations($parentClassName, $propertyName) as $annotation)
                 {
                     if(null === $inheritAnnotationClasses)
                     {
@@ -337,6 +355,12 @@ class AnnotationParser
             }
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
+                $parentClassName = $parentClass->getName();
+                if(!isset($this->classes[$parentClassName]))
+                {
+                    $this->parse($parentClassName);
+                    $this->execParse($parentClassName);
+                }
                 if(is_string($annotation->annotation))
                 {
                     $inheritAnnotationClasses = [$annotation->annotation];
@@ -346,7 +370,7 @@ class AnnotationParser
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
                 $inheritAnnotations = [];
-                foreach(AnnotationManager::getConstantAnnotations($parentClass->getName(), $constName) as $annotation)
+                foreach(AnnotationManager::getConstantAnnotations($parentClassName, $constName) as $annotation)
                 {
                     if(null === $inheritAnnotationClasses)
                     {
@@ -628,4 +652,16 @@ class AnnotationParser
             }
         }
     }
+
+    /**
+     * 是否处理过该类
+     *
+     * @param string $className
+     * @return boolean
+     */
+    public function isParsed($className)
+    {
+        return isset($this->classes[$className]);
+    }
+
 }
