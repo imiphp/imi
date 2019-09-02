@@ -2,10 +2,14 @@
 namespace Imi\Test\Component\Model\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Entity;
 
 /**
  * MemberBase
+ * @Entity
+ * @Table(name="tb_member", id={"id"})
  * @property int $id 
  * @property string $username 用户名
  * @property string $password 密码

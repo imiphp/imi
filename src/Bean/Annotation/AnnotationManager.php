@@ -83,7 +83,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addClassAnnotations($annotations);
         foreach($annotations as $annotation)
@@ -125,7 +125,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addMethodAnnotations($methodName, $annotations);
         foreach($annotations as $annotation)
@@ -167,7 +167,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addpropertyAnnotations($propertyName, $annotations);
         foreach($annotations as $annotation)
@@ -209,7 +209,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addConstantAnnotations($constantName, $annotations);
         foreach($annotations as $annotation)

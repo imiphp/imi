@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Imi\Event\TEvent;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Util\Imi;
 
 /**
@@ -92,7 +93,49 @@ class AnnotationParser
         {
             $this->classes[$className] = 1;
             $this->files[$ref->getFileName()] = 1;
-            AnnotationManager::setClassAnnotations($className, ...$annotations);
+            
+            // @Inherit 注解继承父级的注解
+            $hasInherit = false;
+            foreach($annotations as $annotation)
+            {
+                if($annotation instanceof Inherit)
+                {
+                    $hasInherit = true;
+                    break;
+                }
+            }
+            if($hasInherit && $parentClass = $ref->getParentClass())
+            {
+                if(is_string($annotation->annotation))
+                {
+                    $inheritAnnotationClasses = [$annotation->annotation];
+                }
+                else
+                {
+                    $inheritAnnotationClasses = $annotation->annotation;
+                }
+                $inheritAnnotations = [];
+                foreach(AnnotationManager::getClassAnnotations($parentClass->getName()) as $annotation)
+                {
+                    if(null === $inheritAnnotationClasses)
+                    {
+                        $inheritAnnotations[] = $annotation;
+                    }
+                    else
+                    {
+                        foreach($inheritAnnotationClasses as $inheritAnnotationClass)
+                        {
+                            if($annotation instanceof $inheritAnnotationClass)
+                            {
+                                $inheritAnnotations[] = $annotation;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            AnnotationManager::setClassAnnotations($className, ...$annotations, ...$inheritAnnotations ?? []);
         }
         // 是注解类的情况下，Parser类不需要指定@Parser()处理器
         else if($ref->isSubclassOf('Imi\Bean\Annotation\Base') && $className !== 'Imi\Bean\Annotation\Parser')
@@ -123,12 +166,57 @@ class AnnotationParser
     public function parseMethod(\ReflectionClass $ref, \ReflectionMethod $method)
     {
         $annotations = $this->reader->getMethodAnnotations($method);
-        $className = $ref->getName();
+
         if($this->checkAnnotations($annotations))
         {
+            $className = $ref->getName();
+            $methodName = $method->getName();
+
             $this->classes[$className] = 1;
             $this->files[$ref->getFileName()] = 1;
-            AnnotationManager::setMethodAnnotations($className, $method->getName(), ...$annotations);
+
+            // @Inherit 注解继承父级的注解
+            $hasInherit = false;
+            foreach($annotations as $annotation)
+            {
+                if($annotation instanceof Inherit)
+                {
+                    $hasInherit = true;
+                    break;
+                }
+            }
+            if($hasInherit && $parentClass = $ref->getParentClass())
+            {
+                if(is_string($annotation->annotation))
+                {
+                    $inheritAnnotationClasses = [$annotation->annotation];
+                }
+                else
+                {
+                    $inheritAnnotationClasses = $annotation->annotation;
+                }
+                $inheritAnnotations = [];
+                foreach(AnnotationManager::getMethodAnnotations($parentClass->getName(), $methodName) as $annotation)
+                {
+                    if(null === $inheritAnnotationClasses)
+                    {
+                        $inheritAnnotations[] = $annotation;
+                    }
+                    else
+                    {
+                        foreach($inheritAnnotationClasses as $inheritAnnotationClass)
+                        {
+                            if($annotation instanceof $inheritAnnotationClass)
+                            {
+                                $inheritAnnotations[] = $annotation;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            AnnotationManager::setMethodAnnotations($className, $methodName, ...$annotations, ...$inheritAnnotations ?? []);
         }
     }
 
@@ -155,11 +243,54 @@ class AnnotationParser
     {
         $annotations = $this->reader->getPropertyAnnotations($prop);
         $className = $ref->getName();
+        $propertyName = $prop->getName();
         if($this->checkAnnotations($annotations))
         {
             $this->classes[$className] = 1;
             $this->files[$ref->getFileName()] = 1;
-            AnnotationManager::setPropertyAnnotations($className, $prop->getName(), ...$annotations);
+
+            // @Inherit 注解继承父级的注解
+            $hasInherit = false;
+            foreach($annotations as $annotation)
+            {
+                if($annotation instanceof Inherit)
+                {
+                    $hasInherit = true;
+                    break;
+                }
+            }
+            if($hasInherit && $parentClass = $ref->getParentClass())
+            {
+                if(is_string($annotation->annotation))
+                {
+                    $inheritAnnotationClasses = [$annotation->annotation];
+                }
+                else
+                {
+                    $inheritAnnotationClasses = $annotation->annotation;
+                }
+                $inheritAnnotations = [];
+                foreach(AnnotationManager::getPropertyAnnotations($parentClass->getName(), $propertyName) as $annotation)
+                {
+                    if(null === $inheritAnnotationClasses)
+                    {
+                        $inheritAnnotations[] = $annotation;
+                    }
+                    else
+                    {
+                        foreach($inheritAnnotationClasses as $inheritAnnotationClass)
+                        {
+                            if($annotation instanceof $inheritAnnotationClass)
+                            {
+                                $inheritAnnotations[] = $annotation;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            AnnotationManager::setPropertyAnnotations($className, $propertyName, ...$annotations, ...$inheritAnnotations ?? []);
         }
     }
 
@@ -188,11 +319,54 @@ class AnnotationParser
     {
         $annotations = $this->reader->getConstantAnnotations($const);
         $className = $ref->getName();
+        $constName = $const->getName();
         if($this->checkAnnotations($annotations))
         {
             $this->classes[$className] = 1;
             $this->files[$ref->getFileName()] = 1;
-            AnnotationManager::setConstantAnnotations($className, $const->getName(), ...$annotations);
+            
+            // @Inherit 注解继承父级的注解
+            $hasInherit = false;
+            foreach($annotations as $annotation)
+            {
+                if($annotation instanceof Inherit)
+                {
+                    $hasInherit = true;
+                    break;
+                }
+            }
+            if($hasInherit && $parentClass = $ref->getParentClass())
+            {
+                if(is_string($annotation->annotation))
+                {
+                    $inheritAnnotationClasses = [$annotation->annotation];
+                }
+                else
+                {
+                    $inheritAnnotationClasses = $annotation->annotation;
+                }
+                $inheritAnnotations = [];
+                foreach(AnnotationManager::getConstantAnnotations($parentClass->getName(), $constName) as $annotation)
+                {
+                    if(null === $inheritAnnotationClasses)
+                    {
+                        $inheritAnnotations[] = $annotation;
+                    }
+                    else
+                    {
+                        foreach($inheritAnnotationClasses as $inheritAnnotationClass)
+                        {
+                            if($annotation instanceof $inheritAnnotationClass)
+                            {
+                                $inheritAnnotations[] = $annotation;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations, ...$inheritAnnotations ?? []);
         }
     }
 

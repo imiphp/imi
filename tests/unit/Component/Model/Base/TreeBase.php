@@ -2,10 +2,14 @@
 namespace Imi\Test\Component\Model\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Entity;
 
 /**
  * TreeBase
+ * @Entity
+ * @Table(name="tb_tree", id={"id"})
  * @property int $id 
  * @property int $parentId 
  * @property string $name 

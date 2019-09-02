@@ -2,10 +2,14 @@
 namespace Imi\Test\Component\Model\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Entity;
 
 /**
  * UpdateTimeBase
+ * @Entity
+ * @Table(name="tb_update_time", id={"id"})
  * @property int $id 
  * @property string $date 
  * @property string $time 
