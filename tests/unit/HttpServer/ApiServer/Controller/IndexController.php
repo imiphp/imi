@@ -93,6 +93,34 @@ class IndexController extends HttpController
      *
      * @return void
      */
+    public function info2($get, $post, $default = 19260817)
+    {
+        return [
+            'get'       =>  $this->request->get(),
+            'post'      =>  $this->request->post(),
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function info3($get, $post, $parsedBody, $default = 19260817)
+    {
+        return [
+            'get'           =>  $this->request->get(),
+            'post'          =>  $this->request->post(),
+            'parsedBody'    =>  $this->request->getParsedBody(),
+            'default'       =>  $default,
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
     public function cookie()
     {
         $this->response = $this->response->withCookie('a', '1')

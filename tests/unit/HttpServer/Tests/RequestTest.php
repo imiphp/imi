@@ -173,4 +173,33 @@ class RequestTest extends BaseTest
         $this->assertEquals('testOutside', $data['action'] ?? null);
     }
 
+    /**
+     * 测试动作传入的参数值
+     *
+     * @return void
+     */
+    public function testActionProperty()
+    {
+        $http = new HttpRequest;
+        $response = $http->post($this->host . 'info2?get=1', 'post=2');
+        $data = $response->json(true);
+        $this->assertEquals([
+            'get'   =>  ['get' => 1],
+            'post'  =>  ['post' => 2],
+        ], $data);
+
+        $response = $http->header('Content-Type', 'application/json')->post($this->host . 'info3?get=1', json_encode([
+            'parsedBody'    =>  3,
+        ]));
+        $data = $response->json(true);
+        $this->assertEquals([
+            'get'           =>  ['get' => 1],
+            'post'          =>  [],
+            'parsedBody'    =>  [
+                'parsedBody'    =>  3,
+            ],
+            'default'       =>  19260817,
+        ], $data);
+    }
+
 }

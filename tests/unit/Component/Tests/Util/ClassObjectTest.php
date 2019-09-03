@@ -59,4 +59,17 @@ class ClassObjectTest extends BaseTest
         ], ClassObject::convertArgsToKV($class, $method, $args, false));
     }
 
+    /**
+     * @testdox getSubClasses
+     *
+     * @return void
+     */
+    public function testGetSubClasses()
+    {
+        $this->assertEquals([\Imi\Test\Component\Model\Article::class], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\ArticleBase::class));
+        $this->assertEquals([], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\ArticleBase::class, [
+            \Imi\Test\Component\Model\Member::class,
+        ]));
+    }
+
 }
