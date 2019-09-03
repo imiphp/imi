@@ -3,7 +3,7 @@
 require dirname(__DIR__) . '/vendor/autoload.php';
 ini_set('date.timezone', date_default_timezone_get());
 
-if(version_compare(SWOOLE_VERSION, '4.4.4', '>='))
+if(version_compare(SWOOLE_VERSION, '4.4.4', '='))
 {
     \swoole_async_set([
         'max_thread_num'    =>  4,
