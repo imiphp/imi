@@ -92,7 +92,7 @@ class AnnotationParser
         $className = $ref->getName();
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = 1;
+            $this->classes[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
             
             // @Inherit 注解继承父级的注解
@@ -178,7 +178,7 @@ class AnnotationParser
 
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = 1;
+            $this->classes[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
 
             // @Inherit 注解继承父级的注解
@@ -258,7 +258,7 @@ class AnnotationParser
         $propertyName = $prop->getName();
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = 1;
+            $this->classes[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
 
             // @Inherit 注解继承父级的注解
@@ -340,7 +340,7 @@ class AnnotationParser
         $constName = $const->getName();
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = 1;
+            $this->classes[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
             
             // @Inherit 注解继承父级的注解
@@ -589,17 +589,6 @@ class AnnotationParser
     }
 
     /**
-     * 设置类名列表
-     *
-     * @param array $classes
-     * @return void
-     */
-    public function setClasses($classes)
-    {
-        $this->classes = array_flip($classes);
-    }
-
-    /**
      * Get 文件数据映射
      *
      * @return array
@@ -607,18 +596,6 @@ class AnnotationParser
     public function getFiles()
     {
         return $this->files;
-    }
-
-    /**
-     * Set 文件数据映射
-     *
-     * @param array $files 文件数据映射
-     *
-     * @return void
-     */ 
-    public function setFiles(array $files)
-    {
-        $this->files = $files;
     }
 
     /**
@@ -635,17 +612,24 @@ class AnnotationParser
             {
                 unset($this->files[$file]);
             }
-            if(!is_file($file))
+            $className = null;
+            if($className = array_search($file, $this->classes))
+            {
+            }
+            else if(is_file($file))
+            {
+                $content = file_get_contents($file);
+                if(preg_match('/namespace ([^;]+);/', $content, $matches) <= 0)
+                {
+                    continue;
+                }
+                $namespace = trim($matches[1]);
+                $className = $namespace . '\\' . basename($file, '.php');
+            }
+            else
             {
                 continue;
             }
-            $content = file_get_contents($file);
-            if(preg_match('/namespace ([^;]+);/', $content, $matches) <= 0)
-            {
-                continue;
-            }
-            $namespace = trim($matches[1]);
-            $className = $namespace . '\\' . basename($file, '.php');
             if(class_exists($className))
             {
                 $this->parse($className);
@@ -677,6 +661,31 @@ class AnnotationParser
     public function isParsed($className)
     {
         return isset($this->classes[$className]);
+    }
+
+    /**
+     * 获取存储数据
+     *
+     * @return void
+     */
+    public function getStoreData()
+    {
+        return [
+            $this->files,
+            $this->classes,
+        ];
+    }
+
+    /**
+     * 加载存储数据
+     *
+     * @param array $data
+     * @return void
+     */
+    public function loadStoreData($data)
+    {
+        $this->files = $data[0];
+        $this->classes = $data[1];
     }
 
 }
