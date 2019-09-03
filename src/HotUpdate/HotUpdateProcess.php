@@ -96,7 +96,7 @@ class HotUpdateProcess extends BaseProcess
             while(true)
             {
                 // 检测间隔延时
-                sleep(min(max($this->timespan - (microtime(true) - $time), $this->timespan), $this->timespan));
+                usleep(min(max($this->timespan - (microtime(true) - $time), $this->timespan), $this->timespan) * 1000000);
                 $time = microtime(true);
                 // 检查文件是否有修改
                 if($monitor->isChanged())
