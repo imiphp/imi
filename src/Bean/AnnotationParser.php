@@ -7,6 +7,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Imi\Event\TEvent;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Inherit;
+use Imi\Util\ClassObject;
 use Imi\Util\Imi;
 
 /**
@@ -140,14 +141,14 @@ class AnnotationParser
                     }
                 }
             }
-
-            AnnotationManager::setClassAnnotations($className, ...$annotations, ...$inheritAnnotations ?? []);
         }
         // 是注解类的情况下，Parser类不需要指定@Parser()处理器
         else if($ref->isSubclassOf('Imi\Bean\Annotation\Base') && $className !== 'Imi\Bean\Annotation\Parser')
         {
             throw new \RuntimeException(sprintf('Annotation %s has no @Parser()', $className));
         }
+
+        AnnotationManager::setClassAnnotations($className, ...$annotations, ...$inheritAnnotations ?? []);
     }
 
     /**
@@ -171,13 +172,12 @@ class AnnotationParser
      */
     public function parseMethod(\ReflectionClass $ref, \ReflectionMethod $method)
     {
+        $className = $ref->getName();
+        $methodName = $method->getName();
         $annotations = $this->reader->getMethodAnnotations($method);
 
         if($this->checkAnnotations($annotations))
         {
-            $className = $ref->getName();
-            $methodName = $method->getName();
-
             $this->classes[$className] = 1;
             $this->files[$ref->getFileName()] = 1;
 
@@ -227,9 +227,9 @@ class AnnotationParser
                     }
                 }
             }
-
-            AnnotationManager::setMethodAnnotations($className, $methodName, ...$annotations, ...$inheritAnnotations ?? []);
         }
+
+        AnnotationManager::setMethodAnnotations($className, $methodName, ...$annotations, ...$inheritAnnotations ?? []);
     }
 
     /**
@@ -307,9 +307,9 @@ class AnnotationParser
                     }
                 }
             }
-
-            AnnotationManager::setPropertyAnnotations($className, $propertyName, ...$annotations, ...$inheritAnnotations ?? []);
         }
+
+        AnnotationManager::setPropertyAnnotations($className, $propertyName, ...$annotations, ...$inheritAnnotations ?? []);
     }
 
     /**
@@ -389,9 +389,9 @@ class AnnotationParser
                     }
                 }
             }
-
-            AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations, ...$inheritAnnotations ?? []);
         }
+
+        AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations, ...$inheritAnnotations ?? []);
     }
 
     /**
@@ -649,6 +649,21 @@ class AnnotationParser
             if(class_exists($className))
             {
                 $this->parse($className);
+            }
+            else
+            {
+                AnnotationManager::clearClassAllAnnotations($className);
+            }
+            foreach(ClassObject::getSubClasses($className, $this->getClasses()) as $subClassName)
+            {
+                if(class_exists($subClassName))
+                {
+                    $this->parse($subClassName);
+                }
+                else
+                {
+                    AnnotationManager::clearClassAllAnnotations($subClassName);
+                }
             }
         }
     }

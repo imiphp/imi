@@ -88,4 +88,25 @@ abstract class ClassObject
     
         return $result;
     }
+
+    /**
+     * 获取一个类的所有子类
+     *
+     * @param string $class
+     * @param string[] $classList
+     * @return string[]
+     */
+    public static function getSubClasses($class, $classList = null)
+    {
+        $list = [];
+        foreach($classList ?? get_declared_classes() as $tClass)
+        {
+            if(is_subclass_of($tClass, $class))
+            {
+                $list[] = $tClass;
+            }
+        }
+        return $list;
+    }
+
 }
