@@ -118,6 +118,7 @@ class ActionMiddleware implements MiddlewareInterface
             return [];
         }
         $result = [];
+        $parsedBody = $request->getParsedBody();
         foreach($ref->getParameters() as $param)
         {
             if(isset($routeResult->params[$param->name]))
@@ -134,6 +135,14 @@ class ActionMiddleware implements MiddlewareInterface
             {
                 // get
                 $result[] = $request->get($param->name);
+            }
+            else if(isset($parsedBody[$param->name]))
+            {
+                $result[] = $parsedBody[$param->name];
+            }
+            else if(isset($parsedBody->{$param->name}))
+            {
+                $result[] = $parsedBody->{$param->name};
             }
             else if($param->isOptional())
             {
