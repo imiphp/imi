@@ -22,7 +22,13 @@ abstract class <?= $className ?>Base extends Model
     foreach($fields as $field):
 ?>
     /**
-     * <?= $field['name'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
+<?php if('' === $field['comment']):?>
+     * <?= $field['name'] ?>
+<?php else: ?>
+     * <?= $field['comment'] ?>
+
+     * <?= $field['name'] ?>
+<?php endif;?>
 
      * @Column(name="<?= $field['name'] ?>", type="<?= $field['type'] ?>", length=<?= $field['length'] ?>, accuracy=<?= $field['accuracy'] ?>, nullable=<?= json_encode($field['nullable']) ?>, default="<?= $field['default'] ?>", isPrimaryKey=<?= json_encode($field['isPrimaryKey']) ?>, primaryKeyIndex=<?= $field['primaryKeyIndex'] ?>, isAutoIncrement=<?= json_encode($field['isAutoIncrement']) ?>)
      * @var <?= $field['phpType'] ?>

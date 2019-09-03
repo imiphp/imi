@@ -45,7 +45,8 @@ abstract class MemberBase extends Model
     }
 
     /**
-     * username - 用户名
+     * 用户名
+     * username
      * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var string
      */
@@ -73,7 +74,8 @@ abstract class MemberBase extends Model
     }
 
     /**
-     * password - 密码
+     * 密码
+     * password
      * @Column(name="password", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      * @var string
      */
