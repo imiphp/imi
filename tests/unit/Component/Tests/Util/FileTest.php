@@ -89,6 +89,36 @@ class FileTest extends BaseTest
     }
 
     /**
+     * @testdox enumFile
+     *
+     * @return void
+     */
+    public function testEnumFile()
+    {
+        $path = dirname(__DIR__, 2) . '/Util/File';
+        $expectedFiles = [
+            ['pathName' => $path . '/1.txt', 'pathName2' => $path . '/1.txt', 'fileName' => '1.txt'],
+            ['pathName' => $path . '/2.php', 'pathName2' => $path . '/2.php', 'fileName' => '2.php'],
+            ['pathName' => $path . '/a/a-1', 'pathName2' => $path . '/a/a-1', 'fileName' => 'a-1'],
+            ['pathName' => $path . '/a', 'pathName2' => $path . '/a', 'fileName' => 'a'],
+            ['pathName' => $path . '/a/a-1/a-1.txt', 'pathName2' => $path . '/a/a-1/a-1.txt', 'fileName' => 'a-1.txt'],
+            ['pathName' => $path . '/b/b.php', 'pathName2' => $path . '/b/b.php', 'fileName' => 'b.php'],
+            ['pathName' => $path . '/b', 'pathName2' => $path . '/b', 'fileName' => 'b'],
+        ];
+
+        $files = [];
+        foreach(File::enumFile($path) as $file)
+        {
+            $files[] = [
+                'pathName'  =>  $file->getFullPath(),
+                'pathName2' =>  (string)$file,
+                'fileName'  =>  $file->getFileName(),
+            ];
+        }
+        $this->assertEqualsCanonicalizing($expectedFiles, $files);
+    }
+
+    /**
      * @testdox path
      *
      * @return void

@@ -2,6 +2,8 @@
 
 namespace Imi\Util;
 
+use Imi\Util\File\FileEnumItem;
+
 /**
  * 文件相关工具类
  */
@@ -52,6 +54,37 @@ abstract class File
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
         return $regex;
+    }
+
+    /**
+     * 枚举文件，支持自定义中断进入下一级目录
+     *
+     * @param string $dirPath
+     * @return \Imi\Util\File\FileEnumItem[]
+     */
+    public static function enumFile(string $dirPath)
+    {
+        if(!is_dir($dirPath))
+        {
+            return false;
+        }
+        $dh = opendir($dirPath);
+        while ($file = readdir($dh))
+        {
+            if('.' !== $file && '..' !== $file)
+            {
+                $item = new FileEnumItem($dirPath, $file);
+                yield $item;
+                if(is_dir($item) && $item->getContinue())
+                {
+                    foreach(static::enumFile($item) as $fileItem)
+                    {
+                        yield $fileItem;
+                    }
+                }
+            }
+        }
+        closedir($dh);
     }
 
     /**
