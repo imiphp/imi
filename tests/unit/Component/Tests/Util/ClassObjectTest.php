@@ -72,4 +72,16 @@ class ClassObjectTest extends BaseTest
         ]));
     }
 
+    /**
+     * @testdox inNamespace
+     *
+     * @return void
+     */
+    public function testInNamespace()
+    {
+        $this->assertTrue(ClassObject::inNamespace('Imi\Test\Component\Tests\Util', __CLASS__));
+        $this->assertTrue(ClassObject::inNamespace('', \Redis::class));
+
+    }
+
 }

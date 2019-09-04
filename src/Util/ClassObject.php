@@ -109,4 +109,20 @@ abstract class ClassObject
         return $list;
     }
 
+    /**
+     * 判断某类是否在指定命名空间下
+     *
+     * @param string $namespace
+     * @param string $subClass
+     * @return void
+     */
+    public static function inNamespace($namespace, $class)
+    {
+        if('' !== $namespace && '\\' !== substr($namespace, -1, 1))
+        {
+            $namespace .= '\\';
+        }
+        return $namespace === substr($class, 0, strlen($namespace));
+    }
+
 }
