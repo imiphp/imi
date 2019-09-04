@@ -7,6 +7,7 @@ use Imi\Util\Coroutine;
 use Imi\Bean\BeanFactory;
 use Imi\Process\BaseProcess;
 use Imi\Bean\Annotation\Bean;
+use Imi\Event\Event;
 use Imi\Process\Annotation\Process;
 
 /**
@@ -106,7 +107,7 @@ class HotUpdateProcess extends BaseProcess
                     file_put_contents($this->changedFilesFile, implode("\n", $changedFiles));
                     echo 'Building runtime...', PHP_EOL;
                     $beginTime = microtime(true);
-                    $result = $this->beginBuildRuntime();
+                    $result = $this->beginBuildRuntime($changedFiles);
                     $this->initBuildRuntime();
                     if("Build app runtime complete" !== trim($result))
                     {
@@ -172,10 +173,21 @@ class HotUpdateProcess extends BaseProcess
     /**
      * 开始构建 runtime
      *
+     * @param string[] $changedFiles
      * @return void
      */
-    private function beginBuildRuntime()
+    private function beginBuildRuntime($changedFiles)
     {
+        $result = null;
+        Event::trigger('IMI.HOTUPDATE.BEGIN_BUILD', [
+            'changedFiles'      =>  $changedFiles,
+            'changedFilesFile'  =>  $this->changedFilesFile,
+            'result'            =>  &$result,
+        ]);
+        if($result)
+        {
+            return $result;
+        }
         $writeContent = "y\n";
         if(strlen($writeContent) !== fwrite($this->buildRuntimePipes[0], $writeContent))
         {
