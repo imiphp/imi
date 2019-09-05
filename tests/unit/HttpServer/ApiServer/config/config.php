@@ -29,7 +29,11 @@ return [
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
                 \Imi\Test\HttpServer\ApiServer\Middleware\PoweredBy::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
+                'OptionsMiddleware',
             ],
+        ],
+        'OptionsMiddleware' =>  [
+            'allowOrigin'   =>  'http://127.0.0.1',
         ],
         'HtmlView'    =>    [
             'templatePath'    =>    dirname(__DIR__) . '/template/',
