@@ -251,7 +251,11 @@ class BeanProxy
         {
             $beanName = $className;
         }
-        $beanProperties = Config::get('@currentServer.beans.' . $beanName, []);
+        $beanProperties = Config::get('@currentServer.beans.' . $beanName);
+        if(null === $beanProperties && $beanName !== $className)
+        {
+            $beanProperties = Config::get('@currentServer.beans.' . $className);
+        }
         return $beanProperties ?? [];
     }
 
