@@ -16,7 +16,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Imi\Server\Http\Middleware\ActionMiddleware;
 
 /**
- * @Bean
+ * @Bean("RouteMiddleware")
  */
 class RouteMiddleware implements MiddlewareInterface
 {

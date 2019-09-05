@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * @Bean
+ * @Bean("ActionWrapMiddleware")
  */
 class ActionWrapMiddleware implements MiddlewareInterface
 {

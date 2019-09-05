@@ -8,7 +8,7 @@ use Imi\Server\WebSocket\Message\IFrame;
 use Imi\Server\WebSocket\IMessageHandler;
 
 /**
- * @Bean
+ * @Bean("WebSocketActionMiddleware")
  */
 class ActionMiddleware implements IMiddleware
 {

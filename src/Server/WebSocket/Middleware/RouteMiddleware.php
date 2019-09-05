@@ -8,7 +8,7 @@ use Imi\Server\WebSocket\MessageHandler;
 use Imi\Server\WebSocket\IMessageHandler;
 
 /**
- * @Bean
+ * @Bean("WebSocketRouteMiddleware")
  */
 class RouteMiddleware implements IMiddleware
 {

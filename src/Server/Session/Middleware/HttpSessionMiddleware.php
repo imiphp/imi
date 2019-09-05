@@ -11,7 +11,7 @@ use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 
 /**
- * @Bean
+ * @Bean("HttpSessionMiddleware")
  */
 class HttpSessionMiddleware implements MiddlewareInterface
 {

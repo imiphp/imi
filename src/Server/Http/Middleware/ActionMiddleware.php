@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * @Bean
+ * @Bean("ActionMiddleware")
  */
 class ActionMiddleware implements MiddlewareInterface
 {
