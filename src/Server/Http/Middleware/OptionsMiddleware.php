@@ -58,13 +58,9 @@ class OptionsMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $response = RequestContext::get('response');
         if('OPTIONS' === $request->getMethod())
         {
-            $response = RequestContext::get('response');
-            if(null !== $this->allowOrigin)
-            {
-                $response = $response->withHeader('Access-Control-Allow-Origin', $this->allowOrigin);
-            }
             if(null !== $this->allowHeaders)
             {
                 $response = $response->withHeader('Access-Control-Allow-Headers', $this->allowHeaders);
@@ -77,16 +73,21 @@ class OptionsMiddleware implements MiddlewareInterface
             {
                 $response = $response->withHeader('Access-Control-Allow-Methods', $this->allowMethods);
             }
-            if(null !== $this->allowCredentials)
-            {
-                $response = $response->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials);
-            }
-            return $response;
         }
-        else
+        if(null === $this->allowOrigin)
         {
-            return $handler->handle($request);
+            $response = $response->withHeader('Access-Control-Allow-Origin', $request->getHeaderLine('Origin'));
         }
+        else if($this->allowOrigin)
+        {
+            $response = $response->withHeader('Access-Control-Allow-Origin', $this->allowOrigin);
+        }
+        if(null !== $this->allowCredentials)
+        {
+            $response = $response->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials);
+        }
+        RequestContext::set('response', $response);
+        return $handler->handle($request);
     }
 
 }
