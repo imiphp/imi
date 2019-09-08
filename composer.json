@@ -5,7 +5,7 @@
     "description": "基于 Swoole 开发的协程 PHP 开发框架，常驻内存、协程异步，致力于丰富框架文档，上手容易，让开发者跟使用传统 MVC 框架一样顺手",
     "require": {
         "php": ">=7.1.0",
-        "yurunsoft/doctrine-annotations": ">=1.6,<1.7,!=1.6.x-dev",
+        "yurunsoft/doctrine-annotations": ">=1.7,<1.8,!=1.7.x-dev",
         "psr/log": "~1.0",
         "psr/container": "~1.0",
         "psr/http-message": "~1.0",
