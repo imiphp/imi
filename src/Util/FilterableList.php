@@ -6,7 +6,7 @@ use Imi\Util\Interfaces\IArrayable;
 /**
  * 过滤字段的列表，每一个成员应该是数组或对象
  */
-class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
+class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, \Countable
 {
     /**
      * 模式
@@ -195,4 +195,5 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         }
         return $result;
     }
+
 }

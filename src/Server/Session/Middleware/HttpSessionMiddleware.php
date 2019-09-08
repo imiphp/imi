@@ -11,7 +11,7 @@ use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 
 /**
- * @Bean
+ * @Bean("HttpSessionMiddleware")
  */
 class HttpSessionMiddleware implements MiddlewareInterface
 {
@@ -80,6 +80,6 @@ class HttpSessionMiddleware implements MiddlewareInterface
     private function sendCookie($sessionManager, Response $response): ResponseInterface
     {
         $config = $sessionManager->getConfig();
-        return $response->withCookie($sessionManager->getName(), $sessionManager->getID(), time() + $config->cookie->lifetime, $config->cookie->path, $config->cookie->domain, $config->cookie->secure);
+        return $response->withCookie($sessionManager->getName(), $sessionManager->getID(), time() + $config->cookie->lifetime, $config->cookie->path, $config->cookie->domain, $config->cookie->secure, $config->cookie->httponly);
     }
 }

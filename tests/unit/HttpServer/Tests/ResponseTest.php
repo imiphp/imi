@@ -27,6 +27,23 @@ class ResponseTest extends BaseTest
     }
 
     /**
+     * Options Middleware
+     *
+     * @return void
+     */
+    public function testOptionsMiddleware()
+    {
+        $http = new HttpRequest;
+        $response = $http->send($this->host, '', 'OPTIONS');
+        // OPTIONS 中间件
+        $this->assertEquals('http://127.0.0.1', $response->getHeaderLine('Access-Control-Allow-Origin'));
+        $this->assertEquals('Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie', $response->getHeaderLine('Access-Control-Allow-Headers'));
+        $this->assertEquals('Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie', $response->getHeaderLine('Access-Control-Expose-Headers'));
+        $this->assertEquals('GET, POST, PATCH, PUT, DELETE', $response->getHeaderLine('Access-Control-Allow-Methods'));
+        $this->assertEquals('true', $response->getHeaderLine('Access-Control-Allow-Credentials'));
+    }
+
+    /**
      * Cookie
      *
      * @return void

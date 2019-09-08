@@ -14,13 +14,6 @@ class FileMTime extends BaseMonitor
     private $files = [];
 
     /**
-     * 排除规则
-     *
-     * @var array
-     */
-    private $excludeRule;
-
-    /**
      * 更改的文件们
      *
      * @var array
@@ -38,9 +31,10 @@ class FileMTime extends BaseMonitor
             if(!$this->excludePaths[$i] = realpath($path))
             {
                 unset($this->excludePaths[$i]);
+                continue;
             }
+            $this->excludePaths[$i] .= '/';
         }
-        $this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
         foreach($this->includePaths as $i => $path)
         {
             if(!$this->includePaths[$i] = $path = realpath($path))
@@ -48,23 +42,18 @@ class FileMTime extends BaseMonitor
                 unset($this->includePaths[$i]);
                 continue;
             }
-            $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
-            $iterator = new \RecursiveIteratorIterator($directory);
-            if('' === $this->excludeRule)
+            foreach(File::enumFile($path) as $file)
             {
-                foreach($iterator as $fileName => $fileInfo)
+                $fullPath = $file->getFullPath();
+                foreach($this->excludePaths as $path)
                 {
-                    $this->parseInitFile($fileName);
+                    if(substr($fullPath, 0, strlen($path)) === $path)
+                    {
+                        $file->setContinue(false);
+                        continue 2;
+                    }
                 }
-            }
-            else
-            {
-                $rule = "/^(?!{$this->excludeRule}).+$/i";
-                $regex = new \RegexIterator($iterator, $rule, \RecursiveRegexIterator::GET_MATCH);
-                foreach ($regex as $item)
-                {
-                    $this->parseInitFile($item[0]);
-                }
+                $this->parseInitFile($fullPath);
             }
         }
     }
@@ -101,32 +90,21 @@ class FileMTime extends BaseMonitor
         // 包含的路径中检测
         foreach($this->includePaths as $path)
         {
-            $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
-            $iterator = new \RecursiveIteratorIterator($directory);
-            if('' === $this->excludeRule)
+            foreach(File::enumFile($path) as $file)
             {
-                // 无排除规则处理
-                foreach($iterator as $fileName => $fileInfo)
+                $fullPath = $file->getFullPath();
+                foreach($this->excludePaths as $path)
                 {
-                    if($this->parseCheckFile($fileName))
+                    if(substr($fullPath, 0, strlen($path)) === $path)
                     {
-                        $this->changedFiles[] = $fileName;
-                        $changed = true;
+                        $file->setContinue(false);
+                        continue 2;
                     }
                 }
-            }
-            else
-            {
-                // 有排除规则处理
-                $rule = "/^(?!{$this->excludeRule}).+$/i";
-                $regex = new \RegexIterator($iterator, $rule, \RecursiveRegexIterator::GET_MATCH);
-                foreach ($regex as $item)
+                if($this->parseCheckFile($fullPath))
                 {
-                    if($this->parseCheckFile($item[0]))
-                    {
-                        $this->changedFiles[] = $item[0];
-                        $changed = true;
-                    }
+                    $this->changedFiles[] = $fullPath;
+                    $changed = true;
                 }
             }
         }

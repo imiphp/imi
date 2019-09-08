@@ -8,7 +8,7 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
- * @Bean
+ * @Bean("TCPRouteMiddleware")
  */
 class RouteMiddleware implements IMiddleware
 {
@@ -32,11 +32,6 @@ class RouteMiddleware implements IMiddleware
         else
         {
             RequestContext::set('routeResult', $result);
-
-            $middlewares = $result->routeItem->middlewares;
-            $middlewares[] = ActionMiddleware::class;
-            $handler = new ReceiveHandler($middlewares);
-            return $handler->handle($data);
         }
         return $handler->handle($data);
     }

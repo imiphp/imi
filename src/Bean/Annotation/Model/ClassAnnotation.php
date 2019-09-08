@@ -4,6 +4,13 @@ namespace Imi\Bean\Annotation\Model;
 class ClassAnnotation
 {
     /**
+     * 类名
+     *
+     * @var string
+     */
+    private $className;
+
+    /**
      * 类注解列表
      *
      * @var \Imi\Bean\Annotation\Base[]
@@ -30,6 +37,11 @@ class ClassAnnotation
      * @var \Imi\Bean\Annotation\Base[]
      */
     private $constantAnnotations = [];
+
+    public function __construct($className)
+    {
+        $this->className = $className;
+    }
 
     /**
      * Get 类注解列表
@@ -152,6 +164,16 @@ class ClassAnnotation
         $this->constantAnnotations[$constantName] = array_merge($this->constantAnnotations[$constantName] ?? [], $constantAnnotations);
 
         return $this;
+    }
+
+    /**
+     * Get 类名
+     *
+     * @return string
+     */ 
+    public function getClassName()
+    {
+        return $this->className;
     }
 
 }

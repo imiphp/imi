@@ -212,44 +212,47 @@ abstract class Base
                 }
             });
 
-            if(
-                (!isset($this->config['configs']['enable_coroutine']) || $this->config['configs']['enable_coroutine'])
-                && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['task_enable_coroutine'])
+            if(0 !== ($this->config['configs']['task_worker_num'] ?? -1))
             {
-                $this->swooleServer->on('task', function(\Swoole\Server $server, \Swoole\Server\Task $task){
-                    try{
-                        Event::trigger('IMI.MAIN_SERVER.TASK', [
-                            'server'   => $this,
-                            'taskID'   => $task->id,
-                            'workerID' => $task->worker_id,
-                            'data'     => $task->data,
-                            'flags'    => $task->flags,
-                            'task'     => $task,
-                        ], $this, TaskEventParam::class);
-                    }
-                    catch(\Throwable $ex)
-                    {
-                        App::getBean('ErrorLog')->onException($ex);
-                    }
-                });
-            }
-            else
-            {
-                $this->swooleServer->on('task', function(\Swoole\Server $server, int $taskID, int $workerID, $data) {
-                    try
-                    {
-                        Event::trigger('IMI.MAIN_SERVER.TASK', [
-                            'server'   => $this,
-                            'taskID'   => $taskID,
-                            'workerID' => $workerID,
-                            'data'     => $data,
-                        ], $this, TaskEventParam::class);
-                    }
-                    catch (\Throwable $ex)
-                    {
-                        App::getBean('ErrorLog')->onException($ex);
-                    }
-                });
+                if(
+                    (!isset($this->config['configs']['enable_coroutine']) || $this->config['configs']['enable_coroutine'])
+                    && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['task_enable_coroutine'])
+                {
+                    $this->swooleServer->on('task', function(\Swoole\Server $server, \Swoole\Server\Task $task){
+                        try{
+                            Event::trigger('IMI.MAIN_SERVER.TASK', [
+                                'server'   => $this,
+                                'taskID'   => $task->id,
+                                'workerID' => $task->worker_id,
+                                'data'     => $task->data,
+                                'flags'    => $task->flags,
+                                'task'     => $task,
+                            ], $this, TaskEventParam::class);
+                        }
+                        catch(\Throwable $ex)
+                        {
+                            App::getBean('ErrorLog')->onException($ex);
+                        }
+                    });
+                }
+                else
+                {
+                    $this->swooleServer->on('task', function(\Swoole\Server $server, int $taskID, int $workerID, $data) {
+                        try
+                        {
+                            Event::trigger('IMI.MAIN_SERVER.TASK', [
+                                'server'   => $this,
+                                'taskID'   => $taskID,
+                                'workerID' => $workerID,
+                                'data'     => $data,
+                            ], $this, TaskEventParam::class);
+                        }
+                        catch (\Throwable $ex)
+                        {
+                            App::getBean('ErrorLog')->onException($ex);
+                        }
+                    });
+                }
             }
 
             $this->swooleServer->on('finish', function(\Swoole\Server $server, int $taskID, $data){

@@ -59,6 +59,94 @@ class QueryCurdTest extends BaseTest
         Assert::assertEquals(2, $record);
     }
 
+    public function testPaginate()
+    {
+        $expectedData = [
+            'list'  =>  [
+                [
+                    'id'        =>  '1',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+                [
+                    'id'        =>  '2',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+            ],
+            'limit'         =>  2,
+            'total'         =>  3,
+            'page_count'    =>  2,
+        ];
+        $query = Db::query();
+        $result = $query->from('tb_article')->paginate(1, 2);
+        $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
+        $this->assertEqualsCanonicalizing(json_encode($expectedData), json_encode($result));
+        $this->assertEqualsCanonicalizing([
+            [
+                'id'        =>  '1',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+            [
+                'id'        =>  '2',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+        ], $result->getList());
+        $this->assertEquals(3, $result->getTotal());
+        $this->assertEquals(2, $result->getLimit());
+        $this->assertEquals(2, $result->getPageCount());
+    }
+
+    public function testPaginateNoTotal()
+    {
+        $expectedData = [
+            'list'  =>  [
+                [
+                    'id'        =>  '1',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+                [
+                    'id'        =>  '2',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+            ],
+            'limit'         =>  2,
+        ];
+        $query = Db::query();
+        $result = $query->from('tb_article')->paginate(1, 2, [
+            'total' =>  false,
+        ]);
+        $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
+        $this->assertEqualsCanonicalizing(json_encode($expectedData), json_encode($result));
+        $this->assertEqualsCanonicalizing([
+            [
+                'id'        =>  '1',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+            [
+                'id'        =>  '2',
+                'title'     =>  'title',
+                'content'   =>  'content',
+                'time'      =>  '2019-06-21 00:00:00',
+            ],
+        ], $result->getList());
+        $this->assertNull($result->getTotal());
+        $this->assertEquals(2, $result->getLimit());
+        $this->assertNull($result->getPageCount());
+    }
+
     public function testInsert()
     {
         $data = [
@@ -156,14 +244,23 @@ class QueryCurdTest extends BaseTest
     public function testWhereEx()
     {
         $query = Db::query();
-        $record = $query->from('tb_article')->whereEx([
+        $result = $query->from('tb_article')->whereEx([
             'id'    =>  1,
-        ])->select()->get();
+            'and'   =>  [
+                'id'    =>  ['in', [1]],
+            ],
+        ])->select();
+        // 多条件SQL
+        Assert::assertEquals('select * from `tb_article` where (`id` = :p1 and (`id` in (:p2) ) )', $result->getSql());
+        // 查询记录
+        $record = $result->get();
         Assert::assertEquals([
             'id'        =>  '1',
             'title'     =>  'title',
             'content'   =>  'content',
             'time'      =>  '2019-06-21 00:00:00',
         ], $record);
+        // BUG: https://github.com/Yurunsoft/IMI/pull/25
+        Assert::assertEquals('select * from `tb_article`', Db::query()->from('tb_article')->whereEx([])->select()->getSql());
     }
 }

@@ -157,7 +157,7 @@ abstract class Imi
         if(isset($rule[0]) && '!' === $rule[0])
         {
             // 不等
-            return $value !== $rule;
+            return $value !== substr($rule, 1);
         }
         else
         {
@@ -497,7 +497,7 @@ abstract class Imi
             $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
-        $runtimeInfo->annotationParserData = [Annotation::getInstance()->getParser()->getClasses(), Annotation::getInstance()->getParser()->getFiles()];
+        $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getStoreData();
         $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
         $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
         $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();

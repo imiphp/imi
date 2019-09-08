@@ -88,4 +88,41 @@ abstract class ClassObject
     
         return $result;
     }
+
+    /**
+     * 获取一个类的所有子类
+     *
+     * @param string $class
+     * @param string[] $classList
+     * @return string[]
+     */
+    public static function getSubClasses($class, $classList = null)
+    {
+        $list = [];
+        foreach($classList ?? get_declared_classes() as $tClass)
+        {
+            if(is_subclass_of($tClass, $class))
+            {
+                $list[] = $tClass;
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * 判断某类是否在指定命名空间下
+     *
+     * @param string $namespace
+     * @param string $subClass
+     * @return void
+     */
+    public static function inNamespace($namespace, $class)
+    {
+        if('' !== $namespace && '\\' !== substr($namespace, -1, 1))
+        {
+            $namespace .= '\\';
+        }
+        return $namespace === substr($class, 0, strlen($namespace));
+    }
+
 }

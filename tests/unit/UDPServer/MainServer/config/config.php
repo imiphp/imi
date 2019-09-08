@@ -12,8 +12,17 @@ return [
         'UdpDispatcher'    =>    [
             'middlewares'    =>    [
                 \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
-                \Imi\Server\UdpServer\Middleware\ActionMiddleware::class,
+                \Imi\Test\UDPServer\MainServer\Middleware\Test::class,
             ],
+        ],
+        'ConnectContextStore'   =>  [
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        ],
+        'ConnectContextMemoryTable' =>  [
+            'tableName' =>  'connectContext',
+        ],
+        'ServerGroup'   =>  [
+            'status'    =>  false,
         ],
     ],
 ];

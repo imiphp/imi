@@ -33,6 +33,8 @@ class Dispatcher
 
     protected function getMiddlewares()
     {
-        return $this->middlewares;
+        return array_merge($this->middlewares, [
+            \Imi\Server\Http\Middleware\ActionWrapMiddleware::class,
+        ]);
     }
 }

@@ -32,7 +32,7 @@ $imi = new class{
             unset($fileName, $loader);
         }
 
-        Args::init(2);
+        Args::init(1);
 
         $namespace = Args::get('appNamespace');
         if(null === $namespace)

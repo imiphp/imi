@@ -3,10 +3,14 @@
 namespace <?= $namespace ?>\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Entity;
 
 /**
  * <?= $className ?>Base
+ * @Entity
+ * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?>)
 <?php foreach($fields as $field):?>
  * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= '' === $field['comment'] ? '' : $field['comment'] ?>
 
@@ -18,7 +22,13 @@ abstract class <?= $className ?>Base extends Model
     foreach($fields as $field):
 ?>
     /**
-     * <?= $field['name'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
+<?php if('' === $field['comment']):?>
+     * <?= $field['name'] ?>
+<?php else: ?>
+     * <?= $field['comment'] ?>
+
+     * <?= $field['name'] ?>
+<?php endif;?>
 
      * @Column(name="<?= $field['name'] ?>", type="<?= $field['type'] ?>", length=<?= $field['length'] ?>, accuracy=<?= $field['accuracy'] ?>, nullable=<?= json_encode($field['nullable']) ?>, default="<?= $field['default'] ?>", isPrimaryKey=<?= json_encode($field['isPrimaryKey']) ?>, primaryKeyIndex=<?= $field['primaryKeyIndex'] ?>, isAutoIncrement=<?= json_encode($field['isAutoIncrement']) ?>)
      * @var <?= $field['phpType'] ?>

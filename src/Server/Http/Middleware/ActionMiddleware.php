@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * @Bean
+ * @Bean("ActionMiddleware")
  */
 class ActionMiddleware implements MiddlewareInterface
 {
@@ -135,14 +135,26 @@ class ActionMiddleware implements MiddlewareInterface
                 // get
                 $result[] = $request->get($param->name);
             }
-            else if($param->isOptional())
-            {
-                // 方法默认值
-                $result[] = $param->getDefaultValue();
-            }
             else
             {
-                $result[] = null;
+                $parsedBody = $request->getParsedBody();
+                if(is_object($parsedBody) && isset($parsedBody->{$param->name}))
+                {
+                    $result[] = $parsedBody->{$param->name};
+                }
+                else if(is_array($parsedBody) && isset($parsedBody[$param->name]))
+                {
+                    $result[] = $parsedBody[$param->name];
+                }
+                else if($param->isOptional())
+                {
+                    // 方法默认值
+                    $result[] = $param->getDefaultValue();
+                }
+                else
+                {
+                    $result[] = null;
+                }
             }
         }
         return $result;

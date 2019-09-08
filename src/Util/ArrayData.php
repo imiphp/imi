@@ -121,7 +121,7 @@ class ArrayData implements \ArrayAccess, \Countable
                 return $default;
             }
         }
-        if (count($name) > 0)
+        if (isset($value))
         {
             return $result;
         }
@@ -208,9 +208,9 @@ class ArrayData implements \ArrayAccess, \Countable
         return $this->get($key);
     }
     
-    public function __set($key,$value)
+    public function __set($key, $value)
     {
-        $this->set($key,$value);
+        $this->set($key, $value);
     }
     
     public function __isset ($key)
@@ -223,7 +223,7 @@ class ArrayData implements \ArrayAccess, \Countable
         $this->remove($key);
     }
     
-    public function offsetSet($offset,$value)
+    public function offsetSet($offset, $value)
     {
         if (is_null($offset))
         {
@@ -231,7 +231,7 @@ class ArrayData implements \ArrayAccess, \Countable
         }
         else
         {
-            $this->setVal($offset,$value);
+            $this->setVal($offset, $value);
         }
     }
     

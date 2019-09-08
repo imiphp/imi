@@ -77,8 +77,11 @@ class Annotation
     private function loadModuleAnnotations($namespace)
     {
         $this->loader->loadModuleAnnotations($namespace, function($fileNamespace){
-            $this->parser->parse($fileNamespace);
-            $this->parser->execParse($fileNamespace);
+            if(!$this->parser->isParsed($fileNamespace))
+            {
+                $this->parser->parse($fileNamespace);
+                $this->parser->execParse($fileNamespace);
+            }
         });
     }
 

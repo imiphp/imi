@@ -8,7 +8,7 @@ use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
- * @Bean
+ * @Bean("TCPActionMiddleware")
  */
 class ActionMiddleware implements IMiddleware
 {

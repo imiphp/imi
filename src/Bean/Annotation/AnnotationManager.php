@@ -83,7 +83,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addClassAnnotations($annotations);
         foreach($annotations as $annotation)
@@ -125,7 +125,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addMethodAnnotations($methodName, $annotations);
         foreach($annotations as $annotation)
@@ -167,7 +167,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addpropertyAnnotations($propertyName, $annotations);
         foreach($annotations as $annotation)
@@ -209,7 +209,7 @@ abstract class AnnotationManager
     {
         if(!isset(static::$annotations[$className]))
         {
-            static::$annotations[$className] = new ClassAnnotation;
+            static::$annotations[$className] = new ClassAnnotation($className);
         }
         static::$annotations[$className]->addConstantAnnotations($constantName, $annotations);
         foreach($annotations as $annotation)
@@ -481,4 +481,44 @@ abstract class AnnotationManager
         }
         return $result;
     }
+
+    /**
+     * 清空类所有类、属性、方法、常量注解
+     *
+     * @param string $className
+     * @return void
+     */
+    public static function clearClassAllAnnotations($className)
+    {
+        if(isset(static::$annotations[$className]))
+        {
+            foreach(static::$annotations[$className]->getClassAnnotations() as $annotation)
+            {
+                static::$annotationRelation->removeClassRelation(get_class($annotation), $className);
+            }
+            foreach(static::$annotations[$className]->getMethodAnnotations() as $methodName => $annotations)
+            {
+                foreach($annotations as $annotation)
+                {
+                    static::$annotationRelation->removeMethodRelation(get_class($annotation), $className, $methodName);
+                }
+            }
+            foreach(static::$annotations[$className]->getPropertyAnnotations() as $propertyName => $annotations)
+            {
+                foreach($annotations as $annotation)
+                {
+                    static::$annotationRelation->removePropertyRelation(get_class($annotation), $className, $propertyName);
+                }
+            }
+            foreach(static::$annotations[$className]->getConstantAnnotations() as $constName => $annotations)
+            {
+                foreach($annotations as $annotation)
+                {
+                    static::$annotationRelation->removeConstantRelation(get_class($annotation), $className, $constName);
+                }
+            }
+            unset(static::$annotations[$className]);
+        }
+    }
+
 }

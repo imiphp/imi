@@ -12,6 +12,7 @@ return [
         'WebSocketDispatcher'    =>    [
             'middlewares'    =>    [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
+                \Imi\Test\WebSocketServer\MainServer\Middleware\Test::class,
             ],
         ],
         'GroupRedis'    =>    [
@@ -26,6 +27,12 @@ return [
         ],
         'ConnectContextRedis'    =>    [
             'redisPool'    =>    'redis',
+        ],
+        'ConnectContextStore'   =>  [
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        ],
+        'ConnectContextMemoryTable' =>  [
+            'tableName' =>  'connectContext',
         ],
     ],
 ];

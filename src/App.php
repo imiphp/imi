@@ -344,9 +344,7 @@ abstract class App
         static::$runtimeInfo = unserialize(file_get_contents($fileName));
         if(!$minimumAvailable)
         {
-            $data = static::$runtimeInfo->annotationParserData;
-            Annotation::getInstance()->getParser()->setClasses($data[0]);
-            Annotation::getInstance()->getParser()->setFiles($data[1]);
+            Annotation::getInstance()->getParser()->loadStoreData(static::$runtimeInfo->annotationParserData);
             Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
         }
         AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);

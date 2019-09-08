@@ -36,7 +36,25 @@ abstract class Tool
             }
             if(false === strpos($_SERVER['argv'][1], '/'))
             {
-                throw new \RuntimeException(sprintf('Tool name and operation not found!'));
+                if(Args::get('h'))
+                {
+                    echo '命令列表:', PHP_EOL, PHP_EOL;
+                    foreach(ToolParser::getInstance()->getData()['tool'] ?? [] as $tool => $operations)
+                    {
+                        foreach($operations as $operation => $callable)
+                        {
+                            $className = get_parent_class(App::getBean($callable[0]));
+                            $refClass = new \ReflectionClass($className);
+                            echo '[', $tool, '/', $operation, '] ', static::parseComment($refClass->getMethod($callable[1])->getDocComment()), PHP_EOL;
+                        }
+                    }
+                    echo PHP_EOL, '你可以运行: ', Imi::getImiCmd('xxx', 'xxx', ['h']), ' 查看参数列表', PHP_EOL;
+                    exit;
+                }
+                else
+                {
+                    throw new \RuntimeException(sprintf('Tool name and operation not found!'));
+                }
             }
             // 工具名/操作名
             list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);

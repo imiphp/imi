@@ -2,6 +2,7 @@
 namespace Imi\Test\TCPServer\MainServer\Controller;
 
 use Imi\ConnectContext;
+use Imi\RequestContext;
 use Imi\Server\Route\Annotation\Tcp\TcpRoute;
 use Imi\Server\Route\Annotation\Tcp\TcpAction;
 use Imi\Server\Route\Annotation\Tcp\TcpController;
@@ -23,7 +24,7 @@ class TestController extends \Imi\Controller\TcpController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->data->getFd());
-        return ['action'=>'login', 'success'=>true];
+        return ['action'=>'login', 'success'=>true, 'middlewareData' => RequestContext::get('middlewareData')];
     }
 
     /**

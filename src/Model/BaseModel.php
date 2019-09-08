@@ -34,7 +34,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * 驼峰缓存
      * @var array
      */
-    protected $__camelCache = [];
+    protected static $__camelCache = [];
 
     /**
      * 从存储中读取出来的原始数据
@@ -42,6 +42,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * @var array
      */
     protected $__originValues = [];
+
+    /**
+     * 方法引用
+     *
+     * @var array
+     */
+    protected static $__methodReference = [];
 
     public function __construct($data = [])
     {
@@ -113,7 +120,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
         if(method_exists($this, $methodName))
         {
-            $result = $this->$methodName();
+            $class = BeanFactory::getObjectClass($this);
+            if(!isset(self::$__methodReference[$class][$methodName]))
+            {
+                $refMethod = new \ReflectionMethod($this, $methodName);
+                self::$__methodReference[$class][$methodName] = $refMethod->returnsReference();
+            }
+            if(self::$__methodReference[$class][$methodName])
+            {
+                return $this->$methodName();
+            }
+            else
+            {
+                $result = $this->$methodName();
+            }
         }
         else
         {
@@ -152,7 +172,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                 || (($name = Text::toCamelName($offset)) && isset($extractProperties[$name]))
             )
             {
-                $this->parseExtractProperty($name, $extractProperties[$name]);
+                $this->__parseExtractProperty($name, $extractProperties[$name]);
             }
         }
 
@@ -295,13 +315,19 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected function __getCamelName($name)
     {
-        if(!isset($this->__camelCache[$name]))
+        if(!isset(self::$__camelCache[$name]))
         {
-            $this->__camelCache[$name] = Text::toCamelName($name);
+            self::$__camelCache[$name] = Text::toCamelName($name);
         }
-        return $this->__camelCache[$name];
+        return self::$__camelCache[$name];
     }
 
+    /**
+     * 获取字段名
+     *
+     * @param string $fieldName
+     * @return void
+     */
     protected function __getFieldName($fieldName)
     {
         if(false === $fieldName)
@@ -318,7 +344,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    protected function parseExtractProperty($propertyName, $annotations)
+    /**
+     * 处理导出属性
+     *
+     * @param string $propertyName
+     * @param \Imi\Model\Annotation\ExtractProperty[] $annotations
+     * @return void
+     */
+    protected function __parseExtractProperty($propertyName, $annotations)
     {
         foreach($annotations as $annotation)
         {

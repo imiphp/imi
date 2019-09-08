@@ -2,6 +2,7 @@
 namespace Imi\Test\UDPServer\MainServer\Controller;
 
 use Imi\ConnectContext;
+use Imi\RequestContext;
 use Imi\Server\Route\Annotation\Udp\UdpRoute;
 use Imi\Server\Route\Annotation\Udp\UdpAction;
 use Imi\Server\Route\Annotation\Udp\UdpController;
@@ -23,7 +24,8 @@ class TestController extends \Imi\Controller\UdpController
     {
         $data = $this->data->getFormatData();
         return [
-            'time'    =>    date($data->format, $data->time),
+            'time'              => date($data->format, $data->time),
+            'middlewareData'    => RequestContext::get('middlewareData'),
         ];
     }
 

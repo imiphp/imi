@@ -8,7 +8,7 @@ use Imi\Server\WebSocket\MessageHandler;
 use Imi\Server\WebSocket\IMessageHandler;
 
 /**
- * @Bean
+ * @Bean("WebSocketRouteMiddleware")
  */
 class RouteMiddleware implements IMiddleware
 {
@@ -32,11 +32,6 @@ class RouteMiddleware implements IMiddleware
         else
         {
             RequestContext::set('routeResult', $result);
-
-            $middlewares = $result->routeItem->middlewares;
-            $middlewares[] = ActionMiddleware::class;
-            $handler = new MessageHandler($middlewares);
-            return $handler->handle($frame);
         }
         return $handler->handle($frame);
     }

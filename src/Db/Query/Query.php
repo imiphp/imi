@@ -25,6 +25,7 @@ use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Builder\ReplaceBuilder;
 use Imi\Db\Query\Builder\BatchInsertBuilder;
+use Imi\Db\Query\Interfaces\IPaginateResult;
 
 /**
  * @Bean("Query")
@@ -102,7 +103,7 @@ class Query implements IQuery
 
     public function __init()
     {
-        $this->dbParamInc = 1;
+        $this->dbParamInc = 0;
         $this->option = new QueryOption;
         if(!$this->isInitQueryType)
         {
@@ -126,7 +127,7 @@ class Query implements IQuery
      */
     public function setOption(QueryOption $option)
     {
-        $this->dbParamInc = 1;
+        $this->dbParamInc = 0;
         $this->option = $option;
         return $this;
     }
@@ -308,6 +309,9 @@ class Query implements IQuery
      */
     public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND)
     {
+        if(!$condition){
+            return $this;
+        }
         $func = function($condition) use(&$func){
             $result = [];
             foreach($condition as $key => $value)
@@ -326,24 +330,28 @@ class Query implements IQuery
                                     throw new \RuntimeException('Between must have 3 params');
                                 }
                                 $result[] = new Where($key, 'between', [$value[1], $value[2]]);
+                                break;
                             case 'not between':
                                 if(!isset($value[2]))
                                 {
                                     throw new \RuntimeException('Not between must have 3 params');
                                 }
                                 $result[] = new Where($key, 'not between', [$value[1], $value[2]]);
+                                break;
                             case 'in':
                                 if(!isset($value[1]))
                                 {
                                     throw new \RuntimeException('In must have 3 params');
                                 }
                                 $result[] = new Where($key, 'in', $value[1]);
+                                break;
                             case 'not in':
                                 if(!isset($value[1]))
                                 {
                                     throw new \RuntimeException('Not in must have 3 params');
                                 }
                                 $result[] = new Where($key, 'not in', $value[1]);
+                                break;
                             default:
                                 $result[] = new Where($key, $operator, $value[1]);
                                 break;
@@ -855,6 +863,33 @@ class Query implements IQuery
             $this->queryType = QueryType::READ;
         }
         return $this->execute($sql);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param boolean $status 设置为true时，查询结果会返回为分页格式
+     * @param array $options
+     * @return \Imi\Db\Query\Interfaces\IPaginateResult
+     */
+    public function paginate($page, $count, $options = []): IPaginateResult
+    {
+        $this->page($page, $count);
+        $pagination = new Pagination($page, $count);
+        if($options['total'] ?? true)
+        {
+            $option = clone $this->option;
+            $queryType = $this->queryType;
+            $total = (int)$this->count();
+            $this->option = $option;
+            $this->queryType = $queryType;
+        }
+        else
+        {
+            $total = null;
+        }
+        $statement = $this->select();
+        return new PaginateResult($statement, $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
     }
 
     /**

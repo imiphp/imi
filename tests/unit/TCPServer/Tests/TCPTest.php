@@ -25,7 +25,7 @@ class TCPTest extends BaseTest
             $this->assertEquals(strlen($sendContent), $client->send($sendContent));
             $result = $client->recv();
             $errCode = (false === $result ? $client->errCode : '');
-            $this->assertEquals('{"action":"login","success":true}' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
+            $this->assertEquals('{"action":"login","success":true,"middlewareData":"imi"}' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
 
             $time = time();
             $sendContent = json_encode([
