@@ -83,7 +83,7 @@ class ErrorLog
     {
         try {
             $e = error_get_last();
-            if (in_array($e['type'], [
+            if ($e && in_array($e['type'], [
                 E_ERROR,
                 E_PARSE,
                 E_CORE_ERROR,
