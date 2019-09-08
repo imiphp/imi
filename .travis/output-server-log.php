@@ -6,6 +6,7 @@ $servers = [
     'RedisSessionServer',
     'TCPServer',
     'UDPServer',
+    'WebSocketServer',
 ];
 
 $date = date('Y-m-d');
