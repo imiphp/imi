@@ -15,6 +15,10 @@ class TCPTest extends BaseTest
     {
         $this->go(function(){
             $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
+            $client->set([
+                'open_eof_split' => true,
+                'package_eof' => "\r\n",
+            ]);
             $uri = new Uri($this->host);
             $this->assertTrue($client->connect($uri->getHost(), $uri->getPort(), 3));
             $name = 'imitest';
