@@ -12,7 +12,7 @@ $date = date('Y-m-d');
 
 foreach($servers as $server)
 {
-    $filename = $dir . $server . '/logs/' . $date . '.log';
+    $filename = $dir . $server . '/logs/cli.log';
     echo '[', $server, '] ', PHP_EOL, 'File: ', $filename, PHP_EOL;
     if(is_file($filename))
     {
