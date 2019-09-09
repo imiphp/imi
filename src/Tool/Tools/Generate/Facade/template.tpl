@@ -7,8 +7,8 @@ use Imi\Facade\Annotation\Facade;
 
 /**
  * <?=$facadeAnnotation?>
-
 <?php foreach($methods as $item):?>
+
  * <?=$item?>
 <?php endforeach;?>
 
