@@ -83,7 +83,7 @@ class FacadeGenerate
                 $params[] = ($param->hasType() ? $param->getType() : 'mixed') . ' $' . $param->getName();
             }
             $params = implode(', ', $params);
-            $methods[] = '@method ' . $returnType . ' ' . $method->getName() . '(' . $params . ')';
+            $methods[] = '@method static ' . $returnType . ' ' . $method->getName() . '(' . $params . ')';
         }
         $content = (function() use($namespace, $facadeAnnotation, $methods, $shortClassName){
             ob_start();
