@@ -59,33 +59,39 @@ class Server extends Base
     {
         $server = $this->swoolePort ?? $this->swooleServer;
 
-        $server->on('request', function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
-            try{
-                $request = new Request($this, $swooleRequest);
-                $response = new Response($this, $swooleResponse);
-                $this->trigger('request', [
-                    'request'   => &$request,
-                    'response'  => &$response,
-                ], $this, RequestEventParam::class);
-            }
-            catch(\Throwable $ex)
-            {
-                App::getBean('ErrorLog')->onException($ex);
-            }
-        });
+        if($event = ($this->config['events']['request'] ?? true))
+        {
+            $server->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+                try{
+                    $request = new Request($this, $swooleRequest);
+                    $response = new Response($this, $swooleResponse);
+                    $this->trigger('request', [
+                        'request'   => $request,
+                        'response'  => $response,
+                    ], $this, RequestEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
 
-        $server->on('close', function(\Swoole\Http\Server $server, $fd, $reactorID){
-            try{
-                $this->trigger('close', [
-                    'server'    => $this,
-                    'fd'        => $fd,
-                    'reactorID' => $reactorID,
-                ], $this, CloseEventParam::class);
-            }
-            catch(\Throwable $ex)
-            {
-                App::getBean('ErrorLog')->onException($ex);
-            }
-        });
+        if($event = ($this->config['events']['close'] ?? false))
+        {
+            $server->on('close', is_callable($event) ? $event : function(\Swoole\Http\Server $server, $fd, $reactorID){
+                try{
+                    $this->trigger('close', [
+                        'server'    => $this,
+                        'fd'        => $fd,
+                        'reactorID' => $reactorID,
+                    ], $this, CloseEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
     }
 }

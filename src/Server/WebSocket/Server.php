@@ -60,46 +60,55 @@ class Server extends Base
     {
         $server = $this->swoolePort ?? $this->swooleServer;
 
-        $server->on('handShake', function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
-            try{
-                $request = new Request($this, $swooleRequest);
-                $response = new Response($this, $swooleResponse);
-                $this->trigger('handShake', [
-                    'request'   => &$request,
-                    'response'  => &$response,
-                ], $this, HandShakeEventParam::class);
-            }
-            catch(\Throwable $ex)
-            {
-                App::getBean('ErrorLog')->onException($ex);
-            }
-        });
+        if($event = ($this->config['events']['handshake'] ?? true))
+        {
+            $server->on('handshake', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+                try{
+                    $request = new Request($this, $swooleRequest);
+                    $response = new Response($this, $swooleResponse);
+                    $this->trigger('handShake', [
+                        'request'   => &$request,
+                        'response'  => &$response,
+                    ], $this, HandShakeEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
 
-        $server->on('message', function (\Swoole\WebSocket\Server $server, \Swoole\WebSocket\Frame $frame) {
-            try{
-                $this->trigger('message', [
-                    'server'    => $this,
-                    'frame'     => $frame,
-                ], $this, MessageEventParam::class);
-            }
-            catch(\Throwable $ex)
-            {
-                App::getBean('ErrorLog')->onException($ex);
-            }
-        });
+        if($event = ($this->config['events']['message'] ?? true))
+        {
+            $server->on('message', is_callable($event) ? $event : function (\Swoole\WebSocket\Server $server, \Swoole\WebSocket\Frame $frame) {
+                try{
+                    $this->trigger('message', [
+                        'server'    => $this,
+                        'frame'     => $frame,
+                    ], $this, MessageEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
 
-        $server->on('close', function(\Swoole\Http\Server $server, $fd, $reactorID){
-            try{
-                $this->trigger('close', [
-                    'server'    => $this,
-                    'fd'        => $fd,
-                    'reactorID' => $reactorID,
-                ], $this, CloseEventParam::class);
-            }
-            catch(\Throwable $ex)
-            {
-                App::getBean('ErrorLog')->onException($ex);
-            }
-        });
+        if($event = ($this->config['events']['close'] ?? true))
+        {
+            $server->on('close', is_callable($event) ? $event : function(\Swoole\Http\Server $server, $fd, $reactorID){
+                try{
+                    $this->trigger('close', [
+                        'server'    => $this,
+                        'fd'        => $fd,
+                        'reactorID' => $reactorID,
+                    ], $this, CloseEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
     }
 }
