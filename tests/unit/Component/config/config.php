@@ -17,6 +17,7 @@ return [
         'Imi\Test\Component\Validate',
         'Imi\Test\Component\Inherit',
         'Imi\Test\Component\Util\Imi',
+        'Imi\Test\Component\Facade',
     ],
     'beans'    =>    [
         'TestPropertyClass' =>  [
