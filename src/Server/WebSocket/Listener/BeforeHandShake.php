@@ -31,11 +31,12 @@ class BeforeHandShake implements IHandShakeEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create();
-        RequestContext::set('server', $e->request->getServerInstance());
-        RequestContext::set('request', $e->request);
-        RequestContext::set('response', $e->response);
-        RequestContext::set('fd', $e->request->getSwooleRequest()->fd);
+        RequestContext::create([
+            'server'    =>  $e->request->getServerInstance(),
+            'request'   =>  $e->request,
+            'response'  =>  $e->response,
+            'fd'        =>  $e->request->getSwooleRequest()->fd,
+        ]);
 
         // 连接上下文创建
         ConnectContext::create();

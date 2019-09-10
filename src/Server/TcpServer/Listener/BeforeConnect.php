@@ -29,9 +29,10 @@ class BeforeConnect implements IConnectEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create();
-        RequestContext::set('server', $e->server);
-        RequestContext::set('fd', $e->fd);
+        RequestContext::create([
+            'server'    =>  $e->server,
+            'fd'        =>  $e->fd,
+        ]);
 
         // 连接上下文创建
         ConnectContext::create();

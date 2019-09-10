@@ -32,8 +32,9 @@ function imiCallable(callable $callable, bool $withGo = false)
     $resultCallable = function(...$args) use($callable, $server){
         if(!RequestContext::exists())
         {
-            RequestContext::create();
-            RequestContext::set('server', $server);
+            RequestContext::create([
+                'server'    =>  $server,
+            ]);
         }
         return $callable(...$args);
     };

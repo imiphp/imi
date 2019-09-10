@@ -29,9 +29,10 @@ class BeforePacket implements IPacketEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create();
-        RequestContext::set('clientInfo', $e->clientInfo);
-        RequestContext::set('server', $e->getTarget());
+        RequestContext::create([
+            'clientInfo'    =>  $e->clientInfo,
+            'server'        =>  $e->getTarget(),
+        ]);
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('UdpDispatcher');

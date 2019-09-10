@@ -44,8 +44,9 @@ class TcpRouteInit implements IEventListener
             {
                 continue;
             }
-            RequestContext::create();
-            RequestContext::set('server', $server);
+            RequestContext::create([
+                'server'    =>  $server,
+            ]);
             $route = $server->getBean('TcpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {

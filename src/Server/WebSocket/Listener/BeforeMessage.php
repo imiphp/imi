@@ -31,9 +31,10 @@ class BeforeMessage implements IMessageEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create();
-        RequestContext::set('fd', $e->frame->fd);
-        RequestContext::set('server', $e->getTarget());
+        RequestContext::create([
+            'fd'        =>  $e->frame->fd,
+            'server'    =>  $e->getTarget(),
+        ]);
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('WebSocketDispatcher');

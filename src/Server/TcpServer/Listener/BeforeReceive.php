@@ -31,9 +31,10 @@ class BeforeReceive implements IReceiveEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create();
-        RequestContext::set('fd', $e->fd);
-        RequestContext::set('server', $e->getTarget());
+        RequestContext::create([
+            'server'    =>  $e->getTarget(),
+            'fd'        =>  $e->fd,
+        ]);
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('TcpDispatcher');

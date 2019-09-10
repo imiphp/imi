@@ -13,14 +13,16 @@ abstract class RequestContext
 
     /**
      * 为当前请求创建上下文
+     * 
+     * @param array $data
      * @return void
      */
-    public static function create()
+    public static function create(array $data = [])
     {
         $coID = Coroutine::getuid();
         if(!isset(static::$context[$coID]))
         {
-            static::$context[$coID] = [];
+            static::$context[$coID] = $data;
             if($coID > -1)
             {
                 defer(function(){
@@ -103,6 +105,25 @@ abstract class RequestContext
             throw new RequestContextException('set context data failed, current context is not found');
         }
         static::$context[$coID][$name] = $value;
+    }
+
+    /**
+     * 批量设置上下文数据
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function muiltiSet(array $data)
+    {
+        $coID = Coroutine::getuid();
+        if(!isset(static::$context[$coID]))
+        {
+            throw new RequestContextException('set context data failed, current context is not found');
+        }
+        foreach($data as $k => $v)
+        {
+            static::$context[$coID][$k] = $v;
+        }
     }
 
     /**

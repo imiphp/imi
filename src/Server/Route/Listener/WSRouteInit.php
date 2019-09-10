@@ -44,8 +44,9 @@ class WSRouteInit implements IEventListener
             {
                 continue;
             }
-            RequestContext::create();
-            RequestContext::set('server', $server);
+            RequestContext::create([
+                'server'    =>  $server,
+            ]);
             $route = $server->getBean('WSRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {

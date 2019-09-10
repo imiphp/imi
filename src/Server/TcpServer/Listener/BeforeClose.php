@@ -25,8 +25,9 @@ class BeforeClose implements ICloseEventListener
         {
             RequestContext::create();
         }
-        RequestContext::set('fd', $e->fd);
-        RequestContext::set('server', $e->getTarget());
-        
+        RequestContext::muiltiSet([
+            'fd'        =>  $e->fd,
+            'server'    =>  $e->getTarget(),
+        ]);
     }
 }
