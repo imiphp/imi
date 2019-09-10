@@ -4,10 +4,12 @@ namespace Imi\Server\Http;
 use Imi\App;
 use Imi\Server\Base;
 use Imi\ServerManage;
+use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
+use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Event\Param\RequestEventParam;
 
 /**
@@ -57,6 +59,10 @@ class Server extends Base
      */
     protected function __bindEvents()
     {
+        // 内置事件监听
+        $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
+
+        // Swoole 服务器对象事件监听
         $server = $this->swoolePort ?? $this->swooleServer;
 
         if($event = ($this->config['events']['request'] ?? true))

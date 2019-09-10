@@ -6,9 +6,6 @@ use Imi\Pool\PoolManager;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 
-/**
- * @Listener("IMI.REQUEST_CONTENT.DESTROY")
- */
 class RequestContextDestroy implements IEventListener
 {
     /**

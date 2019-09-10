@@ -12,7 +12,6 @@ use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * request事件前置处理
- * @ClassEventListener(className="Imi\Server\Http\Server",eventName="request",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
 class BeforeRequest implements IRequestEventListener
 {

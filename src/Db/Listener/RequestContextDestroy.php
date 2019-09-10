@@ -8,9 +8,6 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Statement\StatementManager;
 
-/**
- * @Listener("IMI.REQUEST_CONTENT.DESTROY")
- */
 class RequestContextDestroy implements IEventListener
 {
     /**
