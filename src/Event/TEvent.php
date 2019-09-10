@@ -83,8 +83,37 @@ trait TEvent
      */
     public function trigger($name, $data = [], $target = null, $paramClass = EventParam::class)
     {
-        // ClassEventListener支持
-        $callbacks = $this->getTriggerCallbacks($name);
+        // 获取回调列表
+        if(!isset($this->eventQueue[$name]))
+        {
+            $classEventdata = ClassEventParser::getInstance()->getData();
+            if(empty($classEventdata) && empty($this->events[$name]))
+            {
+                return;
+            }
+            $this->rebuildEventQueue($name);
+            foreach($classEventdata as $className => $option)
+            {
+                if($this instanceof $className && isset($option[$name]))
+                {
+                    foreach($option[$name] as $callback)
+                    {
+                        // 数据映射
+                        $this->events[$name][] = $item = new EventItem($callback['className'], $callback['priority']);
+                        $this->eventQueue[$name]->insert($item, $callback['priority']);
+                    }
+                }
+            }
+        }
+        else if(empty($this->events[$name]))
+        {
+            return;
+        }
+        else if(isset($this->eventChangeRecords[$name]))
+        {
+            $this->rebuildEventQueue($name);
+        }
+        $callbacks = clone $this->eventQueue[$name];
         // 实例化参数
         $param = new $paramClass($name, $data, $target);
         $oneTimeCallbacks = [];
@@ -135,39 +164,6 @@ trait TEvent
             }
             $this->eventChangeRecords[$name] = true;
         }
-    }
-
-    /**
-     * 获取事件触发回调列表
-     *
-     * @param string $name
-     * @return \SplPriorityQueue
-     */
-    private function getTriggerCallbacks($name)
-    {
-        if(!isset($this->eventQueue[$name]))
-        {
-            $this->rebuildEventQueue($name);
-            $data = ClassEventParser::getInstance()->getData();
-            foreach($data as $className => $option)
-            {
-                if($this instanceof $className && isset($option[$name]))
-                {
-                    foreach($option[$name] as $callback)
-                    {
-                        // 数据映射
-                        $this->events[$name][] = $item = new EventItem($callback['className'], $callback['priority']);
-                        $this->eventQueue[$name]->insert($item, $callback['priority']);
-                    }
-                }
-            }
-        }
-        else if(isset($this->eventChangeRecords[$name]))
-        {
-            $this->rebuildEventQueue($name);
-        }
-        $callbacks = clone $this->eventQueue[$name];
-        return $callbacks;
     }
 
     /**
