@@ -8,6 +8,7 @@ use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\App;
 use Imi\Worker;
 use Imi\Util\Coroutine;
+use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * request事件前置处理
@@ -24,8 +25,9 @@ class BeforeRequest implements IRequestEventListener
     {
         if(!Worker::isWorkerStartAppComplete())
         {
-            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-            Coroutine::suspend();
+            $e->response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
+            $e->stopPropagation();
+            return;
         }
         
         // 上下文创建

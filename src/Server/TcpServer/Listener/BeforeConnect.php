@@ -24,8 +24,9 @@ class BeforeConnect implements IConnectEventListener
     {
         if(!Worker::isWorkerStartAppComplete())
         {
-            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-            Coroutine::suspend();
+            $e->server->getSwooleServer()->close($e->fd);
+            $e->stopPropagation();
+            return;
         }
         // 上下文创建
         RequestContext::create();

@@ -53,8 +53,6 @@ class BeforeWorkerStart implements IWorkerStartEventListener
             Imi::setProcessName('worker');
         }
 
-        $GLOBALS['WORKER_START_END_RESUME_COIDS'] = [];
-
         // 初始化 worker
         App::initWorker();
     }

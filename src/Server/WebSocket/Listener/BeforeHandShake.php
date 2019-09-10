@@ -26,8 +26,9 @@ class BeforeHandShake implements IHandShakeEventListener
     {
         if(!Worker::isWorkerStartAppComplete())
         {
-            $GLOBALS['WORKER_START_END_RESUME_COIDS'][] = Coroutine::getuid();
-            Coroutine::suspend();
+            $e->response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
+            $e->stopPropagation();
+            return;
         }
         // 上下文创建
         RequestContext::create();
