@@ -68,7 +68,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
         $this->get = $get;
         $this->post = $post;
         parent::__construct($uri, $headers, $body, $method, $version);
-        $this->parseParsedBody();
         $this->setUploadedFiles($this, $files);
     }
 
@@ -244,6 +243,43 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     public function getParsedBody()
     {
+        if(null === $this->parsedBody)
+        {
+            $contentType = $this->getHeaderLine(RequestHeader::CONTENT_TYPE);
+            // post
+            if('POST' === $this->method && in_array($contentType, [
+                MediaType::APPLICATION_FORM_URLENCODED,
+                MediaType::MULTIPART_FORM_DATA,
+            ]))
+            {
+                $this->parsedBody = $this->post;
+            }
+            // json
+            else if(in_array($contentType, [
+                MediaType::APPLICATION_JSON,
+                MediaType::APPLICATION_JSON_UTF8,
+            ]))
+            {
+                $this->parsedBody = json_decode($this->body, !Config::get('@currentServer.jsonBodyIsObject', false));
+            }
+            // xml
+            else if(in_array($contentType, [
+                MediaType::TEXT_XML,
+                MediaType::APPLICATION_ATOM_XML,
+                MediaType::APPLICATION_RSS_XML,
+                MediaType::APPLICATION_XHTML_XML,
+                MediaType::APPLICATION_XML,
+            ]))
+            {
+                $this->parsedBody = new \DOMDocument();
+                $this->parsedBody->loadXML($this->body);
+            }
+            // 其它
+            else
+            {
+                $this->parsedBody = (object)(string)$this->body;
+            }
+        }
         return $this->parsedBody;
     }
 
@@ -385,48 +421,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
             $object->files[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
         }
         return $object;
-    }
-
-    /**
-     * 处理处理后的主体内容
-     * @return void
-     */
-    protected function parseParsedBody()
-    {
-        $contentType = $this->getHeaderLine(RequestHeader::CONTENT_TYPE);
-        // post
-        if('POST' === $this->method && in_array($contentType, [
-            MediaType::APPLICATION_FORM_URLENCODED,
-            MediaType::MULTIPART_FORM_DATA,
-        ]))
-        {
-            $this->parsedBody = $this->post;
-        }
-        // json
-        else if(in_array($contentType, [
-            MediaType::APPLICATION_JSON,
-            MediaType::APPLICATION_JSON_UTF8,
-        ]))
-        {
-            $this->parsedBody = json_decode($this->body, !Config::get('@currentServer.jsonBodyIsObject', false));
-        }
-        // xml
-        else if(in_array($contentType, [
-            MediaType::TEXT_XML,
-            MediaType::APPLICATION_ATOM_XML,
-            MediaType::APPLICATION_RSS_XML,
-            MediaType::APPLICATION_XHTML_XML,
-            MediaType::APPLICATION_XML,
-        ]))
-        {
-            $this->parsedBody = new \DOMDocument();
-            $this->parsedBody->loadXML($this->body);
-        }
-        // 其它
-        else
-        {
-            $this->parsedBody = (object)(string)$this->body;
-        }
     }
 
     /**

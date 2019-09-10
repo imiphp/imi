@@ -91,26 +91,28 @@ class Uri implements UriInterface
      */
     public static function makeUriString($host, $path, $query = '', $port = null, $scheme = 'http', $fragment = '', $userInfo = '')
     {
-        $uri = '';
         // 协议
         if('' !== $scheme)
         {
-            $uri = $scheme . '://';
+            $scheme .= '://';
         }
         // 用户信息
         if('' !== $userInfo)
         {
-            $uri .= $userInfo . '@';
+            $userInfo .= '@';
         }
-        // 主机+端口
-        $uri .= $host. (null === $port ? '' : (':' . $port));
+        // 端口
+        if(null !== $port)
+        {
+            $port = ':' . $port;
+        }
         // 路径
-        $uri .= '/' . ltrim($path, '/');
+        $path = '/' . ltrim($path, '/');
         // 查询参数
-        $uri .= ('' === $query ? '' : ('?' . $query));
+        $query = ('' === $query ? '' : ('?' . $query));
         // 锚点
-        $uri .= ('' === $fragment ? '' : ('#' . $fragment));
-        return $uri;
+        $fragment = ('' === $fragment ? '' : ('#' . $fragment));
+        return "{$scheme}{$userInfo}{$host}{$port}{$path}{$query}{$fragment}";
     }
 
     /**

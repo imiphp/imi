@@ -206,7 +206,7 @@ abstract class AbstractMessage implements MessageInterface
     public function withHeader($name, $value)
     {
         $self = clone $this;
-        return $this->setHeader($self, $name, $value);
+        return $this->setHeaders([$name=>$value], $self);
     }
 
     /**
@@ -321,45 +321,37 @@ abstract class AbstractMessage implements MessageInterface
      * @param array $headers
      * @return static
      */
-    protected function setHeaders(array $headers)
+    protected function setHeaders(array $headers, self $object = null)
     {
+        if(null === $object)
+        {
+            $object = $this;
+        }
         foreach($headers as $name => $value)
         {
-            $this->setHeader($this, $name, $value);
-        }
-        return $this;
-    }
-
-    /**
-     * 设置header
-     * @param AbstractMessage $object
-     * @param string $name
-     * @param string $value
-     * @return static
-     */
-    protected function setHeader($object, $name, $value)
-    {
-        $lowerName = strtolower($name);
-        if(isset($object->headerNames[$lowerName]))
-        {
-            $name = $object->headerNames[$lowerName];
-        }
-        else
-        {
-            $object->headerNames[$lowerName] = $name;
-        }
-        if(is_string($value))
-        {
-            $object->headers[$name] = [$value];
-        }
-        else if(is_array($value))
-        {
-            $object->headers[$name] = $value;
-        }
-        else
-        {
-            throw new \InvalidArgumentException('invalid header names or values');
+            $lowerName = strtolower($name);
+            if(isset($object->headerNames[$lowerName]))
+            {
+                $name = $object->headerNames[$lowerName];
+            }
+            else
+            {
+                $object->headerNames[$lowerName] = $name;
+            }
+            if(is_string($value))
+            {
+                $object->headers[$name] = [$value];
+            }
+            else if(is_array($value))
+            {
+                $object->headers[$name] = $value;
+            }
+            else
+            {
+                throw new \InvalidArgumentException('invalid header names or values');
+            }
         }
         return $object;
     }
+
 }
