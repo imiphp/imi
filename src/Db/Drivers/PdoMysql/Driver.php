@@ -231,7 +231,7 @@ class Driver extends Base implements IDb
         else
         {
             $errorInfo = $this->instance->errorInfo();
-            return !isset($errorInfo[0]) || 0 == $errorInfo[0] ? '' : implode(' ', $errorInfo);
+            return $errorInfo[1] . ':' . $errorInfo[2];
         }
     }
 
@@ -322,7 +322,7 @@ class Driver extends Base implements IDb
             $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
             if(false === $this->lastStmt)
             {
-                throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
+                throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
             $stmt = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
             if($isCache)
@@ -354,7 +354,7 @@ class Driver extends Base implements IDb
         $this->lastStmt = $this->instance->query($sql);
         if(false === $this->lastStmt)
         {
-            throw new DbException('sql prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
+            throw new DbException('SQL prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
         }
         return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
     }

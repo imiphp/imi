@@ -130,7 +130,7 @@ class Statement extends BaseStatement implements IStatement
     public function errorInfo(): string
     {
         $errorInfo = $this->statement->errorInfo();
-        return !isset($errorInfo[0]) || 0 == $errorInfo[0] ? '' : implode(' ', $errorInfo);
+        return $errorInfo[1] . ':' . $errorInfo[2];
     }
 
     /**
