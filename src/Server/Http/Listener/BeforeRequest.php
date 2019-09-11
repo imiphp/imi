@@ -22,22 +22,29 @@ class BeforeRequest implements IRequestEventListener
      */
     public function handle(RequestEventParam $e)
     {
-        if(!Worker::isWorkerStartAppComplete())
-        {
-            $e->response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
-            $e->stopPropagation();
-            return;
-        }
-        
-        // 上下文创建
-        RequestContext::create([
-            'server'    =>  $e->request->getServerInstance(),
-            'request'   =>  $e->request,
-            'response'  =>  $e->response,
-        ]);
+        try {
+            if(!Worker::isWorkerStartAppComplete())
+            {
+                $e->response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
+                $e->stopPropagation();
+                return;
+            }
+            
+            // 上下文创建
+            RequestContext::create([
+                'server'    =>  $e->request->getServerInstance(),
+                'request'   =>  $e->request,
+                'response'  =>  $e->response,
+            ]);
 
-        // 中间件
-        $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $dispatcher->dispatch($e->request, $e->response);
+            // 中间件
+            $dispatcher = RequestContext::getServerBean('HttpDispatcher');
+            $dispatcher->dispatch($e->request, $e->response);
+        } catch(\Throwable $th) {
+            if(true !== App::getBean('HttpErrorHandler')->handle($th))
+            {
+                throw $th;
+            }
+        }
     }
 }
