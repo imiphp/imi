@@ -34,7 +34,7 @@ class RouteMiddleware implements MiddlewareInterface
         if(null === $result || !is_callable($result->callable))
         {
             // 未匹配到路由
-            $response = App::getBean('HttpNotFoundHandler')->handle($request, RequestContext::get('response'));
+            $response = App::getBean('HttpNotFoundHandler')->handle($handler, $request, RequestContext::get('response'));
             return $response;
         }
         else
