@@ -40,7 +40,8 @@ class ViewParser extends BaseParser
     {
         if(!is_array($callable))
         {
-            return null;
+            $view = new View();
+            return $view;
         }
         list($object, $methodName) = $callable;
         if($object instanceof IBean)
