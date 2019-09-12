@@ -90,3 +90,20 @@ class Test extends WebSocketController
 
 如上代码，同时支持设置单个和多个中间件
 
+### 中间件分组
+
+服务器 config.php：
+
+```php
+return [
+	'middleware'    =>  [
+        'groups'    =>  [
+			// 组名
+            'test'  =>  [
+				// 中间件列表
+                \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
+            ],
+        ],
+    ],
+];
+```

@@ -121,3 +121,21 @@ class Index extends HttpController
 	],
 ],
 ```
+
+#### 中间件分组
+
+服务器 config.php：
+
+```php
+return [
+	'middleware'    =>  [
+        'groups'    =>  [
+			// 组名
+            'test'  =>  [
+				// 中间件列表
+                \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
+            ],
+        ],
+    ],
+];
+```
