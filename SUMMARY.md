@@ -84,6 +84,7 @@
   * [RedisHash](components/cache/redisHash.md)
 * [日志](components/log/index.md)
 * [验证器](components/validation/index.md)
+* [门面 (Facade)](components/facade/index.md)
 * [Lock 锁](components/lock/index.md)
   * [使用方法](components/lock/index.md)
   * [RedisLock](components/lock/redis.md)
