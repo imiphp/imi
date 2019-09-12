@@ -13,6 +13,7 @@ use Imi\Server\Route\Annotation\Tcp\TcpRoute;
 use Imi\Server\Route\Annotation\Tcp\TcpAction;
 use Imi\Server\Route\Parser\TcpControllerParser;
 use Imi\Server\Route\Annotation\Tcp\TcpMiddleware;
+use Imi\Server\Route\TMiddleware;
 
 /**
  * TCP 服务器路由初始化
@@ -20,6 +21,8 @@ use Imi\Server\Route\Annotation\Tcp\TcpMiddleware;
  */
 class TcpRouteInit implements IEventListener
 {
+    use TMiddleware;
+
     /**
      * 事件处理方法
      * @param EventParam $e
@@ -54,14 +57,7 @@ class TcpRouteInit implements IEventListener
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
                 {
-                    if(is_array($middleware->middlewares))
-                    {
-                        $classMiddlewares = array_merge($classMiddlewares, $middleware->middlewares);
-                    }
-                    else
-                    {
-                        $classMiddlewares[] = $middleware->middlewares;
-                    }
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares));
                 }
                 foreach(AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
                 {
@@ -74,14 +70,7 @@ class TcpRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach(AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
                     {
-                        if(is_array($middleware->middlewares))
-                        {
-                            $methodMiddlewares = array_merge($methodMiddlewares, $middleware->middlewares);
-                        }
-                        else
-                        {
-                            $methodMiddlewares[] = $middleware->middlewares;
-                        }
+                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares));
                     }
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));

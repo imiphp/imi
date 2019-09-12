@@ -45,4 +45,11 @@ return [
             ],
         ]
     ],
+    'middleware'    =>  [
+        'groups'    =>  [
+            'test'  =>  [
+                \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
+            ],
+        ],
+    ],
 ];

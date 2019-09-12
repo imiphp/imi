@@ -155,6 +155,7 @@ class IndexController extends HttpController
      *  \Imi\Test\HttpServer\ApiServer\Middleware\Middleware2::class,
      *  \Imi\Test\HttpServer\ApiServer\Middleware\Middleware3::class
      * })
+     * @Middleware("@test")
      *
      * @return void
      */

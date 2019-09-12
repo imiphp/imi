@@ -16,6 +16,7 @@ use Imi\Server\Route\Annotation\Middleware;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\WebSocket\WSConfig;
 use Imi\RequestContext;
+use Imi\Server\Route\TMiddleware;
 
 /**
  * http服务器路由初始化
@@ -23,6 +24,8 @@ use Imi\RequestContext;
  */
 class HttpRouteInit implements IEventListener
 {
+    use TMiddleware;
+
     /**
      * 事件处理方法
      * @param EventParam $e
@@ -58,14 +61,7 @@ class HttpRouteInit implements IEventListener
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, Middleware::class) ?? [] as $middleware)
                 {
-                    if(is_array($middleware->middlewares))
-                    {
-                        $classMiddlewares = array_merge($classMiddlewares, $middleware->middlewares);
-                    }
-                    else
-                    {
-                        $classMiddlewares[] = $middleware->middlewares;
-                    }
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares));
                 }
                 foreach(AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $actionAnnotations)
                 {
@@ -86,14 +82,7 @@ class HttpRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach(AnnotationManager::getMethodAnnotations($className, $methodName, Middleware::class) ?? [] as $middleware)
                     {
-                        if(is_array($middleware->middlewares))
-                        {
-                            $methodMiddlewares = array_merge($methodMiddlewares, $middleware->middlewares);
-                        }
-                        else
-                        {
-                            $methodMiddlewares[] = $middleware->middlewares;
-                        }
+                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares));
                     }
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));

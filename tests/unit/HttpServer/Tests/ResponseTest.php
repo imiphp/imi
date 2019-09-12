@@ -24,6 +24,7 @@ class ResponseTest extends BaseTest
         $this->assertEquals('1', $response->getHeaderLine('imi-middleware-1'));
         $this->assertEquals('2', $response->getHeaderLine('imi-middleware-2'));
         $this->assertEquals('3', $response->getHeaderLine('imi-middleware-3'));
+        $this->assertEquals('4', $response->getHeaderLine('imi-middleware-4'));
     }
 
     /**
