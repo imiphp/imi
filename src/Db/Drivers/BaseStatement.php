@@ -14,7 +14,7 @@ abstract class BaseStatement implements IStatement
      */
     public function close()
     {
-        StatementManager::remove($this->getDb(), $this->getSql());
+        StatementManager::remove($this);
     }
 
 }

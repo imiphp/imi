@@ -76,25 +76,15 @@ abstract class StatementManager
     }
 
     /**
-     * 将statement设为可用
+     * 将连接中对应sql的statement设为可用
      *
      * @param IStatement $statement
      * @return void
      */
-    public static function unUsingStatement(IStatement $statement)
+    public static function unUsing(IStatement $statement)
     {
-        return static::unUsing($statement->getDb(), $statement->getSql());
-    }
-
-    /**
-     * 将连接中对应sql的statement设为可用
-     *
-     * @param IDb $db
-     * @param string $sql
-     * @return void
-     */
-    public static function unUsing(IDb $db, string $sql)
-    {
+        $db = $statement->getDb();
+        $sql = $statement->getSql();
         $hashCode = $db->hashCode();
         if(isset(static::$statements[$hashCode][$sql]))
         {
@@ -160,13 +150,14 @@ abstract class StatementManager
     /**
      * 移除连接中对应sql的statement
      *
-     * @param IDb $db
-     * @param string $sql
+     * @param IStatement $statement
      * @return void
      */
-    public static function remove(IDb $db, string $sql)
+    public static function remove(IStatement $statement)
     {
-        static::unUsing($db, $sql);
+        $db = $statement->getDb();
+        $sql = $statement->getSql();
+        static::unUsing($statement);
         $hashCode = $db->hashCode();
         if(isset(static::$statements[$hashCode][$sql]))
         {
@@ -242,7 +233,7 @@ abstract class StatementManager
         $statementCaches = RequestContext::get('statementCaches', []);
         foreach($statementCaches as $statement)
         {
-            static::unUsingStatement($statement);
+            static::unUsing($statement);
         }
     }
 

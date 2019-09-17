@@ -3,6 +3,7 @@ namespace Imi\Db\Drivers\PdoMysql;
 
 use Imi\Db\Drivers\Base;
 use Imi\Bean\BeanFactory;
+use Imi\Config;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
@@ -45,6 +46,13 @@ class Driver extends Base implements IDb
     protected $lastStmt;
 
     /**
+     * 是否缓存 Statement
+     *
+     * @var bool
+     */
+    protected $isCacheStatement;
+
+    /**
      * 参数格式：
      * [
      * 'host'       => 'MySQL IP地址',
@@ -73,6 +81,7 @@ class Driver extends Base implements IDb
         {
             $this->option['options'] = [];
         }
+        $this->isCacheStatement = Config::get('@app.db.statement.cache', true);;
     }
 
     public function __destruct()
@@ -304,15 +313,7 @@ class Driver extends Base implements IDb
      */
     public function prepare(string $sql, array $driverOptions = [])
     {
-        if(isset($driverOptions['IMI_NO_CACHE']))
-        {
-            $isCache = $driverOptions['IMI_NO_CACHE'];
-        }
-        else
-        {
-            $isCache = !isset($this->option['IMI_NO_CACHE']) || $this->option['IMI_NO_CACHE'];
-        }
-        if($isCache && $stmtCache = StatementManager::get($this, $sql))
+        if($this->isCacheStatement && $stmtCache = StatementManager::get($this, $sql))
         {
             $stmt = $stmtCache['statement'];
         }
@@ -325,12 +326,12 @@ class Driver extends Base implements IDb
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
             $stmt = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
-            if($isCache)
+            if($this->isCacheStatement)
             {
                 $stmtCache = StatementManager::get($this, $sql);
                 if($stmtCache)
                 {
-                    StatementManager::unUsingStatement($stmtCache['statement']);
+                    StatementManager::unUsing($stmtCache['statement']);
                 }
                 else
                 {

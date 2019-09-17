@@ -60,7 +60,7 @@ class Result implements IResult
 
     public function __destruct()
     {
-        StatementManager::unUsingStatement($this->statement);
+        StatementManager::unUsing($this->statement);
     }
 
     /**
