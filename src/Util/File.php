@@ -129,9 +129,9 @@ abstract class File
 
     /**
      * 创建一个目录
-     * author:lovefc
-     * @param $dir 目录路径
-     * @param $mode 目录的权限
+     * 
+     * @param string $dir 目录路径
+     * @param int $mode 目录的权限
      * @return false|true
      */
     public static function createDir($dir, $mode = 0775)
@@ -159,12 +159,13 @@ abstract class File
 
     /**
      * 创建一个文件
-     * author:lovefc
-     * @param $dir 文件路径
-     * @param $mode 文件的权限
+     * 
+     * @param string $dir 文件路径
+     * @param string $content
+     * @param int $mode 文件的权限
      * @return false|true
      */
-    public static function createFile($file, $mode = 0775)
+    public static function createFile($file, $content = '', $mode = 0775)
     {
         if (empty($file))
         {
@@ -179,6 +180,10 @@ abstract class File
         $fh = @fopen($file, 'a');
         if ($fh)
         {
+            if('' !== $content)
+            {
+                fwrite($fh, $content);
+            }
             fclose($fh);
             return true;
         }
