@@ -9,12 +9,16 @@ abstract class ConnectContext
      * 为当前连接创建上下文
      * @return void
      */
-    public static function create()
+    public static function create(array $data = [])
     {
         $data = static::get();
         if(!$data && $fd = RequestContext::get('fd'))
         {
-            static::set('fd', $fd, $fd);
+            static::use(function($contextData) use($data, $fd){
+                $contextData = $data;
+                $contextData['fd'] = $fd;
+                return $contextData;
+            }, $fd);
         }
     }
 
@@ -92,6 +96,34 @@ abstract class ConnectContext
         $result = $store->lock(function() use($store, $name, $value, $fd){
             $data = $store->read($fd);
             $data[$name] = $value;
+            $store->save($fd, $data);
+        });
+        if(!$result)
+        {
+            throw new \RuntimeException('ConnectContext lock fail');
+        }
+    }
+
+    /**
+     * 批量设置上下文数据
+     *
+     * @param array $data
+     * @param int|null $fd
+     * @return void
+     */
+    public static function muiltiSet(array $data, $fd = null)
+    {
+        if(!$fd)
+        {
+            $fd = RequestContext::get('fd');
+        }
+        $store = RequestContext::getServerBean('ConnectContextStore');
+        $result = $store->lock(function() use($store, $data, $fd){
+            $data = $store->read($fd);
+            foreach($data as $name => $value)
+            {
+                $data[$name] = $value;
+            }
             $store->save($fd, $data);
         });
         if(!$result)
