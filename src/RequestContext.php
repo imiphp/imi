@@ -127,6 +127,22 @@ abstract class RequestContext
     }
 
     /**
+     * 使用回调来使用当前请求上下文数据
+     *
+     * @param callable $callback
+     * @return mixed
+     */
+    public static function use(callable $callback)
+    {
+        $coID = Coroutine::getuid();
+        if(!isset(static::$context[$coID]))
+        {
+            throw new RequestContextException('set context data failed, current context is not found');
+        }
+        return $callback(static::$context[$coID]);
+    }
+
+    /**
      * 获取当前上下文
      * @return array
      */
