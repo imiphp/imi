@@ -40,16 +40,13 @@ abstract class ConnectContext
      */
     public static function exists($fd = null)
     {
-        if(RequestContext::exists())
-        {
+        try {
             if(!$fd)
             {
                 $fd = RequestContext::get('fd');
             }
             return isset(static::$context[$fd]) || RequestContext::getServerBean('ConnectContextStore')->exists($fd);
-        }
-        else
-        {
+        } catch(\Imi\Exception\RequestContextException $e) {
             return false;
         }
     }

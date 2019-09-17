@@ -1,6 +1,7 @@
 <?php
 namespace Imi;
 
+use Imi\Exception\RequestContextException;
 use Imi\Util\Imi;
 use Imi\Main\Helper;
 use Imi\Util\ArrayData;
@@ -133,7 +134,13 @@ abstract class Config
             $first = array_shift($names);
             if('@currentServer' === $first)
             {
-                if($isCurrentServer = (RequestContext::exists() && null !== ($server = RequestContext::getServer())))
+                try {
+                    $server = RequestContext::getServer();
+                    $isCurrentServer = null !== $server;
+                } catch(RequestContextException $e) {
+                    $isCurrentServer = false;
+                }
+                if($isCurrentServer)
                 {
                     $first = '@server';
                     array_unshift($names, $server->getName());
