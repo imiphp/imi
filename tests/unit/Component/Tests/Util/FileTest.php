@@ -212,4 +212,20 @@ class FileTest extends BaseTest
         $this->assertFalse(is_dir($path));
     }
 
+    /**
+     * @testdox putContents
+     *
+     * @return void
+     */
+    public function testPutContents()
+    {
+        $path = Imi::getRuntimePath('test/test');
+        $this->assertFalse(is_dir($path));
+        $content = uniqid();
+        $fileName = $path . '/a/b/c/1.txt';
+        $this->assertTrue(false !== File::putContents($fileName, $content));
+        $this->assertEquals($content, file_get_contents($fileName));
+        File::deleteDir($path . '/a/b/c');
+    }
+
 }

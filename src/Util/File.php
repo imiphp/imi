@@ -257,4 +257,24 @@ abstract class File
         }
     }
 
+    /**
+     * 写入内容到文件
+     * 如果目录不存在自动创建多级目录
+     *
+     * @param string $fileName
+     * @param mixed $data
+     * @param integer $flags
+     * @param resource $context
+     * @return int|false
+     */
+    public static function putContents($fileName, $data, $flags = 0, $context = null)
+    {
+        $dir = dirname($fileName);
+        if(!is_dir($dir) && !static::createDir($dir))
+        {
+            throw new \RuntimeException(sprintf('Create dir %s failed', $dir));
+        }
+        return file_put_contents($fileName, $data, $flags, $context);
+    }
+
 }
