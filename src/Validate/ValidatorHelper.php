@@ -151,8 +151,7 @@ class ValidatorHelper
     
     /**
      * 检测邮箱格式
-     * @access public static
-     * @param $email
+     * @param string $email
      * @return bool
      */
     public static function email($email)
@@ -162,7 +161,6 @@ class ValidatorHelper
     
     /**
      * 检测中国手机号码格式
-     * @access public static
      * @param string $str
      * @return bool
      */
@@ -173,7 +171,6 @@ class ValidatorHelper
     
     /**
      * 检测中国电话号码格式，支持400、800等
-     * @access public static
      * @param string $str
      * @return bool
      */
@@ -184,8 +181,7 @@ class ValidatorHelper
 
     /**
      * 检测中国手机电话号码格式
-     * @access public static
-     * @param $str
+     * @param string $str
      * @return bool
      */
     public static function mobile($str)
@@ -205,7 +201,6 @@ class ValidatorHelper
     
     /**
      * 检测中国邮政编码
-     * @access public static
      * @param string $str
      * @return bool
      */
@@ -216,7 +211,6 @@ class ValidatorHelper
     
     /**
      * 检测URL地址
-     * @access public static
      * @param string $str
      * @return bool
      */
@@ -227,7 +221,6 @@ class ValidatorHelper
     
     /**
      * 检测QQ号是否符合规则
-     * @access public static
      * @param string $str
      * @return bool
      */
@@ -473,7 +466,6 @@ class ValidatorHelper
 
     /**
      * 检测中国居民身份证，支持15位和18位
-     * @access public static
      * @param string $id_card
      * @return bool
      */
