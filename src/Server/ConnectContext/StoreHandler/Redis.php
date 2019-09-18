@@ -102,7 +102,8 @@ class Redis implements IHandler
         {
             throw new \RuntimeException('ConnectContextRedis lockId must be set');
         }
-        if(0 === Worker::getWorkerID())
+        $workerId = Worker::getWorkerID();
+        if(0 === $workerId)
         {
             $this->useRedis(function($resource, $redis){
                 // 判断master进程pid
@@ -138,7 +139,7 @@ class Redis implements IHandler
             });
             AtomicManager::wakeup('imi.ConnectContextRedisLock', Worker::getWorkerNum());
         }
-        else
+        else if($workerId > 0)
         {
             AtomicManager::wait('imi.ConnectContextRedisLock');
         }

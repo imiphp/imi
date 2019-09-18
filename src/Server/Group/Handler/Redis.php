@@ -83,7 +83,8 @@ class Redis implements IGroupHandler
         {
             return;
         }
-        if(0 === Worker::getWorkerID())
+        $workerId = Worker::getWorkerID();
+        if(0 === $workerId)
         {
             $this->useRedis(function($resource, $redis){
                 // 判断master进程pid
@@ -119,7 +120,7 @@ class Redis implements IGroupHandler
             });
             AtomicManager::wakeup('imi.GroupRedisLock', Worker::getWorkerNum());
         }
-        else
+        else if($workerId > 0)
         {
             AtomicManager::wait('imi.GroupRedisLock');
         }
