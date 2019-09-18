@@ -142,7 +142,14 @@ class HttpRoute
                         $this->checkRequestMime($request, $item->annotation->requestMime)
                     )
                     {
-                        $params = array_merge($result->params, $domainParams);
+                        if([] === $domainParams)
+                        {
+                            $params = $result->params;
+                        }
+                        else
+                        {
+                            $params = array_merge($result->params, $domainParams);
+                        }
                         return new RouteResult(clone $item, $result, $params);
                     }
                 }

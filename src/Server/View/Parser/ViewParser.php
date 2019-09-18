@@ -19,6 +19,13 @@ class ViewParser extends BaseParser
     use TServerAnnotationParser;
     
     /**
+     * 视图注解缓存
+     *
+     * @var \Imi\Server\View\Annotation\View[]
+     */
+    private $viewCache = [];
+
+    /**
      * 处理方法
      * @param \Imi\Bean\Annotation\Base $annotation 注解类
      * @param string $className 类名
@@ -52,44 +59,47 @@ class ViewParser extends BaseParser
         {
             $className = get_class($object);
         }
-        $shortClassName = Imi::getClassShortName($className);
-        
-        $isClassView = false;
-        $view = AnnotationManager::getMethodAnnotations($className, $methodName, View::class)[0] ?? null;
-        if(null === $view)
+        if(!isset($this->viewCache[$className][$methodName]))
         {
-            $view = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
+            $shortClassName = Imi::getClassShortName($className);
+            $isClassView = false;
+            $view = AnnotationManager::getMethodAnnotations($className, $methodName, View::class)[0] ?? null;
             if(null === $view)
             {
-                $view = new View([
-                    'template' => File::path($shortClassName, $methodName),
-                ]);
+                $view = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
+                if(null === $view)
+                {
+                    $view = new View([
+                        'template' => File::path($shortClassName, $methodName),
+                    ]);
+                }
+                else
+                {
+                    $view = clone $view;
+                    $isClassView = true;
+                }
             }
             else
             {
                 $view = clone $view;
-                $isClassView = true;
             }
-        }
-        else
-        {
-            $view = clone $view;
-        }
 
-        // baseDir
-        if(null === $view->baseDir && !$isClassView)
-        {
-            $classView = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
-            if($classView)
+            // baseDir
+            if(null === $view->baseDir && !$isClassView)
             {
-                $view->baseDir = $classView->baseDir;
+                $classView = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
+                if($classView)
+                {
+                    $view->baseDir = $classView->baseDir;
+                }
             }
+            // template
+            if(null === $view->template)
+            {
+                $view->template = $methodName;
+            }
+            $this->viewCache[$className][$methodName] = $view;
         }
-        // template
-        if(null === $view->template)
-        {
-            $view->template = $methodName;
-        }
-        return $view;
+        return $this->viewCache[$className][$methodName];
     }
 }

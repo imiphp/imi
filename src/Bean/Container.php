@@ -36,6 +36,14 @@ class Container implements ContainerInterface
      */
     public function get($id)
     {
+        // 实现传递实例化参数
+        $params = func_get_args();
+        // 单例中有数据，且无实例化参数时直接返回单例
+        if(isset($this->singletonObjects[$id]) && !isset($params[1]))
+        {
+            return $this->singletonObjects[$id];
+        }
+
         if(!is_string($id))
         {
             throw new ContainerException('id is not a string value');
@@ -44,18 +52,11 @@ class Container implements ContainerInterface
         {
             throw new ContainerException('id can not be a empty string value');
         }
-        
-        // 实现传递实例化参数
-        $params = func_get_args();
-        // 单例中有数据，且无实例化参数时直接返回单例
-        if(isset($this->singletonObjects[$id]) && !isset($params[1]))
-        {
-            return $this->singletonObjects[$id];
-        }
+
         $data = $this->beanParser->getData();
 
         unset($params[0]);
-        
+
         if(isset($data[$id]))
         {
             $object = BeanFactory::newInstanceNoInit($data[$id]['className'], ...$params);
@@ -87,7 +88,7 @@ class Container implements ContainerInterface
      */
     public function has($id)
     {
-        return is_string($id) && '' !== $id && isset($this->singletonObjects[$id]);
+        return '' !== $id && isset($this->singletonObjects[$id]);
     }
 
 }

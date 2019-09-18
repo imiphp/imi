@@ -69,8 +69,8 @@ class Server extends Base
         {
             $server->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
-                    $request = new Request($this, $swooleRequest);
-                    $response = new Response($this, $swooleResponse);
+                    $request = Request::getInstance($this, $swooleRequest);
+                    $response = Response::getInstance($this, $swooleResponse);
                     $this->trigger('request', [
                         'request'   => $request,
                         'response'  => $response,

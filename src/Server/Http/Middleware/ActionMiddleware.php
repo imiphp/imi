@@ -66,7 +66,7 @@ class ActionMiddleware implements MiddlewareInterface
             $viewAnnotation = clone ViewParser::getInstance()->getByCallable($result->callable);
             if(null !== $viewAnnotation)
             {
-                if(is_array($actionResult))
+                if([] !== $viewAnnotation->data && is_array($actionResult))
                 {
                     // 动作返回值是数组，合并到视图注解
                     $viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);

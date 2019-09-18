@@ -41,12 +41,38 @@ class Response extends \Imi\Util\Http\Response
      * @var \Imi\Server\Base
      */
     protected $serverInstance;
-    
+
+    /**
+     * 空对象缓存
+     *
+     * @var static
+     */
+    protected static $emptyInstance;
+
     public function __construct(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
         $this->swooleResponse = $response;
         $this->serverInstance = $server;
         parent::__construct();
+    }
+
+    /**
+     * 获取实例对象
+     *
+     * @param \Imi\Server\Base $server
+     * @param \Swoole\Http\Response $response
+     * @return static
+     */
+    public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
+    {
+        if(null === static::$emptyInstance)
+        {
+            static::$emptyInstance = new static($server, $response);
+        }
+        $instance = clone static::$emptyInstance;
+        $instance->serverInstance = $server;
+        $instance->swooleResponse = $response;
+        return $instance;
     }
 
     /**

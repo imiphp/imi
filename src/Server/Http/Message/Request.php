@@ -1,8 +1,10 @@
 <?php
 namespace Imi\Server\Http\Message;
 
+use Imi\Config;
 use Imi\Util\Uri;
 use Imi\Util\Http\ServerRequest;
+use Imi\Util\Stream\MemoryStream;
 
 class Request extends ServerRequest
 {
@@ -18,6 +20,13 @@ class Request extends ServerRequest
      */
     protected $serverInstance;
 
+    /**
+     * 实例映射
+     *
+     * @var static[]
+     */
+    protected static $instanceMap = [];
+
     public function __construct(\Imi\Server\Base $server, \Swoole\Http\Request $request)
     {
         $this->swooleRequest = $request;
@@ -27,7 +36,41 @@ class Request extends ServerRequest
         {
             $body = '';
         }
-        parent::__construct($this->getRequestUri(), $request->header, $body, strtoupper($request->server['request_method']), $this->getRequestProtocol(), $request->server, $request->cookie ?? [], $request->get ?? [], $request->post ?? [], $request->files ?? []);
+        parent::__construct($this->getRequestUri(), $request->header, $body, $request->server['request_method'], $this->getRequestProtocol(), $request->server, $request->cookie ?? [], $request->get ?? [], $request->post ?? [], $request->files ?? []);
+    }
+
+    /**
+     * 获取实例对象
+     *
+     * @param \Imi\Server\Base $server
+     * @param \Swoole\Http\Request $request
+     * @return static
+     */
+    public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Request $request)
+    {
+        $key = $request->header['host'] . '#' . $request->server['path_info'];
+        if(!isset(static::$instanceMap[$key]))
+        {
+            if(count(static::$instanceMap) >= Config::get('@app.http.maxRequestCache', 1024))
+            {
+                array_shift(static::$instanceMap);
+            }
+            static::$instanceMap[$key] = new static($server, $request);
+        }
+        $instance = clone static::$instanceMap[$key];
+        $instance->serverInstance = $server;
+        $instance->swooleRequest = $request;
+        $instance->get = $request->get ?? [];
+        $instance->uri = $instance->uri->withQuery([] === $instance->get ? '' : (\http_build_query($instance->get, null, '&')));
+        $instance->post = $request->post ?? [];
+        $instance->body = new MemoryStream($request->rawContent());
+        $instance->setHeaders($request->header);
+        $instance->cookies = $request->cookie ?? [];
+        $instance->setUploadedFiles($instance, $request->files ?? []);
+        $instance->server = $request->server;
+        $instance->protocolVersion = $instance->getRequestProtocol();
+        $instance->method = $request->server['request_method'];
+        return $instance;
     }
 
     /**
@@ -37,7 +80,7 @@ class Request extends ServerRequest
     private function getRequestUri()
     {
         $isHttps = isset($this->swooleRequest->server['https']) && 'on' === $this->swooleRequest->server['https'];
-        return Uri::makeUri($this->swooleRequest->header['host'], $this->swooleRequest->server['path_info'], \http_build_query($this->swooleRequest->get ?? [], null, '&'), null, $isHttps ? 'https' : 'http');
+        return Uri::makeUri($this->swooleRequest->header['host'], $this->swooleRequest->server['path_info'], null === $this->swooleRequest->get ? '' : (\http_build_query($this->swooleRequest->get, null, '&')), null, $isHttps ? 'https' : 'http');
     }
 
     /**
@@ -67,4 +110,5 @@ class Request extends ServerRequest
     {
         return $this->serverInstance;
     }
+
 }
