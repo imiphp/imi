@@ -109,9 +109,9 @@ class RequestTest extends BaseTest
     public function testUploadSingle()
     {
         $http = new HttpRequest;
-        $file = new UploadedFile('file', MediaType::TEXT_HTML, __FILE__);
+        $file = new UploadedFile(basename(__FILE__), MediaType::TEXT_HTML, __FILE__);
         $http->content([
-            $file,
+            'file'  =>  $file,
         ]);
         $response = $http->post($this->host . 'upload');
         $data = $response->json(true);
@@ -119,7 +119,7 @@ class RequestTest extends BaseTest
         $this->assertTrue(isset($data['file']));
         $file = $data['file'];
         $content = file_get_contents(__FILE__);
-        $this->assertEquals('file', $file['clientFilename']);
+        $this->assertEquals(basename(__FILE__), $file['clientFilename']);
         $this->assertEquals(MediaType::TEXT_HTML, $file['clientMediaType']);
         $this->assertEquals(strlen($content), $file['size']);
         $this->assertEquals(md5($content), $file['hash']);
@@ -134,11 +134,11 @@ class RequestTest extends BaseTest
     {
         $http = new HttpRequest;
         $file2Path = __DIR__ . '/1.txt';
-        $file1 = new UploadedFile('file1', MediaType::TEXT_HTML, __FILE__);
-        $file2 = new UploadedFile('file2', MediaType::TEXT_PLAIN, $file2Path);
+        $file1 = new UploadedFile(basename(__FILE__), MediaType::TEXT_HTML, __FILE__);
+        $file2 = new UploadedFile(basename($file2Path), MediaType::TEXT_PLAIN, $file2Path);
         $http->content([
-            $file1,
-            $file2,
+            'file1' =>  $file1,
+            'file2' =>  $file2,
         ]);
         $response = $http->post($this->host . 'upload');
         $data = $response->json(true);
@@ -146,7 +146,7 @@ class RequestTest extends BaseTest
         $this->assertTrue(isset($data['file1']));
         $file = $data['file1'];
         $content = file_get_contents(__FILE__);
-        $this->assertEquals('file1', $file['clientFilename']);
+        $this->assertEquals(basename(__FILE__), $file['clientFilename']);
         $this->assertEquals(MediaType::TEXT_HTML, $file['clientMediaType']);
         $this->assertEquals(strlen($content), $file['size']);
         $this->assertEquals(md5($content), $file['hash']);
@@ -154,7 +154,7 @@ class RequestTest extends BaseTest
         $this->assertTrue(isset($data['file2']));
         $file = $data['file2'];
         $content = file_get_contents($file2Path);
-        $this->assertEquals('file2', $file['clientFilename']);
+        $this->assertEquals(basename($file2Path), $file['clientFilename']);
         $this->assertEquals(MediaType::TEXT_PLAIN, $file['clientMediaType']);
         $this->assertEquals(strlen($content), $file['size']);
         $this->assertEquals(md5($content), $file['hash']);
