@@ -60,6 +60,7 @@ before_script:
   - sh tests/db/install-db.sh
   - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
   - export TEST_PHPUNIT_PATH=~/.phpenv/versions/$(phpenv version-name)/bin/phpunit
+  - php ./.travis/composer-no-phpunit.php
   - composer update
   - cd ./tests && composer update && cd ../
   - php --ri swoole
