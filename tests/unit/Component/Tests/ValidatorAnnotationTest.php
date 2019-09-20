@@ -34,6 +34,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->numberFail();
         $this->textFail();
         $this->validateValueFail();
+        $this->optional();
     }
 
     public function testAutoConstructValidator()
@@ -81,6 +82,7 @@ class ValidatorAnnotationTest extends BaseTest
             'number'        =>  1,
             'text'          =>  'imiphp.com',
             'validateValue' =>  -1,
+            'optional'      =>  1,
         ];
     }
 
@@ -171,6 +173,16 @@ class ValidatorAnnotationTest extends BaseTest
         $this->initData();
         $this->data['validateValue'] = '1';
         $this->assertFalse($this->tester->validate());
+    }
+
+    private function optional()
+    {
+        $this->initData();
+        $this->data['optional'] = -1;
+        $this->assertFalse($this->tester->validate());
+
+        unset($this->data['optional']);
+        $this->assertTrue($this->tester->validate());
     }
 
 }

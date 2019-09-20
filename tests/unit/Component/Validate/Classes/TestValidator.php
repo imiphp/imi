@@ -24,6 +24,7 @@ use Imi\Validate\Annotation\ValidateValue;
  * @Number(name="number", min=0.01, max=999.99, accuracy=2, message="数值必须大于等于{min}，小于等于{max}，小数点最多保留{accuracy}位小数，当前值为{:value}")
  * @Text(name="text", min=6, max=12, message="{name}参数长度必须>={min} && <={max}")
  * @Compare(name="validateValue", value=@ValidateValue("{:data.compare}"), operation="==")
+ * @Integer(name="optional", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}", optional=true)
  */
 class TestValidator extends Validator
 {

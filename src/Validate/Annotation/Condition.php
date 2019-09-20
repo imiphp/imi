@@ -25,6 +25,13 @@ class Condition extends Base
     public $name;
 
     /**
+     * 非必验证，只有当值存在才验证
+     *
+     * @var boolean
+     */
+    public $optional = false;
+
+    /**
      * 当值不符合条件时的默认值
      *
      * @var mixed

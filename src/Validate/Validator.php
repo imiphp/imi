@@ -281,6 +281,10 @@ class Validator implements IValidator
      */
     protected function validateByAnnotation($data, $annotation)
     {
+        if($annotation->optional && !ObjectArrayHelper::exists($data, $annotation->name))
+        {
+            return true;
+        }
         $args = [];
         foreach($annotation->args as $arg)
         {
