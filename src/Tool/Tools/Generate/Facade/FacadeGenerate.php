@@ -46,7 +46,7 @@ class FacadeGenerate
             }
             else
             {
-                throw new \RuntimeException(sprintf('Class %s does not found', $namespace));
+                throw new \RuntimeException(sprintf('Class %s does not found', $class));
             }
         }
         $namespace = Imi::getClassNamespace($facadeClass);
