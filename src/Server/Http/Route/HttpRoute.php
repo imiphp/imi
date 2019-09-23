@@ -125,9 +125,18 @@ class HttpRoute
      */
     public function parse(Request $request)
     {
-        foreach($this->rules as $url => $items)
+        $pathInfo = $request->getServerParam('path_info');
+        if(isset($this->rules[$pathInfo]))
         {
-            $result = $this->checkUrl($request, $url);
+            $rules = [$pathInfo => $this->rules[$pathInfo]];
+        }
+        else
+        {
+            $rules = $this->rules;
+        }
+        foreach($rules as $url => $items)
+        {
+            $result = $this->checkUrl($request, $url, $pathInfo);
             if($result->result || $result->resultIgnoreCase)
             {
                 foreach($items as $item)
@@ -165,9 +174,8 @@ class HttpRoute
      * @param array $params url路由中的自定义参数
      * @return \Imi\Server\Http\Route\UrlCheckResult
      */
-    private function checkUrl(Request $request, string $url)
+    private function checkUrl(Request $request, string $url, string $pathInfo)
     {
-        $pathInfo = $request->getServerParam('path_info');
         if(!isset($this->urlCheckCache[$pathInfo][$url]))
         {
             $rule = $this->parseRule($url, $fields);
@@ -242,7 +250,7 @@ class HttpRoute
      */
     private function checkMethod(Request $request, $method)
     {
-        if(Text::isEmpty($method))
+        if(null === $method)
         {
             return true;
         }
@@ -265,7 +273,7 @@ class HttpRoute
     private function checkDomain(Request $request, $domain, &$params)
     {
         $params = [];
-        if(Text::isEmpty($domain))
+        if(null === $domain)
         {
             return true;
         }
@@ -297,7 +305,7 @@ class HttpRoute
      */
     private function checkParamsGet(Request $request, $params)
     {
-        if(empty($params))
+        if(null === $params)
         {
             return true;
         }
@@ -314,7 +322,7 @@ class HttpRoute
      */
     private function checkParamsPost(Request $request, $params)
     {
-        if(empty($params))
+        if(null === $params)
         {
             return true;
         }
@@ -331,7 +339,7 @@ class HttpRoute
      */
     private function checkHeader(Request $request, $header)
     {
-        if(empty($header))
+        if(null === $header)
         {
             return true;
         }
@@ -348,7 +356,7 @@ class HttpRoute
      */
     private function checkRequestMime(Request $request, $requestMime)
     {
-        if(empty($requestMime))
+        if(null === $requestMime)
         {
             return true;
         }
