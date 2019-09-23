@@ -4,8 +4,6 @@ use Imi\Util\Args;
 use Imi\Util\File;
 
 $imi = new class{
-    private $appPath;    
-
     public function run()
     {
         if(!class_exists('Imi\App'))
