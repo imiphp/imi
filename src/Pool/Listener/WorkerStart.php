@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Db\Listener;
+namespace Imi\Pool\Listener;
 
 use Imi\Event\Event;
 use Imi\Event\EventParam;
@@ -14,12 +14,12 @@ class WorkerStart implements IEventListener
 {
     /**
      * 事件处理方法
-     * @param InitEventParam $e
+     * @param EventParam $e
      * @return void
      */
     public function handle(EventParam $e)
     {
-        Event::on('IMI.REQUEST_CONTENT.DESTROY', [new \Imi\Db\Listener\RequestContextDestroy, 'handle'], ImiPriority::IMI_MIN - 20);
+        Event::on('IMI.REQUEST_CONTENT.DESTROY', [new \Imi\Pool\Listener\RequestContextDestroy, 'handle'], ImiPriority::IMI_MIN - 30);
     }
 
 }
