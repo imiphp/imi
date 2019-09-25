@@ -116,7 +116,7 @@ class CoServer
         Event::trigger('IMI.CO_SERVER.START', [], $this);
 
         $this->realWorkerNum = $this->workerNum + $this->processNum;
-        $processPool = new Pool($this->realWorkerNum, 0, 0, true);
+        $processPool = new Pool($this->realWorkerNum);
         $processPool->on('Init', function(InitEventParam $e){
             Process::signal(SIGUSR1, function() use($e) {
                 $workerIds = [];
