@@ -26,7 +26,7 @@ $processPool->on('WorkerStart', function(\Imi\Process\Pool\WorkerEventParam $e){
     }
 });
 // 工作进程退出事件-可选
-$processPool->on('WorkerStart', function(\Imi\Process\Pool\WorkerEventParam $e){
+$processPool->on('WorkerExit', function(\Imi\Process\Pool\WorkerEventParam $e){
     // 做一些释放操作
 });
 // 工作进程停止事件-可选
