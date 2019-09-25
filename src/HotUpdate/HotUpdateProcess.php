@@ -9,6 +9,7 @@ use Imi\Process\BaseProcess;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Process\Annotation\Process;
+use Swoole\Event as SwooleEvent;
 
 /**
  * @Bean("hotUpdate")
@@ -89,40 +90,38 @@ class HotUpdateProcess extends BaseProcess
             ];
         }
         $this->excludePaths[] = Imi::getRuntimePath();
-        go(function(){
-            echo 'Process [hotUpdate] start', PHP_EOL;
-            $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
-            $time = 0;
-            $this->initBuildRuntime();
-            while(true)
+        echo 'Process [hotUpdate] start', PHP_EOL;
+        $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
+        $time = 0;
+        $this->initBuildRuntime();
+        while(true)
+        {
+            // 检测间隔延时
+            usleep(min(max($this->timespan - (microtime(true) - $time), $this->timespan), $this->timespan) * 1000000);
+            $time = microtime(true);
+            // 检查文件是否有修改
+            if($monitor->isChanged())
             {
-                // 检测间隔延时
-                usleep(min(max($this->timespan - (microtime(true) - $time), $this->timespan), $this->timespan) * 1000000);
-                $time = microtime(true);
-                // 检查文件是否有修改
-                if($monitor->isChanged())
+                $changedFiles = $monitor->getChangedFiles();
+                echo 'Found ', count($changedFiles) , ' changed Files:', PHP_EOL, implode(PHP_EOL, $changedFiles), PHP_EOL;
+                file_put_contents($this->changedFilesFile, implode("\n", $changedFiles));
+                echo 'Building runtime...', PHP_EOL;
+                $beginTime = microtime(true);
+                $result = $this->beginBuildRuntime($changedFiles);
+                $this->initBuildRuntime();
+                if("Build app runtime complete" !== trim($result))
                 {
-                    $changedFiles = $monitor->getChangedFiles();
-                    echo 'Found ', count($changedFiles) , ' changed Files:', PHP_EOL, implode(PHP_EOL, $changedFiles), PHP_EOL;
-                    file_put_contents($this->changedFilesFile, implode("\n", $changedFiles));
-                    echo 'Building runtime...', PHP_EOL;
-                    $beginTime = microtime(true);
-                    $result = $this->beginBuildRuntime($changedFiles);
-                    $this->initBuildRuntime();
-                    if("Build app runtime complete" !== trim($result))
-                    {
-                        echo $result, PHP_EOL, 'Build runtime failed!', PHP_EOL;
-                        continue;
-                    }
-                    // 清除各种缓存
-                    $this->clearCache();
-                    echo 'Build time use: ', microtime(true) - $beginTime, ' sec', PHP_EOL;
-                    // 执行重新加载
-                    echo 'Reloading server...', PHP_EOL;
-                    $reloadResult = Imi::reloadServer();
+                    echo $result, PHP_EOL, 'Build runtime failed!', PHP_EOL;
+                    continue;
                 }
+                // 清除各种缓存
+                $this->clearCache();
+                echo 'Build time use: ', microtime(true) - $beginTime, ' sec', PHP_EOL;
+                // 执行重新加载
+                echo 'Reloading server...', PHP_EOL;
+                $reloadResult = Imi::reloadServer();
             }
-        });
+        }
     }
 
     /**
@@ -208,17 +207,31 @@ class HotUpdateProcess extends BaseProcess
      */
     private function closeBuildRuntime()
     {
-        if(null !== $this->buildRuntimePipes)
-        {
-            foreach($this->buildRuntimePipes as $pipe)
+        $closePipes = function(){
+            if(null !== $this->buildRuntimePipes)
             {
-                fclose($pipe);
+                foreach($this->buildRuntimePipes as $pipe)
+                {
+                    fclose($pipe);
+                }
+                $this->buildRuntimePipes = null;
             }
-            $this->buildRuntimePipes = null;
-        }
+        };
         if(null !== $this->buildRuntimeHandler)
         {
+            $status = proc_get_status($this->buildRuntimeHandler);
+            if($status['running'] ?? false)
+            {
+                $writeContent = "n\n";
+                fwrite($this->buildRuntimePipes[0], $writeContent);
+            }
+            $closePipes();
             proc_close($this->buildRuntimeHandler);
+            $this->buildRuntimeHandler = null;
+        }
+        else
+        {
+            $closePipes();
         }
     }
 }

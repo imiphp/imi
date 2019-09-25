@@ -97,9 +97,11 @@ class Imi
 
         if($confirm)
         {
-            do {
-                $input = fread(STDIN, 1);
-            } while(false === $input || 'y' !== $input);
+            $input = fread(STDIN, 1);
+            if('y' !== $input)
+            {
+                return;
+            }
         }
 
         if(!Text::isEmpty($changedFilesFile) && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
