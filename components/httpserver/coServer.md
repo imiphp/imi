@@ -1,6 +1,6 @@
 # 高性能 Http 服务
 
-`imi v1.0.12` 版本新增了一个 [`Swoole\Coroutine\Http\Server`](https://wiki.swoole.com/wiki/page/p-coroutine_http_server.html) 实现的协程服务器。需要 `Swoole 4.4+` 才可使用该特性。
+`imi v1.0.13` 版本新增了一个 [`Swoole\Coroutine\Http\Server`](https://wiki.swoole.com/wiki/page/p-coroutine_http_server.html) 实现的协程服务器。需要 `Swoole 4.4+` 才可使用该特性。
 
 该特性是可选的，不影响以前使用的服务器模式。
 
