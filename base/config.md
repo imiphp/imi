@@ -46,6 +46,32 @@ return [
         'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
         'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
     ],
+    'imi'   =>  [
+        // 覆盖 imi 框架默认的 beanScan，可以禁用某些用不到的模块
+        'beanScan'  =>  [
+            'Imi\Config',
+            'Imi\Bean',
+            'Imi\Aop',
+            'Imi\Annotation',
+            'Imi\Cache',
+            'Imi\Server',
+            'Imi\Log',
+            'Imi\Pool',
+            'Imi\Db',
+            'Imi\Redis',
+            'Imi\Listener',
+            'Imi\Model',
+            'Imi\Task',
+            'Imi\Tool',
+            'Imi\Process',
+            'Imi\HotUpdate',
+            'Imi\Validate',
+            'Imi\HttpValidate',
+            'Imi\Enum',
+            'Imi\Lock',
+            'Imi\Facade',
+        ],
+    ],
     // 主服务器配置
     'mainServer'	=>	[
         // 指定服务器命名空间
