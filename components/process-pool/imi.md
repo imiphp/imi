@@ -7,7 +7,7 @@ imi 实现了一个可以替代 Swoole 进程池的更强大的进程池。支�
 ## 使用
 
 ```php
-$workerNum = 2;
+$workerNum = 4;
 $processPool = new \Imi\Process\Pool($workerNum);
 // 初始化事件-可选
 $processPool->on('Init', function(\Imi\Process\Pool\InitEventParam $e){
@@ -45,5 +45,21 @@ $processPool->on('Message', function(\Imi\Process\Pool\MessageEventParam $e){
             break;
     }
 });
-$processPool->start();
+$processPool->start(); // 启动
+// $processPool->shutdown(); // 停止
+```
+
+### 重启进程
+
+重启所有进程：
+
+```php
+$processPool->restartAllWorker();
+```
+
+重启部分进程：
+
+```php
+// 重启 workerId 为 0、3 的进程
+$processPool->restartWorker(0, 3);
 ```
