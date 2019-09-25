@@ -121,7 +121,7 @@ function startServer()
             'checkStatus'   => 'checkHttpServerStatus',
         ],
         'RedisSessionServer'    =>  [
-            'start'         => __DIR__ . '/unit/RedisSessionServer/bin/start.sh',
+            'start'         => __DIR__ . '/unit/RedisSessionServer/bin/' . (version_compare(SWOOLE_VERSION, '4.4', '>=') ? 'start.sh' : 'start-sw4.3.sh'),
             'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
             'checkStatus'   => 'checkRedisSessionServerStatus',
         ],
