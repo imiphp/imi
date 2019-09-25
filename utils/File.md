@@ -72,8 +72,11 @@ File::createDir('a/b/c', 0777);
 // 创建文件，目录不存在则自动创建，权限默认0755
 File::createFile('a/b/c.txt');
 
+// 创建文件，目录不存在，指定内容为abc，则自动创建，权限默认0755
+File::createFile('a/b/c.txt', 'abc');
+
 // 创建文件，目录不存在则自动创建，权限为0777
-File::createFile('a/b/c.txt', 0777);
+File::createFile('a/b/c.txt', '', 0777);
 ```
 
 ### isEmptyDir
@@ -90,4 +93,14 @@ File::isEmptyDir(__DIR__);
 
 ```php
 File::deleteDir('xxx');
+```
+
+### putContents
+
+写入内容到文件，如果目录不存在自动创建多级目录。
+
+> 参数、返回值与 `file_put_contents` 完全一致
+
+```php
+File::putContents('./a/b/c/1.txt', '123');
 ```

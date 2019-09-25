@@ -22,6 +22,13 @@ imi 提供了基本数据类型的验证，以及可扩展的验证方法，这�
 public $name;
 
 /**
+ * 非必验证，只有当值存在才验证
+ *
+ * @var boolean
+ */
+public $optional = false;
+
+/**
  * 当值不符合条件时的默认值
  *
  * @var mixed
@@ -247,6 +254,14 @@ $result = in_array($value, [1, 2, 3]);
 用于验证值是否存在于枚举列表中
 
 `@InEnum(name="type", enum="EnumClass")`
+
+## 可选验证
+
+可选验证，只有当值存在时，才对值进行验证。没有该值时不验证，可以用于一些可选参数的验证场景。
+
+用法是需要作为可选验证的注解，`optional`属性设为`true`即可。
+
+`@Text(name="a", "min"=1, optional=true)`
 
 ## 自动验证
 

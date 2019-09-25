@@ -9,6 +9,9 @@
 return [
     'db'    => [
         'defaultPool'   => 'alias1', // 默认连接池
+        'statement'     =>  [
+            'cache' =>  true, // 是否开启 statement 缓存，默认开启
+        ],
     ],
     'pools' => [
         // 连接池名称
