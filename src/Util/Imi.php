@@ -594,4 +594,14 @@ abstract class Imi
         }
     }
 
+    /**
+     * 检查系统是否支持端口重用
+     *
+     * @return bool
+     */
+    public static function checkReusePort()
+    {
+        return 'Linux' === PHP_OS && version_compare(php_uname('r'), '3.9', '>=');
+    }
+
 }

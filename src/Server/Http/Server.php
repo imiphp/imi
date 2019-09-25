@@ -6,11 +6,14 @@ use Imi\Server\Base;
 use Imi\ServerManage;
 use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Event\Param\RequestEventParam;
+use Imi\Util\Coroutine;
+use Imi\Util\Imi;
 
 /**
  * Http 服务器类
@@ -25,7 +28,14 @@ class Server extends Base
     protected function createServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        if($config['coServer'])
+        {
+            $this->swooleServer = new \Co\Http\Server($config['host'], $config['port'], $config['ssl'], $config['reuse_port']);
+        }
+        else
+        {
+            $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        }
     }
 
     /**
@@ -50,7 +60,46 @@ class Server extends Base
             'port'      => isset($this->config['port']) ? $this->config['port'] : 80,
             'sockType'  => isset($this->config['sockType']) ? $this->config['sockType'] : SWOOLE_SOCK_TCP,
             'mode'      => isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
+            'coServer'  => $this->config['coServer'] ?? false,
+            'ssl'       => $this->config['ssl'] ?? false,
+            'reuse_port'=> $this->config['reuse_port'] ?? true,
         ];
+    }
+
+    /**
+     * 绑定服务器事件
+     * @return void
+     */
+    protected function bindEvents()
+    {
+        $config = $this->getServerInitConfig();
+        if(!$config['coServer'])
+        {
+            parent::bindEvents();
+            return;
+        }
+        if($event = ($this->config['events']['request'] ?? true))
+        {
+            $this->swooleServer->handle('/', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+                try{
+                    $request = Request::getInstance($this, $swooleRequest);
+                    $response = Response::getInstance($this, $swooleResponse);
+                    $this->trigger('request', [
+                        'request'   => $request,
+                        'response'  => $response,
+                    ], $this, RequestEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+                finally
+                {
+                    RequestContext::destroy();
+                }
+            });
+        }
+        $this->__bindEvents();
     }
 
     /**
@@ -59,8 +108,15 @@ class Server extends Base
      */
     protected function __bindEvents()
     {
+        $config = $this->getServerInitConfig();
+
         // 内置事件监听
         $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
+
+        if($config['coServer'])
+        {
+            return;
+        }
 
         // Swoole 服务器对象事件监听
         $server = $this->swoolePort ?? $this->swooleServer;

@@ -3,10 +3,8 @@ namespace Imi\Tool\Tools\Server;
 
 use Imi\App;
 use Imi\Util\Imi;
-use Imi\Util\File;
 use Imi\ServerManage;
 use Imi\Tool\ArgType;
-use Swoole\Coroutine;
 use Imi\RequestContext;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
@@ -23,16 +21,26 @@ class Server
      * 开启服务
      * 
      * @Operation(name="start", co=false)
+     * @Arg(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
+     * @Arg(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * 
      * @return void
      */
-    public function start()
+    public function start($name, $workerNum)
     {
         RequestContext::destroy();
         PoolManager::clearPools();
         CacheManager::clearPools();
-        App::createServers();
-        ServerManage::getServer('main')->getSwooleServer()->start();
+        if(null === $name)
+        {
+            App::createServers();
+            ServerManage::getServer('main')->getSwooleServer()->start();
+        }
+        else
+        {
+            $server = App::createCoServer($name, $workerNum);
+            $server->run();
+        }
     }
 
     /**

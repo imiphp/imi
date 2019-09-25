@@ -52,7 +52,21 @@ abstract class ProcessManager
         {
             $pipeType = $processOption['Process']->pipeType;
         }
-        $process = new \Swoole\Process(function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
+        $process = new \Swoole\Process(static::getProcessCallable($args, $name, $processOption), $redirectStdinStdout, $pipeType);
+        return $process;
+    }
+
+    /**
+     * 获取进程回调
+     *
+     * @param array $args
+     * @param string $name
+     * @param array $processOption
+     * @return callable
+     */
+    private static function getProcessCallable($args, $name, $processOption)
+    {
+        return function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
             // 设置进程名称
             Imi::setProcessName('process', [
                 'processName'   =>  $name,
@@ -88,8 +102,7 @@ abstract class ProcessManager
                 ]);
             });
             \Swoole\Event::wait();
-        }, $redirectStdinStdout, $pipeType);
-        return $process;
+        };
     }
 
     /**
@@ -189,14 +202,27 @@ abstract class ProcessManager
      * @param array $args
      * @param boolean $redirectStdinStdout
      * @param int $pipeType
-     * @return \Swoole\Process
+     * @return \Swoole\Process|null
      */
     public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
-        $process = static::create($name, $args, $redirectStdinStdout, $pipeType);
-        $server = ServerManage::getServer('main')->getSwooleServer();
-        $server->addProcess($process);
-        return $process;
+        if(App::isCoServer())
+        {
+            $processOption = ProcessParser::getInstance()->getProcess($name);
+            if(null === $processOption)
+            {
+                return null;
+            }
+            ServerManage::getCoServer()->addProcess(static::getProcessCallable($args, $name, $processOption));
+            return null;
+        }
+        else
+        {
+            $process = static::create($name, $args, $redirectStdinStdout, $pipeType);
+            $server = ServerManage::getServer('main')->getSwooleServer();
+            $server->addProcess($process);
+            return $process;
+        }
     }
 
     /**

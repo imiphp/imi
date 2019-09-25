@@ -52,13 +52,17 @@ abstract class Worker
         if(null === static::$workerID)
         {
             $main = ServerManage::getServer('main');
-            if($main)
+            if($main instanceof \Imi\Server\Base)
             {
                 $workerID = $main->getSwooleServer()->worker_id;
                 if($workerID > -1)
                 {
                     static::$workerID = $workerID;
                 }
+            }
+            else if($main instanceof \Imi\Server\CoServer)
+            {
+                static::$workerID = $main->getWorkerId();
             }
         }
         return static::$workerID;

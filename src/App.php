@@ -2,23 +2,18 @@
 namespace Imi;
 
 use Imi\Config;
-use Imi\Util\File;
+use Imi\Util\Imi;
+use Imi\Util\Args;
 use Imi\Event\Event;
-use Imi\Log\LogLevel;
-use Imi\Main\BaseMain;
 use Imi\Bean\Container;
 use Imi\Util\Coroutine;
 use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
-use Imi\Server\Http\Server;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
-use Imi\Util\Imi;
-use Imi\Util\Random;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Util\Args;
 
 abstract class App
 {
@@ -59,6 +54,13 @@ abstract class App
      * @var RuntimeInfo
      */
     private static $runtimeInfo;
+
+    /**
+     * 是否协程服务器模式
+     *
+     * @var boolean
+     */
+    private static $isCoServer = false;
 
     /**
      * 框架服务运行入口
@@ -164,6 +166,30 @@ abstract class App
         }
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
+    }
+
+    /**
+     * 创建协程服务器
+     *
+     * @param string $name
+     * @param int $workerNum
+     * @return \Imi\Server\CoServer
+     */
+    public static function createCoServer($name, $workerNum)
+    {
+        static::$isCoServer = true;
+        $server = ServerManage::createCoServer($name, $workerNum);
+        return $server;
+    }
+
+    /**
+     * 是否协程服务器模式
+     *
+     * @return boolean
+     */
+    public static function isCoServer()
+    {
+        return static::$isCoServer;
     }
 
     /**

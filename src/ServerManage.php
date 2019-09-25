@@ -2,6 +2,7 @@
 namespace Imi;
 
 use Imi\Event\Event;
+use Imi\Server\CoServer;
 
 abstract class ServerManage
 {
@@ -10,6 +11,13 @@ abstract class ServerManage
      * @var array
      */
     private static $servers = [];
+
+    /**
+     * 协程服务器
+     *
+     * @var \Imi\Server\CoServer
+     */
+    private static $coServer;
 
     /**
      * 获取服务器数组
@@ -42,9 +50,9 @@ abstract class ServerManage
      * @param string $name
      * @param array $config
      * @param bool $subServer 是否为子服务器
-     * @return void
+     * @return \Imi\Server\Base
      */
-    public static function createServer($name, $config, $isSubServer = false)
+    public static function createServer($name, $config, $isSubServer = false): \Imi\Server\Base
     {
         // 创建服务器对象前置操作
         Event::trigger('IMI.SERVER.CREATE.BEFORE', [
@@ -63,5 +71,29 @@ abstract class ServerManage
             'config'        => $config,
             'isSubServer'   => $isSubServer,
         ]);
+        return $server;
     }
+
+    /**
+     * 创建协程服务器
+     *
+     * @param string $name
+     * @param int $workerNum
+     * @return \Imi\Server\CoServer
+     */
+    public static function createCoServer($name, $workerNum): CoServer
+    {
+        return static::$coServer = new CoServer($name, $workerNum);
+    }
+
+    /**
+     * 获取协程服务器
+     *
+     * @return \Imi\Server\CoServer
+     */
+    public static function getCoServer(): CoServer
+    {
+        return static::$coServer;
+    }
+
 }
