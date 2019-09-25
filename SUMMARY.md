@@ -94,7 +94,8 @@
 * [后台任务](components/task/index.md)
 * [AOP](components/aop/index.md)
 * [进程](components/process/index.md)
-* [进程池](components/process-pool/index.md)
+* [进程池-Swoole](components/process-pool/swoole.md)
+* [进程池-imi](components/process-pool/imi.md)
 * [热更新](components/hotupdate/index.md)
 * [Phar 支持](components/phar/index.md)
 
