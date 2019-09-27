@@ -64,11 +64,9 @@ class Server extends Base
         {
             $server->on('handshake', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
-                    $request = new Request($this, $swooleRequest);
-                    $response = new Response($this, $swooleResponse);
                     $this->trigger('handShake', [
-                        'request'   => &$request,
-                        'response'  => &$response,
+                        'request'   => new Request($this, $swooleRequest),
+                        'response'  => new Response($this, $swooleResponse),
                     ], $this, HandShakeEventParam::class);
                 }
                 catch(\Throwable $ex)

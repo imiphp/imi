@@ -374,9 +374,8 @@ class File extends Base
      */
     protected function writeExData($fileName, $ttl)
     {
-        $data = [
+        file_put_contents($this->getExDataFileName($fileName), serialize([
             'ttl' => $ttl,
-        ];
-        file_put_contents($this->getExDataFileName($fileName), serialize($data));
+        ]));
     }
 }

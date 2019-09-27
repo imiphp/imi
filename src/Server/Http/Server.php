@@ -82,11 +82,9 @@ class Server extends Base
         {
             $this->swooleServer->handle('/', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
-                    $request = Request::getInstance($this, $swooleRequest);
-                    $response = Response::getInstance($this, $swooleResponse);
                     $this->trigger('request', [
-                        'request'   => $request,
-                        'response'  => $response,
+                        'request'   => Request::getInstance($this, $swooleRequest),
+                        'response'  => Response::getInstance($this, $swooleResponse),
                     ], $this, RequestEventParam::class);
                 }
                 catch(\Throwable $ex)
@@ -125,11 +123,9 @@ class Server extends Base
         {
             $server->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
-                    $request = Request::getInstance($this, $swooleRequest);
-                    $response = Response::getInstance($this, $swooleResponse);
                     $this->trigger('request', [
-                        'request'   => $request,
-                        'response'  => $response,
+                        'request'   => Request::getInstance($this, $swooleRequest),
+                        'response'  => Response::getInstance($this, $swooleResponse),
                     ], $this, RequestEventParam::class);
                 }
                 catch(\Throwable $ex)
