@@ -132,37 +132,41 @@ class HttpRoute
         }
         else
         {
-            $rules = $this->rules;
+            $rules = [];
         }
-        foreach($rules as $url => $items)
+        for($i = 0; $i < 2; ++$i)
         {
-            $result = $this->checkUrl($request, $url, $pathInfo);
-            if($result->result || $result->resultIgnoreCase)
+            foreach($rules as $url => $items)
             {
-                foreach($items as $item)
+                $result = $this->checkUrl($request, $url, $pathInfo);
+                if($result->result || $result->resultIgnoreCase)
                 {
-                    if(
-                        ($result->result || ($this->ignoreCase || $item->annotation->ignoreCase)) &&
-                        $this->checkMethod($request, $item->annotation->method) &&
-                        $this->checkDomain($request, $item->annotation->domain, $domainParams) &&
-                        $this->checkParamsGet($request, $item->annotation->paramsGet) &&
-                        $this->checkParamsPost($request, $item->annotation->paramsPost) &&
-                        $this->checkHeader($request, $item->annotation->header) &&
-                        $this->checkRequestMime($request, $item->annotation->requestMime)
-                    )
+                    foreach($items as $item)
                     {
-                        if([] === $domainParams)
+                        if(
+                            ($result->result || ($this->ignoreCase || $item->annotation->ignoreCase)) &&
+                            $this->checkMethod($request, $item->annotation->method) &&
+                            $this->checkDomain($request, $item->annotation->domain, $domainParams) &&
+                            $this->checkParamsGet($request, $item->annotation->paramsGet) &&
+                            $this->checkParamsPost($request, $item->annotation->paramsPost) &&
+                            $this->checkHeader($request, $item->annotation->header) &&
+                            $this->checkRequestMime($request, $item->annotation->requestMime)
+                        )
                         {
-                            $params = $result->params;
+                            if([] === $domainParams)
+                            {
+                                $params = $result->params;
+                            }
+                            else
+                            {
+                                $params = array_merge($result->params, $domainParams);
+                            }
+                            return new RouteResult(clone $item, $result, $params);
                         }
-                        else
-                        {
-                            $params = array_merge($result->params, $domainParams);
-                        }
-                        return new RouteResult(clone $item, $result, $params);
                     }
                 }
             }
+            $rules = $this->rules;
         }
         return null;
     }
