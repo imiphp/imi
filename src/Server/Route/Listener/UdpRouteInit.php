@@ -3,7 +3,6 @@ namespace Imi\Server\Route\Listener;
 
 use Imi\Main\Helper;
 use Imi\ServerManage;
-use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
@@ -47,9 +46,6 @@ class UdpRouteInit implements IEventListener
             {
                 continue;
             }
-            RequestContext::create([
-                'server'    =>  $server,
-            ]);
             $route = $server->getBean('UdpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -58,7 +54,7 @@ class UdpRouteInit implements IEventListener
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) ?? [] as $middleware)
                 {
-                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares));
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
                 foreach(AnnotationManager::getMethodsAnnotations($className, UdpAction::class) as $methodName => $methodItem)
                 {
@@ -71,20 +67,19 @@ class UdpRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach(AnnotationManager::getMethodAnnotations($className, $methodName, UdpMiddleware::class) ?? [] as $middleware)
                     {
-                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares));
+                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
                     
                     foreach($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
+                        $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
                         ]);
                     }
                 }
             }
-            RequestContext::destroy();
         }
     }
 
@@ -110,7 +105,7 @@ class UdpRouteInit implements IEventListener
                 }
                 else
                 {
-                    $callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
+                    $callable = new RouteCallable($server, $routeOption['controller'], $routeOption['method']);
                 }
                 $route->addRuleAnnotation($routeAnnotation, $callable, [
                     'middlewares' => $routeOption['middlewares'],

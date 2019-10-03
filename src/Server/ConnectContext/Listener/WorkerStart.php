@@ -34,7 +34,6 @@ class WorkerStart implements IWorkerStartEventListener
                     $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
                 }
             }
-            RequestContext::destroy();
         }
     }
 }

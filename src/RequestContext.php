@@ -12,10 +12,10 @@ abstract class RequestContext
     private static $context = [];
 
     /**
-     * 为当前请求创建上下文
+     * 为当前请求创建上下文，返回当前协程ID
      * 
      * @param array $data
-     * @return void
+     * @return int
      */
     public static function create(array $data = [])
     {
@@ -34,6 +34,7 @@ abstract class RequestContext
                 });
             }
             Event::trigger('IMI.REQUEST_CONTENT.CREATE');
+            return $coID;
         }
         else
         {

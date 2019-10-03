@@ -2,18 +2,18 @@
 namespace Imi\Server\Http;
 
 use Imi\App;
+use Imi\Event\Event;
 use Imi\Server\Base;
 use Imi\ServerManage;
+use Imi\RequestContext;
 use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
-use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Event\Param\RequestEventParam;
-use Imi\Util\Coroutine;
-use Imi\Util\Imi;
+use Imi\Server\Event\Param\WorkerStartEventParam;
 
 /**
  * Http 服务器类
@@ -81,18 +81,15 @@ class Server extends Base
         if($event = ($this->config['events']['request'] ?? true))
         {
             $this->swooleServer->handle('/', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
-                try{
+                try {
                     $this->trigger('request', [
                         'request'   => Request::getInstance($this, $swooleRequest),
                         'response'  => Response::getInstance($this, $swooleResponse),
                     ], $this, RequestEventParam::class);
-                }
-                catch(\Throwable $ex)
+                } catch(\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
-                }
-                finally
-                {
+                } finally {
                     RequestContext::destroy();
                 }
             });
@@ -108,8 +105,10 @@ class Server extends Base
     {
         $config = $this->getServerInitConfig();
 
-        // 内置事件监听
-        $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
+        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function(WorkerStartEventParam $e){
+            // 内置事件监听
+            $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
+        });
 
         if($config['coServer'])
         {

@@ -1,10 +1,8 @@
 <?php
 namespace Imi\Server\Route\Listener;
 
-use Imi\Worker;
 use Imi\Main\Helper;
 use Imi\ServerManage;
-use Swoole\Coroutine;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
@@ -15,7 +13,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Server\Route\Annotation\Middleware;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\WebSocket\WSConfig;
-use Imi\RequestContext;
 use Imi\Server\Route\TMiddleware;
 
 /**
@@ -50,9 +47,6 @@ class HttpRouteInit implements IEventListener
             {
                 continue;
             }
-            RequestContext::create([
-                'server'    =>  $server,
-            ]);
             $route = $server->getBean('HttpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -61,7 +55,7 @@ class HttpRouteInit implements IEventListener
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, Middleware::class) ?? [] as $middleware)
                 {
-                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares));
+                    $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
                 foreach(AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $actionAnnotations)
                 {
@@ -82,7 +76,7 @@ class HttpRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach(AnnotationManager::getMethodAnnotations($className, $methodName, Middleware::class) ?? [] as $middleware)
                     {
-                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares));
+                        $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
@@ -97,14 +91,13 @@ class HttpRouteInit implements IEventListener
                         {
                             $routeItem->url = $classAnnotation->prefix . $routeItem->url;
                         }
-                        $route->addRuleAnnotation($routeItem, new RouteCallable($className, $methodName), [
+                        $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
                         ]);
                     }
                 }
             }
-            RequestContext::destroy();
         }
     }
 
@@ -130,7 +123,7 @@ class HttpRouteInit implements IEventListener
                 }
                 else
                 {
-                    $callable = new RouteCallable($routeOption['controller'], $routeOption['method']);
+                    $callable = new RouteCallable($server, $routeOption['controller'], $routeOption['method']);
                 }
                 $route->addRuleAnnotation($routeAnnotation, $callable, [
                     'middlewares' => $routeOption['middlewares'] ?? [],

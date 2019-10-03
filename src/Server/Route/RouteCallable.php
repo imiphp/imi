@@ -1,11 +1,15 @@
 <?php
 namespace Imi\Server\Route;
 
-use Imi\RequestContext;
-
-
 class RouteCallable
 {
+    /**
+     * 服务器对象
+     *
+     * @var \Imi\Server\Base
+     */
+    public $server;
+
     /**
      * 类名
      * @var string
@@ -18,8 +22,9 @@ class RouteCallable
      */
     public $methodName;
 
-    public function __construct($className, $methodName)
+    public function __construct($server, $className, $methodName)
     {
+        $this->server = $server;
         $this->className = $className;
         $this->methodName = $methodName;
     }
@@ -38,6 +43,6 @@ class RouteCallable
             $className = str_replace('{$' . $name . '}', $value, $className);
             $methodName = str_replace('{$' . $name . '}', $value, $methodName);
         }
-        return [RequestContext::getServer()->getBean($className), $methodName];
+        return [$this->server->getBean($className), $methodName];
     }
 }

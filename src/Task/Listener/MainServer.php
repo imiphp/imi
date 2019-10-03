@@ -19,7 +19,7 @@ class MainServer implements ITaskEventListener
      */
     public function handle(TaskEventParam $e)
     {
-        RequestContext::create();
+        $coId = RequestContext::create();
         try{
             $taskInfo = $e->data;
             if($taskInfo instanceof TaskInfo)
@@ -37,13 +37,13 @@ class MainServer implements ITaskEventListener
                     }
                 }
             }
-        }
-        catch(\Throwable $ex)
-        {
+        } catch(\Throwable $ex) {
             throw $ex;
-        }
-        finally{
-            RequestContext::destroy();
+        } finally {
+            if(-1 === $coId)
+            {
+                RequestContext::destroy();
+            }
         }
     }
 }

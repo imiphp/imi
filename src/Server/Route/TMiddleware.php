@@ -7,10 +7,10 @@ trait TMiddleware
 {
     /**
      * 获取真实的中间件列表
-     *
+     * 
      * @return string[]
      */
-    protected function getMiddlewares($middlewares)
+    protected function getMiddlewares($middlewares, $serverName)
     {
         if(is_array($middlewares))
         {
@@ -18,7 +18,7 @@ trait TMiddleware
         }
         else if(isset($middlewares[0]) && '@' === $middlewares[0])
         {
-            return Config::get('@currentServer.middleware.groups.' . substr($middlewares, 1), []);
+            return Config::get('@server.' . $serverName . '.middleware.groups.' . substr($middlewares, 1), []);
         }
         else
         {

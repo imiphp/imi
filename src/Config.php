@@ -135,7 +135,7 @@ abstract class Config
             if('@currentServer' === $first)
             {
                 try {
-                    $server = RequestContext::getServer();
+                    $server = RequestContext::get('server');
                     $isCurrentServer = null !== $server;
                 } catch(RequestContextException $e) {
                     $isCurrentServer = false;
