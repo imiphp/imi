@@ -24,7 +24,7 @@ class AnnotationRelation
      *
      * @var \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[]
      */
-    private $propertieRelations = [];
+    private $propertyRelations = [];
 
     /**
      * 常量关联列表
@@ -91,9 +91,9 @@ class AnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[]
      */ 
-    public function getPropertieRelations()
+    public function getpropertyRelations()
     {
-        return $this->propertieRelations;
+        return $this->propertyRelations;
     }
 
     /**
@@ -105,7 +105,7 @@ class AnnotationRelation
     public function addPropertyRelation(PropertyAnnotationRelation $relation)
     {
         $class = get_class($relation->getAnnotation());
-        $this->propertieRelations[$class][] = $relation;
+        $this->propertyRelations[$class][] = $relation;
         $this->allRelations[$class] = null;
     }
 
@@ -149,7 +149,7 @@ class AnnotationRelation
                 $this->allRelations[$className] = array_merge(
                     $this->classRelations[$className] ?? [],
                     $this->methodRelations[$className] ?? [],
-                    $this->propertieRelations[$className] ?? [],
+                    $this->propertyRelations[$className] ?? [],
                     $this->constantRelations[$className] ?? []
                 );
             }

@@ -8,11 +8,11 @@ use Imi\Db\Query\Interfaces\IPaginateResult;
 class PaginateResult implements IPaginateResult
 {
     /**
-     * Statement
+     * 数据库查询结构
      *
      * @var \Imi\Db\Query\Interfaces\IResult
      */
-    protected $statement;
+    protected $result;
 
     /**
      * 数组数据
@@ -56,9 +56,9 @@ class PaginateResult implements IPaginateResult
      */
     protected $options;
 
-    public function __construct(IResult $statement, $page, $limit, $total, $pageCount, $options)
+    public function __construct(IResult $result, $page, $limit, $total, $pageCount, $options)
     {
-        $this->statement = $statement;
+        $this->result = $result;
         $this->page = $page;
         $this->limit = $limit;
         $this->total = $total;
@@ -72,7 +72,7 @@ class PaginateResult implements IPaginateResult
      */
     public function isSuccess(): bool
     {
-        return $this->statement->isSuccess();
+        return $this->result->isSuccess();
     }
 
     /**
@@ -81,7 +81,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getLastInsertId()
     {
-        return $this->statement->getLastInsertId();
+        return $this->result->getLastInsertId();
     }
 
     /**
@@ -90,7 +90,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getAffectedRows()
     {
-        return $this->statement->getAffectedRows();
+        return $this->result->getAffectedRows();
     }
 
     /**
@@ -100,7 +100,7 @@ class PaginateResult implements IPaginateResult
      */
     public function get($className = null)
     {
-        return $this->statement->get($className);
+        return $this->result->get($className);
     }
 
     /**
@@ -110,7 +110,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getArray($className = null)
     {
-        return $this->statement->getArray($className);
+        return $this->result->getArray($className);
     }
 
     /**
@@ -119,7 +119,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getColumn($column = 0)
     {
-        return $this->statement->getColumn($column);
+        return $this->result->getColumn($column);
     }
 
     /**
@@ -128,7 +128,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getScalar()
     {
-        return $this->statement->getScalar();
+        return $this->result->getScalar();
     }
 
     /**
@@ -137,7 +137,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getRowCount()
     {
-        return $this->statement->getRowCount();
+        return $this->result->getRowCount();
     }
 
     /**
@@ -147,7 +147,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getSql()
     {
-        return $this->statement->getSql();
+        return $this->result->getSql();
     }
 
     /**
@@ -157,7 +157,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getStatement(): IStatement
     {
-        return $this->statement->getStatement();
+        return $this->result->getStatement();
     }
 
     /**
@@ -167,7 +167,7 @@ class PaginateResult implements IPaginateResult
      */
     public function getList()
     {
-        return $this->statement->getArray();
+        return $this->result->getArray();
     }
 
     /**
@@ -210,7 +210,7 @@ class PaginateResult implements IPaginateResult
         {
             $this->arrayData = [
                 // 数据列表
-                $this->options['field_list'] ?? 'list'              =>  $this->statement->getArray(),
+                $this->options['field_list'] ?? 'list'              =>  $this->result->getArray(),
                 // 每页记录数
                 $this->options['field_limit'] ?? 'limit'            =>  $this->limit,
             ];

@@ -243,7 +243,7 @@ abstract class AnnotationManager
      * 获取注解使用点
      *
      * @param string $annotationClassName 注解类名
-     * @param string|null $where null/Class/Method/Property
+     * @param string|null $where null/class/method/property
      * @return \Imi\Bean\Annotation\Model\IAnnotationRelation[]
      */
     public static function getAnnotationPoints($annotationClassName, $where = null)
