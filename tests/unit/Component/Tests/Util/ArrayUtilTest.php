@@ -70,7 +70,11 @@ class ArrayUtilTest extends BaseTest
                     'id'    =>  3,
                     'name'  =>  'https://www.yurunsoft.com',
                 ],
-            ]
+            ],
+            'c' =>  [
+                100 =>  '1',
+                200 =>  'b',
+            ],
         ];
         $arr2 = [
             'a' =>  [
@@ -80,6 +84,10 @@ class ArrayUtilTest extends BaseTest
                 'a-2'   =>  100,
             ],
             'b' =>  200,
+            'c' =>  [
+                100 =>  'a',
+                300 =>  'c',
+            ]
         ];
         $actual = [
             'a' =>  [
@@ -94,6 +102,11 @@ class ArrayUtilTest extends BaseTest
                 ],
             ],
             'b' =>  200,
+            'c' =>  [
+                100 =>  'a',
+                200 =>  'b',
+                300 =>  'c',
+            ],
         ];
         $result = ArrayUtil::recursiveMerge($arr1, $arr2);
         $this->assertEquals($actual, $result);

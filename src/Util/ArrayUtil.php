@@ -56,9 +56,10 @@ abstract class ArrayUtil
             {
                 continue;
             }
+            $isAssoc = self::isAssoc($array);
             foreach ( $array as $key => $value )
             {
-                if (is_string ( $key ))
+                if ($isAssoc)
                 {
                     if (is_array ( $value ) && isset($merged[$key]) && is_array ( $merged [$key] ))
                     {
