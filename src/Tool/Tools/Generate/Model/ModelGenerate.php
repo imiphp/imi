@@ -141,7 +141,7 @@ class ModelGenerate
                     'id'    => [],
                 ],
                 'fields'    => [],
-                'entity'   => $entity,
+                'entity'    => $entity,
             ];
             $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`' , $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
