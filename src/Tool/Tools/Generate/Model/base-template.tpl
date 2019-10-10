@@ -9,7 +9,8 @@ use Imi\Model\Annotation\Entity;
 
 /**
  * <?= $className ?>Base
- * @Entity
+ * <?php if($entity === true):?>@Entity<?php else:?>@Entity(false)<?php endif;?>
+
  * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?>)
 <?php foreach($fields as $field):?>
  * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= '' === $field['comment'] ? '' : $field['comment'] ?>
