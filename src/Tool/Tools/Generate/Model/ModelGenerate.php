@@ -34,7 +34,7 @@ class ModelGenerate
      * @Arg(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @return void
      */
-    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath,$entity)
+    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity)
     {
         $override = (string)$override;
         switch($override)
