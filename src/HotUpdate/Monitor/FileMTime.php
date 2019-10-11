@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\HotUpdate\Monitor;
 
 use Imi\Util\File;
@@ -26,29 +27,22 @@ class FileMTime extends BaseMonitor
      */
     protected function init()
     {
-        foreach($this->excludePaths as $i => $path)
-        {
-            if(!$this->excludePaths[$i] = realpath($path))
-            {
+        foreach ($this->excludePaths as $i => $path) {
+            if (!$this->excludePaths[$i] = realpath($path)) {
                 unset($this->excludePaths[$i]);
                 continue;
             }
             $this->excludePaths[$i] .= '/';
         }
-        foreach($this->includePaths as $i => $path)
-        {
-            if(!$this->includePaths[$i] = $path = realpath($path))
-            {
+        foreach ($this->includePaths as $i => $path) {
+            if (!$this->includePaths[$i] = $path = realpath($path)) {
                 unset($this->includePaths[$i]);
                 continue;
             }
-            foreach(File::enumFile($path) as $file)
-            {
+            foreach (File::enumFile($path) as $file) {
                 $fullPath = $file->getFullPath();
-                foreach($this->excludePaths as $path)
-                {
-                    if(substr($fullPath, 0, strlen($path)) === $path)
-                    {
+                foreach ($this->excludePaths as $path) {
+                    if (substr($fullPath, 0, strlen($path)) === $path) {
                         $file->setContinue(false);
                         continue 2;
                     }
@@ -66,11 +60,10 @@ class FileMTime extends BaseMonitor
      */
     protected function parseInitFile($fileName)
     {
-        if(is_file($fileName))
-        {
+        if (is_file($fileName)) {
             $this->files[$fileName] = [
-                'exists'    => true,
-                'mtime'        => filemtime($fileName),
+                'exists' => true,
+                'mtime' => filemtime($fileName),
             ];
         }
     }
@@ -82,37 +75,30 @@ class FileMTime extends BaseMonitor
     public function isChanged(): bool
     {
         $changed = false;
-        $this->files = array_map(function($item){
+        $this->files = array_map(function ($item) {
             $item['exists'] = false;
             return $item;
         }, $this->files);
         $this->changedFiles = [];
         // 包含的路径中检测
-        foreach($this->includePaths as $path)
-        {
-            foreach(File::enumFile($path) as $file)
-            {
+        foreach ($this->includePaths as $path) {
+            foreach (File::enumFile($path) as $file) {
                 $fullPath = $file->getFullPath();
-                foreach($this->excludePaths as $path)
-                {
-                    if(substr($fullPath, 0, strlen($path)) === $path)
-                    {
+                foreach ($this->excludePaths as $path) {
+                    if (substr($fullPath, 0, strlen($path)) === $path) {
                         $file->setContinue(false);
                         continue 2;
                     }
                 }
-                if($this->parseCheckFile($fullPath))
-                {
+                if ($this->parseCheckFile($fullPath)) {
                     $this->changedFiles[] = $fullPath;
                     $changed = true;
                 }
             }
         }
         // 之前有的文件被删处理
-        foreach($this->files as $fileName => $option)
-        {
-            if(!$option['exists'])
-            {
+        foreach ($this->files as $fileName => $option) {
+            if (!$option['exists']) {
                 unset($this->files[$fileName]);
                 $this->changedFiles[] = $fileName;
                 $changed = true;
@@ -139,40 +125,24 @@ class FileMTime extends BaseMonitor
     protected function parseCheckFile($fileName)
     {
         $isFile = is_file($fileName);
-        if($isFile)
-        {
-            $changed = false;
-            $mtime = filemtime($fileName);
-            if(isset($this->files[$fileName]))
-            {
-                // 判断文件修改时间
-                if($this->files[$fileName]['mtime'] !== $mtime)
-                {
-                    $changed = true;
+        $changed = true;
+        $mtime = 0;
+        if ($isFile || $this->files[$fileName]) {
+            if ($isFile && isset($this->files[$fileName])) {
+                $mtime = filemtime($fileName);
+                if ($this->files[$fileName]['mtime'] == $mtime) {
+                    $changed = false;
                 }
             }
-            else
-            {
-                $changed = true;
-            }
-        }
-        else
-        {
-            $changed = true;
-            $mtime = 0;
-        }
-        if(isset($this->files[$fileName]) || $isFile)
-        {
             $this->files[$fileName] = [
-                'exists'    => $isFile,
-                'mtime'     => $mtime,
+                'exists' => $isFile,
+                'mtime' => $mtime,
             ];
             return $changed;
-        }
-        else
-        {
+        } else {
             return false;
         }
+
     }
-    
+
 }
