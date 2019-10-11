@@ -4,6 +4,7 @@ namespace Imi\Model\Tree;
 use Imi\Model\ModelManager;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Model\Tree\Annotation\TreeModel;
+use Imi\Util\ArrayUtil;
 
 /**
  * 树形模型扩展
@@ -66,26 +67,7 @@ trait TTreeModel
         }
         $treeModel = ModelManager::getAnnotation(static::class, TreeModel::class);
         $idField = ModelManager::getFirstId(static::class);
-        // 查出所有记录
-        $arr1 = $query->select()->getArray();
-        $result = $arr2 = [];
-        // 处理成ID为键名的数组
-        foreach($arr1 as $item)
-        {
-            $arr2[$item[$idField]] = $item;
-        }
-        foreach($arr2 as $item)
-        {
-            if(isset($arr2[$item[$treeModel->parentField]]))
-            {
-                $arr2[$item[$treeModel->parentField]][$treeModel->childrenField][] = $arr2[$item[$idField]];
-            }
-            else
-            {
-                $result[] = $arr2[$item[$idField]];
-            }
-        }
-        return $result;
+        return ArrayUtil::toTreeAssoc($query->select()->getArray(), $idField, $treeModel->parentField, $treeModel->childrenField);
     }
 
 	/**

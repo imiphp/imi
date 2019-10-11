@@ -133,4 +133,37 @@ abstract class ArrayUtil
         return $result;
     }
 
+    /**
+     * 列表转树形关联结构
+     *
+     * @param array $list
+     * @param string $idField
+     * @param string $parentField
+     * @param string $childrenField
+     * @return array
+     */
+    public static function toTreeAssoc(array $list, $idField = 'id', $parentField = 'parent_id', $childrenField = 'children')
+    {
+        // 查出所有记录
+        $result = $tmpArr = [];
+        // 处理成ID为键名的数组
+        foreach($list as $item)
+        {
+            $item[$childrenField] = [];
+            $tmpArr[$item[$idField]] = $item;
+        }
+        foreach($tmpArr as $item)
+        {
+            if(isset($tmpArr[$item[$parentField]]))
+            {
+                $tmpArr[$item[$parentField]][$childrenField][] = &$tmpArr[$item[$idField]];
+            }
+            else
+            {
+                $result[] = &$tmpArr[$item[$idField]];
+            }
+        }
+        return $result;
+    }
+
 }

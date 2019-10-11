@@ -173,4 +173,37 @@ class ArrayUtilTest extends BaseTest
         }
     }
 
+    /**
+     * @testdox toTreeAssoc
+     */
+    public function testToTreeAssoc()
+    {
+        $list = [
+            ['id' => '1', 'parentId' => '0', 'name' => 'a'],
+            ['id' => '2', 'parentId' => '0', 'name' => 'b'],
+            ['id' => '3', 'parentId' => '0', 'name' => 'c'],
+            ['id' => '4', 'parentId' => '1', 'name' => 'a-1'],
+            ['id' => '5', 'parentId' => '1', 'name' => 'a-2'],
+            ['id' => '6', 'parentId' => '4', 'name' => 'a-1-1'],
+            ['id' => '7', 'parentId' => '4', 'name' => 'a-1-2'],
+            ['id' => '8', 'parentId' => '2', 'name' => 'b-1'],
+            ['id' => '9', 'parentId' => '2', 'name' => 'b-2'],
+        ];
+        $expected = [
+            ['id' => '1', 'parentId' => '0', 'name' => 'a', 'children' => [
+                ['id' => '4', 'parentId' => '1', 'name' => 'a-1', 'children' => [
+                    ['id' => '6', 'parentId' => '4', 'name' => 'a-1-1', 'children' => []],
+                    ['id' => '7', 'parentId' => '4', 'name' => 'a-1-2', 'children' => []],
+                ]],
+                ['id' => '5', 'parentId' => '1', 'name' => 'a-2', 'children' => []],
+            ]],
+            ['id' => '2', 'parentId' => '0', 'name' => 'b', 'children' => [
+                ['id' => '8', 'parentId' => '2', 'name' => 'b-1', 'children' => []],
+                ['id' => '9', 'parentId' => '2', 'name' => 'b-2', 'children' => []],
+            ]],
+            ['id' => '3', 'parentId' => '0', 'name' => 'c', 'children' => []],
+        ];
+        $this->assertEquals($expected, ArrayUtil::toTreeAssoc($list, 'id', 'parentId'));
+    }
+
 }
