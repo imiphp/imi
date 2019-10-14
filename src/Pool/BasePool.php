@@ -299,10 +299,14 @@ abstract class BasePool implements IPool
     /**
      * 获取下一个资源配置
      *
-     * @return void
+     * @return mixed
      */
     protected function getNextResourceConfig()
     {
+        if(!isset($this->resourceConfig[1]))
+        {
+            return $this->resourceConfig[0];
+        }
         switch($this->config->getResourceConfigMode())
         {
             case ResourceConfigMode::RANDOM:
