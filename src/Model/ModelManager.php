@@ -17,6 +17,18 @@ use Imi\Model\Annotation\Column;
 abstract class ModelManager
 {
     /**
+     * 模型类注解缓存
+     * @var array
+     */
+    private static $annotation = [];
+
+    /**
+     * 模型类属性注解缓存
+     * @var array
+     */
+    private static $propertyAnnotation = [];
+
+    /**
      * 驼峰命名缓存
      * @var array
      */
@@ -36,6 +48,34 @@ abstract class ModelManager
     private static $fields = [];
 
     /**
+     * 表名缓存
+     *
+     * @var array
+     */
+    private static $table = [];
+
+    /**
+     * 数据库连接池名缓存
+     *
+     * @var array
+     */
+    private static $dbPoolName = [];
+
+    /**
+     * 主键缓存
+     *
+     * @var array
+     */
+    private static $id = [];
+
+    /**
+     * 模型类的提取属性注解缓存
+     *
+     * @var array
+     */
+    private static $extractPropertys;
+
+    /**
      * 获取当前模型类的类注解
      * @param string|object $object
      * @param string $annotationClass
@@ -43,7 +83,12 @@ abstract class ModelManager
      */
     public static function getAnnotation($object, $annotationClass)
     {
-        return AnnotationManager::getClassAnnotations(BeanFactory::getObjectClass($object), $annotationClass)[0] ?? null;
+        $objectClass = BeanFactory::getObjectClass($object);
+        if(!isset(static::$annotation[$objectClass][$annotationClass]))
+        {
+            static::$annotation[$objectClass][$annotationClass] = AnnotationManager::getClassAnnotations($objectClass, $annotationClass)[0] ?? null;
+        }
+        return static::$annotation[$objectClass][$annotationClass];
     }
 
     /**
@@ -55,7 +100,12 @@ abstract class ModelManager
      */
     public static function getPropertyAnnotation($object, $propertyName, $annotationClass)
     {
-        return AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null;
+        $objectClass = BeanFactory::getObjectClass($object);
+        if(!isset(static::$propertyAnnotation[$objectClass][$propertyName][$annotationClass]))
+        {
+            static::$propertyAnnotation[$objectClass][$propertyName][$annotationClass] = AnnotationManager::getPropertyAnnotations(BeanFactory::getObjectClass($object), $propertyName, $annotationClass)[0] ?? null;
+        }
+        return static::$propertyAnnotation[$objectClass][$propertyName][$annotationClass];
     }
 
     /**
@@ -65,15 +115,13 @@ abstract class ModelManager
      */
     public static function getTable($object)
     {
-        $tableAnnotation = static::getAnnotation($object, Table::class);
-        if(null !== $tableAnnotation)
+        $objectClass = BeanFactory::getObjectClass($object);
+        if(!isset(static::$table[$objectClass]))
         {
-            return $tableAnnotation->name;
+            $tableAnnotation = static::getAnnotation($object, Table::class);
+            static::$table[$objectClass] = $tableAnnotation ? $tableAnnotation->name : null;
         }
-        else
-        {
-            return null;
-        }
+        return static::$table[$objectClass];
     }
 
     /**
@@ -83,15 +131,13 @@ abstract class ModelManager
      */
     public static function getDbPoolName($object)
     {
-        $tableAnnotation = static::getAnnotation($object, Table::class);
-        if(null !== $tableAnnotation)
+        $objectClass = BeanFactory::getObjectClass($object);
+        if(!isset(static::$dbPoolName[$objectClass]))
         {
-            return $tableAnnotation->dbPoolName;
+            $tableAnnotation = static::getAnnotation($object, Table::class);
+            static::$dbPoolName[$objectClass] = $tableAnnotation ? $tableAnnotation->dbPoolName : null;
         }
-        else
-        {
-            return null;
-        }
+        return static::$dbPoolName[$objectClass];
     }
 
     /**
@@ -102,15 +148,13 @@ abstract class ModelManager
      */
     public static function getId($object)
     {
-        $tableAnnotation = static::getAnnotation($object, Table::class);
-        if(null !== $tableAnnotation)
+        $objectClass = BeanFactory::getObjectClass($object);
+        if(!isset(static::$id[$objectClass]))
         {
-            return $tableAnnotation->id;
+            $tableAnnotation = static::getAnnotation($object, Table::class);
+            static::$id[$objectClass] = $tableAnnotation ? $tableAnnotation->id : null;
         }
-        else
-        {
-            return null;
-        }
+        return static::$id[$objectClass];
     }
 
     /**
@@ -121,22 +165,8 @@ abstract class ModelManager
      */
     public static function getFirstId($object)
     {
-        $tableAnnotation = static::getAnnotation($object, Table::class);
-        if(null !== $tableAnnotation)
-        {
-            if(is_array($tableAnnotation->id))
-            {
-                return reset($tableAnnotation->id);
-            }
-            else
-            {
-                return $tableAnnotation->id;
-            }
-        }
-        else
-        {
-            return null;
-        }
+        $id = self::getId($object);
+        return $id[0] ?? null;
     }
 
     /**
@@ -210,15 +240,7 @@ abstract class ModelManager
      */
     public static function getRedisEntity($object)
     {
-        $annotation = static::getAnnotation($object, RedisEntity::class);
-        if(null !== $annotation)
-        {
-            return $annotation;
-        }
-        else
-        {
-            return null;
-        }
+        return static::getAnnotation($object, RedisEntity::class);
     }
 
     /**
@@ -229,15 +251,7 @@ abstract class ModelManager
      */
     public static function getSerializables($object)
     {
-        $annotation = static::getAnnotation($object, Serializables::class);
-        if(null !== $annotation)
-        {
-            return $annotation;
-        }
-        else
-        {
-            return null;
-        }
+        return static::getAnnotation($object, Serializables::class);
     }
 
     /**
@@ -248,14 +262,11 @@ abstract class ModelManager
      */
     public static function getExtractPropertys($object)
     {
-        $list = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($object), ExtractProperty::class);
-        if(null !== $list)
+        $class = BeanFactory::getObjectClass($object);
+        if(!isset(static::$extractPropertys[$class]))
         {
-            return $list;
+            static::$extractPropertys[$class] = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($object), ExtractProperty::class);
         }
-        else
-        {
-            return [];
-        }
+        return static::$extractPropertys[$class];
     }
 }
