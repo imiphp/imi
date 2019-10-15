@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
+    const PERFORMANCE_COUNT = 10000;
+
     protected function go($callable, $finally = null)
     {
         $throwable = null;
@@ -35,6 +37,11 @@ abstract class BaseTest extends TestCase
     {
         $cmd = PHP_BINARY . " {$phpFile} {$args}";
         return `{$cmd}`;
+    }
+
+    public function startTest()
+    {
+
     }
 
 }

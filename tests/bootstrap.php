@@ -155,7 +155,7 @@ function startServer()
             $cmd = $options['stop'];
             echo "Stoping {$name}...", PHP_EOL;
             echo `{$cmd}`, PHP_EOL;
-            echo "{$name} stoped!", PHP_EOL;
+            echo "{$name} stoped!", PHP_EOL, PHP_EOL;
         });
     
         if(($options['checkStatus'])())
@@ -167,6 +167,10 @@ function startServer()
             throw new \RuntimeException("{$name} start failed");
         }
     }
+
+    register_shutdown_function(function() {
+        App::getBean('Logger')->save();
+    });
 }
 
 startServer();

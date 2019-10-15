@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 29/08/2019 16:32:25
+ Date: 15/10/2019 09:02:00
 */
 
 SET NAMES utf8mb4;
@@ -37,6 +37,16 @@ CREATE TABLE `tb_member`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for tb_performance
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_performance`;
+CREATE TABLE `tb_performance`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 

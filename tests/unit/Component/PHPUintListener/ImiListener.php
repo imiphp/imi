@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\AssertionFailedError;
 use Imi\Pool\PoolManager;
 use Imi\Db\Interfaces\IDb;
+use Imi\Test\BaseTest;
 
 class ImiListener implements TestListener
 {
@@ -151,6 +152,7 @@ class ImiListener implements TestListener
                             'tb_article',
                             'tb_member',
                             'tb_update_time',
+                            'tb_performance',
                         ];
                         foreach($truncateList as $table)
                         {
@@ -172,6 +174,10 @@ class ImiListener implements TestListener
         $this->stopOb(1);
         echo PHP_EOL, 'TEST ', $this->namePrettifier->prettifyTestClass($this->suite->getName()), ' ', $this->namePrettifier->prettifyTestCase($test);
         $this->success = true;
+        if($test instanceof BaseTest)
+        {
+            $test->startTest();
+        }
         $this->startOb();
     }
 

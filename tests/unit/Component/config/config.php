@@ -23,6 +23,20 @@ return [
         'TestPropertyClass' =>  [
             'b' =>  'bbb',
         ],
+        'Logger'            =>  [
+            'exHandlers'    =>  [
+                [
+                    'class'     => \Imi\Log\Handler\Console::class,
+                    'options'   => [
+                        'levels'        => [
+                            'Test',
+                        ],
+                        'format'        => '{message}',
+                        'logCacheNumber'=> 10240,
+                    ],
+                ],
+            ],
+        ],
     ],
     'imi'   =>  'very six',
     'yurun' =>  '',
