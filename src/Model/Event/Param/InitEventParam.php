@@ -13,7 +13,7 @@ class InitEventParam extends EventParam
 
     /**
      * 初始化数据
-     * @var \Imi\Util\LazyArrayObject
+     * @var array
      */
     public $data;
 }

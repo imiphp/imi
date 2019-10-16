@@ -15,12 +15,17 @@ use Imi\Model\Annotation\Relation\RelationBase;
 
 abstract class ModelRelationManager
 {
+    /**
+     * 模型关联字段名数组
+     *
+     * @var array
+     */
     private static $relationFieldsNames = [];
 
     /**
      * 初始化模型
      *
-     * @param \Imi\Model\Model $model
+     * @param \Imi\Model\Model|string $model
      * @return void
      */
     public static function initModel($model)
@@ -37,9 +42,20 @@ abstract class ModelRelationManager
     }
 
     /**
+     * 模型是否有关联定义
+     *
+     * @param \Imi\Model\Model|string $model
+     * @return boolean
+     */
+    public static function hasRelation($model)
+    {
+        return !!AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class);
+    }
+
+    /**
      * 查询模型指定关联
      *
-     * @param \Imi\Model\Model $model
+     * @param \Imi\Model\Model|string $model
      * @param string ...$names
      * @return void
      */
@@ -58,7 +74,7 @@ abstract class ModelRelationManager
     /**
      * 插入模型
      *
-     * @param \Imi\Model\Model $model
+     * @param \Imi\Model\Model|string $model
      * @return void
      */
     public static function insertModel($model)
@@ -77,7 +93,7 @@ abstract class ModelRelationManager
     /**
      * 更新模型
      *
-     * @param \Imi\Model\Model $model
+     * @param \Imi\Model\Model|string $model
      * @return void
      */
     public static function updateModel($model)
@@ -96,7 +112,7 @@ abstract class ModelRelationManager
     /**
      * 删除模型
      *
-     * @param \Imi\Model\Model $model
+     * @param \Imi\Model\Model|string $model
      * @return void
      */
     public static function deleteModel($model)
@@ -136,4 +152,5 @@ abstract class ModelRelationManager
         }
         return static::$relationFieldsNames[$class];
     }
+
 }

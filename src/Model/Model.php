@@ -8,9 +8,9 @@ use Imi\Bean\BeanFactory;
 use Imi\Model\Relation\Query;
 use Imi\Util\LazyArrayObject;
 use Imi\Model\Relation\Update;
-use Imi\Util\Traits\TBeanRealClass;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Util\Traits\TBeanRealClass;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Model\Event\Param\InitEventParam;
 
@@ -23,9 +23,12 @@ abstract class Model extends BaseModel
 
     public function __init($data = [])
     {
-        $this->on(ModelEvents::AFTER_INIT, function(InitEventParam $e){
-            ModelRelationManager::initModel($this);
-        }, \Imi\Util\ImiPriority::IMI_MAX);
+        if($this->__hasRelation = ModelRelationManager::hasRelation($this))
+        {
+            $this->one(ModelEvents::AFTER_INIT, function(InitEventParam $e){
+                ModelRelationManager::initModel($this);
+            }, \Imi\Util\ImiPriority::IMI_MAX);
+        }
         parent::__init($data);
     }
 
@@ -184,8 +187,11 @@ abstract class Model extends BaseModel
             'result'=> $result
         ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
 
-        // 子模型插入
-        ModelRelationManager::insertModel($this);
+        if($this->__hasRelation)
+        {
+            // 子模型插入
+            ModelRelationManager::insertModel($this);
+        }
 
         return $result;
     }
@@ -230,8 +236,11 @@ abstract class Model extends BaseModel
             'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
 
-        // 子模型更新
-        ModelRelationManager::updateModel($this);
+        if($this->__hasRelation)
+        {
+            // 子模型更新
+            ModelRelationManager::updateModel($this);
+        }
 
         return $result;
     }
@@ -354,8 +363,11 @@ abstract class Model extends BaseModel
             'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
 
-        // 子模型删除
-        ModelRelationManager::deleteModel($this);
+        if($this->__hasRelation)
+        {
+            // 子模型删除
+            ModelRelationManager::deleteModel($this);
+        }
 
         return $result;
     }

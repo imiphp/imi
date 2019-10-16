@@ -37,33 +37,37 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     protected static $__camelCache = [];
 
     /**
-     * 从存储中读取出来的原始数据
-     *
-     * @var array
-     */
-    protected $__originValues = [];
-
-    /**
      * 方法引用
      *
      * @var array
      */
     protected static $__methodReference = [];
 
+    /**
+     * 是否有关联模型
+     *
+     * @var bool
+     */
+    protected $__hasRelation = false;
+
     public function __construct($data = [])
     {
         if(!$this instanceof IBean)
         {
-            $this->__init();
+            $this->__init($data);
         }
     }
 
     public function __init($data = [])
     {
-        $this->__originValues = $data;
-        $this->__fieldNames = array_merge(ModelManager::getFieldNames($this), ModelRelationManager::getRelationFieldNames($this));
-
-        $data = new LazyArrayObject($data);
+        if($this->__hasRelation)
+        {
+            $this->__fieldNames = array_merge(ModelManager::getFieldNames($this), ModelRelationManager::getRelationFieldNames($this));
+        }
+        else
+        {
+            $this->__fieldNames = ModelManager::getFieldNames($this);
+        }
 
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
@@ -215,15 +219,18 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $result = \iterator_to_array($this);
         $className = BeanFactory::getObjectClass($this);
-        // 支持注解配置隐藏为null的关联属性
-        foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
+        if($this->__hasRelation)
         {
-            if(array_key_exists($name, $result) && null === $result[$name])
+            // 支持注解配置隐藏为null的关联属性
+            foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
             {
-                $autoSelect = AnnotationManager::getPropertyAnnotations($className, $name, AutoSelect::class)[0] ?? null;
-                if($autoSelect && !$autoSelect->alwaysShow)
+                if(array_key_exists($name, $result) && null === $result[$name])
                 {
-                    unset($result[$name]);
+                    $autoSelect = AnnotationManager::getPropertyAnnotations($className, $name, AutoSelect::class)[0] ?? null;
+                    if($autoSelect && !$autoSelect->alwaysShow)
+                    {
+                        unset($result[$name]);
+                    }
                 }
             }
         }
