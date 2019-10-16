@@ -10,7 +10,7 @@ use Imi\Test\Component\Model\Performance;
  */
 class ModelTest extends BaseTest
 {
-    public function startTest()
+    public function __startTest()
     {
         Log::log('Test', 'Performance:Model');
     }

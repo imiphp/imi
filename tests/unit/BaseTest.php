@@ -41,6 +41,16 @@ abstract class BaseTest extends TestCase
 
     public function startTest()
     {
+        static $run = false;
+        if(!$run)
+        {
+            $run = true;
+            $this->__startTest();
+        }
+    }
+
+    public function __startTest()
+    {
 
     }
 
