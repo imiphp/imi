@@ -184,7 +184,7 @@ abstract class ModelManager
             foreach($annotationsSet as $propertyName => $annotations)
             {
                 $annotation = $annotations[0];
-                $fields[$annotation->name ?? $propertyName] = $annotation;
+                $fields[$annotation->name ?: $propertyName] = $annotation;
             }
             static::$fields[$objectClass] = $fields;
         }
