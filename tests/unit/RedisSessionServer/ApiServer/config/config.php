@@ -21,7 +21,7 @@ return [
 
         ],
         'SessionCookie'    =>    [
-            'lifetime'    =>    86400 * 30,
+            'lifetime'    =>    0,
         ],
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [

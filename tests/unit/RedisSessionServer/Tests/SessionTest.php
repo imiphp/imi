@@ -15,6 +15,8 @@ class SessionTest extends BaseTest
         $http->get($this->host . 'session/login');
 
         $response = $http->get($this->host . 'session/status');
+        // lifetime = 0 测试
+        $this->assertEquals(0, $http->getHandler()->getCookieManager()->getCookieItem('imisid')->expires ?? null);
         $data = $response->json(true);
         Assert::assertTrue(isset($data['isLogin']) && $data['isLogin']);
         Assert::assertEquals('admin', $data['username']);

@@ -80,6 +80,6 @@ class HttpSessionMiddleware implements MiddlewareInterface
     private function sendCookie($sessionManager, Response $response): ResponseInterface
     {
         $config = $sessionManager->getConfig();
-        return $response->withCookie($sessionManager->getName(), $sessionManager->getID(), time() + $config->cookie->lifetime, $config->cookie->path, $config->cookie->domain, $config->cookie->secure, $config->cookie->httponly);
+        return $response->withCookie($sessionManager->getName(), $sessionManager->getID(), 0 === $config->cookie->lifetime ? 0 : (time() + $config->cookie->lifetime), $config->cookie->path, $config->cookie->domain, $config->cookie->secure, $config->cookie->httponly);
     }
 }
