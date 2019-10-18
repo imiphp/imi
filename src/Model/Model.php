@@ -152,7 +152,7 @@ abstract class Model extends BaseModel
     {
         if(null === $data)
         {
-            $data = static::parseSaveData($this, 'insert');
+            $data = static::parseSaveData(\iterator_to_array($this), 'insert', $this);
         }
         else if(!$data instanceof \ArrayAccess)
         {
@@ -208,7 +208,7 @@ abstract class Model extends BaseModel
         $query = $this->parseWhereId($query);
         if(null === $data)
         {
-            $data = static::parseSaveData($this, 'update');
+            $data = static::parseSaveData(\iterator_to_array($this), 'update', $this);
         }
         else if(!$data instanceof \ArrayAccess)
         {
@@ -301,7 +301,7 @@ abstract class Model extends BaseModel
     {
         $query = static::query($this);
         $query = $this->parseWhereId($query);
-        $data = static::parseSaveData($this, 'save');
+        $data = static::parseSaveData(\iterator_to_array($this), 'save', $this);
 
         // 保存前
         $this->trigger(ModelEvents::BEFORE_SAVE, [
