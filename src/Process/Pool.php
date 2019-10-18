@@ -103,7 +103,6 @@ class Pool
 
         Process::signal(SIGTERM, function() {
             $this->working = false;
-            Process::alarm(0);
             foreach($this->workers as $worker)
             {
                 Process::kill($worker->pid, SIGTERM);
