@@ -14,6 +14,18 @@ abstract class Base implements ISessionHandler
     protected $formatHandlerClass = PhpSerialize::class;
 
     /**
+     * 数据格式化处理器对象
+     *
+     * @var \Imi\Util\Format\IFormat
+     */
+    private $formatHandler;
+
+    public function __init()
+    {
+        $this->formatHandler = RequestContext::getServerBean($this->formatHandlerClass);
+    }
+
+    /**
      * 生成SessionID
      * @return string
      */
@@ -32,7 +44,7 @@ abstract class Base implements ISessionHandler
      */
     public function encode(array $data)
     {
-        return RequestContext::getServerBean($this->formatHandlerClass)->encode($data);
+        return $this->formatHandler->encode($data);
     }
 
     /**
@@ -42,7 +54,7 @@ abstract class Base implements ISessionHandler
      */
     public function decode($data): array
     {
-        $result = RequestContext::getServerBean($this->formatHandlerClass)->decode($data);
+        $result = $this->formatHandler->decode($data);
         if(!is_array($result))
         {
             $result = [];

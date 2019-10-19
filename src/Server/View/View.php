@@ -35,23 +35,37 @@ class View
      */
     protected $data = [];
 
+    /**
+     * 视图处理器对象列表
+     *
+     * @var \Imi\Server\View\Handler\IHandler[]
+     */
+    protected $handlers;
+
+    public function __init()
+    {
+        foreach([$this->coreHandlers, $this->exHandlers] as $list)
+        {
+            foreach($list as $name => $class)
+            {
+                $this->handlers[$name] = RequestContext::getServerBean($class);
+            }
+        }
+    }
+
     public function render($renderType, $data, $options, Response $response = null): Response
     {
-        if(is_array($data))
+        if(isset($this->handlers[$renderType]))
         {
-            $data = array_merge($this->data, $data);
-        }
-        if(null === $response)
-        {
-            $response = RequestContext::get('response');
-        }
-        if(isset($this->exHandlers[$renderType]))
-        {
-            return $this->handle($this->exHandlers[$renderType], $data, $options, $response);
-        }
-        else if(isset($this->coreHandlers[$renderType]))
-        {
-            return $this->handle($this->coreHandlers[$renderType], $data, $options, $response);
+            if(is_array($data))
+            {
+                $data = array_merge($this->data, $data);
+            }
+            if(null === $response)
+            {
+                $response = RequestContext::get('response');
+            }
+            $this->handlers[$renderType]->handle($data, $options, $response);
         }
         else
         {
@@ -60,9 +74,4 @@ class View
         return $response;
     }
 
-    protected function handle($handlerClass, $data, $options, Response $response = null): Response
-    {
-        $handler = RequestContext::getServerBean($handlerClass);
-        return $handler->handle($data, $options, $response);
-    }
 }

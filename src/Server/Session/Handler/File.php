@@ -19,7 +19,9 @@ class File extends Base
     /**
      * 执行初始化操作
      */
-    public function __init(){
+    public function __init()
+    {
+        parent::__init();
         FileUtil::createDir($this->savePath);
     }
 

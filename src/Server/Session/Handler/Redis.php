@@ -24,6 +24,7 @@ class Redis extends Base
 
     public function __init()
     {
+        parent::__init();
         if(null === $this->keyPrefix)
         {
             $this->keyPrefix = 'imi:' . App::getNamespace() . ':';

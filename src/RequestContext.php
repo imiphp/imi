@@ -173,7 +173,7 @@ abstract class RequestContext
      */
     public static function getServerBean($name, ...$params)
     {
-        return static::getServer()->getBean($name, ...$params);
+        return static::get('server')->getBean($name, ...$params);
     }
 
     /**

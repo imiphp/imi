@@ -35,6 +35,18 @@ class Html implements IHandler
      */
     protected $templateEngine = \Imi\Server\View\Engine\Php::class;
 
+    /**
+     * 模版引擎处理对象
+     *
+     * @var \Imi\Server\View\Engine\IEngine
+     */
+    protected $templateEngineInstance;
+
+    public function __init()
+    {
+        $this->templateEngineInstance = RequestContext::getServerBean($this->templateEngine);
+    }
+
     public function handle($data, array $options, Response $response): Response
     {
         $fileName = $this->getTemplateFilePath($options);
@@ -44,9 +56,7 @@ class Html implements IHandler
             return $response;
         }
 
-        $engine = RequestContext::getServerBean($this->templateEngine);
-
-        return $engine->render($response, $fileName, $data);
+        return $this->templateEngineInstance->render($response, $fileName, $data);
     }
 
     /**
