@@ -65,7 +65,7 @@ class View
             {
                 $response = RequestContext::get('response');
             }
-            $this->handlers[$renderType]->handle($data, $options, $response);
+            return $this->handlers[$renderType]->handle($data, $options, $response);
         }
         else
         {
