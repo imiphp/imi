@@ -7,6 +7,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\View\Parser\ViewParser;
+use Imi\Server\Annotation\ServerInject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,6 +18,13 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class ActionMiddleware implements MiddlewareInterface
 {
+    /**
+     * @ServerInject("View")
+     *
+     * @var \Imi\Server\View\View
+     */
+    protected $view;
+
     /**
      * 处理方法
      * @param ServerRequestInterface $request
@@ -82,9 +90,8 @@ class ActionMiddleware implements MiddlewareInterface
         if(isset($viewAnnotation))
         {
             // 视图渲染
-            $view = RequestContext::getServerBean('View');
             $options = $viewAnnotation->toArray();
-            $response = $view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $response);
+            $response = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $response);
         }
 
         return $response;

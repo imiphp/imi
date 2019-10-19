@@ -9,6 +9,7 @@ use Imi\Controller\HttpController;
 use Imi\Server\Http\RequestHandler;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
+use Imi\Server\Annotation\ServerInject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,6 +22,13 @@ use Imi\Server\Http\Middleware\ActionMiddleware;
 class RouteMiddleware implements MiddlewareInterface
 {
     /**
+     * @ServerInject("HttpRoute")
+     *
+     * @var \Imi\Server\Http\Route\HttpRoute
+     */
+    protected $route;
+
+    /**
      * 处理方法
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -29,8 +37,7 @@ class RouteMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 路由解析
-        $route = RequestContext::getServerBean('HttpRoute');
-        $result = $route->parse($request);
+        $result = $this->route->parse($request);
         if(null === $result || !is_callable($result->callable))
         {
             // 未匹配到路由
