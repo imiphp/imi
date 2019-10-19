@@ -71,7 +71,6 @@ class View
         {
             throw new \RuntimeException('Unsupport View renderType: ' . $renderType);
         }
-        return $response;
     }
 
 }
