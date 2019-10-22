@@ -874,8 +874,6 @@ class Query implements IQuery
      */
     public function paginate($page, $count, $options = []): IPaginateResult
     {
-        $this->page($page, $count);
-        $pagination = new Pagination($page, $count);
         if($options['total'] ?? true)
         {
             $option = clone $this->option;
@@ -888,7 +886,9 @@ class Query implements IQuery
         {
             $total = null;
         }
+        $this->page($page, $count);
         $statement = $this->select();
+        $pagination = new Pagination($page, $count);
         return new PaginateResult($statement, $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
     }
 

@@ -64,43 +64,24 @@ class QueryCurdTest extends BaseTest
         $expectedData = [
             'list'  =>  [
                 [
-                    'id'        =>  '1',
-                    'title'     =>  'title',
-                    'content'   =>  'content',
-                    'time'      =>  '2019-06-21 00:00:00',
-                ],
-                [
                     'id'        =>  '2',
                     'title'     =>  'title',
                     'content'   =>  'content',
                     'time'      =>  '2019-06-21 00:00:00',
                 ],
             ],
-            'limit'         =>  2,
+            'limit'         =>  1,
             'total'         =>  3,
-            'page_count'    =>  2,
+            'page_count'    =>  3,
         ];
         $query = Db::query();
-        $result = $query->from('tb_article')->paginate(1, 2);
+        $result = $query->from('tb_article')->paginate(2, 1);
         $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
         $this->assertEqualsCanonicalizing(json_encode($expectedData), json_encode($result));
-        $this->assertEqualsCanonicalizing([
-            [
-                'id'        =>  '1',
-                'title'     =>  'title',
-                'content'   =>  'content',
-                'time'      =>  '2019-06-21 00:00:00',
-            ],
-            [
-                'id'        =>  '2',
-                'title'     =>  'title',
-                'content'   =>  'content',
-                'time'      =>  '2019-06-21 00:00:00',
-            ],
-        ], $result->getList());
-        $this->assertEquals(3, $result->getTotal());
-        $this->assertEquals(2, $result->getLimit());
-        $this->assertEquals(2, $result->getPageCount());
+        $this->assertEqualsCanonicalizing($expectedData['list'], $result->getList());
+        $this->assertEquals($expectedData['total'], $result->getTotal());
+        $this->assertEquals($expectedData['limit'], $result->getLimit());
+        $this->assertEquals($expectedData['page_count'], $result->getPageCount());
     }
 
     public function testPaginateNoTotal()
