@@ -110,6 +110,17 @@ class ModelTest extends BaseTest
         ], json_decode(json_encode($list), true));
     }
 
+    public function testDbQuery()
+    {
+        $list = Member::dbQuery()->field('id', 'username')->where('id', '=', 1)->select()->getArray();
+        $this->assertEquals([
+            [
+                'id'        =>  1,
+                'username'  =>  '1',
+            ]
+        ], $list);
+    }
+
     public function testBatchUpdate()
     {
         $count1 = Member::count();

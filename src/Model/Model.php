@@ -53,6 +53,26 @@ abstract class Model extends BaseModel
     }
 
     /**
+     * 返回一个数据库查询器，查询结果为数组，而不是当前类实例对象
+     * @param string|object $object
+     * @param string|null $poolName 连接池名，为null则取默认
+     * @param int|null $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
+     * @return \Imi\Db\Query\Interfaces\IQuery
+     */
+    public static function dbQuery($object = null, $poolName = null, $queryType = null)
+    {
+        if($object)
+        {
+            $class = BeanFactory::getObjectClass($object);
+        }
+        else
+        {
+            $class = static::__getRealClassName();
+        }
+        return Db::query($poolName, null, $queryType)->from(ModelManager::getTable($class));
+    }
+
+    /**
      * 查找一条记录
      * @param callable|mixed ...$ids
      * @return static
