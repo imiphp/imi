@@ -39,15 +39,6 @@ abstract class Base
     protected $traceFormat = '#{index}  {call} called at [{file}:{line}]';
 
     /**
-     * [实验性功能]
-     * 是否精简调用跟踪
-     * 可能会删去Bean类调用、AOP调用跟踪
-     *
-     * @var boolean
-     */
-    protected $traceMinimum = false;
-
-    /**
      * date()函数支持的格式
      */
     const DATE_FORMATS = [
