@@ -1,10 +1,6 @@
 <?php
 namespace Imi\Log\Handler;
 
-use Imi\Log\Record;
-use Imi\App;
-use Imi\Log\TraceMinimum;
-
 abstract class Base
 {
     /**
@@ -203,10 +199,6 @@ abstract class Base
     {
         $result = [];
         $trace = $record->getTrace();
-        if($this->traceMinimum)
-        {
-            $trace = App::getBean(TraceMinimum::class)->parse($trace);
-        }
         foreach($trace as $index => $vars)
         {
             $vars['call'] = $this->getTraceCall($vars);

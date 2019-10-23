@@ -48,7 +48,6 @@ return [
                     'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
                     'format'        => "{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}\n{trace}",
                     'traceFormat'   => '#{index}  {call} called at [{file}:{line}]',
-                    'traceMinimum'  =>  true,
                 ],
             ]
         ],
