@@ -121,7 +121,7 @@ abstract class StatementManager
             $statementCaches = [];
             $requestContext = false;
         }
-        foreach(static::$statements[$db->hashCode()] as &$item)
+        foreach(static::$statements[$db->hashCode()] ?? [] as &$item)
         {
             if($requestContext && false !== $i = array_search($item['statement'], $statementCaches))
             {
