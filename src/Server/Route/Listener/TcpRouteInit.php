@@ -1,18 +1,19 @@
 <?php
 namespace Imi\Server\Route\Listener;
 
+use Imi\Config;
 use Imi\Main\Helper;
 use Imi\ServerManage;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
+use Imi\Server\Route\TMiddleware;
 use Imi\Server\Route\RouteCallable;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Server\Route\Annotation\Tcp\TcpRoute;
 use Imi\Server\Route\Annotation\Tcp\TcpAction;
 use Imi\Server\Route\Parser\TcpControllerParser;
 use Imi\Server\Route\Annotation\Tcp\TcpMiddleware;
-use Imi\Server\Route\TMiddleware;
 
 /**
  * TCP 服务器路由初始化
@@ -50,6 +51,8 @@ class TcpRouteInit implements IEventListener
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
                 // 类中间件
+                /** @var \Imi\Server\Route\Annotation\Tcp\TcpController $classAnnotation */
+                $classAnnotation = $classItem->getAnnotation();
                 $classMiddlewares = [];
                 foreach(AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
                 {
@@ -75,6 +78,7 @@ class TcpRouteInit implements IEventListener
                     {
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
+                            'singleton'   => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
                         ]);
                     }
                 }

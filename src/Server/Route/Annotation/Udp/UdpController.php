@@ -18,4 +18,13 @@ class UdpController extends Base
      */
     protected $defaultFieldName = 'prefix';
 
+    /**
+     * 是否为单例控制器
+     * 
+     * 默认为 null 时取 '@server.服务器名.controller.singleton'
+     *
+     * @var null|bool
+     */
+    public $singleton;
+
 }

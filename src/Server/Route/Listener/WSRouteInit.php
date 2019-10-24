@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\Route\Listener;
 
+use Imi\Config;
 use Imi\Main\Helper;
 use Imi\ServerManage;
 use Imi\Event\EventParam;
@@ -49,6 +50,7 @@ class WSRouteInit implements IEventListener
             $route = $server->getBean('WSRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
+                /** @var \Imi\Server\Route\Annotation\WebSocket\WSController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
@@ -76,6 +78,7 @@ class WSRouteInit implements IEventListener
                     {
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
+                            'singleton'   => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
                         ]);
                     }
                 }

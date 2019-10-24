@@ -48,6 +48,10 @@ class UdpRoute implements IRoute
         {
             $routeItem->middlewares = $options['middlewares'];
         }
+        if(isset($options['singleton']))
+        {
+            $routeItem->singleton = $options['singleton'];
+        }
         $this->rules[spl_object_hash($annotation)] = $routeItem;
     }
 

@@ -25,4 +25,7 @@ return [
             'status'    =>  false,
         ],
     ],
+    'controller'    =>  [
+        'singleton' =>  true,
+    ],
 ];

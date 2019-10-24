@@ -35,4 +35,7 @@ return [
             'tableName' =>  'connectContext',
         ],
     ],
+    'controller'    =>  [
+        'singleton' =>  true,
+    ],
 ];

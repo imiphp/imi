@@ -22,6 +22,7 @@ class ActionMiddleware implements IMiddleware
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {
         // 获取路由结果
+        /** @var \Imi\Server\TcpServer\Route\RouteResult $result */
         $result = RequestContext::get('routeResult');
         if(null === $result)
         {
@@ -31,8 +32,11 @@ class ActionMiddleware implements IMiddleware
         $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof TcpController;
         if($isObject)
         {
-            // 复制一份控制器对象
-            $result->callable[0] = clone $result->callable[0];
+            if(!$result->routeItem->singleton)
+            {
+                // 复制一份控制器对象
+                $result->callable[0] = clone $result->callable[0];
+            }
             $result->callable[0]->server = RequestContext::getServer();
             $result->callable[0]->data = $data;
         }
