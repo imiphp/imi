@@ -87,6 +87,10 @@ class HttpRoute
         {
             $routeItem->wsConfig = $options['wsConfig'];
         }
+        if(isset($options['singleton']))
+        {
+            $routeItem->singleton = $options['singleton'];
+        }
         $this->rules[$annotation->url][spl_object_hash($annotation)] = $routeItem;
     }
 
@@ -136,6 +140,7 @@ class HttpRoute
         }
         for($i = 0; $i < 2; ++$i)
         {
+            /** @var \Imi\Server\Http\Route\RouteItem[] $items */
             foreach($rules as $url => $items)
             {
                 $result = $this->checkUrl($request, $url, $pathInfo);

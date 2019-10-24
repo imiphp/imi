@@ -12,7 +12,7 @@ use Imi\Server\Route\Annotation\Middleware;
 use Imi\Util\Http\Consts\StatusCode;
 
 /**
- * @Controller("/")
+ * @Controller(prefix="/", singleton=true)
  */
 class IndexController extends HttpController
 {

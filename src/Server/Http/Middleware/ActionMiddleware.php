@@ -36,6 +36,7 @@ class ActionMiddleware implements MiddlewareInterface
         // 获取Response对象
         $response = $handler->handle($request);
         // 获取路由结果
+        /** @var \Imi\Server\Http\Route\RouteResult $result */
         $result = RequestContext::get('routeResult');
         if(null === $result)
         {
@@ -45,8 +46,11 @@ class ActionMiddleware implements MiddlewareInterface
         $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
         if($isObject)
         {
-            // 复制一份控制器对象
-            $result->callable[0] = clone $result->callable[0];
+            if(!$result->routeItem->singleton)
+            {
+                // 复制一份控制器对象
+                $result->callable[0] = clone $result->callable[0];
+            }
             // 传入Request和Response对象
             $result->callable[0]->request = $request;
             $result->callable[0]->response = $response;

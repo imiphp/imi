@@ -40,6 +40,13 @@ class RouteItem
      */
     public $options;
 
+    /**
+     * 是否为单例控制器
+     * 
+     * @var bool
+     */
+    public $singleton = false;
+
     public function __construct(Route $annotation, $callable, array $options = [])
     {
         $this->annotation = $annotation;

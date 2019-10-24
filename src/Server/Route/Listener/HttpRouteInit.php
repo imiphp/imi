@@ -10,6 +10,7 @@ use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Parser\ControllerParser;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Config;
 use Imi\Server\Route\Annotation\Middleware;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\WebSocket\WSConfig;
@@ -50,6 +51,7 @@ class HttpRouteInit implements IEventListener
             $route = $server->getBean('HttpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
+                /** @var \Imi\Server\Route\Annotation\Controller $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
@@ -94,6 +96,7 @@ class HttpRouteInit implements IEventListener
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
+                            'singleton'     => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
                         ]);
                     }
                 }
