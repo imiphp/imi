@@ -52,4 +52,8 @@ return [
             ]
         ],
     ],
+    // 启用超全局变量
+    'SuperGlobals'  =>  [
+        'enable'    =>  true,
+    ],
 ];

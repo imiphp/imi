@@ -93,6 +93,24 @@ class IndexController extends HttpController
      *
      * @return void
      */
+    public function superGlobalsInfo()
+    {
+        return [
+            'get'       =>  $_GET,
+            'post'      =>  $_POST,
+            'cookie'    =>  $_COOKIE,
+            'server'    =>  $_SERVER,
+            'request'   =>  $_REQUEST,
+            'session'   =>  $_SESSION,
+            'files'     =>  $_FILES,
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
     public function info2($get, $post, $default = 19260817)
     {
         return [
