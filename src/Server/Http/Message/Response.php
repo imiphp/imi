@@ -19,12 +19,6 @@ class Response extends \Imi\Util\Http\Response
     protected $cookies = [];
 
     /**
-     * GZIP启用状态，默认禁用
-     * @var boolean
-     */
-    protected $gzipStatus = false;
-
-    /**
      * gzip压缩等级1-9，默认为5
      * @var int
      */
@@ -135,23 +129,6 @@ class Response extends \Imi\Util\Http\Response
     }
 
     /**
-     * 设置GZIP压缩
-     * @param bool $status
-     * @param int $level
-     * @return void
-     */
-    public function withGzip(boolean $status, $level = null)
-    {
-        $self = clone $this;
-        $self->gzipStatus = $status;
-        if(null !== $level)
-        {
-            $self->gzipLevel = $level;
-        }
-        return $self;
-    }
-
-    /**
      * 发送头部信息，没有特别需求，无需手动调用
      * @return static
      */
@@ -163,12 +140,15 @@ class Response extends \Imi\Util\Http\Response
             $this->swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
         }
         // header
-        foreach($this->getHeaders() as $name => $headers)
+        foreach($this->headers as $name => $headers)
         {
             $this->swooleResponse->header($name, $this->getHeaderLine($name));
         }
         // status
-        $this->swooleResponse->status($this->getStatusCode());
+        if(StatusCode::OK !== $this->statusCode)
+        {
+            $this->swooleResponse->status($this->statusCode);
+        }
         return $this;
     }
 
@@ -178,14 +158,9 @@ class Response extends \Imi\Util\Http\Response
      */
     public function send()
     {
-        // gzip支持
-        if($this->gzipStatus)
-        {
-            $this->swooleResponse->gzip($this->gzipLevel);
-        }
+        $this->isEnded = true;
         $this->sendHeaders();
         $this->swooleResponse->end($this->getBody());
-        $this->isEnded = true;
         return $this;
     }
 
@@ -198,9 +173,9 @@ class Response extends \Imi\Util\Http\Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
     {
+        $this->isEnded = true;
         $this->sendHeaders();
         $this->swooleResponse->sendfile($filename, $offset, $length);
-        $this->isEnded = true;
         return $this;
     }
 
