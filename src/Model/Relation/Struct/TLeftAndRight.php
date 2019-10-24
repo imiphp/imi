@@ -60,7 +60,7 @@ trait TLeftAndRight
         }
         else
         {
-            $this->leftField = ModelManager::getFirstId($className);
+            $this->leftField = $className::__getMeta()->getFirstId();
         }
 
         if($joinTo)

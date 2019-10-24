@@ -107,7 +107,7 @@ class TransactionAop
     {
         if($object instanceof \Imi\Model\Model)
         {
-            $db = Db::getInstance(ModelManager::getDbPoolName($object));
+            $db = Db::getInstance($object->__getMeta()->getDbPoolName());
         }
         else
         {

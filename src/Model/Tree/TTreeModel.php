@@ -48,7 +48,7 @@ trait TTreeModel
     {
         if(null === $this->idField)
         {
-            $this->idField = ModelManager::getFirstId($this);
+            $this->idField = $this->__getMeta()->getFirstId();
         }
         return $this->idField;
     }
@@ -66,7 +66,7 @@ trait TTreeModel
             $query = static::query();
         }
         $treeModel = ModelManager::getAnnotation(static::class, TreeModel::class);
-        $idField = ModelManager::getFirstId(static::class);
+        $idField = static::__getMeta()->getFirstId();
         return ArrayUtil::toTreeAssoc($query->select()->getArray(), $idField, $treeModel->parentField, $treeModel->childrenField);
     }
 

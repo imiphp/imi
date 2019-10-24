@@ -134,19 +134,12 @@ abstract class Update
         if($orphanRemoval)
         {
             // 删除无关联数据
-            $pks = ModelManager::getId($rightModel);
-            if(is_array($pks))
+            $pks = $rightModel::__getMeta()->getId();
+            if(isset($pks[1]))
             {
-                if(isset($pks[1]))
-                {
-                    throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));
-                }
-                $pk = $pks[0];
+                throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));
             }
-            else
-            {
-                $pk = $pks;
-            }
+            $pk = $pks[0];
 
             $oldIDs = $rightModel::query()->where($rightField, '=', $model->$leftField)->field($pk)->select()->getColumn();
 
@@ -367,19 +360,12 @@ abstract class Update
         if($orphanRemoval)
         {
             // 删除无关联数据
-            $pks = ModelManager::getId($rightModel);
-            if(is_array($pks))
+            $pks = $rightModel::__getMeta()->getId();
+            if(isset($pks[1]))
             {
-                if(isset($pks[1]))
-                {
-                    throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));
-                }
-                $pk = $pks[0];
+                throw new \RuntimeException(sprintf('%s can not OneToMany, because has more than 1 primary keys', $rightModel));
             }
-            else
-            {
-                $pk = $pks;
-            }
+            $pk = $pks[0];
 
             $oldIDs = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->field($pk)->select()->getColumn();
 

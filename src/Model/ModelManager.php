@@ -258,7 +258,7 @@ abstract class ModelManager
      * 获取模型类的提取属性注解
      *
      * @param string|object $object
-     * @return array
+     * @return \Imi\Model\Annotation\ExtractProperty[]
      */
     public static function getExtractPropertys($object)
     {

@@ -179,8 +179,8 @@ abstract class Query
         $struct = new ManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $middleTable = ModelManager::getTable($struct->getMiddleModel());
-        $rightTable = ModelManager::getTable($struct->getRightModel());
+        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
+        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
         static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
         $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
@@ -190,7 +190,7 @@ abstract class Query
         
         if(null !== $model->$leftField)
         {
-            $query = Db::query(ModelManager::getDbPoolName($className))
+            $query = Db::query($className::__getMeta()->getDbPoolName())
                         ->table($rightTable)
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
@@ -353,8 +353,8 @@ abstract class Query
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $middleTable = ModelManager::getTable($struct->getMiddleModel());
-        $rightTable = ModelManager::getTable($struct->getRightModel());
+        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
+        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
         static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
         $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
@@ -363,7 +363,7 @@ abstract class Query
         
         if(null !== $model->$leftField)
         {
-            $query = Db::query(ModelManager::getDbPoolName($className))
+            $query = Db::query($className::__getMeta()->getDbPoolName())
                         ->table($rightTable)
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleLeftField(), '=', $rightTable . '.' . $rightField)
@@ -398,8 +398,8 @@ abstract class Query
         $struct = new PolymorphicManyToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
-        $middleTable = ModelManager::getTable($struct->getMiddleModel());
-        $rightTable = ModelManager::getTable($struct->getRightModel());
+        $middleTable = $struct->getMiddleModel()::__getMeta()->getTableName();
+        $rightTable = $struct->getRightModel()::__getMeta()->getTableName();
 
         static::parseManyToManyQueryFields($struct->getMiddleModel(), $struct->getRightModel(), $middleFields, $rightFields);
         $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
@@ -409,7 +409,7 @@ abstract class Query
         
         if(null !== $model->$leftField)
         {
-            $list = Db::query(ModelManager::getDbPoolName($className))
+            $list = Db::query($className::__getMeta()->getDbPoolName())
                         ->table($rightTable)
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
@@ -487,15 +487,15 @@ abstract class Query
         $middleFields = [];
         $rightFields = [];
 
-        $middleTable = ModelManager::getTable($middleModel);
-        $rightTable = ModelManager::getTable($rightModel);
+        $middleTable = $middleModel::__getMeta()->getTableName();
+        $rightTable = $rightModel::__getMeta()->getTableName();
 
-        foreach(ModelManager::getFieldNames($middleModel) as $name)
+        foreach($middleModel::__getMeta()->getFieldNames() as $name)
         {
             $middleFields[$middleTable . '_' . $name] = $name;
         }
 
-        foreach(ModelManager::getFieldNames($rightModel) as $name)
+        foreach($rightModel::__getMeta()->getFieldNames() as $name)
         {
             $rightFields[$rightTable . '_' . $name] = $name;
         }

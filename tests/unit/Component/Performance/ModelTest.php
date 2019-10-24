@@ -63,5 +63,16 @@ class ModelTest extends BaseTest
         Log::log('Test', sprintf('Model->update(): %s s', microtime(true) - $time));
     }
 
+    public function testToArray()
+    {
+        $this->assertTrue(true);
+        $time = microtime(true);
+        $record = Performance::find(1);
+        for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
+        {
+            $record->toArray();
+        }
+        Log::log('Test', sprintf('Model->toArray(): %s s', microtime(true) - $time));
+    }
 
 }

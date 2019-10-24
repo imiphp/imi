@@ -2,6 +2,7 @@
 namespace Imi\Model;
 
 use Imi\Util\Text;
+use Imi\Bean\IBean;
 use Imi\Event\IEvent;
 use Imi\Event\TEvent;
 use Imi\Bean\BeanFactory;
@@ -11,18 +12,18 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
 use Imi\Util\Interfaces\IArrayable;
+use Imi\Util\Traits\TBeanRealClass;
 use Imi\Model\Annotation\Serializable;
 use Imi\Model\Event\Param\InitEventParam;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Relation\AutoSelect;
-use Imi\Bean\IBean;
 
 /**
  * 模型基类
  */
 abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent
 {
-    use TEvent;
+    use TEvent, TBeanRealClass;
 
     /**
      * 数据库原始字段名称
@@ -44,11 +45,18 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     protected static $__methodReference = [];
 
     /**
-     * 是否有关联模型
+     * 元数据集合
      *
-     * @var bool
+     * @var \Imi\Model\Meta[]
      */
-    protected $__hasRelation = false;
+    protected static $__metas;
+
+    /**
+     * 当前对象 meta 缓存
+     *
+     * @var \Imi\Model\Meta
+     */
+    protected $__meta;
 
     public function __construct($data = [])
     {
@@ -60,14 +68,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __init($data = [])
     {
-        if($this->__hasRelation)
-        {
-            $this->__fieldNames = array_merge(ModelManager::getFieldNames($this), ModelRelationManager::getRelationFieldNames($this));
-        }
-        else
-        {
-            $this->__fieldNames = ModelManager::getFieldNames($this);
-        }
+        $this->__meta = static::__getMeta();
+        $this->__fieldNames = $this->__meta->getRealFieldNames();
 
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
@@ -75,7 +77,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             'data'  => $data,
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
 
-        $fieldAnnotations = ModelManager::getFields($this);
+        $fieldAnnotations = $this->__meta->getFields();
         foreach($data as $k => $v)
         {
             if(isset($fieldAnnotations[$k]))
@@ -148,11 +150,19 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function offsetSet($offset, $value)
     {
+        $fields = $this->__meta->getFields();
         // 数据库bit类型字段处理
-        $column = ModelManager::getPropertyAnnotation($this, $offset, Column::class);
-        if(null === $column)
+        if(isset($fields[$offset]))
         {
-            $column = ModelManager::getPropertyAnnotation($this, $this->__getCamelName($offset), Column::class);
+            $column = $fields[$offset];
+        }
+        else
+        {
+            $name = $this->__getCamelName($offset);
+            if(isset($fields[$name]))
+            {
+                $column = $fields[$name];
+            }
         }
         if(null !== $column && 'bit' === $column->type)
         {
@@ -169,7 +179,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         if(is_array($value) || is_object($value))
         {
             // 提取字段中的属性到当前模型
-            $extractProperties = ModelManager::getExtractPropertys($this);
+            $extractProperties = $this->__meta->getExtractPropertys();
             if(
                 (($name = $offset) && isset($extractProperties[$name]))
                 || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
@@ -219,7 +229,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $result = \iterator_to_array($this);
         $className = BeanFactory::getObjectClass($this);
-        if($this->__hasRelation)
+        if($this->__meta->hasRelation())
         {
             // 支持注解配置隐藏为null的关联属性
             foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
@@ -235,7 +245,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             }
         }
         // 禁止序列化支持
-        $serializables = ModelManager::getSerializables($this);
+        $serializables = $this->__meta->getSerializables();
         $serializableSets = AnnotationManager::getPropertiesAnnotations($className, Serializable::class);
         foreach($result as $propertyName => $value)
         {
@@ -341,7 +351,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             return false;
         }
-        if(ModelManager::isCamel($this))
+        if($this->__meta->isCamel())
         {
             return $this->__getCamelName($fieldName);
         }
@@ -374,4 +384,28 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $this[$setPropertyName] = ObjectArrayHelper::get($this[$propertyName], $annotation->fieldName);
         }
     }
+
+    /**
+     * Get 元数据
+     *
+     * @param string|object $object
+     * @return \Imi\Model\Meta
+     */ 
+    public static function __getMeta($object = null)
+    {
+        if($object)
+        {
+            $class = BeanFactory::getObjectClass($object);
+        }
+        else
+        {
+            $class = static::__getRealClassName();
+        }
+        if(!isset(self::$__metas[$class]))
+        {
+            self::$__metas[$class] = new Meta($class);
+        }
+        return self::$__metas[$class];
+    }
+
 }

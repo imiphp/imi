@@ -11,7 +11,7 @@ class ModelQuery extends Query
     public function __init()
     {
         parent::__init();
-        if($this->modelClass && $tableName = ModelManager::getTable($this->modelClass))
+        if($this->modelClass && $tableName = $this->modelClass::__getMeta()->getTableName())
         {
             $this->table($tableName);
         }

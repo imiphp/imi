@@ -10,7 +10,6 @@ use Imi\Util\LazyArrayObject;
 use Imi\Model\Relation\Update;
 use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Util\Traits\TBeanRealClass;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Model\Event\Param\InitEventParam;
 
@@ -19,11 +18,9 @@ use Imi\Model\Event\Param\InitEventParam;
  */
 abstract class Model extends BaseModel
 {
-    use TBeanRealClass;
-
     public function __init($data = [])
     {
-        if($this->__hasRelation = ModelRelationManager::hasRelation($this))
+        if(static::__getMeta()->hasRelation())
         {
             $this->one(ModelEvents::AFTER_INIT, function(InitEventParam $e){
                 ModelRelationManager::initModel($this);
@@ -61,15 +58,7 @@ abstract class Model extends BaseModel
      */
     public static function dbQuery($object = null, $poolName = null, $queryType = null)
     {
-        if($object)
-        {
-            $class = BeanFactory::getObjectClass($object);
-        }
-        else
-        {
-            $class = static::__getRealClassName();
-        }
-        return Db::query($poolName, null, $queryType)->from(ModelManager::getTable($class));
+        return Db::query($poolName, null, $queryType)->from(static::__getMeta($object)->getTableName());
     }
 
     /**
@@ -104,12 +93,7 @@ abstract class Model extends BaseModel
             else
             {
                 // 主键值
-                $id = ModelManager::getId($realClassName);
-                if(is_string($id))
-                {
-                    $id = [$id];
-                }
-                foreach($id as $i => $idName)
+                foreach(static::__getMeta()->getId() as $i => $idName)
                 {
                     if(!isset($ids[$i]))
                     {
@@ -190,7 +174,7 @@ abstract class Model extends BaseModel
         $result = $query->insert($data);
         if($result->isSuccess())
         {
-            foreach(ModelManager::getFields($this) as $name => $column)
+            foreach($this->__meta->getFields() as $name => $column)
             {
                 if($column->isAutoIncrement)
                 {
@@ -207,7 +191,7 @@ abstract class Model extends BaseModel
             'result'=> $result
         ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
 
-        if($this->__hasRelation)
+        if($this->__meta->hasRelation())
         {
             // 子模型插入
             ModelRelationManager::insertModel($this);
@@ -256,7 +240,7 @@ abstract class Model extends BaseModel
             'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
 
-        if($this->__hasRelation)
+        if($this->__meta->hasRelation())
         {
             // 子模型更新
             ModelRelationManager::updateModel($this);
@@ -276,7 +260,7 @@ abstract class Model extends BaseModel
         $class = static::__getRealClassName();
         if(Update::hasUpdateRelation($class))
         {
-            $query = Db::query()->table(ModelManager::getTable($class));
+            $query = Db::query()->table(static::__getMeta()->getTableName());
             $query = static::parseWhere($query, $where);
 
             $list = $query->select()->getArray();
@@ -333,7 +317,7 @@ abstract class Model extends BaseModel
         $result = $query->replace($data);
         if($result->isSuccess())
         {
-            foreach(ModelManager::getFields($this) as $name => $column)
+            foreach($this->__meta->getFields() as $name => $column)
             {
                 if($column->isAutoIncrement)
                 {
@@ -383,7 +367,7 @@ abstract class Model extends BaseModel
             'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
 
-        if($this->__hasRelation)
+        if($this->__meta->hasRelation())
         {
             // 子模型删除
             ModelRelationManager::deleteModel($this);
@@ -403,7 +387,7 @@ abstract class Model extends BaseModel
         ModelRelationManager::queryModelRelations($this, ...$names);
 
         // 提取属性支持
-        $propertyAnnotations = ModelManager::getExtractPropertys($this);
+        $propertyAnnotations = $this->__meta->getExtractPropertys();
         foreach($names as $name)
         {
             if(isset($propertyAnnotations[$name]))
@@ -529,12 +513,7 @@ abstract class Model extends BaseModel
     private function parseWhereId(IQuery $query)
     {
         // 主键条件加入
-        $id = ModelManager::getId($this);
-        if(is_string($id))
-        {
-            $id = [$id];
-        }
-        foreach($id as $idName)
+        foreach($this->__meta->getId() as $idName)
         {
             if(isset($this->$idName))
             {
@@ -588,6 +567,7 @@ abstract class Model extends BaseModel
      */
     private static function parseSaveData($data, $type, $object = null)
     {
+        $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();
         // 处理前
         Event::trigger($realClassName . ':' . ModelEvents::BEFORE_PARSE_DATA, [
@@ -608,18 +588,10 @@ abstract class Model extends BaseModel
             }
             $data = $_data;
         }
-        if($object)
-        {
-            $class = BeanFactory::getObjectClass($object);
-        }
-        else
-        {
-            $class = $realClassName;
-        }
         $result = new LazyArrayObject;
         $canUpdateTime = 'save' === $type || 'update' === $type;
         $objectIsObject = is_object($object);
-        foreach(ModelManager::getFields($class) as $name => $column)
+        foreach($meta->getFields() as $name => $column)
         {
             // 虚拟字段不参与数据库操作
             if($column->virtual)
