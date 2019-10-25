@@ -35,8 +35,6 @@ return [
 						'fileName'	=>	dirname(__DIR__, 3) . '/log.log',
 						// 单文件最大体积，单位字节，默认1G
 						// 'maxSize'	=>	1073741824,
-						// trace日志精简（实验性功能）
-						'traceMinimum' => true,
 					],
 				]
 			],

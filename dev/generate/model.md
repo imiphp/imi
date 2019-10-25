@@ -14,6 +14,7 @@
 `-override` 是否覆盖已存在的文件，请慎重！`true`-全覆盖;`false`-不覆盖;`base`-覆盖基类;`model`-覆盖模型类;默认缺省状态为`false`
 `-config` 配置文件。`true`-项目配置；`false`-忽略配置；php配置文件名-使用该配置文件。默认为`true`
 `-basePath` 指定命名空间对应的基准路径，可选
+`-entity` 序列化时是否使用驼峰命名(`true` or `false`),默认`true`,可选
 
 示例：
 

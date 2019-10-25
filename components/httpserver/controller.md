@@ -194,10 +194,6 @@ public function action()
 
 `public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)`
 
-#### 设置GZIP压缩
-
-`public function withGzip(boolean $status, $level = null)`
-
 #### 发送所有响应数据
 
 `public function send()`

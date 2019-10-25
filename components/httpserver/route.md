@@ -44,6 +44,7 @@ return [
 | 属性名称 | 说明 |
 | ------------ | ------------ 
 | prefix | 动作配置的访问地址前缀，如果动作配置的访问地址规则以`/`开始，则本属性无效 |
+| singleton | 是否为单例控制器，默认为 null 时取 '@server.服务器名.controller.singleton' |
 
 ### @Route
 
