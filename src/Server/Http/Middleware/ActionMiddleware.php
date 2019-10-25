@@ -59,6 +59,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
             // 执行动作
             $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
+            $response = $context['response'];
             if($isObject && !$result->routeItem->singleton)
             {
                 // 获得控制器中的Response
