@@ -58,8 +58,16 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected $__meta;
 
+    /**
+     * 真实类名
+     *
+     * @var string
+     */
+    protected $__realClass;
+
     public function __construct($data = [])
     {
+        $this->__realClass = BeanFactory::getObjectClass($this);
         if(!$this instanceof IBean)
         {
             $this->__init($data);
@@ -126,13 +134,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
         if(method_exists($this, $methodName))
         {
-            $class = BeanFactory::getObjectClass($this);
-            if(!isset(self::$__methodReference[$class][$methodName]))
+            if(!isset(self::$__methodReference[$this->__realClass][$methodName]))
             {
                 $refMethod = new \ReflectionMethod($this, $methodName);
-                self::$__methodReference[$class][$methodName] = $refMethod->returnsReference();
+                self::$__methodReference[$this->__realClass][$methodName] = $refMethod->returnsReference();
             }
-            if(self::$__methodReference[$class][$methodName])
+            if(self::$__methodReference[$this->__realClass][$methodName])
             {
                 return $this->$methodName();
             }
@@ -151,6 +158,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function offsetSet($offset, $value)
     {
         $fields = $this->__meta->getFields();
+        $camelName = $this->__getCamelName($offset);
         // 数据库bit类型字段处理
         if(isset($fields[$offset]))
         {
@@ -158,10 +166,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         else
         {
-            $name = $this->__getCamelName($offset);
-            if(isset($fields[$name]))
+            if(isset($fields[$camelName]))
             {
-                $column = $fields[$name];
+                $column = $fields[$camelName];
             }
         }
         if(null !== $column && 'bit' === $column->type)
@@ -169,7 +176,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $value = (1 == $value || chr(1) == $value);
         }
 
-        $methodName = 'set' . ucfirst($this->__getCamelName($offset));
+        $methodName = 'set' . ucfirst($camelName);
         if(!method_exists($this, $methodName))
         {
             return;
@@ -183,7 +190,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             if(
                 (($name = $offset) && isset($extractProperties[$name]))
                 || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
-                || (($name = Text::toCamelName($offset)) && isset($extractProperties[$name]))
+                || (($name = $this->__getCamelName($offset)) && isset($extractProperties[$name]))
             )
             {
                 $this->__parseExtractProperty($name, $extractProperties[$name]);
@@ -228,7 +235,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function toArray(): array
     {
         $result = \iterator_to_array($this);
-        $className = BeanFactory::getObjectClass($this);
         if($this->__meta->hasRelation())
         {
             // 支持注解配置隐藏为null的关联属性
@@ -236,7 +242,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 if(array_key_exists($name, $result) && null === $result[$name])
                 {
-                    $autoSelect = AnnotationManager::getPropertyAnnotations($className, $name, AutoSelect::class)[0] ?? null;
+                    $autoSelect = AnnotationManager::getPropertyAnnotations($this->__realClass, $name, AutoSelect::class)[0] ?? null;
                     if($autoSelect && !$autoSelect->alwaysShow)
                     {
                         unset($result[$name]);
@@ -246,7 +252,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         // 禁止序列化支持
         $serializables = $this->__meta->getSerializables();
-        $serializableSets = AnnotationManager::getPropertiesAnnotations($className, Serializable::class);
+        $serializableSets = AnnotationManager::getPropertiesAnnotations($this->__realClass, Serializable::class);
         foreach($result as $propertyName => $value)
         {
             if(isset($serializableSets[$propertyName]))
