@@ -1,15 +1,16 @@
 <?php
 namespace Imi\Test\HttpServer\ApiServer\Controller;
 
+use Imi\RequestContext;
 use Imi\Aop\Annotation\Inject;
 use Imi\Util\Http\MessageUtil;
 use Imi\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
+use Imi\Util\Http\Consts\StatusCode;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Route\Annotation\Middleware;
-use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * @Controller(prefix="/", singleton=true)
@@ -31,7 +32,7 @@ class IndexController extends HttpController
      */
     public function index()
     {
-        return $this->response->write('imi');
+        return RequestContext::get('response')->write('imi');
     }
 
     /**
@@ -78,13 +79,15 @@ class IndexController extends HttpController
      */
     public function info()
     {
+        /** @var \Imi\Server\Http\Message\Request $request */
+        $request = RequestContext::get('request');
         return [
-            'get'       =>  $this->request->get(),
-            'post'      =>  $this->request->post(),
-            'cookie'    =>  $this->request->getCookieParams(),
-            'headers'   =>  MessageUtil::headersToStringList($this->request->getHeaders()),
-            'server'    =>  $this->request->getServerParams(),
-            'request'   =>  $this->request->request(),
+            'get'       =>  $request->get(),
+            'post'      =>  $request->post(),
+            'cookie'    =>  $request->getCookieParams(),
+            'headers'   =>  MessageUtil::headersToStringList($request->getHeaders()),
+            'server'    =>  $request->getServerParams(),
+            'request'   =>  $request->request(),
         ];
     }
 
@@ -113,9 +116,11 @@ class IndexController extends HttpController
      */
     public function info2($get, $post, $default = 19260817)
     {
+        /** @var \Imi\Server\Http\Message\Request $request */
+        $request = RequestContext::get('request');
         return [
-            'get'       =>  $this->request->get(),
-            'post'      =>  $this->request->post(),
+            'get'       =>  $request->get(),
+            'post'      =>  $request->post(),
         ];
     }
 
@@ -126,10 +131,12 @@ class IndexController extends HttpController
      */
     public function info3($get, $post, $parsedBody, $default = 19260817)
     {
+        /** @var \Imi\Server\Http\Message\Request $request */
+        $request = RequestContext::get('request');
         return [
-            'get'           =>  $this->request->get(),
-            'post'          =>  $this->request->post(),
-            'parsedBody'    =>  $this->request->getParsedBody(),
+            'get'           =>  $request->get(),
+            'post'          =>  $request->post(),
+            'parsedBody'    =>  $request->getParsedBody(),
             'default'       =>  $default,
         ];
     }
@@ -141,14 +148,14 @@ class IndexController extends HttpController
      */
     public function cookie()
     {
-        $this->response = $this->response->withCookie('a', '1')
-                                         ->withCookie('b', '2', time() + 1)
-                                         ->withCookie('c', '3', 0, '/')
-                                         ->withCookie('d', '4', 0, '/a')
-                                         ->withCookie('e', '5', 0, '/', 'localhost')
-                                         ->withCookie('f', '6', 0, '/', '', true)
-                                         ->withCookie('g', '7', 0, '/', '', true, true)
-                                         ;
+        return RequestContext::get('response')->withCookie('a', '1')
+                                            ->withCookie('b', '2', time() + 1)
+                                            ->withCookie('c', '3', 0, '/')
+                                            ->withCookie('d', '4', 0, '/a')
+                                            ->withCookie('e', '5', 0, '/', 'localhost')
+                                            ->withCookie('f', '6', 0, '/', '', true)
+                                            ->withCookie('g', '7', 0, '/', '', true, true)
+                                            ;
     }
 
     /**
@@ -158,7 +165,7 @@ class IndexController extends HttpController
      */
     public function headers()
     {
-        $this->response = $this->response->withHeader('a', '1')
+        return RequestContext::get('response')->withHeader('a', '1')
                                          ->withAddedHeader('a', '11')
                                          ->withAddedHeader('b', '2')
                                          ->withHeader('c', '3')
@@ -189,7 +196,7 @@ class IndexController extends HttpController
      */
     public function redirect()
     {
-        $this->response = $this->response->redirect('/', StatusCode::MOVED_PERMANENTLY);
+        return RequestContext::get('response')->redirect('/', StatusCode::MOVED_PERMANENTLY);
     }
 
     /**
@@ -199,7 +206,7 @@ class IndexController extends HttpController
      */
     public function download()
     {
-        $this->response = $this->response->sendFile(__FILE__);
+        return RequestContext::get('response')->sendFile(__FILE__);
     }
 
     /**
@@ -209,7 +216,9 @@ class IndexController extends HttpController
      */
     public function upload()
     {
-        $files = $this->request->getUploadedFiles();
+        /** @var \Imi\Server\Http\Message\Request $request */
+        $request = RequestContext::get('request');
+        $files = $request->getUploadedFiles();
         $result = [];
         foreach($files as $k => $file)
         {
