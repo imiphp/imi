@@ -33,7 +33,6 @@ class SuperGlobals implements IWorkerStartEventListener
      */
     public function handle(WorkerStartEventParam $e)
     {
-        var_dump($this->enable);
         if($this->enable)
         {
             $_GET = new Get;
