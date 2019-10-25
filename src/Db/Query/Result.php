@@ -139,7 +139,6 @@ class Result implements IResult
             }
             if(is_subclass_of($object, IEvent::class))
             {
-                $className = BeanFactory::getObjectClass($object);
                 $object->trigger(ModelEvents::AFTER_QUERY, [
                     'model'      =>  $object,
                 ], $object, AfterQueryEventParam::class);
