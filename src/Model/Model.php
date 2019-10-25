@@ -252,29 +252,33 @@ abstract class Model extends BaseModel
         ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
 
         $bindValues = [];
-        foreach($this->__meta->getId() as $idName)
+        $id = $this->__meta->getId();
+        foreach($id as $idName)
         {
             if(isset($this->$idName))
             {
-                $bindValues[$idName] = $this->$idName;
+                $bindValues[':c_' . $idName] = $this->$idName;
             }
         }
         if(empty($bindValues))
         {
             throw new \RuntimeException('use Model->update(), primary key can not be null');
         }
-        foreach($data as $k => $v)
-        {
-            $bindValues[$k] = $v;
-        }
         $keys = [];
         foreach($data as $k => $v)
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function(IQuery $query){
-            $this->parseWhereId($query, true);
-        })->update($bindValues);
+        $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function(IQuery $query) use($id){
+            // 主键条件加入
+            foreach($id as $idName)
+            {
+                if(isset($this->$idName))
+                {
+                    $query->whereRaw($idName . '=:c_' . $idName);
+                }
+            }
+        })->bindValues($bindValues)->update($data);
 
         // 更新后
         $this->trigger(ModelEvents::AFTER_UPDATE, [
@@ -362,7 +366,14 @@ abstract class Model extends BaseModel
             $keys[] = $k;
         }
         $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function(IQuery $query){
-            $this->parseWhereId($query, true);
+            // 主键条件加入
+            foreach($this->__meta->getId() as $idName)
+            {
+                if(isset($this->$idName))
+                {
+                    $query->whereRaw($idName . '=:' . $idName);
+                }
+            }
         })->replace($data);
         if($result->isSuccess())
         {
@@ -404,7 +415,8 @@ abstract class Model extends BaseModel
         ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
 
         $bindValues = [];
-        foreach($this->__meta->getId() as $idName)
+        $id = $this->__meta->getId();
+        foreach($id as $idName)
         {
             if(isset($this->$idName))
             {
@@ -415,8 +427,15 @@ abstract class Model extends BaseModel
         {
             throw new \RuntimeException('use Model->delete(), primary key can not be null');
         }
-        $result = $query->alias($this->__realClass . ':delete', function(IQuery $query){
-            $this->parseWhereId($query, true);
+        $result = $query->alias($this->__realClass . ':delete', function(IQuery $query) use($id){
+            // 主键条件加入
+            foreach($id as $idName)
+            {
+                if(isset($this->$idName))
+                {
+                    $query->whereRaw($idName . '=:' . $idName);
+                }
+            }
         })->bindValues($bindValues)->delete();
 
         // 删除后
@@ -561,31 +580,6 @@ abstract class Model extends BaseModel
             $queryCallable($query);
         }
         return $query->$functionName($fieldName);
-    }
-
-    /**
-     * 处理主键where条件
-     * @param IQuery $query
-     * @return IQuery
-     */
-    private function parseWhereId(IQuery $query, $raw = false)
-    {
-        // 主键条件加入
-        foreach($this->__meta->getId() as $idName)
-        {
-            if(isset($this->$idName))
-            {
-                if($raw)
-                {
-                    $query->whereRaw($idName . '=:' . $idName);
-                }
-                else
-                {
-                    $query->where($idName, '=', $this->$idName);
-                }
-            }
-        }
-        return $query;
     }
 
     /**

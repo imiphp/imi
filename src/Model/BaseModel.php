@@ -160,6 +160,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $fields = $this->__meta->getFields();
         $camelName = $this->__getCamelName($offset);
         // 数据库bit类型字段处理
+        $column = null;
         if(isset($fields[$offset]))
         {
             $column = $fields[$offset];
