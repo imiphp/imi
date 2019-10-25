@@ -13,6 +13,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use Imi\Pool\PoolManager;
 use Imi\Db\Interfaces\IDb;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Model\Article;
 
 class ImiListener implements TestListener
 {

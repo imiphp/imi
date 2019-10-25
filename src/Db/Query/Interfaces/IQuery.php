@@ -594,5 +594,19 @@ interface IQuery
      */
     public function setFieldDec($fieldName, float $decValue = 1);
 
+    /**
+     * 获取自动起名的参数名称
+     * @return string
+     */
     public function getAutoParamName();
+
+    /**
+     * 查询器别名
+     *
+     * @param string $name
+     * @param callable $callable
+     * @return static
+     */
+    public function alias($name, $callable);
+
 }

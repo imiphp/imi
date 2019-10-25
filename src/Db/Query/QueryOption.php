@@ -74,4 +74,10 @@ class QueryOption
     {
         $this->table = new Table();
     }
+
+    public function __clone()
+    {
+        $this->table = clone $this->table;
+    }
+
 }

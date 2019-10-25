@@ -38,7 +38,7 @@ class InsertBuilder extends BaseBuilder
                 else
                 {
                     $fields[] = $this->parseKeyword($k);
-                    $valueParam = $this->query->getAutoParamName();
+                    $valueParam = ':' . $k;
                     $valueParams[] = $valueParam;
                     $this->params[$valueParam] = $v;
                 }

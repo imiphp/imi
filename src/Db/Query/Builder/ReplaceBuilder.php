@@ -42,7 +42,7 @@ class ReplaceBuilder extends BaseBuilder
                 }
                 else
                 {
-                    $valueParam = $this->query->getAutoParamName();
+                    $valueParam = ':' . $k;
                     $this->params[$valueParam] = $v;
                     $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
                 }

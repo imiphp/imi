@@ -91,6 +91,27 @@ class Query implements IQuery
      */
     protected $dbParamInc = 0;
 
+    /**
+     * 查询器别名集合
+     *
+     * @var \Imi\Db\Query\Interfaces\IQuery[]
+     */
+    protected static $aliasMap = [];
+
+    /**
+     * 当前别名
+     *
+     * @var string
+     */
+    protected $alias;
+
+    /**
+     * 别名 Sql 集合
+     *
+     * @var string[]
+     */
+    protected static $aliasSqls = [];
+
     public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
         $this->db = $db;
@@ -109,6 +130,13 @@ class Query implements IQuery
         {
             $this->queryType = null;
         }
+    }
+
+    public function __clone()
+    {
+        $this->isInitDb = false;
+        $this->db = null;
+        $this->option = clone $this->option;
     }
 
     /**
@@ -856,8 +884,15 @@ class Query implements IQuery
      */
     public function select(): IResult
     {
-        $builder = new SelectBuilder($this);
-        $sql = $builder->build();
+        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        {
+            $sql = static::$aliasSqls[$this->alias];
+        }
+        else
+        {
+            $builder = new SelectBuilder($this);
+            static::$aliasSqls[$this->alias] = $sql = $builder->build();
+        }
         if(!$this->isInitQueryType && !$this->isInTransaction())
         {
             $this->queryType = QueryType::READ;
@@ -899,8 +934,29 @@ class Query implements IQuery
      */
     public function insert($data = null): IResult
     {
-        $builder = new InsertBuilder($this);
-        $sql = $builder->build($data);
+        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        {
+            $sql = static::$aliasSqls[$this->alias];
+            $bindValues = [];
+            $numberKey = isset($data[0]);
+            foreach($data as $k => $v)
+            {
+                if($numberKey)
+                {
+                    $bindValues[':' . ($k + 1)] = $v;
+                }
+                else
+                {
+                    $bindValues[':' . $k] = $v;
+                }
+            }
+            $this->bindValues($bindValues);
+        }
+        else
+        {
+            $builder = new InsertBuilder($this);
+            static::$aliasSqls[$this->alias] = $sql = $builder->build($data);
+        }
         return $this->execute($sql);
     }
 
@@ -926,8 +982,21 @@ class Query implements IQuery
      */
     public function update($data = null): IResult
     {
-        $builder = new UpdateBuilder($this);
-        $sql = $builder->build($data);
+        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        {
+            $sql = static::$aliasSqls[$this->alias];
+            $bindValues = [];
+            foreach($data as $k => $v)
+            {
+                $bindValues[':' . $k] = $v;
+            }
+            $this->bindValues($bindValues);
+        }
+        else
+        {
+            $builder = new UpdateBuilder($this);
+            static::$aliasSqls[$this->alias] = $sql = $builder->build($data);
+        }
         return $this->execute($sql);
     }
 
@@ -939,8 +1008,21 @@ class Query implements IQuery
      */
     public function replace($data = null): IResult
     {
-        $builder = new ReplaceBuilder($this);
-        $sql = $builder->build($data);
+        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        {
+            $sql = static::$aliasSqls[$this->alias];
+            $bindValues = [];
+            foreach($data as $k => $v)
+            {
+                $bindValues[':' . $k] = $v;
+            }
+            $this->bindValues($bindValues);
+        }
+        else
+        {
+            $builder = new ReplaceBuilder($this);
+            static::$aliasSqls[$this->alias] = $sql = $builder->build($data);
+        }
         return $this->execute($sql);
     }
 
@@ -950,10 +1032,16 @@ class Query implements IQuery
      */
     public function delete(): IResult
     {
-        $builder = new DeleteBuilder($this);
-        $sql = $builder->build();
+        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        {
+            $sql = static::$aliasSqls[$this->alias];
+        }
+        else
+        {
+            $builder = new DeleteBuilder($this);
+            static::$aliasSqls[$this->alias] = $sql = $builder->build();
+        }
         $result = $this->execute($sql);
-        $this->__init();
         return $result;
     }
 
@@ -1158,4 +1246,23 @@ class Query implements IQuery
             return false;
         }
     }
+
+    /**
+     * 查询器别名
+     *
+     * @param string $name
+     * @param callable $callable
+     * @return static
+     */
+    public function alias($name, $callable)
+    {
+        if(!isset(static::$aliasMap[$name]))
+        {
+            $callable($this);
+            $this->alias = $name;
+            static::$aliasMap[$name] = $this;
+        }
+        return clone static::$aliasMap[$name];
+    }
+
 }

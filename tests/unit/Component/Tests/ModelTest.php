@@ -94,6 +94,15 @@ class ModelTest extends BaseTest
             'username'  =>  '1',
             'password'  =>  '2',
         ], $member->toArray());
+
+        $member = Member::find([
+            'id'    =>  1,
+        ]);
+        $this->assertEquals([
+            'id'        =>  1,
+            'username'  =>  '1',
+            'password'  =>  '2',
+        ], $member->toArray());
     }
 
     public function testSelect()
