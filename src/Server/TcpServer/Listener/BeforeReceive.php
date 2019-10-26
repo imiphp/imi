@@ -31,7 +31,7 @@ class BeforeReceive implements IReceiveEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create([
+        RequestContext::muiltiSet([
             'server'    =>  $e->getTarget(),
             'fd'        =>  $e->fd,
         ]);

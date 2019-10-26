@@ -86,11 +86,8 @@ class Server extends Base
                         'request'   => Request::getInstance($this, $swooleRequest),
                         'response'  => Response::getInstance($this, $swooleResponse),
                     ], $this, RequestEventParam::class);
-                } catch(\Throwable $ex)
-                {
+                } catch(\Throwable $ex) {
                     App::getBean('ErrorLog')->onException($ex);
-                } finally {
-                    RequestContext::destroy();
                 }
             });
         }

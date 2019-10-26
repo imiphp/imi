@@ -28,7 +28,6 @@ class Server
      */
     public function start($name, $workerNum)
     {
-        RequestContext::destroy();
         PoolManager::clearPools();
         CacheManager::clearPools();
         if(null === $name)

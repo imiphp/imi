@@ -29,7 +29,7 @@ class BeforeConnect implements IConnectEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create([
+        RequestContext::muiltiSet([
             'server'    =>  $e->server,
             'fd'        =>  $e->fd,
         ]);

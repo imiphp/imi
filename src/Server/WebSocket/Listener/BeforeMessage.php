@@ -31,7 +31,7 @@ class BeforeMessage implements IMessageEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create([
+        RequestContext::muiltiSet([
             'fd'        =>  $e->frame->fd,
             'server'    =>  $e->getTarget(),
         ]);

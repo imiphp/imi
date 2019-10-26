@@ -21,10 +21,6 @@ class BeforeClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
-        if(!RequestContext::exists())
-        {
-            RequestContext::create();
-        }
         RequestContext::muiltiSet([
             'fd'        =>  $e->fd,
             'server'    =>  $e->getTarget(),

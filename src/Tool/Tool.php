@@ -184,7 +184,6 @@ abstract class Tool
         }
         Annotation::getInstance()->init($initMains);
 
-        RequestContext::create();
         // 获取配置
         $pools = $caches = [];
         foreach(Helper::getMains() as $main)

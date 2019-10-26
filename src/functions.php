@@ -28,14 +28,9 @@ function imigo(callable $callable, ...$args)
  */
 function imiCallable(callable $callable, bool $withGo = false)
 {
-    $server = RequestContext::exists() ? RequestContext::get('server') : null;
+    $server = RequestContext::get('server');
     $resultCallable = function(...$args) use($callable, $server){
-        if(!RequestContext::exists())
-        {
-            RequestContext::create([
-                'server'    =>  $server,
-            ]);
-        }
+        RequestContext::set('server', $server);
         return $callable(...$args);
     };
     if($withGo)

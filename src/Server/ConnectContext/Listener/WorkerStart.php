@@ -24,7 +24,6 @@ class WorkerStart implements IWorkerStartEventListener
     {
         if(!$e->server->getSwooleServer()->taskworker && 0 === Worker::getWorkerID())
         {
-            RequestContext::create();
             foreach(ServerManage::getServers() as $server)
             {
                 RequestContext::set('server', $server);

@@ -31,7 +31,7 @@ class BeforeHandShake implements IHandShakeEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create([
+        RequestContext::muiltiSet([
             'server'    =>  $e->request->getServerInstance(),
             'request'   =>  $e->request,
             'response'  =>  $e->response,

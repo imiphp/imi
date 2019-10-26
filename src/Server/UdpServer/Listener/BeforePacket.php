@@ -29,7 +29,7 @@ class BeforePacket implements IPacketEventListener
             return;
         }
         // 上下文创建
-        RequestContext::create([
+        RequestContext::muiltiSet([
             'clientInfo'    =>  $e->clientInfo,
             'server'        =>  $e->getTarget(),
         ]);
