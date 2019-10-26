@@ -88,7 +88,15 @@ abstract class RequestContext
     public static function set($name, $value)
     {
         $context = Coroutine::getContext();
-        if(!$context)
+        if($context)
+        {
+            if(!($context['__bindDestroy'] ?? false))
+            {
+                $context['__bindDestroy'] = true;
+                defer('static::__destroy');
+            }
+        }
+        else
         {
             $coId = Coroutine::getuid();
             if(!isset(static::$context[$coId]))
@@ -98,11 +106,6 @@ abstract class RequestContext
             $context = &static::$context[$coId];
         }
         $context[$name] = $value;
-        if(!($context['__bindDestroy'] ?? false))
-        {
-            $context['__bindDestroy'] = true;
-            defer('static::__destroy');
-        }
     }
 
     /**
@@ -114,7 +117,15 @@ abstract class RequestContext
     public static function muiltiSet(array $data)
     {
         $context = Coroutine::getContext();
-        if(!$context)
+        if($context)
+        {
+            if(!($context['__bindDestroy'] ?? false))
+            {
+                $context['__bindDestroy'] = true;
+                defer('static::__destroy');
+            }
+        }
+        else
         {
             $coId = Coroutine::getuid();
             if(!isset(static::$context[$coId]))
@@ -127,11 +138,6 @@ abstract class RequestContext
         {
             $context[$k] = $v;
         }
-        if(!($context['__bindDestroy'] ?? false))
-        {
-            $context['__bindDestroy'] = true;
-            defer('static::__destroy');
-        }
     }
 
     /**
@@ -143,7 +149,15 @@ abstract class RequestContext
     public static function use(callable $callback)
     {
         $context = Coroutine::getContext();
-        if(!$context)
+        if($context)
+        {
+            if(!($context['__bindDestroy'] ?? false))
+            {
+                $context['__bindDestroy'] = true;
+                defer('static::__destroy');
+            }
+        }
+        else
         {
             $coId = Coroutine::getuid();
             if(!isset(static::$context[$coId]))
@@ -153,11 +167,6 @@ abstract class RequestContext
             $context = &static::$context[$coId];
         }
         $result = $callback($context);
-        if(!($context['__bindDestroy'] ?? false))
-        {
-            $context['__bindDestroy'] = true;
-            defer('static::__destroy');
-        }
         return $result;
     }
 
@@ -168,7 +177,15 @@ abstract class RequestContext
     public static function &getContext()
     {
         $context = Coroutine::getContext();
-        if(!$context)
+        if($context)
+        {
+            if(!($context['__bindDestroy'] ?? false))
+            {
+                $context['__bindDestroy'] = true;
+                defer('static::__destroy');
+            }
+        }
+        else
         {
             $coId = Coroutine::getuid();
             if(!isset(static::$context[$coId]))
@@ -176,11 +193,6 @@ abstract class RequestContext
                 static::$context[$coId] = [];
             }
             $context = &static::$context[$coId];
-        }
-        if(!($context['__bindDestroy'] ?? false))
-        {
-            $context['__bindDestroy'] = true;
-            defer('static::__destroy');
         }
         return $context;
     }
