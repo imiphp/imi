@@ -92,7 +92,6 @@ class Inotify extends BaseMonitor
     public function isChanged(): bool
     {
         $this->changedFiles = [];
-        $result = null;
         do{
             $readResult = \inotify_read($this->handler);
             if(false === $readResult)
@@ -117,7 +116,6 @@ class Inotify extends BaseMonitor
                     $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
                 }
             }
-            $result = isset($readResult[0]);
         }while(true);
     }
 

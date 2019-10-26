@@ -81,7 +81,7 @@ class Driver extends Base implements IDb
         {
             $this->option['options'] = [];
         }
-        $this->isCacheStatement = Config::get('@app.db.statement.cache', true);;
+        $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
     }
 
     public function __destruct()

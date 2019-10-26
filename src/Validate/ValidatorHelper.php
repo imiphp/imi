@@ -511,14 +511,7 @@ class ValidatorHelper
             }
             $id_card1 = $id_card;
             $id_card = substr($id_card, 0, 17);
-            if ($idcard_verify_number() !== strtoupper(substr($id_card1, 17, 1)))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return $idcard_verify_number() === strtoupper(substr($id_card1, 17, 1));
         };
         /**
          * 将15位身份证升级到18位

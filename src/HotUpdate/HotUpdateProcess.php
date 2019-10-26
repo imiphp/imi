@@ -119,7 +119,7 @@ class HotUpdateProcess extends BaseProcess
                 echo 'Build time use: ', microtime(true) - $beginTime, ' sec', PHP_EOL;
                 // 执行重新加载
                 echo 'Reloading server...', PHP_EOL;
-                $reloadResult = Imi::reloadServer();
+                Imi::reloadServer();
             }
         }
     }

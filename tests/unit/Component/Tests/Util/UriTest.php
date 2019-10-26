@@ -32,7 +32,7 @@ class UriTest extends BaseTest
         $this->assertEquals($url, (string)$uri);
         $this->assertEquals($url, Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo()));
 
-        $url = 'http://www.imiphp.com:4433/index.html?t=123#ggsmd';;
+        $url = 'http://www.imiphp.com:4433/index.html?t=123#ggsmd';
         $uri = $uri->withFragment('ggsmd')->withHost('www.imiphp.com')->withPath('/index.html')->withPort('4433')->withQuery('t=123')->withScheme('http')->withUserInfo('');
         $this->assertEquals('http', $uri->getScheme());
         $this->assertEquals('www.imiphp.com:4433', $uri->getAuthority());

@@ -63,7 +63,7 @@ class FacadeGenerate
         ]));
         $refClass = new ReflectionClass($fromClass);
         $methods = [];
-        foreach($refClass->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PUBLIC) as $method)
+        foreach($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
         {
             if(preg_match('/@return\s+([^\s]+)/', $method->getDocComment(), $matches) > 0)
             {

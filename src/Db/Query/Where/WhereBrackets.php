@@ -107,12 +107,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         }
         else if($callResult instanceof IBaseWhere)
         {
-            $result = '(' . $callResult . ')';
-            $this->binds = $callResult->getBinds();
-            return $result;
-        }
-        else if($callResult instanceof IBaseWhere)
-        {
             return $callResult->toStringWithoutLogic($query);
         }
         else

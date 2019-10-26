@@ -140,20 +140,17 @@ abstract class File
         {
             return false;
         }
-        if (!is_dir($dir))
+        if (is_dir($dir))
         {
-            if(@mkdir($dir, $mode, true))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
+        }
+        if(@mkdir($dir, $mode, true))
+        {
+            return true;
         }
         else
         {
-           return true;
+            return false;
         }
     }
 
@@ -247,14 +244,7 @@ abstract class File
             }
         }
         closedir($dh);
-        if(rmdir($dir))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return rmdir($dir);
     }
 
     /**

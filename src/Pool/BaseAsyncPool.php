@@ -87,8 +87,6 @@ abstract class BaseAsyncPool extends BasePool
                 return false;
             }
         }
-        $read = [$this->queue];
-        $write = null;
         // Coroutine\Channel::select()/->pop() 最小超时时间1毫秒
         $result = $this->queue->pop(0.001);
         if(false === $result)
