@@ -92,7 +92,7 @@ abstract class Model extends BaseModel
                     $keys[] = $k;
                     $bindValues[':' . $k] = $v;
                 }
-                $query = $query->alias($realClassName . ':find:pk:' . md5(implode(',', $keys)), function(IQuery $query) use($keys){
+                $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), function(IQuery $query) use($keys){
                     foreach($keys as $name)
                     {
                         $query->whereRaw($name . '=:' . $name);
@@ -101,25 +101,25 @@ abstract class Model extends BaseModel
             }
             else
             {
-                do {
-                    // 主键值
-                    $id = static::__getMeta()->getId();
-                    $bindValues = [];
-                    foreach($id as $i => $idName)
+                // 主键值
+                $id = static::__getMeta()->getId();
+                $keys = [];
+                $bindValues = [];
+                foreach($id as $i => $idName)
+                {
+                    if(!isset($ids[$i]))
                     {
-                        if(!isset($ids[$i]))
-                        {
-                            break 2;
-                        }
-                        $bindValues[':' . $idName] = $ids[$i];
+                        break;
                     }
-                    $query = $query->alias($realClassName . ':find:pk', function(IQuery $query) use($id){
-                        foreach($id as $idName)
-                        {
-                            $query->whereRaw($idName . '=:' . $idName);
-                        }
-                    })->bindValues($bindValues);
-                } while(0);
+                    $keys[] = $idName;
+                    $bindValues[':' . $idName] = $ids[$i];
+                }
+                $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), function(IQuery $query) use($keys){
+                    foreach($keys as $name)
+                    {
+                        $query->whereRaw($name . '=:' . $name);
+                    }
+                })->bindValues($bindValues);
             }
         }
 
