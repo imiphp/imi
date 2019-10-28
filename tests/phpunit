@@ -27,5 +27,8 @@ go(function() use(&$statusCode){
         }
     });
 });
-Event::wait();
+if(version_compare(SWOOLE_VERSION, '4.4', '>='))
+{
+    Event::wait();
+}
 exit($statusCode);
