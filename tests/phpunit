@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+
+use Swoole\Event;
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 ini_set('date.timezone', date_default_timezone_get());
 
@@ -24,4 +27,5 @@ go(function() use(&$statusCode){
         }
     });
 });
+Event::wait();
 exit($statusCode);

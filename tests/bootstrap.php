@@ -3,8 +3,13 @@ $loader = require dirname(__DIR__) . '/vendor/autoload.php';
 require __DIR__ . '/vendor/autoload.php';
 
 use Imi\App;
+use Swoole\Event;
+use Yurun\Swoole\CoPool\CoPool;
+use Yurun\Swoole\CoPool\Interfaces\ICoTask;
+use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 
 App::setLoader($loader);
+\Swoole\Runtime::enableCoroutine();
 
 /**
  * 开启服务器
@@ -142,35 +147,74 @@ function startServer()
             'checkStatus'   => 'checkUDPServerStatus',
         ],
     ];
-    
+
+    $pool = new CoPool(swoole_cpu_num(), 16,
+        // 定义任务匿名类，当然你也可以定义成普通类，传入完整类名
+        new class implements ICoTask
+        {
+            /**
+             * 执行任务
+             *
+             * @param ITaskParam $param
+             * @return mixed
+             */
+            public function run(ITaskParam $param)
+            {
+                ($param->getData())();
+                // 执行任务
+                return true; // 返回任务执行结果，非必须
+            }
+
+        }
+    );
+    $pool->run();
+
+    $taskCount = count($servers);
+    $completeTaskCount = 0;
     foreach($servers as $name => $options)
     {
-        // start server
-        $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
-        echo "Starting {$name}...", PHP_EOL;
-        echo `{$cmd}`, PHP_EOL;
-    
-        register_shutdown_function(function() use($name, $options){
-            // stop server
-            $cmd = $options['stop'];
-            echo "Stoping {$name}...", PHP_EOL;
-            echo `{$cmd}`, PHP_EOL;
-            echo "{$name} stoped!", PHP_EOL, PHP_EOL;
+        // 增加任务，异步回调
+        $pool->addTaskAsync(function() use($options, $name){
+            // start server
+            $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+            echo "Starting {$name}...", PHP_EOL;
+            `{$cmd}`;
+
+            register_shutdown_function(function() use($name, $options){
+                // stop server
+                $cmd = $options['stop'];
+                echo "Stoping {$name}...", PHP_EOL;
+                `{$cmd}`;
+                echo "{$name} stoped!", PHP_EOL, PHP_EOL;
+            });
+
+            if(($options['checkStatus'])())
+            {
+                echo "{$name} started!", PHP_EOL;
+            }
+            else
+            {
+                throw new \RuntimeException("{$name} start failed");
+            }
+        }, function(ITaskParam $param, $data) use(&$completeTaskCount, $taskCount, $pool){
+            // 异步回调
+            ++$completeTaskCount;
         });
-    
-        if(($options['checkStatus'])())
-        {
-            echo "{$name} started!", PHP_EOL;
-        }
-        else
-        {
-            throw new \RuntimeException("{$name} start failed");
-        }
     }
+
+    while($completeTaskCount < $taskCount)
+    {
+        usleep(10000);
+    }
+    $pool->stop();
 
     register_shutdown_function(function() {
         App::getBean('Logger')->save();
     });
 }
-
+register_shutdown_function(function(){
+    echo 'Shutdown memory:', PHP_EOL, `free -m`, PHP_EOL;
+});
+echo 'Before start server memory:', PHP_EOL, `free -m`, PHP_EOL;
 startServer();
+echo 'After start server memory:', PHP_EOL, `free -m`, PHP_EOL;
