@@ -185,6 +185,40 @@ return [
                 ]
             ],
         ],
+        'redis_manager_test'    =>    [
+            'sync'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'serialize'   =>    false,
+                    'db'          =>    imiGetEnv('REDIS_CACHE_DB', 1),
+                ]
+            ],
+            'async'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'serialize'   =>    false,
+                    'db'          =>    1,
+                ]
+            ],
+        ],
     ],
     // db 配置
     'db' =>  [

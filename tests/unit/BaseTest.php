@@ -21,7 +21,7 @@ abstract class BaseTest extends TestCase
         });
         while(!$end)
         {
-            \Swoole\Event::dispatch();
+            usleep(10000);
         }
         if($finally)
         {

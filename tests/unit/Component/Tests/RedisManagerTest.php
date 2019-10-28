@@ -20,18 +20,17 @@ class RedisManagerTest extends BaseTest
 
     public function testNewInstance()
     {
-        $pool = PoolManager::getInstance(RedisManager::getDefaultPoolName());
+        $pool = PoolManager::getInstance('redis_manager_test');
+        $instance = null;
         try {
             Assert::assertEquals(1, $pool->getCount());
             Assert::assertEquals(1, $pool->getFree());
 
-            $instance = RedisManager::getNewInstance();
+            $instance = RedisManager::getNewInstance('redis_manager_test');
 
             Assert::assertEquals(1, $pool->getCount());
             Assert::assertEquals(0, $pool->getFree());
             $this->assertRedisHandler($instance);
-        } catch (\Throwable $th) {
-            throw $th;
         } finally {
             if($instance)
             {
@@ -44,12 +43,12 @@ class RedisManagerTest extends BaseTest
 
     public function testInstance()
     {
-        $pool = PoolManager::getInstance(RedisManager::getDefaultPoolName());
+        $pool = PoolManager::getInstance('redis_manager_test');
         $this->go(function() use($pool){
             Assert::assertEquals(1, $pool->getCount());
             Assert::assertEquals(1, $pool->getFree());
 
-            $instance = RedisManager::getInstance();
+            $instance = RedisManager::getInstance('redis_manager_test');
 
             Assert::assertEquals(1, $pool->getCount());
             Assert::assertEquals(0, $pool->getFree());
