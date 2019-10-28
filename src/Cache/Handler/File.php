@@ -51,31 +51,39 @@ class File extends Base
         {
             return $default;
         }
-        // 加锁失败
-        if (!flock($fp, LOCK_SH))
-        {
+        $isLocked = $isExpired = false;
+        try {
+            // 加锁失败
+            if (!$isLocked = flock($fp, LOCK_SH))
+            {
+                return $default;
+            }
+            // 检查是否过期
+            if($isExpired = $this->checkExpire($fileName))
+            {
+                return $default;
+            }
+            // 正常读入
+            if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
+            {
+                $content = Coroutine::fread($fp);
+            }
+            else
+            {
+                $content = FileUtil::readAll($fp);
+            }
+            return $this->decode($content);
+        } finally {
+            if($isLocked)
+            {
+                flock($fp, LOCK_UN);
+            }
             fclose($fp);
-            return $default;
+            if($isExpired)
+            {
+                unlink($fileName);
+            }
         }
-        // 检查是否过期
-        if($this->checkExpire($fileName))
-        {
-            flock($fp, LOCK_UN);
-            fclose($fp);
-            return $default;
-        }
-        // 正常读入
-        if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
-        {
-            $content = Coroutine::fread($fp);
-        }
-        else
-        {
-            $content = FileUtil::readAll($fp);
-        }
-        flock($fp, LOCK_UN);
-        fclose($fp);
-        return $this->decode($content);
     }
 
     /**
@@ -108,31 +116,37 @@ class File extends Base
         {
             return false;
         }
-        // 加锁失败
-        if (!flock($fp, LOCK_EX))
-        {
+        $isLocked = false;
+        try {
+            // 加锁失败
+            if (!$isLocked = flock($fp, LOCK_EX))
+            {
+                return false;
+            }
+            // 写入缓存数据
+            if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
+            {
+                Coroutine::fwrite($fp, $this->encode($value));
+            }
+            else
+            {
+                fwrite($fp, $this->encode($value));
+            }
+            // ttl 支持 \DateInterval 格式
+            if($ttl instanceof \DateInterval)
+            {
+                $ttl = DateTime::getSecondsByInterval($ttl);
+            }
+            // 写入扩展数据
+            $this->writeExData($fileName, $ttl);
+            return true;
+        } finally {
+            if($isLocked)
+            {
+                flock($fp, LOCK_UN);
+            }
             fclose($fp);
-            return false;
         }
-        // 写入缓存数据
-        if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
-        {
-            Coroutine::fwrite($fp, $this->encode($value));
-        }
-        else
-        {
-            fwrite($fp, $this->encode($value));
-        }
-        // ttl 支持 \DateInterval 格式
-        if($ttl instanceof \DateInterval)
-        {
-            $ttl = DateTime::getSecondsByInterval($ttl);
-        }
-        // 写入扩展数据
-        $this->writeExData($fileName, $ttl);
-        flock($fp, LOCK_UN);
-        fclose($fp);
-        return true;
     }
 
     /**
@@ -291,16 +305,25 @@ class File extends Base
         {
             return false;
         }
-        // 加锁失败
-        if (!flock($fp, LOCK_SH))
-        {
+        $isLocked = $isExpired = false;
+        try {
+            // 加锁失败
+            if (!$isLocked = flock($fp, LOCK_SH))
+            {
+                return false;
+            }
+            return !$isExpired = $this->checkExpire($fileName);
+        } finally {
+            if($isLocked)
+            {
+                flock($fp, LOCK_UN);
+            }
             fclose($fp);
-            return false;
+            if($isExpired)
+            {
+                unlink($fileName);
+            }
         }
-        $result = !$this->checkExpire($fileName);
-        flock($fp, LOCK_UN);
-        fclose($fp);
-        return $result;
     }
 
     /**
@@ -356,7 +379,6 @@ class File extends Base
         $maxTime = time() - $data['ttl'];
         if(filemtime($fileName) <= $maxTime)
         {
-            unlink($fileName);
             unlink($exDataFileName);
             return true;
         }
