@@ -111,7 +111,7 @@ class Meta
         $this->relation = ModelRelationManager::hasRelation($modelClass);
         if($this->relation)
         {
-            $this->realFieldNames = array_merge($this->fieldNames, ModelRelationManager::getRelationFieldNames($this));
+            $this->realFieldNames = array_merge($this->fieldNames, ModelRelationManager::getRelationFieldNames($modelClass));
         }
         else
         {
