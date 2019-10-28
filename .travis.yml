@@ -66,7 +66,7 @@ before_script:
   - php --ri swoole
 
 script:
-  - ./tests/phpunit -c ./tests/phpunit.xml
+  - ./tests/run
 
 after_failure:
   - php ./.travis/output-server-log.php

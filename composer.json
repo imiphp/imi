@@ -33,7 +33,7 @@
         "bin/imi"
     ],
     "scripts": {
-      "test": "php ./tests/phpunit -c ./tests/phpunit.xml",
+      "test": "./tests/run",
       "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
     }
 }
