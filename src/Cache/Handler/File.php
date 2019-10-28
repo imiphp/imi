@@ -372,7 +372,7 @@ class File extends Base
             return false;
         }
         $data = unserialize(file_get_contents($exDataFileName));
-        if(null === $data['ttl'] ?? null)
+        if(null === ($data['ttl'] ?? null))
         {
             return false;
         }
