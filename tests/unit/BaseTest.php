@@ -2,6 +2,7 @@
 namespace Imi\Test;
 
 use PHPUnit\Framework\TestCase;
+use Swoole\Coroutine;
 
 abstract class BaseTest extends TestCase
 {
@@ -10,16 +11,14 @@ abstract class BaseTest extends TestCase
     protected function go($callable, $finally = null)
     {
         $throwable = null;
-        $end = false;
-        imigo(function() use($callable, &$throwable, &$end){
+        $cid = imigo(function() use($callable, &$throwable){
             try {
                 $callable();
             } catch(\Throwable $th) {
                 $throwable = $th;
             }
-            $end = true;
         });
-        while(!$end)
+        while(Coroutine::exists($cid))
         {
             usleep(10000);
         }
