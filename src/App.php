@@ -422,11 +422,23 @@ STR;
      */
     public static function outStartupInfo()
     {
-        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL
-        , 'PHP: v', PHP_VERSION, PHP_EOL
-        , 'Swoole: v', SWOOLE_VERSION, PHP_EOL
-        , 'Timezone: ', date_default_timezone_get(), PHP_EOL
-        , PHP_EOL;
+        echo '[System]', PHP_EOL;
+        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL;
+        echo 'CPU: ', swoole_cpu_num(), ' Cores', PHP_EOL;
+        echo 'Disk: Free ', round(@disk_free_space('.') / (1024*1024*1024), 3), ' GB / Total ', round(@disk_total_space('.') / (1024*1024*1024), 3), ' GB', PHP_EOL;
+
+        echo PHP_EOL, '[Network]', PHP_EOL;
+        foreach(swoole_get_local_ip() as $name => $ip)
+        {
+            echo 'ip@', $name, ': ', $ip, PHP_EOL;
+        }
+
+        echo PHP_EOL, '[PHP]', PHP_EOL;
+        echo 'Version: v', PHP_VERSION, PHP_EOL;
+        echo 'Swoole: v', SWOOLE_VERSION, PHP_EOL;
+        echo 'Timezone: ', date_default_timezone_get(), PHP_EOL;
+
+        echo PHP_EOL;
     }
 
 }
