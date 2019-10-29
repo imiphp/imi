@@ -77,12 +77,20 @@ abstract class Base
         'U',
     ];
 
+    /**
+     * date()函数支持的格式缓存文本
+     *
+     * @var string
+     */
+    private $dateFormatsCacheStr;
+
     public function __construct($option = [])
     {
         foreach($option as $k => $v)
         {
             $this->$k = $v;
         }
+        $this->dateFormatsCacheStr = implode('#', static::DATE_FORMATS);
     }
 
     /**
@@ -168,24 +176,22 @@ abstract class Base
             'trace'         => $this->parseTrace($record),
         ];
 
-        $find = $replace = [];
+        $replaces = [];
         foreach($vars as $key => $value)
         {
             if(is_scalar($value))
             {
-                $find[] = '{' . $key . '}';
-                $replace[] = $value;
+                $replaces['{' . $key . '}'] = $value;
             }
         }
         foreach ($record->getContext() as $key => $value)
         {
             if(is_scalar($value))
             {
-                $find[] = '{' . $key . '}';
-                $replace[] = $value;
+                $replaces['{' . $key . '}'] = $value;
             }
         }
-        $logContent = str_replace($find, $replace, $this->format);
+        $logContent = strtr($this->format, $replaces);
         
         return $this->replaceDateTime($logContent, $record->getLogTime());
     }
@@ -204,14 +210,15 @@ abstract class Base
             $vars['call'] = $this->getTraceCall($vars);
             $vars['index'] = $index;
             $line = $this->traceFormat;
+            $replaces = [];
             foreach($vars as $name => $value)
             {
                 if(is_scalar($value))
                 {
-                    $line = str_replace('{' . $name . '}', (string)$value, $line);
+                    $replaces['{' . $name . '}'] = (string)$value;
                 }
             }
-            $result[] = $line;
+            $result[] = strtr($line, $replaces);
         }
         return implode(PHP_EOL, $result);
     }
@@ -265,10 +272,12 @@ abstract class Base
      */
     protected function replaceDateTime($string, $timestamp)
     {
-        foreach(static::DATE_FORMATS as $format)
+        $list = explode('#', date($this->dateFormatsCacheStr, $timestamp));
+        $replaces = [];
+        foreach($list as $i => $item)
         {
-            $string = str_replace('{' . $format . '}', date($format, $timestamp), $string);
+            $replaces['{' . static::DATE_FORMATS[$i] . '}'] = $item;
         }
-        return $string;
+        return strtr($string, $replaces);
     }
 }

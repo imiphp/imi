@@ -37,6 +37,19 @@ class IndexController extends HttpController
 
     /**
      * @Action
+     * @Route("/route/{id}")
+     *
+     * @return void
+     */
+    public function route($id)
+    {
+        return [
+            'id'    =>  $id,
+        ];
+    }
+
+    /**
+     * @Action
      * @View(renderType="html", template="html")
      * @return void
      */

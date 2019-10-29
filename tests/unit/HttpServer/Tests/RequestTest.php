@@ -11,6 +11,20 @@ use Imi\Util\Http\Consts\MediaType;
 class RequestTest extends BaseTest
 {
     /**
+     * route
+     *
+     * @return void
+     */
+    public function testRoute()
+    {
+        $http = new HttpRequest;
+        $id = '19260817';
+        $response = $http->get($this->host . 'route/' . $id);
+        $data = $response->json(true);
+        $this->assertEquals($id, $data['id'] ?? null);
+    }
+
+    /**
      * $_GET
      *
      * @return void

@@ -115,16 +115,16 @@ abstract class RedisModel extends BaseModel
     public function __getKey()
     {
         $rule = ModelManager::getKeyRule($this);
-        $result = $rule->rule;
+        $replaces = [];
         foreach($rule->paramNames as $paramName)
         {
             if(!isset($this[$paramName]))
             {
                 throw new \RuntimeException(sprintf('__getKey param %s does not exists', $paramName));
             }
-            $result = str_replace('{' . $paramName . '}', $this[$paramName], $result);
+            $replaces['{' . $paramName . '}'] = $this[$paramName];
         }
-        return $result;
+        return strtr($rule->rule, $replaces);
     }
 
     /**
@@ -141,16 +141,16 @@ abstract class RedisModel extends BaseModel
         else
         {
             $rule = ModelManager::getKeyRule(static::class);
-            $result = $rule->rule;
+            $replaces = [];
             foreach($rule->paramNames as $paramName)
             {
                 if(!isset($condition[$paramName]))
                 {
                     throw new \RuntimeException(sprintf('GenerateKey param %s does not exists', $paramName));
                 }
-                $result = str_replace('{' . $paramName . '}', $condition[$paramName], $result);
+                $replaces['{' . $paramName . '}'] = $condition[$paramName];
             }
-            return $result;
+            return strtr($rule->rule, $replaces);
         }
     }
 

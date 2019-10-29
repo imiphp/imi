@@ -238,7 +238,11 @@ class HttpRoute
         if(!isset($this->rulesCache[$rule]))
         {
             $fields = [];
-            $rule = str_replace(['/', '\{', '\}'], ['\/', '{', '}'], preg_quote($rule));
+            $rule = strtr(preg_quote($rule), [
+                '/'     =>  '\/',
+                '\{'    =>  '{',
+                '\}'    =>  '}',
+            ]);
             $this->rulesCache[$rule] = '/^' . preg_replace_callback(
                 '/{([^}]+)}/i',
                 function($matches)use(&$fields){
