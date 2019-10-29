@@ -90,8 +90,6 @@ abstract class BaseLock implements ILockHandler
                 }
                 $taskCallable();
                 return true;
-            } catch (\Throwable $th) {
-                throw $th;
             } finally {
                 $this->unlock();
             }
@@ -120,8 +118,6 @@ abstract class BaseLock implements ILockHandler
         {
             try {
                 $taskCallable();
-            } catch (\Throwable $th) {
-                throw $th;
             } finally {
                 $this->unlock();
             }

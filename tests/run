@@ -79,8 +79,6 @@ function startServer()
                     $serverStarted = true;
                     break;
                 }
-            } catch(\Throwable $th) {
-                throw $th;
             } finally {
                 socket_close($sock);
             }
@@ -110,8 +108,6 @@ function startServer()
                     $serverStarted = true;
                     break;
                 }
-            } catch(\Throwable $th) {
-                throw $th;
             } finally {
                 fclose($handle);
             }

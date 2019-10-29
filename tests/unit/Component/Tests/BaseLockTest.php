@@ -19,8 +19,6 @@ abstract class BaseLockTest extends BaseTest
             Assert::assertTrue($result);
             Assert::assertTrue(Lock::isLocked($this->lockId));
             Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockCoId());
-        } catch(\Throwable $th) {
-            throw $th;
         } finally {
             Assert::assertTrue(Lock::unlock($this->lockId));
             Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -37,8 +35,6 @@ abstract class BaseLockTest extends BaseTest
             Assert::assertTrue($result);
             Assert::assertTrue(Lock::isLocked($this->lockId));
             Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockCoId());
-        } catch(\Throwable $th) {
-            throw $th;
         } finally {
             Assert::assertTrue(Lock::unlock($this->lockId));
             Assert::assertFalse(Lock::isLocked($this->lockId));

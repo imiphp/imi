@@ -157,8 +157,6 @@ class MemoryTableController extends HttpController
                 'getField'  =>  MemoryTableManager::get('t1', $key, 'name'),
                 'getRow'    =>  MemoryTableManager::get('t1', $key),
             ];
-        } catch(\Throwable $th) {
-            throw $th;
         } finally {
             MemoryTableManager::unlock('t1');
         }

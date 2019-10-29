@@ -48,8 +48,6 @@ class HttpSessionMiddleware implements MiddlewareInterface
                 // 发送cookie
                 $response = $this->sendCookie($sessionManager, $response);
             }
-        } catch(\Throwable $ex){
-            throw $ex;
         } finally{
             // 尝试进行垃圾回收
             $sessionManager->tryGC();

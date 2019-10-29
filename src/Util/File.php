@@ -208,8 +208,6 @@ abstract class File
                     return false;
                 }
             }
-        } catch(\Throwable $th) {
-            throw $th;
         } finally {
             if($handler)
             {
