@@ -242,12 +242,10 @@ function test()
     
     if(version_compare(SWOOLE_VERSION, '4.4', '<') && 255 === ($status['exitcode'] ?? 0) && 'OK' === substr($records2[0] ?? '', 0, 2))
     {
-        var_dump(0);
         exit(0);
     }
     else
     {
-        var_dump($status['exitcode'] ?? 0);
         exit($status['exitcode'] ?? 0);
     }
 }
