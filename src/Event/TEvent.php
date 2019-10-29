@@ -61,12 +61,13 @@ trait TEvent
     {
         if(isset($this->events[$name]))
         {
+            $map = &$this->events[$name];
             // 数据映射
             foreach($this->events[$name] as $k => $item)
             {
                 if($callback === $item->callback)
                 {
-                    unset($this->events[$name][$k]);
+                    unset($map[$k]);
                 }
             }
             $this->eventChangeRecords[$name] = true;
@@ -91,6 +92,7 @@ trait TEvent
             {
                 return;
             }
+            $eventsMap = &$this->events[$name];
             $this->rebuildEventQueue($name);
             foreach($classEventdata as $className => $option)
             {
@@ -99,7 +101,7 @@ trait TEvent
                     foreach($option[$name] as $callback)
                     {
                         // 数据映射
-                        $this->events[$name][] = $item = new EventItem($callback['className'], $callback['priority']);
+                        $eventsMap[] = $item = new EventItem($callback['className'], $callback['priority']);
                         $this->eventQueue[$name]->insert($item, $callback['priority']);
                     }
                 }
@@ -151,13 +153,14 @@ trait TEvent
         // 仅触发一次的处理
         if(isset($oneTimeCallbacks[0]))
         {
-            foreach($this->events[$name] as $eventsKey => $item)
+            $eventsMap = &$this->events[$name];
+            foreach($eventsMap as $eventsKey => $item)
             {
                 foreach($oneTimeCallbacks as $oneTimeCallbacksKey => $oneTimeItem)
                 {
                     if($oneTimeItem === $item)
                     {
-                        unset($this->events[$name][$eventsKey], $oneTimeCallbacks[$oneTimeCallbacksKey]);
+                        unset($eventsMap[$eventsKey], $oneTimeCallbacks[$oneTimeCallbacksKey]);
                         break;
                     }
                 }

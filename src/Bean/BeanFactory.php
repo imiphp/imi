@@ -219,29 +219,31 @@ TPL;
      */
     private static function getMethodParamTpls(\ReflectionMethod $method)
     {
+        $args = $define = $call = [];
+        $setArgs = $setArgsBack = '';
         $result = [
-            'args'      => [],
-            'define'    => [],
-            'call'      => [],
-            'set_args'  => '',
-            'set_args_back'  => '',
+            'args'          => &$args,
+            'define'        => &$define,
+            'call'          => &$call,
+            'set_args'      => &$setArgs,
+            'set_args_back' => &$setArgsBack,
         ];
         foreach($method->getParameters() as $i => $param)
         {
             // 数组参数，支持可变传参
             if(!$param->isVariadic())
             {
-                $result['args'][] = static::getMethodParamArgsTpl($param);
+                $args[] = static::getMethodParamArgsTpl($param);
             }
             // 方法参数定义
-            $result['define'][] = static::getMethodParamDefineTpl($param);
+            $define[] = static::getMethodParamDefineTpl($param);
             // 调用传参
-            $result['call'][] = static::getMethodParamCallTpl($param);
+            $call[] = static::getMethodParamCallTpl($param);
             // 引用传参
             if($param->isPassedByReference())
             {
-                $result['set_args'] .= '$__args__[' . $i . '] = &$' . $param->name . ';';
-                $result['set_args_back'] .= '$' . $param->name . ' = $__args__[' . $i . '];';
+                $setArgs .= '$__args__[' . $i . '] = &$' . $param->name . ';';
+                $setArgsBack .= '$' . $param->name . ' = $__args__[' . $i . '];';
             }
         }
         foreach($result as &$item)
@@ -252,9 +254,9 @@ TPL;
             }
         }
         // 调用如果参数为空处理
-        if('' === $result['call'])
+        if('' === $call)
         {
-            $result['call'] = '...func_get_args()';
+            $call = '...func_get_args()';
         }
         return $result;
     }

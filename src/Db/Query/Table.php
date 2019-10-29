@@ -106,15 +106,16 @@ class Table implements ITable
         $matches = $this->parseKeywordText($value);
         if(isset($matches['keywords']))
         {
-            if(isset($matches['keywords'][1]))
+            $keywords = $matches['keywords'];
+            if(isset($keywords[1]))
             {
-                $this->database = $matches['keywords'][0];
-                $this->table = $matches['keywords'][1];
+                $this->database = $keywords[0];
+                $this->table = $keywords[1];
             }
-            else if(isset($matches['keywords'][0]))
+            else if(isset($keywords[0]))
             {
                 $this->database = null;
-                $this->table = $matches['keywords'][0];
+                $this->table = $keywords[0];
             }
             $this->alias = $matches['alias'];
         }

@@ -54,17 +54,16 @@ abstract class StatementManager
     public static function get(IDb $db, string $sql)
     {
         $hashCode = $db->hashCode();
-        $result = static::$statements[$hashCode][$sql] ?? null;
-        if(null === $result)
+        $statement = &static::$statements[$hashCode][$sql] ?? null;
+        if(null === $statement)
         {
-            return $result;
+            return $statement;
         }
-        if($result['using'])
+        if($statement['using'])
         {
             return false;
         }
-        static::$statements[$hashCode][$sql]['using'] = true;
-        $statement = static::$statements[$hashCode][$sql];
+        $statement['using'] = true;
         try {
             RequestContext::use(function(&$context) use($statement){
                 $context['statementCaches'][] = $statement['statement'];
@@ -88,13 +87,14 @@ abstract class StatementManager
         $hashCode = $db->hashCode();
         if(isset(static::$statements[$hashCode][$sql]))
         {
-            static::$statements[$hashCode][$sql]['statement']->closeCursor();
-            static::$statements[$hashCode][$sql]['using'] = false;
+            $statementItem = static::$statements[$hashCode][$sql];
+            $statementItem['statement']->closeCursor();
+            $statementItem['using'] = false;
             try {
-                RequestContext::use(function(&$context) use($hashCode, $sql){
+                RequestContext::use(function(&$context) use($hashCode, $sql, $statementItem){
                     if(isset($context['statementCaches']))
                     {
-                        if(false !== $i = array_search(static::$statements[$hashCode][$sql]['statement'], $context['statementCaches']))
+                        if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
                         {
                             unset($context['statementCaches'][$i]);
                         }

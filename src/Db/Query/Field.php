@@ -133,23 +133,24 @@ class Field implements IField
         $matches = $this->parseKeywordText($value);
         if(isset($matches['keywords']))
         {
-            if(isset($matches['keywords'][2]))
+            $keywords = $matches['keywords'];
+            if(isset($keywords[2]))
             {
-                $this->database = $matches['keywords'][0];
-                $this->table = $matches['keywords'][1];
-                $this->field = $matches['keywords'][2];
+                $this->database = $keywords[0];
+                $this->table = $keywords[1];
+                $this->field = $keywords[2];
             }
-            else if(isset($matches['keywords'][1]))
+            else if(isset($keywords[1]))
             {
                 $this->database = null;
-                $this->table = $matches['keywords'][0];
-                $this->field = $matches['keywords'][1];
+                $this->table = $keywords[0];
+                $this->field = $keywords[1];
             }
-            else if(isset($matches['keywords'][0]))
+            else if(isset($keywords[0]))
             {
                 $this->database = null;
                 $this->table = null;
-                $this->field = $matches['keywords'][0];
+                $this->field = $keywords[0];
             }
             $this->alias = $matches['alias'];
         }
