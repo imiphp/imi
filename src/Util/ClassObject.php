@@ -79,7 +79,7 @@ abstract class ClassObject
             if(isset($args[$i + 1]))
             {
                 $count = count($args);
-                for($i += 1; $i < $count; ++$i)
+                for(++$i; $i < $count; ++$i)
                 {
                     $result[$param->name][] = $args[$i];
                 }
