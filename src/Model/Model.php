@@ -5,6 +5,7 @@ use Imi\Db\Db;
 use Imi\Util\Text;
 use Imi\Event\Event;
 use Imi\Bean\BeanFactory;
+use Imi\Db\Query\Field;
 use Imi\Model\Relation\Query;
 use Imi\Util\LazyArrayObject;
 use Imi\Model\Relation\Update;
@@ -95,7 +96,7 @@ abstract class Model extends BaseModel
                 $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), function(IQuery $query) use($keys){
                     foreach($keys as $name)
                     {
-                        $query->whereRaw($name . '=:' . $name);
+                        $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
                     }
                 })->bindValues($bindValues);
             }
@@ -117,7 +118,7 @@ abstract class Model extends BaseModel
                 $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), function(IQuery $query) use($keys){
                     foreach($keys as $name)
                     {
-                        $query->whereRaw($name . '=:' . $name);
+                        $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
                     }
                 })->bindValues($bindValues);
             }
@@ -275,7 +276,7 @@ abstract class Model extends BaseModel
             {
                 if(isset($this->$idName))
                 {
-                    $query->whereRaw($idName . '=:c_' . $idName);
+                    $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
                 }
             }
         })->bindValues($bindValues)->update($data);
@@ -371,7 +372,7 @@ abstract class Model extends BaseModel
             {
                 if(isset($this->$idName))
                 {
-                    $query->whereRaw($idName . '=:' . $idName);
+                    $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
                 }
             }
         })->replace($data);
@@ -433,7 +434,7 @@ abstract class Model extends BaseModel
             {
                 if(isset($this->$idName))
                 {
-                    $query->whereRaw($idName . '=:' . $idName);
+                    $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
                 }
             }
         })->bindValues($bindValues)->delete();
