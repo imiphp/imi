@@ -21,8 +21,7 @@ abstract class ObjectArrayHelper
         $result = &$object;
         foreach ($names as $nameItem)
         {
-            $type = gettype($result);
-            if('array' === $type)
+            if(is_array($result))
             {
                 // 数组
                 if (isset($result[$nameItem]))
@@ -34,7 +33,7 @@ abstract class ObjectArrayHelper
                     return $default;
                 }
             }
-            else if('object' === $type)
+            else if(is_object($result))
             {
                 // 对象
                 if (isset($result->$nameItem))

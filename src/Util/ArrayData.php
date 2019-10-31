@@ -44,12 +44,11 @@ class ArrayData implements \ArrayAccess, \Countable
      */
     public function setVal($name, $value = null)
     {
-        $type = gettype($name);
-        if('string' === $type)
+        if(is_string($name))
         {
             $name = explode('.', $name);
         }
-        else if('array' !== $type)
+        else if(!is_array($name))
         {
             return false;
         }
@@ -79,20 +78,18 @@ class ArrayData implements \ArrayAccess, \Countable
         {
             return $this->data;
         }
-        $type = gettype($name);
-        if('string' === $type)
+        if(is_string($name))
         {
             $name = explode('.', $name);
         }
-        else if('array' !== $type)
+        else if(!is_array($name))
         {
             return $default;
         }
         $result = &$this->data;
         foreach ($name as $value)
         {
-            $type = gettype($result);
-            if('array' === $type)
+            if(is_array($result))
             {
                 // 数组
                 if (isset($result[$value]))
@@ -104,7 +101,7 @@ class ArrayData implements \ArrayAccess, \Countable
                     return $default;
                 }
             }
-            else if('object' === $type)
+            else if(is_object($result))
             {
                 // 对象
                 if (property_exists($result, $value))
@@ -143,12 +140,11 @@ class ArrayData implements \ArrayAccess, \Countable
         }
         foreach($name as $val)
         {
-            $type = gettype($val);
-            if('string' === $type)
+            if(is_string($val))
             {
                 $val = explode('.', $val);
             }
-            else if('array' !== $type)
+            else if(!is_array($val))
             {
                 return false;
             }

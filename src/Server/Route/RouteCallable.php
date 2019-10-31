@@ -40,8 +40,15 @@ class RouteCallable
         $methodName = $this->methodName;
         foreach($params as $name => $value)
         {
-            $className = str_replace('{$' . $name . '}', $value, $className);
-            $methodName = str_replace('{$' . $name . '}', $value, $methodName);
+            $search = '{$' . $name . '}';
+            if(false !== strpos($className, $search))
+            {
+                $className = str_replace($search, $value, $className);
+            }
+            if(false !== strpos($methodName, $search))
+            {
+                $methodName = str_replace($search, $value, $methodName);
+            }
         }
         return [$this->server->getBean($className), $methodName];
     }
