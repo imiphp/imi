@@ -252,32 +252,31 @@ abstract class Model extends BaseModel
             'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeUpdateEventParam::class);
 
-        $bindValues = [];
-        $id = $this->__meta->getId();
-        foreach($id as $idName)
-        {
-            if(isset($this->$idName))
-            {
-                $bindValues[':c_' . $idName] = $this->$idName;
-            }
-        }
-        if(empty($bindValues))
-        {
-            throw new \RuntimeException('use Model->update(), primary key can not be null');
-        }
         $keys = [];
         foreach($data as $k => $v)
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function(IQuery $query) use($id){
-            // 主键条件加入
-            foreach($id as $idName)
+        $keys[] = '#'; // 分隔符
+
+        $conditionId = $bindValues = [];
+        foreach($this->__meta->getId() as $idName)
+        {
+            if(isset($this->$idName))
             {
-                if(isset($this->$idName))
-                {
-                    $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
-                }
+                $bindValues[':c_' . $idName] = $this->$idName;
+                $keys[] = $conditionId[] = $idName;
+            }
+        }
+        if(!isset($conditionId[0]))
+        {
+            throw new \RuntimeException('use Model->update(), primary key can not be null');
+        }
+        $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function(IQuery $query) use($conditionId){
+            // 主键条件加入
+            foreach($conditionId as $idName)
+            {
+                $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
             }
         })->bindValues($bindValues)->update($data);
 
@@ -720,6 +719,15 @@ abstract class Model extends BaseModel
                     break;
             }
             $result[$name] = $value;
+        }
+
+        // 更新时无需更新主键
+        if('update' === $type)
+        {
+            foreach($meta->getId() as $id)
+            {
+                unset($result[$id]);
+            }
         }
 
         // 处理后
