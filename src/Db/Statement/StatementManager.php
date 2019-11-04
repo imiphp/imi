@@ -87,11 +87,11 @@ abstract class StatementManager
         $hashCode = $db->hashCode();
         if(isset(static::$statements[$hashCode][$sql]))
         {
-            $statementItem = static::$statements[$hashCode][$sql];
+            $statementItem = &static::$statements[$hashCode][$sql];
             $statementItem['statement']->closeCursor();
             $statementItem['using'] = false;
             try {
-                RequestContext::use(function(&$context) use($hashCode, $sql, $statementItem){
+                RequestContext::use(function(&$context) use($statementItem){
                     if(isset($context['statementCaches']))
                     {
                         if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
