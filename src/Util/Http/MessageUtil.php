@@ -15,7 +15,7 @@ class MessageUtil
         $result = [];
         foreach ($headers as $name => $values)
         {
-            $result[$name] = implode(", ", $values);
+            $result[$name] = implode(', ', $values);
         }
         return $result;
     }
