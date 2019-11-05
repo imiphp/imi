@@ -26,7 +26,7 @@ class ExtractDataAop
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
-     *             \Imi\Server\Route\Annotation\Action::class
+     *             \Imi\Server\Http\Annotation\ExtractData::class
      *         }
      * )
      * @Around
