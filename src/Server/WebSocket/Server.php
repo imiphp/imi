@@ -2,6 +2,7 @@
 namespace Imi\Server\WebSocket;
 
 use Imi\App;
+use Imi\Util\Bit;
 use Imi\Server\Base;
 use Imi\ServerManage;
 use Imi\Bean\Annotation\Bean;
@@ -18,6 +19,13 @@ use Imi\Server\Event\Param\HandShakeEventParam;
 class Server extends Base
 {
     /**
+     * 是否为 wss 服务
+     *
+     * @var bool
+     */
+    private $wss;
+
+    /**
      * 创建 swoole 服务器对象
      * @return void
      */
@@ -25,6 +33,7 @@ class Server extends Base
     {
         $config = $this->getServerInitConfig();
         $this->swooleServer = new \Swoole\WebSocket\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->wss = Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
@@ -36,6 +45,11 @@ class Server extends Base
         $config = $this->getServerInitConfig();
         $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        if(!isset($this->config['configs']['open_websocket_protocol']))
+        {
+            $this->config['configs']['open_websocket_protocol'] = true;
+        }
+        $this->wss = Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
@@ -109,4 +123,15 @@ class Server extends Base
             });
         }
     }
+
+    /**
+     * 是否为 wss 服务
+     *
+     * @return boolean
+     */
+    public function isSSL()
+    {
+        return $this->wss;
+    }
+
 }

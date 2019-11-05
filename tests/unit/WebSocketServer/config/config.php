@@ -76,8 +76,9 @@ return [
     // 内存表配置
     'memoryTable'   =>  [
         'connectContext'    =>  [
-            'class' =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
-            'lockId'=>  'atomic',
+            'class'     =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+            'lockId'    =>  'atomic',
+            'dataLength'=>  2048,
         ],
     ],
 

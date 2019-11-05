@@ -101,6 +101,7 @@ class IndexController extends HttpController
             'headers'   =>  MessageUtil::headersToStringList($request->getHeaders()),
             'server'    =>  $request->getServerParams(),
             'request'   =>  $request->request(),
+            'uri'       =>  (string)$request->getUri(),
         ];
     }
 

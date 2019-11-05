@@ -3,6 +3,7 @@ namespace Imi\Test\WebSocketServer\MainServer\Listener;
 
 use Imi\Server\Event\Param\OpenEventParam;
 use Imi\Bean\Annotation\ClassEventListener;
+use Imi\ConnectContext;
 use Imi\Server\Event\Listener\IOpenEventListener;
 
 /**
@@ -17,7 +18,6 @@ class OnOpen implements IOpenEventListener
      */
     public function handle(OpenEventParam $e)
     {
-        // var_dump('open');
-        // var_dump($e->request->getHeaders());
+        ConnectContext::set('requestUri', (string)$e->request->getUri());
     }
 }

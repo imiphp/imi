@@ -216,4 +216,18 @@ class RequestTest extends BaseTest
         ], $data);
     }
 
+    /**
+     * 测试 Uri 地址
+     *
+     * @return void
+     */
+    public function testUri()
+    {
+        $http = new HttpRequest;
+        $uri = $this->host . 'info?get=1';
+        $response = $http->get($uri);
+        $data = $response->json(true);
+        $this->assertEquals($uri, $data['uri'] ?? null);
+    }
+
 }

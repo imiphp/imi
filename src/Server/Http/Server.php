@@ -14,6 +14,7 @@ use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Util\Bit;
 
 /**
  * Http 服务器类
@@ -21,6 +22,13 @@ use Imi\Server\Event\Param\WorkerStartEventParam;
  */
 class Server extends Base
 {
+    /**
+     * 是否为 https 服务
+     *
+     * @var bool
+     */
+    private $https;
+
     /**
      * 创建 swoole 服务器对象
      * @return void
@@ -36,6 +44,7 @@ class Server extends Base
         {
             $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
         }
+        $this->https = Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
@@ -47,6 +56,11 @@ class Server extends Base
         $config = $this->getServerInitConfig();
         $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        if(!isset($this->config['configs']['open_http_protocol']))
+        {
+            $this->config['configs']['open_http_protocol'] = true;
+        }
+        $this->https = Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
@@ -148,4 +162,15 @@ class Server extends Base
             });
         }
     }
+
+    /**
+     * 是否为 https 服务
+     *
+     * @return boolean
+     */
+    public function isSSL()
+    {
+        return $this->https;
+    }
+
 }

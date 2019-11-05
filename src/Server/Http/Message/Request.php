@@ -16,7 +16,7 @@ class Request extends ServerRequest
 
     /**
      * 对应的服务器
-     * @var \Imi\Server\Base
+     * @var \Imi\Server\Http\Server|\Imi\Server\WebSocket\Server
      */
     protected $serverInstance;
 
@@ -79,8 +79,19 @@ class Request extends ServerRequest
      */
     private function getRequestUri()
     {
-        $isHttps = isset($this->swooleRequest->server['https']) && 'on' === $this->swooleRequest->server['https'];
-        return Uri::makeUri($this->swooleRequest->header['host'], $this->swooleRequest->server['path_info'], null === $this->swooleRequest->get ? '' : (\http_build_query($this->swooleRequest->get, null, '&')), null, $isHttps ? 'https' : 'http');
+        if($this->serverInstance instanceof \Imi\Server\Http\Server)
+        {
+            $scheme = $this->serverInstance->isSSL() ? 'https' : 'http';
+        }
+        else if($this->serverInstance instanceof \Imi\Server\WebSocket\Server)
+        {
+            $scheme = $this->serverInstance->isSSL() ? 'wss' : 'ws';
+        }
+        else
+        {
+            $scheme = 'http';
+        }
+        return Uri::makeUri($this->swooleRequest->header['host'], $this->swooleRequest->server['path_info'], null === $this->swooleRequest->get ? '' : (\http_build_query($this->swooleRequest->get, null, '&')), null, $scheme);
     }
 
     /**

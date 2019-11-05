@@ -31,13 +31,24 @@ return [
     ],
 
     // 子服务器（端口监听）配置
-    'subServers'        =>    [
+    'subServers'    =>    [
         'SessionTest'   =>  [
-            'namespace'    =>    'Imi\Test\HttpServer\SessionTestServer',
-            'type'        =>    Imi\Server\Type::HTTP,
-            'host'        =>    '127.0.0.1',
-            'port'        =>    13005,
-        ]
+            'namespace' =>    'Imi\Test\HttpServer\SessionTestServer',
+            'type'      =>    Imi\Server\Type::HTTP,
+            'host'      =>    '127.0.0.1',
+            'port'      =>    13005,
+        ],
+        'HttpsTest'     =>  [
+            'namespace' =>    'Imi\Test\HttpServer\HttpsTestServer',
+            'type'      =>    Imi\Server\Type::HTTP,
+            'host'      =>    '127.0.0.1',
+            'port'      =>    13006,
+            'sockType'  =>    SWOOLE_SOCK_TCP | SWOOLE_SSL,
+            'configs'   =>  [
+                'ssl_cert_file'     =>  dirname(__DIR__, 3) . '/ssl/server.crt',
+                'ssl_key_file'      =>  dirname(__DIR__, 3) . '/ssl/server.key',
+            ],
+        ],
     ],
 
     // 连接池配置

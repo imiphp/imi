@@ -27,7 +27,11 @@ class WSTest extends BaseTest
                 'username'  =>  'test',
             ])));
             $recv = $client->recv();
-            $this->assertEquals('{"success":true,"middlewareData":"imi"}', $recv);
+            $this->assertEquals(json_encode([
+                'success'       =>  true,
+                'middlewareData'=>  'imi',
+                'requestUri'    =>  $this->host,
+            ]), $recv);
             $time = time();
             $this->assertTrue($client->send(json_encode([
                 'action'    =>  'send',
