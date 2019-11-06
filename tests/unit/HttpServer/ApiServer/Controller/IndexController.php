@@ -247,4 +247,17 @@ class IndexController extends HttpController
         return $result;
     }
 
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function executeTimeout()
+    {
+        sleep(5);
+        return [
+            'success'    =>  true,
+        ];
+    }
+
 }

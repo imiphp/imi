@@ -25,12 +25,6 @@ class Response extends \Imi\Util\Http\Response
     protected $gzipLevel = 5;
     
     /**
-     * 是否已结束请求
-     * @var boolean
-     */
-    protected $isEnded = false;
-
-    /**
      * 对应的服务器
      * @var \Imi\Server\Base
      */
@@ -66,6 +60,7 @@ class Response extends \Imi\Util\Http\Response
         $instance = clone static::$emptyInstance;
         $instance->serverInstance = $server;
         $instance->swooleResponse = $response;
+        $response->isEnded = false;
         return $instance;
     }
 
@@ -158,7 +153,7 @@ class Response extends \Imi\Util\Http\Response
      */
     public function send()
     {
-        $this->isEnded = true;
+        $this->swooleResponse->isEnded = true;
         $this->sendHeaders();
         $this->swooleResponse->end($this->getBody());
         return $this;
@@ -173,7 +168,7 @@ class Response extends \Imi\Util\Http\Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
     {
-        $this->isEnded = true;
+        $this->swooleResponse->isEnded = true;
         $this->sendHeaders();
         $this->swooleResponse->sendfile($filename, $offset, $length);
         return $this;
@@ -203,6 +198,6 @@ class Response extends \Imi\Util\Http\Response
      */
     public function isEnded()
     {
-        return $this->isEnded;
+        return $this->swooleResponse->isEnded;
     }
 }

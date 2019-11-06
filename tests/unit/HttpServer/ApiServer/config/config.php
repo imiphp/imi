@@ -25,6 +25,7 @@ return [
         ],
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [
+                'ExecuteTimeoutMiddleware',
                 \Imi\Test\HttpServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
                 \Imi\Test\HttpServer\ApiServer\Middleware\PoweredBy::class,
@@ -43,7 +44,10 @@ return [
                 'html',
                 'php'
             ],
-        ]
+        ],
+        'ExecuteTimeoutMiddleware' =>  [
+            'maxExecuteTime'    =>  3000,
+        ],
     ],
     'middleware'    =>  [
         'groups'    =>  [

@@ -230,4 +230,19 @@ class RequestTest extends BaseTest
         $this->assertEquals($uri, $data['uri'] ?? null);
     }
 
+    /**
+     * 测试执行超时
+     *
+     * @return void
+     */
+    public function testExecuteTimeout()
+    {
+        $http = new HttpRequest;
+        $time = microtime(true);
+        $response = $http->get($this->host . 'executeTimeout');
+        $time = microtime(true) - $time;
+        $this->assertLessThan(5, $time);
+        $this->assertEquals('<h1>Request execute timeout</h1>', $response->body());
+    }
+
 }

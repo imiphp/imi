@@ -20,6 +20,12 @@ class Dispatcher
      */
     protected $middlewares = [];
 
+    /**
+     * 调度
+     *
+     * @param \Imi\Server\Http\Message\Request $request
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function dispatch($request): Response
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
