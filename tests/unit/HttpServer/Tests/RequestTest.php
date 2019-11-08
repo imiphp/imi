@@ -245,4 +245,17 @@ class RequestTest extends BaseTest
         $this->assertEquals('<h1>Request execute timeout</h1>', $response->body());
     }
 
+    /**
+     * 测试未找到匹配路由情况
+     *
+     * @return void
+     */
+    public function testRouteNotFound()
+    {
+        $http = new HttpRequest;
+        $uri = $this->host . 'testRouteNotFound';
+        $response = $http->get($uri);
+        $this->assertEquals('gg', $response->body());
+    }
+
 }

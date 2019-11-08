@@ -7,6 +7,7 @@ return [
     'beanScan'    =>    [
         'Imi\Test\WebSocketServer\MainServer\Controller',
         'Imi\Test\WebSocketServer\MainServer\Listener',
+        'Imi\Test\WebSocketServer\MainServer\Error',
     ],
     'beans'    =>    [
         'WebSocketDispatcher'    =>    [
@@ -33,6 +34,9 @@ return [
         ],
         'ConnectContextMemoryTable' =>  [
             'tableName' =>  'connectContext',
+        ],
+        'WSRouteNotFoundHandler'    =>  [
+            'handler'   =>  'RouteNotFound',
         ],
     ],
     'controller'    =>  [

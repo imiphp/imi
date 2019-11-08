@@ -45,4 +45,26 @@ class TCPTest extends BaseTest
         });
     }
 
+    public function testNotFound()
+    {
+        $this->go(function(){
+            $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
+            $client->set([
+                'open_eof_split' => true,
+                'package_eof' => "\r\n",
+            ]);
+            $uri = new Uri($this->host);
+            $this->assertTrue($client->connect($uri->getHost(), $uri->getPort(), 3));
+            $sendContent = json_encode([
+                'action'    => 'gg',
+            ]) . "\r\n";
+            $this->assertEquals(strlen($sendContent), $client->send($sendContent));
+            $result = $client->recv();
+            $errCode = (false === $result ? $client->errCode : '');
+            $this->assertEquals('"gg"' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
+
+            $client->close();
+        });
+    }
+
 }

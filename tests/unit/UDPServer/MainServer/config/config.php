@@ -7,6 +7,7 @@ return [
     'beanScan'    =>    [
         'Imi\Test\UDPServer\MainServer\Controller',
         'Imi\Test\UDPServer\MainServer\Listener',
+        'Imi\Test\UDPServer\MainServer\Error',
     ],
     'beans'    =>    [
         'UdpDispatcher'    =>    [
@@ -23,6 +24,9 @@ return [
         ],
         'ServerGroup'   =>  [
             'status'    =>  false,
+        ],
+        'UdpRouteNotFoundHandler'   =>  [
+            'handler'   =>  'RouteNotFound',
         ],
     ],
     'controller'    =>  [

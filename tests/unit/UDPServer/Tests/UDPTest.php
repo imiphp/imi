@@ -28,4 +28,19 @@ class UDPTest extends BaseTest
         });
     }
 
+    public function testNotFound()
+    {
+        $this->go(function(){
+            $uri = new Uri($this->host);
+            $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_UDP);
+            $time = time();
+            $format = 'Y-m-d H:i:s';
+            $this->assertTrue($client->sendto($uri->getHost(), $uri->getPort(), json_encode([
+                'action'    =>  'gg',
+            ])));
+            $data = $client->recv();
+            $this->assertEquals('"gg"', $data);
+        });
+    }
+
 }

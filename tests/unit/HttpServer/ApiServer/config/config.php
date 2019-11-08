@@ -9,6 +9,7 @@ return [
         'Imi\Test\HttpServer\ApiServer\Controller',
         'Imi\Test\HttpServer\Modules',
         'Imi\Test\HttpServer\OutsideController',
+        'Imi\Test\HttpServer\ApiServer\Error',
     ],
     'beans'    =>    [
         'SessionManager'    =>    [
@@ -47,6 +48,9 @@ return [
         ],
         'ExecuteTimeoutMiddleware' =>  [
             'maxExecuteTime'    =>  3000,
+        ],
+        'HttpNotFoundHandler'   =>  [
+            'handler'   =>  'MyHttpNotFoundHandler',
         ],
     ],
     'middleware'    =>  [

@@ -7,6 +7,7 @@ return [
     'beanScan'    =>    [
         'Imi\Test\TCPServer\MainServer\Controller',
         'Imi\Test\TCPServer\MainServer\Listener',
+        'Imi\Test\TCPServer\MainServer\Error',
     ],
     'beans'    =>    [
         'TcpDispatcher'    =>    [
@@ -26,6 +27,9 @@ return [
         ],
         'ConnectContextMemoryTable' =>  [
             'tableName' =>  'connectContext',
+        ],
+        'TcpRouteNotFoundHandler'   =>  [
+            'handler'   =>  'RouteNotFound',
         ],
     ],
     'controller'    =>  [
