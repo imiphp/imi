@@ -29,6 +29,13 @@ class RouteMiddleware implements MiddlewareInterface
     protected $route;
 
     /**
+     * @ServerInject("HttpNotFoundHandler")
+     *
+     * @var \Imi\Server\Http\Error\IHttpNotFoundHandler
+     */
+    protected $notFoundHandler;
+
+    /**
      * 处理方法
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -36,21 +43,21 @@ class RouteMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // 路由解析
-        $result = $this->route->parse($request);
-        if(null === $result || !is_callable($result->callable))
-        {
-            // 未匹配到路由
-            $response = App::getBean('HttpNotFoundHandler')->handle($handler, $request, RequestContext::get('response'));
-            return $response;
-        }
-        else
-        {
-            RequestContext::set('routeResult', $result);
-        }
-        $response = $handler->handle($request);
-        RequestContext::set('response', $response);
-        return $response;
+        return RequestContext::use(function(&$context) use($request, $handler){
+            // 路由解析
+            $result = $this->route->parse($request);
+            if(null === $result || !is_callable($result->callable))
+            {
+                // 未匹配到路由
+                $response = $this->notFoundHandler->handle($handler, $request, $context['response']);
+            }
+            else
+            {
+                $context['routeResult'] = $result;
+                $response = $handler->handle($request);
+            }
+            return $context['response'] = $response;
+        });
     }
 
 }
