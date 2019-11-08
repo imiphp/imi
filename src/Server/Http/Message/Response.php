@@ -39,6 +39,7 @@ class Response extends \Imi\Util\Http\Response
 
     public function __construct(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
+        $response->isEnded = false;
         $this->swooleResponse = $response;
         $this->serverInstance = $server;
         parent::__construct();
