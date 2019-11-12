@@ -25,6 +25,7 @@ go(function() use(&$statusCode){
         } catch (\Swoole\ExitException $e) {
             $statusCode = $e->getStatus();
         }
+        Event::exit();
     });
 });
 Event::wait();
