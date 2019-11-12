@@ -67,7 +67,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __construct($data = [])
     {
-        $this->__realClass = BeanFactory::getObjectClass($this);
+        $this->__meta = static::__getMeta();
+        $this->__fieldNames = $this->__meta->getRealFieldNames();
+        $this->__realClass = $this->__meta->getClassName();
         if(!$this instanceof IBean)
         {
             $this->__init($data);
@@ -76,9 +78,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __init($data = [])
     {
-        $this->__meta = static::__getMeta();
-        $this->__fieldNames = $this->__meta->getRealFieldNames();
-
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
             'model' => $this,

@@ -11,6 +11,13 @@ use Imi\Model\Annotation\Table;
 class Meta
 {
     /**
+     * 类名
+     *
+     * @var string
+     */
+    private $className;
+
+    /**
      * 表名
      *
      * @var string
@@ -89,6 +96,7 @@ class Meta
 
     public function __construct($modelClass)
     {
+        $this->className = $modelClass;
         /** @var \Imi\Model\Annotation\Table $table */
         $table = AnnotationManager::getClassAnnotations($modelClass, Table::class)[0] ?? null;
         /** @var \Imi\Model\Annotation\Entity $entity */
@@ -227,5 +235,15 @@ class Meta
     public function getExtractPropertys()
     {
         return $this->extractPropertys;
+    }
+
+    /**
+     * Get 类名
+     *
+     * @return string
+     */ 
+    public function getClassName()
+    {
+        return $this->className;
     }
 }

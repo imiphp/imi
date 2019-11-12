@@ -21,7 +21,7 @@ abstract class Model extends BaseModel
 {
     public function __init($data = [])
     {
-        if(static::__getMeta()->hasRelation())
+        if($this->__meta->hasRelation())
         {
             $this->one(ModelEvents::AFTER_INIT, function(InitEventParam $e){
                 ModelRelationManager::initModel($this);
