@@ -52,6 +52,7 @@ return [
                     'config'    =>    [
                         'maxResources'    =>    10,
                         'minResources'    =>    1,
+                        'checkStateWhenGetResource' =>  false,
                     ],
                 ],
                 'resource'    =>    [
@@ -70,6 +71,8 @@ return [
                     'config'    =>    [
                         'maxResources'    =>    10,
                         'minResources'    =>    1,
+                        'checkStateWhenGetResource' =>  false,
+                        'heartbeatInterval'         =>  120,
                     ],
                 ],
                 'resource'    =>    [

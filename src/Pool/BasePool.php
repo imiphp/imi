@@ -36,10 +36,17 @@ abstract class BasePool implements IPool
     protected $resourceConfig;
 
     /**
-     * 时间间隔定时器ID
+     * 垃圾回收定时器ID
      * @var int
      */
-    protected $timerID;
+    protected $gcTimerId;
+
+    /**
+     * 心跳定时器ID
+     *
+     * @var int
+     */
+    protected $heartbeatTimerId;
 
     /**
      * 当前配置序号
@@ -111,6 +118,9 @@ abstract class BasePool implements IPool
         // 定时资源回收
         $this->stopAutoGC();
         $this->startAutoGC();
+        // 心跳
+        $this->stopHeartbeat();
+        $this->startHeartbeat();
     }
 
     /**
@@ -237,23 +247,14 @@ abstract class BasePool implements IPool
     {
         if(null !== Worker::getWorkerID())
         {
-            $this->__startAutoGC();
-        }
-    }
-
-    /**
-     * 开始自动垃圾回收
-     * @return void
-     */
-    private function __startAutoGC()
-    {
-        $gcInterval = $this->config->getGCInterval();
-        if(null !== $gcInterval)
-        {
-            $this->timerID = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
-                $this->stopAutoGC();
-            }, \Imi\Util\ImiPriority::IMI_MIN);
+            $gcInterval = $this->config->getGCInterval();
+            if(null !== $gcInterval)
+            {
+                $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
+                Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
+                    $this->stopAutoGC();
+                }, \Imi\Util\ImiPriority::IMI_MIN);
+            }
         }
     }
 
@@ -263,9 +264,9 @@ abstract class BasePool implements IPool
      */
     public function stopAutoGC()
     {
-        if(null !== $this->timerID)
+        if(null !== $this->gcTimerId)
         {
-            \Swoole\Timer::clear($this->timerID);
+            \Swoole\Timer::clear($this->gcTimerId);
         }
     }
 
@@ -323,4 +324,57 @@ abstract class BasePool implements IPool
         }
         return $this->resourceConfig[$index];
     }
+
+    /**
+     * 心跳
+     *
+     * @return void
+     */
+    public function heartbeat()
+    {
+        $hasGC = false;
+        foreach($this->pool as $key => $item)
+        {
+            $resource = $item->getResource();
+            if(!$resource->checkState())
+            {
+                $resource->close();
+                unset($this->pool[$key]);
+                $hasGC = true;
+            }
+        }
+        if($hasGC)
+        {
+            $this->fillMinResources();
+            $this->buildQueue();
+        }
+    }
+
+    /**
+     * 开始心跳维持资源
+     * @return void
+     */
+    public function startHeartbeat()
+    {
+        if(null !== Worker::getWorkerID() && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
+        {
+            $this->heartbeatTimerId = \Swoole\Timer::tick($heartbeatInterval * 1000, [$this, 'heartbeat']);
+            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
+                $this->stopHeartbeat();
+            }, \Imi\Util\ImiPriority::IMI_MIN);
+        }
+    }
+
+    /**
+     * 停止心跳维持资源
+     * @return void
+     */
+    public function stopHeartbeat()
+    {
+        if(null !== $this->heartbeatTimerId)
+        {
+            \Swoole\Timer::clear($this->heartbeatTimerId);
+        }
+    }
+
 }

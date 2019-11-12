@@ -60,11 +60,25 @@ class PoolConfig implements IPoolConfig
     protected $requestResourceCheckInterval = 3;
 
     /**
+     * 心跳时间间隔，单位：秒
+     *
+     * @var double
+     */
+    protected $heartbeatInterval;
+
+    /**
      * 资源配置模式
      *
      * @var int
      */
     protected $resourceConfigMode = ResourceConfigMode::TURN;
+
+    /**
+     * 当获取资源时，是否检查状态
+     *
+     * @var boolean
+     */
+    protected $checkStateWhenGetResource = true;
 
     public function __construct($option = [])
     {
@@ -255,6 +269,49 @@ class PoolConfig implements IPoolConfig
     {
         $this->requestResourceCheckInterval = $value;
         return $this;
+    }
+
+    /**
+     * 获取心跳时间间隔，单位：秒
+     *
+     * @return double
+     */
+    public function getHeartbeatInterval()
+    {
+        return $this->heartbeatInterval;
+    }
+
+    /**
+     * Set 心跳时间间隔，单位：秒
+     *
+     * @param double|null $heartbeatInterval 心跳时间间隔，单位：秒
+     *
+     * @return static
+     */ 
+    public function setHeartbeatInterval($heartbeatInterval)
+    {
+        $this->heartbeatInterval = $heartbeatInterval;
+    }
+
+    /**
+     * 当获取资源时，是否检查状态
+     *
+     * @return boolean
+     */
+    public function isCheckStateWhenGetResource()
+    {
+        return $this->checkStateWhenGetResource;
+    }
+
+    /**
+     * 设置获取资源时，是否检查状态
+     *
+     * @param bool $checkStateWhenGetResource
+     * @return static
+     */
+    public function setCheckStateWhenGetResource($checkStateWhenGetResource)
+    {
+        $this->checkStateWhenGetResource = $checkStateWhenGetResource;
     }
 
 }

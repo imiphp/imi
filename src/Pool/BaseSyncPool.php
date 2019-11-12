@@ -48,7 +48,7 @@ abstract class BaseSyncPool extends BasePool
             }
         }
         $resource = $this->queue->pop();
-        if(!$resource || (!$resource->checkState() && !$resource->close() && !$resource->open()))
+        if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
         }
@@ -74,7 +74,7 @@ abstract class BaseSyncPool extends BasePool
             }
         }
         $resource = $this->queue->pop();
-        if(!$resource->checkState() && !$resource->close() && !$resource->open())
+        if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
         }

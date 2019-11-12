@@ -125,4 +125,36 @@ interface IPoolConfig
      * @return static
      */
     public function setRequestResourceCheckInterval($value);
+
+    /**
+     * 获取心跳时间间隔，单位：秒
+     *
+     * @return double
+     */
+    public function getHeartbeatInterval();
+
+    /**
+     * Set 心跳时间间隔，单位：秒
+     *
+     * @param double|null $heartbeatInterval 心跳时间间隔，单位：秒
+     *
+     * @return static
+     */ 
+    public function setHeartbeatInterval($heartbeatInterval);
+
+    /**
+     * 当获取资源时，是否检查状态
+     *
+     * @return boolean
+     */
+    public function isCheckStateWhenGetResource();
+
+    /**
+     * 设置获取资源时，是否检查状态
+     *
+     * @param bool $checkStateWhenGetResource
+     * @return static
+     */
+    public function setCheckStateWhenGetResource($checkStateWhenGetResource);
+
 }
