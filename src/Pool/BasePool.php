@@ -3,6 +3,7 @@ namespace Imi\Pool;
 
 use Imi\App;
 use Imi\Worker;
+use Swoole\Event;
 use Swoole\Coroutine;
 use Imi\Util\ArrayUtil;
 use Imi\Bean\BeanFactory;
