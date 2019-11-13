@@ -1,14 +1,15 @@
 <?php
-namespace Imi\Listener;
+namespace Imi\Process\Listener;
 
-use Imi\Config;
+use Imi\App;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Process\ProcessManager;
 use Imi\Bean\Annotation\Listener;
 
 /**
- * @Listener(eventName="IMI.SERVERS.CREATE.AFTER")
+ * @Listener(eventName="IMI.SERVERS.CREATE.AFTER",priority=Imi\Util\ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.CO_SERVER.START",priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class OnServerCreateAfter implements IEventListener
 {
@@ -19,10 +20,9 @@ class OnServerCreateAfter implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        // 热更新
-        if(Config::get('@app.beans.hotUpdate.status', true))
+        foreach(App::getBean('AutoRunProcessManager')->getProcesses() as $process)
         {
-            ProcessManager::runWithManager('hotUpdate');
+            ProcessManager::runWithManager($process);
         }
     }
 }
