@@ -252,7 +252,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         // 禁止序列化支持
         $serializables = $this->__meta->getSerializables();
-        $serializableSets = AnnotationManager::getPropertiesAnnotations($this->__realClass, Serializable::class);
+        $serializableSets = $this->__meta->getSerializableSets();
         if($serializables || $serializableSets)
         {
             foreach($result as $propertyName => $value)

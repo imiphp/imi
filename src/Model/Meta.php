@@ -1,9 +1,10 @@
 <?php
 namespace Imi\Model;
 
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
+use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\Serializable;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * 模型元数据
@@ -81,6 +82,13 @@ class Meta
     private $serializables;
 
     /**
+     * 序列化注解列表
+     *
+     * @var \Imi\Model\Annotation\Serializable[]
+     */
+    private $serializableSets;
+
+    /**
      * 提取属性注解
      *
      * @var \Imi\Model\Annotation\ExtractProperty[]
@@ -115,6 +123,7 @@ class Meta
             $this->camel = $entity->camel;
         }
         $this->serializables = ModelManager::getSerializables($modelClass);
+        $this->serializableSets = AnnotationManager::getPropertiesAnnotations($modelClass, Serializable::class);
         $this->extractPropertys = ModelManager::getExtractPropertys($modelClass);
         $this->relation = ModelRelationManager::hasRelation($modelClass);
         if($this->relation)
@@ -245,5 +254,15 @@ class Meta
     public function getClassName()
     {
         return $this->className;
+    }
+
+    /**
+     * Get 序列化注解列表
+     *
+     * @return \Imi\Model\Annotation\Serializable[]
+     */ 
+    public function getSerializableSets()
+    {
+        return $this->serializableSets;
     }
 }
