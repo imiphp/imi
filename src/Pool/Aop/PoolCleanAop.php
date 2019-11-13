@@ -34,22 +34,10 @@ class PoolCleanAop
         switch($poolClean->mode)
         {
             case 'allow':
-                foreach(PoolManager::getNames() as $poolName)
-                {
-                    if(!in_array($poolName, $poolClean->list))
-                    {
-                        PoolManager::getInstance($poolName)->close();
-                    }
-                }
+                PoolManager::cleanAllow($poolClean->list);
                 break;
             case 'deny':
-                foreach(PoolManager::getNames() as $poolName)
-                {
-                    if(in_array($poolName, $poolClean->list))
-                    {
-                        PoolManager::getInstance($poolName)->close();
-                    }
-                }
+                PoolManager::cleanDeny($poolClean->list);
                 break;
         }
     }
