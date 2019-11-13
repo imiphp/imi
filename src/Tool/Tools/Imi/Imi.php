@@ -2,24 +2,25 @@
 namespace Imi\Tool\Tools\Imi;
 
 use Imi\App;
+use Imi\Util\Args;
 use Imi\Util\File;
+use Imi\Util\Text;
 use Imi\ServerManage;
 use Imi\Tool\ArgType;
 use Swoole\Coroutine;
 use Imi\RequestContext;
+use Imi\Bean\Annotation;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Tool\Annotation\Arg;
+use Imi\Util\Imi as ImiUtil;
 use Imi\Tool\Annotation\Tool;
 use Imi\Model\Annotation\Column;
+use Imi\Pool\Annotation\PoolClean;
 use Imi\Tool\Annotation\Operation;
+use \Imi\Main\Helper as MainHelper;
 use Imi\Model\Annotation\MemoryTable;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Util\Imi as ImiUtil;
-use Imi\Bean\Annotation;
-use \Imi\Main\Helper as MainHelper;
-use Imi\Util\Args;
-use Imi\Util\Text;
 
 /**
  * @Tool("imi")
@@ -67,6 +68,8 @@ class Imi
 
     /**
      * 构建项目预加载缓存
+     * 
+     * @PoolClean
      * 
      * @Operation(name="buildRuntime", co=false)
      * 
