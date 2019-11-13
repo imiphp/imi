@@ -3,13 +3,14 @@ namespace Imi\HotUpdate;
 
 use Imi\App;
 use Imi\Util\Imi;
+use Imi\Event\Event;
 use Imi\Util\Coroutine;
 use Imi\Bean\BeanFactory;
 use Imi\Process\BaseProcess;
 use Imi\Bean\Annotation\Bean;
-use Imi\Event\Event;
-use Imi\Process\Annotation\Process;
 use Swoole\Event as SwooleEvent;
+use Imi\Pool\Annotation\PoolClean;
+use Imi\Process\Annotation\Process;
 
 /**
  * @Bean("hotUpdate")
@@ -74,6 +75,12 @@ class HotUpdateProcess extends BaseProcess
      */
     private $buildRuntimePipes = null;
 
+    /**
+     * @PoolClean
+     *
+     * @param \Swoole\Process $process
+     * @return void
+     */
     public function run(\Swoole\Process $process)
     {
         \Swoole\Runtime::enableCoroutine(false);
