@@ -12,6 +12,7 @@ return [
     'beanScan'    =>    [
         'Imi\Test\HttpServer\Listener',
         'Imi\Test\HttpServer\Task',
+        'Imi\Test\HttpServer\Process',
     ],
 
     // 组件命名空间
@@ -79,7 +80,7 @@ return [
                     'class'        =>    \Imi\Db\Pool\CoroutineDbPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    0,
+                        'minResources'    =>    1,
                     ],
                 ],
                 'resource'    =>    [
@@ -112,7 +113,7 @@ return [
                     'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
                     'config'    =>    [
                         'maxResources'    =>    10,
-                        'minResources'    =>    0,
+                        'minResources'    =>    1,
                     ],
                 ],
                 'resource'    =>    [
