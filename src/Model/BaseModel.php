@@ -253,32 +253,35 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         // 禁止序列化支持
         $serializables = $this->__meta->getSerializables();
         $serializableSets = AnnotationManager::getPropertiesAnnotations($this->__realClass, Serializable::class);
-        foreach($result as $propertyName => $value)
+        if($serializables || $serializableSets)
         {
-            if(isset($serializableSets[$propertyName]))
+            foreach($result as $propertyName => $value)
             {
-                // 单独属性上的 @Serializable 注解
-                if(!$serializableSets[$propertyName][0]->allow)
+                if(isset($serializableSets[$propertyName]))
                 {
-                    unset($result[$propertyName]);
-                }
-            }
-            else if($serializables)
-            {
-                if(in_array($propertyName, $serializables->fields))
-                {
-                    // 在黑名单中的字段剔除
-                    if('deny' === $serializables->mode)
+                    // 单独属性上的 @Serializable 注解
+                    if(!$serializableSets[$propertyName][0]->allow)
                     {
                         unset($result[$propertyName]);
                     }
                 }
-                else
+                else if($serializables)
                 {
-                    // 不在白名单中的字段剔除
-                    if('allow' === $serializables->mode)
+                    if(in_array($propertyName, $serializables->fields))
                     {
-                        unset($result[$propertyName]);
+                        // 在黑名单中的字段剔除
+                        if('deny' === $serializables->mode)
+                        {
+                            unset($result[$propertyName]);
+                        }
+                    }
+                    else
+                    {
+                        // 不在白名单中的字段剔除
+                        if('allow' === $serializables->mode)
+                        {
+                            unset($result[$propertyName]);
+                        }
                     }
                 }
             }
