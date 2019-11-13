@@ -36,6 +36,7 @@ class Process
         $process->start();
         $result = \Swoole\Process::wait(true);
         echo 'Process exit! pid:', $result['pid'], ', code:', $result['code'], ', signal:', $result['signal'], PHP_EOL;
+        exit($result['code']);
     }
 
     /**
