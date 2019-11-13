@@ -130,10 +130,13 @@ abstract class BasePool implements IPool
     public function close()
     {
         $this->stopAutoGC();
+        $this->stopHeartbeat();
         foreach($this->pool as $item)
         {
             $item->getResource()->close();
         }
+        $this->pool = [];
+        $this->buildQueue();
     }
 
     /**
