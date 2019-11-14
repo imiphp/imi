@@ -31,9 +31,8 @@ abstract class StatementManager
         if($using)
         {
             try {
-                RequestContext::use(function(&$context) use($statement){
-                    $context['statementCaches'][] = $statement;
-                });
+                $context = RequestContext::getContext();
+                $context['statementCaches'][] = $statement;
             } catch(RequestContextException $e) {
 
             }
@@ -65,9 +64,8 @@ abstract class StatementManager
         }
         $statement['using'] = true;
         try {
-            RequestContext::use(function(&$context) use($statement){
-                $context['statementCaches'][] = $statement['statement'];
-            });
+            $context = RequestContext::getContext();
+            $context['statementCaches'][] = $statement['statement'];
         } catch(RequestContextException $e) {
 
         }
@@ -91,15 +89,14 @@ abstract class StatementManager
             $statementItem['statement']->closeCursor();
             $statementItem['using'] = false;
             try {
-                RequestContext::use(function(&$context) use($statementItem){
-                    if(isset($context['statementCaches']))
+                $context = RequestContext::getContext();
+                if(isset($context['statementCaches']))
+                {
+                    if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
                     {
-                        if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
-                        {
-                            unset($context['statementCaches'][$i]);
-                        }
+                        unset($context['statementCaches'][$i]);
                     }
-                });
+                }
             } catch(RequestContextException $e) {
 
             }

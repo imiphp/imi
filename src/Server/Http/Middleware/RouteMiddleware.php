@@ -43,21 +43,20 @@ class RouteMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return RequestContext::use(function(&$context) use($request, $handler){
-            // 路由解析
-            $result = $this->route->parse($request);
-            if(null === $result || !is_callable($result->callable))
-            {
-                // 未匹配到路由
-                $response = $this->notFoundHandler->handle($handler, $request, $context['response']);
-            }
-            else
-            {
-                $context['routeResult'] = $result;
-                $response = $handler->handle($request);
-            }
-            return $context['response'] = $response;
-        });
+        $context = RequestContext::getContext();
+        // 路由解析
+        $result = $this->route->parse($request);
+        if(null === $result || !is_callable($result->callable))
+        {
+            // 未匹配到路由
+            $response = $this->notFoundHandler->handle($handler, $request, $context['response']);
+        }
+        else
+        {
+            $context['routeResult'] = $result;
+            $response = $handler->handle($request);
+        }
+        return $context['response'] = $response;
     }
 
 }

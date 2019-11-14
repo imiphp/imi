@@ -36,71 +36,68 @@ class ActionMiddleware implements MiddlewareInterface
         // 获取Response对象
         $response = $handler->handle($request);
         // 获取路由结果
-        RequestContext::use(function(&$context) use($request, &$response){
-            $context['response'] = $response;
-            /** @var \Imi\Server\Http\Route\RouteResult $result */
-            $result = $context['routeResult'];
-            if(null === $result)
+        $context = RequestContext::getContext();
+        $context['response'] = $response;
+        /** @var \Imi\Server\Http\Route\RouteResult $result */
+        $result = $context['routeResult'];
+        if(null === $result)
+        {
+            throw new \RuntimeException('RequestContent not found routeResult');
+        }
+        // 路由匹配结果是否是[控制器对象, 方法名]
+        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
+        $useObjectRequestAndResponse = $isObject && !$result->routeItem->singleton;
+        if($useObjectRequestAndResponse)
+        {
+            // 复制一份控制器对象
+            $result->callable[0] = clone $result->callable[0];
+            // 传入Request和Response对象
+            $result->callable[0]->request = $request;
+            $result->callable[0]->response = $response;
+        }
+        // 执行动作
+        $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
+        $response = $context['response'];
+        if($useObjectRequestAndResponse)
+        {
+            // 获得控制器中的Response
+            $response = $result->callable[0]->response;
+        }
+        // 视图
+        if($actionResult instanceof \Imi\Server\View\Annotation\View)
+        {
+            // 动作返回的值是@View注解
+            $viewAnnotation = $actionResult;
+        }
+        else if($actionResult instanceof Response)
+        {
+            $response = $actionResult;
+        }
+        else
+        {
+            // 获取对应动作的视图注解
+            $viewAnnotation = clone ViewParser::getInstance()->getByCallable($result->callable);
+            if(null !== $viewAnnotation)
             {
-                throw new \RuntimeException('RequestContent not found routeResult');
-            }
-            // 路由匹配结果是否是[控制器对象, 方法名]
-            $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
-            if($isObject)
-            {
-                if(!$result->routeItem->singleton)
+                if([] !== $viewAnnotation->data && is_array($actionResult))
                 {
-                    // 复制一份控制器对象
-                    $result->callable[0] = clone $result->callable[0];
-                    // 传入Request和Response对象
-                    $result->callable[0]->request = $request;
-                    $result->callable[0]->response = $response;
+                    // 动作返回值是数组，合并到视图注解
+                    $viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
+                }
+                else
+                {
+                    // 非数组直接赋值
+                    $viewAnnotation->data = $actionResult;
                 }
             }
-            // 执行动作
-            $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
-            $response = $context['response'];
-            if($isObject && !$result->routeItem->singleton)
-            {
-                // 获得控制器中的Response
-                $response = $result->callable[0]->response;
-            }
-            // 视图
-            if($actionResult instanceof \Imi\Server\View\Annotation\View)
-            {
-                // 动作返回的值是@View注解
-                $viewAnnotation = $actionResult;
-            }
-            else if($actionResult instanceof Response)
-            {
-                $response = $actionResult;
-            }
-            else
-            {
-                // 获取对应动作的视图注解
-                $viewAnnotation = clone ViewParser::getInstance()->getByCallable($result->callable);
-                if(null !== $viewAnnotation)
-                {
-                    if([] !== $viewAnnotation->data && is_array($actionResult))
-                    {
-                        // 动作返回值是数组，合并到视图注解
-                        $viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
-                    }
-                    else
-                    {
-                        // 非数组直接赋值
-                        $viewAnnotation->data = $actionResult;
-                    }
-                }
-            }
+        }
 
-            if(isset($viewAnnotation))
-            {
-                // 视图渲染
-                $options = $viewAnnotation->toArray();
-                $response = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $response);
-            }
-        });
+        if(isset($viewAnnotation))
+        {
+            // 视图渲染
+            $options = $viewAnnotation->toArray();
+            $response = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $response);
+        }
 
         return $response;
     }
@@ -145,10 +142,10 @@ class ActionMiddleware implements MiddlewareInterface
                 // post
                 $result[] = $request->post($param->name);
             }
-            else if($request->hasGet($param->name))
+            else if(null !== ($value = $request->get($param->name)))
             {
                 // get
-                $result[] = $request->get($param->name);
+                $result[] = $value;
             }
             else
             {
