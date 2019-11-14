@@ -16,12 +16,12 @@ use Imi\Process\Annotation\Process;
  */
 class TestProcess extends BaseProcess
 {
-	public function run(\Swoole\Process $process)
-	{
-		var_dump($this->data);
-		sleep(3);
-		var_dump('testProcess');
-	}
+    public function run(\Swoole\Process $process)
+    {
+        var_dump($this->data);
+        sleep(3);
+        var_dump('testProcess');
+    }
 }
 ```
 
@@ -138,4 +138,18 @@ ProcessManager::coRun($name, $args = [], $redirectStdinStdout = null, $pipeType 
  * @return void
  */
 public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+```
+
+### 随服务启动
+
+在项目配置文件中配置`beans`节：
+
+```php
+[
+    'AutoRunProcessManager' =>  [
+        'processes' =>  [
+            '进程类名或Bean名称'
+        ],
+    ],
+]
 ```
