@@ -172,16 +172,12 @@ abstract class Imi
     /**
      * 处理按.分隔的规则文本，支持\.转义不分隔
      * @param string $rule
+     * @return string[]|false
      */
     public static function parseDotRule($rule)
     {
         $result = preg_split('#(?<!\\\)\.#', $rule);
-        array_walk($result, function(&$value, $key){
-            if(false !== strpos($value,'\.'))
-            {
-                $value = str_replace('\.', '.', $value);
-            }
-        });
+        $result = str_replace('\.', '.', $result);
         return $result;
     }
 
