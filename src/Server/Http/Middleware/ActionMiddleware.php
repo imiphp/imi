@@ -26,6 +26,13 @@ class ActionMiddleware implements MiddlewareInterface
     protected $view;
 
     /**
+     * 动作方法参数缓存
+     *
+     * @var \ReflectionParameter[]
+     */
+    private $actionMethodParams = [];
+
+    /**
      * 处理方法
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -104,33 +111,45 @@ class ActionMiddleware implements MiddlewareInterface
     
     /**
      * 准备调用action的参数
-     * @param Request $e
+     * @param Request $request
      * @param array $routeResult
      * @return array
      */
     private function prepareActionParams(Request $request, $routeResult)
     {
         // 根据动作回调类型获取反射
-        try{
-            if(is_array($routeResult->callable))
+        if(is_array($routeResult->callable))
+        {
+            if(is_string($routeResult->callable[0]))
             {
-                $ref = new \ReflectionMethod($routeResult->callable[0], $routeResult->callable[1]);
-            }
-            else if(!$routeResult->callable instanceof \Closure)
-            {
-                $ref = new \ReflectionFunction($routeResult->callable);
+                $class = $routeResult->callable[0];
             }
             else
             {
-                return [];
+                $class = get_class($routeResult->callable[0]);
+            }
+            $method = $routeResult->callable[1];
+            if(isset($this->actionMethodParams[$class][$method]))
+            {
+                $params = $this->actionMethodParams[$class][$method];
+            }
+            else
+            {
+                $ref = new \ReflectionMethod($routeResult->callable[0], $routeResult->callable[1]);
+                $params = $this->actionMethodParams[$class][$method] = $ref->getParameters();
             }
         }
-        catch(\Throwable $ex)
+        else if(!$routeResult->callable instanceof \Closure)
+        {
+            $ref = new \ReflectionFunction($routeResult->callable);
+            $params = $ref->getParameters();
+        }
+        else
         {
             return [];
         }
         $result = [];
-        foreach($ref->getParameters() as $param)
+        foreach($params as $param)
         {
             if(isset($routeResult->params[$param->name]))
             {
