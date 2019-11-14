@@ -31,6 +31,10 @@ return [
                         // 'maxActiveTime' => 3600,
                         // 等待资源最大超时时间，单位：毫秒
                         // 'waitTimeout' => 3000,
+                        // 心跳时间间隔，单位：秒
+                        // 'heartbeatInterval' => null,
+                        // 当获取资源时，是否检查状态
+                        // 'checkStateWhenGetResource' => true,
                         // 负载均衡-轮流
                         // 'resourceConfigMode' => ResourceConfigMode::TURN,
                         // 负载均衡-随机

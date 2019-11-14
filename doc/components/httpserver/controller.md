@@ -116,6 +116,7 @@ request 数据包含 get/post/cookie
 `public function getServerInstance(): \Imi\Server\Http\Server`
 
 #### 获取上传的文件
+
 `public function getUploadedFiles()`
 
 返回值为`Imi\Server\Http\Message\UploadedFile数组`
