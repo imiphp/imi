@@ -657,10 +657,11 @@ abstract class Model extends BaseModel
             {
                 continue;
             }
+            $columnType = $column->type;
             // 字段自动更新时间
             if($canUpdateTime && $column->updateTime)
             {
-                switch($column->type)
+                switch($columnType)
                 {
                     case 'date':
                         $value = date('Y-m-d');
@@ -709,7 +710,7 @@ abstract class Model extends BaseModel
             {
                 continue;
             }
-            switch($column->type)
+            switch($columnType)
             {
                 case 'json':
                     if(null !== $value)

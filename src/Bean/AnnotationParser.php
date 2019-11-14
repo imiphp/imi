@@ -68,7 +68,7 @@ class AnnotationParser
         $this->parseConsts($ref);
 
         // 处理注解的处理器
-        $this->parseAnnotationParsers($className);
+        $this->parseAnnotationParsers($ref);
 
     }
 
@@ -408,8 +408,9 @@ class AnnotationParser
      * 处理注解的处理器
      * @return void
      */
-    private function parseAnnotationParsers($className)
+    private function parseAnnotationParsers(\ReflectionClass $ref)
     {
+        $className = $ref->getName();
         if(isset($this->parsers[$className]))
         {
             return;
@@ -419,7 +420,6 @@ class AnnotationParser
         {
             return;
         }
-        $ref = new \ReflectionClass($className);
         if(!$ref->isSubclassOf('Imi\Bean\Annotation\Base'))
         {
             return;

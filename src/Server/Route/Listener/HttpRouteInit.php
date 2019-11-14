@@ -89,9 +89,10 @@ class HttpRouteInit implements IEventListener
                         {
                             $routeItem->url = $methodName;
                         }
-                        if((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]) && '' != $classAnnotation->prefix)
+                        $prefix = $classAnnotation->prefix;
+                        if((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]) && '' != $prefix)
                         {
-                            $routeItem->url = $classAnnotation->prefix . $routeItem->url;
+                            $routeItem->url = $prefix . $routeItem->url;
                         }
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares'   => $middlewares,
