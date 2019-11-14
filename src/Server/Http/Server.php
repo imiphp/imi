@@ -44,7 +44,7 @@ class Server extends Base
         {
             $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
         }
-        $this->https = Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->https = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
@@ -60,7 +60,7 @@ class Server extends Base
         {
             $this->config['configs']['open_http_protocol'] = true;
         }
-        $this->https = Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->https = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**

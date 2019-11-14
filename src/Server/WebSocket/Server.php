@@ -33,7 +33,7 @@ class Server extends Base
     {
         $config = $this->getServerInitConfig();
         $this->swooleServer = new \Swoole\WebSocket\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
-        $this->wss = Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->wss = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
@@ -49,7 +49,7 @@ class Server extends Base
         {
             $this->config['configs']['open_websocket_protocol'] = true;
         }
-        $this->wss = Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->wss = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
     }
 
     /**
