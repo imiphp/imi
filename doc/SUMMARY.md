@@ -29,6 +29,7 @@
 * [404处理](components/httpserver/404.md)
 * [HTTP 验证器](components/httpserver/validation.md)
 * [超全局变量](components/httpserver/superGlobals.md)
+* [请求最大执行时间](components/httpserver/maxExecuteTime.md)
 
 ## WebSocket 服务
 
