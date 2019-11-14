@@ -326,17 +326,9 @@ class Driver extends Base implements IDb
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
             $stmt = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
-            if($this->isCacheStatement)
+            if($this->isCacheStatement && null === $stmtCache)
             {
-                $stmtCache = StatementManager::get($this, $sql);
-                if($stmtCache)
-                {
-                    StatementManager::unUsing($stmtCache['statement']);
-                }
-                else
-                {
-                    StatementManager::set($stmt, true);
-                }
+                StatementManager::setNX($stmt, true);
             }
         }
 

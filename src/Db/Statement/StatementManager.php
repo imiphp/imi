@@ -40,6 +40,37 @@ abstract class StatementManager
     }
 
     /**
+     * 设置statement缓存，存在则不设置
+     *
+     * @param IStatement $statement
+     * @param bool $using
+     * @return bool
+     */
+    public static function setNX(IStatement $statement, bool $using)
+    {
+        $hashCode = $statement->getDb()->hashCode();
+        $sql = $statement->getSql();
+        if(isset(static::$statements[$hashCode][$sql]))
+        {
+            return false;
+        }
+        static::$statements[$hashCode][$sql] = [
+            'statement'     =>  $statement,
+            'using'         =>  $using,
+        ];
+        if($using)
+        {
+            try {
+                $context = RequestContext::getContext();
+                $context['statementCaches'][] = $statement;
+            } catch(RequestContextException $e) {
+
+            }
+        }
+        return true;
+    }
+
+    /**
      * 获取连接中对应sql的statement
      * 
      * 返回数组则代表获取成功
@@ -112,7 +143,8 @@ abstract class StatementManager
     public static function unUsingAll(IDb $db)
     {
         try {
-            $statementCaches = RequestContext::get('statementCaches', []);
+            $context = RequestContext::getContext();
+            $statementCaches = $context['statementCaches'] ?? [];
             $requestContext = true;
         } catch(RequestContextException $e) {
             $statementCaches = [];
@@ -129,7 +161,7 @@ abstract class StatementManager
         }
         if($requestContext)
         {
-            RequestContext::set('statementCaches', $statementCaches);
+            $context['statementCaches'] = $statementCaches;
         }
     }
 
@@ -217,20 +249,6 @@ abstract class StatementManager
             RequestContext::set('statementCaches', []);
         } catch(RequestContextException $e) {
 
-        }
-    }
-
-    /**
-     * 释放请求上下文
-     *
-     * @return void
-     */
-    public static function destoryRequestContext()
-    {
-        $statementCaches = RequestContext::get('statementCaches', []);
-        foreach($statementCaches as $statement)
-        {
-            static::unUsing($statement);
         }
     }
 

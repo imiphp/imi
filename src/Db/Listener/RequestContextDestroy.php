@@ -17,8 +17,6 @@ class RequestContextDestroy implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        // 释放当前请求上下文的 Statement
-        StatementManager::destoryRequestContext();
         // 释放当前连接池连接的 Statement
         foreach(RequestContext::get('poolResources', []) as $resource)
         {
