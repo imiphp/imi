@@ -57,7 +57,7 @@ class View
     {
         if(isset($this->handlers[$renderType]))
         {
-            if(is_array($data))
+            if($this->data && is_array($data))
             {
                 $data = array_merge($this->data, $data);
             }

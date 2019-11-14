@@ -6,7 +6,6 @@ use Imi\Util\Http\Response;
 use Imi\Bean\Annotation\Bean;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Message\Request;
-use Imi\Server\View\Parser\ViewParser;
 use Imi\Server\Annotation\ServerInject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -83,7 +82,7 @@ class ActionMiddleware implements MiddlewareInterface
         else
         {
             // 获取对应动作的视图注解
-            $viewAnnotation = clone ViewParser::getInstance()->getByCallable($result->callable);
+            $viewAnnotation = clone $result->routeItem->view;
             if(null !== $viewAnnotation)
             {
                 if([] !== $viewAnnotation->data && is_array($actionResult))

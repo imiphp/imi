@@ -7,6 +7,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
 use Imi\Server\Route\RouteCallable;
+use Imi\Server\View\Parser\ViewParser;
 use Imi\Util\Uri;
 
 /**
@@ -66,7 +67,7 @@ class HttpRoute
                 'url' => $url,
             ]);
         }
-        $this->rules[$url][spl_object_hash($annotation)] = new RouteItem($annotation, $callable);
+        $this->rules[$url][spl_object_hash($annotation)] = new RouteItem($annotation, $callable, ViewParser::getInstance()->getByCallable($callable));
     }
 
     /**
@@ -78,7 +79,7 @@ class HttpRoute
      */
     public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
     {
-        $routeItem = new RouteItem($annotation, $callable, $options);
+        $routeItem = new RouteItem($annotation, $callable, ViewParser::getInstance()->getByCallable($callable), $options);
         if(isset($options['middlewares']))
         {
             $routeItem->middlewares = $options['middlewares'];

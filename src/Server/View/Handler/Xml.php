@@ -15,7 +15,7 @@ class Xml implements IHandler
 {
     public function handle($data, array $options, Response $response): Response
     {
-        $response = $response->withAddedHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
+        $response = $response->withHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
         if($data instanceof \DOMDocument)
         {
             return $response->write($data->saveXML());

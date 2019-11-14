@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\Http\Route;
 
+use Imi\Server\View\Annotation\View;
 use Imi\Server\Route\Annotation\Route;
 
 class RouteItem
@@ -47,10 +48,18 @@ class RouteItem
      */
     public $singleton = false;
 
-    public function __construct(Route $annotation, $callable, array $options = [])
+    /**
+     * 视图注解
+     *
+     * @var \Imi\Server\View\Annotation\View
+     */
+    public $view;
+
+    public function __construct(Route $annotation, $callable, View $view, array $options = [])
     {
         $this->annotation = $annotation;
         $this->callable = $callable;
+        $this->view = $view;
         $this->options = $options;
     }
 

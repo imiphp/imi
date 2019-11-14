@@ -10,6 +10,7 @@ use Imi\Util\Imi;
 use Imi\Util\ClassObject;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\IBean;
+use Imi\Server\Route\RouteCallable;
 
 /**
  * 视图注解处理器
@@ -45,6 +46,10 @@ class ViewParser extends BaseParser
      */
     public function getByCallable($callable)
     {
+        if($callable instanceof RouteCallable)
+        {
+            $callable = $callable->getCallable();
+        }
         if(!is_array($callable))
         {
             $view = new View();
