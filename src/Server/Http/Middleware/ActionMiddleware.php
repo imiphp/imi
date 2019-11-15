@@ -63,12 +63,6 @@ class ActionMiddleware implements MiddlewareInterface
         }
         // 执行动作
         $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
-        $response = $context['response'];
-        if($useObjectRequestAndResponse)
-        {
-            // 获得控制器中的Response
-            $response = $result->callable[0]->response;
-        }
         // 视图
         if($actionResult instanceof \Imi\Server\View\Annotation\View)
         {
@@ -100,6 +94,15 @@ class ActionMiddleware implements MiddlewareInterface
 
         if(isset($viewAnnotation))
         {
+            if($useObjectRequestAndResponse)
+            {
+                // 获得控制器中的Response
+                $response = $result->callable[0]->response;
+            }
+            else
+            {
+                $response = $context['response'];
+            }
             // 视图渲染
             $options = $viewAnnotation->toArray();
             $response = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $response);
