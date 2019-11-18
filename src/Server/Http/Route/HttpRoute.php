@@ -142,9 +142,9 @@ class HttpRoute
         for($i = 0; $i < 2; ++$i)
         {
             /** @var \Imi\Server\Http\Route\RouteItem[] $items */
-            foreach($rules as $url => $items)
+            foreach($rules as $urlRule => $items)
             {
-                $result = $this->checkUrl($request, $url, $pathInfo);
+                $result = $this->checkUrl($request, $urlRule, $pathInfo);
                 if($result->result || $result->resultIgnoreCase)
                 {
                     foreach($items as $item)
@@ -180,15 +180,15 @@ class HttpRoute
     /**
      * 检查验证url是否匹配
      * @param Request $request
-     * @param string $url
+     * @param string $urlRule
      * @param array $params url路由中的自定义参数
      * @return \Imi\Server\Http\Route\UrlCheckResult
      */
-    private function checkUrl(Request $request, string $url, string $pathInfo)
+    private function checkUrl(Request $request, string $urlRule, string $pathInfo)
     {
-        if(!isset($this->urlCheckCache[$pathInfo][$url]))
+        if(!isset($this->urlCheckCache[$pathInfo][$urlRule]))
         {
-            $rule = $this->parseRule($url, $fields);
+            $rule = $this->parseRule($urlRule, $fields);
             $params = [];
             if($result = preg_match_all($rule, $pathInfo, $matches) > 0)
             {
@@ -222,10 +222,10 @@ class HttpRoute
                 array_shift($this->urlCheckCache);
                 --$this->urlCheckCacheCount;
             }
-            $this->urlCheckCache[$pathInfo][$url] = $result;
+            $this->urlCheckCache[$pathInfo][$urlRule] = $result;
             ++$this->urlCheckCacheCount;
         }
-        return $this->urlCheckCache[$pathInfo][$url];
+        return $this->urlCheckCache[$pathInfo][$urlRule];
     }
 
     /**
@@ -239,16 +239,15 @@ class HttpRoute
         if(!isset($this->rulesCache[$rule]))
         {
             $fields = [];
-            $rule = strtr(preg_quote($rule), [
-                '/'     =>  '\/',
-                '\{'    =>  '{',
-                '\}'    =>  '}',
-            ]);
+            if(false !== strpos($rule, '/'))
+            {
+                $rule = str_replace('/', '\/', $rule);
+            }
             $this->rulesCache[$rule] = '/^' . preg_replace_callback(
-                '/{([^}]+)}/i',
+                '/\{([^:]+)(?::([^{}]*(?:\{(?-1)\}[^{}]*)*))?\}/',
                 function($matches)use(&$fields){
                     $fields[] = $matches[1];
-                    return '(.+)';
+                    return '(' . ($matches[2] ?? '.+') . ')';
                 },
                 $rule
             ) . '\/?$/';

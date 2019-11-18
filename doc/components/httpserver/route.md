@@ -6,13 +6,13 @@
 
 ```php
 return [
-	'beans'	=>	[
-		'HttpDispatcher'	=>	[
-			'middlewares'	=>	[
-				\Imi\Server\Http\Middleware\RouteMiddleware::class,
-			],
-		],
-	],
+    'beans'	=>	[
+        'HttpDispatcher'	=>	[
+            'middlewares'	=>	[
+                \Imi\Server\Http\Middleware\RouteMiddleware::class,
+            ],
+        ],
+    ],
 ];
 ```
 
@@ -22,14 +22,14 @@ return [
 
 ```php
 return [
-	'beans'	=>	[
-		'HttpRoute'	=>	[
-			// url匹配缓存数量，默认1024
-			'urlCacheNumber'	=>	1024,
-			// 全局忽略 URL 路由大小写
-			'ignoreCase'		=>	false,
-		],
-	],
+    'beans'	=>	[
+        'HttpRoute'	=>	[
+            // url匹配缓存数量，默认1024
+            'urlCacheNumber'	=>	1024,
+            // 全局忽略 URL 路由大小写
+            'ignoreCase'		=>	false,
+        ],
+    ],
 ];
 ```
 
@@ -54,7 +54,7 @@ return [
 
 | 属性名称 | 说明 |
 | ------------ | ------------ 
-| url | 请求地址规则。<br>以`/`开头则忽视`@Controller`中的`prefix`<br>支持代入`{name}`形式占位符，匹配出来的值可以作为参数传入动作 |
+| url | 请求地址规则。<br>以`/`开头则忽视`@Controller`中的`prefix`<br>支持代入`{name}`形式占位符，匹配出来的值可以作为参数传入动作<br>支持正则写法：{id:\d+} |
 | method | 如果设置了`method`，则请求方法必须在`method`列表中才可以进到动作。<br>支持字符串和数组。如：`"GET"`或`{"GET", "POST"}` |
 | domain | 判断域名，只有符合条件才允许访问。<br>支持字符串和数组，支持`{name}`形式占位符，可以作为参数传入动作 |
 | paramsGet | 判断`GET`参数，只有符合条件才允许访问。<br>可以是字符串或数组。<br>`id=100`必须包含id，并且值为100<br>`id!=100`或`id<>100`必须包含id，并且值不为100<br>`id`必须包含id参数<br>`!id`必须不包含id参数</br>`["id" => "\d+"]`支持正则</br> |
@@ -90,15 +90,15 @@ use Imi\Server\Route\Annotation\Controller;
  */
 class Index extends HttpController
 {
-	/**
-	 * 一个动作
-	 * @Action
-	 * @Route(url="/")
-	 */
-	public function index()
-	{
-		return $this->response->write('hello imi!');
-	}
+    /**
+     * 一个动作
+     * @Action
+     * @Route(url="/")
+     */
+    public function index()
+    {
+        return $this->response->write('hello imi!');
+    }
 }
 ```
 
@@ -117,51 +117,51 @@ hello imi!
 ```php
 <?php
 return [
-	'route' => [
-		// 传统方式，直接指定控制器、方法、路由，和注解方式比较类似
-		[
-			'controller' => \ImiDemo\HttpDemo\MainServer\Controller\Test::class,
-			'method' => 'index',
-			'route' => [
-				'url' => '/test',
-				// 'method'	=>	'PUT',
-				// 'method'	=>	['GET', 'POST'],
-				// 'domain'	=>	'{name}.xxx.com',
-			],
-		],
-		// 回调方式，给callback指定一个callable类型
-		[
-			'route' => [
-				'url' => '/callback1',
-			],
-			'callback' => function () {
-				return RequestContext::get('response')->write('callback1');
-			},
-		],
-		// 路由回调方式，new RouteCallable(类名, 方法名)
-		[
-			'route' => [
-				'url' => '/callback2',
-			],
-			'callback' => new RouteCallable('\Test', 'abc'),
-		],
-		// 匹配URL，把interface代入到类、方法名中
-		[
-			'controller' => '\ImiDemo\HttpDemo\MainServer\Controller\Test{$interface}',
-			'method' => '{$interface}',
-			'route' => [
-				'url' => '/test/{interface}',
-			],
-		],
-		// 懒人免去写@Controller和@Action注解的麻烦
-		[
-			'controller'	=>	'\ImiDemo\HttpDemo\MainServer\Controller\{$controller}',
-			'method'		=>	'{$action}',
-			'route'	=>	[
-				'url'	=>	'/{controller}/{action}',
-			],
-		],
-	]
+    'route' => [
+        // 传统方式，直接指定控制器、方法、路由，和注解方式比较类似
+        [
+            'controller' => \ImiDemo\HttpDemo\MainServer\Controller\Test::class,
+            'method' => 'index',
+            'route' => [
+                'url' => '/test',
+                // 'method'	=>	'PUT',
+                // 'method'	=>	['GET', 'POST'],
+                // 'domain'	=>	'{name}.xxx.com',
+            ],
+        ],
+        // 回调方式，给callback指定一个callable类型
+        [
+            'route' => [
+                'url' => '/callback1',
+            ],
+            'callback' => function () {
+                return RequestContext::get('response')->write('callback1');
+            },
+        ],
+        // 路由回调方式，new RouteCallable(类名, 方法名)
+        [
+            'route' => [
+                'url' => '/callback2',
+            ],
+            'callback' => new RouteCallable('\Test', 'abc'),
+        ],
+        // 匹配URL，把interface代入到类、方法名中
+        [
+            'controller' => '\ImiDemo\HttpDemo\MainServer\Controller\Test{$interface}',
+            'method' => '{$interface}',
+            'route' => [
+                'url' => '/test/{interface}',
+            ],
+        ],
+        // 懒人免去写@Controller和@Action注解的麻烦
+        [
+            'controller'	=>	'\ImiDemo\HttpDemo\MainServer\Controller\{$controller}',
+            'method'		=>	'{$action}',
+            'route'	=>	[
+                'url'	=>	'/{controller}/{action}',
+            ],
+        ],
+    ]
 ];
 ```
 

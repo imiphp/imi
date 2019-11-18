@@ -258,4 +258,28 @@ class RequestTest extends BaseTest
         $this->assertEquals('gg', $response->body());
     }
 
+    /**
+     * 测试正则路由
+     *
+     * @return void
+     */
+    public function testregularExpressionRoute()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'a/123/1');
+        $this->assertEquals(json_encode([
+            'id'    =>  '123',
+            'page'  =>  '1',
+        ]), $response->body());
+
+        $response = $http->get($this->host . 'a/1234/1');
+        $this->assertEquals('gg', $response->body());
+        
+        $response = $http->get($this->host . 'a/abc/2');
+        $this->assertEquals(json_encode([
+            'name'  =>  'abc',
+            'page'  =>  '2',
+        ]), $response->body());
+    }
+
 }

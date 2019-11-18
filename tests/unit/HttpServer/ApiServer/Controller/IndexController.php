@@ -260,4 +260,32 @@ class IndexController extends HttpController
         ];
     }
 
+    /**
+     * @Action
+     * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
+     *
+     * @return void
+     */
+    public function regularExpression1($id, $page)
+    {
+        return [
+            'id'    =>  $id,
+            'page'  =>  $page,
+        ];
+    }
+
+    /**
+     * @Action
+     * @Route("/a/{name:[a-zA-Z]+}/{page}")
+     *
+     * @return void
+     */
+    public function regularExpression2($name, $page)
+    {
+        return [
+            'name'  =>  $name,
+            'page'  =>  $page,
+        ];
+    }
+
 }
