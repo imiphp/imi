@@ -26,11 +26,11 @@ class FileStream implements StreamInterface
 
     public function __construct($uri, $mode = StreamMode::READ_WRITE)
     {
-        if(! $uri instanceof Uri)
+        if(is_string($uri))
         {
             $this->uri = new Uri($uri);
         }
-        else if(null !== $uri)
+        else if($uri instanceof Uri)
         {
             $this->uri = $uri;
         }

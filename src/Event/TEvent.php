@@ -96,7 +96,7 @@ trait TEvent
             $this->rebuildEventQueue($name);
             foreach($classEventdata as $className => $option)
             {
-                if($this instanceof $className && isset($option[$name]))
+                if(isset($option[$name]) && $this instanceof $className)
                 {
                     foreach($option[$name] as $callback)
                     {

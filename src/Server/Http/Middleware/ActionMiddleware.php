@@ -64,14 +64,14 @@ class ActionMiddleware implements MiddlewareInterface
         // 执行动作
         $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
         // 视图
-        if($actionResult instanceof \Imi\Server\View\Annotation\View)
+        if($actionResult instanceof Response)
+        {
+            $response = $actionResult;
+        }
+        else if($actionResult instanceof \Imi\Server\View\Annotation\View)
         {
             // 动作返回的值是@View注解
             $viewAnnotation = $actionResult;
-        }
-        else if($actionResult instanceof Response)
-        {
-            $response = $actionResult;
         }
         else
         {

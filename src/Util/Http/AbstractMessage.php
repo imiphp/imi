@@ -34,13 +34,13 @@ abstract class AbstractMessage implements MessageInterface
 
     public function __construct($body)
     {
-        if($body instanceof \Psr\Http\Message\StreamInterface)
-        {
-            $this->body = $body;
-        }
-        else
+        if(is_string($body))
         {
             $this->body = new MemoryStream($body);
+        }
+        else if($body instanceof \Psr\Http\Message\StreamInterface)
+        {
+            $this->body = $body;
         }
     }
 

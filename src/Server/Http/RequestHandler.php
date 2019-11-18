@@ -38,7 +38,7 @@ class RequestHandler implements RequestHandlerInterface
         if(isset($this->middlewares[$this->index]))
         {
             $middleware = $this->middlewares[$this->index];
-            if($middleware instanceof RequestHandlerInterface)
+            if(is_object($middleware))
             {
                 $requestHandler = $middleware;
             }
@@ -60,9 +60,8 @@ class RequestHandler implements RequestHandlerInterface
      */
     protected function next()
     {
-        $self = clone $this;
-        ++$self->index;
-        return $self;
+        ++$this->index;
+        return $this;
     }
 
     /**
