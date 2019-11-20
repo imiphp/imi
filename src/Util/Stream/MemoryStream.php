@@ -183,6 +183,7 @@ class MemoryStream implements StreamInterface
         $this->content = Text::insert($this->content, $this->position, $string);
         $len = strlen($string);
         $this->position += $len;
+        $this->size += $len;
         return $len;
     }
 
