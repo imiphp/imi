@@ -132,7 +132,7 @@ abstract class BaseLock implements ILockHandler
      */
     public function unlock(): bool
     {
-        if(!$this->isLocked())
+        if(!$this->isLocked)
         {
             return false;
         }
