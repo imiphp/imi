@@ -19,13 +19,20 @@ class ErrorLog
     use TBeanRealClass;
 
     /**
+     * 错误级别
+     *
+     * @var integer
+     */
+    protected $level = 0;
+
+    /**
      * 注册错误监听
      *
      * @return void
      */
     public function register()
     {
-        error_reporting(0);
+        error_reporting($this->level);
         register_shutdown_function([$this, 'onShutdown']);
         set_error_handler([$this, 'onError']);
     }
@@ -41,6 +48,10 @@ class ErrorLog
      */
     public function onError($errno, $errstr, $errfile, $errline)
     {
+        if(error_reporting() & $errno)
+        {
+            throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+        }
         switch($errno)
         {
             case E_ERROR:
