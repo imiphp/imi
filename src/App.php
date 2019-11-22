@@ -14,6 +14,7 @@ use Imi\Cache\CacheManager;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Util\Text;
 
@@ -85,7 +86,8 @@ abstract class App
      */
     public static function run($namespace)
     {
-        self::set('worker', ProcessType::MASTER, true);
+        self::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
+        self::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
         static::$namespace = $namespace;
         static::outImi();
         static::outStartupInfo();

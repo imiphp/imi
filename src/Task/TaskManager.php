@@ -101,4 +101,17 @@ abstract class TaskManager
         return $result;
     }
 
+    /**
+     * 获取 TaskInfo
+     *
+     * @param string $name
+     * @return TaskInfo
+     */
+    public static function getTaskInfo(string $name, $data): TaskInfo
+    {
+        $task = TaskParser::getInstance()->getTask($name);
+        $paramClass = $task['Task']->paramClass;
+        return new TaskInfo(new $task['className'], new $paramClass($data));
+    }
+
 }

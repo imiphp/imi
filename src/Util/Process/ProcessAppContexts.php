@@ -16,4 +16,9 @@ abstract class ProcessAppContexts
      */
     const PROCESS_NAME = 'process_name';
 
+    /**
+     * 主进程pid
+     */
+    const MASTER_PID = 'master_pid';
+
 }

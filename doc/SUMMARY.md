@@ -94,6 +94,7 @@
   * [AtomicLock](components/lock/atomic.md)
 * [事件监听](components/event/index.md)
 * [后台任务](components/task/index.md)
+* [定时任务](components/task/cron.md)
 * [AOP](components/aop/index.md)
 * [进程](components/process/index.md)
 * [进程池-Swoole](components/process-pool/swoole.md)

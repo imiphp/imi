@@ -37,6 +37,9 @@ return [
                 ],
             ],
         ],
+        'ErrorLog'          =>  [
+            // 'level' =>  ,
+        ],
     ],
     'imi'   =>  'very six',
     'yurun' =>  '',

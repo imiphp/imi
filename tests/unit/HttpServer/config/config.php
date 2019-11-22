@@ -13,6 +13,7 @@ return [
         'Imi\Test\HttpServer\Listener',
         'Imi\Test\HttpServer\Task',
         'Imi\Test\HttpServer\Process',
+        'Imi\Test\HttpServer\Cron',
     ],
 
     // 组件命名空间
@@ -26,7 +27,7 @@ return [
         'host'        =>    '127.0.0.1',
         'port'        =>    13000,
         'configs'    =>    [
-            'worker_num'        =>  1,
+            'worker_num'        =>  4,
             'task_worker_num'   =>  1,
         ],
     ],

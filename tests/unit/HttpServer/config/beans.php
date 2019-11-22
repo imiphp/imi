@@ -56,4 +56,14 @@ return [
     'SuperGlobals'  =>  [
         'enable'    =>  true,
     ],
+    'AutoRunProcessManager'   =>  [
+        'processes' =>  [
+            'CronProcess',
+        ],
+    ],
+    'CronManager'   =>  [
+        'tasks' =>  [
+
+        ],
+    ],
 ];
