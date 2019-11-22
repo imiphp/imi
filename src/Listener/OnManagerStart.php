@@ -5,6 +5,8 @@ use Imi\App;
 use Imi\Util\Imi;
 use Imi\Util\Swoole;
 use Imi\Bean\Annotation\Listener;
+use Imi\Util\Process\ProcessType;
+use Imi\Util\Process\ProcessAppContexts;
 use Imi\Server\Event\Param\ManagerStartEventParam;
 use Imi\Server\Event\Listener\IManagerStartEventListener;
 
@@ -20,6 +22,7 @@ class OnManagerStart implements IManagerStartEventListener
      */
     public function handle(ManagerStartEventParam $e)
     {
+        App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::MANAGER, true);
         Imi::setProcessName('manager');
 
         // 随机数播种
