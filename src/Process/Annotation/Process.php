@@ -43,4 +43,12 @@ class Process extends Base
      * @var boolean
      */
     public $unique = false;
+
+    /**
+     * 自动开启协程
+     *
+     * @var boolean
+     */
+    public $co = true;
+
 }

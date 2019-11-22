@@ -2,13 +2,15 @@
 namespace Imi\Process;
 
 use Imi\App;
+use Imi\Util\Imi;
 use Imi\Util\File;
 use Imi\Event\Event;
-use Imi\Bean\BeanFactory;
-use Imi\Process\Parser\ProcessParser;
-use Imi\Process\Exception\ProcessAlreadyRunException;
-use Imi\Util\Imi;
 use Imi\ServerManage;
+use Imi\Bean\BeanFactory;
+use Imi\Util\Process\ProcessType;
+use Imi\Process\Parser\ProcessParser;
+use Imi\Util\Process\ProcessAppContexts;
+use Imi\Process\Exception\ProcessAlreadyRunException;
 
 /**
  * 进程管理类
@@ -67,6 +69,8 @@ abstract class ProcessManager
     private static function getProcessCallable($args, $name, $processOption)
     {
         return function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
+            App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
+            App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称
             Imi::setProcessName('process', [
                 'processName'   =>  $name,
@@ -75,7 +79,7 @@ abstract class ProcessManager
             \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
-            imigo(function() use($swooleProcess, $args, $name, $processOption){
+            $callable = function() use($swooleProcess, $args, $name, $processOption){
                 if($processOption['Process']->unique && !static::lockProcess($name))
                 {
                     throw new \RuntimeException('lock process lock file error');
@@ -100,7 +104,15 @@ abstract class ProcessManager
                     'name'      => $name,
                     'process'   => $swooleProcess,
                 ]);
-            });
+            };
+            if($processOption['Process']->co)
+            {
+                imigo($callable);
+            }
+            else
+            {
+                $callable();
+            }
             \Swoole\Event::wait();
         };
     }
