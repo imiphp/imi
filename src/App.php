@@ -480,11 +480,8 @@ STR;
     {
         if(isset(static::$contextReadonly[$name]))
         {
-            $backtrace = debug_backtrace([
-                DEBUG_BACKTRACE_PROVIDE_OBJECT  =>  true,
-                DEBUG_BACKTRACE_IGNORE_ARGS     =>  true,
-            ], 1);
-            $backtrace = $backtrace[0] ?? null;
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $backtrace = $backtrace[1] ?? null;
             if(!(
                 (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
                 || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
