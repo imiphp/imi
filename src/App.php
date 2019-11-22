@@ -14,6 +14,8 @@ use Imi\Cache\CacheManager;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Util\Process\ProcessType;
+use Imi\Util\Text;
 
 abstract class App
 {
@@ -63,12 +65,27 @@ abstract class App
     private static $isCoServer = false;
 
     /**
+     * 上下文集合
+     *
+     * @var array
+     */
+    private static $context = [];
+
+    /**
+     * 只读上下文键名列表
+     *
+     * @var string[]
+     */
+    private static $contextReadonly = [];
+
+    /**
      * 框架服务运行入口
      * @param string $namespace 应用命名空间
      * @return void
      */
     public static function run($namespace)
     {
+        self::set('worker', ProcessType::MASTER, true);
         static::$namespace = $namespace;
         static::outImi();
         static::outStartupInfo();
@@ -439,6 +456,48 @@ STR;
         echo 'Timezone: ', date_default_timezone_get(), PHP_EOL;
 
         echo PHP_EOL;
+    }
+
+    /**
+     * 获取应用上下文数据
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function get($name, $default = null)
+    {
+        return static::$context[$name] ?? $default;
+    }
+
+    /**
+     * 设置应用上下文数据
+     * @param string $name
+     * @param mixed $value
+     * @param bool $readonly
+     * @return void
+     */
+    public static function set($name, $value, $readonly = false)
+    {
+        if(isset(static::$contextReadonly[$name]))
+        {
+            $backtrace = debug_backtrace([
+                DEBUG_BACKTRACE_PROVIDE_OBJECT  =>  true,
+                DEBUG_BACKTRACE_IGNORE_ARGS     =>  true,
+            ], 1);
+            $backtrace = $backtrace[0] ?? null;
+            if(!(
+                (isset($backtrace['object']) && $backtrace['object'] instanceof \Imi\Bean\IBean)
+                || (isset($backtrace['class']) && Text::startwith($backtrace['class'], 'Imi\\'))
+            ))
+            {
+                throw new \RuntimeException('Cannot write to read-only application context');
+            }
+        }
+        else if($readonly)
+        {
+            static::$contextReadonly[$name] = true;
+        }
+        static::$context[$name] = $value;
     }
 
 }
