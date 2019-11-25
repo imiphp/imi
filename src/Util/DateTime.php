@@ -186,30 +186,4 @@ abstract class DateTime
         return $weeks;
     }
 
-    // /**
-    //  * 获取下月的时间
-    //  * 
-    //  * 可传入 $day 指定几号，不传则取时间戳对应几号。如果下个月是2月，当前的日（如29-31）有可能没有，那就按倒数第几天来取。
-    //  * 可传入 $format 格式化，不传则返回时间戳
-    //  * 可传入 $timestamp 指定时间戳，不传则取当前时间
-    //  *
-    //  * @param int|null $weekNo
-    //  * @param string|null $format
-    //  * @param int|null $timestamp
-    //  * @return void
-    //  */
-    // public static function getNextMonth($day = null, $format = null, $timestamp = null)
-    // {
-    //     if(null === $timestamp)
-    //     {
-    //         $timestamp = time();
-    //     }
-        
-    //     if(null === $format)
-    //     {
-    //         return $timestamp;
-    //     }
-    //     return date($format, $timestamp);
-    // }
-
 }
