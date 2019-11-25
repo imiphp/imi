@@ -67,38 +67,75 @@ class CronCalculator
             }
             foreach($months as $month)
             {
-                if($month < $nowMonth)
+                if($year == $nowYear && $month < $nowMonth)
                 {
                     continue;
                 }
                 foreach($days as $day)
                 {
-                    if(($year == $nowYear && $month == $nowMonth && $day < $nowDay) || !in_array(date('N', strtotime("{$year}-{$month}-{$day}")), $weeks))
+                    if('year' === $day)
                     {
                         continue;
                     }
-                    foreach($hours as $hour)
+                    if('year' === $days[0])
                     {
-                        if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour < $nowHour)
+                        if($day < 0)
+                        {
+                            $timestamp = strtotime($year . '-12-31') + 86400 * ((int)$day + 1);
+                        }
+                        else
+                        {
+                            $timestamp = strtotime($year . '-01-01') + 86400 * ((int)$day - 1);
+                        }
+                        [$y, $m, $d] = explode('-', date('Y-m-d', $timestamp));
+                        if(($y == $nowYear && (($m == $nowMonth && $d < $nowDay) || ($m < $nowMonth))) || !in_array(date('N', $timestamp), $weeks))
                         {
                             continue;
                         }
-                        foreach($minutes as $minute)
-                        {
-                            if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour == $nowHour && $minute < $nowMinute)
-                            {
-                                continue;
-                            }
-                            foreach($seconds as $second)
-                            {
-                                if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour == $nowHour && $minute == $nowMinute && $second <= $nowSecond)
-                                {
-                                    continue;
-                                }
-                                return strtotime("{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}");
-                            }
-                        }
+                        $result = $this->parseHis($y, $m, $d, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond);
                     }
+                    else
+                    {
+                        if($day < 0)
+                        {
+                            $day = date('d', strtotime($year . '-' . $month . '-' . date('t', strtotime($year . '-' . $month . '-01'))) + 86400 * ((int)$day + 1));
+                        }
+                        if(($year == $nowYear && $month == $nowMonth && $day < $nowDay) || !in_array(date('N', strtotime("{$year}-{$month}-{$day}")), $weeks))
+                        {
+                            continue;
+                        }
+                        $result = $this->parseHis($year, $month, $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond);
+                    }
+                    if(null !== $result)
+                    {
+                        return $result;
+                    }
+                }
+            }
+        }
+    }
+
+    private function parseHis($year, $month, $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond)
+    {
+        foreach($hours as $hour)
+        {
+            if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour < $nowHour)
+            {
+                continue;
+            }
+            foreach($minutes as $minute)
+            {
+                if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour == $nowHour && $minute < $nowMinute)
+                {
+                    continue;
+                }
+                foreach($seconds as $second)
+                {
+                    if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour == $nowHour && $minute == $nowMinute && $second <= $nowSecond)
+                    {
+                        continue;
+                    }
+                    return strtotime("{$year}-{$month}-{$day} {$hour}:{$minute}:{$second}");
                 }
             }
         }
@@ -115,14 +152,18 @@ class CronCalculator
         if(strpos($rule, '-') > 0)
         {
             [$begin, $end] = explode('-', substr($rule, 1), 2);
-            // 负数支持
-            if($begin < $min)
+            $begin = substr($rule, 0, 1) . $begin;
+            if('day' !== $name)
             {
-                $begin = $max + 1 + $begin;
-            }
-            if($end < $min)
-            {
-                $end = $max + 1 + $end;
+                // 负数支持
+                if($begin < $min)
+                {
+                    $begin = $max + 1 + (int)$begin;
+                }
+                if($end < $min)
+                {
+                    $end = $max + 1 + (int)$end;
+                }
             }
             return range(max($min, $begin), min($end, $max));
         }
@@ -142,18 +183,20 @@ class CronCalculator
         }
         // 列表
         $list = explode(',', $rule);
-        // 处理负数
-        foreach($list as &$item)
+        if('day' !== $name)
         {
-            if($item < $min)
+            // 处理负数
+            foreach($list as &$item)
             {
-                $item = $max + 1 - $item;
+                if($item < $min)
+                {
+                    $item = $max + 1 + (int)$item;
+                }
             }
         }
         // 从小到大排序
         sort($list, SORT_NUMERIC);
         return $list;
-        throw new \InvalidArgumentException(sprintf('Invalid cron %s %s', $name, $rule));
     }
 
     /**
@@ -165,7 +208,7 @@ class CronCalculator
      */
     public function getAllYear($year, $lastTime)
     {
-        $min = date('Y');
+        $min = date('Y', $lastTime);
         $max = 2100; // 我觉得 2100 年不可能还在用这个代码了吧……
         return $this->getAll($year, 'year', $min, $max, 'Y', $lastTime);
     }
@@ -194,12 +237,32 @@ class CronCalculator
         if('year ' === substr($day, 0, 5))
         {
             $day = substr($day, 5);
-            return $this->getAll($day, 'day', 1, 366, 'd', $lastTime);
+            $list = $this->getAll($day, 'day', 1, 366, 'd', $lastTime);
+            array_unshift($list, 'year');
         }
         else
         {
-            return $this->getAll($day, 'day', 1, 31, 'd', $lastTime);
+            $list = $this->getAll($day, 'day', 1, 31, 'd', $lastTime);
         }
+        $negatives = [];
+        foreach($list as $i => $value)
+        {
+            if($value < 0)
+            {
+                $negatives[] = $value;
+                unset($list[$i]);
+            }
+            else
+            {
+                break;
+            }
+        }
+        rsort($negatives, SORT_NUMERIC);
+        foreach($negatives as $value)
+        {
+            $list[] = $value;
+        }
+        return array_values($list);
     }
 
     /**
