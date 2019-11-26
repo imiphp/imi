@@ -27,50 +27,59 @@ trait TEvent
 
     /**
      * 事件监听
-     * @param string $name 事件名称
+     * @param string|string[] $name 事件名称
      * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int $priority 优先级，越大越先执行
      * @return void
      */
     public function on($name, $callback, $priority = 0)
     {
-        $this->events[$name][] = new EventItem($callback, $priority);
-        $this->eventChangeRecords[$name] = true;
+        foreach(is_array($name) ? $name : [$name] as $eventName)
+        {
+            $this->events[$eventName][] = new EventItem($callback, $priority);
+            $this->eventChangeRecords[$eventName] = true;
+        }
     }
 
     /**
      * 监听事件，仅触发一次
-     * @param string $name 事件名称
+     * @param string|string[] $name 事件名称
      * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int $priority 优先级，越大越先执行
      * @return void
      */
     public function one($name, $callback, $priority = 0)
     {
-        $this->events[$name][] = new EventItem($callback, $priority, true);
-        $this->eventChangeRecords[$name] = true;
+        foreach(is_array($name) ? $name : [$name] as $eventName)
+        {
+            $this->events[$eventName][] = new EventItem($callback, $priority, true);
+            $this->eventChangeRecords[$eventName] = true;
+        }
     }
 
     /**
      * 取消事件监听
-     * @param string $name 事件名称
+     * @param string|string[] $name 事件名称
      * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
      * @return void
      */
     public function off($name, $callback)
     {
-        if(isset($this->events[$name]))
+        foreach(is_array($name) ? $name : [$name] as $eventName)
         {
-            $map = &$this->events[$name];
-            // 数据映射
-            foreach($this->events[$name] as $k => $item)
+            if(isset($this->events[$eventName]))
             {
-                if($callback === $item->callback)
+                $map = &$this->events[$eventName];
+                // 数据映射
+                foreach($this->events[$eventName] as $k => $item)
                 {
-                    unset($map[$k]);
+                    if($callback === $item->callback)
+                    {
+                        unset($map[$k]);
+                    }
                 }
+                $this->eventChangeRecords[$eventName] = true;
             }
-            $this->eventChangeRecords[$name] = true;
         }
     }
 
