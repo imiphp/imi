@@ -54,12 +54,13 @@ class Client
         {
             return true;
         }
-        $this->socket = stream_socket_client('unix://' . $this->socketFile, $errno, $errstr);
+        $this->socket = stream_socket_client('unix://' . $this->socketFile, $errno, $errstr, 10);
         if(false === $this->socket)
         {
             $this->connected = false;
             return false;
         }
+        stream_set_timeout($this->socket, 10);
         $this->connected = true;
         return true;
     }
