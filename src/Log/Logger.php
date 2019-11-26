@@ -85,7 +85,7 @@ class Logger extends AbstractLogger
         {
             $this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-        Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function(){
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function(){
             $this->save();
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
     }
