@@ -6,6 +6,8 @@ HttpServer-SessionTest: `13005`
 
 HttpServer-HttpsTest: `13006`
 
+Http2Server: `13007`
+
 RedisSessionServer: `13001`
 
 WebSocketServer: `13002`

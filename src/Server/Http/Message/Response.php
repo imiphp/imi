@@ -19,12 +19,6 @@ class Response extends \Imi\Util\Http\Response
     protected $cookies = [];
 
     /**
-     * gzip压缩等级1-9，默认为5
-     * @var int
-     */
-    protected $gzipLevel = 5;
-    
-    /**
      * 对应的服务器
      * @var \Imi\Server\Base
      */
@@ -131,14 +125,25 @@ class Response extends \Imi\Util\Http\Response
     public function sendHeaders()
     {
         // cookie
-        foreach($this->cookies as $cookie)
+        if($this->cookies)
         {
-            $this->swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
+            foreach($this->cookies as $cookie)
+            {
+                $this->swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
+            }
         }
         // header
         foreach($this->headers as $name => $headers)
         {
             $this->swooleResponse->header($name, $this->getHeaderLine($name));
+        }
+        // trailer
+        if($this->trailers)
+        {
+            foreach($this->trailers as $name => $value)
+            {
+                $this->swooleResponse->trailer($name, $value);
+            }
         }
         // status
         if(StatusCode::OK !== $this->statusCode)

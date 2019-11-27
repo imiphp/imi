@@ -30,6 +30,7 @@
 * [HTTP 验证器](components/httpserver/validation.md)
 * [超全局变量](components/httpserver/superGlobals.md)
 * [请求最大执行时间](components/httpserver/maxExecuteTime.md)
+* [Http2](components/httpserver/http2.md)
 
 ## WebSocket 服务
 

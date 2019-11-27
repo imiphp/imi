@@ -2,10 +2,10 @@
 namespace Imi\Server\Http;
 
 use Imi\App;
+use Imi\Util\Bit;
 use Imi\Event\Event;
 use Imi\Server\Base;
 use Imi\ServerManage;
-use Imi\RequestContext;
 use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Request;
@@ -13,8 +13,9 @@ use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Event\Param\RequestEventParam;
+use Imi\Server\Http\Listener\Http2AfterClose;
+use Imi\Server\Http\Listener\Http2BeforeClose;
 use Imi\Server\Event\Param\WorkerStartEventParam;
-use Imi\Util\Bit;
 
 /**
  * Http 服务器类
@@ -28,6 +29,13 @@ class Server extends Base
      * @var bool
      */
     private $https;
+
+    /**
+     * 是否为 http2 服务
+     *
+     * @var bool
+     */
+    private $http2;
 
     /**
      * 创建 swoole 服务器对象
@@ -45,6 +53,7 @@ class Server extends Base
             $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
         }
         $this->https = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
     }
 
     /**
@@ -61,6 +70,7 @@ class Server extends Base
             $this->config['configs']['open_http_protocol'] = true;
         }
         $this->https = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
     }
 
     /**
@@ -119,6 +129,11 @@ class Server extends Base
         Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function(WorkerStartEventParam $e){
             // 内置事件监听
             $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
+            if($this->http2)
+            {
+                $this->on('close', [new Http2BeforeClose, 'handle'], ImiPriority::IMI_MAX);
+                $this->on('close', [new Http2AfterClose, 'handle'], ImiPriority::IMI_MIN);
+            }
         });
 
         if($config['coServer'])
@@ -145,7 +160,7 @@ class Server extends Base
             });
         }
 
-        if($event = ($this->config['events']['close'] ?? false))
+        if($event = ($this->config['events']['close'] ?? false) || $this->http2)
         {
             $server->on('close', is_callable($event) ? $event : function(\Swoole\Http\Server $server, $fd, $reactorID){
                 try{
@@ -171,6 +186,16 @@ class Server extends Base
     public function isSSL()
     {
         return $this->https;
+    }
+
+    /**
+     * 是否为 http2 服务
+     *
+     * @var bool
+     */
+    public function isHttp2()
+    {
+        return $this->http2;
     }
 
 }

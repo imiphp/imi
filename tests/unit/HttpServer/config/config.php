@@ -51,6 +51,18 @@ return [
                 'ssl_key_file'      =>  dirname(__DIR__, 3) . '/ssl/server.key',
             ],
         ],
+        'Http2Test'   =>  [
+            'namespace' =>    'Imi\Test\HttpServer\Http2TestServer',
+            'type'      =>    Imi\Server\Type::HTTP,
+            'host'      =>    '127.0.0.1',
+            'port'      =>    13007,
+            'sockType'  =>    SWOOLE_SOCK_TCP | SWOOLE_SSL,
+            'configs'   =>  [
+                'open_http2_protocol'   =>  true,
+                'ssl_cert_file'     =>  dirname(__DIR__, 3) . '/ssl/server.crt',
+                'ssl_key_file'      =>  dirname(__DIR__, 3) . '/ssl/server.key',
+            ],
+        ],
     ],
 
     // 连接池配置
@@ -147,6 +159,10 @@ return [
             ],
             'lockId'    =>  'memoryTableLock',
         ],
+        'connectContext'    =>  [
+            'class' =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+            'lockId'=>  'redisConnectContextLock',
+        ],
     ],
 
     // 锁
@@ -159,6 +175,12 @@ return [
             //     ],
             // ],
             'memoryTableLock' =>  [
+                'class' =>  'RedisLock',
+                'options'   =>  [
+                    'poolName'  =>  'redis',
+                ],
+            ],
+            'redisConnectContextLock' =>  [
                 'class' =>  'RedisLock',
                 'options'   =>  [
                     'poolName'  =>  'redis',

@@ -5,6 +5,7 @@ use Imi\RequestContext;
 use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\App;
+use Imi\ConnectContext;
 
 /**
  * request事件前置处理
@@ -25,7 +26,11 @@ class BeforeRequest implements IRequestEventListener
                 'request'   =>  $e->request,
                 'response'  =>  $e->response,
             ]);
-
+            if($server->isHttp2())
+            {
+                RequestContext::set('fd', $e->request->getSwooleRequest()->fd);
+                ConnectContext::create();
+            }
             // 中间件
             $dispatcher = $server->getBean('HttpDispatcher');
             $dispatcher->dispatch($e->request, $e->response);

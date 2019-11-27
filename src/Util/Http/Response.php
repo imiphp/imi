@@ -18,6 +18,13 @@ class Response extends AbstractMessage implements ResponseInterface
      */
     protected $reasonPhrase;
 
+    /**
+     * Trailer 列表
+     *
+     * @var array
+     */
+    protected $trailers = [];
+
     public function __construct()
     {
         parent::__construct('');
@@ -90,4 +97,51 @@ class Response extends AbstractMessage implements ResponseInterface
     {
         return $this->reasonPhrase;
     }
+
+    /**
+     * 获取 Trailer 列表
+     * 
+     * @return array
+     */
+    public function getTrailers()
+    {
+        return $this->trailers;
+    }
+
+    /**
+     * Trailer 是否存在
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasTrailer($name)
+    {
+        return isset($this->trailers[$name]);
+    }
+
+    /**
+     * 获取 Trailer 值
+     * 
+     * @param string $name
+     * @return string|null
+     */
+    public function getTrailer($name)
+    {
+        return $this->trailers[$name] ?? null;
+    }
+
+    /**
+     * 获取 Trailer
+     * 
+     * @param string $name
+     * @param string $value
+     * @return static
+     */
+    public function withTrailer($name, $value)
+    {
+        $self = clone $this;
+        $self->trailers[$name] = $value;
+        return $self;
+    }
+
 }
