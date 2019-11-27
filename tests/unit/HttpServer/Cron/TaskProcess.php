@@ -6,6 +6,7 @@ use Imi\Process\IProcess;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Traits\TWorkerReport;
 use Imi\Process\Annotation\Process;
+use Swoole\Event;
 
 /**
  * @Cron(id="CronProcess", second="3n")
@@ -17,10 +18,22 @@ class TaskProcess implements IProcess
 
     public function run(\Swoole\Process $process)
     {
-        $id = Args::get('id');
-        $data = json_decode(Args::get('data'), true);
-        $this->reportCronResult($id, true, '');
-        $process->exit(0);
+        $success = false;
+        $message = '';
+        try {
+            $id = Args::get('id');
+            if(null === $id)
+            {
+                return;
+            }
+            $data = json_decode(Args::get('data'), true);
+            $success = true;
+        } catch(\Throwable $th) {
+            $message = $th->getMessage();
+            throw $th;
+        } finally {
+            $this->reportCronResult($id, $success, $message);
+        }
     }
 
 }
