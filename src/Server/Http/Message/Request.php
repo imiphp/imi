@@ -64,6 +64,7 @@ class Request extends ServerRequest
         $instance->uri = $instance->uri->withQuery([] === $instance->get ? '' : (\http_build_query($instance->get, null, '&')));
         $instance->post = $request->post ?? [];
         $instance->body = new MemoryStream($request->rawContent());
+        $instance->headerNames = $instance->headers = [];
         $instance->setHeaders($request->header);
         $instance->cookies = $request->cookie ?? [];
         $instance->setUploadedFiles($instance, $request->files ?? []);
