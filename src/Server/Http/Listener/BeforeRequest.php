@@ -35,7 +35,11 @@ class BeforeRequest implements IRequestEventListener
             $dispatcher = $server->getBean('HttpDispatcher');
             $dispatcher->dispatch($e->request, $e->response);
         } catch(\Throwable $th) {
-            if(true !== App::getBean('HttpErrorHandler')->handle($th))
+            if(!$server)
+            {
+                throw $th;
+            }
+            if(true !== $server->getBean('HttpErrorHandler')->handle($th))
             {
                 throw $th;
             }
