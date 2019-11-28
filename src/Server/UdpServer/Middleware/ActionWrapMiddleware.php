@@ -13,6 +13,13 @@ use Imi\Server\UdpServer\Message\IPacketData;
 class ActionWrapMiddleware implements IMiddleware
 {
     /**
+     * 动作中间件
+     *
+     * @var string
+     */
+    protected $actionMiddleware = ActionMiddleware::class;
+
+    /**
      * 处理方法
      *
      * @param IPacketData $data
@@ -28,7 +35,7 @@ class ActionWrapMiddleware implements IMiddleware
             return $handler->handle($data);
         }
         $middlewares = $result->routeItem->middlewares;
-        $middlewares[] = ActionMiddleware::class;
+        $middlewares[] = $this->actionMiddleware;
         $handler = new PacketHandler($middlewares);
         return $handler->handle($data);
     }

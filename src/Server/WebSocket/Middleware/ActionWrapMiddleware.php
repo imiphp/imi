@@ -13,6 +13,13 @@ use Imi\Server\WebSocket\IMessageHandler;
 class ActionWrapMiddleware implements IMiddleware
 {
     /**
+     * 动作中间件
+     *
+     * @var string
+     */
+    protected $actionMiddleware = ActionMiddleware::class;
+
+    /**
      * 处理方法
      *
      * @param IFrame $frame
@@ -28,7 +35,7 @@ class ActionWrapMiddleware implements IMiddleware
             return $handler->handle($frame);
         }
         $middlewares = $result->routeItem->middlewares;
-        $middlewares[] = ActionMiddleware::class;
+        $middlewares[] = $this->actionMiddleware;
         $handler = new MessageHandler($middlewares);
         return $handler->handle($frame);
     }

@@ -15,6 +15,13 @@ use Psr\Http\Server\RequestHandlerInterface;
 class ActionWrapMiddleware implements MiddlewareInterface
 {
     /**
+     * 动作中间件
+     *
+     * @var string
+     */
+    protected $actionMiddleware = ActionMiddleware::class;
+
+    /**
      * 处理方法
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -29,7 +36,7 @@ class ActionWrapMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
         $middlewares = $result->routeItem->middlewares;
-        $middlewares[] = ActionMiddleware::class;
+        $middlewares[] = $this->actionMiddleware;
         $handler = new RequestHandler($middlewares);
         return $handler->handle($request);
     }
