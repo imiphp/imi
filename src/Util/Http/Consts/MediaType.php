@@ -53,4 +53,11 @@ abstract class MediaType
     const TEXT_PLAIN = 'text/plain';
     
     const TEXT_XML = 'text/xml';
+
+    const GRPC = 'application/grpc';
+
+    const GRPC_PROTO = 'application/grpc+proto';
+
+    const GRPC_JSON = 'application/grpc+json';
+
 }

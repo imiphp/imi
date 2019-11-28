@@ -38,4 +38,5 @@ abstract class RequestHeader
     const UPGRADE = 'Upgrade';
     const VIA = 'Via';
     const WARNING = 'Warning';
+    const TRAILER = 'trailer';
 }
