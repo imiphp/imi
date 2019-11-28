@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Bean;
 
-use Imi\Bean\Proxy\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Parser\BeanParser;
 use Psr\Container\ContainerInterface;
@@ -13,16 +12,24 @@ class Container implements ContainerInterface
      * 单例对象们
      * @var array
      */
-    public $singletonObjects = [];
+    private $singletonObjects = [];
 
     /**
      * Bean处理器
      * @var \Imi\Bean\Parser\BeanParser
      */
-    public $beanParser;
+    private $beanParser;
 
-    public function __construct()
+    /**
+     * 绑定列表
+     *
+     * @var array
+     */
+    private $binds;
+
+    public function __construct($binds = [])
     {
+        $this->binds = $binds;
         $this->beanParser = BeanParser::getInstance();
     }
 
@@ -53,27 +60,37 @@ class Container implements ContainerInterface
             throw new ContainerException('id can not be a empty string value');
         }
 
-        $data = $this->beanParser->getData();
-
         unset($params[0]);
 
-        if(isset($data[$id]))
+        if(isset($this->binds[$id]))
         {
-            $object = BeanFactory::newInstanceNoInit($data[$id]['className'], ...$params);
-        }
-        else if(class_exists($id))
-        {
-            $object = BeanFactory::newInstanceNoInit($id, ...$params);
+            $object = BeanFactory::newInstanceNoInit($this->binds[$id], ...$params);
+            if([] === $params)
+            {
+                $this->singletonObjects[$id] = $object;
+            }
         }
         else
         {
-            throw new ContainerException(sprintf('%s not found', $id));
-        }
+            $data = $this->beanParser->getData();
+            if(isset($data[$id]))
+            {
+                $object = BeanFactory::newInstanceNoInit($data[$id]['className'], ...$params);
+            }
+            else if(class_exists($id))
+            {
+                $object = BeanFactory::newInstanceNoInit($id, ...$params);
+            }
+            else
+            {
+                throw new ContainerException(sprintf('%s not found', $id));
+            }
 
-        // 传参实例化强制不使用单例
-        if([] === $params && isset($data[$id]['instanceType']) && $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)
-        {
-            $this->singletonObjects[$id] = $object;
+            // 传参实例化强制不使用单例
+            if([] === $params && isset($data[$id]['instanceType']) && $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON)
+            {
+                $this->singletonObjects[$id] = $object;
+            }
         }
 
         BeanFactory::initInstance($object, $params);
@@ -89,6 +106,38 @@ class Container implements ContainerInterface
     public function has($id)
     {
         return '' !== $id && isset($this->singletonObjects[$id]);
+    }
+
+    /**
+     * 绑定名称和类名
+     *
+     * @param string $name
+     * @param string $class
+     * @return void
+     */
+    public function bind($name, $class)
+    {
+        $this->binds[$name] = $class;
+    }
+
+    /**
+     * Get 绑定列表
+     *
+     * @return array
+     */ 
+    public function getBinds()
+    {
+        return $this->binds;
+    }
+
+    /**
+     * 返回一个新的容器对象，容器内无对象，仅有列表关联
+     *
+     * @return static
+     */
+    public function newSubContainer()
+    {
+        return new static($this->binds);
     }
 
 }

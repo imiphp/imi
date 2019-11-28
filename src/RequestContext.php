@@ -223,11 +223,22 @@ abstract class RequestContext
      */
     public static function getBean($name, ...$params)
     {
-        $container = static::get('container');
-        if(null === $container)
+        $context = static::getContext();
+        if(isset($context['container']))
         {
-            $container = new Container;
-            static::set('container', $container);
+            $container = $context['container'];
+        }
+        else
+        {
+            if(isset($context['server']))
+            {
+                $container = $context['server']->getContainer()->newSubContainer();
+            }
+            else
+            {
+                $container = App::getContainer()->newSubContainer();
+            }
+            $context['container'] = $container;
         }
         return $container->get($name, ...$params);
     }

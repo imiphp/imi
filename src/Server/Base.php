@@ -70,7 +70,7 @@ abstract class Base
      */
     public function __construct($name, $config, $isSubServer = false)
     {
-        $this->container = new Container;
+        $this->container = App::getContainer()->newSubContainer();
         $this->name = $name;
         $this->config = $config;
         $this->isSubServer = $isSubServer;

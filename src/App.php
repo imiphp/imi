@@ -221,6 +221,16 @@ abstract class App
     }
 
     /**
+     * 获取容器对象
+     *
+     * @return \Imi\Bean\Container
+     */
+    public static function getContainer()
+    {
+        return static::$container;
+    }
+
+    /**
      * 获取Bean对象
      * @param string $name
      * @return mixed
