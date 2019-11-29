@@ -16,7 +16,7 @@ matrix:
   - php: '7.3'
     env: SWOOLE_VERSION="master"
   - php: '7.4snapshot'
-    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false
+    env: SWOOLE_VERSION="master"
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
   - php: '7.1'
