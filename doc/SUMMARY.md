@@ -116,6 +116,7 @@
 
 ## 工具类
 
+* [App 类](utils/app.md)
 * [全局函数](utils/functions.md)
 * [Imi](utils/Imi.md)
 * [Args](utils/Args.md)
@@ -151,4 +152,3 @@
 
 * [性能优化](adv/performance.md)
 * [参与框架开发](adv/devp.md)
-

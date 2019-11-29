@@ -65,6 +65,14 @@ Event::one('事件名', function(){});
 Event::off('事件名', $callable);
 ```
 
+`on()、one()、off()` 方法还支持传入多个事件：
+
+```php
+Event::on(['e1', 'e2'], function(){
+	// 事件回调
+});
+```
+
 ### 自定义事件
 
 ```php

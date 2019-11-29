@@ -150,3 +150,17 @@ return [
 ```
 
 使用：`@Middleware("@test")`
+
+### 注入修改核心动作中间件
+
+服务器 config.php:
+
+```php
+[
+    'beans' =>  [
+        'ActionWrapMiddleware'  =>  [
+            'actionMiddleware'  =>  '自定义',
+        ],
+    ],
+]
+```

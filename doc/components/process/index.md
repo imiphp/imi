@@ -59,6 +59,13 @@ public $redirectStdinStdout = false;
  * @var int
  */
 public $pipeType = 2;
+
+/**
+ * 自动开启协程
+ *
+ * @var boolean
+ */
+public $co = true;
 ```
 
 ### 创建进程
