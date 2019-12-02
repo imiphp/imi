@@ -250,7 +250,7 @@ abstract class Base
     public function getTraceArgs($trace)
     {
         $result = [];
-        foreach($trace['args'] as $value)
+        foreach($trace['args'] ?? [] as $value)
         {
             if(is_scalar($value))
             {
