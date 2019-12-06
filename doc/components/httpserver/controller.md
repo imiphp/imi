@@ -2,6 +2,8 @@
 
 如下代码所示，一个最简单的控制器代码。
 
+## 基本控制器
+
 ```php
 <?php
 namespace Test;
@@ -16,6 +18,43 @@ use Imi\Server\Route\Annotation\Controller;
  * @Controller
  */
 class Index extends HttpController
+{
+	/**
+	 * 一个动作
+	 * @Action
+	 * @Route(url="/")
+	 */
+	public function index()
+	{
+		return $this->response->write('hello imi!');
+	}
+}
+```
+
+访问地址：`http://localhost:{port}/`
+输出内容：
+```
+hello imi!
+```
+
+## 单例控制器
+
+用法完全一致，适合用于单例控制器场景，对象内部协程上下文自动切换
+
+```php
+<?php
+namespace Test;
+
+use Imi\Controller\SingletonHttpController;
+use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Route\Annotation\Action;
+use Imi\Server\Route\Annotation\Controller;
+
+/**
+ * 一个简单的控制器
+ * @Controller(singleton=true)
+ */
+class Index extends SingletonHttpController
 {
 	/**
 	 * 一个动作

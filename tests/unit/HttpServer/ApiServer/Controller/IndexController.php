@@ -5,6 +5,7 @@ use Imi\RequestContext;
 use Imi\Aop\Annotation\Inject;
 use Imi\Util\Http\MessageUtil;
 use Imi\Controller\HttpController;
+use Imi\Controller\SingletonHttpController;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Server\Route\Annotation\Route;
@@ -15,7 +16,7 @@ use Imi\Server\Route\Annotation\Middleware;
 /**
  * @Controller(prefix="/", singleton=true)
  */
-class IndexController extends HttpController
+class IndexController extends SingletonHttpController
 {
     /**
      * @Inject("TestService")
@@ -286,6 +287,46 @@ class IndexController extends HttpController
             'name'  =>  $name,
             'page'  =>  $page,
         ];
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function singletonRequest()
+    {
+        return [
+            'get'       =>  $this->request->get(),
+            'post'      =>  $this->request->post(),
+            'cookie'    =>  $this->request->getCookieParams(),
+            'headers'   =>  MessageUtil::headersToStringList($this->request->getHeaders()),
+            'server'    =>  $this->request->getServerParams(),
+            'request'   =>  $this->request->request(),
+            'uri'       =>  (string)$this->request->getUri(),
+        ];
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function singletonResponse1()
+    {
+        return $this->response->write('imi niubi-1');
+    }
+
+    /**
+     * @Action
+     * 
+     * @View(renderType="html")
+     *
+     * @return void
+     */
+    public function singletonResponse2()
+    {
+        $this->response->setResponseInstance($this->response->write('imi niubi-2'));
     }
 
 }

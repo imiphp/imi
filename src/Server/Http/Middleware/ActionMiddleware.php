@@ -2,13 +2,14 @@
 namespace Imi\Server\Http\Middleware;
 
 use Imi\RequestContext;
-use Imi\Util\Http\Response;
 use Imi\Bean\Annotation\Bean;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Message\Request;
+use Imi\Server\Http\Message\Response;
 use Imi\Server\Annotation\ServerInject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Imi\Controller\SingletonHttpController;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -23,6 +24,20 @@ class ActionMiddleware implements MiddlewareInterface
      * @var \Imi\Server\View\View
      */
     protected $view;
+
+    /**
+     * @ServerInject("HttpRequestProxy")
+     *
+     * @var \Imi\Server\Http\Message\Proxy\RequestProxy
+     */
+    protected $requestProxy;
+
+    /**
+     * @ServerInject("HttpResponseProxy")
+     *
+     * @var \Imi\Server\Http\Message\Proxy\ResponseProxy
+     */
+    protected $responseProxy;
 
     /**
      * 动作方法参数缓存
@@ -45,21 +60,35 @@ class ActionMiddleware implements MiddlewareInterface
         $context = RequestContext::getContext();
         $context['response'] = $response;
         /** @var \Imi\Server\Http\Route\RouteResult $result */
-        $result = $context['routeResult'];
-        if(null === $result)
+        if(null === ($result = $context['routeResult']))
         {
             throw new \RuntimeException('RequestContent not found routeResult');
         }
-        // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
-        $useObjectRequestAndResponse = $isObject && !$result->routeItem->singleton;
-        if($useObjectRequestAndResponse)
+        if($isSingleton = $result->routeItem->singleton)
+        {
+            $object = $result->callable[0];
+        }
+        else
         {
             // 复制一份控制器对象
-            $result->callable[0] = clone $result->callable[0];
-            // 传入Request和Response对象
-            $result->callable[0]->request = $request;
-            $result->callable[0]->response = $response;
+            $object = $result->callable[0] = clone $result->callable[0];
+        }
+        // 路由匹配结果是否是[控制器对象, 方法名]
+        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
+        if($isObject)
+        {
+            if($isSingletonController = ($object instanceof SingletonHttpController))
+            {
+                // 传入Request和Response代理对象
+                $object->request = $this->requestProxy;
+                $object->response = $this->responseProxy;
+            }
+            else
+            {
+                // 传入Request和Response对象
+                $object->request = $request;
+                $object->response = $response;
+            }
         }
         // 执行动作
         $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
@@ -97,7 +126,7 @@ class ActionMiddleware implements MiddlewareInterface
         {
             if(!$finalResponse)
             {
-                if($useObjectRequestAndResponse)
+                if($isObject && !$isSingletonController && !$isSingleton)
                 {
                     // 获得控制器中的Response
                     $finalResponse = $result->callable[0]->response;

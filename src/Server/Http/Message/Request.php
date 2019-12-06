@@ -2,11 +2,12 @@
 namespace Imi\Server\Http\Message;
 
 use Imi\Config;
+use Imi\Util\Http\Contract\IServerRequest;
 use Imi\Util\Uri;
 use Imi\Util\Http\ServerRequest;
 use Imi\Util\Stream\MemoryStream;
 
-class Request extends ServerRequest
+class Request extends ServerRequest implements IServerRequest
 {
     /**
      * swoole的http请求对象
