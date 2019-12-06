@@ -217,6 +217,7 @@ use Imi\Config;
  * @method static mixed zSize($key)
  * @method static mixed zinterstore($key, array $keys, ?array $weights = null, $aggregate = null)
  * @method static mixed zunionstore($key, array $keys, ?array $weights = null, $aggregate = null)
+ * @method static mixed evalEx(string $script, $args = null, $num_keys = null)
  */
 abstract class Redis
 {

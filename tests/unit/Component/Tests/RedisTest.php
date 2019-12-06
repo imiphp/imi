@@ -44,4 +44,16 @@ SCRIPT
         Assert::assertEquals('imi very 6', $value);
     }
 
+    public function testEvalEx2()
+    {
+        $value = Redis::evalEx(<<<SCRIPT
+local key = KEYS[1]
+local value = ARGV[1]
+redis.call('set', key, value)
+return redis.call('get', key)
+SCRIPT
+, ['imi:test:a', 'imi very 6'], 1);
+        Assert::assertEquals('imi very 6', $value);
+    }
+
 }
