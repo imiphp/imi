@@ -15,7 +15,7 @@ matrix:
     env: SWOOLE_VERSION="master"
   - php: '7.3'
     env: SWOOLE_VERSION="master"
-  - php: '7.4snapshot'
+  - php: '7.4'
     env: SWOOLE_VERSION="master"
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
@@ -25,10 +25,11 @@ matrix:
     env: SWOOLE_VERSION="v4.4.12"
   - php: '7.3'
     env: SWOOLE_VERSION="v4.4.12"
+  - php: '7.4'
+    env: SWOOLE_VERSION="v4.4.12"
   allow_failures:
   - env: SWOOLE_VERSION="master"
   - php: nightly
-  - php: 7.4snapshot
 
 services:
   - redis-server
