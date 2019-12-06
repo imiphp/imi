@@ -229,7 +229,9 @@ function test()
         }
     }
     
-    $status = proc_get_status($processHndler);
+    do {
+        $status = proc_get_status($processHndler);
+    } while($status['running'] ?? false);
     foreach($pipes as $pipe)
     {
         fclose($pipe);
