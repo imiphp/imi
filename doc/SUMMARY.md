@@ -59,6 +59,11 @@
 * [中间件](components/udpServer/middleware.md)
 * [不使用中间件](components/udpServer/noMiddleware.md)
 
+## RPC 服务
+
+* [Hprose](components/rpc/hprose.md)
+* [gRPC](components/rpc/grpc.md)
+
 ## 功能组件
 
 * [配置读写](components/config/index.md)
