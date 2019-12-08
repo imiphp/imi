@@ -41,6 +41,8 @@ abstract class MediaType
     const IMAGE_GIF = 'image/gif';
     
     const IMAGE_WEBP = 'image/webp';
+
+    const IMAGE_ICON = 'image/x-icon';
     
     const MULTIPART_FORM_DATA = 'multipart/form-data';
     
