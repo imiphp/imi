@@ -15,6 +15,7 @@
 * [事件](core/events.md)
 * [中间件](core/middleware.md)
 * [进程名称管理](core/processNameManager.md)
+* [错误转为异常捕获](core/handleError.md)
 
 ## Http 服务
 
