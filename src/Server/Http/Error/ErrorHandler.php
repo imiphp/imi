@@ -14,6 +14,6 @@ class ErrorHandler implements IErrorHandler
 
     public function handle(\Throwable $throwable): bool
     {
-        return RequestContext::getServerBean($this->handler)->handle($throwable);;
+        return RequestContext::getServerBean($this->handler)->handle($throwable);
     }
 }
