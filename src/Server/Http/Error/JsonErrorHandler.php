@@ -3,9 +3,8 @@ namespace Imi\Server\Http\Error;
 
 use Imi\App;
 use Imi\RequestContext;
-use Imi\Util\Format\Json;
 use Imi\Util\Http\Consts\MediaType;
-use Imi\Util\Http\Consts\RequestHeader;
+use Imi\Util\Http\Consts\ResponseHeader;
 
 class JsonErrorHandler implements IErrorHandler
 {
@@ -48,7 +47,7 @@ class JsonErrorHandler implements IErrorHandler
             ];
         }
         RequestContext::get('response')
-        ->withAddedHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
+        ->withAddedHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
         ->write(json_encode($data))
         ->send();
         return $this->cancelThrow;

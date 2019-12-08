@@ -3,9 +3,8 @@ namespace Imi\Server\View\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Http\Consts\MediaType;
-use Imi\Server\View\Annotation\View;
 use Imi\Server\Http\Message\Response;
-use Imi\Util\Http\Consts\RequestHeader;
+use Imi\Util\Http\Consts\ResponseHeader;
 
 /**
  * Xml视图处理器
@@ -15,7 +14,7 @@ class Xml implements IHandler
 {
     public function handle($data, array $options, Response $response): Response
     {
-        $response = $response->withHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
+        $response = $response->withHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
         if($data instanceof \DOMDocument)
         {
             return $response->write($data->saveXML());
