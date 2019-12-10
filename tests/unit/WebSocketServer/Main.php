@@ -2,7 +2,6 @@
 namespace Imi\Test\WebSocketServer;
 
 use Imi\Test\AppBaseMain;
-use Doctrine\Common\Annotations\AnnotationReader;
 
 class Main extends AppBaseMain
 {

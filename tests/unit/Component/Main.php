@@ -2,7 +2,6 @@
 namespace Imi\Test\Component;
 
 use Imi\Test\AppBaseMain;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Imi\Util\File;
 use Imi\Util\Imi;
 

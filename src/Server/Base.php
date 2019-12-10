@@ -12,7 +12,6 @@ use Imi\Server\Event\Param\StartEventParam;
 use Imi\Server\Event\Param\FinishEventParam;
 use Imi\Server\Event\Param\ShutdownEventParam;
 use Imi\Server\Event\Param\WorkerStopEventParam;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Imi\Server\Event\Param\ManagerStopEventParam;
 use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\WorkerErrorEventParam;

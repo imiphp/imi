@@ -2,8 +2,8 @@
 namespace Imi\Bean;
 
 use Imi\Bean\Parser\BaseParser;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
+use Yurun\Doctrine\Common\Annotations\AnnotationReader;
+use Yurun\Doctrine\Common\Annotations\AnnotationRegistry;
 use Imi\Event\TEvent;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Inherit;
@@ -38,7 +38,7 @@ class AnnotationParser
 
     /**
      * 注解读取器
-     * @var \Doctrine\Common\Annotations\AnnotationReader
+     * @var \Yurun\Doctrine\Common\Annotations\AnnotationReader
      */
     private $reader;
 

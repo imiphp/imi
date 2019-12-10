@@ -1,8 +1,8 @@
 <?php
 namespace Imi\Test;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Swoole\Coroutine;
+use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 
 abstract class AppBaseMain extends \Imi\Main\AppBaseMain
 {
