@@ -89,6 +89,13 @@ class AnnotationParser
     public function parseClass(\ReflectionClass $ref)
     {
         $annotations = $this->reader->getClassAnnotations($ref);
+        foreach($annotations as $i => $annotation)
+        {
+            if(!$annotation instanceof \Imi\Bean\Annotation\Base)
+            {
+                unset($annotations[$i]);
+            }
+        }
         $className = $ref->getName();
         if($this->checkAnnotations($annotations))
         {
@@ -175,6 +182,13 @@ class AnnotationParser
         $className = $ref->getName();
         $methodName = $method->getName();
         $annotations = $this->reader->getMethodAnnotations($method);
+        foreach($annotations as $i => $annotation)
+        {
+            if(!$annotation instanceof \Imi\Bean\Annotation\Base)
+            {
+                unset($annotations[$i]);
+            }
+        }
 
         if($this->checkAnnotations($annotations))
         {
@@ -254,6 +268,13 @@ class AnnotationParser
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop)
     {
         $annotations = $this->reader->getPropertyAnnotations($prop);
+        foreach($annotations as $i => $annotation)
+        {
+            if(!$annotation instanceof \Imi\Bean\Annotation\Base)
+            {
+                unset($annotations[$i]);
+            }
+        }
         $className = $ref->getName();
         $propertyName = $prop->getName();
         if($this->checkAnnotations($annotations))
@@ -336,6 +357,13 @@ class AnnotationParser
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const)
     {
         $annotations = $this->reader->getConstantAnnotations($const);
+        foreach($annotations as $i => $annotation)
+        {
+            if(!$annotation instanceof \Imi\Bean\Annotation\Base)
+            {
+                unset($annotations[$i]);
+            }
+        }
         $className = $ref->getName();
         $constName = $const->getName();
         if($this->checkAnnotations($annotations))
