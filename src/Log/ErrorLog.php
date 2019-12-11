@@ -121,14 +121,28 @@ class ErrorLog
      *
      * @return void
      */
-    public function onException(\Throwable $ex)
+    public function onException(\Throwable $th)
     {
-        // 日志处理
-        Log::error($ex->getMessage(), [
-            'trace'     => $ex->getTrace(),
-            'errorFile' => $ex->getFile(),
-            'errorLine' => $ex->getLine(),
-        ]);
+        // 支持记录无限级上级日志
+        $throwables = [];
+        $prev = $th;
+        do {
+            $prev = $prev->getPrevious();
+            if($prev)
+            {
+                $throwables[] = $prev;
+            }
+        } while($prev);
+        $throwables = array_reverse($throwables);
+        foreach($throwables as $throwable)
+        {
+            // 日志处理
+            Log::error($throwable->getMessage(), [
+                'trace'     => $throwable->getTrace(),
+                'errorFile' => $throwable->getFile(),
+                'errorLine' => $throwable->getLine(),
+            ]);
+        }
     }
 
     /**
