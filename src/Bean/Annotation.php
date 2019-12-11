@@ -78,7 +78,25 @@ class Annotation
      */
     private function loadModuleAnnotations($namespace)
     {
-        $this->loader->loadModuleAnnotations($namespace, function($fileNamespace){
+        $ignoredNamespaces = Config::get('@app.ignoreNamespace', []);
+        if($ignoredNamespaces)
+        {
+            $list = [];
+            foreach($ignoredNamespaces as $ns)
+            {
+                $list[] = str_replace('\\*', '.*', preg_quote($ns));
+            }
+            $pattern = '/^((' . implode(')|(', $list) . '))$/';
+        }
+        else
+        {
+            $pattern = null;
+        }
+        $this->loader->loadModuleAnnotations($namespace, function($fileNamespace) use($pattern){
+            if($pattern && 1 === preg_match($pattern, $fileNamespace))
+            {
+                return;
+            }
             if(!$this->parser->isParsed($fileNamespace))
             {
                 $this->parser->parse($fileNamespace);

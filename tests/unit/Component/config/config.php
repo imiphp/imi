@@ -18,6 +18,11 @@ return [
         'Imi\Test\Component\Inherit',
         'Imi\Test\Component\Util\Imi',
         'Imi\Test\Component\Facade',
+        'Imi\Test\Component\Annotation',
+    ],
+    'ignoreNamespace'   =>  [
+        'Imi\Test\Component\Annotation\A\*',
+        'Imi\Test\Component\Annotation\B\TestB',
     ],
     'beans'    =>    [
         'TestPropertyClass' =>  [
