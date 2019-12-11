@@ -37,6 +37,7 @@ class CronTask implements ITaskHandler
             $success = true;
         } catch(\Throwable $th) {
             $message = $th->getMessage();
+            throw $th;
         } finally {
             $this->reportCronResult($id, $success, $message);
         }

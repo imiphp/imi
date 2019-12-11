@@ -32,6 +32,7 @@ class CronWorkerProcess extends BaseProcess
         } catch(\Throwable $th) {
             $message = $th->getMessage();
             $exitCode = 1;
+            throw $th;
         } finally {
             $this->reportCronResult($id, $success, $message);
             $process->exit($exitCode);

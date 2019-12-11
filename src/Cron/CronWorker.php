@@ -43,7 +43,7 @@ class CronWorker
                     $taskCallable($id, $data);
                     $success = true;
                 } catch(\Throwable $th) {
-                    throw new \RuntimeException(sprintf('Task %s execution failed, message: %s', $id, $th->getMessage()));
+                    throw new \RuntimeException(sprintf('Task %s execution failed, message: %s', $id, $th->getMessage()), $th->getCode(), $th);
                 }
             }
             else
@@ -54,6 +54,7 @@ class CronWorker
         } catch(\Throwable $th) {
             $success = false;
             $message = $th->getMessage();
+            throw $th;
         } finally {
             $this->reportCronResult($id, $success, $message);
         }
