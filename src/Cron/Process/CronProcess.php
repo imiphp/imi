@@ -62,14 +62,19 @@ class CronProcess extends BaseProcess
             $this->startSchedule();
             while(true)
             {
-                $conn = stream_socket_accept($this->socket, 0);
-                if(false === $conn)
+                $arrRead = [$this->socket];
+                $arrWrite = [];
+                if(stream_select($arrRead, $arrWrite, $arrWrite, null))
                 {
-                    continue;
+                    $conn = stream_socket_accept($this->socket, 1);
+                    if(false === $conn)
+                    {
+                        continue;
+                    }
+                    imigo(function() use($conn){
+                        $this->parseConn($conn);
+                    });
                 }
-                imigo(function() use($conn){
-                    $this->parseConn($conn);
-                });
             }
         });
     }
