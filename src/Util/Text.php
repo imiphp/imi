@@ -10,22 +10,38 @@ abstract class Text
      * 字符串是否以另一个字符串开头
      * @param string $string
      * @param string $compare
+     * @param bool $caseSensitive
      * @return string
      */
-    public static function startwith($string, $compare)
+    public static function startwith($string, $compare, $caseSensitive = true)
     {
-        return 0 === strpos($string, $compare);
+        if($caseSensitive)
+        {
+            return 0 === strpos($string, $compare);
+        }
+        else
+        {
+            return 0 === stripos($string, $compare);
+        }
     }
 
     /**
      * 字符串是否以另一个字符串结尾
      * @param string $string
      * @param string $compare
+     * @param bool $caseSensitive
      * @return string
      */
-    public static function endwith($string, $compare)
+    public static function endwith($string, $compare, $caseSensitive = true)
     {
-        return substr($string, -strlen($compare)) === $compare;
+        if($caseSensitive)
+        {
+            return $compare === strrchr($string, $compare);
+        }
+        else
+        {
+            return substr_compare($compare, strrchr($string, $compare), 0, null, true);
+        }
     }
 
     /**
