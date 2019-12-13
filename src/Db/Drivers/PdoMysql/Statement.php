@@ -342,7 +342,7 @@ class Statement extends BaseStatement implements IStatement
      */
     private function updateLastInsertId()
     {
-        if(Text::startwith($this->statement->queryString, 'insert ') || Text::startwith($this->statement->queryString, 'replace '))
+        if(Text::startwith($this->statement->queryString, 'insert ', false) || Text::startwith($this->statement->queryString, 'replace ', false))
         {
             $this->lastInsertId = (int)$this->db->lastInsertId();
         }
