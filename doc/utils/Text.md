@@ -16,6 +16,9 @@ var_dump(Text::startwith('http://www.baidu.com', 'http://'));
 
 // false
 var_dump(Text::startwith('http://www.baidu.com', 'https://'));
+
+// 不区分大小写-true
+var_dump(Text::startwith('http://www.baidu.com', 'HTTP://', false));
 ```
 
 ### endwith
@@ -28,6 +31,9 @@ var_dump(Text::endwith('http://www.baidu.com/index.html', '.html'));
 
 // false
 var_dump(Text::endwith('http://www.baidu.com/index.html', '.htm'));
+
+// 不区分大小写-true
+var_dump(Text::endwith('http://www.baidu.com/index.html', '.HTML'));
 ```
 
 ### insert
