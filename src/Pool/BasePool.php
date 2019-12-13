@@ -338,12 +338,15 @@ abstract class BasePool implements IPool
         $hasGC = false;
         foreach($this->pool as $key => $item)
         {
-            $resource = $item->getResource();
-            if(!$resource->checkState())
+            if($item->isFree())
             {
-                $resource->close();
-                unset($this->pool[$key]);
-                $hasGC = true;
+                $resource = $item->getResource();
+                if(!$resource->checkState())
+                {
+                    $resource->close();
+                    unset($this->pool[$key]);
+                    $hasGC = true;
+                }
             }
         }
         if($hasGC)
