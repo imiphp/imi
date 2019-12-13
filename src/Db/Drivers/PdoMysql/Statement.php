@@ -7,6 +7,7 @@ use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Statement\StatementManager;
+use Imi\Util\Text;
 
 /**
  * PDO MySQL驱动Statement
@@ -44,7 +45,7 @@ class Statement extends BaseStatement implements IStatement
     {
         $this->db = $db;
         $this->statement = $statement;
-        $this->lastInsertId = (int)$this->db->lastInsertId();
+        $this->updateLastInsertId();
     }
 
     /**
@@ -169,7 +170,7 @@ class Statement extends BaseStatement implements IStatement
         {
             throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
         }
-        $this->lastInsertId = (int)$this->db->lastInsertId();
+        $this->updateLastInsertId();
         return $result;
     }
 
@@ -333,4 +334,22 @@ class Statement extends BaseStatement implements IStatement
         }
         return \PDO::PARAM_STR;
     }
+
+    /**
+     * 更新最后插入ID
+     *
+     * @return void
+     */
+    private function updateLastInsertId()
+    {
+        if(Text::startwith($this->statement->queryString, 'insert ') || Text::startwith($this->statement->queryString, 'replace '))
+        {
+            $this->lastInsertId = (int)$this->db->lastInsertId();
+        }
+        else
+        {
+            $this->lastInsertId = 0;
+        }
+    }
+
 }
