@@ -300,13 +300,13 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        if(isset($_SERVER['_']) && $_SERVER['SCRIPT_FILENAME'] === $_SERVER['_'])
+        if(isset($_SERVER['_']) && realpath($_SERVER['SCRIPT_FILENAME']) === ($path = realpath($_SERVER['_'])))
         {
-            $cmd = $_SERVER['_'];
+            $cmd = $path;
         }
         else
         {
-            $cmd = ($_SERVER['_'] ?? 'php') . ' ' . $_SERVER['argv'][0];
+            $cmd = ($path ?? 'php') . ' ' . $_SERVER['argv'][0];
         }
         $cmd .= ' ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
