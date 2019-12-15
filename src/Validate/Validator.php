@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Validate;
 
+use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Traits\TBeanRealClass;
 use Imi\Bean\Annotation\AnnotationManager;
@@ -296,9 +297,16 @@ class Validator implements IValidator
             $args[] = $value;
         }
         $callable = $annotation->callable;
-        if(is_array($callable) && isset($callable[0]) && '$this' === $callable[0])
+        if(is_array($callable) && isset($callable[0]))
         {
-            $callable[0] = $this;
+            if('$this' === $callable[0])
+            {
+                $callable[0] = $this;
+            }
+            else if($callable[0] instanceof BaseInjectValue)
+            {
+                $callable[0] = $callable[0]->getRealValue();
+            }
         }
         $result = $callable(...$args);
         if($annotation->inverseResult)
