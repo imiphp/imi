@@ -76,13 +76,15 @@ class Imi
      * @Arg(name="format", type=ArgType::STRING, default="", comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
      * @Arg(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * @Arg(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
+     * @Arg(name="sock", type=ArgType::STRING, default=false, comments="如果传了 sock 则走 Unix Socket 通讯")
      * 
      * @return void
      */
-    public function buildRuntime($format, $changedFilesFile, $confirm)
+    public function buildRuntime($format, $changedFilesFile, $confirm, $sock)
     {
+        $socket = null;
         ob_start();
-        register_shutdown_function(function() use($format){
+        register_shutdown_function(function() use($format, &$socket){
             $result = ob_get_clean();
             if('' === $result)
             {
@@ -96,9 +98,55 @@ class Imi
             {
                 echo $result;
             }
+            if($socket)
+            {
+                $data = [
+                    'action'    =>  'buildRuntimeResult',
+                    'result'    =>  $result,
+                ];
+                $content = serialize($data);
+                $content = pack('N', strlen($content)) . $content;
+                fwrite($socket, $content);
+                fclose($socket);
+            }
         });
 
-        if($confirm)
+        if($sock)
+        {
+            $socket = stream_socket_client('unix://' . $sock, $errno, $errstr, 10);
+            if(false === $socket)
+            {
+                return false;
+            }
+            stream_set_timeout($socket, 60);
+            do {
+                $meta = fread($socket, 4);
+                if('' === $meta)
+                {
+                    if(feof($socket))
+                    {
+                        return;
+                    }
+                    continue;
+                }
+                if(false === $meta)
+                {
+                    return;
+                }
+                $length = unpack('N', $meta)[1];
+                $data = fread($socket, $length);
+                if(false === $data || !isset($data[$length - 1]))
+                {
+                    break;
+                }
+                $result = unserialize($data);
+                if('buildRuntime' === $result['action'])
+                {
+                    break;
+                }
+            } while(true);
+        }
+        else if($confirm)
         {
             $input = fread(STDIN, 1);
             if('y' !== $input)
