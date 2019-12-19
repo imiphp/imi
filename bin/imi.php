@@ -9,7 +9,7 @@ $imi = new class{
         if(!class_exists('Imi\App'))
         {
             $paths = [
-                $_SERVER['PWD'],
+                $_SERVER['PWD'] ?? getcwd(),
                 dirname(__DIR__),
             ];
             foreach($paths as $path)
