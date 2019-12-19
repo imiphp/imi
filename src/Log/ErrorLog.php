@@ -124,7 +124,7 @@ class ErrorLog
     public function onException(\Throwable $th)
     {
         // 支持记录无限级上级日志
-        $throwables = [];
+        $throwables = [$th];
         $prev = $th;
         do {
             $prev = $prev->getPrevious();
