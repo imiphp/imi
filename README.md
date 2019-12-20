@@ -21,6 +21,10 @@ imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动�
 
 imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
+从秃头到满头秀发的 imi 框架教程，全集免费观看👉<https://www.bilibili.com/video/av78158909>
+
+每周四晚上更新至少一集，欢迎素质四连（点赞、收藏、投币、关注~）
+
 ### 核心组件
 
 * HttpApi、WebSocket、TCP、UDP 服务器
