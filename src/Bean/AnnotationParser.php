@@ -429,7 +429,7 @@ class AnnotationParser
      */
     private function checkAnnotations($annotations)
     {
-        return isset($annotations[0]);
+        return [] !== $annotations;
     }
 
     /**
