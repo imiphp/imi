@@ -193,14 +193,15 @@ TPL;
     {
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
+        \$__callback__ = function({$paramsTpls['define']}){
+            \$__args__ = func_get_args();
+            {$paramsTpls['set_args']}
+            return parent::{$method->name}(...\$__args__);
+        };
         \$__result__ = \$this->beanProxy->call(
             \$this,
             '{$method->name}',
-            function({$paramsTpls['define']}){
-                \$__args__ = func_get_args();
-                {$paramsTpls['set_args']}
-                return parent::{$method->name}(...\$__args__);
-            },
+            \$__callback__,
             \$__args__
         );
         {$paramsTpls['set_args_back']}

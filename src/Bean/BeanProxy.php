@@ -98,8 +98,8 @@ class BeanProxy
      */
     private function init($object)
     {
-        $this->refClass = new \ReflectionClass($object);
         $this->className = BeanFactory::getObjectClass($object);
+        $this->refClass = new \ReflectionClass($this->className);
         // 每个类只需处理一次
         if(!isset(static::$aspects[$this->className]))
         {
@@ -307,8 +307,8 @@ class BeanProxy
     {
         $this->doAspect($method, 'before', function($aspectClassName, $methodName) use($object, $method, &$args){
             $joinPoint = new JoinPoint('before', $method, $args, $object, $this);
-            $object = new $aspectClassName;
-            $object->$methodName($joinPoint);
+            $aspectObject = new $aspectClassName;
+            $aspectObject->$methodName($joinPoint);
         });
     }
 
@@ -323,8 +323,8 @@ class BeanProxy
     {
         $this->doAspect($method, 'after', function($aspectClassName, $methodName) use($object, $method, &$args){
             $joinPoint = new JoinPoint('after', $method, $args, $object, $this);
-            $object = new $aspectClassName;
-            $object->$methodName($joinPoint);
+            $aspectObject = new $aspectClassName;
+            $aspectObject->$methodName($joinPoint);
         });
     }
 
@@ -341,8 +341,8 @@ class BeanProxy
         $this->doAspect($method, 'afterReturning', function($aspectClassName, $methodName) use($object, $method, &$args, &$returnValue){
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object, $this);
             $joinPoint->setReturnValue($returnValue);
-            $object = new $aspectClassName;
-            $object->$methodName($joinPoint);
+            $aspectObject = new $aspectClassName;
+            $aspectObject->$methodName($joinPoint);
             $returnValue = $joinPoint->getReturnValue();
         });
     }
@@ -436,8 +436,8 @@ class BeanProxy
             }
             // 处理
             $joinPoint = new AfterThrowingJoinPoint('afterThrowing', $method, $args, $object, $this, $throwable);
-            $object = new $aspectClassName;
-            $object->$methodName($joinPoint);
+            $aspectObject = new $aspectClassName;
+            $aspectObject->$methodName($joinPoint);
             if(!$isCancelThrow && $joinPoint->isCancelThrow())
             {
                 $isCancelThrow = true;
