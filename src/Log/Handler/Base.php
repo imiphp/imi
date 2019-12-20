@@ -35,6 +35,13 @@ abstract class Base
     protected $traceFormat = '#{index}  {call} called at [{file}:{line}]';
 
     /**
+     * 限制 trace 条目数量，默认为 -1 不限制
+     *
+     * @var integer
+     */
+    protected $traceLimit = -1;
+
+    /**
      * date()函数支持的格式
      */
     const DATE_FORMATS = [
@@ -207,6 +214,10 @@ abstract class Base
         $trace = $record->getTrace();
         foreach($trace as $index => $vars)
         {
+            if($this->traceLimit > -1 && $index >= $this->traceLimit)
+            {
+                break;
+            }
             $vars['call'] = $this->getTraceCall($vars);
             $vars['index'] = $index;
             $line = $this->traceFormat;
