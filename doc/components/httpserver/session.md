@@ -72,7 +72,7 @@ return [
         // Redis连接池名称
         'poolName'    =>    '',
         // Redis中存储的key前缀，可以用于多系统session的分离
-        // 'keyPrefix'    =>    'imi.',
+        // 'keyPrefix'    =>    'imi:',
     ]
 ]
 ```
