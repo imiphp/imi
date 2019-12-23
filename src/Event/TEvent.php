@@ -34,7 +34,7 @@ trait TEvent
      */
     public function on($name, $callback, $priority = 0)
     {
-        foreach(is_array($name) ? $name : [$name] as $eventName)
+        foreach((array)$name as $eventName)
         {
             $this->events[$eventName][] = new EventItem($callback, $priority);
             $this->eventChangeRecords[$eventName] = true;
@@ -50,7 +50,7 @@ trait TEvent
      */
     public function one($name, $callback, $priority = 0)
     {
-        foreach(is_array($name) ? $name : [$name] as $eventName)
+        foreach((array)$name as $eventName)
         {
             $this->events[$eventName][] = new EventItem($callback, $priority, true);
             $this->eventChangeRecords[$eventName] = true;
@@ -65,7 +65,7 @@ trait TEvent
      */
     public function off($name, $callback)
     {
-        foreach(is_array($name) ? $name : [$name] as $eventName)
+        foreach((array)$name as $eventName)
         {
             if(isset($this->events[$eventName]))
             {

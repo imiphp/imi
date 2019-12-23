@@ -113,8 +113,7 @@ class Meta
         {
             $this->tableName = $table->name;
             $this->dbPoolName = $table->dbPoolName;
-            $tableId = $table->id;
-            $this->id = is_string($tableId) ? [$tableId] : $tableId;
+            $this->id = (array)$table->id;
         }
         $this->firstId = $this->id[0] ?? null;
         $this->fields = ModelManager::getFields($modelClass);

@@ -77,7 +77,7 @@ abstract class Imi
      */
     public static function checkCompareRules($rules, $valueCallback)
     {
-        foreach(is_array($rules) ? $rules : [$rules] as $fieldName => $rule)
+        foreach((array)$rules as $fieldName => $rule)
         {
             if(is_numeric($fieldName))
             {
@@ -139,7 +139,7 @@ abstract class Imi
      */
     public static function checkCompareValues($rules, $value)
     {
-        foreach(is_array($rules) ? $rules : [$rules] as $rule)
+        foreach((array)$rules as $rule)
         {
             if(!static::checkCompareValue($rule, $value))
             {
