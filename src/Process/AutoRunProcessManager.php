@@ -1,8 +1,8 @@
 <?php
 namespace Imi\Process;
 
-use Imi\Bean\Annotation\Bean;
 use Imi\Util\ArrayUtil;
+use Imi\Bean\Annotation\Bean;
 
 /**
  * 进程管理器，管理跟随服务自动启动的进程
@@ -23,34 +23,46 @@ class AutoRunProcessManager
     /**
      * 添加进程
      *
+     * @param string $name
      * @param string $process
+     * @param array $args
      * @return void
      */
-    public function add($process)
+    public function add($name, $process, $args = [])
     {
-        $this->processes[] = $process;
+        $this->processes[$name] = [
+            'process'   =>  $process,
+            'args'      =>  $args,
+        ];
     }
 
     /**
      * 移除进程
      *
-     * @param string $process
+     * @param string $name
      * @return void
      */
-    public function remove($process)
+    public function remove($name)
     {
-        ArrayUtil::remove($this->processes, $process);
+        if(isset($this->processes[$name]))
+        {
+            unset($this->processes[$name]);
+        }
+        else
+        {
+            ArrayUtil::remove($this->processes, $name);
+        }
     }
 
     /**
      * 进程是否存在
      *
-     * @param string $process
+     * @param string $name
      * @return bool
      */
-    public function exists($process): bool
+    public function exists($name): bool
     {
-        return in_array($process, $this->processes);
+        return isset($this->processes[$name]) || in_array($name, $this->processes);
     }
 
     /**

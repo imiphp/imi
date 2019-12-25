@@ -24,7 +24,7 @@ class OnServerCreateAfter implements IEventListener
         // 热更新
         if(Config::get('@app.beans.hotUpdate.status', true))
         {
-            App::getBean('AutoRunProcessManager')->add('hotUpdate');
+            App::getBean('AutoRunProcessManager')->add('hotUpdate', 'hotUpdate');
         }
     }
 }

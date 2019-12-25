@@ -147,7 +147,7 @@ ProcessManager::coRun($name, $args = [], $redirectStdinStdout = null, $pipeType 
 public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
 ```
 
-### 随服务启动
+### 进程随服务启动
 
 在项目配置文件中配置`beans`节：
 
@@ -155,7 +155,13 @@ public static function runWithManager($name, $args = [], $redirectStdinStdout = 
 [
     'AutoRunProcessManager' =>  [
         'processes' =>  [
-            '进程类名或Bean名称'
+            // 进程类名或Bean名称
+            'XXXProcess',
+            // 指定别名 A 为指定进程 XXXProcess，并指定参数
+            'A' =>  [
+                'process'   =>  'XXXProcess',
+                'args'      =>  ['id' => 123],
+            ],
         ],
     ],
 ]

@@ -20,9 +20,16 @@ class OnServerCreateAfter implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        foreach(App::getBean('AutoRunProcessManager')->getProcesses() as $process)
+        foreach(App::getBean('AutoRunProcessManager')->getProcesses() as $k => $process)
         {
-            ProcessManager::runWithManager($process);
+            if(is_array($process))
+            {
+                ProcessManager::runWithManager($process['process'], $process['args'] ?? []);
+            }
+            else
+            {
+                ProcessManager::runWithManager($process);
+            }
         }
     }
 }

@@ -45,7 +45,7 @@ class Init implements IEventListener
     public function handle(EventParam $e)
     {
         // 未启用定时任务进程不初始化
-        if(!$this->autoRunProcessManager->exists(\Imi\Cron\Process\CronProcess::class) && !$this->autoRunProcessManager->exists('CronProcess'))
+        if(!$this->autoRunProcessManager->exists('CronProcess'))
         {
             return;
         }
