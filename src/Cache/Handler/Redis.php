@@ -249,9 +249,9 @@ class Redis extends Base
      * 处理键
      *
      * @param string $key
-     * @return void
+     * @return string
      */
-    public function parseKey($key)
+    public function parseKey(string $key): string
     {
         if($this->replaceDot)
         {
