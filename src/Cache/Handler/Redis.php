@@ -22,6 +22,13 @@ class Redis extends Base
      * @var string
      */
     protected $prefix;
+
+    /**
+     * 将 key 中的 "." 替换为 ":"
+     *
+     * @var boolean
+     */
+    protected $replaceDot = false;
     
     /**
      * Fetches a value from the cache.
@@ -38,7 +45,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
         $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
-            return $redis->get(($this->prefix ?? '') . $key);
+            return $redis->get($this->parseKey($key));
         });
         if(false === $result)
         {
@@ -73,7 +80,7 @@ class Redis extends Base
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
-            return $redis->set(($this->prefix ?? '') . $key, $this->encode($value), $ttl);
+            return $redis->set($this->parseKey($key), $this->encode($value), $ttl);
         });
     }
 
@@ -91,7 +98,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
-            return $redis->del(($this->prefix ?? '') . $key) > 0;
+            return $redis->del($this->parseKey($key)) > 0;
         });
     }
 
@@ -125,7 +132,7 @@ class Redis extends Base
         $mgetResult = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
             foreach($keys as &$key)
             {
-                $key = ($this->prefix ?? '') . $key;
+                $key = $this->parseKey($key);
             }
             return $redis->mget($keys);
         });
@@ -171,7 +178,7 @@ class Redis extends Base
         }
         foreach($setValues as $k => $v)
         {
-            $setValues[($this->prefix ?? '') . $k] = $this->encode($v);
+            $setValues[$this->parseKey($k)] = $this->encode($v);
         }
         // ttl 支持 \DateInterval 格式
         if($ttl instanceof \DateInterval)
@@ -209,7 +216,7 @@ class Redis extends Base
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
             foreach($keys as &$key)
             {
-                $key = ($this->prefix ?? '') . $key;
+                $key = $this->parseKey($key);
             }
             return $redis->del($keys);
         });
@@ -234,7 +241,27 @@ class Redis extends Base
     {
         $this->checkKey($key);
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
-            return $redis->exists(($this->prefix ?? '') . $key);
+            return $redis->exists($this->parseKey($key));
         });
     }
+
+    /**
+     * 处理键
+     *
+     * @param string $key
+     * @return void
+     */
+    public function parseKey($key)
+    {
+        if($this->replaceDot)
+        {
+            $key = str_replace('.', ':', $key);
+        }
+        if($this->prefix)
+        {
+            $key = $this->prefix . $key;
+        }
+        return $key;
+    }
+
 }
