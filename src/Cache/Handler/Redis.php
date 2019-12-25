@@ -15,6 +15,13 @@ class Redis extends Base
      * @var string
      */
     protected $poolName;
+
+    /**
+     * 缓存键前缀
+     *
+     * @var string
+     */
+    protected $prefix;
     
     /**
      * Fetches a value from the cache.
@@ -31,7 +38,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
         $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
-            return $redis->get($key);
+            return $redis->get(($this->prefix ?? '') . $key);
         });
         if(false === $result)
         {
@@ -66,7 +73,7 @@ class Redis extends Base
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
-            return $redis->set($key, $this->encode($value), $ttl);
+            return $redis->set(($this->prefix ?? '') . $key, $this->encode($value), $ttl);
         });
     }
 
@@ -84,7 +91,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
-            return $redis->del($key) > 0;
+            return $redis->del(($this->prefix ?? '') . $key) > 0;
         });
     }
 
@@ -116,6 +123,10 @@ class Redis extends Base
     {
         $this->checkArrayOrTraversable($keys);
         $mgetResult = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
+            foreach($keys as &$key)
+            {
+                $key = ($this->prefix ?? '') . $key;
+            }
             return $redis->mget($keys);
         });
         $result = [];
@@ -160,7 +171,7 @@ class Redis extends Base
         }
         foreach($setValues as $k => $v)
         {
-            $setValues[$k] = $this->encode($v);
+            $setValues[($this->prefix ?? '') . $k] = $this->encode($v);
         }
         // ttl 支持 \DateInterval 格式
         if($ttl instanceof \DateInterval)
@@ -196,6 +207,10 @@ class Redis extends Base
     {
         $this->checkArrayOrTraversable($keys);
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
+            foreach($keys as &$key)
+            {
+                $key = ($this->prefix ?? '') . $key;
+            }
             return $redis->del($keys);
         });
     }
@@ -219,7 +234,7 @@ class Redis extends Base
     {
         $this->checkKey($key);
         return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
-            return $redis->exists($key);
+            return $redis->exists(($this->prefix ?? '') . $key);
         });
     }
 }

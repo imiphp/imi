@@ -13,8 +13,9 @@ return [
             'handlerClass'    =>    \Imi\Cache\Handler\Redis::class,
             // 驱动实例配置
             'option'        =>    [
-                'poolName'    =>    '连接池名称',
-                'formatHandlerClass'    =>    '', // 数据读写修改器
+                'poolName'              =>  '连接池名称',
+                'prefix'                =>  '', // 缓存键前缀
+                'formatHandlerClass'    =>  '', // 数据读写修改器
             ],
         ],
     ],
