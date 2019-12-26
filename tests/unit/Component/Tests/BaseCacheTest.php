@@ -28,9 +28,9 @@ abstract class BaseCacheTest extends BaseTest
         {
             $this->markTestSkipped('Handler does not support TTL');
         }
-        Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 1));
+        Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb', 2));
         Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
-        usleep(1100000);
+        usleep(2100000);
         Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
     }
 

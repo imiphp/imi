@@ -142,15 +142,18 @@ abstract class BaseAsyncPool extends BasePool
     protected function push(IPoolResource $resource)
     {
         $poolItem = $this->pool[$resource->hashCode()] ?? null;
-        if(Coroutine::isIn())
+        if($poolItem)
         {
-            $this->queue->push($poolItem);
-        }
-        else
-        {
-            go(function() use($poolItem){
+            if(Coroutine::isIn())
+            {
                 $this->queue->push($poolItem);
-            });
+            }
+            else
+            {
+                go(function() use($poolItem){
+                    $this->queue->push($poolItem);
+                });
+            }
         }
     }
 
