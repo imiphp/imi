@@ -340,12 +340,21 @@ abstract class BasePool implements IPool
         {
             if($item->isFree())
             {
-                $resource = $item->getResource();
-                if(!$resource->checkState())
-                {
-                    $resource->close();
-                    unset($this->pool[$key]);
-                    $hasGC = true;
+                try {
+                    $item->lock();
+                    $resource = $item->getResource();
+                    if(!$resource->checkState())
+                    {
+                        $resource->close();
+                        unset($this->pool[$key]);
+                        $hasGC = true;
+                    }
+                    $item = null;
+                } finally {
+                    if($item)
+                    {
+                        $item->release();
+                    }
                 }
             }
         }
