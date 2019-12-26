@@ -2,7 +2,6 @@
 namespace Imi\Redis;
 
 use Imi\Pool\BasePoolResource;
-use Imi\Pool\Interfaces\IPoolResource;
 
 class RedisResource extends BasePoolResource
 {
@@ -86,7 +85,9 @@ class RedisResource extends BasePoolResource
     public function checkState(): bool
     {
         try{
-            return '+PONG' === $this->redis->ping();
+            $result = $this->redis->ping();
+            // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
+            return true === $result || '+PONG' === $result;
         }catch(\Throwable $ex)
         {
             return false;
