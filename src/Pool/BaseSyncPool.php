@@ -47,11 +47,14 @@ abstract class BaseSyncPool extends BasePool
                 throw new \RuntimeException(sprintf('SyncPool [%s] Maximum number of resources', $this->getName()));
             }
         }
-        $resource = $this->queue->pop();
+        /** @var \Imi\Pool\PoolItem $poolItem */
+        $poolItem = $this->queue->pop();
+        $resource = $poolItem->getResource();
         if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
         }
+        $poolItem->lock();
         return $resource;
     }
 
@@ -73,11 +76,14 @@ abstract class BaseSyncPool extends BasePool
                 return false;
             }
         }
-        $resource = $this->queue->pop();
+        /** @var \Imi\Pool\PoolItem $poolItem */
+        $poolItem = $this->queue->pop();
+        $resource = $poolItem->getResource();
         if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
         }
+        $poolItem->lock();
         return $resource;
     }
 
@@ -92,7 +98,7 @@ abstract class BaseSyncPool extends BasePool
         // 重新建立队列
         foreach($this->pool as $item)
         {
-            $this->queue->push($item->getResource());
+            $this->queue->push($item);
         }
     }
     
@@ -103,7 +109,11 @@ abstract class BaseSyncPool extends BasePool
      */
     protected function push(IPoolResource $resource)
     {
-        $this->queue->push($resource);
+        $poolItem = $this->pool[$resource->hashCode()] ?? null;
+        if($poolItem)
+        {
+            $this->queue->push($resource);
+        }
     }
 
     /**

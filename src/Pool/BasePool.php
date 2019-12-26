@@ -348,8 +348,8 @@ abstract class BasePool implements IPool
                         $resource->close();
                         unset($this->pool[$key]);
                         $hasGC = true;
+                        $item = null;
                     }
-                    $item = null;
                 } finally {
                     if($item)
                     {

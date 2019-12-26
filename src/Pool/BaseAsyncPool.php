@@ -56,16 +56,19 @@ abstract class BaseAsyncPool extends BasePool
         }
         if(true === $selectResult)
         {
-            $resource = $this->queue->pop();
+            $poolItem = $this->queue->pop();
         }
         else
         {
-            $resource = $selectResult;
+            $poolItem = $selectResult;
         }
+        /** @var \Imi\Pool\PoolItem $poolItem */
+        $resource = $poolItem->getResource();
         if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
+        $poolItem->lock();
         return $resource;
     }
 
@@ -95,16 +98,19 @@ abstract class BaseAsyncPool extends BasePool
         }
         if(true === $result)
         {
-            $resource = $this->queue->pop();
+            $poolItem = $this->queue->pop();
         }
         else
         {
-            $resource = $result;
+            $poolItem = $result;
         }
+        /** @var \Imi\Pool\PoolItem $poolItem */
+        $resource = $poolItem->getResource();
         if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
         }
+        $poolItem->lock();
         return $resource;
     }
 
@@ -123,7 +129,7 @@ abstract class BaseAsyncPool extends BasePool
         // 重新建立队列
         foreach($this->pool as $item)
         {
-            $this->queue->push($item->getResource());
+            $this->queue->push($item);
         }
         $this->free = $this->queue->length();
     }
@@ -135,14 +141,15 @@ abstract class BaseAsyncPool extends BasePool
      */
     protected function push(IPoolResource $resource)
     {
+        $poolItem = $this->pool[$resource->hashCode()] ?? null;
         if(Coroutine::isIn())
         {
-            $this->queue->push($resource);
+            $this->queue->push($poolItem);
         }
         else
         {
-            go(function() use($resource){
-                $this->queue->push($resource);
+            go(function() use($poolItem){
+                $this->queue->push($poolItem);
             });
         }
     }
