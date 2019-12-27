@@ -102,7 +102,7 @@ class CacheAnnotationTest extends BaseTest
             }
         }
         $channel->close();
-        Assert::assertTrue($useTime < 0.02, 'Cacheable lock concurrent Timeout');
+        Assert::assertLessThanOrEqual(1, $useTime);
     }
 
     public function testCacheEvict()
