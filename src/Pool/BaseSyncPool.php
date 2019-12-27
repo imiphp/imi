@@ -120,7 +120,7 @@ abstract class BaseSyncPool extends BasePool
         $poolItem = $this->pool[$resource->hashCode()] ?? null;
         if($poolItem)
         {
-            $this->queue->push($resource);
+            $this->queue->push($poolItem);
         }
     }
 
