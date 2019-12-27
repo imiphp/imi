@@ -62,6 +62,10 @@ abstract class BaseAsyncPool extends BasePool
         {
             $poolItem = $selectResult;
         }
+        if(!$poolItem)
+        {
+            throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
+        }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $resource = $poolItem->getResource();
         if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
@@ -103,6 +107,10 @@ abstract class BaseAsyncPool extends BasePool
         else
         {
             $poolItem = $result;
+        }
+        if(!$poolItem)
+        {
+            throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $resource = $poolItem->getResource();
