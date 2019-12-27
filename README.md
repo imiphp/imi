@@ -49,6 +49,7 @@ imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/imag
 * [RPC](https://github.com/imiphp/imi-rpc)
 * [Hprose](https://github.com/imiphp/imi-hprose)
 * [gRPC](https://github.com/imiphp/imi-grpc)
+* [AMQP](https://github.com/imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
 * [权限控制](https://github.com/imiphp/imi-access-control)
 * [Smarty 模版引擎](https://github.com/imiphp/imi-smarty)
 * [限流](https://github.com/imiphp/imi-rate-limit)
