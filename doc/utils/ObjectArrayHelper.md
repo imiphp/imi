@@ -53,7 +53,7 @@ ObjectArrayHelper::set($data, 'a.b.c2', '333');
 ObjectArrayHelper::remove($data, 'a.b.c2');
 ```
 
-### remove
+### exists
 
 值是否存在
 
