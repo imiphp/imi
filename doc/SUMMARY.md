@@ -65,6 +65,11 @@
 * [Hprose](components/rpc/hprose.md)
 * [gRPC](components/rpc/grpc.md)
 
+## 消息队列
+
+* [AMQP](components/mq/amqp.md)
+* [RabbitMQ](components/mq/amqp.md)
+
 ## 功能组件
 
 * [配置读写](components/config/index.md)
