@@ -113,7 +113,10 @@ abstract class BaseMain implements IMain
     {
         foreach(Config::get('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
         {
-            Helper::getMain($namespace, $componentName);
+            if(!Helper::getMain($namespace, $componentName))
+            {
+                throw new \RuntimeException(sprintf('Component [%s] must have the class %s\\Main', $componentName, $namespace));
+            }
         }
     }
 }

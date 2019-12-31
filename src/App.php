@@ -148,16 +148,22 @@ abstract class App
     private static function initMains()
     {
         // 框架
-        MainHelper::getMain('Imi', 'Imi');
+        if(!MainHelper::getMain('Imi', 'Imi'))
+        {
+            throw new \RuntimeException('Framework imi must have the class Imi\\Main');
+        }
         // 项目
-        MainHelper::getMain(static::$namespace, 'app');
+        if(!MainHelper::getMain(static::$namespace, 'app'))
+        {
+            throw new \RuntimeException(sprintf('Your app must have the class %s\\Main', static::$namespace));
+        }
         // 服务器们
         $servers = array_merge(['main'=>Config::get('@app.mainServer')], Config::get('@app.subServers', []));
         foreach($servers as $serverName => $item)
         {
-            if($item)
+            if($item && !MainHelper::getMain($item['namespace'], 'server.' . $serverName))
             {
-                MainHelper::getMain($item['namespace'], 'server.' . $serverName);
+                throw new \RuntimeException(sprintf('Server [%s] must have the class %s\\Main', $serverName, $item['namespace']));
             }
         }
     }
