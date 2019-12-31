@@ -4,9 +4,9 @@ namespace Imi\Server\Session;
 use Imi\Util\Random;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Aop\Annotation\Inject;
-use Imi\Server\Session\Handler\ISessionHandler;
 use Imi\Util\ObjectArrayHelper;
+use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Session\Handler\ISessionHandler;
 
 /**
  * @Bean("SessionManager")
@@ -15,7 +15,7 @@ class SessionManager
 {
     /**
      * Session配置
-     * @Inject("SessionConfig")
+     * @ServerInject("SessionConfig")
      * @var \Imi\Server\Session\SessionConfig
      */
     protected $config;
