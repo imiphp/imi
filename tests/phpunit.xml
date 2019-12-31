@@ -39,7 +39,7 @@
         </testsuite>
     </testsuites>
     <listeners>
-        <listener class="Imi\Test\Component\PHPUintListener\ImiListener" file="tests/unit/Component/PHPUintListener/ImiListener.php">
+        <listener class="Imi\Test\Component\PHPUintListener\ImiListener">
         </listener>
     </listeners>
 </phpunit>
