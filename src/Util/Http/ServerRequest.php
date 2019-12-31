@@ -245,7 +245,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     {
         if(null === $this->parsedBody)
         {
-            $contentType = $this->getHeaderLine(RequestHeader::CONTENT_TYPE);
+            $contentType = strtolower($this->getHeaderLine(RequestHeader::CONTENT_TYPE));
             // post
             if('POST' === $this->method && in_array($contentType, [
                 MediaType::APPLICATION_FORM_URLENCODED,

@@ -14,7 +14,7 @@ abstract class MediaType
 
     const APPLICATION_JSON = 'application/json';
 
-    const APPLICATION_JSON_UTF8 = 'application/json;charset=UTF-8';
+    const APPLICATION_JSON_UTF8 = 'application/json;charset=utf-8';
 
     const APPLICATION_OCTET_STREAM = 'application/octet-stream';
 
