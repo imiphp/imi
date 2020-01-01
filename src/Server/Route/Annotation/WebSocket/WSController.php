@@ -16,7 +16,7 @@ class WSController extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'prefix';
+    protected $defaultFieldName;
 
     /**
      * 是否为单例控制器
@@ -26,5 +26,14 @@ class WSController extends Base
      * @var null|bool
      */
     public $singleton;
+
+    /**
+     * http 路由
+     * 
+     * 如果设置，则只有握手指定 http 路由，才可以触发该 WebSocket 路由
+     *
+     * @var string|null
+     */
+    public $route;
 
 }

@@ -144,7 +144,7 @@ class HttpRoute
             /** @var \Imi\Server\Http\Route\RouteItem[] $items */
             foreach($rules as $urlRule => $items)
             {
-                $result = $this->checkUrl($request, $urlRule, $pathInfo);
+                $result = $this->checkUrl($urlRule, $pathInfo);
                 if($result->result || $result->resultIgnoreCase)
                 {
                     foreach($items as $item)
@@ -179,12 +179,11 @@ class HttpRoute
 
     /**
      * 检查验证url是否匹配
-     * @param Request $request
      * @param string $urlRule
      * @param array $params url路由中的自定义参数
      * @return \Imi\Server\Http\Route\UrlCheckResult
      */
-    private function checkUrl(Request $request, string $urlRule, string $pathInfo)
+    public function checkUrl(string $urlRule, string $pathInfo)
     {
         if(!isset($this->urlCheckCache[$pathInfo][$urlRule]))
         {

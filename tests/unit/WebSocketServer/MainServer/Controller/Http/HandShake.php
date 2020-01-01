@@ -17,10 +17,8 @@ use Imi\Server\Route\Annotation\Controller;
 class HandShake extends HttpController
 {
     /**
-     * 连接地址：ws://127.0.0.1:8083/testHandShake
-     * 
      * @Action
-     * @Route("/testHandShake")
+     * @Route("/test")
      * @return void
      */
     public function index()

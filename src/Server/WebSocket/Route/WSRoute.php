@@ -1,11 +1,13 @@
 <?php
 namespace Imi\Server\WebSocket\Route;
 
+use Imi\ConnectContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\ObjectArrayHelper;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\WebSocket\Route\IRoute;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute as WSRouteAnnotation;
-use Imi\Util\ObjectArrayHelper;
 
 /**
  * @Bean("WSRoute")
@@ -19,15 +21,27 @@ class WSRoute implements IRoute
     protected $rules = [];
 
     /**
+     * @ServerInject("HttpRoute")
+     *
+     * @var \Imi\Server\Http\Route\HttpRoute
+     */
+    protected $httpRoute;
+
+    /**
      * 路由解析处理
      * @param mixed $data
      * @return \Imi\Server\WebSocket\Route\RouteResult
      */
     public function parse($data)
     {
+        /** @var \Imi\Util\Uri $uri */
+        $uri = ConnectContext::get('uri');
+        $path = $uri->getPath();
         foreach($this->rules as $item)
         {
-            if($this->checkCondition($data, $item->annotation))
+            if($this->checkCondition($data, $item->annotation)
+            // http 路由匹配
+            && (!$item->annotation->route || $this->httpRoute->checkUrl($item->annotation->route, $path)->result))
             {
                 return new RouteResult($item);
             }
@@ -96,6 +110,7 @@ class WSRoute implements IRoute
         {
             return false;
         }
+        // 匹配 WebSocket 路由
         foreach($annotation->condition as $name => $value)
         {
             if(ObjectArrayHelper::get($data, $name) !== $value)

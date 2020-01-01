@@ -23,4 +23,14 @@ class WSRoute extends Base
      * @var array
      */
     public $condition = [];
+
+    /**
+     * http 路由
+     * 
+     * 如果设置，则只有握手指定 http 路由，才可以触发该 WebSocket 路由
+     *
+     * @var string|null
+     */
+    public $route;
+
 }

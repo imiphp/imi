@@ -47,6 +47,7 @@ class WSRouteInit implements IEventListener
             {
                 continue;
             }
+            /** @var \Imi\Server\WebSocket\Route\WSRoute $route*/
             $route = $server->getBean('WSRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -60,6 +61,7 @@ class WSRouteInit implements IEventListener
                 }
                 foreach(AnnotationManager::getMethodsAnnotations($className, WSAction::class) as $methodName => $actionAnnotations)
                 {
+                    /** @var \Imi\Server\Route\Annotation\WebSocket\WSRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, WSRoute::class);
                     if(!isset($routes[0]))
                     {
@@ -76,6 +78,12 @@ class WSRouteInit implements IEventListener
                     
                     foreach($routes as $routeItem)
                     {
+                        $routeItem = clone $routeItem;
+                        // 方法上的 @WSRoute 未设置 route，则使用 @WSController 中的
+                        if(null === $routeItem->route)
+                        {
+                            $routeItem->route = $classAnnotation->route;
+                        }
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
                             'singleton'   => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,

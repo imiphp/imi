@@ -38,6 +38,21 @@ class Test extends WebSocketController
 
 ## 注解
 
+### @WSController
+
+通常：
+
+```php
+@WSController
+```
+
+指定匹配 http 路由：
+
+```php
+// 只有握手 /test 这个路径才可以触发该 WebSocket 动作
+@WSController(route="/test")
+```
+
 ### @WSRoute
 
 指定 WebSocket 路由解析规则。
@@ -56,6 +71,13 @@ class Test extends WebSocketController
 ```php
 // 解析 $data->a->b->c === 'login'
 @WSRoute({"a.b.c"="login"})
+```
+
+指定匹配 http 路由：
+
+```php
+// 只有握手 /test 这个路径才可以触发该 WebSocket 动作
+@WSRoute(condition={"action"="login"}, route="/test")
 ```
 
 路由匹配成功，就会执行这个动作。

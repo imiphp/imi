@@ -17,8 +17,6 @@ use Imi\Server\Route\Annotation\WebSocket\WSConfig;
 class IndexController extends HttpController
 {
     /**
-     * 连接地址：ws://127.0.0.1:8083/
-     * 
      * @Action
      * @Route("/")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
@@ -29,4 +27,15 @@ class IndexController extends HttpController
         // 握手处理，什么都不做，框架会帮你做好
     }
     
+    /**
+     * @Action
+     * @Route("/test2")
+     * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
+     * @return void
+     */
+    public function test2()
+    {
+
+    }
+
 }

@@ -26,7 +26,7 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getFd());
-        return ['success'=>true, 'middlewareData' => RequestContext::get('middlewareData'), 'requestUri' => ConnectContext::get('requestUri')];
+        return ['success'=>true, 'middlewareData' => RequestContext::get('middlewareData'), 'requestUri' => ConnectContext::get('requestUri'), 'uri' => (string)ConnectContext::get('uri')];
     }
 
     /**

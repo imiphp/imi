@@ -31,6 +31,7 @@ class WSTest extends BaseTest
                 'success'       =>  true,
                 'middlewareData'=>  'imi',
                 'requestUri'    =>  $this->host,
+                'uri'           =>  $this->host,
             ]), $recv);
             $time = time();
             $this->assertTrue($client->send(json_encode([
@@ -60,6 +61,43 @@ class WSTest extends BaseTest
             ])));
             $recv = $client->recv();
             $this->assertEquals(json_encode('gg'), $recv);
+            $client->close();
+        }, function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
+        });
+    }
+
+    public function testMatchHttpRoute()
+    {
+        $this->go(function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
+            $http = new HttpRequest;
+            $http->retry = 3;
+            $http->timeout = 3000;
+            $http->connectTimeout = 3000;
+            $client = $http->websocket($this->host);
+            $this->assertTrue($client->isConnected());
+            $this->assertTrue($client->send(json_encode([
+                'action'    =>  'test',
+                'username'  =>  'test',
+            ])));
+            $recv = $client->recv();
+            $this->assertEquals(json_encode('gg'), $recv);
+            $client->close();
+
+            $client = $http->websocket($this->host . 'test');
+            $this->assertTrue($client->isConnected());
+            $this->assertTrue($client->send(json_encode([
+                'action'    =>  'test',
+                'username'  =>  'test',
+            ])));
+            $recv = $client->recv();
+            $this->assertEquals(json_encode([
+                'data'  =>  [
+                    'action'    =>  'test',
+                    'username'  =>  'test',
+                ],
+            ]), $recv);
             $client->close();
         }, function(){
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
