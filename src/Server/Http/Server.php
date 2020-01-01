@@ -162,7 +162,7 @@ class Server extends Base
 
         if($event = ($this->config['events']['close'] ?? false) || $this->http2)
         {
-            $server->on('close', is_callable($event) ? $event : function(\Swoole\Http\Server $server, $fd, $reactorID){
+            $server->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
                 try{
                     $this->trigger('close', [
                         'server'    => $this,
