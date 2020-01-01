@@ -92,7 +92,7 @@ class Server extends Base
 
         if($event = ($this->config['events']['message'] ?? true))
         {
-            $server->on('message', is_callable($event) ? $event : function (\Swoole\WebSocket\Server $server, \Swoole\WebSocket\Frame $frame) {
+            $server->on('message', is_callable($event) ? $event : function ($server, \Swoole\WebSocket\Frame $frame) {
                 try{
                     $this->trigger('message', [
                         'server'    => $this,
