@@ -50,7 +50,10 @@ class BeforeHandShake implements IHandShakeEventListener
             $routeResult = RequestContext::get('routeResult');
             $routeResult->routeItem->callable = null;
             $routeResult->callable = null;
-            ConnectContext::set('httpRouteResult', $routeResult);
+            ConnectContext::muiltiSet([
+                'httpRouteResult'   =>  $routeResult,
+                'uri'               =>  $e->request->getUri(),
+            ]);
 
             $server = $e->getTarget();
             $request = $e->request;

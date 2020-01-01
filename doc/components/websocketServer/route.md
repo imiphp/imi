@@ -32,6 +32,13 @@ return [
 $httpRouteResult = ConnectContext::get('routeResult');
 ```
 
+## 获取握手时的 uri 对象
+
+```php
+/** @var \Imi\Util\Uri $uri */
+$uri = ConnectContext::get('uri');
+```
+
 ## 获取当前路由解析结果 (`routeResult`)
 
 ```php
