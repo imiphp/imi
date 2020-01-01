@@ -119,12 +119,12 @@ abstract class ConnectContext
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
         $result = $store->lock(function() use($store, $data, $fd){
-            $data = $store->read($fd);
+            $storeData = $store->read($fd);
             foreach($data as $name => $value)
             {
-                $data[$name] = $value;
+                $storeData[$name] = $value;
             }
-            $store->save($fd, $data);
+            $store->save($fd, $storeData);
         });
         if(!$result)
         {
