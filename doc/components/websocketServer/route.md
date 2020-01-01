@@ -7,6 +7,14 @@
 ```php
 return [
 	'beans'	=>	[
+		// 配置 http 为了握手
+        'HttpDispatcher'    =>    [
+            'middlewares'    =>    [
+                \Imi\Server\WebSocket\Middleware\HandShakeMiddleware::class,
+                \Imi\Server\Http\Middleware\RouteMiddleware::class,
+            ],
+		],
+		// WebSocket 配置
 		'WebSocketDispatcher'	=>	[
 			'middlewares'	=>	[
 				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
