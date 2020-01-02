@@ -60,23 +60,30 @@ trait TEvent
     /**
      * 取消事件监听
      * @param string|string[] $name 事件名称
-     * @param mixed $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param mixed|null $callback 回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
      * @return void
      */
-    public function off($name, $callback)
+    public function off($name, $callback = null)
     {
         foreach((array)$name as $eventName)
         {
             if(isset($this->events[$eventName]))
             {
-                $map = &$this->events[$eventName];
-                // 数据映射
-                foreach($this->events[$eventName] as $k => $item)
+                if($callback)
                 {
-                    if($callback === $item->callback)
+                    $map = &$this->events[$eventName];
+                    // 数据映射
+                    foreach($this->events[$eventName] as $k => $item)
                     {
-                        unset($map[$k]);
+                        if($callback === $item->callback)
+                        {
+                            unset($map[$k]);
+                        }
                     }
+                }
+                else
+                {
+                    unset($this->events[$eventName]);
                 }
                 $this->eventChangeRecords[$eventName] = true;
             }
