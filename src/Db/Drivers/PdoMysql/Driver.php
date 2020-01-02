@@ -7,20 +7,14 @@ use Imi\Config;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Transaction\TTransaction;
 use Imi\Db\Statement\StatementManager;
+use Imi\Db\Transaction\Transaction;
 
 /**
  * PDO MySQL驱动
  */
 class Driver extends Base implements IDb
 {
-    use TTransaction {
-        beginTransaction as protected __tBeginTransaction;
-        commit as protected __tCommit;
-        rollBack as protected __tRollBack;
-    }
-
     /**
      * 连接对象
      * @var \PDO
@@ -53,6 +47,13 @@ class Driver extends Base implements IDb
     protected $isCacheStatement;
 
     /**
+     * 事务管理
+     *
+     * @var \Imi\Db\Transaction\Transaction
+     */
+    protected $transaction;
+
+    /**
      * 参数格式：
      * [
      * 'host'       => 'MySQL IP地址',
@@ -82,6 +83,7 @@ class Driver extends Base implements IDb
             $this->option['options'] = [];
         }
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
+        $this->transaction = new Transaction;
     }
 
     public function __destruct()
@@ -169,7 +171,7 @@ class Driver extends Base implements IDb
             }
         }
         $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
-        $this->__tBeginTransaction();
+        $this->transaction->beginTransaction();
         return true;
     }
 
@@ -179,7 +181,7 @@ class Driver extends Base implements IDb
      */
     public function commit(): bool
     {
-        return $this->__tCommit() && $this->instance->commit();
+        return $this->transaction->commit() && $this->instance->commit();
     }
 
     /**
@@ -190,7 +192,7 @@ class Driver extends Base implements IDb
      */
     public function rollBack($levels = null): bool
     {
-        $this->__tRollBack($levels);
+        $this->transaction->rollBack($levels);
         if(null === $levels)
         {
             return $this->instance->rollback();
@@ -200,6 +202,16 @@ class Driver extends Base implements IDb
             $this->exec('ROLLBACK TO P' . ($this->getTransactionLevels()));
             return true;
         }
+    }
+
+    /**
+     * 获取事务层数
+     *
+     * @return int
+     */
+    public function getTransactionLevels(): int
+    {
+        return $this->transaction->getTransactionLevels();
     }
 
     /**
@@ -351,4 +363,15 @@ class Driver extends Base implements IDb
         }
         return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
     }
+
+    /**
+     * Get 事务管理
+     *
+     * @return \Imi\Db\Transaction\Transaction
+     */ 
+    public function getTransaction()
+    {
+        return $this->transaction;
+    }
+
 }

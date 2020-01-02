@@ -143,4 +143,11 @@ interface IDb extends IHashCode
      */
     public function getInstance();
 
+    /**
+     * Get 事务管理
+     *
+     * @return \Imi\Db\Transaction\Transaction
+     */ 
+    public function getTransaction();
+
 }
