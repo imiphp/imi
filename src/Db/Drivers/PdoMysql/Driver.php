@@ -181,7 +181,7 @@ class Driver extends Base implements IDb
      */
     public function commit(): bool
     {
-        return $this->transaction->commit() && $this->instance->commit();
+        return $this->instance->commit() && $this->transaction->commit();
     }
 
     /**
@@ -192,16 +192,20 @@ class Driver extends Base implements IDb
      */
     public function rollBack($levels = null): bool
     {
-        $this->transaction->rollBack($levels);
         if(null === $levels)
         {
-            return $this->instance->rollback();
+            $result = $this->instance->rollback();
         }
         else
         {
             $this->exec('ROLLBACK TO P' . ($this->getTransactionLevels()));
-            return true;
+            $result = true;
         }
+        if($result)
+        {
+            $this->transaction->rollBack($levels);
+        }
+        return $result;
     }
 
     /**
