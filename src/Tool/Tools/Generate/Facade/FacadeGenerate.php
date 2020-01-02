@@ -72,6 +72,10 @@ class FacadeGenerate
             else if($method->hasReturnType())
             {
                 $returnType = $method->getReturnType();
+                if($returnType->allowsNull())
+                {
+                    $returnType .= '|null';
+                }
             }
             else
             {
@@ -80,7 +84,27 @@ class FacadeGenerate
             $params = [];
             foreach($method->getParameters() as $param)
             {
-                $params[] = ($param->hasType() ? $param->getType() : 'mixed') . ' $' . $param->getName();
+                if($param->hasType())
+                {
+                    $type = $param->getType();
+                    if($type->allowsNull())
+                    {
+                        $type .= '|null';
+                    }
+                }
+                else
+                {
+                    $type = 'mixed';
+                }
+                if($param->isDefaultValueAvailable())
+                {
+                    $defaultValue = ' = ' . var_export($param->getDefaultValue(), true);
+                }
+                else
+                {
+                    $defaultValue = '';
+                }
+                $params[] = $type . ' $' . $param->getName() . $defaultValue;
             }
             $params = implode(', ', $params);
             $methods[] = '@method static ' . $returnType . ' ' . $method->getName() . '(' . $params . ')';
