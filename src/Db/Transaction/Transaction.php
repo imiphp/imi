@@ -92,4 +92,26 @@ class Transaction
         return $this->transactionLevels;
     }
 
+    /**
+     * 监听事务提交事件
+     *
+     * @param callable $callable
+     * @return void
+     */
+    public function onTransactionCommit(callable $callable)
+    {
+        $this->one('transaction.' . $this->transactionLevels . '.commit', $callable);
+    }
+
+    /**
+     * 监听事务回滚事件
+     *
+     * @param callable $callable
+     * @return void
+     */
+    public function onTransactionRollback(callable $callable)
+    {
+        $this->one('transaction.' . $this->transactionLevels . '.rollback', $callable);
+    }
+
 }

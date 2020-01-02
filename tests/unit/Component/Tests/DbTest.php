@@ -164,4 +164,41 @@ class DbTest extends BaseTest
         Assert::assertEquals([], $stmt->fetchAll());
     }
 
+    public function testTransactionRollbackRollbackEvent()
+    {
+        $db = Db::getInstance();
+        $db->beginTransaction();
+        Assert::assertTrue($db->inTransaction());
+        $this->assertEquals(1, $db->getTransactionLevels());
+        $r1 = false;
+        $db->getTransaction()->onTransactionRollback(function() use(&$r1){
+            $r1 = true;
+        });
+
+        $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
+        Assert::assertEquals(1, $result);
+        $id = $db->lastInsertId();
+        $db->rollBack();
+        $this->assertEquals(0, $db->getTransactionLevels());
+        Assert::assertNotTrue($db->inTransaction());
+
+        $this->assertTrue($r1);
+    }
+
+    public function testTransactionRollbackCommitEvent()
+    {
+        $db = Db::getInstance();
+        $db->beginTransaction();
+        Assert::assertTrue($db->inTransaction());
+        $this->assertEquals(1, $db->getTransactionLevels());
+        $r1 = false;
+        $db->getTransaction()->onTransactionCommit(function() use(&$r1){
+            $r1 = true;
+        });
+        $db->commit();
+        $this->assertEquals(0, $db->getTransactionLevels());
+        $this->assertFalse($db->inTransaction());
+        $this->assertTrue($r1);
+    }
+
 }
