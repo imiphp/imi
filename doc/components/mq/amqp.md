@@ -35,6 +35,78 @@
 ]
 ```
 
+连接池配置：
+
+```php
+[
+    'pools'    =>    [
+        'rabbit'    =>  [
+            'sync'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\AMQP\Pool\AMQPSyncPool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    0,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'      => '127.0.0.1',
+                    'port'      => 5672,
+                    'user'      => 'guest',
+                    'password'  => 'guest',
+                ]
+            ],
+            'async'    =>    [
+                'pool'    =>    [
+                    'class'        =>    \Imi\AMQP\Pool\AMQPCoroutinePool::class,
+                    'config'    =>    [
+                        'maxResources'    =>    10,
+                        'minResources'    =>    1,
+                    ],
+                ],
+                'resource'    =>    [
+                    'host'      => '127.0.0.1',
+                    'port'      => 5672,
+                    'user'      => 'guest',
+                    'password'  => 'guest',
+                ]
+            ],
+        ],
+    ]
+]
+```
+
+默认连接池：
+
+```php
+[
+    'beans' =>  [
+        'AMQP'  =>  [
+            'defaultPoolName'   =>  'rabbit',
+        ],
+    ],
+]
+```
+
+### 连接配置项
+
+| 属性名称 | 说明 |
+|-|-
+| host | 主机 |
+| port | 端口 |
+| user | 用户名 |
+| vhost | vhost，默认`/` |
+| insist | insist |
+| loginMethod | 默认`AMQPLAIN` |
+| loginResponse | loginResponse |
+| locale | 默认`en_US` |
+| connectionTimeout | 连接超时 |
+| readWriteTimeout | 读写超时 |
+| keepalive | keepalive，默认`false` |
+| heartbeat | 心跳时间，默认`0` |
+| channelRpcTimeout | 频道 RPC 超时时间，默认`0.0` |
+| sslProtocol | ssl 协议，默认`null` |
+
 ### 消息定义
 
 继承 `Imi\AMQP\Message` 类，可在构造方法中对属性修改。
