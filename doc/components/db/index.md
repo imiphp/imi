@@ -241,6 +241,30 @@ Db::trans($db, function(IDb $db){
 
 `@Transaction(rollbackType=RollbackType::PART, rollbackLevels="回滚层数，默认为1")`
 
+**事务监听**
+
+监听提交事务：
+
+```php
+$db = Db::getInstance();
+$db->getTransaction()->onTransactionCommit(function($param){
+    $data = $param->getData();
+    $db = $data['db'];
+    $level = $data['level']; // 第几层事务，支持事务嵌套
+});
+```
+
+监听回滚事务：
+
+```php
+$db = Db::getInstance();
+$db->getTransaction()->onTransactionRollback(function($param){
+    $data = $param->getData();
+    $db = $data['db'];
+    $level = $data['level']; // 第几层事务，支持事务嵌套
+});
+```
+
 ### 指定表 (table/from)
 
 ```php

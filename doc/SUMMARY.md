@@ -25,6 +25,7 @@
 * [控制器](components/httpserver/controller.md)
 * [RESTful](components/httpserver/restful.md)
 * [Session](components/httpserver/session.md)
+* [JWT](components/httpserver/jwt.md)
 * [视图](components/httpserver/view.md)
 * [错误异常处理](components/httpserver/error.md)
 * [404处理](components/httpserver/404.md)

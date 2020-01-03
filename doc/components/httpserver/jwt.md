@@ -1,0 +1,152 @@
+# JWT
+
+## 介绍
+
+在 imi 框架中非常方便地接入 jwt
+
+## Composer
+
+本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:
+
+```json
+{
+    "require": {
+        "imiphp/imi-jwt": "~1.0"
+    }
+}
+```
+
+然后执行 `composer update` 安装。
+
+## 使用
+
+在项目 `config/config.php` 中配置：
+
+```php
+[
+    'components'    =>  [
+        // 引入本组件
+        'jwt'    =>  'Imi\JWT',
+    ],
+]
+```
+
+### 配置
+
+配置 `@app.beans`：
+
+```php
+[
+    'JWT'   =>  [
+        'list'  =>  [
+            // a 为名称，可以自定义，以下被注释的项为非必设，一般有默认值
+            'a' =>  [
+                // 'signer'    =>  'Hmac',      // 签名者，可选：Ecdsa/Hmac/Rsa
+                // 'algo'      =>  'Sha256',    // 算法，可选：Sha256/Sha384/Sha512
+                // 'dataName'  =>  'data',      // 自定义数据字段名，放你需要往token里丢的数据
+                // 'audience'  =>  null,        // 接收，非必须
+                // 'subject'   =>  null,        // 主题，非必须
+                // 'expires'   =>  null,        // 超时秒数，非必须
+                // 'issuer'    =>  null,        // 发行人，非必须
+                // 'notBefore' =>  null,        // 实际日期必须大于等于本值
+                // 'issuedAt'  =>  true,        // JWT 发出时间。设为 true 则为当前时间；设为 false 不设置；其它值则直接写入
+                // 'id'        =>  null,        // Token id
+                // 'headers'   =>  [],          // 头
+                // 自定义获取 token 回调，返回值为 Token。默认从 Header Authorization 中获取。
+                // 'tokenHandler'  =>  null,
+                'privateKey'    =>  '123456',// 私钥
+                'publicKey'     =>  '123456',// 公钥
+            ],
+        ],
+    ],
+]
+```
+
+### 生成 Token
+
+简单生成：
+
+```php
+use \Imi\JWT\Facade\JWT;
+// 你需要往token里丢的数据
+$data = [
+    'memberId'  =>  19260817,
+];
+$token = JWT::getToken($data);
+```
+
+指定名称：
+
+```php
+use \Imi\JWT\Facade\JWT;
+// 你需要往token里丢的数据
+$data = [
+    'memberId'  =>  19260817,
+];
+$token = JWT::getToken($data, 'a');
+```
+
+自定义处理：
+
+```php
+use \Imi\JWT\Facade\JWT;
+// 你需要往token里丢的数据
+$data = [
+    'memberId'  =>  19260817,
+];
+$token = JWT::getToken($data, 'a', function(\Lcobucci\JWT\Builder $builder){
+    // 可以针对该对象做一些操作
+    $builder->withClaim('aaa', 'bbb');
+});
+```
+
+### 验证 Token
+
+手动验证：
+
+```php
+use \Imi\JWT\Facade\JWT;
+/** @var \Lcobucci\JWT\Token $token */
+$token = JWT::parseToken($jwt);
+// $token = JWT::parseToken($jwt, 'a'); // 指定配置名称
+$data = $token->getClaim('data'); // 获取往token里丢的数据
+```
+
+注解验证：
+
+```php
+<?php
+namespace Imi\JWT\Test\Test;
+
+use Imi\Bean\Annotation\Bean;
+use Imi\JWT\Annotation\JWTValidation;
+
+/**
+ * @Bean("A")
+ */
+class A
+{
+    /**
+     * @JWTValidation(tokenParam="token", dataParam="data")
+     *
+     * @param \Lcobucci\JWT\Token $token
+     * @param \stdClass $data
+     * @return array
+     */
+    public function test($token = null, $data = null)
+    {
+        return [$token, $data];
+    }
+
+}
+```
+
+**@JWTValidation**
+
+JWT 验证注解
+
+| 属性名称 | 说明 |
+|-|-
+| name | JWT 配置名称 |
+| tokenParam | Token 对象注入的参数名称 |
+| dataParam | 数据注入的参数名称 |
