@@ -43,25 +43,7 @@ class BeforeHandShake implements IHandShakeEventListener
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $response = $dispatcher->dispatch($e->request, $e->response);
-        if(StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
-        {
-            // http 路由解析结果
-            $routeResult = RequestContext::get('routeResult');
-            $routeResult->routeItem->callable = null;
-            $routeResult->callable = null;
-            ConnectContext::muiltiSet([
-                'httpRouteResult'   =>  $routeResult,
-                'uri'               =>  $e->request->getUri(),
-            ]);
-
-            $server = $e->getTarget();
-            $request = $e->request;
-            $server->trigger('open', [
-                'server'   => &$server,
-                'request'  => &$request,
-            ], $this, OpenEventParam::class);
-        }
+        $dispatcher->dispatch($e->request, $e->response);
     }
 
 }

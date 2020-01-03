@@ -1,10 +1,13 @@
 <?php
 namespace Imi\Server\WebSocket\Middleware;
 
+use Imi\ConnectContext;
+use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Http\Consts\StatusCode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Imi\Server\Event\Param\OpenEventParam;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -23,6 +26,23 @@ class HandShakeMiddleware implements MiddlewareInterface
         {
             // 未做处理则做默认握手处理
             $response = $this->defaultHandShake($request, $response);
+        }
+        if(StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
+        {
+            // http 路由解析结果
+            $routeResult = RequestContext::get('routeResult');
+            $routeResult->routeItem->callable = null;
+            $routeResult->callable = null;
+            ConnectContext::muiltiSet([
+                'httpRouteResult'   =>  $routeResult,
+                'uri'               =>  $request->getUri(),
+            ]);
+
+            $server = RequestContext::get('server');
+            $server->trigger('open', [
+                'server'   => &$server,
+                'request'  => &$request,
+            ], $this, OpenEventParam::class);
         }
         return $response;
     }
