@@ -166,3 +166,11 @@ public static function runWithManager($name, $args = [], $redirectStdinStdout = 
     ],
 ]
 ```
+
+### 获取随服务启动的进程对象
+
+```php
+use \Imi\Process\ProcessManager;
+/** @var \Swoole\Process $process */
+$process = ProcessManager::getProcessWithManager('processName');
+```

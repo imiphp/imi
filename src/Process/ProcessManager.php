@@ -11,6 +11,7 @@ use Imi\Util\Process\ProcessType;
 use Imi\Process\Parser\ProcessParser;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Process\Exception\ProcessAlreadyRunException;
+use Swoole\Process;
 
 /**
  * 进程管理类
@@ -23,6 +24,13 @@ abstract class ProcessManager
      * @var array
      */
     private static $lockMap = [];
+
+    /**
+     * 挂载在管理进程下的进程列表
+     *
+     * @var \Swoole\Process[]
+     */
+    private static $managerProcesses = [];
 
     /**
      * 创建进程
@@ -233,8 +241,25 @@ abstract class ProcessManager
             $process = static::create($name, $args, $redirectStdinStdout, $pipeType);
             $server = ServerManage::getServer('main')->getSwooleServer();
             $server->addProcess($process);
+            static::$managerProcesses[$name] = $process;
             return $process;
         }
+    }
+
+    /**
+     * 获取挂载在管理进程下的进程
+     *
+     * @param string $name
+     * @param string|null $alias
+     * @return \Swoole\Process|null
+     */
+    public static function getProcessWithManager(string $name, ?string $alias = null): ?Process
+    {
+        if(null !== $alias)
+        {
+            $name .= '#' . $alias;            
+        }
+        return static::$managerProcesses[$name] ?? null;
     }
 
     /**

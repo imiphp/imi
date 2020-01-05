@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Test\HttpServer\Tests;
 
+use Yurun\Util\HttpRequest;
+
 /**
  * @testdox Process
  */
@@ -40,6 +42,19 @@ class ProcessTest extends BaseTest
             'maindb'    =>  0,
             'redis'     =>  1,
         ]), prev($list));
+    }
+
+    /**
+     * getProcessWithManager
+     *
+     * @return void
+     */
+    public function testGetProcessWithManager()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'process/');
+        $data = $response->json(true);
+        $this->assertTrue($data['result'] ?? null);
     }
 
 }

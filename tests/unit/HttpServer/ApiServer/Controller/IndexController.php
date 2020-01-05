@@ -6,6 +6,7 @@ use Imi\Aop\Annotation\Inject;
 use Imi\Util\Http\MessageUtil;
 use Imi\Controller\HttpController;
 use Imi\Controller\SingletonHttpController;
+use Imi\Process\ProcessManager;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Server\Route\Annotation\Route;
@@ -327,6 +328,19 @@ class IndexController extends SingletonHttpController
     public function singletonResponse2()
     {
         $this->response->setResponseInstance($this->response->write('imi niubi-2'));
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function process()
+    {
+        $process = ProcessManager::getProcessWithManager('CronProcess');
+        return [
+            'result'    =>  $process instanceof \Swoole\Process,
+        ];
     }
 
 }
