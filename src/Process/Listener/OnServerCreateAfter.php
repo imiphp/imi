@@ -24,7 +24,7 @@ class OnServerCreateAfter implements IEventListener
         {
             if(is_array($process))
             {
-                ProcessManager::runWithManager($process['process'] . '#' . $k, $process['args'] ?? []);
+                ProcessManager::runWithManager($process['process'], $process['args'] ?? [], $k);
             }
             else
             {

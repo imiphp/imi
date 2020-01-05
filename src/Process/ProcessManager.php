@@ -41,9 +41,10 @@ abstract class ProcessManager
      * @param array $args
      * @param boolean $redirectStdinStdout
      * @param int $pipeType
+     * @param string|null $alias
      * @return \Swoole\Process
      */
-    public static function create($name, $args = [], $redirectStdinStdout = null, $pipeType = null): \Swoole\Process
+    public static function create($name, $args = [], $redirectStdinStdout = null, $pipeType = null, ?string $alias = null): \Swoole\Process
     {
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if(null === $processOption)
@@ -62,7 +63,7 @@ abstract class ProcessManager
         {
             $pipeType = $processOption['Process']->pipeType;
         }
-        $process = new \Swoole\Process(static::getProcessCallable($args, $name, $processOption), $redirectStdinStdout, $pipeType);
+        $process = new \Swoole\Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
         return $process;
     }
 
@@ -72,16 +73,22 @@ abstract class ProcessManager
      * @param array $args
      * @param string $name
      * @param array $processOption
+     * @param string|null $alias
      * @return callable
      */
-    private static function getProcessCallable($args, $name, $processOption)
+    private static function getProcessCallable($args, $name, $processOption, ?string $alias = null)
     {
-        return function(\Swoole\Process $swooleProcess) use($args, $name, $processOption){
+        return function(\Swoole\Process $swooleProcess) use($args, $name, $processOption, $alias){
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称
+            $processName = $name;
+            if($alias)
+            {
+                $processName .= '#' . $processName;
+            }
             Imi::setProcessName('process', [
-                'processName'   =>  $name,
+                'processName'   =>  $processName,
             ]);
             // 强制开启进程协程化
             \Swoole\Runtime::enableCoroutine(true);
@@ -222,9 +229,10 @@ abstract class ProcessManager
      * @param array $args
      * @param boolean $redirectStdinStdout
      * @param int $pipeType
+     * @param string|null $alias
      * @return \Swoole\Process|null
      */
-    public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+    public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null, ?string $alias = null)
     {
         if(App::isCoServer())
         {
@@ -233,15 +241,15 @@ abstract class ProcessManager
             {
                 return null;
             }
-            ServerManage::getCoServer()->addProcess(static::getProcessCallable($args, $name, $processOption));
+            ServerManage::getCoServer()->addProcess(static::getProcessCallable($args, $name, $processOption, $alias));
             return null;
         }
         else
         {
-            $process = static::create($name, $args, $redirectStdinStdout, $pipeType);
+            $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
             $server = ServerManage::getServer('main')->getSwooleServer();
             $server->addProcess($process);
-            static::$managerProcesses[$name] = $process;
+            static::$managerProcesses[$name][$alias] = $process;
             return $process;
         }
     }
@@ -255,11 +263,7 @@ abstract class ProcessManager
      */
     public static function getProcessWithManager(string $name, ?string $alias = null): ?Process
     {
-        if(null !== $alias)
-        {
-            $name .= '#' . $alias;            
-        }
-        return static::$managerProcesses[$name] ?? null;
+        return static::$managerProcesses[$name][$alias] ?? null;
     }
 
     /**
