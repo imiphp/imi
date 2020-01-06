@@ -145,6 +145,22 @@ abstract class Db
     }
 
     /**
+     * 使用回调来使用当前上下文中的资源，无需手动释放，自动开启/提交/回滚事务
+     * 回调有 1 个参数：$instance(操作实例对象)
+     * 本方法返回值为回调的返回值
+     *
+     * @param callable $callable
+     * @param string $poolName
+     * @param int $queryType
+     * @return mixed
+     */
+    public static function transContext($callable, $poolName = null, $queryType = QueryType::WRITE)
+    {
+        $db = static::getInstance($poolName, $queryType);
+        return static::trans($db, $callable);
+    }
+
+    /**
      * 事务处理，自动开启/提交/回滚事务
      *
      * @param IDb $db

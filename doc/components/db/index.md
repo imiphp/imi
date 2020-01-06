@@ -204,6 +204,8 @@ Db::transUse(function(IDb $db){
 }, $poolName, QueryType::WRITE);
 ```
 
+> `Db::transUse()` 不能在回调中使用模型
+
 获取连接后，想要使用某个连接，执行事务操作，自动开启/提交/回滚事务：
 
 ```php
@@ -212,6 +214,21 @@ Db::trans($db, function(IDb $db){
 
 });
 ```
+
+> 可以使用模型
+
+使用回调来使用当前上下文中的资源：
+
+```php
+Db::transContext(function(IDb $db){
+
+});
+Db::transContext(function(IDb $db){
+
+}, $poolName, QueryType::WRITE);
+```
+
+> 可以使用模型
 
 **自动事务处理**
 
