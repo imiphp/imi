@@ -10,3 +10,7 @@
 ## Windows 开发者
 
 可以使用虚拟机、Windows 10 Linux 子系统等环境，实现在 Windows 系统上开发和调试。
+
+## Docker
+
+推荐使用 Swoole 官方 Docker：<https://github.com/swoole/docker-swoole>

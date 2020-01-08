@@ -77,6 +77,10 @@ imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/imag
 - [Swoole](https://www.swoole.com/) >= 4.3.0
 - Redis、PDO 扩展
 
+## Docker
+
+推荐使用 Swoole 官方 Docker：<https://github.com/swoole/docker-swoole>
+
 ## 版权信息
 
 imi 遵循 木兰宽松许可证(Mulan PSL v1) 开源协议发布，并提供免费使用。
