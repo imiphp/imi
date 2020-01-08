@@ -100,6 +100,12 @@ abstract class App
      */
     private static function initFramework()
     {
+        $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
+        $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
+        if (in_array($useShortname, ['', 'off', 'false'], true)) {
+            echo 'Please enable swoole short name before using imi!', PHP_EOL, 'You can set swoole.use_shortname = on into your php.ini.', PHP_EOL;
+            return;
+        }
         if(!isset($_SERVER['argv'][1]))
         {
             echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
