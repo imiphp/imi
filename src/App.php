@@ -142,7 +142,7 @@ abstract class App
                 Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
             }
         }
-        unset($result);
+        unset($result, $useShortname);
         static::$isInited = true;
         Event::trigger('IMI.INITED');
     }
