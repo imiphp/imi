@@ -156,8 +156,10 @@ class AuthServiceController extends HttpController implements AuthServiceInterfa
                 ],
                 'resource'    =>    [
                     // 这里需要和你的服务端路由一致
-                    'url'   =>  'http://127.0.0.1:8080/{package}.{service}/{name}',
+                    'url'           =>  'http://127.0.0.1:8080/{package}.{service}/{name}',
+                    // 'url'           =>  'http://127.0.0.1:8080/{package}.{service}/{name|ucfirst}', // 参数支持设定函数处理，比如这个将方法名首字母大写，兼容其它部分语言
                     'clientClass'   =>  \Imi\Grpc\Client\GrpcClient::class,
+                    'method'        =>  'POST', // 指定请求方式，默认 GET
                 ]
             ],
         ],
