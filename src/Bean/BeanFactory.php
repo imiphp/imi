@@ -340,7 +340,7 @@ TPL;
         {
             return '';
         }
-        return ' : ' . $method->getReturnType();
+        return ' : ' . $method->getReturnType()->getName();
     }
 
     /**

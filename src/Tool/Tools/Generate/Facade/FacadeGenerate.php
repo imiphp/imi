@@ -74,7 +74,11 @@ class FacadeGenerate
                 $returnType = $method->getReturnType();
                 if($returnType->allowsNull())
                 {
-                    $returnType .= '|null';
+                    $returnType = $returnType->getName() . '|null';
+                }
+                else
+                {
+                    $returnType = $returnType->getName();
                 }
             }
             else
@@ -89,7 +93,11 @@ class FacadeGenerate
                     $type = $param->getType();
                     if($type->allowsNull())
                     {
-                        $type .= '|null';
+                        $type = $type->getName() . '|null';
+                    }
+                    else
+                    {
+                        $type = $type->getName();
                     }
                 }
                 else
