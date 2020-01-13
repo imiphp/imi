@@ -164,3 +164,7 @@
 
 * [性能优化](adv/performance.md)
 * [参与框架开发](adv/devp.md)
+
+## 全文搜索
+
+* [ElasticSearch](other/elasticsearch.md)
