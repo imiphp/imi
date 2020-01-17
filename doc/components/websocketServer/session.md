@@ -65,3 +65,20 @@ Redis:
     ],
 ],
 ```
+
+Local:
+
+本地变量存储，性能最高
+
+> 只建议在 `SWOOLE_BASE` 模式下使用
+
+```php
+'beans' =>  [
+    'ConnectContextStore'   =>  [
+        'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Local::class,
+    ],
+    'ConnectContextLocal'    =>    [
+        'lockId'    =>  null, // 必设，需要用锁来防止数据错乱问题
+    ],
+],
+```
