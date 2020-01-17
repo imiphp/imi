@@ -16,7 +16,11 @@ return [
             ],
         ],
         'ConnectContextStore'   =>  [
-            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Redis::class,
+        ],
+        'ConnectContextRedis'    =>    [
+            'redisPool' =>  'redis',
+            'lockId'    =>  'redisConnectContextLock',
         ],
         'ConnectContextMemoryTable' =>  [
             'tableName' =>  'connectContext',

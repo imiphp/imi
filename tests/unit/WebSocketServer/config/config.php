@@ -97,6 +97,12 @@ return [
                     'atomicName'    =>  'atomic1',
                 ],
             ],
+            'redisConnectContextLock' =>  [
+                'class' =>  'RedisLock',
+                'options'   =>  [
+                    'poolName'  =>  'redis',
+                ],
+            ],
         ]
     ],
 ];

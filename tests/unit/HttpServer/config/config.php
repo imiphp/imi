@@ -26,6 +26,7 @@ return [
         'type'        =>    Imi\Server\Type::HTTP,
         'host'        =>    '127.0.0.1',
         'port'        =>    13000,
+        'mode'      =>  SWOOLE_BASE,
         'configs'    =>    [
             'worker_num'        =>  4,
             'task_worker_num'   =>  1,
