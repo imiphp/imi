@@ -265,4 +265,37 @@ abstract class File
         return file_put_contents($fileName, $data, $flags, $context);
     }
 
+    /**
+     * 获取绝对路径
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function absolute(string $path): string
+    {
+        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+        $parts = explode(DIRECTORY_SEPARATOR, $path);
+        $absolutes = [];
+        foreach ($parts as $i => $part)
+        {
+            if ('.' === $part)
+            {
+                continue;
+            }
+            if('' === $part && $i > 0)
+            {
+                continue;
+            }
+            if ('..' === $part)
+            {
+                array_pop($absolutes);
+            }
+            else
+            {
+                $absolutes[] = $part;
+            }
+        }
+        return implode(DIRECTORY_SEPARATOR, $absolutes);
+    }
+
 }

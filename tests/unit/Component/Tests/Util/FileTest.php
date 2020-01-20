@@ -228,4 +228,14 @@ class FileTest extends BaseTest
         File::deleteDir($path . '/a/b/c');
     }
 
+    /**
+     * @testdox absolute
+     *
+     * @return void
+     */
+    public function testAbsolute()
+    {
+        $this->assertEquals('/a/b/c/1.jpg', File::absolute('/a/b/d/e/../../c/./1.jpg'));
+    }
+
 }
