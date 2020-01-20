@@ -254,17 +254,67 @@ abstract class Imi
         }
         if(isset($result))
         {
-            $realPath = realpath($result);
-            if(false === $realPath)
-            {
-                return $result;
-            }
-            else
-            {
-                return $realPath;
-            }
+            return File::absolute($result);
         }
         return null;
+    }
+
+    /**
+     * 根据命名空间获取真实路径，允许返回多个
+     * 
+     * @param string $namespace
+     * @return string[]
+     */
+    public static function getNamespacePaths($namespace): array
+    {
+        $resultPaths = [];
+        if('\\' !== substr($namespace, -1, 1))
+        {
+            $namespace .= '\\';
+        }
+        $loader = App::getLoader();
+        if(null === $loader)
+        {
+            // Composer 加载器未赋值，则只能取Main类命名空间下的目录
+            foreach(Helper::getMains() as $main)
+            {
+                $mainNamespace = $main->getNamespace();
+                if('\\' !== substr($mainNamespace, -1, 1))
+                {
+                    $mainNamespace .= '\\';
+                }
+                $len = strlen($mainNamespace);
+                if($mainNamespace === substr($namespace, 0, $len))
+                {
+                    $namespaceSubPath = substr($namespace, $len);
+                    $refClass = new \ReflectionClass($main);
+                    $path = dirname($refClass->getFileName());
+                    $resultPaths[] = File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
+                }
+            }
+        }
+        else
+        {
+            // 依靠 Composer PSR-4 配置的目录进行定位目录
+            $prefixDirsPsr4 = $loader->getPrefixesPsr4();
+            foreach($prefixDirsPsr4 as $keyNamespace => $paths)
+            {
+                $len = strlen($keyNamespace);
+                if(substr($namespace, 0, $len) === $keyNamespace)
+                {
+                    foreach($paths as $path)
+                    {
+                        $resultPaths[] = File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, substr($namespace, $len)));
+                    }
+                }
+            }
+        }
+        $resultPaths = array_unique($resultPaths);
+        foreach($resultPaths as &$path)
+        {
+            $path = File::absolute($path);
+        }
+        return array_unique($resultPaths);
     }
 
     /**

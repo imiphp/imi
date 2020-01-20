@@ -243,6 +243,19 @@ class ImiTest extends BaseTest
     }
 
     /**
+     * @testdox getNamespacePaths
+     *
+     * @return void
+     */
+    public function testGetNamespacePaths()
+    {
+        $this->assertEquals([
+            __DIR__,
+            dirname(__DIR__, 5) . '/src/Test/Component/Tests/Util',
+        ], Imi::getNamespacePaths('Imi\Test\Component\Tests\Util'));
+    }
+
+    /**
      * @testdox getClassPropertyValue
      *
      * @return void
