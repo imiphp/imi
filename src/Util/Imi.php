@@ -388,12 +388,21 @@ abstract class Imi
         $parentPath = Config::get('@app.runtimePath');
         if(null === $parentPath)
         {
-            $namespacePath = Imi::getNamespacePath($namespace = App::getNamespace());
-            if(null === $namespacePath)
+            $namespacePaths = Imi::getNamespacePaths($namespace = App::getNamespace());
+            $resultNamespacePath = null;
+            foreach($namespacePaths as $namespacePath)
+            {
+                if(is_dir($namespacePath))
+                {
+                    $resultNamespacePath = $namespacePath;
+                    break;
+                }
+            }
+            if(null === $resultNamespacePath)
             {
                 throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
             }
-            $parentPath = File::path($namespacePath, '.runtime');
+            $parentPath = File::path($resultNamespacePath, '.runtime');
         }
         File::createDir($parentPath);
         return File::path($parentPath, ...$path);

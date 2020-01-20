@@ -123,9 +123,7 @@ class HotUpdateProcess extends BaseProcess
         file_put_contents($this->changedFilesFile, '');
         if(null === $this->defaultPath)
         {
-            $this->defaultPath = [
-                Imi::getNamespacePath(App::getNamespace()),
-            ];
+            $this->defaultPath = Imi::getNamespacePaths(App::getNamespace());
         }
         $this->excludePaths[] = Imi::getRuntimePath();
         $this->startSocketServer();
