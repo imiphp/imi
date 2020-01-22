@@ -19,7 +19,7 @@ class Arg extends Base
     protected $defaultFieldName = 'name';
 
     /**
-     * 操作名称
+     * 参数名称
      * @var string
      */
     public $name;
