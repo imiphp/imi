@@ -173,7 +173,7 @@ $returnValue = Db::use(function(IDb $db){
 
 ## 连贯操作
 
-IMI 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
+imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
 
 ```php
 use Imi\Db\Db;

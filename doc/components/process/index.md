@@ -1,6 +1,6 @@
 # 进程
 
-IMI 中对进程的创建和运行做了简单封装。
+imi 中对进程的创建和运行做了简单封装。
 
 ### 定义进程
 
@@ -132,7 +132,7 @@ ProcessManager::coRun($name, $args = [], $redirectStdinStdout = null, $pipeType 
 
 ### 运行进程，托管到 Manager 进程
 
-> 这个用法只能在IMI.SERVERS.CREATE.AFTER事件中使用！
+> 这个用法只能在`IMI.SERVERS.CREATE.AFTER`事件中使用！
 
 ```php
 /**

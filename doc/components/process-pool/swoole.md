@@ -1,6 +1,6 @@
 # 进程池-Swoole
 
-IMI 中对进程池的创建和运行做了简单封装，基于`Swoole\Process\Pool`实现。
+imi 中对进程池的创建和运行做了简单封装，基于`Swoole\Process\Pool`实现。
 
 ### 定义进程池
 

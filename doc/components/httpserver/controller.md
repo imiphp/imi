@@ -150,7 +150,7 @@ request 数据包含 get/post/cookie
 
 > 协议会根据当前服务器是否启用 `ssl` 判断，支持协议：`http/https/ws/wss`
 
-#### 获取 IMI 中对应服务器的对象
+#### 获取 imi 中对应服务器的对象
 
 `public function getServerInstance(): \Imi\Server\Http\Server`
 
