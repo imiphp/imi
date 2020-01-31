@@ -25,7 +25,7 @@ class ResponseProxy implements IResponse
      */
     public function getStatusCode()
     {
-        return $this->getResponseInstance()->getStatusCode();
+        return static::getResponseInstance()->getStatusCode();
     }
 
     /**
@@ -50,7 +50,7 @@ class ResponseProxy implements IResponse
      */
     public function withStatus($code, $reasonPhrase = '')
     {
-        return $this->getResponseInstance()->withStatus($code, $reasonPhrase);
+        return static::getResponseInstance()->withStatus($code, $reasonPhrase);
     }
 
     /**
@@ -68,7 +68,7 @@ class ResponseProxy implements IResponse
      */
     public function getReasonPhrase()
     {
-        return $this->getResponseInstance()->getReasonPhrase();
+        return static::getResponseInstance()->getReasonPhrase();
     }
 
     
@@ -81,7 +81,7 @@ class ResponseProxy implements IResponse
      */
     public function getProtocolVersion()
     {
-        return $this->getResponseInstance()->getProtocolVersion();
+        return static::getResponseInstance()->getProtocolVersion();
     }
 
     /**
@@ -99,7 +99,7 @@ class ResponseProxy implements IResponse
      */
     public function withProtocolVersion($version)
     {
-        return $this->getResponseInstance()->withProtocolVersion($version);
+        return static::getResponseInstance()->withProtocolVersion($version);
     }
 
     /**
@@ -129,7 +129,7 @@ class ResponseProxy implements IResponse
      */
     public function getHeaders()
     {
-        return $this->getResponseInstance()->getHeaders();
+        return static::getResponseInstance()->getHeaders();
     }
 
     /**
@@ -142,7 +142,7 @@ class ResponseProxy implements IResponse
      */
     public function hasHeader($name)
     {
-        return $this->getResponseInstance()->hasHeader($name);
+        return static::getResponseInstance()->hasHeader($name);
     }
 
     /**
@@ -161,7 +161,7 @@ class ResponseProxy implements IResponse
      */
     public function getHeader($name)
     {
-        return $this->getResponseInstance()->getHeader($name);
+        return static::getResponseInstance()->getHeader($name);
     }
 
     /**
@@ -185,7 +185,7 @@ class ResponseProxy implements IResponse
      */
     public function getHeaderLine($name)
     {
-        return $this->getResponseInstance()->getHeaderLine($name);
+        return static::getResponseInstance()->getHeaderLine($name);
     }
 
     /**
@@ -205,7 +205,7 @@ class ResponseProxy implements IResponse
      */
     public function withHeader($name, $value)
     {
-        return $this->getResponseInstance()->withHeader($name, $value);
+        return static::getResponseInstance()->withHeader($name, $value);
     }
 
     /**
@@ -226,7 +226,7 @@ class ResponseProxy implements IResponse
      */
     public function withAddedHeader($name, $value)
     {
-        return $this->getResponseInstance()->withAddedHeader($name, $value);
+        return static::getResponseInstance()->withAddedHeader($name, $value);
     }
 
     /**
@@ -243,7 +243,7 @@ class ResponseProxy implements IResponse
      */
     public function withoutHeader($name)
     {
-        return $this->getResponseInstance()->withoutHeader($name);
+        return static::getResponseInstance()->withoutHeader($name);
     }
 
     /**
@@ -253,7 +253,7 @@ class ResponseProxy implements IResponse
      */
     public function getBody()
     {
-        return $this->getResponseInstance()->getBody();
+        return static::getResponseInstance()->getBody();
     }
 
     /**
@@ -271,7 +271,7 @@ class ResponseProxy implements IResponse
      */
     public function withBody(StreamInterface $body)
     {
-        return $this->getResponseInstance()->withBody($body);
+        return static::getResponseInstance()->withBody($body);
     }
 
     /**
@@ -283,7 +283,7 @@ class ResponseProxy implements IResponse
      */
     public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
-        return $this->getResponseInstance()->getInstance($server, $response);
+        return static::getResponseInstance()->getInstance($server, $response);
     }
 
     /**
@@ -299,7 +299,7 @@ class ResponseProxy implements IResponse
      */
     public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
     {
-        return $this->getResponseInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+        return static::getResponseInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
     /**
@@ -309,7 +309,7 @@ class ResponseProxy implements IResponse
      */
     public function getTrailers()
     {
-        return $this->getResponseInstance()->getTrailers();
+        return static::getResponseInstance()->getTrailers();
     }
 
     /**
@@ -320,7 +320,7 @@ class ResponseProxy implements IResponse
      */
     public function hasTrailer($name)
     {
-        return $this->getResponseInstance()->hasTrailer($name);
+        return static::getResponseInstance()->hasTrailer($name);
     }
 
     /**
@@ -331,7 +331,7 @@ class ResponseProxy implements IResponse
      */
     public function getTrailer($name)
     {
-        return $this->getResponseInstance()->getTrailer($name);
+        return static::getResponseInstance()->getTrailer($name);
     }
 
     /**
@@ -343,7 +343,7 @@ class ResponseProxy implements IResponse
      */
     public function withTrailer($name, $value)
     {
-        return $this->getResponseInstance()->withTrailer($name, $value);
+        return static::getResponseInstance()->withTrailer($name, $value);
     }
 
     /**
@@ -353,7 +353,7 @@ class ResponseProxy implements IResponse
      */
     public function write(string $content)
     {
-        return $this->getResponseInstance()->write($content);
+        return static::getResponseInstance()->write($content);
     }
 
     /**
@@ -362,7 +362,7 @@ class ResponseProxy implements IResponse
      */
     public function clear()
     {
-        return $this->getResponseInstance()->clear();
+        return static::getResponseInstance()->clear();
     }
     
     /**
@@ -374,7 +374,7 @@ class ResponseProxy implements IResponse
      */
     public function redirect($url, $status = StatusCode::FOUND)
     {
-        return $this->getResponseInstance()->redirect($url, $status);
+        return static::getResponseInstance()->redirect($url, $status);
     }
 
     /**
@@ -383,7 +383,7 @@ class ResponseProxy implements IResponse
      */
     public function sendHeaders()
     {
-        return $this->getResponseInstance()->sendHeaders();
+        return static::getResponseInstance()->sendHeaders();
     }
 
     /**
@@ -392,7 +392,7 @@ class ResponseProxy implements IResponse
      */
     public function send()
     {
-        return $this->getResponseInstance()->send();
+        return static::getResponseInstance()->send();
     }
 
     /**
@@ -404,7 +404,7 @@ class ResponseProxy implements IResponse
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
     {
-        return $this->getResponseInstance()->sendFile($filename, $offset, $length);
+        return static::getResponseInstance()->sendFile($filename, $offset, $length);
     }
 
     /**
@@ -413,7 +413,7 @@ class ResponseProxy implements IResponse
      */
     public function getSwooleResponse(): \Swoole\Http\Response
     {
-        return $this->getResponseInstance()->getSwooleResponse();
+        return static::getResponseInstance()->getSwooleResponse();
     }
 
     /**
@@ -422,7 +422,7 @@ class ResponseProxy implements IResponse
      */
     public function getServerInstance(): \Imi\Server\Base
     {
-        return $this->getResponseInstance()->getServerInstance();
+        return static::getResponseInstance()->getServerInstance();
     }
 
     /**
@@ -431,7 +431,7 @@ class ResponseProxy implements IResponse
      */
     public function isEnded()
     {
-        return $this->getResponseInstance()->isEnded();
+        return static::getResponseInstance()->isEnded();
     }
 
     /**
@@ -439,7 +439,7 @@ class ResponseProxy implements IResponse
      *
      * @return \Imi\Server\Http\Message\Response
      */
-    public function getResponseInstance(): Response
+    public static function getResponseInstance(): Response
     {
         return RequestContext::get('response');
     }
