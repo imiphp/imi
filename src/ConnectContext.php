@@ -44,15 +44,11 @@ abstract class ConnectContext
      */
     public static function exists($fd = null)
     {
-        try {
-            if(!$fd)
-            {
-                $fd = RequestContext::get('fd');
-            }
-            return isset(static::$context[$fd]) || RequestContext::getServerBean('ConnectContextStore')->exists($fd);
-        } catch(\Imi\Exception\RequestContextException $e) {
-            return false;
+        if(!$fd)
+        {
+            $fd = RequestContext::get('fd');
         }
+        return isset(static::$context[$fd]) || RequestContext::getServerBean('ConnectContextStore')->exists($fd);
     }
 
     /**

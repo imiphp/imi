@@ -2,7 +2,6 @@
 namespace Imi\Server\Http\SuperGlobals;
 
 use Imi\RequestContext;
-use Imi\Exception\RequestContextException;
 
 class Server implements \ArrayAccess, \JsonSerializable
 {
@@ -29,17 +28,13 @@ class Server implements \ArrayAccess, \JsonSerializable
         {
             return true;
         }
-        try {
-            /** @var \Imi\Server\Http\Message\Request $request */
-            $request = RequestContext::get('request');
-            $serverParams = $request->getServerParams();
-            if(isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
-            {
-                return true;
-            }
-        } catch(RequestContextException $e) {
-            
-        }
+       /** @var \Imi\Server\Http\Message\Request $request */
+       $request = RequestContext::get('request');
+       $serverParams = $request->getServerParams();
+       if(isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+       {
+           return true;
+       }
         return false;
     }
 
@@ -63,8 +58,6 @@ class Server implements \ArrayAccess, \JsonSerializable
             {
                 return $serverParams[$lowerOffset];
             }
-        } catch(RequestContextException $e) {
-
         } finally {
             if(isset($this->defaultServer[$offset]))
             {
@@ -80,15 +73,16 @@ class Server implements \ArrayAccess, \JsonSerializable
 
     public function jsonSerialize()
     {
-        try {
-            /** @var \Imi\Server\Http\Message\Request $request */
-            $request = RequestContext::get('request');
-            $serverParams = $request->getServerParams();
+        /** @var \Imi\Server\Http\Message\Request $request */
+        $request = RequestContext::get('request');
+        $serverParams = $request->getServerParams();
+        if($serverParams)
+        {
             return array_merge($this->defaultServer, array_change_key_case($serverParams, CASE_UPPER));
-        } catch(RequestContextException $e) {
+        }
+        else
+        {
             return $this->defaultServer;
-        } finally {
-            
         }
     }
 

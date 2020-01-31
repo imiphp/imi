@@ -4,7 +4,6 @@ namespace Imi\Db\Statement;
 use Imi\RequestContext;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Exception\RequestContextException;
 
 abstract class StatementManager
 {
@@ -30,12 +29,8 @@ abstract class StatementManager
         ];
         if($using)
         {
-            try {
-                $context = RequestContext::getContext();
-                $context['statementCaches'][] = $statement;
-            } catch(RequestContextException $e) {
-
-            }
+            $context = RequestContext::getContext();
+            $context['statementCaches'][] = $statement;
         }
     }
 
@@ -60,12 +55,8 @@ abstract class StatementManager
         ];
         if($using)
         {
-            try {
-                $context = RequestContext::getContext();
-                $context['statementCaches'][] = $statement;
-            } catch(RequestContextException $e) {
-
-            }
+            $context = RequestContext::getContext();
+            $context['statementCaches'][] = $statement;
         }
         return true;
     }
@@ -94,12 +85,8 @@ abstract class StatementManager
             return false;
         }
         $statement['using'] = true;
-        try {
-            $context = RequestContext::getContext();
-            $context['statementCaches'][] = $statement['statement'];
-        } catch(RequestContextException $e) {
-
-        }
+        $context = RequestContext::getContext();
+        $context['statementCaches'][] = $statement['statement'];
         return $statement;
     }
 
@@ -119,17 +106,13 @@ abstract class StatementManager
             $statementItem = &static::$statements[$hashCode][$sql];
             $statementItem['statement']->closeCursor();
             $statementItem['using'] = false;
-            try {
-                $context = RequestContext::getContext();
-                if(isset($context['statementCaches']))
+            $context = RequestContext::getContext();
+            if(isset($context['statementCaches']))
+            {
+                if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
                 {
-                    if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
-                    {
-                        unset($context['statementCaches'][$i]);
-                    }
+                    unset($context['statementCaches'][$i]);
                 }
-            } catch(RequestContextException $e) {
-
             }
         }
     }
@@ -142,14 +125,9 @@ abstract class StatementManager
      */
     public static function unUsingAll(IDb $db)
     {
-        try {
-            $context = RequestContext::getContext();
-            $statementCaches = $context['statementCaches'] ?? [];
-            $requestContext = true;
-        } catch(RequestContextException $e) {
-            $statementCaches = [];
-            $requestContext = false;
-        }
+        $context = RequestContext::getContext();
+        $statementCaches = $context['statementCaches'] ?? [];
+        $requestContext = true;
         foreach(static::$statements[$db->hashCode()] ?? [] as &$item)
         {
             if($requestContext && false !== $i = array_search($item['statement'], $statementCaches))
@@ -202,13 +180,8 @@ abstract class StatementManager
      */
     public static function clear(IDb $db)
     {
-        try {
-            $statementCaches = RequestContext::get('statementCaches', []);
-            $requestContext = true;
-        } catch(RequestContextException $e) {
-            $statementCaches = [];
-            $requestContext = false;
-        }
+        $statementCaches = RequestContext::get('statementCaches', []);
+        $requestContext = true;
         $statements = static::$statements[$db->hashCode()] ?? [];
         foreach($statements as $item)
         {
@@ -245,11 +218,7 @@ abstract class StatementManager
     public static function clearAll()
     {
         static::$statements = [];
-        try {
-            RequestContext::set('statementCaches', []);
-        } catch(RequestContextException $e) {
-
-        }
+        RequestContext::set('statementCaches', []);
     }
 
 }
