@@ -20,7 +20,7 @@ imi 框架内置了一个 `OptionsMiddleware` 中间件，用于解决使用 `ap
 [
     'beans' =>  [
         'OptionsMiddleware' =>  [
-            // 设置允许的 Origin，为 null 时允许所有
+            // 设置允许的 Origin，为 null 时允许所有，为数组时允许多个
             'allowOrigin'       =>  null,
             // 允许的请求头
             'allowHeaders'      =>  'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie',

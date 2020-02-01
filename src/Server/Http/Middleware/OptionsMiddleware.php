@@ -16,9 +16,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 class OptionsMiddleware implements MiddlewareInterface
 {
     /**
-     * 设置允许的 Origin，为 null 时允许所有
+     * 设置允许的 Origin
+     * 为 null 时允许所有
+     * 为数组时允许多个
      *
-     * @var string|null
+     * @var string|null|string[]
      */
     protected $allowOrigin = null;
 
@@ -74,11 +76,11 @@ class OptionsMiddleware implements MiddlewareInterface
                 $response = $response->withHeader('Access-Control-Allow-Methods', $this->allowMethods);
             }
         }
-        if(null === $this->allowOrigin)
+        if(null === $this->allowOrigin || (is_array($this->allowOrigin) && in_array($request->getHeaderLine('Origin'), $this->allowOrigin)))
         {
             $response = $response->withHeader('Access-Control-Allow-Origin', $request->getHeaderLine('Origin'));
         }
-        else if($this->allowOrigin)
+        else if(!is_array($this->allowOrigin))
         {
             $response = $response->withHeader('Access-Control-Allow-Origin', $this->allowOrigin);
         }
