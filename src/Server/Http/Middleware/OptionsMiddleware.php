@@ -16,7 +16,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 class OptionsMiddleware implements MiddlewareInterface
 {
     /**
-     * 设置允许的 Origin
+     * 设置允许的 Origin，为 null 时允许所有
      *
      * @var string|null
      */
