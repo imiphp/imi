@@ -1,19 +1,28 @@
 <?php
 namespace Imi\Config\Dotenv;
 
+use Dotenv\Dotenv as DotenvDotenv;
 use Imi\App;
 use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\File;
 
 /**
  * @Bean("Dotenv")
  */
-class Dotenv extends \Dotenv\Dotenv
+class Dotenv extends DotenvDotenv
 {
+    /**
+     * 路径数组
+     *
+     * @var string[]
+     */
+    private $paths;
+
     public function __construct()
     {
-        parent::__construct(Imi::getNamespacePath(App::getNamespace()));
+        $this->paths = Imi::getNamespacePaths(App::getNamespace());
     }
 
     public function init()
@@ -22,13 +31,29 @@ class Dotenv extends \Dotenv\Dotenv
         {
             $this->loader->clearEnvironmentVariable($name);
         }
-        if(is_file($this->filePath))
+        foreach($this->paths as $path)
         {
-            $this->overload();
+            $filePath = File::path($path, '.env');
+            if(is_file($filePath))
+            {
+                $obj = new DotenvDotenv($path);
+                $obj->overload();
+            }
         }
         foreach($_ENV as $name => $value)
         {
             Config::set($name, $value);
         }
     }
+
+    /**
+     * Get 路径数组
+     *
+     * @return string[]
+     */ 
+    public function getPaths()
+    {
+        return $this->paths;
+    }
+
 }
