@@ -41,6 +41,14 @@ echo Imi::getNamespacePath('Imi'), PHP_EOL;
 echo Imi::getNamespacePath('ImiDemo\HttpDemo'), PHP_EOL;
 ```
 
+### getNamespacePaths
+
+根据命名空间获取真实路径，允许返回多个
+
+```php
+var_dump(Imi::getNamespacePaths('Imi'));
+```
+
 ### getClassPropertyValue
 
 获取类属性的值，值为beans配置或默认配置，支持传入Bean名称

@@ -104,3 +104,14 @@ File::deleteDir('xxx');
 ```php
 File::putContents('./a/b/c/1.txt', '123');
 ```
+
+### absolute
+
+获取绝对路径
+
+相比 `realpath()` 函数，此方法不需要路径是真实存在的。
+
+```php
+// /a/b/c/1.jpg
+File::absolute('/a/b/d/e/../../c/./1.jpg');
+```
