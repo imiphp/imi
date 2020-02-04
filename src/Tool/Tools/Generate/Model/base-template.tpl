@@ -11,7 +11,7 @@ use Imi\Model\Annotation\Entity;
  * <?= $className ?>Base
  * <?php if($entity === true):?>@Entity<?php else:?>@Entity(false)<?php endif;?>
 
- * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?>)
+ * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?><?php if($poolName):?>, poolName="<?=$poolName?>"<?php endif;?>)
 <?php foreach($fields as $field):?>
  * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= '' === $field['comment'] ? '' : $field['comment'] ?>
 

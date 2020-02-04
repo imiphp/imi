@@ -142,8 +142,9 @@ class ModelGenerate
                 ],
                 'fields'    => [],
                 'entity'    => $entity,
+                'poolName'  => $poolName,
             ];
-            $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`' , $table))->getArray();
+            $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`.`%s`' , $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
