@@ -22,6 +22,7 @@ class Dotenv extends DotenvDotenv
 
     public function __construct()
     {
+        parent::__construct('');
         $this->paths = Imi::getNamespacePaths(App::getNamespace());
     }
 
