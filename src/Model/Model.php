@@ -301,7 +301,7 @@ abstract class Model extends BaseModel
         $class = static::__getRealClassName();
         if(Update::hasUpdateRelation($class))
         {
-            $query = Db::query()->table(static::__getMeta()->getTableName());
+            $query = static::dbQuery();
             $query = static::parseWhere($query, $where);
 
             $list = $query->select()->getArray();
