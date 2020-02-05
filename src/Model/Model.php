@@ -39,15 +39,8 @@ abstract class Model extends BaseModel
      */
     public static function query($object = null, $poolName = null, $queryType = null)
     {
-        if($object)
-        {
-            $class = BeanFactory::getObjectClass($object);
-        }
-        else
-        {
-            $class = static::__getRealClassName();
-        }
-        return BeanFactory::newInstance(ModelQuery::class, null, $class, $poolName, $queryType);
+        $meta = static::__getMeta($object);
+        return BeanFactory::newInstance(ModelQuery::class, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
     }
 
     /**
@@ -59,7 +52,8 @@ abstract class Model extends BaseModel
      */
     public static function dbQuery($object = null, $poolName = null, $queryType = null)
     {
-        return Db::query($poolName, null, $queryType)->from(static::__getMeta($object)->getTableName());
+        $meta = static::__getMeta($object);
+        return Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->from($meta->getTableName());
     }
 
     /**
