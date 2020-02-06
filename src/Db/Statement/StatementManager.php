@@ -104,7 +104,10 @@ abstract class StatementManager
         if(isset(static::$statements[$hashCode][$sql]))
         {
             $statementItem = &static::$statements[$hashCode][$sql];
-            $statementItem['statement']->closeCursor();
+            if($statementItem['statement'])
+            {
+                $statementItem['statement']->closeCursor();
+            }
             $statementItem['using'] = false;
             $context = RequestContext::getContext();
             if(isset($context['statementCaches']))
@@ -134,7 +137,10 @@ abstract class StatementManager
             {
                 unset($statementCaches[$i]);
             }
-            $item['statement']->closeCursor();
+            if($item['statement'])
+            {
+                $item['statement']->closeCursor();
+            }
             $item['using'] = false;
         }
         if($requestContext)
