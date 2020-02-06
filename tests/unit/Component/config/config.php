@@ -303,4 +303,5 @@ return [
             ],
         ],
     ],
+    'yurun2'   =>  imiGetEnv('yurun'),
 ];

@@ -14,6 +14,7 @@ class ConfigTest extends BaseTest
     {
         Assert::assertEquals('very six', Config::get('@app.imi'));
         Assert::assertEquals('666', Config::get('@app.yurun')); // .env
+        Assert::assertEquals('777', Config::get('@app.yurun2')); // .env
         Assert::assertEquals('default', Config::get('@app.none', 'default'));
     }
 

@@ -110,7 +110,18 @@ return [
 
 ### .env
 
-在 `.env` 中的配置方式，和`Config::set()`写法类似，支持`@app`等写法。
+在 `.env` 中的配置方式，支持两种写法。
+
+写法一：直接注入配置，和`Config::set()`写法类似，支持`@app`等写法。
+
+写法二：传统方式，如设定一个`ABC=123`，在配置文件中：
+
+```php
+return [
+    'abc2'   =>  getenv('ABC'), // PHP 内置
+    'abc1'   =>  imiGetEnv('ABC', 'default'), // imi 框架封装，支持第二个参数为默认值
+];
+```
 
 如下，是设置连接池的uri例子：
 

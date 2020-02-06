@@ -14,6 +14,7 @@ use Imi\Cache\CacheManager;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Config\Dotenv\Dotenv;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Util\Text;
@@ -114,6 +115,9 @@ abstract class App
         AnnotationManager::init();
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
+        // .env
+        $dotenv = new Dotenv(Imi::getNamespacePaths(static::$namespace));
+        $dotenv->init();
         // 初始化Main类
         static::initMains();
         // 框架运行时缓存支持
