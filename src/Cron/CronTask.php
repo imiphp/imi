@@ -81,6 +81,13 @@ class CronTask
     private $lastRunTime = -1;
 
     /**
+     * 每次启动服务强制执行
+     *
+     * @var boolean
+     */
+    private $force = false;
+
+    /**
      * 构造方法
      *
      * @param string $id
@@ -92,8 +99,9 @@ class CronTask
      * @param string|null $unique
      * @param string|null $redisPool
      * @param float $lockWaitTimeout
+     * @param bool $force
      */
-    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3)
+    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
     {
         $this->id = $id;
         $this->type = $type;
@@ -104,6 +112,7 @@ class CronTask
         $this->redisPool = $redisPool;
         $this->lockWaitTimeout = $lockWaitTimeout;
         $this->maxExecutionTime = $maxExecutionTime;
+        $this->force = $force;
     }
 
     /**
@@ -235,4 +244,13 @@ class CronTask
         $this->lastRunTime = $time;
     }
 
+    /**
+     * Get 每次启动服务强制执行
+     *
+     * @return boolean
+     */ 
+    public function getForce()
+    {
+        return $this->force;
+    }
 }

@@ -57,7 +57,7 @@ class CronManager
         $this->realTasks = [];
         foreach($this->tasks as $id => $task)
         {
-            $this->realTasks[$id] = new CronTask($id, $task['type'], $task['task'], $task['cron'], $task['data'] ?? null, $task['lockExpire'] ?? 120, $task['unique'] ?? false, $task['redisPool'] ?? null, $task['lockWaitTimeout'] ?? 10);
+            $this->realTasks[$id] = new CronTask($id, $task['type'], $task['task'], $task['cron'], $task['data'] ?? null, $task['lockExpire'] ?? 120, $task['unique'] ?? false, $task['redisPool'] ?? null, $task['lockWaitTimeout'] ?? 10, $task['force'] ?? false);
         }
     }
 
@@ -73,15 +73,16 @@ class CronManager
      * @param string|null $unique
      * @param string|null $redisPool
      * @param float $lockWaitTimeout
+     * @param bool $force
      * @return void
      */
-    public function addCron(string $id, string $type, $task, array $cronRules, $data, float $lockExpire = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3)
+    public function addCron(string $id, string $type, $task, array $cronRules, $data, float $lockExpire = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
     {
         if(isset($this->tasks[$id]))
         {
             throw new \RuntimeException(sprintf('Cron id %s already exists', $id));
         }
-        $this->realTasks[$id] = new CronTask($id, $type, $task, $cronRules, $data, $lockExpire, $unique, $redisPool, $lockWaitTimeout);
+        $this->realTasks[$id] = new CronTask($id, $type, $task, $cronRules, $data, $lockExpire, $unique, $redisPool, $lockWaitTimeout, $force);
     }
 
     /**

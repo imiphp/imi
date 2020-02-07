@@ -52,7 +52,7 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 
 注解 `@Cron`，类 `Imi\Cron\Annotation\Cron`
 
-`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="")`
+`@Cron(id="任务唯一ID", type="", year="", month="", day="", hour="", minute="", second="", unique=null, redisPool="", lockWaitTimeout="", maxExecutionTime="", force=false)`
 
 ##### 属性
 
@@ -73,6 +73,10 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 `task`-后台任务
 
 `process`-进程
+
+###### force
+
+每次启动服务强制执行，默认为`false`
 
 ###### year
 
@@ -231,6 +235,7 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
                 'redisPool'         =>  'redis',
                 'lockWaitTimeout'   =>  10,
                 'maxExecutionTime'  =>  120,
+                'force'             =>  false,
             ],
         ],
     ],

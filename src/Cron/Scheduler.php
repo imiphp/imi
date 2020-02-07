@@ -74,6 +74,13 @@ class Scheduler
      */
     private $runningTasks = [];
 
+    /**
+     * 是否首轮运行
+     *
+     * @var boolean
+     */
+    private $first = true;
+
     public function __construct()
     {
         $this->coPool = new CoPool($this->poolCoCount, $this->poolQueueLength,
@@ -153,12 +160,13 @@ class Scheduler
             {
                 $this->nextTickTimeMap[$id] = $this->cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             }
-            if($now >= $this->nextTickTimeMap[$id])
+            if(($this->first && $task->getForce()) || $now >= $this->nextTickTimeMap[$id])
             {
                 unset($this->nextTickTimeMap[$id]);
                 yield $task;
             }
         }
+        $this->first = false;
     }
 
     /**

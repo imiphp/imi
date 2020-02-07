@@ -36,6 +36,13 @@ class Cron extends Base
     public $data;
 
     /**
+     * 每次启动服务强制执行
+     *
+     * @var boolean
+     */
+    public $force = false;
+
+    /**
      * 年
      * 
      * 指定任务执行年份，默认为 `*`。

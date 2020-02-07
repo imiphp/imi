@@ -129,7 +129,7 @@ class Init implements IEventListener
                 'hour'      =>  $cron->hour,
                 'minute'    =>  $cron->minute,
                 'second'    =>  $cron->second,
-            ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout);
+            ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout, $cron->force);
         }
     }
 
