@@ -352,15 +352,11 @@ abstract class Imi
     {
         if(isset($_SERVER['_']) && realpath($_SERVER['SCRIPT_FILENAME']) === ($path = realpath($_SERVER['_'])))
         {
-            $cmd = $path;
+            $cmd = '"' . $path . '"';
         }
         else
         {
-            $cmd = ($path ?? 'php') . ' ' . $_SERVER['argv'][0];
-        }
-        if('"' !== $cmd[0] && '"' !== substr($cmd, -1, 1) && false === strpos($cmd, ' /'))
-        {
-            $cmd = '"' . $cmd . '"';
+            $cmd = '"' . ($path ?? 'php') . '" "' . $_SERVER['argv'][0] . '"';
         }
         $cmd .= ' ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
