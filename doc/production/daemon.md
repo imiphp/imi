@@ -19,6 +19,8 @@ Restart=always
 WantedBy=multi-user.target graphical.target
 ```
 
+> 修改`ExecStart`为你的启动命令，该文件适用于任何应用，不仅限于 imi 项目
+
 启用服务：`systemctl --user enable $PWD/test.service`
 
 启动服务：`systemctl start test`
