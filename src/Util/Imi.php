@@ -358,7 +358,11 @@ abstract class Imi
         {
             $cmd = ($path ?? 'php') . ' ' . $_SERVER['argv'][0];
         }
-        $cmd = '"' . $cmd . '" ' . $toolName . '/' . $operation;
+        if('"' !== $cmd[0] && '"' !== substr($cmd, -1, 1) && false === strpos($cmd, ' /'))
+        {
+            $cmd = '"' . $cmd . '"';
+        }
+        $cmd .= ' ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
