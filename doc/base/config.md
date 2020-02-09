@@ -81,8 +81,8 @@ return [
     'mainServer'	=>	[
         // 指定服务器命名空间
         'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
-        // 服务器类型，暂时仅支持Type::HTTP
-        'type'		=>	Type::HTTP,
+        // 服务器类型(http/WebSocket/TcpServer/UdpServer)
+        'type'		=>	\Imi\Server\Type::HTTP,
         // 监听的IP地址，可选
         'host'		=>	'0.0.0.0',
         // 监听的端口
