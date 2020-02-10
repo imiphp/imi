@@ -25,6 +25,22 @@ class ViewTest extends BaseTest
         Assert::assertEquals('<p>tpl2:' . date('Y-m-d H:i:s', $time) . '</p>', $response->body());
     }
 
+    public function testRenderHtml1()
+    {
+        $http = new HttpRequest;
+        $time = time();
+        $response = $http->get($this->host . 'renderHtml1');
+        Assert::assertEquals('hello yurun', $response->body());
+    }
+
+    public function testRrenderHtml2()
+    {
+        $http = new HttpRequest;
+        $time = time();
+        $response = $http->get($this->host . 'renderHtml2');
+        Assert::assertEquals('imi niubi', $response->body());
+    }
+
     public function testJson()
     {
         $http = new HttpRequest;

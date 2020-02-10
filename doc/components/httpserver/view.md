@@ -115,7 +115,8 @@ return [
 
 ### 使用方式
 
-#### 控制器-动作
+#### 通过注解配置
+
 ```php
 /**
  * @Action
@@ -126,6 +127,20 @@ public function index()
 	return [
 		'content'	=>	'hello imi',
 	];
+}
+```
+
+#### 语句动态渲染
+
+```php
+/**
+ * @Action
+ */
+public function index()
+{
+	return $this->__render('a/b', [
+		'content'	=>	'hello imi',
+	]);
 }
 ```
 

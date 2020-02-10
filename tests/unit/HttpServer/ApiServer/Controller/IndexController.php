@@ -79,6 +79,30 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
+    public function renderHtml1()
+    {
+        return $this->__render('test/a', [
+            'name'  =>  'yurun',
+        ]);
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
+    public function renderHtml2()
+    {
+        return $this->__render(dirname(__DIR__, 2) . '/template/b.html', [
+            'name'  =>  'imi',
+        ]);
+    }
+
+    /**
+     * @Action
+     *
+     * @return void
+     */
     public function json($time)
     {
         return [
