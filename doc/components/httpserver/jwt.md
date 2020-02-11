@@ -107,9 +107,24 @@ $token = JWT::getToken($data, 'a', function(\Lcobucci\JWT\Builder $builder){
 ```php
 use \Imi\JWT\Facade\JWT;
 /** @var \Lcobucci\JWT\Token $token */
-$token = JWT::parseToken($jwt);
+$token = JWT::parseToken($jwt); // 仅验证是否合法
 // $token = JWT::parseToken($jwt, 'a'); // 指定配置名称
 $data = $token->getClaim('data'); // 获取往token里丢的数据
+
+// 验证有效期、id、issuer、audience、subject
+$validationData = new \Lcobucci\JWT\ValidationData;
+$validationData->setId('');
+$validationData->setIssuer('');
+$validationData->setAudience('');
+$validationData->setSubject('');
+if($token->validate($validationData))
+{
+    // 合法
+}
+else
+{
+    // 不合法
+}
 ```
 
 注解验证：
@@ -148,5 +163,9 @@ JWT 验证注解
 | 属性名称 | 说明 |
 |-|-
 | name | JWT 配置名称 |
+| id | 验证 ID。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
+| issuer | 验证发行人。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
+| audience | 验证接收。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
+| subject | 验证主题。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
 | tokenParam | Token 对象注入的参数名称 |
 | dataParam | 数据注入的参数名称 |
