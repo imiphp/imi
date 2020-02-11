@@ -389,7 +389,7 @@ abstract class Model extends BaseModel
             'model' => $this,
             'data'  => $data,
             'result'=> $result,
-        ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
+        ], $this, \Imi\Model\Event\Param\AfterSaveEventParam::class);
 
         return $result;
     }
