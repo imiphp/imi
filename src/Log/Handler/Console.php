@@ -28,7 +28,7 @@ class Console extends Base
             {
                 $content = mb_substr($content, 0, $this->length) . '...';
             }
-            echo $content, PHP_EOL;
+            fwrite(STDOUT, $content . PHP_EOL);
         }
     }
 }
