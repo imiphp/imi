@@ -678,8 +678,11 @@ abstract class Imi
         $path = is_dir('/dev/shm') ? '/dev/shm' : '/tmp';
         $fileName = tempnam($path, 'imi-');
         file_put_contents($fileName, '<?php ' . $code);
-        $result = require $fileName;
-        unlink($fileName);
+        try {
+            $result = require $fileName;
+        } finally {
+            unlink($fileName);
+        }
         return $result;
     }
 
