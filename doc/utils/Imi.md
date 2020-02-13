@@ -68,3 +68,11 @@ echo Imi::getClassPropertyValue('ServerGroup', 'groupHandler');
 // php /mnt/d/projects/imi-demo/HttpDemo/bin/imi server/reload
 echo Imi::getImiCmd('server', 'reload');
 ```
+
+### eval
+
+`eval()` 函数的安全替代方法
+
+```php
+Imi::eval('echo "hello imi";');
+```

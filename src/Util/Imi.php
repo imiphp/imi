@@ -667,4 +667,20 @@ abstract class Imi
         return 'Linux' === PHP_OS && version_compare(php_uname('r'), '3.9', '>=');
     }
 
+    /**
+     * eval() 函数的安全替代方法
+     *
+     * @param string $code
+     * @return mixed
+     */
+    public static function eval(string $code)
+    {
+        $path = is_dir('/dev/shm') ? '/dev/shm' : '/tmp';
+        $fileName = tempnam($path, 'imi-');
+        file_put_contents($fileName, '<?php ' . $code);
+        $result = require $fileName;
+        unlink($fileName);
+        return $result;
+    }
+
 }

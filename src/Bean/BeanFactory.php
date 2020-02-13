@@ -42,7 +42,7 @@ abstract class BeanFactory
             $ref = new \ReflectionClass($class);
             $className = static::getNewClassName($ref->getShortName());
             $tpl = static::getTpl($ref, $className);
-            eval($tpl);
+            Imi::eval($tpl);
             static::$classNameMap[$class] = $className;
         }
         $object = new static::$classNameMap[$class](...$args);
@@ -64,7 +64,7 @@ abstract class BeanFactory
             $ref = new \ReflectionClass($class);
             $className = static::getNewClassName($ref->getShortName());
             $tpl = static::getTpl($ref, $className);
-            eval($tpl);
+            Imi::eval($tpl);
             static::$classNameMap[$class] = $className;
         }
         return new static::$classNameMap[$class](...$args);
