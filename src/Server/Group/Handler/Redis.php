@@ -300,14 +300,8 @@ class Redis implements IGroupHandler
     {
         $this->useRedis(function($resource, $redis) use($groupName){
             $key = $this->getGroupNameKey($groupName);
-            try{
-                $redis->del($key);
-                $redis->sRem($this->getGroupsKey(), $groupName);
-            }
-            catch(\Throwable $ex)
-            {
-
-            }
+            $redis->del($key);
+            $redis->sRem($this->getGroupsKey(), $groupName);
         });
     }
 
