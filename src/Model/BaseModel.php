@@ -173,7 +173,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         if(null !== $column && 'bit' === $column->type)
         {
-            $value = (1 == $value || chr(1) == $value);
+            $value = (1 == $value || chr(1) === $value);
         }
 
         $methodName = 'set' . ucfirst($camelName);
