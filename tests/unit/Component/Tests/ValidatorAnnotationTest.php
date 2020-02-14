@@ -33,6 +33,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->requiredFail();
         $this->numberFail();
         $this->textFail();
+        $this->textCharFail();
         $this->validateValueFail();
         $this->optional();
     }
@@ -81,6 +82,7 @@ class ValidatorAnnotationTest extends BaseTest
             'required'      =>  '',
             'number'        =>  1,
             'text'          =>  'imiphp.com',
+            'chars'         =>  'imiphp.com',
             'validateValue' =>  -1,
             'optional'      =>  1,
         ];
@@ -166,6 +168,22 @@ class ValidatorAnnotationTest extends BaseTest
         $this->data['text'] = '1234567890123';
         $this->assertFalse($this->tester->validate());
         $this->assertEquals('text参数长度必须>=6 && <=12', $this->tester->getMessage());
+    }
+
+    private function textCharFail()
+    {
+        $this->initData();
+
+        $this->data['chars'] = '这个可以通过';
+        $this->assertTrue($this->tester->validate());
+
+        $this->data['chars'] = '测试不通过';
+        $this->assertFalse($this->tester->validate());
+        $this->assertEquals('chars参数长度必须>=6 && <=12', $this->tester->getMessage());
+
+        $this->data['chars'] = '测试不通过测试不通过测试不通过';
+        $this->assertFalse($this->tester->validate());
+        $this->assertEquals('chars参数长度必须>=6 && <=12', $this->tester->getMessage());
     }
 
     private function validateValueFail()

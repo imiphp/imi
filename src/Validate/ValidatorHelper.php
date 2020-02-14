@@ -555,4 +555,26 @@ class ValidatorHelper
             return false;
         }
     }
+
+    /**
+     * 文本验证
+     *
+     * @param string $str
+     * @param integer $min
+     * @param integer|null $max
+     * @param boolean $char
+     * @return bool
+     */
+    public static function text(string $str, int $min, ?int $max = null, bool $char = false): bool
+    {
+        if($char)
+        {
+            return static::lengthChar($str, $min, $max);
+        }
+        else
+        {
+            return static::length($str, $min, $max);
+        }
+    }
+
 }

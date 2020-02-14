@@ -14,6 +14,15 @@ use Imi\Bean\Annotation\Parser;
 class Text extends Condition
 {
     /**
+     * 是否为字符模式，默认为 false
+     * 设为 true 则使用字符判断长度
+     * 设为 false 则使用字节判断长度
+     *
+     * @var boolean
+     */
+    public $char = false;
+
+    /**
      * 最短长度
      *
      * @var int
@@ -32,7 +41,7 @@ class Text extends Condition
      *
      * @var callable
      */
-    public $callable = '\Imi\Validate\ValidatorHelper::length';
+    public $callable = '\Imi\Validate\ValidatorHelper::text';
 
     /**
      * 参数名数组
@@ -43,5 +52,6 @@ class Text extends Condition
         '{:value}',
         '{min}',
         '{max}',
+        '{char}',
     ];
 }
