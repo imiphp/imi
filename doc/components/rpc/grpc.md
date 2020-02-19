@@ -220,3 +220,7 @@ class Test
 
 `@GrpcService` 注解的 `serviceName` 属性格式为 `{package}.{service}`；
 `interface` 属性是生成出来的服务接口类名
+
+**↓↓↓注意↓↓↓：**
+
+> 使用 `@GrpcService` 注解注入时，如果调用的 `grpc` 接口方法名是：`getName`、`send`、`recv`、`call`、`getClient`，请使用 `call` 方法来调用，因为这和内置方法名相冲突了。
