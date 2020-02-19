@@ -21,15 +21,16 @@ namespace Imi\Test\Component\Partial\Partial
 
 namespace Imi\Test\Component\Partial\Classes
 {
-    return;
-
-    class PartialClassA
+    if(false)
     {
-        public $test2Value;
-
-        public function test2()
+        class PartialClassA
         {
-
+            public $test2Value;
+    
+            public function test2()
+            {
+    
+            }
         }
     }
 

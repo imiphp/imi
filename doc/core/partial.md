@@ -69,15 +69,17 @@ namespace Imi\Test\Component\Partial\Partial
 // 以下为方便 IDE 提示而写，非必须
 namespace Imi\Test\Component\Partial\Classes
 {
-    return; // 必须有，否则会出现重复定义类错误
-
-    class PartialClassA
+    // 必须用这个括起来，代码不会执行，但是 IDE 提示有效
+    if(false)
     {
-        public $test2Value;
-
-        public function test2()
+        class PartialClassA
         {
+            public $test2Value;
 
+            public function test2()
+            {
+
+            }
         }
     }
 
@@ -88,7 +90,7 @@ namespace Imi\Test\Component\Partial\Classes
 
 * 命名空间 `namespace` 必须用 `{}` 括起来。
 
-* 下面一部分代码是为方便 IDE 提示而写，非必须。如果写，则必须在里面写 `return;`，否则会出现重复定义类错误！
+* 下面一部分代码是为方便 IDE 提示而写，非必须。如果写，则必须在里面写 `if(false){}`，否则会出现重复定义类错误！
 
 * 被注入的类、`Partial` 定义类，必须能被配置文件中配置的 `beanScan` 扫描到。
 
