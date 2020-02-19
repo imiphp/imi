@@ -12,6 +12,7 @@ use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\Annotation\AnnotationManager;
 use \Swoole\Coroutine;
 use Imi\Aop\PointCutType;
+use Imi\Bean\Parser\PartialParser;
 
 abstract class BeanFactory
 {
@@ -146,11 +147,43 @@ TPL;
             $constructDefine = '...$args';
             $aopConstruct = '';
         }
+        // partial 处理
+        $classes = [$class];
+        $parentClass = $ref;
+        while($parentClass = $parentClass->getParentClass())
+        {
+            $classes[] = $parentClass->getName();
+        }
+        if(isset($classes[1]))
+        {
+            $classes = array_reverse(array_unique($classes));
+        }
+        $partialData = PartialParser::getInstance()->getData();
+        $traits = [];
+        foreach($classes as $currentClass)
+        {
+            if(isset($partialData[$currentClass]))
+            {
+                $traits[] = $partialData[$currentClass];
+            }
+        }
+        if($traits)
+        {
+            $traits = array_unique(array_merge(...$traits));
+            $traitsTpl = 'use ' . implode(',', $traits) . ';';
+        }
+        else
+        {
+            $traitsTpl = '';
+        }
+
         $parentClone = $ref->hasMethod('__clone') ? "{$class}::__clone();" : '';
         // 类模版定义
         $tpl = <<<TPL
 class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 {
+    {$traitsTpl}
+
     protected \$beanProxy;
 
     public function __construct({$constructDefine})

@@ -12,6 +12,7 @@
 
 * [生命周期](core/lifeCycle.md)
 * [容器](core/container.md)
+* [Partial](core/partial.md)
 * [事件](core/events.md)
 * [中间件](core/middleware.md)
 * [进程名称管理](core/processNameManager.md)
