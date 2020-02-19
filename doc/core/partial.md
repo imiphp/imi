@@ -86,6 +86,18 @@ namespace Imi\Test\Component\Partial\Classes
 }
 ```
 
+调用：
+
+```php
+/** @var \Imi\Test\Component\Partial\Classes\PartialClassA $test */
+$test = App::getBean('PartialClassA');
+var_dump($test->test1());
+// 原类中没定义，但通过 partial 可以正常调用
+// 通过反射也可以获取到，是实实在在存在的方法和属性
+var_dump($test->test2());
+var_dump($test->test2Value);
+```
+
 注意事项：
 
 * 命名空间 `namespace` 必须用 `{}` 括起来。
