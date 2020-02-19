@@ -118,7 +118,7 @@ abstract class BeanFactory
         {
             $paramsTpls = static::getMethodParamTpls($constructMethod);
             $constructDefine = $paramsTpls['define'];
-            $construct = "{$class}::__construct({$paramsTpls['call']});";
+            $construct = "parent::__construct({$paramsTpls['call']});";
             if(static::hasAop($ref, '__construct'))
             {
                 $aopConstruct = <<<TPL
@@ -130,7 +130,7 @@ abstract class BeanFactory
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
                 {$paramsTpls['set_args']}
-                return {$class}::__construct(...\$__args__);
+                return parent::__construct(...\$__args__);
             },
             \$__args__
         );
@@ -177,7 +177,7 @@ TPL;
             $traitsTpl = '';
         }
 
-        $parentClone = $ref->hasMethod('__clone') ? "{$class}::__clone();" : '';
+        $parentClone = $ref->hasMethod('__clone') ? "parent::__clone();" : '';
         // 类模版定义
         $tpl = <<<TPL
 class {$newClassName} extends {$class} implements \Imi\Bean\IBean
@@ -211,7 +211,6 @@ TPL;
      */
     private static function getMethodsTpl($ref)
     {
-        $class = $ref->getName();
         $tpl = '';
         foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
         {
@@ -227,15 +226,14 @@ TPL;
     {
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
-        \$__callback__ = function({$paramsTpls['define']}){
-            \$__args__ = func_get_args();
-            {$paramsTpls['set_args']}
-            return {$class}::{$method->name}(...\$__args__);
-        };
         \$__result__ = \$this->beanProxy->call(
             \$this,
             '{$method->name}',
-            \$__callback__,
+            function({$paramsTpls['define']}){
+                \$__args__ = func_get_args();
+                {$paramsTpls['set_args']}
+                return parent::{$method->name}(...\$__args__);
+            },
             \$__args__
         );
         {$paramsTpls['set_args_back']}
