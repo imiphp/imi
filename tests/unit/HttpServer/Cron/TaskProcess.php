@@ -9,7 +9,7 @@ use Imi\Process\Annotation\Process;
 use Swoole\Event;
 
 /**
- * @Cron(id="CronProcess", second="3n")
+ * @Cron(id="CronProcess1", second="3n")
  * @Process("CronProcess1")
  */
 class TaskProcess implements IProcess
