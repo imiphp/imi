@@ -9,6 +9,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Process\BaseProcess;
 use Imi\Bean\Annotation\Bean;
 use Imi\Aop\Annotation\Inject;
+use Imi\Log\Log;
 use Swoole\Event as SwooleEvent;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Process\Annotation\Process;
@@ -107,6 +108,20 @@ class HotUpdateProcess extends BaseProcess
     private $beginTime;
 
     /**
+     * 是否正在构建中
+     *
+     * @var boolean
+     */
+    private $building = false;
+
+    /**
+     * 构建运行时计时器ID
+     *
+     * @var int
+     */
+    private $buildRuntimeTimerId;
+
+    /**
      * @PoolClean
      *
      * @param \Swoole\Process $process
@@ -131,11 +146,27 @@ class HotUpdateProcess extends BaseProcess
         $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
         $this->initBuildRuntime();
-        Timer::tick(1000, [$this, 'buildRuntimeTimer']);
+        $this->startBuildRuntimeTimer();
         while(true)
         {
             // 检测间隔延时
-            usleep(min(max($this->timespan - (microtime(true) - $time), $this->timespan), $this->timespan) * 1000000);
+            if($this->timespan > 0)
+            {
+                $time = $this->timespan - (microtime(true) - $time);
+                if($time <= 0)
+                {
+                    $time = 10000;
+                }
+                else
+                {
+                    $time *= 1000000;
+                }
+            }
+            else
+            {
+                $time = 10000;
+            }
+            usleep($time);
             $time = microtime(true);
             // 检查文件是否有修改
             if($monitor->isChanged())
@@ -144,10 +175,36 @@ class HotUpdateProcess extends BaseProcess
                 echo 'Found ', count($changedFiles) , ' changed Files:', PHP_EOL, implode(PHP_EOL, $changedFiles), PHP_EOL;
                 file_put_contents($this->changedFilesFile, implode("\n", $changedFiles));
                 echo 'Building runtime...', PHP_EOL;
+                if($this->building)
+                {
+                    $this->stopBuildRuntimeTimer();
+                    $this->initBuildRuntime();
+                    $this->startBuildRuntimeTimer();
+                }
                 $this->beginTime = microtime(true);
                 $this->beginBuildRuntime($changedFiles);
             }
         }
+    }
+
+    /**
+     * 开始构建运行时计时器
+     *
+     * @return void
+     */
+    private function startBuildRuntimeTimer()
+    {
+        $this->buildRuntimeTimerId = Timer::tick(1000, [$this, 'buildRuntimeTimer']);
+    }
+
+    /**
+     * 停止构建运行时计时器
+     *
+     * @return void
+     */
+    private function stopBuildRuntimeTimer()
+    {
+        Timer::clear($this->buildRuntimeTimerId);
     }
 
     /**
@@ -214,14 +271,28 @@ class HotUpdateProcess extends BaseProcess
         {
             return $result;
         }
+        $this->building = true;
         $data = [
             'action'    =>  'buildRuntime',
         ];
         $content = serialize($data);
         $content = pack('N', strlen($content)) . $content;
-        foreach($this->conns as $conn)
+        $whileCount = 0;
+        while(($count = count($this->conns)) <= 0 && $whileCount < 100)
         {
-            fwrite($conn, $content);
+            usleep(10000);
+            ++$whileCount;
+        }
+        if($count > 0)
+        {
+            foreach($this->conns as $conn)
+            {
+                fwrite($conn, $content);
+            }
+        }
+        else
+        {
+            Log::warning('Not found buildRuntime tool connection');
         }
     }
 
@@ -232,31 +303,34 @@ class HotUpdateProcess extends BaseProcess
      */
     private function closeBuildRuntime()
     {
-        $closePipes = function(){
-            if(null !== $this->buildRuntimePipes)
+        $closePipes = function($buildRuntimePipes){
+            if(null !== $buildRuntimePipes)
             {
-                foreach($this->buildRuntimePipes as $pipe)
+                foreach($buildRuntimePipes as $pipe)
                 {
                     fclose($pipe);
                 }
-                $this->buildRuntimePipes = null;
             }
         };
-        if(null !== $this->buildRuntimeHandler)
+        if($this->buildRuntimeHandler)
         {
-            $status = proc_get_status($this->buildRuntimeHandler);
+            $buildRuntimeHandler = $this->buildRuntimeHandler;
+            $buildRuntimePipes = $this->buildRuntimePipes;
+            $status = proc_get_status($buildRuntimeHandler);
             if($status['running'] ?? false)
             {
                 $writeContent = "n\n";
-                fwrite($this->buildRuntimePipes[0], $writeContent);
+                fwrite($buildRuntimePipes[0], $writeContent);
             }
-            $closePipes();
-            proc_close($this->buildRuntimeHandler);
             $this->buildRuntimeHandler = null;
+            $this->buildRuntimePipes = null;
+            $closePipes($buildRuntimePipes);
+            proc_close($buildRuntimeHandler);
         }
         else
         {
-            $closePipes();
+            $closePipes($this->buildRuntimePipes);
+            $this->buildRuntimePipes = null;
         }
     }
 
@@ -334,6 +408,7 @@ class HotUpdateProcess extends BaseProcess
                     switch($result['action'] ?? null)
                     {
                         case 'buildRuntimeResult':
+                            $this->building = false;
                             if("Build app runtime complete" !== trim($result['result']))
                             {
                                 echo $result['result'], PHP_EOL, 'Build runtime failed!', PHP_EOL;
