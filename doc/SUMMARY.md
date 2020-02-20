@@ -174,6 +174,10 @@
 * [Docker](production/docker.md)
 * [守护进程](production/daemon.md)
 
-## 全文搜索
+## Swoole 协程化组件
 
+* [Guzzle](other/guzzle.md)
 * [ElasticSearch](other/elasticsearch.md)
+* [YurunHttp](other/yurunhttp.md)
+* [第三方授权 SDK](other/yurun-oauth-login.md)
+* [第三方支付 SDK](other/paysdk.md)
