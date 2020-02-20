@@ -48,6 +48,10 @@ class Inotify extends BaseMonitor
         $this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
         foreach($this->includePaths as $path)
         {
+            if(!is_dir($path))
+            {
+                continue;
+            }
             \inotify_add_watch($this->handler, $path, $this->mask);
             $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO);
             $iterator = new \RecursiveIteratorIterator($directory);
