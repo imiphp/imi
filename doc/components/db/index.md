@@ -524,11 +524,12 @@ $page = 1;
 $count = 10;
 $data = Db::query()->from('xxxtable')->paginate($page, $count);
 
-$result->getList(); // 列表数据
-$result->getTotal(); // 总记录数
-$result->getLimit(); // $count === 10
-$result->getPageCount(); // 总页数
+$data->getList(); // 列表数据
+$data->getTotal(); // 总记录数
+$data->getLimit(); // $count === 10
+$data->getPageCount(); // 总页数
 
+var_dump($data->toArray()); // 转数组
 var_dump(json_encode($result)); // 支持序列化
 // 数据格式如下：
 [
@@ -547,6 +548,7 @@ $count = 10;
 $data = Db::query()->from('xxxtable')->paginate($page, $count, [
     'total' =>  false,
 ]);
+var_dump($data->toArray()); // 转数组
 var_dump(json_encode($result)); // 支持序列化
 // 数据格式如下：
 [
