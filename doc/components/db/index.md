@@ -530,7 +530,7 @@ $data->getLimit(); // $count === 10
 $data->getPageCount(); // 总页数
 
 var_dump($data->toArray()); // 转数组
-var_dump(json_encode($result)); // 支持序列化
+var_dump(json_encode($data)); // 支持序列化
 // 数据格式如下：
 [
     'list'          => [],
@@ -549,7 +549,7 @@ $data = Db::query()->from('xxxtable')->paginate($page, $count, [
     'total' =>  false,
 ]);
 var_dump($data->toArray()); // 转数组
-var_dump(json_encode($result)); // 支持序列化
+var_dump(json_encode($data)); // 支持序列化
 // 数据格式如下：
 [
     'list'          => [],
