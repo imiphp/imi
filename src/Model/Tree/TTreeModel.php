@@ -12,31 +12,13 @@ use Imi\Util\ArrayUtil;
 trait TTreeModel
 {
     /**
-     * TreeModel 注解
-     *
-     * @var \Imi\Model\Tree\Annotation\TreeModel
-     */
-    private $treeModel;
-
-    /**
-     * 主键字段名
-     *
-     * @var string
-     */
-    private $idField;
-
-    /**
      * 获取 TreeModel 注解
      *
      * @return \Imi\Model\Tree\Annotation\TreeModel
      */
-    private function __getTreeModel()
+    private static function __getTreeModel()
     {
-        if(null === $this->treeModel)
-        {
-            $this->treeModel = ModelManager::getAnnotation($this, TreeModel::class);
-        }
-        return $this->treeModel;
+        return ModelManager::getAnnotation(static::__getRealClassName(), TreeModel::class);
     }
 
     /**
@@ -44,20 +26,17 @@ trait TTreeModel
      *
      * @return string
      */
-    private function __getIdField()
+    private static function __getIdField()
     {
-        if(null === $this->idField)
+        $treeModel = static::__getTreeModel();
+        if($treeModel->idField)
         {
-            if($this->treeModel->idField)
-            {
-                $this->idField = $this->treeModel->idField;
-            }
-            else
-            {
-                $this->idField = $this->__getMeta()->getFirstId();
-            }
+            return $treeModel->idField;
         }
-        return $this->idField;
+        else
+        {
+            return static::__getMeta()->getFirstId();
+        }
     }
 
     /**
@@ -90,7 +69,7 @@ trait TTreeModel
 	 */
 	public function getChildrenIds($parentId = null, $includeParentId = false, $limitLevel = -1)
 	{
-        $idField = $this->__getIdField();
+        $idField = static::__getIdField();
 		if(is_array($parentId))
 		{
 			$ids = $parentId;
@@ -113,7 +92,7 @@ trait TTreeModel
             $idsList2 = [];
         }
         $level = 1;
-        $parentField = $this->__getTreeModel()->parentField;
+        $parentField = static::__getTreeModel()->parentField;
         do {
             $i = null;
             foreach($idsList as $i => $ids)
@@ -146,8 +125,8 @@ trait TTreeModel
 	 */
 	public function getChildIds($parentId = null)
 	{
-        $idField = $this->__getIdField();
-		return static::query()->field($idField)->where($this->__getTreeModel()->parentField, '=', $parentId ?? $this[$idField])->select()->getColumn();
+        $idField = static::__getIdField();
+		return static::query()->field($idField)->where(static::__getTreeModel()->parentField, '=', $parentId ?? $this[$idField])->select()->getColumn();
 	}
 
     /**
@@ -164,7 +143,7 @@ trait TTreeModel
         {
             return [];
         }
-        return static::query()->whereIn($this->__getIdField(), $ids)->select()->getArray();
+        return static::query()->whereIn(static::__getIdField(), $ids)->select()->getArray();
     }
 
     /**
@@ -174,7 +153,7 @@ trait TTreeModel
      */
     public function getParent()
     {
-        return static::find($this[$this->__getTreeModel()->parentField]);
+        return static::find($this[static::__getTreeModel()->parentField]);
     }
 
     /**
@@ -186,7 +165,7 @@ trait TTreeModel
     {
         $parents = [];
         $treeItem = $this;
-        $parentField = $this->__getTreeModel()->parentField;
+        $parentField = static::__getTreeModel()->parentField;
         do {
             $treeItem = static::find($treeItem[$parentField]);
             if(!$treeItem)
