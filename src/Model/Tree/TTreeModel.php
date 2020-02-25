@@ -48,7 +48,14 @@ trait TTreeModel
     {
         if(null === $this->idField)
         {
-            $this->idField = $this->__getMeta()->getFirstId();
+            if($this->treeModel->idField)
+            {
+                $this->idField = $this->treeModel->idField;
+            }
+            else
+            {
+                $this->idField = $this->__getMeta()->getFirstId();
+            }
         }
         return $this->idField;
     }

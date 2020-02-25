@@ -6,6 +6,16 @@
 
 ## 定义模型
 
+引入 `trait`：`Imi\Model\Tree\TTreeModel`
+
+类上加上 `@TreeModel` 注解，类：`Imi\Model\Tree\Annotation\TreeModel`
+
+| 属性名称 | 说明 |
+| ------------ | ------------ |
+| idField | 主键字段名，默认为null，则自动获取 |
+| parentField | 父级ID字段名 |
+| childrenField | 子集字段名 |
+
 ```php
 <?php
 namespace Imi\Test\Component\Model;
