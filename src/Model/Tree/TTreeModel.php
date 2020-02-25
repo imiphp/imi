@@ -51,8 +51,8 @@ trait TTreeModel
         {
             $query = static::query();
         }
-        $treeModel = ModelManager::getAnnotation(static::class, TreeModel::class);
-        $idField = static::__getMeta()->getFirstId();
+        $treeModel = static::__getTreeModel();
+        $idField = static::__getIdField();
         return ArrayUtil::toTreeAssoc($query->select()->getArray(), $idField, $treeModel->parentField, $treeModel->childrenField);
     }
 
