@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Redis;
 
+use Imi\App;
 use Imi\Pool\BasePoolResource;
 
 class RedisResource extends BasePoolResource
@@ -30,24 +31,28 @@ class RedisResource extends BasePoolResource
      */
     public function open()
     {
-        $result = $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['timeout'] ?? null);
-        if('' !== ($this->config['password'] ?? ''))
+        $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['timeout'] ?? null);
+        if(('' !== ($this->config['password'] ?? '')) && !$this->redis->auth($this->config['password']))
         {
-            $result = $result && $this->redis->auth($this->config['password']);
+            throw new \RedisException('Redis auth failed');
         }
-        if(isset($this->config['db']))
+        if(isset($this->config['db']) && !$this->redis->select($this->config['db']))
         {
-            $result = $result && $this->redis->select($this->config['db']);
+            throw new \RedisException('Redis select db failed');
         }
-        if($this->config['serialize'] ?? true)
+        $options = $this->config['options'] ?? [];
+        if(($this->config['serialize'] ?? true) && !isset($options[\Redis::OPT_SERIALIZER]))
         {
-            $result = $result && $this->redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
+            $options[\Redis::OPT_SERIALIZER] = \Redis::SERIALIZER_PHP;
         }
-        foreach($this->config['options'] ?? [] as $key => $value)
+        foreach($options as $key => $value)
         {
-            $this->redis->setOption($key, $value);
+            if(!$this->redis->setOption($key, $value))
+            {
+                throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', $key, $value));
+            }
         }
-        return $result;
+        return true;
     }
 
     /**
@@ -74,8 +79,15 @@ class RedisResource extends BasePoolResource
      */
     public function reset()
     {
-        $this->redis->select($this->config['db'] ?? 0);
-        $this->redis->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
+        if(!$this->redis->select($this->config['db'] ?? 0))
+        {
+            throw new \RedisException('Redis select db failed');
+        }
+        $optScan = $this->config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
+        if(!$this->redis->setOption(\Redis::OPT_SCAN, $optScan))
+        {
+            throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', \Redis::OPT_SCAN, $optScan));
+        }
     }
     
     /**
@@ -88,8 +100,10 @@ class RedisResource extends BasePoolResource
             $result = $this->redis->ping();
             // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
             return true === $result || '+PONG' === $result;
-        }catch(\Throwable $ex)
-        {
+        } catch(\Throwable $ex) {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($ex);
             return false;
         }
     }
