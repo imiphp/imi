@@ -235,7 +235,12 @@ class HttpRoute
      */
     private function parseRule($rule, &$fields)
     {
-        if(!isset($this->rulesCache[$rule]))
+        if(isset($this->rulesCache[$rule]))
+        {
+            $fields = $this->rulesCache[$rule]['fields'];
+            return $this->rulesCache[$rule]['pattern'];
+        }
+        else
         {
             $fields = [];
             if(false !== strpos($rule, '/'))
@@ -254,9 +259,8 @@ class HttpRoute
                 'pattern'   =>  $pattern,
                 'fields'    =>  $fields,
             ];
+            return $pattern;
         }
-        $fields = $this->rulesCache[$rule]['fields'];
-        return $this->rulesCache[$rule]['pattern'];
     }
 
     /**
