@@ -242,7 +242,7 @@ class HttpRoute
             {
                 $rule = str_replace('/', '\/', $rule);
             }
-            $this->rulesCache[$rule] = '/^' . preg_replace_callback(
+            $pattern = '/^' . preg_replace_callback(
                 '/\{([^:]+)(?::([^{}]*(?:\{(?-1)\}[^{}]*)*))?\}/',
                 function($matches)use(&$fields){
                     $fields[] = $matches[1];
@@ -250,8 +250,13 @@ class HttpRoute
                 },
                 $rule
             ) . '\/?$/';
+            $this->rulesCache[$rule] = [
+                'pattern'   =>  $pattern,
+                'fields'    =>  $fields,
+            ];
         }
-        return $this->rulesCache[$rule];
+        $fields = $this->rulesCache[$rule]['fields'];
+        return $this->rulesCache[$rule]['pattern'];
     }
 
     /**
