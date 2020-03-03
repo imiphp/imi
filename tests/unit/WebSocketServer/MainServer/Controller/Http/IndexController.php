@@ -38,4 +38,15 @@ class IndexController extends HttpController
 
     }
 
+    /**
+     * @Action
+     * @Route("/http")
+     *
+     * @return void
+     */
+    public function http()
+    {
+        return $this->response->write('http');
+    }
+
 }

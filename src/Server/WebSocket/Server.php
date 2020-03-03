@@ -3,14 +3,19 @@ namespace Imi\Server\WebSocket;
 
 use Imi\App;
 use Imi\Util\Bit;
+use Imi\Event\Event;
 use Imi\Server\Base;
 use Imi\ServerManage;
+use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
+use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Event\Param\MessageEventParam;
+use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Param\HandShakeEventParam;
+use Imi\Server\Event\Param\WorkerStartEventParam;
 
 /**
  * WebSocket 服务器类
@@ -26,6 +31,20 @@ class Server extends Base
     private $wss;
 
     /**
+     * 是否为 https 服务
+     *
+     * @var bool
+     */
+    private $https;
+
+    /**
+     * 是否为 http2 服务
+     *
+     * @var bool
+     */
+    private $http2;
+
+    /**
      * 创建 swoole 服务器对象
      * @return void
      */
@@ -33,7 +52,8 @@ class Server extends Base
     {
         $config = $this->getServerInitConfig();
         $this->swooleServer = new \Swoole\WebSocket\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
-        $this->wss = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->https = $this->wss = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
+        $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
     }
 
     /**
@@ -72,6 +92,11 @@ class Server extends Base
      */
     protected function __bindEvents()
     {
+        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function(WorkerStartEventParam $e){
+            // 内置事件监听
+            $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
+        });
+
         $server = $this->swoolePort ?? $this->swooleServer;
 
         if($event = ($this->config['events']['handshake'] ?? true))
@@ -122,6 +147,23 @@ class Server extends Base
                 }
             });
         }
+
+        if($event = ($this->config['events']['request'] ?? true))
+        {
+            $server->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+                try{
+                    $this->trigger('request', [
+                        'request'   => Request::getInstance($this, $swooleRequest),
+                        'response'  => Response::getInstance($this, $swooleResponse),
+                    ], $this, RequestEventParam::class);
+                }
+                catch(\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
+
     }
 
     /**
@@ -134,4 +176,23 @@ class Server extends Base
         return $this->wss;
     }
 
+    /**
+     * 是否为 https 服务
+     *
+     * @return bool
+     */ 
+    public function isHttps()
+    {
+        return $this->https;
+    }
+
+    /**
+     * 是否为 http2 服务
+     *
+     * @return bool
+     */ 
+    public function isHttp2()
+    {
+        return $this->http2;
+    }
 }

@@ -22,6 +22,16 @@ class HandShakeMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
+        if('websocket' !== $request->getHeaderLine('Upgrade'))
+        {
+            /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
+            $routeResult = RequestContext::get('routeResult');
+            if($routeResult->routeItem->wsConfig->wsOnly)
+            {
+                $response = $response->withStatus(StatusCode::BAD_REQUEST);
+            }
+            return $response;
+        }
         if(StatusCode::OK === $response->getStatusCode() && 'Upgrade' !== $response->getHeaderLine('Connection'))
         {
             // 未做处理则做默认握手处理

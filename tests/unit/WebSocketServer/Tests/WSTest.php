@@ -104,4 +104,16 @@ class WSTest extends BaseTest
         });
     }
 
+    public function testHttp()
+    {
+        $this->go(function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
+            $http = new HttpRequest;
+            $response = $http->get($this->host . 'http');
+            $this->assertEquals('http', $response->body());
+        }, function(){
+            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
+        });
+    }
+
 }
