@@ -91,8 +91,8 @@ $datetime = Redis::get('imi:redis:test');
 ### 回调方式使用Redis
 
 ```php
-$result = Redis::use(function($resource, $redis){
-    redis->set('a', 1);
+$result = Redis::use(function(\Imi\Redis\RedisHandler $redis){
+    $redis->set('a', 1);
     return true;
 }); // true
 ```
