@@ -41,7 +41,9 @@ abstract class RedisModel extends BaseModel
         {
             return null;
         }
-        return static::newInstance($data);
+        $record = static::newInstance($data);
+        $record->key = $key;
+        return $record;
     }
 
     /**
@@ -57,11 +59,13 @@ abstract class RedisModel extends BaseModel
         }
         $datas = static::__getRedis()->mGet($keys);
         $list = [];
-        foreach($datas as $data)
+        foreach($datas as $i => $data)
         {
             if(null !== $data)
             {
-                $list[] = static::newInstance($data);
+                $record = static::newInstance($data);
+                $record->key = $keys[$i];
+                $list[] = $record;
             }
         }
         return $list;
