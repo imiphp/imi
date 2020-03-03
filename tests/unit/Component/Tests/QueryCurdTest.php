@@ -4,6 +4,7 @@ namespace Imi\Test\Component\Tests;
 use Imi\Test\BaseTest;
 use Imi\App;
 use Imi\Db\Db;
+use Imi\Db\Query\Lock\MysqlLock;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -244,4 +245,26 @@ class QueryCurdTest extends BaseTest
         // BUG: https://github.com/Yurunsoft/IMI/pull/25
         Assert::assertEquals('select * from `tb_article`', Db::query()->from('tb_article')->whereEx([])->select()->getSql());
     }
+
+    public function testLock()
+    {
+        $query = Db::query();
+        $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();
+        Assert::assertEquals([
+            'id'        =>  '1',
+            'title'     =>  'title',
+            'content'   =>  'content',
+            'time'      =>  '2019-06-21 00:00:00',
+        ], $record);
+
+        $query = Db::query();
+        $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::SHARED)->select()->get();
+        Assert::assertEquals([
+            'id'        =>  '1',
+            'title'     =>  'title',
+            'content'   =>  'content',
+            'time'      =>  '2019-06-21 00:00:00',
+        ], $record);
+    }
+
 }

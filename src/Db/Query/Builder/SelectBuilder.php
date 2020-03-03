@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Db\Query\Builder;
 
+use Imi\Db\Query\Lock\MysqlLock;
+
 class SelectBuilder extends BaseBuilder
 {
     /**
@@ -21,8 +23,33 @@ class SelectBuilder extends BaseBuilder
                 . $this->parseHaving($option->having)
                 . $this->parseOrder($option->order)
                 . $this->parseLimit($option->offset, $option->limit)
+                . $this->parseLock($option->lock)
                 ;
         $this->query->bindValues($this->params);
         return $sql;
     }
+
+    /**
+     * lock
+     *
+     * @param int|string|null|bool $lock
+     * @return string
+     */
+    public function parseLock($lock): string
+    {
+        if(null === $lock || false === $lock)
+        {
+            return '';
+        }
+        switch($lock)
+        {
+            case MysqlLock::FOR_UPDATE:
+                return ' FOR UPDATE';
+            case MysqlLock::SHARED:
+                return ' LOCK IN SHARE MODE';
+            default:
+                return ' ' . $lock;
+        }
+    }
+
 }

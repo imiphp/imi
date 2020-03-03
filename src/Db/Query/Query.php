@@ -1265,4 +1265,16 @@ class Query implements IQuery
         return clone static::$aliasMap[$name];
     }
 
+    /**
+     * 加锁
+     *
+     * @param int|string|null|bool $value
+     * @return static
+     */
+    public function lock($value)
+    {
+        $this->option->lock = $value;
+        return $this;
+    }
+
 }

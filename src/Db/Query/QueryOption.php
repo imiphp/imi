@@ -70,6 +70,13 @@ class QueryOption
      */
     public $limit;
 
+    /**
+     * 锁配置
+     *
+     * @var int|string|null
+     */
+    public $lock;
+
     public function __construct()
     {
         $this->table = new Table();

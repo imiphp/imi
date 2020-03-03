@@ -609,4 +609,12 @@ interface IQuery
      */
     public function alias($name, $callable);
 
+    /**
+     * 加锁
+     *
+     * @param int|string|null|bool $value
+     * @return static
+     */
+    public function lock($value);
+
 }

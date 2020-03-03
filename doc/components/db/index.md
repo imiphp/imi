@@ -704,6 +704,22 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->delete();
 // $result使用方法同上
 ```
 
+### 加锁
+
+排它锁：
+
+```php
+use Imi\Db\Query\Lock\MysqlLock;
+Db::query()->from('tb_xxx')->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();
+```
+
+共享锁：
+
+```php
+use Imi\Db\Query\Lock\MysqlLock;
+Db::query()->from('tb_xxx')->where('id', '=', 1)->lock(MysqlLock::SHARED)->select()->get();
+```
+
 ## 直接执行SQL
 
 ```php
