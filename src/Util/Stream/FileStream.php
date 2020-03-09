@@ -119,7 +119,7 @@ class FileStream implements StreamInterface
         $result = ftell($this->stream);
         if(false === $result)
         {
-            throw \RuntimeException('stream tell error');
+            throw new \RuntimeException('stream tell error');
         }
         return $result;
     }
@@ -287,7 +287,7 @@ class FileStream implements StreamInterface
         $result = stream_get_meta_data($this->stream);
         if(!$result)
         {
-            throw \RuntimeException('stream getMetadata error');
+            throw new \RuntimeException('stream getMetadata error');
         }
         if(null === $key)
         {
