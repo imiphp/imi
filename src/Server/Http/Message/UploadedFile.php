@@ -206,4 +206,15 @@ class UploadedFile implements UploadedFileInterface
     {
         return $this->mediaType;
     }
+
+    /**
+     * Get 临时文件名
+     *
+     * @return string
+     */ 
+    public function getTmpFileName()
+    {
+        return $this->tmpFileName;
+    }
+
 }
