@@ -109,6 +109,7 @@ TaskManager::postCo([new TaskInfo(
 namespace Test;
 
 use Imi\Task\TaskParam;
+use Imi\Task\Annotation\Task;
 use Imi\Task\Interfaces\ITaskHandler;
 
 /**
@@ -183,11 +184,10 @@ TaskManager::nPostWait(new TaskInfo(
 #### 协程批量投递任务
 
 ```php
-TaskManager::postWait([
-['testTask', ['time'=>time()]],
-['testTask', ['time'=>time()]],
+TaskManager::postCo([
+	['testTask', ['time'=>time()]],
+	['testTask', ['time'=>time()]],
 ],
 // 最长等待时间，单位：秒
 0.5);
 ```
-
