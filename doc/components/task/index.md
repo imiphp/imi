@@ -167,7 +167,7 @@ TaskManager::nPost(
 #### 同步投递任务
 
 ```php
-TaskManager::nPostWait(new TaskInfo(
+TaskManager::nPostWait(
 	// 任务名称
 	'testTask'
 	// 任务参数
@@ -176,7 +176,7 @@ TaskManager::nPostWait(new TaskInfo(
 	]
 	// 最长等待时间，单位：秒
 	0.5
-));
+);
 ```
 
 投递任务后阻塞等待执行完毕或超时，返回值为任务执行结果或false
