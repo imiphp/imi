@@ -304,9 +304,9 @@ class ModelGenerate
             'bigint'    => 'int',
             'bit'       => 'boolean',
             'year'      => 'int',
-            'double'    =>  'double',
-            'float'     =>  'double',
-            'decimal'   =>  'double',
+            'double'    => 'float',
+            'float'     => 'float',
+            'decimal'   => 'float',
             'json'      =>  \Imi\Util\LazyArrayObject::class,
         ];
         return $map[$firstType] ?? 'string';
