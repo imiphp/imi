@@ -262,4 +262,38 @@ class CronCalculatorTest extends BaseTest
         ]));
     }
 
+    /**
+     * @link https://github.com/Yurunsoft/imi/issues/51
+     *
+     * @return void
+     */
+    public function testBug51()
+    {
+        $beginTime = strtotime('2018-06-21 12:34:56');
+
+        $this->assertEquals(strtotime('2079-06-21 12:34:56'), $this->cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['year' => '61n']),
+        ]));
+
+        $this->assertEquals(strtotime('2023-07-21 12:34:56'), $this->cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['month' => '61n']),
+        ]));
+
+        $this->assertEquals(strtotime('2018-08-21 12:34:56'), $this->cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['day' => '61n']),
+        ]));
+
+        $this->assertEquals(strtotime('2018-06-24 01:34:56'), $this->cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['hour' => '61n']),
+        ]));
+
+        $this->assertEquals(strtotime('2018-06-21 13:35:56'), $this->cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['minute' => '61n']),
+        ]));
+
+        $this->assertEquals(strtotime('2018-06-21 12:35:57'), $this->cronCalculator->getNextTickTime($beginTime, [
+            new CronRule(['second' => '61n']),
+        ]));
+    }
+
 }

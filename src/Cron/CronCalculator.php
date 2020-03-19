@@ -65,13 +65,13 @@ class CronCalculator
             {
                 continue;
             }
-            foreach($months as $month)
+            foreach($months ?: [] as $month)
             {
                 if($year == $nowYear && $month < $nowMonth)
                 {
                     continue;
                 }
-                foreach($days as $day)
+                foreach($days ?: [] as $day)
                 {
                     if('year' === $day)
                     {
@@ -117,19 +117,19 @@ class CronCalculator
 
     private function parseHis($year, $month, $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond)
     {
-        foreach($hours as $hour)
+        foreach($hours ?: [] as $hour)
         {
             if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour < $nowHour)
             {
                 continue;
             }
-            foreach($minutes as $minute)
+            foreach($minutes ?: [] as $minute)
             {
                 if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour == $nowHour && $minute < $nowMinute)
                 {
                     continue;
                 }
-                foreach($seconds as $second)
+                foreach($seconds ?: [] as $second)
                 {
                     if($year == $nowYear && $month == $nowMonth && $day == $nowDay && $hour == $nowHour && $minute == $nowMinute && $second <= $nowSecond)
                     {
@@ -173,6 +173,10 @@ class CronCalculator
             $step = (int)substr($rule, 0, -1);
             if($lastTime < $min)
             {
+                if($step > $max - $min)
+                {
+                    return [];
+                }
                 return range($min, $max, $step);
             }
             else
