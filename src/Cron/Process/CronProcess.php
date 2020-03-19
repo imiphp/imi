@@ -63,8 +63,8 @@ class CronProcess extends BaseProcess
             while(true)
             {
                 $arrRead = [$this->socket];
-                $arrWrite = [];
-                if(stream_select($arrRead, $arrWrite, $arrWrite, null))
+                $write = $except = null;
+                if(stream_select($arrRead, $write, $except, null))
                 {
                     $conn = stream_socket_accept($this->socket, 1);
                     if(false === $conn)
