@@ -33,7 +33,6 @@ class Local implements IHandler
      */
     public function read(string $key): array
     {
-        var_dump($key);
         return $this->storeMap[$key] ?? [];
     }
 
