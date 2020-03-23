@@ -34,12 +34,17 @@ return [
         ],
         'ConnectContextStore'   =>  [
             'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Local::class,
+            'ttl'           =>  600,
         ],
         'ConnectContextMemoryTable' =>  [
             'tableName' =>  'connectContext',
         ],
         'WSRouteNotFoundHandler'    =>  [
             'handler'   =>  'RouteNotFound',
+        ],
+        'ConnectionBinder'  =>  [
+            'redisPool' =>  'redis',
+            'key'       =>  'imi:wsTest:connectionBinder:map'
         ],
     ],
     'controller'    =>  [

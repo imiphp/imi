@@ -19,6 +19,15 @@ class StoreHandler implements IHandler
     protected $handlerClass = \Imi\Server\ConnectContext\StoreHandler\Redis::class;
 
     /**
+     * 数据有效期，单位：秒
+     * 连接断开后，供断线重连的，数据保留时间
+     * 设为 0 则连接断开立即销毁数据
+     *
+     * @var integer
+     */
+    protected $ttl = 0;
+
+    /**
      * 读取数据
      *
      * @param string $key
@@ -53,6 +62,18 @@ class StoreHandler implements IHandler
     }
 
     /**
+     * 延迟销毁数据
+     *
+     * @param string $key
+     * @param integer $ttl
+     * @return void
+     */
+    public function delayDestroy(string $key, int $ttl)
+    {
+        $this->getHandler()->delayDestroy($key, $ttl);
+    }
+
+    /**
      * 数据是否存在
      *
      * @param string $key
@@ -65,13 +86,14 @@ class StoreHandler implements IHandler
 
     /**
      * 加锁
-     *
+     * 
+     * @param string $key
      * @param callable $callable
      * @return boolean
      */
-    public function lock($callable = null)
+    public function lock(string $key, $callable = null)
     {
-        return $this->getHandler()->lock($callable);
+        return $this->getHandler()->lock($key, $callable);
     }
 
     /**
@@ -92,5 +114,15 @@ class StoreHandler implements IHandler
     public function getHandler(): IHandler
     {
         return RequestContext::getServerBean($this->handlerClass);
+    }
+
+    /**
+     * Get 设为 0 则连接断开立即销毁数据
+     *
+     * @return integer
+     */ 
+    public function getTtl()
+    {
+        return $this->ttl;
     }
 }

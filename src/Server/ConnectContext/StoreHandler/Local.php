@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\ConnectContext\StoreHandler;
 
+use Swoole\Timer;
 use Imi\Lock\Lock;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\ConnectContext\StoreHandler\IHandler;
@@ -63,6 +64,20 @@ class Local implements IHandler
     }
 
     /**
+     * 延迟销毁数据
+     *
+     * @param string $key
+     * @param integer $ttl
+     * @return void
+     */
+    public function delayDestroy(string $key, int $ttl)
+    {
+        Timer::after($ttl * 1000, function() use($key){
+            $this->destroy($key);
+        });
+    }
+
+    /**
      * 数据是否存在
      *
      * @param string $key
@@ -75,13 +90,14 @@ class Local implements IHandler
 
     /**
      * 加锁
-     *
+     * 
+     * @param string $key
      * @param callable $callable
      * @return boolean
      */
-    public function lock($callable = null)
+    public function lock(string $key, $callable = null)
     {
-        return Lock::lock($this->lockId, $callable);
+        return Lock::getInstance($this->lockId, $key)->lock($callable);
     }
 
     /**
