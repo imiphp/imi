@@ -16,7 +16,7 @@ use Imi\Server\Event\Listener\IConnectEventListener;
 class BeforeConnect implements IConnectEventListener
 {
     /**
-     * 默认的 WebSocket 握手
+     * 事件处理方法
      * @param ConnectEventParam $e
      * @return void
      */

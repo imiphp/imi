@@ -398,7 +398,7 @@ class Redis implements IGroupHandler
      * 使用redis
      *
      * @param callable $callback
-     * @return void
+     * @return mixed
      */
     private function useRedis($callback)
     {
