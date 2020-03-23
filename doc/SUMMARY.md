@@ -46,6 +46,7 @@
 * [中间件](components/websocketServer/middleware.md)
 * [连接上下文](components/websocketServer/session.md)
 * [连接分组](components/websocketServer/group.md)
+* [断线重连](components/websocketServer/reconnect.md)
 * [不使用中间件](components/websocketServer/noMiddleware.md)
 
 ## TCP 服务
@@ -55,6 +56,7 @@
 * [中间件](components/tcpServer/middleware.md)
 * [连接上下文](components/tcpServer/session.md)
 * [连接分组](components/tcpServer/group.md)
+* [断线重连](components/tcpServer/reconnect.md)
 * [不使用中间件](components/tcpServer/noMiddleware.md)
 
 ## UDP 服务

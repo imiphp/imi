@@ -22,7 +22,6 @@ class GroupRestore implements IConnectContextRestoreListener
         $fd = $e->toFd;
         $connectContextData = ConnectContext::getContext($fd);
         $groups = $connectContextData['__groups'] ?? [];
-        var_dump('re:', $groups);
         if(!$groups)
         {
             return;
