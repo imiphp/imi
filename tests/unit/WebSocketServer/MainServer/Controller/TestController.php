@@ -26,7 +26,31 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getFd());
-        return ['success'=>true, 'middlewareData' => RequestContext::get('middlewareData'), 'requestUri' => ConnectContext::get('requestUri'), 'uri' => (string)ConnectContext::get('uri')];
+        $token = md5(uniqid('', true));
+        ConnectContext::bind($token);
+        return [
+            'success'           => true,
+            'middlewareData'    => RequestContext::get('middlewareData'),
+            'requestUri'        => ConnectContext::get('requestUri'),
+            'uri'               => (string)ConnectContext::get('uri'),
+            'token'             => $token,
+        ];
+    }
+
+    /**
+     * 重连
+     * 
+     * @WSAction
+     * @WSRoute({"action"="reconnect"})
+     * @return void
+     */
+    public function reconnect($data)
+    {
+        ConnectContext::restore($data->token);
+        return [
+            'success'   => true,
+            'username'  => ConnectContext::get('username'),
+        ];
     }
 
     /**

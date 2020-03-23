@@ -4,6 +4,7 @@ namespace Imi\Server\ConnectContext\StoreHandler;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\MemoryTableManager;
 use Imi\Lock\Lock;
+use Swoole\Timer;
 
 /**
  * 连接上下文存储处理器-MemoryTable
@@ -93,6 +94,20 @@ class MemoryTable implements IHandler
     }
 
     /**
+     * 延迟销毁数据
+     *
+     * @param string $key
+     * @param integer $ttl
+     * @return void
+     */
+    public function delayDestroy(string $key, int $ttl)
+    {
+        Timer::after($ttl * 1000, function() use($key){
+            $this->destroy($key);
+        });
+    }
+
+    /**
      * 数据是否存在
      *
      * @param string $key
@@ -102,19 +117,19 @@ class MemoryTable implements IHandler
     {
         return MemoryTableManager::exist($this->tableName, $key);
     }
-    
+
     /**
      * 加锁
-     * $callable 不为 null 时，应在执行完后自动解锁
-     *
+     * 
+     * @param string $key
      * @param callable $callable
      * @return boolean
      */
-    public function lock($callable = null)
+    public function lock(string $key, $callable = null)
     {
         if($this->lockId)
         {
-            return Lock::lock($this->lockId, $callable);
+            return Lock::getInstance($this->lockId, $key)->lock($callable);
         }
         else
         {

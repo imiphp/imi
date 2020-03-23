@@ -23,6 +23,27 @@ abstract class ConnectContext
     }
 
     /**
+     * 从某个连接上下文中，加载到当前上下文或指定上下文中
+     *
+     * @param integer $fromFd
+     * @param integer|null $toFd
+     * @return void
+     */
+    public static function load(int $fromFd, ?int $toFd = null)
+    {
+        if(!$toFd)
+        {
+            $toFd = RequestContext::get('fd');
+        }
+        $data = static::getContext($fromFd);
+        static::use(function($contextData) use($data, $toFd){
+            $contextData = $data;
+            $contextData['fd'] = $toFd;
+            return $contextData;
+        }, $toFd);
+    }
+
+    /**
      * 销毁当前连接的上下文
      * 
      * @param int|null $fd
@@ -34,7 +55,16 @@ abstract class ConnectContext
         {
             $fd = RequestContext::get('fd');
         }
-        RequestContext::getServerBean('ConnectContextStore')->destroy($fd);
+        /** @var \Imi\Server\ConnectContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectContextStore');
+        if(($ttl = $store->getTtl()) > 0)
+        {
+            $store->delayDestroy($fd, $ttl);
+        }
+        else
+        {
+            $store->destroy($fd);
+        }
     }
 
     /**
@@ -48,7 +78,7 @@ abstract class ConnectContext
         {
             $fd = RequestContext::get('fd');
         }
-        return isset(static::$context[$fd]) || RequestContext::getServerBean('ConnectContextStore')->exists($fd);
+        return RequestContext::getServerBean('ConnectContextStore')->exists($fd);
     }
 
     /**
@@ -89,7 +119,7 @@ abstract class ConnectContext
             $fd = RequestContext::get('fd');
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $result = $store->lock(function() use($store, $name, $value, $fd){
+        $result = $store->lock($fd, function() use($store, $name, $value, $fd){
             $data = $store->read($fd);
             $data[$name] = $value;
             $store->save($fd, $data);
@@ -114,7 +144,7 @@ abstract class ConnectContext
             $fd = RequestContext::get('fd');
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $result = $store->lock(function() use($store, $data, $fd){
+        $result = $store->lock($fd, function() use($store, $data, $fd){
             $storeData = $store->read($fd);
             foreach($data as $name => $value)
             {
@@ -142,7 +172,7 @@ abstract class ConnectContext
             $fd = RequestContext::get('fd');
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $store->lock(function() use($callable, $store, $fd){
+        $store->lock($fd, function() use($callable, $store, $fd){
             $data = $store->read($fd);
             $result = $callable($data);
             if($result)
@@ -160,6 +190,67 @@ abstract class ConnectContext
     public static function getContext($fd = null)
     {
         return static::get(null, null, $fd);
+    }
+
+    /**
+     * 绑定一个标记到当前连接
+     *
+     * @param string $flag
+     * @param integer|null $fd
+     * @return void
+     */
+    public static function bind(string $flag, ?int $fd = null)
+    {
+        if(!$fd)
+        {
+            $fd = RequestContext::get('fd');
+        }
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder->bind($flag, $fd);
+    }
+
+    /**
+     * 取消绑定
+     *
+     * @param string $flag
+     * @return void
+     */
+    public static function unbind(string $flag)
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder->unbind($flag);
+    }
+
+    /**
+     * 使用标记获取连接编号
+     *
+     * @param string $flag
+     * @return int|null
+     */
+    public static function getFdByFlag(string $flag): ?int
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        return $connectionBinder->getFdByFlag($flag);
+    }
+
+    /**
+     * 恢复标记对应连接中的数据
+     *
+     * @param string $flag
+     * @param integer|null $toFd
+     * @return void
+     */
+    public static function restore(string $flag, ?int $toFd = null)
+    {
+        $fromFd = static::getFdByFlag($flag);
+        if(!$fromFd)
+        {
+            throw new \RuntimeException(sprintf('Not found fd of connection flag %s', $flag));
+        }
+        static::load($fromFd, $toFd);
     }
 
 }

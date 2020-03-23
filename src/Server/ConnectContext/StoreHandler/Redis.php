@@ -12,6 +12,7 @@ use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\AtomicManager;
 use Imi\App;
+use Imi\Redis\RedisHandler;
 
 /**
  * 连接上下文存储处理器-Redis
@@ -313,6 +314,20 @@ class Redis implements IHandler
     }
 
     /**
+     * 延迟销毁数据
+     *
+     * @param string $key
+     * @param integer $ttl
+     * @return void
+     */
+    public function delayDestroy(string $key, int $ttl)
+    {
+        $this->useRedis(function($resource, RedisHandler $redis) use($key, $ttl){
+            $redis->expire($this->getStoreKey(), $ttl);
+        });
+    }
+
+    /**
      * 数据是否存在
      *
      * @param string $key
@@ -339,7 +354,7 @@ class Redis implements IHandler
      * 使用redis
      *
      * @param callable $callback
-     * @return void
+     * @return mixed
      */
     private function useRedis($callback)
     {
@@ -348,16 +363,17 @@ class Redis implements IHandler
             return $callback($resource, $redis);
         });
     }
-    
+
     /**
      * 加锁
-     *
+     * 
+     * @param string $key
      * @param callable $callable
      * @return boolean
      */
-    public function lock($callable = null)
+    public function lock(string $key, $callable = null)
     {
-        return Lock::lock($this->lockId, $callable);
+        return Lock::getInstance($this->lockId, $key)->lock($callable);
     }
 
     /**

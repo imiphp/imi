@@ -32,6 +32,15 @@ interface IHandler
     public function destroy(string $key);
 
     /**
+     * 延迟销毁数据
+     *
+     * @param string $key
+     * @param integer $ttl
+     * @return void
+     */
+    public function delayDestroy(string $key, int $ttl);
+
+    /**
      * 数据是否存在
      *
      * @param string $key
@@ -41,11 +50,12 @@ interface IHandler
 
     /**
      * 加锁
-     *
+     * 
+     * @param string $key
      * @param callable $callable
      * @return boolean
      */
-    public function lock($callable = null);
+    public function lock(string $key, $callable = null);
 
     /**
      * 解锁
