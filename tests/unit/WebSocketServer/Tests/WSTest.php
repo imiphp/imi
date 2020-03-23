@@ -67,6 +67,14 @@ class WSTest extends BaseTest
                 'success'   => true,
                 'username'  => 'test',
             ], $recvData);
+            
+            $time = time();
+            $this->assertTrue($client->send(json_encode([
+                'action'    =>  'send',
+                'message'   =>  $time,
+            ])));
+            $recv = $client->recv();
+            $this->assertEquals('test:' . $time, $recv);
             $client->close();
 
         }, function(){

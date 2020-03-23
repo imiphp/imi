@@ -2,10 +2,12 @@
 namespace Imi\Server\Group;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\ConnectContext;
 use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Server\Group\Handler\IGroupHandler;
 use Imi\RequestContext;
 use Imi\Event\Event;
+use Imi\Util\ArrayUtil;
 
 /**
  * 逻辑组
@@ -99,6 +101,10 @@ class Group
         if($this->handler->joinGroup($this->groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
+            ConnectContext::use(function($contextData){
+                $contextData['__groups'][] = $this->groupName;
+                return $contextData;
+            }, $fd);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
                 'server'    => RequestContext::getServer(),
                 'groupName' => $this->groupName,
@@ -118,6 +124,13 @@ class Group
         if($this->handler->leaveGroup($this->groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
+            ConnectContext::use(function($contextData){
+                if(isset($contextData['__groups']))
+                {
+                    $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $this->groupName);
+                    return $contextData;
+                }
+            }, $fd);
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
                 'server'    => RequestContext::getServer(),
                 'groupName' => $this->groupName,

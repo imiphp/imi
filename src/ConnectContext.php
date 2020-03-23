@@ -1,7 +1,9 @@
 <?php
 namespace Imi;
 
+use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\ConnectContext\Event\Param\ConnectContextRestoreParam;
 
 abstract class ConnectContext
 {
@@ -12,11 +14,13 @@ abstract class ConnectContext
     public static function create(array $data = [])
     {
         $data = static::get();
-        if(!$data && $fd = RequestContext::get('fd'))
+        $requestContextData = RequestContext::getContext();
+        if(!$data && $fd = ($requestContextData['fd'] ?? null))
         {
-            static::use(function($contextData) use($data, $fd){
+            static::use(function($contextData) use($data, $fd, $requestContextData){
                 $contextData = $data;
                 $contextData['fd'] = $fd;
+                $contextData['__serverName'] = $requestContextData['server']->getName();
                 return $contextData;
             }, $fd);
         }
@@ -250,7 +254,15 @@ abstract class ConnectContext
         {
             throw new \RuntimeException(sprintf('Not found fd of connection flag %s', $flag));
         }
+        if(!$toFd)
+        {
+            $toFd = RequestContext::get('fd');
+        }
         static::load($fromFd, $toFd);
+        Event::trigger('IMI.CONNECT_CONTEXT.RESTORE', [
+            'fromFd'    =>  $fromFd,
+            'toFd'      =>  $toFd,
+        ], null, ConnectContextRestoreParam::class);
     }
 
 }
