@@ -23,25 +23,26 @@ abstract class Lock
     /**
      * 获取锁对象
      *
-     * @param string|null $id
+     * @param string|null $lockConfigId
+     * @param string|null $lockId
      * @return \Imi\Lock\Handler\ILockHandler
      */
-    public static function getInstance($id = null)
+    public static function getInstance($lockConfigId = null, $lockId = null)
     {
-        if(!$id)
+        if(!$lockConfigId)
         {
-            $id = static::getDefaultId();
+            $lockConfigId = static::getDefaultId();
         }
-        if(isset(static::$instances[$id]))
+        if(isset(static::$instances[$lockConfigId]))
         {
-            return static::$instances[$id];
+            return static::$instances[$lockConfigId];
         }
-        if(!isset(static::$options[$id]))
+        if(!isset(static::$options[$lockConfigId]))
         {
-            throw new \RuntimeException(sprintf('Lock %s does not exists', $id));
+            throw new \RuntimeException(sprintf('Lock %s does not exists', $lockConfigId));
         }
-        $option = static::$options[$id];
-        return static::$instances[$id] = App::getBean($option->class, $id, $option->options);
+        $option = static::$options[$lockConfigId];
+        return static::$instances[$lockConfigId] = App::getBean($option->class, $lockId ?? $lockConfigId, $option->options);
     }
 
     /**
