@@ -87,6 +87,7 @@ abstract class App
      */
     public static function run($namespace)
     {
+        static::checkEnvironment();
         self::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
         self::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
         static::$namespace = $namespace;
@@ -96,17 +97,34 @@ abstract class App
     }
 
     /**
+     * 检查环境
+     *
+     * @return void
+     */
+    private static function checkEnvironment()
+    {
+        // Swoole 检查
+        if(!extension_loaded('swoole'))
+        {
+            echo 'No Swoole extension installed or enabled', PHP_EOL;
+            return;
+        }
+        // 短名称检查
+        $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
+        $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
+        if (in_array($useShortname, ['', 'off', 'false'], true))
+        {
+            echo 'Please enable swoole short name before using imi!', PHP_EOL, 'You can set swoole.use_shortname = on into your php.ini.', PHP_EOL;
+            return;
+        }
+    }
+
+    /**
      * 框架初始化
      * @return void
      */
     private static function initFramework()
     {
-        $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
-        $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
-        if (in_array($useShortname, ['', 'off', 'false'], true)) {
-            echo 'Please enable swoole short name before using imi!', PHP_EOL, 'You can set swoole.use_shortname = on into your php.ini.', PHP_EOL;
-            return;
-        }
         if(!isset($_SERVER['argv'][1]))
         {
             echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
