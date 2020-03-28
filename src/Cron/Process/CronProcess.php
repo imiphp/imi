@@ -41,8 +41,18 @@ class CronProcess extends BaseProcess
      */
     private $socket;
 
+    /**
+     * 是否正在运行
+     *
+     * @var boolean
+     */
+    private $running = false;
+
     public function run(\Swoole\Process $process)
     {
+        \Swoole\Process::signal(SIGTERM, function($signo) {
+            $this->running = false;
+        });
         $this->startSocketServer();
     }
 
@@ -59,12 +69,13 @@ class CronProcess extends BaseProcess
             {
                 throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %', $errno, $errstr, $socketFile));
             }
+            $this->running = true;
             $this->startSchedule();
-            while(true)
+            while($this->running)
             {
                 $arrRead = [$this->socket];
                 $write = $except = null;
-                if(stream_select($arrRead, $write, $except, null))
+                if(stream_select($arrRead, $write, $except, 3) > 0)
                 {
                     $conn = stream_socket_accept($this->socket, 1);
                     if(false === $conn)
@@ -73,9 +84,11 @@ class CronProcess extends BaseProcess
                     }
                     imigo(function() use($conn){
                         $this->parseConn($conn);
+                        fclose($conn);
                     });
                 }
             }
+            fclose($this->socket);
         });
     }
 
@@ -87,7 +100,7 @@ class CronProcess extends BaseProcess
      */
     private function parseConn($conn)
     {
-        while(true)
+        while($this->running)
         {
             try {
                 $meta = fread($conn, 4);
@@ -134,7 +147,7 @@ class CronProcess extends BaseProcess
                 {
                     usleep($sleep * 1000000);
                 }
-            } while(true);
+            } while($this->running);
         });
     }
 
