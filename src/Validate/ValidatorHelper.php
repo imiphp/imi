@@ -67,7 +67,7 @@ class ValidatorHelper
             return false;
         }
         // 整数验证
-        return ((int)$value) == $value;
+        return (string)(int)$value === (string)$value;
     }
 
     /**

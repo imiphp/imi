@@ -136,6 +136,10 @@ class ValidatorAnnotationTest extends BaseTest
         $this->data['int'] = -1;
         $this->assertFalse($this->tester->validate());
         $this->assertEquals('-1 不符合大于等于0且小于等于100', $this->tester->getMessage());
+
+        $this->data['int'] = 'a';
+        $this->assertFalse($this->tester->validate());
+        $this->assertEquals('a 不符合大于等于0且小于等于100', $this->tester->getMessage());
     }
 
     private function requiredFail()
