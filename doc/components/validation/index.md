@@ -433,3 +433,61 @@ if(!$result)
 // 获得数据，如果你配置有default属性，并且验证失败，可以获得默认值
 $data = $v->getData();
 ```
+
+### 场景验证
+
+定义场景，指定某个场景，只验证指定的几个字段。
+
+方法一，注解定义：
+
+```php
+<?php
+namespace Imi\Test\Component\Validate\Classes;
+
+use Imi\Validate\Validator;
+use Imi\Validate\Annotation\Scene;
+use Imi\Validate\Annotation\Decimal;
+use Imi\Validate\Annotation\Integer;
+
+/**
+ * @Decimal(name="decimal", min=1, max=10, accuracy=2)
+ * @Integer(name="int", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
+ * @Scene(name="a", fields={"decimal"})
+ * @Scene(name="b", fields={"int"})
+ * @Scene(name="c", fields={"decimal", "int"})
+ */
+class TestSceneAnnotationValidator extends Validator
+{
+
+}
+```
+
+方法二，代码定义：
+
+```php
+<?php
+namespace Imi\Test\Component\Validate\Classes;
+
+use Imi\Validate\Validator;
+use Imi\Validate\Annotation\Decimal;
+use Imi\Validate\Annotation\Integer;
+
+/**
+ * @Decimal(name="decimal", min=1, max=10, accuracy=2)
+ * @Integer(name="int", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
+ */
+class TestSceneValidator extends Validator
+{
+    /**
+     * 场景定义
+     *
+     * @var array|null
+     */
+    protected $scene = [
+        'a' =>  ['decimal'],
+        'b' =>  ['int'],
+        'c' =>  ['decimal', 'int'],
+    ];
+
+}
+```

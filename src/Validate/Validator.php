@@ -6,6 +6,7 @@ use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Traits\TBeanRealClass;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Validate\Annotation\Condition;
+use Imi\Validate\Annotation\Scene;
 use Imi\Validate\Annotation\ValidateValue;
 
 /**
@@ -51,6 +52,20 @@ class Validator implements IValidator
     protected $failRules;
 
     /**
+     * 场景定义
+     *
+     * @var array|null
+     */
+    protected $scene;
+
+    /**
+     * 当前场景
+     *
+     * @var string|null
+     */
+    protected $currentScene;
+
+    /**
      * 校验规则
      *
      * @var \Imi\Validate\Annotation\Condition[]
@@ -69,11 +84,18 @@ class Validator implements IValidator
         $this->data = &$data;
         if(null === $rules)
         {
-            $this->rules = $this->getAnnotationRules();
+            if(!$this->rules)
+            {
+                $this->rules = $this->getAnnotationRules();
+            }
         }
         else
         {
             $this->rules = $rules;
+        }
+        if(!$this->scene)
+        {
+            $this->scene = $this->getAnnotationScene();
         }
     }
 
@@ -199,9 +221,14 @@ class Validator implements IValidator
         $this->message = null;
         $this->results = [];
         $result = true;
+        $sceneOption = $this->scene[$this->currentScene] ?? null;
         foreach($this->rules as $annotation)
         {
             if(!$annotation instanceof Condition)
+            {
+                continue;
+            }
+            if($sceneOption && !in_array($annotation->name, $sceneOption))
             {
                 continue;
             }
@@ -385,4 +412,71 @@ class Validator implements IValidator
     {
         return $this->failRules;
     }
+
+    /**
+     * Get 场景定义
+     *
+     * @return array|null
+     */ 
+    public function getScene(): ?array
+    {
+        return $this->scene;
+    }
+
+    /**
+     * Set 场景定义
+     *
+     * @param array|null $scene  场景定义
+     *
+     * @return self
+     */ 
+    public function setScene(?array $scene)
+    {
+        $this->scene = $scene;
+
+        return $this;
+    }
+
+    /**
+     * Get 当前场景
+     *
+     * @return string|null
+     */ 
+    public function getCurrentScene(): ?string
+    {
+        return $this->currentScene;
+    }
+
+    /**
+     * Set 当前场景
+     *
+     * @param string|null $currentScene  当前场景
+     *
+     * @return self
+     */ 
+    public function setCurrentScene(?string $currentScene)
+    {
+        $this->currentScene = $currentScene;
+
+        return $this;
+    }
+
+    /**
+     * 获取注解定义的场景
+     *
+     * @return array
+     */
+    public function getAnnotationScene()
+    {
+        $className = static::__getRealClassName();
+        /** @var \Imi\Validate\Annotation\Scene[] $scenes */
+        $scenes = AnnotationManager::getClassAnnotations($className, Scene::class);
+        $result = [];
+        foreach($scenes as $item)
+        {
+            $result[$item->name] = $item->fields;
+        }
+        return $result;
+    }
+
 }

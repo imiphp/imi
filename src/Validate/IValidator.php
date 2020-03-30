@@ -35,6 +35,38 @@ interface IValidator
     public function getRules();
 
     /**
+     * Get 场景定义
+     *
+     * @return array|null
+     */ 
+    public function getScene(): ?array;
+
+    /**
+     * Set 场景定义
+     *
+     * @param array|null $scene  场景定义
+     *
+     * @return self
+     */ 
+    public function setScene(?array $scene);
+
+    /**
+     * Get 当前场景
+     *
+     * @return string|null
+     */ 
+    public function getCurrentScene(): ?string;
+
+    /**
+     * Set 当前场景
+     *
+     * @param string|null $currentScene  当前场景
+     *
+     * @return self
+     */ 
+    public function setCurrentScene(?string $currentScene);
+
+    /**
      * 获得所有注解校验规则
      *
      * @return \Imi\Validate\Annotation\Condition[]
@@ -69,4 +101,5 @@ interface IValidator
      * @return array
      */
     public function getResults();
+
 }
