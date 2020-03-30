@@ -491,3 +491,14 @@ class TestSceneValidator extends Validator
 
 }
 ```
+
+选择场景验证：
+
+```php
+$data = [
+    'decimal'   =>  'a',
+    'int'       =>  'b',
+];
+$validator = new TestSceneValidator($data);
+$result = $validator->setCurrentScene('a')->validate();
+```
