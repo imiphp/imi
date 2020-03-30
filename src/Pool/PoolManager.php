@@ -105,7 +105,8 @@ abstract class PoolManager
      */
     public static function getRequestContextResource(string $name)
     {
-        $resource = RequestContext::get('poolResource.' . $name);
+        $requestContext = RequestContext::getContext();
+        $resource = $requestContext['poolResource.' . $name] ?? null;
         if(null !== $resource && microtime(true) - static::$lastGetResourceTime[$name] > $resource->getPool()->getConfig()->getRequestResourceCheckInterval() && !$resource->checkState())
         {
             $resource->getPool()->release($resource);
@@ -114,7 +115,7 @@ abstract class PoolManager
         if(null === $resource)
         {
             $resource = static::getResource($name);
-            RequestContext::set('poolResource.' . $name, $resource);
+            $requestContext['poolResource.' . $name] = $resource;
         }
         return $resource;
     }
@@ -173,12 +174,13 @@ abstract class PoolManager
      */
     public static function destroyCurrentContext()
     {
-        $poolResources = RequestContext::get('poolResources', []);
+        $requestContext = RequestContext::getContext();
+        $poolResources = $requestContext['poolResources'] ?? [];
         foreach($poolResources as $resource)
         {
             $resource->getPool()->release($resource);
         }
-        RequestContext::set('poolResources', []);
+        $requestContext['poolResources'] = [];
     }
 
     /**
@@ -200,10 +202,11 @@ abstract class PoolManager
      */
     private static function pushResourceToRequestContext(IPoolResource $resource)
     {
-        $poolResources = RequestContext::get('poolResources', []);
+        $requestContext = RequestContext::getContext();
+        $poolResources = $requestContext['poolResources'] ?? [];
         $instance = $resource->getInstance();
         $poolResources[spl_object_hash($instance)] = $resource;
-        RequestContext::set('poolResources', $poolResources);
+        $requestContext['poolResources'] = $poolResources;
     }
 
     /**
@@ -213,20 +216,21 @@ abstract class PoolManager
      */
     private static function removeResourceFromRequestContext(IPoolResource $resource)
     {
-        $poolResources = RequestContext::get('poolResources', []);
+        $requestContext = RequestContext::getContext();
+        $poolResources = $requestContext['poolResources'] ?? [];
         $instance = $resource->getInstance();
         $key = spl_object_hash($instance);
         if(isset($poolResources[$key]))
         {
             unset($poolResources[$key]);
-            RequestContext::set('poolResources', $poolResources);
+            $requestContext['poolResources'] = $poolResources;
         }
 
         $name = 'poolResource.' . $resource->getPool()->getName();
         $poolResource = RequestContext::get($name);
         if($poolResource === $resource)
         {
-            RequestContext::set($name, null);
+            $requestContext[$name] = null;
         }
     }
 

@@ -21,9 +21,10 @@ class ActionMiddleware implements IMiddleware
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {
+        $requestContext = RequestContext::getContext();
         // 获取路由结果
         /** @var \Imi\Server\UdpServer\Route\RouteResult $result */
-        $result = RequestContext::get('routeResult');
+        $result = $requestContext['routeResult'] ?? null;
         if(null === $result)
         {
             return $handler->handle($data);
@@ -43,16 +44,16 @@ class ActionMiddleware implements IMiddleware
         // 执行动作
         $actionResult = ($result->callable)($data->getFormatData());
 
-        RequestContext::set('udpResult', $actionResult);
+        $requestContext['udpResult'] = $actionResult;
 
         $actionResult = $handler->handle($data);
 
         if(null !== $actionResult)
         {
-            RequestContext::set('udpResult', $actionResult);
+            $requestContext['udpResult'] = $actionResult;
         }
 
-        return RequestContext::get('udpResult');
+        return $requestContext['udpResult'];
     }
     
 }

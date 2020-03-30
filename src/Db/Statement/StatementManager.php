@@ -186,19 +186,20 @@ abstract class StatementManager
      */
     public static function clear(IDb $db)
     {
-        $statementCaches = RequestContext::get('statementCaches', []);
-        $requestContext = true;
+        $requestContext = RequestContext::getContext();
+        $statementCaches = $requestContext['statementCaches'] ?? [];
+        $isRequestContext = true;
         $statements = static::$statements[$db->hashCode()] ?? [];
         foreach($statements as $item)
         {
-            if($requestContext && false !== $i = array_search($item['statement'], $statementCaches))
+            if($isRequestContext && false !== $i = array_search($item['statement'], $statementCaches))
             {
                 unset($statementCaches[$i]);
             }
         }
-        if($requestContext)
+        if($isRequestContext)
         {
-            RequestContext::set('statementCaches', $statementCaches);
+            $requestContext['statementCaches'] = $statementCaches;
         }
         if($statements)
         {

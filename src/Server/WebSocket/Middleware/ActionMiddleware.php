@@ -21,9 +21,10 @@ class ActionMiddleware implements IMiddleware
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {
+        $requestContext = RequestContext::getContext();
         // 获取路由结果
         /** @var \Imi\Server\WebSocket\Route\RouteResult $result */
-        $result = RequestContext::get('routeResult');
+        $result = $requestContext['routeResult'] ?? null;
         if(null === $result)
         {
             return $handler->handle($frame);
@@ -43,16 +44,16 @@ class ActionMiddleware implements IMiddleware
         // 执行动作
         $actionResult = ($result->callable)($frame->getFormatData());
 
-        RequestContext::set('wsResult', $actionResult);
+        $requestContext['wsResult'] = $actionResult;
 
         $actionResult = $handler->handle($frame);
 
         if(null !== $actionResult)
         {
-            RequestContext::set('wsResult', $actionResult);
+            $requestContext['wsResult'] = $actionResult;
         }
 
-        return RequestContext::get('wsResult');
+        return $requestContext['wsResult'];
     }
     
 }
