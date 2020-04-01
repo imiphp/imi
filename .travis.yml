@@ -21,13 +21,13 @@ matrix:
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
   - php: '7.1'
-    env: SWOOLE_VERSION="v4.4.16"
+    env: SWOOLE_VERSION="v4.4.17"
   - php: '7.2'
-    env: SWOOLE_VERSION="v4.4.16"
+    env: SWOOLE_VERSION="v4.4.17"
   - php: '7.3'
-    env: SWOOLE_VERSION="v4.4.16"
+    env: SWOOLE_VERSION="v4.4.17"
   - php: '7.4'
-    env: SWOOLE_VERSION="v4.4.16"
+    env: SWOOLE_VERSION="v4.4.17"
   allow_failures:
   - env: SWOOLE_VERSION="master"
   - php: nightly
