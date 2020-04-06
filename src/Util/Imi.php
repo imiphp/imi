@@ -350,15 +350,7 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        if(isset($_SERVER['_']) && realpath($_SERVER['SCRIPT_FILENAME']) === ($path = realpath($_SERVER['_'])))
-        {
-            $cmd = '"' . $path . '"';
-        }
-        else
-        {
-            $cmd = '"' . ($path ?? 'php') . '" "' . $_SERVER['argv'][0] . '"';
-        }
-        $cmd .= ' ' . $toolName . '/' . $operation;
+        $cmd = '"' . PHP_BINARY . '" "' . $_SERVER['SCRIPT_FILENAME'] . '" ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
