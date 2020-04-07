@@ -129,7 +129,21 @@ class TestRedisModel extends RedisModel
 
 `ttl`数据默认的过期时间，null为永不过期，hash 存储模式不支持过期
 
-`storage`Redis 实体类存储模式，支持：string、hash
+`storage`Redis 实体类存储模式，支持：string、hash、hash_object
+
+**storage 属性说明：**
+
+- string
+
+字符串模式，使用 set/get 存序列化后的对象
+
+- hash
+
+hash 模式，使用 hset/hget 存序列化后的对象
+
+- hash_object
+
+hash 对象模式，使用 hset/hget，将对象存到一个 key 中，member 为字段名
 
 #### @Column
 Redis模型中只有name生效

@@ -2,16 +2,16 @@
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
-use Imi\Test\Component\Model\TestRedisHashModel;
+use Imi\Test\Component\Model\TestRedisHashObjectModel;
 
 /**
- * @testdox RedisModel Hash
+ * @testdox RedisModel HashObject
  */
-class RedisModelHashTest extends BaseTest
+class RedisModelHashObjectTest extends BaseTest
 {
     public function testSave()
     {
-        $record = TestRedisHashModel::newInstance([
+        $record = TestRedisHashObjectModel::newInstance([
             'id'    =>  1,
             'name'  =>  'a',
         ]);
@@ -26,7 +26,7 @@ class RedisModelHashTest extends BaseTest
             'name'  =>  'a',
             'age'   =>  11,
         ];
-        $record = TestRedisHashModel::find([
+        $record = TestRedisHashObjectModel::find([
             'id'    =>  1,
             'name'  =>  'a',
         ]);
@@ -48,13 +48,13 @@ class RedisModelHashTest extends BaseTest
                 'age'   =>  22,
             ]
         ];
-        $record = TestRedisHashModel::newInstance([
+        $record = TestRedisHashObjectModel::newInstance([
             'id'    =>  2,
             'name'  =>  'b',
             'age'   =>  22,
         ]);
         $this->assertTrue($record->save());
-        $list = TestRedisHashModel::select([
+        $list = TestRedisHashObjectModel::select([
             'id'    =>  1,
             'name'  =>  'a',
         ], [
@@ -66,7 +66,7 @@ class RedisModelHashTest extends BaseTest
 
     public function testDelete()
     {
-        $record = TestRedisHashModel::find([
+        $record = TestRedisHashObjectModel::find([
             'id'    =>  1,
             'name'  =>  'a',
         ]);
@@ -76,19 +76,19 @@ class RedisModelHashTest extends BaseTest
 
     public function testDeleteBatch()
     {
-        $record = TestRedisHashModel::newInstance([
+        $record = TestRedisHashObjectModel::newInstance([
             'id'    =>  1,
             'name'  =>  'a',
             'age'   =>  11,
         ]);
         $this->assertTrue($record->save());
-        $record = TestRedisHashModel::newInstance([
+        $record = TestRedisHashObjectModel::newInstance([
             'id'    =>  2,
             'name'  =>  'b',
             'age'   =>  22,
         ]);
         $this->assertTrue($record->save());
-        $this->assertEquals(2, TestRedisHashModel::deleteBatch([
+        $this->assertEquals(2, TestRedisHashObjectModel::deleteBatch([
             'id'    =>  1,
             'name'  =>  'a',
         ], [

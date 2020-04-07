@@ -54,6 +54,9 @@ abstract class RedisModel extends BaseModel
                 $member = static::generateMember($condition);
                 $data = static::__getRedis()->hGet($key, $member);
                 break;
+            case RedisStorageMode::HASH_OBJECT:
+                $data = static::__getRedis()->hGetAll($key);
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
@@ -105,9 +108,10 @@ abstract class RedisModel extends BaseModel
                     $members[] = static::generateMember($condition);
                 }
                 $list = [];
+                $redis = static::__getRedis();
                 foreach(array_unique($keys) as $key)
                 {
-                    $datas = static::__getRedis()->hMget($key, $members);
+                    $datas = $redis->hMget($key, $members);
                     foreach($datas as $i => $data)
                     {
                         if(null !== $data)
@@ -121,6 +125,16 @@ abstract class RedisModel extends BaseModel
                             $list[] = $record;
                         }
                     }
+                }
+                return $list;
+            case RedisStorageMode::HASH_OBJECT:
+                $redis = static::__getRedis();
+                foreach($keys as $key)
+                {
+                    $data = $redis->hGetAll($key);
+                    $record = static::newInstance($data);
+                    $record->key = $key;
+                    $list[] = $record;
                 }
                 return $list;
             default:
@@ -151,6 +165,14 @@ abstract class RedisModel extends BaseModel
                 break;
             case RedisStorageMode::HASH:
                 return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $this->toArray());
+            case RedisStorageMode::HASH_OBJECT:
+                $key = $this->__getKey();
+                $result = $redis->hMset($key, $this->toArray());
+                if($result && null !== $this->__ttl)
+                {
+                    $result = $result && $redis->expire($key, $this->__ttl);
+                }
+                return $result;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
@@ -170,6 +192,8 @@ abstract class RedisModel extends BaseModel
                 return static::__getRedis($this)->del($this->__getKey()) > 0;
             case RedisStorageMode::HASH:
                 return static::__getRedis($this)->hDel($this->__getKey(), $this->__getMember()) > 0;
+            case RedisStorageMode::HASH_OBJECT:
+                return static::__getRedis($this)->del($this->__getKey()) > 0;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
@@ -209,6 +233,9 @@ abstract class RedisModel extends BaseModel
                     }
                 }
                 return $result;
+            case RedisStorageMode::HASH_OBJECT:
+                return static::__getRedis()->del(...$keys);
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
