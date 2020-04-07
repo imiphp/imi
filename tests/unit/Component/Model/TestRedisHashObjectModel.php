@@ -9,7 +9,7 @@ use Imi\Model\Annotation\RedisEntity;
 /**
  * Test
  * @Entity
- * @RedisEntity(key="imi:redisModel:test2:{id}", member="{name}", storage="hash_object")
+ * @RedisEntity(key="imi:redisModel:test2:{id}", storage="hash_object")
  */
 class TestRedisHashObjectModel extends RedisModel
 {
