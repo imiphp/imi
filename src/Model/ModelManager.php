@@ -41,6 +41,12 @@ abstract class ModelManager
     private static $keyRules = [];
 
     /**
+     * member规则缓存
+     * @var array
+     */
+    private static $memberRules = [];
+
+    /**
      * 字段缓存
      *
      * @var array
@@ -231,6 +237,23 @@ abstract class ModelManager
             static::$keyRules[$class] = new KeyRule($key, $matches[1]);
         }
         return static::$keyRules[$class];
+    }
+
+    /**
+     * 获取Member
+     * @param string|object $object
+     * @return \Imi\Model\Key\KeyRule
+     */
+    public static function getMemberRule($object)
+    {
+        $class = BeanFactory::getObjectClass($object);
+        if(!isset(static::$memberRules[$class]))
+        {
+            $key = static::getAnnotation($object, RedisEntity::class)->member;
+            preg_match_all('/{([^}]+)}/', $key, $matches);
+            static::$memberRules[$class] = new KeyRule($key, $matches[1]);
+        }
+        return static::$memberRules[$class];
     }
     
     /**

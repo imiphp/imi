@@ -3,6 +3,7 @@ namespace Imi\Model\Annotation;
 
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
+use Imi\Model\Enum\RedisStorageMode;
 
 /**
  * Redis模型注解
@@ -37,8 +38,27 @@ class RedisEntity extends Base
     public $key = '{key}';
 
     /**
+     * hash 成员标识，支持定义多个参数，格式：{key}
+     * 仅 hash 存储模式有效
+     * 
+     * @var string
+     */
+    public $member = '{member}';
+
+    /**
      * 数据默认的过期时间，null为永不过期
+     * hash 存储模式不支持过期
      * @var integer
      */
     public $ttl = null;
+
+    /**
+     * Redis 实体类存储模式
+     * 
+     * 支持 string、hash
+     *
+     * @var string
+     */
+    public $storage = RedisStorageMode::STRING;
+
 }

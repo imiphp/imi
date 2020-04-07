@@ -118,10 +118,18 @@ class TestRedisModel extends RedisModel
 #### @RedisEntity
 指定当前类为Redis实体类
 **可选属性：**
+
 `poolName`redis连接池名称
+
 `db`第几个库，不传为null时使用连接池默认配置
+
 `key`键，支持定义多个参数，默认为`{key}`，在`RedisModel`中已经预先定义了`setKey()`和`getKey()`方法
-`ttl`数据默认的过期时间，null为永不过期
+
+`member`，规则同`key`，仅在`storage`为`hash`时有效
+
+`ttl`数据默认的过期时间，null为永不过期，hash 存储模式不支持过期
+
+`storage`Redis 实体类存储模式，支持：string、hash
 
 #### @Column
 Redis模型中只有name生效
