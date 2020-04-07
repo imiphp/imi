@@ -123,9 +123,32 @@ class ModelGenerate
             }
             else
             {
-                $modelNamespace = $namespace;
-                $fileName = File::path($modelPath, $className . '.php');
-                $basePath = $baseModelPath;
+                $hasResult = false;
+                foreach($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
+                {
+                    if(in_array($table, $namespaceItem['tables'] ?? []))
+                    {
+                        $modelNamespace = $namespaceName;
+                        $path = Imi::getNamespacePath($modelNamespace);
+                        if(null === $path)
+                        {
+                            echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
+                            exit;
+                        }
+                        File::createDir($path);
+                        $basePath = $path . '/Base';
+                        File::createDir($basePath);
+                        $fileName = File::path($path, $className . '.php');
+                        $hasResult = true;
+                        break;
+                    }
+                }
+                if(!$hasResult)
+                {
+                    $modelNamespace = $namespace;
+                    $fileName = File::path($modelPath, $className . '.php');
+                    $basePath = $baseModelPath;
+                }
             }
             if(false === $override && is_file($fileName))
             {
