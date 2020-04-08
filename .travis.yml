@@ -28,8 +28,17 @@ matrix:
     env: SWOOLE_VERSION="v4.4.17"
   - php: '7.4'
     env: SWOOLE_VERSION="v4.4.17"
+  - php: '7.1'
+    env: SWOOLE_VERSION="v4.5.0RC1"
+  - php: '7.2'
+    env: SWOOLE_VERSION="v4.5.0RC1"
+  - php: '7.3'
+    env: SWOOLE_VERSION="v4.5.0RC1"
+  - php: '7.4'
+    env: SWOOLE_VERSION="v4.5.0RC1"
   allow_failures:
   - env: SWOOLE_VERSION="master"
+  - env: SWOOLE_VERSION="v4.5.0RC1"
   - php: nightly
 
 services:
