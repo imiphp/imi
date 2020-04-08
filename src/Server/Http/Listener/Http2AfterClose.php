@@ -14,7 +14,14 @@ class Http2AfterClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
-        ConnectContext::destroy();
+        $groups = ConnectContext::get('__groups', []);
+
+        // 当前连接离开所有组
+        $e->getTarget()->getBean('FdMap')->leaveAll($e->fd);
+
+        ConnectContext::set('__groups', $groups);
+
+        ConnectContext::destroy($e->fd);
     }
 
 }
