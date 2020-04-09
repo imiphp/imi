@@ -28,7 +28,7 @@ return [
         'port'        =>    13000,
         'mode'      =>  SWOOLE_BASE,
         'configs'    =>    [
-            'worker_num'        =>  4,
+            'worker_num'        =>  2,
             'task_worker_num'   =>  1,
         ],
     ],

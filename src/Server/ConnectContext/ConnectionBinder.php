@@ -3,6 +3,7 @@ namespace Imi\Server\ConnectContext;
 
 use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\ConnectContext;
 use Imi\Redis\RedisHandler;
 
 /**
@@ -32,6 +33,21 @@ class ConnectionBinder
      */
     protected $key = 'imi:connectionBinder:map';
 
+    public function __init()
+    {
+        $this->useRedis(function(RedisHandler $redis){
+            $redis->del($this->key);
+            $it = null;
+            do {
+                $arrKeys = $redis->scan($it, $this->key . ':*');
+                if ($arrKeys)
+                {
+                    $redis->del(...$arrKeys);
+                }
+            } while ($it > 0);
+        });
+    }
+
     /**
      * 绑定一个标记到当前连接
      *
@@ -41,6 +57,7 @@ class ConnectionBinder
      */
     public function bind(string $flag, int $fd)
     {
+        ConnectContext::set('__flag', $flag, $fd);
         $this->useRedis(function(RedisHandler $redis) use($flag, $fd){
             $redis->hSet($this->key, $flag, $fd);
         });
@@ -50,12 +67,23 @@ class ConnectionBinder
      * 取消绑定
      *
      * @param string $flag
+     * @param int|null $keepTime 旧数据保持时间，null 则不保留
      * @return void
      */
-    public function unbind(string $flag)
+    public function unbind(string $flag, int $keepTime = null)
     {
-        $this->useRedis(function(RedisHandler $redis) use($flag){
+        $this->useRedis(function(RedisHandler $redis) use($flag, $keepTime){
+            if($fd = $redis->hGet($this->key, $flag))
+            {
+                ConnectContext::set('__flag', null, $fd);
+            }
+            $redis->multi();
             $redis->hDel($this->key, $flag);
+            if($fd && $keepTime > 0)
+            {
+                $redis->set($this->key . ':old:' . $flag, $fd, $keepTime);
+            }
+            $redis->exec();
         });
     }
 
@@ -69,6 +97,30 @@ class ConnectionBinder
     {
         return $this->useRedis(function(RedisHandler $redis) use($flag){
             return $redis->hGet($this->key, $flag);
+        });
+    }
+
+    /**
+     * 使用连接编号获取标记
+     *
+     * @param integer $fd
+     * @return string|null
+     */
+    public function getFlagByFd(int $fd): ?string
+    {
+        return ConnectContext::get('__flag', null, $fd);
+    }
+
+    /**
+     * 使用标记获取旧的连接编号
+     *
+     * @param string $flag
+     * @return integer|null
+     */
+    public function getOldFdByFlag(string $flag): ?int
+    {
+        return $this->useRedis(function(RedisHandler $redis) use($flag){
+            return $redis->get($this->key . ':old:' . $flag);
         });
     }
 

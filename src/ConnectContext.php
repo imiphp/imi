@@ -218,13 +218,14 @@ abstract class ConnectContext
      * 取消绑定
      *
      * @param string $flag
+     * @param int|null $keepTime 旧数据保持时间，null 则不保留
      * @return void
      */
-    public static function unbind(string $flag)
+    public static function unbind(string $flag, int $keepTime = null)
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
-        $connectionBinder->unbind($flag);
+        $connectionBinder->unbind($flag, $keepTime);
     }
 
     /**
@@ -241,6 +242,32 @@ abstract class ConnectContext
     }
 
     /**
+     * 使用连接编号获取标记
+     *
+     * @param integer $fd
+     * @return string|null
+     */
+    public static function getFlagByFd(int $fd): ?string
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        return $connectionBinder->getFlagByFd($fd);
+    }
+
+    /**
+     * 使用标记获取旧的连接编号
+     *
+     * @param string $flag
+     * @return integer|null
+     */
+    public static function getOldFdByFlag(string $flag): ?int
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        return $connectionBinder->getOldFdByFlag($flag);
+    }
+
+    /**
      * 恢复标记对应连接中的数据
      *
      * @param string $flag
@@ -249,7 +276,7 @@ abstract class ConnectContext
      */
     public static function restore(string $flag, ?int $toFd = null)
     {
-        $fromFd = static::getFdByFlag($flag);
+        $fromFd = static::getOldFdByFlag($flag);
         if(!$fromFd)
         {
             throw new \RuntimeException(sprintf('Not found fd of connection flag %s', $flag));
@@ -259,6 +286,7 @@ abstract class ConnectContext
             $toFd = RequestContext::get('fd');
         }
         static::load($fromFd, $toFd);
+        static::bind($flag, $toFd);
         Event::trigger('IMI.CONNECT_CONTEXT.RESTORE', [
             'fromFd'    =>  $fromFd,
             'toFd'      =>  $toFd,

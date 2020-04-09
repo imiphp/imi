@@ -1,12 +1,14 @@
 <?php
 namespace Imi\Server\Http\Listener;
 
-use Imi\ConnectContext;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Event\Listener\ICloseEventListener;
+use Imi\Server\ConnectContext\Traits\TConnectContextRelease;
 
 class Http2AfterClose implements ICloseEventListener
 {
+    use TConnectContextRelease;
+
     /**
      * 事件处理方法
      * @param CloseEventParam $e
@@ -14,15 +16,7 @@ class Http2AfterClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
-        $connectContext = ConnectContext::get($e->fd);
-        $groups = $connectContext['__groups'] ?? [];
-
-        // 当前连接离开所有组
-        $e->getTarget()->getBean('FdMap')->leaveAll($e->fd);
-
-        $connectContext['__groups'] = $groups;
-
-        ConnectContext::destroy($e->fd);
+        $this->release($e->fd);
     }
 
 }

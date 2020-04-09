@@ -1,12 +1,10 @@
 <?php
 namespace Imi\Server\WebSocket\Listener;
 
-use Imi\ServerManage;
-use Imi\ConnectContext;
-use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Event\Listener\ICloseEventListener;
+use Imi\Server\ConnectContext\Traits\TConnectContextRelease;
 
 /**
  * Close事件后置处理
@@ -14,6 +12,8 @@ use Imi\Server\Event\Listener\ICloseEventListener;
  */
 class AfterClose implements ICloseEventListener
 {
+    use TConnectContextRelease;
+
     /**
      * 事件处理方法
      * @param CloseEventParam $e
@@ -21,14 +21,6 @@ class AfterClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
-        $connectContext = ConnectContext::get($e->fd);
-        $groups = $connectContext['__groups'] ?? [];
-
-        // 当前连接离开所有组
-        $e->getTarget()->getBean('FdMap')->leaveAll($e->fd);
-
-        $connectContext['__groups'] = $groups;
-
-        ConnectContext::destroy($e->fd);
+        $this->release($e->fd);
     }
 }

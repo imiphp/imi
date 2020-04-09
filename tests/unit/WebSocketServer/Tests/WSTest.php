@@ -57,12 +57,21 @@ class WSTest extends BaseTest
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
 
-            $this->assertTrue($client->send(json_encode([
-                'action'    =>  'reconnect',
-                'token'     =>  $token,
-            ])));
-            $recv = $client->recv();
-            $recvData = json_decode($recv, true);
+            // 重试3次
+            for($i = 0; $i < 3; ++$i)
+            {
+                $this->assertTrue($client->send(json_encode([
+                    'action'    =>  'reconnect',
+                    'token'     =>  $token,
+                ])));
+                $recv = $client->recv();
+                $recvData = json_decode($recv, true);
+                if(null !== $recvData)
+                {
+                    break;
+                }
+                sleep(1);
+            }
             $this->assertEquals([
                 'success'   => true,
                 'username'  => 'test',
