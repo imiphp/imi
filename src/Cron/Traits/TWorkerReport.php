@@ -26,7 +26,7 @@ trait TWorkerReport
         ]);
         if($client->connect())
         {
-            $result = new Result('CronTask', $id, $success, $message);
+            $result = new Result('cronTask', $id, $success, $message);
             $client->send($result);
             $client->close();
         }

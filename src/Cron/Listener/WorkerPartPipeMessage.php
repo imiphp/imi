@@ -2,17 +2,17 @@
 namespace Imi\Cron\Listener;
 
 use Imi\App;
+use Imi\Event\EventParam;
+use Imi\Event\IEventListener;
 use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Listener;
 use Imi\Util\Process\ProcessType;
 use Imi\Util\Process\ProcessAppContexts;
-use Imi\Server\Event\Param\PipeMessageEventParam;
-use Imi\Server\Event\Listener\IPipeMessageEventListener;
 
 /**
- * @Listener("IMI.MAIN_SERVER.PIPE_MESSAGE")
+ * @Listener("IMI.PIPE_MESSAGE.cronTask")
  */
-class WorkerPartPipeMessage implements IPipeMessageEventListener
+class WorkerPartPipeMessage implements IEventListener
 {
     /**
      * @Inject("CronManager")
@@ -30,20 +30,16 @@ class WorkerPartPipeMessage implements IPipeMessageEventListener
 
     /**
      * 事件处理方法
-     * @param PipeMessageEventParam $e
+     * @param EventParam $e
      * @return void
      */
-    public function handle(PipeMessageEventParam $e)
+    public function handle(EventParam $e)
     {
         if(ProcessType::WORKER !== App::get(ProcessAppContexts::PROCESS_TYPE))
         {
             return;
         }
-        $data = json_decode($e->message, true);
-        if('CronTask' !== ($data['action'] ?? null))
-        {
-            return;
-        }
+        $data = $e->getData();
         $this->cronWorker->exec($data['id'], $data['data']);
     }
 

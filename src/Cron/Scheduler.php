@@ -102,7 +102,7 @@ class Scheduler
                         case CronTaskType::RANDOM_WORKER:
                             $swooleServer = ServerManage::getServer('main')->getSwooleServer();
                             $swooleServer->sendMessage(json_encode([
-                                'action'    =>  'CronTask',
+                                'action'    =>  'cronTask',
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
                             ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
@@ -110,7 +110,7 @@ class Scheduler
                         case CronTaskType::ALL_WORKER:
                             $swooleServer = ServerManage::getServer('main')->getSwooleServer();
                             $message = json_encode([
-                                'action'    =>  'CronTask',
+                                'action'    =>  'cronTask',
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
                             ]);
