@@ -1,9 +1,10 @@
 <?php
 namespace Imi\Server\Session\Handler;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\Pool\PoolManager;
 use Imi\App;
+use Imi\Redis\Redis as ImiRedis;
+use Imi\Pool\PoolManager;
+use Imi\Bean\Annotation\Bean;
 
 /**
  * @Bean("SessionRedis")
@@ -38,9 +39,9 @@ class Redis extends Base
      */
     public function destroy($sessionID)
     {
-        PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID){
+        ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($sessionID){
             $redis->del($this->getKey($sessionID));
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -60,9 +61,9 @@ class Redis extends Base
      */
     public function read($sessionID)
     {
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID){
+        return ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($sessionID){
             return $redis->get($this->getKey($sessionID));
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -74,9 +75,9 @@ class Redis extends Base
      */
     public function write($sessionID, $sessionData, $maxLifeTime)
     {
-        PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($sessionID, $sessionData, $maxLifeTime){
+        ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($sessionID, $sessionData, $maxLifeTime){
             $redis->set($this->getKey($sessionID), $sessionData, $maxLifeTime);
-        });
+        }, $this->poolName, true);
     }
 
     /**

@@ -1,8 +1,7 @@
 <?php
 namespace Imi\Cache\Handler;
 
-use Imi\Util\DateTime;
-use Imi\Pool\PoolManager;
+use Imi\Redis\Redis;
 use Imi\Bean\Annotation\Bean;
 use Imi\Cache\InvalidArgumentException;
 
@@ -45,9 +44,9 @@ class RedisHash extends Base
     public function get($key, $default = null)
     {
         $this->parseKey($key, $member);
-        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member){
+        $result = Redis::use(function(\Imi\Redis\RedisHandler $redis) use($key, $member){
             return $redis->hGet($key, $member);
-        });
+        }, $this->poolName, true);
         if(false === $result)
         {
             return $default;
@@ -73,9 +72,9 @@ class RedisHash extends Base
     public function set($key, $value, $ttl = null)
     {
         $this->parseKey($key, $member);
-        return false !== PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member, $value){
+        return false !== Redis::use(function(\Imi\Redis\RedisHandler $redis) use($key, $member, $value){
             return $redis->hSet($key, $member, $this->encode($value));
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -91,7 +90,7 @@ class RedisHash extends Base
     public function delete($key)
     {
         $this->parseKey($key, $member);
-        return PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member){
+        return Redis::use(function(\Imi\Redis\RedisHandler $redis) use($key, $member){
             if(null === $member)
             {
                 return $redis->del($key) > 0;
@@ -100,7 +99,7 @@ class RedisHash extends Base
             {
                 return $redis->hDel($key, $member) > 0;
             }
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -110,9 +109,9 @@ class RedisHash extends Base
      */
     public function clear()
     {
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
+        return (bool)Redis::use(function(\Imi\Redis\RedisHandler $redis){
             return $redis->flushDB();
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -146,7 +145,7 @@ SCRIPT;
             $keysMembers[$key][] = $member;
         }
 
-        $list = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($script, $keysMembers){
+        $list = Redis::use(function(\Imi\Redis\RedisHandler $redis) use($script, $keysMembers){
             $result = [];
             foreach($keysMembers as $key => $members)
             {
@@ -157,7 +156,7 @@ SCRIPT;
                 $result = array_merge($result, $evalResult);
             }
             return $result;
-        });
+        }, $this->poolName, true);
         $result = [];
         foreach($list as $i => $v)
         {
@@ -213,7 +212,7 @@ SCRIPT;
             $setValues[$k]['value'][] = $this->encode($v);
         }
 
-        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($script, $setValues){
+        $result = Redis::use(function(\Imi\Redis\RedisHandler $redis) use($script, $setValues){
             foreach($setValues as $key => $item)
             {
                 $result = false !== $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), count($item['member']) + 1);
@@ -223,7 +222,7 @@ SCRIPT;
                 }
             }
             return true;
-        });
+        }, $this->poolName, true);
         return (bool)$result;
     }
 
@@ -257,7 +256,7 @@ SCRIPT;
             $keysMembers[$key][] = $member;
         }
 
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($script, $keysMembers){
+        return (bool)Redis::use(function(\Imi\Redis\RedisHandler $redis) use($script, $keysMembers){
             foreach($keysMembers as $key => $members)
             {
                 $result = $redis->evalEx($script, array_merge(
@@ -270,7 +269,7 @@ SCRIPT;
                 }
             }
             return true;
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -291,9 +290,9 @@ SCRIPT;
     public function has($key)
     {
         $this->parseKey($key, $member);
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $member){
+        return (bool)Redis::use(function(\Imi\Redis\RedisHandler $redis) use($key, $member){
             return $redis->hExists($key, $member);
-        });
+        }, $this->poolName, true);
     }
 
     /**

@@ -1,12 +1,11 @@
 <?php
 namespace Imi\Lock\Handler;
 
+use Imi\Redis\Redis as ImiRedis;
 use Imi\Util\Coroutine;
-use Imi\Bean\BeanFactory;
+use Imi\Redis\RedisManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Handler\BaseLock;
-use Imi\Pool\PoolManager;
-use Imi\Redis\RedisManager;
 
 /**
  * Redis + Lua 实现的分布式锁，需要 Redis >= 2.6.0
@@ -109,7 +108,7 @@ class Redis extends BaseLock
      */
     protected function __tryLock(): bool
     {
-        return PoolManager::use($this->poolName, function($resource, $redis){
+        return ImiRedis::use(function($redis){
             return 1 == $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
@@ -134,7 +133,7 @@ SCRIPT
                 $this->db,
                 $this->lockExpire,
             ], 2);
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -144,7 +143,7 @@ SCRIPT
      */
     protected function __unlock(): bool
     {
-        return PoolManager::use($this->poolName, function($resource, $redis){
+        return ImiRedis::use(function($redis){
             return false !== $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
@@ -161,7 +160,7 @@ SCRIPT
                 $this->guid,
                 $this->db,
             ], 2);
-        });
+        }, $this->poolName, true);
     }
 
 }

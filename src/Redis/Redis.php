@@ -242,11 +242,12 @@ abstract class Redis
      *
      * @param callable $callable
      * @param string $poolName
+     * @param bool $forceUse
      * @return mixed
      */
-    public static function use($callable, $poolName = null)
+    public static function use($callable, $poolName = null, $forceUse = false)
     {
-        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if(!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return $callable(RedisManager::getInstance($poolName));
         }
@@ -257,4 +258,5 @@ abstract class Redis
             });
         }
     }
+
 }

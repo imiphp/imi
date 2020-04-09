@@ -1,18 +1,17 @@
 <?php
 namespace Imi\Server\ConnectContext\StoreHandler;
 
+use Imi\App;
 use Imi\Worker;
 use Imi\Log\Log;
 use Imi\Lock\Lock;
 use Imi\Event\Event;
+use Imi\Redis\Redis as ImiRedis;
 use Imi\Util\Swoole;
 use Imi\ServerManage;
-use Imi\RequestContext;
-use Imi\Pool\PoolManager;
-use Imi\Bean\Annotation\Bean;
-use Imi\Util\AtomicManager;
-use Imi\App;
 use Imi\Redis\RedisHandler;
+use Imi\Util\AtomicManager;
+use Imi\Bean\Annotation\Bean;
 
 /**
  * 连接上下文存储处理器-Redis
@@ -106,7 +105,7 @@ class Redis implements IHandler
         $workerId = Worker::getWorkerID();
         if(0 === $workerId)
         {
-            $this->useRedis(function($resource, $redis){
+            $this->useRedis(function($redis){
                 // 判断master进程pid
                 $this->masterPID = Swoole::getMasterPID();
                 $storeMasterPID = $redis->get($this->key . ':master_pid');
@@ -192,7 +191,7 @@ class Redis implements IHandler
      */
     public function pingTimer()
     {
-        $this->useRedis(function($resource, $redis){
+        $this->useRedis(function($redis){
             $this->ping($redis);
         });
     }
@@ -262,7 +261,7 @@ class Redis implements IHandler
      */
     public function read(string $key): array
     {
-        return $this->useRedis(function($resource, $redis) use($key){
+        return $this->useRedis(function($redis) use($key){
             $result = $redis->hget($this->getStoreKey(), $key);
             if($result)
             {
@@ -291,7 +290,7 @@ class Redis implements IHandler
      */
     public function save(string $key, array $data)
     {
-        $this->useRedis(function($resource, $redis) use($key, $data){
+        $this->useRedis(function($redis) use($key, $data){
             if($this->dataEncode)
             {
                 $data = ($this->dataEncode)($data);
@@ -308,7 +307,7 @@ class Redis implements IHandler
      */
     public function destroy(string $key)
     {
-        $this->useRedis(function($resource, $redis) use($key){
+        $this->useRedis(function($redis) use($key){
             $redis->hdel($this->getStoreKey(), $key);
         });
     }
@@ -322,7 +321,7 @@ class Redis implements IHandler
      */
     public function delayDestroy(string $key, int $ttl)
     {
-        $this->useRedis(function($resource, RedisHandler $redis) use($key, $ttl){
+        $this->useRedis(function(RedisHandler $redis) use($key, $ttl){
             $redis->expire($this->getStoreKey(), $ttl);
         });
     }
@@ -335,7 +334,7 @@ class Redis implements IHandler
      */
     public function exists(string $key)
     {
-        return $this->useRedis(function($resource, $redis) use($key){
+        return $this->useRedis(function($redis) use($key){
             return $redis->hexists($this->getStoreKey(), $key);
         });
     }
@@ -358,10 +357,10 @@ class Redis implements IHandler
      */
     private function useRedis($callback)
     {
-        return PoolManager::use($this->redisPool, function($resource, $redis) use($callback){
+        return ImiRedis::use(function($redis) use($callback){
             $redis->select($this->redisDb);
-            return $callback($resource, $redis);
-        });
+            return $callback($redis);
+        }, $this->redisPool, true);
     }
 
     /**

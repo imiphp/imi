@@ -1,10 +1,10 @@
 <?php
 namespace Imi\Server\ConnectContext;
 
-use Imi\Pool\PoolManager;
-use Imi\Bean\Annotation\Bean;
+use Imi\Redis\Redis;
 use Imi\ConnectContext;
 use Imi\Redis\RedisHandler;
+use Imi\Bean\Annotation\Bean;
 
 /**
  * 连接绑定器
@@ -132,10 +132,10 @@ class ConnectionBinder
      */
     private function useRedis($callback)
     {
-        return PoolManager::use($this->redisPool, function($resource, $redis) use($callback){
+        return Redis::use(function($redis) use($callback){
             $redis->select($this->redisDb);
             return $callback($redis);
-        });
+        }, $this->redisPool, true);
     }
 
 }

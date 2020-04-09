@@ -1,8 +1,8 @@
 <?php
 namespace Imi\Cache\Handler;
 
+use Imi\Redis\Redis as ImiRedis;
 use Imi\Util\DateTime;
-use Imi\Pool\PoolManager;
 use Imi\Bean\Annotation\Bean;
 
 /**
@@ -44,9 +44,9 @@ class Redis extends Base
     public function get($key, $default = null)
     {
         $this->checkKey($key);
-        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
+        $result = ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($key){
             return $redis->get($this->parseKey($key));
-        });
+        }, $this->poolName, true);
         if(false === $result)
         {
             return $default;
@@ -79,9 +79,9 @@ class Redis extends Base
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
+        return (bool)ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($key, $value, $ttl){
             return $redis->set($this->parseKey($key), $this->encode($value), $ttl);
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -97,9 +97,9 @@ class Redis extends Base
     public function delete($key)
     {
         $this->checkKey($key);
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
+        return (bool)ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($key){
             return $redis->del($this->parseKey($key)) > 0;
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -109,9 +109,9 @@ class Redis extends Base
      */
     public function clear()
     {
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis){
+        return (bool)ImiRedis::use(function(\Imi\Redis\RedisHandler $redis){
             return $redis->flushDB();
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -129,13 +129,13 @@ class Redis extends Base
     public function getMultiple($keys, $default = null)
     {
         $this->checkArrayOrTraversable($keys);
-        $mgetResult = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
+        $mgetResult = ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($keys){
             foreach($keys as &$key)
             {
                 $key = $this->parseKey($key);
             }
             return $redis->mget($keys);
-        });
+        }, $this->poolName, true);
         $result = [];
         foreach($mgetResult as $i => $v)
         {
@@ -185,7 +185,7 @@ class Redis extends Base
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        $result = PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($setValues, $ttl){
+        $result = ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($setValues, $ttl){
             $result = $redis->mset($setValues);
             if(null !== $ttl)
             {
@@ -195,7 +195,7 @@ class Redis extends Base
                 }
             }
             return $result;
-        });
+        }, $this->poolName, true);
         return (bool)$result;
     }
 
@@ -213,13 +213,13 @@ class Redis extends Base
     public function deleteMultiple($keys)
     {
         $this->checkArrayOrTraversable($keys);
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($keys){
+        return (bool)ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($keys){
             foreach($keys as &$key)
             {
                 $key = $this->parseKey($key);
             }
             return $redis->del($keys);
-        });
+        }, $this->poolName, true);
     }
 
     /**
@@ -240,9 +240,9 @@ class Redis extends Base
     public function has($key)
     {
         $this->checkKey($key);
-        return (bool)PoolManager::use($this->poolName, function($resource, \Imi\Redis\RedisHandler $redis) use($key){
+        return (bool)ImiRedis::use(function(\Imi\Redis\RedisHandler $redis) use($key){
             return $redis->exists($this->parseKey($key));
-        });
+        }, $this->poolName, true);
     }
 
     /**

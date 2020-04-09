@@ -5,11 +5,9 @@ use Imi\App;
 use Imi\Worker;
 use Imi\Log\Log;
 use Imi\Event\Event;
+use Imi\Redis\Redis as ImiRedis;
 use Imi\Util\Swoole;
 use Imi\ServerManage;
-use Imi\RequestContext;
-use Imi\Util\ArrayUtil;
-use Imi\Pool\PoolManager;
 use Imi\Util\AtomicManager;
 use Imi\Bean\Annotation\Bean;
 
@@ -86,7 +84,7 @@ class Redis implements IGroupHandler
         $workerId = Worker::getWorkerID();
         if(0 === $workerId)
         {
-            $this->useRedis(function($resource, $redis){
+            $this->useRedis(function($redis){
                 // 判断master进程pid
                 $this->masterPID = Swoole::getMasterPID();
                 $storeMasterPID = $redis->get($this->key . ':master_pid');
@@ -197,7 +195,7 @@ class Redis implements IGroupHandler
      */
     public function pingTimer()
     {
-        $this->useRedis(function($resource, $redis){
+        $this->useRedis(function($redis){
             $this->ping($redis);
         });
     }
@@ -281,7 +279,7 @@ class Redis implements IGroupHandler
     {
         if(!isset($this->groups[$groupName]))
         {
-            $this->useRedis(function($resource, $redis) use($groupName){
+            $this->useRedis(function($redis) use($groupName){
                 $redis->sAdd($this->getGroupsKey(), $groupName);
             });
             $this->groups[$groupName] = [
@@ -298,7 +296,7 @@ class Redis implements IGroupHandler
      */
     public function closeGroup(string $groupName)
     {
-        $this->useRedis(function($resource, $redis) use($groupName){
+        $this->useRedis(function($redis) use($groupName){
             $key = $this->getGroupNameKey($groupName);
             $redis->del($key);
             $redis->sRem($this->getGroupsKey(), $groupName);
@@ -314,7 +312,7 @@ class Redis implements IGroupHandler
      */
     public function joinGroup(string $groupName, int $fd): bool
     {
-        return $this->useRedis(function($resource, $redis) use($groupName, $fd){
+        return $this->useRedis(function($redis) use($groupName, $fd){
             $key = $this->getGroupNameKey($groupName);
             return $redis->sadd($key, $fd) > 0;
         });
@@ -329,7 +327,7 @@ class Redis implements IGroupHandler
      */
     public function leaveGroup(string $groupName, int $fd): bool
     {
-        return $this->useRedis(function($resource, $redis) use($groupName, $fd){
+        return $this->useRedis(function($redis) use($groupName, $fd){
             $key = $this->getGroupNameKey($groupName);
             return $redis->srem($key, $fd) > 0;
         });
@@ -344,7 +342,7 @@ class Redis implements IGroupHandler
      */
     public function isInGroup(string $groupName, int $fd): bool
     {
-        return $this->useRedis(function($resource, $redis) use($groupName, $fd){
+        return $this->useRedis(function($redis) use($groupName, $fd){
             $key = $this->getGroupNameKey($groupName);
             $redis->sIsMember($key, $fd);
         });
@@ -358,7 +356,7 @@ class Redis implements IGroupHandler
      */
     public function getFds(string $groupName): array
     {
-        return $this->useRedis(function($resource, $redis) use($groupName){
+        return $this->useRedis(function($redis) use($groupName){
             $key = $this->getGroupNameKey($groupName);
             if($this->groups[$groupName]['maxClient'] > 0)
             {
@@ -388,7 +386,7 @@ class Redis implements IGroupHandler
      */
     public function count(string $groupName): int
     {
-        return $this->useRedis(function($resource, $redis) use($groupName){
+        return $this->useRedis(function($redis) use($groupName){
             $key = $this->getGroupNameKey($groupName);
             return $redis->scard($key);
         });
@@ -402,9 +400,9 @@ class Redis implements IGroupHandler
      */
     private function useRedis($callback)
     {
-        return PoolManager::use($this->redisPool, function($resource, $redis) use($callback){
+        return ImiRedis::use(function($redis) use($callback){
             $redis->select($this->redisDb);
-            return $callback($resource, $redis);
-        });
+            return $callback($redis);
+        }, $this->redisPool, true);
     }
 }
