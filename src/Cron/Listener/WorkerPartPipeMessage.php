@@ -39,7 +39,7 @@ class WorkerPartPipeMessage implements IEventListener
         {
             return;
         }
-        $data = $e->getData();
+        $data = $e->getData()['data'];
         $this->cronWorker->exec($data['id'], $data['data']);
     }
 
