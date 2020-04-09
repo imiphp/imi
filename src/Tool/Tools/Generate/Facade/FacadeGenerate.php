@@ -88,31 +88,43 @@ class FacadeGenerate
             $params = [];
             foreach($method->getParameters() as $param)
             {
-                if($param->hasType())
+                $result = '';
+                // 类型
+                $paramType = $param->getType();
+                if($paramType)
                 {
-                    $type = $param->getType();
-                    if($type->allowsNull())
+                    $paramType = $paramType->getName();
+                }
+                if(null !== $paramType && $param->allowsNull())
+                {
+                    $paramType = '?' . $paramType;
+                }
+                $result .= null === $paramType ? '' : ((string)$paramType . ' ');
+                if($param->isPassedByReference())
+                {
+                    // 引用传参
+                    $result .= '&';
+                }
+                else if($param->isVariadic())
+                {
+                    // 可变参数...
+                    $result .= '...';
+                }
+                // $参数名
+                $result .= '$' . $param->name;
+                // 默认值
+                if($param->isOptional() && !$param->isVariadic())
+                {
+                    if($param->isDefaultValueAvailable())
                     {
-                        $type = $type->getName() . '|null';
+                        $result .= ' = ' . var_export($param->getDefaultValue(), true);
                     }
                     else
                     {
-                        $type = $type->getName();
+                        $result .= ' = null';
                     }
                 }
-                else
-                {
-                    $type = 'mixed';
-                }
-                if($param->isDefaultValueAvailable())
-                {
-                    $defaultValue = ' = ' . var_export($param->getDefaultValue(), true);
-                }
-                else
-                {
-                    $defaultValue = '';
-                }
-                $params[] = $type . ' $' . $param->getName() . $defaultValue;
+                $params[] = $result;
             }
             $params = implode(', ', $params);
             $methods[] = '@method static ' . $returnType . ' ' . $method->getName() . '(' . $params . ')';
