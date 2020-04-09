@@ -80,10 +80,18 @@ abstract class Base
         else
         {
             $this->createServer();
+            $this->swoolePort = $this->swooleServer->ports[0] ?? $this->swooleServer;
         }
         if(!empty($this->config['configs']))
         {
-            ($this->swoolePort ?? $this->swooleServer)->set($this->config['configs']);
+            if($isSubServer)
+            {
+                $this->swoolePort->set($this->config['configs']);
+            }
+            else
+            {
+                $this->swooleServer->set($this->config['configs']);
+            }
         }
         $this->bindEvents();
     }

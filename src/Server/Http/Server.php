@@ -142,11 +142,10 @@ class Server extends Base
         }
 
         // Swoole 服务器对象事件监听
-        $server = $this->swoolePort ?? $this->swooleServer;
 
         if($event = ($this->config['events']['request'] ?? true))
         {
-            $server->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+            $this->swoolePort->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
                     $this->trigger('request', [
                         'request'   => Request::getInstance($this, $swooleRequest),
@@ -162,7 +161,7 @@ class Server extends Base
 
         if($event = ($this->config['events']['close'] ?? false) || $this->http2)
         {
-            $server->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
+            $this->swoolePort->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
                 try{
                     $this->trigger('close', [
                         'server'    => $this,

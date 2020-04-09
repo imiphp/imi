@@ -35,14 +35,7 @@ class ServerStart implements IStartEventListener
             echo 'WorkerNum: ', $mainSwooleServer->setting['worker_num'], ', TaskWorkerNum: ', $mainSwooleServer->setting['task_worker_num'], PHP_EOL;
             foreach(ServerManage::getServers() as $server)
             {
-                if($server->isSubServer())
-                {
-                    $serverPort = $server->getSwoolePort();
-                }
-                else
-                {
-                    $serverPort = $server->getSwooleServer();
-                }
+                $serverPort = $server->getSwoolePort();
                 echo '[', $server->getConfig()['type'], '] ', $server->getName(), '; listen: ', $serverPort->host, ':', $serverPort->port, PHP_EOL;
             }
         }

@@ -97,11 +97,9 @@ class Server extends Base
             $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
         });
 
-        $server = $this->swoolePort ?? $this->swooleServer;
-
         if($event = ($this->config['events']['handshake'] ?? true))
         {
-            $server->on('handshake', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+            $this->swoolePort->on('handshake', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
                     $this->trigger('handShake', [
                         'request'   => new Request($this, $swooleRequest),
@@ -117,7 +115,7 @@ class Server extends Base
 
         if($event = ($this->config['events']['message'] ?? true))
         {
-            $server->on('message', is_callable($event) ? $event : function ($server, \Swoole\WebSocket\Frame $frame) {
+            $this->swoolePort->on('message', is_callable($event) ? $event : function ($server, \Swoole\WebSocket\Frame $frame) {
                 try{
                     $this->trigger('message', [
                         'server'    => $this,
@@ -133,7 +131,7 @@ class Server extends Base
 
         if($event = ($this->config['events']['close'] ?? true))
         {
-            $server->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
+            $this->swoolePort->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
                 try{
                     $this->trigger('close', [
                         'server'    => $this,
@@ -150,7 +148,7 @@ class Server extends Base
 
         if($event = ($this->config['events']['request'] ?? true))
         {
-            $server->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
+            $this->swoolePort->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
                     $this->trigger('request', [
                         'request'   => Request::getInstance($this, $swooleRequest),
