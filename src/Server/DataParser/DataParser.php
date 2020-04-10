@@ -36,9 +36,14 @@ class DataParser
      */
     public function getParserClass()
     {
-        $server = RequestContext::getServer();
+        $requestContext = RequestContext::getContext();
+        $server = $requestContext['server'] ?? null;
         if($server instanceof \Imi\Server\WebSocket\Server)
         {
+            if(!($requestContext['fd'] ?? null))
+            {
+                return JsonObjectParser::class;
+            }
             return ConnectContext::get('httpRouteResult')->wsConfig->parserClass ?? JsonObjectParser::class;
         }
         else if($server instanceof \Imi\Server\TcpServer\Server || $server instanceof \Imi\Server\UdpServer\Server)
