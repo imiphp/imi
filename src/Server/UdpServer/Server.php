@@ -73,4 +73,15 @@ class Server extends Base
         }
         
     }
+
+    /**
+     * 是否为长连接服务
+     *
+     * @return boolean
+     */
+    public function isLongConnection(): bool
+    {
+        return false;
+    }
+
 }

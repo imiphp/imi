@@ -26,11 +26,15 @@ class WorkerStart implements IWorkerStartEventListener
         {
             foreach(ServerManage::getServers() as $server)
             {
-                RequestContext::set('server', $server);
-                $server->getBean('ConnectContextStore')->getHandler();
-                if(Imi::getClassPropertyValue('ServerGroup', 'status'))
+                if($server->isLongConnection())
                 {
-                    $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
+                    RequestContext::set('server', $server);
+                    $server->getBean('ConnectContextStore')->getHandler();
+                    if(Imi::getClassPropertyValue('ServerGroup', 'status'))
+                    {
+                        $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
+                    }
+                    $server->getBean('ConnectionBinder');
                 }
             }
         }

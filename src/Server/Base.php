@@ -347,6 +347,16 @@ abstract class Base
     }
 
     /**
+     * 是否为长连接服务
+     *
+     * @return boolean
+     */
+    public function isLongConnection(): bool
+    {
+        return true;
+    }
+
+    /**
      * 绑定服务器事件
      * @return void
      */
@@ -369,4 +379,5 @@ abstract class Base
      * @return array
      */
     protected abstract function getServerInitConfig();
+
 }

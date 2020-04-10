@@ -197,4 +197,14 @@ class Server extends Base
         return $this->http2;
     }
 
+    /**
+     * 是否为长连接服务
+     *
+     * @return boolean
+     */
+    public function isLongConnection(): bool
+    {
+        return $this->isHttp2();
+    }
+
 }

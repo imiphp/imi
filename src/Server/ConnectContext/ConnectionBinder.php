@@ -5,6 +5,7 @@ use Imi\Redis\Redis;
 use Imi\ConnectContext;
 use Imi\Redis\RedisHandler;
 use Imi\Bean\Annotation\Bean;
+use Imi\Worker;
 
 /**
  * 连接绑定器
@@ -35,17 +36,20 @@ class ConnectionBinder
 
     public function __init()
     {
-        $this->useRedis(function(RedisHandler $redis){
-            $redis->del($this->key);
-            $it = null;
-            do {
-                $arrKeys = $redis->scan($it, $this->key . ':*');
-                if ($arrKeys)
-                {
-                    $redis->del(...$arrKeys);
-                }
-            } while ($it > 0);
-        });
+        if(0 === Worker::getWorkerID())
+        {
+            $this->useRedis(function(RedisHandler $redis){
+                $redis->del($this->key);
+                $it = null;
+                do {
+                    $arrKeys = $redis->scan($it, $this->key . ':*');
+                    if ($arrKeys)
+                    {
+                        $redis->del(...$arrKeys);
+                    }
+                } while ($it > 0);
+            });
+        }
     }
 
     /**
