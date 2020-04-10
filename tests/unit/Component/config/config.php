@@ -1,4 +1,6 @@
 <?php
+
+use Imi\Log\LogLevel;
 return [
     'configs'    =>    [
     ],
@@ -31,6 +33,24 @@ return [
         ],
         'Logger'            =>  [
             'exHandlers'    =>  [
+                // 指定级别日志输出trace
+                [
+                    'class'        =>    \Imi\Log\Handler\File::class,
+                    'options'    =>    [
+                        'levels'        => [
+                            LogLevel::ALERT,
+                            LogLevel::CRITICAL,
+                            LogLevel::DEBUG,
+                            LogLevel::EMERGENCY,
+                            LogLevel::ERROR,
+                            LogLevel::NOTICE,
+                            LogLevel::WARNING,
+                        ],
+                        'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
+                        'format'        => "{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}\n{trace}",
+                        'traceFormat'   => '#{index}  {call} called at [{file}:{line}]',
+                    ],
+                ],
                 [
                     'class'     => \Imi\Log\Handler\Console::class,
                     'options'   => [

@@ -8,6 +8,7 @@ use Imi\Server\Route\Annotation\WebSocket\WSAction;
 use Imi\Server\Route\Annotation\WebSocket\WSController;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Worker;
 
 /**
  * 数据收发测试
@@ -65,6 +66,22 @@ class TestController extends WebSocketController
     {
         $message = ConnectContext::get('username') . ':' . $data->message;
         $this->server->groupCall('g1', 'push', $message);
+    }
+
+    /**
+     * 连接信息
+     *
+     * @WSAction
+     * @WSRoute({"action"="info"})
+     * @param 
+     * @return void
+     */
+    public function info()
+    {
+        return [
+            'fd'        =>  RequestContext::get('fd'),
+            'workerId'  =>  Worker::getWorkerID(),
+        ];
     }
 
     /**

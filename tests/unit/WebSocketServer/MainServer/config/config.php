@@ -27,13 +27,11 @@ return [
             ],
         ],
         'ConnectContextRedis'    =>    [
-            'redisPool'    =>    'redis',
-        ],
-        'ConnectContextLocal'    =>    [
+            'redisPool' =>  'redis',
             'lockId'    =>  'redisConnectContextLock',
         ],
         'ConnectContextStore'   =>  [
-            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Local::class,
+            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Redis::class,
             'ttl'           =>  600,
         ],
         'ConnectContextMemoryTable' =>  [
