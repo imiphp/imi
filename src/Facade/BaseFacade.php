@@ -36,11 +36,11 @@ abstract class BaseFacade
         }
         if(self::$cache[static::class]->request)
         {
-            return RequestContext::getBean(self::$cache[static::class]->class, self::$cache[static::class]->args);
+            return RequestContext::getBean(self::$cache[static::class]->class, ...self::$cache[static::class]->args);
         }
         else
         {
-            return App::getBean(self::$cache[static::class]->class, self::$cache[static::class]->args);
+            return App::getBean(self::$cache[static::class]->class, ...self::$cache[static::class]->args);
         }
     }
 
