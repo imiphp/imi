@@ -23,6 +23,7 @@ return [
         'Imi\Lock',
         'Imi\Facade',
         'Imi\Cron',
+        'Imi\Util\Co',
     ],
     'atomics' => [
         'session',
