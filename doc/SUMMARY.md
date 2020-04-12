@@ -18,6 +18,7 @@
 * [进程名称管理](core/processNameManager.md)
 * [错误转为异常捕获](core/handleError.md)
 * [子服务器（单项目多端口多协议）](core/subServer.md)
+* [内部进程间通讯](core/processCommunication.md)
 
 ## Http 服务
 
@@ -150,6 +151,7 @@
 * [DateTime](utils/DateTime.md)
 * [KVStorage](utils/KVStorage.md)
 * [ServerManage](utils/ServerManage.md)
+* [通道容器](utils/ChannelContainer.md)
 
 ## 注解
 
