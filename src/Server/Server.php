@@ -15,7 +15,7 @@ use Imi\Server\Event\Param\PipeMessageEventParam;
 abstract class Server
 {
     /**
-     * 发送消息，使用框架内置格式
+     * 发送消息给 Worker 进程，使用框架内置格式
      * 
      * 返回成功发送消息数量
      *
@@ -58,7 +58,7 @@ abstract class Server
     }
 
     /**
-     * 发送消息
+     * 发送消息给 Worker 进程
      * 
      * 返回成功发送消息数量
      *
