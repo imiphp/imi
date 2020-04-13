@@ -35,6 +35,11 @@ class TestController extends WebSocketController
             'requestUri'        => ConnectContext::get('requestUri'),
             'uri'               => (string)ConnectContext::get('uri'),
             'token'             => $token,
+            'fd'                => $this->frame->getFd(),
+            'getFdByFlag'       => ConnectContext::getFdByFlag($token),
+            'getFlagByFd'       => ConnectContext::getFlagByFd($this->frame->getFd()),
+            'getFdsByFlags'       => ConnectContext::getFdsByFlags([$token]),
+            'getFlagsByFds'       => ConnectContext::getFlagsByFds([$this->frame->getFd()]),
         ];
     }
 

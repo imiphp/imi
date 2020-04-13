@@ -105,6 +105,19 @@ class ConnectionBinder
     }
 
     /**
+     * 使用标记获取连接编号
+     *
+     * @param string[] $flag
+     * @return int[]
+     */
+    public function getFdsByFlags(array $flags): array
+    {
+        return $this->useRedis(function(RedisHandler $redis) use($flags){
+            return $redis->hMget($this->key, $flags);
+        });
+    }
+
+    /**
      * 使用连接编号获取标记
      *
      * @param integer $fd
@@ -113,6 +126,22 @@ class ConnectionBinder
     public function getFlagByFd(int $fd): ?string
     {
         return ConnectContext::get('__flag', null, $fd);
+    }
+
+    /**
+     * 使用连接编号获取标记
+     *
+     * @param integer[] $fds
+     * @return string[]
+     */
+    public function getFlagsByFds(array $fds): array
+    {
+        $flags = [];
+        foreach($fds as $fd)
+        {
+            $flags[$fd] = ConnectContext::get('__flag', null, $fd);
+        }
+        return $flags;
     }
 
     /**

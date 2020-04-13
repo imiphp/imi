@@ -242,6 +242,19 @@ abstract class ConnectContext
     }
 
     /**
+     * 使用标记获取连接编号
+     *
+     * @param string[] $flag
+     * @return int[]
+     */
+    public static function getFdsByFlags(array $flags): array
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        return $connectionBinder->getFdsByFlags($flags);
+    }
+
+    /**
      * 使用连接编号获取标记
      *
      * @param integer $fd
@@ -252,6 +265,19 @@ abstract class ConnectContext
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
         return $connectionBinder->getFlagByFd($fd);
+    }
+
+    /**
+     * 使用连接编号获取标记
+     *
+     * @param integer[] $fds
+     * @return string[]
+     */
+    public function getFlagsByFds(array $fds): array
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        return $connectionBinder->getFlagsByFds($fds);
     }
 
     /**
