@@ -269,16 +269,19 @@ abstract class Server
         {
             $method = 'send';
         }
-        $group = $server->getGroup($groupName);
         $success = 0;
-        if($group)
+        foreach((array)$groupName as $tmpGroupName)
         {
-            $result = $group->$method($data);
-            foreach($result as $item)
+            $group = $server->getGroup($tmpGroupName);
+            if($group)
             {
-                if($item)
+                $result = $group->$method($data);
+                foreach($result as $item)
                 {
-                    ++$success;
+                    if($item)
+                    {
+                        ++$success;
+                    }
                 }
             }
         }
