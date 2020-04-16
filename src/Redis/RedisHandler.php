@@ -288,4 +288,150 @@ class RedisHandler
         return $result;
     }
 
+    /**
+     * scan
+     * 
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        return $this->redis->scan($iterator, $pattern, $count);
+    }
+
+    /**
+     * scan 方法的扩展简易遍历方法
+     * 
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function scanEach(?string $pattern = null, ?int $count = null)
+    {
+        $it = null;
+        while(false !== ($keys = $this->scan($it, $pattern, $count)))
+        {
+            if($keys)
+            {
+                foreach($keys as $key)
+                {
+                    yield $key;
+                }
+            }
+        }
+    }
+
+    /**
+     * hscan
+     * 
+     * @param string $key
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function hscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        return $this->redis->hscan($key, $iterator, $pattern, $count);
+    }
+
+    /**
+     * hscan 方法的扩展简易遍历方法
+     * 
+     * @param string $key
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function hscanEach(string $key, ?string $pattern = null, ?int $count = null)
+    {
+        $it = null;
+        while(false !== ($result = $this->hscan($key, $it, $pattern, $count)))
+        {
+            if($result)
+            {
+                foreach($result as $key => $value)
+                {
+                    yield $key => $value;
+                }
+            }
+        }
+    }
+
+    /**
+     * sscan
+     * 
+     * @param string $key
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        return $this->redis->sscan($key, $iterator, $pattern, $count);
+    }
+
+    /**
+     * sscan 方法的扩展简易遍历方法
+     * 
+     * @param string $key
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function sscanEach(string $key, ?string $pattern = null, ?int $count = null)
+    {
+        $it = null;
+        while(false !== ($result = $this->sscan($key, $it, $pattern, $count)))
+        {
+            if($result)
+            {
+                foreach($result as $value)
+                {
+                    yield $value;
+                }
+            }
+        }
+    }
+
+    /**
+     * zscan
+     * 
+     * @param string $key
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function zscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        return $this->redis->zscan($key, $iterator, $pattern, $count);
+    }
+
+    /**
+     * zscan 方法的扩展简易遍历方法
+     * 
+     * @param string $key
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public function zscanEach(string $key, ?string $pattern = null, ?int $count = null)
+    {
+        $it = null;
+        while(false !== ($result = $this->zscan($key, $it, $pattern, $count)))
+        {
+            if($result)
+            {
+                foreach($result as $value)
+                {
+                    yield $value;
+                }
+            }
+        }
+    }
+
 }

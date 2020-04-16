@@ -283,4 +283,95 @@ abstract class Redis
         }
     }
 
+    /**
+     * scan
+     * 
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public static function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        {
+            return RedisManager::getInstance()->scan($iterator, $pattern, $count);
+        }
+        else
+        {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use(&$iterator, $pattern, $count) {
+                return $redis->scan($iterator, $pattern, $count);
+            });
+        }
+    }
+
+    /**
+     * hscan
+     * 
+     * @param string $key
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public static function hscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        {
+            return RedisManager::getInstance()->hscan($key, $iterator, $pattern, $count);
+        }
+        else
+        {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($key, &$iterator, $pattern, $count) {
+                return $redis->hscan($key, $iterator, $pattern, $count);
+            });
+        }
+    }
+
+    /**
+     * sscan
+     * 
+     * @param string $key
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public static function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        {
+            return RedisManager::getInstance()->sscan($key, $iterator, $pattern, $count);
+        }
+        else
+        {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($key, &$iterator, $pattern, $count) {
+                return $redis->sscan($key, $iterator, $pattern, $count);
+            });
+        }
+    }
+
+    /**
+     * zscan
+     * 
+     * @param string $key
+     * @param int|null $iterator
+     * @param string|null $pattern
+     * @param int|null $count
+     * @return mixed
+     */
+    public static function zscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    {
+        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        {
+            return RedisManager::getInstance()->zscan($key, $iterator, $pattern, $count);
+        }
+        else
+        {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($key, &$iterator, $pattern, $count) {
+                return $redis->zscan($key, $iterator, $pattern, $count);
+            });
+        }
+    }
+
 }
