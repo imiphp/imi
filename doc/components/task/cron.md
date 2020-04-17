@@ -34,15 +34,132 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 
 #### Task 任务
 
-与异步任务等同，不再赘述
+与异步任务写法基本一致，多了`@Cron`注解
+
+```php
+<?php
+namespace Imi\Test\HttpServer\Cron;
+
+use Imi\Task\TaskParam;
+use Imi\Cron\Annotation\Cron;
+use Imi\Task\Annotation\Task;
+use Imi\Cron\Traits\TWorkerReport;
+use Imi\Task\Interfaces\ITaskHandler;
+
+/**
+ * @Cron(id="TaskCron", second="3n", data={"id":"TaskCron"})
+ * @Task("CronTask1")
+ */
+class TaskCron implements ITaskHandler
+{
+    use TWorkerReport;
+
+    /**
+     * 任务处理方法
+     * @param TaskParam $param
+     * @param \Swoole\Server $server
+     * @param integer $taskID
+     * @param integer $WorkerID
+     * @return void
+     */
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+    {
+        // 上报任务完成
+        $this->reportCronResult($param->getData()['id'], true, '');
+        return date('Y-m-d H:i:s');
+    }
+ 
+    /**
+     * 任务结束时触发
+     * @param \swoole_server $server
+     * @param int $taskId
+     * @param mixed $data
+     * @return void
+     */
+    public function finish(\Swoole\Server $server, int $taskID, $data)
+    {
+    }
+
+}
+```
 
 #### Process 任务
 
-与进程等同，不再赘述
+与进程写法基本一致，多了`@Cron`注解
+
+```php
+<?php
+namespace Imi\Test\HttpServer\Cron;
+
+use Imi\Util\Args;
+use Imi\Process\IProcess;
+use Imi\Cron\Annotation\Cron;
+use Imi\Cron\Traits\TWorkerReport;
+use Imi\Process\Annotation\Process;
+use Swoole\Event;
+
+/**
+ * @Cron(id="CronProcess1", second="3n")
+ * @Process("CronProcess1")
+ */
+class TaskProcess implements IProcess
+{
+    use TWorkerReport;
+
+    public function run(\Swoole\Process $process)
+    {
+        $success = false;
+        $message = '';
+        try {
+            $id = Args::get('id');
+            if(null === $id)
+            {
+                return;
+            }
+            $data = json_decode(Args::get('data'), true);
+            $success = true;
+        } catch(\Throwable $th) {
+            $message = $th->getMessage();
+            throw $th;
+        } finally {
+            // 上报任务完成
+            $this->reportCronResult($id, $success, $message);
+        }
+    }
+
+}
+```
 
 #### 协程任务
 
 实现 `Imi\Cron\Contract\ICronTask` 接口、`run()` 方法
+
+```php
+<?php
+namespace Imi\Test\HttpServer\Cron;
+
+use Imi\Cron\Annotation\Cron;
+use Imi\Cron\Contract\ICronTask;
+
+/**
+ * @Cron(id="CronRandomWorker", second="3n", type="random_worker")
+ */
+class CronRandomWorker implements ICronTask
+{
+    /**
+     * 执行任务
+     *
+     * @param string $id
+     * @param mixed $data
+     * @return void
+     */
+    public function run(string $id, $data)
+    {
+        var_dump('random');
+    }
+
+}
+```
 
 ### 定时规则
 
