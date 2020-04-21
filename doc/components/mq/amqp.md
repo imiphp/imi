@@ -234,7 +234,7 @@ mandatory | mandatory标志位 | `false` |
 immediate | immediate标志位 | `false` |
 ticket | ticket | `null` |
 
-### 发布者
+### 发布者定义
 
 必选注解：`@Publisher`
 
@@ -267,7 +267,23 @@ class TestPublisher extends BasePublisher
 }
 ```
 
-### 消费者
+> 该类所在命名空间必须能被扫描到，要在`beanScan`中配置
+
+### 发布消息
+
+```php
+// 实例化构建消息
+$message = new \ImiApp\AMQP\Test2\TestMessage2;
+$message->setMembertId(1);
+$message->setContent('imi niubi');
+
+// 发布消息
+/** @var \ImiApp\AMQP\Test\TestPublisher $testPublisher */
+$testPublisher = App::getBean('TestPublisher');
+$testPublisher->publish($message);
+```
+
+### 消费者定义
 
 必选注解：`@Consumer`
 
