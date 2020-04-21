@@ -1,10 +1,10 @@
 # Hprose
 
-代码仓库地址：<https://github.com/imiphp/imi-hprose> (来个Star⭐可好~)
-
 ## 介绍
 
 在 imi 框架中集成 Hprose 服务开发，目前支持`TCP`、`Unix Socket`协议。
+
+Github: <https://github.com/imiphp/imi-hprose>
 
 ## Composer
 

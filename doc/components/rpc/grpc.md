@@ -1,12 +1,12 @@
 # gRPC
 
-代码仓库地址：<https://github.com/imiphp/imi-grpc> (来个Star⭐可好~)
-
 ## 介绍
 
 在 imi 框架中集成 gRPC 服务开发、客户端调用及连接池。
 
 通讯协议为二进制的 Protobuf。
+
+Github: <https://github.com/imiphp/imi-grpc>
 
 ## Composer
 

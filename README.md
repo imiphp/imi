@@ -56,6 +56,7 @@ imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/imag
 * [限流](https://github.com/imiphp/imi-rate-limit)
 * [跨进程变量共享](https://github.com/imiphp/imi-shared-memory)
 * [Swoole Tracker](https://github.com/imiphp/imi-swoole-tracker)
+* [雪花算法发号器](https://github.com/imiphp/imi-snowflake)
 
 ## 开始使用
 
