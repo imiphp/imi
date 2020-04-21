@@ -274,7 +274,7 @@ class TestPublisher extends BasePublisher
 ```php
 // 实例化构建消息
 $message = new \ImiApp\AMQP\Test2\TestMessage2;
-$message->setMembertId(1);
+$message->setMemberId(1);
 $message->setContent('imi niubi');
 
 // 发布消息
