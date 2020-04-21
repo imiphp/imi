@@ -87,3 +87,8 @@ public $msgQueueKey = null;
 public static function create($name, $workerNum = null, $args = [], $ipcType = 0, $msgQueueKey = null): \Swoole\Process\Pool
 ```
 
+### 启动连接池进程
+
+命令：`bin/imi process/pool -name 进程名`
+
+其它参数可加上`-h`参数查看

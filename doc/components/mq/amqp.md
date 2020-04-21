@@ -331,6 +331,79 @@ class TestConsumer extends BaseConsumer
 
 ```
 
+### 消费消息
+
+#### 随服务启动的消费进程
+
+只会启动一个进程，适合量少的场景。适合IO密集型场景。
+
+首先定义进程：
+
+```php
+<?php
+namespace ImiApp\Process;
+
+use Imi\Process\BaseProcess;
+use Imi\Aop\Annotation\Inject;
+use Imi\Process\Annotation\Process;
+
+/**
+ * @Process(name="TestProcess")
+ */
+class TestProcess extends BaseProcess
+{
+    /**
+     * @Inject("TestConsumer")
+     *
+     * @var \ImiApp\AMQP\Test\TestConsumer
+     */
+    protected $testConsumer;
+
+    /**
+     * @Inject("TestConsumer2")
+     *
+     * @var \ImiApp\AMQP\Test2\TestConsumer2
+     */
+    protected $testConsumer2;
+
+    public function run(\Swoole\Process $process)
+    {
+        // 启动消费者
+        go(function(){
+            do {
+                $this->testConsumer->run();
+            } while(true);
+        });
+        go(function(){
+            do {
+                $this->testConsumer2->run();
+            } while(true);
+        });
+    }
+
+}
+```
+
+然后在项目配置`@app.beans`中配置消费进程
+
+```php
+[
+    'AutoRunProcessManager' =>  [
+        'processes' =>  [
+            'TestProcess'
+        ],
+    ],
+]
+```
+
+#### 启动进程池消费
+
+适合计算密集型场景、消费量非常多的场景。
+
+进程池写法参考：<https://doc.imiphp.com/components/process-pool/swoole.html>
+
+启动消费者写法参考上面的即可。
+
 ### 注解说明
 
 ### @Publisher
