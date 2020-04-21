@@ -120,6 +120,7 @@
 * [进程池-imi](components/process-pool/imi.md)
 * [热更新](components/hotupdate/index.md)
 * [Phar 支持](components/phar/index.md)
+* [雪花算法发号器](components/snowflake.md)
 
 ## 数据结构
 
