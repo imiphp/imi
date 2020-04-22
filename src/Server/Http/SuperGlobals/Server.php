@@ -28,13 +28,13 @@ class Server implements \ArrayAccess, \JsonSerializable
         {
             return true;
         }
-       /** @var \Imi\Server\Http\Message\Request $request */
-       $request = RequestContext::get('request');
-       $serverParams = $request->getServerParams();
-       if(isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
-       {
-           return true;
-       }
+        /** @var \Imi\Server\Http\Message\Request $request */
+        $request = RequestContext::get('request');
+        $serverParams = $request->getServerParams();
+        if(isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+        {
+            return true;
+        }
         return false;
     }
 
