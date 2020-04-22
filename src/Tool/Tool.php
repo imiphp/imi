@@ -199,6 +199,10 @@ abstract class Tool
                 $pool = $pool['sync'];
                 PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
             }
+            else if(isset($pool['pool']['syncClass']))
+            {
+                PoolManager::addName($name, $pool['pool']['syncClass'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+            }
         }
         // 缓存初始化
         foreach($caches as $name => $cache)

@@ -349,6 +349,10 @@ abstract class App
                     $pool = $pool['async'];
                     PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
                 }
+                else if(isset($pool['pool']['asyncClass']))
+                {
+                    PoolManager::addName($name, $pool['pool']['asyncClass'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                }
             }
         }
         else
@@ -365,6 +369,10 @@ abstract class App
                 {
                     $pool = $pool['sync'];
                     PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                }
+                else if(isset($pool['pool']['syncClass']))
+                {
+                    PoolManager::addName($name, $pool['pool']['syncClass'], new PoolConfig($pool['pool']['config']), $pool['resource']);
                 }
             }
         }
