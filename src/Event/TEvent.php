@@ -1,8 +1,8 @@
 <?php
 namespace Imi\Event;
 
-use Imi\Bean\Parser\ClassEventParser;
 use Imi\Bean\BeanFactory;
+use Imi\Bean\Parser\ClassEventParser;
 
 trait TEvent
 {
@@ -36,7 +36,23 @@ trait TEvent
     {
         foreach((array)$name as $eventName)
         {
-            $this->events[$eventName][] = new EventItem($callback, $priority);
+            if(is_string($callback) && class_exists($callback))
+            {
+                $callbackClass = $callback;
+                $callback = function($param) use($callback){
+                    $obj = BeanFactory::newInstance($callback);
+                    $obj->handle($param);
+                };
+            }
+            else
+            {
+                $callbackClass = null;
+            }
+            $this->events[$eventName][] = $item = new EventItem($callback, $priority);
+            if(null !== $callbackClass)
+            {
+                $item->callbackClass = $callbackClass;
+            }
             $this->eventChangeRecords[$eventName] = true;
         }
     }
@@ -52,7 +68,23 @@ trait TEvent
     {
         foreach((array)$name as $eventName)
         {
-            $this->events[$eventName][] = new EventItem($callback, $priority, true);
+            if(is_string($callback) && class_exists($callback))
+            {
+                $callbackClass = $callback;
+                $callback = function($param) use($callback){
+                    $obj = BeanFactory::newInstance($callback);
+                    $obj->handle($param);
+                };
+            }
+            else
+            {
+                $callbackClass = null;
+            }
+            $this->events[$eventName][] = $item = new EventItem($callback, $priority, true);
+            if(null !== $callbackClass)
+            {
+                $item->callbackClass = $callbackClass;
+            }
             $this->eventChangeRecords[$eventName] = true;
         }
     }
@@ -75,7 +107,7 @@ trait TEvent
                     // 数据映射
                     foreach($this->events[$eventName] as $k => $item)
                     {
-                        if($callback === $item->callback)
+                        if($callback === $item->callback || $callback === $item->callbackClass)
                         {
                             unset($map[$k]);
                         }
@@ -117,7 +149,10 @@ trait TEvent
                     foreach($option[$name] as $callback)
                     {
                         // 数据映射
-                        $eventsMap[] = $item = new EventItem($callback['className'], $callback['priority']);
+                        $eventsMap[] = $item = new EventItem(function($param) use($callback){
+                            $obj = BeanFactory::newInstance($callback['className']);
+                            $obj->handle($param);
+                        }, $callback['priority']);
                         $this->eventQueue[$name]->insert($item, $callback['priority']);
                     }
                 }
@@ -137,24 +172,8 @@ trait TEvent
         $oneTimeCallbacks = [];
         foreach($callbacks as $option)
         {
-            $callback = $option->callback;
-            // 回调类型处理，优先判断为类的情况
-            $type = 'callback';
-            if(is_string($callback) && class_exists($callback))
-            {
-                $type = 'class';
-            }
             // 回调执行
-            switch($type)
-            {
-                case 'callback':
-                    $callback($param);
-                    break;
-                case 'class':
-                    $obj = BeanFactory::newInstance($callback);
-                    $obj->handle($param);
-                    break;
-            }
+            ($option->callback)($param);
             // 仅触发一次
             if($option->oneTime)
             {

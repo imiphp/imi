@@ -4,10 +4,16 @@ namespace Imi\Event;
 class EventItem
 {
     /**
-     * 事件回调
-     * 或者事件类名
+     * 回调类
      *
-     * @var callable|string
+     * @var string
+     */
+    public $callbackClass;
+
+    /**
+     * 真实的事件回调
+     *
+     * @var callable
      */
     public $callback;
 
