@@ -273,7 +273,7 @@ abstract class ConnectContext
      * @param integer[] $fds
      * @return string[]
      */
-    public function getFlagsByFds(array $fds): array
+    public static function getFlagsByFds(array $fds): array
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
