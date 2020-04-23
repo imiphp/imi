@@ -20,34 +20,35 @@ class ToolParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
     {
+        $data = &$this->data;
         if($annotation instanceof Tool)
         {
-            $this->data['class'][$className]['Tool'] = $annotation;
+            $data['class'][$className]['Tool'] = $annotation;
             Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className);
         }
         else if($annotation instanceof Operation)
         {
-            if(isset($this->data['class'][$className]['Methods'][$targetName]['Operation']) && $this->data['class'][$className]['Methods'][$targetName]['Operation'] != $annotation)
+            if(isset($data['class'][$className]['Methods'][$targetName]['Operation']) && $data['class'][$className]['Methods'][$targetName]['Operation'] != $annotation)
             {
-                throw new \RuntimeException(sprintf('Tool %s/%s is already exists!', isset($this->data['class'][$className]['Tool']) ? $this->data['class'][$className]['Tool']->name : $className, $annotation->name));
+                throw new \RuntimeException(sprintf('Tool %s/%s is already exists!', isset($data['class'][$className]['Tool']) ? $data['class'][$className]['Tool']->name : $className, $annotation->name));
             }
-            $this->data['class'][$className]['Methods'][$targetName]['Operation'] = $annotation;
-            if(isset($this->data['class'][$className]['Tool']))
+            $data['class'][$className]['Methods'][$targetName]['Operation'] = $annotation;
+            if(isset($data['class'][$className]['Tool']))
             {
-                $this->data['tool'][$this->data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
+                $data['tool'][$data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
             }
             else
             {
                 $operation = $annotation;
-                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, function() use($className, $operation, $targetName){
-                    $this->data['tool'][$this->data['class'][$className]['Tool']->name][$operation->name] = [$className, $targetName];
+                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, function() use($className, $operation, $targetName, $data){
+                    $data['tool'][$data['class'][$className]['Tool']->name][$operation->name] = [$className, $targetName];
                 });
             }
             
         }
         else if($annotation instanceof Arg)
         {
-            $this->data['class'][$className]['Methods'][$targetName]['Args'][$annotation->name] = $annotation;
+            $data['class'][$className]['Methods'][$targetName]['Args'][$annotation->name] = $annotation;
         }
     }
 
@@ -59,9 +60,10 @@ class ToolParser extends BaseParser
      */
     public function getCallable($tool, $operation)
     {
-        if(isset($this->data['tool'][$tool][$operation]))
+        $data = &$this->data;
+        if(isset($data['tool'][$tool][$operation]))
         {
-            $callable = $this->data['tool'][$tool][$operation];
+            $callable = $data['tool'][$tool][$operation];
             $callable[0] = App::getBean($callable[0]);
             return $callable;
         }
@@ -85,9 +87,10 @@ class ToolParser extends BaseParser
      */
     public function getToolClassAndMethod($tool, $operation)
     {
-        if(isset($this->data['tool'][$tool][$operation]))
+        $data = &$this->data;
+        if(isset($data['tool'][$tool][$operation]))
         {
-            $callable = $this->data['tool'][$tool][$operation];
+            $callable = $data['tool'][$tool][$operation];
             return [
                 'class'     =>  $callable[0],
                 'method'    =>  $callable[1],

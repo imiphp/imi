@@ -44,13 +44,14 @@ class AutoRunProcessManager
      */
     public function remove($name)
     {
-        if(isset($this->processes[$name]))
+        $processes = &$this->processes;
+        if(isset($processes[$name]))
         {
-            unset($this->processes[$name]);
+            unset($processes[$name]);
         }
         else
         {
-            ArrayUtil::remove($this->processes, $name);
+            ArrayUtil::remove($processes, $name);
         }
     }
 
@@ -62,7 +63,8 @@ class AutoRunProcessManager
      */
     public function exists($name): bool
     {
-        return isset($this->processes[$name]) || in_array($name, $this->processes);
+        $processes = $this->processes;
+        return isset($processes[$name]) || in_array($name, $processes);
     }
 
     /**

@@ -131,14 +131,16 @@ class HttpRoute
     public function parse(Request $request)
     {
         $pathInfo = $request->getServerParam('path_info');
-        if(isset($this->rules[$pathInfo]))
+        $thisRules = &$this->rules;
+        if(isset($thisRules[$pathInfo]))
         {
-            $rules = [$pathInfo => $this->rules[$pathInfo]];
+            $rules = [$pathInfo => $thisRules[$pathInfo]];
         }
         else
         {
             $rules = [];
         }
+        $ignoreCase = $this->ignoreCase;
         for($i = 0; $i < 2; ++$i)
         {
             /** @var \Imi\Server\Http\Route\RouteItem[] $items */
@@ -150,7 +152,7 @@ class HttpRoute
                     foreach($items as $item)
                     {
                         if(
-                            ($result->result || ($this->ignoreCase || $item->annotation->ignoreCase)) &&
+                            ($result->result || ($ignoreCase || $item->annotation->ignoreCase)) &&
                             $this->checkMethod($request, $item->annotation->method) &&
                             $this->checkDomain($request, $item->annotation->domain, $domainParams) &&
                             $this->checkParamsGet($request, $item->annotation->paramsGet) &&
@@ -172,7 +174,7 @@ class HttpRoute
                     }
                 }
             }
-            $rules = $this->rules;
+            $rules = $thisRules;
         }
         return null;
     }
@@ -185,7 +187,9 @@ class HttpRoute
      */
     public function checkUrl(string $urlRule, string $pathInfo)
     {
-        if(!isset($this->urlCheckCache[$pathInfo][$urlRule]))
+        $urlCheckCache = &$this->urlCheckCache;
+        $urlCheckCacheCount = &$this->urlCheckCacheCount;
+        if(!isset($urlCheckCache[$pathInfo][$urlRule]))
         {
             $rule = $this->parseRule($urlRule, $fields);
             $params = [];
@@ -216,15 +220,15 @@ class HttpRoute
                 $result->resultIgnoreCase = false;
             }
             // 最大缓存数量处理
-            if($this->urlCheckCacheCount >= $this->urlCacheNumber)
+            if($urlCheckCacheCount >= $this->urlCacheNumber)
             {
-                array_shift($this->urlCheckCache);
-                --$this->urlCheckCacheCount;
+                array_shift($urlCheckCache);
+                --$urlCheckCacheCount;
             }
-            $this->urlCheckCache[$pathInfo][$urlRule] = $result;
-            ++$this->urlCheckCacheCount;
+            $urlCheckCache[$pathInfo][$urlRule] = $result;
+            ++$urlCheckCacheCount;
         }
-        return $this->urlCheckCache[$pathInfo][$urlRule];
+        return $urlCheckCache[$pathInfo][$urlRule];
     }
 
     /**
@@ -235,10 +239,11 @@ class HttpRoute
      */
     private function parseRule($rule, &$fields)
     {
-        if(isset($this->rulesCache[$rule]))
+        $rulesCache = &$this->rulesCache;
+        if(isset($rulesCache[$rule]))
         {
-            $fields = $this->rulesCache[$rule]['fields'];
-            return $this->rulesCache[$rule]['pattern'];
+            $fields = $rulesCache[$rule]['fields'];
+            return $rulesCache[$rule]['pattern'];
         }
         else
         {
@@ -255,7 +260,7 @@ class HttpRoute
                 },
                 $rule
             ) . '\/?$/';
-            $this->rulesCache[$rule] = [
+            $rulesCache[$rule] = [
                 'pattern'   =>  $pattern,
                 'fields'    =>  $fields,
             ];

@@ -49,8 +49,8 @@ class Result implements IResult
         if($statement instanceof IStatement)
         {
             $this->statement = $statement;
-            $this->isSuccess = '00000' === $this->statement->errorCode();
-            $this->statementRecords = $this->statement->fetchAll();
+            $this->isSuccess = '00000' === $statement->errorCode();
+            $this->statementRecords = $statement->fetchAll();
         }
         else
         {
@@ -204,16 +204,17 @@ class Result implements IResult
         {
             throw new \RuntimeException('Result is not success!');
         }
-        if(isset($this->statementRecords[0]))
+        $statementRecords = &$this->statementRecords;
+        if(isset($statementRecords[0]))
         {
             if(is_numeric($column))
             {
-                $keys = array_keys($this->statementRecords[0]);
-                return array_column($this->statementRecords, $keys[$column]);
+                $keys = array_keys($statementRecords[0]);
+                return array_column($statementRecords, $keys[$column]);
             }
             else
             {
-                return array_column($this->statementRecords, $column);
+                return array_column($statementRecords, $column);
             }
         }
         return [];

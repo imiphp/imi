@@ -44,18 +44,20 @@ class View
 
     public function __init()
     {
+        $handlers = &$this->handlers;
         foreach([$this->coreHandlers, $this->exHandlers] as $list)
         {
             foreach($list as $name => $class)
             {
-                $this->handlers[$name] = RequestContext::getServerBean($class);
+                $handlers[$name] = RequestContext::getServerBean($class);
             }
         }
     }
 
     public function render($renderType, $data, $options, Response $response = null): Response
     {
-        if(isset($this->handlers[$renderType]))
+        $handlers = &$this->handlers;
+        if(isset($handlers[$renderType]))
         {
             if($this->data && is_array($data))
             {
@@ -65,7 +67,7 @@ class View
             {
                 $response = RequestContext::get('response');
             }
-            return $this->handlers[$renderType]->handle($data, $options, $response);
+            return $handlers[$renderType]->handle($data, $options, $response);
         }
         else
         {

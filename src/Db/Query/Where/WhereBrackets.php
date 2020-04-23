@@ -80,6 +80,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
         {
             return $this->rawSQL;
         }
+        $binds = &$this->binds;
         $callResult = ($this->callback)();
         if(is_array($callResult))
         {
@@ -96,7 +97,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
                     {
                         $result .= $callResultItem->getLogicalOperator() . ' ' . $callResultItem->toStringWithoutLogic($query) . ' ';
                     }
-                    $this->binds = array_merge($this->binds, $callResultItem->getBinds());
+                    $binds = array_merge($binds, $callResultItem->getBinds());
                 }
                 else
                 {

@@ -243,8 +243,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     public function getParsedBody()
     {
-        if(null === $this->parsedBody)
+        $parsedBody = &$this->parsedBody;
+        if(null === $parsedBody)
         {
+            $body = $this->body;
             $contentType = strtolower($this->getHeaderLine(RequestHeader::CONTENT_TYPE));
             // post
             if('POST' === $this->method && in_array($contentType, [
@@ -252,7 +254,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
                 MediaType::MULTIPART_FORM_DATA,
             ]))
             {
-                $this->parsedBody = $this->post;
+                $parsedBody = $this->post;
             }
             // json
             else if(in_array($contentType, [
@@ -260,7 +262,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
                 MediaType::APPLICATION_JSON_UTF8,
             ]))
             {
-                $this->parsedBody = json_decode($this->body, !Config::get('@currentServer.jsonBodyIsObject', false));
+                $parsedBody = json_decode($body, !Config::get('@currentServer.jsonBodyIsObject', false));
             }
             // xml
             else if(in_array($contentType, [
@@ -271,16 +273,16 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
                 MediaType::APPLICATION_XML,
             ]))
             {
-                $this->parsedBody = new \DOMDocument();
-                $this->parsedBody->loadXML($this->body);
+                $parsedBody = new \DOMDocument();
+                $parsedBody->loadXML($body);
             }
             // 其它
             else
             {
-                $this->parsedBody = (object)(string)$this->body;
+                $parsedBody = (object)(string)$body;
             }
         }
-        return $this->parsedBody;
+        return $parsedBody;
     }
 
     /**
@@ -351,9 +353,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     public function getAttribute($name, $default = null)
     {
-        if(array_key_exists($name, $this->attributes))
+        $attributes = $this->attributes;
+        if(array_key_exists($name, $attributes))
         {
-            return $this->attributes[$name];
+            return $attributes[$name];
         }
         else
         {
@@ -492,17 +495,18 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     public function request($name = null, $default = null)
     {
-        if(null === $this->request)
+        $request = &$this->request;
+        if(null === $request)
         {
-            $this->request = array_merge($this->get, $this->post, $this->cookies);
+            $request = array_merge($this->get, $this->post, $this->cookies);
         }
         if(null === $name)
         {
-            return $this->request;
+            return $request;
         }
         else
         {
-            return $this->request[$name] ?? $default;
+            return $request[$name] ?? $default;
         }
     }
 
@@ -515,11 +519,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     public function hasRequest($name)
     {
-        if(null === $this->request)
+        $request = &$this->request;
+        if(null === $request)
         {
-            $this->request = array_merge($this->get, $this->post, $this->cookies);
+            $request = array_merge($this->get, $this->post, $this->cookies);
         }
-        return isset($this->request[$name]);
+        return isset($request[$name]);
     }
 
 }

@@ -177,6 +177,7 @@ abstract class Model extends BaseModel
             $data = new LazyArrayObject($data);
         }
         $query = static::query($this);
+        $meta = $this->__meta;
 
         // 插入前
         $this->trigger(ModelEvents::BEFORE_INSERT, [
@@ -195,7 +196,7 @@ abstract class Model extends BaseModel
         })->insert($data);
         if($result->isSuccess())
         {
-            foreach($this->__meta->getFields() as $name => $column)
+            foreach($meta->getFields() as $name => $column)
             {
                 if($column->isAutoIncrement)
                 {
@@ -212,7 +213,7 @@ abstract class Model extends BaseModel
             'result'=> $result
         ], $this, \Imi\Model\Event\Param\AfterInsertEventParam::class);
 
-        if($this->__meta->hasRelation())
+        if($meta->hasRelation())
         {
             // 子模型插入
             ModelRelationManager::insertModel($this);
@@ -230,6 +231,7 @@ abstract class Model extends BaseModel
     public function update($data = null): IResult
     {
         $query = static::query($this);
+        $meta = $this->__meta;
         if(null === $data)
         {
             $data = static::parseSaveData(\iterator_to_array($this), 'update', $this);
@@ -254,7 +256,7 @@ abstract class Model extends BaseModel
         $keys[] = '#'; // 分隔符
 
         $conditionId = $bindValues = [];
-        foreach($this->__meta->getId() as $idName)
+        foreach($meta->getId() as $idName)
         {
             if(isset($this->$idName))
             {
@@ -281,7 +283,7 @@ abstract class Model extends BaseModel
             'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterUpdateEventParam::class);
 
-        if($this->__meta->hasRelation())
+        if($meta->hasRelation())
         {
             // 子模型更新
             ModelRelationManager::updateModel($this);
@@ -346,6 +348,7 @@ abstract class Model extends BaseModel
     {
         $query = static::query($this);
         $data = static::parseSaveData(\iterator_to_array($this), 'save', $this);
+        $meta = $this->__meta;
 
         // 保存前
         $this->trigger(ModelEvents::BEFORE_SAVE, [
@@ -359,9 +362,9 @@ abstract class Model extends BaseModel
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function(IQuery $query){
+        $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function(IQuery $query) use($meta){
             // 主键条件加入
-            foreach($this->__meta->getId() as $idName)
+            foreach($meta->getId() as $idName)
             {
                 if(isset($this->$idName))
                 {
@@ -371,7 +374,7 @@ abstract class Model extends BaseModel
         })->replace($data);
         if($result->isSuccess())
         {
-            foreach($this->__meta->getFields() as $name => $column)
+            foreach($meta->getFields() as $name => $column)
             {
                 if($column->isAutoIncrement)
                 {
@@ -409,7 +412,8 @@ abstract class Model extends BaseModel
         ], $this, \Imi\Model\Event\Param\BeforeDeleteEventParam::class);
 
         $bindValues = [];
-        $id = $this->__meta->getId();
+        $meta = $this->__meta;
+        $id = $meta->getId();
         foreach($id as $idName)
         {
             if(isset($this->$idName))
@@ -438,7 +442,7 @@ abstract class Model extends BaseModel
             'result'=> $result,
         ], $this, \Imi\Model\Event\Param\AfterDeleteEventParam::class);
 
-        if($this->__meta->hasRelation())
+        if($meta->hasRelation())
         {
             // 子模型删除
             ModelRelationManager::deleteModel($this);

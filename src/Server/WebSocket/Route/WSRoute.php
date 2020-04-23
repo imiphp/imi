@@ -37,11 +37,12 @@ class WSRoute implements IRoute
         /** @var \Imi\Util\Uri $uri */
         $uri = ConnectContext::get('uri');
         $path = $uri->getPath();
+        $httpRoute = $this->httpRoute;
         foreach($this->rules as $item)
         {
             if($this->checkCondition($data, $item->annotation)
             // http 路由匹配
-            && (!$item->annotation->route || $this->httpRoute->checkUrl($item->annotation->route, $path)->result))
+            && (!$item->annotation->route || $httpRoute->checkUrl($item->annotation->route, $path)->result))
             {
                 return new RouteResult($item);
             }

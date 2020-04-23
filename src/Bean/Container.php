@@ -46,9 +46,10 @@ class Container implements ContainerInterface
         // 实现传递实例化参数
         $params = func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
-        if(isset($this->singletonObjects[$id]) && !isset($params[1]))
+        $singletonObjects = &$this->singletonObjects;
+        if(isset($singletonObjects[$id]) && !isset($params[1]))
         {
-            return $this->singletonObjects[$id];
+            return $singletonObjects[$id];
         }
 
         if(!is_string($id))
@@ -62,12 +63,13 @@ class Container implements ContainerInterface
 
         unset($params[0]);
 
-        if(isset($this->binds[$id]))
+        $binds = &$this->binds;
+        if(isset($binds[$id]))
         {
-            $object = BeanFactory::newInstanceNoInit($this->binds[$id], ...$params);
+            $object = BeanFactory::newInstanceNoInit($binds[$id], ...$params);
             if([] === $params)
             {
-                $this->singletonObjects[$id] = $object;
+                $singletonObjects[$id] = $object;
             }
         }
         else
@@ -89,7 +91,7 @@ class Container implements ContainerInterface
             // 传参实例化强制不使用单例
             if([] === $params && (!isset($data[$id]['instanceType']) || $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON))
             {
-                $this->singletonObjects[$id] = $object;
+                $singletonObjects[$id] = $object;
             }
         }
 

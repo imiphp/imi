@@ -130,16 +130,17 @@ abstract class BaseAsyncPool extends BasePool
     {
         // 清空队列
         $count = $this->getFree();
+        $queue = $this->queue;
         for($i = 0; $i < $count; ++$i)
         {
-            $this->queue->pop();
+            $queue->pop();
         }
         // 重新建立队列
         foreach($this->pool as $item)
         {
-            $this->queue->push($item);
+            $queue->push($item);
         }
-        $this->free = $this->queue->length();
+        $this->free = $queue->length();
     }
     
     /**

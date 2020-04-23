@@ -59,9 +59,10 @@ class Server implements \ArrayAccess, \JsonSerializable
                 return $serverParams[$lowerOffset];
             }
         } finally {
-            if(isset($this->defaultServer[$offset]))
+            $defaultServer = &$this->defaultServer;
+            if(isset($defaultServer[$offset]))
             {
-                return $this->defaultServer[$offset];
+                return $defaultServer[$offset];
             }
         }
     }

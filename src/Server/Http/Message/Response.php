@@ -124,31 +124,32 @@ class Response extends \Imi\Util\Http\Response
      */
     public function sendHeaders()
     {
+        $swooleResponse = $this->swooleResponse;
         // cookie
         if($this->cookies)
         {
             foreach($this->cookies as $cookie)
             {
-                $this->swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
+                $swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
             }
         }
         // header
         foreach($this->headers as $name => $headers)
         {
-            $this->swooleResponse->header($name, $this->getHeaderLine($name));
+            $swooleResponse->header($name, $this->getHeaderLine($name));
         }
         // trailer
         if($this->trailers)
         {
             foreach($this->trailers as $name => $value)
             {
-                $this->swooleResponse->trailer($name, $value);
+                $swooleResponse->trailer($name, $value);
             }
         }
         // status
         if(StatusCode::OK !== $this->statusCode)
         {
-            $this->swooleResponse->status($this->statusCode);
+            $swooleResponse->status($this->statusCode);
         }
         return $this;
     }
@@ -159,9 +160,10 @@ class Response extends \Imi\Util\Http\Response
      */
     public function send()
     {
-        $this->swooleResponse->isEnded = true;
+        $swooleResponse = $this->swooleResponse;
+        $swooleResponse->isEnded = true;
         $this->sendHeaders();
-        $this->swooleResponse->end($this->getBody());
+        $swooleResponse->end($this->getBody());
         return $this;
     }
 
@@ -174,9 +176,10 @@ class Response extends \Imi\Util\Http\Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
     {
-        $this->swooleResponse->isEnded = true;
+        $swooleResponse = $this->swooleResponse;
+        $swooleResponse->isEnded = true;
         $this->sendHeaders();
-        $this->swooleResponse->sendfile($filename, $offset, $length);
+        $swooleResponse->sendfile($filename, $offset, $length);
         return $this;
     }
 

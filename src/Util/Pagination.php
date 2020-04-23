@@ -98,8 +98,9 @@ class Pagination
      */
     private function calc()
     {
-        $this->limitOffset = max((int)(($this->page - 1) * $this->count), 0);
-        $this->limitEndOffset = $this->limitOffset + $this->count - 1;
+        $count = $this->count;
+        $this->limitOffset = max((int)(($this->page - 1) * $count), 0);
+        $this->limitEndOffset = $this->limitOffset + $count - 1;
     }
 
     /**
@@ -130,13 +131,14 @@ class Pagination
      */
     public function calcPageCount($records)
     {
-        if(0 === $records % $this->count)
+        $count = $this->count;
+        if(0 === $records % $count)
         {
-            return $records / $this->count;
+            return $records / $count;
         }
         else
         {
-            return ((int)($records / $this->count)) + 1;
+            return ((int)($records / $count)) + 1;
         }
     }
 }

@@ -31,23 +31,25 @@ class RedisResource extends BasePoolResource
      */
     public function open()
     {
-        $this->redis->connect($this->config['host'] ?? '127.0.0.1', $this->config['port'] ?? 6379, $this->config['timeout'] ?? null);
-        if(('' !== ($this->config['password'] ?? '')) && !$this->redis->auth($this->config['password']))
+        $config = $this->config;
+        $redis = $this->redis;
+        $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? null);
+        if(('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
         {
             throw new \RedisException('Redis auth failed');
         }
-        if(isset($this->config['db']) && !$this->redis->select($this->config['db']))
+        if(isset($config['db']) && !$redis->select($config['db']))
         {
             throw new \RedisException('Redis select db failed');
         }
-        $options = $this->config['options'] ?? [];
-        if(($this->config['serialize'] ?? true) && !isset($options[\Redis::OPT_SERIALIZER]))
+        $options = $config['options'] ?? [];
+        if(($config['serialize'] ?? true) && !isset($options[\Redis::OPT_SERIALIZER]))
         {
             $options[\Redis::OPT_SERIALIZER] = \Redis::SERIALIZER_PHP;
         }
         foreach($options as $key => $value)
         {
-            if(!$this->redis->setOption($key, $value))
+            if(!$redis->setOption($key, $value))
             {
                 throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', $key, $value));
             }
@@ -79,12 +81,14 @@ class RedisResource extends BasePoolResource
      */
     public function reset()
     {
-        if(!$this->redis->select($this->config['db'] ?? 0))
+        $config = $this->config;
+        $redis = $this->redis;
+        if(!$redis->select($config['db'] ?? 0))
         {
             throw new \RedisException('Redis select db failed');
         }
-        $optScan = $this->config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
-        if(!$this->redis->setOption(\Redis::OPT_SCAN, $optScan))
+        $optScan = $config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
+        if(!$redis->setOption(\Redis::OPT_SCAN, $optScan))
         {
             throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', \Redis::OPT_SCAN, $optScan));
         }

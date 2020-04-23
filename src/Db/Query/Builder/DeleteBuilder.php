@@ -6,7 +6,8 @@ class DeleteBuilder extends BaseBuilder
     public function build(...$args)
     {
         parent::build(...$args);
-        $option = $this->query->getOption();
+        $query = $this->query;
+        $option = $query->getOption();
 
         $sql = 'delete from ' . $option->table
                 . $this->parseWhere($option->where)
@@ -15,7 +16,7 @@ class DeleteBuilder extends BaseBuilder
                 ;
 
         
-        $this->query->bindValues($this->params);
+                $query->bindValues($this->params);
 
         return $sql;
     }

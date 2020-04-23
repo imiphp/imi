@@ -164,14 +164,15 @@ class ActionMiddleware implements MiddlewareInterface
                 $class = get_class($routeResult->callable[0]);
             }
             $method = $routeResult->callable[1];
-            if(isset($this->actionMethodParams[$class][$method]))
+            $actionMethodParams = &$this->actionMethodParams;
+            if(isset($actionMethodParams[$class][$method]))
             {
-                $params = $this->actionMethodParams[$class][$method];
+                $params = $actionMethodParams[$class][$method];
             }
             else
             {
                 $ref = new \ReflectionMethod($routeResult->callable[0], $routeResult->callable[1]);
-                $params = $this->actionMethodParams[$class][$method] = $ref->getParameters();
+                $params = $actionMethodParams[$class][$method] = $ref->getParameters();
             }
         }
         else if(!$routeResult->callable instanceof \Closure)

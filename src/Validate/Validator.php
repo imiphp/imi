@@ -218,8 +218,12 @@ class Validator implements IValidator
      */
     protected function __validateAll(&$data, $break)
     {
-        $this->message = null;
-        $this->results = [];
+        $thisMessage = &$this->message;
+        $thisResults = &$this->results;
+        $thisFailRules = &$this->failRules;
+        $thisFailRule = &$this->failRule;
+        $thisMessage = null;
+        $thisResults = [];
         $result = true;
         $sceneOption = $this->scene[$this->currentScene] ?? null;
         foreach($this->rules as $annotation)
@@ -238,12 +242,12 @@ class Validator implements IValidator
                 {
                     $result = false;
                     $message = $this->buildMessage($data, $annotation);
-                    $this->results[$annotation->name][] = $message;
-                    $this->failRules[$annotation->name][] = $annotation;
-                    if(null === $this->message)
+                    $thisResults[$annotation->name][] = $message;
+                    $thisFailRules[$annotation->name][] = $annotation;
+                    if(null === $thisMessage)
                     {
-                        $this->message = $message;
-                        $this->failRule = $annotation;
+                        $thisMessage = $message;
+                        $thisFailRule = $annotation;
                     }
                     if($break)
                     {

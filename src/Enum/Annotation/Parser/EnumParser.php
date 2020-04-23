@@ -19,8 +19,9 @@ class EnumParser extends BaseParser
         if($annotation instanceof EnumItem)
         {
             $value = constant($className . '::' . $targetName);
-            $this->data['map'][$className][$targetName] = $value;
-            $this->data['EnumItem'][$className][$value] = $annotation;
+            $data = &$this->data;
+            $data['map'][$className][$targetName] = $value;
+            $data['EnumItem'][$className][$value] = $annotation;
         }
     }
 
@@ -66,9 +67,10 @@ class EnumParser extends BaseParser
      */
     public function getValues($className)
     {
-        if(isset($this->data['EnumItem'][$className]))
+        $data = &$this->data;
+        if(isset($data['EnumItem'][$className]))
         {
-            return array_keys($this->data['EnumItem'][$className]);
+            return array_keys($data['EnumItem'][$className]);
         }
         else
         {

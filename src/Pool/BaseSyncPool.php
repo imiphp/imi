@@ -103,10 +103,11 @@ abstract class BaseSyncPool extends BasePool
     {
         // 清空队列
         $this->initQueue();
+        $queue = $this->queue;
         // 重新建立队列
         foreach($this->pool as $item)
         {
-            $this->queue->push($item);
+            $queue->push($item);
         }
     }
     

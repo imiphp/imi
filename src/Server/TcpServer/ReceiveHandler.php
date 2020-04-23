@@ -35,9 +35,10 @@ class ReceiveHandler implements IReceiveHandler
      */
     public function handle(IReceiveData $data)
     {
-        if(isset($this->middlewares[$this->index]))
+        $middlewares = &$this->middlewares;
+        if(isset($middlewares[$this->index]))
         {
-            $middleware = $this->middlewares[$this->index];
+            $middleware = $middlewares[$this->index];
             if($middleware instanceof IReceiveHandler)
             {
                 $requestHandler = $middleware;

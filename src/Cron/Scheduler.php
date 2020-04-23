@@ -83,7 +83,7 @@ class Scheduler
 
     public function __construct()
     {
-        $this->coPool = new CoPool($this->poolCoCount, $this->poolQueueLength,
+        $this->coPool = $coPool = new CoPool($this->poolCoCount, $this->poolQueueLength,
             // 定义任务匿名类，当然你也可以定义成普通类，传入完整类名
             new class implements ICoTask
             {
@@ -131,7 +131,7 @@ class Scheduler
             }
         );
         // 运行协程池
-        $this->coPool->run();
+        $coPool->run();
     }
 
     /**
@@ -142,10 +142,14 @@ class Scheduler
     public function schedule()
     {
         $now = time();
+        $runningTasks = &$this->runningTasks;
+        $nextTickTimeMap = &$this->nextTickTimeMap;
+        $cronCalculator = $this->cronCalculator;
+        $first = &$this->first;
         foreach($this->cronManager->getRealTasks() as $task)
         {
             $id = $task->getId();
-            if(isset($this->runningTasks[$id]))
+            if(isset($runningTasks[$id]))
             {
                 if(time() < $task->getLastRunTime() + $task->getMaxExecutionTime())
                 {
@@ -153,20 +157,20 @@ class Scheduler
                 }
                 else
                 {
-                    unset($this->runningTasks[$id]);
+                    unset($runningTasks[$id]);
                 }
             }
-            if(!isset($this->nextTickTimeMap[$id]))
+            if(!isset($nextTickTimeMap[$id]))
             {
-                $this->nextTickTimeMap[$id] = $this->cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
+                $nextTickTimeMap[$id] = $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             }
-            if(($this->first && $task->getForce()) || $now >= $this->nextTickTimeMap[$id])
+            if(($first && $task->getForce()) || $now >= $nextTickTimeMap[$id])
             {
-                unset($this->nextTickTimeMap[$id]);
+                unset($nextTickTimeMap[$id]);
                 yield $task;
             }
         }
-        $this->first = false;
+        $first = false;
     }
 
     /**
@@ -195,13 +199,14 @@ class Scheduler
      */
     public function completeTask(Result $result)
     {
-        if(isset($this->runningTasks[$result->id]))
+        $runningTasks = &$this->unningTasks;
+        if(isset($runningTasks[$result->id]))
         {
-            if(!$this->cronLock->unlock($this->runningTasks[$result->id]))
+            if(!$this->cronLock->unlock($runningTasks[$result->id]))
             {
                 Log::error(sprintf('Task %s unlock failed', $result->id));
             }
-            unset($this->runningTasks[$result->id]);
+            unset($runningTasks[$result->id]);
         }
         if($result->success)
         {

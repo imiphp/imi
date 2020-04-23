@@ -80,9 +80,9 @@ class File extends Base
     {
         $this->currentFileDateTime = $timestamp;
         $this->currentFileIndex = 0;
-        $this->currentNoIndexFileName = $this->replaceDateTime($this->fileName, $timestamp);
-        $this->currentFileExt = pathinfo($this->currentNoIndexFileName, PATHINFO_EXTENSION);
-        return $this->currentNoIndexFileName = substr($this->currentNoIndexFileName, 0, -strlen($this->currentFileExt));
+        $currentNoIndexFileName = $this->replaceDateTime($this->fileName, $timestamp);
+        $this->currentFileExt = pathinfo($currentNoIndexFileName, PATHINFO_EXTENSION);
+        return $this->currentNoIndexFileName = substr($currentNoIndexFileName, 0, -strlen($this->currentFileExt));
     }
 
     /**
@@ -91,16 +91,19 @@ class File extends Base
      */
     private function getFileName()
     {
-        --$this->currentFileIndex;
+        $currentFileIndex = &$this->currentFileIndex;
+        --$currentFileIndex;
+        $currentFileExt = $this->currentFileExt;
+        $maxSize = $this->maxSize;
         do{
-            ++$this->currentFileIndex;
+            ++$currentFileIndex;
             $fileName = $this->currentNoIndexFileName;
-            if($this->currentFileIndex > 0)
+            if($currentFileIndex > 0)
             {
-                $fileName .= '(' . $this->currentFileIndex . ')';
+                $fileName .= '(' . $currentFileIndex . ')';
             }
-            $fileName .= $this->currentFileExt;
-        }while(is_file($fileName) && filesize($fileName) >= $this->maxSize);
+            $fileName .= $currentFileExt;
+        }while(is_file($fileName) && filesize($fileName) >= $maxSize);
         return $fileName;
     }
 }

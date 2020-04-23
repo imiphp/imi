@@ -10,18 +10,20 @@ class ReplaceBuilder extends BaseBuilder
     public function build(...$args)
     {
         parent::build(...$args);
-        $option = $this->query->getOption();
+        $query = $this->query;
+        $params = &$this->params;
+        $option = $query->getOption();
         list($data) = $args;
         if(null === $data)
         {
-            $data = $this->query->getOption()->saveData;
+            $data = $option->saveData;
         }
         $sql = 'replace into ' . $option->table . ' ';
         if($data instanceof \Imi\Db\Query\Interfaces\IQuery)
         {
             $builder = new SelectBuilder($data);
             $sql .= $builder->build();
-            $this->query->bindValues($data->getBinds());
+            $query->bindValues($data->getBinds());
         }
         else
         {
@@ -43,12 +45,12 @@ class ReplaceBuilder extends BaseBuilder
                 else
                 {
                     $valueParam = ':' . $k;
-                    $this->params[$valueParam] = $v;
+                    $params[$valueParam] = $v;
                     $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
                 }
             }
             $sql .= 'set ' . implode(',', $setStrs);
-            $this->query->bindValues($this->params);
+            $query->bindValues($params);
         }
         return $sql;
     }

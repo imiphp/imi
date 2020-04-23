@@ -38,9 +38,10 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     public function &offsetGet($offset)
     {
-        if(isset($this->list[$offset]))
+        $list = &$this->list;
+        if(isset($list[$offset]))
         {
-            $value = &$this->list[$offset];
+            $value = &$list[$offset];
         }
         else
         {
@@ -67,9 +68,10 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     public function offsetUnset($offset)
     {
-        if(isset($this->list[$offset]))
+        $list = &$this->list;
+        if(isset($list[$offset]))
         {
-            unset($this->list[$offset]);
+            unset($list[$offset]);
         }
     }
 

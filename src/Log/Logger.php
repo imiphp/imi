@@ -81,9 +81,10 @@ class Logger extends AbstractLogger
     
     public function __init()
     {
+        $handlers = &$this->handlers;
         foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
         {
-            $this->handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
+            $handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
         Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function(){
             $this->save();

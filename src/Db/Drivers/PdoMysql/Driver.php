@@ -69,19 +69,19 @@ class Driver extends Base implements IDb
      */
     public function __construct($option = [])
     {
-        $this->option = $option;
-        if(!isset($this->option['username']))
+        if(!isset($option['username']))
         {
-            $this->option['username'] = 'root';
+            $option['username'] = 'root';
         }
         if(!isset($option['password']))
         {
-            $this->option['password'] = '';
+            $option['password'] = '';
         }
         if(!isset($option['options']))
         {
-            $this->option['options'] = [];
+            $option['options'] = [];
         }
+        $this->option = $option;
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction;
     }
@@ -97,16 +97,17 @@ class Driver extends Base implements IDb
      */
     protected function buildDSN()
     {
-        if(isset($this->option['dsn']))
+        $option = $this->option;
+        if(isset($option['dsn']))
         {
-            return $this->option['dsn'];
+            return $option['dsn'];
         }
         return 'mysql:'
-                 . 'host=' . ($this->option['host'] ?? '127.0.0.1')
-                 . ';port=' . ($this->option['port'] ?? '3306')
-                 . ';dbname=' . ($this->option['database'] ?? '')
-                 . ';unix_socket=' . ($this->option['unix_socket'] ?? '')
-                 . ';charset=' . ($this->option['charset'] ?? 'utf8')
+                 . 'host=' . ($option['host'] ?? '127.0.0.1')
+                 . ';port=' . ($option['port'] ?? '3306')
+                 . ';dbname=' . ($option['database'] ?? '')
+                 . ';unix_socket=' . ($option['unix_socket'] ?? '')
+                 . ';charset=' . ($option['charset'] ?? 'utf8')
                  ;
     }
 
@@ -129,7 +130,8 @@ class Driver extends Base implements IDb
      */
     public function open()
     {
-        $this->instance = new \PDO($this->buildDSN(), $this->option['username'], $this->option['password'], $this->option['options']);
+        $option = $this->option;
+        $this->instance = new \PDO($this->buildDSN(), $option['username'], $option['password'], $option['options']);
         return true;
     }
 
@@ -336,12 +338,12 @@ class Driver extends Base implements IDb
         else
         {
             $this->lastSql = $sql;
-            $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
-            if(false === $this->lastStmt)
+            $this->lastStmt = $lastStmt = $this->instance->prepare($sql, $driverOptions);
+            if(false === $lastStmt)
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
+            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt);
             if($this->isCacheStatement && null === $stmtCache)
             {
                 StatementManager::setNX($stmt, true);
@@ -360,12 +362,12 @@ class Driver extends Base implements IDb
     public function query(string $sql)
     {
         $this->lastSql = $sql;
-        $this->lastStmt = $this->instance->query($sql);
-        if(false === $this->lastStmt)
+        $this->lastStmt = $lastStmt = $this->instance->query($sql);
+        if(false === $lastStmt)
         {
             throw new DbException('SQL prepare error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
         }
-        return BeanFactory::newInstance(Statement::class, $this, $this->lastStmt);
+        return BeanFactory::newInstance(Statement::class, $this, $lastStmt);
     }
 
     /**

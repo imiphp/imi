@@ -115,7 +115,7 @@ class Query implements IQuery
     public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
         $this->db = $db;
-        $this->isInitDb = null !== $this->db;
+        $this->isInitDb = null !== $db;
         $this->poolName = $poolName;
         $this->modelClass = $modelClass;
         $this->queryType = $queryType;
@@ -178,10 +178,11 @@ class Query implements IQuery
      */
     public function table(string $table, string $alias = null, string $database = null)
     {
-        $this->option->table->useRaw(false);
-        $this->option->table->setTable($table);
-        $this->option->table->setAlias($alias);
-        $this->option->table->setDatabase($database);
+        $optionTable = $this->option->table;
+        $optionTable->useRaw(false);
+        $optionTable->setTable($table);
+        $optionTable->setAlias($alias);
+        $optionTable->setDatabase($database);
         return $this;
     }
 
@@ -192,8 +193,9 @@ class Query implements IQuery
      */
     public function tableRaw(string $raw)
     {
-        $this->option->table->useRaw(true);
-        $this->option->table->setRawSQL($raw);
+        $optionTable = $this->option->table;
+        $optionTable->useRaw(true);
+        $optionTable->setRawSQL($raw);
         return $this;
     }
 
@@ -237,13 +239,14 @@ class Query implements IQuery
      */
     public function field(...$fields)
     {
+        $option = $this->option;
         if(!isset($fields[1]) && is_array($fields[0]))
         {
-            $this->option->field = array_merge($this->option->field, $fields[0]);
+            $option->field = array_merge($option->field, $fields[0]);
         }
         else
         {
-            $this->option->field = array_merge($this->option->field, $fields);
+            $option->field = array_merge($option->field, $fields);
         }
         return $this;
     }
@@ -694,6 +697,7 @@ class Query implements IQuery
      */
     public function orderRaw($raw)
     {
+        $optionOrder = &$this->option->order;
         if(is_array($raw))
         {
             foreach($raw as $k => $v)
@@ -708,7 +712,7 @@ class Query implements IQuery
                     $fieldName = $k;
                     $direction = $v;
                 }
-                $this->option->order[] = new Order($fieldName, $direction);
+                $optionOrder[] = new Order($fieldName, $direction);
             }
         }
         else
@@ -716,7 +720,7 @@ class Query implements IQuery
             $order = new Order();
             $order->useRaw();
             $order->setRawSQL($raw);
-            $this->option->order[] = $order;
+            $optionOrder[] = $order;
         }
         return $this;
     }
@@ -731,8 +735,9 @@ class Query implements IQuery
     public function page($page, $count)
     {
         $pagination = new Pagination($page, $count);
-        $this->option->offset = $pagination->getLimitOffset();
-        $this->option->limit = $count;
+        $option = $this->option;
+        $option->offset = $pagination->getLimitOffset();
+        $option->limit = $count;
         return $this;
     }
 
@@ -765,11 +770,12 @@ class Query implements IQuery
      */
     public function group(...$groups)
     {
+        $optionGroup = &$this->option->group;
         foreach($groups as $item)
         {
             $group = new Group();
             $group->setValue($item);
-            $this->option->group[] = $group;
+            $optionGroup[] = $group;
         }
         return $this;
     }
@@ -862,9 +868,10 @@ class Query implements IQuery
      */
     public function bindValues($values)
     {
+        $binds = &$this->binds;
         foreach($values as $k => $v)
         {
-            $this->binds[$k] = $v;
+            $binds[$k] = $v;
         }
         return $this;
     }
@@ -884,14 +891,15 @@ class Query implements IQuery
      */
     public function select(): IResult
     {
-        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        $alias = $this->alias;
+        if($alias && isset(static::$aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$this->alias];
+            $sql = static::$aliasSqls[$alias];
         }
         else
         {
             $builder = new SelectBuilder($this);
-            static::$aliasSqls[$this->alias] = $sql = $builder->build();
+            static::$aliasSqls[$alias] = $sql = $builder->build();
         }
         if(!$this->isInitQueryType && !$this->isInTransaction())
         {
@@ -934,9 +942,10 @@ class Query implements IQuery
      */
     public function insert($data = null): IResult
     {
-        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        $alias = $this->alias;
+        if($alias && isset(static::$aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$this->alias];
+            $sql = static::$aliasSqls[$alias];
             $bindValues = [];
             $numberKey = isset($data[0]);
             foreach($data as $k => $v)
@@ -955,7 +964,7 @@ class Query implements IQuery
         else
         {
             $builder = new InsertBuilder($this);
-            static::$aliasSqls[$this->alias] = $sql = $builder->build($data);
+            static::$aliasSqls[$alias] = $sql = $builder->build($data);
         }
         return $this->execute($sql);
     }
@@ -982,9 +991,10 @@ class Query implements IQuery
      */
     public function update($data = null): IResult
     {
-        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        $alias = $this->alias;
+        if($alias && isset(static::$aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$this->alias];
+            $sql = static::$aliasSqls[$alias];
             $bindValues = [];
             foreach($data as $k => $v)
             {
@@ -995,7 +1005,7 @@ class Query implements IQuery
         else
         {
             $builder = new UpdateBuilder($this);
-            static::$aliasSqls[$this->alias] = $sql = $builder->build($data);
+            static::$aliasSqls[$alias] = $sql = $builder->build($data);
         }
         return $this->execute($sql);
     }
@@ -1008,9 +1018,10 @@ class Query implements IQuery
      */
     public function replace($data = null): IResult
     {
-        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        $alias = $this->alias;
+        if($alias && isset(static::$aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$this->alias];
+            $sql = static::$aliasSqls[$alias];
             $bindValues = [];
             foreach($data as $k => $v)
             {
@@ -1021,7 +1032,7 @@ class Query implements IQuery
         else
         {
             $builder = new ReplaceBuilder($this);
-            static::$aliasSqls[$this->alias] = $sql = $builder->build($data);
+            static::$aliasSqls[$alias] = $sql = $builder->build($data);
         }
         return $this->execute($sql);
     }
@@ -1032,14 +1043,15 @@ class Query implements IQuery
      */
     public function delete(): IResult
     {
-        if($this->alias && isset(static::$aliasSqls[$this->alias]))
+        $alias = $this->alias;
+        if($alias && isset(static::$aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$this->alias];
+            $sql = static::$aliasSqls[$alias];
         }
         else
         {
             $builder = new DeleteBuilder($this);
-            static::$aliasSqls[$this->alias] = $sql = $builder->build();
+            static::$aliasSqls[$alias] = $sql = $builder->build();
         }
         $result = $this->execute($sql);
         return $result;
@@ -1124,15 +1136,16 @@ class Query implements IQuery
             {
                 $this->queryType = QueryType::WRITE;
             }
+            $db = &$this->db;
             if(!$this->isInitDb)
             {
-                $this->db = Db::getInstance($this->poolName, $this->queryType);
+                $db = Db::getInstance($this->poolName, $this->queryType);
             }
-            if(!$this->db)
+            if(!$db)
             {
                 return new Result(false);
             }
-            $stmt = $this->db->prepare($sql);
+            $stmt = $db->prepare($sql);
             if($stmt)
             {
                 $binds = $this->binds;
@@ -1151,12 +1164,13 @@ class Query implements IQuery
      */
     public function getAutoParamName()
     {
-        if($this->dbParamInc >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
+        $dbParamInc = &$this->dbParamInc;
+        if($dbParamInc >= 65535) // 限制dechex()结果最长为ffff，一般一个查询也不会用到这么多参数，足够了
         {
-            $this->dbParamInc = 0;
+            $dbParamInc = 0;
         }
-        ++$this->dbParamInc;
-        return ':p' . dechex($this->dbParamInc);
+        ++$dbParamInc;
+        return ':p' . dechex($dbParamInc);
     }
 
     /**

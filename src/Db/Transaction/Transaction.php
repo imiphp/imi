@@ -31,7 +31,8 @@ class Transaction
     public function commit(): bool
     {
         $offEvents = [];
-        for($i = $this->transactionLevels; $i >= 0; --$i)
+        $levels = &$this->transactionLevels;
+        for($i = $levels; $i >= 0; --$i)
         {
             $this->trigger('transaction.' . $i . '.commit', [
                 'db'    =>  $this,
@@ -40,7 +41,7 @@ class Transaction
             $offEvents[] = 'transaction.' . $i . '.rollback';
         }
         $this->off($offEvents);
-        $this->transactionLevels = 0;
+        $levels = 0;
         return true;
     }
 
@@ -53,9 +54,10 @@ class Transaction
     public function rollBack($levels = null): bool
     {
         $offEvents = [];
+        $levels = &$this->transactionLevels;
         if(null === $levels)
         {
-            for($i = $this->transactionLevels; $i >= 0; --$i)
+            for($i = $levels; $i >= 0; --$i)
             {
                 $this->trigger('transaction.' . $i . '.rollback', [
                     'db'    =>  $this,
@@ -63,12 +65,12 @@ class Transaction
                 ]);
                 $offEvents[] = 'transaction.' . $i . '.commit';
             }
-            $this->transactionLevels = 0;
+            $levels = 0;
         }
         else
         {
-            $final = $this->transactionLevels - $levels;
-            for($i = $this->transactionLevels; $i >= $final; --$i)
+            $final = $levels - $levels;
+            for($i = $levels; $i >= $final; --$i)
             {
                 $this->trigger('transaction.' . $i . '.rollback', [
                     'db'    =>  $this,
@@ -76,7 +78,7 @@ class Transaction
                 ]);
                 $offEvents[] = 'transaction.' . $i . '.commit';
             }
-            $this->transactionLevels = $final;
+            $levels = $final;
         }
         $this->off($offEvents);
         return true;

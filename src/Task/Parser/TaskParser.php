@@ -18,11 +18,12 @@ class TaskParser extends BaseParser
     {
         if($annotation instanceof Task)
         {
-            if(isset($this->data[$annotation->name]) && $this->data[$annotation->name]['className'] != $className)
+            $data = &$this->data;
+            if(isset($data[$annotation->name]) && $data[$annotation->name]['className'] != $className)
             {
                 throw new \RuntimeException(sprintf('Task %s is exists', $annotation->name));
             }
-            $this->data[$annotation->name] = [
+            $data[$annotation->name] = [
                 'className' => $className,
                 'Task'      => $annotation,
             ];

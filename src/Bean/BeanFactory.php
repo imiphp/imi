@@ -194,8 +194,8 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 
     public function __clone()
     {
-        \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
-        \$this->beanProxy->injectProps(\$this);
+        \$this->beanProxy = \$beanProxy = new \Imi\Bean\BeanProxy(\$this);
+        \$beanProxy->injectProps(\$this);
         {$parentClone}
     }
 {$methodsTpl}

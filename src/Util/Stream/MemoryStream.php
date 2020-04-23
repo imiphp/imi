@@ -180,9 +180,11 @@ class MemoryStream implements StreamInterface
      */
     public function write($string)
     {
-        $this->content = Text::insert($this->content, $this->position, $string);
+        $content = &$this->content;
+        $position = &$this->position;
+        $content = Text::insert($content, $position, $string);
         $len = strlen($string);
-        $this->position += $len;
+        $position += $len;
         $this->size += $len;
         return $len;
     }
@@ -209,8 +211,9 @@ class MemoryStream implements StreamInterface
      */
     public function read($length)
     {
-        $result = substr($this->content, $this->position, $length);
-        $this->position += $length;
+        $position = &$this->position;
+        $result = substr($this->content, $position, $length);
+        $position += $length;
         return $result;
     }
 

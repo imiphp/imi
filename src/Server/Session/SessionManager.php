@@ -82,17 +82,17 @@ class SessionManager
         {
             throw new \RuntimeException('Session can not repeated start');
         }
-        $this->handler = RequestContext::getServerBean($this->handlerClass);
-        $this->isNewSession = null === $sessionID;
-        if($this->isNewSession)
+        $this->handler = $handler = RequestContext::getServerBean($this->handlerClass);
+        $this->isNewSession = $isNewSession = null === $sessionID;
+        if($isNewSession)
         {
-            $this->id = $this->handler->createSessionID();
+            $this->id = $handler->createSessionID();
         }
         else
         {
             $this->id = $sessionID;
-            $data = $this->handler->read($this->id);
-            $this->data = $this->handler->decode($data);
+            $data = $handler->read($this->id);
+            $this->data = $handler->decode($data);
         }
         $this->isStart = true;
     }
@@ -123,7 +123,8 @@ class SessionManager
      */
     public function save()
     {
-        $this->handler->write($this->id, $this->handler->encode($this->data), $this->config->maxLifeTime);
+        $handler = $this->handler;
+        $handler->write($this->id, $handler->encode($this->data), $this->config->maxLifeTime);
     }
 
     /**

@@ -75,8 +75,8 @@ class Group
     {
         if($this->status)
         {
-            $this->handler = RequestContext::getServerBean($this->groupHandler);
-            $this->handler->createGroup($this->groupName, $this->maxClients);
+            $this->handler = $handler = RequestContext::getServerBean($this->groupHandler);
+            $handler->createGroup($this->groupName, $this->maxClients);
         }
     }
 
@@ -98,16 +98,17 @@ class Group
      */
     public function join($fd)
     {
-        if($this->handler->joinGroup($this->groupName, $fd))
+        $groupName = $this->groupName;
+        if($this->handler->joinGroup($groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
-            ConnectContext::use(function($contextData){
-                $contextData['__groups'][] = $this->groupName;
+            ConnectContext::use(function($contextData) use($groupName){
+                $contextData['__groups'][] = $groupName;
                 return $contextData;
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
                 'server'    => RequestContext::getServer(),
-                'groupName' => $this->groupName,
+                'groupName' => $groupName,
                 'fd'        => $fd,
             ]);
         }
@@ -121,19 +122,20 @@ class Group
      */
     public function leave($fd)
     {
-        if($this->handler->leaveGroup($this->groupName, $fd))
+        $groupName = $this->groupName;
+        if($this->handler->leaveGroup($groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
-            ConnectContext::use(function($contextData){
+            ConnectContext::use(function($contextData) use($groupName){
                 if(isset($contextData['__groups']))
                 {
-                    $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $this->groupName);
+                    $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $groupName);
                     return $contextData;
                 }
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
                 'server'    => RequestContext::getServer(),
-                'groupName' => $this->groupName,
+                'groupName' => $groupName,
                 'fd'        => $fd,
             ]);
         }

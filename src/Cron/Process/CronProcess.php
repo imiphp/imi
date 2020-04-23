@@ -64,20 +64,21 @@ class CronProcess extends BaseProcess
             {
                 unlink($socketFile);
             }
-            $this->socket = stream_socket_server('unix://' . $socketFile, $errno, $errstr);
-            if(false === $this->socket)
+            $this->socket = $socket = stream_socket_server('unix://' . $socketFile, $errno, $errstr);
+            if(false === $socket)
             {
                 throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %', $errno, $errstr, $socketFile));
             }
             $this->running = true;
+            $running = &$this->running;
             $this->startSchedule();
-            while($this->running)
+            while($running)
             {
-                $arrRead = [$this->socket];
+                $arrRead = [$socket];
                 $write = $except = null;
                 if(stream_select($arrRead, $write, $except, 3) > 0)
                 {
-                    $conn = stream_socket_accept($this->socket, 1);
+                    $conn = stream_socket_accept($socket, 1);
                     if(false === $conn)
                     {
                         continue;
@@ -88,7 +89,7 @@ class CronProcess extends BaseProcess
                     });
                 }
             }
-            fclose($this->socket);
+            fclose($socket);
         });
     }
 
@@ -100,7 +101,10 @@ class CronProcess extends BaseProcess
      */
     private function parseConn($conn)
     {
-        while($this->running)
+        $running = &$this->running;
+        $scheduler = $this->scheduler;
+        $errorLog = $this->errorLog;
+        while($running)
         {
             try {
                 $meta = fread($conn, 4);
@@ -119,9 +123,9 @@ class CronProcess extends BaseProcess
                 {
                     return;
                 }
-                $this->scheduler->completeTask($result);
+                $scheduler->completeTask($result);
             } catch(\Throwable $th) {
-                $this->errorLog->onException($th);
+                $errorLog->onException($th);
             }
         }
     }
@@ -134,12 +138,14 @@ class CronProcess extends BaseProcess
     private function startSchedule()
     {
         imigo(function(){
+            $scheduler = $this->scheduler;
+            $running = &$this->running;
             do {
                 $time = microtime(true);
     
-                foreach($this->scheduler->schedule() as $task)
+                foreach($scheduler->schedule() as $task)
                 {
-                    $this->scheduler->runTask($task);
+                    $scheduler->runTask($task);
                 }
     
                 $sleep = 1 - (microtime(true) - $time);
@@ -147,7 +153,7 @@ class CronProcess extends BaseProcess
                 {
                     usleep($sleep * 1000000);
                 }
-            } while($this->running);
+            } while($running);
         });
     }
 

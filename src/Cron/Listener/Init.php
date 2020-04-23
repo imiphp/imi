@@ -49,6 +49,7 @@ class Init implements IEventListener
         {
             return;
         }
+        $cronManager = $this->cronManager;
         foreach(AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
             /** @var Cron $cron */
@@ -121,7 +122,7 @@ class Init implements IEventListener
             {
                 throw new \RuntimeException(sprintf('Invalid cron class %s', $class));
             }
-            $this->cronManager->addCron($cron->id, $cronType, $task, [[
+            $cronManager->addCron($cron->id, $cronType, $task, [[
                 'year'      =>  $cron->year,
                 'month'     =>  $cron->month,
                 'day'       =>  $cron->day,

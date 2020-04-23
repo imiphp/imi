@@ -10,11 +10,13 @@ class InsertBuilder extends BaseBuilder
     public function build(...$args)
     {
         parent::build(...$args);
-        $option = $this->query->getOption();
+        $query = $this->query;
+        $params = &$this->params;
+        $option = $query->getOption();
         list($data) = $args;
         if(null === $data)
         {
-            $data = $this->query->getOption()->saveData;
+            $data = $option->saveData;
         }
         if($data instanceof \Traversable)
         {
@@ -40,7 +42,7 @@ class InsertBuilder extends BaseBuilder
                     $fields[] = $this->parseKeyword($k);
                     $valueParam = ':' . $k;
                     $valueParams[] = $valueParam;
-                    $this->params[$valueParam] = $v;
+                    $params[$valueParam] = $v;
                 }
             }
             $sql = 'insert into ' . $option->table . '(' . implode(',', $fields) . ') values(' . implode(',', $valueParams) . ')';
@@ -56,14 +58,14 @@ class InsertBuilder extends BaseBuilder
                 }
                 else
                 {
-                    $valueParam = $this->query->getAutoParamName();
+                    $valueParam = $query->getAutoParamName();
                     $valueParams[] = $valueParam;
-                    $this->params[$valueParam] = $v;
+                    $params[$valueParam] = $v;
                 }
             }
             $sql = 'insert into ' . $option->table . ' values(' . implode(',', $valueParams) . ')';
         }
-        $this->query->bindValues($this->params);
+        $query->bindValues($params);
         return $sql;
     }
 }

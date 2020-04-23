@@ -277,12 +277,13 @@ class Redis implements IGroupHandler
      */
     public function createGroup(string $groupName, int $maxClients = -1)
     {
-        if(!isset($this->groups[$groupName]))
+        $groups = &$this->groups;
+        if(!isset($groups[$groupName]))
         {
             $this->useRedis(function($redis) use($groupName){
                 $redis->sAdd($this->getGroupsKey(), $groupName);
             });
-            $this->groups[$groupName] = [
+            $groups[$groupName] = [
                 'maxClient' => $maxClients,
             ];
         }

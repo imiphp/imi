@@ -97,10 +97,11 @@ class Annotation
             {
                 return;
             }
-            if(!$this->parser->isParsed($fileNamespace))
+            $parser = $this->parser;
+            if(!$parser->isParsed($fileNamespace))
             {
-                $this->parser->parse($fileNamespace);
-                $this->parser->execParse($fileNamespace);
+                $parser->parse($fileNamespace);
+                $parser->execParse($fileNamespace);
             }
         });
     }

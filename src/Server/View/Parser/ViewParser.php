@@ -64,7 +64,8 @@ class ViewParser extends BaseParser
         {
             $className = get_class($object);
         }
-        if(!isset($this->viewCache[$className][$methodName]))
+        $viewCache = &$this->viewCache;
+        if(!isset($viewCache[$className][$methodName]))
         {
             $shortClassName = Imi::getClassShortName($className);
             $isClassView = false;
@@ -103,8 +104,8 @@ class ViewParser extends BaseParser
             {
                 $view->template = $methodName;
             }
-            $this->viewCache[$className][$methodName] = $view;
+            $viewCache[$className][$methodName] = $view;
         }
-        return $this->viewCache[$className][$methodName];
+        return $viewCache[$className][$methodName];
     }
 }

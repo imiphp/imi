@@ -129,7 +129,9 @@ class Where extends BaseWhere implements IWhere
      */
     public function toStringWithoutLogic(IQuery $query)
     {
-        $this->binds = [];
+        $binds = &$this->binds;
+        $binds = [];
+        $thisValues = &$this->value;
         if($this->isRaw)
         {
             return $this->rawSQL;
@@ -142,25 +144,25 @@ class Where extends BaseWhere implements IWhere
                 $begin = $query->getAutoParamName();
                 $end = $query->getAutoParamName();
                 $result .= "{$begin} and {$end}";
-                $this->binds[$begin] = $this->value[0];
-                $this->binds[$end] = $this->value[1];
+                $binds[$begin] = $thisValues[0];
+                $binds[$end] = $thisValues[1];
                 break;
             case 'in':
             case 'not in':
                 $result .= '(';
                 $valueNames = [];
-                foreach($this->value as $value)
+                foreach($thisValues as $value)
                 {
                     $paramName = $query->getAutoParamName();
                     $valueNames[] = $paramName;
-                    $this->binds[$paramName] = $value;
+                    $binds[$paramName] = $value;
                 }
                 $result .= implode(',', $valueNames) . ')';
                 break;
             default:
                 $value = $query->getAutoParamName();
                 $result .= $value;
-                $this->binds[$value] = $this->value;
+                $binds[$value] = $thisValues;
                 break;
         }
         return $result;

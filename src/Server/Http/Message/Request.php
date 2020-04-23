@@ -81,19 +81,21 @@ class Request extends ServerRequest implements IServerRequest
      */
     private function getRequestUri()
     {
-        if($this->serverInstance instanceof \Imi\Server\Http\Server)
+        $serverInstance = $this->serverInstance;
+        if($serverInstance instanceof \Imi\Server\Http\Server)
         {
-            $scheme = $this->serverInstance->isSSL() ? 'https' : 'http';
+            $scheme = $serverInstance->isSSL() ? 'https' : 'http';
         }
-        else if($this->serverInstance instanceof \Imi\Server\WebSocket\Server)
+        else if($serverInstance instanceof \Imi\Server\WebSocket\Server)
         {
-            $scheme = $this->serverInstance->isSSL() ? 'wss' : 'ws';
+            $scheme = $serverInstance->isSSL() ? 'wss' : 'ws';
         }
         else
         {
             $scheme = 'http';
         }
-        return Uri::makeUri($this->swooleRequest->header['host'], $this->swooleRequest->server['path_info'], null === $this->swooleRequest->get ? '' : (\http_build_query($this->swooleRequest->get, null, '&')), null, $scheme);
+        $swooleRequest = $this->swooleRequest;
+        return Uri::makeUri($swooleRequest->header['host'], $swooleRequest->server['path_info'], null === $swooleRequest->get ? '' : (\http_build_query($swooleRequest->get, null, '&')), null, $scheme);
     }
 
     /**

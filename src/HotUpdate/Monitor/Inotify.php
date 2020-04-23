@@ -42,27 +42,30 @@ class Inotify extends BaseMonitor
         {
             throw new \RuntimeException('the extension inotify is not installed');
         }
-        $this->handler = \inotify_init();
-        stream_set_blocking($this->handler, 0);
+        $this->handler = $handler = \inotify_init();
+        stream_set_blocking($handler, 0);
 
-        $this->excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $this->excludePaths));
+        $excludeRule = &$this->excludeRule;
+        $excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $excludeRule));
+        $paths = &$this->paths;
+        $mask = &$this->mask;
         foreach($this->includePaths as $path)
         {
             if(!is_dir($path))
             {
                 continue;
             }
-            \inotify_add_watch($this->handler, $path, $this->mask);
+            \inotify_add_watch($handler, $path, $mask);
             $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO);
             $iterator = new \RecursiveIteratorIterator($directory);
-            if('' === $this->excludeRule)
+            if('' === $excludeRule)
             {
                 foreach($iterator as $fileName => $fileInfo)
                 {
                     $filePath = dirname($fileName);
-                    if(!isset($this->paths[$filePath]))
+                    if(!isset($paths[$filePath]))
                     {
-                        $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                        $paths[$filePath] = \inotify_add_watch($handler, $filePath, $mask);
                     }
                 }
             }
@@ -71,7 +74,7 @@ class Inotify extends BaseMonitor
                 foreach(File::enumFile($path) as $file)
                 {
                     $fullPath = $file->getFullPath();
-                    foreach($this->excludePaths as $path)
+                    foreach($excludeRule as $path)
                     {
                         if(substr($fullPath, 0, strlen($path)) === $path)
                         {
@@ -80,9 +83,9 @@ class Inotify extends BaseMonitor
                         }
                     }
                     $filePath = $file->getPath();
-                    if(!isset($this->paths[$filePath]))
+                    if(!isset($paths[$filePath]))
                     {
-                        $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                        $paths[$filePath] = \inotify_add_watch($handler, $filePath, $mask);
                     }
                 }
             }
@@ -95,16 +98,20 @@ class Inotify extends BaseMonitor
      */
     public function isChanged(): bool
     {
-        $this->changedFiles = [];
+        $changedFiles = &$this->changedFiles;
+        $changedFiles = [];
+        $paths = &$this->paths;
+        $handler = &$this->handler;
+        $mask = &$this->mask;
         do{
-            $readResult = \inotify_read($this->handler);
+            $readResult = \inotify_read($handler);
             if(false === $readResult)
             {
-                return isset($this->changedFiles[0]);
+                return isset($changedFiles[0]);
             }
             foreach($readResult as $item)
             {
-                $key = array_search($item['wd'], $this->paths);
+                $key = array_search($item['wd'], $paths);
                 if(false === $key)
                 {
                     continue;
@@ -113,11 +120,11 @@ class Inotify extends BaseMonitor
                 $filePathIsDir = is_dir($filePath);
                 if(!$filePathIsDir)
                 {
-                    $this->changedFiles[] = $filePath;
+                    $changedFiles[] = $filePath;
                 }
                 if((Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
                 {
-                    $this->paths[$filePath] = \inotify_add_watch($this->handler, $filePath, $this->mask);
+                    $paths[$filePath] = \inotify_add_watch($handler, $filePath, $mask);
                 }
             }
         }while(true);

@@ -57,9 +57,10 @@ class Local implements IHandler
      */
     public function destroy(string $key)
     {
-        if(isset($this->storeMap[$key]))
+        $storeMap = &$this->storeMap;
+        if(isset($storeMap[$key]))
         {
-            unset($this->storeMap[$key]);
+            unset($storeMap[$key]);
         }
     }
 

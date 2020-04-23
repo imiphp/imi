@@ -31,8 +31,9 @@ class HttpSessionMiddleware implements MiddlewareInterface
         $sessionManager = RequestContext::getBean('SessionManager');
 
         $sessionID = '';
-        if(null !== $this->sessionIdHandler && is_callable($this->sessionIdHandler)) {
-            $sessionID = ($this->sessionIdHandler)($request);
+        $sessionIdHandler = $this->sessionIdHandler;
+        if(null !== $sessionIdHandler && is_callable($sessionIdHandler)) {
+            $sessionID = ($sessionIdHandler)($request);
         }
         $sessionID = $sessionID ?: $request->getCookie($sessionManager->getName());
 

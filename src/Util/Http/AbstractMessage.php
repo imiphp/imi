@@ -117,9 +117,10 @@ abstract class AbstractMessage implements MessageInterface
     public function hasHeader($name)
     {
         $lowerName = strtolower($name);
-        if(isset($this->headerNames[$lowerName]))
+        $headerNames = $this->headerNames;
+        if(isset($headerNames[$lowerName]))
         {
-            $name = $this->headerNames[$lowerName];
+            $name = $headerNames[$lowerName];
         }
         return isset($this->headers[$name]);
     }
@@ -141,13 +142,15 @@ abstract class AbstractMessage implements MessageInterface
     public function getHeader($name)
     {
         $lowerName = strtolower($name);
-        if(isset($this->headerNames[$lowerName]))
+        $headerNames = $this->headerNames;
+        if(isset($headerNames[$lowerName]))
         {
-            $name = $this->headerNames[$lowerName];
+            $name = $headerNames[$lowerName];
         }
-        if(isset($this->headers[$name]))
+        $headers = $this->headers;
+        if(isset($headers[$name]))
         {
-            return $this->headers[$name];
+            return $headers[$name];
         }
         else
         {
@@ -177,15 +180,17 @@ abstract class AbstractMessage implements MessageInterface
     public function getHeaderLine($name)
     {
         $lowerName = strtolower($name);
-        if(isset($this->headerNames[$lowerName]))
+        $headerNames = $this->headerNames;
+        if(isset($headerNames[$lowerName]))
         {
-            $name = $this->headerNames[$lowerName];
+            $name = $headerNames[$lowerName];
         }
-        if(!isset($this->headers[$name]))
+        $headers = $this->headers;
+        if(!isset($headers[$name]))
         {
             return '';
         }
-        return implode(',', $this->headers[$name]);
+        return implode(',', $headers[$name]);
     }
 
     /**

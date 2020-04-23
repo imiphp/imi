@@ -40,13 +40,14 @@ class RouteResult
         $this->routeItem = $routeItem;
         $this->urlCheckResult = $urlCheckResult;
         $this->params = $params;
-        if($this->routeItem->callable instanceof RouteCallable)
+        $callable = $routeItem->callable;
+        if($callable instanceof RouteCallable)
         {
-            $this->callable = $this->routeItem->callable->getCallable($this->urlCheckResult->params);
+            $this->callable = $callable->getCallable($this->urlCheckResult->params);
         }
         else
         {
-            $this->callable = $this->routeItem->callable;
+            $this->callable = $callable;
         }
     }
 

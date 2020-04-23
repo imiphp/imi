@@ -28,8 +28,8 @@ class Response extends AbstractMessage implements ResponseInterface
     public function __construct()
     {
         parent::__construct('');
-        $this->statusCode = StatusCode::OK;
-        $this->reasonPhrase = StatusCode::getReasonPhrase($this->statusCode);
+        $this->statusCode = $statusCode = StatusCode::OK;
+        $this->reasonPhrase = StatusCode::getReasonPhrase($statusCode);
     }
 
     /**

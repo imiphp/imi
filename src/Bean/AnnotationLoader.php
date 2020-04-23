@@ -54,8 +54,9 @@ class AnnotationLoader
      */
     public function enumModulePath($namespace, $callback)
     {
+        $loaded = &$this->loaded;
         // 避免重复加载
-        if(isset($this->loaded[$namespace]))
+        if(isset($loaded[$namespace]))
         {
             return;
         }
@@ -70,9 +71,9 @@ class AnnotationLoader
             do{
                 $pops[] = array_pop($namespaceSplit);
                 $tNamespace = implode('\\', $namespaceSplit);
-                if(isset($this->loaded[$tNamespace]))
+                if(isset($loaded[$tNamespace]))
                 {
-                    $paths = (array)$this->loaded[$tNamespace];
+                    $paths = (array)$loaded[$tNamespace];
                 }
                 else
                 {
@@ -98,7 +99,7 @@ class AnnotationLoader
         else
         {
             // 有主类
-            $this->loaded[$main->getNamespace()] = $main->getPath();
+            $loaded[$main->getNamespace()] = $main->getPath();
             // 遍历加载
             foreach($main->getBeanScan() as $namespace)
             {

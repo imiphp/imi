@@ -97,9 +97,10 @@ class AnnotationParser
             }
         }
         $className = $ref->getName();
+        $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = $ref->getFileName();
+            $thisClasses[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
             
             // @Inherit 注解继承父级的注解
@@ -115,7 +116,7 @@ class AnnotationParser
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
                 $parentClassName = $parentClass->getName();
-                if(!isset($this->classes[$parentClassName]))
+                if(!isset($thisClasses[$parentClassName]))
                 {
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
@@ -189,10 +190,10 @@ class AnnotationParser
                 unset($annotations[$i]);
             }
         }
-
+        $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = $ref->getFileName();
+            $thisClasses[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
 
             // @Inherit 注解继承父级的注解
@@ -208,7 +209,7 @@ class AnnotationParser
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
                 $parentClassName = $parentClass->getName();
-                if(!isset($this->classes[$parentClassName]))
+                if(!isset($thisClasses[$parentClassName]))
                 {
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
@@ -277,9 +278,10 @@ class AnnotationParser
         }
         $className = $ref->getName();
         $propertyName = $prop->getName();
+        $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = $ref->getFileName();
+            $thisClasses[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
 
             // @Inherit 注解继承父级的注解
@@ -295,7 +297,7 @@ class AnnotationParser
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
                 $parentClassName = $parentClass->getName();
-                if(!isset($this->classes[$parentClassName]))
+                if(!isset($thisClasses[$parentClassName]))
                 {
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
@@ -366,9 +368,10 @@ class AnnotationParser
         }
         $className = $ref->getName();
         $constName = $const->getName();
+        $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $this->classes[$className] = $ref->getFileName();
+            $thisClasses[$className] = $ref->getFileName();
             $this->files[$ref->getFileName()] = 1;
             
             // @Inherit 注解继承父级的注解
@@ -384,7 +387,7 @@ class AnnotationParser
             if($hasInherit && $parentClass = $ref->getParentClass())
             {
                 $parentClassName = $parentClass->getName();
-                if(!isset($this->classes[$parentClassName]))
+                if(!isset($thisClasses[$parentClassName]))
                 {
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
@@ -439,7 +442,8 @@ class AnnotationParser
     private function parseAnnotationParsers(\ReflectionClass $ref)
     {
         $className = $ref->getName();
-        if(isset($this->parsers[$className]))
+        $parsers = &$this->parsers;
+        if(isset($parsers[$className]))
         {
             return;
         }
@@ -457,7 +461,7 @@ class AnnotationParser
         {
             if($annotation instanceof \Imi\Bean\Annotation\Parser)
             {
-                $this->parsers[$className] = $annotation->className;
+                $parsers[$className] = $annotation->className;
                 $hasParser = true;
                 break;
             }
@@ -634,14 +638,16 @@ class AnnotationParser
      */
     public function parseIncr($files)
     {
+        $thisFiles = &$this->files;
+        $thisClasses = &$this->classes;
         foreach($files as $file)
         {
-            if(isset($this->files[$file]))
+            if(isset($thisFiles[$file]))
             {
-                unset($this->files[$file]);
+                unset($thisFiles[$file]);
             }
             $className = null;
-            if($className = array_search($file, $this->classes))
+            if($className = array_search($file, $thisClasses))
             {
             }
             else if(is_file($file))

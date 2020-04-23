@@ -47,9 +47,10 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     public function &offsetGet($offset)
     {
-        if(isset($this->list[$offset]))
+        $list = &$this->list;
+        if(isset($list[$offset]))
         {
-            $value = &$this->list[$offset];
+            $value = &$list[$offset];
         }
         else
         {
@@ -76,9 +77,10 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     public function offsetUnset($offset)
     {
-        if(isset($this->list[$offset]))
+        $list = $this->list;
+        if(isset($list[$offset]))
         {
-            unset($this->list[$offset]);
+            unset($list[$offset]);
         }
     }
 

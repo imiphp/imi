@@ -15,11 +15,8 @@ class ClassEventParser extends BaseParser
     {
         if($annotation instanceof \Imi\Bean\Annotation\ClassEventListener)
         {
-            if(!isset($this->data[$annotation->className][$annotation->eventName]))
-            {
-                $this->data[$annotation->className][$annotation->eventName] = [];
-            }
-            $this->data[$annotation->className][$annotation->eventName][] = [
+            $data = &$this->data;
+            $data[$annotation->className][$annotation->eventName][] = [
                 'className' => $className,
                 'priority'  => $annotation->priority,
             ];

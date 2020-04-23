@@ -12,11 +12,12 @@ trait THashCode
 
     public function hashCode(): string
     {
-        if ($this->hashCode === null) {
-            $this->hashCode = spl_object_hash($this);
+        $hashCode = &$this->hashCode;
+        if ($hashCode === null) {
+            $hashCode = spl_object_hash($this);
         }
 
-        return $this->hashCode;
+        return $hashCode;
     }
     
 }

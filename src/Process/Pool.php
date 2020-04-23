@@ -157,11 +157,12 @@ class Pool
      */
     public function restartWorker(...$workerIds)
     {
+        $workers = &$this->workers;
         foreach($workerIds as $workerId)
         {
-            if(isset($this->workers[$workerId]))
+            if(isset($workers[$workerId]))
             {
-                Process::kill($this->workers[$workerId]->pid);
+                Process::kill($workers[$workerId]->pid);
             }
             else
             {
@@ -179,7 +180,8 @@ class Pool
      */
     private function startWorker($workerId)
     {
-        if(isset($this->workers[$workerId]))
+        $workers = &$this->workers;
+        if(isset($workers[$workerId]))
         {
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
@@ -233,7 +235,7 @@ class Pool
                     'data'      =>  $data,
                 ], $this, MessageEventParam::class);
             });
-            $this->workers[$workerId] = $worker;
+            $workers[$workerId] = $worker;
             $this->workerIdMap[$pid] = $workerId;
         }
     }

@@ -24,9 +24,10 @@ trait TServerAnnotationParser
      */
     public function getByServer($serverName)
     {
-        if(isset($this->cache[$serverName]))
+        $cache = &$this->cache;
+        if(isset($cache[$serverName]))
         {
-            return $this->cache[$serverName];
+            return $cache[$serverName];
         }
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
         foreach($namespaces as &$namespace)
@@ -50,7 +51,7 @@ trait TServerAnnotationParser
                 }
             }
         }
-        $this->cache[$serverName] = $result;
+        $cache[$serverName] = $result;
         return $result;
     }
 }

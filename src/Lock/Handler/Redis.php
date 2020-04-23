@@ -77,20 +77,22 @@ class Redis extends BaseLock
     protected function __lock(): bool
     {
         $beginTime = microtime(true);
+        $waitTimeout = $this->waitTimeout;
+        $waitSleepTime = $this->waitSleepTime;
         do {
             if($this->__tryLock())
             {
                 return true;
             }
-            if(0 === $this->waitTimeout || microtime(true) - $beginTime < $this->waitTimeout / 1000)
+            if(0 === $waitTimeout || microtime(true) - $beginTime < $waitTimeout / 1000)
             {
                 if(Coroutine::isIn())
                 {
-                    Coroutine::sleep($this->waitSleepTime / 1000);
+                    Coroutine::sleep($waitSleepTime / 1000);
                 }
                 else
                 {
-                    usleep($this->waitSleepTime * 1000);
+                    usleep($waitSleepTime * 1000);
                 }
             }
             else

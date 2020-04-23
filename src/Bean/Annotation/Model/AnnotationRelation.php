@@ -144,16 +144,17 @@ class AnnotationRelation
     {
         if(null === $where)
         {
-            if(!isset($this->allRelations[$className]))
+            $allRelations = &$this->allRelations;
+            if(!isset($allRelations[$className]))
             {
-                $this->allRelations[$className] = array_merge(
+                $allRelations[$className] = array_merge(
                     $this->classRelations[$className] ?? [],
                     $this->methodRelations[$className] ?? [],
                     $this->propertyRelations[$className] ?? [],
                     $this->constantRelations[$className] ?? []
                 );
             }
-            return $this->allRelations[$className];
+            return $allRelations[$className];
         }
         return $this->{$where . 'Relations'}[$className] ?? [];
     }
@@ -167,16 +168,17 @@ class AnnotationRelation
      */
     public function removeClassRelation($annotationClassName, $className)
     {
-        if(isset($this->classRelations[$annotationClassName]))
+        $classRelations = &$this->classRelations;
+        if(isset($classRelations[$annotationClassName]))
         {
-            foreach($this->classRelations[$annotationClassName] as $i => $relation)
+            foreach($classRelations[$annotationClassName] as $i => $relation)
             {
                 if($relation->getClass() === $className)
                 {
-                    unset($this->classRelations[$annotationClassName][$i]);
+                    unset($classRelations[$annotationClassName][$i]);
                 }
             }
-            $this->classRelations[$annotationClassName] = array_values($this->classRelations[$annotationClassName]);
+            $classRelations[$annotationClassName] = array_values($classRelations[$annotationClassName]);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -191,16 +193,17 @@ class AnnotationRelation
      */
     public function removeMethodRelation(string $annotationClassName, string $className, string $methodName)
     {
-        if(isset($this->methodRelations[$annotationClassName]))
+        $methodRelations = &$this->methodRelations;
+        if(isset($methodRelations[$annotationClassName]))
         {
-            foreach($this->methodRelations[$annotationClassName] as $i => $relation)
+            foreach($methodRelations[$annotationClassName] as $i => $relation)
             {
                 if($relation->getClass() === $className && $relation->getMethod() === $methodName)
                 {
-                    unset($this->methodRelations[$annotationClassName][$i]);
+                    unset($methodRelations[$annotationClassName][$i]);
                 }
             }
-            $this->methodRelations[$annotationClassName] = array_values($this->methodRelations[$annotationClassName]);
+            $methodRelations[$annotationClassName] = array_values($methodRelations[$annotationClassName]);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -215,16 +218,17 @@ class AnnotationRelation
      */
     public function removePropertyRelation(string $annotationClassName, string $className, string $propertyName)
     {
-        if(isset($this->propertyRelations[$annotationClassName]))
+        $propertyRelations = &$this->propertyRelations;
+        if(isset($propertyRelations[$annotationClassName]))
         {
-            foreach($this->propertyRelations[$annotationClassName] as $i => $relation)
+            foreach($propertyRelations[$annotationClassName] as $i => $relation)
             {
                 if($relation->getClass() === $className && $relation->getProperty() === $propertyName)
                 {
-                    unset($this->propertyRelations[$annotationClassName][$i]);
+                    unset($propertyRelations[$annotationClassName][$i]);
                 }
             }
-            $this->propertyRelations[$annotationClassName] = array_values($this->propertyRelations[$annotationClassName]);
+            $propertyRelations[$annotationClassName] = array_values($propertyRelations[$annotationClassName]);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -239,16 +243,17 @@ class AnnotationRelation
      */
     public function removeConstantRelation(string $annotationClassName, string $className, string $constantName)
     {
-        if(isset($this->constantRelations[$annotationClassName]))
+        $constantRelations = &$this->constantRelations;
+        if(isset($constantRelations[$annotationClassName]))
         {
-            foreach($this->constantRelations[$annotationClassName] as $i => $relation)
+            foreach($constantRelations[$annotationClassName] as $i => $relation)
             {
                 if($relation->getClass() === $className && $relation->getConstant() === $constantName)
                 {
-                    unset($this->constantRelations[$annotationClassName][$i]);
+                    unset($constantRelations[$annotationClassName][$i]);
                 }
             }
-            $this->constantRelations[$annotationClassName] = array_values($this->constantRelations[$annotationClassName]);
+            $constantRelations[$annotationClassName] = array_values($constantRelations[$annotationClassName]);
         }
         $this->allRelations[$annotationClassName] = null;
     }

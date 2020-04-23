@@ -36,7 +36,7 @@ class Client
     public function __construct($options = [])
     {
         $this->options = $options;
-        if(!isset($this->options['socketFile']))
+        if(!isset($options['socketFile']))
         {
             throw new \InvalidArgumentException('If you want to use Swoole Shared Memory, you must set the "socketFile" option');
         }

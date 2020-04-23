@@ -108,9 +108,10 @@ abstract class BaseBuilder implements IBuilder
     protected function parseJoin($join)
     {
         $result = implode(' ', $join);
+        $params = &$this->params;
         foreach($join as $item)
         {
-            $this->params = array_merge($this->params, $item->getBinds());
+            $params = array_merge($params, $item->getBinds());
         }
         return $result;
     }
@@ -123,11 +124,13 @@ abstract class BaseBuilder implements IBuilder
     protected function parseWhere($where)
     {
         $result = [];
+        $params = &$this->params;
+        $query = $this->query;
         foreach($where as $item)
         {
             $result[] = $item->getLogicalOperator();
-            $result[] = $item->toStringWithoutLogic($this->query);
-            $this->params = array_merge($this->params, $item->getBinds());
+            $result[] = $item->toStringWithoutLogic($query);
+            $params = array_merge($params, $item->getBinds());
         }
         unset($result[0]);
         $result = implode(' ', $result);
@@ -146,22 +149,24 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseLimit($offset, $limit)
     {
+        $params = &$this->params;
+        $query = $this->query;
         if(null === $limit)
         {
             return '';
         }
         else if(null === $offset)
         {
-            $limitName = $this->query->getAutoParamName();
-            $this->params[$limitName] = (int)$limit;
+            $limitName = $query->getAutoParamName();
+            $params[$limitName] = (int)$limit;
             return ' limit ' . $limitName;
         }
         else
         {
-            $offsetName = $this->query->getAutoParamName();
-            $this->params[$offsetName] = (int)$offset;
-            $limitName = $this->query->getAutoParamName();
-            $this->params[$limitName] = (int)$limit;
+            $offsetName = $query->getAutoParamName();
+            $params[$offsetName] = (int)$offset;
+            $limitName = $query->getAutoParamName();
+            $params[$limitName] = (int)$limit;
             return ' limit ' . $offsetName . ',' . $limitName;
         }
     }
@@ -176,9 +181,10 @@ abstract class BaseBuilder implements IBuilder
         if(isset($order[0]))
         {
             $result = ' order by ' . implode(',', $order);
+            $params = &$this->params;
             foreach($order as $item)
             {
-                $this->params = array_merge($this->params, $item->getBinds());
+                $params = array_merge($params, $item->getBinds());
             }
             return $result;
         }
@@ -212,12 +218,14 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseHaving($having)
     {
+        $params = &$this->params;
+        $query = $this->query;
         $result = [];
         foreach($having as $item)
         {
             $result[] = $item->getLogicalOperator();
-            $result[] = $item->toStringWithoutLogic($this->query);
-            $this->params = array_merge($this->params, $item->getBinds());
+            $result[] = $item->toStringWithoutLogic($query);
+            $params = array_merge($params, $item->getBinds());
         }
         unset($result[0]);
         $result = implode(' ', $result);

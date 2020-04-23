@@ -208,18 +208,20 @@ class PaginateResult implements IPaginateResult
     {
         if(null === $this->arrayData)
         {
-            $this->arrayData = [
+            $arrayData = &$this->arrayData;
+            $options = $this->options;
+            $arrayData = [
                 // 数据列表
-                $this->options['field_list'] ?? 'list'              =>  $this->result->getArray(),
+                $options['field_list'] ?? 'list'              =>  $this->result->getArray(),
                 // 每页记录数
-                $this->options['field_limit'] ?? 'limit'            =>  $this->limit,
+                $options['field_limit'] ?? 'limit'            =>  $this->limit,
             ];
             if(null !== $this->total)
             {
                 // 记录总数
-                $this->arrayData[$this->options['field_total'] ?? 'total'] = $this->total;
+                $arrayData[$options['field_total'] ?? 'total'] = $this->total;
                 // 总页数
-                $this->arrayData[$this->options['field_page_count'] ?? 'page_count'] = $this->pageCount;
+                $arrayData[$options['field_page_count'] ?? 'page_count'] = $this->pageCount;
             }
         }
         return $this->arrayData;

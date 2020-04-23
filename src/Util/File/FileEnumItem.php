@@ -37,7 +37,7 @@ class FileEnumItem
     {
         $this->path = $path;
         $this->fileName = $fileName;
-        $this->fullPath = File::path($this->path, $this->fileName);
+        $this->fullPath = File::path($path, $fileName);
     }
 
     /**

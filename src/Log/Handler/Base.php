@@ -107,9 +107,10 @@ abstract class Base
      */
     public function log(\Imi\Log\Record $record)
     {
+        $records = &$this->records;
         if(in_array($record->getLevel(), $this->levels))
         {
-            $this->records[] = $record;
+            $records[] = $record;
             $this->trySave();
         }
     }
@@ -212,9 +213,10 @@ abstract class Base
     {
         $result = [];
         $trace = $record->getTrace();
+        $traceLimit = $this->traceLimit;
         foreach($trace as $index => $vars)
         {
-            if($this->traceLimit > -1 && $index >= $this->traceLimit)
+            if($traceLimit > -1 && $index >= $traceLimit)
             {
                 break;
             }

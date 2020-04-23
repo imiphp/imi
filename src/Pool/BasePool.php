@@ -147,9 +147,10 @@ abstract class BasePool implements IPool
     public function release(IPoolResource $resource)
     {
         $hash = $resource->hashCode();
-        if(isset($this->pool[$hash]))
+        $pool = &$this->pool;
+        if(isset($pool[$hash]))
         {
-            $this->pool[$hash]->release();
+            $pool[$hash]->release();
             $resource->reset();
             $this->push($resource);
         }
@@ -162,8 +163,10 @@ abstract class BasePool implements IPool
     public function gc()
     {
         $hasGC = false;
-        $maxActiveTime = $this->config->getMaxActiveTime();
-        $maxUsedTime = $this->config->getMaxUsedTime();
+        $config = $this->config;
+        $maxActiveTime = $config->getMaxActiveTime();
+        $maxUsedTime = $config->getMaxUsedTime();
+        $pool = &$this->pool;
         foreach($this->pool as $key => $item)
         {
             if(
@@ -172,7 +175,7 @@ abstract class BasePool implements IPool
                 )
             {
                 $item->getResource()->close();
-                unset($this->pool[$key]);
+                unset($pool[$key]);
                 $hasGC = true;
             }
         }
@@ -201,8 +204,9 @@ abstract class BasePool implements IPool
      */
     protected function addResource()
     {
+        $addingResources = &$this->addingResources;
         try {
-            ++$this->addingResources;
+            ++$addingResources;
             $resource = $this->createResource();
             $resource->open();
 
@@ -213,7 +217,7 @@ abstract class BasePool implements IPool
 
             return $resource;
         } finally {
-            --$this->addingResources;
+            --$addingResources;
         }
     }
 
@@ -307,17 +311,18 @@ abstract class BasePool implements IPool
      */
     protected function getNextResourceConfig()
     {
-        if(!isset($this->resourceConfig[1]))
+        $resourceConfig = &$this->resourceConfig;
+        if(!isset($resourceConfig[1]))
         {
-            return $this->resourceConfig[0];
+            return $resourceConfig[0];
         }
         switch($this->config->getResourceConfigMode())
         {
             case ResourceConfigMode::RANDOM:
-                $index = mt_rand(0, count($this->resourceConfig) - 1);
+                $index = mt_rand(0, count($resourceConfig) - 1);
                 break;
             default:
-                $maxIndex = count($this->resourceConfig) - 1;
+                $maxIndex = count($resourceConfig) - 1;
                 if(++$this->configIndex > $maxIndex)
                 {
                     $this->configIndex = 0;
@@ -325,7 +330,7 @@ abstract class BasePool implements IPool
                 $index = $this->configIndex;
                 break;
         }
-        return $this->resourceConfig[$index];
+        return $resourceConfig[$index];
     }
 
     /**
@@ -336,7 +341,8 @@ abstract class BasePool implements IPool
     public function heartbeat()
     {
         $hasGC = false;
-        foreach($this->pool as $key => $item)
+        $pool = &$this->pool;
+        foreach($pool as $key => $item)
         {
             if($item->isFree())
             {
@@ -346,7 +352,7 @@ abstract class BasePool implements IPool
                     if(!$resource->checkState())
                     {
                         $resource->close();
-                        unset($this->pool[$key]);
+                        unset($pool[$key]);
                         $hasGC = true;
                         $item = null;
                     }

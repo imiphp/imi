@@ -11,11 +11,13 @@ class BatchInsertBuilder extends BaseBuilder
     public function build(...$args)
     {
         parent::build(...$args);
-        $option = $this->query->getOption();
+        $query = $this->query;
+        $params = &$this->params;
+        $option = $query->getOption();
         list($list) = $args;
         if(null === $list)
         {
-            $list = $this->query->getOption()->saveData;
+            $list = $option->saveData;
         }
         if($list instanceof \Traversable)
         {
@@ -39,15 +41,15 @@ class BatchInsertBuilder extends BaseBuilder
             $valueParams = [];
             foreach($fields as $field)
             {
-                $valueParam = $this->query->getAutoParamName();
+                $valueParam = $query->getAutoParamName();
                 $valueParams[] = $valueParam;
-                $this->params[$valueParam] = ObjectArrayHelper::get($data, $field);
+                $params[$valueParam] = ObjectArrayHelper::get($data, $field);
             }
             $values[] = '(' . implode(',', $valueParams) . ')';
         }
         $sql .= implode(',', $values);
         
-        $this->query->bindValues($this->params);
+        $query->bindValues($params);
         return $sql;
     }
 }

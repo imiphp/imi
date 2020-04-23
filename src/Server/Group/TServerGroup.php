@@ -33,11 +33,12 @@ trait TServerGroup
      */
     public function createGroup(string $groupName, int $maxClients = -1)
     {
-        if(!isset($this->groups[$groupName]))
+        $groups = &$this->groups;
+        if(!isset($groups[$groupName]))
         {
-            $this->groups[$groupName] = RequestContext::getServerBean('ServerGroup', $this, $groupName, $maxClients);
+            $groups[$groupName] = RequestContext::getServerBean('ServerGroup', $this, $groupName, $maxClients);
         }
-        return $this->groups[$groupName];
+        return $groups[$groupName];
     }
 
     /**

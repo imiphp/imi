@@ -38,10 +38,11 @@ class FdMap
      */
     public function joinGroup(int $fd, Group $group)
     {
-        $index = array_search($group, $this->map[$fd] ?? []);
+        $map = &$this->map;
+        $index = array_search($group, $map[$fd] ?? []);
         if(false === $index)
         {
-            $this->map[$fd][] = $group;
+            $map[$fd][] = $group;
         }
     }
 
@@ -54,10 +55,11 @@ class FdMap
      */
     public function leaveGroup(int $fd, Group $group)
     {
-        $index = array_search($group, $this->map[$fd] ?? []);
+        $map = &$this->map;
+        $index = array_search($group, $map[$fd] ?? []);
         if(false !== $index)
         {
-            unset($this->map[$fd][$index]);
+            unset($map[$fd][$index]);
         }
     }
 

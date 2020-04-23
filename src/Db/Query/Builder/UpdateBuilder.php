@@ -8,11 +8,13 @@ class UpdateBuilder extends BaseBuilder
     public function build(...$args)
     {
         parent::build(...$args);
-        $option = $this->query->getOption();
+        $query = $this->query;
+        $params = &$this->params;
+        $option = $query->getOption();
         list($data) = $args;
         if(null === $data)
         {
-            $data = $this->query->getOption()->saveData;
+            $data = $option->saveData;
         }
         $valueParams = [];
         $sql = 'update ' . $option->table . ' set ';
@@ -36,7 +38,7 @@ class UpdateBuilder extends BaseBuilder
             {
                 $valueParam = ':' . $k;
                 $valueParams[] = $valueParam;
-                $this->params[$valueParam] = $v;
+                $params[$valueParam] = $v;
                 $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
             }
         }
@@ -46,7 +48,7 @@ class UpdateBuilder extends BaseBuilder
             . $this->parseOrder($option->order)
             . $this->parseLimit($option->offset, $option->limit);
 
-        $this->query->bindValues($this->params);
+        $query->bindValues($params);
         return $sql;
     }
 }

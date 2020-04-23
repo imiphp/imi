@@ -21,12 +21,13 @@ class Console extends Base
      */
     protected function __save()
     {
+        $length = $this->length;
         foreach($this->records as $record)
         {
             $content = $this->getLogString($record);
-            if($this->length > 0)
+            if($length > 0)
             {
-                $content = mb_substr($content, 0, $this->length) . '...';
+                $content = mb_substr($content, 0, $length) . '...';
             }
             fwrite(STDOUT, $content . PHP_EOL);
         }

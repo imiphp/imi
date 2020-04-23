@@ -39,10 +39,11 @@ class ConnectionBinder
         if(0 === Worker::getWorkerID())
         {
             $this->useRedis(function(RedisHandler $redis){
-                $redis->del($this->key);
+                $key = $this->key;
+                $redis->del($key);
                 $it = null;
                 do {
-                    $arrKeys = $redis->scan($it, $this->key . ':*');
+                    $arrKeys = $redis->scan($it, $key . ':*');
                     if ($arrKeys)
                     {
                         $redis->del(...$arrKeys);
@@ -77,15 +78,16 @@ class ConnectionBinder
     public function unbind(string $flag, int $keepTime = null)
     {
         $this->useRedis(function(RedisHandler $redis) use($flag, $keepTime){
-            if($fd = $redis->hGet($this->key, $flag))
+            $key = $this->key;
+            if($fd = $redis->hGet($key, $flag))
             {
                 ConnectContext::set('__flag', null, $fd);
             }
             $redis->multi();
-            $redis->hDel($this->key, $flag);
+            $redis->hDel($key, $flag);
             if($fd && $keepTime > 0)
             {
-                $redis->set($this->key . ':old:' . $flag, $fd, $keepTime);
+                $redis->set($key . ':old:' . $flag, $fd, $keepTime);
             }
             $redis->exec();
         });

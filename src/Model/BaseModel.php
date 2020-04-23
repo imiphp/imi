@@ -67,9 +67,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function __construct($data = [])
     {
-        $this->__meta = static::__getMeta();
-        $this->__fieldNames = $this->__meta->getRealFieldNames();
-        $this->__realClass = $this->__meta->getClassName();
+        $this->__meta = $meta = static::__getMeta();
+        $this->__fieldNames = $meta->getRealFieldNames();
+        $this->__realClass = $meta->getClassName();
         if(!$this instanceof IBean)
         {
             $this->__init($data);
@@ -131,14 +131,15 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function &offsetGet($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
+        $realClass = $this->__realClass;
         if(method_exists($this, $methodName))
         {
-            if(!isset(self::$__methodReference[$this->__realClass][$methodName]))
+            if(!isset(self::$__methodReference[$realClass][$methodName]))
             {
                 $refMethod = new \ReflectionMethod($this, $methodName);
-                self::$__methodReference[$this->__realClass][$methodName] = $refMethod->returnsReference();
+                self::$__methodReference[$realClass][$methodName] = $refMethod->returnsReference();
             }
-            if(self::$__methodReference[$this->__realClass][$methodName])
+            if(self::$__methodReference[$realClass][$methodName])
             {
                 return $this->$methodName();
             }
@@ -156,7 +157,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     public function offsetSet($offset, $value)
     {
-        $fields = $this->__meta->getFields();
+        $meta = $this->__meta;
+        $fields = $meta->getFields();
         $camelName = $this->__getCamelName($offset);
         // 数据库bit类型字段处理
         $column = null;
@@ -186,7 +188,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         if(is_array($value) || is_object($value))
         {
             // 提取字段中的属性到当前模型
-            $extractProperties = $this->__meta->getExtractPropertys();
+            $extractProperties = $meta->getExtractPropertys();
             if(
                 (($name = $offset) && isset($extractProperties[$name]))
                 || (($name = Text::toUnderScoreCase($offset)) && isset($extractProperties[$name]))
@@ -235,14 +237,16 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function toArray(): array
     {
         $result = \iterator_to_array($this);
-        if($this->__meta->hasRelation())
+        $meta = $this->__meta;
+        $realClass = $this->__realClass;
+        if($meta->hasRelation())
         {
             // 支持注解配置隐藏为null的关联属性
             foreach(ModelRelationManager::getRelationFieldNames($this) as $name)
             {
                 if(array_key_exists($name, $result) && null === $result[$name])
                 {
-                    $autoSelect = AnnotationManager::getPropertyAnnotations($this->__realClass, $name, AutoSelect::class)[0] ?? null;
+                    $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
                     if($autoSelect && !$autoSelect->alwaysShow)
                     {
                         unset($result[$name]);
@@ -251,8 +255,8 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             }
         }
         // 禁止序列化支持
-        $serializables = $this->__meta->getSerializables();
-        $serializableSets = $this->__meta->getSerializableSets();
+        $serializables = $meta->getSerializables();
+        $serializableSets = $meta->getSerializableSets();
         if($serializables || $serializableSets)
         {
             foreach($result as $propertyName => $value)

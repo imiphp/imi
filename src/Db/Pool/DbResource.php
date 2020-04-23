@@ -29,8 +29,9 @@ class DbResource extends BasePoolResource
      */
     public function open()
     {
-        $this->db->open();
-        return $this->db->isConnected();
+        $db = $this->db;
+        $db->open();
+        return $db->isConnected();
     }
 
     /**
@@ -57,10 +58,11 @@ class DbResource extends BasePoolResource
      */
     public function reset()
     {
+        $db = $this->db;
         // 如果在事务中，则回滚
-        if($this->db->inTransaction())
+        if($db->inTransaction())
         {
-            $this->db->rollBack();
+            $db->rollBack();
         }
     }
     

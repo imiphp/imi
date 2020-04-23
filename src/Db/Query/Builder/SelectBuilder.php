@@ -12,7 +12,8 @@ class SelectBuilder extends BaseBuilder
     public function build(...$args)
     {
         parent::build(...$args);
-        $option = $this->query->getOption();
+        $query = $this->query;
+        $option = $query->getOption();
         $sql = 'select ' . $this->parseDistinct($option->distinct)
                 . $this->parseField($option->field)
                 . ' from '
@@ -25,7 +26,7 @@ class SelectBuilder extends BaseBuilder
                 . $this->parseLimit($option->offset, $option->limit)
                 . $this->parseLock($option->lock)
                 ;
-        $this->query->bindValues($this->params);
+        $query->bindValues($this->params);
         return $sql;
     }
 

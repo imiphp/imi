@@ -26,26 +26,28 @@ class FileMTime extends BaseMonitor
      */
     protected function init()
     {
-        foreach($this->excludePaths as $i => $path)
+        $excludePaths = &$this->excludePaths;
+        $includePaths = &$this->includePaths;
+        foreach($excludePaths as $i => $path)
         {
-            if(!$this->excludePaths[$i] = realpath($path))
+            if(!$excludePaths[$i] = realpath($path))
             {
-                unset($this->excludePaths[$i]);
+                unset($excludePaths[$i]);
                 continue;
             }
-            $this->excludePaths[$i] .= '/';
+            $excludePaths[$i] .= '/';
         }
-        foreach($this->includePaths as $i => $path)
+        foreach($includePaths as $i => $path)
         {
-            if(!$this->includePaths[$i] = $path = realpath($path))
+            if(!$includePaths[$i] = $path = realpath($path))
             {
-                unset($this->includePaths[$i]);
+                unset($includePaths[$i]);
                 continue;
             }
             foreach(File::enumFile($path) as $file)
             {
                 $fullPath = $file->getFullPath();
-                foreach($this->excludePaths as $path)
+                foreach($excludePaths as $path)
                 {
                     if(substr($fullPath, 0, strlen($path)) === $path)
                     {
@@ -82,18 +84,21 @@ class FileMTime extends BaseMonitor
     public function isChanged(): bool
     {
         $changed = false;
-        $this->files = array_map(function($item){
+        $files = &$this->files;
+        $files = array_map(function($item){
             $item['exists'] = false;
             return $item;
-        }, $this->files);
-        $this->changedFiles = [];
+        }, $files);
+        $changedFiles = &$this->changedFiles;
+        $changedFiles = [];
+        $excludePaths = &$this->excludePaths;
         // 包含的路径中检测
         foreach($this->includePaths as $path)
         {
             foreach(File::enumFile($path) as $file)
             {
                 $fullPath = $file->getFullPath();
-                foreach($this->excludePaths as $path)
+                foreach($excludePaths as $path)
                 {
                     if(substr($fullPath, 0, strlen($path)) === $path)
                     {
@@ -103,18 +108,18 @@ class FileMTime extends BaseMonitor
                 }
                 if($this->parseCheckFile($fullPath))
                 {
-                    $this->changedFiles[] = $fullPath;
+                    $changedFiles[] = $fullPath;
                     $changed = true;
                 }
             }
         }
         // 之前有的文件被删处理
-        foreach($this->files as $fileName => $option)
+        foreach($files as $fileName => $option)
         {
             if(!$option['exists'])
             {
-                unset($this->files[$fileName]);
-                $this->changedFiles[] = $fileName;
+                unset($files[$fileName]);
+                $changedFiles[] = $fileName;
                 $changed = true;
             }
         }
@@ -138,15 +143,16 @@ class FileMTime extends BaseMonitor
      */
     protected function parseCheckFile($fileName)
     {
+        $files = &$this->files;
         $isFile = is_file($fileName);
         if($isFile)
         {
             $changed = false;
             $mtime = filemtime($fileName);
-            if(isset($this->files[$fileName]))
+            if(isset($files[$fileName]))
             {
                 // 判断文件修改时间
-                if($this->files[$fileName]['mtime'] !== $mtime)
+                if($files[$fileName]['mtime'] !== $mtime)
                 {
                     $changed = true;
                 }
@@ -161,9 +167,9 @@ class FileMTime extends BaseMonitor
             $changed = true;
             $mtime = 0;
         }
-        if(isset($this->files[$fileName]) || $isFile)
+        if(isset($files[$fileName]) || $isFile)
         {
-            $this->files[$fileName] = [
+            $files[$fileName] = [
                 'exists'    => $isFile,
                 'mtime'     => $mtime,
             ];

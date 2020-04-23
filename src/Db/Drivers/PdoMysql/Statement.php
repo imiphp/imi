@@ -150,22 +150,23 @@ class Statement extends BaseStatement implements IStatement
      */
     public function execute(array $inputParameters = null): bool
     {
-        $this->statement->closeCursor();
+        $statement = $this->statement;
+        $statement->closeCursor();
         if(null !== $inputParameters)
         {
             foreach($inputParameters as $k => $v)
             {
                 if(is_numeric($k))
                 {
-                    $this->statement->bindValue($k + 1, $v, $this->getDataTypeByValue($v));
+                    $statement->bindValue($k + 1, $v, $this->getDataTypeByValue($v));
                 }
                 else
                 {
-                    $this->statement->bindValue($k, $v, $this->getDataTypeByValue($v));
+                    $statement->bindValue($k, $v, $this->getDataTypeByValue($v));
                 }
             }
         }
-        $result = $this->statement->execute();
+        $result = $statement->execute();
         if(!$result)
         {
             throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
@@ -342,7 +343,8 @@ class Statement extends BaseStatement implements IStatement
      */
     private function updateLastInsertId()
     {
-        if(Text::startwith($this->statement->queryString, 'insert ', false) || Text::startwith($this->statement->queryString, 'replace ', false))
+        $queryString = $this->statement->queryString;
+        if(Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))
         {
             $this->lastInsertId = (int)$this->db->lastInsertId();
         }
