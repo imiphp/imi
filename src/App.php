@@ -4,20 +4,21 @@ namespace Imi;
 use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Args;
+use Imi\Util\Text;
 use Imi\Event\Event;
+use Imi\Util\Composer;
 use Imi\Bean\Container;
 use Imi\Util\Coroutine;
 use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
+use Imi\Config\Dotenv\Dotenv;
+use Imi\Util\Process\ProcessType;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Config\Dotenv\Dotenv;
 use Imi\Util\Process\ProcessAppContexts;
-use Imi\Util\Process\ProcessType;
-use Imi\Util\Text;
+use Imi\Bean\Annotation\AnnotationManager;
 
 abstract class App
 {
@@ -79,6 +80,13 @@ abstract class App
      * @var string[]
      */
     private static $contextReadonly = [];
+
+    /**
+     * imi 版本号，来源于 composer.lock
+     *
+     * @var string
+     */
+    private static $imiVersion;
 
     /**
      * 框架服务运行入口
@@ -411,6 +419,10 @@ abstract class App
      */
     public static function getLoader()
     {
+        if(null == static::$loader)
+        {
+            static::$loader = Composer::getClassLoader();
+        }
         return static::$loader;
     }
 
@@ -507,6 +519,7 @@ STR;
         echo PHP_EOL, '[PHP]', PHP_EOL;
         echo 'Version: v', PHP_VERSION, PHP_EOL;
         echo 'Swoole: v', SWOOLE_VERSION, PHP_EOL;
+        echo 'imi: ', static::getImiVersion(), PHP_EOL;
         echo 'Timezone: ', date_default_timezone_get(), PHP_EOL;
 
         echo PHP_EOL;
@@ -549,6 +562,37 @@ STR;
             static::$contextReadonly[$name] = true;
         }
         static::$context[$name] = $value;
+    }
+
+    /**
+     * 获取 imi 版本
+     *
+     * @return string
+     */
+    public static function getImiVersion(): string
+    {
+        if(null !== static::$imiVersion)
+        {
+            return static::$imiVersion;
+        }
+        $loader = static::getLoader();
+        if($loader)
+        {
+            $ref = new \ReflectionClass($loader);
+            $fileName = dirname($ref->getFileName(), 3) . '/composer.lock';
+            if(is_file($fileName))
+            {
+                $data = json_decode(file_get_contents($fileName), true);
+                foreach($data['packages'] ?? [] as $item)
+                {
+                    if('yurunsoft/imi' === $item['name'])
+                    {
+                        return static::$imiVersion = $item['version'];
+                    }
+                }
+            }
+        }
+        return static::$imiVersion = 'Unknown';
     }
 
 }
