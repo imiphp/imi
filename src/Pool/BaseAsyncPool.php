@@ -17,8 +17,9 @@ abstract class BaseAsyncPool extends BasePool
      */
     protected $queue;
 
-    public function __destruct()
+    public function close()
     {
+        parent::close();
         $this->queue->close();
     }
 
