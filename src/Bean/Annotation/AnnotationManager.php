@@ -291,7 +291,7 @@ abstract class AnnotationManager
      * @param string $className
      * @param string $methodName
      * @param string|null $annotationClassName
-     * @return void
+     * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getMethodAnnotations($className, $methodName, $annotationClassName = null)
     {
@@ -325,7 +325,7 @@ abstract class AnnotationManager
      * @param string $className
      * @param string $propertyName
      * @param string|null $annotationClassName
-     * @return void
+     * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getPropertyAnnotations($className, $propertyName, $annotationClassName = null)
     {
@@ -359,7 +359,7 @@ abstract class AnnotationManager
      * @param string $className
      * @param string $constantName
      * @param string|null $annotationClassName
-     * @return void
+     * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getConstantAnnotations($className, $constantName, $annotationClassName = null)
     {
