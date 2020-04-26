@@ -17,6 +17,10 @@ abstract class BaseAsyncPool extends BasePool
      */
     protected $queue;
 
+    /**
+     * 关闭池子，释放所有资源
+     * @return void
+     */
     public function close()
     {
         parent::close();
