@@ -323,11 +323,12 @@ abstract class BasePool implements IPool
                 break;
             default:
                 $maxIndex = count($resourceConfig) - 1;
-                if(++$this->configIndex > $maxIndex)
+                $configIndex = &$this->configIndex;
+                if(++$configIndex > $maxIndex)
                 {
-                    $this->configIndex = 0;
+                    $configIndex = 0;
                 }
-                $index = $this->configIndex;
+                $index = $configIndex;
                 break;
         }
         return $resourceConfig[$index];
