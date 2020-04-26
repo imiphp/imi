@@ -45,8 +45,9 @@ class Inotify extends BaseMonitor
         $this->handler = $handler = \inotify_init();
         stream_set_blocking($handler, 0);
 
+        $excludePaths = &$this->excludePaths;
         $excludeRule = &$this->excludeRule;
-        $excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $excludeRule));
+        $excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $excludePaths));
         $paths = &$this->paths;
         $mask = &$this->mask;
         foreach($this->includePaths as $path)
@@ -74,7 +75,7 @@ class Inotify extends BaseMonitor
                 foreach(File::enumFile($path) as $file)
                 {
                     $fullPath = $file->getFullPath();
-                    foreach($excludeRule as $path)
+                    foreach($excludePaths as $path)
                     {
                         if(substr($fullPath, 0, strlen($path)) === $path)
                         {
