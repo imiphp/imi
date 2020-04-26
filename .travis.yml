@@ -5,6 +5,22 @@ dist: bionic
 matrix:
   include:
   - php: '7.1'
+    env: SWOOLE_VERSION="v4.5.0"
+  - php: '7.2'
+    env: SWOOLE_VERSION="v4.5.0"
+  - php: '7.3'
+    env: SWOOLE_VERSION="v4.5.0"
+  - php: '7.4'
+    env: SWOOLE_VERSION="v4.5.0"
+  - php: '7.1'
+    env: SWOOLE_VERSION="v4.4.18"
+  - php: '7.2'
+    env: SWOOLE_VERSION="v4.4.18"
+  - php: '7.3'
+    env: SWOOLE_VERSION="v4.4.18"
+  - php: '7.4'
+    env: SWOOLE_VERSION="v4.4.18"
+  - php: '7.1'
     env: SWOOLE_VERSION="v4.3.6"
   - php: '7.2'
     env: SWOOLE_VERSION="v4.3.6"
@@ -20,25 +36,8 @@ matrix:
     env: SWOOLE_VERSION="master"
   - php: 'nightly'
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
-  - php: '7.1'
-    env: SWOOLE_VERSION="v4.4.18"
-  - php: '7.2'
-    env: SWOOLE_VERSION="v4.4.18"
-  - php: '7.3'
-    env: SWOOLE_VERSION="v4.4.18"
-  - php: '7.4'
-    env: SWOOLE_VERSION="v4.4.18"
-  - php: '7.1'
-    env: SWOOLE_VERSION="v4.5.0RC1"
-  - php: '7.2'
-    env: SWOOLE_VERSION="v4.5.0RC1"
-  - php: '7.3'
-    env: SWOOLE_VERSION="v4.5.0RC1"
-  - php: '7.4'
-    env: SWOOLE_VERSION="v4.5.0RC1"
   allow_failures:
   - env: SWOOLE_VERSION="master"
-  - env: SWOOLE_VERSION="v4.5.0RC1"
   - php: nightly
 
 services:
