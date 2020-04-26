@@ -46,6 +46,14 @@ class FileStream implements StreamInterface
         }
     }
 
+    public function __destruct()
+    {
+        if($this->stream)
+        {
+            $this->close();
+        }
+    }
+
     /**
      * Reads all data from the stream into a string, from the beginning to end.
      *
