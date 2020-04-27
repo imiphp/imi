@@ -199,7 +199,7 @@ class Scheduler
      */
     public function completeTask(Result $result)
     {
-        $runningTasks = &$this->unningTasks;
+        $runningTasks = &$this->runningTasks;
         if(isset($runningTasks[$result->id]))
         {
             if(!$this->cronLock->unlock($runningTasks[$result->id]))
