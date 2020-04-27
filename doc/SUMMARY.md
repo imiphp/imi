@@ -166,6 +166,7 @@
 * [服务器工具](dev/server.md)
 * [生成工具](dev/generate.md)
   * [模型生成](dev/generate/model.md)
+  * [表生成](dev/generate/table.md)
   * [控制器生成](dev/generate/controller.md)
 * [进程工具](dev/process.md)
 * [自己动手开发命令行工具](dev/tool.md)

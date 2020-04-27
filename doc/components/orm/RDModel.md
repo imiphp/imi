@@ -14,6 +14,8 @@
 
 `@Column` 注解为定义字段
 
+`@DDL` 定义表结构的 SQL 语句
+
 具体定义看下面代码：
 
 ```php
@@ -196,6 +198,34 @@ class Test extends Model
 指定多个主键
 
 `@Table(name='tb_user', id={'id1', 'id2'})`
+
+### @DDL
+
+写在类上，定义表结构
+
+**用法：**
+
+```php
+/**
+ * ArticleBase
+ * @Entity
+ * @Table(name="tb_article", id={"id"})
+ * @DDL("CREATE TABLE `tb_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * @property int $id 
+ * @property string $title 
+ * @property string $content 
+ * @property string $time 
+ */
+abstract class ArticleBase extends Model
+{
+}
+```
 
 ### @Column
 
