@@ -2,6 +2,7 @@
 namespace Imi\Test\Component\Model\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
@@ -10,6 +11,13 @@ use Imi\Model\Annotation\Entity;
  * ArticleBase
  * @Entity
  * @Table(name="tb_article", id={"id"})
+ * @DDL("CREATE TABLE `tb_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
  * @property int $id 
  * @property string $title 
  * @property string $content 

@@ -2,6 +2,7 @@
 namespace Imi\Test\Component\Model\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
@@ -10,6 +11,11 @@ use Imi\Model\Annotation\Entity;
  * PerformanceBase
  * @Entity
  * @Table(name="tb_performance", id={"id"})
+ * @DDL("CREATE TABLE `tb_performance` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  * @property int $id 
  * @property string $value 
  */

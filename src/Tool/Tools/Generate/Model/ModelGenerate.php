@@ -4,14 +4,15 @@ namespace Imi\Tool\Tools\Generate\Model;
 use Imi\App;
 use Imi\Db\Db;
 use Imi\Config;
+use Imi\Util\Imi;
 use Imi\Util\File;
+use Imi\Util\Text;
 use Imi\Main\Helper;
 use Imi\Tool\ArgType;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
-use Imi\Util\Text;
-use Imi\Util\Imi;
+use Imi\Db\Query\Interfaces\IQuery;
 
 /**
  * @Tool("generate")
@@ -156,6 +157,7 @@ class ModelGenerate
                 echo 'Skip ', $table, '...', PHP_EOL;
                 continue;
             }
+            $ddl = $this->getDDL($query, $table);
             $data = [
                 'namespace' => $modelNamespace,
                 'className' => $className,
@@ -166,6 +168,7 @@ class ModelGenerate
                 'fields'    => [],
                 'entity'    => $entity,
                 'poolName'  => $poolName,
+                'ddl'       => $ddl,
             ];
             $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`.`%s`' , $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
@@ -334,4 +337,18 @@ class ModelGenerate
         ];
         return $map[$firstType] ?? 'string';
     }
+
+    /**
+     * 获取创建表的 DDL
+     *
+     * @param \Imi\Db\Query\Interfaces\IQuery $query
+     * @param string $table
+     * @return string
+     */
+    public function getDDL(IQuery $query, string $table): string
+    {
+        $result = $query->execute('show create table ' . $table);
+        return $result->get()['Create Table'] ?? '';
+    }
+
 }

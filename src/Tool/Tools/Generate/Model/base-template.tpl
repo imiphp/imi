@@ -3,6 +3,7 @@
 namespace <?= $namespace ?>\Base;
 
 use Imi\Model\Model;
+use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
@@ -12,6 +13,7 @@ use Imi\Model\Annotation\Entity;
  * <?php if($entity === true):?>@Entity<?php else:?>@Entity(false)<?php endif;?>
 
  * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?><?php if($poolName):?>, dbPoolName="<?=$poolName?>"<?php endif;?>)
+ * @DDL("<?= str_replace('"', '""', $ddl) ?>")
 <?php foreach($fields as $field):?>
  * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= '' === $field['comment'] ? '' : $field['comment'] ?>
 
