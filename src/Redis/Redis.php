@@ -242,6 +242,9 @@ use Imi\Config;
  * @method static mixed zUnion($key, array $keys, ?array $weights = null, $aggregate = null)
  * @method static mixed evalEx(string $script, $args = null, $num_keys = null)
  * @method static array hMGetAll(array $keys)
+ * @method static mixed scanEach(?string $pattern = null, ?int $count = null)
+ * @method static mixed sscanEach(string $key, ?string $pattern = null, ?int $count = null)
+ * @method static mixed zscanEach(string $key, ?string $pattern = null, ?int $count = null)
  */
 abstract class Redis
 {
