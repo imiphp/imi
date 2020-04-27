@@ -19,7 +19,10 @@ class DDL extends Base
     protected $defaultFieldName = 'sql';
 
     /**
-     * 表名
+     * 表结构 SQL
+     * 
+     * CREATE TABLE 语句
+     * 
      * @var string
      */
     public $sql;
