@@ -1,61 +1,33 @@
 <?php
 namespace Imi\Server\Session;
 
-use Imi\RequestContext;
+use Imi\Facade\BaseFacade;
+use Imi\Facade\Annotation\Facade;
 
-abstract class Session
+/**
+ * @Facade(class="SessionManager", request=true)
+ * @method static void start(?string $sessionID = NULL)
+ * @method static void close()
+ * @method static void destroy()
+ * @method static void save()
+ * @method static void commit()
+ * @method static boolean isStart()
+ * @method static string getName()
+ * @method static string getID()
+ * @method static ISessionHandler getHandler()
+ * @method static void tryGC()
+ * @method static void gc()
+ * @method static mixed get($name = NULL, $default = NULL)
+ * @method static void set($name, $value)
+ * @method static void delete($name)
+ * @method static mixed once($name, $default = NULL)
+ * @method static void clear()
+ * @method static SessionConfig getConfig()
+ * @method static string parseName($name)
+ * @method static boolean isChanged()
+ * @method static boolean isNewSession()
+ */
+abstract class Session extends BaseFacade
 {
-    /**
-     * 设置Session值
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
-    public static function set($name, $value)
-    {
-        RequestContext::getBean('SessionManager')->set($name, $value);
-    }
-
-    /**
-     * 获取Session值
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function get($name = null, $default = null)
-    {
-        return RequestContext::getBean('SessionManager')->get($name, $default);
-    }
-
-    /**
-     * 删除Session值
-     * @param string $name
-     * @return void
-     */
-    public static function delete($name)
-    {
-        RequestContext::getBean('SessionManager')->delete($name);
-    }
-
-    /**
-     * 获取一次值后将该值删除，可用于验证码等一次性功能
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function once($name, $default = false)
-    {
-        return RequestContext::getBean('SessionManager')->once($name, $default);
-    }
-
-    /**
-     * 清空所有Session
-     * @param string $name
-     * @return void
-     */
-    public static function clear()
-    {
-        RequestContext::getBean('SessionManager')->clear();
-    }
 
 }
