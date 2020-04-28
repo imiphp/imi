@@ -65,6 +65,12 @@ class FacadeGenerate
         $methods = [];
         foreach($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
         {
+            $methodName = $method->getName();
+            // 构造、析构方法去除
+            if(in_array($methodName, ['__construct', '__destruct']))
+            {
+                continue;
+            }
             if(preg_match('/@return\s+([^\s]+)/', $method->getDocComment(), $matches) > 0)
             {
                 $returnType = $matches[1];
