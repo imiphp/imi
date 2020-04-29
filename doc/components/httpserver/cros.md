@@ -30,6 +30,8 @@ imi 框架内置了一个 `OptionsMiddleware` 中间件，用于解决使用 `ap
             'allowMethods'      =>  'GET, POST, PATCH, PUT, DELETE',
             // 是否允许跨域 Cookie
             'allowCredentials'  =>  'true',
+            // 当请求为 OPTIONS 时，是否中止后续中间件和路由逻辑，一般建议设为 true
+            'optionsBreak'      =>  true,
         ],
     ],
 ]

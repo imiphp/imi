@@ -53,6 +53,15 @@ class OptionsMiddleware implements MiddlewareInterface
     protected $allowCredentials = 'true';
 
     /**
+     * 当请求为 OPTIONS 时，是否中止后续中间件和路由逻辑
+     *
+     * 一般建议设为 true
+     * 
+     * @var bool
+     */
+    protected $optionsBreak = false;
+
+    /**
      * 处理方法
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler
@@ -62,7 +71,7 @@ class OptionsMiddleware implements MiddlewareInterface
     {
         $requestContext = RequestContext::getContext();
         $response = $requestContext['response'] ?? null;
-        if('OPTIONS' === $request->getMethod())
+        if($isOptions = ('OPTIONS' === $request->getMethod()))
         {
             if(null !== $this->allowHeaders)
             {
@@ -90,7 +99,14 @@ class OptionsMiddleware implements MiddlewareInterface
             $response = $response->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials);
         }
         $requestContext['response'] = $response;
-        return $handler->handle($request);
+        if($isOptions && $this->optionsBreak)
+        {
+            return $response;
+        }
+        else
+        {
+            return $handler->handle($request);
+        }
     }
 
 }
