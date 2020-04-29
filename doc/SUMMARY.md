@@ -37,6 +37,7 @@
 * [请求最大执行时间](components/httpserver/maxExecuteTime.md)
 * [Http2](components/httpserver/http2.md)
 * [跨域和 OPTIONS 请求](components/httpserver/cros.md)
+* [HTTPS 配置](components/server/ssl.md)
 
 ## WebSocket 服务
 
@@ -49,6 +50,7 @@
 * [连接分组](components/websocketServer/group.md)
 * [断线重连](components/websocketServer/reconnect.md)
 * [不使用中间件](components/websocketServer/noMiddleware.md)
+* [WSS 配置](components/server/ssl.md)
 
 ## TCP 服务
 
