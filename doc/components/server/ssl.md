@@ -82,7 +82,8 @@ server {
     ssl_certificate_key  {证书}.key;
 
     # websocket
-    location ~* ^/ws/(.+) {
+    location / { # 全部
+    # location ~* ^/ws/(.+) { # 指定路径
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
