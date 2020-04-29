@@ -44,7 +44,7 @@ class DataParser
             {
                 return JsonObjectParser::class;
             }
-            return ConnectContext::get('httpRouteResult')->wsConfig->parserClass ?? JsonObjectParser::class;
+            return ConnectContext::get('httpRouteResult')->routeItem->wsConfig->parserClass ?? JsonObjectParser::class;
         }
         else if($server instanceof \Imi\Server\TcpServer\Server || $server instanceof \Imi\Server\UdpServer\Server)
         {
