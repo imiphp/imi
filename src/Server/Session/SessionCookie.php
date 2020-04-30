@@ -38,6 +38,13 @@ class SessionCookie
      */
     public $httponly;
 
+    /**
+     * 是否启用 Cookie
+     *
+     * @var bool
+     */
+    public $enable = true;
+
     public function __construct($lifetime = 0, $path = '/', $domain = '', bool $secure = false, bool $httponly = false)
     {
         $this->lifetime = $lifetime;

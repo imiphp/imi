@@ -28,6 +28,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var \Imi\Server\Session\SessionManager $sessionManager */
         $sessionManager = RequestContext::getBean('SessionManager');
 
         $sessionID = '';
@@ -44,7 +45,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
             // 执行其它中间件
             $response = $handler->handle($request);
 
-            if($sessionManager->isNewSession() && $sessionManager->isChanged())
+            if($sessionManager->getConfig()->cookie->enable && $sessionManager->isNewSession() && $sessionManager->isChanged())
             {
                 // 发送cookie
                 $response = $this->sendCookie($sessionManager, $response);

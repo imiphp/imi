@@ -43,6 +43,9 @@ class SessionController extends HttpController
     public function login()
     {
         Session::set('auth.username', 'admin');
+        return [
+            'sessionId' =>  Session::getID(),
+        ];
     }
 
     /**
@@ -63,6 +66,9 @@ class SessionController extends HttpController
     public function sendSms()
     {
         Session::set('vcode', '1234');
+        return [
+            'sessionId' =>  Session::getID(),
+        ];
     }
 
     /**

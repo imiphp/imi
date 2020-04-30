@@ -26,6 +26,8 @@ return [
             'prefix' => null,
         ],
         'SessionCookie'    =>    [
+            // 是否启用 Cookie
+            'enable'    =>  true,
             // Cookie 的 生命周期，以秒为单位。
             'lifetime'    =>    0,
             // 此 cookie 的有效 路径。 on the domain where 设置为“/”表示对于本域上所有的路径此 cookie 都可用。

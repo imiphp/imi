@@ -27,6 +27,8 @@ class CustomSessionIdTest extends BaseTest
             $http = new HttpRequest;
             $response = $http->get($this->host . 'session/login');
             $sessionId = $response->getCookie('imisid');
+            Assert::assertNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+            $sessionId = $response->json(true)['sessionId'] ?? null;
             Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
 
             $http = new HttpRequest;
@@ -58,14 +60,16 @@ class CustomSessionIdTest extends BaseTest
             $data = $response->json(true);
             Assert::assertTrue(isset($data['success']) && !$data['success'], 'fail:' . $response->errno() . ':' . $response->error());
             $sessionId = $response->getCookie('imisid');
-            Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+            Assert::assertNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
 
             $http = new HttpRequest;
-            $http->header('X-Session-ID', $sessionId);
 
             $response = $http->get($this->host . 'session/sendSms');
             $sessionId = $response->getCookie('imisid');
             Assert::assertNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+            $sessionId = $response->json(true)['sessionId'] ?? null;
+            Assert::assertNotNull($sessionId, 'fail:' . $response->errno() . ':' . $response->error());
+            $http->header('X-Session-ID', $sessionId);
 
             $response = $http->get($this->host . 'session/verifySms?vcode=1234');
             $data = $response->json(true);
