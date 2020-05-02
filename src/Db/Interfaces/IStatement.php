@@ -96,7 +96,7 @@ interface IStatement extends \Iterator
      * @param array $ctorArgs
      * @return array
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = array()): array;
+    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array;
 
     /**
      * 从结果集中的下一行返回单独的一列。

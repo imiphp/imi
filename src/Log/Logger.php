@@ -100,7 +100,7 @@ class Logger extends AbstractLogger
      *
      * @return void
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         $context = $this->parseContext($context);
         $trace = $context['trace'];

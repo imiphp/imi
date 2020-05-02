@@ -193,7 +193,7 @@ class Statement extends BaseStatement implements IStatement
      * @param mixed $fetchArgument
      * @return array
      */
-    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = array()): array
+    public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
     {
         if(null === $fetchArgument)
         {

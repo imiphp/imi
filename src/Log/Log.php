@@ -18,7 +18,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function log($level, $message, array $context = array())
+    public static function log($level, $message, array $context = [])
     {
         App::getBean('Logger')->log($level, $message, static::parseContext($context));
     }
@@ -31,7 +31,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function emergency($message, array $context = array())
+    public static function emergency($message, array $context = [])
     {
         App::getBean('Logger')->emergency($message, static::parseContext($context));
     }
@@ -47,7 +47,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function alert($message, array $context = array())
+    public static function alert($message, array $context = [])
     {
         App::getBean('Logger')->alert($message, static::parseContext($context));
     }
@@ -62,7 +62,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function critical($message, array $context = array())
+    public static function critical($message, array $context = [])
     {
         App::getBean('Logger')->critical($message, static::parseContext($context));
     }
@@ -76,7 +76,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function error($message, array $context = array())
+    public static function error($message, array $context = [])
     {
         App::getBean('Logger')->error($message, static::parseContext($context));
     }
@@ -92,7 +92,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function warning($message, array $context = array())
+    public static function warning($message, array $context = [])
     {
         App::getBean('Logger')->warning($message, static::parseContext($context));
     }
@@ -105,7 +105,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function notice($message, array $context = array())
+    public static function notice($message, array $context = [])
     {
         App::getBean('Logger')->notice($message, static::parseContext($context));
     }
@@ -120,7 +120,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function info($message, array $context = array())
+    public static function info($message, array $context = [])
     {
         App::getBean('Logger')->info($message, static::parseContext($context));
     }
@@ -133,7 +133,7 @@ abstract class Log
      *
      * @return void
      */
-    public static function debug($message, array $context = array())
+    public static function debug($message, array $context = [])
     {
         App::getBean('Logger')->debug($message, static::parseContext($context));
     }
