@@ -9,11 +9,11 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 数据
      */
-    protected $data = array ();
+    protected $__data = [];
 
     public function __construct($data)
     {
-        $this->data = $data;
+        $this->__data = $data;
     }
 
     /**
@@ -26,12 +26,12 @@ class ArrayData implements \ArrayAccess, \Countable
         if (is_array($name))
         {
             // 如果传入数组就合并当前数据
-            $this->data = ArrayUtil::recursiveMerge($this->data, $name);
+            $this->__data = ArrayUtil::recursiveMerge($this->__data, $name);
         }
         else
         {
             // 设置数据
-            $this->data[$name] = $value;
+            $this->__data[$name] = $value;
         }
         return true;
     }
@@ -53,12 +53,12 @@ class ArrayData implements \ArrayAccess, \Countable
             return false;
         }
         $last = array_pop($name);
-        $data = &$this->data;
+        $data = &$this->__data;
         foreach ($name as $val)
         {
             if (! isset($data[$val]))
             {
-                $data[$val] = array ();
+                $data[$val] = [];
             }
             $data = &$data[$val];
         }
@@ -76,7 +76,7 @@ class ArrayData implements \ArrayAccess, \Countable
     {
         if (empty($name))
         {
-            return $this->data;
+            return $this->__data;
         }
         if(is_string($name))
         {
@@ -86,7 +86,7 @@ class ArrayData implements \ArrayAccess, \Countable
         {
             return $default;
         }
-        $result = &$this->data;
+        $result = &$this->__data;
         foreach ($name as $value)
         {
             if(is_array($result))
@@ -149,7 +149,7 @@ class ArrayData implements \ArrayAccess, \Countable
                 return false;
             }
             $last = array_pop($val);
-            $result = &$this->data;
+            $result = &$this->__data;
             foreach ($val as $value)
             {
                 if (isset($result[$value]))
@@ -167,7 +167,7 @@ class ArrayData implements \ArrayAccess, \Countable
      */
     public function clear()
     {
-        $this->data = array ();
+        $this->__data = [];
     }
 
     /**
@@ -176,7 +176,7 @@ class ArrayData implements \ArrayAccess, \Countable
      */
     public function length()
     {
-        return count($this->data);
+        return count($this->__data);
     }
 
     /**
@@ -186,7 +186,7 @@ class ArrayData implements \ArrayAccess, \Countable
      */
     public function count()
     {
-        return count($this->data);
+        return count($this->__data);
     }
 
     /**
@@ -196,7 +196,7 @@ class ArrayData implements \ArrayAccess, \Countable
      */
     public function exists($name)
     {
-        return isset($this->data[$name]);
+        return isset($this->__data[$name]);
     }
     
     public function &__get ($key)
@@ -223,7 +223,7 @@ class ArrayData implements \ArrayAccess, \Countable
     {
         if (is_null($offset))
         {
-            $this->data[] = $value;
+            $this->__data[] = $value;
         }
         else
         {
@@ -248,6 +248,6 @@ class ArrayData implements \ArrayAccess, \Countable
     
     public function &getRawData() 
     {
-        return $this->data;
+        return $this->__data;
     }
 }

@@ -49,7 +49,7 @@ abstract class ArrayUtil
      */
     public static function recursiveMerge(...$arrays)
     {
-        $merged = array ();
+        $merged = [];
         foreach($arrays as $array)
         {
             if (!is_array($array))
