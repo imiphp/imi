@@ -12,21 +12,21 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
      * 数据
      * @var array
      */
-    private $data;
+    private $__data;
 
     public function __construct($data = [])
     {
-        $this->data = $data;
+        $this->__data = $data;
     }
 
     public function offsetExists($offset)
     {
-        return array_key_exists($offset, $this->data);
+        return array_key_exists($offset, $this->__data);
     }
 
     public function &offsetGet($offset)
     {
-        $data = &$this->data;
+        $data = &$this->__data;
         if(array_key_exists($offset, $data))
         {
             $value = &$data[$offset];
@@ -40,12 +40,12 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function offsetSet($offset, $value)
     {
-        $this->data[$offset] = $value;
+        $this->__data[$offset] = $value;
     }
 
     public function offsetUnset($offset)
     {
-        $data = &$this->data;
+        $data = &$this->__data;
         if(array_key_exists($offset, $data))
         {
             unset($data[$offset]);
@@ -54,32 +54,32 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function current()
     {
-        return current($this->data);
+        return current($this->__data);
     }
 
     public function key()
     {
-        return key($this->data);
+        return key($this->__data);
     }
 
     public function next()
     {
-        next($this->data);
+        next($this->__data);
     }
 
     public function rewind()
     {
-        reset($this->data);
+        reset($this->__data);
     }
 
     public function valid()
     {
-        return null !== key($this->data);
+        return null !== key($this->__data);
     }
 
     public function __set($name, $value) 
     {
-        $this->data[$name] = $value;
+        $this->__data[$name] = $value;
     }
 
     public function &__get($name)
@@ -89,12 +89,12 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function __isset($name)
     {
-        return array_key_exists($name, $this->data);
+        return array_key_exists($name, $this->__data);
     }
 
     public function __unset($name)
     {
-        $data = &$this->data;
+        $data = &$this->__data;
         if(array_key_exists($name, $data))
         {
             unset($data[$name]);
