@@ -146,6 +146,12 @@ abstract class App
         $dotenv->init();
         // 初始化Main类
         static::initMains();
+        // 运行时目录写权限检测
+        if(!is_writable($runtimePath = Imi::getRuntimePath()))
+        {
+            echo "Runtime path \"", $runtimePath, "\" is not writable", PHP_EOL;
+            return;
+        }
         // 框架运行时缓存支持
         if('server/start' === $_SERVER['argv'][1])
         {
@@ -172,7 +178,7 @@ abstract class App
                 Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
             }
         }
-        unset($result, $useShortname);
+        unset($result, $useShortname, $dotenv, $runtimePath);
         static::$isInited = true;
         Event::trigger('IMI.INITED');
     }
