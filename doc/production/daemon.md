@@ -1,5 +1,17 @@
 # 守护进程
 
+## 命令模式
+
+守护进程方式启动：`bin/imi server/start -d`
+
+重定向标准输入输出：`bin/imi server/start -d 文件名.log`
+
+> 此方法只可让服务在后台运行，退出 ssh 后不被终止。
+
+> 无法在服务崩溃后重新拉起，建议使用 systemd
+
+## systemd
+
 创建文件 `test.service`
 
 ```

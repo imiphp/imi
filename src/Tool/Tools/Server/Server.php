@@ -23,17 +23,31 @@ class Server
      * @Operation(name="start", co=false)
      * @Arg(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
      * @Arg(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
+     * @Arg(name="d", type=ArgType::STRING, required=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件")
      * 
      * @return void
      */
-    public function start($name, $workerNum)
+    public function start($name, $workerNum, $d)
     {
         PoolManager::clearPools();
         CacheManager::clearPools();
         if(null === $name)
         {
             App::createServers();
-            ServerManage::getServer('main')->getSwooleServer()->start();
+            $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+            // 守护进程支持
+            if($d)
+            {
+                $options = [
+                    'daemonize' =>  1,
+                ];
+                if(true !== $d)
+                {
+                    $options['log_file'] = $d;
+                }
+                $swooleServer->set($options);
+            }
+            $swooleServer->start();
         }
         else
         {
