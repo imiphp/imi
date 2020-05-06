@@ -144,7 +144,7 @@ abstract class File
         {
             return true;
         }
-        if(@mkdir($dir, $mode, true))
+        if(mkdir($dir, $mode, true))
         {
             return true;
         }
@@ -174,7 +174,7 @@ abstract class File
         }
         $dir = dirname($file);
         self::createDir($dir, $mode);
-        $fh = @fopen($file, 'a');
+        $fh = fopen($file, 'a');
         if ($fh)
         {
             if('' !== $content)
@@ -196,7 +196,7 @@ abstract class File
     public static function isEmptyDir($dir)
     {
         try {
-            $handler = @opendir($dir);
+            $handler = opendir($dir);
             if(!$handler)
             {
                 return true;
