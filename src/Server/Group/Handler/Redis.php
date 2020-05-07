@@ -5,11 +5,12 @@ use Imi\App;
 use Imi\Worker;
 use Imi\Log\Log;
 use Imi\Event\Event;
-use Imi\Redis\Redis as ImiRedis;
 use Imi\Util\Swoole;
 use Imi\ServerManage;
+use Imi\Redis\RedisHandler;
 use Imi\Util\AtomicManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Redis\Redis as ImiRedis;
 
 /**
  * @Bean("GroupRedis")
@@ -82,18 +83,19 @@ class Redis implements IGroupHandler
             return;
         }
         $workerId = Worker::getWorkerID();
+        $this->masterPID = $masterPID = Swoole::getMasterPID();
+        $masterPidKey = $this->key . ':master_pid';
         if(0 === $workerId)
         {
-            $this->useRedis(function($redis){
+            $this->useRedis(function(RedisHandler $redis) use($masterPID, $masterPidKey){
                 // 判断master进程pid
-                $this->masterPID = Swoole::getMasterPID();
-                $storeMasterPID = $redis->get($this->key . ':master_pid');
+                $storeMasterPID = $redis->get($masterPidKey);
                 if(!$storeMasterPID)
                 {
                     // 没有存储master进程pid
                     $this->initRedis($redis, $storeMasterPID);
                 }
-                else if($this->masterPID != $storeMasterPID)
+                else if($masterPID != $storeMasterPID)
                 {
                     $hasPing = $this->hasPing($redis);
                     if($hasPing)
@@ -115,12 +117,17 @@ class Redis implements IGroupHandler
                     }
                 }
                 $this->startPing($redis);
+                AtomicManager::wakeup('imi.GroupRedisLock', Worker::getWorkerNum());
             });
-            AtomicManager::wakeup('imi.GroupRedisLock', Worker::getWorkerNum());
         }
         else if($workerId > 0)
         {
-            AtomicManager::wait('imi.GroupRedisLock');
+            if(!$this->useRedis(function(RedisHandler $redis) use($masterPID, $masterPidKey){
+                return $masterPID == $redis->get($masterPidKey);
+            }))
+            {
+                AtomicManager::wait('imi.GroupRedisLock');
+            }
         }
     }
 

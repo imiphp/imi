@@ -103,18 +103,19 @@ class Redis implements IHandler
             throw new \RuntimeException('ConnectContextRedis lockId must be set');
         }
         $workerId = Worker::getWorkerID();
+        $this->masterPID = $masterPID = Swoole::getMasterPID();
+        $masterPidKey = $this->key . ':master_pid';
         if(0 === $workerId)
         {
-            $this->useRedis(function($redis){
+            $this->useRedis(function(RedisHandler $redis) use($masterPID, $masterPidKey){
                 // 判断master进程pid
-                $this->masterPID = Swoole::getMasterPID();
-                $storeMasterPID = $redis->get($this->key . ':master_pid');
+                $storeMasterPID = $redis->get($masterPidKey);
                 if(!$storeMasterPID)
                 {
                     // 没有存储master进程pid
                     $this->initRedis($redis, $storeMasterPID);
                 }
-                else if($this->masterPID != $storeMasterPID)
+                else if($masterPID != $storeMasterPID)
                 {
                     $hasPing = $this->hasPing($redis);
                     if($hasPing)
@@ -136,12 +137,17 @@ class Redis implements IHandler
                     }
                 }
                 $this->startPing($redis);
+                AtomicManager::wakeup('imi.ConnectContextRedisLock', Worker::getWorkerNum());
             });
-            AtomicManager::wakeup('imi.ConnectContextRedisLock', Worker::getWorkerNum());
         }
         else if($workerId > 0)
         {
-            AtomicManager::wait('imi.ConnectContextRedisLock');
+            if(!$this->useRedis(function(RedisHandler $redis) use($masterPID, $masterPidKey){
+                return $masterPID == $redis->get($masterPidKey);
+            }))
+            {
+                AtomicManager::wait('imi.ConnectContextRedisLock');
+            }
         }
     }
 
