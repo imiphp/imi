@@ -25,7 +25,7 @@ class MemoryStream implements StreamInterface
      */
     protected $position = 0;
 
-    public function __construct($content = '')
+    public function __construct(string $content = '')
     {
         $this->content = $content;
         $this->size = strlen($content);
