@@ -137,7 +137,7 @@ class Imi
                 $data = fread($socket, $length);
                 if(false === $data || !isset($data[$length - 1]))
                 {
-                    break;
+                    return;
                 }
                 $result = unserialize($data);
                 if('buildRuntime' === $result['action'])
