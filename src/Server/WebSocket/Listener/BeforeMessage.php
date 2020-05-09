@@ -24,21 +24,22 @@ class BeforeMessage implements IMessageEventListener
      */
     public function handle(MessageEventParam $e)
     {
+        $frame = $e->frame;
         if(!Worker::isWorkerStartAppComplete())
         {
-            $e->server->getSwooleServer()->close($e->frame->fd);
+            $e->server->getSwooleServer()->close($frame->fd);
             $e->stopPropagation();
             return;
         }
         // 上下文创建
         RequestContext::muiltiSet([
-            'fd'        =>  $e->frame->fd,
+            'fd'        =>  $frame->fd,
             'server'    =>  $e->getTarget(),
         ]);
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('WebSocketDispatcher');
-        $dispatcher->dispatch(new Frame($e->frame));
+        $dispatcher->dispatch(new Frame($frame));
 
     }
 }

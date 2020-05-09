@@ -22,8 +22,10 @@ class MainServer implements ITaskEventListener
         $taskInfo = $e->data;
         if($taskInfo instanceof TaskInfo)
         {
-            $result = $taskInfo->getTaskHandler()->handle($taskInfo->getParam(), $e->server->getSwooleServer(), $e->taskID, $e->workerID);
-            if($e->workerID >= 0 && $e->workerID < $e->server->getSwooleServer()->setting['worker_num'])
+            $workerId = $e->workerID;
+            $swooleServer = $e->server->getSwooleServer();
+            $result = $taskInfo->getTaskHandler()->handle($taskInfo->getParam(), $swooleServer, $e->taskID, $workerId);
+            if($workerId >= 0 && $workerId < $swooleServer->setting['worker_num'])
             {
                 if($e->task)
                 {
@@ -31,7 +33,7 @@ class MainServer implements ITaskEventListener
                 }
                 else
                 {
-                    $e->server->getSwooleServer()->finish($result);
+                    $swooleServer->finish($result);
                 }
             }
         }

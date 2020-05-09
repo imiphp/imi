@@ -24,18 +24,20 @@ class BeforeHandShake implements IHandShakeEventListener
      */
     public function handle(HandShakeEventParam $e)
     {
+        $request = $e->request;
+        $response = $e->response;
         if(!Worker::isWorkerStartAppComplete())
         {
-            $e->response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
+            $response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
             $e->stopPropagation();
             return;
         }
         // 上下文创建
         RequestContext::muiltiSet([
-            'server'    =>  $e->request->getServerInstance(),
-            'request'   =>  $e->request,
-            'response'  =>  $e->response,
-            'fd'        =>  $e->request->getSwooleRequest()->fd,
+            'server'    =>  $request->getServerInstance(),
+            'request'   =>  $request,
+            'response'  =>  $response,
+            'fd'        =>  $request->getSwooleRequest()->fd,
         ]);
 
         // 连接上下文创建
@@ -43,7 +45,7 @@ class BeforeHandShake implements IHandShakeEventListener
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $dispatcher->dispatch($e->request, $e->response);
+        $dispatcher->dispatch($request, $response);
     }
 
 }
