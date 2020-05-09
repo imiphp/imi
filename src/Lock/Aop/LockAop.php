@@ -35,10 +35,12 @@ class LockAop
      */
     public function parseLock(AroundJoinPoint $joinPoint)
     {
-        $class = get_parent_class($joinPoint->getTarget());
+        $target = $joinPoint->getTarget();
+        $method = $joinPoint->getMethod();
+        $class = get_parent_class($target);
         // Lockable 注解
-        $lockable = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), Lockable::class)[0] ?? null;
-        return $this->parseLockable($joinPoint->getTarget(), $joinPoint->getMethod(), $joinPoint->getArgs(), $lockable, function() use($joinPoint){
+        $lockable = AnnotationManager::getMethodAnnotations($class, $method, Lockable::class)[0] ?? null;
+        return $this->parseLockable($target, $method, $joinPoint->getArgs(), $lockable, function() use($joinPoint){
             return $joinPoint->proceed();
         });
     }

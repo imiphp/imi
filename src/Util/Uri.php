@@ -68,10 +68,11 @@ class Uri implements UriInterface
         $this->scheme = isset($uriOption['scheme']) ? $uriOption['scheme'] : '';
         $this->host = isset($uriOption['host']) ? $uriOption['host'] : '';
         $this->port = isset($uriOption['port']) ? $uriOption['port'] : null;
-        $this->userInfo = isset($uriOption['user']) ? $uriOption['user'] : '';
+        $userInfo = &$this->userInfo;
+        $userInfo = isset($uriOption['user']) ? $uriOption['user'] : '';
         if(isset($uriOption['pass']))
         {
-            $this->userInfo .= ':' . $uriOption['pass'];
+            $userInfo .= ':' . $uriOption['pass'];
         }
         $this->path = isset($uriOption['path']) ? $uriOption['path'] : '';
         $this->query = isset($uriOption['query']) ? $uriOption['query'] : '';

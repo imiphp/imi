@@ -34,13 +34,16 @@ class CacheableAop
      */
     public function parseCacheable(AroundJoinPoint $joinPoint)
     {
-        $class = get_parent_class($joinPoint->getTarget());
+        $target = $joinPoint->getTarget();
+        $class = get_parent_class($target);
+        $method = $joinPoint->getMethod();
+        $joinPointArgs = $joinPoint->getArgs();
 
         // Cacheable 注解
-        $cacheable = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), Cacheable::class)[0] ?? null;
+        $cacheable = AnnotationManager::getMethodAnnotations($class, $method, Cacheable::class)[0] ?? null;
 
         // 方法参数
-        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+        $args = ClassObject::convertArgsToKV($class, $method, $joinPointArgs);
 
         // 缓存名
         $name = $cacheable->name;
@@ -71,7 +74,7 @@ class CacheableAop
             {
                 // 加锁
                 $nextProceedExeced = false;
-                $this->parseLockable($joinPoint->getTarget(), $joinPoint->getMethod(), $joinPoint->getArgs(), $cacheable->lockable, function() use(&$cacheValue, $joinPoint, &$nextProceedExeced){
+                $this->parseLockable($target, $method, $joinPointArgs, $cacheable->lockable, function() use(&$cacheValue, $joinPoint, &$nextProceedExeced){
                     $nextProceedExeced = true;
                     $cacheValue = $joinPoint->proceed();
                 }, function() use($cacheInstance, $key, &$cacheValue){

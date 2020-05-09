@@ -36,9 +36,10 @@ abstract class Base extends LazyArrayObject
         
         foreach($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
         {
-            $value = $this->{$property->name};
-            unset($this->{$property->name});
-            $this->{$property->name} = $value;
+            $propertyName = $property->name;
+            $value = $this->$propertyName;
+            unset($this->$propertyName);
+            $this->$propertyName = $value;
         }
 
     }

@@ -91,8 +91,9 @@ abstract class Insert
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName->$rightField = $model->$leftField;
-        $model->$propertyName->insert();
+        $modelField = $model->$propertyName;
+        $modelField->$rightField = $model->$leftField;
+        $modelField->insert();
     }
     
     /**
@@ -169,9 +170,10 @@ abstract class Insert
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName->$rightField = $model->$leftField;
-        $model->$propertyName->{$annotation->type} = $annotation->typeValue;
-        $model->$propertyName->insert();
+        $modelField = $model->$propertyName;
+        $modelField->$rightField = $model->$leftField;
+        $modelField->{$annotation->type} = $annotation->typeValue;
+        $modelField->insert();
     }
 
     /**

@@ -40,7 +40,7 @@ class Client
         {
             throw new \InvalidArgumentException('If you want to use Swoole Shared Memory, you must set the "socketFile" option');
         }
-        $this->socketFile = $this->options['socketFile'];
+        $this->socketFile = $options['socketFile'];
     }
 
     /**
@@ -54,13 +54,13 @@ class Client
         {
             return true;
         }
-        $this->socket = stream_socket_client('unix://' . $this->socketFile, $errno, $errstr, 10);
-        if(false === $this->socket)
+        $this->socket = $socket = stream_socket_client('unix://' . $this->socketFile, $errno, $errstr, 10);
+        if(false === $socket)
         {
             $this->connected = false;
             return false;
         }
-        stream_set_timeout($this->socket, 10);
+        stream_set_timeout($socket, 10);
         $this->connected = true;
         return true;
     }

@@ -418,10 +418,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     protected function setUploadedFiles(self $object, array $files)
     {
-        $object->files = [];
+        $objectFiles = &$object->files;
+        $objectFiles = [];
         foreach($files as $key => $file)
         {
-            $object->files[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+            $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
         }
         return $object;
     }

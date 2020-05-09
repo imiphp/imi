@@ -232,7 +232,8 @@ class Validator implements IValidator
             {
                 continue;
             }
-            if($sceneOption && !in_array($annotation->name, $sceneOption))
+            $annotationName = $annotation->name;
+            if($sceneOption && !in_array($annotationName, $sceneOption))
             {
                 continue;
             }
@@ -242,8 +243,8 @@ class Validator implements IValidator
                 {
                     $result = false;
                     $message = $this->buildMessage($data, $annotation);
-                    $thisResults[$annotation->name][] = $message;
-                    $thisFailRules[$annotation->name][] = $annotation;
+                    $thisResults[$annotationName][] = $message;
+                    $thisFailRules[$annotationName][] = $annotation;
                     if(null === $thisMessage)
                     {
                         $thisMessage = $message;
@@ -256,7 +257,7 @@ class Validator implements IValidator
                 }
                 else
                 {
-                    ObjectArrayHelper::set($data, $annotation->name, $annotation->default);
+                    ObjectArrayHelper::set($data, $annotationName, $annotation->default);
                 }
             }
         }

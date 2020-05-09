@@ -177,10 +177,11 @@ abstract class Base
      */
     public function getLogString(\Imi\Log\Record $record)
     {
+        $logTime = $record->getLogTime();
         $vars = [
             'message'       => $record->getMessage(),
             'level'         => $record->getLevel(),
-            'timestamp'     => $record->getLogTime(),
+            'timestamp'     => $logTime,
             'trace'         => $this->parseTrace($record),
         ];
 
@@ -201,7 +202,7 @@ abstract class Base
         }
         $logContent = strtr($this->format, $replaces);
         
-        return $this->replaceDateTime($logContent, $record->getLogTime());
+        return $this->replaceDateTime($logContent, $logTime);
     }
 
     /**
@@ -214,6 +215,7 @@ abstract class Base
         $result = [];
         $trace = $record->getTrace();
         $traceLimit = $this->traceLimit;
+        $traceFormat = $this->traceFormat;
         foreach($trace as $index => $vars)
         {
             if($traceLimit > -1 && $index >= $traceLimit)
@@ -222,7 +224,6 @@ abstract class Base
             }
             $vars['call'] = $this->getTraceCall($vars);
             $vars['index'] = $index;
-            $line = $this->traceFormat;
             $replaces = [];
             foreach($vars as $name => $value)
             {
@@ -231,7 +232,7 @@ abstract class Base
                     $replaces['{' . $name . '}'] = (string)$value;
                 }
             }
-            $result[] = strtr($line, $replaces);
+            $result[] = strtr($traceFormat, $replaces);
         }
         return implode(PHP_EOL, $result);
     }

@@ -40,9 +40,10 @@ class WSRoute implements IRoute
         $httpRoute = $this->httpRoute;
         foreach($this->rules as $item)
         {
-            if($this->checkCondition($data, $item->annotation)
+            $itemAnnotation = $item->annotation;
+            if($this->checkCondition($data, $itemAnnotation)
             // http 路由匹配
-            && (!$item->annotation->route || $httpRoute->checkUrl($item->annotation->route, $path)->result))
+            && (!$itemAnnotation->route || $httpRoute->checkUrl($itemAnnotation->route, $path)->result))
             {
                 return new RouteResult($item);
             }

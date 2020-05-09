@@ -124,7 +124,7 @@ abstract class BeanFactory
                 $aopConstruct = <<<TPL
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
-        \$__result__ = \$this->beanProxy->call(
+        \$__result__ = \$beanProxy->call(
             \$this,
             '__construct',
             function({$paramsTpls['define']}){
@@ -188,7 +188,7 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 
     public function __construct({$constructDefine})
     {
-        \$this->beanProxy = new \Imi\Bean\BeanProxy(\$this);
+        \$this->beanProxy = \$beanProxy = new \Imi\Bean\BeanProxy(\$this);
         {$aopConstruct}
     }
 
@@ -214,7 +214,8 @@ TPL;
         $tpl = '';
         foreach($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
         {
-            if($method->isStatic() || '__construct' === $method->name || $method->isFinal() || !static::hasAop($ref, $method))
+            $methodName = $method->name;
+            if($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $method))
             {
                 continue;
             }
@@ -222,17 +223,17 @@ TPL;
             $methodReturnType = static::getMethodReturnType($method);
             $returnsReference = $method->returnsReference() ? '&' : '';
             $tpl .= <<<TPL
-    public function {$returnsReference}{$method->name}({$paramsTpls['define']}){$methodReturnType}
+    public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
     {
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
         \$__result__ = \$this->beanProxy->call(
             \$this,
-            '{$method->name}',
+            '{$methodName}',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
                 {$paramsTpls['set_args']}
-                return parent::{$method->name}(...\$__args__);
+                return parent::{$methodName}(...\$__args__);
             },
             \$__args__
         );
@@ -275,8 +276,9 @@ TPL;
             // 引用传参
             if($param->isPassedByReference())
             {
-                $setArgs .= '$__args__[' . $i . '] = &$' . $param->name . ';';
-                $setArgsBack .= '$' . $param->name . ' = $__args__[' . $i . '];';
+                $paramName = $param->name;
+                $setArgs .= '$__args__[' . $i . '] = &$' . $paramName . ';';
+                $setArgsBack .= '$' . $paramName . ' = $__args__[' . $i . '];';
             }
         }
         foreach($result as &$item)

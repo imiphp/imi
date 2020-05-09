@@ -29,20 +29,21 @@ class ActionMiddleware implements IMiddleware
         {
             return $handler->handle($data);
         }
+        $callable = &$result->callable;
         // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof UdpController;
+        $isObject = is_array($callable) && isset($callable[0]) && $callable[0] instanceof UdpController;
         if($isObject)
         {
             if(!$result->routeItem->singleton)
             {
                 // 复制一份控制器对象
-                $result->callable[0] = clone $result->callable[0];
+                $callable[0] = clone $callable[0];
             }
-            $result->callable[0]->server = RequestContext::getServer();
-            $result->callable[0]->data = $data;
+            $callable[0]->server = RequestContext::getServer();
+            $callable[0]->data = $data;
         }
         // 执行动作
-        $actionResult = ($result->callable)($data->getFormatData());
+        $actionResult = ($callable)($data->getFormatData());
 
         $requestContext['udpResult'] = $actionResult;
 

@@ -43,7 +43,7 @@ class RouteResult
         $callable = $routeItem->callable;
         if($callable instanceof RouteCallable)
         {
-            $this->callable = $callable->getCallable($this->urlCheckResult->params);
+            $this->callable = $callable->getCallable($urlCheckResult->params);
         }
         else
         {

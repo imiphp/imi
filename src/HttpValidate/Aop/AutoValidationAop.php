@@ -41,15 +41,16 @@ class AutoValidationAop
         {
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
 
-            $data['$get'] = $controller->request->get();
-            $data['$post'] = $controller->request->post();
-            $data['$body'] = $controller->request->getParsedBody();
+            $controllerRequest = $controller->request;
+            $data['$get'] = $controllerRequest->get();
+            $data['$post'] = $controllerRequest->post();
+            $data['$body'] = $controllerRequest->getParsedBody();
             $data['$headers'] = [];
-            foreach ($controller->request->getHeaders() as $name => $values)
+            foreach ($controllerRequest->getHeaders() as $name => $values)
             {
                 $data['$headers'][$name] = implode(', ', $values);
             }
-            $data['$cookie'] = $controller->request->getCookieParams();
+            $data['$cookie'] = $controllerRequest->getCookieParams();
             $data['$session'] = Session::get();
             $data['$this'] = $controller;
 

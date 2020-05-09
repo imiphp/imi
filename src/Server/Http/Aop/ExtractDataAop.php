@@ -41,17 +41,18 @@ class ExtractDataAop
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, ExtractData::class);
         if(isset($annotations[0]))
         {
+            $controllerRequest = $controller->request;
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
             $allData = [
-                '$get'      =>  $controller->request->get(),
-                '$post'     =>  $controller->request->post(),
-                '$body'     =>  $controller->request->getParsedBody(),
+                '$get'      =>  $controllerRequest->get(),
+                '$post'     =>  $controllerRequest->post(),
+                '$body'     =>  $controllerRequest->getParsedBody(),
                 '$headers'  =>  [],
-                '$cookie'   =>  $controller->request->getCookieParams(),
+                '$cookie'   =>  $controllerRequest->getCookieParams(),
                 '$session'  =>  Session::get(),
                 '$this'     =>  $controller,
             ];
-            foreach ($controller->request->getHeaders() as $name => $values)
+            foreach ($controllerRequest->getHeaders() as $name => $values)
             {
                 $allData['$headers'][$name] = implode(', ', $values);
             }

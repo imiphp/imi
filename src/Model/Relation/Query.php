@@ -279,7 +279,7 @@ abstract class Query
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName = new ArrayList($modelClass);
+        $model->$propertyName = $modelPropery = new ArrayList($modelClass);
         if(null !== $model->$leftField)
         {
             $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
@@ -290,7 +290,7 @@ abstract class Query
             $list = $query->select()->getArray();
             if(null !== $list)
             {
-                $model->$propertyName->append(...$list);
+                $modelPropery->append(...$list);
             }
         }
     }

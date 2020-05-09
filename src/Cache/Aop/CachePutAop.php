@@ -35,14 +35,15 @@ class CachePutAop
     public function parseCachePut(AroundJoinPoint $joinPoint)
     {
         $methodReturn = $joinPoint->proceed();
+        $method = $joinPoint->getMethod();
 
         $class = get_parent_class($joinPoint->getTarget());
 
         // CachePut 注解列表
-        $cachePuts = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), CachePut::class);
+        $cachePuts = AnnotationManager::getMethodAnnotations($class, $method, CachePut::class);
 
         // 方法参数
-        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+        $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 
         foreach($cachePuts as $cachePut)
         {

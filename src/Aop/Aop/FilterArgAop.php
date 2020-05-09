@@ -29,12 +29,14 @@ class FilterArgAop
     public function parse(JoinPoint $joinPoint)
     {
         $class = get_parent_class($joinPoint->getTarget());
-        $filterArgs = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), FilterArg::class);
-        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+        $method = $joinPoint->getMethod();
+        $filterArgs = AnnotationManager::getMethodAnnotations($class, $method, FilterArg::class);
+        $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 
         foreach($filterArgs as $filterArg)
         {
-            $args[$filterArg->name] = ($filterArg->filter)($args[$filterArg->name]);
+            $name = $filterArg->name;
+            $args[$name] = ($filterArg->filter)($args[$name]);
         }
 
         $args = array_values($args);

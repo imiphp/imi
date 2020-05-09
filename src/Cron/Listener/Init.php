@@ -77,12 +77,12 @@ class Init implements IEventListener
                         };
                         break;
                     case CronTaskType::PROCESS:
-                        $task = function($id, $data) use($class){
+                        $task = function($id, $data) use($class, $cronManager){
                             ProcessManager::run('CronWorkerProcess', [
                                 'id'        =>  $id,
                                 'data'      =>  json_encode($data),
                                 'class'     =>  $class,
-                                'cronSock'  =>  $this->cronManager->getSocketFile(),
+                                'cronSock'  =>  $cronManager->getSocketFile(),
                             ]);
                         };
                         break;

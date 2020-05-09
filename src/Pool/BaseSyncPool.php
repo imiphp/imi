@@ -35,9 +35,10 @@ abstract class BaseSyncPool extends BasePool
      */
     public function getResource()
     {
+        $config = $this->config;
         if($this->getFree() <= 0)
         {
-            if($this->getCount() < $this->config->getMaxResources())
+            if($this->getCount() < $config->getMaxResources())
             {
                 // 没有空闲连接，当前连接数少于最大连接数
                 $this->addResource();
@@ -54,7 +55,7 @@ abstract class BaseSyncPool extends BasePool
             throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
         }
         $resource = $poolItem->getResource();
-        if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+        if(!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
         }

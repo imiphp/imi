@@ -136,8 +136,9 @@ class Where extends BaseWhere implements IWhere
         {
             return $this->rawSQL;
         }
-        $result = $this->parseKeyword($this->fieldName) . ' ' . $this->operation . ' ';
-        switch(strtolower($this->operation))
+        $operation = $this->operation;
+        $result = $this->parseKeyword($this->fieldName) . ' ' . $operation . ' ';
+        switch(strtolower($operation))
         {
             case 'between':
             case 'not between':

@@ -147,27 +147,30 @@ class HttpRoute
             foreach($rules as $urlRule => $items)
             {
                 $result = $this->checkUrl($urlRule, $pathInfo);
-                if($result->result || $result->resultIgnoreCase)
+                $resultResult = $result->result;
+                $resultParams = $result->params;
+                if($resultResult || $result->resultIgnoreCase)
                 {
                     foreach($items as $item)
                     {
+                        $itemAnnotation = $item->annotation;
                         if(
-                            ($result->result || ($ignoreCase || $item->annotation->ignoreCase)) &&
-                            $this->checkMethod($request, $item->annotation->method) &&
-                            $this->checkDomain($request, $item->annotation->domain, $domainParams) &&
-                            $this->checkParamsGet($request, $item->annotation->paramsGet) &&
-                            $this->checkParamsPost($request, $item->annotation->paramsPost) &&
-                            $this->checkHeader($request, $item->annotation->header) &&
-                            $this->checkRequestMime($request, $item->annotation->requestMime)
+                            ($resultResult || ($ignoreCase || $itemAnnotation->ignoreCase)) &&
+                            $this->checkMethod($request, $itemAnnotation->method) &&
+                            $this->checkDomain($request, $itemAnnotation->domain, $domainParams) &&
+                            $this->checkParamsGet($request, $itemAnnotation->paramsGet) &&
+                            $this->checkParamsPost($request, $itemAnnotation->paramsPost) &&
+                            $this->checkHeader($request, $itemAnnotation->header) &&
+                            $this->checkRequestMime($request, $itemAnnotation->requestMime)
                         )
                         {
                             if([] === $domainParams)
                             {
-                                $params = $result->params;
+                                $params = $resultParams;
                             }
                             else
                             {
-                                $params = array_merge($result->params, $domainParams);
+                                $params = array_merge($resultParams, $domainParams);
                             }
                             return new RouteResult(clone $item, $result, $params);
                         }

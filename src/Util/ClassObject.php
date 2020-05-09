@@ -75,13 +75,14 @@ abstract class ClassObject
 
         if(isset($param) && $param->isVariadic())
         {
-            $result[$param->name] = [$result[$param->name]];
+            $paramName = $param->name;
+            $result[$paramName] = [$result[$paramName]];
             if(isset($args[$i + 1]))
             {
                 $count = count($args);
                 for(++$i; $i < $count; ++$i)
                 {
-                    $result[$param->name][] = $args[$i];
+                    $result[$paramName][] = $args[$i];
                 }
             }
         }

@@ -43,16 +43,18 @@ abstract class BaseAsyncPool extends BasePool
     public function getResource()
     {
         $selectResult = true;
+        $queue = $this->queue;
+        $config = $this->config;
         if($this->getFree() <= 0)
         {
-            if($this->getCount() < $this->config->getMaxResources())
+            if($this->getCount() < $config->getMaxResources())
             {
                 // 没有空闲连接，当前连接数少于最大连接数
                 $this->addResource();
             }
             else
             {
-                $selectResult = $this->queue->pop($this->config->getWaitTimeout() / 1000);
+                $selectResult = $queue->pop($config->getWaitTimeout() / 1000);
                 if(false === $selectResult)
                 {
                     throw new \RuntimeException(sprintf('AsyncPool [%s] getResource timeout', $this->getName()));
@@ -61,7 +63,7 @@ abstract class BaseAsyncPool extends BasePool
         }
         if(true === $selectResult)
         {
-            $poolItem = $this->queue->pop();
+            $poolItem = $queue->pop();
         }
         else
         {
@@ -73,7 +75,7 @@ abstract class BaseAsyncPool extends BasePool
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $resource = $poolItem->getResource();
-        if(!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+        if(!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
@@ -99,15 +101,16 @@ abstract class BaseAsyncPool extends BasePool
                 return false;
             }
         }
+        $queue = $this->queue;
         // Coroutine\Channel::select()/->pop() 最小超时时间1毫秒
-        $result = $this->queue->pop(0.001);
+        $result = $queue->pop(0.001);
         if(false === $result)
         {
             return false;
         }
         if(true === $result)
         {
-            $poolItem = $this->queue->pop();
+            $poolItem = $queue->pop();
         }
         else
         {

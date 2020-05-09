@@ -17,8 +17,10 @@ class ListenerParser extends BaseParser
     {
         if($annotation instanceof \Imi\Bean\Annotation\Listener)
         {
-            $this->data[] = [$annotation->eventName, $className, $annotation->priority];
-            Event::on($annotation->eventName, $className, $annotation->priority);
+            $eventName = $annotation->eventName;
+            $priority = $annotation->priority;
+            $this->data[] = [$eventName, $className, $priority];
+            Event::on($eventName, $className, $priority);
         }
     }
     

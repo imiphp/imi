@@ -29,8 +29,9 @@ class InjectArgAop
     public function parse(AroundJoinPoint $joinPoint)
     {
         $class = get_parent_class($joinPoint->getTarget());
-        $injectArgs = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), InjectArg::class);
-        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+        $method = $joinPoint->getMethod();
+        $injectArgs = AnnotationManager::getMethodAnnotations($class, $method, InjectArg::class);
+        $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 
         foreach($injectArgs as $injectArg)
         {

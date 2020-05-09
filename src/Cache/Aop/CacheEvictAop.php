@@ -36,12 +36,13 @@ class CacheEvictAop
     public function parseCacheEvict(AroundJoinPoint $joinPoint)
     {
         $class = get_parent_class($joinPoint->getTarget());
+        $method = $joinPoint->getMethod();
 
         // CacheEvict 注解列表
-        $cacheEvicts = AnnotationManager::getMethodAnnotations($class, $joinPoint->getMethod(), CacheEvict::class);
+        $cacheEvicts = AnnotationManager::getMethodAnnotations($class, $method, CacheEvict::class);
 
         // 方法参数
-        $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+        $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
         
         foreach($cacheEvicts as $index => $cacheEvict)
         {

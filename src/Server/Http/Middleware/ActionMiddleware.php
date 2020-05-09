@@ -64,17 +64,18 @@ class ActionMiddleware implements MiddlewareInterface
         {
             throw new \RuntimeException('RequestContent not found routeResult');
         }
+        $callable = &$result->callable;
         if($isSingleton = $result->routeItem->singleton)
         {
-            $object = $result->callable[0];
+            $object = $callable[0];
         }
         else
         {
             // 复制一份控制器对象
-            $object = $result->callable[0] = clone $result->callable[0];
+            $object = $callable[0] = clone $callable[0];
         }
         // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
+        $isObject = $callable[0] instanceof HttpController;
         if($isObject)
         {
             if($isSingletonController = ($object instanceof SingletonHttpController))
@@ -91,7 +92,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
         }
         // 执行动作
-        $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
+        $actionResult = ($callable)(...$this->prepareActionParams($request, $result));
         // 视图
         $finalResponse = null;
         if($actionResult instanceof Response)
@@ -129,7 +130,7 @@ class ActionMiddleware implements MiddlewareInterface
                 if($isObject && !$isSingletonController && !$isSingleton)
                 {
                     // 获得控制器中的Response
-                    $finalResponse = $result->callable[0]->response;
+                    $finalResponse = $object->response;
                 }
                 else
                 {
@@ -152,18 +153,19 @@ class ActionMiddleware implements MiddlewareInterface
      */
     private function prepareActionParams(Request $request, $routeResult)
     {
+        $callable = $routeResult->callable;
         // 根据动作回调类型获取反射
-        if(is_array($routeResult->callable))
+        if(is_array($callable))
         {
-            if(is_string($routeResult->callable[0]))
+            if(is_string($callable[0]))
             {
-                $class = $routeResult->callable[0];
+                $class = $callable[0];
             }
             else
             {
-                $class = get_class($routeResult->callable[0]);
+                $class = get_class($callable[0]);
             }
-            $method = $routeResult->callable[1];
+            $method = $callable[1];
             $actionMethodParams = &$this->actionMethodParams;
             if(isset($actionMethodParams[$class][$method]))
             {
@@ -171,13 +173,13 @@ class ActionMiddleware implements MiddlewareInterface
             }
             else
             {
-                $ref = new \ReflectionMethod($routeResult->callable[0], $routeResult->callable[1]);
+                $ref = new \ReflectionMethod($class, $method);
                 $params = $actionMethodParams[$class][$method] = $ref->getParameters();
             }
         }
-        else if(!$routeResult->callable instanceof \Closure)
+        else if(!$callable instanceof \Closure)
         {
-            $ref = new \ReflectionFunction($routeResult->callable);
+            $ref = new \ReflectionFunction($callable);
             $params = $ref->getParameters();
         }
         else
@@ -187,17 +189,18 @@ class ActionMiddleware implements MiddlewareInterface
         $result = [];
         foreach($params as $param)
         {
-            if(isset($routeResult->params[$param->name]))
+            $paramName = $param->name;
+            if(isset($routeResult->params[$paramName]))
             {
                 // 路由解析出来的参数
-                $result[] = $routeResult->params[$param->name];
+                $result[] = $routeResult->params[$paramName];
             }
-            else if($request->hasPost($param->name))
+            else if($request->hasPost($paramName))
             {
                 // post
-                $result[] = $request->post($param->name);
+                $result[] = $request->post($paramName);
             }
-            else if(null !== ($value = $request->get($param->name)))
+            else if(null !== ($value = $request->get($paramName)))
             {
                 // get
                 $result[] = $value;
@@ -205,13 +208,13 @@ class ActionMiddleware implements MiddlewareInterface
             else
             {
                 $parsedBody = $request->getParsedBody();
-                if(is_object($parsedBody) && isset($parsedBody->{$param->name}))
+                if(is_object($parsedBody) && isset($parsedBody->{$paramName}))
                 {
-                    $result[] = $parsedBody->{$param->name};
+                    $result[] = $parsedBody->{$paramName};
                 }
-                else if(is_array($parsedBody) && isset($parsedBody[$param->name]))
+                else if(is_array($parsedBody) && isset($parsedBody[$paramName]))
                 {
-                    $result[] = $parsedBody[$param->name];
+                    $result[] = $parsedBody[$paramName];
                 }
                 else if($param->isOptional())
                 {

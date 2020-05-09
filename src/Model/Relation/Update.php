@@ -94,8 +94,9 @@ abstract class Update
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName->$rightField = $model->$leftField;
-        $model->$propertyName->update();
+        $modelField = $model->$propertyName;
+        $modelField->$rightField = $model->$leftField;
+        $modelField->update();
     }
 
     /**
@@ -131,6 +132,7 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $modelLeftValue = $model->$leftField;
         if($orphanRemoval)
         {
             // 删除无关联数据
@@ -141,7 +143,7 @@ abstract class Update
             }
             $pk = $pks[0];
 
-            $oldIDs = $rightModel::query()->where($rightField, '=', $model->$leftField)->field($pk)->select()->getColumn();
+            $oldIDs = $rightModel::query()->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
             $updateIDs = [];
             foreach($model->$propertyName as $row)
@@ -150,7 +152,7 @@ abstract class Update
                 {
                     $updateIDs[] = $row->$pk;
                 }
-                $row->$rightField = $model->$leftField;
+                $row->$rightField = $modelLeftValue;
                 $row->save();
             }
 
@@ -169,7 +171,7 @@ abstract class Update
             // 直接更新
             foreach($model->$propertyName as $row)
             {
-                $row->$rightField = $model->$leftField;
+                $row->$rightField = $modelLeftValue;
                 $row->save();
             }
         }
@@ -209,10 +211,11 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $modelLeftValue = $model->$leftField;
         if($orphanRemoval)
         {
             // 删除无关联数据
-            $oldRightIDs = $middleModel::query()->where($middleLeftField, '=', $model->$leftField)->field($middleRightField)->select()->getColumn();
+            $oldRightIDs = $middleModel::query()->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
             $updateIDs = [];
             foreach($model->$propertyName as $row)
@@ -221,7 +224,7 @@ abstract class Update
                 {
                     $updateIDs[] = $row->$middleRightField;
                 }
-                $row->$middleLeftField = $model->$leftField;
+                $row->$middleLeftField = $modelLeftValue;
                 $row->save();
             }
 
@@ -231,7 +234,7 @@ abstract class Update
             {
                 // 批量删除
                 $middleModel::deleteBatch(function(IQuery $query) use($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs){
-                    $query->where($middleLeftField, '=', $model->$leftField)->whereIn($middleRightField, $deleteIDs);
+                    $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
                 });
             }
         }
@@ -240,7 +243,7 @@ abstract class Update
             // 直接更新
             foreach($model->$propertyName as $row)
             {
-                $row->$middleLeftField = $model->$leftField;
+                $row->$middleLeftField = $modelLeftValue;
                 $row->save();
             }
         }
@@ -319,9 +322,10 @@ abstract class Update
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName->$rightField = $model->$leftField;
-        $model->$propertyName->{$annotation->type} = $annotation->typeValue;
-        $model->$propertyName->update();
+        $modelField = $model->$propertyName;
+        $modelField->$rightField = $model->$leftField;
+        $modelField->{$annotation->type} = $annotation->typeValue;
+        $modelField->update();
     }
 
     /**
@@ -357,6 +361,7 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $modelLeftValue = $model->$leftField;
         if($orphanRemoval)
         {
             // 删除无关联数据
@@ -367,7 +372,7 @@ abstract class Update
             }
             $pk = $pks[0];
 
-            $oldIDs = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->field($pk)->select()->getColumn();
+            $oldIDs = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
             $updateIDs = [];
             foreach($model->$propertyName as $row)
@@ -376,7 +381,7 @@ abstract class Update
                 {
                     $updateIDs[] = $row->$pk;
                 }
-                $row->$rightField = $model->$leftField;
+                $row->$rightField = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
@@ -396,7 +401,7 @@ abstract class Update
             // 直接更新
             foreach($model->$propertyName as $row)
             {
-                $row->$rightField = $model->$leftField;
+                $row->$rightField = $modelLeftValue;
                 $row->save();
             }
         }
@@ -436,10 +441,11 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $modelLeftValue = $model->$leftField;
         if($orphanRemoval)
         {
             // 删除无关联数据
-            $oldRightIDs = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField)->field($middleRightField)->select()->getColumn();
+            $oldRightIDs = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
             $updateIDs = [];
             foreach($model->$propertyName as $row)
@@ -448,7 +454,7 @@ abstract class Update
                 {
                     $updateIDs[] = $row->$middleRightField;
                 }
-                $row->$middleLeftField = $model->$leftField;
+                $row->$middleLeftField = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
@@ -459,7 +465,7 @@ abstract class Update
             {
                 // 批量删除
                 $middleModel::deleteBatch(function(IQuery $query) use($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation){
-                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField)->whereIn($middleRightField, $deleteIDs);
+                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
                 });
             }
         }
@@ -468,7 +474,7 @@ abstract class Update
             // 直接更新
             foreach($model->$propertyName as $row)
             {
-                $row->$middleLeftField = $model->$leftField;
+                $row->$middleLeftField = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }

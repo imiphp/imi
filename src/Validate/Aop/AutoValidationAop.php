@@ -31,7 +31,8 @@ class AutoValidationAop
      */
     public function validateConstruct(JoinPoint $joinPoint)
     {
-        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
+        $target = $joinPoint->getTarget();
+        $className = BeanFactory::getObjectClass($target);
 
         $annotations = AnnotationManager::getClassAnnotations($className);
         $propertyAnnotations = AnnotationManager::getPropertiesAnnotations($className);
@@ -49,7 +50,7 @@ class AutoValidationAop
         if(isset($annotations[0]))
         {
             $data = [];
-            foreach($joinPoint->getTarget() as $name => $value)
+            foreach($target as $name => $value)
             {
                 $data[$name] = $value;
             }
@@ -81,14 +82,15 @@ class AutoValidationAop
      */
     public function validateMethod(AroundJoinPoint $joinPoint)
     {
-        $className = BeanFactory::getObjectClass($joinPoint->getTarget());
+        $target = $joinPoint->getTarget();
+        $className = BeanFactory::getObjectClass($target);
         $methodName = $joinPoint->getMethod();
 
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName);
         if(isset($annotations[0]))
         {
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
-            $data['$this'] = $joinPoint->getTarget();
+            $data['$this'] = $target;
 
             $validator = new Validator($data, $annotations);
             if(!$validator->validate())

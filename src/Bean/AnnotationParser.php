@@ -100,8 +100,9 @@ class AnnotationParser
         $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $thisClasses[$className] = $ref->getFileName();
-            $this->files[$ref->getFileName()] = 1;
+            $fileName = $ref->getFileName();
+            $thisClasses[$className] = $fileName;
+            $this->files[$fileName] = 1;
             
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -193,8 +194,9 @@ class AnnotationParser
         $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $thisClasses[$className] = $ref->getFileName();
-            $this->files[$ref->getFileName()] = 1;
+            $fileName = $ref->getFileName();
+            $thisClasses[$className] = $fileName;
+            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -281,8 +283,9 @@ class AnnotationParser
         $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $thisClasses[$className] = $ref->getFileName();
-            $this->files[$ref->getFileName()] = 1;
+            $fileName = $ref->getFileName();
+            $thisClasses[$className] = $fileName;
+            $this->files[$fileName] = 1;
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
@@ -371,8 +374,9 @@ class AnnotationParser
         $thisClasses = &$this->classes;
         if($this->checkAnnotations($annotations))
         {
-            $thisClasses[$className] = $ref->getFileName();
-            $this->files[$ref->getFileName()] = 1;
+            $fileName = $ref->getFileName();
+            $thisClasses[$className] = $fileName;
+            $this->files[$fileName] = 1;
             
             // @Inherit 注解继承父级的注解
             $hasInherit = false;

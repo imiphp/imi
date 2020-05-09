@@ -33,22 +33,24 @@ class TransactionAop
      */
     public function parseTransaction(AroundJoinPoint $joinPoint)
     {
-        $transaction = AnnotationManager::getMethodAnnotations(get_parent_class($joinPoint->getTarget()), $joinPoint->getMethod(), Transaction::class)[0] ?? null;
+        $target = $joinPoint->getTarget();
+        $method = $joinPoint->getMethod();
+        $transaction = AnnotationManager::getMethodAnnotations(get_parent_class($target), $method, Transaction::class)[0] ?? null;
         if(null === $transaction)
         {
             return $joinPoint->proceed();
         }
         else
         {
-            $object = $joinPoint->getTarget();
-            $db = $this->getDb($transaction, $object);
+            $db = $this->getDb($transaction, $target);
             if(!$db)
             {
                 throw new \RuntimeException('@Transaction failed, get db failed');
             }
             try{
                 $isBeginTransaction = !$db->inTransaction();
-                switch($transaction->type)
+                $transactionType = $transaction->type;
+                switch($transactionType)
                 {
                     case TransactionType::NESTING:
                         // 开启事务
@@ -57,7 +59,7 @@ class TransactionAop
                     case TransactionType::REQUIREMENT:
                         if(!$db->inTransaction())
                         {
-                            throw new \RuntimeException(sprintf('%s::%s can not run without transactional', BeanFactory::getObjectClass($object), $joinPoint->getMethod()));
+                            throw new \RuntimeException(sprintf('%s::%s can not run without transactional', BeanFactory::getObjectClass($target), $method));
                         }
                         break;
                     case TransactionType::AUTO:
@@ -69,7 +71,7 @@ class TransactionAop
                         break;
                 }
                 $result = $joinPoint->proceed();
-                if($isBeginTransaction && $transaction->autoCommit && (TransactionType::NESTING === $transaction->type || TransactionType::AUTO === $transaction->type))
+                if($isBeginTransaction && $transaction->autoCommit && (TransactionType::NESTING === $transactionType || TransactionType::AUTO === $transactionType))
                 {
                     // 提交事务
                     $db->commit();

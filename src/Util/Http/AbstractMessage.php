@@ -234,13 +234,14 @@ abstract class AbstractMessage implements MessageInterface
     {
         $self = clone $this;
         $lowerName = strtolower($name);
-        if(isset($self->headerNames[$lowerName]))
+        $headerNames = &$self->headerNames;
+        if(isset($headerNames[$lowerName]))
         {
-            $name = $self->headerNames[$lowerName];
+            $name = $headerNames[$lowerName];
         }
         else
         {
-            $self->headerNames[$lowerName] = $name;
+            $headerNames[$lowerName] = $name;
         }
 
         if(is_string($value))
@@ -252,13 +253,14 @@ abstract class AbstractMessage implements MessageInterface
             throw new \InvalidArgumentException('invalid header names or values');
         }
 
-        if(isset($self->headers[$name]))
+        $headers = &$self->headers;
+        if(isset($headers[$name]))
         {
-            $self->headers[$name] = array_merge($self->headers[$name], $value);
+            $headers[$name] = array_merge($headers[$name], $value);
         }
         else
         {
-            $self->headers[$name] = $value;
+            $headers[$name] = $value;
         }
 
         return $self;
@@ -332,24 +334,26 @@ abstract class AbstractMessage implements MessageInterface
         {
             $object = $this;
         }
+        $headerNames = &$object->headerNames;
+        $objectHeaders = &$object->headers;
         foreach($headers as $name => $value)
         {
             $lowerName = strtolower($name);
-            if(isset($object->headerNames[$lowerName]))
+            if(isset($headerNames[$lowerName]))
             {
-                $name = $object->headerNames[$lowerName];
+                $name = $headerNames[$lowerName];
             }
             else
             {
-                $object->headerNames[$lowerName] = $name;
+                $headerNames[$lowerName] = $name;
             }
             if(is_string($value))
             {
-                $object->headers[$name] = [$value];
+                $objectHeaders[$name] = [$value];
             }
             else if(is_array($value))
             {
-                $object->headers[$name] = $value;
+                $objectHeaders[$name] = $value;
             }
             else
             {

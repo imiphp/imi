@@ -49,7 +49,9 @@ class Request extends ServerRequest implements IServerRequest
      */
     public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Request $request)
     {
-        $key = $request->header['host'] . '#' . $request->server['path_info'];
+        $requestHeader = $request->header;
+        $requestServer = $request->server;
+        $key = $requestHeader['host'] . '#' . $requestServer['path_info'];
         if(!isset(static::$instanceMap[$key]))
         {
             if(count(static::$instanceMap) >= Config::get('@app.http.maxRequestCache', 1024))
@@ -67,12 +69,12 @@ class Request extends ServerRequest implements IServerRequest
         $rawContent = $request->rawContent();
         $instance->body = new MemoryStream(false === $rawContent ? '' : $rawContent);
         $instance->headerNames = $instance->headers = [];
-        $instance->setHeaders($request->header);
+        $instance->setHeaders($requestHeader);
         $instance->cookies = $request->cookie ?? [];
         $instance->setUploadedFiles($instance, $request->files ?? []);
-        $instance->server = $request->server;
+        $instance->server = $requestServer;
         $instance->protocolVersion = $instance->getRequestProtocol();
-        $instance->method = $request->server['request_method'];
+        $instance->method = $requestServer['request_method'];
         return $instance;
     }
 
@@ -96,7 +98,8 @@ class Request extends ServerRequest implements IServerRequest
             $scheme = 'http';
         }
         $swooleRequest = $this->swooleRequest;
-        return Uri::makeUri($swooleRequest->header['host'], $swooleRequest->server['path_info'], null === $swooleRequest->get ? '' : (\http_build_query($swooleRequest->get, null, '&')), null, $scheme);
+        $get = $swooleRequest->get;
+        return Uri::makeUri($swooleRequest->header['host'], $swooleRequest->server['path_info'], null === $get ? '' : (\http_build_query($get, null, '&')), null, $scheme);
     }
 
     /**

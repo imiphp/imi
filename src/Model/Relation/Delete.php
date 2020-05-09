@@ -80,8 +80,9 @@ abstract class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName->$rightField = $model->$leftField;
-        $model->$propertyName->delete();
+        $modelField = $model->$propertyName;
+        $modelField->$rightField = $model->$leftField;
+        $modelField->delete();
     }
 
     /**
@@ -144,9 +145,10 @@ abstract class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
 
-        $model->$propertyName->$rightField = $model->$leftField;
-        $model->$propertyName->{$annotation->type} = $annotation->typeValue;
-        $model->$propertyName->delete();
+        $modelField = $model->$propertyName;
+        $modelField->$rightField = $model->$leftField;
+        $modelField->{$annotation->type} = $annotation->typeValue;
+        $modelField->delete();
     }
     
     /**

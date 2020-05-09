@@ -206,9 +206,9 @@ class PaginateResult implements IPaginateResult
      */
     public function toArray(): array
     {
-        if(null === $this->arrayData)
+        $arrayData = &$this->arrayData;
+        if(null === $arrayData)
         {
-            $arrayData = &$this->arrayData;
             $options = $this->options;
             $arrayData = [
                 // 数据列表
@@ -224,7 +224,7 @@ class PaginateResult implements IPaginateResult
                 $arrayData[$options['field_page_count'] ?? 'page_count'] = $this->pageCount;
             }
         }
-        return $this->arrayData;
+        return $arrayData;
     }
 
     /**

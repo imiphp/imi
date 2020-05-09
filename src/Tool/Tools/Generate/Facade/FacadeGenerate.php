@@ -133,7 +133,7 @@ class FacadeGenerate
                 $params[] = $result;
             }
             $params = implode(', ', $params);
-            $methods[] = '@method static ' . $returnType . ' ' . $method->getName() . '(' . $params . ')';
+            $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
         $content = (function() use($namespace, $facadeAnnotation, $methods, $shortClassName){
             ob_start();

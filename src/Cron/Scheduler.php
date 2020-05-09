@@ -200,21 +200,22 @@ class Scheduler
     public function completeTask(Result $result)
     {
         $runningTasks = &$this->runningTasks;
-        if(isset($runningTasks[$result->id]))
+        $resultId = $result->id;
+        if(isset($runningTasks[$resultId]))
         {
-            if(!$this->cronLock->unlock($runningTasks[$result->id]))
+            if(!$this->cronLock->unlock($runningTasks[$resultId]))
             {
-                Log::error(sprintf('Task %s unlock failed', $result->id));
+                Log::error(sprintf('Task %s unlock failed', $resultId));
             }
-            unset($runningTasks[$result->id]);
+            unset($runningTasks[$resultId]);
         }
         if($result->success)
         {
-            Log::info(sprintf('Task: %s, Process: %s#%s, Success', $result->id, $result->processType, $result->processId));
+            Log::info(sprintf('Task: %s, Process: %s#%s, Success', $resultId, $result->processType, $result->processId));
         }
         else
         {
-            Log::error(sprintf('Task: %s, Process: %s#%s, %s', $result->id, $result->processType, $result->processId, $result->message));
+            Log::error(sprintf('Task: %s, Process: %s#%s, %s', $resultId, $result->processType, $result->processId, $result->message));
         }
     }
 
