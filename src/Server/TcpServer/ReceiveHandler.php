@@ -39,7 +39,7 @@ class ReceiveHandler implements IReceiveHandler
         if(isset($middlewares[$this->index]))
         {
             $middleware = $middlewares[$this->index];
-            if($middleware instanceof IReceiveHandler)
+            if(is_object($middleware))
             {
                 $requestHandler = $middleware;
             }

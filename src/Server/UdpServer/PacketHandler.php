@@ -39,7 +39,7 @@ class PacketHandler implements IPacketHandler
         if(isset($middlewares[$this->index]))
         {
             $middleware = $middlewares[$this->index];
-            if($middleware instanceof IPacketHandler)
+            if(is_object($middleware))
             {
                 $requestHandler = $middleware;
             }

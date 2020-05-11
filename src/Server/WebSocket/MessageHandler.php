@@ -38,7 +38,7 @@ class MessageHandler implements IMessageHandler
         if(isset($this->middlewares[$this->index]))
         {
             $middleware = $this->middlewares[$this->index];
-            if($middleware instanceof IMessageHandler)
+            if(is_object($middleware))
             {
                 $requestHandler = $middleware;
             }
