@@ -5,13 +5,13 @@ dist: bionic
 matrix:
   include:
   - php: '7.1'
-    env: SWOOLE_VERSION="v4.5.0"
+    env: SWOOLE_VERSION="v4.5.1"
   - php: '7.2'
-    env: SWOOLE_VERSION="v4.5.0"
+    env: SWOOLE_VERSION="v4.5.1"
   - php: '7.3'
-    env: SWOOLE_VERSION="v4.5.0"
+    env: SWOOLE_VERSION="v4.5.1"
   - php: '7.4'
-    env: SWOOLE_VERSION="v4.5.0"
+    env: SWOOLE_VERSION="v4.5.1"
   - php: '7.1'
     env: SWOOLE_VERSION="v4.4.18"
   - php: '7.2'
