@@ -98,10 +98,15 @@ abstract class App
         static::checkEnvironment();
         self::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
         self::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
-        static::$namespace = $namespace;
         static::outImi();
         static::outStartupInfo();
-        static::initFramework();
+        static::initFramework($namespace);
+        if(!isset($_SERVER['argv'][1]))
+        {
+            echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
+            return;
+        }
+        Event::trigger('IMI.INITED');
     }
 
     /**
@@ -129,15 +134,13 @@ abstract class App
 
     /**
      * 框架初始化
+     * 
+     * @param string $namespace
      * @return void
      */
-    private static function initFramework()
+    public static function initFramework(string $namespace)
     {
-        if(!isset($_SERVER['argv'][1]))
-        {
-            echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
-            return;
-        }
+        static::$namespace = $namespace;
         AnnotationManager::init();
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
@@ -153,7 +156,7 @@ abstract class App
             return;
         }
         // 框架运行时缓存支持
-        if('server/start' === $_SERVER['argv'][1])
+        if($isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null)))
         {
             $result = false;
         }
@@ -173,14 +176,12 @@ abstract class App
             Annotation::getInstance()->init([
                 MainHelper::getMain('Imi', 'Imi'),
             ]);
-            if('server/start' === $_SERVER['argv'][1])
+            if($isServerStart)
             {
                 Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
             }
         }
-        unset($result, $useShortname, $dotenv, $runtimePath);
         static::$isInited = true;
-        Event::trigger('IMI.INITED');
     }
 
     /**
