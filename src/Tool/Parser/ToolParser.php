@@ -40,7 +40,7 @@ class ToolParser extends BaseParser
             else
             {
                 $operation = $annotation;
-                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, function() use($className, $operation, $targetName, $data){
+                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, function() use($className, $operation, $targetName, &$data){
                     $data['tool'][$data['class'][$className]['Tool']->name][$operation->name] = [$className, $targetName];
                 });
             }
