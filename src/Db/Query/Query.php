@@ -919,11 +919,7 @@ class Query implements IQuery
     {
         if($options['total'] ?? true)
         {
-            $option = clone $this->option;
-            $queryType = $this->queryType;
-            $total = (int)$this->count();
-            $this->option = $option;
-            $this->queryType = $queryType;
+            $total = (int)(clone $this)->count();
         }
         else
         {

@@ -85,6 +85,35 @@ class QueryCurdTest extends BaseTest
         $this->assertEquals($expectedData['page_count'], $result->getPageCount());
     }
 
+    /**
+     * @see https://github.com/Yurunsoft/imi/issues/58
+     *
+     * @return void
+     */
+    public function testBug58()
+    {
+        $expectedData = [
+            'list'  =>  [
+                [
+                    'id'        =>  '2',
+                    'title'     =>  'title',
+                    'content'   =>  'content',
+                    'time'      =>  '2019-06-21 00:00:00',
+                ],
+            ],
+            'limit'         =>  1,
+            'total'         =>  1,
+            'page_count'    =>  1,
+        ];
+        $result = Db::query()->from('tb_article')
+                             ->bindValues([
+                                 ':id'  =>  2
+                             ])
+                             ->whereRaw('id = :id')
+                             ->paginate(1, 1);
+        $this->assertEqualsCanonicalizing($expectedData, $result->toArray());
+    }
+
     public function testPaginateNoTotal()
     {
         $expectedData = [
