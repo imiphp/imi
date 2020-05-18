@@ -133,6 +133,6 @@ Json 格式: `imi doc/api -to api.json`
 
 **效果：**
 
-<img src="../../res/1.jpg"/>
+![avatar](../../res/1.jpg)
 
-<img src="../../res/2.jpg"/>
+![avatar](../../res/2.jpg)
