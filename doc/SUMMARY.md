@@ -168,7 +168,7 @@
 * [方法参数过滤器](annotations/filterArg.md)
 * [注解相关问题](annotations/qa.md)
 
-## 命令行工具
+## 开发工具
 
 * [介绍](dev/intro.md)
 * [服务器工具](dev/server.md)
@@ -176,6 +176,7 @@
   * [模型生成](dev/generate/model.md)
   * [表生成](dev/generate/table.md)
   * [控制器生成](dev/generate/controller.md)
+  * [Swagger 文档生成](dev/generate/swagger.md)
 * [进程工具](dev/process.md)
 * [自己动手开发命令行工具](dev/tool.md)
 
