@@ -26,7 +26,7 @@ class ModelGenerate
      * @Arg(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
      * @Arg(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
      * @Arg(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
-     * @Arg(name="prefix", type=ArgType::STRING, default="", comments="传值则去除该表前缀")
+     * @Arg(name="prefix", type=ArgType::ARRAY, default="", comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
      * @Arg(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
      * @Arg(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
      * @Arg(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false")
@@ -211,15 +211,19 @@ class ModelGenerate
     /**
      * 表名转短类名
      * @param string $table
-     * @param string $prefix
+     * @param array $prefixs
      * @return string
      */
-    private function getClassName($table, $prefix)
+    private function getClassName($table, $prefixs)
     {
-        $prefixLen = strlen($prefix);
-        if(substr($table, 0, $prefixLen) === $prefix)
+        foreach($prefixs as $prefix)
         {
-            $table = substr($table, $prefixLen);
+            $prefixLen = strlen($prefix);
+            if(substr($table, 0, $prefixLen) === $prefix)
+            {
+                $table = substr($table, $prefixLen);
+                break;
+            }
         }
         return Text::toPascalName($table);
     }
