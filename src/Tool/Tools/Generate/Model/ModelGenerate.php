@@ -77,7 +77,7 @@ class ModelGenerate
                           'BASE TABLE',
                           'VIEW',
                       ])
-                      ->field('TABLE_NAME', 'TABLE_TYPE')
+                      ->field('TABLE_NAME', 'TABLE_TYPE', 'TABLE_COMMENT')
                       ->select()
                       ->getArray();
         // model保存路径
@@ -159,16 +159,17 @@ class ModelGenerate
             }
             $ddl = $this->getDDL($query, $table);
             $data = [
-                'namespace' => $modelNamespace,
-                'className' => $className,
-                'table'     => [
+                'namespace'     => $modelNamespace,
+                'className'     => $className,
+                'table'         => [
                     'name'  => $table,
                     'id'    => [],
                 ],
-                'fields'    => [],
-                'entity'    => $entity,
-                'poolName'  => $poolName,
-                'ddl'       => $ddl,
+                'fields'        => [],
+                'entity'        => $entity,
+                'poolName'      => $poolName,
+                'ddl'           => $ddl,
+                'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
             ];
             $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`.`%s`' , $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);

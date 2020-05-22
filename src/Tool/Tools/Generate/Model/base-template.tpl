@@ -9,7 +9,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
 /**
- * <?= $className ?>Base
+ * <?= $tableComment ?> 基类
  * <?php if($entity === true):?>@Entity<?php else:?>@Entity(false)<?php endif;?>
 
  * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?><?php if($poolName):?>, dbPoolName="<?=$poolName?>"<?php endif;?>)

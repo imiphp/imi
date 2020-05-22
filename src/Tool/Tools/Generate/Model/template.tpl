@@ -6,7 +6,7 @@ use Imi\Bean\Annotation\Inherit;
 use <?= $namespace ?>\Base\<?= $className ?>Base;
 
 /**
- * <?= $className ?>
+ * <?= $tableComment ?>
 
  * @Inherit
  */
