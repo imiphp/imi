@@ -33,6 +33,7 @@ class TableGenerate
      */
     public function generate($namespace, $database, $poolName, $include, $exclude, $override)
     {
+        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         $override = (bool)json_decode((string)$override);
         $query = Db::query($poolName);
         // 数据库
