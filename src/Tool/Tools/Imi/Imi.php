@@ -83,20 +83,24 @@ class Imi
     public function buildRuntime($format, $changedFilesFile, $confirm, $sock)
     {
         $socket = null;
+        $success = false;
         ob_start();
-        register_shutdown_function(function() use($format, &$socket){
+        register_shutdown_function(function() use($format, &$socket, &$success){
             $result = ob_get_clean();
-            if('' === $result)
+            if($success)
             {
                 $result = 'Build app runtime complete' . PHP_EOL;
             }
-            if('json' === $format)
+            if($result)
             {
-                echo json_encode($result);
-            }
-            else
-            {
-                echo $result;
+                if('json' === $format)
+                {
+                    echo json_encode($result);
+                }
+                else
+                {
+                    echo $result;
+                }
             }
             if($socket)
             {
@@ -166,6 +170,7 @@ class Imi
             Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         }
         ImiUtil::buildRuntime();
+        $success = true;
     }
 
     /**
