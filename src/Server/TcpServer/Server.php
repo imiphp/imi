@@ -34,7 +34,14 @@ class Server extends Base
         $config = $this->getServerInitConfig();
         $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
-        $this->swoolePort->set([]);
+        $configs = &$this->config['configs'];
+        foreach(static::SWOOLE_PROTOCOLS as $protocol)
+        {
+            if(!isset($configs[$protocol]))
+            {
+                $configs[$protocol] = false;
+            }
+        }
     }
 
     /**

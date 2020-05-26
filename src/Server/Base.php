@@ -24,6 +24,17 @@ abstract class Base
     use TEvent, TServerGroup;
 
     /**
+     * Swoole 支持的协议列表
+     */
+    const SWOOLE_PROTOCOLS = [
+        'open_http_protocol',
+        'open_websocket_protocol',
+        'open_http2_protocol',
+        'open_mqtt_protocol',
+        'open_redis_protocol',
+    ];
+
+    /**
      * swoole 服务器对象
      * @var \Swoole\Server
      */
