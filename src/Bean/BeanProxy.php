@@ -502,7 +502,7 @@ class BeanProxy
                                 $allowResult = $annotation instanceof $rule;
                                 if($allowResult)
                                 {
-                                    break;
+                                    break 2;
                                 }
                             }
                         }
@@ -539,7 +539,7 @@ class BeanProxy
                                     $denyResult = $annotation instanceof $rule;
                                     if($denyResult)
                                     {
-                                        break;
+                                        break 2;
                                     }
                                 }
                             }
