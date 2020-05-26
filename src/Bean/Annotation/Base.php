@@ -2,6 +2,7 @@
 namespace Imi\Bean\Annotation;
 
 use Imi\Util\LazyArrayObject;
+use Imi\Bean\ReflectionContainer;
 use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
@@ -32,7 +33,7 @@ abstract class Base extends LazyArrayObject
             }
         }
         
-        $refClass = new \ReflectionClass($this);
+        $refClass = ReflectionContainer::getClassReflection(static::class);
         
         foreach($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
         {
@@ -56,7 +57,7 @@ abstract class Base extends LazyArrayObject
 
     public function __wakeup()
     {
-        $refClass = new \ReflectionClass($this);
+        $refClass = ReflectionContainer::getClassReflection(static::class);
         foreach($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
         {
             unset($this->{$property->name});

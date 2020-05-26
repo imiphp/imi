@@ -1,14 +1,15 @@
 <?php
 namespace Imi\Bean;
 
+use Imi\Util\Imi;
+use Imi\Event\TEvent;
+use Imi\Util\ClassObject;
 use Imi\Bean\Parser\BaseParser;
+use Imi\Bean\Annotation\Inherit;
+use Imi\Bean\ReflectionContainer;
+use Imi\Bean\Annotation\AnnotationManager;
 use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 use Yurun\Doctrine\Common\Annotations\AnnotationRegistry;
-use Imi\Event\TEvent;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\Annotation\Inherit;
-use Imi\Util\ClassObject;
-use Imi\Util\Imi;
 
 /**
  * 注解处理类
@@ -53,7 +54,7 @@ class AnnotationParser
     
     public function parse($className)
     {
-        $ref = new \ReflectionClass($className);
+        $ref = ReflectionContainer::getClassReflection($className);
 
         // 处理类注解
         $this->parseClass($ref);

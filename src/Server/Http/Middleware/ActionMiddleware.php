@@ -3,6 +3,7 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\ReflectionContainer;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
@@ -173,7 +174,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
             else
             {
-                $ref = new \ReflectionMethod($class, $method);
+                $ref = ReflectionContainer::getMethodReflection($class, $method);
                 $params = $actionMethodParams[$class][$method] = $ref->getParameters();
             }
         }

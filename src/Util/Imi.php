@@ -11,6 +11,7 @@ use Imi\Bean\BeanProxy;
 use Imi\Bean\Annotation;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Model\Annotation\Column;
+use Imi\Bean\ReflectionContainer;
 use Imi\Model\Annotation\MemoryTable;
 use Imi\Bean\Annotation\AnnotationManager;
 
@@ -227,7 +228,7 @@ abstract class Imi
                 if($mainNamespace === substr($namespace, 0, $len))
                 {
                     $namespaceSubPath = substr($namespace, $len);
-                    $refClass = new \ReflectionClass($main);
+                    $refClass = ReflectionContainer::getClassReflection(get_class($main));
                     $path = dirname($refClass->getFileName());
                     $result = File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
                     break;
@@ -287,7 +288,7 @@ abstract class Imi
                 if($mainNamespace === substr($namespace, 0, $len))
                 {
                     $namespaceSubPath = substr($namespace, $len);
-                    $refClass = new \ReflectionClass($main);
+                    $refClass = ReflectionContainer::getClassReflection(get_class($main));
                     $path = dirname($refClass->getFileName());
                     $resultPaths[] = File::path($path, str_replace('\\', DIRECTORY_SEPARATOR, $namespaceSubPath));
                 }
@@ -334,7 +335,7 @@ abstract class Imi
             {
                 $className = BeanParser::getInstance()->getData()[$className]['className'];
             }
-            $ref = new \ReflectionClass($className);
+            $ref = ReflectionContainer::getClassReflection($className);
             $value = $ref->getDefaultProperties()[$propertyName] ?? null;
         }
         return $value;

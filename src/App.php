@@ -19,6 +19,7 @@ use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\ReflectionContainer;
 
 abstract class App
 {
@@ -585,7 +586,7 @@ STR;
         $loader = static::getLoader();
         if($loader)
         {
-            $ref = new \ReflectionClass($loader);
+            $ref = ReflectionContainer::getClassReflection(get_class($loader));
             $fileName = dirname($ref->getFileName(), 3) . '/composer.lock';
             if(is_file($fileName))
             {

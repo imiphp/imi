@@ -3,6 +3,7 @@ namespace Imi\Main;
 
 use Imi\Config;
 use Imi\Main\Helper;
+use Imi\Bean\ReflectionContainer;
 
 /**
  * 主类基类
@@ -58,7 +59,7 @@ abstract class BaseMain implements IMain
     {
         if(null === $this->path)
         {
-            $ref = new \ReflectionClass($this);
+            $ref = ReflectionContainer::getClassReflection(static::class);
             $this->path = dirname($ref->getFileName());
         }
         return $this->path;

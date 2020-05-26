@@ -3,6 +3,7 @@ namespace Imi\Util\Traits;
 
 use Imi\Bean\IBean;
 use Imi\Util\ClassObject;
+use Imi\Bean\ReflectionContainer;
 
 
 trait TBeanRealClass
@@ -23,7 +24,7 @@ trait TBeanRealClass
     {
         if(!isset(TBeanRealClass::$realClassNames[static::class]))
         {
-            $ref = new \ReflectionClass(static::class);
+            $ref = ReflectionContainer::getClassReflection(static::class);
             if($ref->implementsInterface(IBean::class))
             {
                 TBeanRealClass::$realClassNames[static::class] = $ref->getParentClass()->getName();

@@ -11,6 +11,7 @@ use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
+use Imi\Bean\ReflectionContainer;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\Traits\TBeanRealClass;
 use Imi\Model\Annotation\Serializable;
@@ -136,7 +137,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             if(!isset(self::$__methodReference[$realClass][$methodName]))
             {
-                $refMethod = new \ReflectionMethod($this, $methodName);
+                $refMethod = ReflectionContainer::getMethodReflection(static::class, $methodName);
                 self::$__methodReference[$realClass][$methodName] = $refMethod->returnsReference();
             }
             if(self::$__methodReference[$realClass][$methodName])

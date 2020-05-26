@@ -3,10 +3,11 @@ namespace Imi\Lock\Aop;
 
 use Imi\App;
 use Imi\Config;
+use Imi\Util\ClassObject;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Lock\Annotation\Lockable;
+use Imi\Bean\ReflectionContainer;
 use Imi\Lock\Exception\LockFailException;
-use Imi\Util\ClassObject;
 
 trait TLockableParser
 {
@@ -54,7 +55,7 @@ trait TLockableParser
         if(is_array($lockableAfterLock) && isset($lockableAfterLock[0]) && '$this' === $lockableAfterLock[0])
         {
             // 用反射实现调用 protected 方法
-            $refMethod = new \ReflectionMethod($class . '::' . $lockableAfterLock[1]);
+            $refMethod = ReflectionContainer::getMethodReflection($class, $lockableAfterLock[1]);
             $lockableAfterLock = $refMethod->getClosure($object);
         }
         $result = null;

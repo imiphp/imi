@@ -12,6 +12,7 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Aop\Annotation\PointCut;
+use Imi\Bean\ReflectionContainer;
 use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Aop\Annotation\AfterThrowing;
@@ -99,7 +100,7 @@ class BeanProxy
     private function init($object)
     {
         $this->className = $className = BeanFactory::getObjectClass($object);
-        $this->refClass = $refClass = new \ReflectionClass($className);
+        $this->refClass = $refClass = ReflectionContainer::getClassReflection($className);
         // 每个类只需处理一次
         if(!isset(static::$aspects[$className]))
         {

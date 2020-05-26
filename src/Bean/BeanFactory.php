@@ -5,14 +5,15 @@ use Imi\Config;
 use Imi\Worker;
 use Imi\Util\Imi;
 use Imi\Util\File;
+use \Swoole\Coroutine;
 use Imi\RequestContext;
+use Imi\Aop\PointCutType;
 use Imi\Util\ClassObject;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
-use Imi\Bean\Annotation\AnnotationManager;
-use \Swoole\Coroutine;
-use Imi\Aop\PointCutType;
+use Imi\Bean\ReflectionContainer;
 use Imi\Bean\Parser\PartialParser;
+use Imi\Bean\Annotation\AnnotationManager;
 
 abstract class BeanFactory
 {
@@ -40,7 +41,7 @@ abstract class BeanFactory
     {
         if(!isset(static::$classNameMap[$class]))
         {
-            $ref = new \ReflectionClass($class);
+            $ref = ReflectionContainer::getClassReflection($class);
             $className = static::getNewClassName($ref->getShortName());
             $tpl = static::getTpl($ref, $className);
             Imi::eval($tpl);
@@ -62,7 +63,7 @@ abstract class BeanFactory
     {
         if(!isset(static::$classNameMap[$class]))
         {
-            $ref = new \ReflectionClass($class);
+            $ref = ReflectionContainer::getClassReflection($class);
             $className = static::getNewClassName($ref->getShortName());
             $tpl = static::getTpl($ref, $className);
             Imi::eval($tpl);
@@ -81,7 +82,7 @@ abstract class BeanFactory
      */
     public static function initInstance($object, $args = [])
     {
-        $ref = new \ReflectionClass($object);
+        $ref = ReflectionContainer::getClassReflection(get_class($object));
         $beanProxy = $ref->getProperty('beanProxy');
         $beanProxy->setAccessible(true);
         $beanProxy->getValue($object)

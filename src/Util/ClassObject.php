@@ -1,6 +1,8 @@
 <?php
 namespace Imi\Util;
 
+use Imi\Bean\ReflectionContainer;
+
 /**
  * 类和对象相关工具类
  */
@@ -53,7 +55,7 @@ abstract class ClassObject
      */
     public static function convertArgsToKV($class, $method, $args, $keepNotExistArgs = true)
     {
-        $methodRef = new \ReflectionMethod($class, $method);
+        $methodRef = ReflectionContainer::getMethodReflection($class, $method);
 
         $result = [];
     
