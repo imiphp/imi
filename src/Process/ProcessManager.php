@@ -300,14 +300,17 @@ abstract class ProcessManager
      */
     private static function unlockProcess($name)
     {
-        if(!isset(static::$lockMap[$name]))
+        $lockMap = &static::$lockMap;
+        if(!isset($lockMap[$name]))
         {
             return false;
         }
-        if(flock(static::$lockMap[$name]['fp'], LOCK_UN) && fclose(static::$lockMap[$name]['fp']))
+        $lockItem = $lockMap[$name];
+        $fp = $lockItem['fp'];
+        if(flock($fp, LOCK_UN) && fclose($fp))
         {
-            unlink(static::$lockMap[$name]['fileName']);
-            unset(static::$lockMap[$name]);
+            unlink($lockItem['fileName']);
+            unset($lockMap[$name]);
             return true;
         }
         return false;

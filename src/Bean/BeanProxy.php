@@ -102,9 +102,10 @@ class BeanProxy
         $this->className = $className = BeanFactory::getObjectClass($object);
         $this->refClass = $refClass = ReflectionContainer::getClassReflection($className);
         // 每个类只需处理一次
-        if(!isset(static::$aspects[$className]))
+        $staticAspects = &static::$aspects;
+        if(!isset($staticAspects[$className]))
         {
-            static::$aspects[$className] = new \SplPriorityQueue;
+            $staticAspects[$className] = $aspect = new \SplPriorityQueue;
             $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
             foreach($aspects as $item)
             {
@@ -123,7 +124,7 @@ class BeanProxy
                                 {
                                     if(Imi::checkClassRule($allowItem, $className))
                                     {
-                                        static::$aspects[$className]->insert([
+                                        $aspect->insert([
                                             'class'     =>  $itemClass,
                                             'method'    =>  $methodName,
                                             'pointCut'  =>  $pointCut,
@@ -142,7 +143,7 @@ class BeanProxy
                                         {
                                             if($annotation instanceof $allowItem)
                                             {
-                                                static::$aspects[$className]->insert([
+                                                $aspect->insert([
                                                     'class'     =>  $itemClass,
                                                     'method'    =>  $methodName,
                                                     'pointCut'  =>  $pointCut,
@@ -170,7 +171,7 @@ class BeanProxy
                                 {
                                     if(Imi::checkRuleMatch($allowItem, $className))
                                     {
-                                        static::$aspects[$className]->insert([
+                                        $aspect->insert([
                                             'class'     =>  $itemClass,
                                             'method'    =>  $methodName,
                                             'pointCut'  =>  $pointCut,
@@ -188,7 +189,7 @@ class BeanProxy
                                     {
                                         if($annotation instanceof $allowItem)
                                         {
-                                            static::$aspects[$className]->insert([
+                                            $aspect->insert([
                                                 'class'     =>  $itemClass,
                                                 'method'    =>  $methodName,
                                                 'pointCut'  =>  $pointCut,

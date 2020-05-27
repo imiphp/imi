@@ -136,7 +136,12 @@ abstract class ModelRelationManager
     public static function getRelationFieldNames($object)
     {
         $class = BeanFactory::getObjectClass($object);
-        if(!isset(static::$relationFieldsNames[$class]))
+        $staticRelationFieldsNames = &static::$relationFieldsNames;
+        if(isset($staticRelationFieldsNames[$class]))
+        {
+            return $staticRelationFieldsNames[$class];
+        }
+        else
         {
             $relations = AnnotationManager::getPropertiesAnnotations($class, RelationBase::class);
             $result = array_keys($relations);
@@ -148,9 +153,8 @@ abstract class ModelRelationManager
                     $result[] = $annotation->rightMany;
                 }
             }
-            static::$relationFieldsNames[$class] = $result;
+            return $staticRelationFieldsNames[$class] = $result;
         }
-        return static::$relationFieldsNames[$class];
     }
 
 }

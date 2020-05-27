@@ -32,8 +32,8 @@ abstract class PoolManager
      */
     public static function addName(string $name, string $poolClassName, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
-        static::$pools[$name] = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
-        static::$pools[$name]->open();
+        static::$pools[$name] = $pool = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
+        $pool->open();
     }
 
     /**
@@ -73,11 +73,12 @@ abstract class PoolManager
      */
     public static function getInstance(string $name): IPool
     {
-        if(!isset(static::$pools[$name]))
+        $pools = &static::$pools;
+        if(!isset($pools[$name]))
         {
             throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
-        return static::$pools[$name];
+        return $pools[$name];
     }
 
     /**
@@ -128,7 +129,7 @@ abstract class PoolManager
     public static function tryGetResource(string $name)
     {
         $resource = static::getInstance($name)->tryGetResource();
-        if(!$resource)
+        if($resource)
         {
             static::pushResourceToRequestContext($resource);
         }

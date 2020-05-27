@@ -20,12 +20,13 @@ abstract class Helper
     {
         if(null !== $namespace)
         {
+            $mains = &static::$mains;
             if(null === $componentName)
             {
                 // 获取
-                if(isset(static::$mains[$namespace]))
+                if(isset($mains[$namespace]))
                 {
-                    return static::$mains[$namespace];
+                    return $mains[$namespace];
                 }
                 else
                 {
@@ -35,9 +36,9 @@ abstract class Helper
             else
             {
                 // 获取或新实例
-                if(isset(static::$mains[$namespace]))
+                if(isset($mains[$namespace]))
                 {
-                    return static::$mains[$namespace];
+                    return $mains[$namespace];
                 }
                 else
                 {
@@ -47,11 +48,13 @@ abstract class Helper
         }
         else if(null !== $componentName)
         {
-            if(!isset(static::$nameMap[$componentName], static::$mains[static::$nameMap[$componentName]]))
+            $mains = &static::$mains;
+            $nameMap = &static::$nameMap;
+            if(!isset($nameMap[$componentName], $mains[$nameMap[$componentName]]))
             {
                 return null;
             }
-            return static::$mains[static::$nameMap[$componentName]];
+            return $mains[$nameMap[$componentName]];
         }
         else
         {
@@ -84,9 +87,9 @@ abstract class Helper
         $className = $namespace . '\\Main';
         if(class_exists($className))
         {
-            static::$mains[$namespace] = new $className($componentName);
+            static::$mains[$namespace] = $instance = new $className($componentName);
             static::$nameMap[$componentName] = $namespace;
-            return static::$mains[$namespace];
+            return $instance;
         }
         else
         {

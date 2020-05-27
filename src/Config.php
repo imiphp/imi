@@ -24,26 +24,30 @@ abstract class Config
         $nameSplit = explode('.', $name);
 
         $first = array_shift($nameSplit);
-        if(!isset(static::$configs[$first]))
+        if(isset(static::$configs[$first]))
         {
-            static::$configs[$first] = new ArrayData([]);
+            $configData = static::$configs[$first];
+        }
+        else
+        {
+            static::$configs[$first] = $configData = new ArrayData([]);
         }
 
         if(isset($nameSplit[0]))
         {
             $configName = implode('.', $nameSplit);
-            static::$configs[$first]->set($configName, $config);
-            if(false !== ($configs = static::$configs[$first]->get($configName . '.configs')))
+            $configData->set($configName, $config);
+            if(false !== ($configs = $configData->get($configName . '.configs')))
             {
                 static::load($name, $configs);
             }
         }
         else
         {
-            static::$configs[$first]->set($config);
-            if(static::$configs[$first]->exists('configs'))
+            $configData->set($config);
+            if($configData->exists('configs'))
             {
-                static::load($name, static::$configs[$first]->get('configs', []));
+                static::load($name, $configData->get('configs', []));
             }
         }
 
@@ -81,9 +85,10 @@ abstract class Config
      */
     public static function removeConfig($name)
     {
-        if(isset(static::$configs[$name]))
+        $configs = &static::$configs;
+        if(isset($configs[$name]))
         {
-            unset(static::$configs[$name]);
+            unset($configs[$name]);
             return true;
         }
         else
@@ -104,9 +109,10 @@ abstract class Config
         if (isset($names[0]))
         {
             $first = array_shift($names);
-            if(isset(static::$configs[$first]))
+            $configs = &static::$configs;
+            if(isset($configs[$first]))
             {
-                return static::$configs[$first]->setVal($names, $value);
+                return $configs[$first]->setVal($names, $value);
             }
             else
             {
@@ -149,9 +155,10 @@ abstract class Config
             {
                 $isCurrentServer = false;
             }
-            if(isset(static::$configs[$first]))
+            $configs = &static::$configs;
+            if(isset($configs[$first]))
             {
-                $result = static::$configs[$first]->get($names, null);
+                $result = $configs[$first]->get($names, null);
             }
             if(isset($result))
             {
@@ -161,7 +168,7 @@ abstract class Config
             {
                 $first = '@app';
                 unset($names[0]);
-                return static::$configs[$first]->get($names, $default);
+                return $configs[$first]->get($names, $default);
             }
         }
         return $default;
@@ -178,9 +185,10 @@ abstract class Config
         if (isset($names[0]))
         {
             $first = array_shift($names);
-            if(isset(static::$configs[$first]))
+            $configs = &static::$configs;
+            if(isset($configs[$first]))
             {
-                return null !== static::$configs[$first]->get($names, null);
+                return null !== $configs[$first]->get($names, null);
             }
             else
             {

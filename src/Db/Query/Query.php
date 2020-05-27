@@ -892,14 +892,15 @@ class Query implements IQuery
     public function select(): IResult
     {
         $alias = $this->alias;
-        if($alias && isset(static::$aliasSqls[$alias]))
+        $aliasSqls = &static::$aliasSqls;
+        if($alias && isset($aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$alias];
+            $sql = $aliasSqls[$alias];
         }
         else
         {
             $builder = new SelectBuilder($this);
-            static::$aliasSqls[$alias] = $sql = $builder->build();
+            $aliasSqls[$alias] = $sql = $builder->build();
         }
         if(!$this->isInitQueryType && !$this->isInTransaction())
         {
@@ -939,9 +940,10 @@ class Query implements IQuery
     public function insert($data = null): IResult
     {
         $alias = $this->alias;
-        if($alias && isset(static::$aliasSqls[$alias]))
+        $aliasSqls = &static::$aliasSqls;
+        if($alias && isset($aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$alias];
+            $sql = $aliasSqls[$alias];
             $bindValues = [];
             $numberKey = isset($data[0]);
             foreach($data as $k => $v)
@@ -960,7 +962,7 @@ class Query implements IQuery
         else
         {
             $builder = new InsertBuilder($this);
-            static::$aliasSqls[$alias] = $sql = $builder->build($data);
+            $aliasSqls[$alias] = $sql = $builder->build($data);
         }
         return $this->execute($sql);
     }
@@ -988,9 +990,10 @@ class Query implements IQuery
     public function update($data = null): IResult
     {
         $alias = $this->alias;
-        if($alias && isset(static::$aliasSqls[$alias]))
+        $aliasSqls = &static::$aliasSqls;
+        if($alias && isset($aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$alias];
+            $sql = $aliasSqls[$alias];
             $bindValues = [];
             foreach($data as $k => $v)
             {
@@ -1001,7 +1004,7 @@ class Query implements IQuery
         else
         {
             $builder = new UpdateBuilder($this);
-            static::$aliasSqls[$alias] = $sql = $builder->build($data);
+            $aliasSqls[$alias] = $sql = $builder->build($data);
         }
         return $this->execute($sql);
     }
@@ -1015,9 +1018,10 @@ class Query implements IQuery
     public function replace($data = null): IResult
     {
         $alias = $this->alias;
-        if($alias && isset(static::$aliasSqls[$alias]))
+        $aliasSqls = &static::$aliasSqls;
+        if($alias && isset($aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$alias];
+            $sql = $aliasSqls[$alias];
             $bindValues = [];
             foreach($data as $k => $v)
             {
@@ -1028,7 +1032,7 @@ class Query implements IQuery
         else
         {
             $builder = new ReplaceBuilder($this);
-            static::$aliasSqls[$alias] = $sql = $builder->build($data);
+            $aliasSqls[$alias] = $sql = $builder->build($data);
         }
         return $this->execute($sql);
     }
@@ -1040,14 +1044,15 @@ class Query implements IQuery
     public function delete(): IResult
     {
         $alias = $this->alias;
-        if($alias && isset(static::$aliasSqls[$alias]))
+        $aliasSqls = &static::$aliasSqls;
+        if($alias && isset($aliasSqls[$alias]))
         {
-            $sql = static::$aliasSqls[$alias];
+            $sql = $aliasSqls[$alias];
         }
         else
         {
             $builder = new DeleteBuilder($this);
-            static::$aliasSqls[$alias] = $sql = $builder->build();
+            $aliasSqls[$alias] = $sql = $builder->build();
         }
         $result = $this->execute($sql);
         return $result;
@@ -1266,13 +1271,14 @@ class Query implements IQuery
      */
     public function alias($name, $callable)
     {
-        if(!isset(static::$aliasMap[$name]))
+        $aliasMap = &static::$aliasMap;
+        if(!isset($aliasMap[$name]))
         {
             $callable($this);
             $this->alias = $name;
-            static::$aliasMap[$name] = $this;
+            $aliasMap[$name] = $this;
         }
-        return clone static::$aliasMap[$name];
+        return clone $aliasMap[$name];
     }
 
     /**

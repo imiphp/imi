@@ -52,15 +52,16 @@ class Request extends ServerRequest implements IServerRequest
         $requestHeader = $request->header;
         $requestServer = $request->server;
         $key = $requestHeader['host'] . '#' . $requestServer['path_info'];
-        if(!isset(static::$instanceMap[$key]))
+        $instanceMap = &static::$instanceMap;
+        if(!isset($instanceMap[$key]))
         {
-            if(count(static::$instanceMap) >= Config::get('@app.http.maxRequestCache', 1024))
+            if(count($instanceMap) >= Config::get('@app.http.maxRequestCache', 1024))
             {
-                array_shift(static::$instanceMap);
+                array_shift($instanceMap);
             }
-            static::$instanceMap[$key] = new static($server, $request);
+            $instanceMap[$key] = new static($server, $request);
         }
-        $instance = clone static::$instanceMap[$key];
+        $instance = clone $instanceMap[$key];
         $instance->serverInstance = $server;
         $instance->swooleRequest = $request;
         $instance->get = $request->get ?? [];

@@ -12,7 +12,7 @@ abstract class RequestContext
      *
      * @var array
      */
-    private static $context = [];
+    private static $contextMap = [];
 
     /**
      * 为当前请求创建上下文，返回当前协程ID
@@ -56,9 +56,10 @@ abstract class RequestContext
         if(!$context)
         {
             $coId = Coroutine::getuid();
-            if(isset(static::$context[$coId]))
+            $contextMap = &static::$contextMap;
+            if(isset($contextMap[$coId]))
             {
-                unset(static::$context[$coId]);
+                unset($contextMap[$coId]);
             }
         }
     }
@@ -76,7 +77,7 @@ abstract class RequestContext
         {
             return $context[$name] ?? $default;
         }
-        return static::$context[Coroutine::getuid()][$name] ?? $default;
+        return static::$contextMap[Coroutine::getuid()][$name] ?? $default;
     }
 
     /**
@@ -99,11 +100,12 @@ abstract class RequestContext
         else
         {
             $coId = Coroutine::getuid();
-            if(!isset(static::$context[$coId]))
+            $contextMap = &static::$contextMap;
+            if(!isset($contextMap[$coId]))
             {
-                static::$context[$coId] = [];
+                $contextMap[$coId] = [];
             }
-            $context = &static::$context[$coId];
+            $context = &$contextMap[$coId];
         }
         $context[$name] = $value;
     }
@@ -128,11 +130,12 @@ abstract class RequestContext
         else
         {
             $coId = Coroutine::getuid();
-            if(!isset(static::$context[$coId]))
+            $contextMap = &static::$contextMap;
+            if(!isset($contextMap[$coId]))
             {
-                static::$context[$coId] = [];
+                $contextMap[$coId] = [];
             }
-            $context = &static::$context[$coId];
+            $context = &$contextMap[$coId];
         }
         foreach($data as $k => $v)
         {
@@ -160,11 +163,12 @@ abstract class RequestContext
         else
         {
             $coId = Coroutine::getuid();
-            if(!isset(static::$context[$coId]))
+            $contextMap = &static::$contextMap;
+            if(!isset($contextMap[$coId]))
             {
-                static::$context[$coId] = [];
+                $contextMap[$coId] = [];
             }
-            $context = &static::$context[$coId];
+            $context = &$contextMap[$coId];
         }
         $result = $callback($context);
         return $result;
@@ -188,11 +192,12 @@ abstract class RequestContext
         else
         {
             $coId = Coroutine::getuid();
-            if(!isset(static::$context[$coId]))
+            $contextMap = &static::$contextMap;
+            if(!isset($contextMap[$coId]))
             {
-                static::$context[$coId] = [];
+                $contextMap[$coId] = [];
             }
-            $context = &static::$context[$coId];
+            $context = &$contextMap[$coId];
         }
         return $context;
     }

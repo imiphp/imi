@@ -109,10 +109,11 @@ abstract class CoroutineChannelManager
      */
     public static function getInstance(string $name): \Swoole\Coroutine\Channel
     {
-        if(!isset(static::$channels[$name]))
+        $channels = &static::$channels;
+        if(!isset($channels[$name]))
         {
             throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
-        return static::$channels[$name];
+        return $channels[$name];
     }
 }

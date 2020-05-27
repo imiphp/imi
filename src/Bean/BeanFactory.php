@@ -39,15 +39,20 @@ abstract class BeanFactory
      */
     public static function newInstance($class, ...$args)
     {
-        if(!isset(static::$classNameMap[$class]))
+        $classNameMap = &static::$classNameMap;
+        if(isset($classNameMap[$class]))
+        {
+            $className = $classNameMap[$class];
+        }
+        else
         {
             $ref = ReflectionContainer::getClassReflection($class);
             $className = static::getNewClassName($ref->getShortName());
             $tpl = static::getTpl($ref, $className);
             Imi::eval($tpl);
-            static::$classNameMap[$class] = $className;
+            $classNameMap[$class] = $className;
         }
-        $object = new static::$classNameMap[$class](...$args);
+        $object = new $className(...$args);
         static::initInstance($object, $args);
         return $object;
     }
@@ -61,15 +66,20 @@ abstract class BeanFactory
      */
     public static function newInstanceNoInit($class, ...$args)
     {
-        if(!isset(static::$classNameMap[$class]))
+        $classNameMap = &static::$classNameMap;
+        if(isset($classNameMap[$class]))
+        {
+            $className = $classNameMap[$class];
+        }
+        else
         {
             $ref = ReflectionContainer::getClassReflection($class);
             $className = static::getNewClassName($ref->getShortName());
             $tpl = static::getTpl($ref, $className);
             Imi::eval($tpl);
-            static::$classNameMap[$class] = $className;
+            $classNameMap[$class] = $className;
         }
-        return new static::$classNameMap[$class](...$args);
+        return new $className(...$args);
     }
 
     /**

@@ -101,9 +101,10 @@ abstract class StatementManager
         $db = $statement->getDb();
         $sql = $statement->getSql();
         $hashCode = $db->hashCode();
-        if(isset(static::$statements[$hashCode][$sql]))
+        $staticStatements = &static::$statements;
+        if(isset($staticStatements[$hashCode][$sql]))
         {
-            $statementItem = &static::$statements[$hashCode][$sql];
+            $statementItem = &$staticStatements[$hashCode][$sql];
             if($statementItem['statement'])
             {
                 $statementItem['statement']->closeCursor();
@@ -172,9 +173,10 @@ abstract class StatementManager
         $sql = $statement->getSql();
         static::unUsing($statement);
         $hashCode = $db->hashCode();
-        if(isset(static::$statements[$hashCode][$sql]))
+        $staticStatements = &static::$statements;
+        if(isset($staticStatements[$hashCode][$sql]))
         {
-            unset(static::$statements[$hashCode][$sql]);
+            unset($staticStatements[$hashCode][$sql]);
         }
     }
 
@@ -189,7 +191,8 @@ abstract class StatementManager
         $requestContext = RequestContext::getContext();
         $statementCaches = $requestContext['statementCaches'] ?? [];
         $isRequestContext = true;
-        $statements = static::$statements[$db->hashCode()] ?? [];
+        $staticStatements = &static::$statements;
+        $statements = $staticStatements[$db->hashCode()] ?? [];
         foreach($statements as $item)
         {
             if($isRequestContext && false !== $i = array_search($item['statement'], $statementCaches))
@@ -203,7 +206,7 @@ abstract class StatementManager
         }
         if($statements)
         {
-            unset(static::$statements[$db->hashCode()]);
+            unset($staticStatements[$db->hashCode()]);
         }
     }
 

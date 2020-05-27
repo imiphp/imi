@@ -31,18 +31,11 @@ abstract class ServerManage
     /**
      * 获取服务器对象
      * @param string $name
-     * @return \Imi\Server\Base
+     * @return \Imi\Server\Base|null
      */
     public static function getServer($name)
     {
-        if(isset(static::$servers[$name]))
-        {
-            return static::$servers[$name];
-        }
-        else
-        {
-            return null;
-        }
+        return static::$servers[$name] ?? null;
     }
 
     /**
