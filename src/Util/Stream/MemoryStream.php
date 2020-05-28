@@ -226,7 +226,16 @@ class MemoryStream implements StreamInterface
      */
     public function getContents()
     {
-        return $this->read($this->size - $this->position);
+        $position = &$this->position;
+        if(0 === $position)
+        {
+            $position = $this->size;
+            return $this->content;
+        }
+        else
+        {
+            return $this->read($this->size - $position);
+        }
     }
 
     /**
