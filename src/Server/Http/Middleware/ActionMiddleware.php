@@ -7,6 +7,7 @@ use Imi\Bean\ReflectionContainer;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\Annotation\ServerInject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -66,7 +67,8 @@ class ActionMiddleware implements MiddlewareInterface
             throw new \RuntimeException('RequestContent not found routeResult');
         }
         $callable = &$result->callable;
-        if($isSingleton = $result->routeItem->singleton)
+        $routeItem = $result->routeItem;
+        if($isSingleton = $routeItem->singleton)
         {
             $object = $callable[0];
         }
@@ -108,39 +110,32 @@ class ActionMiddleware implements MiddlewareInterface
         else
         {
             // 获取对应动作的视图注解
-            $viewAnnotation = clone $result->routeItem->view;
-            if(null !== $viewAnnotation)
+            $viewAnnotation = clone $routeItem->view;
+            if([] !== $viewAnnotation->data && is_array($actionResult))
             {
-                if([] !== $viewAnnotation->data && is_array($actionResult))
-                {
-                    // 动作返回值是数组，合并到视图注解
-                    $viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
-                }
-                else
-                {
-                    // 非数组直接赋值
-                    $viewAnnotation->data = $actionResult;
-                }
+                // 动作返回值是数组，合并到视图注解
+                $viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
+            }
+            else
+            {
+                // 非数组直接赋值
+                $viewAnnotation->data = $actionResult;
             }
         }
 
         if(isset($viewAnnotation))
         {
-            if(!$finalResponse)
+            if($isObject && !$isSingletonController && !$isSingleton)
             {
-                if($isObject && !$isSingletonController && !$isSingleton)
-                {
-                    // 获得控制器中的Response
-                    $finalResponse = $object->response;
-                }
-                else
-                {
-                    $finalResponse = $context['response'];
-                }
+                // 获得控制器中的Response
+                $finalResponse = $object->response;
+            }
+            else
+            {
+                $finalResponse = $context['response'];
             }
             // 视图渲染
-            $options = $viewAnnotation->toArray();
-            $finalResponse = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $finalResponse);
+            $finalResponse = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $viewAnnotation->toArray(), $finalResponse);
         }
 
         return $finalResponse;
@@ -149,10 +144,10 @@ class ActionMiddleware implements MiddlewareInterface
     /**
      * 准备调用action的参数
      * @param Request $request
-     * @param array $routeResult
+     * @param \Imi\Server\Http\Route\RouteResult $routeResult
      * @return array
      */
-    private function prepareActionParams(Request $request, $routeResult)
+    private function prepareActionParams(Request $request, RouteResult $routeResult)
     {
         $callable = $routeResult->callable;
         // 根据动作回调类型获取反射
