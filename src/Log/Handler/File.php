@@ -2,6 +2,7 @@
 namespace Imi\Log\Handler;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\File as UtilFile;
 
 /**
  * @Bean("FileLog")
@@ -95,15 +96,23 @@ class File extends Base
         --$currentFileIndex;
         $currentFileExt = $this->currentFileExt;
         $maxSize = $this->maxSize;
+        $currentNoIndexFileName = $this->currentNoIndexFileName;
         do{
             ++$currentFileIndex;
-            $fileName = $this->currentNoIndexFileName;
+            $fileName = $currentNoIndexFileName;
             if($currentFileIndex > 0)
             {
                 $fileName .= '(' . $currentFileIndex . ')';
             }
             $fileName .= $currentFileExt;
         }while(is_file($fileName) && filesize($fileName) >= $maxSize);
+        // 自动创建目录
+        $dir = dirname($fileName);
+        if(!is_dir($dir))
+        {
+            UtilFile::createDir($dir);
+        }
         return $fileName;
     }
+
 }
