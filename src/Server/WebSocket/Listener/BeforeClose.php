@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\WebSocket\Listener;
 
+use Imi\Worker;
 use Imi\ServerManage;
 use Imi\ConnectContext;
 use Imi\RequestContext;
@@ -21,6 +22,11 @@ class BeforeClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
+        if(!Worker::isWorkerStartAppComplete())
+        {
+            $e->stopPropagation();
+            return;
+        }
         RequestContext::muiltiSet([
             'fd'        =>  $e->fd,
             'server'    =>  $e->getTarget(),
