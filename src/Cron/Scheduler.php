@@ -135,6 +135,16 @@ class Scheduler
     }
 
     /**
+     * 关闭
+     *
+     * @return void
+     */
+    public function close()
+    {
+        $this->coPool->stop();
+    }
+
+    /**
      * 遍历可运行的任务列表
      *
      * @return \Imi\Cron\CronTask[]
