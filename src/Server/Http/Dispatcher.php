@@ -21,6 +21,13 @@ class Dispatcher
     protected $middlewares = [];
 
     /**
+     * 最终使用的中间件列表
+     *
+     * @var array
+     */
+    private $finalMiddlewares;
+
+    /**
      * 调度
      *
      * @param \Imi\Server\Http\Message\Request $request
@@ -37,10 +44,21 @@ class Dispatcher
         return $response;
     }
 
-    protected function getMiddlewares()
+    /**
+     * 获取中间件列表
+     *
+     * @return array
+     */
+    protected function getMiddlewares(): array
     {
-        return array_merge($this->middlewares, [
-            \Imi\Server\Http\Middleware\ActionWrapMiddleware::class,
-        ]);
+        $finalMiddlewares = &$this->finalMiddlewares;
+        if(null === $finalMiddlewares)
+        {
+            return $finalMiddlewares = array_merge($this->middlewares, [
+                \Imi\Server\Http\Middleware\ActionWrapMiddleware::class,
+            ]);
+        }
+        return $finalMiddlewares;
     }
+
 }

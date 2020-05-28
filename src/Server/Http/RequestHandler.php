@@ -36,9 +36,10 @@ class RequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $middlewares = &$this->middlewares;
-        if(isset($middlewares[$this->index]))
+        $index = $this->index;
+        if(isset($middlewares[$index]))
         {
-            $middleware = $middlewares[$this->index];
+            $middleware = $middlewares[$index];
             if(is_object($middleware))
             {
                 $requestHandler = $middleware;

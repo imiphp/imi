@@ -18,6 +18,13 @@ class Dispatcher
      */
     protected $middlewares = [];
 
+    /**
+     * 最终使用的中间件列表
+     *
+     * @var array
+     */
+    private $finalMiddlewares;
+
     public function dispatch(IReceiveData $data)
     {
         $requestHandler = new ReceiveHandler($this->getMiddlewares());
@@ -28,10 +35,21 @@ class Dispatcher
         }
     }
 
-    protected function getMiddlewares()
+    /**
+     * 获取中间件列表
+     *
+     * @return array
+     */
+    protected function getMiddlewares(): array
     {
-        return array_merge($this->middlewares, [
-            \Imi\Server\TcpServer\Middleware\ActionWrapMiddleware::class,
-        ]);
+        $finalMiddlewares = &$this->finalMiddlewares;
+        if(null === $finalMiddlewares)
+        {
+            return $finalMiddlewares = array_merge($this->middlewares, [
+                \Imi\Server\TcpServer\Middleware\ActionWrapMiddleware::class,
+            ]);
+        }
+        return $finalMiddlewares;
     }
+
 }

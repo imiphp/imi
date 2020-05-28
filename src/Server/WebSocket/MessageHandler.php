@@ -35,9 +35,11 @@ class MessageHandler implements IMessageHandler
      */
     public function handle(IFrame $frame)
     {
-        if(isset($this->middlewares[$this->index]))
+        $middlewares = &$this->middlewares;
+        $index = $this->index;
+        if(isset($middlewares[$index]))
         {
-            $middleware = $this->middlewares[$this->index];
+            $middleware = $middlewares[$index];
             if(is_object($middleware))
             {
                 $requestHandler = $middleware;
