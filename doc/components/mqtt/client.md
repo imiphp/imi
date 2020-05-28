@@ -16,7 +16,6 @@
 
 ## 使用
 
-
 **事件监听类：**
 
 ```php
@@ -154,6 +153,14 @@ $client->wait(); // 开始循环接收，直到关闭连接
 | keepAlive | 保活时间 |
 | clean | 清除会话 |
 | will | 遗嘱消息，具体结构看下面的表格 |
+| ssl | 使用 SSL 连接 |
+| sslCertFile | 证书文件 |
+| sslKeyFile | 证书密钥文件 |
+| sslVerifyPeer | 验证服务器端证书 |
+| sslAllowSelfSigned | 允许自签名证书 |
+| sslHostName | 服务器主机名称 |
+| sslCafile | CA 证书 |
+| sslCapath | 证书目录 |
 
 **will 遗嘱消息参数表：**
 
