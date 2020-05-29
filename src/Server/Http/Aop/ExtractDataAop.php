@@ -52,9 +52,10 @@ class ExtractDataAop
                 '$session'  =>  Session::get(),
                 '$this'     =>  $controller,
             ];
+            $headers = &$allData['$headers'];
             foreach ($controllerRequest->getHeaders() as $name => $values)
             {
-                $allData['$headers'][$name] = implode(', ', $values);
+                $headers[$name] = implode(', ', $values);
             }
 
             foreach($annotations as $annotation)

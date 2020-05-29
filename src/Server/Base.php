@@ -230,11 +230,12 @@ abstract class Base
                 }
             });
 
-            if(0 !== ($this->config['configs']['task_worker_num'] ?? -1))
+            $configs = $this->config['configs'] ?? null;
+            if(0 !== ($configs['task_worker_num'] ?? -1))
             {
                 if(
-                    (!isset($this->config['configs']['enable_coroutine']) || $this->config['configs']['enable_coroutine'])
-                    && isset($this->config['configs']['task_enable_coroutine']) && $this->config['configs']['task_enable_coroutine'])
+                    (!isset($configs['enable_coroutine']) || $configs['enable_coroutine'])
+                    && isset($configs['task_enable_coroutine']) && $configs['task_enable_coroutine'])
                 {
                     $this->swooleServer->on('task', function(\Swoole\Server $server, \Swoole\Server\Task $task){
                         try{

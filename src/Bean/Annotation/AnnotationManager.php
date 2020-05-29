@@ -436,12 +436,17 @@ abstract class AnnotationManager
         $result = [];
         foreach($annotationList as $methodName => $annotations)
         {
+            $resultMethodItem = [];
             foreach($annotations as $annotation)
             {
                 if($annotation instanceof $annotationClassName)
                 {
-                    $result[$methodName][] = $annotation;
+                    $resultMethodItem[] = $annotation;
                 }
+            }
+            if($resultMethodItem)
+            {
+                $result[$methodName] = $resultMethodItem;
             }
         }
         return $result;
@@ -469,12 +474,17 @@ abstract class AnnotationManager
         $result = [];
         foreach($annotationList as $propertyName => $annotations)
         {
+            $resultPropertyItem = [];
             foreach($annotations as $annotation)
             {
                 if($annotation instanceof $annotationClassName)
                 {
-                    $result[$propertyName][] = $annotation;
+                    $resultPropertyItem[] = $annotation;
                 }
+            }
+            if($resultPropertyItem)
+            {
+                $result[$propertyName] = $resultPropertyItem;
             }
         }
         return $result;
@@ -502,12 +512,17 @@ abstract class AnnotationManager
         $result = [];
         foreach($annotationList as $constantName => $annotations)
         {
+            $resultConstantItem = [];
             foreach($annotations as $annotation)
             {
                 if($annotation instanceof $annotationClassName)
                 {
-                    $result[$constantName][] = $annotation;
+                    $resultConstantItem[] = $annotation;
                 }
+            }
+            if($resultConstantItem)
+            {
+                $result[$constantName] = $resultConstantItem;
             }
         }
         return $result;

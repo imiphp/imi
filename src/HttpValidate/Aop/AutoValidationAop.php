@@ -45,11 +45,12 @@ class AutoValidationAop
             $data['$get'] = $controllerRequest->get();
             $data['$post'] = $controllerRequest->post();
             $data['$body'] = $controllerRequest->getParsedBody();
-            $data['$headers'] = [];
+            $headers = [];
             foreach ($controllerRequest->getHeaders() as $name => $values)
             {
-                $data['$headers'][$name] = implode(', ', $values);
+                $headers[$name] = implode(', ', $values);
             }
+            $data['$headers'] = $headers;
             $data['$cookie'] = $controllerRequest->getCookieParams();
             $data['$session'] = Session::get();
             $data['$this'] = $controller;

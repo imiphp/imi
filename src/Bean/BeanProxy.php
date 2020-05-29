@@ -473,9 +473,13 @@ class BeanProxy
             $aspectCache = &static::$aspectCache;
         }
         $className = $this->className;
-        if(!isset($aspectCache[$className][$method][$pointType]))
+        if(isset($aspectCache[$className][$method][$pointType]))
         {
-            $aspectCache[$className][$method][$pointType] = [];
+            $tmpItem = $aspectCache[$className][$method][$pointType];
+        }
+        else
+        {
+            $tmpItem = [];
             $list = clone static::$aspects[$className];
             $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method);
             foreach($list as $option)
@@ -555,13 +559,14 @@ class BeanProxy
                     $point = AnnotationManager::getMethodAnnotations($aspectClassName, $methodName, 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType))[0] ?? null;
                     if(null !== $point)
                     {
-                        $aspectCache[$className][$method][$pointType][] = [$aspectClassName, $methodName, $point];
+                        $tmpItem[] = [$aspectClassName, $methodName, $point];
                     }
                 }
             }
+            $aspectCache[$className][$method][$pointType] = $tmpItem;
         }
         
-        foreach($aspectCache[$className][$method][$pointType] as $item)
+        foreach($tmpItem as $item)
         {
             $callback(...$item);
         }

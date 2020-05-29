@@ -245,8 +245,9 @@ class HttpRoute
         $rulesCache = &$this->rulesCache;
         if(isset($rulesCache[$rule]))
         {
-            $fields = $rulesCache[$rule]['fields'];
-            return $rulesCache[$rule]['pattern'];
+            $cache = $rulesCache[$rule];
+            $fields = $cache['fields'];
+            return $cache['pattern'];
         }
         else
         {

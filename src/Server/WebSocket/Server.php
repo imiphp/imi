@@ -65,9 +65,10 @@ class Server extends Base
         $config = $this->getServerInitConfig();
         $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
-        if(!isset($this->config['configs']['open_websocket_protocol']))
+        $thisConfig = &$this->config;
+        if(!isset($thisConfig['configs']['open_websocket_protocol']))
         {
-            $this->config['configs']['open_websocket_protocol'] = true;
+            $thisConfig['configs']['open_websocket_protocol'] = true;
         }
         $this->wss = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
     }
@@ -97,7 +98,8 @@ class Server extends Base
             $this->on('request', [new BeforeRequest, 'handle'], ImiPriority::IMI_MAX);
         });
 
-        if($event = ($this->config['events']['handshake'] ?? true))
+        $events = $this->config['events'] ?? null;
+        if($event = ($events['handshake'] ?? true))
         {
             $this->swoolePort->on('handshake', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
@@ -113,7 +115,7 @@ class Server extends Base
             });
         }
 
-        if($event = ($this->config['events']['message'] ?? true))
+        if($event = ($events['message'] ?? true))
         {
             $this->swoolePort->on('message', is_callable($event) ? $event : function ($server, \Swoole\WebSocket\Frame $frame) {
                 try{
@@ -129,7 +131,7 @@ class Server extends Base
             });
         }
 
-        if($event = ($this->config['events']['close'] ?? true))
+        if($event = ($events['close'] ?? true))
         {
             $this->swoolePort->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
                 try{
@@ -146,7 +148,7 @@ class Server extends Base
             });
         }
 
-        if($event = ($this->config['events']['request'] ?? true))
+        if($event = ($events['request'] ?? true))
         {
             $this->swoolePort->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{

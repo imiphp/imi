@@ -24,20 +24,21 @@ abstract class Args
         $keyName = null;
         for($i = $argBegin; $i < $_SERVER['argc']; ++$i)
         {
-            if(isset($_SERVER['argv'][$i][0]) && '-' === $_SERVER['argv'][$i][0])
+            $argvI = $_SERVER['argv'][$i];
+            if(isset($argvI[0]) && '-' === $argvI[0])
             {
-                $keyName = substr($_SERVER['argv'][$i], 1);
+                $keyName = substr($argvI, 1);
                 static::$cliArgs[$keyName] = true;
             }
             else
             {
                 if(null === $keyName)
                 {
-                    static::$cliArgs[$_SERVER['argv'][$i]] = true;
+                    static::$cliArgs[$argvI] = true;
                 }
                 else
                 {
-                    static::$cliArgs[$keyName] = $_SERVER['argv'][$i];
+                    static::$cliArgs[$keyName] = $argvI;
                     $keyName = null;
                 }
             }

@@ -79,9 +79,10 @@ class Database implements IDatabase
         $matches = $this->parseKeywordText($value);
         if(isset($matches['keywords']))
         {
-            if(isset($matches['keywords'][0]))
+            $keywords = $matches['keywords'];
+            if(isset($keywords[0]))
             {
-                $this->database = $matches['keywords'][0];
+                $this->database = $keywords[0];
             }
             $this->alias = $matches['alias'];
         }

@@ -34,7 +34,8 @@ abstract class Tool
             {
                 throw new \RuntimeException(sprintf('Tool args error!'));
             }
-            if(false === strpos($_SERVER['argv'][1], '/'))
+            $argv1 = $_SERVER['argv'][1];
+            if(false === strpos($argv1, '/'))
             {
                 if(Args::get('h'))
                 {
@@ -57,7 +58,7 @@ abstract class Tool
                 }
             }
             // 工具名/操作名
-            list(static::$toolName, static::$toolOperation) = explode('/', $_SERVER['argv'][1]);
+            list(static::$toolName, static::$toolOperation) = explode('/', $argv1);
             static::init();
             Imi::setProcessName('tool');
         }
@@ -197,11 +198,13 @@ abstract class Tool
             if(isset($pool['sync']))
             {
                 $pool = $pool['sync'];
-                PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                $poolPool = $pool['pool'];
+                PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
             }
             else if(isset($pool['pool']['syncClass']))
             {
-                PoolManager::addName($name, $pool['pool']['syncClass'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                $poolPool = $pool['pool'];
+                PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
             }
         }
         // 缓存初始化

@@ -65,12 +65,13 @@ class Server extends Base
         $config = $this->getServerInitConfig();
         $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
-        if(!isset($this->config['configs']['open_http_protocol']))
+        $thisConfig = &$this->config;
+        if(!isset($thisConfig['configs']['open_http_protocol']))
         {
-            $this->config['configs']['open_http_protocol'] = true;
+            $thisConfig['configs']['open_http_protocol'] = true;
         }
         $this->https = defined('SWOOLE_SSL') && Bit::has($config['sockType'], SWOOLE_SSL);
-        $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
+        $this->http2 = $thisConfig['configs']['open_http2_protocol'] ?? false;
     }
 
     /**
@@ -143,7 +144,8 @@ class Server extends Base
 
         // Swoole 服务器对象事件监听
 
-        if($event = ($this->config['events']['request'] ?? true))
+        $events = $this->config['events'] ?? null;
+        if($event = ($events['request'] ?? true))
         {
             $this->swoolePort->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
@@ -159,7 +161,7 @@ class Server extends Base
             });
         }
 
-        if($event = ($this->config['events']['close'] ?? false) || $this->http2)
+        if($event = ($events['close'] ?? false) || $this->http2)
         {
             $this->swoolePort->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
                 try{

@@ -135,12 +135,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $realClass = $this->__realClass;
         if(method_exists($this, $methodName))
         {
-            if(!isset(self::$__methodReference[$realClass][$methodName]))
+            $__methodReference = &self::$__methodReference;
+            if(!isset($__methodReference[$realClass][$methodName]))
             {
                 $refMethod = ReflectionContainer::getMethodReflection(static::class, $methodName);
-                self::$__methodReference[$realClass][$methodName] = $refMethod->returnsReference();
+                $__methodReference[$realClass][$methodName] = $refMethod->returnsReference();
             }
-            if(self::$__methodReference[$realClass][$methodName])
+            if($__methodReference[$realClass][$methodName])
             {
                 return $this->$methodName();
             }

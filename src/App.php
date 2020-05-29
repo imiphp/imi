@@ -363,11 +363,13 @@ abstract class App
                 if(isset($pool['async']))
                 {
                     $pool = $pool['async'];
-                    PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                    $poolPool = $pool['pool'];
+                    PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
                 }
                 else if(isset($pool['pool']['asyncClass']))
                 {
-                    PoolManager::addName($name, $pool['pool']['asyncClass'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                    $poolPool = $pool['pool'];
+                    PoolManager::addName($name, $poolPool['asyncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
                 }
             }
         }
@@ -384,11 +386,13 @@ abstract class App
                 if(isset($pool['sync']))
                 {
                     $pool = $pool['sync'];
-                    PoolManager::addName($name, $pool['pool']['class'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                    $poolPool = $pool['pool'];
+                    PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
                 }
                 else if(isset($pool['pool']['syncClass']))
                 {
-                    PoolManager::addName($name, $pool['pool']['syncClass'], new PoolConfig($pool['pool']['config']), $pool['resource']);
+                    $poolPool = $pool['pool'];
+                    PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
                 }
             }
         }

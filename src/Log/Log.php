@@ -156,7 +156,8 @@ abstract class Log
     private static function getErrorFile()
     {
         $backtrace = debug_backtrace(0, 3);
-        return [$backtrace[2]['file'] ?? '', $backtrace[2]['line'] ?? 0];
+        $secondItem = $backtrace[2] ?? null;
+        return [$secondItem['file'] ?? '', $secondItem['line'] ?? 0];
     }
     
     /**

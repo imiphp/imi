@@ -64,7 +64,8 @@ class Server extends Base
      */
     protected function __bindEvents()
     {
-        if($event = ($this->config['events']['connect'] ?? true))
+        $events = $this->config['events'] ?? null;
+        if($event = ($events['connect'] ?? true))
         {
             $this->swoolePort->on('connect', is_callable($event) ? $event : function(\Swoole\Server $server, $fd, $reactorID){
                 try{
@@ -81,7 +82,7 @@ class Server extends Base
             });
         }
         
-        if($event = ($this->config['events']['receive'] ?? true))
+        if($event = ($events['receive'] ?? true))
         {
             $this->swoolePort->on('receive', is_callable($event) ? $event : function(\Swoole\Server $server, $fd, $reactorID, $data){
                 try{
@@ -99,7 +100,7 @@ class Server extends Base
             });
         }
     
-        if($event = ($this->config['events']['close'] ?? true))
+        if($event = ($events['close'] ?? true))
         {
             $this->swoolePort->on('close', is_callable($event) ? $event : function(\Swoole\Server $server, $fd, $reactorID){
                 try{

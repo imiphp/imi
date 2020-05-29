@@ -364,11 +364,12 @@ class Redis implements IGroupHandler
      */
     public function getFds(string $groupName): array
     {
-        return $this->useRedis(function($redis) use($groupName){
+        $groups = $this->groups;
+        return $this->useRedis(function($redis) use($groupName, $groups){
             $key = $this->getGroupNameKey($groupName);
-            if($this->groups[$groupName]['maxClient'] > 0)
+            if($groups[$groupName]['maxClient'] > 0)
             {
-                return $redis->sRandMember($key, $this->groups[$groupName]['maxClient']);
+                return $redis->sRandMember($key, $groups[$groupName]['maxClient']);
             }
             else
             {

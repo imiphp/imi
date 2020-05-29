@@ -134,7 +134,8 @@ class Logger extends AbstractLogger
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
-            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
+            $key = $i + 1;
+            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$key]['file']) && 'AbstractLogger.php' !== basename($backtrace[$key]['file']))
             {
                 $index = $i + 2;
                 break;
@@ -158,13 +159,15 @@ class Logger extends AbstractLogger
         $realClassName = static::__getRealClassName();
         foreach($backtrace as $i => $item)
         {
-            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$i + 1]['file']) && 'AbstractLogger.php' !== basename($backtrace[$i + 1]['file']))
+            $key = $i + 1;
+            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$key]['file']) && 'AbstractLogger.php' !== basename($backtrace[$key]['file']))
             {
-                $index = $i + 1;
+                $index = $key;
                 break;
             }
         }
-        return [$backtrace[$index]['file'] ?? '', $backtrace[$index]['line'] ?? 0];
+        $backTraceItem = $backtrace[$index] ?? null;
+        return [$backTraceItem['file'] ?? '', $backTraceItem['line'] ?? 0];
     }
 
     /**

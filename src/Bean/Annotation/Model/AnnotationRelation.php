@@ -171,14 +171,15 @@ class AnnotationRelation
         $classRelations = &$this->classRelations;
         if(isset($classRelations[$annotationClassName]))
         {
-            foreach($classRelations[$annotationClassName] as $i => $relation)
+            $classRelationsItem = &$classRelations[$annotationClassName];
+            foreach($classRelationsItem as $i => $relation)
             {
                 if($relation->getClass() === $className)
                 {
-                    unset($classRelations[$annotationClassName][$i]);
+                    unset($classRelationsItem[$i]);
                 }
             }
-            $classRelations[$annotationClassName] = array_values($classRelations[$annotationClassName]);
+            $classRelationsItem = array_values($classRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -196,14 +197,15 @@ class AnnotationRelation
         $methodRelations = &$this->methodRelations;
         if(isset($methodRelations[$annotationClassName]))
         {
-            foreach($methodRelations[$annotationClassName] as $i => $relation)
+            $methodRelationsItem = &$methodRelations[$annotationClassName];
+            foreach($methodRelationsItem as $i => $relation)
             {
                 if($relation->getClass() === $className && $relation->getMethod() === $methodName)
                 {
-                    unset($methodRelations[$annotationClassName][$i]);
+                    unset($methodRelationsItem[$i]);
                 }
             }
-            $methodRelations[$annotationClassName] = array_values($methodRelations[$annotationClassName]);
+            $methodRelationsItem = array_values($methodRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -221,14 +223,15 @@ class AnnotationRelation
         $propertyRelations = &$this->propertyRelations;
         if(isset($propertyRelations[$annotationClassName]))
         {
-            foreach($propertyRelations[$annotationClassName] as $i => $relation)
+            $propertyRelationsItem = &$propertyRelations[$annotationClassName];
+            foreach($propertyRelationsItem as $i => $relation)
             {
                 if($relation->getClass() === $className && $relation->getProperty() === $propertyName)
                 {
-                    unset($propertyRelations[$annotationClassName][$i]);
+                    unset($propertyRelationsItem[$i]);
                 }
             }
-            $propertyRelations[$annotationClassName] = array_values($propertyRelations[$annotationClassName]);
+            $propertyRelationsItem = array_values($propertyRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -246,14 +249,15 @@ class AnnotationRelation
         $constantRelations = &$this->constantRelations;
         if(isset($constantRelations[$annotationClassName]))
         {
-            foreach($constantRelations[$annotationClassName] as $i => $relation)
+            $constantRelationsItem = &$constantRelations[$annotationClassName];
+            foreach($constantRelationsItem as $i => $relation)
             {
                 if($relation->getClass() === $className && $relation->getConstant() === $constantName)
                 {
-                    unset($constantRelations[$annotationClassName][$i]);
+                    unset($constantRelationsItem[$i]);
                 }
             }
-            $constantRelations[$annotationClassName] = array_values($constantRelations[$annotationClassName]);
+            $constantRelationsItem = array_values($constantRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
