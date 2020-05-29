@@ -38,6 +38,7 @@
 * [Http2](components/httpserver/http2.md)
 * [跨域和 OPTIONS 请求](components/httpserver/cros.md)
 * [HTTPS 配置](components/server/ssl.md)
+* [Swagger API 文档生成](dev/generate/swagger.md)
 
 ## WebSocket 服务
 
@@ -126,7 +127,6 @@
 * [进程池-Swoole](components/process-pool/swoole.md)
 * [进程池-imi](components/process-pool/imi.md)
 * [热更新](components/hotupdate/index.md)
-* [Phar 支持](components/phar/index.md)
 * [雪花算法发号器](components/snowflake.md)
 
 ## 数据结构
@@ -176,7 +176,6 @@
   * [模型生成](dev/generate/model.md)
   * [表生成](dev/generate/table.md)
   * [控制器生成](dev/generate/controller.md)
-  * [Swagger 文档生成](dev/generate/swagger.md)
 * [进程工具](dev/process.md)
 * [自己动手开发命令行工具](dev/tool.md)
 
