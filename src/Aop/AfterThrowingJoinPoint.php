@@ -17,7 +17,7 @@ class AfterThrowingJoinPoint extends JoinPoint
 
     public function __construct($type, $method, $args, $target, $_this, \Throwable $throwable)
     {
-        parent::__construct(...func_get_args());
+        parent::__construct($type, $method, $args, $target, $_this);
         $this->throwable = $throwable;
     }
 
