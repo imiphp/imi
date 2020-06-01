@@ -111,7 +111,7 @@ interface IStatement extends \Iterator
      * @param array $ctor_args
      * @return mixed
      */
-    public function fetchObject(string $className = "stdClass", array $ctorArgs = null);
+    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null);
 
     /**
      * 检索一个语句属性

@@ -225,7 +225,7 @@ class Statement extends BaseStatement implements IStatement
      * @param array $ctor_args
      * @return mixed
      */
-    public function fetchObject(string $className = "stdClass", array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
     {
         return $this->statement->fetchObject($className, $ctorArgs);
     }
