@@ -143,17 +143,20 @@ abstract class Base
     {
         if(!$this->isSubServer)
         {
-            $this->swooleServer->on('start', function(\Swoole\Server $server){
-                try{
-                    Event::trigger('IMI.MAIN_SERVER.START', [
-                        'server' => $this,
-                    ], $this, StartEventParam::class);
-                }
-                catch(\Throwable $ex)
-                {
-                    App::getBean('ErrorLog')->onException($ex);
-                }
-            });
+            if(SWOOLE_BASE !== $this->swooleServer->mode)
+            {
+                $this->swooleServer->on('start', function(\Swoole\Server $server){
+                    try{
+                        Event::trigger('IMI.MAIN_SERVER.START', [
+                            'server' => $this,
+                        ], $this, StartEventParam::class);
+                    }
+                    catch(\Throwable $ex)
+                    {
+                        App::getBean('ErrorLog')->onException($ex);
+                    }
+                });
+            }
 
             $this->swooleServer->on('shutdown', function(\Swoole\Server $server){
                 try{

@@ -2,23 +2,23 @@
 namespace Imi\Listener;
 
 use Imi\App;
-use Imi\Bean\Annotation\Listener;
-use Imi\Server\Event\Param\StartEventParam;
-use Imi\Server\Event\Listener\IStartEventListener;
-use Imi\ServerManage;
 use Imi\Util\Imi;
+use Imi\ServerManage;
+use Imi\Bean\Annotation\Listener;
+use Imi\Server\Event\Param\ManagerStartEventParam;
+use Imi\Server\Event\Listener\IManagerStartEventListener;
 
 /**
- * @Listener(eventName="IMI.MAIN_SERVER.START")
+ * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START")
  */
-class ServerStart implements IStartEventListener
+class ServerStart implements IManagerStartEventListener
 {
     /**
      * 事件处理方法
-     * @param StartEventParam $e
+     * @param ManagerStartEventParam $e
      * @return void
      */
-    public function handle(StartEventParam $e)
+    public function handle(ManagerStartEventParam $e)
     {
         Imi::setProcessName('master');
         echo 'Server start', PHP_EOL;
