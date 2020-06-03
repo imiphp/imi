@@ -7,4 +7,4 @@ $loader = require_once $vendor . 'autoload.php';
 
 \Imi\App::setDebug(true);
 
-require dirname(__DIR__, 4) . '/bin/imi.php';
+require dirname(__DIR__, 4) . '/bin/imi-cli.php';
