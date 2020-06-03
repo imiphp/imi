@@ -80,6 +80,13 @@ hello imi!
 
 请求信息对象，可以用于获取参数、请求头等，遵循 PSR-7 标准。
 
+该对象同样可以用如下方法全局调用：
+
+```php
+/** @var \Imi\Server\Http\Message\Request $request */
+$request = \Imi\RequestContext::get('request');
+```
+
 #### 获取 GET 参数
 
 `public function get($name = null, $default = null)`
@@ -200,6 +207,13 @@ string(47) "/xxx.html"
 ### $response
 
 响应对象，遵循 PSR-7 标准。
+
+该对象同样可以用如下方法全局调用：
+
+```php
+/** @var \Imi\Server\Http\Message\Response $request */
+$response = \Imi\RequestContext::get('response');
+```
 
 直接对该对象操作无效，需要如下使用才可。
 
