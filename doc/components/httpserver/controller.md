@@ -204,6 +204,12 @@ array(11) {
 string(47) "/xxx.html"
 ```
 
+#### 获取客户端IP地址
+
+```php
+$ip = $this->request->getServerParam('remote_addr');
+```
+
 ### $response
 
 响应对象，遵循 PSR-7 标准。
