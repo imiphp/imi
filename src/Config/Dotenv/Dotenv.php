@@ -1,39 +1,34 @@
 <?php
 namespace Imi\Config\Dotenv;
 
-use Dotenv\Dotenv as DotenvDotenv;
-use Imi\Util\File;
-
-class Dotenv extends DotenvDotenv
+class Dotenv
 {
     /**
      * 路径数组
      *
      * @var string[]
      */
-    private $paths;
+    private array $paths;
 
-    public function __construct($paths)
+    /**
+     * @var \Dotenv\Dotenv
+     */
+    private \Dotenv\Dotenv $dotenv;
+
+    public function __construct(array $paths)
     {
-        parent::__construct('');
         $this->paths = $paths;
+        $this->dotenv = $dotenv = \Dotenv\Dotenv::createImmutable($paths);
     }
 
-    public function init()
+    /**
+     * 初始化
+     *
+     * @return void
+     */
+    public function init(): void
     {
-        foreach($_ENV as $name => $value)
-        {
-            $this->loader->clearEnvironmentVariable($name);
-        }
-        foreach($this->paths as $path)
-        {
-            $filePath = File::path($path, '.env');
-            if(is_file($filePath))
-            {
-                $obj = new DotenvDotenv($path);
-                $obj->overload();
-            }
-        }
+        $this->dotenv->load();
     }
 
 }
