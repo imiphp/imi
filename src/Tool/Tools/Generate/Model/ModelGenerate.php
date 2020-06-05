@@ -92,7 +92,7 @@ class ModelGenerate
         if(null === $modelPath)
         {
             echo 'Namespace ', $namespace, ' cannot found', PHP_EOL;
-            exit;
+            return;
         }
         echo 'modelPath: ', $modelPath, PHP_EOL;
         File::createDir($modelPath);
@@ -115,7 +115,7 @@ class ModelGenerate
                 if(null === $path)
                 {
                     echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
-                    exit;
+                    return;
                 }
                 File::createDir($path);
                 $basePath = $path . '/Base';
@@ -134,7 +134,7 @@ class ModelGenerate
                         if(null === $path)
                         {
                             echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
-                            exit;
+                            return;
                         }
                         File::createDir($path);
                         $basePath = $path . '/Base';
