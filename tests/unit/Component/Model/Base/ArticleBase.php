@@ -8,7 +8,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
 /**
- * ArticleBase
+ * tb_article 基类
  * @Entity
  * @Table(name="tb_article", id={"id"})
  * @DDL("CREATE TABLE `tb_article` (
@@ -17,7 +17,7 @@ use Imi\Model\Annotation\Entity;
   `content` mediumtext NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
  * @property int $id 
  * @property string $title 
  * @property string $content 

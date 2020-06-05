@@ -353,7 +353,9 @@ class ModelGenerate
     public function getDDL(IQuery $query, string $table): string
     {
         $result = $query->execute('show create table ' . $table);
-        return $result->get()['Create Table'] ?? '';
+        $sql = $result->get()['Create Table'] ?? '';
+        $sql = preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
+        return $sql;
     }
 
 }

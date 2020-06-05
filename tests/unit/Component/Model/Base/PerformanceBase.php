@@ -8,14 +8,14 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
 /**
- * PerformanceBase
+ * tb_performance 基类
  * @Entity
  * @Table(name="tb_performance", id={"id"})
  * @DDL("CREATE TABLE `tb_performance` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
  * @property int $id 
  * @property string $value 
  */

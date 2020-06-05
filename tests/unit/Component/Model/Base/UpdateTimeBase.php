@@ -8,7 +8,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
 /**
- * UpdateTimeBase
+ * tb_update_time 基类
  * @Entity
  * @Table(name="tb_update_time", id={"id"})
  * @DDL("CREATE TABLE `tb_update_time` (
@@ -20,8 +20,8 @@ use Imi\Model\Annotation\Entity;
   `int` int(11) DEFAULT NULL,
   `bigint` bigint(20) DEFAULT NULL,
   `year` year(4) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8")
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
  * @property int $id 
  * @property string $date 
  * @property string $time 
