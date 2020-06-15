@@ -41,7 +41,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var array
      */
-    protected $result;
+    protected $result = [];
 
     /**
      * 最后执行过的SQL语句
@@ -216,6 +216,10 @@ class Statement extends BaseStatement implements IStatement
             if(true === $result)
             {
                 $result = $statement->fetchAll();
+                if(false === $result)
+                {
+                    $result = [];
+                }
             }
             else if(false === $result)
             {
