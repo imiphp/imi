@@ -131,6 +131,10 @@ class Statement extends BaseStatement implements IStatement
     public function errorInfo(): string
     {
         $errorInfo = $this->statement->errorInfo();
+        if(null === $errorInfo[1] && null === $errorInfo[2])
+        {
+            return '';
+        }
         return $errorInfo[1] . ':' . $errorInfo[2];
     }
 

@@ -61,7 +61,6 @@ class Driver extends Base implements IDb
      * 'password'   => '数据库密码',
      * 'database'   => '数据库名',
      * 'port'       => 'MySQL端口 默认3306 可选参数',
-     * 'timeout'    => '建立连接超时时间',
      * 'charset'    => '字符集',
      * 'options'    => [], // PDO连接选项
      * ]
@@ -258,6 +257,10 @@ class Driver extends Base implements IDb
         else
         {
             $errorInfo = $this->instance->errorInfo();
+            if(null === $errorInfo[1] && null === $errorInfo[2])
+            {
+                return '';
+            }
             return $errorInfo[1] . ':' . $errorInfo[2];
         }
     }

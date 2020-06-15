@@ -49,7 +49,7 @@ class Result implements IResult
         if($statement instanceof IStatement)
         {
             $this->statement = $statement;
-            $this->isSuccess = '00000' === $statement->errorCode();
+            $this->isSuccess = '' === $statement->errorInfo();
             $this->statementRecords = $statement->fetchAll();
         }
         else
