@@ -277,23 +277,27 @@ class HotUpdateProcess extends BaseProcess
         ];
         $content = serialize($data);
         $content = pack('N', strlen($content)) . $content;
-        $whileCount = 0;
-        while(($count = count($this->conns)) <= 0 && $whileCount < 100)
-        {
-            usleep(10000);
-            ++$whileCount;
-        }
-        if($count > 0)
-        {
-            foreach($this->conns as $conn)
+        do {
+            $whileCount = 0;
+            while(($count = count($this->conns)) <= 0 && $whileCount < 100)
             {
-                fwrite($conn, $content);
+                usleep(10000);
+                ++$whileCount;
             }
-        }
-        else
-        {
-            Log::warning('Not found buildRuntime tool connection');
-        }
+            if($count > 0)
+            {
+                foreach($this->conns as $conn)
+                {
+                    fwrite($conn, $content);
+                }
+                return;
+            }
+            else
+            {
+                Log::warning('Not found buildRuntime tool connection, retry run buildRuntime');
+                $this->initBuildRuntime();
+            }
+        } while(true);
     }
 
     /**
