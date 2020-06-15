@@ -222,7 +222,7 @@ class Statement extends BaseStatement implements IStatement
                 throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
             }
         }
-        $this->result = $result;
+        $this->result = (true === $result ? [] : $result);
         return true;
     }
 
