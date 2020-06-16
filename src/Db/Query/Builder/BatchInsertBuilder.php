@@ -27,10 +27,10 @@ class BatchInsertBuilder extends BaseBuilder
         {
             throw new \RuntimeException('Batch insert must have at least 1 data');
         }
-        $fields = $safeFields = [];
-        foreach($list[0] as $key => $value)
+        $fields = array_keys($list[0]);
+        $safeFields = [];
+        foreach($fields as $key)
         {
-            $fields[] = $key;
             $safeFields[] = $this->parseKeyword($key);
         }
         $sql = 'insert into ' . $option->table . '(' . implode(',', $safeFields) . ') values ';

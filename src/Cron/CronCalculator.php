@@ -262,11 +262,7 @@ class CronCalculator
             }
         }
         rsort($negatives, SORT_NUMERIC);
-        foreach($negatives as $value)
-        {
-            $list[] = $value;
-        }
-        return array_values($list);
+        return array_values(array_merge($list, $negatives));
     }
 
     /**

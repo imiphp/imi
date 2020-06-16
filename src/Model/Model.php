@@ -80,11 +80,10 @@ abstract class Model extends BaseModel
             if(is_array($ids[0]))
             {
                 // 键值数组where条件
-                $keys = [];
+                $keys = array_keys($ids[0]);
                 $bindValues = [];
                 foreach($ids[0] as $k => $v)
                 {
-                    $keys[] = $k;
                     $bindValues[':' . $k] = $v;
                 }
                 $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), function(IQuery $query) use($keys){
