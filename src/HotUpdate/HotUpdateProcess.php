@@ -80,25 +80,11 @@ class HotUpdateProcess extends BaseProcess
     private $buildRuntimePipes = null;
 
     /**
-     * sock 文件名
-     *
-     * @var string
-     */
-    private $sockFile;
-
-    /**
      * @Inject("ErrorLog")
      *
      * @var \Imi\Log\ErrorLog
      */
     protected $errorLog;
-
-    /**
-     * 连接集合
-     *
-     * @var resource[]
-     */
-    private $conns = [];
 
     /**
      * 开始时间
@@ -141,7 +127,6 @@ class HotUpdateProcess extends BaseProcess
             $this->defaultPath = Imi::getNamespacePaths(App::getNamespace());
         }
         $this->excludePaths[] = Imi::getRuntimePath();
-        $this->startSocketServer();
         echo 'Process [hotUpdate] start', PHP_EOL;
         $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
@@ -181,7 +166,6 @@ class HotUpdateProcess extends BaseProcess
                     $this->initBuildRuntime();
                     $this->startBuildRuntimeTimer();
                 }
-                $this->beginTime = microtime(true);
                 $this->beginBuildRuntime($changedFiles);
             }
         }
@@ -240,7 +224,6 @@ class HotUpdateProcess extends BaseProcess
             'changedFilesFile'  =>  $this->changedFilesFile,
             'imi-runtime'       =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
             'confirm'           =>  true,
-            'sock'              =>  $this->sockFile,
         ]);
         static $descriptorspec = [
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
@@ -261,6 +244,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function beginBuildRuntime($changedFiles)
     {
+        $this->beginTime = microtime(true);
         $result = null;
         Event::trigger('IMI.HOTUPDATE.BEGIN_BUILD', [
             'changedFiles'      =>  $changedFiles,
@@ -272,32 +256,39 @@ class HotUpdateProcess extends BaseProcess
             return $result;
         }
         $this->building = true;
-        $data = [
-            'action'    =>  'buildRuntime',
-        ];
-        $content = serialize($data);
-        $content = pack('N', strlen($content)) . $content;
-        do {
-            $whileCount = 0;
-            while(($count = count($this->conns)) <= 0 && $whileCount < 100)
+        try {
+            $status = proc_get_status($this->buildRuntimeHandler);
+            if(!($status['running'] ?? false))
             {
-                usleep(10000);
-                ++$whileCount;
-            }
-            if($count > 0)
-            {
-                foreach($this->conns as $conn)
-                {
-                    fwrite($conn, $content);
-                }
-                return;
-            }
-            else
-            {
-                Log::warning('Not found buildRuntime tool connection, retry run buildRuntime');
                 $this->initBuildRuntime();
             }
-        } while(true);
+            $writeContent = "y\n";
+            if(strlen($writeContent) !== fwrite($this->buildRuntimePipes[0], $writeContent))
+            {
+                throw new \RuntimeException('Send to buildRuntime process failed');
+            }
+            $content = '';
+            while($tmp = fgets($this->buildRuntimePipes[1]))
+            {
+                $content = $tmp;
+            }
+            $result = json_decode($content, true);
+            if('Build app runtime complete' !== trim($result))
+            {
+                echo $result, PHP_EOL, 'Build runtime failed!', PHP_EOL;
+                return;
+            }
+            // 清除各种缓存
+            $this->clearCache();
+            echo 'Build time use: ', microtime(true) - $this->beginTime, ' sec', PHP_EOL;
+            // 执行重新加载
+            echo 'Reloading server...', PHP_EOL;
+            Imi::reloadServer();
+        } catch(\Throwable $th) {
+            throw $th;
+        } finally {
+            $this->building = false;
+        }
     }
 
     /**
@@ -335,103 +326,6 @@ class HotUpdateProcess extends BaseProcess
         {
             $closePipes($this->buildRuntimePipes);
             $this->buildRuntimePipes = null;
-        }
-    }
-
-    /**
-     * 开始 Unix Socket 服务
-     *
-     * @return void
-     */
-    private function startSocketServer()
-    {
-        imigo(function(){
-            $this->sockFile = '/tmp/imi.' . App::get(ProcessAppContexts::MASTER_PID) . '.hotupdate.sock';
-            if(is_file($this->sockFile))
-            {
-                unlink($this->sockFile);
-            }
-            $this->socket = stream_socket_server('unix://' . $this->sockFile, $errno, $errstr);
-            if(false === $this->socket)
-            {
-                throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %', $errno, $errstr, $this->sockFile));
-            }
-            while(true)
-            {
-                $arrRead = [$this->socket];
-                $arrWrite = [];
-                if(stream_select($arrRead, $arrWrite, $arrWrite, null))
-                {
-                    $conn = stream_socket_accept($this->socket, 1);
-                    if(false === $conn)
-                    {
-                        continue;
-                    }
-                    imigo(function() use($conn){
-                        $this->parseConn($conn);
-                    });
-                }
-            }
-        });
-    }
-
-    /**
-     * 处理连接
-     *
-     * @param resource $conn
-     * @return void
-     */
-    private function parseConn($conn)
-    {
-        $this->conns[(int)$conn] = $conn;
-        try {
-            stream_set_timeout($conn, 60);
-            while(true)
-            {
-                try {
-                    $meta = fread($conn, 4);
-                    if('' === $meta)
-                    {
-                        if(feof($conn))
-                        {
-                            return;
-                        }
-                        continue;
-                    }
-                    if(false === $meta)
-                    {
-                        return;
-                    }
-                    $length = unpack('N', $meta)[1];
-                    $data = fread($conn, $length);
-                    if(false === $data || !isset($data[$length - 1]))
-                    {
-                        return;
-                    }
-                    $result = unserialize($data);
-                    switch($result['action'] ?? null)
-                    {
-                        case 'buildRuntimeResult':
-                            $this->building = false;
-                            if("Build app runtime complete" !== trim($result['result']))
-                            {
-                                echo $result['result'], PHP_EOL, 'Build runtime failed!', PHP_EOL;
-                                break;
-                            }
-                            // 清除各种缓存
-                            $this->clearCache();
-                            echo 'Build time use: ', microtime(true) - $this->beginTime, ' sec', PHP_EOL;
-                            // 执行重新加载
-                            echo 'Reloading server...', PHP_EOL;
-                            Imi::reloadServer();
-                            break;
-                    }
-                } catch(\Throwable $th) {
-                    $this->errorLog->onException($th);
-                }
-            }
-        } finally {
-            unset($this->conns[(int)$conn]);
         }
     }
 
