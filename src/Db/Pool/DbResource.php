@@ -30,8 +30,7 @@ class DbResource extends BasePoolResource
     public function open()
     {
         $db = $this->db;
-        $db->open();
-        return $db->isConnected();
+        return $db->open();
     }
 
     /**
