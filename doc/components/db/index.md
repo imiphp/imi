@@ -56,6 +56,10 @@ return [
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
+                // 使用 hook pdo 驱动（缺省默认）
+                // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 Swoole MySQL 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -105,6 +109,10 @@ return [
                 // 'port'    => '3306',
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
+                // 使用 hook pdo 驱动（缺省默认）
+                // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 Swoole MySQL 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -167,6 +175,10 @@ return [
                     // 'timeout' => '建立连接超时时间',
                     // 'charset' => '',
                     // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+                    // 使用 hook pdo 驱动（缺省默认）
+                    // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                    // 使用 Swoole MySQL 驱动
+                    // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                 ],
             ],
             // 异步池子，worker进程使用
@@ -187,6 +199,10 @@ return [
                         // 'timeout' => '建立连接超时时间',
                         // 'charset' => '',
                         // 'options' => [], // PDO连接选项
+                        // 使用 hook pdo 驱动（缺省默认）
+                        // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                        // 使用 Swoole MySQL 驱动
+                        // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                     ],
                     [
                         'host'		=> '127.0.0.2',
@@ -196,6 +212,10 @@ return [
                         // 'timeout' => '建立连接超时时间',
                         // 'charset' => '',
                         // 'options' => [], // PDO连接选项
+                        // 使用 hook pdo 驱动（缺省默认）
+                        // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                        // 使用 Swoole MySQL 驱动
+                        // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                     ]
                 ],
             ],

@@ -166,6 +166,8 @@
 
 * [注入值注解](annotations/injectValue.md)
 * [方法参数过滤器](annotations/filterArg.md)
+* [编写自定义注解](annotations/annotation.md)
+* [注解管理器](annotations/annotationManager.md)
 * [注解相关问题](annotations/qa.md)
 
 ## 开发工具
