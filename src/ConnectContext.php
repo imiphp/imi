@@ -215,6 +215,24 @@ abstract class ConnectContext
     }
 
     /**
+     * 绑定一个标记到当前连接，如果已绑定返回false
+     *
+     * @param string $flag
+     * @param integer $fd
+     * @return boolean
+     */
+    public static function bindNx(string $flag, ?int $fd = null)
+    {
+        if(!$fd)
+        {
+            $fd = RequestContext::get('fd');
+        }
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        return $connectionBinder->bindNx($flag, $fd);
+    }
+
+    /**
      * 取消绑定
      *
      * @param string $flag

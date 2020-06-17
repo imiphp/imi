@@ -45,6 +45,15 @@ $memberId = 1; // 用户标识符
 ConnectContext::bind($memberId);
 ```
 
+### 绑定连接，如果已绑定返回false
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+ConnectContext::bindNx($memberId);
+```
+
 ### 恢复连接数据
 
 ```php
