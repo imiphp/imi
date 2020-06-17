@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Server\ConnectContext\Listener;
 
+use Imi\App;
 use Imi\Worker;
 use Imi\Util\Imi;
 use Imi\ServerManage;
@@ -34,7 +35,7 @@ class WorkerStart implements IWorkerStartEventListener
                     {
                         $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
                     }
-                    $server->getBean('ConnectionBinder');
+                    App::getBean('ConnectionBinder');
                 }
             }
         }
