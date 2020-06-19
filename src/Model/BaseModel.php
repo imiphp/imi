@@ -347,11 +347,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected function __getCamelName($name)
     {
-        if(!isset(self::$__camelCache[$name]))
+        $__camelCache = &self::$__camelCache;
+        if(!isset($__camelCache[$name]))
         {
-            self::$__camelCache[$name] = Text::toCamelName($name);
+            return $__camelCache[$name] = Text::toCamelName($name);
         }
-        return self::$__camelCache[$name];
+        return $__camelCache[$name];
     }
 
     /**
@@ -416,11 +417,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $class = static::__getRealClassName();
         }
-        if(!isset(self::$__metas[$class]))
+        $__metas = &self::$__metas;
+        if(!isset($__metas[$class]))
         {
-            self::$__metas[$class] = new Meta($class);
+            return $__metas[$class] = new Meta($class);
         }
-        return self::$__metas[$class];
+        return $__metas[$class];
     }
 
 }
