@@ -131,14 +131,14 @@
 
 ## 数据结构
 
-* [Atomic](components/struct/atomic.md)
-* [Channel](components/struct/co-channel.md)
-* [MemoryTable](components/struct/memory-table.md)
-* [Enum](components/struct/enum.md)
-* [ArrayData](components/struct/ArrayData.md)
-* [LazyArrayObject](components/struct/LazyArrayObject.md)
-* [ArrayList](components/struct/ArrayList.md)
-* [FilterableList](components/struct/FilterableList.md)
+* [Atomic(原子性)](components/struct/atomic.md)
+* [Channel(通道)](components/struct/co-channel.md)
+* [MemoryTable(内存表)](components/struct/memory-table.md)
+* [Enum(枚举)](components/struct/enum.md)
+* [ArrayData(数组数据)](components/struct/ArrayData.md)
+* [LazyArrayObject(智能数组对象)](components/struct/LazyArrayObject.md)
+* [ArrayList(数组列表)](components/struct/ArrayList.md)
+* [FilterableList(过滤器列表)](components/struct/FilterableList.md)
 
 ## 工具类
 
