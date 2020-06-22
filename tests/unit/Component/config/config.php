@@ -330,4 +330,18 @@ return [
         ],
     ],
     'yurun2'   =>  imiGetEnv('yurun'),
+    'tools'  =>  [
+        'generate/model'    =>  [
+            'namespace' =>  [
+                'Imi\Test\Component\Model' =>  [
+                    'tables'    =>  [
+                        'tb_tree'
+                    ],
+                    'withRecords'   =>  [
+                        'tb_tree',
+                    ],
+                ],
+            ]
+        ],
+    ],
 ];
