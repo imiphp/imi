@@ -265,6 +265,23 @@ class Driver extends Base implements IDb
     }
 
     /**
+     * 批量执行 SQL，返回查询结果
+     *
+     * @param string $sql
+     * @return array
+     */
+    public function batchExec(string $sql): array
+    {
+        $result = [];
+        foreach(SqlUtil::parseMultiSql($sql) as $itemSql)
+        {
+            $queryResult = $this->query($itemSql);
+            $result[] = $queryResult->fetchAll();
+        }
+        return $result;
+    }
+
+    /**
      * 取回一个数据库连接的属性
      * @param mixed $attribute
      * @return mixed

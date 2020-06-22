@@ -36,6 +36,16 @@ abstract class DbBaseTest extends BaseTest
         Assert::assertEquals($sql, $db->lastSql());
     }
 
+    public function testBatchExec()
+    {
+        $db = Db::getInstance($this->poolName);
+        $result = $db->batchExec('select 1 as a;select 2 as b;');
+        $this->assertEquals([
+            [['a' => 1]],
+            [['b' => 2]],
+        ], $result);
+    }
+
     public function testQuery()
     {
         $db = Db::getInstance($this->poolName);
