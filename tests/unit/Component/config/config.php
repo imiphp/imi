@@ -26,6 +26,7 @@ return [
     'ignoreNamespace'   =>  [
         'Imi\Test\Component\Annotation\A\*',
         'Imi\Test\Component\Annotation\B\TestB',
+        'Imi\Test\Component\Tests\*',
     ],
     'beans'    =>    [
         'TestPropertyClass' =>  [
