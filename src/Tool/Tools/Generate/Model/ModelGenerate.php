@@ -13,6 +13,7 @@ use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Util\SqlUtil;
 
 /**
  * @Tool("generate")
@@ -121,6 +122,7 @@ class ModelGenerate
                 $basePath = $path . '/Base';
                 File::createDir($basePath);
                 $fileName = File::path($path, $className . '.php');
+                $withRecords = $configItem['withRecords'] ?? false;
             }
             else
             {
@@ -141,6 +143,7 @@ class ModelGenerate
                         File::createDir($basePath);
                         $fileName = File::path($path, $className . '.php');
                         $hasResult = true;
+                        $withRecords = in_array($table, $namespaceItem['withRecords'] ?? []);
                         break;
                     }
                 }
@@ -149,6 +152,7 @@ class ModelGenerate
                     $modelNamespace = $namespace;
                     $fileName = File::path($modelPath, $className . '.php');
                     $basePath = $baseModelPath;
+                    $withRecords = false;
                 }
             }
             if(false === $override && is_file($fileName))
@@ -158,6 +162,11 @@ class ModelGenerate
                 continue;
             }
             $ddl = $this->getDDL($query, $table);
+            if($withRecords)
+            {
+                $dataList = $query->from($table)->select()->getArray();
+                $ddl .= ';' . PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'className'     => $className,

@@ -2,7 +2,11 @@
 namespace Imi\Db\Util;
 
 use Imi\Db\Exception\DbException;
+use Imi\Db\Query\Table;
 
+/**
+ * SQL 工具类
+ */
 abstract class SqlUtil
 {
     /**
@@ -73,6 +77,57 @@ abstract class SqlUtil
             throw new DbException(sprintf('Invalid sql: %s', trim($leftSql)));
         }
         return $result;
+    }
+
+    /**
+     * 生成插入语句
+     *
+     * @param string $table
+     * @param array $dataList
+     * @return string
+     */
+    public static function buildInsertSql(string $table, array $dataList): string
+    {
+        $sql = '';
+        $tableObj = new Table;
+        $tableObj->setValue($table);
+        $tableStr = $tableObj->__toString();
+        foreach($dataList as $row)
+        {
+            foreach($row as &$value)
+            {
+                if(is_string($value))
+                {
+                    $value = '\'' . self::mysqlEscapeString($value) . '\'';
+                }
+            }
+            $sql .= 'insert into ' . $tableStr . ' values(' . implode(',', $row) . ');' . PHP_EOL;
+        }
+        return $sql;
+    }
+
+    /**
+     * 转义 MySQL 字符串
+     * @source https://github.com/abreksa4/mysql-escape-string-polyfill
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function mysqlEscapeString(string $value): string
+    {
+        return \strtr($value, [
+            "\0"    => '\0',
+            "\n"    => '\n',
+            "\r"    => '\r',
+            "\t"    => '\t',
+            chr(26) => '\Z',
+            chr(8)  => '\b',
+            '"'     => '\"',
+            '\''    => '\\\'',
+            '_'     => '\_',
+            '%'     => '\%',
+            '\\'    => '\\\\'
+        ]);
     }
 
 }
