@@ -66,13 +66,25 @@ class ModelTest extends BaseTest
     public function testToArray()
     {
         $this->assertTrue(true);
-        $time = microtime(true);
         $record = Performance::find(1);
+        $time = microtime(true);
         for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record->toArray();
         }
         Log::log('Test', sprintf('Model->toArray(): %s s', microtime(true) - $time));
+    }
+
+    public function testConvertToArray()
+    {
+        $this->assertTrue(true);
+        $record = Performance::find(1);
+        $time = microtime(true);
+        for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
+        {
+            $record->convertToArray();
+        }
+        Log::log('Test', sprintf('Model->convertToArray(): %s s', microtime(true) - $time));
     }
 
 }

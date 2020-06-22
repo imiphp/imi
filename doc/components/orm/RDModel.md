@@ -1,8 +1,8 @@
-# 数据库模型
+# 数据库表模型
 
 ## 介绍
 
-传统关系型数据库的模型，日常增删改查完全够用，支持复合主键、联合主键。
+传统关系型数据库（MySQL）的模型，日常增删改查完全够用，支持复合主键、联合主键。
 
 ## 模型定义
 
@@ -290,6 +290,25 @@ protected $xxx = [
 
 ## 模型操作
 
+### 初始化模型
+
+```php
+$testModel = TestModel::newInstance([
+    'a'	=>	'abc',
+    'b'	=>	'def',
+]);
+```
+
+第二种方法：
+
+```php
+$testModel = TestModel::newInstance();
+$testModel->set([
+    'a'	=>	'abc',
+    'b'	=>	'def',
+]);
+```
+
 ### 查询记录
 
 查询记录并返回一个模型实例。
@@ -433,20 +452,23 @@ $testModel = TestModel::query()->where()->join()->select()->get();
 // $testModel 依然是 TestModel 类型
 ```
 
-### 初始化模型
+### 对象转数组
+
+**将当前对象作为数组返回：**
+
+属性的值，如果是对象，那依然会保持原样。只保证第一层是数组。
 
 ```php
-$testModel = TestModel::newInstance([
-    'a'	=>	'abc',
-    'b'	=>	'def',
-]);
-```
-第二种方法：
-```php
-$testModel = TestModel::newInstance();
-$testModel->set([
-    'a'	=>	'abc',
-    'b'	=>	'def',
-]);
+$testModel = TestModel::find(1, 'abc');
+$array = $testModel->toArray();
 ```
 
+**将当前模型转为数组：**
+
+包括属性的值也会被转为数组
+
+```php
+$testModel = TestModel::find(1, 'abc');
+$array = $testModel->convertToArray(); // 过滤注解定义的隐藏属性
+$array = $testModel->convertToArray(false); // 不过滤
+```
