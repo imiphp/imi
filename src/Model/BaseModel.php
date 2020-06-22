@@ -315,6 +315,23 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         return json_decode(json_encode($data), true);
     }
+
+    /**
+     * 转换模型数组为模型
+     *
+     * @param array $list
+     * @param boolean $filter 过滤隐藏属性
+     * @return array
+     */
+    public static function convertListToArray(array $list, bool $filter = true): array
+    {
+        foreach($list as &$row)
+        {
+            /** @var static $row */
+            $row = $row->convertToArray($filter);
+        }
+        return $list;
+    }
     
     public function &current()
     {

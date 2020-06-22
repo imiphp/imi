@@ -472,3 +472,11 @@ $testModel = TestModel::find(1, 'abc');
 $array = $testModel->convertToArray(); // 过滤注解定义的隐藏属性
 $array = $testModel->convertToArray(false); // 不过滤
 ```
+
+### 转换模型数组为模型
+
+```php
+$list = TestModel::select();
+$arrayList = TestModel::convertListToArray($list); // 过滤注解定义的隐藏属性
+$arrayList = TestModel::convertListToArray($list, false); // 不过滤
+```
