@@ -385,7 +385,8 @@ TPL;
         {
             return '';
         }
-        return ' : ' . $method->getReturnType()->getName();
+        $returnType = $method->getReturnType();
+        return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
     }
 
     /**
