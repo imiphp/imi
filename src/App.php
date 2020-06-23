@@ -153,7 +153,7 @@ abstract class App
         // 运行时目录写权限检测
         if(!is_writable($runtimePath = Imi::getRuntimePath()))
         {
-            echo "Runtime path \"", $runtimePath, "\" is not writable", PHP_EOL;
+            echo 'Runtime path "', $runtimePath, '" is not writable', PHP_EOL;
             return;
         }
         // 框架运行时缓存支持
