@@ -17,6 +17,7 @@ use Imi\Tool\Parser\ToolParser;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Tool\Annotation\Operation;
 use Imi\Event\Event;
+use Swoole\ExitException;
 
 abstract class Tool
 {
@@ -119,11 +120,16 @@ abstract class Tool
                 throw new \RuntimeException(sprintf('Tool %s/%s does not exists!', static::$toolName, static::$toolOperation));
             }
             $operationAnnotation = AnnotationManager::getMethodAnnotations($result['class'], $result['method'], Operation::class)[0];
+            $exitCode = 0;
             // 执行工具操作
             if($operationAnnotation->co)
             {
-                imigo(function() use($callable, $args) {
-                    $callable(...$args);
+                imigo(function() use($callable, $args, &$exitCode) {
+                    try {
+                        $callable(...$args);
+                    } catch(ExitException $e) {
+                        $exitCode = $e->getStatus();
+                    }
                 });
             }
             else
@@ -131,6 +137,7 @@ abstract class Tool
                 $callable(...$args);
             }
             \Swoole\Event::wait();
+            exit($exitCode);
         }
         
     }

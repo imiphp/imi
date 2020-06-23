@@ -22,6 +22,7 @@ return [
         'Imi\Test\Component\Facade',
         'Imi\Test\Component\Annotation',
         'Imi\Test\Component\Partial',
+        'Imi\Test\Component\Tool',
     ],
     'ignoreNamespace'   =>  [
         'Imi\Test\Component\Annotation\A\*',
