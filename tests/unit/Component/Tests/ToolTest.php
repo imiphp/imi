@@ -15,9 +15,12 @@ class ToolTest extends BaseTest
         exec($cmd, $output, $exitCode);
         $this->assertEquals(0, $exitCode);
 
-        $code = mt_rand(0, 255);
-        exec($cmd . ' -code ' . $code, $output, $exitCode);
-        $this->assertEquals($code, $exitCode);
+        if(version_compare(SWOOLE_VERSION, '4.4', '>='))
+        {
+            $code = mt_rand(0, 255);
+            exec($cmd . ' -code ' . $code, $output, $exitCode);
+            $this->assertEquals($code, $exitCode);
+        }
     }
 
 }

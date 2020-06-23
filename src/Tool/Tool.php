@@ -137,7 +137,10 @@ abstract class Tool
                 $callable(...$args);
             }
             \Swoole\Event::wait();
-            exit($exitCode);
+            if(0 != $exitCode)
+            {
+                exit($exitCode);
+            }
         }
         
     }
