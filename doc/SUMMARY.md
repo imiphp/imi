@@ -82,8 +82,8 @@
 
 ## 消息队列
 
-* [AMQP](components/mq/amqp.md)
-* [RabbitMQ](components/mq/amqp.md)
+* [RabbitMQ(AMQP)](components/mq/amqp.md)
+* [Redis](components/mq/redis.md)
 
 ## 功能组件
 
