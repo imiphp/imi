@@ -2,10 +2,19 @@
 namespace Imi\Cron;
 
 use Imi\App;
-use Imi\Bean\Annotation\Bean;
 use Imi\Util\Args;
-use Imi\Util\Process\ProcessAppContexts;
+use Imi\Process\IProcess;
+use Imi\Task\TaskManager;
+use Imi\Bean\Annotation\Bean;
+use Imi\Task\Annotation\Task;
+use Imi\Process\ProcessManager;
+use Imi\Cron\Contract\ICronTask;
+use Imi\Cron\Consts\CronTaskType;
 use Imi\Util\Process\ProcessType;
+use Imi\Process\Annotation\Process;
+use Imi\Task\Interfaces\ITaskHandler;
+use Imi\Util\Process\ProcessAppContexts;
+use Imi\Bean\Annotation\AnnotationManager;
 
 /**
  * 定时任务管理器
@@ -66,7 +75,7 @@ class CronManager
      * 增加 Cron 任务
      *
      * @param string $id
-     * @param string $type
+     * @param string|null $type
      * @param callable|string $task
      * @param array $cronRules
      * @param mixed $data
@@ -77,13 +86,35 @@ class CronManager
      * @param bool $force
      * @return void
      */
-    public function addCron(string $id, string $type, $task, array $cronRules, $data, float $lockExpire = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
+    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
     {
         if(isset($this->tasks[$id]))
         {
             throw new \RuntimeException(sprintf('Cron id %s already exists', $id));
         }
+        if(is_string($task))
+        {
+            $task = $this->getTaskCallable($id, $task, $type);
+        }
+        if(null === $type)
+        {
+            throw new \InvalidArgumentException('$type must not null');
+        }
         $this->realTasks[$id] = new CronTask($id, $type, $task, $cronRules, $data, $lockExpire, $unique, $redisPool, $lockWaitTimeout, $force);
+    }
+
+    /**
+     * 移除定时任务
+     *
+     * @param string $id
+     * @return void
+     */
+    public function removeCron(string $id)
+    {
+        if(isset($this->tasks[$id]))
+        {
+            unset($this->tasks[$id], $this->realTasks[$id]);
+        }
     }
 
     /**
@@ -115,6 +146,86 @@ class CronManager
     public function getSocketFile()
     {
         return $this->socketFile;
+    }
+
+    /**
+     * 获取任务回调
+     *
+     * @param string $cronId
+     * @param string $class
+     * @param string|null $cronType
+     * @return callable
+     */
+    public function getTaskCallable(string $cronId, string $class, ?string &$cronType): callable
+    {
+        if(is_subclass_of($class, ICronTask::class))
+        {
+            switch($cronType)
+            {
+                case CronTaskType::ALL_WORKER:
+                case CronTaskType::RANDOM_WORKER:
+                    $task = function($id, $data) use($class){
+                        /** @var \Imi\Cron\ICronTask $handler */
+                        $handler = App::getBean($class);
+                        $handler->run($id, $data);
+                    };
+                    break;
+                case CronTaskType::TASK:
+                    $task = function($id, $data) use($class){
+                        TaskManager::nPost('imiCronTask', [
+                            'id'    =>  $id,
+                            'data'  =>  $data,
+                            'class' =>  $class,
+                        ]);
+                    };
+                    break;
+                case CronTaskType::PROCESS:
+                    $task = function($id, $data) use($class){
+                        ProcessManager::run('CronWorkerProcess', [
+                            'id'        =>  $id,
+                            'data'      =>  json_encode($data),
+                            'class'     =>  $class,
+                            'cronSock'  =>  $this->getSocketFile(),
+                        ]);
+                    };
+                    break;
+            }
+        }
+        else if(is_subclass_of($class, IProcess::class))
+        {
+            $cronType = CronTaskType::PROCESS;
+            /** @var Process $process */
+            $process = AnnotationManager::getClassAnnotations($class, Process::class)[0] ?? null;
+            if(!$process)
+            {
+                throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
+            }
+            $task = function($id, $data) use($process){
+                ProcessManager::run($process->name, [
+                    'id'        =>  $id,
+                    'data'      =>  json_encode($data),
+                    'cronSock'  =>  $this->getSocketFile(),
+                ]);
+            };
+        }
+        else if(is_subclass_of($class, ITaskHandler::class))
+        {
+            $cronType = CronTaskType::TASK;
+            /** @var Task $taskAnnotation */
+            $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class)[0] ?? null;
+            if(!$taskAnnotation)
+            {
+                throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cronId, $class));
+            }
+            $task = function($id, $data) use($taskAnnotation){
+                TaskManager::nPost($taskAnnotation->name, $data);
+            };
+        }
+        else
+        {
+            throw new \RuntimeException(sprintf('Invalid cron class %s', $class));
+        }
+        return $task;
     }
 
 }

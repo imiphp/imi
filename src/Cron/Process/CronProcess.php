@@ -120,11 +120,10 @@ class CronProcess extends BaseProcess
                     return;
                 }
                 $result = unserialize($data);
-                if(!$result instanceof Result)
+                if($result instanceof Result)
                 {
-                    return;
+                    $scheduler->completeTask($result);
                 }
-                $scheduler->completeTask($result);
             } catch(\Throwable $th) {
                 $errorLog->onException($th);
             }

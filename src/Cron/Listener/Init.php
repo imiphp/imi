@@ -54,75 +54,7 @@ class Init implements IEventListener
         {
             /** @var Cron $cron */
             $cron = $point->getAnnotation();
-            $class = $point->getClass();
-            if(is_subclass_of($class, ICronTask::class))
-            {
-                switch($cronType = $cron->type)
-                {
-                    case CronTaskType::ALL_WORKER:
-                    case CronTaskType::RANDOM_WORKER:
-                        $task = function($id, $data) use($class){
-                            /** @var \Imi\Cron\ICronTask $handler */
-                            $handler = App::getBean($class);
-                            $handler->run($id, $data);
-                        };
-                        break;
-                    case CronTaskType::TASK:
-                        $task = function($id, $data) use($class){
-                            TaskManager::nPost('imiCronTask', [
-                                'id'    =>  $id,
-                                'data'  =>  $data,
-                                'class' =>  $class,
-                            ]);
-                        };
-                        break;
-                    case CronTaskType::PROCESS:
-                        $task = function($id, $data) use($class, $cronManager){
-                            ProcessManager::run('CronWorkerProcess', [
-                                'id'        =>  $id,
-                                'data'      =>  json_encode($data),
-                                'class'     =>  $class,
-                                'cronSock'  =>  $cronManager->getSocketFile(),
-                            ]);
-                        };
-                        break;
-                }
-            }
-            else if(is_subclass_of($class, IProcess::class))
-            {
-                $cronType = CronTaskType::PROCESS;
-                /** @var Process $process */
-                $process = AnnotationManager::getClassAnnotations($class, Process::class)[0] ?? null;
-                if(!$process)
-                {
-                    throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cron->id, $class));
-                }
-                $task = function($id, $data) use($process){
-                    ProcessManager::run($process->name, [
-                        'id'        =>  $id,
-                        'data'      =>  json_encode($data),
-                        'cronSock'  =>  $this->cronManager->getSocketFile(),
-                    ]);
-                };
-            }
-            else if(is_subclass_of($class, ITaskHandler::class))
-            {
-                $cronType = CronTaskType::TASK;
-                /** @var Task $taskAnnotation */
-                $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class)[0] ?? null;
-                if(!$taskAnnotation)
-                {
-                    throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cron->id, $class));
-                }
-                $task = function($id, $data) use($taskAnnotation, $cron){
-                    TaskManager::nPost($taskAnnotation->name, $data);
-                };
-            }
-            else
-            {
-                throw new \RuntimeException(sprintf('Invalid cron class %s', $class));
-            }
-            $cronManager->addCron($cron->id, $cronType, $task, [[
+            $cronManager->addCron($cron->id, $cron->type, $point->getClass(), [[
                 'year'      =>  $cron->year,
                 'month'     =>  $cron->month,
                 'day'       =>  $cron->day,
