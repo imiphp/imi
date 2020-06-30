@@ -2,9 +2,9 @@
 namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Task\TaskParam;
+use Imi\Cron\Util\CronUtil;
 use Imi\Cron\Annotation\Cron;
 use Imi\Task\Annotation\Task;
-use Imi\Cron\Traits\TWorkerReport;
 use Imi\Task\Interfaces\ITaskHandler;
 
 /**
@@ -13,8 +13,6 @@ use Imi\Task\Interfaces\ITaskHandler;
  */
 class TaskCron implements ITaskHandler
 {
-    use TWorkerReport;
-
     /**
      * 任务处理方法
      * @param TaskParam $param
@@ -25,7 +23,7 @@ class TaskCron implements ITaskHandler
      */
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
     {
-        $this->reportCronResult($param->getData()['id'], true, '');
+        CronUtil::reportCronResult($param->getData()['id'], true, '');
         return date('Y-m-d H:i:s');
     }
  

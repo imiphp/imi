@@ -92,9 +92,9 @@ class CronManager
         {
             throw new \RuntimeException(sprintf('Cron id %s already exists', $id));
         }
-        if(is_string($task))
+        if(null === $type && is_string($task))
         {
-            $task = $this->getTaskCallable($id, $task, $type);
+            $type = $this->getCronTypeByClass($task);
         }
         if(null === $type)
         {
@@ -149,15 +149,35 @@ class CronManager
     }
 
     /**
+     * 使用类名获取定时任务类型
+     *
+     * @param string $class
+     * @return string|null
+     */
+    public function getCronTypeByClass(string $class): ?string
+    {
+        if(is_subclass_of($class, IProcess::class))
+        {
+            return CronTaskType::PROCESS;
+        }
+        else if(is_subclass_of($class, ITaskHandler::class))
+        {
+            return CronTaskType::TASK;
+        }
+        return null;
+    }
+
+    /**
      * 获取任务回调
      *
      * @param string $cronId
      * @param string $class
      * @param string|null $cronType
-     * @return callable
+     * @return string|callable
      */
-    public function getTaskCallable(string $cronId, string $class, ?string &$cronType): callable
+    public function getTaskCallable(string $cronId, $class, ?string &$cronType)
     {
+        $task = $class;
         if(is_subclass_of($class, ICronTask::class))
         {
             switch($cronType)
@@ -165,7 +185,7 @@ class CronManager
                 case CronTaskType::ALL_WORKER:
                 case CronTaskType::RANDOM_WORKER:
                     $task = function($id, $data) use($class){
-                        /** @var \Imi\Cron\ICronTask $handler */
+                        /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);
                     };

@@ -1,9 +1,9 @@
 <?php
 namespace Imi\Cron;
 
+use Imi\Cron\Util\CronUtil;
 use Imi\Bean\Annotation\Bean;
 use Imi\Aop\Annotation\Inject;
-use Imi\Cron\Traits\TWorkerReport;
 
 /**
  * 定时任务工作类
@@ -11,8 +11,6 @@ use Imi\Cron\Traits\TWorkerReport;
  */
 class CronWorker
 {
-    use TWorkerReport;
-
     /**
      * @Inject("CronManager")
      * 
@@ -27,16 +25,20 @@ class CronWorker
      * @param mixed $data
      * @return mixed
      */
-    public function exec($id, $data)
+    public function exec($id, $data, $task, $type)
     {
         $message = '';
         try {
-            $task = $this->cronManager->getTask($id);
-            if(!$task)
+            if(null === $task)
             {
-                throw new \RuntimeException(sprintf('Can not found task %s', $id));
+                $taskObj = $this->cronManager->getTask($id);
+                if(!$taskObj)
+                {
+                    throw new \RuntimeException(sprintf('Can not found task %s', $id));
+                }
+                $task = $taskObj->getTask();
             }
-            $taskCallable = $task->getTask();
+            $taskCallable = $this->cronManager->getTaskCallable($id, $task, $type);
             if(is_callable($taskCallable))
             {
                 try {
@@ -56,7 +58,7 @@ class CronWorker
             $message = $th->getMessage();
             throw $th;
         } finally {
-            $this->reportCronResult($id, $success, $message);
+            CronUtil::reportCronResult($id, $success, $message);
         }
     }
 

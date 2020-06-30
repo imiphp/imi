@@ -3,8 +3,8 @@ namespace Imi\Cron\Process;
 
 use Imi\App;
 use Imi\Util\Args;
+use Imi\Cron\Util\CronUtil;
 use Imi\Process\BaseProcess;
-use Imi\Cron\Traits\TWorkerReport;
 use Imi\Process\Annotation\Process;
 
 /**
@@ -14,8 +14,6 @@ use Imi\Process\Annotation\Process;
  */
 class CronWorkerProcess extends BaseProcess
 {
-    use TWorkerReport;
-
     public function run(\Swoole\Process $process)
     {
         $success = false;
@@ -34,7 +32,7 @@ class CronWorkerProcess extends BaseProcess
             $exitCode = 1;
             throw $th;
         } finally {
-            $this->reportCronResult($id, $success, $message);
+            CronUtil::reportCronResult($id, $success, $message);
             $process->exit($exitCode);
         }
     }

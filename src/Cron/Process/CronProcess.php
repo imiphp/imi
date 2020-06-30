@@ -3,7 +3,9 @@ namespace Imi\Cron\Process;
 
 use Imi\Cron\Message\Result;
 use Imi\Process\BaseProcess;
+use Imi\Cron\Message\AddCron;
 use Imi\Aop\Annotation\Inject;
+use Imi\Cron\Message\RemoveCron;
 use Imi\Process\Annotation\Process;
 
 /**
@@ -123,6 +125,23 @@ class CronProcess extends BaseProcess
                 if($result instanceof Result)
                 {
                     $scheduler->completeTask($result);
+                }
+                else if($result instanceof AddCron)
+                {
+                    $cronAnnotation = $result->cronAnnotation;
+                    $this->cronManager->addCron($cronAnnotation->id, $cronAnnotation->type, $result->task, [[
+                        'year'      =>  $cronAnnotation->year,
+                        'month'     =>  $cronAnnotation->month,
+                        'day'       =>  $cronAnnotation->day,
+                        'week'      =>  $cronAnnotation->week,
+                        'hour'      =>  $cronAnnotation->hour,
+                        'minute'    =>  $cronAnnotation->minute,
+                        'second'    =>  $cronAnnotation->second,
+                    ]], $cronAnnotation->data, $cronAnnotation->maxExecutionTime, $cronAnnotation->unique, $cronAnnotation->redisPool, $cronAnnotation->lockWaitTimeout, $cronAnnotation->force);
+                }
+                else if($result instanceof RemoveCron)
+                {
+                    $this->cronManager->removeCron($result->id);
                 }
             } catch(\Throwable $th) {
                 $errorLog->onException($th);

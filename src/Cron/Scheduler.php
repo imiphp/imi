@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Cron;
 
+use Imi\App;
 use Imi\Log\Log;
 use Imi\ServerManage;
 use Imi\Cron\Message\Result;
@@ -97,22 +98,30 @@ class Scheduler
                 {
                     /** @var \Imi\Cron\CronTask $task */
                     $task = $param->getData();
-                    switch($task->getType())
+                    /** @var \Imi\Cron\CronManager $cronManager */
+                    $cronManager = App::getBean('CronManager');
+                    switch($type = $task->getType())
                     {
                         case CronTaskType::RANDOM_WORKER:
                             $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                            $taskClass = $task->getTask();
                             $swooleServer->sendMessage(json_encode([
                                 'action'    =>  'cronTask',
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
+                                'task'      =>  is_callable($taskClass) ? null : $taskClass,
+                                'type'      =>  $task->getType(),
                             ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
                             break;
                         case CronTaskType::ALL_WORKER:
                             $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                            $taskClass = $task->getTask();
                             $message = json_encode([
                                 'action'    =>  'cronTask',
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
+                                'task'      =>  is_callable($taskClass) ? null : $taskClass,
+                                'type'      =>  $task->getType(),
                             ]);
                             for($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
                             {
@@ -120,10 +129,10 @@ class Scheduler
                             }
                             break;
                         case CronTaskType::TASK:
-                            ($task->getTask())($task->getId(), $task->getData());
+                            $cronManager->getTaskCallable($task->getId(), $task->getTask(), $type)($task->getId(), $task->getData());
                             break;
                         case CronTaskType::PROCESS:
-                            ($task->getTask())($task->getId(), $task->getData());
+                            $cronManager->getTaskCallable($task->getTask(), $task->getTask(), $type)($task->getId(), $task->getData());
                             break;
                     }
                 }

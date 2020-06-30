@@ -14,6 +14,7 @@ return [
         'Imi\Test\HttpServer\Task',
         'Imi\Test\HttpServer\Process',
         'Imi\Test\HttpServer\Cron',
+        'Imi\Test\HttpServer\Listener',
     ],
 
     // 组件命名空间

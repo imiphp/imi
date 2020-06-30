@@ -358,3 +358,27 @@ class CronRandomWorker implements ICronTask
     ],
 ]
 ```
+
+### 动态维护
+
+#### 增加定时任务
+
+```php
+use Imi\Cron\Util\CronUtil;
+use Imi\Cron\Annotation\Cron;
+use Imi\Test\HttpServer\Cron\CronDWorker;
+
+$cron = new Cron;
+$cron->id = 'CronRandomWorkerTest';
+$cron->second = '3n';
+$cron->type = 'random_worker';
+CronUtil::addCron($cron, CronDWorker::class);
+```
+
+#### 移除定时任务
+
+```php
+use Imi\Cron\Util\CronUtil;
+
+CronUtil::removeCron('任务ID');
+```
