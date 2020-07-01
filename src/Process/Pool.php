@@ -71,32 +71,32 @@ class Pool
         ], $this, BeforeStartEventParam::class);
 
         \Imi\Util\Process::signal(SIGCHLD, function($sig) {
-            while(true)
+            while(!empty($this->workers))
             {
-                $ret = Process::wait(false);
-                if ($ret)
+                foreach($this->workers as $worker)
                 {
-                    $pid = $ret['pid'] ?? null;
-                    $workerId = $this->workerIdMap[$pid] ?? null;
-                    if(null === $workerId)
+                    $ret = $worker->wait(false);
+                    if ($ret)
                     {
-                        user_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), E_USER_WARNING);
-                        continue;
+                        $pid = $ret['pid'] ?? null;
+                        var_dump(spl_object_id($this));
+                        $workerId = $this->workerIdMap[$pid] ?? null;
+                        if(null === $workerId)
+                        {
+                            user_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), E_USER_WARNING);
+                            continue;
+                        }
+                        Event::del($this->workers[$workerId]->pipe);
+                        unset($this->workerIdMap[$pid], $this->workers[$workerId]);
+                        if($this->working)
+                        {
+                            $this->startWorker($workerId);
+                        }
+                        else if(empty($this->workers))
+                        {
+                            Event::exit();
+                        }
                     }
-                    Event::del($this->workers[$workerId]->pipe);
-                    unset($this->workerIdMap[$pid], $this->workers[$workerId]);
-                    if($this->working)
-                    {
-                        $this->startWorker($workerId);
-                    }
-                    else if(empty($this->workers))
-                    {
-                        Event::exit();
-                    }
-                }
-                else
-                {
-                    break;
                 }
             }
         });
