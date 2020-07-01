@@ -118,24 +118,25 @@ abstract class ProcessManager
                     {
                         static::unlockProcess($name);
                     }
+                } catch(ExitException $e) {
+                    $exitCode = $e->getStatus();
+                } finally {
                     // 进程结束事件
                     Event::trigger('IMI.PROCESS.END', [
                         'name'      => $name,
                         'process'   => $swooleProcess,
                     ]);
-                } catch(ExitException $e) {
-                    $exitCode = $e->getStatus();
                 }
             };
             if($processOption['Process']->co)
             {
                 imigo($callable);
+                \Swoole\Event::wait();
             }
             else
             {
                 $callable();
             }
-            \Swoole\Event::wait();
             if(0 != $exitCode)
             {
                 exit($exitCode);
