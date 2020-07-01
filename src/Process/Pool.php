@@ -186,6 +186,7 @@ class Pool
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
         $worker = new \Imi\Process\Process(function(Process $worker) use($workerId){
+            \Imi\Util\Process::clearNotInheritableSignalListener();
             \Imi\Util\Process::signal(SIGTERM, function() use($worker, $workerId){
                 $this->trigger('WorkerExit', [
                     'pool'      =>  $this,
