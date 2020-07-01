@@ -47,7 +47,7 @@ class Container implements ContainerInterface
         $params = func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;
-        if(isset($singletonObjects[$id]) && !isset($params[1]))
+        if(isset($singletonObjects[$id]) && 1 === func_num_args())
         {
             return $singletonObjects[$id];
         }
