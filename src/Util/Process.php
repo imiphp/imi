@@ -22,22 +22,46 @@ class Process
      *
      * @param integer $signalNo
      * @param callable $callback
+     * @param boolean $inheritable 是否可被子进程继承
      * @return boolean
      */
-    public static function signal(int $signalNo, callable $callback): bool
+    public static function signal(int $signalNo, callable $callback, bool $inheritable = false): bool
     {
         $instance = self::getInstance();
         if(!isset($instance->events[$signalNo]))
         {
             \Swoole\Process::signal($signalNo, function($signalNo){
-                foreach(self::getInstance()->events[$signalNo] ?? [] as $callback)
+                foreach(self::getInstance()->events[$signalNo] ?? [] as $callbacks)
                 {
-                    $callback($signalNo);
+                    foreach($callbacks as $callback)
+                    {
+                        $callback($signalNo);
+                    }
                 }
             });
         }
-        $instance->events[$signalNo][] = $callback;
+        $instance->events[$signalNo][$inheritable][] = $callback;
         return true;
+    }
+
+    /**
+     * 清理不可继承的监听
+     *
+     * @return void
+     */
+    public static function clearNotInheritableSignalListener()
+    {
+        $instance = self::getInstance();
+        foreach($instance->events as &$events)
+        {
+            if(isset($events[false]))
+            {
+                foreach($events[false] as $k => $v)
+                {
+                    unset($events[false][$k]);
+                }
+            }
+        }
     }
 
 }

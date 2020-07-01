@@ -99,6 +99,7 @@ abstract class ProcessManager
                 {
                     throw new \RuntimeException('lock process lock file error');
                 }
+                \Imi\Util\Process::clearNotInheritableSignalListener();
                 // 加载服务器注解
                 \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
                 App::initWorker();
