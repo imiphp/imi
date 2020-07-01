@@ -52,7 +52,7 @@ class CronProcess extends BaseProcess
 
     public function run(\Swoole\Process $process)
     {
-        \Swoole\Process::signal(SIGTERM, function($signo) {
+        \Imi\Util\Process::signal(SIGTERM, function($signo) {
             $this->running = false;
             $this->scheduler->close();
         });

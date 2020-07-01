@@ -174,3 +174,13 @@ use \Imi\Process\ProcessManager;
 /** @var \Swoole\Process $process */
 $process = ProcessManager::getProcessWithManager('processName');
 ```
+
+### 设置异步信号监听
+
+相比 Swoole 的监听，此方法支持触发多次事件
+
+```php
+\Imi\Util\Process::signal(SIGTERM, function($signo) {
+     echo "shutdown.";
+});
+```

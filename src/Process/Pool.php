@@ -70,7 +70,7 @@ class Pool
             'pool'  =>  $this,
         ], $this, BeforeStartEventParam::class);
 
-        Process::signal(SIGCHLD, function($sig) {
+        \Imi\Util\Process::signal(SIGCHLD, function($sig) {
             while(true)
             {
                 $ret = Process::wait(false);
@@ -101,7 +101,7 @@ class Pool
             }
         });
 
-        Process::signal(SIGTERM, function() {
+        \Imi\Util\Process::signal(SIGTERM, function() {
             $this->working = false;
             foreach($this->workers as $worker)
             {
@@ -186,7 +186,7 @@ class Pool
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
         $worker = new \Imi\Process\Process(function(Process $worker) use($workerId){
-            Process::signal(SIGTERM, function() use($worker, $workerId){
+            \Imi\Util\Process::signal(SIGTERM, function() use($worker, $workerId){
                 $this->trigger('WorkerExit', [
                     'pool'      =>  $this,
                     'worker'    =>  $worker,
