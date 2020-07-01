@@ -199,7 +199,7 @@ abstract class ProcessManager
      */
     public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
-        $cmd = Imi::getImiCmd('process', 'start', $args) . ' -name ' . $name;
+        $cmd = Imi::getImiCmd('process', 'run', $args) . ' -name ' . $name;
         if(null !== $redirectStdinStdout)
         {
             $cmd .= ' -redirectStdinStdout ' . $redirectStdinStdout;

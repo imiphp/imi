@@ -9,6 +9,8 @@ use Imi\Tool\Annotation\Tool;
 use Imi\Process\ProcessManager;
 use Imi\Tool\Annotation\Operation;
 use Imi\Process\ProcessPoolManager;
+use Imi\Process\Parser\ProcessParser;
+use RuntimeException;
 
 /**
  * @Tool("process")
@@ -60,4 +62,29 @@ class Process
         $processPool = ProcessPoolManager::create($name, $worker, $args, $ipcType, $msgQueueKey);
         $processPool->start();
     }
+
+    /**
+     * 运行一个进程
+     * 
+     * @Operation(name="run", co=false)
+     *
+     * @Arg(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
+     * 
+     * @return void
+     */
+    public function run(string $name)
+    {
+        // 加载服务器注解
+        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        App::initWorker();
+        $args = Args::get();
+        $processOption = ProcessParser::getInstance()->getProcess($name);
+        if(null === $processOption)
+        {
+            throw new RuntimeException(sprintf('Not found process %s', $name));
+        }
+        $callable = ProcessManager::getProcessCallable($args, $name, $processOption);
+        $callable(new \Imi\Process\Process(function(){}));
+    }
+
 }
