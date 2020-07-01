@@ -79,7 +79,6 @@ class Pool
                     if ($ret)
                     {
                         $pid = $ret['pid'] ?? null;
-                        var_dump(spl_object_id($this));
                         $workerId = $this->workerIdMap[$pid] ?? null;
                         if(null === $workerId)
                         {
