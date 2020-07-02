@@ -41,25 +41,24 @@ class CronProcess extends BaseProcess
      *
      * @var resource
      */
-    private $socket;
+    protected $socket;
 
     /**
      * 是否正在运行
      *
      * @var boolean
      */
-    private $running = false;
+    protected $running = false;
 
     public function run(\Swoole\Process $process)
     {
         \Imi\Util\Process::signal(SIGTERM, function($signo) {
-            $this->running = false;
-            $this->scheduler->close();
+            $this->stop();
         });
         $this->startSocketServer();
     }
 
-    private function startSocketServer()
+    protected function startSocketServer()
     {
         imigo(function(){
             $socketFile = $this->cronManager->getSocketFile();
@@ -102,7 +101,7 @@ class CronProcess extends BaseProcess
      * @param resource $conn
      * @return void
      */
-    private function parseConn($conn)
+    protected function parseConn($conn)
     {
         $running = &$this->running;
         $scheduler = $this->scheduler;
@@ -154,7 +153,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    private function startSchedule()
+    protected function startSchedule()
     {
         imigo(function(){
             $scheduler = $this->scheduler;
@@ -174,6 +173,17 @@ class CronProcess extends BaseProcess
                 }
             } while($running);
         });
+    }
+
+    /**
+     * 停止
+     *
+     * @return void
+     */
+    protected function stop()
+    {
+        $this->running = false;
+        $this->scheduler->close();
     }
 
 }
