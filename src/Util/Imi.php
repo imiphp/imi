@@ -612,7 +612,7 @@ abstract class Imi
         {
             $cmd = 'kill ' . $pid['masterPID'];
             $return['cmd'] = $cmd;
-            $result = `$cmd`;
+            $result = `exec {$cmd}`;
             $return['result'] = $result;
             return $return;
         }
@@ -640,7 +640,7 @@ abstract class Imi
         {
             $cmd = 'kill -USR1 ' . $pid['masterPID'];
             $return['cmd'] = $cmd;
-            $result = `$cmd`;
+            $result = `exec {$cmd}`;
             $return['result'] = $result;
             return $return;
         }

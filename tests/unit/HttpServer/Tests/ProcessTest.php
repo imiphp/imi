@@ -16,7 +16,7 @@ class ProcessTest extends BaseTest
     public function testPoolCleanAllow()
     {
         $dir = dirname(__DIR__) . '/bin/imi process/start -name PoolTest1';
-        $result = `{$dir}`;
+        $result = `exec {$dir}`;
         $list = explode(PHP_EOL, $result);
         end($list);
         prev($list);
@@ -34,7 +34,7 @@ class ProcessTest extends BaseTest
     public function testPoolCleanDeny()
     {
         $dir = dirname(__DIR__) . '/bin/imi process/run -name PoolTest2';
-        $result = `{$dir}`;
+        $result = `exec {$dir}`;
         $list = explode(PHP_EOL, $result);
         end($list);
         $this->assertEquals(json_encode([
