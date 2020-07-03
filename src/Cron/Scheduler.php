@@ -76,11 +76,11 @@ class Scheduler
     private $runningTasks = [];
 
     /**
-     * 是否首轮运行
+     * 首次执行记录集合
      *
-     * @var boolean
+     * @var array
      */
-    private $first = true;
+    private $firstRunMap = [];
 
     public function __construct()
     {
@@ -169,7 +169,7 @@ class Scheduler
         $runningTasks = &$this->runningTasks;
         $nextTickTimeMap = &$this->nextTickTimeMap;
         $cronCalculator = $this->cronCalculator;
-        $first = &$this->first;
+        $firstRunMap = &$this->firstRunMap;
         foreach($this->cronManager->getRealTasks() as $task)
         {
             $id = $task->getId();
@@ -188,13 +188,20 @@ class Scheduler
             {
                 $nextTickTimeMap[$id] = $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             }
-            if(($first && $task->getForce()) || $now >= $nextTickTimeMap[$id])
+            $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
+            if($firstRun || $now >= $nextTickTimeMap[$id])
             {
-                unset($nextTickTimeMap[$id]);
+                if($firstRun)
+                {
+                    $firstRunMap[$id] = true;
+                }
+                else
+                {
+                    unset($nextTickTimeMap[$id]);
+                }
                 yield $task;
             }
         }
-        $first = false;
     }
 
     /**
