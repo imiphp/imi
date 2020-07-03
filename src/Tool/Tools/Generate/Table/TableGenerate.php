@@ -72,7 +72,7 @@ class TableGenerate
             if($override)
             {
                 // 尝试删除表
-                $query->execute('DROP TABLE IF EXISTS ' . $table);
+                $query->execute('DROP TABLE IF EXISTS `' . $table . '`');
             }
             else
             {
