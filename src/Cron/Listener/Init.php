@@ -52,17 +52,7 @@ class Init implements IEventListener
         $cronManager = $this->cronManager;
         foreach(AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
-            /** @var Cron $cron */
-            $cron = $point->getAnnotation();
-            $cronManager->addCron($cron->id, $cron->type, $point->getClass(), [[
-                'year'      =>  $cron->year,
-                'month'     =>  $cron->month,
-                'day'       =>  $cron->day,
-                'week'      =>  $cron->week,
-                'hour'      =>  $cron->hour,
-                'minute'    =>  $cron->minute,
-                'second'    =>  $cron->second,
-            ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout, $cron->force);
+            $cronManager->addCronByAnnotation($point->getAnnotation(), $point->getClass());
         }
     }
 

@@ -15,6 +15,7 @@ use Imi\Process\Annotation\Process;
 use Imi\Task\Interfaces\ITaskHandler;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Cron\Annotation\Cron;
 
 /**
  * 定时任务管理器
@@ -72,7 +73,27 @@ class CronManager
     }
 
     /**
-     * 增加 Cron 任务
+     * 使用注解增加定时任务
+     *
+     * @param \Imi\Cron\Annotation\Cron $cron
+     * @param string $pointClass
+     * @return void
+     */
+    public function addCronByAnnotation(Cron $cron, string $pointClass)
+    {
+        $this->addCron($cron->id, $cron->type, $pointClass, [[
+            'year'      =>  $cron->year,
+            'month'     =>  $cron->month,
+            'day'       =>  $cron->day,
+            'week'      =>  $cron->week,
+            'hour'      =>  $cron->hour,
+            'minute'    =>  $cron->minute,
+            'second'    =>  $cron->second,
+        ]], $cron->data, $cron->maxExecutionTime, $cron->unique, $cron->redisPool, $cron->lockWaitTimeout, $cron->force);
+    }
+
+    /**
+     * 增加定时任务
      *
      * @param string $id
      * @param string|null $type
@@ -243,7 +264,7 @@ class CronManager
         }
         else
         {
-            throw new \RuntimeException(sprintf('Invalid cron class %s', $class));
+            throw new \InvalidArgumentException(sprintf('Invalid cron class %s', $class));
         }
         return $task;
     }

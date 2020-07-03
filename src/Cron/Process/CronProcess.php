@@ -128,15 +128,7 @@ class CronProcess extends BaseProcess
                 else if($result instanceof AddCron)
                 {
                     $cronAnnotation = $result->cronAnnotation;
-                    $this->cronManager->addCron($cronAnnotation->id, $cronAnnotation->type, $result->task, [[
-                        'year'      =>  $cronAnnotation->year,
-                        'month'     =>  $cronAnnotation->month,
-                        'day'       =>  $cronAnnotation->day,
-                        'week'      =>  $cronAnnotation->week,
-                        'hour'      =>  $cronAnnotation->hour,
-                        'minute'    =>  $cronAnnotation->minute,
-                        'second'    =>  $cronAnnotation->second,
-                    ]], $cronAnnotation->data, $cronAnnotation->maxExecutionTime, $cronAnnotation->unique, $cronAnnotation->redisPool, $cronAnnotation->lockWaitTimeout, $cronAnnotation->force);
+                    $this->cronManager->addCronByAnnotation($cronAnnotation, $result->task);
                 }
                 else if($result instanceof RemoveCron)
                 {
