@@ -229,7 +229,7 @@ class HotUpdateProcess extends BaseProcess
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
             ['pipe', 'w'],  // 标准输出，子进程向此管道中写入数据
         ];
-        $this->buildRuntimeHandler = proc_open('exec ' . $cmd, $descriptorspec, $this->buildRuntimePipes);
+        $this->buildRuntimeHandler = proc_open($cmd, $descriptorspec, $this->buildRuntimePipes);
         if(false === $this->buildRuntimeHandler)
         {
             throw new \RuntimeException(sprintf('Open "%s" failed', $cmd));

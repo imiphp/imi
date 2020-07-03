@@ -37,7 +37,7 @@ if(class_exists(TestCase::class))
         protected function php($phpFile, $args = '')
         {
             $cmd = '"' . PHP_BINARY . "\" \"{$phpFile}\" {$args}";
-            return `exec {$cmd}`;
+            return `{$cmd}`;
         }
     
         public function startTest()
