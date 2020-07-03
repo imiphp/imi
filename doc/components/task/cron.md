@@ -191,6 +191,8 @@ class CronRandomWorker implements ICronTask
 
 `process`-进程
 
+`cron_process`-定时任务进程
+
 ###### force
 
 每次启动服务强制执行，默认为`false`

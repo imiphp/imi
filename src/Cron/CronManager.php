@@ -17,6 +17,8 @@ use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Cron\Annotation\Cron;
 
+use function Yurun\Swoole\Coroutine\goWait;
+
 /**
  * 定时任务管理器
  * 
@@ -228,6 +230,15 @@ class CronManager
                             'class'     =>  $class,
                             'cronSock'  =>  $this->getSocketFile(),
                         ]);
+                    };
+                    break;
+                case CronTaskType::CRON_PROCESS:
+                    return function($id, $data) use($class){
+                        goWait(function() use($class, $id, $data){
+                            /** @var \Imi\Cron\Contract\ICronTask $handler */
+                            $handler = App::getBean($class);
+                            $handler->run($id, $data);
+                        });
                     };
                     break;
             }

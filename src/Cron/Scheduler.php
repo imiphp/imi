@@ -110,7 +110,7 @@ class Scheduler
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
                                 'task'      =>  is_callable($taskClass) ? null : $taskClass,
-                                'type'      =>  $task->getType(),
+                                'type'      =>  $type,
                             ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
                             break;
                         case CronTaskType::ALL_WORKER:
@@ -121,7 +121,7 @@ class Scheduler
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
                                 'task'      =>  is_callable($taskClass) ? null : $taskClass,
-                                'type'      =>  $task->getType(),
+                                'type'      =>  $type,
                             ]);
                             for($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
                             {
@@ -133,6 +133,11 @@ class Scheduler
                             break;
                         case CronTaskType::PROCESS:
                             $cronManager->getTaskCallable($task->getTask(), $task->getTask(), $type)($task->getId(), $task->getData());
+                            break;
+                        case CronTaskType::CRON_PROCESS:
+                            /** @var \Imi\Cron\CronWorker $cronWorker */
+                            $cronWorker = App::getBean('CronWorker');
+                            $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
                             break;
                     }
                 }
