@@ -99,8 +99,6 @@ abstract class App
         static::checkEnvironment();
         self::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
         self::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
-        static::outImi();
-        static::outStartupInfo();
         static::initFramework($namespace);
         if(!isset($_SERVER['argv'][1]))
         {
@@ -142,6 +140,12 @@ abstract class App
     public static function initFramework(string $namespace)
     {
         static::$namespace = $namespace;
+        $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
+        if($isServerStart)
+        {
+            self::outImi();
+            self::outStartupInfo();
+        }
         AnnotationManager::init();
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
@@ -157,7 +161,7 @@ abstract class App
             return;
         }
         // 框架运行时缓存支持
-        if($isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null)))
+        if($isServerStart)
         {
             $result = false;
         }
