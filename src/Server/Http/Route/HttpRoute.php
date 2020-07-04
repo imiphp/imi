@@ -257,7 +257,7 @@ class HttpRoute
                 $rule = str_replace('/', '\/', $rule);
             }
             $pattern = '/^' . preg_replace_callback(
-                '/\{(([^:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
+                '/\{(([^\}:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
                 function($matches)use(&$fields){
                     if(isset($matches[4]))
                     {
