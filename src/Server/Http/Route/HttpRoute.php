@@ -257,10 +257,20 @@ class HttpRoute
                 $rule = str_replace('/', '\/', $rule);
             }
             $pattern = '/^' . preg_replace_callback(
-                '/\{([^:]+)(?::([^{}]*(?:\{(?-1)\}[^{}]*)*))?\}/',
+                '/\{(([^:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
                 function($matches)use(&$fields){
-                    $fields[] = $matches[1];
-                    return '(' . ($matches[2] ?? '.+') . ')';
+                    if(isset($matches[4]))
+                    {
+                        // 正则
+                        $fields[] = $matches[3];
+                        return '(' . $matches[4] . ')';
+                    }
+                    else
+                    {
+                        // 正常匹配
+                        $fields[] = $matches[1];
+                        return '(.+)';
+                    }
                 },
                 $rule
             ) . '\/?$/';
