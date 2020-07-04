@@ -51,7 +51,7 @@ class ProcessTest extends BaseTest
     public function testGetProcessWithManager()
     {
         $http = new HttpRequest;
-        $response = $http->get($this->host . 'process/');
+        $response = $http->get($this->host . 'process');
         $data = $response->json(true);
         $this->assertTrue($data['result'] ?? null);
     }
