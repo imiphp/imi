@@ -679,4 +679,92 @@ abstract class Imi
         return $result;
     }
 
+    /**
+     * 检测是否为 WSL 环境
+     *
+     * @return boolean
+     */
+    public static function isWSL(): bool
+    {
+        return is_file('/mnt/c/Windows/explorer.exe');
+    }
+
+    /**
+     * 获取 Linux 版本号
+     *
+     * @return string
+     */
+    public static function getLinuxVersion(): string
+    {
+        $info = parse_ini_string(`cat /etc/*-release`);
+        if(isset($info['NAME']))
+        {
+            $result = $info['NAME'];
+        }
+        else
+        {
+            return '';
+        }
+        if(isset($info['VERSION']))
+        {
+            $result .= ' ' . $info['VERSION'];
+        }
+        return $result;
+    }
+
+    /**
+     * 获取苹果系统版本
+     *
+     * @return string
+     */
+    public static function getDarwinVersion(): string
+    {
+        $xml = simplexml_load_file('/System/Library/CoreServices/SystemVersion.plist');
+        if(!$xml)
+        {
+            return '';
+        }
+        $i = 0;
+        foreach($xml->dict->key as $item)
+        {
+            switch($item->__toString())
+            {
+                case 'ProductName':
+                    $name = $xml->dict->string[$i]->__toString();
+                    break;
+                case 'ProductUserVisibleVersion':
+                    $version = $xml->dict->string[$i]->__toString();
+                    break;
+            }
+            ++$i;
+        }
+        if(!isset($name))
+        {
+            return '';
+        }
+        $result = $name;
+        if(isset($version))
+        {
+            $result .= ' ' . $version;
+        }
+        return $result;
+    }
+
+    /**
+     * 获取 Cygwin 版本
+     *
+     * @return string
+     */
+    public static function getCygwinVersion(): string
+    {
+        if(preg_match('/^cygwin\s+(\S+)\s+OK$/', exec('cygcheck -c cygwin'), $matches) > 0)
+        {
+            return $matches[1];
+        }
+        else
+        {
+            return '';
+        }
+    }
+
 }

@@ -522,7 +522,24 @@ STR;
     public static function outStartupInfo()
     {
         echo '[System]', PHP_EOL;
-        echo 'System: ', defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : PHP_OS, PHP_EOL;
+        $system = (defined('PHP_OS_FAMILY') && 'Unknown' !== PHP_OS_FAMILY) ? PHP_OS_FAMILY : PHP_OS;
+        switch($system)
+        {
+            case 'Linux':
+                $system .= ' - ' . Imi::getLinuxVersion();
+                if(Imi::isWSL())
+                {
+                    $system .= ' (WSL)';
+                }
+                break;
+            case 'Darwin':
+                $system .= ' - ' . Imi::getDarwinVersion();
+                break;
+            case 'CYGWIN':
+                $system .= ' - ' . Imi::getCygwinVersion();
+                break;
+        }
+        echo 'System: ', $system, PHP_EOL;
         echo 'CPU: ', swoole_cpu_num(), ' Cores', PHP_EOL;
         echo 'Disk: Free ', round(@disk_free_space('.') / (1024*1024*1024), 3), ' GB / Total ', round(@disk_total_space('.') / (1024*1024*1024), 3), ' GB', PHP_EOL;
 
