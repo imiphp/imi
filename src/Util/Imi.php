@@ -696,18 +696,35 @@ abstract class Imi
      */
     public static function getLinuxVersion(): string
     {
-        $info = parse_ini_string(`cat /etc/*-release`);
-        if(isset($info['NAME']))
-        {
-            $result = $info['NAME'];
-        }
-        else
+        if(preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', `cat /etc/*-release`, $matches) <= 0)
         {
             return '';
         }
-        if(isset($info['VERSION']))
+        if(!isset($matches['name']))
         {
-            $result .= ' ' . $info['VERSION'];
+            return '';
+        }
+        foreach($matches['name'] as $name)
+        {
+            if('' !== $name)
+            {
+                break;
+            }
+        }
+        $result = trim($name, '"');
+        if(isset($matches['version']))
+        {
+            foreach($matches['version'] as $version)
+            {
+                if('' !== $version)
+                {
+                    break;
+                }
+            }
+            if('' !== $version)
+            {
+                $result .= ' ' . trim($version, '"');
+            }
         }
         return $result;
     }
