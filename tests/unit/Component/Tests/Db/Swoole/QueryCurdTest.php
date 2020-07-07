@@ -20,6 +20,6 @@ class QueryCurdTest extends QueryCurdBaseTest
      *
      * @var string
      */
-    protected $expectedTestWhereExSql = 'select * from `tb_article` where (`id` = ? and (`id` in (?) ) )';
+    protected $expectedTestWhereExSql = 'select * from `tb_article` where (`id` = :p1 and (`id` in (:p2) ) )';
 
 }

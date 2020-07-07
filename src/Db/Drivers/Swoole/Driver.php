@@ -336,13 +336,14 @@ class Driver extends Base implements IDb
         }
         else
         {
-            $this->lastSql = $sql = SqlUtil::parseSqlWithColonParams($sql, $sqlParamsMap);
-            $this->lastStmt = $lastStmt = $this->instance->prepare($sql);
+            $this->lastSql = $sql;
+            $parsedSql = SqlUtil::parseSqlWithColonParams($sql, $sqlParamsMap);
+            $this->lastStmt = $lastStmt = $this->instance->prepare($parsedSql);
             if(false === $lastStmt)
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sqlParamsMap);
+            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
             if($this->isCacheStatement && null === $stmtCache)
             {
                 StatementManager::setNX($stmt, true);
@@ -366,7 +367,7 @@ class Driver extends Base implements IDb
         {
             throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . PHP_EOL . 'sql: ' . $sql . PHP_EOL);
         }
-        return BeanFactory::newInstance(Statement::class, $this, $lastStmt);
+        return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql);
     }
 
     /**

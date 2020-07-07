@@ -57,7 +57,7 @@ class Statement extends BaseStatement implements IStatement
      */
     protected $sqlParamsMap;
 
-    public function __construct(IDb $db, $statement, ?array $sqlParamsMap = null)
+    public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -65,7 +65,7 @@ class Statement extends BaseStatement implements IStatement
         {
             $this->result = $statement;
         }
-        $this->lastSql = $db->lastSql();
+        $this->lastSql = $originSql;
         $this->sqlParamsMap = $sqlParamsMap;
     }
 
