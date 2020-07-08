@@ -50,7 +50,10 @@ class Result implements IResult
         {
             $this->statement = $statement;
             $this->isSuccess = '' === $statement->errorInfo();
-            $this->statementRecords = $statement->fetchAll();
+            if($statement->columnCount() > 0)
+            {
+                $this->statementRecords = $statement->fetchAll();
+            }
         }
         else
         {
