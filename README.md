@@ -129,6 +129,7 @@ Redis、MySQL
 
 名称 | 描述 | 默认值
 -|-|-
+SERVER_HOST | 测试用的服务，监听的主机名 | 127.0.0.1 |
 MYSQL_SERVER_HOST | MySQL 主机名 | 127.0.0.1 |
 MYSQL_SERVER_PORT | MySQL 端口 | 3306 |
 MYSQL_SERVER_USERNAME | MySQL 用户名 | root |

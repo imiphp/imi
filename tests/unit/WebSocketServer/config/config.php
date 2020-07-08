@@ -22,7 +22,7 @@ return [
     'mainServer'    =>    [
         'namespace'    =>    'Imi\Test\WebSocketServer\MainServer',
         'type'        =>    Imi\Server\Type::WEBSOCKET,
-        'host'        =>    '127.0.0.1',
+        'host'        =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'        =>    13002,
         'configs'    =>    [
             'worker_num'    =>  2,
