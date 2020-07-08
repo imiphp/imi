@@ -527,10 +527,6 @@ STR;
         {
             case 'Linux':
                 $system .= ' - ' . Imi::getLinuxVersion();
-                if(Imi::isWSL())
-                {
-                    $system .= ' (WSL)';
-                }
                 break;
             case 'Darwin':
                 $system .= ' - ' . Imi::getDarwinVersion();
@@ -540,6 +536,14 @@ STR;
                 break;
         }
         echo 'System: ', $system, PHP_EOL;
+        if(Imi::isDockerEnvironment())
+        {
+            echo 'Virtual machine: Docker', PHP_EOL;
+        }
+        else if(Imi::isWSL())
+        {
+            echo 'Virtual machine: WSL', PHP_EOL;
+        }
         echo 'CPU: ', swoole_cpu_num(), ' Cores', PHP_EOL;
         echo 'Disk: Free ', round(@disk_free_space('.') / (1024*1024*1024), 3), ' GB / Total ', round(@disk_total_space('.') / (1024*1024*1024), 3), ' GB', PHP_EOL;
 

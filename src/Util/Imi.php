@@ -784,4 +784,19 @@ abstract class Imi
         }
     }
 
+    /**
+     * 判断是否为 Docker 环境
+     *
+     * @return boolean
+     */
+    public static function isDockerEnvironment(): bool
+    {
+        $fileName = '/proc/1/cgroup';
+        if(is_file($fileName))
+        {
+            return false !== strpos(file_get_contents($fileName), ':/docker/');
+        }
+        return false;
+    }
+
 }
