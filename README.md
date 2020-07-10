@@ -21,9 +21,11 @@ imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动�
 
 imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
-从秃头到满头秀发的 imi 框架教程，全集免费观看👉<https://www.bilibili.com/video/av78158909>
+## 官方视频教程（完全免费）
 
-每周四晚上更新至少一集，欢迎素质四连（点赞、收藏、投币、关注~）
+imi 框架入门教程（11集全）<https://www.bilibili.com/video/av78158909>
+
+imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://space.bilibili.com/768718/channel/detail?cid=136926>
 
 ### 核心组件
 
@@ -84,6 +86,20 @@ imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/imag
 
 推荐使用 Swoole 官方 Docker：<https://github.com/swoole/docker-swoole>
 
+## 案例征集
+
+不论您使用 imi 开发的是个人项目还是公司项目，不管是开源还是商业，都可以向我们提交案例。
+
+案例可能会被采纳并展示在 imi 官网、Swoole 官网等处，这对项目的推广和发展有着促进作用。
+
+**提交格式：**
+
+* 项目名称
+* 项目介绍
+* 项目地址（官网/下载地址/Github等至少一项）
+* 联系方式（电话/邮箱/QQ/微信等至少一项）
+* 项目截图（可选）
+
 ## 版权信息
 
 imi 遵循 木兰宽松许可证(Mulan PSL v1) 开源协议发布，并提供免费使用。
@@ -115,7 +131,7 @@ imi 遵循 木兰宽松许可证(Mulan PSL v1) 开源协议发布，并提供免
 
 提交 `Pull Request` 到本仓库，你就有机会成为 imi 的作者之一！
 
-## 关于测试脚本
+## 关于测试用例
 
 ### 环境要求
 
