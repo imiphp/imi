@@ -128,6 +128,7 @@
 * [进程池-imi](components/process-pool/imi.md)
 * [热更新](components/hotupdate/index.md)
 * [雪花算法发号器](components/snowflake.md)
+* [imi 组件列表一览](components/list.md)
 
 ## 数据结构
 
