@@ -69,7 +69,7 @@ before_script:
   - if [[ $DISABLE_XDEBUG != false ]]; then
       phpenv config-rm xdebug.ini;
     fi
-  - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
+  - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.5.phar
   - export TEST_PHPUNIT_PATH=~/.phpenv/versions/$(phpenv version-name)/bin/phpunit
   - php ./.travis/composer-no-phpunit.php
   - composer update
