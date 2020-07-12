@@ -296,7 +296,18 @@ class Driver extends Base implements IDb
         $queryResult = $this->query($sql);
         $result = [];
         do {
-            $result[] = $queryResult->fetchAll();
+            try {
+                $result[] = $queryResult->fetchAll();
+            } catch(\PDOException $pe) {
+                if('SQLSTATE[HY000]: General error' === $pe->getMessage())
+                {
+                    $result[] = [];
+                }
+                else
+                {
+                    throw $pe;
+                }
+            }
         } while($queryResult->nextRowset());
         return $result;
     }

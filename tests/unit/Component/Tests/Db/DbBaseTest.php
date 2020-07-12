@@ -39,9 +39,10 @@ abstract class DbBaseTest extends BaseTest
     public function testBatchExec()
     {
         $db = Db::getInstance($this->poolName);
-        $result = $db->batchExec('select 1 as a;select 2 as b;');
+        $result = $db->batchExec('select 1 as a;update tb_article set id = 1 where id = 1;select 2 as b;');
         $this->assertEquals([
             [['a' => 1]],
+            [],
             [['b' => 2]],
         ], $result);
     }
