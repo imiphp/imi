@@ -5,6 +5,7 @@ use Imi\App;
 use Imi\Util\Imi;
 use Imi\Main\Helper;
 use Imi\Bean\Annotation\Listener;
+use Imi\Config;
 use Imi\Util\Process\ProcessType;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
@@ -41,7 +42,7 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::WORKER, true);
             // swoole 4.1.0 一键协程化
-            if(method_exists('\Swoole\Runtime', 'enableCoroutine') && (Helper::getMain(App::getNamespace())->getConfig()['enableCoroutine'] ?? true))
+            if(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true) && Config::get('@app.mainServer.configs.enable_coroutine', true))
             {
                 \Swoole\Runtime::enableCoroutine(true);
             }
