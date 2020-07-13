@@ -1,7 +1,7 @@
 {
     "name": "yurunsoft/imi",
     "type": "library",
-    "license": "MulanPSL-2.0",
+    "license": "MulanPSL-1.0",
     "description": "imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。",
     "require": {
         "php": ">=7.1.0",
