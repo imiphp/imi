@@ -13,7 +13,7 @@
 
 ## 介绍
 
-imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP 服务的开发。
+imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。
 
 在 Swoole 的加持下，相比 php-fpm 请求响应能力，I/O密集型场景处理能力，有着本质上的提升。
 
@@ -29,7 +29,7 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 
 ### 核心组件
 
-* HttpApi、WebSocket、TCP、UDP 服务器
+* HttpApi、WebSocket、TCP、UDP、MQTT 服务器
 * MySQL 连接池 (主从+负载均衡)
 * Redis 连接池 (主从+负载均衡)
 * 超好用的 ORM (Db、Redis、Tree)
