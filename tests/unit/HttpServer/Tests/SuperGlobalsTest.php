@@ -58,14 +58,16 @@ class SuperGlobalsTest extends BaseTest
         $this->assertEquals('/superGlobalsInfo', $data['server']['REQUEST_URI'] ?? null);
 
         $content = file_get_contents(__FILE__);
-        $this->assertArraySubset([
-            'file'  =>  [
-                'name'      =>  basename(__FILE__),
-                'type'      =>  MediaType::TEXT_HTML,
-                'error'     =>  0,
-                'size'      =>  strlen($content),
-            ],
-        ], $data['files'] ?? null);
+        $file = $data['files']['file'] ?? null;
+        foreach([
+            'name'      =>  basename(__FILE__),
+            'type'      =>  MediaType::TEXT_HTML,
+            'error'     =>  0,
+            'size'      =>  strlen($content),
+        ] as $k => $v)
+        {
+            $this->assertEquals($v, $file[$k] ?? null);
+        }
 
     }
 }
