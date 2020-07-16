@@ -6,6 +6,7 @@ use Imi\Cron\Annotation\Cron;
 use Imi\Log\Log;
 use Imi\Cron\Client;
 use Imi\Cron\Message\AddCron;
+use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 
@@ -77,6 +78,28 @@ abstract class CronUtil
         {
             $result = new RemoveCron;
             $result->id = $id;
+            $client->send($result);
+            $client->close();
+        }
+        else
+        {
+            Log::error('Cannot connect to CronProcess');
+        }
+    }
+
+    /**
+     * 清空定时任务
+     *
+     * @return void
+     */
+    public static function clear()
+    {
+        $client = new Client([
+            'socketFile'    =>  App::getBean('CronManager')->getSocketFile(),
+        ]);
+        if($client->connect())
+        {
+            $result = new Clear;
             $client->send($result);
             $client->close();
         }

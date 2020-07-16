@@ -5,6 +5,7 @@ use Imi\Cron\Message\Result;
 use Imi\Process\BaseProcess;
 use Imi\Cron\Message\AddCron;
 use Imi\Aop\Annotation\Inject;
+use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Process\Annotation\Process;
 
@@ -133,6 +134,10 @@ class CronProcess extends BaseProcess
                 else if($result instanceof RemoveCron)
                 {
                     $this->cronManager->removeCron($result->id);
+                }
+                else if($result instanceof Clear)
+                {
+                    $this->cronManager->clear();
                 }
             } catch(\Throwable $th) {
                 $errorLog->onException($th);

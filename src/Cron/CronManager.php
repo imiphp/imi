@@ -47,7 +47,7 @@ class CronManager
      *
      * @var \Imi\Cron\CronTask[]
      */
-    private $realTasks;
+    private $realTasks = [];
 
     public function __init()
     {
@@ -66,7 +66,6 @@ class CronManager
                 $this->socketFile = '/tmp/imi.' . App::get(ProcessAppContexts::MASTER_PID) . '.cron.sock';
             }
         }
-        $this->realTasks = [];
         $realTasks = &$this->realTasks;
         foreach($this->tasks as $id => $task)
         {
@@ -138,6 +137,16 @@ class CronManager
         {
             unset($this->tasks[$id], $this->realTasks[$id]);
         }
+    }
+
+    /**
+     * 清空定时任务
+     *
+     * @return void
+     */
+    public function clear()
+    {
+        $this->tasks = $this->realTasks = [];
     }
 
     /**
