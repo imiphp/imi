@@ -91,8 +91,6 @@ abstract class ProcessManager
             Imi::setProcessName('process', [
                 'processName'   =>  $processName,
             ]);
-            // 强制开启进程协程化
-            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
             $exitCode = 0;
@@ -120,6 +118,9 @@ abstract class ProcessManager
                     }
                 } catch(ExitException $e) {
                     $exitCode = $e->getStatus();
+                } catch(\Throwable $th) {
+                    App::getBean('ErrorLog')->onException($th);
+                    $exitCode = 255;
                 } finally {
                     // 进程结束事件
                     Event::trigger('IMI.PROCESS.END', [
@@ -130,6 +131,8 @@ abstract class ProcessManager
             };
             if($processOption['Process']->co)
             {
+                // 强制开启进程协程化
+                \Swoole\Runtime::enableCoroutine(true);
                 imigo($callable);
                 \Swoole\Event::wait();
             }

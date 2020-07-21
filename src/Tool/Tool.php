@@ -129,12 +129,20 @@ abstract class Tool
                         $callable(...$args);
                     } catch(ExitException $e) {
                         $exitCode = $e->getStatus();
+                    } catch(\Throwable $th) {
+                        App::getBean('ErrorLog')->onException($th);
+                        $exitCode = 255;
                     }
                 });
             }
             else
             {
-                $callable(...$args);
+                try {
+                    $callable(...$args);
+                } catch(\Throwable $th) {
+                    App::getBean('ErrorLog')->onException($th);
+                    $exitCode = 255;
+                }
             }
             \Swoole\Event::wait();
             if(0 != $exitCode)
