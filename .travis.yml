@@ -57,7 +57,7 @@ jobs:
     env: SWOOLE_VERSION="master"
   - php: 'nightly'
     language: php
-    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true DOWNLOAD_PHPUNIT=9
+    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true DOWNLOAD_PHPUNIT=nightly
   allow_failures:
   - env: SWOOLE_VERSION="v4.5.3-alpha"
   - env: SWOOLE_VERSION="master"
@@ -93,7 +93,7 @@ install:
       cd phpredis-develop;
       phpize;
       ./configure;
-      make && make install;
+      make -j && make install;
       cd ../;
     fi
   - if [[ $TRAVIS_OS_NAME == linux ]]; then

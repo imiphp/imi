@@ -63,7 +63,7 @@ abstract class Db
     }
 
     /**
-     * 处理连接池 名称
+     * 处理连接池名称
      *
      * @param string $poolName
      * @param int $queryType

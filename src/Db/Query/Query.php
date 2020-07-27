@@ -1266,15 +1266,18 @@ class Query implements IQuery
      * 查询器别名
      *
      * @param string $name
-     * @param callable $callable
+     * @param callable|null $callable
      * @return static
      */
-    public function alias($name, $callable)
+    public function alias($name, $callable = null)
     {
         $aliasMap = &static::$aliasMap;
         if(!isset($aliasMap[$name]))
         {
-            $callable($this);
+            if($callable)
+            {
+                $callable($this);
+            }
             $this->alias = $name;
             $aliasMap[$name] = $this;
         }

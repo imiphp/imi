@@ -604,10 +604,10 @@ interface IQuery
      * 查询器别名
      *
      * @param string $name
-     * @param callable $callable
+     * @param callable|null $callable
      * @return static
      */
-    public function alias($name, $callable);
+    public function alias($name, $callable = null);
 
     /**
      * 加锁

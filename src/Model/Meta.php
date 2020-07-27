@@ -102,6 +102,13 @@ class Meta
      */
     private $relation;
 
+    /**
+     * 自增字段名
+     *
+     * @var string
+     */
+    private $autoIncrementField;
+
     public function __construct($modelClass)
     {
         $this->className = $modelClass;
@@ -116,8 +123,16 @@ class Meta
             $this->id = (array)$table->id;
         }
         $this->firstId = $this->id[0] ?? null;
-        $this->fields = ModelManager::getFields($modelClass);
-        $this->fieldNames = ModelManager::getFieldNames($modelClass);
+        $this->fields = $fields = ModelManager::getFields($modelClass);
+        $this->fieldNames = array_keys($fields);
+        foreach($fields as $field => $column)
+        {
+            if($column->isAutoIncrement)
+            {
+                $this->autoIncrementField = $field;
+                break;
+            }
+        }
         if($entity)
         {
             $this->camel = $entity->camel;
@@ -265,4 +280,15 @@ class Meta
     {
         return $this->serializableSets;
     }
+
+    /**
+     * Get 自增字段名
+     *
+     * @return string
+     */ 
+    public function getAutoIncrementField()
+    {
+        return $this->autoIncrementField;
+    }
+
 }

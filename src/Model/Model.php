@@ -190,19 +190,10 @@ abstract class Model extends BaseModel
         {
             $keys[] = $k;
         }
-        $result = $query->alias($this->__realClass . ':insert:' . md5(implode(',', $keys)), function(IQuery $query){
-            
-        })->insert($data);
-        if($result->isSuccess())
+        $result = $query->alias($this->__realClass . ':insert:' . md5(implode(',', $keys)))->insert($data);
+        if($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
         {
-            foreach($meta->getFields() as $name => $column)
-            {
-                if($column->isAutoIncrement)
-                {
-                    $this[$name] = $result->getLastInsertId();
-                    break;
-                }
-            }
+            $this[$autoIncrementField] = $result->getLastInsertId();
         }
 
         // 插入后
@@ -371,19 +362,9 @@ abstract class Model extends BaseModel
                 }
             }
         })->replace($data);
-        if($result->isSuccess())
+        if($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
         {
-            foreach($meta->getFields() as $name => $column)
-            {
-                if($column->isAutoIncrement)
-                {
-                    if(null === $this[$name])
-                    {
-                        $this[$name] = $result->getLastInsertId();
-                    }
-                    break;
-                }
-            }
+            $this[$autoIncrementField] = $result->getLastInsertId();
         }
 
         // 保存后
