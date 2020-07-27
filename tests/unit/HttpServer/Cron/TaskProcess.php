@@ -8,8 +8,8 @@ use Imi\Cron\Annotation\Cron;
 use Imi\Process\Annotation\Process;
 
 /**
- * @Cron(id="CronProcess1", second="3n")
- * @Process("CronProcess1")
+ * @Cron(id="TaskProcess1", second="3n")
+ * @Process("TaskProcess1")
  */
 class TaskProcess implements IProcess
 {
