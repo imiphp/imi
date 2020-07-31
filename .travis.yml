@@ -112,6 +112,7 @@ install:
   - php -v && php -m; 
   - if [[ $DOWNLOAD_PHPUNIT != "" ]]; then
       curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-$DOWNLOAD_PHPUNIT.phar && php ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit --version && export TEST_PHPUNIT_PATH=~/.phpenv/versions/$(phpenv version-name)/bin/phpunit;
+      php ./.travis/composer-no-phpunit.php;
     fi
 
 before_script:
