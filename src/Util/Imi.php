@@ -670,13 +670,23 @@ abstract class Imi
     {
         $path = is_dir('/dev/shm') ? '/dev/shm' : '/tmp';
         $fileName = tempnam($path, 'imi-');
-        file_put_contents($fileName, '<?php ' . $code);
-        try {
-            $result = require $fileName;
-        } finally {
-            unlink($fileName);
+        if(false === $fileName)
+        {
+            trigger_error(sprintf('Unable to create tempfile in directory: %s, and has automatically tried to use eval()', $path), E_USER_WARNING);
+            return eval($code);
         }
-        return $result;
+        else
+        {
+            try {
+                if(false === file_put_contents($fileName, '<?php ' . $code))
+                {
+                    throw new \RuntimeException(sprintf('Unable to write temporary file: %s', $fileName));
+                }
+                return require $fileName;
+            } finally {
+                unlink($fileName);
+            }
+        }
     }
 
     /**
