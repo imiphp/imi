@@ -668,22 +668,28 @@ abstract class Imi
      */
     public static function eval(string $code)
     {
-        $path = is_dir('/dev/shm') ? '/dev/shm' : '/tmp';
-        $fileName = tempnam($path, 'imi-');
-        if(false === $fileName)
+        $path = is_dir('/run/shm') ? '/run/shm/' : '/tmp/';
+        $fileName = $path . uniqid('imi-', true);
+        $fp = fopen($fileName, 'x');
+        if(false === $fp)
         {
-            trigger_error(sprintf('Unable to create tempfile in directory: %s, and has automatically tried to use eval()', $path), E_USER_WARNING);
             return eval($code);
         }
         else
         {
             try {
-                if(false === file_put_contents($fileName, '<?php ' . $code))
+                if(!fwrite($fp, '<?php ' . $code))
                 {
                     throw new \RuntimeException(sprintf('Unable to write temporary file: %s', $fileName));
                 }
+                fclose($fp);
+                $closed = true;
                 return require $fileName;
             } finally {
+                if(!isset($closed))
+                {
+                    fclose($fp);
+                }
                 unlink($fileName);
             }
         }
