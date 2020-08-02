@@ -182,8 +182,7 @@ class CronCalculator
             else
             {
                 $s = date($dateFormat, $lastTime);
-                // 同取余 % $step
-                return range($s & ($step - 1), $max, $step);
+                return range($s % $step, $max, $step);
             }
         }
         // 列表

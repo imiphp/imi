@@ -152,8 +152,7 @@ abstract class DateTime
             $days -= (8 - $week);
         }
         $weeks += (int)($days / 7);
-        // 同取余 % 7
-        if(($days & 6) > 0)
+        if($days % 7 > 0)
         {
             ++$weeks;
         }
