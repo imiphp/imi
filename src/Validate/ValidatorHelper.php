@@ -493,7 +493,8 @@ class ValidatorHelper
             {
                 $checksum += substr($id_card, $i, 1) * $factor[$i];
             }
-            $mod = $checksum % 11;
+            // 同取余 % 11
+            $mod = $checksum & 10;
             $verify_number = $verify_number_list[$mod];
             return $verify_number;
         };

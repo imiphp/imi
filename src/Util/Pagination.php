@@ -132,7 +132,8 @@ class Pagination
     public function calcPageCount($records)
     {
         $count = $this->count;
-        if(0 === $records % $count)
+        // 同取余 % $count
+        if(0 === ($records & ($count - 1)))
         {
             return $records / $count;
         }
