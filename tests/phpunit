@@ -22,6 +22,7 @@ go(function() use(&$statusCode){
                 require $phpunitPath;
             }
             $statusCode = PHPUnit\TextUI\Command::main(false);
+            var_dump('a:' . $statusCode);
         } catch (\Swoole\ExitException $e) {
             $statusCode = $e->getStatus();
         }
@@ -29,4 +30,5 @@ go(function() use(&$statusCode){
     });
 });
 Event::wait();
+var_dump('gg:' . $statusCode);
 exit($statusCode);
