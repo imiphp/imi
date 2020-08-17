@@ -21,7 +21,7 @@ go(function() use(&$statusCode){
             {
                 require $phpunitPath;
             }
-            PHPUnit\TextUI\Command::main();
+            $statusCode = PHPUnit\TextUI\Command::main(false);
         } catch (\Swoole\ExitException $e) {
             $statusCode = $e->getStatus();
         }
