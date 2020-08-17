@@ -99,6 +99,7 @@ abstract class App
         static::checkEnvironment();
         self::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
         self::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
+        self::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
         static::initFramework($namespace);
         if(!isset($_SERVER['argv'][1]))
         {

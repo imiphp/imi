@@ -21,4 +21,9 @@ abstract class ProcessAppContexts
      */
     const MASTER_PID = 'master_pid';
 
+    /**
+     * 当前进程脚本名称
+     */
+    const SCRIPT_NAME = 'script_name';
+
 }

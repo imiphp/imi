@@ -13,6 +13,7 @@ use Imi\Bean\Parser\BeanParser;
 use Imi\Model\Annotation\Column;
 use Imi\Bean\ReflectionContainer;
 use Imi\Model\Annotation\MemoryTable;
+use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
 
 /**
@@ -351,7 +352,7 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        $cmd = '"' . PHP_BINARY . '" "' . $_SERVER['SCRIPT_FILENAME'] . '" ' . $toolName . '/' . $operation;
+        $cmd = '"' . PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
