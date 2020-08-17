@@ -130,7 +130,7 @@ class HttpRoute
      */
     public function parse(Request $request)
     {
-        $pathInfo = $request->getServerParam('path_info');
+        $pathInfo = $request->getUri()->getPath();
         $thisRules = &$this->rules;
         if(isset($thisRules[$pathInfo]))
         {
