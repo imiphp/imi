@@ -13,7 +13,7 @@ class ToolTest extends BaseTest
     {
         if(version_compare(SWOOLE_VERSION, '4.4', '>='))
         {
-            $cmd = '"' . dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test -appNamespace "Imi\Test\Component"';
+            $cmd = cmd('"' . dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test -appNamespace "Imi\Test\Component"');
             exec($cmd, $output, $exitCode);
             $this->assertEquals(0, $exitCode);
 

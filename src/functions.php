@@ -63,3 +63,15 @@ function imiGetEnv($varname = null, $default = null, $localOnly = false)
     }
     return $result;
 }
+
+/**
+ * 处理命令行，执行后不会有 sh 进程
+ * 仅限 Swoole >= 4.5.3
+ * 
+ * @param string $cmd
+ * @return string
+ */
+function cmd(string $cmd): string
+{
+    return (SWOOLE_VERSION_ID >= 40503 ? 'exec ' : '') . $cmd;
+}
