@@ -12,7 +12,6 @@ class ModelTest extends BaseTest
     public function testInsert()
     {
         $this->assertTrue(true);
-        $time = microtime(true);
         for($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
         {
             Performance::newInstance([
@@ -24,7 +23,6 @@ class ModelTest extends BaseTest
     public function testSelect()
     {
         $this->assertTrue(true);
-        $time = microtime(true);
         for($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
         {
             Performance::query()->limit(mt_rand(0, 99) * 100, 100);
@@ -34,7 +32,6 @@ class ModelTest extends BaseTest
     public function testFind()
     {
         $this->assertTrue(true);
-        $time = microtime(true);
         for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record = Performance::find($i);
@@ -44,7 +41,6 @@ class ModelTest extends BaseTest
     public function testUpdate()
     {
         $this->assertTrue(true);
-        $time = microtime(true);
         for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record = Performance::find($i);
@@ -57,7 +53,6 @@ class ModelTest extends BaseTest
     {
         $this->assertTrue(true);
         $record = Performance::find(1);
-        $time = microtime(true);
         for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record->toArray();
@@ -68,7 +63,6 @@ class ModelTest extends BaseTest
     {
         $this->assertTrue(true);
         $record = Performance::find(1);
-        $time = microtime(true);
         for($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record->convertToArray();
