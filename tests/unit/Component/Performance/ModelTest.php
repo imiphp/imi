@@ -1,7 +1,6 @@
 <?php
 namespace Imi\Test\Component\Tests\Performance;
 
-use Imi\Log\Log;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Performance;
 
@@ -10,11 +9,6 @@ use Imi\Test\Component\Model\Performance;
  */
 class ModelTest extends BaseTest
 {
-    public function __startTest()
-    {
-        Log::log('Test', 'Performance:Model');
-    }
-
     public function testInsert()
     {
         $this->assertTrue(true);
@@ -25,7 +19,6 @@ class ModelTest extends BaseTest
                 'value' =>  $i + 1,
             ])->insert();
         }
-        Log::log('Test', sprintf('Model->insert(): %s s', microtime(true) - $time));
     }
 
     public function testSelect()
@@ -36,7 +29,6 @@ class ModelTest extends BaseTest
         {
             Performance::query()->limit(mt_rand(0, 99) * 100, 100);
         }
-        Log::log('Test', sprintf('Model->select(): %s s', microtime(true) - $time));
     }
 
     public function testFind()
@@ -47,7 +39,6 @@ class ModelTest extends BaseTest
         {
             $record = Performance::find($i);
         }
-        Log::log('Test', sprintf('Model->find(): %s s', microtime(true) - $time));
     }
 
     public function testUpdate()
@@ -60,7 +51,6 @@ class ModelTest extends BaseTest
             $record->value = static::PERFORMANCE_COUNT - $i;
             $record->update();
         }
-        Log::log('Test', sprintf('Model->update(): %s s', microtime(true) - $time));
     }
 
     public function testToArray()
@@ -72,7 +62,6 @@ class ModelTest extends BaseTest
         {
             $record->toArray();
         }
-        Log::log('Test', sprintf('Model->toArray(): %s s', microtime(true) - $time));
     }
 
     public function testConvertToArray()
@@ -84,7 +73,6 @@ class ModelTest extends BaseTest
         {
             $record->convertToArray();
         }
-        Log::log('Test', sprintf('Model->convertToArray(): %s s', microtime(true) - $time));
     }
 
 }
