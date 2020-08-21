@@ -90,11 +90,6 @@ install:
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
       echo "no" | pecl install -f redis;
     fi
-  - if [[ $TRAVIS_OS_NAME == linux ]]; then
-      phpenv config-add .travis/redis.ini;
-    else
-      echo "extension = redis.so" >> $PHP_INI_FILE;
-    fi;
     php --ri redis;
   - wget https://github.com/swoole/swoole-src/archive/$SWOOLE_VERSION.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure --enable-openssl --enable-http2 --enable-mysqlnd $macosSwooleMakeArg && make -j && make install && cd -;
     if [[ $TRAVIS_OS_NAME == linux ]]; then
