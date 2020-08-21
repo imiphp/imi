@@ -78,6 +78,8 @@ addons:
 
 install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then
+      brew services start redis;
+      brew services start mysql;
       brew install php@$PHP_VERSION;
       export PATH="$(brew --prefix php)/bin:$PATH";
       PHP_INI_FILE="/usr/local/etc/php/$PHP_VERSION/php.ini";
@@ -111,10 +113,6 @@ install:
     fi
 
 before_script:
-  - if [[ $TRAVIS_OS_NAME == osx ]]; then
-      brew services start redis;
-      brew services start mysql;
-    fi
   - if [[ $DISABLE_XDEBUG != false ]]; then
       phpenv config-rm xdebug.ini;
     fi
@@ -131,3 +129,4 @@ env:
   global:
     - MYSQL_SERVER_USERNAME: root
     - MYSQL_SERVER_PASSWORD:
+    - HOMEBREW_NO_AUTO_UPDATE: "true"
