@@ -59,7 +59,7 @@ jobs:
     language: php
     env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true DOWNLOAD_PHPUNIT=nightly
   allow_failures:
-  - env: SWOOLE_VERSION="v4.5.3-alpha"
+  - env: SWOOLE_VERSION="v4.5.3-beta"
   - env: SWOOLE_VERSION="master"
   - php: nightly
 
@@ -88,13 +88,7 @@ install:
       dd if=/dev/zero of=swap bs=1024 count=2048000 && chmod 600 swap && sudo mkswap swap && sudo swapon swap;
     fi
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
-      wget https://github.com/phpredis/phpredis/archive/develop.zip;
-      unzip develop.zip;
-      cd phpredis-develop;
-      phpize;
-      ./configure;
-      make -j && make install;
-      cd ../;
+      pecl install -f redis
     fi
   - if [[ $TRAVIS_OS_NAME == linux ]]; then
       phpenv config-add .travis/redis.ini;

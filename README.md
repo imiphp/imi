@@ -1,3 +1,5 @@
+# imi - 基于 Swoole 的 PHP 协程开发框架
+
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
         <img src="https://raw.githubusercontent.com/Yurunsoft/IMI/dev/res/logo.png" alt="imi" />
@@ -76,11 +78,11 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 
 ## 运行环境
 
-- Linux 系统 (Swoole 不支持在 Windows 上运行)
-- [PHP](https://php.net/) >= 7.1
-- [Composer](https://getcomposer.org/)
-- [Swoole](https://www.swoole.com/) >= 4.3.0
-- Redis、PDO 扩展
+* Linux 系统 (Swoole 不支持在 Windows 上运行)
+* [PHP](https://php.net/) >= 7.1
+* [Composer](https://getcomposer.org/)
+* [Swoole](https://www.swoole.com/) >= 4.3.0
+* Redis、PDO 扩展
 
 ## Docker
 
@@ -123,13 +125,13 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 感谢以下开源项目 (按字母顺序排列) 为 imi 提供强力支持！
 
-- [doctrine/annotations](https://github.com/doctrine/annotations) (PHP 注解处理类库)
-- [PHP](https://php.net/) (没有 PHP 就没有 imi)
-- [Swoole](https://www.swoole.com/) (没有 Swoole 就没有 imi)
+* [doctrine/annotations](https://github.com/doctrine/annotations) (PHP 注解处理类库)
+* [PHP](https://php.net/) (没有 PHP 就没有 imi)
+* [Swoole](https://www.swoole.com/) (没有 Swoole 就没有 imi)
 
 ## 贡献者
 
-<a href="https://github.com/Yurunsoft/IMI/graphs/contributors"><img src="https://opencollective.com/IMI/contributors.svg?width=890&button=false" /></a>
+[![贡献者](https://opencollective.com/IMI/contributors.svg?width=890&button=false)](https://github.com/Yurunsoft/IMI/graphs/contributors)
 
 你想出现在贡献者列表中吗？
 
@@ -178,6 +180,6 @@ REDIS_CACHE_DB | Redis 缓存用的 `db`，该 `db` 会被清空数据，请慎�
 
 ## 捐赠
 
-<img src="https://cdn.jsdelivr.net/gh/Yurunsoft/IMI@dev/res/pay.png"/>
+![捐赠](https://cdn.jsdelivr.net/gh/Yurunsoft/IMI@dev/res/pay.png)
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……
