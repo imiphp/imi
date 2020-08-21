@@ -88,7 +88,7 @@ install:
       dd if=/dev/zero of=swap bs=1024 count=2048000 && chmod 600 swap && sudo mkswap swap && sudo swapon swap;
     fi
   - if [[ $INSTALL_REDIS_EXT == true ]]; then
-      pecl install -f redis;
+      echo "no" | pecl install -f redis;
     fi
   - if [[ $TRAVIS_OS_NAME == linux ]]; then
       phpenv config-add .travis/redis.ini;
