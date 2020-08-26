@@ -662,6 +662,13 @@ abstract class Imi
     }
 
     /**
+     * eval 方法用的自增变量
+     *
+     * @var integer
+     */
+    private static $evalAtomic = 0;
+
+    /**
      * eval() 函数的安全替代方法
      *
      * @param string $code
@@ -669,8 +676,7 @@ abstract class Imi
      */
     public static function eval(string $code)
     {
-        $path = is_dir('/run/shm') ? '/run/shm/' : '/tmp/';
-        $fileName = $path . uniqid('imi-', true);
+        $fileName = (is_dir('/run/shm') ? '/run/shm/' : '/tmp/') . 'imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
         $fp = fopen($fileName, 'x');
         if(false === $fp)
         {
