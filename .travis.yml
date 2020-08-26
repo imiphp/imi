@@ -89,13 +89,17 @@ install:
   - if [[ $TRAVIS_OS_NAME == linux ]]; then
       dd if=/dev/zero of=swap bs=1024 count=2048000 && chmod 600 swap && sudo mkswap swap && sudo swapon swap;
     fi
-  - if [[ $INSTALL_REDIS_EXT != "" ]]; then
+  - if [[ $INSTALL_REDIS_EXT == "" ]]; then
+      EXTENSION_ENABLE_REDIS=1;
+    else
       if [[ $INSTALL_REDIS_EXT == true ]]; then
         echo "no" | pecl install -f redis;
       else
         wget https://github.com/phpredis/phpredis/archive/$INSTALL_REDIS_EXT.tar.gz -O redis.tar.gz && mkdir -p redis && tar -xf redis.tar.gz -C redis --strip-components=1 && cd redis && phpize && ./configure && make -j && make install && cd -;
+        EXTENSION_ENABLE_REDIS=1;
       fi;
-    else
+    fi;
+    if [[ $EXTENSION_ENABLE_REDIS ]]; then
       if [[ $TRAVIS_OS_NAME == linux ]]; then
         phpenv config-add .travis/redis.ini;
       else
