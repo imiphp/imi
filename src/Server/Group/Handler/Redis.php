@@ -402,6 +402,33 @@ class Redis implements IGroupHandler
     }
 
     /**
+     * 清空分组
+     *
+     * @return void
+     */
+    public function clear()
+    {
+        return $this->useRedis(function(RedisHandler $redis){
+            $keys = [];
+            $count = 0;
+            foreach($redis->scanEach($this->getGroupNameKey('*')) as $key)
+            {
+                $keys[] = $key;
+                if(++$count >= 1000)
+                {
+                    $redis->del($keys);
+                    $keys = [];
+                    $count = 0;
+                }
+            }
+            if($keys)
+            {
+                $redis->del($keys);
+            }
+        });
+    }
+
+    /**
      * 使用redis
      *
      * @param callable $callback
@@ -414,4 +441,5 @@ class Redis implements IGroupHandler
             return $callback($redis);
         }, $this->redisPool, true);
     }
+
 }

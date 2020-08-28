@@ -130,7 +130,7 @@ class HttpRoute
      */
     public function parse(Request $request)
     {
-        $pathInfo = $request->getServerParam('path_info');
+        $pathInfo = $request->getUri()->getPath();
         $thisRules = &$this->rules;
         if(isset($thisRules[$pathInfo]))
         {
@@ -194,33 +194,42 @@ class HttpRoute
         $urlCheckCacheCount = &$this->urlCheckCacheCount;
         if(!isset($urlCheckCache[$pathInfo][$urlRule]))
         {
-            $rule = $this->parseRule($urlRule, $fields);
+            $rule = $this->parseRule($urlRule, $fields, $isRegular);
             $params = [];
-            if($result = preg_match_all($rule, $pathInfo, $matches) > 0)
+            if($isRegular)
             {
-                foreach($fields as $i => $fieldName)
+                if($matchResult = preg_match_all($rule, $pathInfo, $matches) > 0)
                 {
-                    $params[$fieldName] = $matches[$i + 1][0];
+                    foreach($fields as $i => $fieldName)
+                    {
+                        $params[$fieldName] = $matches[$i + 1][0];
+                    }
                 }
-            }
-            $result = new UrlCheckResult($result, $params);
-            if($result->result)
-            {
-                $result->resultIgnoreCase = true;
-            }
-            // 正则加i忽略大小写
-            else if(preg_match_all($rule . 'i', $pathInfo, $matches) > 0)
-            {
-                foreach($fields as $i => $fieldName)
-                {
-                    $params[$fieldName] = $matches[$i + 1][0];
-                }
-                $result->resultIgnoreCase = true;
-                $result->params = $params;
             }
             else
             {
-                $result->resultIgnoreCase = false;
+                $matchResult = $rule === $pathInfo;
+            }
+            $result = new UrlCheckResult($matchResult, $params);
+            if(!$matchResult)
+            {
+                if($isRegular)
+                {
+                    // 正则加i忽略大小写
+                    if(preg_match_all($rule . 'i', $pathInfo, $matches) > 0)
+                    {
+                        foreach($fields as $i => $fieldName)
+                        {
+                            $params[$fieldName] = $matches[$i + 1][0];
+                        }
+                        $result->resultIgnoreCase = true;
+                        $result->params = $params;
+                    }
+                }
+                else if(0 === strcasecmp($rule, $pathInfo))
+                {
+                    $result->resultIgnoreCase = true;
+                }
             }
             // 最大缓存数量处理
             if($urlCheckCacheCount >= $this->urlCacheNumber)
@@ -238,35 +247,61 @@ class HttpRoute
      * 处理规则为正则
      * @param string $rule
      * @param array $fields 规则中包含的自定义参数
+     * @param bool $isRegular 是否为正则
      * @return string
      */
-    private function parseRule($rule, &$fields)
+    private function parseRule($rule, &$fields, &$isRegular)
     {
         $rulesCache = &$this->rulesCache;
         if(isset($rulesCache[$rule]))
         {
             $cache = $rulesCache[$rule];
             $fields = $cache['fields'];
+            $isRegular = $cache['isRegular'];
             return $cache['pattern'];
         }
         else
         {
             $fields = [];
-            if(false !== strpos($rule, '/'))
+            if(false === strpos($rule, '/'))
             {
-                $rule = str_replace('/', '\/', $rule);
+                $parsedRule = $rule;
             }
-            $pattern = '/^' . preg_replace_callback(
-                '/\{([^:]+)(?::([^{}]*(?:\{(?-1)\}[^{}]*)*))?\}/',
+            else
+            {
+                $parsedRule = str_replace('/', '\/', $rule);
+            }
+            $pattern = preg_replace_callback(
+                '/\{(([^\}:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
                 function($matches)use(&$fields){
-                    $fields[] = $matches[1];
-                    return '(' . ($matches[2] ?? '.+') . ')';
+                    if(isset($matches[4]))
+                    {
+                        // 正则
+                        $fields[] = $matches[3];
+                        return '(' . $matches[4] . ')';
+                    }
+                    else
+                    {
+                        // 正常匹配
+                        $fields[] = $matches[1];
+                        return '(.+)';
+                    }
                 },
-                $rule
-            ) . '\/?$/';
+                $parsedRule, -1, $isRegular
+            );
+            $isRegular = $isRegular > 0;
+            if($isRegular)
+            {
+                $pattern = '/^' . $pattern . '\/?$/';
+            }
+            else
+            {
+                $pattern = $rule;
+            }
             $rulesCache[$rule] = [
                 'pattern'   =>  $pattern,
                 'fields'    =>  $fields,
+                'isRegular' =>  $isRegular,
             ];
             return $pattern;
         }
@@ -311,16 +346,25 @@ class HttpRoute
         {
             $domain = [$domain];
         }
+        $uriDomain = Uri::getDomain($request->getUri());
         foreach($domain as $rule)
         {
-            $rule = $this->parseRule($rule, $fields);
-            if(preg_match_all($rule, Uri::getDomain($request->getUri()), $matches) > 0)
+            $rule = $this->parseRule($rule, $fields, $isRegular);
+            if($isRegular)
             {
-                $params = [];
-                foreach($fields as $i => $fieldName)
+                // 域名匹配不区分大小写
+                if(preg_match_all($rule . 'i', $uriDomain, $matches) > 0)
                 {
-                    $params[$fieldName] = $matches[$i + 1][0];
+                    $params = [];
+                    foreach($fields as $i => $fieldName)
+                    {
+                        $params[$fieldName] = $matches[$i + 1][0];
+                    }
+                    return true;
                 }
+            }
+            else if(0 === strcasecmp($rule, $uriDomain))
+            {
                 return true;
             }
         }

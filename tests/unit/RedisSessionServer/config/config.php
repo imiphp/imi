@@ -21,7 +21,7 @@ return [
     'mainServer'    =>    [
         'namespace'    =>    'Imi\Test\RedisSessionServer\ApiServer',
         'type'        =>    Imi\Server\Type::HTTP,
-        'host'        =>    '127.0.0.1',
+        'host'        =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'        =>    13001,
         'configs'    =>    [
             'worker_num'    =>  1,

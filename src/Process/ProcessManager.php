@@ -4,14 +4,15 @@ namespace Imi\Process;
 use Imi\App;
 use Imi\Util\Imi;
 use Imi\Util\File;
+use Swoole\Process;
 use Imi\Event\Event;
 use Imi\ServerManage;
 use Imi\Bean\BeanFactory;
+use Swoole\ExitException;
 use Imi\Util\Process\ProcessType;
 use Imi\Process\Parser\ProcessParser;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Process\Exception\ProcessAlreadyRunException;
-use Swoole\Process;
 
 /**
  * 进程管理类
@@ -76,7 +77,7 @@ abstract class ProcessManager
      * @param string|null $alias
      * @return callable
      */
-    private static function getProcessCallable($args, $name, $processOption, ?string $alias = null)
+    public static function getProcessCallable($args, $name, $processOption, ?string $alias = null)
     {
         return function(\Swoole\Process $swooleProcess) use($args, $name, $processOption, $alias){
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
@@ -90,45 +91,59 @@ abstract class ProcessManager
             Imi::setProcessName('process', [
                 'processName'   =>  $processName,
             ]);
-            // 强制开启进程协程化
-            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
-            $callable = function() use($swooleProcess, $args, $name, $processOption){
-                if($processOption['Process']->unique && !static::lockProcess($name))
-                {
-                    throw new \RuntimeException('lock process lock file error');
+            $exitCode = 0;
+            $callable = function() use($swooleProcess, $args, $name, $processOption, &$exitCode){
+                try {
+                    if($processOption['Process']->unique && !static::lockProcess($name))
+                    {
+                        throw new \RuntimeException('lock process lock file error');
+                    }
+                    \Imi\Util\Process::clearNotInheritableSignalListener();
+                    // 加载服务器注解
+                    \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+                    App::initWorker();
+                    // 进程开始事件
+                    Event::trigger('IMI.PROCESS.BEGIN', [
+                        'name'      => $name,
+                        'process'   => $swooleProcess,
+                    ]);
+                    // 执行任务
+                    $processInstance = BeanFactory::newInstance($processOption['className'], $args);
+                    $processInstance->run($swooleProcess);
+                    if($processOption['Process']->unique)
+                    {
+                        static::unlockProcess($name);
+                    }
+                } catch(ExitException $e) {
+                    $exitCode = $e->getStatus();
+                } catch(\Throwable $th) {
+                    App::getBean('ErrorLog')->onException($th);
+                    $exitCode = 255;
+                } finally {
+                    // 进程结束事件
+                    Event::trigger('IMI.PROCESS.END', [
+                        'name'      => $name,
+                        'process'   => $swooleProcess,
+                    ]);
                 }
-                // 加载服务器注解
-                \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
-                App::initWorker();
-                // 进程开始事件
-                Event::trigger('IMI.PROCESS.BEGIN', [
-                    'name'      => $name,
-                    'process'   => $swooleProcess,
-                ]);
-                // 执行任务
-                $processInstance = BeanFactory::newInstance($processOption['className'], $args);
-                $processInstance->run($swooleProcess);
-                if($processOption['Process']->unique)
-                {
-                    static::unlockProcess($name);
-                }
-                // 进程结束事件
-                Event::trigger('IMI.PROCESS.END', [
-                    'name'      => $name,
-                    'process'   => $swooleProcess,
-                ]);
             };
             if($processOption['Process']->co)
             {
+                // 强制开启进程协程化
+                \Swoole\Runtime::enableCoroutine(true);
                 imigo($callable);
+                \Swoole\Event::wait();
             }
             else
             {
                 $callable();
             }
-            \Swoole\Event::wait();
+            if(0 != $exitCode)
+            {
+                exit($exitCode);
+            }
         };
     }
 
@@ -188,7 +203,7 @@ abstract class ProcessManager
      */
     public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
-        $cmd = Imi::getImiCmd('process', 'start', $args) . ' -name ' . $name;
+        $cmd = Imi::getImiCmd('process', 'run', $args) . ' -name ' . $name;
         if(null !== $redirectStdinStdout)
         {
             $cmd .= ' -redirectStdinStdout ' . $redirectStdinStdout;

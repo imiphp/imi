@@ -111,7 +111,7 @@ abstract class Server
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
-        return static::sendRaw($dataParser->encode($data), $fd, $server->getName());
+        return static::sendRaw($dataParser->encode($data, $serverName), $fd, $server->getName());
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class Server
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
-        return static::sendRawToAll($dataParser->encode($data), $server->getName(), $toAllWorkers);
+        return static::sendRawToAll($dataParser->encode($data, $serverName), $server->getName(), $toAllWorkers);
     }
 
     /**
@@ -245,7 +245,7 @@ abstract class Server
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
-        return static::sendRawToGroup($groupName, $dataParser->encode($data), $server->getName());
+        return static::sendRawToGroup($groupName, $dataParser->encode($data, $serverName), $server->getName());
     }
 
     /**

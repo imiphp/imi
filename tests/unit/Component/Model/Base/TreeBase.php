@@ -8,15 +8,25 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
 /**
- * TreeBase
+ * tb_tree 基类
  * @Entity
  * @Table(name="tb_tree", id={"id"})
  * @DDL("CREATE TABLE `tb_tree` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` int(10) unsigned NOT NULL,
   `name` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8")
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+insert into `tb_tree` values('1','0','a');
+insert into `tb_tree` values('2','0','b');
+insert into `tb_tree` values('3','0','c');
+insert into `tb_tree` values('4','1','a-1');
+insert into `tb_tree` values('5','1','a-2');
+insert into `tb_tree` values('6','4','a-1-1');
+insert into `tb_tree` values('7','4','a-1-2');
+insert into `tb_tree` values('8','2','b-1');
+insert into `tb_tree` values('9','2','b-2');
+")
  * @property int $id 
  * @property int $parentId 
  * @property string $name 

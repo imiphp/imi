@@ -282,4 +282,15 @@ class RequestTest extends BaseTest
         ]), $response->body());
     }
 
+    public function testMoreUrlParams()
+    {
+        $http = new HttpRequest;
+        $response = $http->get($this->host . 'type/1/test/666');
+        $this->assertEquals(json_encode([
+            'id'    =>  '1',
+            'name'  =>  'test',
+            'page'  =>  '666',
+        ]), $response->body());
+    }
+
 }

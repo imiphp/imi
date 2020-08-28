@@ -60,4 +60,12 @@ interface IGroupHandler
      * @return integer
      */
     public function count(string $groupName): int;
+
+    /**
+     * 清空分组
+     *
+     * @return void
+     */
+    public function clear();
+
 }

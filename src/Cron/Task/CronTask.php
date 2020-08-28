@@ -3,8 +3,8 @@ namespace Imi\Cron\Task;
 
 use Imi\App;
 use Imi\Task\TaskParam;
+use Imi\Cron\Util\CronUtil;
 use Imi\Task\Annotation\Task;
-use Imi\Cron\Traits\TWorkerReport;
 use Imi\Task\Interfaces\ITaskHandler;
 
 /**
@@ -12,8 +12,6 @@ use Imi\Task\Interfaces\ITaskHandler;
  */
 class CronTask implements ITaskHandler
 {
-    use TWorkerReport;
-
     /**
      * 任务处理方法，返回的值会通过 finish 事件推送给 worker 进程
      * @param TaskParam $param
@@ -39,7 +37,7 @@ class CronTask implements ITaskHandler
             $message = $th->getMessage();
             throw $th;
         } finally {
-            $this->reportCronResult($id, $success, $message);
+            CronUtil::reportCronResult($id, $success, $message);
         }
     }
 

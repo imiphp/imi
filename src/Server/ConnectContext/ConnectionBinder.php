@@ -69,6 +69,25 @@ class ConnectionBinder
     }
 
     /**
+     * 绑定一个标记到当前连接，如果已绑定返回false
+     *
+     * @param string $flag
+     * @param integer $fd
+     * @return boolean
+     */
+    public function bindNx(string $flag, int $fd): bool
+    {
+        $result = $this->useRedis(function(RedisHandler $redis) use($flag, $fd){
+            return $redis->hSetNx($this->key, $flag, $fd);
+        });
+        if($result)
+        {
+            ConnectContext::set('__flag', $flag, $fd);
+        }
+        return $result;
+    }
+
+    /**
      * 取消绑定
      *
      * @param string $flag

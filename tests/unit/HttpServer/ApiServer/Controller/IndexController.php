@@ -367,4 +367,14 @@ class IndexController extends SingletonHttpController
         ];
     }
 
+    /**
+     * @Action
+     * @Route(url="/type/{id}/{name}/{page}")
+     * @return array
+     */
+    public function type($id, $name, $page)
+    {
+        return compact('id', 'name', 'page');
+    }
+
 }

@@ -22,7 +22,7 @@ return [
     'mainServer'    =>    [
         'namespace'    =>    'Imi\Test\UDPServer\MainServer',
         'type'        =>    Imi\Server\Type::UDP_SERVER,
-        'host'        =>    '127.0.0.1',
+        'host'        =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'        =>    13004,
         'configs'    =>    [
             'worker_num'    =>  1,

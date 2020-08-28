@@ -14,6 +14,7 @@ return [
         'Imi\Test\HttpServer\Task',
         'Imi\Test\HttpServer\Process',
         'Imi\Test\HttpServer\Cron',
+        'Imi\Test\HttpServer\Listener',
     ],
 
     // 组件命名空间
@@ -24,7 +25,7 @@ return [
     'mainServer'    =>    [
         'namespace'    =>    'Imi\Test\HttpServer\ApiServer',
         'type'        =>    Imi\Server\Type::HTTP,
-        'host'        =>    '127.0.0.1',
+        'host'        =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'        =>    13000,
         'mode'      =>  SWOOLE_BASE,
         'configs'    =>    [
@@ -38,13 +39,13 @@ return [
         'SessionTest'   =>  [
             'namespace' =>    'Imi\Test\HttpServer\SessionTestServer',
             'type'      =>    Imi\Server\Type::HTTP,
-            'host'      =>    '127.0.0.1',
+            'host'      =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      =>    13005,
         ],
         'HttpsTest'     =>  [
             'namespace' =>    'Imi\Test\HttpServer\HttpsTestServer',
             'type'      =>    Imi\Server\Type::HTTP,
-            'host'      =>    '127.0.0.1',
+            'host'      =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      =>    13006,
             'sockType'  =>    SWOOLE_SOCK_TCP | SWOOLE_SSL,
             'configs'   =>  [
@@ -55,7 +56,7 @@ return [
         'Http2Test'   =>  [
             'namespace' =>    'Imi\Test\HttpServer\Http2TestServer',
             'type'      =>    Imi\Server\Type::HTTP,
-            'host'      =>    '127.0.0.1',
+            'host'      =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      =>    13007,
             'sockType'  =>    SWOOLE_SOCK_TCP | SWOOLE_SSL,
             'configs'   =>  [

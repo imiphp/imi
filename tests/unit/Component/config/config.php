@@ -22,6 +22,7 @@ return [
         'Imi\Test\Component\Facade',
         'Imi\Test\Component\Annotation',
         'Imi\Test\Component\Partial',
+        'Imi\Test\Component\Tool',
     ],
     'ignoreNamespace'   =>  [
         'Imi\Test\Component\Annotation\A\*',
@@ -134,6 +135,29 @@ return [
                     'charset'     => 'utf8mb4',
                 ],
             ]
+        ],
+        // 主数据库
+        'swooleMysql'    =>    [
+            'pool'    =>    [
+                // 协程池类名
+                'asyncClass'    =>    \Imi\Db\Pool\CoroutineDbPool::class,
+                // 连接池配置
+                'config'        =>    [
+                    'maxResources'    =>    10,
+                    'minResources'    =>    1,
+                    'checkStateWhenGetResource' =>  false,
+                ],
+            ],
+            // 连接池资源配置
+            'resource'    =>    [
+                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
+                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'database'    => 'db_imi_test',
+                'charset'     => 'utf8mb4',
+                'dbClass'     => \Imi\Db\Drivers\Swoole\Driver::class,
+            ],
         ],
         'redis_test'    =>    [
             'sync'    =>    [
@@ -307,4 +331,18 @@ return [
         ],
     ],
     'yurun2'   =>  imiGetEnv('yurun'),
+    'tools'  =>  [
+        'generate/model'    =>  [
+            'namespace' =>  [
+                'Imi\Test\Component\Model' =>  [
+                    'tables'    =>  [
+                        'tb_tree'
+                    ],
+                    'withRecords'   =>  [
+                        'tb_tree',
+                    ],
+                ],
+            ]
+        ],
+    ],
 ];

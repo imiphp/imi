@@ -129,6 +129,6 @@ public function getData();
  */
 public function getClientInfo();
 
-// 格式同：https://wiki.swoole.com/wiki/page/477.html
+// 格式同：https://wiki.swoole.com/#/server/methods?id=getclientinfo
 ```
 

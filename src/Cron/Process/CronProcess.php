@@ -3,7 +3,10 @@ namespace Imi\Cron\Process;
 
 use Imi\Cron\Message\Result;
 use Imi\Process\BaseProcess;
+use Imi\Cron\Message\AddCron;
 use Imi\Aop\Annotation\Inject;
+use Imi\Cron\Message\Clear;
+use Imi\Cron\Message\RemoveCron;
 use Imi\Process\Annotation\Process;
 
 /**
@@ -39,25 +42,25 @@ class CronProcess extends BaseProcess
      *
      * @var resource
      */
-    private $socket;
+    protected $socket;
 
     /**
      * 是否正在运行
      *
      * @var boolean
      */
-    private $running = false;
+    protected $running = false;
 
     public function run(\Swoole\Process $process)
     {
-        \Swoole\Process::signal(SIGTERM, function($signo) {
-            $this->running = false;
-            $this->scheduler->close();
+        \Imi\Util\Process::signal(SIGTERM, function($signo) {
+            $this->stop();
         });
+        \Swoole\Runtime::enableCoroutine();
         $this->startSocketServer();
     }
 
-    private function startSocketServer()
+    protected function startSocketServer()
     {
         imigo(function(){
             $socketFile = $this->cronManager->getSocketFile();
@@ -100,7 +103,7 @@ class CronProcess extends BaseProcess
      * @param resource $conn
      * @return void
      */
-    private function parseConn($conn)
+    protected function parseConn($conn)
     {
         $running = &$this->running;
         $scheduler = $this->scheduler;
@@ -120,11 +123,23 @@ class CronProcess extends BaseProcess
                     return;
                 }
                 $result = unserialize($data);
-                if(!$result instanceof Result)
+                if($result instanceof Result)
                 {
-                    return;
+                    $scheduler->completeTask($result);
                 }
-                $scheduler->completeTask($result);
+                else if($result instanceof AddCron)
+                {
+                    $cronAnnotation = $result->cronAnnotation;
+                    $this->cronManager->addCronByAnnotation($cronAnnotation, $result->task);
+                }
+                else if($result instanceof RemoveCron)
+                {
+                    $this->cronManager->removeCron($result->id);
+                }
+                else if($result instanceof Clear)
+                {
+                    $this->cronManager->clear();
+                }
             } catch(\Throwable $th) {
                 $errorLog->onException($th);
             }
@@ -136,7 +151,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    private function startSchedule()
+    protected function startSchedule()
     {
         imigo(function(){
             $scheduler = $this->scheduler;
@@ -156,6 +171,17 @@ class CronProcess extends BaseProcess
                 }
             } while($running);
         });
+    }
+
+    /**
+     * 停止
+     *
+     * @return void
+     */
+    protected function stop()
+    {
+        $this->running = false;
+        $this->scheduler->close();
     }
 
 }

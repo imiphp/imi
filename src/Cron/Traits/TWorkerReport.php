@@ -1,10 +1,7 @@
 <?php
 namespace Imi\Cron\Traits;
 
-use Imi\App;
-use Imi\Log\Log;
-use Imi\Cron\Client;
-use Imi\Cron\Message\Result;
+use Imi\Cron\Util\CronUtil;
 
 /**
  * 定时任务上报
@@ -21,19 +18,7 @@ trait TWorkerReport
      */
     protected function reportCronResult(string $id, bool $success, string $message)
     {
-        $client = new Client([
-            'socketFile'    =>  App::getBean('CronManager')->getSocketFile(),
-        ]);
-        if($client->connect())
-        {
-            $result = new Result('cronTask', $id, $success, $message);
-            $client->send($result);
-            $client->close();
-        }
-        else
-        {
-            Log::error('Cannot connect to CronProcess');
-        }
+        CronUtil::reportCronResult($id, $success, $message);
     }
 
 }

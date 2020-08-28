@@ -1,6 +1,7 @@
 <?php
 namespace Imi\Cron;
 
+use Imi\App;
 use Imi\Log\Log;
 use Imi\ServerManage;
 use Imi\Cron\Message\Result;
@@ -75,11 +76,11 @@ class Scheduler
     private $runningTasks = [];
 
     /**
-     * 是否首轮运行
+     * 首次执行记录集合
      *
-     * @var boolean
+     * @var array
      */
-    private $first = true;
+    private $firstRunMap = [];
 
     public function __construct()
     {
@@ -97,22 +98,30 @@ class Scheduler
                 {
                     /** @var \Imi\Cron\CronTask $task */
                     $task = $param->getData();
-                    switch($task->getType())
+                    /** @var \Imi\Cron\CronManager $cronManager */
+                    $cronManager = App::getBean('CronManager');
+                    switch($type = $task->getType())
                     {
                         case CronTaskType::RANDOM_WORKER:
                             $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                            $taskClass = $task->getTask();
                             $swooleServer->sendMessage(json_encode([
                                 'action'    =>  'cronTask',
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
+                                'task'      =>  is_callable($taskClass) ? null : $taskClass,
+                                'type'      =>  $type,
                             ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
                             break;
                         case CronTaskType::ALL_WORKER:
                             $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                            $taskClass = $task->getTask();
                             $message = json_encode([
                                 'action'    =>  'cronTask',
                                 'id'        =>  $task->getId(),
                                 'data'      =>  $task->getData(),
+                                'task'      =>  is_callable($taskClass) ? null : $taskClass,
+                                'type'      =>  $type,
                             ]);
                             for($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
                             {
@@ -120,10 +129,15 @@ class Scheduler
                             }
                             break;
                         case CronTaskType::TASK:
-                            ($task->getTask())($task->getId(), $task->getData());
+                            $cronManager->getTaskCallable($task->getId(), $task->getTask(), $type)($task->getId(), $task->getData());
                             break;
                         case CronTaskType::PROCESS:
-                            ($task->getTask())($task->getId(), $task->getData());
+                            $cronManager->getTaskCallable($task->getTask(), $task->getTask(), $type)($task->getId(), $task->getData());
+                            break;
+                        case CronTaskType::CRON_PROCESS:
+                            /** @var \Imi\Cron\CronWorker $cronWorker */
+                            $cronWorker = App::getBean('CronWorker');
+                            $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
                             break;
                     }
                 }
@@ -155,7 +169,7 @@ class Scheduler
         $runningTasks = &$this->runningTasks;
         $nextTickTimeMap = &$this->nextTickTimeMap;
         $cronCalculator = $this->cronCalculator;
-        $first = &$this->first;
+        $firstRunMap = &$this->firstRunMap;
         foreach($this->cronManager->getRealTasks() as $task)
         {
             $id = $task->getId();
@@ -174,13 +188,20 @@ class Scheduler
             {
                 $nextTickTimeMap[$id] = $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             }
-            if(($first && $task->getForce()) || $now >= $nextTickTimeMap[$id])
+            $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
+            if($firstRun || $now >= $nextTickTimeMap[$id])
             {
-                unset($nextTickTimeMap[$id]);
+                if($firstRun)
+                {
+                    $firstRunMap[$id] = true;
+                }
+                else
+                {
+                    unset($nextTickTimeMap[$id]);
+                }
                 yield $task;
             }
         }
-        $first = false;
     }
 
     /**

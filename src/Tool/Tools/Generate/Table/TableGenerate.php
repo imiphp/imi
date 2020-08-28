@@ -72,7 +72,7 @@ class TableGenerate
             if($override)
             {
                 // 尝试删除表
-                $query->execute('DROP TABLE IF EXISTS ' . $table);
+                $query->execute('DROP TABLE IF EXISTS `' . $table . '`');
             }
             else
             {
@@ -93,7 +93,7 @@ class TableGenerate
             /** @var \Imi\Model\Annotation\DDL $ddlAnnotation */
             $ddlAnnotation = $point->getAnnotation();
             // 创建表
-            $query->execute($ddlAnnotation->sql);
+            Db::getInstance()->batchExec($ddlAnnotation->sql);
             $tables[] = $table;
             echo 'Create ', $table, PHP_EOL;
         }

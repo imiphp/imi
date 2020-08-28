@@ -105,15 +105,16 @@ abstract class StatementManager
         if(isset($staticStatements[$hashCode][$sql]))
         {
             $statementItem = &$staticStatements[$hashCode][$sql];
-            if($statementItem['statement'])
+            $statement = $statementItem['statement'];
+            if($statement)
             {
-                $statementItem['statement']->closeCursor();
+                $statement->closeCursor();
             }
             $statementItem['using'] = false;
             $context = RequestContext::getContext();
             if(isset($context['statementCaches']))
             {
-                if(false !== $i = array_search($statementItem['statement'], $context['statementCaches']))
+                if(false !== $i = array_search($statement, $context['statementCaches']))
                 {
                     unset($context['statementCaches'][$i]);
                 }
@@ -131,23 +132,20 @@ abstract class StatementManager
     {
         $context = RequestContext::getContext();
         $statementCaches = $context['statementCaches'] ?? [];
-        $requestContext = true;
         foreach(static::$statements[$db->hashCode()] ?? [] as &$item)
         {
-            if($requestContext && false !== $i = array_search($item['statement'], $statementCaches))
+            $statement = $item['statement'];
+            if(false !== $i = array_search($statement, $statementCaches))
             {
                 unset($statementCaches[$i]);
             }
-            if($item['statement'])
+            if($statement)
             {
-                $item['statement']->closeCursor();
+                $statement->closeCursor();
             }
             $item['using'] = false;
         }
-        if($requestContext)
-        {
-            $context['statementCaches'] = $statementCaches;
-        }
+        $context['statementCaches'] = $statementCaches;
     }
 
     /**
@@ -190,20 +188,16 @@ abstract class StatementManager
     {
         $requestContext = RequestContext::getContext();
         $statementCaches = $requestContext['statementCaches'] ?? [];
-        $isRequestContext = true;
         $staticStatements = &static::$statements;
         $statements = $staticStatements[$db->hashCode()] ?? [];
         foreach($statements as $item)
         {
-            if($isRequestContext && false !== $i = array_search($item['statement'], $statementCaches))
+            if(false !== $i = array_search($item['statement'], $statementCaches))
             {
                 unset($statementCaches[$i]);
             }
         }
-        if($isRequestContext)
-        {
-            $requestContext['statementCaches'] = $statementCaches;
-        }
+        $requestContext['statementCaches'] = $statementCaches;
         if($statements)
         {
             unset($staticStatements[$db->hashCode()]);

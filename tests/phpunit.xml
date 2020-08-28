@@ -11,31 +11,24 @@
     <testsuites>
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
-            <file>*.php</file>
         </testsuite>
         <testsuite name="HttpServer">
             <directory>unit/HttpServer/Tests</directory>
-            <file>*.php</file>
         </testsuite>
         <testsuite name="RedisSessionServer">
             <directory>unit/RedisSessionServer/Tests</directory>
-            <file>*.php</file>
         </testsuite>
         <testsuite name="WebSocketServer">
             <directory>unit/WebSocketServer/Tests</directory>
-            <file>*.php</file>
         </testsuite>
         <testsuite name="TCPServer">
             <directory>unit/TCPServer/Tests</directory>
-            <file>*.php</file>
         </testsuite>
         <testsuite name="UDPServer">
             <directory>unit/UDPServer/Tests</directory>
-            <file>*.php</file>
         </testsuite>
         <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
-            <file>*.php</file>
         </testsuite>
     </testsuites>
     <listeners>

@@ -94,4 +94,24 @@ abstract class Args
             return $default;
         }
     }
+
+    /**
+     * 写入参数值
+     *
+     * @param string $name
+     * @param string|null $value
+     * @return void
+     */
+    public static function set(string $name, ?string $value)
+    {
+        if(is_integer($name))
+        {
+            $_SERVER['argv'][$name] = $value;;
+        }
+        else
+        {
+            static::$cliArgs[$name] = $value;
+        }
+    }
+
 }

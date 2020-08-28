@@ -11,6 +11,61 @@ use Imi\Test\Component\Model\ReferenceGetterTestModel;
  */
 class ModelTest extends BaseTest
 {
+    public function testToArray()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $this->assertEquals([
+            'id'        =>  null,
+            'username'  =>  '1',
+        ], $member->toArray());
+    }
+
+    public function testConvertToArray()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $this->assertEquals([
+            'id'        =>  null,
+            'username'  =>  '1',
+        ], $member->convertToArray());
+
+        $this->assertEquals([
+            'id'        =>  null,
+            'username'  =>  '1',
+        ], $member->convertToArray(true));
+
+        $this->assertEquals([
+            'id'        =>  null,
+            'username'  =>  '1',
+            'password'  =>  '2',
+        ], $member->convertToArray(false));
+    }
+
+    public function testConvertListToArray()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $this->assertEquals([[
+            'id'        =>  null,
+            'username'  =>  '1',
+        ]], Member::convertListToArray([$member]));
+
+        $this->assertEquals([[
+            'id'        =>  null,
+            'username'  =>  '1',
+        ]], Member::convertListToArray([$member], true));
+
+        $this->assertEquals([[
+            'id'        =>  null,
+            'username'  =>  '1',
+            'password'  =>  '2',
+        ]], Member::convertListToArray([$member], false));
+    }
+
     public function testInsert()
     {
         $member = Member::newInstance();
@@ -44,7 +99,7 @@ class ModelTest extends BaseTest
             'id'        =>  $id,
             'username'  =>  '3',
             'password'  =>  '4',
-        ], $member->toArray());
+        ], $member->convertToArray(false));
     }
 
     public function testSave()
@@ -69,7 +124,7 @@ class ModelTest extends BaseTest
             'id'        =>  $id,
             'username'  =>  '3',
             'password'  =>  '4',
-        ], $member->toArray());
+        ], $member->convertToArray(false));
     }
 
     public function testDelete()
@@ -93,7 +148,7 @@ class ModelTest extends BaseTest
             'id'        =>  1,
             'username'  =>  '1',
             'password'  =>  '2',
-        ], $member->toArray());
+        ], $member->convertToArray(false));
 
         $member = Member::find([
             'id'    =>  1,
@@ -102,7 +157,7 @@ class ModelTest extends BaseTest
             'id'        =>  1,
             'username'  =>  '1',
             'password'  =>  '2',
-        ], $member->toArray());
+        ], $member->convertToArray(false));
     }
 
     public function testSelect()
@@ -112,11 +167,23 @@ class ModelTest extends BaseTest
         ]);
         $this->assertEquals([
             [
-                'id'        =>  1,
+                'id'        =>  '1',
+                'username'  =>  '1',
+            ]
+        ], Member::convertListToArray($list));
+        $this->assertEquals([
+            [
+                'id'        =>  '1',
+                'username'  =>  '1',
+            ]
+        ], Member::convertListToArray($list, true));
+        $this->assertEquals([
+            [
+                'id'        =>  '1',
                 'username'  =>  '1',
                 'password'  =>  '2',
             ]
-        ], json_decode(json_encode($list), true));
+        ], Member::convertListToArray($list, false));
     }
 
     public function testDbQuery()

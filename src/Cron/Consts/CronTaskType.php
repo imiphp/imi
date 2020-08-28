@@ -29,4 +29,9 @@ abstract class CronTaskType extends BaseEnum
      */
     const PROCESS = 'process';
 
+    /**
+     * @EnumItem("定时任务进程")
+     */
+    const CRON_PROCESS = 'cron_process';
+
 }

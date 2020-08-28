@@ -2,7 +2,6 @@
 
 ## 仓库
 
-码云：https://gitee.com/yurunsoft/IMI
 Github：https://github.com/Yurunsoft/IMI
 
 ## 参与方式

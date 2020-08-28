@@ -10,8 +10,14 @@ abstract class BaseLockTest extends BaseTest
 {
     protected $lockId;
 
+    protected function check()
+    {
+
+    }
+
     public function testLockAndUnlock()
     {
+        $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
         Assert::assertEquals(-1, Lock::getInstance($this->lockId)->getLockCoId());
         $result = Lock::lock($this->lockId);
@@ -28,6 +34,7 @@ abstract class BaseLockTest extends BaseTest
 
     public function testTryLock()
     {
+        $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
         Assert::assertEquals(-1, Lock::getInstance($this->lockId)->getLockCoId());
         $result = Lock::tryLock($this->lockId);
@@ -44,6 +51,7 @@ abstract class BaseLockTest extends BaseTest
 
     public function testLockCallable()
     {
+        $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
         $result = Lock::lock($this->lockId, function(){
             Assert::assertTrue(Lock::isLocked($this->lockId));
@@ -55,6 +63,7 @@ abstract class BaseLockTest extends BaseTest
 
     public function testTryLockCallable()
     {
+        $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
         Assert::assertEquals(-1, Lock::getInstance($this->lockId)->getLockCoId());
         $result = Lock::tryLock($this->lockId, function(){
@@ -68,6 +77,7 @@ abstract class BaseLockTest extends BaseTest
 
     public function testCancelLockCallabale()
     {
+        $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
         Assert::assertEquals(-1, Lock::getInstance($this->lockId)->getLockCoId());
         $result = Lock::lock($this->lockId, function(){

@@ -1,8 +1,8 @@
 {
     "name": "yurunsoft/imi",
     "type": "library",
-    "license": "Apache-2.0",
-    "description": "基于 Swoole 开发的协程 PHP 开发框架，常驻内存、协程异步，致力于丰富框架文档，上手容易，让开发者跟使用传统 MVC 框架一样顺手",
+    "license": "MulanPSL-1.0",
+    "description": "imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。",
     "require": {
         "php": ">=7.4",
         "ext-swoole": ">=4.3",
@@ -17,7 +17,7 @@
         "symfony/console": "^5.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7"
+        "phpunit/phpunit": ">=7"
     },
     "autoload": {
         "psr-4" : {

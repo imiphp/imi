@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Test\Component\Tests;
+namespace Imi\Test\Component\Tests\Db;
 
 use Imi\App;
 use Imi\Db\Db;
@@ -10,8 +10,15 @@ use PHPUnit\Framework\Assert;
 /**
  * @testdox Db
  */
-class DbTest extends BaseTest
+abstract class DbBaseTest extends BaseTest
 {
+    /**
+     * 连接池名
+     *
+     * @var string
+     */
+    protected $poolName;
+
     public function testInject()
     {
         $test = App::getBean('TestInjectDb');
@@ -20,7 +27,8 @@ class DbTest extends BaseTest
 
     public function testExec()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
+        $db->exec('TRUNCATE tb_article');
         $sql = "insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')";
         $result = $db->exec($sql);
         Assert::assertEquals(1, $result);
@@ -28,9 +36,20 @@ class DbTest extends BaseTest
         Assert::assertEquals($sql, $db->lastSql());
     }
 
+    public function testBatchExec()
+    {
+        $db = Db::getInstance($this->poolName);
+        $result = $db->batchExec('select 1 as a;update tb_article set id = 1 where id = 1;select 2 as b;');
+        $this->assertEquals([
+            [['a' => 1]],
+            [],
+            [['b' => 2]],
+        ], $result);
+    }
+
     public function testQuery()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $stmt = $db->query('select * from tb_article where id = 1');
         Assert::assertInstanceOf(\Imi\Db\Interfaces\IStatement::class, $stmt);
         Assert::assertEquals([
@@ -45,7 +64,7 @@ class DbTest extends BaseTest
 
     public function testPreparePositional()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = ?');
         $stmt->bindValue(1, 1);
         Assert::assertTrue($stmt->execute());
@@ -61,7 +80,7 @@ class DbTest extends BaseTest
 
     public function testPrepareNamed()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = :id');
         $stmt->bindValue(':id', 1);
         Assert::assertTrue($stmt->execute());
@@ -77,7 +96,7 @@ class DbTest extends BaseTest
 
     public function testTransactionCommit()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
         Assert::assertTrue($db->inTransaction());
 
@@ -102,7 +121,7 @@ class DbTest extends BaseTest
 
     public function testTransactionRollback()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
         Assert::assertTrue($db->inTransaction());
 
@@ -126,9 +145,9 @@ class DbTest extends BaseTest
             $result = $db->exec("insert into tb_article(title,content,time)values('title', 'content', '2019-06-21')");
             Assert::assertEquals(1, $result);
             $id = $db->lastInsertId();
-        });
+        }, $this->poolName);
 
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = ?');
         $stmt->bindValue(1, $id);
         Assert::assertTrue($stmt->execute());
@@ -152,12 +171,12 @@ class DbTest extends BaseTest
                 Assert::assertEquals(1, $result);
                 $id = $db->lastInsertId();
                 throw new \RuntimeException('gg');
-            });
+            }, $this->poolName);
         } catch(\Throwable $th) {
             Assert::assertEquals('gg', $th->getMessage());
         }
 
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = ?');
         $stmt->bindValue(1, $id);
         Assert::assertTrue($stmt->execute());
@@ -166,7 +185,7 @@ class DbTest extends BaseTest
 
     public function testTransactionRollbackRollbackEvent()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
         Assert::assertTrue($db->inTransaction());
         $this->assertEquals(1, $db->getTransactionLevels());
@@ -187,7 +206,7 @@ class DbTest extends BaseTest
 
     public function testTransactionRollbackCommitEvent()
     {
-        $db = Db::getInstance();
+        $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
         Assert::assertTrue($db->inTransaction());
         $this->assertEquals(1, $db->getTransactionLevels());

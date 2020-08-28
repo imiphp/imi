@@ -79,4 +79,11 @@ interface IPool
      * @return int
      */
     public function getUsed();
+
+    /**
+     * 获得资源配置
+     * @return mixed
+     */
+    public function getResourceConfig();
+
 }

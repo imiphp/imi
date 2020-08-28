@@ -15,8 +15,9 @@ class ProcessTest extends BaseTest
      */
     public function testPoolCleanAllow()
     {
-        $dir = dirname(__DIR__) . '/bin/imi process/start -name PoolTest1';
-        $result = `{$dir}`;
+        $file = dirname(__DIR__) . '/bin/imi';
+        $cmd = cmd('"' . $file . '" process/start -name PoolTest1');
+        $result = `{$cmd}`;
         $list = explode(PHP_EOL, $result);
         end($list);
         prev($list);
@@ -33,11 +34,11 @@ class ProcessTest extends BaseTest
      */
     public function testPoolCleanDeny()
     {
-        $dir = dirname(__DIR__) . '/bin/imi process/start -name PoolTest2';
-        $result = `{$dir}`;
+        $file = dirname(__DIR__) . '/bin/imi';
+        $cmd = cmd('"' . $file . '" process/run -name PoolTest2');
+        $result = `{$cmd}`;
         $list = explode(PHP_EOL, $result);
         end($list);
-        prev($list);
         $this->assertEquals(json_encode([
             'maindb'    =>  0,
             'redis'     =>  1,
@@ -52,7 +53,7 @@ class ProcessTest extends BaseTest
     public function testGetProcessWithManager()
     {
         $http = new HttpRequest;
-        $response = $http->get($this->host . 'process/');
+        $response = $http->get($this->host . 'process');
         $data = $response->json(true);
         $this->assertTrue($data['result'] ?? null);
     }

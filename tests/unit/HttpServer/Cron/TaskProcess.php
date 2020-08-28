@@ -3,19 +3,16 @@ namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Util\Args;
 use Imi\Process\IProcess;
+use Imi\Cron\Util\CronUtil;
 use Imi\Cron\Annotation\Cron;
-use Imi\Cron\Traits\TWorkerReport;
 use Imi\Process\Annotation\Process;
-use Swoole\Event;
 
 /**
- * @Cron(id="CronProcess1", second="3n")
- * @Process("CronProcess1")
+ * @Cron(id="TaskProcess1", second="3n")
+ * @Process("TaskProcess1")
  */
 class TaskProcess implements IProcess
 {
-    use TWorkerReport;
-
     public function run(\Swoole\Process $process)
     {
         $success = false;
@@ -32,7 +29,7 @@ class TaskProcess implements IProcess
             $message = $th->getMessage();
             throw $th;
         } finally {
-            $this->reportCronResult($id, $success, $message);
+            CronUtil::reportCronResult($id, $success, $message);
         }
     }
 

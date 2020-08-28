@@ -79,6 +79,14 @@ interface IDb extends IHashCode
     public function exec(string $sql): int;
 
     /**
+     * 批量执行 SQL，返回查询结果
+     *
+     * @param string $sql
+     * @return array
+     */
+    public function batchExec(string $sql): array;
+
+    /**
      * 取回一个数据库连接的属性
      *
      * @param mixed $attribute

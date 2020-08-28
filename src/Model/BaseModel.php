@@ -6,16 +6,12 @@ use Imi\Bean\IBean;
 use Imi\Event\IEvent;
 use Imi\Event\TEvent;
 use Imi\Bean\BeanFactory;
-use Imi\Util\ClassObject;
 use Imi\Util\LazyArrayObject;
 use Imi\Util\ObjectArrayHelper;
-use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
 use Imi\Bean\ReflectionContainer;
 use Imi\Util\Interfaces\IArrayable;
 use Imi\Util\Traits\TBeanRealClass;
-use Imi\Model\Annotation\Serializable;
-use Imi\Model\Event\Param\InitEventParam;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Relation\AutoSelect;
 
@@ -294,6 +290,44 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
         return $result;
     }
+
+    /**
+     * 将当前模型转为数组
+     * 
+     * 包括属性的值也会被转为数组
+     *
+     * @param boolean $filter 过滤隐藏属性
+     * @return array
+     */
+    public function convertToArray(bool $filter = true): array
+    {
+        if($filter)
+        {
+            $data = $this->toArray();
+        }
+        else
+        {
+            $data = \iterator_to_array($this);
+        }
+        return json_decode(json_encode($data), true);
+    }
+
+    /**
+     * 转换模型数组为模型
+     *
+     * @param array $list
+     * @param boolean $filter 过滤隐藏属性
+     * @return array
+     */
+    public static function convertListToArray(array $list, bool $filter = true): array
+    {
+        foreach($list as &$row)
+        {
+            /** @var static $row */
+            $row = $row->convertToArray($filter);
+        }
+        return $list;
+    }
     
     public function &current()
     {
@@ -347,11 +381,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected function __getCamelName($name)
     {
-        if(!isset(self::$__camelCache[$name]))
+        $__camelCache = &self::$__camelCache;
+        if(!isset($__camelCache[$name]))
         {
-            self::$__camelCache[$name] = Text::toCamelName($name);
+            return $__camelCache[$name] = Text::toCamelName($name);
         }
-        return self::$__camelCache[$name];
+        return $__camelCache[$name];
     }
 
     /**
@@ -416,11 +451,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $class = static::__getRealClassName();
         }
-        if(!isset(self::$__metas[$class]))
+        $__metas = &self::$__metas;
+        if(!isset($__metas[$class]))
         {
-            self::$__metas[$class] = new Meta($class);
+            return $__metas[$class] = new Meta($class);
         }
-        return self::$__metas[$class];
+        return $__metas[$class];
     }
 
 }

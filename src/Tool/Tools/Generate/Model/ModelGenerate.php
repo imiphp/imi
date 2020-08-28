@@ -13,6 +13,7 @@ use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Util\SqlUtil;
 
 /**
  * @Tool("generate")
@@ -26,7 +27,7 @@ class ModelGenerate
      * @Arg(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
      * @Arg(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
      * @Arg(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
-     * @Arg(name="prefix", type=ArgType::ARRAY, default="", comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
+     * @Arg(name="prefix", type=ArgType::ARRAY, default={}, comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
      * @Arg(name="include", type=ArgType::ARRAY, default={}, comments="要包含的表名，以半角逗号分隔")
      * @Arg(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
      * @Arg(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的文件，请慎重！true-全覆盖;false-不覆盖;base-覆盖基类;model-覆盖模型类;默认缺省状态为false")
@@ -92,7 +93,7 @@ class ModelGenerate
         if(null === $modelPath)
         {
             echo 'Namespace ', $namespace, ' cannot found', PHP_EOL;
-            exit;
+            return;
         }
         echo 'modelPath: ', $modelPath, PHP_EOL;
         File::createDir($modelPath);
@@ -115,12 +116,13 @@ class ModelGenerate
                 if(null === $path)
                 {
                     echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
-                    exit;
+                    return;
                 }
                 File::createDir($path);
                 $basePath = $path . '/Base';
                 File::createDir($basePath);
                 $fileName = File::path($path, $className . '.php');
+                $withRecords = $configItem['withRecords'] ?? false;
             }
             else
             {
@@ -134,13 +136,14 @@ class ModelGenerate
                         if(null === $path)
                         {
                             echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
-                            exit;
+                            return;
                         }
                         File::createDir($path);
                         $basePath = $path . '/Base';
                         File::createDir($basePath);
                         $fileName = File::path($path, $className . '.php');
                         $hasResult = true;
+                        $withRecords = in_array($table, $namespaceItem['withRecords'] ?? []);
                         break;
                     }
                 }
@@ -149,6 +152,7 @@ class ModelGenerate
                     $modelNamespace = $namespace;
                     $fileName = File::path($modelPath, $className . '.php');
                     $basePath = $baseModelPath;
+                    $withRecords = false;
                 }
             }
             if(false === $override && is_file($fileName))
@@ -158,6 +162,11 @@ class ModelGenerate
                 continue;
             }
             $ddl = $this->getDDL($query, $table);
+            if($withRecords)
+            {
+                $dataList = $query->from($table)->select()->getArray();
+                $ddl .= ';' . PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
+            }
             $data = [
                 'namespace'     => $modelNamespace,
                 'className'     => $className,
@@ -352,8 +361,10 @@ class ModelGenerate
      */
     public function getDDL(IQuery $query, string $table): string
     {
-        $result = $query->execute('show create table ' . $table);
-        return $result->get()['Create Table'] ?? '';
+        $result = $query->execute('show create table `' . $table . '`');
+        $sql = $result->get()['Create Table'] ?? '';
+        $sql = preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
+        return $sql;
     }
 
 }

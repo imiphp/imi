@@ -13,6 +13,7 @@ use Imi\Bean\Parser\BeanParser;
 use Imi\Model\Annotation\Column;
 use Imi\Bean\ReflectionContainer;
 use Imi\Model\Annotation\MemoryTable;
+use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
 
 /**
@@ -351,7 +352,7 @@ abstract class Imi
      */
     public static function getImiCmd($toolName, $operation, $args = [])
     {
-        $cmd = '"' . PHP_BINARY . '" "' . $_SERVER['SCRIPT_FILENAME'] . '" ' . $toolName . '/' . $operation;
+        $cmd = '"' . PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $toolName . '/' . $operation;
         if(null !== ($appNamespace = Args::get('appNamespace')))
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
@@ -610,9 +611,9 @@ abstract class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if($pid > 0)
         {
-            $cmd = 'kill ' . $pid['masterPID'];
+            $cmd = cmd('kill ' . $pid['masterPID']);
             $return['cmd'] = $cmd;
-            $result = `$cmd`;
+            $result = `{$cmd}`;
             $return['result'] = $result;
             return $return;
         }
@@ -638,9 +639,9 @@ abstract class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if($pid > 0)
         {
-            $cmd = 'kill -USR1 ' . $pid['masterPID'];
+            $cmd = cmd('kill -USR1 ' . $pid['masterPID']);
             $return['cmd'] = $cmd;
-            $result = `$cmd`;
+            $result = `{$cmd}`;
             $return['result'] = $result;
             return $return;
         }
@@ -661,6 +662,13 @@ abstract class Imi
     }
 
     /**
+     * eval 方法用的自增变量
+     *
+     * @var integer
+     */
+    private static $evalAtomic = 0;
+
+    /**
      * eval() 函数的安全替代方法
      *
      * @param string $code
@@ -668,15 +676,150 @@ abstract class Imi
      */
     public static function eval(string $code)
     {
-        $path = is_dir('/dev/shm') ? '/dev/shm' : '/tmp';
-        $fileName = tempnam($path, 'imi-');
-        file_put_contents($fileName, '<?php ' . $code);
-        try {
-            $result = require $fileName;
-        } finally {
-            unlink($fileName);
+        $fileName = (is_dir('/run/shm') ? '/run/shm/' : '/tmp/') . 'imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
+        $fp = fopen($fileName, 'x');
+        if(false === $fp)
+        {
+            return eval($code);
+        }
+        else
+        {
+            try {
+                if(!fwrite($fp, '<?php ' . $code))
+                {
+                    throw new \RuntimeException(sprintf('Unable to write temporary file: %s', $fileName));
+                }
+                fclose($fp);
+                $closed = true;
+                return require $fileName;
+            } finally {
+                if(!isset($closed))
+                {
+                    fclose($fp);
+                }
+                unlink($fileName);
+            }
+        }
+    }
+
+    /**
+     * 检测是否为 WSL 环境
+     *
+     * @return boolean
+     */
+    public static function isWSL(): bool
+    {
+        return is_file('/mnt/c/Windows/explorer.exe');
+    }
+
+    /**
+     * 获取 Linux 版本号
+     *
+     * @return string
+     */
+    public static function getLinuxVersion(): string
+    {
+        if(preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', `cat /etc/*-release`, $matches) <= 0)
+        {
+            return '';
+        }
+        if(!isset($matches['name']))
+        {
+            return '';
+        }
+        foreach($matches['name'] as $name)
+        {
+            if('' !== $name)
+            {
+                break;
+            }
+        }
+        $result = trim($name, '"');
+        if(isset($matches['version']))
+        {
+            foreach($matches['version'] as $version)
+            {
+                if('' !== $version)
+                {
+                    break;
+                }
+            }
+            if('' !== $version)
+            {
+                $result .= ' ' . trim($version, '"');
+            }
         }
         return $result;
+    }
+
+    /**
+     * 获取苹果系统版本
+     *
+     * @return string
+     */
+    public static function getDarwinVersion(): string
+    {
+        $xml = simplexml_load_file('/System/Library/CoreServices/SystemVersion.plist');
+        if(!$xml)
+        {
+            return '';
+        }
+        $i = 0;
+        foreach($xml->dict->key as $item)
+        {
+            switch($item->__toString())
+            {
+                case 'ProductName':
+                    $name = $xml->dict->string[$i]->__toString();
+                    break;
+                case 'ProductUserVisibleVersion':
+                    $version = $xml->dict->string[$i]->__toString();
+                    break;
+            }
+            ++$i;
+        }
+        if(!isset($name))
+        {
+            return '';
+        }
+        $result = $name;
+        if(isset($version))
+        {
+            $result .= ' ' . $version;
+        }
+        return $result;
+    }
+
+    /**
+     * 获取 Cygwin 版本
+     *
+     * @return string
+     */
+    public static function getCygwinVersion(): string
+    {
+        if(preg_match('/^cygwin\s+(\S+)\s+OK$/', exec('cygcheck -c cygwin'), $matches) > 0)
+        {
+            return $matches[1];
+        }
+        else
+        {
+            return '';
+        }
+    }
+
+    /**
+     * 判断是否为 Docker 环境
+     *
+     * @return boolean
+     */
+    public static function isDockerEnvironment(): bool
+    {
+        $fileName = '/proc/1/cgroup';
+        if(is_file($fileName))
+        {
+            return false !== strpos(file_get_contents($fileName), ':/docker/');
+        }
+        return false;
     }
 
 }

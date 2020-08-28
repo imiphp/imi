@@ -151,6 +151,16 @@ class Group
     }
 
     /**
+     * 清空分组
+     *
+     * @return void
+     */
+    public function clear()
+    {
+        return $this->handler->clear();
+    }
+
+    /**
      * 获取服务器对象
      *
      * @return \Imi\Server\Base
@@ -213,4 +223,5 @@ class Group
         }
         return $result;
     }
+
 }

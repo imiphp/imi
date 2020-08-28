@@ -18,6 +18,14 @@ var_dump(Args::get('abc'));
 var_dump(Args::get('abc', 'default'));
 ```
 
+### set
+
+写入参数值
+
+```php
+var_dump(Args::set('abc', 'value'));
+```
+
 ### exists
 
 指定数据是否存在

@@ -69,6 +69,7 @@ class Request extends ServerRequest implements IServerRequest
         $instance->post = $request->post ?? [];
         $rawContent = $request->rawContent();
         $instance->body = new MemoryStream(false === $rawContent ? '' : $rawContent);
+        $instance->parsedBody = null;
         $instance->headerNames = $instance->headers = [];
         $instance->setHeaders($requestHeader);
         $instance->cookies = $request->cookie ?? [];

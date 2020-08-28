@@ -25,22 +25,27 @@ abstract class BaseFacade
      */
     public static function __getFacadeInstance()
     {
-        if(!isset(self::$cache[static::class]))
+        $cache = &self::$cache;
+        if(isset($cache[static::class]))
+        {
+            $cacheItem = $cache[static::class];
+        }
+        else
         {
             $annotations = AnnotationManager::getClassAnnotations(static::class, Facade::class);
             if(!isset($annotations[0]))
             {
                 throw new \RuntimeException(sprintf('Class %s not found @Facade Annotation', static::class));
             }
-            self::$cache[static::class] = $annotations[0];
+            $cache[static::class] = $cacheItem = $annotations[0];
         }
-        if(self::$cache[static::class]->request)
+        if($cacheItem->request)
         {
-            return RequestContext::getBean(self::$cache[static::class]->class, ...self::$cache[static::class]->args);
+            return RequestContext::getBean($cacheItem->class, ...$cacheItem->args);
         }
         else
         {
-            return App::getBean(self::$cache[static::class]->class, ...self::$cache[static::class]->args);
+            return App::getBean($cacheItem->class, ...$cacheItem->args);
         }
     }
 
@@ -54,11 +59,12 @@ abstract class BaseFacade
      */
     public static function __bindFacade($facadeClass, $bindClass = null, ...$args)
     {
-        if(isset(self::$cache[$facadeClass]))
+        $cache = &self::$cache;
+        if(isset($cache[$facadeClass]))
         {
             throw new \RuntimeException(sprintf('Facade %s already exists', $facadeClass));
         }
-        self::$cache[$facadeClass] = new Facade([
+        $cache[$facadeClass] = new Facade([
             'class' =>  $bindClass,
             'args'  =>  $args,
         ]);

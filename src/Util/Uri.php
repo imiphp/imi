@@ -156,10 +156,10 @@ class Uri implements UriInterface
      */
     public static function getDomain(UriInterface $uri)
     {
-        $result = $uri->host;
-        if(null !== $uri->port)
+        $result = $uri->getHost();
+        if(null !== ($port = $uri->getPort()))
         {
-            $result .= ':' . $uri->port;
+            $result .= ':' . $port;
         }
         return $result;
     }

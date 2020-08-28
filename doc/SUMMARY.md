@@ -82,8 +82,8 @@
 
 ## 消息队列
 
-* [AMQP](components/mq/amqp.md)
-* [RabbitMQ](components/mq/amqp.md)
+* [RabbitMQ(AMQP)](components/mq/amqp.md)
+* [Redis](components/mq/redis.md)
 
 ## 功能组件
 
@@ -92,10 +92,10 @@
 * [数据库操作](components/db/index.md)
 * [ORM](components/orm/index.md)
   * [使用说明](components/orm/index.md)
-  * [数据表模型](components/orm/RDModel.md)
+  * [数据库表模型](components/orm/RDModel.md)
     * [使用方法](components/orm/RDModel.md)
-    * [树形表模型](components/orm/TreeModel.md)
     * [模型事件](components/orm/RDModel/event.md)
+    * [树形表模型](components/orm/TreeModel.md)
   * [模型关联](components/orm/relation/index.md)
     * [使用说明](components/orm/relation/index.md)
     * [一对一关联](components/orm/relation/oneToOne.md)
@@ -128,17 +128,18 @@
 * [进程池-imi](components/process-pool/imi.md)
 * [热更新](components/hotupdate/index.md)
 * [雪花算法发号器](components/snowflake.md)
+* [imi 组件列表一览](components/list.md)
 
 ## 数据结构
 
-* [Atomic](components/struct/atomic.md)
-* [Channel](components/struct/co-channel.md)
-* [MemoryTable](components/struct/memory-table.md)
-* [Enum](components/struct/enum.md)
-* [ArrayData](components/struct/ArrayData.md)
-* [LazyArrayObject](components/struct/LazyArrayObject.md)
-* [ArrayList](components/struct/ArrayList.md)
-* [FilterableList](components/struct/FilterableList.md)
+* [Atomic(原子性)](components/struct/atomic.md)
+* [Channel(通道)](components/struct/co-channel.md)
+* [MemoryTable(内存表)](components/struct/memory-table.md)
+* [Enum(枚举)](components/struct/enum.md)
+* [ArrayData(数组数据)](components/struct/ArrayData.md)
+* [LazyArrayObject(智能数组对象)](components/struct/LazyArrayObject.md)
+* [ArrayList(数组列表)](components/struct/ArrayList.md)
+* [FilterableList(过滤器列表)](components/struct/FilterableList.md)
 
 ## 工具类
 
@@ -166,6 +167,8 @@
 
 * [注入值注解](annotations/injectValue.md)
 * [方法参数过滤器](annotations/filterArg.md)
+* [编写自定义注解](annotations/annotation.md)
+* [注解管理器](annotations/annotationManager.md)
 * [注解相关问题](annotations/qa.md)
 
 ## 开发工具
