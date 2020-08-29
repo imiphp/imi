@@ -173,37 +173,40 @@ trait TEvent
         // 实例化参数
         $param = new $paramClass($name, $data, $target);
         $oneTimeCallbacks = [];
-        foreach($callbacks as $option)
-        {
-            // 回调执行
-            ($option->callback)($param);
-            // 仅触发一次
-            if($option->oneTime)
+        try {
+            foreach($callbacks as $option)
             {
-                $oneTimeCallbacks[] = $option;
-            }
-            // 阻止事件传播
-            if($param->isPropagationStopped())
-            {
-                break;
-            }
-        }
-        // 仅触发一次的处理
-        if(isset($oneTimeCallbacks[0]))
-        {
-            $eventsMap = &$this->events[$name];
-            foreach($eventsMap as $eventsKey => $item)
-            {
-                foreach($oneTimeCallbacks as $oneTimeCallbacksKey => $oneTimeItem)
+                // 仅触发一次
+                if($option->oneTime)
                 {
-                    if($oneTimeItem === $item)
-                    {
-                        unset($eventsMap[$eventsKey], $oneTimeCallbacks[$oneTimeCallbacksKey]);
-                        break;
-                    }
+                    $oneTimeCallbacks[] = $option;
+                }
+                // 回调执行
+                ($option->callback)($param);
+                // 阻止事件传播
+                if($param->isPropagationStopped())
+                {
+                    break;
                 }
             }
-            $this->eventChangeRecords[$name] = true;
+        } finally {
+            // 仅触发一次的处理
+            if(isset($oneTimeCallbacks[0]))
+            {
+                $eventsMap = &$this->events[$name];
+                foreach($eventsMap as $eventsKey => $item)
+                {
+                    foreach($oneTimeCallbacks as $oneTimeCallbacksKey => $oneTimeItem)
+                    {
+                        if($oneTimeItem === $item)
+                        {
+                            unset($eventsMap[$eventsKey], $oneTimeCallbacks[$oneTimeCallbacksKey]);
+                            break;
+                        }
+                    }
+                }
+                $this->eventChangeRecords[$name] = true;
+            }
         }
     }
 
