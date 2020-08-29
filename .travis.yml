@@ -6,7 +6,7 @@ jobs:
   include:
   - php: '7.4'
     language: php
-    env: SWOOLE_VERSION="v4.5.3-beta"
+    env: SWOOLE_VERSION="v4.5.3RC1"
   - env: PHP_VERSION=7.4 SWOOLE_VERSION="v4.5.2" INSTALL_REDIS_EXT=true DISABLE_XDEBUG=false
     os: osx
     osx_image: xcode12
@@ -57,9 +57,9 @@ jobs:
     env: SWOOLE_VERSION="master"
   - php: 'nightly'
     language: php
-    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true DOWNLOAD_PHPUNIT=nightly
+    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=develop DOWNLOAD_PHPUNIT=nightly
   allow_failures:
-  - env: SWOOLE_VERSION="v4.5.3-alpha"
+  - env: SWOOLE_VERSION="v4.5.3RC1"
   - env: SWOOLE_VERSION="master"
   - php: nightly
 
@@ -78,8 +78,10 @@ addons:
 
 install:
   - if [[ $TRAVIS_OS_NAME == osx ]]; then
+      brew services start redis;
+      brew services start mysql;
       brew install php@$PHP_VERSION;
-      export PATH="$(brew --prefix php)/bin:$PATH";
+      brew link --force --overwrite php@$PHP_VERSION;
       PHP_INI_FILE="/usr/local/etc/php/$PHP_VERSION/php.ini";
       macosSwooleMakeArg="--with-openssl-dir=$(brew --prefix openssl)";
       curl -o composer.phar https://getcomposer.org/composer-stable.phar && chmod +x composer.phar && sudo mv -f composer.phar /usr/local/bin/composer && composer -V;
@@ -87,22 +89,25 @@ install:
   - if [[ $TRAVIS_OS_NAME == linux ]]; then
       dd if=/dev/zero of=swap bs=1024 count=2048000 && chmod 600 swap && sudo mkswap swap && sudo swapon swap;
     fi
-  - if [[ $INSTALL_REDIS_EXT == true ]]; then
-      wget https://github.com/phpredis/phpredis/archive/develop.zip;
-      unzip develop.zip;
-      cd phpredis-develop;
-      phpize;
-      ./configure;
-      make -j && make install;
-      cd ../;
-    fi
-  - if [[ $TRAVIS_OS_NAME == linux ]]; then
-      phpenv config-add .travis/redis.ini;
+  - if [[ $INSTALL_REDIS_EXT == "" ]]; then
+      EXTENSION_ENABLE_REDIS=1;
     else
-      echo "extension = redis.so" >> $PHP_INI_FILE;
+      if [[ $INSTALL_REDIS_EXT == true ]]; then
+        echo "no" | pecl install -f redis;
+      else
+        wget https://github.com/phpredis/phpredis/archive/$INSTALL_REDIS_EXT.tar.gz -O redis.tar.gz && mkdir -p redis && tar -xf redis.tar.gz -C redis --strip-components=1 && cd redis && phpize && ./configure && make -j && make install && cd -;
+        EXTENSION_ENABLE_REDIS=1;
+      fi;
+    fi;
+    if [[ $EXTENSION_ENABLE_REDIS ]]; then
+      if [[ $TRAVIS_OS_NAME == linux ]]; then
+        phpenv config-add .travis/redis.ini;
+      else
+        echo "extension = redis.so" >> $PHP_INI_FILE;
+      fi;
     fi;
     php --ri redis;
-  - wget https://github.com/swoole/swoole-src/archive/$SWOOLE_VERSION.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure --enable-openssl --enable-http2 --enable-mysqlnd $macosSwooleMakeArg && make -j && make install && cd -;
+  - wget https://github.com/swoole/swoole-src/archive/$SWOOLE_VERSION.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && cd swoole && phpize && ./configure --enable-openssl --enable-http2 --enable-mysqlnd $macosSwooleMakeArg && make -j && make install && cd -;
     if [[ $TRAVIS_OS_NAME == linux ]]; then
       phpenv config-add .travis/swoole.ini;
     else
@@ -116,10 +121,6 @@ install:
     fi
 
 before_script:
-  - if [[ $TRAVIS_OS_NAME == osx ]]; then
-      brew services start redis;
-      brew services start mysql;
-    fi
   - if [[ $DISABLE_XDEBUG != false ]]; then
       phpenv config-rm xdebug.ini;
     fi
@@ -136,3 +137,4 @@ env:
   global:
     - MYSQL_SERVER_USERNAME: root
     - MYSQL_SERVER_PASSWORD:
+    - HOMEBREW_NO_AUTO_UPDATE: "true"

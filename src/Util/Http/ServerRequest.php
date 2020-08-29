@@ -528,4 +528,43 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
         return isset($request[$name]);
     }
 
+    /**
+     * 设置 GET 数据
+     *
+     * @param array $get
+     * @return static
+     */
+    public function withGet($get)
+    {
+        $self = clone $this;
+        $self->get = $get;
+        return $self;
+    }
+
+    /**
+     * 设置 POST 数据
+     *
+     * @param array $post
+     * @return static
+     */
+    public function withPost($post)
+    {
+        $self = clone $this;
+        $self->post = $post;
+        return $self;
+    }
+
+    /**
+     * 设置 Request 数据
+     *
+     * @param array $get
+     * @return static
+     */
+    public function withRequest($request)
+    {
+        $self = clone $this;
+        $self->request = $request;
+        return $self;
+    }
+
 }
