@@ -238,7 +238,6 @@ function test()
     }
     proc_close($processHndler);
     
-    var_dump($status, $records2);
     if(version_compare(SWOOLE_VERSION, '4.4', '<') && 255 === ($status['exitcode'] ?? 0) && 'OK' === substr($records2[0] ?? '', 0, 2))
     {
         exit(0);
