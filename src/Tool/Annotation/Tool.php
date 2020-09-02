@@ -2,25 +2,21 @@
 namespace Imi\Tool\Annotation;
 
 use Imi\Bean\Annotation\Parser;
-use Imi\Bean\Annotation\Base;
+use Imi\Cli\Annotation\Command;
 
 /**
- * 工具注解
+ * 命令行注解
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Tool\Parser\ToolParser")
+ * @Parser("Imi\Cli\Parser\ToolParser")
  */
-class Tool extends Base
+class Tool extends Command
 {
     /**
-     * 只传一个参数时的参数名
-     * @var string
+     * 注解别名
+     *
+     * @var string|string[]
      */
-    protected $defaultFieldName = 'name';
+    protected $__alias = Command::class;
 
-    /**
-     * 工具名称
-     * @var string
-     */
-    public $name;
-}
+} 

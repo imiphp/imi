@@ -17,7 +17,7 @@ class Inject extends BaseInjectValue
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'name';
+    protected ?string $defaultFieldName = 'name';
 
     /**
      * Bean名称或类名

@@ -16,7 +16,7 @@ class WSController extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName;
+    protected ?string $defaultFieldName;
 
     /**
      * 是否为单例控制器

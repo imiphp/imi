@@ -58,8 +58,16 @@ class AnnotationRelation
      */
     public function addClassRelation(ClassAnnotationRelation $relation)
     {
-        $class = get_class($relation->getAnnotation());
+        $annotation = $relation->getAnnotation();
+        $class = get_class($annotation);
         $this->classRelations[$class][] = $relation;
+        if(null !== ($alias = $annotation->getAlias()))
+        {
+            foreach((array)$alias as $class)
+            {
+                $this->classRelations[$class][] = $relation;
+            }
+        }
         $this->allRelations[$class] = null;
     }
 
@@ -81,8 +89,16 @@ class AnnotationRelation
      */
     public function addMethodRelation(MethodAnnotationRelation $relation)
     {
-        $class = get_class($relation->getAnnotation());
+        $annotation = $relation->getAnnotation();
+        $class = get_class($annotation);
         $this->methodRelations[$class][] = $relation;
+        if(null !== ($alias = $annotation->getAlias()))
+        {
+            foreach((array)$alias as $class)
+            {
+                $this->methodRelations[$class][] = $relation;
+            }
+        }
         $this->allRelations[$class] = null;
     }
 
@@ -104,8 +120,16 @@ class AnnotationRelation
      */
     public function addPropertyRelation(PropertyAnnotationRelation $relation)
     {
-        $class = get_class($relation->getAnnotation());
+        $annotation = $relation->getAnnotation();
+        $class = get_class($annotation);
         $this->propertyRelations[$class][] = $relation;
+        if(null !== ($alias = $annotation->getAlias()))
+        {
+            foreach((array)$alias as $class)
+            {
+                $this->propertyRelations[$class][] = $relation;
+            }
+        }
         $this->allRelations[$class] = null;
     }
 
@@ -127,8 +151,16 @@ class AnnotationRelation
      */
     public function addConstantRelation(ConstantAnnotationRelation $relation)
     {
-        $class = get_class($relation->getAnnotation());
+        $annotation = $relation->getAnnotation();
+        $class = get_class($annotation);
         $this->constantRelations[$class][] = $relation;
+        if(null !== ($alias = $annotation->getAlias()))
+        {
+            foreach((array)$alias as $class)
+            {
+                $this->constantRelations[$class][] = $relation;
+            }
+        }
         $this->allRelations[$class] = null;
     }
 

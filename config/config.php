@@ -15,6 +15,7 @@ return [
         'Imi\Model',
         'Imi\Task',
         'Imi\Tool',
+        'Imi\Cli',
         'Imi\Process',
         'Imi\HotUpdate',
         'Imi\Validate',
@@ -24,6 +25,10 @@ return [
         'Imi\Facade',
         'Imi\Cron',
         'Imi\Util\Co',
+    ],
+    'ignoreNamespace'   =>  [
+        'Imi\Cli\bootstrap',
+        'Imi\Swoole\bootstrap',
     ],
     'atomics' => [
         'session',

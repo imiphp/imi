@@ -20,7 +20,7 @@ class ConfigValue extends BaseInjectValue
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'name';
+    protected ?string $defaultFieldName = 'name';
 
     /**
      * 配置名，支持@app、@currentServer等用法

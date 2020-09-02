@@ -16,7 +16,7 @@ class PolymorphicOneToOne extends RelationBase
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'model';
+    protected ?string $defaultFieldName = 'model';
 
     /**
      * 关联的模型类

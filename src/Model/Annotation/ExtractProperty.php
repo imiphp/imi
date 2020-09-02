@@ -16,7 +16,7 @@ class ExtractProperty extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'fieldName';
+    protected ?string $defaultFieldName = 'fieldName';
 
     /**
      * 字段名，支持.的形式无限级取值

@@ -16,7 +16,7 @@ class View extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'template';
+    protected ?string $defaultFieldName = 'template';
 
     /**
      * 模版基础路径

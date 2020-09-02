@@ -16,7 +16,7 @@ class AutoSelect extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'status';
+    protected ?string $defaultFieldName = 'status';
 
     /**
      * 是否开启

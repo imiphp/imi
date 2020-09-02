@@ -16,7 +16,7 @@ class Route extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'url';
+    protected ?string $defaultFieldName = 'url';
 
     /**
      * 请求地址规则

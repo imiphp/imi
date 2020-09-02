@@ -219,7 +219,7 @@ class HotUpdateProcess extends BaseProcess
     private function initBuildRuntime()
     {
         $this->closeBuildRuntime();
-        $cmd = Imi::getImiCmd('imi', 'buildRuntime', [
+        $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
             'format'            =>  'json',
             'changedFilesFile'  =>  $this->changedFilesFile,
             'imi-runtime'       =>  Imi::getRuntimePath('imi-runtime-bak.cache'),

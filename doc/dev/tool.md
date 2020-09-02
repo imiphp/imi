@@ -4,31 +4,44 @@ imi 的命令行工具使用注解来定义
 
 ## 注解
 
-### @Tool
+### @Command
 
-`Imi\Tool\Annotation\Tool`，写在类上，用于定义工具名称
+`Imi\Cli\Annotation\Command`，写在类上，用于定义工具名称
 
 | 属性名称 | 说明 |
 |-|-
 | name | 工具名称 |
 
-### @Operation
+### @CommandAction
 
-`Imi\Tool\Annotation\Operation`，写在方法上，用于定义工具动作名称
+`Imi\Cli\Annotation\CommandAction`，写在方法上，用于定义工具动作名称
 
 | 属性名称 | 说明 |
 |-|-
 | name | 工具动作名称 |
 | co | 是否自动开启协程，默认为`true` |
 
-### @Arg
+### @Argument
 
-`Imi\Tool\Annotation\Arg`，写在方法上，可以有多个，用于定义工具参数
+`Imi\Cli\Annotation\Argument`，写在方法上，可以有多个，用于定义工具参数
 
 | 属性名称 | 说明 |
 |-|-
 | name | 参数名称 |
-| type | 参数类型，支持：`string/int/float/boolean/array`，也可以使用`\Imi\Tool\ArgType::XXX` |
+| type | 参数类型，支持：`string/int/float/boolean/array`，也可以使用`\Imi\Cli\ArgType::XXX` |
+| default | 默认值 |
+| required | 是否是必选参数，默认`false` |
+| comments | 注释 |
+
+### @Option
+
+`Imi\Cli\Annotation\Option`，写在方法上，可以有多个，用于可选项参数
+
+| 属性名称 | 说明 |
+|-|-
+| name | 参数名称 |
+| shortcut | 参数短名称 |
+| type | 参数类型，支持：`string/int/float/boolean/array`，也可以使用`\Imi\Cli\ArgType::XXX` |
 | default | 默认值 |
 | required | 是否是必选参数，默认`false` |
 | comments | 注释 |
@@ -38,17 +51,17 @@ imi 的命令行工具使用注解来定义
 ```php
 namespace ImiApp\Tool;
 
-use Imi\Tool\Annotation\Tool;
-use Imi\Tool\Annotation\Operation;
-use Imi\Tool\Annotation\Arg;
+use Imi\Cli\Annotation\Command;
+use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Annotation\Arg;
 
 /**
- * @Tool("test")
+ * @Command("test")
  */
 class Test
 {
     /**
-     * @Operation("hello")
+     * @CommandAction("hello")
      * @Arg(name="username", type="string", default="默认值")
      */
     public function hello($username)

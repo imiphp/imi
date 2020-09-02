@@ -13,7 +13,7 @@ class Inherit extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'annotation';
+    protected ?string $defaultFieldName = 'annotation';
 
     /**
      * 允许的注解类，为 null 则不限制，支持字符串或数组

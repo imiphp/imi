@@ -3,7 +3,7 @@ namespace Imi\Model\Listener;
 
 use Imi\App;
 use Imi\Util\Imi;
-use Imi\Tool\Tool;
+use Imi\Cli\Tool;
 use Imi\Main\Helper;
 use Imi\Bean\Annotation;
 use Imi\Event\EventParam;

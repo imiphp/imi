@@ -23,7 +23,7 @@ class Bean extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'name';
+    protected ?string $defaultFieldName = 'name';
     
     /**
      * Bean名称，留空则为当前类名（包含完整命名空间）

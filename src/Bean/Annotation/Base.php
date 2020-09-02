@@ -14,7 +14,14 @@ abstract class Base extends LazyArrayObject
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName;
+    protected ?string $defaultFieldName = null;
+
+    /**
+     * 注解别名
+     *
+     * @var string|string[]
+     */
+    protected $__alias;
 
     public function __construct($data = [])
     {
@@ -63,4 +70,13 @@ abstract class Base extends LazyArrayObject
             unset($this->{$property->name});
         }
     }
+
+    /**
+     * Get the value of alias
+     */ 
+    public function getAlias()
+    {
+        return $this->__alias;
+    }
+
 }

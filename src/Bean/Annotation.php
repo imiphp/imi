@@ -78,7 +78,11 @@ class Annotation
      */
     private function loadModuleAnnotations($namespace)
     {
-        $ignoredNamespaces = Config::get('@app.ignoreNamespace', []);
+        $ignoredNamespaces = [];
+        foreach(Config::getAlias() as $alias)
+        {
+            $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
+        }
         if($ignoredNamespaces)
         {
             $list = [];
@@ -92,12 +96,12 @@ class Annotation
         {
             $pattern = null;
         }
-        $this->loader->loadModuleAnnotations($namespace, function($fileNamespace) use($pattern){
+        $parser = $this->parser;
+        $this->loader->loadModuleAnnotations($namespace, function($fileNamespace) use($pattern, $parser){
             if($pattern && 1 === preg_match($pattern, $fileNamespace))
             {
                 return;
             }
-            $parser = $this->parser;
             if(!$parser->isParsed($fileNamespace))
             {
                 $parser->parse($fileNamespace);

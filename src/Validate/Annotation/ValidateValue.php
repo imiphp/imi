@@ -18,7 +18,7 @@ class ValidateValue extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'value';
+    protected ?string $defaultFieldName = 'value';
 
     /**
      * 值规则

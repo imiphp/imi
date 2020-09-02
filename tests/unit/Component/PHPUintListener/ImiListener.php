@@ -2,7 +2,7 @@
 namespace Imi\Test\Component\PHPUintListener;
 
 use Imi\App;
-use Imi\Tool\Tool;
+use Imi\Cli\Tool;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
 use PHPUnit\Framework\Test;

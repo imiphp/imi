@@ -4,7 +4,7 @@ namespace Imi\Util;
 use Imi\App;
 use Imi\Config;
 use Imi\Worker;
-use Imi\Tool\Tool;
+use Imi\Cli\Tool;
 use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
@@ -345,27 +345,34 @@ abstract class Imi
     /**
      * 获取imi命令行
      *
-     * @param string $toolName 工具名，如server
-     * @param string $operation 操作名，如start
-     * @param array $args 参数
+     * @param string $commandName
+     * @param array $arguments
+     * @param array $options
      * @return string
      */
-    public static function getImiCmd($toolName, $operation, $args = [])
+    public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
-        $cmd = '"' . PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $toolName . '/' . $operation;
-        if(null !== ($appNamespace = Args::get('appNamespace')))
+        $cmd = '"' . PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $commandName;
+        // if(null !== ($appNamespace = Args::get('appNamespace')))
+        // {
+        //     $cmd .= ' -appNamespace "' . $appNamespace . '"';
+        // }
+        if($arguments)
         {
-            $cmd .= ' -appNamespace "' . $appNamespace . '"';
+            foreach($arguments as $v)
+            {
+                $cmd = ' "' . $v . '"';
+            }
         }
-        foreach($args as $k => $v)
+        foreach($options as $k => $v)
         {
             if(is_numeric($k))
             {
-                $cmd .= ' -' . $v;
+                $cmd .= ' -' . (isset($v[1]) ? '-' : '') . $v;
             }
             else
             {
-                $cmd .= ' -' . $k . ' "' . $v . '"';
+                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . ' "' . $v . '"';
             }
         }
         return $cmd;

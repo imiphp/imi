@@ -3,7 +3,7 @@ namespace Imi\Listener;
 
 use Imi\App;
 use Imi\Util\Imi;
-use Imi\Tool\Tool;
+use Imi\Cli\Tool;
 use Imi\Main\Helper;
 use Imi\Event\EventParam;
 use Imi\Util\AtomicManager;
@@ -26,9 +26,9 @@ class Init implements IEventListener
         {
             while(true)
             {
-                $result = exec(Imi::getImiCmd('imi', 'buildRuntime', [
-                    'format'    =>  'json',
-                    'imi-runtime'       =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
+                $result = exec(Imi::getImiCmd('imi/buildRuntime', [], [
+                    'format'        =>  'json',
+                    'imi-runtime'   =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
                 ]), $output);
                 $result = json_decode($result);
                 if('Build app runtime complete' === trim($result))

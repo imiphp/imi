@@ -67,7 +67,7 @@ return [
             'Imi\Listener',
             'Imi\Model',
             'Imi\Task',
-            'Imi\Tool',
+            'Imi\Cli',
             'Imi\Process',
             'Imi\HotUpdate',
             'Imi\Validate',

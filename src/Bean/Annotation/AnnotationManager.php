@@ -113,6 +113,13 @@ abstract class AnnotationManager
             foreach($tmpAnnotations as $annotation)
             {
                 static::$annotationRelation->removeClassRelation(get_class($annotation), $className);
+                if(null !== ($aliases = $annotation->getAlias()))
+                {
+                    foreach((array)$aliases as $alias)
+                    {
+                        static::$annotationRelation->removeClassRelation($alias, $className);
+                    }
+                }
             }
             unset($staticAnnotations[$className]);
         }
@@ -162,6 +169,13 @@ abstract class AnnotationManager
             foreach($tmpAnnotations as $annotation)
             {
                 static::$annotationRelation->removeMethodRelation(get_class($annotation), $className, $methodName);
+                if(null !== ($aliases = $annotation->getAlias()))
+                {
+                    foreach((array)$aliases as $alias)
+                    {
+                        static::$annotationRelation->removeMethodRelation($alias, $className, $methodName);
+                    }
+                }
             }
         }
         static::addMethodAnnotations($className, $methodName, ...$annotations);
@@ -210,6 +224,13 @@ abstract class AnnotationManager
             foreach($tmpAnnotations as $annotation)
             {
                 static::$annotationRelation->removePropertyRelation(get_class($annotation), $className, $propertyName);
+                if(null !== ($aliases = $annotation->getAlias()))
+                {
+                    foreach((array)$aliases as $alias)
+                    {
+                        static::$annotationRelation->removePropertyRelation($alias, $className, $propertyName);
+                    }
+                }
             }
         }
         static::addPropertyAnnotations($className, $propertyName, ...$annotations);
@@ -258,6 +279,13 @@ abstract class AnnotationManager
             foreach($tmpAnnotations as $annotation)
             {
                 static::$annotationRelation->removeConstantRelation(get_class($annotation), $className, $constantName);
+                if(null !== ($aliases = $annotation->getAlias()))
+                {
+                    foreach((array)$aliases as $alias)
+                    {
+                        static::$annotationRelation->removeConstantRelation($alias, $className, $constantName);
+                    }
+                }
             }
         }
         static::addConstantAnnotations($className, $constantName, ...$annotations);
@@ -543,12 +571,26 @@ abstract class AnnotationManager
             foreach($classAnnotation->getClassAnnotations() as $annotation)
             {
                 static::$annotationRelation->removeClassRelation(get_class($annotation), $className);
+                if(null !== ($aliases = $annotation->getAlias()))
+                {
+                    foreach((array)$aliases as $alias)
+                    {
+                        static::$annotationRelation->removeClassRelation($alias, $className);
+                    }
+                }
             }
             foreach($classAnnotation->getMethodAnnotations() as $methodName => $annotations)
             {
                 foreach($annotations as $annotation)
                 {
                     static::$annotationRelation->removeMethodRelation(get_class($annotation), $className, $methodName);
+                    if(null !== ($aliases = $annotation->getAlias()))
+                    {
+                        foreach((array)$aliases as $alias)
+                        {
+                            static::$annotationRelation->removeMethodRelation($alias, $className, $methodName);
+                        }
+                    }
                 }
             }
             foreach($classAnnotation->getPropertyAnnotations() as $propertyName => $annotations)
@@ -556,6 +598,13 @@ abstract class AnnotationManager
                 foreach($annotations as $annotation)
                 {
                     static::$annotationRelation->removePropertyRelation(get_class($annotation), $className, $propertyName);
+                    if(null !== ($aliases = $annotation->getAlias()))
+                    {
+                        foreach((array)$aliases as $alias)
+                        {
+                            static::$annotationRelation->removePropertyRelation($alias, $className, $propertyName);
+                        }
+                    }
                 }
             }
             foreach($classAnnotation->getConstantAnnotations() as $constName => $annotations)
@@ -563,6 +612,13 @@ abstract class AnnotationManager
                 foreach($annotations as $annotation)
                 {
                     static::$annotationRelation->removeConstantRelation(get_class($annotation), $className, $constName);
+                    if(null !== ($aliases = $annotation->getAlias()))
+                    {
+                        foreach((array)$aliases as $alias)
+                        {
+                            static::$annotationRelation->removeConstantRelation($alias, $className, $constName);
+                        }
+                    }
                 }
             }
             unset($staticAnnotations[$className]);

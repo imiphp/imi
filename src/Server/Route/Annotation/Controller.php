@@ -16,7 +16,7 @@ class Controller extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'prefix';
+    protected ?string $defaultFieldName = 'prefix';
 
     /**
      * 路由前缀

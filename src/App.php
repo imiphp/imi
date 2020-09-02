@@ -13,15 +13,16 @@ use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
+use Imi\Core\Contract\IApp;
 use Imi\Config\Dotenv\Dotenv;
+use Imi\Bean\ReflectionContainer;
 use Imi\Util\Process\ProcessType;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\ReflectionContainer;
 
-abstract class App
+final class App
 {
     /**
      * 应用命名空间
@@ -90,46 +91,29 @@ abstract class App
     private static $imiVersion;
 
     /**
-     * 框架服务运行入口
-     * @param string $namespace 应用命名空间
-     * @return void
+     * App 实例对象
+     *
+     * @var \Imi\Core\Contract\IApp
      */
-    public static function run($namespace)
+    private static IApp $app;
+
+    private function __construct()
     {
-        static::checkEnvironment();
-        self::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
-        self::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
-        self::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
-        static::initFramework($namespace);
-        if(!isset($_SERVER['argv'][1]))
-        {
-            echo "Has no operation! You can try the command: \033[33;33m", $_SERVER['argv'][0], " server/start\033[0m", PHP_EOL;
-            return;
-        }
-        Event::trigger('IMI.INITED');
+        
     }
 
     /**
-     * 检查环境
-     *
+     * 框架服务运行入口
+     * 
+     * @param string $namespace 应用命名空间
+     * @param string $app
      * @return void
      */
-    private static function checkEnvironment()
+    public static function run(string $namespace, string $app): void
     {
-        // Swoole 检查
-        if(!extension_loaded('swoole'))
-        {
-            echo 'No Swoole extension installed or enabled', PHP_EOL;
-            exit;
-        }
-        // 短名称检查
-        $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
-        $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
-        if (in_array($useShortname, ['', 'off', 'false'], true))
-        {
-            echo 'Please enable swoole short name before using imi!', PHP_EOL, 'You can set swoole.use_shortname = on into your php.ini.', PHP_EOL;
-            exit;
-        }
+        self::$app = new $app($namespace);
+        self::initFramework($namespace);
+        self::$app->run();
     }
 
     /**
@@ -142,11 +126,6 @@ abstract class App
     {
         static::$namespace = $namespace;
         $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
-        if($isServerStart)
-        {
-            self::outImi();
-            self::outStartupInfo();
-        }
         AnnotationManager::init();
         static::$runtimeInfo = new RuntimeInfo;
         static::$container = new Container;
@@ -188,6 +167,7 @@ abstract class App
             }
         }
         static::$isInited = true;
+        Event::trigger('IMI.INITED');
     }
 
     /**
@@ -498,72 +478,6 @@ abstract class App
     }
 
     /**
-     * 输出 imi 图标
-     *
-     * @return void
-     */
-    public static function outImi()
-    {
-        echo <<<STR
- _               _ 
-(_)  _ __ ___   (_)
-| | | '_ ` _ \  | |
-| | | | | | | | | |
-|_| |_| |_| |_| |_|
-
-
-STR;
-    }
-
-    /**
-     * 输出启动信息
-     *
-     * @return void
-     */
-    public static function outStartupInfo()
-    {
-        echo '[System]', PHP_EOL;
-        $system = (defined('PHP_OS_FAMILY') && 'Unknown' !== PHP_OS_FAMILY) ? PHP_OS_FAMILY : PHP_OS;
-        switch($system)
-        {
-            case 'Linux':
-                $system .= ' - ' . Imi::getLinuxVersion();
-                break;
-            case 'Darwin':
-                $system .= ' - ' . Imi::getDarwinVersion();
-                break;
-            case 'CYGWIN':
-                $system .= ' - ' . Imi::getCygwinVersion();
-                break;
-        }
-        echo 'System: ', $system, PHP_EOL;
-        if(Imi::isDockerEnvironment())
-        {
-            echo 'Virtual machine: Docker', PHP_EOL;
-        }
-        else if(Imi::isWSL())
-        {
-            echo 'Virtual machine: WSL', PHP_EOL;
-        }
-        echo 'CPU: ', swoole_cpu_num(), ' Cores', PHP_EOL;
-        echo 'Disk: Free ', round(@disk_free_space('.') / (1024*1024*1024), 3), ' GB / Total ', round(@disk_total_space('.') / (1024*1024*1024), 3), ' GB', PHP_EOL;
-
-        echo PHP_EOL, '[Network]', PHP_EOL;
-        foreach(swoole_get_local_ip() as $name => $ip)
-        {
-            echo 'ip@', $name, ': ', $ip, PHP_EOL;
-        }
-
-        echo PHP_EOL, '[PHP]', PHP_EOL;
-        echo 'Version: v', PHP_VERSION, PHP_EOL;
-        echo 'Swoole: v', SWOOLE_VERSION, PHP_EOL;
-        echo 'imi: ', static::getImiVersion(), PHP_EOL;
-        echo 'Timezone: ', date_default_timezone_get(), PHP_EOL;
-
-        echo PHP_EOL;
-    }
-
-    /**
      * 获取应用上下文数据
      * @param string $name
      * @param mixed $default
@@ -631,6 +545,16 @@ STR;
             }
         }
         return static::$imiVersion = 'Unknown';
+    }
+
+    /**
+     * Get app 实例对象
+     *
+     * @return \Imi\Core\Contract\IApp
+     */ 
+    public static function getApp(): IApp
+    {
+        return static::$app;
     }
 
 }

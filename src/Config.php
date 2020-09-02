@@ -11,7 +11,7 @@ abstract class Config
      * 配置数组
      * @var ArrayData[]
      */
-    private static $configs = [];
+    private static array $configs = [];
 
     /**
      * 增加配置

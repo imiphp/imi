@@ -16,7 +16,7 @@ class UdpMiddleware extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'middlewares';
+    protected ?string $defaultFieldName = 'middlewares';
 
     /**
      * 中间件类或数组

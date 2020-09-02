@@ -1,3 +1,3 @@
 #!/usr/bin/env php
 <?php
-require __DIR__ . '/imi-cli.php';
+require dirname(__DIR__) . '/src/Cli/bootstrap.php';

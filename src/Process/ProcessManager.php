@@ -203,14 +203,14 @@ abstract class ProcessManager
      */
     public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
     {
-        $cmd = Imi::getImiCmd('process', 'run', $args) . ' -name ' . $name;
+        $cmd = Imi::getImiCmd('process/run', [$name], $args);
         if(null !== $redirectStdinStdout)
         {
-            $cmd .= ' -redirectStdinStdout ' . $redirectStdinStdout;
+            $cmd .= ' --redirectStdinStdout ' . $redirectStdinStdout;
         }
         if(null !== $pipeType)
         {
-            $cmd .= ' -pipeType ' . $pipeType;
+            $cmd .= ' --pipeType ' . $pipeType;
         }
         return \Swoole\Coroutine::exec($cmd);
     }

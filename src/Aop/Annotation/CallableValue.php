@@ -16,7 +16,7 @@ class CallableValue extends BaseInjectValue
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'callable';
+    protected ?string $defaultFieldName = 'callable';
 
     /**
      * 回调

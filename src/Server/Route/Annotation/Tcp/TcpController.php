@@ -16,7 +16,7 @@ class TcpController extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'prefix';
+    protected ?string $defaultFieldName = 'prefix';
 
     /**
      * 是否为单例控制器

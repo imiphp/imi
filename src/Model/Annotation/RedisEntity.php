@@ -17,7 +17,7 @@ class RedisEntity extends Base
      * 只传一个参数时的参数名
      * @var string
      */
-    protected $defaultFieldName = 'poolName';
+    protected ?string $defaultFieldName = 'poolName';
 
     /**
      * redis 连接池名称

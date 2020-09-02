@@ -1,33 +1,22 @@
 <?php
 namespace Imi\Tool\Annotation;
 
-use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
+use Imi\Cli\Annotation\CommandAction;
 
 /**
- * 工具操作注解
+ * 命令行动作注解
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Tool\Parser\ToolParser")
+ * @Parser("Imi\Cli\Parser\ToolParser")
  */
-class Operation extends Base
+class Operation extends CommandAction
 {
     /**
-     * 只传一个参数时的参数名
-     * @var string
-     */
-    protected $defaultFieldName = 'name';
-
-    /**
-     * 操作名称
-     * @var string
-     */
-    public $name;
-
-    /**
-     * 自动开启协程
+     * 注解别名
      *
-     * @var boolean
+     * @var string|string[]
      */
-    public $co = true;
+    protected $__alias = CommandAction::class;
+
 }
