@@ -3,7 +3,6 @@ namespace Imi\Cli;
 
 use Imi\App;
 use Imi\Cli\ArgType;
-use Imi\Util\Coroutine;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Parser\ToolParser;
 use Imi\Cli\Annotation\Argument;
@@ -16,7 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Imi\Cli\Annotation\Command as CommandAnnotation;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImiCommand extends Command
+class ImiSymfonyCommand extends Command
 {
     /**
      * 类名
@@ -138,7 +137,7 @@ class ImiCommand extends Command
     protected function executeCommand(): int
     {
         try {
-            $instance = new $this->className;
+            $instance = new $this->className($this, $this->input, $this->output);
             $args = $this->getCallToolArgs();
             $instance->{$this->methodName}(...$args);
         } catch(\Throwable $th) {
@@ -206,7 +205,10 @@ class ImiCommand extends Command
                 $value = (bool)json_decode($value);
                 break;
             case ArgType::ARRAY:
-                $value = explode(',', $value);
+                if(!is_array($value))
+                {
+                    $value = explode(',', $value);
+                }
                 break;
         }
         return $value;

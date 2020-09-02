@@ -14,11 +14,12 @@ use Imi\Cli\Annotation\Command;
 use Imi\Facade\Annotation\Facade;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("generate")
  */
-class FacadeGenerate
+class FacadeGenerate extends BaseCommand
 {
     /**
      * 生成门面类

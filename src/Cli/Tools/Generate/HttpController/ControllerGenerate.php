@@ -8,11 +8,12 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("generate")
  */
-class ControllerGenerate
+class ControllerGenerate extends BaseCommand
 {
     /**
      * 生成一个 Http Controller

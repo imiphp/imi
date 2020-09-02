@@ -8,12 +8,13 @@ use Imi\Cli\ArgType;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\Argument;
+use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\Annotation\CommandAction;
 
 /**
  * @Command("dev")
  */
-class Development
+class Development extends BaseCommand
 {
     /**
      * 生成扩展 IDE 提示帮助
@@ -33,11 +34,11 @@ class Development
         }
         foreach($name as $extName)
         {
-            echo 'Generating ', $extName, '...', PHP_EOL;
+            $this->output->writeln('Generating <info>' . $extName . '</info> ...');
             $extensionReflection = new ExtensionReflection($extName);
             $extensionReflection->save(File::path($path, $extName));
         }
-        echo 'Complete!', PHP_EOL;
+        $this->output->writeln('<info>Complete!</info>');
     }
 
 }

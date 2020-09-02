@@ -10,11 +10,12 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\Annotation\Command;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("imi")
  */
-class Imi
+class Imi extends BaseCommand
 {
     /**
      * 构建框架预加载缓存
@@ -31,7 +32,7 @@ class Imi
             $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
         }
         ImiUtil::buildRuntime($file);
-        echo 'Build imi runtime complete', PHP_EOL;
+        $this->output->writeln('<info>Build imi runtime complete</info>');
     }
 
     /**
@@ -47,11 +48,11 @@ class Imi
         if(is_file($file))
         {
             unlink($file);
-            echo 'Clear imi runtime complete', PHP_EOL;
+            $this->output->writeln('<info>Clear imi runtime complete</info>');
         }
         else
         {
-            echo 'Imi runtime does not exists', PHP_EOL;
+            $this->output->writeln('<error>Imi runtime does not exists</error>');
         }
     }
 
@@ -84,11 +85,11 @@ class Imi
             {
                 if('json' === $format)
                 {
-                    echo json_encode($result);
+                    $this->output->write(json_encode($result));
                 }
                 else
                 {
-                    echo $result;
+                    $this->output->write($result);
                 }
             }
             if($socket)
@@ -109,7 +110,7 @@ class Imi
             $socket = stream_socket_client('unix://' . $sock, $errno, $errstr, 10);
             if(false === $socket)
             {
-                return;
+                exit;
             }
             stream_set_timeout($socket, 60);
             do {
@@ -118,19 +119,19 @@ class Imi
                 {
                     if(feof($socket))
                     {
-                        return;
+                        exit;
                     }
                     continue;
                 }
                 if(false === $meta)
                 {
-                    return;
+                    exit;
                 }
                 $length = unpack('N', $meta)[1];
                 $data = fread($socket, $length);
                 if(false === $data || !isset($data[$length - 1]))
                 {
-                    return;
+                    exit;
                 }
                 $result = unserialize($data);
                 if('buildRuntime' === $result['action'])
@@ -144,7 +145,7 @@ class Imi
             $input = fread(STDIN, 1);
             if('y' !== $input)
             {
-                return;
+                exit;
             }
         }
 
@@ -175,11 +176,11 @@ class Imi
         if(is_file($file))
         {
             unlink($file);
-            echo 'Clear app runtime complete', PHP_EOL;
+            $this->output->writeln('<info>Clear app runtime complete</info>');
         }
         else
         {
-            echo 'App runtime does not exists', PHP_EOL;
+            $this->output->writeln('<error>App runtime does not exists</error>');
         }
     }
 

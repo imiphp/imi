@@ -21,6 +21,7 @@ use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 final class App
 {
@@ -137,7 +138,7 @@ final class App
         // 运行时目录写权限检测
         if(!is_writable($runtimePath = Imi::getRuntimePath()))
         {
-            echo 'Runtime path "', $runtimePath, '" is not writable', PHP_EOL;
+            (new ConsoleOutput)->writeln('<error>Runtime path</error> <comment>' . $runtimePath . '</comment> <error>is not writable</error>');
             exit;
         }
         // 框架运行时缓存支持

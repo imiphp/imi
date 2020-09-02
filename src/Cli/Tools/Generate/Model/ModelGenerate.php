@@ -13,11 +13,12 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\Argument;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("generate")
  */
-class ModelGenerate
+class ModelGenerate extends BaseCommand
 {
     /**
      * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
@@ -91,10 +92,10 @@ class ModelGenerate
         }
         if(null === $modelPath)
         {
-            echo 'Namespace ', $namespace, ' cannot found', PHP_EOL;
-            return;
+            $this->output->writeln('<error>Namespace</error> <comments>' . $namespace . '</comments> <error>cannot found</error>');
+            exit;
         }
-        echo 'modelPath: ', $modelPath, PHP_EOL;
+        $this->output->writeln('<info>modelPath:</info> <comments>' . $modelPath . '</comments>');
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
@@ -114,8 +115,8 @@ class ModelGenerate
                 $path = Imi::getNamespacePath($modelNamespace);
                 if(null === $path)
                 {
-                    echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
-                    return;
+                    $this->output->writeln('<error>Namespace</error> <comments>' . $modelNamespace . '</comments> <error>cannot found</error>');
+                    exit;
                 }
                 File::createDir($path);
                 $basePath = $path . '/Base';
@@ -134,8 +135,8 @@ class ModelGenerate
                         $path = Imi::getNamespacePath($modelNamespace);
                         if(null === $path)
                         {
-                            echo 'Namespace ', $modelNamespace, ' cannot found', PHP_EOL;
-                            return;
+                            $this->output->writeln('<error>Namespace</error> <comments>' . $modelNamespace . '</comments> <error>cannot found</error>');
+                            exit;
                         }
                         File::createDir($path);
                         $basePath = $path . '/Base';
@@ -157,7 +158,7 @@ class ModelGenerate
             if(false === $override && is_file($fileName))
             {
                 // 不覆盖
-                echo 'Skip ', $table, '...', PHP_EOL;
+                $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
             $ddl = $this->getDDL($query, $table);
@@ -185,19 +186,19 @@ class ModelGenerate
             $baseFileName = File::path($basePath, $className . 'Base.php');
             if(!is_file($baseFileName) || true === $override || 'base' === $override)
             {
-                echo 'Generating ', $table, ' BaseClass...', PHP_EOL;
+                $this->output->writeln('Generating <info>' . $table . '</info> BaseClass...');
                 $baseContent = $this->renderTemplate('base-template', $data);
                 file_put_contents($baseFileName, $baseContent);
             }
 
             if(!is_file($fileName) || true === $override || 'model' === $override)
             {
-                echo 'Generating ', $table, ' Class...', PHP_EOL;
+                $this->output->writeln('Generating <info>' . $table . '</info> Class...');
                 $content = $this->renderTemplate('template', $data);
                 file_put_contents($fileName, $content);
             }
         }
-        echo 'Complete', PHP_EOL;
+        $this->output->writeln('<info>Complete</info>');
     }
 
     /**

@@ -10,12 +10,13 @@ use Imi\Cache\CacheManager;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\Tools\Imi\Imi as ToolImi;
 
 /**
  * @Command("server")
  */
-class Server
+class Server extends BaseCommand
 {
     /**
      * 开启服务
@@ -68,7 +69,7 @@ class Server
     public function stop(): void
     {
         $result = Imi::stopServer();
-        echo $result['cmd'], PHP_EOL;
+        $this->output->writeln($result['cmd']);
     }
 
     /**
@@ -85,15 +86,15 @@ class Server
     {
         if($runtime)
         {
-            $imi = new ToolImi;
-            echo 'Building runtime...', PHP_EOL;
+            $imi = new ToolImi($this->command, $this->input, $this->output);
+            $this->output->writeln('<info>Building runtime...</info>');
             $time = microtime(true);
             $imi->buildRuntime('', null, false, null);
             $useTime = microtime(true) - $time;
-            echo 'Runtime build complete! ', $useTime, 's', PHP_EOL;
+            $this->output->writeln("<info>Runtime build complete! {$useTime}s</info>");
         }
         $result = Imi::reloadServer();
-        echo $result['cmd'], PHP_EOL;
+        $this->output->writeln($result['cmd']);
     }
 
     /**
@@ -103,15 +104,16 @@ class Server
      */
     public function outImi(): void
     {
-        echo <<<STR
+        $this->output->write('<comment>' . <<<STR
  _               _ 
 (_)  _ __ ___   (_)
 | | | '_ ` _ \  | |
 | | | | | | | | | |
 |_| |_| |_| |_| |_|
 
-
-STR;
+</comment>
+STR
+        );
     }
 
     /**
@@ -121,7 +123,7 @@ STR;
      */
     public function outStartupInfo(): void
     {
-        echo '[System]', PHP_EOL;
+        $this->output->writeln('<fg=yellow;options=bold>[System]</>');
         $system = (defined('PHP_OS_FAMILY') && 'Unknown' !== PHP_OS_FAMILY) ? PHP_OS_FAMILY : PHP_OS;
         switch($system)
         {
@@ -135,31 +137,31 @@ STR;
                 $system .= ' - ' . Imi::getCygwinVersion();
                 break;
         }
-        echo 'System: ', $system, PHP_EOL;
+        $this->output->writeln('<info>System:</info> ' . $system);
         if(Imi::isDockerEnvironment())
         {
-            echo 'Virtual machine: Docker', PHP_EOL;
+            $this->output->writeln('<info>Virtual machine:</info> Docker');
         }
         else if(Imi::isWSL())
         {
-            echo 'Virtual machine: WSL', PHP_EOL;
+            $this->output->writeln('<info>Virtual machine:</info> WSL');
         }
-        echo 'CPU: ', swoole_cpu_num(), ' Cores', PHP_EOL;
-        echo 'Disk: Free ', round(@disk_free_space('.') / (1024*1024*1024), 3), ' GB / Total ', round(@disk_total_space('.') / (1024*1024*1024), 3), ' GB', PHP_EOL;
+        $this->output->writeln('<info>CPU:</info> ' . swoole_cpu_num() . ' Cores');
+        $this->output->writeln('<info>Disk:</info> Free ' . round(@disk_free_space('.') / (1024*1024*1024), 3) . ' GB / Total ' . round(@disk_total_space('.') / (1024*1024*1024), 3) . ' GB');
 
-        echo PHP_EOL, '[Network]', PHP_EOL;
+        $this->output->writeln(PHP_EOL . '<fg=yellow;options=bold>[Network]</>');
         foreach(swoole_get_local_ip() as $name => $ip)
         {
-            echo 'ip@', $name, ': ', $ip, PHP_EOL;
+            $this->output->writeln('<info>ip@' . $name . '</info>: ' . $ip);
         }
 
-        echo PHP_EOL, '[PHP]', PHP_EOL;
-        echo 'Version: v', PHP_VERSION, PHP_EOL;
-        echo 'Swoole: v', SWOOLE_VERSION, PHP_EOL;
-        echo 'imi: ', App::getImiVersion(), PHP_EOL;
-        echo 'Timezone: ', date_default_timezone_get(), PHP_EOL;
+        $this->output->writeln(PHP_EOL . '<fg=yellow;options=bold>[PHP]</>');
+        $this->output->writeln('<info>Version:</info> v' . PHP_VERSION);
+        $this->output->writeln('<info>Swoole:</info> v' . SWOOLE_VERSION);
+        $this->output->writeln('<info>imi:</info> ' . App::getImiVersion());
+        $this->output->writeln('<info>Timezone:</info> ' . date_default_timezone_get());
 
-        echo PHP_EOL;
+        $this->output->writeln('');
     }
 
 }

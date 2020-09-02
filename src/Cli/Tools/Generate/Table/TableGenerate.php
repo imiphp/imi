@@ -11,11 +11,12 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("generate")
  */
-class TableGenerate
+class TableGenerate extends BaseCommand
 {
     /**
      * 根据模型中 DDL 注解定义，生成表
@@ -87,7 +88,7 @@ class TableGenerate
                 {
                     $tables[] = $table;
                     // 表存在跳过
-                    echo 'Skip ', $table, PHP_EOL;
+                    $this->output->writeln('Skip ' . $table);
                     continue;
                 }
             }
@@ -96,7 +97,7 @@ class TableGenerate
             // 创建表
             Db::getInstance()->batchExec($ddlAnnotation->sql);
             $tables[] = $table;
-            echo 'Create ', $table, PHP_EOL;
+            $this->output->writeln('Create <info>' . $table . '</info>');
         }
 
     }

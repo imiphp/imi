@@ -12,11 +12,12 @@ use Imi\Cli\Annotation\Argument;
 use Imi\Process\ProcessPoolManager;
 use Imi\Process\Parser\ProcessParser;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Contract\BaseCommand;
 
 /**
  * @Command("process")
  */
-class Process
+class Process extends BaseCommand
 {
     /**
      * 开启一个进程，可以任意添加参数
@@ -38,7 +39,7 @@ class Process
         $process = ProcessManager::create($name, $args, $redirectStdinStdout, $pipeType);
         $process->start();
         $result = \Swoole\Process::wait(true);
-        echo 'Process exit! pid:', $result['pid'], ', code:', $result['code'], ', signal:', $result['signal'], PHP_EOL;
+        $this->output->writeln('Process exit! pid:' . $result['pid'] . ', code:' . $result['code'] . ', signal:' . $result['signal']);
         exit($result['code']);
     }
 

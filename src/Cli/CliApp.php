@@ -3,7 +3,7 @@ namespace Imi\Cli;
 
 use Imi\App;
 use Imi\Event\Event;
-use Imi\Cli\ImiCommand;
+use Imi\Cli\ImiSymfonyCommand;
 use Imi\Core\Contract\BaseApp;
 use Imi\Cli\Parser\ToolParser;
 use Imi\Cli\Annotation\Command;
@@ -38,10 +38,6 @@ class CliApp extends BaseApp
         $this->cli = $cli = new Application('imi', App::getImiVersion());
         $cli->setDispatcher($dispatcher);
         Event::one('IMI.INITED', function() use($cli){
-            // ToolParser::getInstance()->getData()
-            // $this->cli->addCommands()
-            // AnnotationManager::getAnnotationPoints(Operation::class)
-            // var_dump(count(AnnotationManager::getAnnotationPoints(Command::class, 'class')));
             foreach(AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
             {
                 /** @var Command $commandAnnotation */
@@ -49,7 +45,7 @@ class CliApp extends BaseApp
                 $className = $point->getClass();
                 foreach(AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
                 {
-                    $cli->add(new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
+                    $cli->add(new ImiSymfonyCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
                 }
             }
             Tool::init();

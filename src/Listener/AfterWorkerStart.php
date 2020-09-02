@@ -13,6 +13,7 @@ use Imi\Server\Event\Param\AppInitEventParam;
 use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=Imi\Util\ImiPriority::IMI_MIN)
@@ -37,8 +38,8 @@ class AfterWorkerStart implements IWorkerStartEventListener
                 ], $e->getTarget(), AppInitEventParam::class);
     
                 file_put_contents($initFlagFile, Swoole::getMasterPID());
-    
-                echo 'App Inited', PHP_EOL;
+
+                (new ConsoleOutput())->writeln('<info>App Inited</info>');
             }
         }
         // worker 初始化
