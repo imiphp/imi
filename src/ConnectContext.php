@@ -13,12 +13,18 @@ abstract class ConnectContext
      */
     public static function create(array $data = [])
     {
-        $data = static::get();
         $requestContextData = RequestContext::getContext();
-        if(!$data && $fd = ($requestContextData['fd'] ?? null))
+        if(!static::get() && $fd = ($requestContextData['fd'] ?? null))
         {
             static::use(function($contextData) use($data, $fd, $requestContextData){
-                $contextData = $data;
+                if($contextData)
+                {
+                    $contextData = array_merge($contextData, $data);
+                }
+                else
+                {
+                    $contextData = $data;
+                }
                 $contextData['fd'] = $fd;
                 $contextData['__serverName'] = $requestContextData['server']->getName();
                 return $contextData;

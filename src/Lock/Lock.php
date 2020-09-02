@@ -34,7 +34,7 @@ abstract class Lock
             $lockConfigId = static::getDefaultId();
         }
         $instances = &static::$instances;
-        if(isset($instances[$lockConfigId]))
+        if(null === $lockId && isset($instances[$lockConfigId]))
         {
             return $instances[$lockConfigId];
         }
@@ -44,7 +44,14 @@ abstract class Lock
             throw new \RuntimeException(sprintf('Lock %s does not exists', $lockConfigId));
         }
         $option = $options[$lockConfigId];
-        return $instances[$lockConfigId] = App::getBean($option->class, $lockId ?? $lockConfigId, $option->options);
+		if(null === $lockId)
+		{
+			return $instances[$lockConfigId] = App::getBean($option->class, $lockConfigId, $option->options);
+		}
+        else
+		{
+			return App::getBean($option->class, $lockId, $option->options);
+		}
     }
 
     /**
