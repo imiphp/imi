@@ -41,8 +41,8 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         else
         {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::WORKER, true);
-            // swoole 4.1.0 一键协程化
-            if(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true) && Config::get('@app.mainServer.configs.enable_coroutine', true))
+            // 一键协程化
+            if(Config::get('@app.enableCoroutine', true) && Config::get('@app.mainServer.configs.enable_coroutine', true))
             {
                 \Swoole\Runtime::enableCoroutine(true);
             }

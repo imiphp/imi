@@ -543,15 +543,7 @@ final class App
         {
             return false;
         }
-        // Swoole 4.4.x 下 hook file_get_contents 有奇怪 bug，所以根据不同情况用不同方法
-        if(Coroutine::isIn())
-        {
-            $content = Coroutine::readFile($fileName);
-        }
-        else
-        {
-            $content = file_get_contents($fileName);
-        }
+        $content = file_get_contents($fileName);
         static::$runtimeInfo = unserialize($content);
         if(!$minimumAvailable)
         {

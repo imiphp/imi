@@ -64,7 +64,7 @@ class File extends Base
                 return $default;
             }
             // 正常读入
-            if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
+            if(Coroutine::isIn() && Config::get('@app.enableCoroutine', true))
             {
                 $content = Coroutine::fread($fp);
             }
@@ -124,7 +124,7 @@ class File extends Base
                 return false;
             }
             // 写入缓存数据
-            if(Coroutine::isIn() && !(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true)))
+            if(Coroutine::isIn() && Config::get('@app.enableCoroutine', true))
             {
                 Coroutine::fwrite($fp, $this->encode($value));
             }

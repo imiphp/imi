@@ -66,7 +66,6 @@ namespace Imi
 {
     /**
      * 处理命令行，执行后不会有 sh 进程
-     * 仅限 Swoole >= 4.5.3
      * 
      * @param string $cmd
      * @return string

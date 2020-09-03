@@ -26,11 +26,6 @@ class Http2Test extends BaseTest
      */
     public function testUri()
     {
-        if(version_compare(SWOOLE_VERSION, '4.4', '<'))
-        {
-            $this->markTestSkipped('Http2 in Swoole 4.3.x has some bugs...');
-        }
-        
         $this->go(function(){
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $http = new HttpRequest;

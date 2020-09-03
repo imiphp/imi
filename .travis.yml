@@ -21,27 +21,6 @@ jobs:
     env: SWOOLE_VERSION="v4.5.3"
   - php: '7.1'
     language: php
-    env: SWOOLE_VERSION="v4.4.19"
-  - php: '7.2'
-    language: php
-    env: SWOOLE_VERSION="v4.4.19"
-  - php: '7.3'
-    language: php
-    env: SWOOLE_VERSION="v4.4.19"
-  - php: '7.4'
-    language: php
-    env: SWOOLE_VERSION="v4.4.19"
-  - php: '7.1'
-    language: php
-    env: SWOOLE_VERSION="v4.3.6"
-  - php: '7.2'
-    language: php
-    env: SWOOLE_VERSION="v4.3.6"
-  - php: '7.3'
-    language: php
-    env: SWOOLE_VERSION="v4.3.6"
-  - php: '7.1'
-    language: php
     env: SWOOLE_VERSION="master"
   - php: '7.2'
     language: php
