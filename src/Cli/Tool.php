@@ -3,21 +3,11 @@ namespace Imi\Cli;
 
 use Imi\App;
 use Imi\Config;
-use Imi\Util\Imi;
-use Imi\Util\Args;
-use Imi\Util\File;
 use Imi\Main\Helper;
-use Imi\RequestContext;
 use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
-use Imi\Cli\Annotation\Arg;
-use Imi\Cli\Parser\ToolParser;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Cli\Annotation\Operation;
-use Imi\Event\Event;
-use Swoole\ExitException;
 
 abstract class Tool
 {

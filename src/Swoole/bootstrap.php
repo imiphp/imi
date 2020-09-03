@@ -1,7 +1,7 @@
 <?php
 use Imi\App;
-use Imi\Util\Args;
 use Imi\Util\File;
+use Symfony\Component\Console\Input\ArgvInput;
 
 (function(){
     if(!class_exists('Imi\App'))
@@ -28,16 +28,15 @@ use Imi\Util\File;
         })();
     }
 
-    Args::init(1);
-
     App::run((function(){
-        $namespace = Args::get('appNamespace');
-        if(null === $namespace)
+        $input = new ArgvInput;
+        $namespace = $input->getParameterOption('app-namespace', false);
+        if(false === $namespace)
         {
             $config = include File::path($path ?? dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');
             if(!isset($config['namespace']))
             {
-                echo 'Has no namespace, please add arg: -appNamespace "Your App Namespace"', PHP_EOL;
+                echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', PHP_EOL;
                 exit;
             }
             $namespace = $config['namespace'];

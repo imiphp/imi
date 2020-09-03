@@ -2,10 +2,10 @@
 namespace Imi\Cron\Process;
 
 use Imi\App;
-use Imi\Util\Args;
 use Imi\Cron\Util\CronUtil;
 use Imi\Process\BaseProcess;
 use Imi\Process\Annotation\Process;
+use Symfony\Component\Console\Input\ArgvInput;
 
 /**
  * 定时任务工作进程
@@ -19,9 +19,10 @@ class CronWorkerProcess extends BaseProcess
         $success = false;
         $message = '';
         try {
-            $id = Args::get('id');
-            $data = json_decode(Args::get('data'), true);
-            $class = Args::get('class');
+            $input = new ArgvInput;
+            $id = $input->getParameterOption('id');
+            $data = json_decode($input->getParameterOption('data'), true);
+            $class = $input->getParameterOption('class');
             /** @var \Imi\Cron\ICronTask $handler */
             $handler = App::getBean($class);
             $handler->run($id, $data);

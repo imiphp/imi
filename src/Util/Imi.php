@@ -5,7 +5,6 @@ use Imi\App;
 use Imi\Config;
 use Imi\Worker;
 use Imi\Cli\Tool;
-use Imi\Util\Args;
 use Imi\Main\Helper;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\Annotation;
@@ -353,10 +352,10 @@ abstract class Imi
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
         $cmd = '"' . PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $commandName;
-        // if(null !== ($appNamespace = Args::get('appNamespace')))
-        // {
-        //     $cmd .= ' -appNamespace "' . $appNamespace . '"';
-        // }
+        if(!isset($options['app-namespace']))
+        {
+            $options['app-namespace'] = App::getNamespace();
+        }
         if($arguments)
         {
             foreach($arguments as $v)

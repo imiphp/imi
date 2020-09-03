@@ -2,10 +2,10 @@
 namespace Imi\Cron;
 
 use Imi\App;
-use Imi\Util\Args;
 use Imi\Process\IProcess;
 use Imi\Task\TaskManager;
 use Imi\Bean\Annotation\Bean;
+use Imi\Cron\Annotation\Cron;
 use Imi\Task\Annotation\Task;
 use Imi\Process\ProcessManager;
 use Imi\Cron\Contract\ICronTask;
@@ -15,7 +15,7 @@ use Imi\Process\Annotation\Process;
 use Imi\Task\Interfaces\ITaskHandler;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Cron\Annotation\Cron;
+use Symfony\Component\Console\Input\ArgvInput;
 
 use function Yurun\Swoole\Coroutine\goWait;
 
@@ -55,10 +55,11 @@ class CronManager
         {
             if(ProcessType::PROCESS === App::get(ProcessAppContexts::PROCESS_TYPE))
             {
-                $this->socketFile = Args::get('cronSock');
+                $input = new ArgvInput;
+                $this->socketFile = $input->getParameterOption('cron-sock');
                 if(!$this->socketFile)
                 {
-                    throw new \InvalidArgumentException('In process to run cron, you must have arg cronSock');
+                    throw new \InvalidArgumentException('In process to run cron, you must have arg cron-sock');
                 }
             }
             else
@@ -237,7 +238,7 @@ class CronManager
                             'id'        =>  $id,
                             'data'      =>  json_encode($data),
                             'class'     =>  $class,
-                            'cronSock'  =>  $this->getSocketFile(),
+                            'cron-sock'  =>  $this->getSocketFile(),
                         ]);
                     };
                     break;
@@ -265,7 +266,7 @@ class CronManager
                 ProcessManager::run($process->name, [
                     'id'        =>  $id,
                     'data'      =>  json_encode($data),
-                    'cronSock'  =>  $this->getSocketFile(),
+                    'cron-sock'  =>  $this->getSocketFile(),
                 ]);
             };
         }

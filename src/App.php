@@ -3,7 +3,6 @@ namespace Imi;
 
 use Imi\Config;
 use Imi\Util\Imi;
-use Imi\Util\Args;
 use Imi\Util\Text;
 use Imi\Event\Event;
 use Imi\Main\Helper;
@@ -18,12 +17,11 @@ use Imi\Core\Contract\IApp;
 use Imi\Util\AtomicManager;
 use Imi\Config\Dotenv\Dotenv;
 use Imi\Bean\ReflectionContainer;
-use Imi\Util\Process\ProcessType;
 use Composer\Autoload\ClassLoader;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
-use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 final class App
@@ -144,12 +142,13 @@ final class App
             (new ConsoleOutput)->writeln('<error>Runtime path</error> <comment>' . $runtimePath . '</comment> <error>is not writable</error>');
             exit;
         }
+        $input = new ArgvInput;
         // 框架运行时缓存支持
         if($isServerStart)
         {
             $result = false;
         }
-        else if($file = Args::get('imi-runtime'))
+        else if($file = $input->getParameterOption('imi-runtime'))
         {
             // 尝试加载指定 runtime
             $result = App::loadRuntimeInfo($file);

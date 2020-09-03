@@ -2,7 +2,6 @@
 namespace Imi\Cli\Tools\Process;
 
 use Imi\App;
-use Imi\Util\Args;
 use Imi\Cli\ArgType;
 use RuntimeException;
 use Imi\Process\ProcessManager;
@@ -35,8 +34,7 @@ class Process extends BaseCommand
         // 加载服务器注解
         \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         App::initWorker();
-        $args = Args::get();
-        $process = ProcessManager::create($name, $args, $redirectStdinStdout, $pipeType);
+        $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
         $process->start();
         $result = \Swoole\Process::wait(true);
         $this->output->writeln('Process exit! pid:' . $result['pid'] . ', code:' . $result['code'] . ', signal:' . $result['signal']);
@@ -60,8 +58,7 @@ class Process extends BaseCommand
         // 加载服务器注解
         \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         App::initWorker();
-        $args = Args::get();
-        $processPool = ProcessPoolManager::create($name, $worker, $args, $ipcType, $msgQueueKey);
+        $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
         $processPool->start();
     }
 
@@ -79,13 +76,12 @@ class Process extends BaseCommand
         // 加载服务器注解
         \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         App::initWorker();
-        $args = Args::get();
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if(null === $processOption)
         {
             throw new RuntimeException(sprintf('Not found process %s', $name));
         }
-        $callable = ProcessManager::getProcessCallable($args, $name, $processOption);
+        $callable = ProcessManager::getProcessCallable($_SERVER['argv'], $name, $processOption);
         $callable(new \Imi\Process\Process(function(){}));
     }
 
