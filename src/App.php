@@ -6,6 +6,7 @@ use Imi\Util\Imi;
 use Imi\Util\Args;
 use Imi\Util\Text;
 use Imi\Event\Event;
+use Imi\Main\Helper;
 use Imi\Util\Composer;
 use Imi\Bean\Container;
 use Imi\Util\Coroutine;
@@ -14,9 +15,11 @@ use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
 use Imi\Core\Contract\IApp;
+use Imi\Util\AtomicManager;
 use Imi\Config\Dotenv\Dotenv;
 use Imi\Bean\ReflectionContainer;
 use Imi\Util\Process\ProcessType;
+use Composer\Autoload\ClassLoader;
 use Imi\Main\Helper as MainHelper;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Process\ProcessAppContexts;
@@ -29,67 +32,67 @@ final class App
      * 应用命名空间
      * @var string
      */
-    private static $namespace;
+    private static string $namespace;
 
     /**
      * 容器
      * @var \Imi\Bean\Container
      */
-    private static $container;
+    private static Container $container;
 
     /**
      * 框架是否已初始化
      * @var boolean
      */
-    private static $isInited = false;
+    private static bool $isInited = false;
 
     /**
      * 当前是否为调试模式
      * @var boolean
      */
-    private static $isDebug = false;
+    private static bool $isDebug = false;
 
     /**
      * Composer ClassLoader
      *
      * @var \Composer\Autoload\ClassLoader
      */
-    private static $loader;
+    private static ?ClassLoader $loader = null;
 
     /**
      * 运行时数据
      *
      * @var RuntimeInfo
      */
-    private static $runtimeInfo;
+    private static ?RuntimeInfo $runtimeInfo = null;
 
     /**
      * 是否协程服务器模式
      *
      * @var boolean
      */
-    private static $isCoServer = false;
+    private static bool $isCoServer = false;
 
     /**
      * 上下文集合
      *
      * @var array
      */
-    private static $context = [];
+    private static array $context = [];
 
     /**
      * 只读上下文键名列表
      *
      * @var string[]
      */
-    private static $contextReadonly = [];
+    private static array $contextReadonly = [];
 
     /**
-     * imi 版本号，来源于 composer.lock
+     * imi 版本号
      *
      * @var string
      */
-    private static $imiVersion;
+    private static ?string $imiVersion = null;
 
     /**
      * App 实例对象
@@ -169,6 +172,99 @@ final class App
         }
         static::$isInited = true;
         Event::trigger('IMI.INITED');
+    }
+
+    /**
+     * 初始化应用
+     *
+     * @param boolean $noAppCache
+     * @return void
+     */
+    public static function initApp(bool $noAppCache): void
+    {
+        if($noAppCache)
+        {
+            // 仅初始化项目及组件
+            $initMains = [Helper::getMain(App::getNamespace())];
+            foreach(Helper::getAppMains() as $main)
+            {
+                foreach($main->getConfig()['components'] ?? [] as $namespace)
+                {
+                    $componentMain = Helper::getMain($namespace);
+                    if(null !== $componentMain)
+                    {
+                        $initMains[] = $componentMain;
+                    }
+                }
+            }
+            Annotation::getInstance()->init($initMains);
+
+            // 获取配置
+            $pools = $caches = [];
+            foreach(Helper::getMains() as $main)
+            {
+                $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
+                $caches = array_merge($caches, $main->getConfig()['caches'] ?? []);
+            }
+            // 同步池子初始化
+            foreach($pools as $name => $pool)
+            {
+                if(isset($pool['sync']))
+                {
+                    $pool = $pool['sync'];
+                    $poolPool = $pool['pool'];
+                    PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
+                }
+                else if(isset($pool['pool']['syncClass']))
+                {
+                    $poolPool = $pool['pool'];
+                    PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
+                }
+            }
+            // 缓存初始化
+            foreach($caches as $name => $cache)
+            {
+                CacheManager::addName($name, $cache['handlerClass'], $cache['option'] ?? []);
+            }
+        }
+        else
+        {
+            while(true)
+            {
+                $result = exec(Imi::getImiCmd('imi/buildRuntime', [], [
+                    'format'        =>  'json',
+                    'imi-runtime'   =>  Imi::getRuntimePath('imi-runtime-bak.cache'),
+                    'no-app-cache'  =>  true,
+                ]), $output);
+                $result = json_decode($result);
+                if('Build app runtime complete' === trim($result))
+                {
+                    break;
+                }
+                else
+                {
+                    if(null === $result)
+                    {
+                        echo implode(PHP_EOL, $output), PHP_EOL;
+                    }
+                    else
+                    {
+                        echo $result, PHP_EOL;
+                    }
+                    sleep(1);
+                }
+            }
+            App::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
+            
+            App::getBean('ErrorLog')->register();
+            foreach(Helper::getMains() as $main)
+            {
+                $config = $main->getConfig();
+                // 原子计数初始化
+                AtomicManager::setNames($config['atomics'] ?? []);
+            }
+            AtomicManager::init();
+        }
     }
 
     /**
@@ -528,6 +624,7 @@ final class App
         {
             return static::$imiVersion;
         }
+        // composer
         $loader = static::getLoader();
         if($loader)
         {
@@ -544,6 +641,11 @@ final class App
                     }
                 }
             }
+        }
+        // git
+        if(false !== strpos(`git --version`, 'git version') && preg_match('/\*([^\r\n]+)/', `git branch`, $matches) > 0)
+        {
+            return static::$imiVersion = trim($matches[1]);
         }
         return static::$imiVersion = 'Unknown';
     }

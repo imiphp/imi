@@ -372,7 +372,7 @@ abstract class Imi
             }
             else
             {
-                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . ' "' . $v . '"';
+                $cmd .= ' -' . (isset($k[1]) ? '-' : '') . $k . ' "' . $v . '"';
             }
         }
         return $cmd;
@@ -618,7 +618,7 @@ abstract class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if($pid > 0)
         {
-            $cmd = cmd('kill ' . $pid['masterPID']);
+            $cmd = \Imi\cmd('kill ' . $pid['masterPID']);
             $return['cmd'] = $cmd;
             $result = `{$cmd}`;
             $return['result'] = $result;
@@ -646,7 +646,7 @@ abstract class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if($pid > 0)
         {
-            $cmd = cmd('kill -USR1 ' . $pid['masterPID']);
+            $cmd = \Imi\cmd('kill -USR1 ' . $pid['masterPID']);
             $return['cmd'] = $cmd;
             $result = `{$cmd}`;
             $return['result'] = $result;

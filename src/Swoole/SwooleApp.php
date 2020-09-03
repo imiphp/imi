@@ -34,8 +34,7 @@ class SwooleApp extends CliApp
             $this->checkEnvironment($e->getOutput());
             App::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
             App::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
-            App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
-        }, PHP_INT_MAX);
+        }, PHP_INT_MAX - 1000);
     }
 
     /**

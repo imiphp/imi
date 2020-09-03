@@ -5,13 +5,15 @@ use Imi\App;
 use Imi\Event\Event;
 use Imi\Cli\ImiSymfonyCommand;
 use Imi\Core\Contract\BaseApp;
-use Imi\Cli\Parser\ToolParser;
 use Imi\Cli\Annotation\Command;
-use Imi\Cli\Annotation\Operation;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 class CliApp extends BaseApp
 {
@@ -34,9 +36,44 @@ class CliApp extends BaseApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
+        App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher;
         $this->cli = $cli = new Application('imi', App::getImiVersion());
         $cli->setDispatcher($dispatcher);
+
+        $definition = $cli->getDefinition();
+        $definition->addOption(
+            new InputOption(
+                'app-namespace',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Your project app namespace'
+            )
+        );
+        $definition->addOption(
+            new InputOption(
+                'imi-runtime',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Set imi runtime file',
+                null,
+            )
+        );
+        $definition->addOption(
+            new InputOption(
+                'no-app-cache',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Disable app runtime cache',
+                false,
+            )
+        );
+
+        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function(ConsoleCommandEvent $e){
+            $input = $e->getInput();
+            App::initApp(!!$input->getOption('no-app-cache'));
+        }, PHP_INT_MAX);
+
         Event::one('IMI.INITED', function() use($cli){
             foreach(AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
             {
@@ -48,7 +85,7 @@ class CliApp extends BaseApp
                     $cli->add(new ImiSymfonyCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
                 }
             }
-            Tool::init();
+            // Tool::init();
         });
     }
 

@@ -126,6 +126,7 @@ class ImiSymfonyCommand extends Command
     {
         $this->input = $input;
         $this->output = $output;
+        App::set(CliAppContexts::COMMAND_NAME, $this->getName(), true);
         return $this->executeCommand();
     }
 

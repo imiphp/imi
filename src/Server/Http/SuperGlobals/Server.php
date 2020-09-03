@@ -30,10 +30,13 @@ class Server implements \ArrayAccess, \JsonSerializable
         }
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        $serverParams = $request->getServerParams();
-        if(isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+        if($request)
         {
-            return true;
+            $serverParams = $request->getServerParams();
+            if(isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -48,15 +51,18 @@ class Server implements \ArrayAccess, \JsonSerializable
         try {
             /** @var \Imi\Server\Http\Message\Request $request */
             $request = RequestContext::get('request');
-            $serverParams = $request->getServerParams();
-            if(isset($serverParams[$offset]))
+            if($request)
             {
-                return $serverParams[$offset];
-            }
-            $lowerOffset = strtolower($offset);
-            if(isset($serverParams[$lowerOffset]))
-            {
-                return $serverParams[$lowerOffset];
+                $serverParams = $request->getServerParams();
+                if(isset($serverParams[$offset]))
+                {
+                    return $serverParams[$offset];
+                }
+                $lowerOffset = strtolower($offset);
+                if(isset($serverParams[$lowerOffset]))
+                {
+                    return $serverParams[$lowerOffset];
+                }
             }
         } finally {
             $defaultServer = &$this->defaultServer;

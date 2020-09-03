@@ -16,7 +16,7 @@ class ProcessTest extends BaseTest
     public function testPoolCleanAllow()
     {
         $file = dirname(__DIR__) . '/bin/imi';
-        $cmd = cmd('"' . $file . '" process/start -name PoolTest1');
+        $cmd = \Imi\cmd('"' . $file . '" process/start -name PoolTest1');
         $result = `{$cmd}`;
         $list = explode(PHP_EOL, $result);
         end($list);
@@ -35,7 +35,7 @@ class ProcessTest extends BaseTest
     public function testPoolCleanDeny()
     {
         $file = dirname(__DIR__) . '/bin/imi';
-        $cmd = cmd('"' . $file . '" process/run -name PoolTest2');
+        $cmd = \Imi\cmd('"' . $file . '" process/run -name PoolTest2');
         $result = `{$cmd}`;
         $list = explode(PHP_EOL, $result);
         end($list);
