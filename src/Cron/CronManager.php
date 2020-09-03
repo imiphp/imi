@@ -56,7 +56,7 @@ class CronManager
             if(ProcessType::PROCESS === App::get(ProcessAppContexts::PROCESS_TYPE))
             {
                 $input = new ArgvInput;
-                $this->socketFile = $input->getParameterOption('cron-sock');
+                $this->socketFile = $input->getParameterOption('--cron-sock');
                 if(!$this->socketFile)
                 {
                     throw new \InvalidArgumentException('In process to run cron, you must have arg cron-sock');

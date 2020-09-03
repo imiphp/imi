@@ -24,4 +24,10 @@ class CommandAction extends Base
      */
     public ?string $name = null;
 
+    /**
+     * 是否启用动态参数支持
+     * @var bool
+     */
+    public bool $dynamicOptions = false;
+
 }

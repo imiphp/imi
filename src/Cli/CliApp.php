@@ -3,7 +3,7 @@ namespace Imi\Cli;
 
 use Imi\App;
 use Imi\Event\Event;
-use Imi\Cli\ImiSymfonyCommand;
+use Imi\Cli\ImiCommand;
 use Imi\Core\Contract\BaseApp;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -82,7 +82,7 @@ class CliApp extends BaseApp
                 $className = $point->getClass();
                 foreach(AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
                 {
-                    $cli->add(new ImiSymfonyCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
+                    $cli->add(new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
                 }
             }
             // Tool::init();
@@ -106,7 +106,7 @@ class CliApp extends BaseApp
      */
     public function run(): void
     {
-        $this->cli->run();
+        $this->cli->run(new ImiArgvInput);
     }
 
     /**

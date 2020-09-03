@@ -360,7 +360,7 @@ abstract class Imi
         {
             foreach($arguments as $v)
             {
-                $cmd = ' "' . $v . '"';
+                $cmd .= ' "' . $v . '"';
             }
         }
         foreach($options as $k => $v)

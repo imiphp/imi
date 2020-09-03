@@ -30,7 +30,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 
     App::run((function(){
         $input = new ArgvInput;
-        $namespace = $input->getParameterOption('app-namespace', false);
+        $namespace = $input->getParameterOption('--app-namespace', false);
         if(false === $namespace)
         {
             $config = include File::path($path ?? dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');

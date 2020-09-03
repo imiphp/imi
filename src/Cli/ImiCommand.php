@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Imi\Cli\Annotation\Command as CommandAnnotation;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImiSymfonyCommand extends Command
+class ImiCommand extends Command
 {
     /**
      * 类名
@@ -73,6 +73,8 @@ class ImiSymfonyCommand extends Command
     {
         $this->className = $className;
         $this->methodName = $methodName;
+        $this->commandAnnotation = $commandAnnotation;
+        $this->commandActionAnnotation = $commandActionAnnotation;
         if(null === $commandAnnotation->name)
         {
             $commandName = $commandActionAnnotation->name ?? $methodName;
@@ -106,6 +108,29 @@ class ImiSymfonyCommand extends Command
             }
             $this->addOption($optionAnnotation->name, $optionAnnotation->shortcut, $mode, $optionAnnotation->comments, $optionAnnotation->default);
         }
+    }
+
+    /**
+     * Runs the command.
+     *
+     * The code to execute is either defined directly with the
+     * setCode() method or by overriding the execute() method
+     * in a sub-class.
+     *
+     * @return int The command exit code
+     *
+     * @throws \Exception When binding input fails. Bypass this by calling {@link ignoreValidationErrors()}.
+     *
+     * @see setCode()
+     * @see execute()
+     */
+    public function run(InputInterface $input, OutputInterface $output)
+    {
+        if($input instanceof ImiArgvInput)
+        {
+            $input->setDynamicOptions($this->commandActionAnnotation->dynamicOptions);
+        }
+        return parent::run($input, $output);
     }
 
     /**

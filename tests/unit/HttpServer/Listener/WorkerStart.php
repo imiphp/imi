@@ -23,15 +23,15 @@ class WorkerStart implements IWorkerStartEventListener
     {
         if(0 === Worker::getWorkerID())
         {
-            go(function(){
-                sleep(1);
-                $cron = new Cron;
-                $cron->id = 'CronRandomWorkerTest';
-                $cron->second = '3n';
-                $cron->type = 'random_worker';
-                CronUtil::addCron($cron, CronDWorker::class);
-                var_dump('add');
-            });
+            // go(function(){
+            //     sleep(1);
+            //     $cron = new Cron;
+            //     $cron->id = 'CronRandomWorkerTest';
+            //     $cron->second = '3n';
+            //     $cron->type = 'random_worker';
+            //     CronUtil::addCron($cron, CronDWorker::class);
+            //     var_dump('add');
+            // });
         }
     }
 

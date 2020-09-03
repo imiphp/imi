@@ -19,12 +19,12 @@ class TaskProcess implements IProcess
         $message = '';
         try {
             $input = new ArgvInput;
-            $id = $input->getParameterOption('id');
+            $id = $input->getParameterOption('--id');
             if(false === $id)
             {
                 return;
             }
-            $data = json_decode($input->getParameterOption('data'), true);
+            $data = json_decode($input->getParameterOption('--data'), true);
             $success = true;
         } catch(\Throwable $th) {
             $message = $th->getMessage();

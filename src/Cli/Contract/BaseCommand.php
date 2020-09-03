@@ -1,16 +1,16 @@
 <?php
 namespace Imi\Cli\Contract;
 
-use Imi\Cli\ImiSymfonyCommand;
+use Imi\Cli\ImiCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseCommand
 {
     /**
-     * @var ImiSymfonyCommand
+     * @var ImiCommand
      */
-    protected ImiSymfonyCommand $command;
+    protected ImiCommand $command;
 
     /**
      * @var InputInterface
@@ -22,7 +22,7 @@ abstract class BaseCommand
      */
     protected OutputInterface $output;
 
-    public function __construct(ImiSymfonyCommand $command, InputInterface $input, OutputInterface $output)
+    public function __construct(ImiCommand $command, InputInterface $input, OutputInterface $output)
     {
         $this->command = $command;
         $this->input = $input;

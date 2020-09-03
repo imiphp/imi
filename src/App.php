@@ -148,7 +148,7 @@ final class App
         {
             $result = false;
         }
-        else if($file = $input->getParameterOption('imi-runtime'))
+        else if($file = $input->getParameterOption('--imi-runtime'))
         {
             // 尝试加载指定 runtime
             $result = App::loadRuntimeInfo($file);

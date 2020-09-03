@@ -20,9 +20,9 @@ class CronWorkerProcess extends BaseProcess
         $message = '';
         try {
             $input = new ArgvInput;
-            $id = $input->getParameterOption('id');
-            $data = json_decode($input->getParameterOption('data'), true);
-            $class = $input->getParameterOption('class');
+            $id = $input->getParameterOption('--id');
+            $data = json_decode($input->getParameterOption('--data'), true);
+            $class = $input->getParameterOption('--class');
             /** @var \Imi\Cron\ICronTask $handler */
             $handler = App::getBean($class);
             $handler->run($id, $data);
