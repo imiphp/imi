@@ -28,7 +28,6 @@ return [
     ],
     'ignoreNamespace'   =>  [
         'Imi\Cli\bootstrap',
-        'Imi\Swoole\bootstrap',
     ],
     'atomics' => [
         'session',

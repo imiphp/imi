@@ -7,4 +7,4 @@ require_once dirname(__DIR__, 4) . '/vendor/' . 'autoload.php';
 
 \Imi\App::setDebug(true);
 
-require Imi::getNamespacePath('Imi\Swoole') . '/bootstrap.php';
+require dirname(Imi::getNamespacePath('Imi\Swoole')) . '/bootstrap.php';

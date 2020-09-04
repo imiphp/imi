@@ -6,3 +6,4 @@
 /.travis export-ignore
 /tests export-ignore
 /doc export-ignore
+/src/Components export-ignore

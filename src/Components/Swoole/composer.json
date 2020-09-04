@@ -1,0 +1,17 @@
+{
+    "name": "imiphp/swoole",
+    "type": "library",
+    "license": "MulanPSL-1.0",
+    "description": "imi swoole component",
+    "require-dev": {
+        "phpunit/phpunit": ">=8"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Imi\\Swoole\\" : "src/"
+        }
+    },
+    "bin": [
+        "src/bin/imi-swoole"
+    ]
+}
