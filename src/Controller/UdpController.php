@@ -2,19 +2,8 @@
 namespace Imi\Controller;
 
 /**
- * UDP 控制器
+ * @inheritDoc
  */
-abstract class UdpController
+abstract class UdpController extends \Imi\Server\UdpServer\Controller\UdpController
 {
-    /**
-     * 请求
-     * @var \Imi\Server\UdpServer\Server
-     */
-    public $server;
-
-    /**
-     * 桢
-     * @var \Imi\Server\UdpServer\Message\IPacketData
-     */
-    public $data;
 }

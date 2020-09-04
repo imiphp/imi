@@ -2,19 +2,8 @@
 namespace Imi\Controller;
 
 /**
- * WebSocket 控制器
+ * @inheritDoc
  */
-abstract class WebSocketController
+abstract class WebSocketController extends \Imi\Server\WebSocket\Controller\WebSocketController
 {
-    /**
-     * 请求
-     * @var \Imi\Server\WebSocket\Server
-     */
-    public $server;
-
-    /**
-     * 桢
-     * @var \Imi\Server\WebSocket\Message\IFrame
-     */
-    public $frame;
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Imi\Fpm;
 
-use Imi\Core\Contract\BaseApp;
+use Imi\Core\App\Contract\BaseApp;
 
 class FpmApp extends BaseApp
 {

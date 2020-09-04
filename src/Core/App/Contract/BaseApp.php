@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Core\Contract;
+namespace Imi\Core\App\Contract;
 
 abstract class BaseApp implements IApp
 {

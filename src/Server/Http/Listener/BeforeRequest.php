@@ -24,13 +24,14 @@ class BeforeRequest implements IRequestEventListener
             $response = $e->response;
             // 上下文创建
             RequestContext::muiltiSet([
-                'server'    =>  $server = $request->getServerInstance(),
                 'request'   =>  $request,
                 'response'  =>  $response,
             ]);
+            $context = RequestContext::getContext();
+            $server = $context['server'];
             if($server->isHttp2())
             {
-                RequestContext::set('fd', $request->getSwooleRequest()->fd);
+                RequestContext::set('fd', $context['swooleRequest']->fd);
                 ConnectContext::create();
             }
             // 中间件

@@ -6,6 +6,7 @@ use Imi\Util\Bit;
 use Imi\Event\Event;
 use Imi\Server\Base;
 use Imi\ServerManage;
+use Imi\RequestContext;
 use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Request;
@@ -103,6 +104,11 @@ class Server extends Base
         {
             $this->swoolePort->on('handshake', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
+                    RequestContext::muiltiSet([
+                        'server'        =>  $this,
+                        'swooleRequest' =>  $swooleRequest,
+                        'swooleResponse'=>  $swooleResponse,
+                    ]);
                     $this->trigger('handShake', [
                         'request'   => new Request($this, $swooleRequest),
                         'response'  => new Response($this, $swooleResponse),
@@ -119,6 +125,9 @@ class Server extends Base
         {
             $this->swoolePort->on('message', is_callable($event) ? $event : function ($server, \Swoole\WebSocket\Frame $frame) {
                 try{
+                    RequestContext::muiltiSet([
+                        'server'        =>  $this,
+                    ]);
                     $this->trigger('message', [
                         'server'    => $this,
                         'frame'     => $frame,
@@ -135,6 +144,9 @@ class Server extends Base
         {
             $this->swoolePort->on('close', is_callable($event) ? $event : function($server, $fd, $reactorID){
                 try{
+                    RequestContext::muiltiSet([
+                        'server'        =>  $this,
+                    ]);
                     $this->trigger('close', [
                         'server'    => $this,
                         'fd'        => $fd,
@@ -152,6 +164,11 @@ class Server extends Base
         {
             $this->swoolePort->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
+                    RequestContext::muiltiSet([
+                        'server'        =>  $this,
+                        'swooleRequest' =>  $swooleRequest,
+                        'swooleResponse'=>  $swooleResponse,
+                    ]);
                     $this->trigger('request', [
                         'request'   => Request::getInstance($this, $swooleRequest),
                         'response'  => Response::getInstance($this, $swooleResponse),

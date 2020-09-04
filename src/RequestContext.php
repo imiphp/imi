@@ -19,7 +19,6 @@ abstract class RequestContext
      * 
      * @param array $data
      * @return int
-     * @deprecated 1.0.17
      */
     public static function create(array $data = [])
     {
@@ -29,7 +28,6 @@ abstract class RequestContext
     /**
      * 销毁当前请求的上下文
      * @return void
-     * @deprecated 1.0.17
      */
     public static function destroy()
     {

@@ -666,24 +666,6 @@ class RequestProxy implements IServerRequest
     }
     
     /**
-     * 获取swoole的请求对象
-     * @return \Swoole\Http\Request
-     */
-    public function getSwooleRequest(): \Swoole\Http\Request
-    {
-        return $this->getRequestInstance()->getSwooleRequest();
-    }
-
-    /**
-     * 获取对应的服务器
-     * @return \Imi\Server\Base
-     */
-    public function getServerInstance(): \Imi\Server\Base
-    {
-        return $this->getRequestInstance()->getServerInstance();
-    }
-
-    /**
      * 获取当前上下文中的对象实例
      *
      * @return \Imi\Server\Http\Message\Request

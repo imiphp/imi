@@ -8,6 +8,7 @@ use Imi\Server\Base;
 use Imi\ServerManage;
 use Imi\Util\ImiPriority;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Event\Param\CloseEventParam;
@@ -149,6 +150,11 @@ class Server extends Base
         {
             $this->swoolePort->on('request', is_callable($event) ? $event : function(\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse){
                 try{
+                    RequestContext::muiltiSet([
+                        'server'        =>  $this,
+                        'swooleRequest' =>  $swooleRequest,
+                        'swooleResponse'=>  $swooleResponse,
+                    ]);
                     $this->trigger('request', [
                         'request'   => Request::getInstance($this, $swooleRequest),
                         'response'  => Response::getInstance($this, $swooleResponse),

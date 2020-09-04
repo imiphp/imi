@@ -40,10 +40,11 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $response = RequestContext::get('response');
-        $timerId = Timer::after($this->maxExecuteTime, function() use($request, $response){
+        $context = RequestContext::getContext();
+        $response = $context['response'];
+        $server = $context['server'];
+        $timerId = Timer::after($this->maxExecuteTime, function() use($request, $response, $server){
             /** @var \Imi\Server\Http\Message\Request $request */
-            $server = $request->getServerInstance();
             RequestContext::muiltiSet([
                 'server'    =>  $server,
                 'request'   =>  $request,

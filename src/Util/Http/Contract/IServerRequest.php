@@ -57,16 +57,4 @@ interface IServerRequest extends ServerRequestInterface
      */
     public function hasRequest($name);
 
-    /**
-     * 获取swoole的请求对象
-     * @return \Swoole\Http\Request
-     */
-    public function getSwooleRequest(): \Swoole\Http\Request;
-
-    /**
-     * 获取对应的服务器
-     * @return \Imi\Server\Base
-     */
-    public function getServerInstance(): \Imi\Server\Base;
-
 }
