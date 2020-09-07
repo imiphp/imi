@@ -75,10 +75,9 @@ TaskManager::postWait(new TaskInfo(
 	// 执行任务的参数，构造方法可以接收一个数组
 	new TaskParam([
 		'time'	=>	time(),
-	])
-),
-// 最长等待时间，单位：秒
-0.5
+	])),
+    // 最长等待时间，单位：秒
+    0.5
 );
 ```
 
