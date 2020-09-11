@@ -5,7 +5,7 @@ namespace Imi\Lock;
 use Imi\App;
 use Imi\Config;
 
-abstract class Lock
+class Lock
 {
     /**
      * 配置.
@@ -20,6 +20,10 @@ abstract class Lock
      * @var \Imi\Lock\Handler\ILockHandler[]
      */
     private static $instances = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取锁对象

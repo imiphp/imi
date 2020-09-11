@@ -6,7 +6,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 use Imi\RequestContext;
 
-abstract class StatementManager
+class StatementManager
 {
     /**
      * statement 缓存数据.
@@ -14,6 +14,10 @@ abstract class StatementManager
      * @var array
      */
     private static $statements = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 设置statement缓存.

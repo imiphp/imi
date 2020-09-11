@@ -2,7 +2,7 @@
 
 namespace Imi\Db\Annotation;
 
-abstract class RollbackType
+class RollbackType
 {
     /**
      * 回滚所有（rollback）.
@@ -13,4 +13,8 @@ abstract class RollbackType
      * 回滚部分（rollback to xxx）.
      */
     const PART = 'part';
+
+    private function __construct()
+    {
+    }
 }

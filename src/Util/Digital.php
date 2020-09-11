@@ -5,8 +5,11 @@ namespace Imi\Util;
 /**
  * 数字相关工具类.
  */
-abstract class Digital
+class Digital
 {
+    private function __construct()
+    {
+    }
     /**
      * 科学计数转小数形式的.
      *

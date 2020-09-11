@@ -7,7 +7,7 @@ use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\RequestContext;
 
-abstract class PoolManager
+class PoolManager
 {
     /**
      * \池子数组.
@@ -22,6 +22,10 @@ abstract class PoolManager
      * @var array
      */
     protected static $lastGetResourceTime = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 增加对象名称.

@@ -12,7 +12,7 @@ use Imi\Model\Relation\Insert;
 use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Update;
 
-abstract class ModelRelationManager
+class ModelRelationManager
 {
     /**
      * 模型关联字段名数组.
@@ -20,6 +20,10 @@ abstract class ModelRelationManager
      * @var array
      */
     private static $relationFieldsNames = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 初始化模型.

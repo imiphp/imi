@@ -19,6 +19,10 @@ abstract class BaseFacade
      */
     protected static $cache = [];
 
+    private function __construct()
+    {
+    }
+
     /**
      * 获取实例.
      *

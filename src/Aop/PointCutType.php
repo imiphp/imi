@@ -5,7 +5,7 @@ namespace Imi\Aop;
 /**
  * 切入点类型.
  */
-abstract class PointCutType
+class PointCutType
 {
     /**
      * 方法.
@@ -26,4 +26,8 @@ abstract class PointCutType
      * 带有注解的类的构造方法.
      */
     const ANNOTATION_CONSTRUCT = 4;
+
+    private function __construct()
+    {
+    }
 }

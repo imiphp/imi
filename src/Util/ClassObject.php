@@ -7,8 +7,12 @@ use Imi\Bean\ReflectionContainer;
 /**
  * 类和对象相关工具类.
  */
-abstract class ClassObject
+class ClassObject
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 是否是匿名类对象
      *

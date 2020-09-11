@@ -11,8 +11,12 @@ use Imi\Util\Imi;
 /**
  * 进程池管理类.
  */
-abstract class ProcessPoolManager
+class ProcessPoolManager
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 创建进程池
      * 本方法无法在控制器中使用

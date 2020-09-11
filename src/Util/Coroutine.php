@@ -2,8 +2,12 @@
 
 namespace Imi\Util;
 
-abstract class Coroutine extends \Swoole\Coroutine
+class Coroutine extends \Swoole\Coroutine
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 判断当前是否在协程中运行.
      *

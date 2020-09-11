@@ -12,8 +12,12 @@ use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
-abstract class Delete
+class Delete
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 处理删除.
      *

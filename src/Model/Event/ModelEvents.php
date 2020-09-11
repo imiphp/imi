@@ -2,7 +2,7 @@
 
 namespace Imi\Model\Event;
 
-abstract class ModelEvents
+class ModelEvents
 {
     /**
      * 初始化值前.
@@ -109,4 +109,8 @@ abstract class ModelEvents
      * 处理 save、insert、update 数据后.
      */
     const AFTER_PARSE_DATA = 'AfterParseData';
+
+    private function __construct()
+    {
+    }
 }

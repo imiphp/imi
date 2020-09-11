@@ -5,7 +5,7 @@ namespace Imi\Cli;
 /**
  * 参数类型.
  */
-abstract class ArgType
+class ArgType
 {
     const STRING = 'string';
 
@@ -20,4 +20,8 @@ abstract class ArgType
     const BOOLEAN = 'boolean';
 
     const ARRAY = 'array';
+
+    private function __construct()
+    {
+    }
 }

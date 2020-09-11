@@ -8,7 +8,7 @@ use Imi\Enum\BaseEnum;
 /**
  * 定时任务类型.
  */
-abstract class CronTaskType extends BaseEnum
+class CronTaskType extends BaseEnum
 {
     /**
      * @EnumItem("随机工作进程任务")
@@ -34,4 +34,8 @@ abstract class CronTaskType extends BaseEnum
      * @EnumItem("定时任务进程")
      */
     const CRON_PROCESS = 'cron_process';
+
+    private function __construct()
+    {
+    }
 }

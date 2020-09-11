@@ -11,8 +11,12 @@ use Imi\Db\Query\QueryType;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 
-abstract class Db
+class Db
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 获取新的数据库连接实例.
      *

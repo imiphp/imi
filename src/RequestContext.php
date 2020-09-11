@@ -7,7 +7,7 @@ use Imi\Bean\Container;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\DefaultContextManager;
 
-abstract class RequestContext
+class RequestContext
 {
     /**
      * 上下文管理器.
@@ -15,6 +15,10 @@ abstract class RequestContext
      * @var IContextManager
      */
     private static IContextManager $contextManager;
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取上下文管理器实例.

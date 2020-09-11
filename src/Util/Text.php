@@ -5,8 +5,11 @@ namespace Imi\Util;
 /**
  * 字符串工具类.
  */
-abstract class Text
+class Text
 {
+    private function __construct()
+    {
+    }
     /**
      * 字符串是否以另一个字符串开头.
      *

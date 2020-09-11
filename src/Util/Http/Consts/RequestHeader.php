@@ -5,7 +5,7 @@ namespace Imi\Util\Http\Consts;
 /**
  * 常见的http请求头.
  */
-abstract class RequestHeader
+class RequestHeader
 {
     const ACCEPT = 'Accept';
     const ACCEPT_CHARSET = 'Accept-Charset';
@@ -40,4 +40,7 @@ abstract class RequestHeader
     const VIA = 'Via';
     const WARNING = 'Warning';
     const TRAILER = 'trailer';
+    private function __construct()
+    {
+    }
 }

@@ -13,8 +13,12 @@ use Imi\Worker;
 /**
  * 服务器工具类.
  */
-abstract class Server
+class Server
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 发送消息给 Worker 进程，使用框架内置格式.
      *

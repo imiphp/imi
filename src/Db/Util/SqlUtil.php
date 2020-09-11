@@ -8,8 +8,12 @@ use Imi\Db\Query\Table;
 /**
  * SQL 工具类.
  */
-abstract class SqlUtil
+class SqlUtil
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 解析带冒号参数的 SQL，返回解析后的 SQL.
      *

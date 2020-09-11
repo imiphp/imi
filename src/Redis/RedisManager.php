@@ -6,8 +6,12 @@ use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 
-abstract class RedisManager
+class RedisManager
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 获取新的 Redis 连接实例.
      *

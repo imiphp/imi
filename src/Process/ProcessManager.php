@@ -18,7 +18,7 @@ use Swoole\Process;
 /**
  * 进程管理类.
  */
-abstract class ProcessManager
+class ProcessManager
 {
     /**
      * 锁集合.
@@ -33,6 +33,10 @@ abstract class ProcessManager
      * @var \Swoole\Process[]
      */
     private static $managerProcesses = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 创建进程

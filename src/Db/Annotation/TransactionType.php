@@ -2,7 +2,7 @@
 
 namespace Imi\Db\Annotation;
 
-abstract class TransactionType
+class TransactionType
 {
     /**
      * 事务嵌套.
@@ -18,4 +18,8 @@ abstract class TransactionType
      * 如果当前不在事务中则开启事务
      */
     const AUTO = 'auto';
+
+    private function __construct()
+    {
+    }
 }

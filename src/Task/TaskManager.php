@@ -5,8 +5,12 @@ namespace Imi\Task;
 use Imi\ServerManage;
 use Imi\Task\Parser\TaskParser;
 
-abstract class TaskManager
+class TaskManager
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 投递异步任务
      * 调用成功返回任务ID，失败返回false.

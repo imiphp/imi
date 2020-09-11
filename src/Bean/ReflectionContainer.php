@@ -9,7 +9,7 @@ use ReflectionProperty;
 /**
  * 反射容器.
  */
-abstract class ReflectionContainer
+class ReflectionContainer
 {
     /**
      * 类反射集合.
@@ -31,6 +31,10 @@ abstract class ReflectionContainer
      * @var array
      */
     private static $propertyReflectionMap = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取类反射.

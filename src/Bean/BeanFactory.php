@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Parser\PartialParser;
 use Imi\Util\Imi;
 
-abstract class BeanFactory
+class BeanFactory
 {
     /**
      * 计数器.
@@ -24,6 +24,10 @@ abstract class BeanFactory
      * @var array
      */
     private static $classNameMap = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 实例化.

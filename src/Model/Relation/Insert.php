@@ -13,8 +13,12 @@ use Imi\Model\Relation\Struct\PolymorphicManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
-abstract class Insert
+class Insert
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 处理插入.
      *

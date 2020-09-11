@@ -5,7 +5,7 @@ namespace Imi\Util\Process;
 /**
  * 进程类型.
  */
-abstract class ProcessType
+class ProcessType
 {
     /**
      * master 进程.
@@ -31,4 +31,7 @@ abstract class ProcessType
      * 进程.
      */
     const PROCESS = 'process';
+    private function __construct()
+    {
+    }
 }

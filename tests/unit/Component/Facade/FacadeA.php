@@ -10,6 +10,6 @@ use Imi\Facade\BaseFacade;
  *
  * @method mixed add($a, $b)
  */
-abstract class FacadeA extends BaseFacade
+class FacadeA extends BaseFacade
 {
 }

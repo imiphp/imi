@@ -5,7 +5,7 @@ namespace Imi\Db\Consts;
 use Imi\Enum\Annotation\EnumItem;
 use Imi\Enum\BaseEnum;
 
-abstract class LogicalOperator extends BaseEnum
+class LogicalOperator extends BaseEnum
 {
     /**
      * @EnumItem
@@ -36,4 +36,8 @@ abstract class LogicalOperator extends BaseEnum
      * @EnumItem
      */
     const XOR_NOT = 'xor not';
+
+    private function __construct()
+    {
+    }
 }

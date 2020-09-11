@@ -11,8 +11,12 @@ use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Log\Log;
 
-abstract class CronUtil
+class CronUtil
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 上报定时任务结果.
      *

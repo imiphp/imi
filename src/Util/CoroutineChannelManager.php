@@ -5,8 +5,11 @@ namespace Imi\Util;
 /**
  * 通道队列类-支持多进程.
  */
-abstract class CoroutineChannelManager
+class CoroutineChannelManager
 {
+    private function __construct()
+    {
+    }
     /**
      * \Swoole\Coroutine\Channel 数组.
      *

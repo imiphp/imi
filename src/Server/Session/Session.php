@@ -29,6 +29,6 @@ use Imi\Facade\BaseFacade;
  * @method static boolean isChanged()
  * @method static boolean isNewSession()
  */
-abstract class Session extends BaseFacade
+class Session extends BaseFacade
 {
 }

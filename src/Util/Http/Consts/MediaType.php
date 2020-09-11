@@ -5,7 +5,7 @@ namespace Imi\Util\Http\Consts;
 /**
  * 常见的媒体类型.
  */
-abstract class MediaType
+class MediaType
 {
     const ALL = '*/*';
 
@@ -62,4 +62,8 @@ abstract class MediaType
     const GRPC_PROTO = 'application/grpc+proto';
 
     const GRPC_JSON = 'application/grpc+json';
+
+    private function __construct()
+    {
+    }
 }

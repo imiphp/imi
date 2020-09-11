@@ -7,8 +7,11 @@ use Imi\Util\File\FileEnumItem;
 /**
  * 文件相关工具类.
  */
-abstract class File
+class File
 {
+    private function __construct()
+    {
+    }
     /**
      * 枚举文件.
      *

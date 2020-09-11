@@ -20,6 +20,6 @@ use Imi\Facade\BaseFacade;
  * @method static boolean hasChannel(string $id)
  * @method static void removeChannel(string $id)
  */
-abstract class ChannelContainer extends BaseFacade
+class ChannelContainer extends BaseFacade
 {
 }

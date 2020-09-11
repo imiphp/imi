@@ -2,7 +2,7 @@
 
 namespace Imi\Db\Query;
 
-abstract class QueryType
+class QueryType
 {
     /**
      * 读.
@@ -13,4 +13,8 @@ abstract class QueryType
      * 写.
      */
     const WRITE = 2;
+
+    private function __construct()
+    {
+    }
 }

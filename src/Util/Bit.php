@@ -5,8 +5,12 @@ namespace Imi\Util;
 /**
  * 位操作工具类.
  */
-abstract class Bit
+class Bit
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 判断是否包含值
      *

@@ -5,8 +5,12 @@ namespace Imi\Util;
 /**
  * 原子计数管理类.
  */
-abstract class AtomicManager
+class AtomicManager
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 是否已初始化过.
      *

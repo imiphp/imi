@@ -5,7 +5,7 @@ namespace Imi;
 use Imi\Event\Event;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 
-abstract class Worker
+class Worker
 {
     /**
      * 当前进程的WorkerID.
@@ -41,6 +41,10 @@ abstract class Worker
      * @var int
      */
     private static $taskWorkerNum;
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取当前 worker 进程的 ID

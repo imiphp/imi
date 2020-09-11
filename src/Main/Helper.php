@@ -5,11 +5,15 @@ namespace Imi\Main;
 /**
  * 主类帮助类.
  */
-abstract class Helper
+class Helper
 {
     private static $mains = [];
 
     private static $nameMap = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取主类实例对象

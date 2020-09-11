@@ -9,7 +9,7 @@ use Imi\Bean\Annotation\Model\ConstantAnnotationRelation;
 use Imi\Bean\Annotation\Model\MethodAnnotationRelation;
 use Imi\Bean\Annotation\Model\PropertyAnnotationRelation;
 
-abstract class AnnotationManager
+class AnnotationManager
 {
     /**
      * 注解列表.
@@ -24,6 +24,10 @@ abstract class AnnotationManager
      * @var \Imi\Bean\Annotation\Model\AnnotationRelation
      */
     private static $annotationRelation;
+
+    private function __construct()
+    {
+    }
 
     public static function init()
     {

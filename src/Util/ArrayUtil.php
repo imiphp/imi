@@ -5,8 +5,12 @@ namespace Imi\Util;
 /**
  * 数组帮助类.
  */
-abstract class ArrayUtil
+class ArrayUtil
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 从数组中移除一个或多个元素，重新组织为连续的键.
      *

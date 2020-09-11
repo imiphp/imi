@@ -5,7 +5,7 @@ namespace Imi;
 use Imi\Util\ArrayData;
 use Imi\Util\Imi;
 
-abstract class Config
+class Config
 {
     /**
      * 配置数组.
@@ -13,6 +13,10 @@ abstract class Config
      * @var ArrayData[]
      */
     private static array $configs = [];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 增加配置.

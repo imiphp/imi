@@ -8,7 +8,7 @@ use Imi\Util\MemoryTable\IMemoryTableOption;
 /**
  * 跨进程共享内存表.
  */
-abstract class MemoryTableManager
+class MemoryTableManager
 {
     /**
      * 是否已初始化过.
@@ -24,6 +24,9 @@ abstract class MemoryTableManager
      */
     private static $tables = [];
 
+    private function __construct()
+    {
+    }
     /**
      * 初始化.
      *

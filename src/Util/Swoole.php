@@ -4,8 +4,11 @@ namespace Imi\Util;
 
 use Imi\ServerManage;
 
-abstract class Swoole
+class Swoole
 {
+    private function __construct()
+    {
+    }
     /**
      * 获取master进程pid.
      *

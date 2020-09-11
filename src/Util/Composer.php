@@ -7,8 +7,12 @@ use Composer\Autoload\ClassLoader;
 /**
  * Composer 工具类.
  */
-abstract class Composer
+class Composer
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 获取 Composer ClassLoader 对象
      *

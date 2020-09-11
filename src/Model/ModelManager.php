@@ -12,7 +12,7 @@ use Imi\Model\Annotation\Serializables;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Key\KeyRule;
 
-abstract class ModelManager
+class ModelManager
 {
     /**
      * 模型类注解缓存.
@@ -83,6 +83,10 @@ abstract class ModelManager
      * @var array
      */
     private static $extractPropertys;
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取当前模型类的类注解.

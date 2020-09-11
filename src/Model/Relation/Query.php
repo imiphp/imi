@@ -17,8 +17,12 @@ use Imi\Util\ArrayList;
 use Imi\Util\ClassObject;
 use Imi\Util\Imi;
 
-abstract class Query
+class Query
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 初始化.
      *

@@ -2,6 +2,6 @@
 
 namespace Imi\Tool;
 
-abstract class Tool extends \Imi\Cli\Tool
+class Tool extends \Imi\Cli\Tool
 {
 }

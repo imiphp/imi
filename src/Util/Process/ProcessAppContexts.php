@@ -5,7 +5,7 @@ namespace Imi\Util\Process;
 /**
  * 进程相关的应用上下文名称定义.
  */
-abstract class ProcessAppContexts
+class ProcessAppContexts
 {
     /**
      * 进程类型.
@@ -26,4 +26,7 @@ abstract class ProcessAppContexts
      * 当前进程脚本名称.
      */
     const SCRIPT_NAME = 'script_name';
+    private function __construct()
+    {
+    }
 }

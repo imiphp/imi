@@ -15,8 +15,12 @@ use Imi\Model\Relation\Struct\PolymorphicManyToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToMany;
 use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
-abstract class Update
+class Update
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 处理更新.
      *

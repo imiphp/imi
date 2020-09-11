@@ -5,7 +5,7 @@ namespace Imi;
 use Imi\Event\Event;
 use Imi\Server\CoServer;
 
-abstract class ServerManage
+class ServerManage
 {
     /**
      * 服务器对象数组.
@@ -20,6 +20,10 @@ abstract class ServerManage
      * @var \Imi\Server\CoServer
      */
     private static $coServer;
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取服务器数组.

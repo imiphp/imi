@@ -5,7 +5,7 @@ namespace Imi\Util\Http\Consts;
 /**
  * 常见的http请求方法.
  */
-abstract class RequestMethod
+class RequestMethod
 {
     const GET = 'GET';
 
@@ -22,4 +22,7 @@ abstract class RequestMethod
     const OPTIONS = 'OPTIONS';
 
     const TRACE = 'TRACE';
+    private function __construct()
+    {
+    }
 }

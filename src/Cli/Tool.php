@@ -10,10 +10,14 @@ use Imi\Main\Helper;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 
-abstract class Tool
+class Tool
 {
     private static $toolName;
     private static $toolOperation;
+
+    private function __construct()
+    {
+    }
 
     /**
      * 获取当前命令行工具名称.

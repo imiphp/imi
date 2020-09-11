@@ -38,7 +38,7 @@ use Imi\Facade\Annotation\Facade;
  * @Facade("FacadeA")
  * @method mixed add($a, $b)
  */
-abstract class FacadeA extends BaseFacade
+class FacadeA extends BaseFacade
 {
 
 }

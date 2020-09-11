@@ -19,8 +19,11 @@ use Imi\Worker;
 /**
  * 框架里杂七杂八的各种工具方法.
  */
-abstract class Imi
+class Imi
 {
+    private function __construct()
+    {
+    }
     /**
      * 处理规则，暂只支持通配符*.
      *

@@ -4,8 +4,12 @@ namespace Imi\Log;
 
 use Imi\App;
 
-abstract class Log
+class Log
 {
+    private function __construct()
+    {
+    }
+
     /**
      * Logs with an arbitrary level.
      *

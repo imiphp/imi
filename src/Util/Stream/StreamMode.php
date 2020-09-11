@@ -5,7 +5,7 @@ namespace Imi\Util\Stream;
 /**
  * 流访问类型.
  */
-abstract class StreamMode
+class StreamMode
 {
     /**
      * 只读方式打开，指针指向开头.
@@ -50,4 +50,8 @@ abstract class StreamMode
      * 仅能用于本地文件。
      */
     const CREATE_READ_WRITE = 'x+';
+
+    private function __construct()
+    {
+    }
 }

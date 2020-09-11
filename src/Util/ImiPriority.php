@@ -6,7 +6,7 @@ namespace Imi\Util;
  * 优先级定义
  * 19940312 代表的是宇润的生日.
  */
-abstract class ImiPriority
+class ImiPriority
 {
     /**
      * 优先级最小值
@@ -29,4 +29,7 @@ abstract class ImiPriority
      * 大于这个值，可以先于框架最大优先级执行.
      */
     const IMI_MAX = 19940312;
+    private function __construct()
+    {
+    }
 }

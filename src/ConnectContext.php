@@ -5,8 +5,12 @@ namespace Imi;
 use Imi\Event\Event;
 use Imi\Server\ConnectContext\Event\Param\ConnectContextRestoreParam;
 
-abstract class ConnectContext
+class ConnectContext
 {
+    private function __construct()
+    {
+    }
+
     /**
      * 为当前连接创建上下文.
      *

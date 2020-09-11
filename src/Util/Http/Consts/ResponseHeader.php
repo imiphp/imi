@@ -5,7 +5,7 @@ namespace Imi\Util\Http\Consts;
 /**
  * 常见的http响应头.
  */
-abstract class ResponseHeader
+class ResponseHeader
 {
     const ACCESS_CONTROL_ALLOW_ORIGIN = 'Access-Control-Allow-Origin';
     const ACCEPT_PATCH = 'Accept-Patch';
@@ -44,4 +44,7 @@ abstract class ResponseHeader
     const VIA = 'Via';
     const WARNING = 'Warning';
     const WWW_AUTHENTICATE = 'WWW-Authenticate';
+    private function __construct()
+    {
+    }
 }

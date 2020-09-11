@@ -246,8 +246,12 @@ use Imi\Pool\PoolManager;
  * @method static mixed sscanEach(string $key, ?string $pattern = null, ?int $count = null)
  * @method static mixed zscanEach(string $key, ?string $pattern = null, ?int $count = null)
  */
-abstract class Redis
+class Redis
 {
+    private function __construct()
+    {
+    }
+
     public static function __callStatic($name, $arguments)
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))

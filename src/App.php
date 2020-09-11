@@ -24,7 +24,7 @@ use Imi\Util\Text;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-final class App
+class App
 {
     /**
      * 应用命名空间.

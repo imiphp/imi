@@ -2,7 +2,7 @@
 
 namespace Imi\Util\Http\Consts;
 
-abstract class StatusCode
+class StatusCode
 {
     const CONTINUE = 100;
     const SWITCHING_PROTOCOLS = 101;
@@ -129,6 +129,10 @@ abstract class StatusCode
         self::NOT_EXTENDED                    => 'Not Extended',
         self::NETWORK_AUTHENTICATION_REQUIRED => 'Network Authentication Required',
     ];
+
+    private function __construct()
+    {
+    }
 
     /**
      * 根据状态码获取原因短语.
