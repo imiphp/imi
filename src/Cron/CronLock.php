@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Cron;
 
 use Imi\App;
@@ -12,14 +13,14 @@ use Imi\Util\Process\ProcessAppContexts;
 class CronLock
 {
     /**
-     * 锁列表
+     * 锁列表.
      *
      * @var \Imi\Lock\Handler\ILockHandler[]
      */
     private $locks = [];
 
     /**
-     * 无需锁的列表
+     * 无需锁的列表.
      *
      * @var array
      */
@@ -29,19 +30,20 @@ class CronLock
      * 加锁
      *
      * @param \Imi\Cron\CronTask $task
+     *
      * @return bool
      */
     public function lock($task)
     {
         $id = $task->getId();
         $locks = &$this->locks;
-        if(isset($locks[$id]))
+        if (isset($locks[$id]))
         {
             $lock = $locks[$id];
         }
         else
         {
-            switch($task->getUnique())
+            switch ($task->getUnique())
             {
                 case null:
                     return $this->noLocks[$id] = true;
@@ -55,13 +57,13 @@ class CronLock
                     throw new \InvalidArgumentException(sprintf('Invalid unique type %s', $task->getUnique()));
             }
             $lock = $locks[$id] = App::getBean('RedisLock', $id, [
-                'poolName'      =>  $task->getRedisPool(),
-                'waitTimeout'   =>  $task->getLockWaitTimeout() * 1000,
-                'lockExpire'    =>  $task->getMaxExecutionTime() * 1000,
-                'keyPrefix'     =>  $keyPrefix,
+                'poolName'      => $task->getRedisPool(),
+                'waitTimeout'   => $task->getLockWaitTimeout() * 1000,
+                'lockExpire'    => $task->getMaxExecutionTime() * 1000,
+                'keyPrefix'     => $keyPrefix,
             ]);
         }
-        /** @var \Imi\Lock\Handler\ILockHandler $lock */
+        /* @var \Imi\Lock\Handler\ILockHandler $lock */
         return $lock->lock();
     }
 
@@ -69,17 +71,18 @@ class CronLock
      * 解锁
      *
      * @param \Imi\Cron\CronTask $task
+     *
      * @return bool
      */
     public function unlock($task)
     {
         $id = $task->getId();
         $locks = &$this->locks;
-        if(!isset($locks[$id]))
+        if (!isset($locks[$id]))
         {
             return isset($this->noLocks[$id]);
         }
+
         return $locks[$id]->unlock();
     }
-
 }

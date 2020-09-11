@@ -1,55 +1,56 @@
 <?php
+
 namespace Imi\Server\Http\Route;
 
-use Imi\Server\View\Annotation\View;
 use Imi\Server\Route\Annotation\Route;
+use Imi\Server\View\Annotation\View;
 
 class RouteItem
 {
     /**
-     * 注解
+     * 注解.
      *
      * @var \Imi\Server\Route\Annotation\Route
      */
     public $annotation;
 
     /**
-     * 回调
+     * 回调.
      *
      * @var callable|\Imi\Server\Route\RouteCallable
      */
     public $callable;
 
     /**
-     * 中间件列表
+     * 中间件列表.
      *
      * @var array
      */
     public $middlewares = [];
 
     /**
-     * WebSocket 配置
+     * WebSocket 配置.
      *
      * @var array
      */
     public $wsConfig = [];
 
     /**
-     * 其它配置项
+     * 其它配置项.
      *
      * @var array
      */
     public $options;
 
     /**
-     * 是否为单例控制器
-     * 
+     * 是否为单例控制器.
+     *
      * @var bool
      */
     public $singleton = false;
 
     /**
-     * 视图注解
+     * 视图注解.
      *
      * @var \Imi\Server\View\Annotation\View
      */
@@ -62,5 +63,4 @@ class RouteItem
         $this->view = $view;
         $this->options = $options;
     }
-
 }

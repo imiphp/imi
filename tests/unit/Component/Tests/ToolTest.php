@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
@@ -11,7 +12,7 @@ class ToolTest extends BaseTest
 {
     public function testCoExit()
     {
-        $cmd = \Imi\cmd('"' . dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test --app-namespace "Imi\Test\Component"');
+        $cmd = \Imi\cmd('"' . \dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test --app-namespace "Imi\Test\Component"');
         exec($cmd, $output, $exitCode);
         $this->assertEquals(0, $exitCode);
 
@@ -19,5 +20,4 @@ class ToolTest extends BaseTest
         exec($cmd . ' -code ' . $code, $output, $exitCode);
         $this->assertEquals($code, $exitCode);
     }
-
 }

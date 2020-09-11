@@ -1,10 +1,10 @@
 <?php
+
 namespace Imi\Server\TcpServer\Middleware;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\TcpServer\ReceiveHandler;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
@@ -28,17 +28,18 @@ class RouteMiddleware implements IMiddleware
     protected $notFoundHandler;
 
     /**
-     * 处理方法
+     * 处理方法.
      *
-     * @param IReceiveData $data
+     * @param IReceiveData    $data
      * @param IReceiveHandler $handle
+     *
      * @return void
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {
         // 路由解析
         $result = $this->route->parse($data->getFormatData());
-        if(null === $result || !is_callable($result->callable))
+        if (null === $result || !\is_callable($result->callable))
         {
             // 未匹配到路由
             $result = $this->notFoundHandler->handle($data, $handler);
@@ -48,7 +49,7 @@ class RouteMiddleware implements IMiddleware
             RequestContext::set('routeResult', $result);
             $result = $handler->handle($data);
         }
+
         return $result;
     }
-
 }

@@ -1,19 +1,19 @@
 <?php
+
 namespace Imi\Server\Group;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
-use Imi\Server\Group\Exception\MethodNotFoundException;
-use Imi\Server\Group\Handler\IGroupHandler;
-use Imi\RequestContext;
 use Imi\Event\Event;
+use Imi\RequestContext;
+use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Util\ArrayUtil;
 
 /**
- * 逻辑组
- * 
+ * 逻辑组.
+ *
  * @Bean("ServerGroup")
- * 
+ *
  * @method array send(string $data, int $extraData = 0)
  * @method array sendfile(string $filename, int $offset =0, int $length = 0)
  * @method array sendwait(string $send_dat)
@@ -30,35 +30,35 @@ class Group
     protected $server;
 
     /**
-     * 组中最大允许的客户端数量
+     * 组中最大允许的客户端数量.
      *
      * @var int
      */
     protected $maxClients;
 
     /**
-     * 组名
+     * 组名.
      *
      * @var string
      */
     protected $groupName;
 
     /**
-     * 分组处理器
+     * 分组处理器.
      *
      * @var string
      */
     protected $groupHandler = \Imi\Server\Group\Handler\Redis::class;
 
     /**
-     * 处理器
+     * 处理器.
      *
      * @var \Imi\Server\Group\Handler\IGroupHandler
      */
     protected $handler;
 
     /**
-     * 是否启用逻辑分组
+     * 是否启用逻辑分组.
      *
      * @var bool
      */
@@ -73,7 +73,7 @@ class Group
 
     public function __init()
     {
-        if($this->status)
+        if ($this->status)
         {
             $this->handler = $handler = RequestContext::getServerBean($this->groupHandler);
             $handler->createGroup($this->groupName, $this->maxClients);
@@ -91,19 +91,21 @@ class Group
     }
 
     /**
-     * 加入组
-     * 
+     * 加入组.
+     *
      * @param int $fd
+     *
      * @return void
      */
     public function join($fd)
     {
         $groupName = $this->groupName;
-        if($this->handler->joinGroup($groupName, $fd))
+        if ($this->handler->joinGroup($groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
-            ConnectContext::use(function($contextData) use($groupName){
+            ConnectContext::use(function ($contextData) use ($groupName) {
                 $contextData['__groups'][] = $groupName;
+
                 return $contextData;
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
@@ -115,21 +117,23 @@ class Group
     }
 
     /**
-     * 离开组
+     * 离开组.
      *
      * @param int $fd
+     *
      * @return void
      */
     public function leave($fd)
     {
         $groupName = $this->groupName;
-        if($this->handler->leaveGroup($groupName, $fd))
+        if ($this->handler->leaveGroup($groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
-            ConnectContext::use(function($contextData) use($groupName){
-                if(isset($contextData['__groups']))
+            ConnectContext::use(function ($contextData) use ($groupName) {
+                if (isset($contextData['__groups']))
                 {
                     $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $groupName);
+
                     return $contextData;
                 }
             }, $fd);
@@ -142,8 +146,9 @@ class Group
     }
 
     /**
-     * 获取组中的连接总数
-     * @return integer
+     * 获取组中的连接总数.
+     *
+     * @return int
      */
     public function count()
     {
@@ -151,7 +156,7 @@ class Group
     }
 
     /**
-     * 清空分组
+     * 清空分组.
      *
      * @return void
      */
@@ -164,34 +169,36 @@ class Group
      * 获取服务器对象
      *
      * @return \Imi\Server\Base
-     */ 
+     */
     public function getServer()
     {
         return $this->server;
     }
 
     /**
-     * 获取组中最大允许的客户端数量
+     * 获取组中最大允许的客户端数量.
      *
      * @return int
-     */ 
+     */
     public function getMaxClients()
     {
         return $this->maxClients;
     }
 
     /**
-     * 魔术方法，返回数组，fd=>执行结果
+     * 魔术方法，返回数组，fd=>执行结果.
+     *
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return array
      */
     public function __call($name, $arguments)
     {
         $server = $this->server->getSwooleServer();
-        if(!method_exists($server, $name))
+        if (!method_exists($server, $name))
         {
-            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', get_class($server), $name));
+            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($server), $name));
         }
         // 要检查的方法名
         static $checkMethods = [
@@ -199,7 +206,7 @@ class Group
             'send',
             'sendfile',
             'sendwait',
-            'push'
+            'push',
         ];
         // 客户端关闭的错误
         static $clientCloseErrors = [
@@ -208,20 +215,20 @@ class Group
             1003,
             1004,
         ];
-        $methodIsCheck = in_array($name, $checkMethods);
+        $methodIsCheck = \in_array($name, $checkMethods);
         $result = [];
         $fdMap = RequestContext::getServerBean('FdMap');
-        foreach($this->handler->getFds($this->groupName) as $fd)
+        foreach ($this->handler->getFds($this->groupName) as $fd)
         {
             // 执行结果
             $result[$fd] = $itemResult = $server->$name($fd, ...$arguments);
-            if($methodIsCheck && false === $itemResult && in_array($server->getLastError(), $clientCloseErrors))
+            if ($methodIsCheck && false === $itemResult && \in_array($server->getLastError(), $clientCloseErrors))
             {
                 // 客户端关闭的错误，直接把该客户端T出全部组
                 $fdMap->leaveAll($fd);
             }
         }
+
         return $result;
     }
-
 }

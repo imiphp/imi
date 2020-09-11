@@ -1,13 +1,13 @@
 <?php
+
 namespace Imi\Util;
 
 use Imi\ServerManage;
 
-
 abstract class Swoole
 {
     /**
-     * 获取master进程pid
+     * 获取master进程pid.
      *
      * @return int
      */
@@ -17,7 +17,7 @@ abstract class Swoole
     }
 
     /**
-     * 获取manager进程pid
+     * 获取manager进程pid.
      *
      * @return int
      */

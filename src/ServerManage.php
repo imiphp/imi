@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi;
 
 use Imi\Event\Event;
@@ -7,20 +8,22 @@ use Imi\Server\CoServer;
 abstract class ServerManage
 {
     /**
-     * 服务器对象数组
+     * 服务器对象数组.
+     *
      * @var array
      */
     private static $servers = [];
 
     /**
-     * 协程服务器
+     * 协程服务器.
      *
      * @var \Imi\Server\CoServer
      */
     private static $coServer;
 
     /**
-     * 获取服务器数组
+     * 获取服务器数组.
+     *
      * @return \Imi\Server\Base[]
      */
     public static function getServers()
@@ -30,7 +33,9 @@ abstract class ServerManage
 
     /**
      * 获取服务器对象
+     *
      * @param string $name
+     *
      * @return \Imi\Server\Base|null
      */
     public static function getServer($name)
@@ -40,9 +45,11 @@ abstract class ServerManage
 
     /**
      * 创建服务器对象
+     *
      * @param string $name
-     * @param array $config
-     * @param bool $subServer 是否为子服务器
+     * @param array  $config
+     * @param bool   $subServer 是否为子服务器
+     *
      * @return \Imi\Server\Base
      */
     public static function createServer($name, $config, $isSubServer = false): \Imi\Server\Base
@@ -64,14 +71,16 @@ abstract class ServerManage
             'config'        => $config,
             'isSubServer'   => $isSubServer,
         ]);
+
         return $server;
     }
 
     /**
-     * 创建协程服务器
+     * 创建协程服务器.
      *
      * @param string $name
-     * @param int $workerNum
+     * @param int    $workerNum
+     *
      * @return \Imi\Server\CoServer
      */
     public static function createCoServer($name, $workerNum): CoServer
@@ -80,7 +89,7 @@ abstract class ServerManage
     }
 
     /**
-     * 获取协程服务器
+     * 获取协程服务器.
      *
      * @return \Imi\Server\CoServer
      */
@@ -88,5 +97,4 @@ abstract class ServerManage
     {
         return static::$coServer;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Pool;
 
 abstract class ResourceConfigMode
@@ -9,7 +10,7 @@ abstract class ResourceConfigMode
     const TURN = 1;
 
     /**
-     * 随机
+     * 随机.
      */
     const RANDOM = 2;
 }

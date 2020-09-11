@@ -1,61 +1,68 @@
 <?php
+
 namespace Imi\Util\Http;
 
 use Imi\Config;
-use Imi\Util\Uri;
+use Imi\Server\Http\Message\UploadedFile;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
 use Imi\Util\Http\Consts\RequestMethod;
-use Imi\Server\Http\Message\UploadedFile;
+use Imi\Util\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInterface
 {
     /**
-     * 服务器信息
+     * 服务器信息.
+     *
      * @var array
      */
     protected $server = [];
 
     /**
-     * cookie数据
+     * cookie数据.
+     *
      * @var array
      */
     protected $cookies = [];
-    
+
     /**
-     * get数据
+     * get数据.
+     *
      * @var array
      */
     protected $get = [];
 
     /**
-     * post数据
+     * post数据.
+     *
      * @var array
      */
     protected $post = [];
 
     /**
-     * 包含 GET/POST/Cookie 数据
+     * 包含 GET/POST/Cookie 数据.
      *
      * @var array
      */
     protected $request = null;
 
     /**
-     * 上传的文件
+     * 上传的文件.
+     *
      * @var \Yurun\Util\YurunHttp\Http\Psr7\UploadedFile[]
      */
     protected $files = [];
 
     /**
-     * 处理过的主体内容
-     * @var null|array|object
+     * 处理过的主体内容.
+     *
+     * @var array|object|null
      */
     protected $parsedBody;
-    
+
     /**
-     * 属性数组
+     * 属性数组.
      *
      * @var array
      */
@@ -84,11 +91,13 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     {
         return $this->server;
     }
-    
+
     /**
-     * 获取server参数
+     * 获取server参数.
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return string
      */
     public function getServerParam($name, $default = null)
@@ -126,19 +135,23 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * updated cookie values.
      *
      * @param array $cookies Array of key/value pairs representing cookies.
+     *
      * @return static
      */
     public function withCookieParams(array $cookies)
     {
         $self = clone $this;
         $self->cookies = $cookies;
+
         return $self;
     }
-    
+
     /**
      * 获取cookie值
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function getCookie($name, $default = null)
@@ -182,13 +195,15 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * updated query string arguments.
      *
      * @param array $query Array of query string arguments, typically from
-     *     $_GET.
+     *                     $_GET.
+     *
      * @return static
      */
     public function withQueryParams(array $query)
     {
         $self = clone $this;
         $self->get = $query;
+
         return $self;
     }
 
@@ -202,7 +217,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * instantiation, or MAY be injected via withUploadedFiles().
      *
      * @return \Psr\Http\Message\UploadedFileInterface[] An array tree of UploadedFileInterface instances; an empty
-     *     array MUST be returned if no data is present.
+     *                                                   array MUST be returned if no data is present.
      */
     public function getUploadedFiles()
     {
@@ -217,12 +232,15 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * updated body parameters.
      *
      * @param array An array tree of UploadedFileInterface instances.
+     *
      * @return static
+     *
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
         $self = clone $this;
+
         return $this->setUploadedFiles($self, $uploadedFiles);
     }
 
@@ -238,18 +256,18 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * potential types MUST be arrays or objects only. A null value indicates
      * the absence of body content.
      *
-     * @return null|array|object The deserialized body parameters, if any.
-     *     These will typically be an array or object.
+     * @return array|object|null The deserialized body parameters, if any.
+     *                           These will typically be an array or object.
      */
     public function getParsedBody()
     {
         $parsedBody = &$this->parsedBody;
-        if(null === $parsedBody)
+        if (null === $parsedBody)
         {
             $body = $this->body;
             $contentType = strtolower($this->getHeaderLine(RequestHeader::CONTENT_TYPE));
             // post
-            if('POST' === $this->method && in_array($contentType, [
+            if ('POST' === $this->method && \in_array($contentType, [
                 MediaType::APPLICATION_FORM_URLENCODED,
                 MediaType::MULTIPART_FORM_DATA,
             ]))
@@ -257,7 +275,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
                 $parsedBody = $this->post;
             }
             // json
-            else if(in_array($contentType, [
+            elseif (\in_array($contentType, [
                 MediaType::APPLICATION_JSON,
                 MediaType::APPLICATION_JSON_UTF8,
             ]))
@@ -265,7 +283,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
                 $parsedBody = json_decode($body, !Config::get('@currentServer.jsonBodyIsObject', false));
             }
             // xml
-            else if(in_array($contentType, [
+            elseif (\in_array($contentType, [
                 MediaType::TEXT_XML,
                 MediaType::APPLICATION_ATOM_XML,
                 MediaType::APPLICATION_RSS_XML,
@@ -279,9 +297,10 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
             // 其它
             else
             {
-                $parsedBody = (object)(string)$body;
+                $parsedBody = (object) (string) $body;
             }
         }
+
         return $parsedBody;
     }
 
@@ -307,16 +326,19 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param null|array|object $data The deserialized body data. This will
-     *     typically be in an array or object.
+     * @param array|object|null $data The deserialized body data. This will
+     *                                typically be in an array or object.
+     *
      * @return static
+     *
      * @throws \InvalidArgumentException if an unsupported argument type is
-     *     provided.
+     *                                   provided.
      */
     public function withParsedBody($data)
     {
         $self = clone $this;
         $self->parsedBody = $data;
+
         return $self;
     }
 
@@ -347,14 +369,16 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * specifying a default value to return if the attribute is not found.
      *
      * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $default Default value to return if the attribute does not exist.
+     *
+     * @param string $name    The attribute name.
+     * @param mixed  $default Default value to return if the attribute does not exist.
+     *
      * @return mixed
      */
     public function getAttribute($name, $default = null)
     {
         $attributes = $this->attributes;
-        if(array_key_exists($name, $attributes))
+        if (\array_key_exists($name, $attributes))
         {
             return $attributes[$name];
         }
@@ -375,14 +399,17 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * updated attribute.
      *
      * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $value The value of the attribute.
+     *
+     * @param string $name  The attribute name.
+     * @param mixed  $value The value of the attribute.
+     *
      * @return static
      */
     public function withAttribute($name, $value)
     {
         $self = clone $this;
         $self->attributes[$name] = $value;
+
         return $self;
     }
 
@@ -397,46 +424,54 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * the attribute.
      *
      * @see getAttributes()
+     *
      * @param string $name The attribute name.
+     *
      * @return static
      */
     public function withoutAttribute($name)
     {
         $self = clone $this;
-        if(array_key_exists($name, $self->attributes))
+        if (\array_key_exists($name, $self->attributes))
         {
             unset($self->attributes[$name]);
         }
+
         return $self;
     }
-    
+
     /**
-     * 设置上传的文件
-     * @param self $object
+     * 设置上传的文件.
+     *
+     * @param self  $object
      * @param array $files
+     *
      * @return static
      */
     protected function setUploadedFiles(self $object, array $files)
     {
         $objectFiles = &$object->files;
         $objectFiles = [];
-        foreach($files as $key => $file)
+        foreach ($files as $key => $file)
         {
             $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
         }
+
         return $object;
     }
 
     /**
      * 获取 GET 参数
-     * 当 $name 为 null 时，返回所有
+     * 当 $name 为 null 时，返回所有.
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function get($name = null, $default = null)
     {
-        if(null === $name)
+        if (null === $name)
         {
             return $this->get;
         }
@@ -448,14 +483,16 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
 
     /**
      * 获取 POST 参数
-     * 当 $name 为 null 时，返回所有
+     * 当 $name 为 null 时，返回所有.
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function post($name = null, $default = null)
     {
-        if(null === $name)
+        if (null === $name)
         {
             return $this->post;
         }
@@ -466,9 +503,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     }
 
     /**
-     * 判断是否存在 GET 参数
+     * 判断是否存在 GET 参数.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasGet($name)
     {
@@ -476,9 +515,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     }
 
     /**
-     * 判断是否存在 POST 参数
+     * 判断是否存在 POST 参数.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasPost($name)
     {
@@ -488,20 +529,21 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     /**
      * 获取 REQUEST 参数
      * 当 $name 为 null 时，返回所有
-     * REQUEST 中包括：GET/POST/COOKIE
+     * REQUEST 中包括：GET/POST/COOKIE.
      *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function request($name = null, $default = null)
     {
         $request = &$this->request;
-        if(null === $request)
+        if (null === $request)
         {
             $request = array_merge($this->get, $this->post, $this->cookies);
         }
-        if(null === $name)
+        if (null === $name)
         {
             return $request;
         }
@@ -513,58 +555,65 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
 
     /**
      * 判断是否存在 REQUEST 参数
-     * REQUEST 中包括：GET/POST/COOKIE
+     * REQUEST 中包括：GET/POST/COOKIE.
      *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasRequest($name)
     {
         $request = &$this->request;
-        if(null === $request)
+        if (null === $request)
         {
             $request = array_merge($this->get, $this->post, $this->cookies);
         }
+
         return isset($request[$name]);
     }
 
     /**
-     * 设置 GET 数据
+     * 设置 GET 数据.
      *
      * @param array $get
+     *
      * @return static
      */
     public function withGet($get)
     {
         $self = clone $this;
         $self->get = $get;
+
         return $self;
     }
 
     /**
-     * 设置 POST 数据
+     * 设置 POST 数据.
      *
      * @param array $post
+     *
      * @return static
      */
     public function withPost($post)
     {
         $self = clone $this;
         $self->post = $post;
+
         return $self;
     }
 
     /**
-     * 设置 Request 数据
+     * 设置 Request 数据.
      *
      * @param array $get
+     *
      * @return static
      */
     public function withRequest($request)
     {
         $self = clone $this;
         $self->request = $request;
+
         return $self;
     }
-
 }

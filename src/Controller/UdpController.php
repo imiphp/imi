@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Controller;
 
 /**
- * @inheritDoc
+ * {@inheritdoc}
  */
 abstract class UdpController extends \Imi\Server\UdpServer\Controller\UdpController
 {

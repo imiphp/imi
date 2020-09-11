@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 /**
@@ -7,5 +8,4 @@ namespace Imi\Test\Component\Tests;
 class LockRedisTest extends BaseLockTest
 {
     protected $lockId = 'redis';
-
 }

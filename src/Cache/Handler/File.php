@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Cache\Handler;
 
-use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Bean;
+use Imi\Config;
+use Imi\Util\Coroutine;
+use Imi\Util\DateTime;
 use Imi\Util\File as FileUtil;
 use Imi\Util\Stream\StreamMode;
-use Imi\Util\DateTime;
-use Imi\Config;
 
 /**
  * @Bean("FileCache")
@@ -14,13 +15,15 @@ use Imi\Config;
 class File extends Base
 {
     /**
-     * 缓存文件保存路径
+     * 缓存文件保存路径.
+     *
      * @var string
      */
     protected $savePath;
 
     /**
-     * 缓存文件名的处理回调，用于需要自定义的情况
+     * 缓存文件名的处理回调，用于需要自定义的情况.
+     *
      * @var callable
      */
     protected $saveFileNameCallback;
@@ -34,14 +37,14 @@ class File extends Base
      * @return mixed The value of the item from the cache, or $default in case of cache miss.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value.
      */
     public function get($key, $default = null)
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
         // 缓存文件不存在
-        if(!is_file($fileName))
+        if (!is_file($fileName))
         {
             return $default;
         }
@@ -52,19 +55,20 @@ class File extends Base
             return $default;
         }
         $isLocked = $isExpired = false;
-        try {
+        try
+        {
             // 加锁失败
-            if (!$isLocked = flock($fp, LOCK_SH))
+            if (!$isLocked = flock($fp, \LOCK_SH))
             {
                 return $default;
             }
             // 检查是否过期
-            if($isExpired = $this->checkExpire($fileName))
+            if ($isExpired = $this->checkExpire($fileName))
             {
                 return $default;
             }
             // 正常读入
-            if(Coroutine::isIn() && Config::get('@app.enableCoroutine', true))
+            if (Coroutine::isIn() && Config::get('@app.enableCoroutine', true))
             {
                 $content = Coroutine::fread($fp);
             }
@@ -72,14 +76,17 @@ class File extends Base
             {
                 $content = FileUtil::readAll($fp);
             }
+
             return $this->decode($content);
-        } finally {
-            if($isLocked)
+        }
+        finally
+        {
+            if ($isLocked)
             {
-                flock($fp, LOCK_UN);
+                flock($fp, \LOCK_UN);
             }
             fclose($fp);
-            if($isExpired)
+            if ($isExpired)
             {
                 unlink($fileName);
             }
@@ -91,22 +98,22 @@ class File extends Base
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store, must be serializable.
-     * @param null|int|\DateInterval $ttl   Optional. The TTL value of this item. If no value is sent and
+     * @param int|\DateInterval|null $ttl   Optional. The TTL value of this item. If no value is sent and
      *                                      the driver supports TTL then the library may set a default value
      *                                      for it or let the driver take care of that.
      *
      * @return bool True on success and false on failure.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value.
      */
     public function set($key, $value, $ttl = null)
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
         // 自动建目录
-        $dir = dirname($fileName);
-        if(!is_dir($dir))
+        $dir = \dirname($fileName);
+        if (!is_dir($dir))
         {
             mkdir($dir, 0755, true);
         }
@@ -117,14 +124,15 @@ class File extends Base
             return false;
         }
         $isLocked = false;
-        try {
+        try
+        {
             // 加锁失败
-            if (!$isLocked = flock($fp, LOCK_EX))
+            if (!$isLocked = flock($fp, \LOCK_EX))
             {
                 return false;
             }
             // 写入缓存数据
-            if(Coroutine::isIn() && Config::get('@app.enableCoroutine', true))
+            if (Coroutine::isIn() && Config::get('@app.enableCoroutine', true))
             {
                 Coroutine::fwrite($fp, $this->encode($value));
             }
@@ -133,17 +141,20 @@ class File extends Base
                 fwrite($fp, $this->encode($value));
             }
             // ttl 支持 \DateInterval 格式
-            if($ttl instanceof \DateInterval)
+            if ($ttl instanceof \DateInterval)
             {
                 $ttl = DateTime::getSecondsByInterval($ttl);
             }
             // 写入扩展数据
             $this->writeExData($fileName, $ttl);
+
             return true;
-        } finally {
-            if($isLocked)
+        }
+        finally
+        {
+            if ($isLocked)
             {
-                flock($fp, LOCK_UN);
+                flock($fp, \LOCK_UN);
             }
             fclose($fp);
         }
@@ -157,20 +168,21 @@ class File extends Base
      * @return bool True if the item was successfully removed. False if there was an error.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value.
      */
     public function delete($key)
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
-        if(is_file($fileName))
+        if (is_file($fileName))
         {
             unlink($fileName);
             $fileName = $this->getExDataFileName($key);
-            if(is_file($fileName))
+            if (is_file($fileName))
             {
                 unlink($fileName);
             }
+
             return true;
         }
         else
@@ -186,17 +198,18 @@ class File extends Base
      */
     public function clear()
     {
-        foreach(FileUtil::enumAll($this->savePath) as $fileName)
+        foreach (FileUtil::enumAll($this->savePath) as $fileName)
         {
-            if(is_file($fileName))
+            if (is_file($fileName))
             {
                 unlink($fileName);
             }
-            else if(is_dir($fileName))
+            elseif (is_dir($fileName))
             {
                 rmdir($fileName);
             }
         }
+
         return true;
     }
 
@@ -209,17 +222,18 @@ class File extends Base
      * @return iterable A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if $keys is neither an array nor a Traversable,
-     *   or if any of the $keys are not a legal value.
+     *                                                   MUST be thrown if $keys is neither an array nor a Traversable,
+     *                                                   or if any of the $keys are not a legal value.
      */
     public function getMultiple($keys, $default = null)
     {
         $this->checkArrayOrTraversable($keys);
         $result = [];
-        foreach($keys as $key)
+        foreach ($keys as $key)
         {
             $result[$key] = $this->get($key, $default);
         }
+
         return $result;
     }
 
@@ -227,29 +241,30 @@ class File extends Base
      * Persists a set of key => value pairs in the cache, with an optional TTL.
      *
      * @param iterable               $values A list of key => value pairs for a multiple-set operation.
-     * @param null|int|\DateInterval $ttl    Optional. The TTL value of this item. If no value is sent and
+     * @param int|\DateInterval|null $ttl    Optional. The TTL value of this item. If no value is sent and
      *                                       the driver supports TTL then the library may set a default value
      *                                       for it or let the driver take care of that.
      *
      * @return bool True on success and false on failure.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if $values is neither an array nor a Traversable,
-     *   or if any of the $values are not a legal value.
+     *                                                   MUST be thrown if $values is neither an array nor a Traversable,
+     *                                                   or if any of the $values are not a legal value.
      */
     public function setMultiple($values, $ttl = null)
     {
         $this->checkArrayOrTraversable($values);
         $result = true;
         // ttl 支持 \DateInterval 格式
-        if($ttl instanceof \DateInterval)
+        if ($ttl instanceof \DateInterval)
         {
             $ttl = DateTime::getSecondsByInterval($ttl);
         }
-        foreach($values as $key => $value)
+        foreach ($values as $key => $value)
         {
             $result = $result && $this->set($key, $value, $ttl);
         }
+
         return $result;
     }
 
@@ -261,17 +276,18 @@ class File extends Base
      * @return bool True if the items were successfully removed. False if there was an error.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if $keys is neither an array nor a Traversable,
-     *   or if any of the $keys are not a legal value.
+     *                                                   MUST be thrown if $keys is neither an array nor a Traversable,
+     *                                                   or if any of the $keys are not a legal value.
      */
     public function deleteMultiple($keys)
     {
         $this->checkArrayOrTraversable($keys);
         $result = true;
-        foreach($keys as $key)
+        foreach ($keys as $key)
         {
             $result = $result && $this->delete($key);
         }
+
         return $result;
     }
 
@@ -288,14 +304,14 @@ class File extends Base
      * @return bool
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value.
      */
     public function has($key)
     {
         $this->checkKey($key);
         $fileName = $this->getFileName($key);
         // 缓存文件不存在
-        if(!is_file($fileName))
+        if (!is_file($fileName))
         {
             return false;
         }
@@ -306,20 +322,24 @@ class File extends Base
             return false;
         }
         $isLocked = $isExpired = false;
-        try {
+        try
+        {
             // 加锁失败
-            if (!$isLocked = flock($fp, LOCK_SH))
+            if (!$isLocked = flock($fp, \LOCK_SH))
             {
                 return false;
             }
+
             return !$isExpired = $this->checkExpire($fileName);
-        } finally {
-            if($isLocked)
+        }
+        finally
+        {
+            if ($isLocked)
             {
-                flock($fp, LOCK_UN);
+                flock($fp, \LOCK_UN);
             }
             fclose($fp);
-            if($isExpired)
+            if ($isExpired)
             {
                 unlink($fileName);
             }
@@ -327,13 +347,15 @@ class File extends Base
     }
 
     /**
-     * 获取缓存文件名完整路径
+     * 获取缓存文件名完整路径.
+     *
      * @param string $key
+     *
      * @return string
      */
     public function getFileName($key)
     {
-        if(is_callable($this->saveFileNameCallback))
+        if (\is_callable($this->saveFileNameCallback))
         {
             // 使用回调处理
             return ($this->saveFileNameCallback)($this->savePath, $key);
@@ -346,8 +368,10 @@ class File extends Base
     }
 
     /**
-     * 获取存储扩展数据的文件名
+     * 获取存储扩展数据的文件名.
+     *
      * @param string $fileName
+     *
      * @return string
      */
     public function getExDataFileName($fileName)
@@ -357,29 +381,32 @@ class File extends Base
 
     /**
      * 检查缓存文件是否过期
+     *
      * @param string $fileName
-     * @return boolean
+     *
+     * @return bool
      */
     protected function checkExpire($fileName)
     {
-        if(!is_file($fileName))
+        if (!is_file($fileName))
         {
             return false;
         }
         $exDataFileName = $this->getExDataFileName($fileName);
-        if(!is_file($exDataFileName))
+        if (!is_file($exDataFileName))
         {
             return false;
         }
         $data = unserialize(file_get_contents($exDataFileName));
-        if(null === ($data['ttl'] ?? null))
+        if (null === ($data['ttl'] ?? null))
         {
             return false;
         }
         $maxTime = time() - $data['ttl'];
-        if(filemtime($fileName) <= $maxTime)
+        if (filemtime($fileName) <= $maxTime)
         {
             unlink($exDataFileName);
+
             return true;
         }
         else
@@ -389,9 +416,11 @@ class File extends Base
     }
 
     /**
-     * 写入扩展数据
+     * 写入扩展数据.
+     *
      * @param string $fileName
-     * @param int $ttl
+     * @param int    $ttl
+     *
      * @return void
      */
     protected function writeExData($fileName, $ttl)

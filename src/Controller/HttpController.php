@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Controller;
 
 /**
- * @inheritDoc
+ * {@inheritdoc}
  */
 abstract class HttpController extends \Imi\Server\Http\Controller\HttpController
 {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Process\Pool;
 
 use Imi\Event\EventParam;
@@ -16,10 +17,9 @@ class InitEventParam extends EventParam
      * Get 进程池对象
      *
      * @return \Imi\Process\Pool
-     */ 
+     */
     public function getPool()
     {
         return $this->pool;
     }
-
 }

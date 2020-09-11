@@ -1,13 +1,15 @@
 <?php
+
 namespace Imi\Db\Annotation;
 
-use Imi\Db\Db;
-use Imi\Db\Query\QueryType;
 use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Parser;
+use Imi\Db\Db;
+use Imi\Db\Query\QueryType;
 
 /**
- * 连接池对象注入
+ * 连接池对象注入.
+ *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
@@ -15,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
 class DbInject extends Inject
 {
     /**
-     * 查询类型
+     * 查询类型.
      *
      * @var int
      */
@@ -30,5 +32,4 @@ class DbInject extends Inject
     {
         return Db::getInstance($this->name, $this->queryType);
     }
-
 }

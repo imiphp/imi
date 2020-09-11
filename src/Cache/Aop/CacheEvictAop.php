@@ -1,16 +1,16 @@
 <?php
+
 namespace Imi\Cache\Aop;
 
-use Imi\Config;
-use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
-use Imi\Cache\CacheManager;
-use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
-use Imi\Cache\Annotation\CacheEvict;
+use Imi\Aop\AroundJoinPoint;
+use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Cache\Annotation\CacheEvict;
+use Imi\Cache\CacheManager;
+use Imi\Config;
 use Imi\Util\ClassObject;
 
 /**
@@ -21,7 +21,8 @@ class CacheEvictAop
     use TCacheAopHelper;
 
     /**
-     * 处理 CacheEvict 注解
+     * 处理 CacheEvict 注解.
+     *
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
@@ -29,8 +30,9 @@ class CacheEvictAop
      *         }
      * )
      * @Around
-     * 
+     *
      * @param AroundJoinPoint $joinPoint
+     *
      * @return void
      */
     public function parseCacheEvict(AroundJoinPoint $joinPoint)
@@ -43,10 +45,10 @@ class CacheEvictAop
 
         // 方法参数
         $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
-        
-        foreach($cacheEvicts as $index => $cacheEvict)
+
+        foreach ($cacheEvicts as $index => $cacheEvict)
         {
-            if($cacheEvict->beforeInvocation)
+            if ($cacheEvict->beforeInvocation)
             {
                 $this->deleteCache($cacheEvict, $joinPoint, $args);
                 unset($cacheEvicts[$index]);
@@ -55,11 +57,11 @@ class CacheEvictAop
 
         $result = $joinPoint->proceed();
 
-        foreach($cacheEvicts as $cacheEvict)
+        foreach ($cacheEvicts as $cacheEvict)
         {
             $this->deleteCache($cacheEvict, $joinPoint, $args);
         }
-        
+
         return $result;
     }
 
@@ -67,10 +69,10 @@ class CacheEvictAop
     {
         // 缓存名
         $name = $cacheEvict->name;
-        if(null === $name)
+        if (null === $name)
         {
             $name = Config::get('@currentServer.cache.default');
-            if(null === $name)
+            if (null === $name)
             {
                 throw new \RuntimeException('config "cache.default" not found');
             }
@@ -82,5 +84,4 @@ class CacheEvictAop
 
         $cacheInstance->delete($key);
     }
-
 }

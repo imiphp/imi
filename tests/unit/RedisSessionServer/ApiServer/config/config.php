@@ -1,36 +1,34 @@
 <?php
 
-use Imi\Log\LogLevel;
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\RedisSessionServer\ApiServer\Controller',
     ],
-    'beans'    =>    [
-        'SessionManager'    =>    [
-            'handlerClass'    =>    \Imi\Server\Session\Handler\Redis::class,
+    'beans'    => [
+        'SessionManager'    => [
+            'handlerClass'    => \Imi\Server\Session\Handler\Redis::class,
         ],
-        'SessionRedis'    =>    [
+        'SessionRedis'    => [
             'poolName'              => 'redisSession',
             'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             'keyPrefix'             => 'session:',
         ],
-        'SessionConfig'    =>    [
-
+        'SessionConfig'    => [
         ],
-        'SessionCookie'    =>    [
-            'lifetime'    =>    0,
+        'SessionCookie'    => [
+            'lifetime'    => 0,
         ],
-        'HttpDispatcher'    =>    [
-            'middlewares'    =>    [
+        'HttpDispatcher'    => [
+            'middlewares'    => [
                 \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
     ],
-    'controller'    =>  [
-        'singleton' =>  true,
+    'controller'    => [
+        'singleton' => true,
     ],
 ];

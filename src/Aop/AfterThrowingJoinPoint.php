@@ -1,17 +1,20 @@
 <?php
+
 namespace Imi\Aop;
 
 class AfterThrowingJoinPoint extends JoinPoint
 {
     /**
-     * 异常
+     * 异常.
+     *
      * @var \Throwable
      */
     private $throwable;
 
     /**
-     * 是否取消抛出异常
-     * @var boolean
+     * 是否取消抛出异常.
+     *
+     * @var bool
      */
     private $isCancelThrow = false;
 
@@ -22,7 +25,8 @@ class AfterThrowingJoinPoint extends JoinPoint
     }
 
     /**
-     * 获取异常
+     * 获取异常.
+     *
      * @return \Throwable
      */
     public function getThrowable()
@@ -31,9 +35,11 @@ class AfterThrowingJoinPoint extends JoinPoint
     }
 
     /**
-     * 取消抛出异常
-     * @param boolean $isCancelThrow 是否取消，默认为true
-     * @return boolean
+     * 取消抛出异常.
+     *
+     * @param bool $isCancelThrow 是否取消，默认为true
+     *
+     * @return bool
      */
     public function cancelThrow($isCancelThrow = true)
     {
@@ -41,8 +47,9 @@ class AfterThrowingJoinPoint extends JoinPoint
     }
 
     /**
-     * 是否取消抛出异常
-     * @return boolean
+     * 是否取消抛出异常.
+     *
+     * @return bool
      */
     public function isCancelThrow()
     {

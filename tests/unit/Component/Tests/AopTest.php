@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\BaseTest;
 use Imi\App;
+use Imi\Test\BaseTest;
 
 /**
  * @testdox Aop
@@ -10,7 +11,7 @@ use Imi\App;
 class AopTest extends BaseTest
 {
     /**
-     * Aop Before
+     * Aop Before.
      *
      * @return void
      */
@@ -22,7 +23,7 @@ class AopTest extends BaseTest
     }
 
     /**
-     * Aop After
+     * Aop After.
      *
      * @return void
      */
@@ -34,7 +35,7 @@ class AopTest extends BaseTest
     }
 
     /**
-     * Aop Around
+     * Aop Around.
      *
      * @return void
      */
@@ -46,7 +47,7 @@ class AopTest extends BaseTest
     }
 
     /**
-     * Aop AfterReturning
+     * Aop AfterReturning.
      *
      * @return void
      */
@@ -58,7 +59,7 @@ class AopTest extends BaseTest
     }
 
     /**
-     * Aop AfterReturning
+     * Aop AfterReturning.
      *
      * @return void
      */
@@ -67,20 +68,26 @@ class AopTest extends BaseTest
         $test = App::getBean('TestAfterThrowingClass');
 
         $throwable = null;
-        try {
+        try
+        {
             $test->testCancelThrow();
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
             $throwable = $th;
         }
-        $this->assertEquals(null, $throwable);
+        $this->assertNull($throwable);
 
         $throwable = null;
-        try {
+        try
+        {
             $test->testNotCancelThrow();
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
             $throwable = $th;
         }
-        $this->assertNotEquals(null, $throwable);
+        $this->assertNotNull($throwable);
         $this->assertEquals('test', $th->getMessage());
     }
 }

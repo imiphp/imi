@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -16,10 +17,11 @@ class ClassObjectTest extends BaseTest
      */
     public function testIsAnymous()
     {
-        $obj = new class{};
+        $obj = new class() {
+        };
         $this->assertTrue(ClassObject::isAnymous($obj));
 
-        $obj = new \stdClass;
+        $obj = new \stdClass();
         $this->assertFalse(ClassObject::isAnymous($obj));
     }
 
@@ -48,14 +50,14 @@ class ClassObjectTest extends BaseTest
         $args = [1, 2];
         // $keepNotExistArgs = true
         $this->assertEquals([
-            'a' =>  1,
-            'b' =>  2,
-            'c' =>  'imi.com',
+            'a' => 1,
+            'b' => 2,
+            'c' => 'imi.com',
         ], ClassObject::convertArgsToKV($class, $method, $args));
         // $keepNotExistArgs = false
         $this->assertEquals([
-            'a' =>  1,
-            'b' =>  2,
+            'a' => 1,
+            'b' => 2,
         ], ClassObject::convertArgsToKV($class, $method, $args, false));
     }
 
@@ -81,7 +83,5 @@ class ClassObjectTest extends BaseTest
     {
         $this->assertTrue(ClassObject::inNamespace('Imi\Test\Component\Tests\Util', __CLASS__));
         $this->assertTrue(ClassObject::inNamespace('', \Redis::class));
-
     }
-
 }

@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\BaseTest;
 use Imi\Log\Log;
 use Imi\Log\LogLevel;
+use Imi\Test\BaseTest;
 
 /**
  * @testdox Log
@@ -25,5 +26,4 @@ class LogTest extends BaseTest
         ob_end_clean();
         $this->assertTrue(true, 'Log fail');
     }
-
 }

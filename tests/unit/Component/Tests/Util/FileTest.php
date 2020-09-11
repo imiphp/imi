@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
-use Imi\Util\File;
 use Imi\Test\BaseTest;
+use Imi\Util\File;
 use Imi\Util\Imi;
 
 /**
@@ -17,7 +18,7 @@ class FileTest extends BaseTest
      */
     public function testEnum()
     {
-        $path = dirname(__DIR__, 2) . '/Util/File';
+        $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
             ['pathName' => $path . '/1.txt', 'pathName2' => $path . '/1.txt', 'fileName' => '1.txt'],
             ['pathName' => $path . '/2.php', 'pathName2' => $path . '/2.php', 'fileName' => '2.php'],
@@ -26,12 +27,12 @@ class FileTest extends BaseTest
         ];
 
         $files = [];
-        foreach(File::enum($path) as $file)
+        foreach (File::enum($path) as $file)
         {
             $files[] = [
-                'pathName'  =>  $file->getPathName(),
-                'pathName2' =>  (string)$file,
-                'fileName'  =>  $file->getFileName(),
+                'pathName'  => $file->getPathName(),
+                'pathName2' => (string) $file,
+                'fileName'  => $file->getFileName(),
             ];
         }
         $this->assertEqualsCanonicalizing($expectedFiles, $files);
@@ -44,7 +45,7 @@ class FileTest extends BaseTest
      */
     public function testEnumAll()
     {
-        $path = dirname(__DIR__, 2) . '/Util/File';
+        $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
             ['pathName' => $path . '/1.txt', 'pathName2' => $path . '/1.txt', 'fileName' => '1.txt'],
             ['pathName' => $path . '/2.php', 'pathName2' => $path . '/2.php', 'fileName' => '2.php'],
@@ -56,12 +57,12 @@ class FileTest extends BaseTest
         ];
 
         $files = [];
-        foreach(File::enumAll($path) as $file)
+        foreach (File::enumAll($path) as $file)
         {
             $files[] = [
-                'pathName'  =>  $file->getPathName(),
-                'pathName2' =>  (string)$file,
-                'fileName'  =>  $file->getFileName(),
+                'pathName'  => $file->getPathName(),
+                'pathName2' => (string) $file,
+                'fileName'  => $file->getFileName(),
             ];
         }
         $this->assertEqualsCanonicalizing($expectedFiles, $files);
@@ -74,14 +75,14 @@ class FileTest extends BaseTest
      */
     public function testEnumPHPFile()
     {
-        $path = dirname(__DIR__, 2) . '/Util/File';
+        $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
             $path . '/2.php',
             $path . '/b/b.php',
         ];
 
         $files = [];
-        foreach(File::enumPHPFile($path) as $file)
+        foreach (File::enumPHPFile($path) as $file)
         {
             $files[] = $file[0];
         }
@@ -95,7 +96,7 @@ class FileTest extends BaseTest
      */
     public function testEnumFile()
     {
-        $path = dirname(__DIR__, 2) . '/Util/File';
+        $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
             ['pathName' => $path . '/1.txt', 'pathName2' => $path . '/1.txt', 'fileName' => '1.txt'],
             ['pathName' => $path . '/2.php', 'pathName2' => $path . '/2.php', 'fileName' => '2.php'],
@@ -107,12 +108,12 @@ class FileTest extends BaseTest
         ];
 
         $files = [];
-        foreach(File::enumFile($path) as $file)
+        foreach (File::enumFile($path) as $file)
         {
             $files[] = [
-                'pathName'  =>  $file->getFullPath(),
-                'pathName2' =>  (string)$file,
-                'fileName'  =>  $file->getFileName(),
+                'pathName'  => $file->getFullPath(),
+                'pathName2' => (string) $file,
+                'fileName'  => $file->getFileName(),
             ];
         }
         $this->assertEqualsCanonicalizing($expectedFiles, $files);
@@ -147,11 +148,11 @@ class FileTest extends BaseTest
      */
     public function testReadAll()
     {
-        $fp = fopen(dirname(__DIR__, 2) . '/Util/File/1.txt', 'r');
+        $fp = fopen(\dirname(__DIR__, 2) . '/Util/File/1.txt', 'r');
         $this->assertIsResource($fp);
         $content = File::readAll($fp);
         fclose($fp);
-        $this->assertEquals(4099, strlen($content));
+        $this->assertEquals(4099, \strlen($content));
     }
 
     /**
@@ -162,9 +163,9 @@ class FileTest extends BaseTest
     public function testCreateDir()
     {
         $path = Imi::getRuntimePath('test/a/b');
-        $this->assertFalse(is_dir($path));
+        $this->assertDirectoryNotExists($path);
         $this->assertTrue(File::createDir($path));
-        $this->assertTrue(is_dir($path));
+        $this->assertDirectoryExists($path);
     }
 
     /**
@@ -207,9 +208,9 @@ class FileTest extends BaseTest
     public function testDeleteDir()
     {
         $path = Imi::getRuntimePath('test/test');
-        $this->assertTrue(is_dir($path));
+        $this->assertDirectoryExists($path);
         File::deleteDir($path);
-        $this->assertFalse(is_dir($path));
+        $this->assertDirectoryNotExists($path);
     }
 
     /**
@@ -220,7 +221,7 @@ class FileTest extends BaseTest
     public function testPutContents()
     {
         $path = Imi::getRuntimePath('test/test');
-        $this->assertFalse(is_dir($path));
+        $this->assertDirectoryNotExists($path);
         $content = uniqid();
         $fileName = $path . '/a/b/c/1.txt';
         $this->assertTrue(false !== File::putContents($fileName, $content));
@@ -237,5 +238,4 @@ class FileTest extends BaseTest
     {
         $this->assertEquals('/a/b/c/1.jpg', File::absolute('/a/b/d/e/../../c/./1.jpg'));
     }
-
 }

@@ -1,56 +1,60 @@
 <?php
+
 namespace Imi\Db\Query;
 
-use Imi\Model\Model;
-use Imi\Event\IEvent;
 use Imi\Bean\BeanFactory;
-use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
-use Imi\Model\Event\Param\AfterQueryEventParam;
 use Imi\Db\Statement\StatementManager;
+use Imi\Event\IEvent;
+use Imi\Model\Event\ModelEvents;
+use Imi\Model\Event\Param\AfterQueryEventParam;
+use Imi\Model\Model;
 
 class Result implements IResult
 {
     /**
-     * Statement
+     * Statement.
+     *
      * @var IStatement
      */
     private $statement;
 
     /**
      * 是否执行成功
+     *
      * @var bool
      */
     private $isSuccess;
 
     /**
-     * 查询结果类的类名，为null则为数组
+     * 查询结果类的类名，为null则为数组.
+     *
      * @var string
      */
     private $modelClass;
 
     /**
-     * 记录列表
+     * 记录列表.
      *
      * @var array
      */
     private $statementRecords = [];
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param \Imi\Db\Interfaces\IStatement $statement
-     * @param string|null $modelClass
+     * @param string|null                   $modelClass
      */
     public function __construct($statement, $modelClass = null)
     {
         $this->modelClass = $modelClass;
-        if($statement instanceof IStatement)
+        if ($statement instanceof IStatement)
         {
             $this->statement = $statement;
             $this->isSuccess = '' === $statement->errorInfo();
-            if($statement->columnCount() > 0)
+            if ($statement->columnCount() > 0)
             {
                 $this->statementRecords = $statement->fetchAll();
             }
@@ -68,7 +72,8 @@ class Result implements IResult
 
     /**
      * SQL是否执行成功
-     * @return boolean
+     *
+     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -76,97 +81,106 @@ class Result implements IResult
     }
 
     /**
-     * 获取最后插入的ID
+     * 获取最后插入的ID.
+     *
      * @return string
      */
     public function getLastInsertId()
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
+
         return $this->statement->lastInsertId();
     }
 
     /**
-     * 获取影响行数
+     * 获取影响行数.
+     *
      * @return int
      */
     public function getAffectedRows()
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
+
         return $this->statement->rowCount();
     }
 
     /**
-     * 返回一行数据，数组或对象，失败返回null
+     * 返回一行数据，数组或对象，失败返回null.
+     *
      * @param string $className 实体类名，为null则返回数组
+     *
      * @return mixed|null
      */
     public function get($className = null)
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
         $record = $this->statementRecords[0] ?? null;
-        if(!$record)
+        if (!$record)
         {
             return null;
         }
 
-        if(null === $className)
+        if (null === $className)
         {
             $className = $this->modelClass;
         }
-        if(null === $className)
+        if (null === $className)
         {
             return $record;
         }
         else
         {
-            if(is_subclass_of($className, Model::class))
+            if (is_subclass_of($className, Model::class))
             {
                 $object = BeanFactory::newInstance($className, $record);
             }
             else
             {
                 $object = BeanFactory::newInstance($className);
-                foreach($record as $k => $v)
+                foreach ($record as $k => $v)
                 {
                     $object->$k = $v;
                 }
             }
-            if(is_subclass_of($object, IEvent::class))
+            if (is_subclass_of($object, IEvent::class))
             {
                 $object->trigger(ModelEvents::AFTER_QUERY, [
-                    'model'      =>  $object,
+                    'model'      => $object,
                 ], $object, AfterQueryEventParam::class);
             }
+
             return $object;
         }
     }
 
     /**
-     * 返回数组，失败返回null
+     * 返回数组，失败返回null.
+     *
      * @param string $className 实体类名，为null则数组每个成员为数组
+     *
      * @return array|null
      */
     public function getArray($className = null)
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
 
-        if(null === $className)
+        if (null === $className)
         {
             $className = $this->modelClass;
         }
-        if(null === $className)
+        if (null === $className)
         {
             return $this->statementRecords;
         }
@@ -175,9 +189,9 @@ class Result implements IResult
             $list = [];
             $isModelClass = is_subclass_of($className, Model::class);
             $supportIEvent = is_subclass_of($className, IEvent::class);
-            foreach($this->statementRecords as $item)
+            foreach ($this->statementRecords as $item)
             {
-                if($isModelClass)
+                if ($isModelClass)
                 {
                     $object = BeanFactory::newInstance($className, $item);
                 }
@@ -185,34 +199,37 @@ class Result implements IResult
                 {
                     $object = $item;
                 }
-                if($supportIEvent)
+                if ($supportIEvent)
                 {
                     $object->trigger(ModelEvents::AFTER_QUERY, [
-                        'model'      =>  $object,
+                        'model'      => $object,
                     ], $object, AfterQueryEventParam::class);
                 }
                 $list[] = $object;
             }
+
             return $list;
         }
     }
 
     /**
-     * 获取一列数据
+     * 获取一列数据.
+     *
      * @return array
      */
     public function getColumn($column = 0)
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
         $statementRecords = &$this->statementRecords;
-        if(isset($statementRecords[0]))
+        if (isset($statementRecords[0]))
         {
-            if(is_numeric($column))
+            if (is_numeric($column))
             {
                 $keys = array_keys($statementRecords[0]);
+
                 return array_column($statementRecords, $keys[$column]);
             }
             else
@@ -220,26 +237,30 @@ class Result implements IResult
                 return array_column($statementRecords, $column);
             }
         }
+
         return [];
     }
 
     /**
-     * 获取标量结果
-     * @param integer|string $columnKey
+     * 获取标量结果.
+     *
+     * @param int|string $columnKey
+     *
      * @return mixed
      */
     public function getScalar($columnKey = 0)
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
         $record = $this->statementRecords[0] ?? null;
-        if($record)
+        if ($record)
         {
-            if(is_numeric($columnKey))
+            if (is_numeric($columnKey))
             {
                 $keys = array_keys($record);
+
                 return $record[$keys[$columnKey]];
             }
             else
@@ -247,24 +268,27 @@ class Result implements IResult
                 return $record[$columnKey];
             }
         }
+
         return null;
     }
-    
+
     /**
-     * 获取记录行数
+     * 获取记录行数.
+     *
      * @return int
      */
     public function getRowCount()
     {
-        if(!$this->isSuccess)
+        if (!$this->isSuccess)
         {
             throw new \RuntimeException('Result is not success!');
         }
-        return count($this->statementRecords);
+
+        return \count($this->statementRecords);
     }
 
     /**
-     * 获取执行的SQL语句
+     * 获取执行的SQL语句.
      *
      * @return string
      */
@@ -282,5 +306,4 @@ class Result implements IResult
     {
         return $this->statement;
     }
-
 }

@@ -1,11 +1,13 @@
 <?php
+
 namespace Imi\Util\Co;
 
-use Imi\Facade\BaseFacade;
 use Imi\Facade\Annotation\Facade;
+use Imi\Facade\BaseFacade;
 
 /**
  * @Facade(class="Yurun\Swoole\CoPool\ChannelContainer")
+ *
  * @method static bool push(string $id, $data, float $timeout = -1)
  * @method static mixed pop(string $id, float $timeout = -1)
  * @method static mixed finallyPop(string $id, float $timeout = -1)
@@ -20,5 +22,4 @@ use Imi\Facade\Annotation\Facade;
  */
 abstract class ChannelContainer extends BaseFacade
 {
-
 }

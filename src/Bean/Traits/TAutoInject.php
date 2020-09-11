@@ -1,15 +1,16 @@
 <?php
+
 namespace Imi\Bean\Traits;
 
 use Imi\Bean\BeanFactory;
 
 /**
- * 自动注入属性
+ * 自动注入属性.
  */
 trait TAutoInject
 {
     /**
-     * beanProxy
+     * beanProxy.
      *
      * @var \Imi\Bean\BeanProxy
      */
@@ -21,7 +22,7 @@ trait TAutoInject
     }
 
     /**
-     * 自动注入属性
+     * 自动注入属性.
      *
      * @return void
      */

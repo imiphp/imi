@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Controller;
 
 /**
- * @inheritDoc
+ * {@inheritdoc}
  */
 abstract class TcpController extends \Imi\Server\TcpServer\Controller\TcpController
 {

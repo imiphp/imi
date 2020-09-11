@@ -1,24 +1,25 @@
 <?php
+
 namespace Imi\Bean\Annotation\Model;
 
 class PropertyAnnotationRelation implements IAnnotationRelation
 {
     /**
-     * 类名
+     * 类名.
      *
      * @var string
      */
     private $class;
 
     /**
-     * 属性名
+     * 属性名.
      *
      * @var string
      */
     private $property;
 
     /**
-     * 注解
+     * 注解.
      *
      * @var \Imi\Bean\Annotation\Base
      */
@@ -32,30 +33,30 @@ class PropertyAnnotationRelation implements IAnnotationRelation
     }
 
     /**
-     * Get 类名
+     * Get 类名.
      *
      * @return string
-     */ 
+     */
     public function getClass()
     {
         return $this->class;
     }
 
     /**
-     * Get 注解
+     * Get 注解.
      *
      * @return \Imi\Bean\Annotation\Base
-     */ 
+     */
     public function getAnnotation()
     {
         return $this->annotation;
     }
 
     /**
-     * Get 属性名
+     * Get 属性名.
      *
      * @return string
-     */ 
+     */
     public function getProperty()
     {
         return $this->property;

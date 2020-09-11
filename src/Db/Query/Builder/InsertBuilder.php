@@ -1,9 +1,8 @@
 <?php
+
 namespace Imi\Db\Query\Builder;
 
 use Imi\Util\ArrayUtil;
-use Imi\Db\Query\Query;
-
 
 class InsertBuilder extends BaseBuilder
 {
@@ -14,27 +13,27 @@ class InsertBuilder extends BaseBuilder
         $params = &$this->params;
         $option = $query->getOption();
         list($data) = $args;
-        if(null === $data)
+        if (null === $data)
         {
             $data = $option->saveData;
         }
-        if($data instanceof \Traversable)
+        if ($data instanceof \Traversable)
         {
-            $data = \iterator_to_array($data);
+            $data = iterator_to_array($data);
         }
         $valueParams = [];
-        if(ArrayUtil::isAssoc($data))
+        if (ArrayUtil::isAssoc($data))
         {
             $fields = [];
             // 键值数组
-            foreach($data as $k => $v)
+            foreach ($data as $k => $v)
             {
-                if($v instanceof \Imi\Db\Query\Raw)
+                if ($v instanceof \Imi\Db\Query\Raw)
                 {
-                    if(!is_numeric($k))
+                    if (!is_numeric($k))
                     {
                         $fields[] = $this->parseKeyword($k);
-                        $valueParams[] = (string)$v;
+                        $valueParams[] = (string) $v;
                     }
                 }
                 else
@@ -50,11 +49,11 @@ class InsertBuilder extends BaseBuilder
         else
         {
             // 普通数组
-            foreach($data as $v)
+            foreach ($data as $v)
             {
-                if($v instanceof \Imi\Db\Query\Raw)
+                if ($v instanceof \Imi\Db\Query\Raw)
                 {
-                    $valueParams[] = (string)$v;
+                    $valueParams[] = (string) $v;
                 }
                 else
                 {
@@ -66,6 +65,7 @@ class InsertBuilder extends BaseBuilder
             $sql = 'insert into ' . $option->table . ' values(' . implode(',', $valueParams) . ')';
         }
         $query->bindValues($params);
+
         return $sql;
     }
 }

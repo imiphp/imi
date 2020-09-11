@@ -1,13 +1,12 @@
 <?php
+
 namespace Imi\Server\WebSocket\Middleware;
 
-use Imi\App;
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\WebSocket\Message\IFrame;
-use Imi\Server\WebSocket\MessageHandler;
 use Imi\Server\WebSocket\IMessageHandler;
+use Imi\Server\WebSocket\Message\IFrame;
 
 /**
  * @Bean("WebSocketRouteMiddleware")
@@ -29,17 +28,18 @@ class RouteMiddleware implements IMiddleware
     protected $notFoundHandler;
 
     /**
-     * 处理方法
+     * 处理方法.
      *
-     * @param IFrame $frame
+     * @param IFrame          $frame
      * @param IMessageHandler $handler
+     *
      * @return void
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {
         // 路由解析
         $result = $this->route->parse($frame->getFormatData());
-        if(null === $result || !is_callable($result->callable))
+        if (null === $result || !\is_callable($result->callable))
         {
             // 未匹配到路由
             $result = $this->notFoundHandler->handle($frame, $handler);
@@ -49,7 +49,7 @@ class RouteMiddleware implements IMiddleware
             RequestContext::set('routeResult', $result);
             $result = $handler->handle($frame);
         }
+
         return $result;
     }
-
 }

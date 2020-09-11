@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi;
 
 $isPhar = 'phar://' === @substr(__DIR__, 0, 7);
 
-if($isPhar)
+if ($isPhar)
 {
-    $file = dirname(__DIR__) . '/vendor/autoload.php';
-    if(is_file($file))
+    $file = \dirname(__DIR__) . '/vendor/autoload.php';
+    if (is_file($file))
     {
         require $file;
     }

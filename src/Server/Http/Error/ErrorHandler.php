@@ -1,7 +1,7 @@
 <?php
+
 namespace Imi\Server\Http\Error;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 

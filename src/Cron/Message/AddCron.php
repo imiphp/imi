@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Cron\Message;
 
 class AddCron implements IMessage
 {
     /**
-     * 定时任务注解
+     * 定时任务注解.
      *
      * @var \Imi\Cron\Annotation\Cron
      */
@@ -16,5 +17,4 @@ class AddCron implements IMessage
      * @var string
      */
     public $task;
-
 }

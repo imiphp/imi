@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Process;
 
 /**
- * 进程实现接口
+ * 进程实现接口.
  */
 interface IProcess
 {

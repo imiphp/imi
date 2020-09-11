@@ -1,10 +1,12 @@
 <?php
+
 namespace Imi\Process;
 
 abstract class BaseProcess implements IProcess
 {
     /**
-     * 数据
+     * 数据.
+     *
      * @var array
      */
     protected $data;
@@ -12,7 +14,7 @@ abstract class BaseProcess implements IProcess
     public function __construct($data = [])
     {
         $this->data = $data;
-        foreach($data as $k => $v)
+        foreach ($data as $k => $v)
         {
             $this->$k = $v;
         }

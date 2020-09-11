@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Cli\Contract;
 
 use Imi\Cli\ImiCommand;
@@ -28,5 +29,4 @@ abstract class BaseCommand
         $this->input = $input;
         $this->output = $output;
     }
-
 }

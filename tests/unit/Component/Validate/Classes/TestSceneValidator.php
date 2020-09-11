@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Validate\Classes;
 
-use Imi\Validate\Validator;
 use Imi\Validate\Annotation\Decimal;
 use Imi\Validate\Annotation\Integer;
+use Imi\Validate\Validator;
 
 /**
  * @Decimal(name="decimal", min=1, max=10, accuracy=2)
@@ -12,14 +13,13 @@ use Imi\Validate\Annotation\Integer;
 class TestSceneValidator extends Validator
 {
     /**
-     * 场景定义
+     * 场景定义.
      *
      * @var array|null
      */
     protected $scene = [
-        'a' =>  ['decimal'],
-        'b' =>  ['int'],
-        'c' =>  ['decimal', 'int'],
+        'a' => ['decimal'],
+        'b' => ['int'],
+        'c' => ['decimal', 'int'],
     ];
-
 }

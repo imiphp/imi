@@ -1,47 +1,52 @@
 <?php
+
 namespace Imi\Util\Http;
 
-use Imi\Util\Uri;
-use Psr\Http\Message\UriInterface;
-use Psr\Http\Message\RequestInterface;
 use Imi\Util\Http\Consts\RequestMethod;
+use Imi\Util\Uri;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\UriInterface;
 
 class Request extends AbstractMessage implements RequestInterface
 {
     /**
      * 请求地址
+     *
      * @var \Imi\Util\Uri
      */
     protected $uri;
 
     /**
-     * 请求目标
+     * 请求目标.
+     *
      * @var mixed
      */
     protected $requestTarget;
 
     /**
-     * 请求方法
+     * 请求方法.
+     *
      * @var string
      */
     protected $method;
 
     /**
-     * 构造方法
+     * 构造方法.
+     *
      * @param string|\Imi\Util\Uri $url
-     * @param array $headers
-     * @param string $body
-     * @param string $method
-     * @param string $version
+     * @param array                $headers
+     * @param string               $body
+     * @param string               $method
+     * @param string               $version
      */
     public function __construct($uri = null, array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1')
     {
         parent::__construct($body);
-        if(is_string($uri))
+        if (\is_string($uri))
         {
             $this->uri = new Uri($uri);
         }
-        else if($uri instanceof Uri)
+        elseif ($uri instanceof Uri)
         {
             $this->uri = $uri;
         }
@@ -68,7 +73,7 @@ class Request extends AbstractMessage implements RequestInterface
      */
     public function getRequestTarget()
     {
-        return $this->requestTarget ?? (string)$this->uri;
+        return $this->requestTarget ?? (string) $this->uri;
     }
 
     /**
@@ -83,15 +88,18 @@ class Request extends AbstractMessage implements RequestInterface
      * immutability of the message, and MUST return an instance that has the
      * changed request target.
      *
-     * @link http://tools.ietf.org/html/rfc7230#section-2.7 (for the various
+     * @see http://tools.ietf.org/html/rfc7230#section-2.7 (for the various
      *     request-target forms allowed in request messages)
+     *
      * @param mixed $requestTarget
+     *
      * @return static
      */
     public function withRequestTarget($requestTarget)
     {
         $self = clone $this;
         $self->requestTarget = $requestTarget;
+
         return $self;
     }
 
@@ -117,13 +125,16 @@ class Request extends AbstractMessage implements RequestInterface
      * changed request method.
      *
      * @param string $method Case-sensitive method.
+     *
      * @return static
+     *
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod($method)
     {
         $self = clone $this;
         $self->method = $method;
+
         return $self;
     }
 
@@ -132,9 +143,10 @@ class Request extends AbstractMessage implements RequestInterface
      *
      * This method MUST return a UriInterface instance.
      *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
+     *
      * @return UriInterface Returns a UriInterface instance
-     *     representing the URI of the request.
+     *                      representing the URI of the request.
      */
     public function getUri()
     {
@@ -166,20 +178,23 @@ class Request extends AbstractMessage implements RequestInterface
      * immutability of the message, and MUST return an instance that has the
      * new UriInterface instance.
      *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     * @param UriInterface $uri New request URI to use.
-     * @param bool $preserveHost Preserve the original state of the Host header.
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
+     *
+     * @param UriInterface $uri          New request URI to use.
+     * @param bool         $preserveHost Preserve the original state of the Host header.
+     *
      * @return static
      */
     public function withUri(UriInterface $uri, $preserveHost = false)
     {
         $self = clone $this;
         $self->uri = $uri;
-        if(!$preserveHost)
+        if (!$preserveHost)
         {
             $self->headers = [];
             $self->headerNames = [];
         }
+
         return $self;
     }
 }

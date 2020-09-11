@@ -1,21 +1,22 @@
 <?php
+
 namespace Imi\Db\Query;
 
 use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Interfaces\IPaginateResult;
+use Imi\Db\Query\Interfaces\IResult;
 
 class PaginateResult implements IPaginateResult
 {
     /**
-     * 数据库查询结构
+     * 数据库查询结构.
      *
      * @var \Imi\Db\Query\Interfaces\IResult
      */
     protected $result;
 
     /**
-     * 数组数据
+     * 数组数据.
      *
      * @var array
      */
@@ -29,28 +30,28 @@ class PaginateResult implements IPaginateResult
     protected $page;
 
     /**
-     * 查询几条记录
+     * 查询几条记录.
      *
      * @var int
      */
     protected $limit;
 
     /**
-     * 记录总数
+     * 记录总数.
      *
      * @var int
      */
     protected $total;
 
     /**
-     * 总页数
+     * 总页数.
      *
      * @var int
      */
     protected $pageCount;
 
     /**
-     * 自定义选项
+     * 自定义选项.
      *
      * @var array
      */
@@ -68,7 +69,8 @@ class PaginateResult implements IPaginateResult
 
     /**
      * SQL是否执行成功
-     * @return boolean
+     *
+     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -76,7 +78,8 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取最后插入的ID
+     * 获取最后插入的ID.
+     *
      * @return string
      */
     public function getLastInsertId()
@@ -85,7 +88,8 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取影响行数
+     * 获取影响行数.
+     *
      * @return int
      */
     public function getAffectedRows()
@@ -95,7 +99,9 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 返回一行数据，数组或对象
+     *
      * @param string $className 实体类名，为null则返回数组
+     *
      * @return mixed
      */
     public function get($className = null)
@@ -104,8 +110,10 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 返回数组
+     * 返回数组.
+     *
      * @param string $className 实体类名，为null则数组每个成员为数组
+     *
      * @return array
      */
     public function getArray($className = null)
@@ -114,7 +122,8 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取一列
+     * 获取一列.
+     *
      * @return array
      */
     public function getColumn($column = 0)
@@ -123,7 +132,8 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取标量结果
+     * 获取标量结果.
+     *
      * @return mixed
      */
     public function getScalar()
@@ -132,7 +142,8 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取记录行数
+     * 获取记录行数.
+     *
      * @return int
      */
     public function getRowCount()
@@ -141,7 +152,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取执行的SQL语句
+     * 获取执行的SQL语句.
      *
      * @return string
      */
@@ -161,7 +172,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取数组数据
+     * 获取数组数据.
      *
      * @return void
      */
@@ -171,7 +182,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取记录总数
+     * 获取记录总数.
      *
      * @return int
      */
@@ -181,7 +192,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取查询几条记录
+     * 获取查询几条记录.
      *
      * @return int
      */
@@ -191,7 +202,7 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 获取总页数
+     * 获取总页数.
      *
      * @return int
      */
@@ -201,22 +212,23 @@ class PaginateResult implements IPaginateResult
     }
 
     /**
-     * 将当前对象作为数组返回
+     * 将当前对象作为数组返回.
+     *
      * @return array
      */
     public function toArray(): array
     {
         $arrayData = &$this->arrayData;
-        if(null === $arrayData)
+        if (null === $arrayData)
         {
             $options = $this->options;
             $arrayData = [
                 // 数据列表
-                $options['field_list'] ?? 'list'              =>  $this->result->getArray(),
+                $options['field_list'] ?? 'list'              => $this->result->getArray(),
                 // 每页记录数
-                $options['field_limit'] ?? 'limit'            =>  $this->limit,
+                $options['field_limit'] ?? 'limit'            => $this->limit,
             ];
-            if(null !== $this->total)
+            if (null !== $this->total)
             {
                 // 记录总数
                 $arrayData[$options['field_total'] ?? 'total'] = $this->total;
@@ -224,11 +236,12 @@ class PaginateResult implements IPaginateResult
                 $arrayData[$options['field_page_count'] ?? 'page_count'] = $this->pageCount;
             }
         }
+
         return $arrayData;
     }
 
     /**
-     * json 序列化
+     * json 序列化.
      *
      * @return array
      */
@@ -236,5 +249,4 @@ class PaginateResult implements IPaginateResult
     {
         return $this->toArray();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Http\SuperGlobals;
 
 use Imi\RequestContext;
@@ -7,25 +8,27 @@ class Post implements \ArrayAccess, \JsonSerializable
 {
     public function offsetSet($offset, $value)
     {
-        user_error('imi does not support to assign values to $_POST', E_USER_WARNING);
+        trigger_error('imi does not support to assign values to $_POST', \E_USER_WARNING);
     }
 
     public function offsetExists($offset)
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
+
         return null !== $request->post($offset);
     }
 
     public function offsetUnset($offset)
     {
-        user_error('imi does not support to unset values from $_POST', E_USER_WARNING);
+        trigger_error('imi does not support to unset values from $_POST', \E_USER_WARNING);
     }
 
     public function offsetGet($offset)
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
+
         return $request->post($offset);
     }
 
@@ -38,7 +41,7 @@ class Post implements \ArrayAccess, \JsonSerializable
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
+
         return $request->post();
     }
-
 }

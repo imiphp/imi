@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\TcpServer\Middleware;
 
 use Imi\Server\TcpServer\IReceiveHandler;

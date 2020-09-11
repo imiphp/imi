@@ -1,22 +1,24 @@
 <?php
+
 namespace Imi\Server\Route\Listener;
 
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Main\Helper;
-use Imi\ServerManage;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Bean\Annotation\Listener;
-use Imi\Server\Route\TMiddleware;
-use Imi\Server\Route\RouteCallable;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Main\Helper;
 use Imi\Server\Route\Annotation\Tcp\TcpAction;
-use Imi\Server\Route\Parser\TcpControllerParser;
 use Imi\Server\Route\Annotation\Tcp\TcpMiddleware;
+use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Server\Route\Parser\TcpControllerParser;
+use Imi\Server\Route\RouteCallable;
+use Imi\Server\Route\TMiddleware;
+use Imi\ServerManage;
 
 /**
- * TCP 服务器路由初始化
+ * TCP 服务器路由初始化.
+ *
  * @Listener("IMI.MAIN_SERVER.WORKER.START")
  */
 class TcpRouteInit implements IEventListener
@@ -24,8 +26,10 @@ class TcpRouteInit implements IEventListener
     use TMiddleware;
 
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(EventParam $e)
@@ -35,46 +39,47 @@ class TcpRouteInit implements IEventListener
     }
 
     /**
-     * 处理注解路由
+     * 处理注解路由.
+     *
      * @return void
      */
     private function parseAnnotations(EventParam $e)
     {
         $controllerParser = TcpControllerParser::getInstance();
-        foreach(ServerManage::getServers() as $name => $server)
+        foreach (ServerManage::getServers() as $name => $server)
         {
-            if(!$server instanceof \Imi\Server\TcpServer\Server)
+            if (!$server instanceof \Imi\Server\TcpServer\Server)
             {
                 continue;
             }
             $route = $server->getBean('TcpRoute');
-            foreach($controllerParser->getByServer($name) as $className => $classItem)
+            foreach ($controllerParser->getByServer($name) as $className => $classItem)
             {
                 // 类中间件
                 /** @var \Imi\Server\Route\Annotation\Tcp\TcpController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
                 $classMiddlewares = [];
-                foreach(AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
+                foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
-                foreach(AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
+                foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
                 {
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, TcpRoute::class);
-                    if(!isset($routes[0]))
+                    if (!isset($routes[0]))
                     {
                         throw new \RuntimeException(sprintf('%s->%s method has no route', $className, $methodName));
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
-                    foreach(AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
+                    foreach (AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
-                    
-                    foreach($routes as $routeItem)
+
+                    foreach ($routes as $routeItem)
                     {
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
                             'middlewares' => $middlewares,
@@ -87,22 +92,23 @@ class TcpRouteInit implements IEventListener
     }
 
     /**
-     * 处理配置文件路由
+     * 处理配置文件路由.
+     *
      * @return void
      */
     private function parseConfigs()
     {
-        foreach(ServerManage::getServers() as $server)
+        foreach (ServerManage::getServers() as $server)
         {
-            if(!$server instanceof \Imi\Server\TcpServer\Server)
+            if (!$server instanceof \Imi\Server\TcpServer\Server)
             {
                 continue;
             }
             $route = $server->getBean('TcpRoute');
-            foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
                 $routeAnnotation = new TcpRoute($routeOption['route'] ?? []);
-                if(isset($routeOption['callback']))
+                if (isset($routeOption['callback']))
                 {
                     $callable = $routeOption['callback'];
                 }

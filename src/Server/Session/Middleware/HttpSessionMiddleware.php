@@ -1,14 +1,15 @@
 <?php
+
 namespace Imi\Server\Session\Middleware;
 
 use Imi\Bean\Annotation\Bean;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @Bean("HttpSessionMiddleware")
@@ -16,7 +17,7 @@ use Imi\Server\Http\Message\Response;
 class HttpSessionMiddleware implements MiddlewareInterface
 {
     /**
-     * SessionID处理器
+     * SessionID处理器.
      *
      * @var callable
      */
@@ -33,7 +34,8 @@ class HttpSessionMiddleware implements MiddlewareInterface
 
         $sessionID = '';
         $sessionIdHandler = $this->sessionIdHandler;
-        if(null !== $sessionIdHandler && is_callable($sessionIdHandler)) {
+        if (null !== $sessionIdHandler && \is_callable($sessionIdHandler))
+        {
             $sessionID = ($sessionIdHandler)($request);
         }
         $sessionID = $sessionID ?: $request->getCookie($sessionManager->getName());
@@ -41,16 +43,19 @@ class HttpSessionMiddleware implements MiddlewareInterface
         // 开启session
         $this->start($sessionManager, $sessionID);
 
-        try{
+        try
+        {
             // 执行其它中间件
             $response = $handler->handle($request);
 
-            if($sessionManager->getConfig()->cookie->enable && $sessionManager->isNewSession() && $sessionManager->isChanged())
+            if ($sessionManager->getConfig()->cookie->enable && $sessionManager->isNewSession() && $sessionManager->isChanged())
             {
                 // 发送cookie
                 $response = $this->sendCookie($sessionManager, $response);
             }
-        } finally{
+        }
+        finally
+        {
             // 尝试进行垃圾回收
             $sessionManager->tryGC();
             // 保存关闭session
@@ -61,9 +66,11 @@ class HttpSessionMiddleware implements MiddlewareInterface
     }
 
     /**
-     * 开启session
+     * 开启session.
+     *
      * @param \Imi\Server\Session\SessionManager $sessionManager
-     * @param string $sessionID
+     * @param string                             $sessionID
+     *
      * @return void
      */
     private function start($sessionManager, $sessionID)
@@ -72,15 +79,18 @@ class HttpSessionMiddleware implements MiddlewareInterface
     }
 
     /**
-     * 发送cookie
+     * 发送cookie.
+     *
      * @param \Imi\Server\Session\SessionManager $sessionManager
-     * @param Response $response
+     * @param Response                           $response
+     *
      * @return ResponseInterface
      */
     private function sendCookie($sessionManager, Response $response): ResponseInterface
     {
         $config = $sessionManager->getConfig();
         $cookie = $config->cookie;
+
         return $response->withCookie($sessionManager->getName(), $sessionManager->getID(), 0 === $cookie->lifetime ? 0 : (time() + $cookie->lifetime), $cookie->path, $cookie->domain, $cookie->secure, $cookie->httponly);
     }
 }

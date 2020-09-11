@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Util\Http\Consts;
 
 /**
- * 常见的http请求方法
+ * 常见的http请求方法.
  */
 abstract class RequestMethod
 {

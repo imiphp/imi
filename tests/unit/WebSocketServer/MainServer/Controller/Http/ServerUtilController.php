@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\WebSocketServer\MainServer\Controller\Http;
 
 use Imi\Controller\HttpController;
@@ -7,7 +8,8 @@ use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Server;
 
 /**
- * 服务器工具类
+ * 服务器工具类.
+ *
  * @Controller("/serverUtil/")
  */
 class ServerUtilController extends HttpController
@@ -26,6 +28,7 @@ class ServerUtilController extends HttpController
         $result['main'] = $server->getName();
         $server = Server::getServer('not found');
         $result['notFound'] = null === $server;
+
         return $result;
     }
 
@@ -43,6 +46,7 @@ class ServerUtilController extends HttpController
         $result['sendMessageRawAll'] = Server::sendMessageRaw('test');
         $result['sendMessageRaw1'] = Server::sendMessageRaw('test', 0);
         $result['sendMessageRaw2'] = Server::sendMessageRaw('test', [0, 1]);
+
         return $result;
     }
 
@@ -54,7 +58,7 @@ class ServerUtilController extends HttpController
     public function send($fds)
     {
         $data = [
-            'data'  =>  'test',
+            'data'  => 'test',
         ];
         $dataStr = json_encode($data);
         $result = [];
@@ -67,6 +71,7 @@ class ServerUtilController extends HttpController
 
         $result['sendToAll'] = Server::sendToAll($data);
         $result['sendRawToAll'] = Server::sendRawToAll($dataStr);
+
         return $result;
     }
 
@@ -78,7 +83,7 @@ class ServerUtilController extends HttpController
     public function sendToGroup()
     {
         $data = [
-            'data'  =>  'test',
+            'data'  => 'test',
         ];
         $dataStr = json_encode($data);
         $result = [];
@@ -88,5 +93,4 @@ class ServerUtilController extends HttpController
 
         return $result;
     }
-
 }

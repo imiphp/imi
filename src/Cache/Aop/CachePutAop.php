@@ -1,18 +1,17 @@
 <?php
+
 namespace Imi\Cache\Aop;
 
-use Imi\Config;
-use Imi\Aop\PointCutType;
-use Imi\Util\ClassObject;
-use Imi\Cache\CacheManager;
-use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
-use Imi\Lock\Aop\TLockableParser;
-use Imi\Cache\Annotation\CachePut;
-use Imi\Cache\Annotation\Cacheable;
+use Imi\Aop\AroundJoinPoint;
+use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Cache\Annotation\CachePut;
+use Imi\Cache\CacheManager;
+use Imi\Config;
+use Imi\Util\ClassObject;
 
 /**
  * @Aspect
@@ -22,7 +21,8 @@ class CachePutAop
     use TCacheAopHelper;
 
     /**
-     * 处理 CachePut 注解
+     * 处理 CachePut 注解.
+     *
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
@@ -30,6 +30,7 @@ class CachePutAop
      *         }
      * )
      * @Around
+     *
      * @return mixed
      */
     public function parseCachePut(AroundJoinPoint $joinPoint)
@@ -45,14 +46,14 @@ class CachePutAop
         // 方法参数
         $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 
-        foreach($cachePuts as $cachePut)
+        foreach ($cachePuts as $cachePut)
         {
             // 缓存名
             $name = $cachePut->name;
-            if(null === $name)
+            if (null === $name)
             {
                 $name = Config::get('@currentServer.cache.default');
-                if(null === $name)
+                if (null === $name)
                 {
                     throw new \RuntimeException('config "cache.default" not found');
                 }

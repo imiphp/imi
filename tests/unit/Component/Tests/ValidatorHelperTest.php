@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
-use PHPUnit\Framework\Assert;
-use Imi\Validate\ValidatorHelper;
 use Imi\Test\Component\Enum\TestEnum;
+use Imi\Validate\ValidatorHelper;
+use PHPUnit\Framework\Assert;
 
 /**
  * @testdox ValidatorHelper
@@ -369,5 +370,4 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::cnIdcard('632123198209270518'));
         Assert::assertFalse(ValidatorHelper::cnIdcard('632123198209270517'));
     }
-
 }

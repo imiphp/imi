@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Task;
 
 use Imi\Task\Interfaces\ITaskParam;
@@ -13,7 +14,8 @@ class TaskParam implements ITaskParam
     }
 
     /**
-     * 获取数据
+     * 获取数据.
+     *
      * @return mixed
      */
     public function getData()

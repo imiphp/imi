@@ -1,30 +1,33 @@
 <?php
+
 namespace Imi;
 
-use Imi\Util\Imi;
-use Imi\Main\Helper;
 use Imi\Util\ArrayData;
+use Imi\Util\Imi;
 
 abstract class Config
 {
     /**
-     * 配置数组
+     * 配置数组.
+     *
      * @var ArrayData[]
      */
     private static array $configs = [];
 
     /**
-     * 增加配置
+     * 增加配置.
+     *
      * @param string $name
-     * @param array $config
-     * @return boolean
+     * @param array  $config
+     *
+     * @return bool
      */
     public static function addConfig($name, array $config)
     {
         $nameSplit = explode('.', $name);
 
         $first = array_shift($nameSplit);
-        if(isset(static::$configs[$first]))
+        if (isset(static::$configs[$first]))
         {
             $configData = static::$configs[$first];
         }
@@ -33,11 +36,11 @@ abstract class Config
             static::$configs[$first] = $configData = new ArrayData([]);
         }
 
-        if(isset($nameSplit[0]))
+        if (isset($nameSplit[0]))
         {
             $configName = implode('.', $nameSplit);
             $configData->set($configName, $config);
-            if(false !== ($configs = $configData->get($configName . '.configs')))
+            if (false !== ($configs = $configData->get($configName . '.configs')))
             {
                 static::load($name, $configs);
             }
@@ -45,7 +48,7 @@ abstract class Config
         else
         {
             $configData->set($config);
-            if($configData->exists('configs'))
+            if ($configData->exists('configs'))
             {
                 static::load($name, $configData->get('configs', []));
             }
@@ -55,23 +58,27 @@ abstract class Config
     }
 
     /**
-     * 加载配置列表
+     * 加载配置列表.
+     *
      * @param array $configList
+     *
      * @return void
      */
     public static function load($name, array $configList)
     {
-        foreach($configList as $alias => $fileName)
+        foreach ($configList as $alias => $fileName)
         {
             static::set($name . '.' . $alias, include $fileName);
         }
     }
-    
+
     /**
-     * 设置配置
+     * 设置配置.
+     *
      * @param string $name
-     * @param array $config
-     * @return boolean
+     * @param array  $config
+     *
+     * @return bool
      */
     public static function setConfig($name, array $config)
     {
@@ -79,16 +86,19 @@ abstract class Config
     }
 
     /**
-     * 移除配置项
+     * 移除配置项.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public static function removeConfig($name)
     {
         $configs = &static::$configs;
-        if(isset($configs[$name]))
+        if (isset($configs[$name]))
         {
             unset($configs[$name]);
+
             return true;
         }
         else
@@ -99,9 +109,11 @@ abstract class Config
 
     /**
      * 设置配置值
+     *
      * @param string $name
-     * @param mixed $value
-     * @return boolean
+     * @param mixed  $value
+     *
+     * @return bool
      */
     public static function set(string $name, $value)
     {
@@ -110,7 +122,7 @@ abstract class Config
         {
             $first = array_shift($names);
             $configs = &static::$configs;
-            if(isset($configs[$first]))
+            if (isset($configs[$first]))
             {
                 return $configs[$first]->setVal($names, $value);
             }
@@ -127,8 +139,10 @@ abstract class Config
 
     /**
      * 获取配置值
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function get(string $name, $default = null)
@@ -137,11 +151,11 @@ abstract class Config
         if (isset($names[0]))
         {
             $first = array_shift($names);
-            if('@currentServer' === $first)
+            if ('@currentServer' === $first)
             {
                 $server = RequestContext::get('server');
                 $isCurrentServer = null !== $server;
-                if($isCurrentServer)
+                if ($isCurrentServer)
                 {
                     $first = '@server';
                     array_unshift($names, $server->getName());
@@ -156,28 +170,32 @@ abstract class Config
                 $isCurrentServer = false;
             }
             $configs = &static::$configs;
-            if(isset($configs[$first]))
+            if (isset($configs[$first]))
             {
                 $result = $configs[$first]->get($names, null);
             }
-            if(isset($result))
+            if (isset($result))
             {
                 return $result;
             }
-            else if($isCurrentServer)
+            elseif ($isCurrentServer)
             {
                 $first = '@app';
                 unset($names[0]);
+
                 return $configs[$first]->get($names, $default);
             }
         }
+
         return $default;
     }
 
     /**
-     * 配置值是否存在
+     * 配置值是否存在.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public static function has(string $name)
     {
@@ -186,7 +204,7 @@ abstract class Config
         {
             $first = array_shift($names);
             $configs = &static::$configs;
-            if(isset($configs[$first]))
+            if (isset($configs[$first]))
             {
                 return null !== $configs[$first]->get($names, null);
             }
@@ -202,7 +220,8 @@ abstract class Config
     }
 
     /**
-     * 获取所有别名
+     * 获取所有别名.
+     *
      * @return array
      */
     public static function getAlias()
@@ -211,7 +230,8 @@ abstract class Config
     }
 
     /**
-     * 清空所有配置项
+     * 清空所有配置项.
+     *
      * @return void
      */
     public static function clear()

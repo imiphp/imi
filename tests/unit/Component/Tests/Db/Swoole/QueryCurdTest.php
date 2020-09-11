@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Db\Swoole;
 
 use Imi\Test\Component\Tests\Db\QueryCurdBaseTest;
@@ -9,17 +10,16 @@ use Imi\Test\Component\Tests\Db\QueryCurdBaseTest;
 class QueryCurdTest extends QueryCurdBaseTest
 {
     /**
-     * 连接池名
+     * 连接池名.
      *
      * @var string
      */
     protected $poolName = 'swooleMysql';
 
     /**
-     * 测试 whereEx 的 SQL
+     * 测试 whereEx 的 SQL.
      *
      * @var string
      */
     protected $expectedTestWhereExSql = 'select * from `tb_article` where (`id` = :p1 and (`id` in (:p2) ) )';
-
 }

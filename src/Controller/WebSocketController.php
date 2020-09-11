@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Controller;
 
 /**
- * @inheritDoc
+ * {@inheritdoc}
  */
 abstract class WebSocketController extends \Imi\Server\WebSocket\Controller\WebSocketController
 {

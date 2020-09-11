@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Http\SuperGlobals;
 
 use Imi\Server\Session\Session as ImiSession;
@@ -34,5 +35,4 @@ class Session implements \ArrayAccess, \JsonSerializable
     {
         return ImiSession::get();
     }
-
 }

@@ -1,19 +1,20 @@
 <?php
+
 namespace Imi\Cli\Tools\Generate\Model;
 
-use Imi\Db\Db;
-use Imi\Config;
-use Imi\Util\Imi;
-use Imi\Util\File;
-use Imi\Util\Text;
-use Imi\Cli\ArgType;
-use Imi\Db\Util\SqlUtil;
-use Imi\Cli\Annotation\Option;
-use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\Argument;
-use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Annotation\Option;
+use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Config;
+use Imi\Db\Db;
+use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Util\SqlUtil;
+use Imi\Util\File;
+use Imi\Util\Imi;
+use Imi\Util\Text;
 
 /**
  * @Command("generate")
@@ -22,6 +23,7 @@ class ModelGenerate extends BaseCommand
 {
     /**
      * 生成数据库中所有表的模型文件，如果设置了`include`或`exclude`，则按照相应规则过滤表。
+     *
      * @CommandAction("model")
      *
      * @Argument(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
@@ -34,29 +36,30 @@ class ModelGenerate extends BaseCommand
      * @Option(name="config", type=ArgType::STRING, default=true, comments="配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true")
      * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
+     *
      * @return void
      */
     public function generate(string $namespace, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity): void
     {
-        $override = (string)$override;
-        switch($override)
+        $override = (string) $override;
+        switch ($override)
         {
             case 'base':
                 break;
             case 'model':
                 break;
             default:
-                $override = (bool)json_decode($override);
+                $override = (bool) json_decode($override);
         }
-        if(in_array($config, ['true', 'false']))
+        if (\in_array($config, ['true', 'false']))
         {
-            $config = (bool)json_decode($config);
+            $config = (bool) json_decode($config);
         }
-        if(true === $config)
+        if (true === $config)
         {
             $configData = Config::get('@app.tools.generate/model');
         }
-        else if(is_string($config))
+        elseif (\is_string($config))
         {
             $configData = include $config;
             $configData = $configData['tools']['generate/model'];
@@ -67,7 +70,7 @@ class ModelGenerate extends BaseCommand
         }
         $query = Db::query($poolName);
         // 数据库
-        if(null === $database)
+        if (null === $database)
         {
             $database = $query->execute('select database()')->getScalar();
         }
@@ -82,7 +85,7 @@ class ModelGenerate extends BaseCommand
                       ->select()
                       ->getArray();
         // model保存路径
-        if(null === $basePath)
+        if (null === $basePath)
         {
             $modelPath = Imi::getNamespacePath($namespace);
         }
@@ -90,7 +93,7 @@ class ModelGenerate extends BaseCommand
         {
             $modelPath = $basePath;
         }
-        if(null === $modelPath)
+        if (null === $modelPath)
         {
             $this->output->writeln('<error>Namespace</error> <comments>' . $namespace . '</comments> <error>cannot found</error>');
             exit;
@@ -99,21 +102,21 @@ class ModelGenerate extends BaseCommand
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
-        foreach($list as $item)
+        foreach ($list as $item)
         {
             $table = $item['TABLE_NAME'];
-            if(!$this->checkTable($table, $include, $exclude))
+            if (!$this->checkTable($table, $include, $exclude))
             {
                 // 不符合$include和$exclude
                 continue;
             }
             $className = $this->getClassName($table, $prefix);
-            if(isset($configData['relation'][$table]))
+            if (isset($configData['relation'][$table]))
             {
                 $configItem = $configData['relation'][$table];
                 $modelNamespace = $configItem['namespace'];
                 $path = Imi::getNamespacePath($modelNamespace);
-                if(null === $path)
+                if (null === $path)
                 {
                     $this->output->writeln('<error>Namespace</error> <comments>' . $modelNamespace . '</comments> <error>cannot found</error>');
                     exit;
@@ -127,13 +130,13 @@ class ModelGenerate extends BaseCommand
             else
             {
                 $hasResult = false;
-                foreach($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
+                foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
                 {
-                    if(in_array($table, $namespaceItem['tables'] ?? []))
+                    if (\in_array($table, $namespaceItem['tables'] ?? []))
                     {
                         $modelNamespace = $namespaceName;
                         $path = Imi::getNamespacePath($modelNamespace);
-                        if(null === $path)
+                        if (null === $path)
                         {
                             $this->output->writeln('<error>Namespace</error> <comments>' . $modelNamespace . '</comments> <error>cannot found</error>');
                             exit;
@@ -143,11 +146,11 @@ class ModelGenerate extends BaseCommand
                         File::createDir($basePath);
                         $fileName = File::path($path, $className . '.php');
                         $hasResult = true;
-                        $withRecords = in_array($table, $namespaceItem['withRecords'] ?? []);
+                        $withRecords = \in_array($table, $namespaceItem['withRecords'] ?? []);
                         break;
                     }
                 }
-                if(!$hasResult)
+                if (!$hasResult)
                 {
                     $modelNamespace = $namespace;
                     $fileName = File::path($modelPath, $className . '.php');
@@ -155,17 +158,17 @@ class ModelGenerate extends BaseCommand
                     $withRecords = false;
                 }
             }
-            if(false === $override && is_file($fileName))
+            if (false === $override && is_file($fileName))
             {
                 // 不覆盖
                 $this->output->writeln('Skip <info>' . $table . '</info>');
                 continue;
             }
             $ddl = $this->getDDL($query, $table);
-            if($withRecords)
+            if ($withRecords)
             {
                 $dataList = $query->from($table)->select()->getArray();
-                $ddl .= ';' . PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
+                $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
             }
             $data = [
                 'namespace'     => $modelNamespace,
@@ -180,18 +183,18 @@ class ModelGenerate extends BaseCommand
                 'ddl'           => $ddl,
                 'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
             ];
-            $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`.`%s`' , $database, $table))->getArray();
+            $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
-            if(!is_file($baseFileName) || true === $override || 'base' === $override)
+            if (!is_file($baseFileName) || true === $override || 'base' === $override)
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> BaseClass...');
                 $baseContent = $this->renderTemplate('base-template', $data);
                 file_put_contents($baseFileName, $baseContent);
             }
 
-            if(!is_file($fileName) || true === $override || 'model' === $override)
+            if (!is_file($fileName) || true === $override || 'model' === $override)
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> Class...');
                 $content = $this->renderTemplate('template', $data);
@@ -202,56 +205,63 @@ class ModelGenerate extends BaseCommand
     }
 
     /**
-     * 检查表是否生成
+     * 检查表是否生成.
+     *
      * @param string $table
-     * @param array $include
-     * @param array $exclude
-     * @return boolean
+     * @param array  $include
+     * @param array  $exclude
+     *
+     * @return bool
      */
     private function checkTable(string $table, array $include, array $exclude): bool
     {
-        if(in_array($table, $exclude))
+        if (\in_array($table, $exclude))
         {
             return false;
         }
 
-        return !isset($include[0]) || in_array($table, $include);
+        return !isset($include[0]) || \in_array($table, $include);
     }
 
     /**
-     * 表名转短类名
+     * 表名转短类名.
+     *
      * @param string $table
-     * @param array $prefixs
+     * @param array  $prefixs
+     *
      * @return string
      */
     private function getClassName(string $table, array $prefixs): string
     {
-        foreach($prefixs as $prefix)
+        foreach ($prefixs as $prefix)
         {
-            $prefixLen = strlen($prefix);
-            if(substr($table, 0, $prefixLen) === $prefix)
+            $prefixLen = \strlen($prefix);
+            if (substr($table, 0, $prefixLen) === $prefix)
             {
                 $table = substr($table, $prefixLen);
                 break;
             }
         }
+
         return Text::toPascalName($table);
     }
 
     /**
-     * 处理字段信息
+     * 处理字段信息.
+     *
      * @param array $fields
      * @param array $data
-     * @param boolean $isView
+     * @param bool  $isView
+     *
      * @return void
      */
     private function parseFields(array $fields, ?array &$data, bool $isView): void
     {
         $idCount = 0;
-        foreach($fields as $i => $field)
+        foreach ($fields as $i => $field)
         {
             $this->parseFieldType($field['Type'], $typeName, $length, $accuracy);
-            if($isView && 0 === $i)
+            if ($isView && 0 === $i)
             {
                 $isPk = true;
             }
@@ -266,14 +276,14 @@ class ModelGenerate extends BaseCommand
                 'phpType'           => $this->dbFieldTypeToPhp($typeName),
                 'length'            => $length,
                 'accuracy'          => $accuracy,
-                'nullable'          => $field['Null'] === 'YES',
+                'nullable'          => 'YES' === $field['Null'],
                 'default'           => $field['Default'],
                 'isPrimaryKey'      => $isPk,
                 'primaryKeyIndex'   => $isPk ? $idCount : -1,
                 'isAutoIncrement'   => false !== strpos($field['Extra'], 'auto_increment'),
                 'comment'           => $field['Comment'],
             ];
-            if($isPk)
+            if ($isPk)
             {
                 $data['table']['id'][] = $field['Field'];
                 ++$idCount;
@@ -282,27 +292,30 @@ class ModelGenerate extends BaseCommand
     }
 
     /**
-     * 处理类似varchar(32)和decimal(10,2)格式的字段类型
+     * 处理类似varchar(32)和decimal(10,2)格式的字段类型.
+     *
      * @param string $text
      * @param string $typeName
-     * @param int $length
-     * @param int $accuracy
+     * @param int    $length
+     * @param int    $accuracy
+     *
      * @return bool
      */
     public function parseFieldType(string $text, ?string &$typeName, ?int &$length, ?int &$accuracy): bool
     {
-        if(preg_match('/([^(]+)(\((\d+)(,(\d+))?\))?/', $text, $match))
+        if (preg_match('/([^(]+)(\((\d+)(,(\d+))?\))?/', $text, $match))
         {
             $typeName = $match[1];
-            $length = (int)($match[3] ?? 0);
-            if(isset($match[5]))
+            $length = (int) ($match[3] ?? 0);
+            if (isset($match[5]))
             {
-                $accuracy = (int)$match[5];
+                $accuracy = (int) $match[5];
             }
             else
             {
                 $accuracy = 0;
             }
+
             return true;
         }
         else
@@ -310,14 +323,17 @@ class ModelGenerate extends BaseCommand
             $typeName = '';
             $length = 0;
             $accuracy = 0;
+
             return false;
         }
     }
 
     /**
-     * 渲染模版
+     * 渲染模版.
+     *
      * @param string $template
-     * @param array $data
+     * @param array  $data
+     *
      * @return string
      */
     private function renderTemplate(string $template, array $data): string
@@ -325,12 +341,15 @@ class ModelGenerate extends BaseCommand
         extract($data);
         ob_start();
         include __DIR__ . '/' . $template . '.tpl';
+
         return ob_get_clean();
     }
 
     /**
-     * 数据库字段类型转PHP的字段类型
+     * 数据库字段类型转PHP的字段类型.
+     *
      * @param string $type
+     *
      * @return string
      */
     private function dbFieldTypeToPhp(string $type): string
@@ -347,16 +366,18 @@ class ModelGenerate extends BaseCommand
             'double'    => 'float',
             'float'     => 'float',
             'decimal'   => 'float',
-            'json'      =>  \Imi\Util\LazyArrayObject::class,
+            'json'      => \Imi\Util\LazyArrayObject::class,
         ];
+
         return $map[$firstType] ?? 'string';
     }
 
     /**
-     * 获取创建表的 DDL
+     * 获取创建表的 DDL.
      *
      * @param \Imi\Db\Query\Interfaces\IQuery $query
-     * @param string $table
+     * @param string                          $table
+     *
      * @return string
      */
     public function getDDL(IQuery $query, string $table): string
@@ -364,7 +385,7 @@ class ModelGenerate extends BaseCommand
         $result = $query->execute('show create table `' . $table . '`');
         $sql = $result->get()['Create Table'] ?? '';
         $sql = preg_replace('/ AUTO_INCREMENT=\d+ /', ' ', $sql, 1);
+
         return $sql;
     }
-
 }

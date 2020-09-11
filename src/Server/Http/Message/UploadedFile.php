@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Http\Message;
 
 use Imi\Util\Stream\FileStream;
@@ -7,44 +8,51 @@ use Psr\Http\Message\UploadedFileInterface;
 class UploadedFile implements UploadedFileInterface
 {
     /**
-     * 文件在客户端时的文件名
+     * 文件在客户端时的文件名.
+     *
      * @var string
      */
     protected $fileName;
 
     /**
-     * 文件mime类型
+     * 文件mime类型.
+     *
      * @var string
      */
     protected $mediaType;
 
     /**
-     * 临时文件名
+     * 临时文件名.
+     *
      * @var string
      */
     protected $tmpFileName;
-    
+
     /**
      * 文件大小，单位：字节
+     *
      * @var int
      */
     protected $size;
 
     /**
      * 错误码
+     *
      * @var int
      */
     protected $error;
-    
+
     /**
      * 文件流
+     *
      * @var \Imi\Util\Stream\FileStream
      */
     protected $stream;
-    
+
     /**
-     * 文件是否被移动过
-     * @var boolean
+     * 文件是否被移动过.
+     *
+     * @var bool
      */
     protected $isMoved = false;
 
@@ -70,15 +78,17 @@ class UploadedFile implements UploadedFileInterface
      * an exception.
      *
      * @return StreamInterface Stream representation of the uploaded file.
+     *
      * @throws \RuntimeException in cases when no stream is available or can be
-     *     created.
+     *                           created.
      */
     public function getStream()
     {
-        if(null === $this->stream)
+        if (null === $this->stream)
         {
             $this->stream = new FileStream($this->tmpFileName);
         }
+
         return $this->stream;
     }
 
@@ -109,22 +119,24 @@ class UploadedFile implements UploadedFileInterface
      *
      * @see http://php.net/is_uploaded_file
      * @see http://php.net/move_uploaded_file
+     *
      * @param string $targetPath Path to which to move the uploaded file.
+     *
      * @throws \InvalidArgumentException if the $path specified is invalid.
-     * @throws \RuntimeException on any error during the move operation, or on
-     *     the second or subsequent call to the method.
+     * @throws \RuntimeException         on any error during the move operation, or on
+     *                                   the second or subsequent call to the method.
      */
     public function moveTo($targetPath)
     {
-        if(!is_string($targetPath))
+        if (!\is_string($targetPath))
         {
             throw new \InvalidArgumentException('targetPath specified is invalid');
         }
-        if($this->isMoved)
+        if ($this->isMoved)
         {
             throw new \RuntimeException('file can not be moved');
         }
-        if(is_uploaded_file($this->tmpFileName))
+        if (is_uploaded_file($this->tmpFileName))
         {
             $this->isMoved = move_uploaded_file($this->tmpFileName, $targetPath);
         }
@@ -132,12 +144,12 @@ class UploadedFile implements UploadedFileInterface
         {
             $this->isMoved = rename($this->tmpFileName, $targetPath);
         }
-        if(!$this->isMoved)
+        if (!$this->isMoved)
         {
             throw new \RuntimeException(sprintf('File %s move to %s failed', $this->tmpFileName, $targetPath));
         }
     }
-    
+
     /**
      * Retrieve the file size.
      *
@@ -151,7 +163,7 @@ class UploadedFile implements UploadedFileInterface
     {
         return $this->size;
     }
-    
+
     /**
      * Retrieve the error associated with the uploaded file.
      *
@@ -164,13 +176,14 @@ class UploadedFile implements UploadedFileInterface
      * the file in the $_FILES array.
      *
      * @see http://php.net/manual/en/features.file-upload.errors.php
+     *
      * @return int One of PHP's UPLOAD_ERR_XXX constants.
      */
     public function getError()
     {
         return $this->error;
     }
-    
+
     /**
      * Retrieve the filename sent by the client.
      *
@@ -182,13 +195,13 @@ class UploadedFile implements UploadedFileInterface
      * the file in the $_FILES array.
      *
      * @return string|null The filename sent by the client or null if none
-     *     was provided.
+     *                     was provided.
      */
     public function getClientFilename()
     {
         return $this->fileName;
     }
-    
+
     /**
      * Retrieve the media type sent by the client.
      *
@@ -200,7 +213,7 @@ class UploadedFile implements UploadedFileInterface
      * the file in the $_FILES array.
      *
      * @return string|null The media type sent by the client or null if none
-     *     was provided.
+     *                     was provided.
      */
     public function getClientMediaType()
     {
@@ -208,13 +221,12 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
-     * Get 临时文件名
+     * Get 临时文件名.
      *
      * @return string
-     */ 
+     */
     public function getTmpFileName()
     {
         return $this->tmpFileName;
     }
-
 }

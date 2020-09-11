@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Lock\Handler;
 
 use Imi\Util\Coroutine;
@@ -6,7 +7,7 @@ use Imi\Util\Coroutine;
 abstract class BaseLock implements ILockHandler
 {
     /**
-     * 锁的唯一 ID
+     * 锁的唯一 ID.
      *
      * @var string
      */
@@ -14,42 +15,43 @@ abstract class BaseLock implements ILockHandler
 
     /**
      * 是否已加锁
+     *
      * @var bool
      */
     protected $isLocked = false;
 
     /**
-     * 等待锁超时时间，单位：毫秒，0为不限制
-     * 
+     * 等待锁超时时间，单位：毫秒，0为不限制.
+     *
      * @var int
      */
     protected $waitTimeout = 3000;
 
     /**
-     * 锁超时时间，单位：毫秒
-     * 
+     * 锁超时时间，单位：毫秒.
+     *
      * @var int
      */
     protected $lockExpire = 3000;
 
     /**
-     * 获得锁的协程ID
+     * 获得锁的协程ID.
      *
-     * @var integer
+     * @var int
      */
     private $lockCoId = -1;
-    
+
     public function __construct($id, $options = [])
     {
         $this->id = $id;
-        foreach($options as $k => $v)
+        foreach ($options as $k => $v)
         {
             $this->$k = $v;
         }
     }
 
     /**
-     * 获取锁的唯一ID
+     * 获取锁的唯一ID.
      *
      * @return string
      */
@@ -59,38 +61,43 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 加锁，会挂起协程
+     * 加锁，会挂起协程.
      *
-     * @param callable $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      * @param callable $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
-     * @return boolean
+     *
+     * @return bool
      */
     public function lock($taskCallable = null, $afterLockCallable = null): bool
     {
-        if($this->isLocked())
+        if ($this->isLocked())
         {
             return false;
         }
-        if(!$this->__lock())
+        if (!$this->__lock())
         {
             return false;
         }
         $this->isLocked = true;
         $this->lockCoId = Coroutine::getuid();
-        if(null === $taskCallable)
+        if (null === $taskCallable)
         {
             return true;
         }
         else
         {
-            try {
-                if(null !== $afterLockCallable && true === $afterLockCallable())
+            try
+            {
+                if (null !== $afterLockCallable && true === $afterLockCallable())
                 {
                     return true;
                 }
                 $taskCallable();
+
                 return true;
-            } finally {
+            }
+            finally
+            {
                 $this->unlock();
             }
         }
@@ -100,55 +107,61 @@ abstract class BaseLock implements ILockHandler
      * 尝试获取锁
      *
      * @param callable $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
-     * @return boolean
+     *
+     * @return bool
      */
     public function tryLock($taskCallable = null): bool
     {
-        if($this->isLocked())
+        if ($this->isLocked())
         {
             return false;
         }
-        if(!$this->__tryLock())
+        if (!$this->__tryLock())
         {
             return false;
         }
         $this->isLocked = true;
         $this->lockCoId = Coroutine::getuid();
-        if(null !== $taskCallable)
+        if (null !== $taskCallable)
         {
-            try {
+            try
+            {
                 $taskCallable();
-            } finally {
+            }
+            finally
+            {
                 $this->unlock();
             }
         }
+
         return true;
     }
 
     /**
      * 解锁
      *
-     * @return boolean
+     * @return bool
      */
     public function unlock(): bool
     {
-        if(!$this->isLocked)
+        if (!$this->isLocked)
         {
             return false;
         }
-        if(!$this->__unlock())
+        if (!$this->__unlock())
         {
             return false;
         }
         $this->isLocked = false;
         $this->lockCoId = -1;
+
         return true;
     }
 
     /**
      * 获取当前是否已获得锁状态
      *
-     * @return boolean
+     * @return bool
      */
     public function isLocked(): bool
     {
@@ -156,13 +169,13 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 解锁并释放所有资源
+     * 解锁并释放所有资源.
      *
      * @return void
      */
     public function close()
     {
-        if($this->isLocked)
+        if ($this->isLocked)
         {
             $this->unlock();
         }
@@ -170,58 +183,57 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 解锁并释放所有资源
+     * 解锁并释放所有资源.
      *
      * @return void
      */
     protected function __close()
     {
-        
     }
-    
+
     /**
-     * 加锁，会挂起协程
+     * 加锁，会挂起协程.
      *
-     * @return boolean
+     * @return bool
      */
-    protected abstract function __lock(): bool;
+    abstract protected function __lock(): bool;
 
     /**
      * 尝试获取锁
      *
-     * @return boolean
+     * @return bool
      */
-    protected abstract function __tryLock(): bool;
+    abstract protected function __tryLock(): bool;
 
     /**
      * 解锁
      *
-     * @return boolean
+     * @return bool
      */
-    protected abstract function __unlock(): bool;
+    abstract protected function __unlock(): bool;
 
     /**
-     * Get 等待锁超时时间，单位：毫秒，0为不限制
+     * Get 等待锁超时时间，单位：毫秒，0为不限制.
      *
-     * @return  int
-     */ 
+     * @return int
+     */
     public function getWaitTimeout(): int
     {
         return $this->waitTimeout;
     }
 
     /**
-     * Get 锁超时时间，单位：毫秒
+     * Get 锁超时时间，单位：毫秒.
      *
-     * @return  int
-     */ 
+     * @return int
+     */
     public function getLockExpire(): int
     {
         return $this->lockExpire;
     }
 
     /**
-     * 获取获得锁的协程ID
+     * 获取获得锁的协程ID.
      *
      * @return int
      */
@@ -229,5 +241,4 @@ abstract class BaseLock implements ILockHandler
     {
         return $this->lockCoId;
     }
-
 }

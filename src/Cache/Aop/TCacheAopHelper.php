@@ -1,24 +1,25 @@
 <?php
+
 namespace Imi\Cache\Aop;
 
 use Imi\Aop\JoinPoint;
-use Imi\Bean\BeanFactory;
-use Imi\Util\ObjectArrayHelper;
 use Imi\Cache\Annotation\CachePut;
+use Imi\Util\ObjectArrayHelper;
 
 trait TCacheAopHelper
 {
     /**
-     * 获取缓存key
+     * 获取缓存key.
      *
-     * @param \Imi\Aop\JoinPoint $joinPoint
-     * @param array $args
+     * @param \Imi\Aop\JoinPoint                                                                              $joinPoint
+     * @param array                                                                                           $args
      * @param \Imi\Cache\Annotation\Cacheable|\Imi\Cache\Annotation\CacheEvict|\Imi\Cache\Annotation\CachePut $cacheable
+     *
      * @return string
      */
     protected function getKey(JoinPoint $joinPoint, $args, $cacheable)
     {
-        if(null === $cacheable->key)
+        if (null === $cacheable->key)
         {
             return md5(
                 get_parent_class($joinPoint->getTarget())
@@ -31,16 +32,16 @@ trait TCacheAopHelper
         }
         else
         {
-            return preg_replace_callback('/\{([^\}]+)\}/', function($matches) use($args, $cacheable){
+            return preg_replace_callback('/\{([^\}]+)\}/', function ($matches) use ($args, $cacheable) {
                 $argName = $matches[1];
-                if(':args' === $argName)
+                if (':args' === $argName)
                 {
                     return ($cacheable->hashMethod)(serialize($args));
                 }
                 else
                 {
                     $value = ObjectArrayHelper::get($args, $argName);
-                    if(is_scalar($value))
+                    if (is_scalar($value))
                     {
                         return $value;
                     }
@@ -57,15 +58,17 @@ trait TCacheAopHelper
      * 获取缓存值
      *
      * @param \Imi\Cache\Annotation\CachePut $cachePut
-     * @param mixed $value
+     * @param mixed                          $value
+     *
      * @return mixed
      */
     protected function getValue(CachePut $cachePut, $value)
     {
-        if(null === $cachePut->value)
+        if (null === $cachePut->value)
         {
             return $value;
         }
+
         return ObjectArrayHelper::get($value, $cachePut->value);
     }
 }

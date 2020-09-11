@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Http\Error;
 
 use Imi\App;
@@ -9,13 +10,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * http 未匹配路由时的处理器
+ * http 未匹配路由时的处理器.
+ *
  * @Bean("HttpNotFoundHandler")
  */
 class HttpNotFoundHandler implements IHttpNotFoundHandler
 {
     /**
-     * 处理器类名，如果为null则使用默认处理
+     * 处理器类名，如果为null则使用默认处理.
      *
      * @var string
      */
@@ -23,7 +25,7 @@ class HttpNotFoundHandler implements IHttpNotFoundHandler
 
     public function handle(RequestHandlerInterface $requesthandler, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        if(null === $this->handler)
+        if (null === $this->handler)
         {
             return $response->withStatus(StatusCode::NOT_FOUND);
         }

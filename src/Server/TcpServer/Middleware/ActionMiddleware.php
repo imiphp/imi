@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Server\TcpServer\Middleware;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Controller\TcpController;
+use Imi\RequestContext;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
@@ -13,10 +14,11 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 class ActionMiddleware implements IMiddleware
 {
     /**
-     * 处理方法
+     * 处理方法.
      *
-     * @param IReceiveData $data
+     * @param IReceiveData    $data
      * @param IReceiveHandler $handle
+     *
      * @return void
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
@@ -25,16 +27,16 @@ class ActionMiddleware implements IMiddleware
         // 获取路由结果
         /** @var \Imi\Server\TcpServer\Route\RouteResult $result */
         $result = $requestContext['routeResult'] ?? null;
-        if(null === $result)
+        if (null === $result)
         {
             return $handler->handle($data);
         }
         $callable = &$result->callable;
         // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($callable) && isset($callable[0]) && $callable[0] instanceof TcpController;
-        if($isObject)
+        $isObject = \is_array($callable) && isset($callable[0]) && $callable[0] instanceof TcpController;
+        if ($isObject)
         {
-            if(!$result->routeItem->singleton)
+            if (!$result->routeItem->singleton)
             {
                 // 复制一份控制器对象
                 $callable[0] = clone $callable[0];
@@ -49,12 +51,11 @@ class ActionMiddleware implements IMiddleware
 
         $actionResult = $handler->handle($data);
 
-        if(null !== $actionResult)
+        if (null !== $actionResult)
         {
             $requestContext['tcpResult'] = $actionResult;
         }
 
         return $requestContext['tcpResult'];
     }
-    
 }

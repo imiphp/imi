@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Config\Dotenv;
 
 class Dotenv
 {
     /**
-     * 路径数组
+     * 路径数组.
      *
      * @var string[]
      */
@@ -22,7 +23,7 @@ class Dotenv
     }
 
     /**
-     * 初始化
+     * 初始化.
      *
      * @return void
      */
@@ -30,5 +31,4 @@ class Dotenv
     {
         $this->dotenv->load();
     }
-
 }

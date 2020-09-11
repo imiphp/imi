@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -24,5 +25,4 @@ class BitTest extends BaseTest
         $this->assertFalse(Bit::has($value, 8));
         $this->assertFalse(Bit::has($value, 16));
     }
-
 }

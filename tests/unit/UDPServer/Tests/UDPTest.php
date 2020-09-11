@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\UDPServer\Tests;
 
 use Imi\Util\Uri;
@@ -13,15 +14,15 @@ class UDPTest extends BaseTest
      */
     public function test()
     {
-        $this->go(function(){
+        $this->go(function () {
             $uri = new Uri($this->host);
-            $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_UDP);
+            $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_UDP);
             $time = time();
             $format = 'Y-m-d H:i:s';
             $this->assertTrue($client->sendto($uri->getHost(), $uri->getPort(), json_encode([
-                'action'    =>  'hello',
-                'format'    =>  $format,
-                'time'      =>  $time
+                'action'    => 'hello',
+                'format'    => $format,
+                'time'      => $time,
             ])));
             $data = json_decode($client->recv(), true);
             $this->assertEquals(date($format, $time), $data['time'] ?? null);
@@ -30,17 +31,16 @@ class UDPTest extends BaseTest
 
     public function testNotFound()
     {
-        $this->go(function(){
+        $this->go(function () {
             $uri = new Uri($this->host);
-            $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_UDP);
+            $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_UDP);
             $time = time();
             $format = 'Y-m-d H:i:s';
             $this->assertTrue($client->sendto($uri->getHost(), $uri->getPort(), json_encode([
-                'action'    =>  'gg',
+                'action'    => 'gg',
             ])));
             $data = $client->recv();
             $this->assertEquals('"gg"', $data);
         });
     }
-
 }

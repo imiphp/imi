@@ -1,12 +1,12 @@
 <?php
+
 namespace Imi\Db\Query\Where;
 
-use Imi\Db\Query\Query;
-use Imi\Db\Query\Traits\TRaw;
-use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhere;
+use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Traits\TRaw;
 
 class Where extends BaseWhere implements IWhere
 {
@@ -14,25 +14,29 @@ class Where extends BaseWhere implements IWhere
     use TKeyword;
 
     /**
-     * 字段名
+     * 字段名.
+     *
      * @var string
      */
     protected $fieldName;
 
     /**
-     * 比较符
+     * 比较符.
+     *
      * @var string
      */
     protected $operation;
 
     /**
      * 值
+     *
      * @var mixed
      */
     protected $value;
 
     /**
-     * 绑定的数据们
+     * 绑定的数据们.
+     *
      * @var array
      */
     protected $binds = [];
@@ -46,7 +50,8 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 字段名
+     * 字段名.
+     *
      * @return string
      */
     public function getFieldName(): string
@@ -55,7 +60,8 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 比较符
+     * 比较符.
+     *
      * @return string
      */
     public function getOperation(): string
@@ -65,6 +71,7 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 值
+     *
      * @return mixed
      */
     public function getValue()
@@ -73,7 +80,8 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 逻辑运算符
+     * 逻辑运算符.
+     *
      * @return string
      */
     public function getLogicalOperator(): string
@@ -82,8 +90,10 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 字段名
+     * 字段名.
+     *
      * @param string $fieldName
+     *
      * @return void
      */
     public function setFieldName(string $fieldName)
@@ -92,8 +102,10 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 比较符
+     * 比较符.
+     *
      * @param string $operation
+     *
      * @return void
      */
     public function setOperation(string $operation)
@@ -103,7 +115,9 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 值
+     *
      * @param mixed $value
+     *
      * @return void
      */
     public function setValue($value)
@@ -112,8 +126,10 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 逻辑运算符
+     * 逻辑运算符.
+     *
      * @param string $logicalOperator
+     *
      * @return void
      */
     public function setLogicalOperator(string $logicalOperator)
@@ -122,9 +138,10 @@ class Where extends BaseWhere implements IWhere
     }
 
     /**
-     * 获取无逻辑的字符串
+     * 获取无逻辑的字符串.
      *
      * @param IQuery $query
+     *
      * @return string
      */
     public function toStringWithoutLogic(IQuery $query)
@@ -132,13 +149,13 @@ class Where extends BaseWhere implements IWhere
         $binds = &$this->binds;
         $binds = [];
         $thisValues = &$this->value;
-        if($this->isRaw)
+        if ($this->isRaw)
         {
             return $this->rawSQL;
         }
         $operation = $this->operation;
         $result = $this->parseKeyword($this->fieldName) . ' ' . $operation . ' ';
-        switch(strtolower($operation))
+        switch (strtolower($operation))
         {
             case 'between':
             case 'not between':
@@ -152,7 +169,7 @@ class Where extends BaseWhere implements IWhere
             case 'not in':
                 $result .= '(';
                 $valueNames = [];
-                foreach($thisValues as $value)
+                foreach ($thisValues as $value)
                 {
                     $paramName = $query->getAutoParamName();
                     $valueNames[] = $paramName;
@@ -166,16 +183,17 @@ class Where extends BaseWhere implements IWhere
                 $binds[$value] = $thisValues;
                 break;
         }
+
         return $result;
     }
 
     /**
-     * 获取绑定的数据们
+     * 获取绑定的数据们.
+     *
      * @return array
      */
     public function getBinds()
     {
         return $this->binds;
     }
-
 }

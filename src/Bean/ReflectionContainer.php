@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Bean;
 
 use ReflectionClass;
@@ -6,41 +7,42 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * 反射容器
+ * 反射容器.
  */
 abstract class ReflectionContainer
 {
     /**
-     * 类反射集合
+     * 类反射集合.
      *
      * @var array
      */
     private static $classReflectionMap = [];
 
     /**
-     * 方法反射集合
+     * 方法反射集合.
      *
      * @var array
      */
     private static $methodReflectionMap = [];
 
     /**
-     * 属性反射集合
+     * 属性反射集合.
      *
      * @var array
      */
     private static $propertyReflectionMap = [];
 
     /**
-     * 获取类反射
+     * 获取类反射.
      *
      * @param string $className
+     *
      * @return \ReflectionClass
      */
     public static function getClassReflection(string $className): ReflectionClass
     {
         $map = &static::$classReflectionMap;
-        if(isset($map[$className]))
+        if (isset($map[$className]))
         {
             return $map[$className];
         }
@@ -51,16 +53,17 @@ abstract class ReflectionContainer
     }
 
     /**
-     * 获取方法反射
+     * 获取方法反射.
      *
      * @param string $className
      * @param string $methodName
+     *
      * @return \ReflectionMethod
      */
     public static function getMethodReflection(string $className, string $methodName): ReflectionMethod
     {
         $map = &static::$methodReflectionMap;
-        if(isset($map[$className][$methodName]))
+        if (isset($map[$className][$methodName]))
         {
             return $map[$className][$methodName];
         }
@@ -71,16 +74,17 @@ abstract class ReflectionContainer
     }
 
     /**
-     * 获取属性反射
+     * 获取属性反射.
      *
      * @param string $className
      * @param string $propertyName
+     *
      * @return \ReflectionProperty
      */
     public static function getPropertyReflection(string $className, string $propertyName): ReflectionProperty
     {
         $map = &static::$propertyReflectionMap;
-        if(isset($map[$className][$propertyName]))
+        if (isset($map[$className][$propertyName]))
         {
             return $map[$className][$propertyName];
         }
@@ -89,5 +93,4 @@ abstract class ReflectionContainer
             return $map[$className][$propertyName] = static::getClassReflection($className)->getProperty($propertyName);
         }
     }
-
 }

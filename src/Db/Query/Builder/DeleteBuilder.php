@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Db\Query\Builder;
 
 class DeleteBuilder extends BaseBuilder

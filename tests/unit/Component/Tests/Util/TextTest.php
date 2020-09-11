@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
-use Imi\Util\Text;
 use Imi\Test\BaseTest;
+use Imi\Util\Text;
 
 /**
  * @testdox Imi\Util\Text
@@ -68,7 +69,7 @@ class TextTest extends BaseTest
     {
         $this->assertEquals('tbAdminMember', Text::toCamelName('tb_admin_member'));
     }
-    
+
     /**
      * @testdox toPascalName
      *
@@ -89,5 +90,4 @@ class TextTest extends BaseTest
         $this->assertEquals('tb_admin_member', Text::toUnderScoreCase('tbAdminMember'));
         $this->assertEquals('tb_admin_member', Text::toUnderScoreCase('TbAdminMember'));
     }
-
 }

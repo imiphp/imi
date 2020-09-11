@@ -1,15 +1,17 @@
 <?php
+
 namespace Imi\Server\Http\Error;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Util\Stream\MemoryStream;
+use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
-use Imi\Util\Http\Consts\StatusCode;
 use Imi\Server\Http\Message\Response;
+use Imi\Util\Http\Consts\StatusCode;
+use Imi\Util\Stream\MemoryStream;
 
 /**
- * 执行超时处理器
+ * 执行超时处理器.
+ *
  * @Bean("ExecuteTimeoutHandler")
  */
 class ExecuteTimeoutHandler implements IExecuteTimeoutHandler

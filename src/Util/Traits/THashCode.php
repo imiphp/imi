@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Util\Traits;
 
 trait THashCode
 {
     /**
-     * hashCode
+     * hashCode.
      *
      * @var string
      */
@@ -13,11 +14,11 @@ trait THashCode
     public function hashCode(): string
     {
         $hashCode = &$this->hashCode;
-        if ($hashCode === null) {
+        if (null === $hashCode)
+        {
             $hashCode = spl_object_hash($this);
         }
 
         return $hashCode;
     }
-    
 }

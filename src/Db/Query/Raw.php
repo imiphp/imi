@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Traits\TRaw;
 use Imi\Db\Query\Interfaces\IBase;
+use Imi\Db\Query\Traits\TRaw;
 
 class Raw implements IBase
 {
@@ -19,7 +20,8 @@ class Raw implements IBase
     }
 
     /**
-     * 获取绑定的数据们
+     * 获取绑定的数据们.
+     *
      * @return array
      */
     public function getBinds()

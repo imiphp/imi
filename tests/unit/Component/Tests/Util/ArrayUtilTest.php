@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -15,15 +16,15 @@ class ArrayUtilTest extends BaseTest
     public function testRemove()
     {
         $list = [];
-        for($i = 0; $i < 10; ++$i)
+        for ($i = 0; $i < 10; ++$i)
         {
-            $obj = new \stdClass;
+            $obj = new \stdClass();
             $obj->index = $i;
             $list[] = $obj;
         }
         $resultList = ArrayUtil::remove($list, $list[1], $list[3], $list[9]);
-        $this->assertEquals(7, count($resultList));
-        for($i = 0; $i < 7; ++$i)
+        $this->assertCount(7, $resultList);
+        for ($i = 0; $i < 7; ++$i)
         {
             $this->assertTrue(isset($resultList[$i]));
         }
@@ -38,14 +39,14 @@ class ArrayUtilTest extends BaseTest
     public function testRemoveKeepKey()
     {
         $list = [];
-        for($i = 0; $i < 10; ++$i)
+        for ($i = 0; $i < 10; ++$i)
         {
-            $obj = new \stdClass;
+            $obj = new \stdClass();
             $obj->index = $i;
             $list[] = $obj;
         }
         $resultList = ArrayUtil::removeKeepKey($list, $list[1], $list[3], $list[9]);
-        $this->assertEquals(7, count($resultList));
+        $this->assertCount(7, $resultList);
         $this->assertNull($resultList[1] ?? null);
         $this->assertNull($resultList[3] ?? null);
         $this->assertNull($resultList[9] ?? null);
@@ -57,55 +58,55 @@ class ArrayUtilTest extends BaseTest
     public function testRecursiveMerge()
     {
         $arr1 = [
-            'a' =>  [
-                'a-1'   =>  [
-                    'id'    =>  1,
-                    'name'  =>  'yurun',
+            'a' => [
+                'a-1'   => [
+                    'id'    => 1,
+                    'name'  => 'yurun',
                 ],
-                'a-2'   =>  [
-                    'id'    =>  2,
-                    'name'  =>  'imi',
+                'a-2'   => [
+                    'id'    => 2,
+                    'name'  => 'imi',
                 ],
-                'a-3'   =>  [
-                    'id'    =>  3,
-                    'name'  =>  'https://www.yurunsoft.com',
+                'a-3'   => [
+                    'id'    => 3,
+                    'name'  => 'https://www.yurunsoft.com',
                 ],
             ],
-            'c' =>  [
-                100 =>  '1',
-                200 =>  'b',
+            'c' => [
+                100 => '1',
+                200 => 'b',
             ],
         ];
         $arr2 = [
-            'a' =>  [
-                'a-1'   =>  [
-                    'name'  =>  'https://www.imiphp.com',
+            'a' => [
+                'a-1'   => [
+                    'name'  => 'https://www.imiphp.com',
                 ],
-                'a-2'   =>  100,
+                'a-2'   => 100,
             ],
-            'b' =>  200,
-            'c' =>  [
-                100 =>  'a',
-                300 =>  'c',
-            ]
+            'b' => 200,
+            'c' => [
+                100 => 'a',
+                300 => 'c',
+            ],
         ];
         $actual = [
-            'a' =>  [
-                'a-1'   =>  [
-                    'id'    =>  1,
-                    'name'  =>  'https://www.imiphp.com',
+            'a' => [
+                'a-1'   => [
+                    'id'    => 1,
+                    'name'  => 'https://www.imiphp.com',
                 ],
-                'a-2'   =>  100,
-                'a-3'   =>  [
-                    'id'    =>  3,
-                    'name'  =>  'https://www.yurunsoft.com',
+                'a-2'   => 100,
+                'a-3'   => [
+                    'id'    => 3,
+                    'name'  => 'https://www.yurunsoft.com',
                 ],
             ],
-            'b' =>  200,
-            'c' =>  [
-                100 =>  'a',
-                200 =>  'b',
-                300 =>  'c',
+            'b' => 200,
+            'c' => [
+                100 => 'a',
+                200 => 'b',
+                300 => 'c',
             ],
         ];
         $result = ArrayUtil::recursiveMerge($arr1, $arr2);
@@ -142,13 +143,13 @@ class ArrayUtilTest extends BaseTest
     public function testIsAssoc()
     {
         $assocArr = [
-            0   =>  'a',
-            1   =>  'b',
-            2   =>  'c',
-            'a' =>  'd',
+            0   => 'a',
+            1   => 'b',
+            2   => 'c',
+            'a' => 'd',
         ];
         $indexArr = [
-            'a', 'b', 'c'
+            'a', 'b', 'c',
         ];
         $this->assertTrue(ArrayUtil::isAssoc($assocArr));
         $this->assertFalse(ArrayUtil::isAssoc($indexArr));
@@ -160,14 +161,14 @@ class ArrayUtilTest extends BaseTest
     public function testRandom()
     {
         $arr = [
-            'a' =>  1,
-            'b' =>  2,
-            'c' =>  3,
-            'd' =>  4,
-            'e' =>  5,
+            'a' => 1,
+            'b' => 2,
+            'c' => 3,
+            'd' => 4,
+            'e' => 5,
         ];
         $result = ArrayUtil::random($arr, 3);
-        foreach($result as $k => $v)
+        foreach ($result as $k => $v)
         {
             $this->assertEquals($arr[$k] ?? null, $v);
         }
@@ -205,5 +206,4 @@ class ArrayUtilTest extends BaseTest
         ];
         $this->assertEquals($expected, ArrayUtil::toTreeAssoc($list, 'id', 'parentId'));
     }
-
 }

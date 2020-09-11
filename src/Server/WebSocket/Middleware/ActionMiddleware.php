@@ -1,11 +1,12 @@
 <?php
+
 namespace Imi\Server\WebSocket\Middleware;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
 use Imi\Controller\WebSocketController;
-use Imi\Server\WebSocket\Message\IFrame;
+use Imi\RequestContext;
 use Imi\Server\WebSocket\IMessageHandler;
+use Imi\Server\WebSocket\Message\IFrame;
 
 /**
  * @Bean("WebSocketActionMiddleware")
@@ -13,10 +14,11 @@ use Imi\Server\WebSocket\IMessageHandler;
 class ActionMiddleware implements IMiddleware
 {
     /**
-     * 处理方法
+     * 处理方法.
      *
-     * @param IFrame $frame
+     * @param IFrame          $frame
      * @param IMessageHandler $handler
+     *
      * @return void
      */
     public function process(IFrame $frame, IMessageHandler $handler)
@@ -25,16 +27,16 @@ class ActionMiddleware implements IMiddleware
         // 获取路由结果
         /** @var \Imi\Server\WebSocket\Route\RouteResult $result */
         $result = $requestContext['routeResult'] ?? null;
-        if(null === $result)
+        if (null === $result)
         {
             return $handler->handle($frame);
         }
         $callable = &$result->callable;
         // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = is_array($callable) && isset($callable[0]) && $callable[0] instanceof WebSocketController;
-        if($isObject)
+        $isObject = \is_array($callable) && isset($callable[0]) && $callable[0] instanceof WebSocketController;
+        if ($isObject)
         {
-            if(!$result->routeItem->singleton)
+            if (!$result->routeItem->singleton)
             {
                 // 复制一份控制器对象
                 $callable[0] = clone $callable[0];
@@ -49,12 +51,11 @@ class ActionMiddleware implements IMiddleware
 
         $actionResult = $handler->handle($frame);
 
-        if(null !== $actionResult)
+        if (null !== $actionResult)
         {
             $requestContext['wsResult'] = $actionResult;
         }
 
         return $requestContext['wsResult'];
     }
-    
 }

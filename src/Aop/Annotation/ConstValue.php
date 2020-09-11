@@ -1,15 +1,14 @@
 <?php
+
 namespace Imi\Aop\Annotation;
 
-use Imi\Config;
 use Imi\Bean\Annotation\Parser;
-use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
  * 从常量中读取值
- * 
+ *
  * 支持在注解中为属性动态赋值
- * 
+ *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("\Imi\Bean\Parser\NullParser")
@@ -17,13 +16,14 @@ use Imi\Aop\Annotation\BaseInjectValue;
 class ConstValue extends BaseInjectValue
 {
     /**
-     * 只传一个参数时的参数名
+     * 只传一个参数时的参数名.
+     *
      * @var string
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
-     * 常量名
+     * 常量名.
      *
      * @var string
      */
@@ -43,7 +43,6 @@ class ConstValue extends BaseInjectValue
      */
     public function getRealValue()
     {
-        return defined($this->name) ? constant($this->name) : $this->default;
+        return \defined($this->name) ? \constant($this->name) : $this->default;
     }
-
 }

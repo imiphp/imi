@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Annotation\B;
 
 /**
@@ -6,5 +7,4 @@ namespace Imi\Test\Component\Annotation\B;
  */
 class TestB
 {
-
 }

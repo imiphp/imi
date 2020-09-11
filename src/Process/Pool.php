@@ -1,14 +1,15 @@
 <?php
+
 namespace Imi\Process;
 
-use Swoole\Event;
-use Swoole\Process;
 use Imi\Event\TEvent;
 use Imi\Log\Log;
-use Imi\Process\Pool\InitEventParam;
-use Imi\Process\Pool\WorkerEventParam;
 use Imi\Process\Pool\BeforeStartEventParam;
+use Imi\Process\Pool\InitEventParam;
 use Imi\Process\Pool\MessageEventParam;
+use Imi\Process\Pool\WorkerEventParam;
+use Swoole\Event;
+use Swoole\Process;
 use Swoole\Timer;
 
 class Pool
@@ -16,7 +17,7 @@ class Pool
     use TEvent;
 
     /**
-     * 工作进程数量
+     * 工作进程数量.
      *
      * @var int
      */
@@ -24,28 +25,28 @@ class Pool
 
     /**
      * 工作进程列表
-     * 以 WorkerId 作为 Key
+     * 以 WorkerId 作为 Key.
      *
      * @var \Swoole\Process[]
      */
     private $workers = [];
 
     /**
-     * 以进程 PID 为 key 的映射
+     * 以进程 PID 为 key 的映射.
      *
      * @var int[]
      */
     private $workerIdMap = [];
 
     /**
-     * 是否工作
+     * 是否工作.
      *
-     * @var boolean
+     * @var bool
      */
     private $working = false;
 
     /**
-     * 主进程 PID
+     * 主进程 PID.
      *
      * @var int
      */
@@ -57,7 +58,7 @@ class Pool
     }
 
     /**
-     * 启动进程池
+     * 启动进程池.
      *
      * @return void
      */
@@ -67,31 +68,31 @@ class Pool
         $this->working = true;
 
         $this->trigger('BeforeStart', [
-            'pool'  =>  $this,
+            'pool'  => $this,
         ], $this, BeforeStartEventParam::class);
 
-        \Imi\Util\Process::signal(SIGCHLD, function($sig) {
-            while(!empty($this->workers))
+        \Imi\Util\Process::signal(\SIGCHLD, function ($sig) {
+            while (!empty($this->workers))
             {
-                foreach($this->workers as $worker)
+                foreach ($this->workers as $worker)
                 {
                     $ret = $worker->wait(false);
                     if ($ret)
                     {
                         $pid = $ret['pid'] ?? null;
                         $workerId = $this->workerIdMap[$pid] ?? null;
-                        if(null === $workerId)
+                        if (null === $workerId)
                         {
-                            user_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), E_USER_WARNING);
+                            trigger_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), \E_USER_WARNING);
                             continue;
                         }
                         Event::del($this->workers[$workerId]->pipe);
                         unset($this->workerIdMap[$pid], $this->workers[$workerId]);
-                        if($this->working)
+                        if ($this->working)
                         {
                             $this->startWorker($workerId);
                         }
-                        else if(empty($this->workers))
+                        elseif (empty($this->workers))
                         {
                             Event::exit();
                         }
@@ -100,144 +101,147 @@ class Pool
             }
         });
 
-        \Imi\Util\Process::signal(SIGTERM, function() {
+        \Imi\Util\Process::signal(\SIGTERM, function () {
             $this->working = false;
-            foreach($this->workers as $worker)
+            foreach ($this->workers as $worker)
             {
-                Process::kill($worker->pid, SIGTERM);
+                Process::kill($worker->pid, \SIGTERM);
             }
-            Timer::after(3000, function(){
+            Timer::after(3000, function () {
                 Log::info('Worker exit timeout, forced to terminate');
-                foreach($this->workers as $worker)
+                foreach ($this->workers as $worker)
                 {
-                    Process::kill($worker->pid, SIGKILL);
+                    Process::kill($worker->pid, \SIGKILL);
                 }
             });
         });
 
-        for($i = 0; $i < $this->workerNum; ++$i)
+        for ($i = 0; $i < $this->workerNum; ++$i)
         {
             $this->startWorker($i);
         }
-        
+
         $this->trigger('Init', [
-            'pool'      =>  $this,
+            'pool'      => $this,
         ], $this, InitEventParam::class);
     }
 
     /**
-     * 停止工作池
+     * 停止工作池.
      *
      * @return void
      */
     public function shutdown()
     {
-        Process::kill($this->masterPID, SIGTERM);
+        Process::kill($this->masterPID, \SIGTERM);
     }
 
     /**
-     * 重启所有工作进程
+     * 重启所有工作进程.
      *
      * @return void
      */
     public function restartAllWorker()
     {
-        foreach($this->workers as $worker)
+        foreach ($this->workers as $worker)
         {
             Process::kill($worker->pid);
         }
     }
 
     /**
-     * 重启指定工作进程
+     * 重启指定工作进程.
      *
      * @param int ...$workerIds
+     *
      * @return void
      */
     public function restartWorker(...$workerIds)
     {
         $workers = &$this->workers;
-        foreach($workerIds as $workerId)
+        foreach ($workerIds as $workerId)
         {
-            if(isset($workers[$workerId]))
+            if (isset($workers[$workerId]))
             {
                 Process::kill($workers[$workerId]->pid);
             }
             else
             {
-                user_error(sprintf('%s: Can not found worker by workerId %s', __CLASS__, $workerId), E_USER_WARNING);
+                trigger_error(sprintf('%s: Can not found worker by workerId %s', __CLASS__, $workerId), \E_USER_WARNING);
                 continue;
             }
         }
     }
 
     /**
-     * 启动工作进程
+     * 启动工作进程.
      *
      * @param int $workerId
+     *
      * @return void
      */
     private function startWorker($workerId)
     {
         $workers = &$this->workers;
-        if(isset($workers[$workerId]))
+        if (isset($workers[$workerId]))
         {
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
-        $worker = new \Imi\Process\Process(function(Process $worker) use($workerId){
+        $worker = new \Imi\Process\Process(function (Process $worker) use ($workerId) {
             \Imi\Util\Process::clearNotInheritableSignalListener();
-            \Imi\Util\Process::signal(SIGTERM, function() use($worker, $workerId){
+            \Imi\Util\Process::signal(\SIGTERM, function () use ($worker, $workerId) {
                 $this->trigger('WorkerExit', [
-                    'pool'      =>  $this,
-                    'worker'    =>  $worker,
-                    'workerId'  =>  $workerId,
+                    'pool'      => $this,
+                    'worker'    => $worker,
+                    'workerId'  => $workerId,
                 ], $this, WorkerEventParam::class);
                 Event::exit();
             });
-            register_shutdown_function(function() use($worker, $workerId){
+            register_shutdown_function(function () use ($worker, $workerId) {
                 $this->trigger('WorkerStop', [
-                    'pool'      =>  $this,
-                    'worker'    =>  $worker,
-                    'workerId'  =>  $workerId,
+                    'pool'      => $this,
+                    'worker'    => $worker,
+                    'workerId'  => $workerId,
                 ], $this, WorkerEventParam::class);
             });
             $this->trigger('WorkerStart', [
-                'pool'      =>  $this,
-                'worker'    =>  $worker,
-                'workerId'  =>  $workerId,
+                'pool'      => $this,
+                'worker'    => $worker,
+                'workerId'  => $workerId,
             ], $this, WorkerEventParam::class);
             Event::wait();
         });
         $pid = $worker->start();
-        if(false === $pid)
+        if (false === $pid)
         {
             throw new \RuntimeException(sprintf('Start worker %s failed', $workerId));
         }
         else
         {
-            Event::add($worker->pipe, function($pipe) use($worker, $workerId){
+            Event::add($worker->pipe, function ($pipe) use ($worker, $workerId) {
                 $content = $worker->read();
-                if(false === $content)
+                if (false === $content)
                 {
-                    user_error('%s: Read pipe message content failed', E_USER_WARNING);
+                    trigger_error('%s: Read pipe message content failed', \E_USER_WARNING);
+
                     return;
                 }
                 $data = json_decode($content, true);
-                if(false === $data)
+                if (false === $data)
                 {
-                    user_error('%s: Decode pipe message content failed', E_USER_WARNING);
+                    trigger_error('%s: Decode pipe message content failed', \E_USER_WARNING);
+
                     return;
                 }
                 $this->trigger('Message', [
-                    'pool'      =>  $this,
-                    'worker'    =>  $worker,
-                    'workerId'  =>  $workerId,
-                    'data'      =>  $data,
+                    'pool'      => $this,
+                    'worker'    => $worker,
+                    'workerId'  => $workerId,
+                    'data'      => $data,
                 ], $this, MessageEventParam::class);
             });
             $workers[$workerId] = $worker;
             $this->workerIdMap[$pid] = $workerId;
         }
     }
-
 }

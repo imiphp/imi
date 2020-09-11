@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -18,5 +19,4 @@ class DigitalTest extends BaseTest
     {
         $this->assertEquals(0.000021, Digital::scientificToNum(2.1E-5, 6));
     }
-
 }

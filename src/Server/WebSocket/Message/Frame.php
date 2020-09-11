@@ -1,19 +1,22 @@
 <?php
+
 namespace Imi\Server\WebSocket\Message;
 
-use Imi\Server\DataParser\DataParser;
 use Imi\RequestContext;
+use Imi\Server\DataParser\DataParser;
 
 class Frame implements IFrame
 {
     /**
-     * swoole websocket frame
+     * swoole websocket frame.
+     *
      * @var \Swoole\Websocket\Frame
      */
     protected $frame;
 
     /**
-     * 格式化后的数据
+     * 格式化后的数据.
+     *
      * @var array
      */
     protected $data;
@@ -25,7 +28,8 @@ class Frame implements IFrame
     }
 
     /**
-     * 获取客户端的socket id
+     * 获取客户端的socket id.
+     *
      * @return int
      */
     public function getFd(): int
@@ -34,7 +38,8 @@ class Frame implements IFrame
     }
 
     /**
-     * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断
+     * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
+     *
      * @return string
      */
     public function getData()
@@ -44,6 +49,7 @@ class Frame implements IFrame
 
     /**
      * 获取格式化后的数据，一般是数组或对象
+     *
      * @return mixed
      */
     public function getFormatData()
@@ -54,7 +60,8 @@ class Frame implements IFrame
     /**
      * WebSocket的OpCode类型，可以参考WebSocket协议标准文档
      * WEBSOCKET_OPCODE_TEXT = 0x1 ，文本数据
-     * WEBSOCKET_OPCODE_BINARY = 0x2 ，二进制数据
+     * WEBSOCKET_OPCODE_BINARY = 0x2 ，二进制数据.
+     *
      * @return int
      */
     public function getOpcode()
@@ -63,8 +70,9 @@ class Frame implements IFrame
     }
 
     /**
-     * 表示数据帧是否完整
-     * @return boolean
+     * 表示数据帧是否完整.
+     *
+     * @return bool
      */
     public function isFinish()
     {
@@ -73,6 +81,7 @@ class Frame implements IFrame
 
     /**
      * 获取 \Swoole\Websocket\Frame 对象
+     *
      * @return \Swoole\Websocket\Frame
      */
     public function getSwooleWebSocketFrame(): \Swoole\Websocket\Frame

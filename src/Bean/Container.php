@@ -1,27 +1,30 @@
 <?php
+
 namespace Imi\Bean;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\Exception\ContainerException;
 use Imi\Bean\Parser\BeanParser;
 use Psr\Container\ContainerInterface;
-use Imi\Bean\Exception\ContainerException;
 
 class Container implements ContainerInterface
 {
     /**
-     * 单例对象们
+     * 单例对象们.
+     *
      * @var array
      */
     private $singletonObjects = [];
 
     /**
-     * Bean处理器
+     * Bean处理器.
+     *
      * @var \Imi\Bean\Parser\BeanParser
      */
     private $beanParser;
 
     /**
-     * 绑定列表
+     * 绑定列表.
      *
      * @var array
      */
@@ -34,8 +37,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * 从容器中获取实例对象，如果不存在则实例化
+     * 从容器中获取实例对象，如果不存在则实例化.
+     *
      * @param string $id 标识符
+     *
      * @throws NotFoundExceptionInterface  没有找到对象
      * @throws ContainerExceptionInterface 检索时出错
      *
@@ -44,19 +49,19 @@ class Container implements ContainerInterface
     public function get($id)
     {
         // 实现传递实例化参数
-        $params = func_get_args();
+        $params = \func_get_args();
         // 单例中有数据，且无实例化参数时直接返回单例
         $singletonObjects = &$this->singletonObjects;
-        if(isset($singletonObjects[$id]) && 1 === func_num_args())
+        if (isset($singletonObjects[$id]) && 1 === \func_num_args())
         {
             return $singletonObjects[$id];
         }
 
-        if(!is_string($id))
+        if (!\is_string($id))
         {
             throw new ContainerException('id is not a string value');
         }
-        if('' === $id)
+        if ('' === $id)
         {
             throw new ContainerException('id can not be a empty string value');
         }
@@ -64,10 +69,10 @@ class Container implements ContainerInterface
         unset($params[0]);
 
         $binds = &$this->binds;
-        if(isset($binds[$id]))
+        if (isset($binds[$id]))
         {
             $object = BeanFactory::newInstanceNoInit($binds[$id], ...$params);
-            if([] === $params)
+            if ([] === $params)
             {
                 $singletonObjects[$id] = $object;
             }
@@ -75,11 +80,11 @@ class Container implements ContainerInterface
         else
         {
             $data = $this->beanParser->getData();
-            if(isset($data[$id]))
+            if (isset($data[$id]))
             {
                 $object = BeanFactory::newInstanceNoInit($data[$id]['className'], ...$params);
             }
-            else if(class_exists($id))
+            elseif (class_exists($id))
             {
                 $object = BeanFactory::newInstanceNoInit($id, ...$params);
             }
@@ -89,7 +94,7 @@ class Container implements ContainerInterface
             }
 
             // 传参实例化强制不使用单例
-            if([] === $params && (!isset($data[$id]['instanceType']) || $data[$id]['instanceType'] === Bean::INSTANCE_TYPE_SINGLETON))
+            if ([] === $params && (!isset($data[$id]['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data[$id]['instanceType']))
             {
                 $singletonObjects[$id] = $object;
             }
@@ -101,8 +106,10 @@ class Container implements ContainerInterface
     }
 
     /**
-     * 实例对象是否存在
+     * 实例对象是否存在.
+     *
      * @param string $id 标识符
+     *
      * @return bool
      */
     public function has($id)
@@ -111,10 +118,11 @@ class Container implements ContainerInterface
     }
 
     /**
-     * 绑定名称和类名
+     * 绑定名称和类名.
      *
      * @param string $name
      * @param string $class
+     *
      * @return void
      */
     public function bind($name, $class)
@@ -123,17 +131,17 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Get 绑定列表
+     * Get 绑定列表.
      *
      * @return array
-     */ 
+     */
     public function getBinds()
     {
         return $this->binds;
     }
 
     /**
-     * 返回一个新的容器对象，容器内无对象，仅有列表关联
+     * 返回一个新的容器对象，容器内无对象，仅有列表关联.
      *
      * @return static
      */
@@ -141,5 +149,4 @@ class Container implements ContainerInterface
     {
         return new static($this->binds);
     }
-
 }

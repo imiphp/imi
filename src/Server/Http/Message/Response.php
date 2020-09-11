@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Http\Message;
 
 use Imi\Util\Http\Consts\StatusCode;
@@ -8,24 +9,27 @@ class Response extends \Imi\Util\Http\Response
 {
     /**
      * swoole响应对象
+     *
      * @var \Swoole\Http\Response
      */
     protected $swooleResponse;
 
     /**
-     * cookies
+     * cookies.
+     *
      * @var array
      */
     protected $cookies = [];
 
     /**
-     * 对应的服务器
+     * 对应的服务器.
+     *
      * @var \Imi\Server\Base
      */
     protected $serverInstance;
 
     /**
-     * 空对象缓存
+     * 空对象缓存.
      *
      * @var static
      */
@@ -42,13 +46,14 @@ class Response extends \Imi\Util\Http\Response
     /**
      * 获取实例对象
      *
-     * @param \Imi\Server\Base $server
+     * @param \Imi\Server\Base      $server
      * @param \Swoole\Http\Response $response
+     *
      * @return static
      */
     public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
-        if(null === static::$emptyInstance)
+        if (null === static::$emptyInstance)
         {
             static::$emptyInstance = new static($server, $response);
         }
@@ -56,18 +61,21 @@ class Response extends \Imi\Util\Http\Response
         $instance->serverInstance = $server;
         $instance->swooleResponse = $response;
         $response->isEnded = false;
+
         return $instance;
     }
 
     /**
-     * 设置cookie
+     * 设置cookie.
+     *
      * @param string $key
      * @param string $value
-     * @param integer $expire
+     * @param int    $expire
      * @param string $path
      * @param string $domain
-     * @param boolean $secure
-     * @param boolean $httponly
+     * @param bool   $secure
+     * @param bool   $httponly
+     *
      * @return static
      */
     public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
@@ -82,35 +90,42 @@ class Response extends \Imi\Util\Http\Response
             'secure'    => $secure,
             'httponly'  => $httponly,
         ];
+
         return $self;
     }
 
     /**
      * 输出内容，但不发送
+     *
      * @param string $content
+     *
      * @return static
      */
     public function write(string $content)
     {
         $body = clone $this->getBody();
         $body->write($content);
+
         return $this->withBody($body);
     }
 
     /**
-     * 清空内容
+     * 清空内容.
+     *
      * @return static
      */
     public function clear()
     {
         return $this->withBody(new MemoryStream(''));
     }
-    
+
     /**
      * 设置服务器端重定向
-     * 默认状态码为302
+     * 默认状态码为302.
+     *
      * @param string $url
-     * @param int $status
+     * @param int    $status
+     *
      * @return static
      */
     public function redirect($url, $status = StatusCode::FOUND)
@@ -119,43 +134,46 @@ class Response extends \Imi\Util\Http\Response
     }
 
     /**
-     * 发送头部信息，没有特别需求，无需手动调用
+     * 发送头部信息，没有特别需求，无需手动调用.
+     *
      * @return static
      */
     public function sendHeaders()
     {
         $swooleResponse = $this->swooleResponse;
         // cookie
-        if($this->cookies)
+        if ($this->cookies)
         {
-            foreach($this->cookies as $cookie)
+            foreach ($this->cookies as $cookie)
             {
                 $swooleResponse->cookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
             }
         }
         // header
-        foreach($this->headers as $name => $headers)
+        foreach ($this->headers as $name => $headers)
         {
             $swooleResponse->header($name, $this->getHeaderLine($name));
         }
         // trailer
-        if($this->trailers)
+        if ($this->trailers)
         {
-            foreach($this->trailers as $name => $value)
+            foreach ($this->trailers as $name => $value)
             {
                 $swooleResponse->trailer($name, $value);
             }
         }
         // status
-        if(StatusCode::OK !== $this->statusCode)
+        if (StatusCode::OK !== $this->statusCode)
         {
             $swooleResponse->status($this->statusCode);
         }
+
         return $this;
     }
 
     /**
-     * 发送所有响应数据
+     * 发送所有响应数据.
+     *
      * @return static
      */
     public function send()
@@ -164,14 +182,17 @@ class Response extends \Imi\Util\Http\Response
         $swooleResponse->isEnded = true;
         $this->sendHeaders();
         $swooleResponse->end($this->getBody());
+
         return $this;
     }
 
     /**
-     * 发送文件，一般用于文件下载
+     * 发送文件，一般用于文件下载.
+     *
      * @param string $filename 要发送的文件名称，文件不存在或没有访问权限sendfile会失败
-     * @param integer $offset 上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
-     * @param integer $length 发送数据的尺寸，默认为整个文件的尺寸
+     * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
+     * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
+     *
      * @return static
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
@@ -180,11 +201,13 @@ class Response extends \Imi\Util\Http\Response
         $swooleResponse->isEnded = true;
         $this->sendHeaders();
         $swooleResponse->sendfile($filename, $offset, $length);
+
         return $this;
     }
 
     /**
      * 获取swoole响应对象
+     *
      * @return \Swoole\Http\Response
      */
     public function getSwooleResponse(): \Swoole\Http\Response
@@ -193,7 +216,8 @@ class Response extends \Imi\Util\Http\Response
     }
 
     /**
-     * 获取对应的服务器
+     * 获取对应的服务器.
+     *
      * @return \Imi\Server\Base
      */
     public function getServerInstance(): \Imi\Server\Base
@@ -203,7 +227,8 @@ class Response extends \Imi\Util\Http\Response
 
     /**
      * 是否已结束请求
-     * @return boolean
+     *
+     * @return bool
      */
     public function isEnded()
     {

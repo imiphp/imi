@@ -1,14 +1,16 @@
 <?php
+
 namespace Imi\Aop\Annotation;
 
 use Imi\App;
+use Imi\Bean\Annotation\Parser;
 use Imi\RequestContext;
 use Imi\Util\Coroutine;
-use Imi\Bean\Annotation\Parser;
 
 /**
  * 属性注入
- * 使用：RequestContext::getBean()
+ * 使用：RequestContext::getBean().
+ *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
@@ -22,7 +24,7 @@ class RequestInject extends Inject
      */
     public function getRealValue()
     {
-        if(Coroutine::isIn())
+        if (Coroutine::isIn())
         {
             return RequestContext::getBean($this->name, ...$this->args);
         }

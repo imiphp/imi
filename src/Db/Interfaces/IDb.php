@@ -8,44 +8,51 @@ interface IDb extends IHashCode
 {
     /**
      * 打开
-     * @return boolean
+     *
+     * @return bool
      */
     public function open();
 
     /**
-     * 关闭
+     * 关闭.
+     *
      * @return void
      */
     public function close();
 
     /**
-     * 是否已连接
-     * @return boolean
+     * 是否已连接.
+     *
+     * @return bool
      */
     public function isConnected(): bool;
 
     /**
      * 启动一个事务
-     * @return boolean
+     *
+     * @return bool
      */
     public function beginTransaction(): bool;
 
     /**
      * 提交一个事务
-     * @return boolean
+     *
+     * @return bool
      */
     public function commit(): bool;
 
     /**
      * 回滚事务
-     * 支持设置回滚事务层数，如果不设置则为全部回滚
+     * 支持设置回滚事务层数，如果不设置则为全部回滚.
+     *
      * @param int $levels
-     * @return boolean
+     *
+     * @return bool
      */
     public function rollBack($levels = null): bool;
 
     /**
-     * 获取事务层数
+     * 获取事务层数.
      *
      * @return int
      */
@@ -53,41 +60,45 @@ interface IDb extends IHashCode
 
     /**
      * 返回错误码
+     *
      * @return mixed
      */
     public function errorCode();
 
     /**
-     * 返回错误信息
+     * 返回错误信息.
+     *
      * @return array
      */
     public function errorInfo(): string;
 
     /**
-     * 获取最后一条执行的SQL语句
+     * 获取最后一条执行的SQL语句.
+     *
      * @return string
      */
     public function lastSql();
 
     /**
-     * 执行一条 SQL 语句，并返回受影响的行数
+     * 执行一条 SQL 语句，并返回受影响的行数.
      *
      * @param string $sql
      *
-     * @return integer
+     * @return int
      */
     public function exec(string $sql): int;
 
     /**
-     * 批量执行 SQL，返回查询结果
+     * 批量执行 SQL，返回查询结果.
      *
      * @param string $sql
+     *
      * @return array
      */
     public function batchExec(string $sql): array;
 
     /**
-     * 取回一个数据库连接的属性
+     * 取回一个数据库连接的属性.
      *
      * @param mixed $attribute
      *
@@ -96,7 +107,7 @@ interface IDb extends IHashCode
     public function getAttribute($attribute);
 
     /**
-     * 设置属性
+     * 设置属性.
      *
      * @param mixed $attribute
      * @param mixed $value
@@ -106,7 +117,8 @@ interface IDb extends IHashCode
     public function setAttribute($attribute, $value);
 
     /**
-     * 检查是否在一个事务内
+     * 检查是否在一个事务内.
+     *
      * @return bool
      */
     public function inTransaction(): bool;
@@ -121,7 +133,8 @@ interface IDb extends IHashCode
     public function lastInsertId(string $name = null);
 
     /**
-     * 返回受上一个 SQL 语句影响的行数
+     * 返回受上一个 SQL 语句影响的行数.
+     *
      * @return int
      */
     public function rowCount(): int;
@@ -146,16 +159,16 @@ interface IDb extends IHashCode
     public function query(string $sql);
 
     /**
-     * 获取原对象实例
+     * 获取原对象实例.
+     *
      * @return object
      */
     public function getInstance();
 
     /**
-     * Get 事务管理
+     * Get 事务管理.
      *
      * @return \Imi\Db\Transaction\Transaction
-     */ 
+     */
     public function getTransaction();
-
 }

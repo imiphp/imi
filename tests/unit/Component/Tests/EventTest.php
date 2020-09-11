@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Event\Event;
-use Imi\Test\BaseTest;
 use Imi\Event\EventParam;
+use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -13,7 +14,7 @@ class EventTest extends BaseTest
 {
     public function testNormal()
     {
-        Event::on('IMITEST.EVENT.A', function(EventParam $e){
+        Event::on('IMITEST.EVENT.A', function (EventParam $e) {
             Assert::assertEquals('IMITEST.EVENT.A', $e->getEventName());
             Assert::assertEquals($this, $e->getTarget());
             $data = $e->getData();
@@ -23,15 +24,15 @@ class EventTest extends BaseTest
 
         $return = null;
         Event::trigger('IMITEST.EVENT.A', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
         Assert::assertEquals(19260817, $return);
     }
 
     public function testOne()
     {
-        Event::one('IMITEST.EVENT.B', function(EventParam $e){
+        Event::one('IMITEST.EVENT.B', function (EventParam $e) {
             Assert::assertEquals('IMITEST.EVENT.B', $e->getEventName());
             Assert::assertEquals($this, $e->getTarget());
             $data = $e->getData();
@@ -41,26 +42,26 @@ class EventTest extends BaseTest
 
         $return = null;
         Event::trigger('IMITEST.EVENT.B', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
         Assert::assertEquals(19260817, $return);
 
         $return = null;
         Event::trigger('IMITEST.EVENT.B', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
         Assert::assertNull($return);
     }
 
     public function testOff()
     {
-        $callable1 = function(EventParam $e){
+        $callable1 = function (EventParam $e) {
             Assert::assertTrue(false);
         };
 
-        $callable2 = function(EventParam $e){
+        $callable2 = function (EventParam $e) {
             Assert::assertTrue(false);
         };
         Event::on('IMITEST.EVENT.C', $callable1);
@@ -71,8 +72,8 @@ class EventTest extends BaseTest
 
         $return = null;
         Event::trigger('IMITEST.EVENT.C', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
         Assert::assertNull($return);
     }
@@ -81,23 +82,23 @@ class EventTest extends BaseTest
     {
         $return = null;
         Event::trigger('IMITEST.EVENT.D', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
         Assert::assertEquals(19260817, $return);
     }
 
     public function testClassListener1()
     {
-        $testClass = new \Imi\Test\Component\Event\Classes\TestClass;
+        $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
         $result = $testClass->test1();
         Assert::assertEquals(19260817, $result);
     }
 
     public function testClassListener2()
     {
-        $testClass = new \Imi\Test\Component\Event\Classes\TestClass;
-        $testClass->on('test2', function(EventParam $e) use($testClass){
+        $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
+        $testClass->on('test2', function (EventParam $e) use ($testClass) {
             Assert::assertEquals('test2', $e->getEventName());
             Assert::assertEquals($testClass, $e->getTarget());
             $data = $e->getData();
@@ -110,8 +111,8 @@ class EventTest extends BaseTest
 
     public function testClassListenerOff()
     {
-        $testClass = new \Imi\Test\Component\Event\Classes\TestClass;
-        $callable = function(EventParam $e) {
+        $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
+        $callable = function (EventParam $e) {
             Assert::assertTrue(false);
         };
         $testClass->on('test3', $callable);
@@ -119,5 +120,4 @@ class EventTest extends BaseTest
         $result = $testClass->test3();
         Assert::assertNull($result);
     }
-
 }

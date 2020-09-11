@@ -1,7 +1,6 @@
 <?php
-namespace Imi\Db\Query\Builder;
 
-use Imi\Db\Query\Query;
+namespace Imi\Db\Query\Builder;
 
 class UpdateBuilder extends BaseBuilder
 {
@@ -12,7 +11,7 @@ class UpdateBuilder extends BaseBuilder
         $params = &$this->params;
         $option = $query->getOption();
         list($data) = $args;
-        if(null === $data)
+        if (null === $data)
         {
             $data = $option->saveData;
         }
@@ -21,13 +20,13 @@ class UpdateBuilder extends BaseBuilder
 
         // set后面的field=value
         $setStrs = [];
-        foreach($data as $k => $v)
+        foreach ($data as $k => $v)
         {
-            if($v instanceof \Imi\Db\Query\Raw)
+            if ($v instanceof \Imi\Db\Query\Raw)
             {
-                if(is_numeric($k))
+                if (is_numeric($k))
                 {
-                    $setStrs[] = (string)$v;
+                    $setStrs[] = (string) $v;
                 }
                 else
                 {
@@ -49,6 +48,7 @@ class UpdateBuilder extends BaseBuilder
             . $this->parseLimit($option->offset, $option->limit);
 
         $query->bindValues($params);
+
         return $sql;
     }
 }

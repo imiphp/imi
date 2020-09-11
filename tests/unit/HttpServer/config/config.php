@@ -2,20 +2,20 @@
 
 return [
     // 项目根命名空间
-    'namespace'    =>    'Imi\Test\HttpServer',
+    'namespace'    => 'Imi\Test\HttpServer',
 
     // 配置文件
-    'configs'    =>    [
-        'beans'        =>    __DIR__ . '/beans.php',
+    'configs'    => [
+        'beans'        => __DIR__ . '/beans.php',
     ],
 
     // imi 核心配置
-    'imi'   =>  [
-        'RequestContext'    =>  \Imi\Components\Swoole\Context\CoroutineContextManager::class,
+    'imi'   => [
+        'RequestContext'    => \Imi\Components\Swoole\Context\CoroutineContextManager::class,
     ],
 
     // 扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\HttpServer\Listener',
         'Imi\Test\HttpServer\Task',
         'Imi\Test\HttpServer\Process',
@@ -24,69 +24,69 @@ return [
     ],
 
     // 组件命名空间
-    'components'    =>  [
+    'components'    => [
     ],
 
     // 主服务器配置
-    'mainServer'    =>    [
-        'namespace'    =>    'Imi\Test\HttpServer\ApiServer',
-        'type'        =>    Imi\Server\Type::HTTP,
-        'host'        =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
-        'port'        =>    13000,
-        'mode'      =>  SWOOLE_BASE,
-        'configs'    =>    [
-            'worker_num'        =>  2,
-            'task_worker_num'   =>  1,
+    'mainServer'    => [
+        'namespace'    => 'Imi\Test\HttpServer\ApiServer',
+        'type'         => Imi\Server\Type::HTTP,
+        'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        'port'         => 13000,
+        'mode'         => \SWOOLE_BASE,
+        'configs'      => [
+            'worker_num'        => 2,
+            'task_worker_num'   => 1,
         ],
     ],
 
     // 子服务器（端口监听）配置
-    'subServers'    =>    [
-        'SessionTest'   =>  [
-            'namespace' =>    'Imi\Test\HttpServer\SessionTestServer',
-            'type'      =>    Imi\Server\Type::HTTP,
-            'host'      =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      =>    13005,
+    'subServers'    => [
+        'SessionTest'   => [
+            'namespace' => 'Imi\Test\HttpServer\SessionTestServer',
+            'type'      => Imi\Server\Type::HTTP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13005,
         ],
-        'HttpsTest'     =>  [
-            'namespace' =>    'Imi\Test\HttpServer\HttpsTestServer',
-            'type'      =>    Imi\Server\Type::HTTP,
-            'host'      =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      =>    13006,
-            'sockType'  =>    SWOOLE_SOCK_TCP | SWOOLE_SSL,
-            'configs'   =>  [
-                'ssl_cert_file'     =>  dirname(__DIR__, 3) . '/ssl/server.crt',
-                'ssl_key_file'      =>  dirname(__DIR__, 3) . '/ssl/server.key',
+        'HttpsTest'     => [
+            'namespace' => 'Imi\Test\HttpServer\HttpsTestServer',
+            'type'      => Imi\Server\Type::HTTP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13006,
+            'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
+            'configs'   => [
+                'ssl_cert_file'     => dirname(__DIR__, 3) . '/ssl/server.crt',
+                'ssl_key_file'      => dirname(__DIR__, 3) . '/ssl/server.key',
             ],
         ],
-        'Http2Test'   =>  [
-            'namespace' =>    'Imi\Test\HttpServer\Http2TestServer',
-            'type'      =>    Imi\Server\Type::HTTP,
-            'host'      =>    imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      =>    13007,
-            'sockType'  =>    SWOOLE_SOCK_TCP | SWOOLE_SSL,
-            'configs'   =>  [
-                'open_http2_protocol'   =>  true,
-                'ssl_cert_file'     =>  dirname(__DIR__, 3) . '/ssl/server.crt',
-                'ssl_key_file'      =>  dirname(__DIR__, 3) . '/ssl/server.key',
+        'Http2Test'   => [
+            'namespace' => 'Imi\Test\HttpServer\Http2TestServer',
+            'type'      => Imi\Server\Type::HTTP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13007,
+            'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
+            'configs'   => [
+                'open_http2_protocol'   => true,
+                'ssl_cert_file'         => dirname(__DIR__, 3) . '/ssl/server.crt',
+                'ssl_key_file'          => dirname(__DIR__, 3) . '/ssl/server.key',
             ],
         ],
     ],
 
     // 连接池配置
-    'pools'    =>    [
+    'pools'    => [
         // 主数据库
-        'maindb'    =>    [
+        'maindb'    => [
             // 同步池子
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Db\Pool\SyncDbPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    0,
+            'sync'    => [
+                'pool'    => [
+                    'class'        => \Imi\Db\Pool\SyncDbPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 0,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -96,15 +96,15 @@ return [
                 ],
             ],
             // 异步池子，worker进程使用
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Db\Pool\CoroutineDbPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+            'async'    => [
+                'pool'    => [
+                    'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -112,93 +112,93 @@ return [
                     'database'    => 'mysql',
                     'charset'     => 'utf8mb4',
                 ],
-            ]
-        ],
-        'redis'    =>    [
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    0,
-                    ],
-                ],
-                'resource'    =>    [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ]
             ],
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+        ],
+        'redis'    => [
+            'sync'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\SyncRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 0,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
                     'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ]
+                ],
+            ],
+            'async'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
+                    ],
+                ],
+                'resource'    => [
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                ],
             ],
         ],
     ],
 
     // 数据库配置
-    'db'    =>    [
+    'db'    => [
         // 数默认连接池名
-        'defaultPool'    =>    'maindb',
+        'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
-    'redis' =>  [
+    'redis' => [
         // 数默认连接池名
-        'defaultPool'   =>  'redis',
+        'defaultPool'   => 'redis',
     ],
 
     // 内存表配置
-    'memoryTable'   =>  [
-        't1'    =>  [
-            'columns'   =>  [
+    'memoryTable'   => [
+        't1'    => [
+            'columns'   => [
                 ['name' => 'name', 'type' => \Swoole\Table::TYPE_STRING, 'size' => 16],
                 ['name' => 'quantity', 'type' => \Swoole\Table::TYPE_INT],
             ],
-            'lockId'    =>  'memoryTableLock',
+            'lockId'    => 'memoryTableLock',
         ],
-        'connectContext'    =>  [
-            'class' =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
-            'lockId'=>  'redisConnectContextLock',
+        'connectContext'    => [
+            'class'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+            'lockId' => 'redisConnectContextLock',
         ],
     ],
 
     // 锁
-    'lock'  =>[
-        'list'  =>  [
+    'lock'  => [
+        'list'  => [
             // 'atomic' =>  [
             //     'class' =>  'AtomicLock',
             //     'options'   =>  [
             //         'atomicName'    =>  'atomicLock',
             //     ],
             // ],
-            'memoryTableLock' =>  [
-                'class' =>  'RedisLock',
-                'options'   =>  [
-                    'poolName'  =>  'redis',
+            'memoryTableLock' => [
+                'class'     => 'RedisLock',
+                'options'   => [
+                    'poolName'  => 'redis',
                 ],
             ],
-            'redisConnectContextLock' =>  [
-                'class' =>  'RedisLock',
-                'options'   =>  [
-                    'poolName'  =>  'redis',
+            'redisConnectContextLock' => [
+                'class'     => 'RedisLock',
+                'options'   => [
+                    'poolName'  => 'redis',
                 ],
             ],
         ],
     ],
 
     // atmoic 配置
-    'atomics'    =>  [
-        'atomicLock'   =>  1,
+    'atomics'    => [
+        'atomicLock'   => 1,
     ],
 ];

@@ -1,8 +1,8 @@
 <?php
+
 namespace Imi\Test\Component\Lock\Classes;
 
 use Imi\Bean\Annotation\Bean;
-use PHPUnit\Framework\Assert;
 use Imi\Lock\Annotation\Lockable;
 
 /**
@@ -17,7 +17,7 @@ class TestLockAnnotation
     {
         return 1;
     }
- 
+
     protected function check()
     {
         return 2;
@@ -30,10 +30,9 @@ class TestLockAnnotation
     {
         return 3;
     }
- 
+
     protected function check2()
     {
-         
     }
 
     /**
@@ -42,7 +41,7 @@ class TestLockAnnotation
     public function test()
     {
         usleep(100000);
+
         return time();
     }
-
 }

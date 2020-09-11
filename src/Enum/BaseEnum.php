@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Enum;
 
 use Imi\Enum\Annotation\Parser\EnumParser;
@@ -6,15 +7,17 @@ use Imi\Enum\Annotation\Parser\EnumParser;
 abstract class BaseEnum
 {
     /**
-     * 根据值，获取常量名，失败返回null
+     * 根据值，获取常量名，失败返回null.
      *
      * @param mixed $value
+     *
      * @return string|null
      */
     public static function getName($value)
     {
         $map = EnumParser::getInstance()->getMap(static::class);
         $key = array_search($value, $map);
+
         return $key ?? null;
     }
 
@@ -22,23 +25,25 @@ abstract class BaseEnum
      * 获取值
      *
      * @param string $name
+     *
      * @return mixed
      */
     public static function getValue($name)
     {
-        return constant(static::class . '::' . $name);
+        return \constant(static::class . '::' . $name);
     }
 
     /**
-     * 获取文本
+     * 获取文本.
      *
      * @param mixed $value
+     *
      * @return string|null
      */
     public static function getText($value)
     {
         $enumItem = EnumParser::getInstance()->getEnumItem(static::class, $value);
-        if($enumItem)
+        if ($enumItem)
         {
             return $enumItem->text;
         }
@@ -49,9 +54,10 @@ abstract class BaseEnum
     }
 
     /**
-     * 获取注解
+     * 获取注解.
      *
      * @param mixed $value
+     *
      * @return \Imi\Enum\Annotation\EnumItem
      */
     public static function getData($value)
@@ -60,7 +66,7 @@ abstract class BaseEnum
     }
 
     /**
-     * 获取所有名称
+     * 获取所有名称.
      *
      * @return string[]
      */
@@ -80,7 +86,7 @@ abstract class BaseEnum
     }
 
     /**
-     * 获取键值对应数组
+     * 获取键值对应数组.
      *
      * @return array
      */
@@ -88,5 +94,4 @@ abstract class BaseEnum
     {
         return EnumParser::getInstance()->getMap(static::class);
     }
-
 }

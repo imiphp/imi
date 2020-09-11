@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -11,23 +12,23 @@ class LazyArrayObjectTest extends BaseTest
 {
     public function testLazyArrayObject()
     {
-        $data2 = new \stdClass;
+        $data2 = new \stdClass();
         $data2->id = 2;
         $data2->name = 'b';
         $rawData = [
-            'name'          =>  'imi',
-            'url'           =>  'https://www.imiphp.com',
-            'description'   =>  'imi is very six',
-            'data1'         =>  [
-                'id'    =>  1,
-                'name'  =>  'a',
+            'name'          => 'imi',
+            'url'           => 'https://www.imiphp.com',
+            'description'   => 'imi is very six',
+            'data1'         => [
+                'id'    => 1,
+                'name'  => 'a',
             ],
-            'data2'         =>  $data2
+            'data2'         => $data2,
         ];
         $data = new LazyArrayObject($rawData);
 
         $this->assertEquals($rawData, $data->toArray());
-        foreach($data as $k => $v)
+        foreach ($data as $k => $v)
         {
             $this->assertEquals($rawData[$k], $v);
         }
@@ -52,7 +53,7 @@ class LazyArrayObjectTest extends BaseTest
 
         $this->assertFalse(isset($data->a));
         $this->assertFalse(isset($data['a']));
-        $data->a = ['b'=>1];
+        $data->a = ['b' => 1];
         $this->assertTrue(isset($data->a));
         $this->assertTrue(isset($data['a']));
         $this->assertEquals(1, $data->a['b']);
@@ -68,7 +69,5 @@ class LazyArrayObjectTest extends BaseTest
         $this->assertNull($data['x']);
         $this->assertFalse(isset($data->x));
         $this->assertFalse(isset($data['x']));
-
     }
-
 }

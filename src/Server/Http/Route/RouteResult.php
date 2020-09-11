@@ -1,35 +1,34 @@
 <?php
+
 namespace Imi\Server\Http\Route;
 
 use Imi\Server\Route\RouteCallable;
-use Imi\Server\Http\Route\RouteItem;
-use Imi\Server\Http\Route\UrlCheckResult;
 
 class RouteResult
 {
     /**
-     * 路由配置项
+     * 路由配置项.
      *
      * @var \Imi\Server\Http\Route\RouteItem
      */
     public $routeItem;
 
     /**
-     * URL 检测结果
+     * URL 检测结果.
      *
      * @var \Imi\Server\Http\Route\UrlCheckResult
      */
     public $urlCheckResult;
 
     /**
-     * 参数
+     * 参数.
      *
      * @var array
      */
     public $params;
 
     /**
-     * 回调
+     * 回调.
      *
      * @var callable
      */
@@ -41,7 +40,7 @@ class RouteResult
         $this->urlCheckResult = $urlCheckResult;
         $this->params = $params;
         $callable = $routeItem->callable;
-        if($callable instanceof RouteCallable)
+        if ($callable instanceof RouteCallable)
         {
             $this->callable = $callable->getCallable($urlCheckResult->params);
         }
@@ -50,5 +49,4 @@ class RouteResult
             $this->callable = $callable;
         }
     }
-
 }

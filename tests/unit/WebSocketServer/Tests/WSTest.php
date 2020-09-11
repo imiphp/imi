@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\WebSocketServer\Tests;
 
 use Yurun\Util\HttpRequest;
@@ -14,49 +15,49 @@ class WSTest extends BaseTest
      */
     public function test()
     {
-        $this->go(function(){
+        $this->go(function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
-            $http = new HttpRequest;
+            $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 3000;
             $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
-                'action'    =>  'login',
-                'username'  =>  'test',
+                'action'    => 'login',
+                'username'  => 'test',
             ])));
             $recv = $client->recv();
             $recvData = json_decode($recv, true);
-            if(!isset($recvData['token']))
+            if (!isset($recvData['token']))
             {
                 $this->assertTrue(false, 'Not found token');
             }
             $token = $recvData['token'];
             $fd = $recvData['fd'];
             $this->assertEquals([
-                'success'       =>  true,
-                'middlewareData'=>  'imi',
-                'requestUri'    =>  $this->host,
-                'uri'           =>  $this->host,
-                'token'         =>  $token,
-                'fd'            =>  $fd,
-                'getFdByFlag'   =>  $fd,
-                'getFlagByFd'   => $token,
-                'getFdsByFlags' => [$token => $fd],
-                'getFlagsByFds' => [$fd => $token],
+                'success'        => true,
+                'middlewareData' => 'imi',
+                'requestUri'     => $this->host,
+                'uri'            => $this->host,
+                'token'          => $token,
+                'fd'             => $fd,
+                'getFdByFlag'    => $fd,
+                'getFlagByFd'    => $token,
+                'getFdsByFlags'  => [$token => $fd],
+                'getFlagsByFds'  => [$fd => $token],
             ], $recvData);
             $time = time();
             $this->assertTrue($client->send(json_encode([
-                'action'    =>  'send',
-                'message'   =>  $time,
+                'action'    => 'send',
+                'message'   => $time,
             ])));
             $recv = $client->recv();
             $this->assertEquals('test:' . $time, $recv);
             $client->close();
 
             // 重连逻辑
-            $http = new HttpRequest;
+            $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 3000;
             $http->connectTimeout = 3000;
@@ -64,15 +65,15 @@ class WSTest extends BaseTest
             $this->assertTrue($client->isConnected());
 
             // 重试3次
-            for($i = 0; $i < 3; ++$i)
+            for ($i = 0; $i < 3; ++$i)
             {
                 $this->assertTrue($client->send(json_encode([
-                    'action'    =>  'reconnect',
-                    'token'     =>  $token,
+                    'action'    => 'reconnect',
+                    'token'     => $token,
                 ])));
                 $recv = $client->recv();
                 $recvData = json_decode($recv, true);
-                if(null !== $recvData)
+                if (null !== $recvData)
                 {
                     break;
                 }
@@ -82,55 +83,54 @@ class WSTest extends BaseTest
                 'success'   => true,
                 'username'  => 'test',
             ], $recvData);
-            
+
             $time = time();
             $this->assertTrue($client->send(json_encode([
-                'action'    =>  'send',
-                'message'   =>  $time,
+                'action'    => 'send',
+                'message'   => $time,
             ])));
             $recv = $client->recv();
             $this->assertEquals('test:' . $time, $recv);
             $client->close();
-
-        }, function(){
+        }, function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
     public function testNotFound()
     {
-        $this->go(function(){
+        $this->go(function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
-            $http = new HttpRequest;
+            $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 3000;
             $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
-                'action'    =>  'gg',
+                'action'    => 'gg',
             ])));
             $recv = $client->recv();
             $this->assertEquals(json_encode('gg'), $recv);
             $client->close();
-        }, function(){
+        }, function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
     public function testMatchHttpRoute()
     {
-        $this->go(function(){
+        $this->go(function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
-            $http = new HttpRequest;
+            $http = new HttpRequest();
             $http->retry = 3;
             $http->timeout = 3000;
             $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
-                'action'    =>  'test',
-                'username'  =>  'test',
+                'action'    => 'test',
+                'username'  => 'test',
             ])));
             $recv = $client->recv();
             $this->assertEquals(json_encode('gg'), $recv);
@@ -139,32 +139,31 @@ class WSTest extends BaseTest
             $client = $http->websocket($this->host . 'test');
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
-                'action'    =>  'test',
-                'username'  =>  'test',
+                'action'    => 'test',
+                'username'  => 'test',
             ])));
             $recv = $client->recv();
             $this->assertEquals(json_encode([
-                'data'  =>  [
-                    'action'    =>  'test',
-                    'username'  =>  'test',
+                'data'  => [
+                    'action'    => 'test',
+                    'username'  => 'test',
                 ],
             ]), $recv);
             $client->close();
-        }, function(){
+        }, function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
     public function testHttp()
     {
-        $this->go(function(){
+        $this->go(function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
-            $http = new HttpRequest;
+            $http = new HttpRequest();
             $response = $http->get($this->host . 'http');
             $this->assertEquals('http', $response->body());
-        }, function(){
+        }, function () {
             YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
-
 }

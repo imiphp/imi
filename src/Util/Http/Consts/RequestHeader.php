@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Util\Http\Consts;
 
 /**
- * 常见的http请求头
+ * 常见的http请求头.
  */
 abstract class RequestHeader
 {

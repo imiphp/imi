@@ -1,34 +1,40 @@
 <?php
+
 namespace Imi\Aop;
 
 class JoinPoint
 {
     /**
-     * 切入点类型
+     * 切入点类型.
+     *
      * @var string
      */
     private $type;
 
     /**
-     * 请求方法名
+     * 请求方法名.
+     *
      * @var string
      */
     private $method;
 
     /**
-     * 请求参数
+     * 请求参数.
+     *
      * @var array
      */
     private $args;
 
     /**
      * 连接点所在的目标对象
+     *
      * @var mixed
      */
     private $target;
 
     /**
-     * 代理对象本身
+     * 代理对象本身.
+     *
      * @var \Imi\Bean\BeanProxy
      */
     private $_this;
@@ -43,7 +49,8 @@ class JoinPoint
     }
 
     /**
-     * 获取切入点类型
+     * 获取切入点类型.
+     *
      * @return string
      */
     public function getType()
@@ -52,7 +59,8 @@ class JoinPoint
     }
 
     /**
-     * 获取请求方法名
+     * 获取请求方法名.
+     *
      * @return string
      */
     public function getMethod()
@@ -61,7 +69,8 @@ class JoinPoint
     }
 
     /**
-     * 获取请求参数
+     * 获取请求参数.
+     *
      * @return array
      */
     public function getArgs()
@@ -71,6 +80,7 @@ class JoinPoint
 
     /**
      * 获取连接点所在的目标对象
+     *
      * @return mixed
      */
     public function getTarget()
@@ -79,7 +89,8 @@ class JoinPoint
     }
 
     /**
-     * 获取代理对象本身
+     * 获取代理对象本身.
+     *
      * @return \Imi\Bean\BeanProxy
      */
     public function getThis()
@@ -88,15 +99,14 @@ class JoinPoint
     }
 
     /**
-     * 修改请求参数
+     * 修改请求参数.
      *
      * @param array $args 请求参数
      *
      * @return voie
-     */ 
+     */
     public function setArgs(array $args)
     {
         $this->args = $args;
     }
-
 }

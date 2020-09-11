@@ -1,31 +1,29 @@
 <?php
 
-use Imi\Log\LogLevel;
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\HttpServer\ApiServer\Controller',
         'Imi\Test\HttpServer\Modules',
         'Imi\Test\HttpServer\OutsideController',
         'Imi\Test\HttpServer\ApiServer\Error',
     ],
-    'beans'    =>    [
-        'SessionManager'    =>    [
-            'handlerClass'    =>    \Imi\Server\Session\Handler\File::class,
+    'beans'    => [
+        'SessionManager'    => [
+            'handlerClass'    => \Imi\Server\Session\Handler\File::class,
         ],
-        'SessionFile'    =>    [
-            'savePath'    =>    dirname(__DIR__, 2) . '/.session/',
+        'SessionFile'    => [
+            'savePath'    => dirname(__DIR__, 2) . '/.session/',
         ],
-        'SessionConfig'    =>    [
-
+        'SessionConfig'    => [
         ],
-        'SessionCookie'    =>    [
-            'lifetime'    =>    86400 * 30,
+        'SessionCookie'    => [
+            'lifetime'    => 86400 * 30,
         ],
-        'HttpDispatcher'    =>    [
-            'middlewares'    =>    [
+        'HttpDispatcher'    => [
+            'middlewares'    => [
                 'OptionsMiddleware',
                 'ExecuteTimeoutMiddleware',
                 \Imi\Test\HttpServer\Middleware\RequestLogMiddleware::class,
@@ -34,29 +32,29 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'OptionsMiddleware' =>  [
-            'allowOrigin'   =>  'http://127.0.0.1',
-            'optionsBreak'  =>  true,
+        'OptionsMiddleware' => [
+            'allowOrigin'   => 'http://127.0.0.1',
+            'optionsBreak'  => true,
         ],
-        'HtmlView'    =>    [
-            'templatePath'    =>    dirname(__DIR__) . '/template/',
+        'HtmlView'    => [
+            'templatePath'    => dirname(__DIR__) . '/template/',
             // 支持的模版文件扩展名，优先级按先后顺序
-            'fileSuffixs'        =>    [
+            'fileSuffixs'        => [
                 'tpl',
                 'html',
-                'php'
+                'php',
             ],
         ],
-        'ExecuteTimeoutMiddleware' =>  [
-            'maxExecuteTime'    =>  3000,
+        'ExecuteTimeoutMiddleware' => [
+            'maxExecuteTime'    => 3000,
         ],
-        'HttpNotFoundHandler'   =>  [
-            'handler'   =>  'MyHttpNotFoundHandler',
+        'HttpNotFoundHandler'   => [
+            'handler'   => 'MyHttpNotFoundHandler',
         ],
     ],
-    'middleware'    =>  [
-        'groups'    =>  [
-            'test'  =>  [
+    'middleware'    => [
+        'groups'    => [
+            'test'  => [
                 \Imi\Test\HttpServer\ApiServer\Middleware\Middleware4::class,
             ],
         ],

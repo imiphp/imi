@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
@@ -42,5 +43,4 @@ class AtomicTest extends BaseTest
         Assert::assertTrue(AtomicManager::cmpset('test', 1, 2));
         Assert::assertEquals(2, AtomicManager::get('test'));
     }
-
 }

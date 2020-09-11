@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Inherit;
 
-use Imi\Model\Annotation\Table;
 use Imi\Bean\Annotation\Inherit;
+use Imi\Model\Annotation\Table;
 
 /**
  * @Inherit(annotation="Imi\Bean\Annotation\Bean")
@@ -41,12 +42,10 @@ class TestClass extends ParentClass
      */
     public function test()
     {
-
     }
 
     public function test2()
     {
-
     }
 
     /**
@@ -56,7 +55,5 @@ class TestClass extends ParentClass
      */
     public function test3()
     {
-
     }
-
 }

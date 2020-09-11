@@ -1,18 +1,16 @@
 <?php
+
 namespace Imi\Listener;
 
 use Imi\App;
-use Imi\Worker;
-use Imi\Util\Imi;
-use Imi\Util\File;
-use Imi\Event\Event;
-use Imi\Util\Swoole;
-use Imi\Util\Coroutine;
 use Imi\Bean\Annotation\Listener;
-use Imi\Server\Event\Param\AppInitEventParam;
-use Imi\Server\Event\Param\PipeMessageEventParam;
-use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Event\Event;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
+use Imi\Server\Event\Param\AppInitEventParam;
+use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Util\Imi;
+use Imi\Util\Swoole;
+use Imi\Worker;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -21,22 +19,23 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class AfterWorkerStart implements IWorkerStartEventListener
 {
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(WorkerStartEventParam $e)
     {
         // 项目初始化事件
-        if(!$e->server->getSwooleServer()->taskworker)
+        if (!$e->server->getSwooleServer()->taskworker)
         {
             $initFlagFile = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.app.init');
-            if(0 === Worker::getWorkerID() && !$this->checkInitFlagFile($initFlagFile))
+            if (0 === Worker::getWorkerID() && !$this->checkInitFlagFile($initFlagFile))
             {
                 Event::trigger('IMI.APP.INIT', [
-                    
                 ], $e->getTarget(), AppInitEventParam::class);
-    
+
                 file_put_contents($initFlagFile, Swoole::getMasterPID());
 
                 (new ConsoleOutput())->writeln('<info>App Inited</info>');
@@ -47,10 +46,11 @@ class AfterWorkerStart implements IWorkerStartEventListener
     }
 
     /**
-     * 检测是否当前服务已初始化
+     * 检测是否当前服务已初始化.
      *
      * @param string $initFlagFile
-     * @return boolean
+     *
+     * @return bool
      */
     private function checkInitFlagFile($initFlagFile)
     {

@@ -1,19 +1,19 @@
 <?php
+
 namespace Imi\Cli;
 
 use Imi\App;
-use Imi\Event\Event;
-use Imi\Cli\ImiCommand;
-use Imi\Cli\Annotation\Command;
-use Imi\Core\App\Contract\BaseApp;
-use Imi\Cli\Annotation\CommandAction;
-use Imi\Util\Process\ProcessAppContexts;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Cli\Annotation\Command;
+use Imi\Cli\Annotation\CommandAction;
+use Imi\Core\App\Contract\BaseApp;
+use Imi\Event\Event;
+use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 class CliApp extends BaseApp
 {
@@ -28,16 +28,17 @@ class CliApp extends BaseApp
     protected EventDispatcher $cliEventDispatcher;
 
     /**
-     * 构造方法
+     * 构造方法.
      *
      * @param string $namespace
+     *
      * @return void
      */
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
-        $this->cliEventDispatcher = $dispatcher = new EventDispatcher;
+        $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
         $this->cli = $cli = new Application('imi', App::getImiVersion());
         $cli->setDispatcher($dispatcher);
 
@@ -69,18 +70,18 @@ class CliApp extends BaseApp
             )
         );
 
-        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function(ConsoleCommandEvent $e){
+        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
             $input = $e->getInput();
-            App::initApp(!!$input->getOption('no-app-cache'));
-        }, PHP_INT_MAX);
+            App::initApp((bool) $input->getOption('no-app-cache'));
+        }, \PHP_INT_MAX);
 
-        Event::one('IMI.INITED', function() use($cli){
-            foreach(AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
+        Event::one('IMI.INITED', function () use ($cli) {
+            foreach (AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
             {
                 /** @var Command $commandAnnotation */
                 $commandAnnotation = $point->getAnnotation();
                 $className = $point->getClass();
-                foreach(AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
+                foreach (AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
                 {
                     $cli->add(new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
                 }
@@ -90,7 +91,7 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 获取应用类型
+     * 获取应用类型.
      *
      * @return string
      */
@@ -100,23 +101,22 @@ class CliApp extends BaseApp
     }
 
     /**
-     * 运行应用
+     * 运行应用.
      *
      * @return void
      */
     public function run(): void
     {
-        $this->cli->run(new ImiArgvInput);
+        $this->cli->run(new ImiArgvInput());
     }
 
     /**
-     * Get the value of cli
+     * Get the value of cli.
      *
      * @return Application
-     */ 
+     */
     public function getCli(): Application
     {
         return $this->cli;
     }
-
 }

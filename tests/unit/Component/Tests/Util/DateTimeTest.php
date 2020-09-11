@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -20,5 +21,4 @@ class DateTimeTest extends BaseTest
         $sec = DateTime::getSecondsByInterval($di);
         $this->assertTrue($sec <= 1);
     }
-
 }

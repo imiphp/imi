@@ -1,18 +1,19 @@
 <?php
+
 namespace Imi\Util\Stream;
 
 /**
- * 流访问类型
+ * 流访问类型.
  */
 abstract class StreamMode
 {
     /**
-     * 只读方式打开，指针指向开头
+     * 只读方式打开，指针指向开头.
      */
     const READONLY = 'r';
 
     /**
-     * 读写方式打开，指针指向开头
+     * 读写方式打开，指针指向开头.
      */
     const READ_WRITE = 'r+';
 

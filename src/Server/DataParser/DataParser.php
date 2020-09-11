@@ -1,24 +1,27 @@
 <?php
+
 namespace Imi\Server\DataParser;
 
-use Imi\RequestContext;
 use Imi\ConnectContext;
+use Imi\RequestContext;
 use Imi\ServerManage;
 
 /**
- * 数据处理器
+ * 数据处理器.
  */
 class DataParser
 {
     /**
-     * 编码为存储格式
-     * @param mixed $data
+     * 编码为存储格式.
+     *
+     * @param mixed       $data
      * @param string|null $serverName
+     *
      * @return mixed
      */
     public function encode($data, ?string $serverName = null)
     {
-        if($serverName)
+        if ($serverName)
         {
             return ServerManage::getServer($serverName)->getBean($this->getParserClass($serverName))->encode($data);
         }
@@ -29,14 +32,16 @@ class DataParser
     }
 
     /**
-     * 解码为php变量
-     * @param mixed $data
+     * 解码为php变量.
+     *
+     * @param mixed       $data
      * @param string|null $serverName
+     *
      * @return mixed
      */
     public function decode($data, ?string $serverName = null)
     {
-        if($serverName)
+        if ($serverName)
         {
             return ServerManage::getServer($serverName)->getBean($this->getParserClass($serverName))->decode($data);
         }
@@ -47,15 +52,16 @@ class DataParser
     }
 
     /**
-     * 获取处理器类
+     * 获取处理器类.
      *
      * @param string|null $serverName
+     *
      * @return string
      */
     public function getParserClass(?string $serverName = null)
     {
         $requestContext = RequestContext::getContext();
-        if($serverName)
+        if ($serverName)
         {
             $server = ServerManage::getServer($serverName);
         }
@@ -63,15 +69,16 @@ class DataParser
         {
             $server = $requestContext['server'] ?? null;
         }
-        if($server instanceof \Imi\Server\WebSocket\Server)
+        if ($server instanceof \Imi\Server\WebSocket\Server)
         {
-            if(!($requestContext['fd'] ?? null))
+            if (!($requestContext['fd'] ?? null))
             {
                 return JsonObjectParser::class;
             }
+
             return ConnectContext::get('httpRouteResult')->routeItem->wsConfig->parserClass ?? JsonObjectParser::class;
         }
-        else if($server instanceof \Imi\Server\TcpServer\Server || $server instanceof \Imi\Server\UdpServer\Server)
+        elseif ($server instanceof \Imi\Server\TcpServer\Server || $server instanceof \Imi\Server\UdpServer\Server)
         {
             return $server->getConfig()['dataParser'] ?? JsonObjectParser::class;
         }
@@ -80,5 +87,4 @@ class DataParser
             return JsonObjectParser::class;
         }
     }
-
 }

@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Test\HttpServer\Cron;
 
-use Imi\Process\IProcess;
-use Imi\Cron\Util\CronUtil;
 use Imi\Cron\Annotation\Cron;
+use Imi\Cron\Util\CronUtil;
 use Imi\Process\Annotation\Process;
+use Imi\Process\IProcess;
 use Symfony\Component\Console\Input\ArgvInput;
 
 /**
@@ -17,21 +18,25 @@ class TaskProcess implements IProcess
     {
         $success = false;
         $message = '';
-        try {
-            $input = new ArgvInput;
+        try
+        {
+            $input = new ArgvInput();
             $id = $input->getParameterOption('--id');
-            if(false === $id)
+            if (false === $id)
             {
                 return;
             }
             $data = json_decode($input->getParameterOption('--data'), true);
             $success = true;
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
             $message = $th->getMessage();
             throw $th;
-        } finally {
+        }
+        finally
+        {
             CronUtil::reportCronResult($id, $success, $message);
         }
     }
-
 }

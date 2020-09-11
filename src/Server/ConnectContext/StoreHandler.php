@@ -1,18 +1,20 @@
 <?php
+
 namespace Imi\Server\ConnectContext;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\ConnectContext\StoreHandler\IHandler;
 
 /**
- * 连接上下文存储处理器-总
+ * 连接上下文存储处理器-总.
+ *
  * @Bean("ConnectContextStore")
  */
 class StoreHandler implements IHandler
 {
     /**
-     * 处理器类
+     * 处理器类.
      *
      * @var string
      */
@@ -21,16 +23,17 @@ class StoreHandler implements IHandler
     /**
      * 数据有效期，单位：秒
      * 连接断开后，供断线重连的，数据保留时间
-     * 设为 0 则连接断开立即销毁数据
+     * 设为 0 则连接断开立即销毁数据.
      *
-     * @var integer
+     * @var int
      */
     protected $ttl = 0;
 
     /**
-     * 读取数据
+     * 读取数据.
      *
      * @param string $key
+     *
      * @return array
      */
     public function read(string $key): array
@@ -39,10 +42,11 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 保存数据
+     * 保存数据.
      *
      * @param string $key
-     * @param array $data
+     * @param array  $data
+     *
      * @return void
      */
     public function save(string $key, array $data)
@@ -51,9 +55,10 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 销毁数据
+     * 销毁数据.
      *
      * @param string $key
+     *
      * @return void
      */
     public function destroy(string $key)
@@ -62,10 +67,11 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 延迟销毁数据
+     * 延迟销毁数据.
      *
      * @param string $key
-     * @param integer $ttl
+     * @param int    $ttl
+     *
      * @return void
      */
     public function delayDestroy(string $key, int $ttl)
@@ -74,9 +80,10 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 数据是否存在
+     * 数据是否存在.
      *
      * @param string $key
+     *
      * @return void
      */
     public function exists(string $key)
@@ -86,10 +93,11 @@ class StoreHandler implements IHandler
 
     /**
      * 加锁
-     * 
-     * @param string $key
+     *
+     * @param string   $key
      * @param callable $callable
-     * @return boolean
+     *
+     * @return bool
      */
     public function lock(string $key, $callable = null)
     {
@@ -99,7 +107,7 @@ class StoreHandler implements IHandler
     /**
      * 解锁
      *
-     * @return boolean
+     * @return bool
      */
     public function unlock()
     {
@@ -107,7 +115,7 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * 获取处理器
+     * 获取处理器.
      *
      * @return \Imi\Server\ConnectContext\StoreHandler\IHandler
      */
@@ -117,10 +125,10 @@ class StoreHandler implements IHandler
     }
 
     /**
-     * Get 设为 0 则连接断开立即销毁数据
+     * Get 设为 0 则连接断开立即销毁数据.
      *
-     * @return integer
-     */ 
+     * @return int
+     */
     public function getTtl()
     {
         return $this->ttl;

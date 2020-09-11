@@ -1,25 +1,28 @@
 <?php
+
 namespace Imi\Util\Stream;
 
-use Psr\Http\Message\StreamInterface;
 use Imi\Util\Text;
+use Psr\Http\Message\StreamInterface;
 
 class MemoryStream implements StreamInterface
 {
     /**
-     * 内容
+     * 内容.
+     *
      * @var string
      */
     protected $content;
 
     /**
-     * 大小
+     * 大小.
+     *
      * @var int
      */
     protected $size;
 
     /**
-     * 当前位置
+     * 当前位置.
      *
      * @var int
      */
@@ -28,7 +31,7 @@ class MemoryStream implements StreamInterface
     public function __construct(string $content = '')
     {
         $this->content = $content;
-        $this->size = strlen($content);
+        $this->size = \strlen($content);
     }
 
     /**
@@ -43,6 +46,7 @@ class MemoryStream implements StreamInterface
      * string casting operations.
      *
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
+     *
      * @return string
      */
     public function __toString()
@@ -84,9 +88,10 @@ class MemoryStream implements StreamInterface
     }
 
     /**
-     * Returns the current position of the file read/write pointer
+     * Returns the current position of the file read/write pointer.
      *
      * @return int Position of the file pointer
+     *
      * @throws \RuntimeException on error.
      */
     public function tell()
@@ -117,30 +122,32 @@ class MemoryStream implements StreamInterface
     /**
      * Seek to a position in the stream.
      *
-     * @link http://www.php.net/manual/en/function.fseek.php
+     * @see http://www.php.net/manual/en/function.fseek.php
+     *
      * @param int $offset Stream offset
      * @param int $whence Specifies how the cursor position will be calculated
-     *     based on the seek offset. Valid values are identical to the built-in
-     *     PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
-     *     offset bytes SEEK_CUR: Set position to current location plus offset
-     *     SEEK_END: Set position to end-of-stream plus offset.
+     *                    based on the seek offset. Valid values are identical to the built-in
+     *                    PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
+     *                    offset bytes SEEK_CUR: Set position to current location plus offset
+     *                    SEEK_END: Set position to end-of-stream plus offset.
+     *
      * @throws \RuntimeException on failure.
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = \SEEK_SET)
     {
-        switch($whence)
+        switch ($whence)
         {
-            case SEEK_SET:
-                if($offset < 0)
+            case \SEEK_SET:
+                if ($offset < 0)
                 {
                     throw new \RuntimeException('offset failure');
                 }
                 $this->position = $offset;
                 break;
-            case SEEK_CUR:
+            case \SEEK_CUR:
                 $this->position += $offset;
                 break;
-            case SEEK_END:
+            case \SEEK_END:
                 $this->position = $this->size - 1 + $offset;
                 break;
         }
@@ -153,7 +160,8 @@ class MemoryStream implements StreamInterface
      * otherwise, it will perform a seek(0).
      *
      * @see seek()
-     * @link http://www.php.net/manual/en/function.fseek.php
+     * @see http://www.php.net/manual/en/function.fseek.php
+     *
      * @throws \RuntimeException on failure.
      */
     public function rewind()
@@ -175,7 +183,9 @@ class MemoryStream implements StreamInterface
      * Write data to the stream.
      *
      * @param string $string The string that is to be written.
+     *
      * @return int Returns the number of bytes written to the stream.
+     *
      * @throws \RuntimeException on failure.
      */
     public function write($string)
@@ -183,9 +193,10 @@ class MemoryStream implements StreamInterface
         $content = &$this->content;
         $position = &$this->position;
         $content = Text::insert($content, $position, $string);
-        $len = strlen($string);
+        $len = \strlen($string);
         $position += $len;
         $this->size += $len;
+
         return $len;
     }
 
@@ -203,10 +214,12 @@ class MemoryStream implements StreamInterface
      * Read data from the stream.
      *
      * @param int $length Read up to $length bytes from the object and return
-     *     them. Fewer than $length bytes may be returned if underlying stream
-     *     call returns fewer bytes.
+     *                    them. Fewer than $length bytes may be returned if underlying stream
+     *                    call returns fewer bytes.
+     *
      * @return string Returns the data read from the stream, or an empty string
-     *     if no bytes are available.
+     *                if no bytes are available.
+     *
      * @throws \RuntimeException if an error occurs.
      */
     public function read($length)
@@ -214,22 +227,25 @@ class MemoryStream implements StreamInterface
         $position = &$this->position;
         $result = substr($this->content, $position, $length);
         $position += $length;
+
         return $result;
     }
 
     /**
-     * Returns the remaining contents in a string
+     * Returns the remaining contents in a string.
      *
      * @return string
+     *
      * @throws \RuntimeException if unable to read or an error occurs while
-     *     reading.
+     *                           reading.
      */
     public function getContents()
     {
         $position = &$this->position;
-        if(0 === $position)
+        if (0 === $position)
         {
             $position = $this->size;
+
             return $this->content;
         }
         else
@@ -244,11 +260,13 @@ class MemoryStream implements StreamInterface
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.
      *
-     * @link http://php.net/manual/en/function.stream-get-meta-data.php
+     * @see http://php.net/manual/en/function.stream-get-meta-data.php
+     *
      * @param string $key Specific metadata to retrieve.
+     *
      * @return array|mixed|null Returns an associative array if no key is
-     *     provided. Returns a specific key value if a key is provided and the
-     *     value is found, or null if the key is not found.
+     *                          provided. Returns a specific key value if a key is provided and the
+     *                          value is found, or null if the key is not found.
      */
     public function getMetadata($key = null)
     {

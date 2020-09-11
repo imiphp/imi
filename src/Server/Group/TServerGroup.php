@@ -1,23 +1,24 @@
 <?php
+
 namespace Imi\Server\Group;
 
 use Imi\RequestContext;
-use Imi\Pool\PoolManager;
 
 trait TServerGroup
 {
     /**
-     * 组配置
+     * 组配置.
      *
      * @var \Imi\Server\Group\Group[]
      */
     private $groups = [];
 
     /**
-     * 组是否存在
+     * 组是否存在.
      *
      * @param string $groupName
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasGroup(string $groupName)
     {
@@ -28,23 +29,26 @@ trait TServerGroup
      * 创建组，返回组对象
      *
      * @param string $groupName
-     * @param integer $maxClients
+     * @param int    $maxClients
+     *
      * @return \Imi\Server\Group\Group
      */
     public function createGroup(string $groupName, int $maxClients = -1)
     {
         $groups = &$this->groups;
-        if(!isset($groups[$groupName]))
+        if (!isset($groups[$groupName]))
         {
             $groups[$groupName] = RequestContext::getServerBean('ServerGroup', $this, $groupName, $maxClients);
         }
+
         return $groups[$groupName];
     }
 
     /**
-     * 获取组对象，不存在返回null
+     * 获取组对象，不存在返回null.
      *
      * @param string $groupName
+     *
      * @return \Imi\Server\Group\Group|null
      */
     public function getGroup(string $groupName)
@@ -53,10 +57,11 @@ trait TServerGroup
     }
 
     /**
-     * 加入组，组不存在则自动创建
+     * 加入组，组不存在则自动创建.
      *
      * @param string $groupName
-     * @param integer $fd
+     * @param int    $fd
+     *
      * @return void
      */
     public function joinGroup(string $groupName, int $fd)
@@ -65,10 +70,11 @@ trait TServerGroup
     }
 
     /**
-     * 离开组，组不存在则自动创建
+     * 离开组，组不存在则自动创建.
      *
      * @param string $groupName
-     * @param integer $fd
+     * @param int    $fd
+     *
      * @return void
      */
     public function leaveGroup(string $groupName, int $fd)
@@ -77,11 +83,12 @@ trait TServerGroup
     }
 
     /**
-     * 调用组方法
+     * 调用组方法.
      *
      * @param string $groupName
      * @param string $methodName
-     * @param mixed ...$args
+     * @param mixed  ...$args
+     *
      * @return array
      */
     public function groupCall(string $groupName, string $methodName, ...$args)
@@ -90,7 +97,7 @@ trait TServerGroup
     }
 
     /**
-     * 获取所有组列表
+     * 获取所有组列表.
      *
      * @return \Imi\Server\Group\Group[]
      */

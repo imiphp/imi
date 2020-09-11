@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Redis;
 
 /**
- * imi 框架中封装的 Redis 类
- * 
+ * imi 框架中封装的 Redis 类.
+ *
  * @method mixed _prefix($key)
  * @method mixed _serialize($value)
  * @method mixed _unserialize($value)
@@ -257,7 +258,7 @@ class RedisHandler
     }
 
     /**
-     * 获取 Redis 对象实例
+     * 获取 Redis 对象实例.
      *
      * @return \Redis
      */
@@ -267,13 +268,14 @@ class RedisHandler
     }
 
     /**
-     * eval扩展方法，结合了 eval、evalSha
-     * 
+     * eval扩展方法，结合了 eval、evalSha.
+     *
      * 优先使用 evalSha 尝试，失败则使用 eval 方法
      *
      * @param string $script
-     * @param array $args
-     * @param int $num_keys
+     * @param array  $args
+     * @param int    $num_keys
+     *
      * @return mixed
      */
     public function evalEx($script, $args = null, $num_keys = null)
@@ -281,19 +283,21 @@ class RedisHandler
         $sha1 = sha1($script);
         $this->clearLastError();
         $result = $this->evalSha($sha1, $args, $num_keys);
-        if('NOSCRIPT No matching script. Please use EVAL.' === $this->getLastError())
+        if ('NOSCRIPT No matching script. Please use EVAL.' === $this->getLastError())
         {
             $result = $this->eval($script, $args, $num_keys);
         }
+
         return $result;
     }
 
     /**
-     * scan
-     * 
-     * @param int|null $iterator
+     * scan.
+     *
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -302,20 +306,21 @@ class RedisHandler
     }
 
     /**
-     * scan 方法的扩展简易遍历方法
-     * 
+     * scan 方法的扩展简易遍历方法.
+     *
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function scanEach(?string $pattern = null, ?int $count = null)
     {
         $it = null;
-        while(false !== ($keys = $this->scan($it, $pattern, $count)))
+        while (false !== ($keys = $this->scan($it, $pattern, $count)))
         {
-            if($keys)
+            if ($keys)
             {
-                foreach($keys as $key)
+                foreach ($keys as $key)
                 {
                     yield $key;
                 }
@@ -324,12 +329,13 @@ class RedisHandler
     }
 
     /**
-     * hscan
-     * 
-     * @param string $key
-     * @param int|null $iterator
+     * hscan.
+     *
+     * @param string      $key
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function hscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -338,21 +344,22 @@ class RedisHandler
     }
 
     /**
-     * hscan 方法的扩展简易遍历方法
-     * 
-     * @param string $key
+     * hscan 方法的扩展简易遍历方法.
+     *
+     * @param string      $key
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function hscanEach(string $key, ?string $pattern = null, ?int $count = null)
     {
         $it = null;
-        while(false !== ($result = $this->hscan($key, $it, $pattern, $count)))
+        while (false !== ($result = $this->hscan($key, $it, $pattern, $count)))
         {
-            if($result)
+            if ($result)
             {
-                foreach($result as $key => $value)
+                foreach ($result as $key => $value)
                 {
                     yield $key => $value;
                 }
@@ -361,12 +368,13 @@ class RedisHandler
     }
 
     /**
-     * sscan
-     * 
-     * @param string $key
-     * @param int|null $iterator
+     * sscan.
+     *
+     * @param string      $key
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -375,21 +383,22 @@ class RedisHandler
     }
 
     /**
-     * sscan 方法的扩展简易遍历方法
-     * 
-     * @param string $key
+     * sscan 方法的扩展简易遍历方法.
+     *
+     * @param string      $key
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function sscanEach(string $key, ?string $pattern = null, ?int $count = null)
     {
         $it = null;
-        while(false !== ($result = $this->sscan($key, $it, $pattern, $count)))
+        while (false !== ($result = $this->sscan($key, $it, $pattern, $count)))
         {
-            if($result)
+            if ($result)
             {
-                foreach($result as $value)
+                foreach ($result as $value)
                 {
                     yield $value;
                 }
@@ -398,12 +407,13 @@ class RedisHandler
     }
 
     /**
-     * zscan
-     * 
-     * @param string $key
-     * @param int|null $iterator
+     * zscan.
+     *
+     * @param string      $key
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function zscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -412,26 +422,26 @@ class RedisHandler
     }
 
     /**
-     * zscan 方法的扩展简易遍历方法
-     * 
-     * @param string $key
+     * zscan 方法的扩展简易遍历方法.
+     *
+     * @param string      $key
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public function zscanEach(string $key, ?string $pattern = null, ?int $count = null)
     {
         $it = null;
-        while(false !== ($result = $this->zscan($key, $it, $pattern, $count)))
+        while (false !== ($result = $this->zscan($key, $it, $pattern, $count)))
         {
-            if($result)
+            if ($result)
             {
-                foreach($result as $value)
+                foreach ($result as $value)
                 {
                     yield $value;
                 }
             }
         }
     }
-
 }

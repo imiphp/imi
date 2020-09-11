@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Util;
 
 /**
  * 对象及数组帮助类
- * 智能识别数组和对象，支持对a.b.c这样的name属性进行操作
+ * 智能识别数组和对象，支持对a.b.c这样的name属性进行操作.
  */
 abstract class ObjectArrayHelper
 {
@@ -11,8 +12,9 @@ abstract class ObjectArrayHelper
      * 获取值
      *
      * @param array|object $object
-     * @param string $name
-     * @param mixed $default
+     * @param string       $name
+     * @param mixed        $default
+     *
      * @return mixed
      */
     public static function get(&$object, $name, $default = null)
@@ -21,7 +23,7 @@ abstract class ObjectArrayHelper
         $result = &$object;
         foreach ($names as $nameItem)
         {
-            if(is_array($result))
+            if (\is_array($result))
             {
                 // 数组
                 if (isset($result[$nameItem]))
@@ -33,7 +35,7 @@ abstract class ObjectArrayHelper
                     return $default;
                 }
             }
-            else if(is_object($result))
+            elseif (\is_object($result))
             {
                 // 对象
                 if (isset($result->$nameItem))
@@ -64,8 +66,9 @@ abstract class ObjectArrayHelper
      * 设置值
      *
      * @param array|object $object
-     * @param string $name
-     * @param mixed $value
+     * @param string       $name
+     * @param mixed        $value
+     *
      * @return void
      */
     public static function set(&$object, $name, $value)
@@ -75,7 +78,7 @@ abstract class ObjectArrayHelper
         $data = &$object;
         foreach ($names as $nameItem)
         {
-            if(is_array($data))
+            if (\is_array($data))
             {
                 if (!isset($data[$nameItem]))
                 {
@@ -83,20 +86,20 @@ abstract class ObjectArrayHelper
                 }
                 $data = &$data[$nameItem];
             }
-            else if(is_object($data))
+            elseif (\is_object($data))
             {
                 if (!isset($data->$nameItem))
                 {
-                    $data->$nameItem = new stdClass;
+                    $data->$nameItem = new stdClass();
                 }
                 $data = &$data->$nameItem;
             }
         }
-        if(is_array($data))
+        if (\is_array($data))
         {
             $data[$lastName] = $value;
         }
-        else if(is_object($data))
+        elseif (\is_object($data))
         {
             $data->$lastName = $value;
         }
@@ -106,7 +109,8 @@ abstract class ObjectArrayHelper
      * 移除值
      *
      * @param array|object $object
-     * @param string $name
+     * @param string       $name
+     *
      * @return void
      */
     public static function remove(&$object, $name)
@@ -116,7 +120,7 @@ abstract class ObjectArrayHelper
         $data = &$object;
         foreach ($names as $nameItem)
         {
-            if(is_array($data))
+            if (\is_array($data))
             {
                 if (!isset($data[$nameItem]))
                 {
@@ -124,31 +128,32 @@ abstract class ObjectArrayHelper
                 }
                 $data = &$data[$nameItem];
             }
-            else if(is_object($data))
+            elseif (\is_object($data))
             {
                 if (!isset($data->$nameItem))
                 {
-                    $data->$nameItem = new stdClass;
+                    $data->$nameItem = new stdClass();
                 }
                 $data = &$data->$nameItem;
             }
         }
-        if(is_array($data))
+        if (\is_array($data))
         {
             unset($data[$lastName]);
         }
-        else if(is_object($data))
+        elseif (\is_object($data))
         {
             unset($data->$lastName);
         }
     }
 
     /**
-     * 值是否存在
+     * 值是否存在.
      *
      * @param array|object $object
-     * @param string $name
-     * @return boolean
+     * @param string       $name
+     *
+     * @return bool
      */
     public static function exists($object, $name)
     {
@@ -159,16 +164,17 @@ abstract class ObjectArrayHelper
      * 将第二纬某字段值放入到一个数组中
      * 功能类似array_column，这个方法也支持对象
      *
-     * @param array $array
+     * @param array  $array
      * @param string $columnName
+     *
      * @return array
      */
     public static function column($array, $columnName)
     {
         $result = [];
-        foreach($array as $row)
+        foreach ($array as $row)
         {
-            if(is_object($row))
+            if (\is_object($row))
             {
                 $result[] = $row->$columnName;
             }
@@ -177,39 +183,41 @@ abstract class ObjectArrayHelper
                 $result[] = $row[$columnName];
             }
         }
+
         return $result;
     }
 
     /**
-     * 过滤属性
-     * 
+     * 过滤属性.
+     *
      * $mode只允许取值为：allow/deny
      *
      * @param array|object $object
-     * @param array $fields
-     * @param string $mode
+     * @param array        $fields
+     * @param string       $mode
+     *
      * @return void
      */
     public static function filter(&$object, array $fields, $mode = 'allow')
     {
-        if('allow' === $mode)
+        if ('allow' === $mode)
         {
             $unsetKeys = [];
-            foreach($object as $field => $value)
+            foreach ($object as $field => $value)
             {
-                if(!in_array($field, $fields))
+                if (!\in_array($field, $fields))
                 {
                     $unsetKeys[] = $field;
                 }
             }
-            foreach($unsetKeys as $key)
+            foreach ($unsetKeys as $key)
             {
                 static::remove($object, $key);
             }
         }
-        else if('deny' === $mode)
+        elseif ('deny' === $mode)
         {
-            foreach($fields as $field)
+            foreach ($fields as $field)
             {
                 static::remove($object, $field);
             }

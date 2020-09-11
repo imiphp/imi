@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Db\Query;
 
 class Paginate
@@ -11,7 +12,7 @@ class Paginate
     public $page;
 
     /**
-     * 每页记录数
+     * 每页记录数.
      *
      * @var int
      */
@@ -22,5 +23,4 @@ class Paginate
         $this->page = $page;
         $this->count = $count;
     }
-
 }

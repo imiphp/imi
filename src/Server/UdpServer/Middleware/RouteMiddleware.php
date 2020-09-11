@@ -1,10 +1,10 @@
 <?php
+
 namespace Imi\Server\UdpServer\Middleware;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\UdpServer\PacketHandler;
 use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 
@@ -28,17 +28,18 @@ class RouteMiddleware implements IMiddleware
     protected $notFoundHandler;
 
     /**
-     * 处理方法
+     * 处理方法.
      *
-     * @param IReceiveData $data
+     * @param IReceiveData    $data
      * @param IReceiveHandler $handle
+     *
      * @return void
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {
         // 路由解析
         $result = $this->route->parse($data->getFormatData());
-        if(null === $result || !is_callable($result->callable))
+        if (null === $result || !\is_callable($result->callable))
         {
             // 未匹配到路由
             $result = $this->notFoundHandler->handle($data, $handler);
@@ -48,7 +49,7 @@ class RouteMiddleware implements IMiddleware
             RequestContext::set('routeResult', $result);
             $result = $handler->handle($data);
         }
+
         return $result;
     }
-
 }

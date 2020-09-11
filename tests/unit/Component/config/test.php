@@ -1,4 +1,5 @@
 <?php
+
 return [
-    'imi'   =>  'yurun',
+    'imi'   => 'yurun',
 ];

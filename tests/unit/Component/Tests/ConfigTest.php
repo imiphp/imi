@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
+use Imi\Config;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
-use Imi\Config;
 
 /**
  * @testdox Config
@@ -33,12 +34,12 @@ class ConfigTest extends BaseTest
     public function testAddConfig()
     {
         Config::addConfig('test', [
-            'a' =>  [
-                'b' =>  123,
+            'a' => [
+                'b' => 123,
             ],
             // 配置文件
-            'configs'	=>	[
-                'test'		=>	dirname(__DIR__) . '/config/test.php',
+            'configs'	 => [
+                'test'		 => \dirname(__DIR__) . '/config/test.php',
             ],
         ]);
         Assert::assertEquals(123, Config::get('test.a.b'));
@@ -51,8 +52,8 @@ class ConfigTest extends BaseTest
     public function testSetConfig()
     {
         Config::setConfig('test', [
-            'a' =>  [
-                'b' =>  123,
+            'a' => [
+                'b' => 123,
             ],
         ]);
         Assert::assertEquals(123, Config::get('test.a.b'));

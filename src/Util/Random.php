@@ -1,40 +1,48 @@
 <?php
+
 namespace Imi\Util;
 
 /**
- * 随机生成一些东西的工具类
+ * 随机生成一些东西的工具类.
  */
 abstract class Random
 {
     /**
-     * 随机整数
+     * 随机整数.
+     *
      * @param int $min
      * @param int $max
+     *
      * @return int
      */
-    public static function int($min = PHP_INT_MIN, $max = PHP_INT_MAX)
+    public static function int($min = \PHP_INT_MIN, $max = \PHP_INT_MAX)
     {
         return mt_rand($min, $max);
     }
 
     /**
-     * 随机生成小数
+     * 随机生成小数.
+     *
      * @param float $min
      * @param float $max
-     * @param integer $precision 最大小数位数
+     * @param int   $precision 最大小数位数
+     *
      * @return float
      */
-    public static function number($min = PHP_INT_MIN, $max = PHP_INT_MAX, $precision = 2)
+    public static function number($min = \PHP_INT_MIN, $max = \PHP_INT_MAX, $precision = 2)
     {
         $value = round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
+
         return Digital::scientificToNum($value, $precision);
     }
 
     /**
-     * 随机生成文本
+     * 随机生成文本.
+     *
      * @param string $chars
-     * @param int $min
-     * @param int $max
+     * @param int    $min
+     * @param int    $max
+     *
      * @return string
      */
     public static function text($chars, $min, $max)
@@ -42,17 +50,20 @@ abstract class Random
         $length = mt_rand($min, $max);
         $charLength = mb_strlen($chars);
         $result = '';
-        for($i = 0; $i < $length; ++$i)
+        for ($i = 0; $i < $length; ++$i)
         {
             $result .= mb_substr($chars, mt_rand(1, $charLength) - 1, 1);
         }
+
         return $result;
     }
 
     /**
-     * 随机生成字母
+     * 随机生成字母.
+     *
      * @param int $min
      * @param int $max
+     *
      * @return string
      */
     public static function letter($min, $max)
@@ -61,9 +72,11 @@ abstract class Random
     }
 
     /**
-     * 随机生成数字
+     * 随机生成数字.
+     *
      * @param int $min
      * @param int $max
+     *
      * @return string
      */
     public static function digital($min, $max)
@@ -72,9 +85,11 @@ abstract class Random
     }
 
     /**
-     * 随机生成字母和数字
+     * 随机生成字母和数字.
+     *
      * @param int $min
      * @param int $max
+     *
      * @return string
      */
     public static function letterAndNumber($min, $max)

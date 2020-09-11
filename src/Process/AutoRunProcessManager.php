@@ -1,51 +1,54 @@
 <?php
+
 namespace Imi\Process;
 
-use Imi\Util\ArrayUtil;
 use Imi\Bean\Annotation\Bean;
+use Imi\Util\ArrayUtil;
 
 /**
- * 进程管理器，管理跟随服务自动启动的进程
- * 
+ * 进程管理器，管理跟随服务自动启动的进程.
+ *
  * 本类的操作仅在 manager 进程中有效
- * 
+ *
  * @Bean("AutoRunProcessManager")
  */
 class AutoRunProcessManager
 {
     /**
-     * 进程列表
+     * 进程列表.
      *
      * @var array
      */
     protected $processes = [];
 
     /**
-     * 添加进程
+     * 添加进程.
      *
      * @param string $name
      * @param string $process
-     * @param array $args
+     * @param array  $args
+     *
      * @return void
      */
     public function add($name, $process, $args = [])
     {
         $this->processes[$name] = [
-            'process'   =>  $process,
-            'args'      =>  $args,
+            'process'   => $process,
+            'args'      => $args,
         ];
     }
 
     /**
-     * 移除进程
+     * 移除进程.
      *
      * @param string $name
+     *
      * @return void
      */
     public function remove($name)
     {
         $processes = &$this->processes;
-        if(isset($processes[$name]))
+        if (isset($processes[$name]))
         {
             unset($processes[$name]);
         }
@@ -56,25 +59,26 @@ class AutoRunProcessManager
     }
 
     /**
-     * 进程是否存在
+     * 进程是否存在.
      *
      * @param string $name
+     *
      * @return bool
      */
     public function exists($name): bool
     {
         $processes = $this->processes;
-        return isset($processes[$name]) || in_array($name, $processes);
+
+        return isset($processes[$name]) || \in_array($name, $processes);
     }
 
     /**
-     * Get 进程列表
+     * Get 进程列表.
      *
      * @return array
-     */ 
+     */
     public function getProcesses(): array
     {
         return $this->processes;
     }
-
 }

@@ -1,24 +1,25 @@
 <?php
+
 namespace Imi\Bean\Annotation;
 
-use Imi\Bean\Annotation\Model\ClassAnnotation;
 use Imi\Bean\Annotation\Model\AnnotationRelation;
+use Imi\Bean\Annotation\Model\ClassAnnotation;
 use Imi\Bean\Annotation\Model\ClassAnnotationRelation;
-use Imi\Bean\Annotation\Model\MethodAnnotationRelation;
 use Imi\Bean\Annotation\Model\ConstantAnnotationRelation;
+use Imi\Bean\Annotation\Model\MethodAnnotationRelation;
 use Imi\Bean\Annotation\Model\PropertyAnnotationRelation;
 
 abstract class AnnotationManager
 {
     /**
-     * 注解列表
+     * 注解列表.
      *
      * @var \Imi\Bean\Annotation\Model\ClassAnnotation[]
      */
     private static $annotations = [];
 
     /**
-     * 注解类与类、方法、属性的关联关系
+     * 注解类与类、方法、属性的关联关系.
      *
      * @var \Imi\Bean\Annotation\Model\AnnotationRelation
      */
@@ -27,13 +28,14 @@ abstract class AnnotationManager
     public static function init()
     {
         static::$annotations = [];
-        static::$annotationRelation = new AnnotationRelation;
+        static::$annotationRelation = new AnnotationRelation();
     }
 
     /**
-     * 设置注解列表
+     * 设置注解列表.
      *
      * @param array $annotations
+     *
      * @return void
      */
     public static function setAnnotations($annotations)
@@ -42,7 +44,7 @@ abstract class AnnotationManager
     }
 
     /**
-     * 获取注解列表
+     * 获取注解列表.
      *
      * @return array
      */
@@ -52,9 +54,10 @@ abstract class AnnotationManager
     }
 
     /**
-     * 设置关联关系数据
+     * 设置关联关系数据.
      *
      * @param \Imi\Bean\Annotation\Model\AnnotationRelation $data
+     *
      * @return void
      */
     public static function setAnnotationRelation(AnnotationRelation $data)
@@ -63,7 +66,7 @@ abstract class AnnotationManager
     }
 
     /**
-     * 获取关联关系数据
+     * 获取关联关系数据.
      *
      * @return \Imi\Bean\Annotation\Model\AnnotationRelation
      */
@@ -73,16 +76,17 @@ abstract class AnnotationManager
     }
 
     /**
-     * 增加类注解
+     * 增加类注解.
      *
-     * @param string $className
+     * @param string                    $className
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function addClassAnnotations($className, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
@@ -91,31 +95,32 @@ abstract class AnnotationManager
             $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
         }
         $classAnnotation->addClassAnnotations($annotations);
-        foreach($annotations as $annotation)
+        foreach ($annotations as $annotation)
         {
             static::$annotationRelation->addClassRelation(new ClassAnnotationRelation($className, $annotation));
         }
     }
 
     /**
-     * 设置类注解
+     * 设置类注解.
      *
-     * @param string $className
+     * @param string                    $className
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function setClassAnnotations($className, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $tmpAnnotations = $staticAnnotations[$className]->getClassAnnotations();
-            foreach($tmpAnnotations as $annotation)
+            foreach ($tmpAnnotations as $annotation)
             {
-                static::$annotationRelation->removeClassRelation(get_class($annotation), $className);
-                if(null !== ($aliases = $annotation->getAlias()))
+                static::$annotationRelation->removeClassRelation(\get_class($annotation), $className);
+                if (null !== ($aliases = $annotation->getAlias()))
                 {
-                    foreach((array)$aliases as $alias)
+                    foreach ((array) $aliases as $alias)
                     {
                         static::$annotationRelation->removeClassRelation($alias, $className);
                     }
@@ -127,17 +132,18 @@ abstract class AnnotationManager
     }
 
     /**
-     * 增加方法注解
+     * 增加方法注解.
      *
-     * @param string $className
-     * @param string $methodName
+     * @param string                    $className
+     * @param string                    $methodName
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function addMethodAnnotations($className, $methodName, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
@@ -146,32 +152,33 @@ abstract class AnnotationManager
             $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
         }
         $classAnnotation->addMethodAnnotations($methodName, $annotations);
-        foreach($annotations as $annotation)
+        foreach ($annotations as $annotation)
         {
             static::$annotationRelation->addMethodRelation(new MethodAnnotationRelation($className, $methodName, $annotation));
         }
     }
 
     /**
-     * 设置方法注解
+     * 设置方法注解.
      *
-     * @param string $className
-     * @param string $methodName
+     * @param string                    $className
+     * @param string                    $methodName
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function setMethodAnnotations($className, $methodName, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $tmpAnnotations = $staticAnnotations[$className]->getMethodAnnotations($methodName);
-            foreach($tmpAnnotations as $annotation)
+            foreach ($tmpAnnotations as $annotation)
             {
-                static::$annotationRelation->removeMethodRelation(get_class($annotation), $className, $methodName);
-                if(null !== ($aliases = $annotation->getAlias()))
+                static::$annotationRelation->removeMethodRelation(\get_class($annotation), $className, $methodName);
+                if (null !== ($aliases = $annotation->getAlias()))
                 {
-                    foreach((array)$aliases as $alias)
+                    foreach ((array) $aliases as $alias)
                     {
                         static::$annotationRelation->removeMethodRelation($alias, $className, $methodName);
                     }
@@ -182,17 +189,18 @@ abstract class AnnotationManager
     }
 
     /**
-     * 增加属性注解
+     * 增加属性注解.
      *
-     * @param string $className
-     * @param string $propertyName
+     * @param string                    $className
+     * @param string                    $propertyName
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function addPropertyAnnotations($className, $propertyName, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
@@ -201,32 +209,33 @@ abstract class AnnotationManager
             $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
         }
         $classAnnotation->addpropertyAnnotations($propertyName, $annotations);
-        foreach($annotations as $annotation)
+        foreach ($annotations as $annotation)
         {
             static::$annotationRelation->addPropertyRelation(new PropertyAnnotationRelation($className, $propertyName, $annotation));
         }
     }
 
     /**
-     * 设置属性注解
+     * 设置属性注解.
      *
-     * @param string $className
-     * @param string $propertyName
+     * @param string                    $className
+     * @param string                    $propertyName
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function setPropertyAnnotations($className, $propertyName, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $tmpAnnotations = $staticAnnotations[$className]->getPropertyAnnotations($propertyName);
-            foreach($tmpAnnotations as $annotation)
+            foreach ($tmpAnnotations as $annotation)
             {
-                static::$annotationRelation->removePropertyRelation(get_class($annotation), $className, $propertyName);
-                if(null !== ($aliases = $annotation->getAlias()))
+                static::$annotationRelation->removePropertyRelation(\get_class($annotation), $className, $propertyName);
+                if (null !== ($aliases = $annotation->getAlias()))
                 {
-                    foreach((array)$aliases as $alias)
+                    foreach ((array) $aliases as $alias)
                     {
                         static::$annotationRelation->removePropertyRelation($alias, $className, $propertyName);
                     }
@@ -237,17 +246,18 @@ abstract class AnnotationManager
     }
 
     /**
-     * 增加常量注解
+     * 增加常量注解.
      *
-     * @param string $className
-     * @param string $constantName
+     * @param string                    $className
+     * @param string                    $constantName
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function addConstantAnnotations($className, $constantName, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
         }
@@ -256,32 +266,33 @@ abstract class AnnotationManager
             $staticAnnotations[$className] = $classAnnotation = new Constant($className);
         }
         $classAnnotation->addConstantAnnotations($constantName, $annotations);
-        foreach($annotations as $annotation)
+        foreach ($annotations as $annotation)
         {
             static::$annotationRelation->addConstantRelation(new ConstantAnnotationRelation($className, $constantName, $annotation));
         }
     }
 
     /**
-     * 设置常量注解
+     * 设置常量注解.
      *
-     * @param string $className
-     * @param string $constantName
+     * @param string                    $className
+     * @param string                    $constantName
      * @param \Imi\Bean\Annotation\Base ...$annotations
+     *
      * @return void
      */
     public static function setConstantAnnotations($className, $constantName, ...$annotations)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $tmpAnnotations = $staticAnnotations[$className]->getConstantAnnotations($constantName);
-            foreach($tmpAnnotations as $annotation)
+            foreach ($tmpAnnotations as $annotation)
             {
-                static::$annotationRelation->removeConstantRelation(get_class($annotation), $className, $constantName);
-                if(null !== ($aliases = $annotation->getAlias()))
+                static::$annotationRelation->removeConstantRelation(\get_class($annotation), $className, $constantName);
+                if (null !== ($aliases = $annotation->getAlias()))
                 {
-                    foreach((array)$aliases as $alias)
+                    foreach ((array) $aliases as $alias)
                     {
                         static::$annotationRelation->removeConstantRelation($alias, $className, $constantName);
                     }
@@ -292,10 +303,11 @@ abstract class AnnotationManager
     }
 
     /**
-     * 获取注解使用点
+     * 获取注解使用点.
      *
-     * @param string $annotationClassName 注解类名
-     * @param string|null $where null/class/method/property/constant
+     * @param string      $annotationClassName 注解类名
+     * @param string|null $where               null/class/method/property/constant
+     *
      * @return \Imi\Bean\Annotation\Model\IAnnotationRelation[]
      */
     public static function getAnnotationPoints($annotationClassName, $where = null)
@@ -305,316 +317,331 @@ abstract class AnnotationManager
 
     /**
      * 获取类注解
-     * 可选，是否只获取指定类型注解
+     * 可选，是否只获取指定类型注解.
      *
-     * @param string $className
+     * @param string      $className
      * @param string|null $annotationClassName
+     *
      * @return array
      */
     public static function getClassAnnotations($className, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotations = $staticAnnotations[$className]->getClassAnnotations();
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotations;
         }
         else
         {
             $result = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $result[] = $annotation;
                 }
             }
+
             return $result;
         }
     }
 
     /**
      * 获取指定方法注解
-     * 可选，是否只获取指定类型注解
+     * 可选，是否只获取指定类型注解.
      *
-     * @param string $className
-     * @param string $methodName
+     * @param string      $className
+     * @param string      $methodName
      * @param string|null $annotationClassName
+     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getMethodAnnotations($className, $methodName, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotations = $staticAnnotations[$className]->getMethodAnnotations($methodName);
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotations;
         }
         else
         {
             $result = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $result[] = $annotation;
                 }
             }
+
             return $result;
         }
     }
 
     /**
      * 获取指定属性注解
-     * 可选，是否只获取指定类型注解
+     * 可选，是否只获取指定类型注解.
      *
-     * @param string $className
-     * @param string $propertyName
+     * @param string      $className
+     * @param string      $propertyName
      * @param string|null $annotationClassName
+     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getPropertyAnnotations($className, $propertyName, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotations = $staticAnnotations[$className]->getPropertyAnnotations($propertyName);
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotations;
         }
         else
         {
             $result = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $result[] = $annotation;
                 }
             }
+
             return $result;
         }
     }
 
     /**
      * 获取指定常量注解
-     * 可选，是否只获取指定类型注解
+     * 可选，是否只获取指定类型注解.
      *
-     * @param string $className
-     * @param string $constantName
+     * @param string      $className
+     * @param string      $constantName
      * @param string|null $annotationClassName
+     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getConstantAnnotations($className, $constantName, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotations = $staticAnnotations[$className]->getConstantAnnotations($constantName);
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotations;
         }
         else
         {
             $result = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $result[] = $annotation;
                 }
             }
+
             return $result;
         }
     }
 
     /**
-     * 获取一个类中所有包含指定注解的方法
+     * 获取一个类中所有包含指定注解的方法.
      *
      * @param string $className
      * @param string $annotationClassName
+     *
      * @return array
      */
     public static function getMethodsAnnotations($className, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotationList = $staticAnnotations[$className]->getMethodAnnotations();
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotationList;
         }
         $result = [];
-        foreach($annotationList as $methodName => $annotations)
+        foreach ($annotationList as $methodName => $annotations)
         {
             $resultMethodItem = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $resultMethodItem[] = $annotation;
                 }
             }
-            if($resultMethodItem)
+            if ($resultMethodItem)
             {
                 $result[$methodName] = $resultMethodItem;
             }
         }
+
         return $result;
     }
 
     /**
-     * 获取一个类中所有包含指定注解的属性
+     * 获取一个类中所有包含指定注解的属性.
      *
      * @param string $className
      * @param string $annotationClassName
+     *
      * @return array
      */
     public static function getPropertiesAnnotations($className, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotationList = $staticAnnotations[$className]->getPropertyAnnotations();
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotationList;
         }
         $result = [];
-        foreach($annotationList as $propertyName => $annotations)
+        foreach ($annotationList as $propertyName => $annotations)
         {
             $resultPropertyItem = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $resultPropertyItem[] = $annotation;
                 }
             }
-            if($resultPropertyItem)
+            if ($resultPropertyItem)
             {
                 $result[$propertyName] = $resultPropertyItem;
             }
         }
+
         return $result;
     }
 
     /**
-     * 获取一个类中所有包含指定注解的常量
+     * 获取一个类中所有包含指定注解的常量.
      *
      * @param string $className
      * @param string $annotationClassName
+     *
      * @return array
      */
     public static function getConstantsAnnotations($className, $annotationClassName = null)
     {
         $staticAnnotations = &static::$annotations;
-        if(!isset($staticAnnotations[$className]))
+        if (!isset($staticAnnotations[$className]))
         {
             return [];
         }
         $annotationList = $staticAnnotations[$className]->getConstantAnnotations();
-        if(null === $annotationClassName)
+        if (null === $annotationClassName)
         {
             return $annotationList;
         }
         $result = [];
-        foreach($annotationList as $constantName => $annotations)
+        foreach ($annotationList as $constantName => $annotations)
         {
             $resultConstantItem = [];
-            foreach($annotations as $annotation)
+            foreach ($annotations as $annotation)
             {
-                if($annotation instanceof $annotationClassName)
+                if ($annotation instanceof $annotationClassName)
                 {
                     $resultConstantItem[] = $annotation;
                 }
             }
-            if($resultConstantItem)
+            if ($resultConstantItem)
             {
                 $result[$constantName] = $resultConstantItem;
             }
         }
+
         return $result;
     }
 
     /**
-     * 清空类所有类、属性、方法、常量注解
+     * 清空类所有类、属性、方法、常量注解.
      *
      * @param string $className
+     *
      * @return void
      */
     public static function clearClassAllAnnotations($className)
     {
         $staticAnnotations = &static::$annotations;
-        if(isset($staticAnnotations[$className]))
+        if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
-            foreach($classAnnotation->getClassAnnotations() as $annotation)
+            foreach ($classAnnotation->getClassAnnotations() as $annotation)
             {
-                static::$annotationRelation->removeClassRelation(get_class($annotation), $className);
-                if(null !== ($aliases = $annotation->getAlias()))
+                static::$annotationRelation->removeClassRelation(\get_class($annotation), $className);
+                if (null !== ($aliases = $annotation->getAlias()))
                 {
-                    foreach((array)$aliases as $alias)
+                    foreach ((array) $aliases as $alias)
                     {
                         static::$annotationRelation->removeClassRelation($alias, $className);
                     }
                 }
             }
-            foreach($classAnnotation->getMethodAnnotations() as $methodName => $annotations)
+            foreach ($classAnnotation->getMethodAnnotations() as $methodName => $annotations)
             {
-                foreach($annotations as $annotation)
+                foreach ($annotations as $annotation)
                 {
-                    static::$annotationRelation->removeMethodRelation(get_class($annotation), $className, $methodName);
-                    if(null !== ($aliases = $annotation->getAlias()))
+                    static::$annotationRelation->removeMethodRelation(\get_class($annotation), $className, $methodName);
+                    if (null !== ($aliases = $annotation->getAlias()))
                     {
-                        foreach((array)$aliases as $alias)
+                        foreach ((array) $aliases as $alias)
                         {
                             static::$annotationRelation->removeMethodRelation($alias, $className, $methodName);
                         }
                     }
                 }
             }
-            foreach($classAnnotation->getPropertyAnnotations() as $propertyName => $annotations)
+            foreach ($classAnnotation->getPropertyAnnotations() as $propertyName => $annotations)
             {
-                foreach($annotations as $annotation)
+                foreach ($annotations as $annotation)
                 {
-                    static::$annotationRelation->removePropertyRelation(get_class($annotation), $className, $propertyName);
-                    if(null !== ($aliases = $annotation->getAlias()))
+                    static::$annotationRelation->removePropertyRelation(\get_class($annotation), $className, $propertyName);
+                    if (null !== ($aliases = $annotation->getAlias()))
                     {
-                        foreach((array)$aliases as $alias)
+                        foreach ((array) $aliases as $alias)
                         {
                             static::$annotationRelation->removePropertyRelation($alias, $className, $propertyName);
                         }
                     }
                 }
             }
-            foreach($classAnnotation->getConstantAnnotations() as $constName => $annotations)
+            foreach ($classAnnotation->getConstantAnnotations() as $constName => $annotations)
             {
-                foreach($annotations as $annotation)
+                foreach ($annotations as $annotation)
                 {
-                    static::$annotationRelation->removeConstantRelation(get_class($annotation), $className, $constName);
-                    if(null !== ($aliases = $annotation->getAlias()))
+                    static::$annotationRelation->removeConstantRelation(\get_class($annotation), $className, $constName);
+                    if (null !== ($aliases = $annotation->getAlias()))
                     {
-                        foreach((array)$aliases as $alias)
+                        foreach ((array) $aliases as $alias)
                         {
                             static::$annotationRelation->removeConstantRelation($alias, $className, $constName);
                         }
@@ -624,5 +651,4 @@ abstract class AnnotationManager
             unset($staticAnnotations[$className]);
         }
     }
-
 }

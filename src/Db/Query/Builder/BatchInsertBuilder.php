@@ -1,10 +1,8 @@
 <?php
+
 namespace Imi\Db\Query\Builder;
 
-use Imi\Util\ArrayUtil;
-use Imi\Db\Query\Query;
 use Imi\Util\ObjectArrayHelper;
-
 
 class BatchInsertBuilder extends BaseBuilder
 {
@@ -15,31 +13,31 @@ class BatchInsertBuilder extends BaseBuilder
         $params = &$this->params;
         $option = $query->getOption();
         list($list) = $args;
-        if(null === $list)
+        if (null === $list)
         {
             $list = $option->saveData;
         }
-        if($list instanceof \Traversable)
+        if ($list instanceof \Traversable)
         {
-            $list = \iterator_to_array($list);
+            $list = iterator_to_array($list);
         }
-        if(!isset($list[0]))
+        if (!isset($list[0]))
         {
             throw new \RuntimeException('Batch insert must have at least 1 data');
         }
         $fields = array_keys($list[0]);
         $safeFields = [];
-        foreach($fields as $key)
+        foreach ($fields as $key)
         {
             $safeFields[] = $this->parseKeyword($key);
         }
         $sql = 'insert into ' . $option->table . '(' . implode(',', $safeFields) . ') values ';
         $values = [];
 
-        foreach($list as $data)
+        foreach ($list as $data)
         {
             $valueParams = [];
-            foreach($fields as $field)
+            foreach ($fields as $field)
             {
                 $valueParam = $query->getAutoParamName();
                 $valueParams[] = $valueParam;
@@ -48,8 +46,9 @@ class BatchInsertBuilder extends BaseBuilder
             $values[] = '(' . implode(',', $valueParams) . ')';
         }
         $sql .= implode(',', $values);
-        
+
         $query->bindValues($params);
+
         return $sql;
     }
 }

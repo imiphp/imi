@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\App;
-use Imi\Test\BaseTest;
-use Imi\Bean\Annotation\Bean;
-use PHPUnit\Framework\Assert;
 use Imi\Aop\Annotation\Inject;
+use Imi\App;
+use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Traits\TAutoInject;
+use Imi\Test\BaseTest;
+use PHPUnit\Framework\Assert;
 
 /**
  * @Bean
@@ -43,5 +44,4 @@ class InjectTest extends BaseTest
         $test = App::getBean('TestArg');
         $test->test('123');
     }
-
 }
