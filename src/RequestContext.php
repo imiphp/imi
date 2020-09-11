@@ -1,81 +1,89 @@
 <?php
 namespace Imi;
 
-use Imi\Event\Event;
+use ArrayObject;
 use Imi\Bean\Container;
-use Imi\Util\Coroutine;
+use Imi\Core\Context\DefaultContextManager;
+use Imi\Core\Context\Contract\IContextManager;
 
 abstract class RequestContext
 {
     /**
-     * 上下文集合
-     *
-     * @var array
+     * 上下文管理器
+     * 
+     * @var IContextManager
      */
-    private static $contextMap = [];
+    private static IContextManager $contextManager;
+
+    /**
+     * 获取上下文管理器实例
+     *
+     * @return \Imi\Core\Context\Contract\IContextManager
+     */
+    public static function getInstance(): IContextManager
+    {
+        if(!isset(static::$contextManager))
+        {
+            $contextClass = Config::get('@app.imi.RequestContext', DefaultContextManager::class);
+            return static::$contextManager = new $contextClass;
+        }
+        return static::$contextManager;
+    }
+
+    /**
+     * 获取当前上下文标识
+     *
+     * @return string
+     */
+    public static function getCurrentFlag(): string
+    {
+        return static::getInstance()->getCurrentFlag();
+    }
 
     /**
      * 为当前请求创建上下文，返回当前协程ID
      * 
      * @param array $data
-     * @return int
+     * @return \ArrayObject
      */
-    public static function create(array $data = [])
+    public static function create(array $data = []): ArrayObject
     {
-        return Coroutine::getuid();
+        return static::getInstance()->create(static::getCurrentFlag(), $data);
     }
 
     /**
-     * 销毁当前请求的上下文
-     * @return void
-     */
-    public static function destroy()
-    {
-    }
-
-    /**
-     * 判断当前请求上下文是否存在
+     * 销毁上下文
+     *
+     * @param string $flag
      * @return boolean
-     * @deprecated 1.0.17
      */
-    public static function exists()
+    public static function destroy(string $flag): bool
     {
-        return true;
+        return static::getInstance()->destroy($flag);
+    }
+
+    /**
+     * 上下文是否存在
+     *
+     * @param string $flag
+     * @return boolean
+     */
+    public static function exists(string $flag): bool
+    {
+        return static::getInstance()->exists($flag);
     }
     
     /**
-     * 销毁当前请求的上下文
-     * @return void
-     */
-    private static function __destroy()
-    {
-        Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
-        $context = Coroutine::getContext();
-        if(!$context)
-        {
-            $coId = Coroutine::getuid();
-            $contextMap = &static::$contextMap;
-            if(isset($contextMap[$coId]))
-            {
-                unset($contextMap[$coId]);
-            }
-        }
-    }
-
-    /**
      * 获取上下文数据
+     * 
      * @param string $name
      * @param mixed $default
      * @return mixed
      */
     public static function get($name, $default = null)
     {
-        $context = Coroutine::getContext();
-        if($context)
-        {
-            return $context[$name] ?? $default;
-        }
-        return static::$contextMap[Coroutine::getuid()][$name] ?? $default;
+        $context = static::getInstance()->get(static::getCurrentFlag(), true);
+        return $context[$name] ?? $default;
     }
 
     /**
@@ -86,28 +94,7 @@ abstract class RequestContext
      */
     public static function set($name, $value)
     {
-        $context = Coroutine::getContext();
-        if($context)
-        {
-            if(!($context['__bindDestroy'] ?? false))
-            {
-                $context['__bindDestroy'] = true;
-                defer('static::__destroy');
-            }
-        }
-        else
-        {
-            $coId = Coroutine::getuid();
-            $contextMap = &static::$contextMap;
-            if(isset($contextMap[$coId]))
-            {
-                $context = $contextMap[$coId];
-            }
-            else
-            {
-                $context = $contextMap[$coId] = new \Swoole\Coroutine\Context;
-            }
-        }
+        $context = static::getInstance()->get(static::getCurrentFlag(), true);
         $context[$name] = $value;
     }
 
@@ -119,28 +106,7 @@ abstract class RequestContext
      */
     public static function muiltiSet(array $data)
     {
-        $context = Coroutine::getContext();
-        if($context)
-        {
-            if(!($context['__bindDestroy'] ?? false))
-            {
-                $context['__bindDestroy'] = true;
-                defer('static::__destroy');
-            }
-        }
-        else
-        {
-            $coId = Coroutine::getuid();
-            $contextMap = &static::$contextMap;
-            if(isset($contextMap[$coId]))
-            {
-                $context = $contextMap[$coId];
-            }
-            else
-            {
-                $context = $contextMap[$coId] = new \Swoole\Coroutine\Context;
-            }
-        }
+        $context = static::getInstance()->get(static::getCurrentFlag(), true);
         foreach($data as $k => $v)
         {
             $context[$k] = $v;
@@ -155,28 +121,7 @@ abstract class RequestContext
      */
     public static function use(callable $callback)
     {
-        $context = Coroutine::getContext();
-        if($context)
-        {
-            if(!($context['__bindDestroy'] ?? false))
-            {
-                $context['__bindDestroy'] = true;
-                defer('static::__destroy');
-            }
-        }
-        else
-        {
-            $coId = Coroutine::getuid();
-            $contextMap = &static::$contextMap;
-            if(isset($contextMap[$coId]))
-            {
-                $context = $contextMap[$coId];
-            }
-            else
-            {
-                $context = $contextMap[$coId] = new \Swoole\Coroutine\Context;
-            }
-        }
+        $context = static::getInstance()->get(static::getCurrentFlag(), true);
         $result = $callback($context);
         return $result;
     }
@@ -187,29 +132,7 @@ abstract class RequestContext
      */
     public static function getContext()
     {
-        $context = Coroutine::getContext();
-        if($context)
-        {
-            if(!($context['__bindDestroy'] ?? false))
-            {
-                $context['__bindDestroy'] = true;
-                defer('static::__destroy');
-            }
-        }
-        else
-        {
-            $coId = Coroutine::getuid();
-            $contextMap = &static::$contextMap;
-            if(isset($contextMap[$coId]))
-            {
-                $context = $contextMap[$coId];
-            }
-            else
-            {
-                $contextMap[$coId] = new \Swoole\Coroutine\Context;
-            }
-        }
-        return $context;
+        return static::getInstance()->get(static::getCurrentFlag(), true);
     }
 
     /**
@@ -238,7 +161,7 @@ abstract class RequestContext
      */
     public static function getBean($name, ...$params)
     {
-        $context = static::getContext();
+        $context = static::getInstance()->get(static::getCurrentFlag(), true);
         if(isset($context['container']))
         {
             $container = $context['container'];
@@ -247,14 +170,14 @@ abstract class RequestContext
         {
             if(isset($context['server']))
             {
-                $container = $context['server']->getContainer()->newSubContainer();
+                $context['container'] = $container = $context['server']->getContainer()->newSubContainer();
             }
             else
             {
-                $container = App::getContainer()->newSubContainer();
+                $context['container'] = $container = App::getContainer()->newSubContainer();
             }
-            $context['container'] = $container;
         }
+        /** @var Container $container */
         return $container->get($name, ...$params);
     }
 

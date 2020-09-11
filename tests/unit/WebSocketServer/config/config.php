@@ -9,6 +9,11 @@ return [
         'beans'        =>    __DIR__ . '/beans.php',
     ],
 
+    // imi 核心配置
+    'imi'   =>  [
+        'RequestContext'    =>  \Imi\Components\Swoole\Context\CoroutineContextManager::class,
+    ],
+
     // 扫描目录
     'beanScan'    =>    [
         'Imi\Test\WebSocketServer\Listener',

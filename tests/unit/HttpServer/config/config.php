@@ -1,4 +1,5 @@
 <?php
+
 return [
     // 项目根命名空间
     'namespace'    =>    'Imi\Test\HttpServer',
@@ -6,6 +7,11 @@ return [
     // 配置文件
     'configs'    =>    [
         'beans'        =>    __DIR__ . '/beans.php',
+    ],
+
+    // imi 核心配置
+    'imi'   =>  [
+        'RequestContext'    =>  \Imi\Components\Swoole\Context\CoroutineContextManager::class,
     ],
 
     // 扫描目录

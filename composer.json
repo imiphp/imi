@@ -18,6 +18,7 @@
         "symfony/event-dispatcher": "^5.1"
     },
     "require-dev": {
+        "yurunsoft/ide-helper": "~1.0",
         "phpunit/phpunit": ">=8"
     },
     "autoload": {
@@ -42,5 +43,13 @@
     "scripts": {
       "test": "./tests/run",
       "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
+    },
+    "extra": {
+        "ide-helper": {
+            "list": [
+                "swoole",
+                "redis"
+            ]
+        }
     }
 }

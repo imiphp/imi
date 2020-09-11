@@ -1,13 +1,14 @@
 <?php
 namespace Imi\Server\Http\Middleware;
 
-use Imi\Bean\Annotation\Bean;
+use Swoole\Timer;
 use Imi\RequestContext;
+use Imi\Util\Coroutine;
+use Imi\Bean\Annotation\Bean;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Swoole\Timer;
 
 /**
  * 当单个请求超过最大执行时间，触发超时处理
@@ -53,7 +54,7 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
             $handler = $server->getBean($this->handler);
             $handler->handle($request, $response);
         });
-        defer(function() use($timerId){
+        Coroutine::defer(function() use($timerId){
             Timer::clear($timerId);
         });
         return $handler->handle($request);

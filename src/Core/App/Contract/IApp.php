@@ -1,5 +1,5 @@
 <?php
-namespace Imi\Core\Contract;
+namespace Imi\Core\App\Contract;
 
 /**
  * 应用类接口

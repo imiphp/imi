@@ -13,9 +13,9 @@ use Imi\Bean\Annotation;
 use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Cache\CacheManager;
-use Imi\Core\Contract\IApp;
 use Imi\Util\AtomicManager;
 use Imi\Config\Dotenv\Dotenv;
+use Imi\Core\App\Contract\IApp;
 use Imi\Bean\ReflectionContainer;
 use Composer\Autoload\ClassLoader;
 use Imi\Main\Helper as MainHelper;
@@ -95,7 +95,7 @@ final class App
     /**
      * App 实例对象
      *
-     * @var \Imi\Core\Contract\IApp
+     * @var \Imi\Core\App\Contract\IApp
      */
     private static IApp $app;
 
