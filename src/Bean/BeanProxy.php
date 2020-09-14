@@ -6,7 +6,6 @@ use Imi\Worker;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 use Imi\Aop\JoinPoint;
-use Imi\RequestContext;
 use Imi\Aop\PointCutType;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Aspect;
@@ -21,12 +20,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 
 class BeanProxy
 {
-    /**
-     * 对象反射
-     * @var \ReflectionClass
-     */
-    private $refClass;
-
     /**
      * 存储每个类对应的切面关系
      * @var \SplPriorityQueue[]
@@ -100,7 +93,7 @@ class BeanProxy
     private function init($object)
     {
         $this->className = $className = BeanFactory::getObjectClass($object);
-        $this->refClass = $refClass = ReflectionContainer::getClassReflection($className);
+        $refClass = ReflectionContainer::getClassReflection($className);
         // 每个类只需处理一次
         $staticAspects = &static::$aspects;
         if(!isset($staticAspects[$className]))
@@ -213,8 +206,13 @@ class BeanProxy
      */
     public function injectProps($object)
     {
-        list($injects, $configs) = static::getInjects($this->className);
-        $refClass = $this->refClass;
+        $className = $this->className;
+        list($injects, $configs) = static::getInjects($className);
+        if(!$injects && !$configs)
+        {
+            return;
+        }
+        $refClass = ReflectionContainer::getClassReflection($className);
 
         // @inject()和@requestInject()注入
         foreach($injects as $propName => $annotations)
@@ -274,11 +272,14 @@ class BeanProxy
     {
         $injects = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
         $configs = static::getConfigInjects($className);
-        foreach($configs as $key => $value)
+        if($configs)
         {
-            if(isset($injects[$key]))
+            foreach($configs as $key => $value)
             {
-                unset($injects[$key]);
+                if(isset($injects[$key]))
+                {
+                    unset($injects[$key]);
+                }
             }
         }
         return [$injects, $configs];
