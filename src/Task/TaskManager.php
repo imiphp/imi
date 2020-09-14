@@ -2,9 +2,8 @@
 namespace Imi\Task;
 
 use Imi\ServerManage;
+use Imi\Task\Handler\BeanTaskHandler;
 use Imi\Task\Parser\TaskParser;
-use Imi\Task\Interfaces\ITaskParam;
-use Imi\Task\Interfaces\ITaskHandler;
 
 abstract class TaskManager
 {
@@ -31,9 +30,7 @@ abstract class TaskManager
      */
     public static function nPost(string $name, $data, $workerID = -1)
     {
-        $task = TaskParser::getInstance()->getTask($name);
-        $paramClass = $task['Task']->paramClass;
-        return static::post(new TaskInfo(new $task['className'], new $paramClass($data)), $workerID);
+        return static::post(self::getTaskInfo($name, $data), $workerID);
     }
 
     /**
@@ -64,9 +61,7 @@ abstract class TaskManager
      */
     public static function nPostWait(string $name, $data, $timeout, $workerID = -1)
     {
-        $task = TaskParser::getInstance()->getTask($name);
-        $paramClass = $task['Task']->paramClass;
-        return static::postWait(new TaskInfo(new $task['className'], new $paramClass($data)), $timeout, $workerID);
+        return static::postWait(self::getTaskInfo($name, $data), $timeout, $workerID);
     }
 
     /**
@@ -83,14 +78,11 @@ abstract class TaskManager
     public static function postCo(array $tasks, $timeout)
     {
         $server = ServerManage::getServer('main')->getSwooleServer();
-        $taskParser = TaskParser::getInstance();
         foreach($tasks as $i => $item)
         {
             if(!$item instanceof TaskInfo)
             {
-                $task = $taskParser->getTask($item[0]);
-                $paramClass = $task['Task']->paramClass;
-                $tasks[$i] = new TaskInfo(new $task['className'], new $paramClass($item[1] ?? []));
+                $tasks[$i] = self::getTaskInfo($item[0], $item[1] ?? []);
             }
         }
         $result = $server->taskCo($tasks, $timeout);
@@ -105,13 +97,14 @@ abstract class TaskManager
      * 获取 TaskInfo
      *
      * @param string $name
+     * @param mixed $data
      * @return TaskInfo
      */
     public static function getTaskInfo(string $name, $data): TaskInfo
     {
         $task = TaskParser::getInstance()->getTask($name);
         $paramClass = $task['Task']->paramClass;
-        return new TaskInfo(new $task['className'], new $paramClass($data));
+        return new TaskInfo(new BeanTaskHandler($task['className']), new $paramClass($data));
     }
 
 }
