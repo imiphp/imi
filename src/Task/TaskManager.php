@@ -3,6 +3,7 @@
 namespace Imi\Task;
 
 use Imi\ServerManage;
+use Imi\Task\Handler\BeanTaskHandler;
 use Imi\Task\Parser\TaskParser;
 
 class TaskManager
@@ -20,7 +21,7 @@ class TaskManager
      *
      * @return int|bool
      */
-    public static function post(TaskInfo $taskInfo, $workerID = -1)
+    public static function post(TaskInfo $taskInfo, int $workerID = -1)
     {
         return ServerManage::getServer('main')->getSwooleServer()->task($taskInfo, $workerID, [$taskInfo->getTaskHandler(), 'finish']);
     }
@@ -35,12 +36,9 @@ class TaskManager
      *
      * @return int|bool
      */
-    public static function nPost(string $name, $data, $workerID = -1)
+    public static function nPost(string $name, $data, int $workerID = -1)
     {
-        $task = TaskParser::getInstance()->getTask($name);
-        $paramClass = $task['Task']->paramClass;
-
-        return static::post(new TaskInfo(new $task['className'](), new $paramClass($data)), $workerID);
+        return static::post(self::getTaskInfo($name, $data), $workerID);
     }
 
     /**
@@ -53,7 +51,7 @@ class TaskManager
      *
      * @return string|bool
      */
-    public static function postWait(TaskInfo $taskInfo, $timeout, $workerID = -1)
+    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerID = -1)
     {
         $server = ServerManage::getServer('main')->getSwooleServer();
         $result = $server->taskwait($taskInfo, $timeout, $workerID);
@@ -73,12 +71,9 @@ class TaskManager
      *
      * @return string|bool
      */
-    public static function nPostWait(string $name, $data, $timeout, $workerID = -1)
+    public static function nPostWait(string $name, $data, float $timeout, int $workerID = -1)
     {
-        $task = TaskParser::getInstance()->getTask($name);
-        $paramClass = $task['Task']->paramClass;
-
-        return static::postWait(new TaskInfo(new $task['className'](), new $paramClass($data)), $timeout, $workerID);
+        return static::postWait(self::getTaskInfo($name, $data), $timeout, $workerID);
     }
 
     /**
@@ -94,17 +89,14 @@ class TaskManager
      *
      * @return array
      */
-    public static function postCo(array $tasks, $timeout)
+    public static function postCo(array $tasks, float $timeout): array
     {
         $server = ServerManage::getServer('main')->getSwooleServer();
-        $taskParser = TaskParser::getInstance();
         foreach ($tasks as $i => $item)
         {
             if (!$item instanceof TaskInfo)
             {
-                $task = $taskParser->getTask($item[0]);
-                $paramClass = $task['Task']->paramClass;
-                $tasks[$i] = new TaskInfo(new $task['className'](), new $paramClass($item[1] ?? []));
+                $tasks[$i] = self::getTaskInfo($item[0], $item[1] ?? []);
             }
         }
         $result = $server->taskCo($tasks, $timeout);
@@ -120,6 +112,7 @@ class TaskManager
      * 获取 TaskInfo.
      *
      * @param string $name
+     * @param mixed  $data
      *
      * @return TaskInfo
      */
@@ -128,6 +121,6 @@ class TaskManager
         $task = TaskParser::getInstance()->getTask($name);
         $paramClass = $task['Task']->paramClass;
 
-        return new TaskInfo(new $task['className'](), new $paramClass($data));
+        return new TaskInfo(new BeanTaskHandler($task['className']), new $paramClass($data));
     }
 }
