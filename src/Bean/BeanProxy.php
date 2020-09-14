@@ -21,46 +21,39 @@ use Imi\Worker;
 class BeanProxy
 {
     /**
-     * 对象反射.
-     *
-     * @var \ReflectionClass
-     */
-    private $refClass;
-
-    /**
      * 存储每个类对应的切面关系.
      *
      * @var \SplPriorityQueue[]
      */
-    private static $aspects = [];
+    private static array $aspects = [];
 
     /**
      * 切面缓存.
      *
      * @var array
      */
-    private static $aspectCache = [];
+    private static array $aspectCache = [];
 
     /**
      * 工作进程中的切面缓存.
      *
      * @var array
      */
-    private static $workerAspectCache = [];
+    private static array $workerAspectCache = [];
 
     /**
      * 当前代理类是否属于worker进程.
      *
      * @var bool
      */
-    private $isWorker;
+    private bool $isWorker;
 
     /**
      * 类名.
      *
      * @var string
      */
-    private $className;
+    private string $className;
 
     public function __construct($object)
     {
@@ -71,13 +64,14 @@ class BeanProxy
     /**
      * 魔术方法.
      *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
+     * @param object   $object
+     * @param string   $method
+     * @param callable $method
+     * @param array    $args
      *
      * @return mixed
      */
-    public function call($object, $method, $callback, &$args)
+    public function call($object, string $method, callable $callback, array &$args)
     {
         try
         {
@@ -102,12 +96,14 @@ class BeanProxy
     /**
      * 初始化.
      *
+     * @param object $object
+     *
      * @return void
      */
-    private function init($object)
+    private function init($object): void
     {
         $this->className = $className = BeanFactory::getObjectClass($object);
-        $this->refClass = $refClass = ReflectionContainer::getClassReflection($className);
+        $refClass = ReflectionContainer::getClassReflection($className);
         // 每个类只需处理一次
         $staticAspects = &static::$aspects;
         if (!isset($staticAspects[$className]))
@@ -216,12 +212,19 @@ class BeanProxy
     /**
      * 注入属性.
      *
+     * @param object $object
+     *
      * @return void
      */
-    public function injectProps($object)
+    public function injectProps($object): void
     {
-        list($injects, $configs) = static::getInjects($this->className);
-        $refClass = $this->refClass;
+        $className = $this->className;
+        list($injects, $configs) = static::getInjects($className);
+        if (!$injects && !$configs)
+        {
+            return;
+        }
+        $refClass = ReflectionContainer::getClassReflection($className);
 
         // @inject()和@requestInject()注入
         foreach ($injects as $propName => $annotations)
@@ -252,7 +255,7 @@ class BeanProxy
      *
      * @return array
      */
-    public static function getConfigInjects($className)
+    public static function getConfigInjects(string $className): array
     {
         // 配置文件注入
         $beanData = BeanParser::getInstance()->getData();
@@ -276,19 +279,24 @@ class BeanProxy
     /**
      * 获取注入类属性的注解和配置.
      *
+     * [$annotations, $configs]
+     *
      * @param string $className
      *
-     * @return [$annotations, $configs]
+     * @return array
      */
-    public static function getInjects($className)
+    public static function getInjects(string $className): array
     {
         $injects = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
         $configs = static::getConfigInjects($className);
-        foreach ($configs as $key => $value)
+        if ($configs)
         {
-            if (isset($injects[$key]))
+            foreach ($configs as $key => $value)
             {
-                unset($injects[$key]);
+                if (isset($injects[$key]))
+                {
+                    unset($injects[$key]);
+                }
             }
         }
 
@@ -298,13 +306,14 @@ class BeanProxy
     /**
      * 正常请求
      *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
+     * @param object   $object
+     * @param string   $method
+     * @param array    $args
+     * @param callable $callback
      *
      * @return mixed
      */
-    private function callOrigin($object, $method, &$args, $callback)
+    private function callOrigin($object, string $method, array &$args, callable $callback)
     {
         $this->parseBefore($object, $method, $args);
         // 原始方法调用
@@ -324,7 +333,7 @@ class BeanProxy
      *
      * @return void
      */
-    private function parseBefore($object, $method, &$args)
+    private function parseBefore($object, string $method, array &$args): void
     {
         $this->doAspect($method, 'before', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('before', $method, $args, $object, $this);
@@ -342,7 +351,7 @@ class BeanProxy
      *
      * @return void
      */
-    private function parseAfter($object, $method, &$args)
+    private function parseAfter($object, string $method, array &$args): void
     {
         $this->doAspect($method, 'after', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('after', $method, $args, $object, $this);
@@ -361,7 +370,7 @@ class BeanProxy
      *
      * @return void
      */
-    private function parseAfterReturning($object, $method, &$args, &$returnValue)
+    private function parseAfterReturning($object, string $method, array &$args, &$returnValue): void
     {
         $this->doAspect($method, 'afterReturning', function ($aspectClassName, $methodName) use ($object, $method, &$args, &$returnValue) {
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object, $this);
@@ -375,14 +384,15 @@ class BeanProxy
     /**
      * 处理环绕.
      *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
-     * @param mixed  $returnValue
+     * @param object   $object
+     * @param string   $method
+     * @param array    $args
+     * @param mixed    $returnValue
+     * @param callable $callback
      *
      * @return bool
      */
-    private function parseAround($object, $method, &$args, &$returnValue, $callback)
+    private function parseAround($object, string $method, array &$args, &$returnValue, callable $callback): bool
     {
         $aroundAspectDoList = [];
         $this->doAspect($method, 'around', function ($aspectClassName, $methodName) use (&$aroundAspectDoList) {
@@ -432,7 +442,7 @@ class BeanProxy
      *
      * @return void
      */
-    private function parseAfterThrowing($object, $method, &$args, \Throwable $throwable)
+    private function parseAfterThrowing($object, string $method, array &$args, \Throwable $throwable): void
     {
         $isCancelThrow = false;
         $this->doAspect($method, 'afterThrowing', function ($aspectClassName, $methodName, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
@@ -491,7 +501,7 @@ class BeanProxy
      *
      * @return void
      */
-    private function doAspect($method, $pointType, $callback)
+    private function doAspect(string $method, string $pointType, callable $callback): void
     {
         if ($this->isWorker)
         {
@@ -609,7 +619,7 @@ class BeanProxy
      *
      * @return mixed
      */
-    public static function getInjectValue($className, $propertyName)
+    public static function getInjectValue(string $className, string $propertyName)
     {
         list($annotations, $configs) = static::getInjects($className);
         if (isset($configs[$propertyName]))
