@@ -2,8 +2,6 @@
 namespace Imi\Test\HttpServer\Tests;
 
 use Yurun\Util\HttpRequest;
-use Yurun\Util\YurunHttp\Http\Psr7\UploadedFile;
-use Imi\Util\Http\Consts\MediaType;
 
 /**
  * @testdox Https
