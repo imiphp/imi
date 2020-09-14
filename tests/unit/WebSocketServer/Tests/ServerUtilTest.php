@@ -13,7 +13,6 @@ class ServerUtilTest extends BaseTest
     public function testGetServer()
     {
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $http = new HttpRequest;
             $response = $http->get($this->host . 'serverUtil/getServer');
             $this->assertEquals([
@@ -21,15 +20,12 @@ class ServerUtilTest extends BaseTest
                 'main'      =>  'main',
                 'notFound'  =>  true,
             ], $response->json(true));
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
     public function testSendMessage()
     {
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $http = new HttpRequest;
             $response = $http->get($this->host . 'serverUtil/sendMessage');
             $this->assertEquals([
@@ -40,15 +36,12 @@ class ServerUtilTest extends BaseTest
                 'sendMessageRaw1'   =>  1,
                 'sendMessageRaw2'   =>  2,
             ], $response->json(true));
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
     public function testSend()
     {
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $channel = new Channel(1);
             $func = function($recvCount) use($channel){
                 $dataStr = json_encode([
@@ -113,15 +106,12 @@ class ServerUtilTest extends BaseTest
                     break;
                 }
             }
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
     public function testSendToGroup()
     {
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $waitChannel = new Channel(1);
             $func = function($recvCount) use($waitChannel){
                 $dataStr = json_encode([
@@ -175,8 +165,6 @@ class ServerUtilTest extends BaseTest
                     break;
                 }
             }
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 

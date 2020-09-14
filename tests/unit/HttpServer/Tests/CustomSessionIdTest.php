@@ -23,7 +23,6 @@ class CustomSessionIdTest extends BaseTest
     public function testSetGetDelete()
     {
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $http = new HttpRequest;
             $response = $http->get($this->host . 'session/login');
             $sessionId = $response->getCookie('imisid');
@@ -44,8 +43,6 @@ class CustomSessionIdTest extends BaseTest
             $data = $response->json(true);
             Assert::assertTrue(isset($data['isLogin']) && !$data['isLogin'], 'fail:' . $response->errno() . ':' . $response->error());
             Assert::assertArrayNotHasKey('username', $data, 'fail:' . $response->errno() . ':' . $response->error());
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
 
     }
@@ -53,7 +50,6 @@ class CustomSessionIdTest extends BaseTest
     public function testOnce()
     {
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $http = new HttpRequest;
 
             $response = $http->get($this->host . 'session/verifySms?vcode=1234');
@@ -78,8 +74,6 @@ class CustomSessionIdTest extends BaseTest
             $response = $http->get($this->host . 'session/verifySms?vcode=1234');
             $data = $response->json(true);
             Assert::assertTrue(isset($data['success']) && !$data['success'], 'fail:' . $response->errno() . ':' . $response->error());
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 

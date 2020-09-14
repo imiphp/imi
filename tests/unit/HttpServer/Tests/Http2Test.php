@@ -32,7 +32,6 @@ class Http2Test extends BaseTest
         }
         
         $this->go(function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Swoole::class);
             $http = new HttpRequest;
             $http->protocolVersion = '2.0';
             $uri = $this->host . 'info?get=1';
@@ -47,8 +46,6 @@ class Http2Test extends BaseTest
             $response = $http->get($uri);
             $data = $response->json(true);
             $this->assertEquals(2, $data['connectContext']['count'] ?? null);
-        }, function(){
-            YurunHttp::setDefaultHandler(\Yurun\Util\YurunHttp\Handler\Curl::class);
         });
     }
 
