@@ -49,7 +49,7 @@ abstract class RequestContext
      * 销毁当前请求的上下文
      * @return void
      */
-    private static function __destroy()
+    public static function __destroy()
     {
         Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
         $context = Coroutine::getContext();
@@ -94,7 +94,7 @@ abstract class RequestContext
             if(!($context['__bindDestroy'] ?? false))
             {
                 $context['__bindDestroy'] = true;
-                defer('static::__destroy');
+                Coroutine::defer([static::class, '__destroy']);
             }
         }
         else
@@ -127,7 +127,7 @@ abstract class RequestContext
             if(!($context['__bindDestroy'] ?? false))
             {
                 $context['__bindDestroy'] = true;
-                defer('static::__destroy');
+                Coroutine::defer([static::class, '__destroy']);
             }
         }
         else
@@ -163,7 +163,7 @@ abstract class RequestContext
             if(!($context['__bindDestroy'] ?? false))
             {
                 $context['__bindDestroy'] = true;
-                defer('static::__destroy');
+                Coroutine::defer([static::class, '__destroy']);
             }
         }
         else
@@ -195,7 +195,7 @@ abstract class RequestContext
             if(!($context['__bindDestroy'] ?? false))
             {
                 $context['__bindDestroy'] = true;
-                defer('static::__destroy');
+                Coroutine::defer([static::class, '__destroy']);
             }
         }
         else
