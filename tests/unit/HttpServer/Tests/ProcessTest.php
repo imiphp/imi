@@ -9,7 +9,7 @@ use Yurun\Util\HttpRequest;
 class ProcessTest extends BaseTest
 {
     /**
-     * 测试 @PoolBean 注解，mode=allow
+     * 测试 @PoolClean 注解，mode=allow
      *
      * @return void
      */
@@ -28,7 +28,7 @@ class ProcessTest extends BaseTest
     }
 
     /**
-     * 测试 @PoolBean 注解，mode=deny
+     * 测试 @PoolClean 注解，mode=deny
      *
      * @return void
      */
