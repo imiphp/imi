@@ -7,7 +7,6 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
 use Imi\Server\Route\Annotation\Tcp\TcpAction;
 use Imi\Server\Route\Annotation\Tcp\TcpMiddleware;
 use Imi\Server\Route\Annotation\Tcp\TcpRoute;
@@ -105,7 +104,7 @@ class TcpRouteInit implements IEventListener
                 continue;
             }
             $route = $server->getBean('TcpRoute');
-            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach (Config::get('@server.' . $server->getName() . '.route', []) as $routeOption)
             {
                 $routeAnnotation = new TcpRoute($routeOption['route'] ?? []);
                 if (isset($routeOption['callback']))

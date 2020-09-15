@@ -224,10 +224,10 @@ class HotUpdateProcess extends BaseProcess
     {
         $this->closeBuildRuntime();
         $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
-            'format'            => 'json',
             'changedFilesFile'  => $this->changedFilesFile,
-            'imi-runtime'       => Imi::getRuntimePath('imi-runtime-bak.cache'),
             'confirm'           => true,
+            'no-app-cache'      => true,
+            'imi-runtime'       => Imi::getRuntimePath('imi-runtime-bak.cache'),
         ]);
         static $descriptorspec = [
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
@@ -273,15 +273,25 @@ class HotUpdateProcess extends BaseProcess
             {
                 throw new \RuntimeException('Send to buildRuntime process failed');
             }
-            $content = '';
+
             while ($tmp = fgets($this->buildRuntimePipes[1]))
             {
-                $content = $tmp;
+                echo $tmp;
             }
-            $result = json_decode($content, true);
-            if ('Build app runtime complete' !== trim($result))
+
+            do
             {
-                echo $result, \PHP_EOL, 'Build runtime failed!', \PHP_EOL;
+                $status = proc_get_status($this->buildRuntimeHandler);
+                if (!($status['running'] ?? false))
+                {
+                    break;
+                }
+                usleep(1000);
+            } while (true);
+
+            if (0 !== $status['exitcode'])
+            {
+                echo 'Build runtime failed!', \PHP_EOL;
 
                 return;
             }

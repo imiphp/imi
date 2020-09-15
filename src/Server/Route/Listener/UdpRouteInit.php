@@ -7,7 +7,6 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
 use Imi\Server\Route\Annotation\Udp\UdpAction;
 use Imi\Server\Route\Annotation\Udp\UdpMiddleware;
 use Imi\Server\Route\Annotation\Udp\UdpRoute;
@@ -105,7 +104,7 @@ class UdpRouteInit implements IEventListener
                 continue;
             }
             $route = $server->getBean('UdpRoute');
-            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach (Config::get('@server.' . $server->getName() . '.route', []) as $routeOption)
             {
                 $routeAnnotation = new UdpRoute($routeOption['route'] ?? []);
                 if (isset($routeOption['callback']))

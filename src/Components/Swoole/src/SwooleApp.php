@@ -3,7 +3,10 @@
 namespace Imi\Swoole;
 
 use Imi\App;
+use Imi\Bean\Annotation;
 use Imi\Cli\CliApp;
+use Imi\Config;
+use Imi\Event\Event;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Symfony\Component\Console\ConsoleEvents;
@@ -37,6 +40,14 @@ class SwooleApp extends CliApp
             App::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
             App::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
         }, \PHP_INT_MAX - 1000);
+        Event::one('IMI.SCAN_APP', function () {
+            $namespaces = [Config::get('@app.mainServer.namespace')];
+            foreach (Config::get('@app.subServers.subServers', []) as $config)
+            {
+                $namespaces[] = $config['namespace'];
+            }
+            Annotation::getInstance()->initByNamespace($namespaces);
+        });
     }
 
     /**

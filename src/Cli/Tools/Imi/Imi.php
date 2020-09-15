@@ -3,7 +3,7 @@
 namespace Imi\Cli\Tools\Imi;
 
 use Imi\App;
-use Imi\Bean\Annotation;
+use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
@@ -64,85 +64,14 @@ class Imi extends BaseCommand
      *
      * @CommandAction(name="buildRuntime", co=false)
      *
-     * @Option(name="format", type=ArgType::STRING, default="", comments="返回数据格式，可选：json或其他。json格式框架启动、热重启构建缓存需要。")
      * @Option(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * @Option(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
-     * @Option(name="sock", type=ArgType::STRING, default=null, comments="如果传了 sock 则走 Unix Socket 通讯")
      *
      * @return void
      */
-    public function buildRuntime(string $format, ?string $changedFilesFile, bool $confirm, ?string $sock): void
+    public function buildRuntime(?string $changedFilesFile, bool $confirm): void
     {
-        $socket = null;
-        $success = false;
-        ob_start();
-        register_shutdown_function(function () use ($format, &$socket, &$success) {
-            $result = ob_get_clean();
-            if ($success)
-            {
-                $result = 'Build app runtime complete' . \PHP_EOL;
-            }
-            if ($result)
-            {
-                if ('json' === $format)
-                {
-                    $this->output->write(json_encode($result));
-                }
-                else
-                {
-                    $this->output->write($result);
-                }
-            }
-            if ($socket)
-            {
-                $data = [
-                    'action'    => 'buildRuntimeResult',
-                    'result'    => $result,
-                ];
-                $content = serialize($data);
-                $content = pack('N', \strlen($content)) . $content;
-                fwrite($socket, $content);
-                fclose($socket);
-            }
-        });
-
-        if ($sock)
-        {
-            $socket = stream_socket_client('unix://' . $sock, $errno, $errstr, 10);
-            if (false === $socket)
-            {
-                exit;
-            }
-            stream_set_timeout($socket, 60);
-            do
-            {
-                $meta = fread($socket, 4);
-                if ('' === $meta)
-                {
-                    if (feof($socket))
-                    {
-                        exit;
-                    }
-                    continue;
-                }
-                if (false === $meta)
-                {
-                    exit;
-                }
-                $length = unpack('N', $meta)[1];
-                $data = fread($socket, $length);
-                if (false === $data || !isset($data[$length - 1]))
-                {
-                    exit;
-                }
-                $result = unserialize($data);
-                if ('buildRuntime' === $result['action'])
-                {
-                    break;
-                }
-            } while (true);
-        }
-        elseif ($confirm)
+        if ($confirm)
         {
             $input = fread(\STDIN, 1);
             if ('y' !== $input)
@@ -158,11 +87,11 @@ class Imi extends BaseCommand
         }
         else
         {
-            // 加载服务器注解
-            Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+            Scanner::scanVendor();
+            Scanner::scanApp();
         }
         ImiUtil::buildRuntime();
-        $success = true;
+        echo 'Build app runtime complete' . \PHP_EOL;
     }
 
     /**

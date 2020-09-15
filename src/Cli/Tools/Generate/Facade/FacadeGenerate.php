@@ -4,6 +4,7 @@ namespace Imi\Cli\Tools\Generate\Facade;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Parser\BeanParser;
+use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -11,7 +12,6 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Facade\Annotation\Facade;
-use Imi\Main\Helper;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use ReflectionClass;
@@ -35,7 +35,8 @@ class FacadeGenerate extends BaseCommand
      */
     public function generate(string $facadeClass, string $class, bool $request): void
     {
-        Annotation::getInstance()->init(Helper::getAppMains());
+        Scanner::scanVendor();
+        Scanner::scanApp();
         if (class_exists($class))
         {
             $fromClass = $class;

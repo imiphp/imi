@@ -3,6 +3,7 @@
 namespace Imi\Cli\Tools\Generate\Table;
 
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
@@ -36,7 +37,8 @@ class TableGenerate extends BaseCommand
      */
     public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, $override): void
     {
-        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        Scanner::scanVendor();
+        Scanner::scanApp();
         $override = (bool) json_decode((string) $override);
         $query = Db::query($poolName);
         // 数据库

@@ -7,7 +7,6 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Middleware;
 use Imi\Server\Route\Annotation\Route;
@@ -124,7 +123,7 @@ class HttpRouteInit implements IEventListener
                 continue;
             }
             $route = $server->getBean('HttpRoute');
-            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach (Config::get('@server.' . $server->getName() . '.route', []) as $routeOption)
             {
                 $routeAnnotation = new Route($routeOption['route'] ?? []);
                 if (isset($routeOption['callback']))

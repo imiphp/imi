@@ -56,6 +56,10 @@ class AnnotationParser
 
     public function parse($className)
     {
+        if (!class_exists($className))
+        {
+            return;
+        }
         $ref = ReflectionContainer::getClassReflection($className);
 
         // 处理类注解

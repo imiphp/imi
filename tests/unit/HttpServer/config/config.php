@@ -11,7 +11,7 @@ return [
 
     // imi 核心配置
     'imi'   => [
-        'RequestContext'    => \Imi\Components\Swoole\Context\CoroutineContextManager::class,
+        'RequestContext'    => \Imi\Swoole\Context\CoroutineContextManager::class,
     ],
 
     // 扫描目录

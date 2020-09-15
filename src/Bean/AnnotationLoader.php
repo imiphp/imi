@@ -11,7 +11,7 @@ use Imi\Util\Imi;
  */
 class AnnotationLoader
 {
-    private $loaded = [];
+    private array $loaded = [];
 
     /**
      * 加载模块注解.
@@ -21,9 +21,57 @@ class AnnotationLoader
      *
      * @return void
      */
-    public function loadModuleAnnotations($namespace, $callback)
+    public function loadModuleAnnotations(string $namespace, callable $callback): void
     {
-        $this->enumModulePath($namespace, function ($ns, $path) use ($callback) {
+        $loaded = &$this->loaded;
+        // 避免重复加载
+        if (isset($loaded[$namespace]))
+        {
+            return;
+        }
+        // 尝试当作模块获取主类
+        $main = MainHelper::getMain($namespace);
+        $namespacePaths = Imi::getNamespacePaths($namespace);
+        if (null === $main)
+        {
+            $beanScan = [];
+            foreach ($namespacePaths as $path)
+            {
+                $configFileName = File::path($path, 'config/config.php');
+                if (!is_file($configFileName))
+                {
+                    continue;
+                }
+                $data = json_decode(file_get_contents($configFileName), true);
+                if (isset($data['beanScan']))
+                {
+                    $beanScan[] = $data['beanScan'];
+                }
+            }
+            if ($beanScan)
+            {
+                $beanScan = array_merge(...$beanScan);
+            }
+        }
+        else
+        {
+            // 有主类
+            $loaded[$namespace] = $main->getPath();
+            // 遍历加载
+
+            $beanScan = $main->getBeanScan();
+        }
+        if ($beanScan)
+        {
+            foreach ($beanScan as $namespace)
+            {
+                $this->loadModuleAnnotations($namespace, $callback);
+            }
+
+            return;
+        }
+        foreach ($namespacePaths as $path)
+        {
             $pathLength = \strlen($path);
             foreach (File::enumPHPFile($path) as $filePath)
             {
@@ -42,74 +90,9 @@ class AnnotationLoader
                 {
                     $diffPath .= \DIRECTORY_SEPARATOR;
                 }
-                $fileNamespace = $ns . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . basename($filePath, '.php'));
+                $fileNamespace = $namespace . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . basename($filePath, '.php'));
                 // 回调
                 $callback($fileNamespace);
-            }
-        });
-    }
-
-    /**
-     * 遍历模块目录，并调用回调.
-     *
-     * @param string   $namespace
-     * @param callable $callback
-     *
-     * @return void
-     */
-    public function enumModulePath($namespace, $callback)
-    {
-        $loaded = &$this->loaded;
-        // 避免重复加载
-        if (isset($loaded[$namespace]))
-        {
-            return;
-        }
-        // 尝试当作模块获取主类
-        $main = MainHelper::getMain($namespace);
-        if (null === $main)
-        {
-            // 无主类
-            $namespaceSplit = explode('\\', $namespace);
-            $pops = [];
-            // 命名空间一级一级往上尝试
-            do
-            {
-                $pops[] = array_pop($namespaceSplit);
-                $tNamespace = implode('\\', $namespaceSplit);
-                if (isset($loaded[$tNamespace]))
-                {
-                    $paths = (array) $loaded[$tNamespace];
-                }
-                else
-                {
-                    $paths = Imi::getNamespacePaths($tNamespace);
-                    if (!$paths)
-                    {
-                        continue;
-                    }
-                }
-                foreach ($paths as $path)
-                {
-                    $path .= \DIRECTORY_SEPARATOR . implode(\DIRECTORY_SEPARATOR, array_reverse($pops));
-                    $callback($namespace, $path);
-                }
-                break;
-            } while (isset($namespaceSplit[0]));
-            // 未能成功加载抛出异常
-            if (!isset($namespaceSplit[0]))
-            {
-                throw new \RuntimeException('can not load annotations: ' . $namespace);
-            }
-        }
-        else
-        {
-            // 有主类
-            $loaded[$main->getNamespace()] = $main->getPath();
-            // 遍历加载
-            foreach ($main->getBeanScan() as $namespace)
-            {
-                $this->enumModulePath($namespace, $callback);
             }
         }
     }

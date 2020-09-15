@@ -1,4 +1,5 @@
 <?php
+
 return [
     'beanScan' => [
         'Imi\Config',
@@ -26,7 +27,7 @@ return [
         'Imi\Cron',
         'Imi\Util\Co',
     ],
-    'ignoreNamespace'   =>  [
+    'ignoreNamespace'   => [
         'Imi\Cli\bootstrap',
     ],
     'atomics' => [
@@ -35,7 +36,7 @@ return [
         'imi.GroupRedisLock',
     ],
     // 跳过初始化的工具
-    'skipInitTools' =>  [
+    'skipInitTools' => [
         ['imi', 'buildImiRuntime'],
         ['imi', 'clearImiRuntime'],
     ],

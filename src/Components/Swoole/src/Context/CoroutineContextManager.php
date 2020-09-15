@@ -1,6 +1,6 @@
 <?php
 
-namespace Imi\Components\Swoole\Context;
+namespace Imi\Swoole\Context;
 
 use ArrayObject;
 use Imi\Core\Context\Contract\IContextManager;

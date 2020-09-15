@@ -3,6 +3,7 @@
 namespace Imi\Cli\Tools\Process;
 
 use Imi\App;
+use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -33,7 +34,8 @@ class Process extends BaseCommand
     public function start(string $name, ?string $redirectStdinStdout, ?string $pipeType): void
     {
         // 加载服务器注解
-        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        Scanner::scanVendor();
+        Scanner::scanApp();
         App::initWorker();
         $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
         $process->start();
@@ -57,7 +59,8 @@ class Process extends BaseCommand
     public function pool(string $name, ?int $worker, ?int $ipcType, ?string $msgQueueKey): void
     {
         // 加载服务器注解
-        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        Scanner::scanVendor();
+        Scanner::scanApp();
         App::initWorker();
         $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
         $processPool->start();
@@ -75,7 +78,8 @@ class Process extends BaseCommand
     public function run(string $name): void
     {
         // 加载服务器注解
-        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        Scanner::scanVendor();
+        Scanner::scanApp();
         App::initWorker();
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if (null === $processOption)

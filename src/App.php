@@ -7,6 +7,7 @@ use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\ReflectionContainer;
+use Imi\Bean\Scanner;
 use Imi\Cache\CacheManager;
 use Imi\Config\Dotenv\Dotenv;
 use Imi\Core\App\Contract\IApp;
@@ -166,9 +167,7 @@ class App
         if (!$result)
         {
             // 不使用缓存时去扫描
-            Annotation::getInstance()->init([
-                MainHelper::getMain('Imi', 'Imi'),
-            ]);
+            Scanner::scanImi();
             if ($isServerStart)
             {
                 Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
@@ -189,20 +188,10 @@ class App
     {
         if ($noAppCache)
         {
-            // 仅初始化项目及组件
-            $initMains = [Helper::getMain(self::getNamespace())];
-            foreach (Helper::getAppMains() as $main)
-            {
-                foreach ($main->getConfig()['components'] ?? [] as $namespace)
-                {
-                    $componentMain = Helper::getMain($namespace);
-                    if (null !== $componentMain)
-                    {
-                        $initMains[] = $componentMain;
-                    }
-                }
-            }
-            Annotation::getInstance()->init($initMains);
+            // 扫描组件
+            Scanner::scanVendor();
+            // 扫描项目
+            Scanner::scanApp();
 
             // 获取配置
             $pools = $caches = [];
@@ -236,27 +225,17 @@ class App
         {
             while (true)
             {
-                $result = exec(Imi::getImiCmd('imi/buildRuntime', [], [
-                    'format'        => 'json',
+                exec(Imi::getImiCmd('imi/buildRuntime', [], [
                     'imi-runtime'   => Imi::getRuntimePath('imi-runtime-bak.cache'),
                     'no-app-cache'  => true,
-                ]), $output);
-                $result = json_decode($result);
-                if ('Build app runtime complete' === trim($result))
+                ]), $output, $code);
+                if (0 === $code)
                 {
                     break;
                 }
                 else
                 {
-                    if (null === $result)
-                    {
-                        echo implode(\PHP_EOL, $output), \PHP_EOL;
-                    }
-                    else
-                    {
-                        echo $result, \PHP_EOL;
-                    }
-                    sleep(1);
+                    echo implode(\PHP_EOL, $output), \PHP_EOL;
                 }
             }
             self::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));

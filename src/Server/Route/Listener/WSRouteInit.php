@@ -7,7 +7,6 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
 use Imi\Server\Route\Annotation\WebSocket\WSAction;
 use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute;
@@ -113,7 +112,7 @@ class WSRouteInit implements IEventListener
                 continue;
             }
             $route = $server->getBean('WSRoute');
-            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            foreach (Config::get('@server.' . $server->getName() . '.route', []) as $routeOption)
             {
                 $routeAnnotation = new WSRoute($routeOption['route'] ?? []);
                 if (isset($routeOption['callback']))

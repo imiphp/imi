@@ -4,6 +4,7 @@ namespace Imi\Process;
 
 use Imi\App;
 use Imi\Bean\BeanFactory;
+use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Process\Exception\ProcessAlreadyRunException;
 use Imi\Process\Parser\ProcessParser;
@@ -111,7 +112,8 @@ class ProcessManager
                     }
                     \Imi\Util\Process::clearNotInheritableSignalListener();
                     // 加载服务器注解
-                    \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+                    Scanner::scanVendor();
+                    Scanner::scanApp();
                     App::initWorker();
                     // 进程开始事件
                     Event::trigger('IMI.PROCESS.BEGIN', [

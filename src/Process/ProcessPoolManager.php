@@ -4,6 +4,7 @@ namespace Imi\Process;
 
 use Imi\App;
 use Imi\Bean\BeanFactory;
+use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Process\Parser\ProcessPoolParser;
 use Imi\Util\Imi;
@@ -64,7 +65,8 @@ class ProcessPoolManager
             imigo(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
                 $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
                 // 加载服务器注解
-                \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+                Scanner::scanVendor();
+                Scanner::scanApp();
                 App::initWorker();
                 // 进程开始事件
                 Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [

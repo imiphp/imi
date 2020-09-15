@@ -20,14 +20,14 @@ class Annotation
      *
      * @var AnnotationLoader
      */
-    private $loader;
+    private AnnotationLoader $loader;
 
     /**
      * 处理器.
      *
      * @var AnnotationParser
      */
-    private $parser;
+    private AnnotationParser $parser;
 
     public function __construct()
     {
@@ -42,7 +42,7 @@ class Annotation
      *
      * @return void
      */
-    public function init($mains = null)
+    public function init($mains = null): void
     {
         if (null === $mains)
         {
@@ -52,6 +52,21 @@ class Annotation
         {
             // 扫描注解
             $this->loadModuleAnnotations($main->getNamespace());
+        }
+    }
+
+    /**
+     * 初始化.
+     *
+     * @param string|string[] $namespaces
+     *
+     * @return void
+     */
+    public function initByNamespace($namespaces): void
+    {
+        foreach ((array) $namespaces as $namespace)
+        {
+            $this->loadModuleAnnotations($namespace);
         }
     }
 
