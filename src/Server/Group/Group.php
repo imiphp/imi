@@ -75,7 +75,7 @@ class Group
     {
         if($this->status)
         {
-            $this->handler = $handler = RequestContext::getServerBean($this->groupHandler);
+            $this->handler = $handler = $this->server->getBean($this->groupHandler);
             $handler->createGroup($this->groupName, $this->maxClients);
         }
     }
@@ -101,7 +101,7 @@ class Group
         $groupName = $this->groupName;
         if($this->handler->joinGroup($groupName, $fd))
         {
-            RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
+            $this->server->getBean('FdMap')->joinGroup($fd, $this);
             ConnectContext::use(function($contextData) use($groupName){
                 $contextData['__groups'][] = $groupName;
                 return $contextData;
@@ -125,7 +125,7 @@ class Group
         $groupName = $this->groupName;
         if($this->handler->leaveGroup($groupName, $fd))
         {
-            RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
+            $this->server->getBean('FdMap')->leaveGroup($fd, $this);
             ConnectContext::use(function($contextData) use($groupName){
                 if(isset($contextData['__groups']))
                 {
@@ -210,7 +210,7 @@ class Group
         ];
         $methodIsCheck = in_array($name, $checkMethods);
         $result = [];
-        $fdMap = RequestContext::getServerBean('FdMap');
+        $fdMap = $this->server->getBean('FdMap');
         foreach($this->handler->getFds($this->groupName) as $fd)
         {
             // 执行结果
