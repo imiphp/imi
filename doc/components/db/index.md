@@ -470,18 +470,9 @@ public function getTransaction();
 
 imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
 
-这么写，查询返回的结果都是模型对象，或者模型对象数组：
-
 ```php
 use Imi\Db\Db;
 $query = Db::query();
-```
-
-这么写，查询永远返回数组，字段按数据库命名原样返回：
-
-```php
-use Imi\Db\Db;
-$query = Db::dbQuery();
 ```
 
 ### 事务
