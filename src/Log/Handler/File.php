@@ -82,7 +82,7 @@ class File extends Base
         $this->currentFileDateTime = $timestamp;
         $this->currentFileIndex = 0;
         $currentNoIndexFileName = $this->replaceDateTime($this->fileName, $timestamp);
-        $this->currentFileExt = $currentFileExt = pathinfo($currentNoIndexFileName, PATHINFO_EXTENSION);
+        $this->currentFileExt = $currentFileExt = '.' . pathinfo($currentNoIndexFileName, PATHINFO_EXTENSION);
         return $this->currentNoIndexFileName = substr($currentNoIndexFileName, 0, -strlen($currentFileExt));
     }
 
