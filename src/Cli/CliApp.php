@@ -30,6 +30,9 @@ class CliApp extends BaseApp
      */
     protected EventDispatcher $cliEventDispatcher;
 
+    /**
+     * @var bool
+     */
     private bool $initApped = false;
 
     /**
@@ -89,7 +92,7 @@ class CliApp extends BaseApp
 
     private function onError(ConsoleErrorEvent $e): void
     {
-        if ($e->getError() instanceof CommandNotFoundException)
+        if (!$this->initApped && $e->getError() instanceof CommandNotFoundException)
         {
             $e->stopPropagation();
             // 尝试加载项目
@@ -111,7 +114,6 @@ class CliApp extends BaseApp
                 $command = new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName);
                 if (!$this->cli->has($command->getName()))
                 {
-                    var_dump($command->getName());
                     $this->cli->add($command);
                 }
             }
