@@ -118,9 +118,9 @@ class App
      */
     public static function run(string $namespace, string $app): void
     {
-        self::$app = new $app($namespace);
+        self::$app = $appInstance = new $app($namespace);
         self::initFramework($namespace);
-        self::$app->run();
+        $appInstance->run();
     }
 
     /**
@@ -264,19 +264,8 @@ class App
             throw new \RuntimeException('Framework imi must have the class Imi\\Main');
         }
         // 项目
-        if (!MainHelper::getMain(static::$namespace, 'app'))
-        {
-            throw new \RuntimeException(sprintf('Your app must have the class %s\\Main', static::$namespace));
-        }
-        // 服务器们
-        $servers = array_merge(['main' => Config::get('@app.mainServer')], Config::get('@app.subServers', []));
-        foreach ($servers as $serverName => $item)
-        {
-            if ($item && !MainHelper::getMain($item['namespace'], 'server.' . $serverName))
-            {
-                throw new \RuntimeException(sprintf('Server [%s] must have the class %s\\Main', $serverName, $item['namespace']));
-            }
-        }
+        MainHelper::getMain(static::$namespace, 'app');
+        Event::trigger('IMI.INIT_MAIN');
     }
 
     /**

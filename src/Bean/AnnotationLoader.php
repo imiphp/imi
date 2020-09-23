@@ -58,7 +58,6 @@ class AnnotationLoader
             // 有主类
             $loaded[$namespace] = $main->getPath();
             // 遍历加载
-
             $beanScan = $main->getBeanScan();
         }
         if ($beanScan)

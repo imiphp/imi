@@ -70,7 +70,7 @@ return [
         ],
     ],
     'imi'   => 'very six',
-    'yurun' => '',
+    'yurun' => getenv('APP_YURUN') ?: '',
 
     // 连接池配置
     'pools'    => [

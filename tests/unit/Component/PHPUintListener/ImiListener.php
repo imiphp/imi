@@ -3,7 +3,6 @@
 namespace Imi\Test\Component\PHPUintListener;
 
 use Imi\App;
-use Imi\Cli\Tool;
 use Imi\Db\Interfaces\IDb;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
@@ -137,12 +136,11 @@ class ImiListener implements TestListener
     {
         if (!$this->isLoadedImi)
         {
-            Event::on('IMI.INIT_TOOL', function (EventParam $param) {
-                $data = $param->getData();
-                $data['skip'] = true;
-                Tool::init();
-                $this->isLoadedImi = true;
-            });
+            // Event::on('IMI.INIT_TOOL', function (EventParam $param) {
+            //     $data = $param->getData();
+            //     $data['skip'] = true;
+            //     $this->isLoadedImi = true;
+            // });
             Event::on('IMI.INITED', function (EventParam $param) {
                 App::initWorker();
                 go(function () use ($param) {

@@ -8,7 +8,6 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanProxy;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Bean\ReflectionContainer;
-use Imi\Cli\Tool;
 use Imi\Config;
 use Imi\Main\Helper;
 use Imi\Model\Annotation\Column;
@@ -24,6 +23,7 @@ class Imi
     private function __construct()
     {
     }
+
     /**
      * 处理规则，暂只支持通配符*.
      *
@@ -487,7 +487,6 @@ class Imi
             'taskWorker'    => 'imi:taskWorker-{workerId}:{namespace}',
             'process'       => 'imi:process-{processName}:{namespace}',
             'processPool'   => 'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
-            'tool'          => 'imi:{toolName}/{toolOperation}:{namespace}',
         ];
         if (!isset($defaults[$type]))
         {
@@ -518,10 +517,6 @@ class Imi
                 {
                     return false;
                 }
-                break;
-            case 'tool':
-                $data['toolName'] = Tool::getToolName();
-                $data['toolOperation'] = Tool::getToolOperation();
                 break;
         }
         $result = $rule;

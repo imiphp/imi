@@ -12,6 +12,9 @@ use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
+use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -26,6 +29,8 @@ class CliApp extends BaseApp
      * @var EventDispatcher
      */
     protected EventDispatcher $cliEventDispatcher;
+
+    private bool $initApped = false;
 
     /**
      * 构造方法.
@@ -71,23 +76,55 @@ class CliApp extends BaseApp
         );
 
         $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
-            $input = $e->getInput();
-            App::initApp((bool) $input->getOption('no-app-cache'));
+            $this->initApp($e->getInput());
+        }, \PHP_INT_MAX);
+        $this->cliEventDispatcher->addListener(ConsoleEvents::ERROR, function (ConsoleErrorEvent $e) {
+            $this->onError($e);
         }, \PHP_INT_MAX);
 
         Event::one('IMI.INITED', function () use ($cli) {
-            foreach (AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
+            $this->addCommands();
+        });
+    }
+
+    private function onError(ConsoleErrorEvent $e): void
+    {
+        if ($e->getError() instanceof CommandNotFoundException)
+        {
+            $e->stopPropagation();
+            // 尝试加载项目
+            $this->initApp($e->getInput());
+            $this->addCommands();
+            $this->run();
+        }
+    }
+
+    private function addCommands(): void
+    {
+        foreach (AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
+        {
+            /** @var Command $commandAnnotation */
+            $commandAnnotation = $point->getAnnotation();
+            $className = $point->getClass();
+            foreach (AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
             {
-                /** @var Command $commandAnnotation */
-                $commandAnnotation = $point->getAnnotation();
-                $className = $point->getClass();
-                foreach (AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
+                $command = new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName);
+                if (!$this->cli->has($command->getName()))
                 {
-                    $cli->add(new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName));
+                    var_dump($command->getName());
+                    $this->cli->add($command);
                 }
             }
-            // Tool::init();
-        });
+        }
+    }
+
+    private function initApp(Input $input): void
+    {
+        if (!$this->initApped)
+        {
+            $this->initApped = true;
+            App::initApp((bool) $input->getOption('no-app-cache'));
+        }
     }
 
     /**

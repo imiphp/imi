@@ -7,6 +7,7 @@ use Imi\Bean\Annotation;
 use Imi\Cli\CliApp;
 use Imi\Config;
 use Imi\Event\Event;
+use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Symfony\Component\Console\ConsoleEvents;
@@ -36,18 +37,44 @@ class SwooleApp extends CliApp
     {
         parent::__construct($namespace);
         $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
-            $this->checkEnvironment($e->getOutput());
-            App::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
-            App::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
+            $this->onCommand($e);
         }, \PHP_INT_MAX - 1000);
         Event::one('IMI.SCAN_APP', function () {
-            $namespaces = [Config::get('@app.mainServer.namespace')];
-            foreach (Config::get('@app.subServers.subServers', []) as $config)
-            {
-                $namespaces[] = $config['namespace'];
-            }
-            Annotation::getInstance()->initByNamespace($namespaces);
+            $this->onScanApp();
         });
+        Event::one('IMI.INIT_MAIN', function () {
+            $this->onInitMain();
+        });
+    }
+
+    private function onCommand(ConsoleCommandEvent $e): void
+    {
+        $this->checkEnvironment($e->getOutput());
+        App::set(ProcessAppContexts::PROCESS_NAME, ProcessType::MASTER, true);
+        App::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
+    }
+
+    private function onScanApp(): void
+    {
+        $namespaces = [Config::get('@app.mainServer.namespace')];
+        foreach (Config::get('@app.subServers.subServers', []) as $config)
+        {
+            $namespaces[] = $config['namespace'];
+        }
+        Annotation::getInstance()->initByNamespace($namespaces);
+    }
+
+    private function onInitMain(): void
+    {
+        // 服务器们
+        $servers = array_merge(['main' => Config::get('@app.mainServer')], Config::get('@app.subServers', []));
+        foreach ($servers as $serverName => $item)
+        {
+            if ($item)
+            {
+                Helper::getMain($item['namespace'], 'server.' . $serverName);
+            }
+        }
     }
 
     /**

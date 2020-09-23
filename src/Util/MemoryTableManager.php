@@ -27,6 +27,7 @@ class MemoryTableManager
     private function __construct()
     {
     }
+
     /**
      * 初始化.
      *
