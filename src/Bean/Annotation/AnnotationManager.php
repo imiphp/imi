@@ -232,7 +232,7 @@ abstract class AnnotationManager
         }
         else
         {
-            $staticAnnotations[$className] = $classAnnotation = new Constant($className);
+            $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
         }
         $classAnnotation->addConstantAnnotations($constantName, $annotations);
         foreach($annotations as $annotation)
