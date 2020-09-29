@@ -1,20 +1,21 @@
 <?php
 namespace Imi\Server\Route\Listener;
 
+use Imi\Config;
 use Imi\Main\Helper;
 use Imi\ServerManage;
+use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
+use Imi\Server\Route\TMiddleware;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Parser\ControllerParser;
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Config;
-use Imi\Server\Route\Annotation\Middleware;
 use Imi\Server\Route\Annotation\Action;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Server\Route\Annotation\Middleware;
+use Imi\Server\Route\Parser\ControllerParser;
 use Imi\Server\Route\Annotation\WebSocket\WSConfig;
-use Imi\Server\Route\TMiddleware;
 
 /**
  * http服务器路由初始化
@@ -42,12 +43,14 @@ class HttpRouteInit implements IEventListener
     private function parseAnnotations(EventParam $e)
     {
         $controllerParser = ControllerParser::getInstance();
+        $context = RequestContext::getContext();
         foreach(ServerManage::getServers() as $name => $server)
         {
             if(!$server instanceof \Imi\Server\Http\Server && !$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('HttpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -102,6 +105,7 @@ class HttpRouteInit implements IEventListener
                     }
                 }
             }
+            unset($context['server']);
         }
     }
 
@@ -111,12 +115,14 @@ class HttpRouteInit implements IEventListener
      */
     private function parseConfigs()
     {
+        $context = RequestContext::getContext();
         foreach(ServerManage::getServers() as $server)
         {
             if(!$server instanceof \Imi\Server\Http\Server && !$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('HttpRoute');
             foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
@@ -133,6 +139,7 @@ class HttpRouteInit implements IEventListener
                     'middlewares' => $routeOption['middlewares'] ?? [],
                 ]);
             }
+            unset($context['server']);
         }
     }
 }

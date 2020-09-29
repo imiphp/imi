@@ -4,6 +4,7 @@ namespace Imi\Server\Route\Listener;
 use Imi\Config;
 use Imi\Main\Helper;
 use Imi\ServerManage;
+use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
@@ -41,12 +42,14 @@ class UdpRouteInit implements IEventListener
     private function parseAnnotations(EventParam $e)
     {
         $controllerParser = UdpControllerParser::getInstance();
+        $context = RequestContext::getContext();
         foreach(ServerManage::getServers() as $name => $server)
         {
             if(!$server instanceof \Imi\Server\UdpServer\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('UdpRoute');
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -83,6 +86,7 @@ class UdpRouteInit implements IEventListener
                     }
                 }
             }
+            unset($context['server']);
         }
     }
 
@@ -92,12 +96,14 @@ class UdpRouteInit implements IEventListener
      */
     private function parseConfigs()
     {
+        $context = RequestContext::getContext();
         foreach(ServerManage::getServers() as $server)
         {
             if(!$server instanceof \Imi\Server\UdpServer\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('UdpRoute');
             foreach(Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
@@ -114,6 +120,7 @@ class UdpRouteInit implements IEventListener
                     'middlewares' => $routeOption['middlewares'],
                 ]);
             }
+            unset($context['server']);
         }
     }
 }
