@@ -191,9 +191,9 @@ class HttpRoute
     public function checkUrl(string $urlRule, string $pathInfo)
     {
         $urlCheckCache = &$this->urlCheckCache;
-        $urlCheckCacheCount = &$this->urlCheckCacheCount;
         if(!isset($urlCheckCache[$pathInfo][$urlRule]))
         {
+            $urlCheckCacheCount = &$this->urlCheckCacheCount;
             $rule = $this->parseRule($urlRule, $fields, $isRegular);
             $params = [];
             if($isRegular)
