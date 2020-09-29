@@ -15,6 +15,7 @@
 `-config` 配置文件。`true`-项目配置；`false`-忽略配置；php配置文件名-使用该配置文件。默认为`true`
 `-basePath` 指定命名空间对应的基准路径，可选
 `-entity` 序列化时是否使用驼峰命名(`true` or `false`),默认`true`,可选
+`-sqlSingleLine` 生成的SQL为单行,默认`false`,可选
 
 示例：
 

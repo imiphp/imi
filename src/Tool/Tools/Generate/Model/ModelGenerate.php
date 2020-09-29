@@ -34,9 +34,10 @@ class ModelGenerate
      * @Arg(name="config", type=ArgType::STRING, default=true, comments="配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true")
      * @Arg(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Arg(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
+     * @Arg(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      * @return void
      */
-    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity)
+    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity, $sqlSingleLine)
     {
         $override = (string)$override;
         switch($override)
@@ -166,6 +167,10 @@ class ModelGenerate
             {
                 $dataList = $query->from($table)->select()->getArray();
                 $ddl .= ';' . PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
+            }
+            if($sqlSingleLine)
+            {
+                $ddl = str_replace(\PHP_EOL, ' ', $ddl);
             }
             $data = [
                 'namespace'     => $modelNamespace,
