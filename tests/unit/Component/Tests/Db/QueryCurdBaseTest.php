@@ -308,4 +308,23 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
+    public function testIsNull()
+    {
+        $query = Db::query($this->poolName);
+        $record = $query->from('tb_article')->whereIsNull('id')->select()->get();
+        Assert::assertEquals(null, $record);
+    }
+
+    public function testIsNotNull()
+    {
+        $query = Db::query($this->poolName);
+        $record = $query->from('tb_article')->whereIsNotNull('id')->select()->get();
+        Assert::assertEquals([
+            'id'        =>  '1',
+            'title'     =>  'title',
+            'content'   =>  'content',
+            'time'      =>  '2019-06-21 00:00:00',
+        ], $record);
+    }
+
 }

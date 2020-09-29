@@ -120,7 +120,7 @@ return [
 ```php
 /**
  * @Action
- * @View("a/b")
+ * @View(renderType="html", template="a/b")
  */
 public function index()
 {

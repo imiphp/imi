@@ -26,7 +26,14 @@ class RouteMiddleware implements IMiddleware
 	 */
 	public function process(IPacketData $data, IPacketHandler $handler)
 	{
-		
+        // 前置处理
+        
+        // 先执行其它中间件
+        $result = $handler->handle($data);
+        
+        // 后置处理
+        
+        return $result;
 	}
 
 }
