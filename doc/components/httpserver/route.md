@@ -6,9 +6,9 @@
 
 ```php
 return [
-    'beans'	=>	[
-        'HttpDispatcher'	=>	[
-            'middlewares'	=>	[
+    'beans' =>  [
+        'HttpDispatcher'    =>  [
+            'middlewares'   =>  [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
@@ -22,12 +22,14 @@ return [
 
 ```php
 return [
-    'beans'	=>	[
-        'HttpRoute'	=>	[
+    'beans' => [
+        'HttpRoute' => [
             // url匹配缓存数量，默认1024
-            'urlCacheNumber'	=>	1024,
+            'urlCacheNumber' => 1024,
             // 全局忽略 URL 路由大小写
-            'ignoreCase'		=>	false,
+            'ignoreCase'     => false,
+            // 全局支持智能尾部斜杠，无论是否存在都匹配
+            'autoEndSlash'   => false,
         ],
     ],
 ];
@@ -61,7 +63,8 @@ return [
 | paramsPost | 判断`POST`参数，用法同`paramsGet` |
 | header | 判断请求头，用法同`paramsGet` |
 | requestMime | 请求的mime类型判断<br>判断请求头中的Content-Type中是否包含这些mime类型之一<br>支持字符串和字符串数组<br> |
-| ignoreCase | 忽略请求地址大小写<br>null-取HttpRoute中默认值<br>true-忽略大小写<br>false-严格判断 |
+| ignoreCase | 忽略请求地址大小写<br>`null`-取HttpRoute中默认值<br>`true`-忽略大小写<br>`false`-严格判断 |
+| autoEndSlash | 智能尾部斜杠，无论是否存在都匹配<br>`null`-取HttpRoute中默认值<br>`true`-忽略大小写<br>`false`-严格判断 |
 
 ### @Action
 

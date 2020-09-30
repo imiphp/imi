@@ -52,6 +52,7 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
+     * @Route(autoEndSlash=true)
      * @View(renderType="html", template="html")
      * @return void
      */

@@ -2,11 +2,9 @@
 namespace Imi\Server\Http\Route;
 
 use Imi\Util\Imi;
-use Imi\Util\Text;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
-use Imi\Server\Route\RouteCallable;
 use Imi\Server\View\Parser\ViewParser;
 use Imi\Util\Uri;
 
@@ -51,6 +49,13 @@ class HttpRoute
      * @var boolean
      */
     protected $ignoreCase = false;
+
+    /**
+     * 智能尾部斜杠，无论是否存在都匹配
+     *
+     * @var boolean
+     */
+    protected $autoEndSlash = false;
 
     /**
      * 增加路由规则
@@ -444,5 +449,25 @@ class HttpRoute
     public function getUrlCacheNumber()
     {
         return $this->urlCacheNumber;
+    }
+
+    /**
+     * Get 忽略 URL 规则大小写
+     *
+     * @return boolean
+     */ 
+    public function getIgnoreCase():bool
+    {
+        return $this->ignoreCase;
+    }
+
+    /**
+     * Get 智能尾部斜杠，无论是否存在都匹配
+     *
+     * @return boolean
+     */ 
+    public function getAutoEndSlash():bool
+    {
+        return $this->autoEndSlash;
     }
 }

@@ -10,6 +10,7 @@ use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Server\Route\TMiddleware;
 use Imi\Server\Route\RouteCallable;
+use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Route\Annotation\Route;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Bean\Annotation\AnnotationManager;
@@ -51,7 +52,9 @@ class HttpRouteInit implements IEventListener
                 continue;
             }
             $context['server'] = $server;
+            /** @var HttpRoute $route */
             $route = $server->getBean('HttpRoute');
+            $autoEndSlash = $route->getAutoEndSlash();
             foreach($controllerParser->getByServer($name) as $className => $classItem)
             {
                 /** @var \Imi\Server\Route\Annotation\Controller $classAnnotation */
@@ -86,6 +89,7 @@ class HttpRouteInit implements IEventListener
                     // 最终中间件
                     $middlewares = array_values(array_unique(array_merge($classMiddlewares, $methodMiddlewares)));
                     
+                    /** @var Route[] $routes */
                     foreach($routes as $routeItem)
                     {
                         if(null === $routeItem->url)
@@ -97,11 +101,19 @@ class HttpRouteInit implements IEventListener
                         {
                             $routeItem->url = $prefix . $routeItem->url;
                         }
-                        $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
+                        $routeCallable = new RouteCallable($server, $className, $methodName);
+                        $options = [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
                             'singleton'     => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
-                        ]);
+                        ];
+                        $route->addRuleAnnotation($routeItem, $routeCallable, $options);
+                        if(($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && '/' !== substr($routeItem->url, 0, -1))
+                        {
+                            $routeItem = clone $routeItem;
+                            $routeItem->url .= '/';
+                            $route->addRuleAnnotation($routeItem, $routeCallable, $options);
+                        }
                     }
                 }
             }
