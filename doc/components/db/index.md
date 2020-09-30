@@ -41,6 +41,10 @@ return [
                     // 'heartbeatInterval' => null,
                     // 当获取资源时，是否检查状态
                     // 'checkStateWhenGetResource' => true,
+                    // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
+                    // 'maxUsedTime' => null,
+                    // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
+                    // 'requestResourceCheckInterval' => 30,
                     // 负载均衡-轮流
                     // 'resourceConfigMode' => ResourceConfigMode::TURN,
                     // 负载均衡-随机
@@ -96,6 +100,10 @@ return [
                     // 'heartbeatInterval' => null,
                     // 当获取资源时，是否检查状态
                     // 'checkStateWhenGetResource' => true,
+                    // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
+                    // 'maxUsedTime' => null,
+                    // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
+                    // 'requestResourceCheckInterval' => 30,
                     // 负载均衡-轮流
                     // 'resourceConfigMode' => ResourceConfigMode::TURN,
                     // 负载均衡-随机
@@ -164,6 +172,10 @@ return [
                         // 'heartbeatInterval' => null,
                         // 当获取资源时，是否检查状态
                         // 'checkStateWhenGetResource' => true,
+                        // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
+                        // 'maxUsedTime' => null,
+                        // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
+                        // 'requestResourceCheckInterval' => 30,
                         // 负载均衡-轮流
                         // 'resourceConfigMode' => ResourceConfigMode::TURN,
                         // 负载均衡-随机

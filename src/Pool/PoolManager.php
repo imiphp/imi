@@ -108,10 +108,14 @@ abstract class PoolManager
     {
         $requestContext = RequestContext::getContext();
         $resource = $requestContext['poolResource.' . $name] ?? null;
-        if(null !== $resource && microtime(true) - static::$lastGetResourceTime[$name] > $resource->getPool()->getConfig()->getRequestResourceCheckInterval() && !$resource->checkState())
+        if(null !== $resource)
         {
-            $resource->getPool()->release($resource);
-            $resource = null;
+            $requestResourceCheckInterval = $resource->getPool()->getConfig()->getRequestResourceCheckInterval();
+            if($requestResourceCheckInterval > 0 && microtime(true) - static::$lastGetResourceTime[$name] > $requestResourceCheckInterval && !$resource->checkState())
+            {
+                $resource->getPool()->release($resource);
+                $resource = null;
+            }
         }
         if(null === $resource)
         {
