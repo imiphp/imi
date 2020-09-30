@@ -58,6 +58,8 @@ return [
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
                 // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 hook mysqli 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
@@ -111,6 +113,8 @@ return [
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
                 // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 hook mysqli 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
@@ -177,6 +181,8 @@ return [
                     // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
                     // 使用 hook pdo 驱动（缺省默认）
                     // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                    // 使用 hook mysqli 驱动
+                    // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                     // 使用 Swoole MySQL 驱动
                     // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                 ],
@@ -201,6 +207,8 @@ return [
                         // 'options' => [], // PDO连接选项
                         // 使用 hook pdo 驱动（缺省默认）
                         // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                        // 使用 hook mysqli 驱动
+                        // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                     ],
@@ -214,6 +222,8 @@ return [
                         // 'options' => [], // PDO连接选项
                         // 使用 hook pdo 驱动（缺省默认）
                         // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                        // 使用 hook mysqli 驱动
+                        // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                     ]

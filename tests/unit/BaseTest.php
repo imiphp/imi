@@ -8,7 +8,7 @@ if(class_exists(TestCase::class))
 {
     abstract class BaseTest extends TestCase
     {
-        const PERFORMANCE_COUNT = 10000;
+        const PERFORMANCE_COUNT = 1000;
     
         protected function go($callable, $finally = null)
         {
