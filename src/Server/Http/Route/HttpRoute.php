@@ -456,7 +456,7 @@ class HttpRoute
      *
      * @return boolean
      */ 
-    public function getIgnoreCase():bool
+    public function getIgnoreCase(): bool
     {
         return $this->ignoreCase;
     }
@@ -466,7 +466,7 @@ class HttpRoute
      *
      * @return boolean
      */ 
-    public function getAutoEndSlash():bool
+    public function getAutoEndSlash(): bool
     {
         return $this->autoEndSlash;
     }
