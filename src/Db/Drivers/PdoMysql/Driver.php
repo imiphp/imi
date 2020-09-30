@@ -163,13 +163,9 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        if(!$this->inTransaction())
+        if(!$this->inTransaction() && !$this->instance->beginTransaction())
         {
-            $result = $this->instance->beginTransaction();
-            if(!$result)
-            {
-                return $result;
-            }
+            return false;
         }
         $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
         $this->transaction->beginTransaction();

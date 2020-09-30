@@ -134,9 +134,9 @@ class Driver extends Base implements IDb
 
     /**
      * 获取原对象实例
-     * @return \mysqli_stmt
+     * @return \mysqli
      */
-    public function getInstance(): \mysqli_stmt
+    public function getInstance(): \mysqli
     {
         return $this->instance;
     }
@@ -147,13 +147,9 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        if(!$this->inTransaction())
+        if(!$this->inTransaction() && !$this->instance->begin_transaction())
         {
-            $result = $this->instance->begin_transaction();
-            if(!$result)
-            {
-                return $result;
-            }
+            return false;
         }
         $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
         $this->transaction->beginTransaction();

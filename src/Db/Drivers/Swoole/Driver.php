@@ -101,7 +101,7 @@ class Driver extends Base implements IDb
     {
         $this->instance = $instance = new MySQL;
         $option = $this->option;
-        return $instance->connect(array_merge([
+        $serverConfig = [
             'host'          =>  $option['host'] ?? '127.0.0.1',
             'port'          =>  $option['port'] ?? 3306,
             'user'          =>  $option['username'] ?? 'root',
@@ -111,7 +111,12 @@ class Driver extends Base implements IDb
             'charset'       =>  $option['charset'] ?? 'utf8',
             'strict_type'   =>  $option['strict_type'] ?? true,
             'fetch_mode'    =>  $option['fetch_mode'] ?? false,
-        ], $option['options'] ?? []));
+        ];
+        if(isset($option['options']))
+        {
+            $serverConfig = array_merge($serverConfig, $option['options']);
+        }
+        return $instance->connect($serverConfig);
     }
 
     /**
@@ -144,13 +149,9 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        if(!$this->inTransaction())
+        if(!$this->inTransaction() && !$this->instance->begin())
         {
-            $result = $this->instance->begin();
-            if(!$result)
-            {
-                return $result;
-            }
+            return false;
         }
         $this->exec('SAVEPOINT P' . $this->getTransactionLevels());
         $this->transaction->beginTransaction();
