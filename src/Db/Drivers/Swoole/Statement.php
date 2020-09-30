@@ -239,7 +239,9 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
     {
-        return next($this->result);
+        $result = current($this->result);
+        next($this->result);
+        return $result;
     }
 
     /**
@@ -260,7 +262,8 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetchColumn($columnKey = 0)
     {
-        $row = next($this->result);
+        $row = current($this->result);
+        next($this->result);
         if(isset($row[$columnKey]))
         {
             return $row[$columnKey];
@@ -280,11 +283,12 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
     {
-        $row = next($this->result);
+        $row = current($this->result);
         if(false === $row)
         {
             return null;
         }
+        next($this->result);
         if('stdClass' === $className)
         {
             return (object)$row;
