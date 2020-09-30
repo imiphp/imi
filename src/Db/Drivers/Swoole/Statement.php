@@ -240,7 +240,10 @@ class Statement extends BaseStatement implements IStatement
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
     {
         $result = current($this->result);
-        next($this->result);
+        if($result)
+        {
+            next($this->result);
+        }
         return $result;
     }
 
@@ -263,7 +266,10 @@ class Statement extends BaseStatement implements IStatement
     public function fetchColumn($columnKey = 0)
     {
         $row = current($this->result);
-        next($this->result);
+        if($row)
+        {
+            next($this->result);
+        }
         if(isset($row[$columnKey]))
         {
             return $row[$columnKey];
