@@ -1,38 +1,41 @@
 <?php
+
 namespace Imi\Util;
 
 /**
- * 命令行参数操作类
+ * 命令行参数操作类.
  */
 abstract class Args
 {
     /**
-     * 参数存储
+     * 参数存储.
+     *
      * @var string
      */
     private static $cliArgs;
 
     /**
-     * 初始化
+     * 初始化.
      *
-     * @param integer $argBegin 从第几个参数算
+     * @param int $argBegin 从第几个参数算
+     *
      * @return void
      */
     public static function init($argBegin = 1)
     {
         static::$cliArgs = [];
         $keyName = null;
-        for($i = $argBegin; $i < $_SERVER['argc']; ++$i)
+        for ($i = $argBegin; $i < $_SERVER['argc']; ++$i)
         {
             $argvI = $_SERVER['argv'][$i];
-            if(isset($argvI[0]) && '-' === $argvI[0])
+            if (isset($argvI[0]) && '-' === $argvI[0])
             {
                 $keyName = substr($argvI, 1);
                 static::$cliArgs[$keyName] = true;
             }
             else
             {
-                if(null === $keyName)
+                if (null === $keyName)
                 {
                     static::$cliArgs[$argvI] = true;
                 }
@@ -44,15 +47,17 @@ abstract class Args
             }
         }
     }
-    
+
     /**
-     * 指定数据是否存在
+     * 指定数据是否存在.
+     *
      * @param string $name
+     *
      * @return bool
      */
     public static function exists($name)
     {
-        if(is_integer($name))
+        if (\is_int($name))
         {
             return isset($_SERVER['argv'][$name]);
         }
@@ -61,16 +66,18 @@ abstract class Args
             return isset(static::$cliArgs[$name]);
         }
     }
-    
+
     /**
      * 获取值
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function get($name = '', $default = null)
     {
-        if(is_integer($name))
+        if (\is_int($name))
         {
             $data = $_SERVER['argv'];
         }
@@ -84,7 +91,7 @@ abstract class Args
             return $data;
         }
         // 判断指定的值是否存在
-        else if (isset($data[$name]))
+        elseif (isset($data[$name]))
         {
             return $data[$name];
         }
@@ -98,20 +105,20 @@ abstract class Args
     /**
      * 写入参数值
      *
-     * @param string $name
+     * @param string      $name
      * @param string|null $value
+     *
      * @return void
      */
     public static function set(string $name, ?string $value)
     {
-        if(is_integer($name))
+        if (\is_int($name))
         {
-            $_SERVER['argv'][$name] = $value;;
+            $_SERVER['argv'][$name] = $value;
         }
         else
         {
             static::$cliArgs[$name] = $value;
         }
     }
-
 }

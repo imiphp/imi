@@ -1,75 +1,81 @@
 <?php
+
 namespace Imi\Pool;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Pool\Interfaces\IPoolConfig;
 
 /**
- * 池子配置
+ * 池子配置.
+ *
  * @Bean("PoolConfig")
  */
 class PoolConfig implements IPoolConfig
 {
     /**
-     * 池子中最多资源数
-     * @var integer
+     * 池子中最多资源数.
+     *
+     * @var int
      */
     protected $maxResources = 10;
 
     /**
-     * 池子中最少资源数
-     * @var integer
+     * 池子中最少资源数.
+     *
+     * @var int
      */
     protected $minResources = 1;
 
     /**
-     * 资源回收时间间隔，单位：秒
-     * @var integer
+     * 资源回收时间间隔，单位：秒.
+     *
+     * @var int
      */
     protected $gcInterval = 60;
 
     /**
-     * 资源最大存活时间，单位：秒
-     * 
+     * 资源最大存活时间，单位：秒.
+     *
      * 为 null 则不限制
-     * 
-     * @var integer|null
+     *
+     * @var int|null
      */
     protected $maxActiveTime;
 
     /**
-     * 等待资源最大超时时间，单位：毫秒
-     * @var integer
+     * 等待资源最大超时时间，单位：毫秒.
+     *
+     * @var int
      */
     protected $waitTimeout = 3000;
 
     /**
-     * 每次获取资源最长使用时间，单位：秒
-     * 
+     * 每次获取资源最长使用时间，单位：秒.
+     *
      * 为 null 则不限制
-     * 
+     *
      * @var float|null
      */
     protected $maxUsedTime;
 
     /**
-     * 当前请求上下文资源检查状态间隔，单位：支持小数的秒
-     * 
+     * 当前请求上下文资源检查状态间隔，单位：支持小数的秒.
+     *
      * 为 null 则不限制
      *
-     * @var double
+     * @var float
      */
     protected $requestResourceCheckInterval = 30;
 
     /**
-     * 心跳时间间隔，单位：秒
+     * 心跳时间间隔，单位：秒.
      *
-     * @var double
+     * @var float
      */
     protected $heartbeatInterval;
 
     /**
-     * 资源配置模式
+     * 资源配置模式.
      *
      * @var int
      */
@@ -78,20 +84,21 @@ class PoolConfig implements IPoolConfig
     /**
      * 当获取资源时，是否检查状态
      *
-     * @var boolean
+     * @var bool
      */
     protected $checkStateWhenGetResource = true;
 
     public function __construct($option = [])
     {
-        foreach($option as $k => $v)
+        foreach ($option as $k => $v)
         {
             $this->$k = $v;
         }
     }
 
     /**
-     * 池子中最多资源数
+     * 池子中最多资源数.
+     *
      * @return int
      */
     public function getMaxResources()
@@ -100,7 +107,8 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 池子中最少资源数
+     * 池子中最少资源数.
+     *
      * @return int
      */
     public function getMinResources()
@@ -109,7 +117,8 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取资源回收时间间隔，单位：秒
+     * 获取资源回收时间间隔，单位：秒.
+     *
      * @return int|null
      */
     public function getGCInterval()
@@ -118,7 +127,8 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取资源最大存活时间，单位：秒
+     * 获取资源最大存活时间，单位：秒.
+     *
      * @return int
      */
     public function getMaxActiveTime()
@@ -127,7 +137,8 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取等待资源最大超时时间，单位：毫秒
+     * 获取等待资源最大超时时间，单位：毫秒.
+     *
      * @return int
      */
     public function getWaitTimeout()
@@ -136,12 +147,12 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 池子中最多资源数
+     * Set 池子中最多资源数.
      *
-     * @param integer $maxResources 池子中最多资源数
+     * @param int $maxResources 池子中最多资源数
      *
      * @return static
-     */ 
+     */
     public function setMaxResources($maxResources)
     {
         $this->maxResources = $maxResources;
@@ -150,12 +161,12 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 池子中最少资源数
+     * Set 池子中最少资源数.
      *
-     * @param integer $minResources 池子中最少资源数
+     * @param int $minResources 池子中最少资源数
      *
      * @return static
-     */ 
+     */
     public function setMinResources($minResources)
     {
         $this->minResources = $minResources;
@@ -164,12 +175,12 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 资源回收时间间隔，单位：秒
+     * Set 资源回收时间间隔，单位：秒.
      *
-     * @param integer|null $gcInterval 获取资源回收时间间隔，单位：秒
+     * @param int|null $gcInterval 获取资源回收时间间隔，单位：秒
      *
      * @return static
-     */ 
+     */
     public function setGcInterval($gcInterval)
     {
         $this->gcInterval = $gcInterval;
@@ -178,12 +189,12 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 资源最大存活时间，单位：秒
+     * Set 资源最大存活时间，单位：秒.
      *
-     * @param integer $maxActiveTime 获取资源最大存活时间，单位：秒
+     * @param int $maxActiveTime 获取资源最大存活时间，单位：秒
      *
      * @return static
-     */ 
+     */
     public function setMaxActiveTime($maxActiveTime)
     {
         $this->maxActiveTime = $maxActiveTime;
@@ -192,11 +203,12 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 等待资源最大超时时间
-     * @param integer $waitTimeout 等待资源最大超时时间
+     * Set 等待资源最大超时时间.
+     *
+     * @param int $waitTimeout 等待资源最大超时时间
      *
      * @return static
-     */ 
+     */
     public function setWaitTimeout($waitTimeout)
     {
         $this->waitTimeout = $waitTimeout;
@@ -205,7 +217,7 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取资源配置模式
+     * 获取资源配置模式.
      *
      * @return int
      */
@@ -215,9 +227,10 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 设置资源配置模式
+     * 设置资源配置模式.
      *
      * @param int $resourceConfigMode
+     *
      * @return static
      */
     public function setResourceConfigMode($resourceConfigMode)
@@ -228,22 +241,22 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Get 每次获取资源最长使用时间
+     * Get 每次获取资源最长使用时间.
      *
      * @return float|null
-     */ 
+     */
     public function getMaxUsedTime()
     {
         return $this->maxUsedTime;
     }
 
     /**
-     * Set 每次获取资源最长使用时间
+     * Set 每次获取资源最长使用时间.
      *
      * @param float|null $maxUsedTime 为 null 则不限制
      *
      * @return static
-     */ 
+     */
     public function setMaxUsedTime($maxUsedTime)
     {
         $this->maxUsedTime = $maxUsedTime;
@@ -252,9 +265,9 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒
+     * 获取当前请求上下文资源检查状态间隔，单位：支持小数的秒.
      *
-     * @return double
+     * @return float
      */
     public function getRequestResourceCheckInterval()
     {
@@ -262,21 +275,23 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * 设置当前请求上下文资源检查状态间隔，单位：支持小数的秒
+     * 设置当前请求上下文资源检查状态间隔，单位：支持小数的秒.
      *
-     * @param double $value
+     * @param float $value
+     *
      * @return static
      */
     public function setRequestResourceCheckInterval($value)
     {
         $this->requestResourceCheckInterval = $value;
+
         return $this;
     }
 
     /**
-     * 获取心跳时间间隔，单位：秒
+     * 获取心跳时间间隔，单位：秒.
      *
-     * @return double
+     * @return float
      */
     public function getHeartbeatInterval()
     {
@@ -284,12 +299,12 @@ class PoolConfig implements IPoolConfig
     }
 
     /**
-     * Set 心跳时间间隔，单位：秒
+     * Set 心跳时间间隔，单位：秒.
      *
-     * @param double|null $heartbeatInterval 心跳时间间隔，单位：秒
+     * @param float|null $heartbeatInterval 心跳时间间隔，单位：秒
      *
      * @return static
-     */ 
+     */
     public function setHeartbeatInterval($heartbeatInterval)
     {
         $this->heartbeatInterval = $heartbeatInterval;
@@ -298,7 +313,7 @@ class PoolConfig implements IPoolConfig
     /**
      * 当获取资源时，是否检查状态
      *
-     * @return boolean
+     * @return bool
      */
     public function isCheckStateWhenGetResource()
     {
@@ -309,11 +324,11 @@ class PoolConfig implements IPoolConfig
      * 设置获取资源时，是否检查状态
      *
      * @param bool $checkStateWhenGetResource
+     *
      * @return static
      */
     public function setCheckStateWhenGetResource($checkStateWhenGetResource)
     {
         $this->checkStateWhenGetResource = $checkStateWhenGetResource;
     }
-
 }

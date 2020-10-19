@@ -1,29 +1,34 @@
 <?php
+
 namespace Imi\Event;
 
 class EventParam
 {
     /**
-     * 事件名称
+     * 事件名称.
+     *
      * @var string
      */
     protected $__eventName;
 
     /**
      * 触发该事件的对象
+     *
      * @var object
      */
     protected $__target;
 
     /**
-     * 数据
+     * 数据.
+     *
      * @var array
      */
     protected $__data = [];
 
     /**
-     * 阻止事件继续传播
-     * @var boolean
+     * 阻止事件继续传播.
+     *
+     * @var bool
      */
     protected $__stopPropagation = false;
 
@@ -32,14 +37,15 @@ class EventParam
         $this->__eventName = $eventName;
         $this->__target = $target;
         $this->__data = $data;
-        foreach($data as $key => &$value)
+        foreach ($data as $key => &$value)
         {
             $this->$key = &$value;
         }
     }
 
     /**
-     * 获取事件名称
+     * 获取事件名称.
+     *
      * @return string
      */
     public function getEventName()
@@ -49,6 +55,7 @@ class EventParam
 
     /**
      * 获取触发该事件的对象
+     *
      * @return object
      */
     public function getTarget()
@@ -57,7 +64,8 @@ class EventParam
     }
 
     /**
-     * 获取数据
+     * 获取数据.
+     *
      * @return array
      */
     public function getData()
@@ -66,8 +74,9 @@ class EventParam
     }
 
     /**
-     * 阻止事件继续传播
-     * @param boolean $isStop 是否阻止事件继续传播
+     * 阻止事件继续传播.
+     *
+     * @param bool $isStop 是否阻止事件继续传播
      */
     public function stopPropagation($isStop = true)
     {
@@ -75,8 +84,9 @@ class EventParam
     }
 
     /**
-     * 是否阻止事件继续传播
-     * @return boolean
+     * 是否阻止事件继续传播.
+     *
+     * @return bool
      */
     public function isPropagationStopped()
     {

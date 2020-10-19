@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\WebSocketServer;
 
 use Imi\Test\AppBaseMain;
@@ -10,5 +11,4 @@ class Main extends AppBaseMain
         // 这里可以做一些初始化操作，如果需要的话
         parent::__init();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Aop\Classes;
 
 use Imi\Bean\Annotation\Bean;
@@ -12,5 +13,4 @@ class TestAfterReturningClass
     {
         return $id;
     }
-
 }

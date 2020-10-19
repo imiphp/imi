@@ -1,20 +1,21 @@
 <?php
+
 namespace Imi\Server\ConnectContext;
 
 /**
- * 连接上下文改变事件参数
+ * 连接上下文改变事件参数.
  */
 class ConnectContextChangeEventParam
 {
     /**
-     * 连接标识符
+     * 连接标识符.
      *
      * @var int
      */
     private $fd;
 
     /**
-     * 服务器名
+     * 服务器名.
      *
      * @var string
      */
@@ -27,24 +28,22 @@ class ConnectContextChangeEventParam
     }
 
     /**
-     * Get 连接标识符
+     * Get 连接标识符.
      *
-     * @return  int
-     */ 
+     * @return int
+     */
     public function getFd()
     {
         return $this->fd;
     }
 
-
     /**
-     * Get 服务器名
+     * Get 服务器名.
      *
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getServerName()
     {
         return $this->serverName;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Cron\Annotation\Cron;
@@ -13,12 +14,12 @@ class CronRandomWorker implements ICronTask
      * 执行任务
      *
      * @param string $id
-     * @param mixed $data
+     * @param mixed  $data
+     *
      * @return void
      */
     public function run(string $id, $data)
     {
         var_dump('random');
     }
-
 }

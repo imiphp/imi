@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\HttpServer\Tests;
 
 use Yurun\Util\HttpRequest;
@@ -25,11 +26,10 @@ class HttpsTest extends BaseTest
      */
     public function testUri()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $uri = $this->host . 'info?get=1';
         $response = $http->get($uri);
         $data = $response->json(true);
         $this->assertEquals($uri, $data['uri'] ?? null);
     }
-
 }

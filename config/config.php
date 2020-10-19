@@ -1,4 +1,5 @@
 <?php
+
 return [
     'beanScan' => [
         'Imi\Config',
@@ -31,7 +32,7 @@ return [
         'imi.GroupRedisLock',
     ],
     // 跳过初始化的工具
-    'skipInitTools' =>  [
+    'skipInitTools' => [
         ['imi', 'buildImiRuntime'],
         ['imi', 'clearImiRuntime'],
     ],

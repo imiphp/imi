@@ -1,20 +1,21 @@
 <?php
+
 namespace Imi\Server\View;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Http\Message\Response;
-use \Imi\Server\View\Annotation\View as ViewAnnotation;
-use Imi\App;
 use Imi\RequestContext;
+use Imi\Server\Http\Message\Response;
 
 /**
- * 视图类
+ * 视图类.
+ *
  * @Bean("View")
  */
 class View
 {
     /**
-     * 核心处理器
+     * 核心处理器.
+     *
      * @var array
      */
     protected $coreHandlers = [
@@ -24,19 +25,21 @@ class View
     ];
 
     /**
-     * 扩展处理器
+     * 扩展处理器.
+     *
      * @var array
      */
     protected $exHandlers = [];
 
     /**
-     * 传入视图处理器的数据
+     * 传入视图处理器的数据.
+     *
      * @var array
      */
     protected $data = [];
 
     /**
-     * 视图处理器对象列表
+     * 视图处理器对象列表.
      *
      * @var \Imi\Server\View\Handler\IHandler[]
      */
@@ -45,9 +48,9 @@ class View
     public function __init()
     {
         $handlers = &$this->handlers;
-        foreach([$this->coreHandlers, $this->exHandlers] as $list)
+        foreach ([$this->coreHandlers, $this->exHandlers] as $list)
         {
-            foreach($list as $name => $class)
+            foreach ($list as $name => $class)
             {
                 $handlers[$name] = RequestContext::getServerBean($class);
             }
@@ -57,16 +60,17 @@ class View
     public function render($renderType, $data, $options, Response $response = null): Response
     {
         $handlers = &$this->handlers;
-        if(isset($handlers[$renderType]))
+        if (isset($handlers[$renderType]))
         {
-            if($this->data && is_array($data))
+            if ($this->data && \is_array($data))
             {
                 $data = array_merge($this->data, $data);
             }
-            if(null === $response)
+            if (null === $response)
             {
                 $response = RequestContext::get('response');
             }
+
             return $handlers[$renderType]->handle($data, $options, $response);
         }
         else
@@ -74,5 +78,4 @@ class View
             throw new \RuntimeException('Unsupport View renderType: ' . $renderType);
         }
     }
-
 }

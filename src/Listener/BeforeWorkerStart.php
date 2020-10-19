@@ -1,15 +1,16 @@
 <?php
+
 namespace Imi\Listener;
 
 use Imi\App;
-use Imi\Util\Imi;
-use Imi\Main\Helper;
 use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Util\Process\ProcessType;
-use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Main\Helper;
 use Imi\Server\Event\Listener\IWorkerStartEventListener;
+use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
+use Imi\Util\Process\ProcessType;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
@@ -17,8 +18,10 @@ use Imi\Util\Process\ProcessAppContexts;
 class BeforeWorkerStart implements IWorkerStartEventListener
 {
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(WorkerStartEventParam $e)
@@ -27,13 +30,13 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         mt_srand();
 
         // 重新加载项目配置及组件
-        foreach(Helper::getAppMains() as $main)
+        foreach (Helper::getAppMains() as $main)
         {
             $main->loadConfig();
             $main->loadComponents();
         }
 
-        if($e->server->getSwooleServer()->taskworker)
+        if ($e->server->getSwooleServer()->taskworker)
         {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::TASK_WORKER, true);
             Imi::setProcessName('taskWorker');
@@ -42,7 +45,7 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::WORKER, true);
             // swoole 4.1.0 一键协程化
-            if(method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true) && Config::get('@app.mainServer.configs.enable_coroutine', true))
+            if (method_exists('\Swoole\Runtime', 'enableCoroutine') && Config::get('@app.enableCoroutine', true) && Config::get('@app.mainServer.configs.enable_coroutine', true))
             {
                 \Swoole\Runtime::enableCoroutine(true);
             }

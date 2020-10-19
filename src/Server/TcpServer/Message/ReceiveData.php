@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\TcpServer\Message;
 
 use Imi\RequestContext;
@@ -7,26 +8,28 @@ use Imi\Server\DataParser\DataParser;
 class ReceiveData implements IReceiveData
 {
     /**
-     * 客户端连接的标识符
+     * 客户端连接的标识符.
+     *
      * @var int
      */
     protected $fd;
 
     /**
-     * Reactor线程ID
+     * Reactor线程ID.
+     *
      * @var int
      */
     protected $reactorID;
 
     /**
-     * 接收到的数据
+     * 接收到的数据.
      *
      * @var string
      */
     protected $data;
 
     /**
-     * 接收到的数据
+     * 接收到的数据.
      *
      * @var mixed
      */
@@ -41,7 +44,8 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 获取客户端的socket id
+     * 获取客户端的socket id.
+     *
      * @return int
      */
     public function getFd(): int
@@ -50,7 +54,8 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断
+     * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
+     *
      * @return string
      */
     public function getData()
@@ -60,6 +65,7 @@ class ReceiveData implements IReceiveData
 
     /**
      * 获取格式化后的数据，一般是数组或对象
+     *
      * @return mixed
      */
     public function getFormatData()
@@ -68,7 +74,7 @@ class ReceiveData implements IReceiveData
     }
 
     /**
-     * 获取Reactor线程ID
+     * 获取Reactor线程ID.
      *
      * @return int
      */

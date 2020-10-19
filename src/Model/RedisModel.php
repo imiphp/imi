@@ -1,30 +1,32 @@
 <?php
+
 namespace Imi\Model;
 
 use Imi\Model\Enum\RedisStorageMode;
-use Imi\Pool\PoolManager;
 use Imi\Redis\RedisManager;
-use Imi\Util\MemoryTableManager;
 
 /**
- * Redis 模型
+ * Redis 模型.
  */
 abstract class RedisModel extends BaseModel
 {
     /**
-     * 默认的key
+     * 默认的key.
+     *
      * @var string
      */
     protected $key;
 
     /**
-     * 默认的member
+     * 默认的member.
+     *
      * @var string
      */
     protected $__member;
 
     /**
-     * set时，设置的数据过期时间
+     * set时，设置的数据过期时间.
+     *
      * @var int
      */
     protected $__ttl;
@@ -36,8 +38,10 @@ abstract class RedisModel extends BaseModel
     }
 
     /**
-     * 查找一条记录
+     * 查找一条记录.
+     *
      * @param string|array $condition
+     *
      * @return static
      */
     public static function find($condition)
@@ -45,7 +49,7 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         $key = static::generateKey($condition);
-        switch($redisEntity->storage)
+        switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
                 $data = static::__getRedis()->get($key);
@@ -60,21 +64,23 @@ abstract class RedisModel extends BaseModel
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
-        if(!$data)
+        if (!$data)
         {
             return null;
         }
         $record = static::newInstance($data);
         $record->key = $key;
-        if(isset($member))
+        if (isset($member))
         {
             $record->__member = $member;
         }
+
         return $record;
     }
 
     /**
-     * 查询多条记录
+     * 查询多条记录.
+     *
      * @return static[]
      */
     public static function select(...$conditions)
@@ -82,43 +88,44 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         $keys = [];
-        foreach($conditions as $condition)
+        foreach ($conditions as $condition)
         {
             $keys[] = static::generateKey($condition);
         }
-        switch($redisEntity->storage)
+        switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
                 $datas = static::__getRedis()->mGet($keys);
                 $list = [];
-                foreach($datas as $i => $data)
+                foreach ($datas as $i => $data)
                 {
-                    if(null !== $data)
+                    if (null !== $data)
                     {
                         $record = static::newInstance($data);
                         $record->key = $keys[$i];
                         $list[] = $record;
                     }
                 }
+
                 return $list;
             case RedisStorageMode::HASH:
                 $members = [];
-                foreach($conditions as $condition)
+                foreach ($conditions as $condition)
                 {
                     $members[] = static::generateMember($condition);
                 }
                 $list = [];
                 $redis = static::__getRedis();
-                foreach(array_unique($keys) as $key)
+                foreach (array_unique($keys) as $key)
                 {
                     $datas = $redis->hMget($key, $members);
-                    foreach($datas as $i => $data)
+                    foreach ($datas as $i => $data)
                     {
-                        if(null !== $data)
+                        if (null !== $data)
                         {
                             $record = static::newInstance($data);
                             $record->key = $key;
-                            if(isset($members[$i]))
+                            if (isset($members[$i]))
                             {
                                 $record->__member = $members[$i];
                             }
@@ -126,16 +133,18 @@ abstract class RedisModel extends BaseModel
                         }
                     }
                 }
+
                 return $list;
             case RedisStorageMode::HASH_OBJECT:
                 $redis = static::__getRedis();
-                foreach($keys as $key)
+                foreach ($keys as $key)
                 {
                     $data = $redis->hGetAll($key);
                     $record = static::newInstance($data);
                     $record->key = $key;
                     $list[] = $record;
                 }
+
                 return $list;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
@@ -143,7 +152,8 @@ abstract class RedisModel extends BaseModel
     }
 
     /**
-     * 保存记录
+     * 保存记录.
+     *
      * @return bool
      */
     public function save()
@@ -151,10 +161,10 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         $redis = static::__getRedis($this);
-        switch($redisEntity->storage)
+        switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                if(null === $this->__ttl)
+                if (null === $this->__ttl)
                 {
                     return $redis->set($this->__getKey(), $this->toArray());
                 }
@@ -168,25 +178,27 @@ abstract class RedisModel extends BaseModel
             case RedisStorageMode::HASH_OBJECT:
                 $key = $this->__getKey();
                 $result = $redis->hMset($key, $this->toArray());
-                if($result && null !== $this->__ttl)
+                if ($result && null !== $this->__ttl)
                 {
                     $result = $result && $redis->expire($key, $this->__ttl);
                 }
+
                 return $result;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
     }
-    
+
     /**
-     * 删除记录
+     * 删除记录.
+     *
      * @return bool
      */
     public function delete()
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
-        switch($redisEntity->storage)
+        switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
                 return static::__getRedis($this)->del($this->__getKey()) > 0;
@@ -200,8 +212,10 @@ abstract class RedisModel extends BaseModel
     }
 
     /**
-     * 批量删除
+     * 批量删除.
+     *
      * @param string ...$conditions
+     *
      * @return int
      */
     public static function deleteBatch(...$conditions)
@@ -209,29 +223,30 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         $keys = [];
-        foreach($conditions as $condition)
+        foreach ($conditions as $condition)
         {
             $keys[] = static::generateKey($condition);
         }
-        switch($redisEntity->storage)
+        switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
                 return static::__getRedis()->del(...$keys);
             case RedisStorageMode::HASH:
                 $members = [];
-                foreach($conditions as $condition)
+                foreach ($conditions as $condition)
                 {
                     $members[] = static::generateMember($condition);
                 }
                 $result = true;
-                foreach(array_unique($keys) as $key)
+                foreach (array_unique($keys) as $key)
                 {
-                    if(false === static::__getRedis()->hDel($key, ...$members))
+                    if (false === static::__getRedis()->hDel($key, ...$members))
                     {
                         $result = false;
                         break;
                     }
                 }
+
                 return $result;
             case RedisStorageMode::HASH_OBJECT:
                 return static::__getRedis()->del(...$keys);
@@ -242,32 +257,36 @@ abstract class RedisModel extends BaseModel
     }
 
     /**
-     * 获取键
+     * 获取键.
+     *
      * @return string
      */
     public function __getKey()
     {
         $rule = ModelManager::getKeyRule($this);
         $replaces = [];
-        foreach($rule->paramNames as $paramName)
+        foreach ($rule->paramNames as $paramName)
         {
-            if(!isset($this[$paramName]))
+            if (!isset($this[$paramName]))
             {
                 throw new \RuntimeException(sprintf('__getKey param %s does not exists', $paramName));
             }
             $replaces['{' . $paramName . '}'] = $this[$paramName];
         }
+
         return strtr($rule->rule, $replaces);
     }
 
     /**
-     * 生成key
+     * 生成key.
+     *
      * @param string|array $condition
+     *
      * @return string
      */
     public static function generateKey($condition)
     {
-        if(is_string($condition))
+        if (\is_string($condition))
         {
             return $condition;
         }
@@ -275,26 +294,29 @@ abstract class RedisModel extends BaseModel
         {
             $rule = ModelManager::getKeyRule(static::class);
             $replaces = [];
-            foreach($rule->paramNames as $paramName)
+            foreach ($rule->paramNames as $paramName)
             {
-                if(!isset($condition[$paramName]))
+                if (!isset($condition[$paramName]))
                 {
                     throw new \RuntimeException(sprintf('GenerateKey param %s does not exists', $paramName));
                 }
                 $replaces['{' . $paramName . '}'] = $condition[$paramName];
             }
+
             return strtr($rule->rule, $replaces);
         }
     }
 
     /**
-     * 生成member
+     * 生成member.
+     *
      * @param string|array $condition
+     *
      * @return string
      */
     public static function generateMember($condition)
     {
-        if(is_string($condition))
+        if (\is_string($condition))
         {
             return $condition;
         }
@@ -302,67 +324,76 @@ abstract class RedisModel extends BaseModel
         {
             $rule = ModelManager::getMemberRule(static::class);
             $replaces = [];
-            foreach($rule->paramNames as $paramName)
+            foreach ($rule->paramNames as $paramName)
             {
-                if(!isset($condition[$paramName]))
+                if (!isset($condition[$paramName]))
                 {
                     throw new \RuntimeException(sprintf('GenerateMember param %s does not exists', $paramName));
                 }
                 $replaces['{' . $paramName . '}'] = $condition[$paramName];
             }
+
             return strtr($rule->rule, $replaces);
         }
     }
 
     /**
-     * 获取键
+     * 获取键.
+     *
      * @return string
      */
     public function __getMember()
     {
         $rule = ModelManager::getMemberRule($this);
         $replaces = [];
-        foreach($rule->paramNames as $paramName)
+        foreach ($rule->paramNames as $paramName)
         {
-            if(!isset($this[$paramName]))
+            if (!isset($this[$paramName]))
             {
                 throw new \RuntimeException(sprintf('__getMember param %s does not exists', $paramName));
             }
             $replaces['{' . $paramName . '}'] = $this[$paramName];
         }
+
         return strtr($rule->rule, $replaces);
     }
 
     /**
      * 获取Redis操作对象
+     *
      * @param RedisModel $redisModel
+     *
      * @return \Imi\Redis\RedisHandler
      */
-    public static function __getRedis(RedisModel $redisModel = null)
+    public static function __getRedis(self $redisModel = null)
     {
         $annotation = ModelManager::getRedisEntity(null === $redisModel ? static::class : $redisModel);
         $redis = RedisManager::getInstance($annotation->poolName);
-        if(null !== $annotation->db)
+        if (null !== $annotation->db)
         {
             $redis->select($annotation->db);
         }
+
         return $redis;
     }
 
     /**
-     * Get the value of key
+     * Get the value of key.
+     *
      * @return string
-     */ 
+     */
     public function getKey()
     {
         return $this->key;
     }
 
     /**
-     * Set the value of key
+     * Set the value of key.
+     *
      * @param string $key
+     *
      * @return self
-     */ 
+     */
     public function setKey(string $key)
     {
         $this->key = $key;
@@ -371,22 +402,22 @@ abstract class RedisModel extends BaseModel
     }
 
     /**
-     * Get 默认的member
+     * Get 默认的member.
      *
      * @return string
-     */ 
+     */
     public function getMember()
     {
         return $this->__member;
     }
 
     /**
-     * Set 默认的member
+     * Set 默认的member.
      *
-     * @param string $member  默认的member
+     * @param string $member 默认的member
      *
      * @return self
-     */ 
+     */
     public function setMember(string $member)
     {
         $this->__member = $member;

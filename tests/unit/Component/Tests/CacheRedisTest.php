@@ -1,9 +1,6 @@
 <?php
-namespace Imi\Test\Component\Tests;
 
-use Imi\Util\Imi;
-use Imi\Util\File;
-use PHPUnit\Framework\Assert;
+namespace Imi\Test\Component\Tests;
 
 /**
  * @testdox Cache Redis Handler
@@ -11,5 +8,4 @@ use PHPUnit\Framework\Assert;
 class CacheRedisTest extends BaseCacheTest
 {
     protected $cacheName = 'redis';
-
 }

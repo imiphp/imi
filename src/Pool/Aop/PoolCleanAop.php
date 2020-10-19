@@ -1,15 +1,16 @@
 <?php
+
 namespace Imi\Pool\Aop;
 
-use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
-use Imi\Bean\BeanFactory;
-use Imi\Pool\PoolManager;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\PointCut;
-use Imi\Pool\Annotation\PoolClean;
+use Imi\Aop\JoinPoint;
+use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
+use Imi\Pool\Annotation\PoolClean;
+use Imi\Pool\PoolManager;
 
 /**
  * @Aspect
@@ -17,7 +18,8 @@ use Imi\Bean\Annotation\AnnotationManager;
 class PoolCleanAop
 {
     /**
-     * 过滤方法参数
+     * 过滤方法参数.
+     *
      * @PointCut(
      *      type=PointCutType::ANNOTATION,
      *      allow={
@@ -25,13 +27,14 @@ class PoolCleanAop
      *      }
      * )
      * @Before
+     *
      * @return mixed
      */
     public function parse(JoinPoint $joinPoint)
     {
         /** @var \Imi\Pool\Annotation\PoolClean $poolClean */
         $poolClean = AnnotationManager::getMethodAnnotations(BeanFactory::getObjectClass($joinPoint->getTarget()), $joinPoint->getMethod(), PoolClean::class)[0];
-        switch($poolClean->mode)
+        switch ($poolClean->mode)
         {
             case 'allow':
                 PoolManager::cleanAllow($poolClean->list);
@@ -41,5 +44,4 @@ class PoolCleanAop
                 break;
         }
     }
-
 }

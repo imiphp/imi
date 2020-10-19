@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Performance;
 
 /**
  * @testdox Performance:mysqli
  */
-class Mysqli extends BaseDbTest
+class MysqliDbTest extends BaseDbTest
 {
     public function getPoolName(): string
     {

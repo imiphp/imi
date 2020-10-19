@@ -1,4 +1,5 @@
 <?php
+
 namespace Test;
 
 use Imi\App;
@@ -9,5 +10,4 @@ class TestContext
     {
         App::set('test', 'imi');
     }
-
 }

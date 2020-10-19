@@ -1,60 +1,63 @@
 <?php
+
 namespace Imi\Test;
 
 use PHPUnit\Framework\TestCase;
 use Swoole\Coroutine;
 
-if(class_exists(TestCase::class))
+if (class_exists(TestCase::class))
 {
     abstract class BaseTest extends TestCase
     {
         const PERFORMANCE_COUNT = 1000;
-    
+
         protected function go($callable, $finally = null)
         {
             $throwable = null;
-            $cid = imigo(function() use($callable, &$throwable){
-                try {
+            $cid = imigo(function () use ($callable, &$throwable) {
+                try
+                {
                     $callable();
-                } catch(\Throwable $th) {
+                }
+                catch (\Throwable $th)
+                {
                     $throwable = $th;
                 }
             });
-            while(Coroutine::exists($cid))
+            while (Coroutine::exists($cid))
             {
                 usleep(10000);
             }
-            if($finally)
+            if ($finally)
             {
                 $finally();
             }
-            if($throwable)
+            if ($throwable)
             {
                 throw $throwable;
             }
         }
-    
+
         protected function php($phpFile, $args = '')
         {
-            $cmd = cmd('"' . PHP_BINARY . "\" \"{$phpFile}\" {$args}");
+            $cmd = cmd('"' . \PHP_BINARY . "\" \"{$phpFile}\" {$args}");
+
             return `{$cmd}`;
         }
-    
+
         public function startTest()
         {
             static $run = false;
-            if(!$run)
+            if (!$run)
             {
                 $run = true;
                 $this->__startTest();
             }
         }
-    
+
         public function __startTest()
         {
-    
         }
-    
     }
 }
 else
@@ -62,6 +65,5 @@ else
     // 当 PHPUnit 未引入时，直接执行命令时的支持
     abstract class BaseTest
     {
-
     }
 }

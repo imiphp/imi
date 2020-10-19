@@ -1,11 +1,12 @@
 <?php
+
 namespace Imi\Process\Listener;
 
 use Imi\App;
+use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Process\ProcessManager;
-use Imi\Bean\Annotation\Listener;
 
 /**
  * @Listener(eventName="IMI.SERVERS.CREATE.AFTER",priority=Imi\Util\ImiPriority::IMI_MIN)
@@ -14,15 +15,17 @@ use Imi\Bean\Annotation\Listener;
 class OnServerCreateAfter implements IEventListener
 {
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(EventParam $e)
     {
-        foreach(App::getBean('AutoRunProcessManager')->getProcesses() as $k => $process)
+        foreach (App::getBean('AutoRunProcessManager')->getProcesses() as $k => $process)
         {
-            if(is_array($process))
+            if (\is_array($process))
             {
                 ProcessManager::runWithManager($process['process'], $process['args'] ?? [], null, null, $k);
             }

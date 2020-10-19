@@ -1,11 +1,13 @@
 <?php
+
 namespace Imi\Server\Session;
 
-use Imi\Facade\BaseFacade;
 use Imi\Facade\Annotation\Facade;
+use Imi\Facade\BaseFacade;
 
 /**
  * @Facade(class="SessionManager", request=true)
+ *
  * @method static void start(?string $sessionID = NULL)
  * @method static void close()
  * @method static void destroy()
@@ -29,5 +31,4 @@ use Imi\Facade\Annotation\Facade;
  */
 abstract class Session extends BaseFacade
 {
-
 }

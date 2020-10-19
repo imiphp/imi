@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Model\Event\Param;
 
 use Imi\Event\EventParam;
@@ -6,7 +7,7 @@ use Imi\Event\EventParam;
 class AfterSelectEventParam extends EventParam
 {
     /**
-     * 查询结果
+     * 查询结果.
      *
      * @var \Imi\Model\BaseModel[]
      */
@@ -17,7 +18,7 @@ class AfterSelectEventParam extends EventParam
         $this->eventName = $eventName;
         $this->target = $target;
         $this->data = $data;
-        foreach($data as $key => $value)
+        foreach ($data as $key => $value)
         {
             $this->$key = &$value;
         }

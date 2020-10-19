@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Redis;
 
 use Imi\Bean\BeanFactory;
@@ -10,7 +11,8 @@ class CoroutineRedisPool extends BaseAsyncPool
     use TUriResourceConfig;
 
     /**
-     * 数据库操作类
+     * 数据库操作类.
+     *
      * @var mixed
      */
     protected $handlerClass = \Redis::class;
@@ -22,14 +24,16 @@ class CoroutineRedisPool extends BaseAsyncPool
     }
 
     /**
-     * 创建资源
+     * 创建资源.
+     *
      * @return \Imi\Redis\RedisResource
      */
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {
         $config = $this->getNextResourceConfig();
         $class = $config['handlerClass'] ?? $this->handlerClass;
-        $db = BeanFactory::newInstance(RedisHandler::class, new $class);
+        $db = BeanFactory::newInstance(RedisHandler::class, new $class());
+
         return new RedisResource($this, $db, $config);
     }
 }

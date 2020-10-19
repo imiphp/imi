@@ -1,11 +1,12 @@
 <?php
 
 use Imi\Log\LogLevel;
+
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\Component\Tests',
         'Imi\Test\Component\Aop',
         'Imi\Test\Component\Inject',
@@ -24,20 +25,20 @@ return [
         'Imi\Test\Component\Partial',
         'Imi\Test\Component\Tool',
     ],
-    'ignoreNamespace'   =>  [
+    'ignoreNamespace'   => [
         'Imi\Test\Component\Annotation\A\*',
         'Imi\Test\Component\Annotation\B\TestB',
     ],
-    'beans'    =>    [
-        'TestPropertyClass' =>  [
-            'b' =>  'bbb',
+    'beans'    => [
+        'TestPropertyClass' => [
+            'b' => 'bbb',
         ],
-        'Logger'            =>  [
-            'exHandlers'    =>  [
+        'Logger'            => [
+            'exHandlers'    => [
                 // 指定级别日志输出trace
                 [
-                    'class'        =>    \Imi\Log\Handler\File::class,
-                    'options'    =>    [
+                    'class'        => \Imi\Log\Handler\File::class,
+                    'options'      => [
                         'levels'        => [
                             LogLevel::ALERT,
                             LogLevel::CRITICAL,
@@ -58,37 +59,37 @@ return [
                         'levels'        => [
                             'Test',
                         ],
-                        'format'        => '{message}',
-                        'logCacheNumber'=> 10240,
+                        'format'         => '{message}',
+                        'logCacheNumber' => 10240,
                     ],
                 ],
             ],
         ],
-        'ErrorLog'          =>  [
+        'ErrorLog'          => [
             // 'level' =>  ,
         ],
     ],
-    'imi'   =>  'very six',
-    'yurun' =>  '',
-    
+    'imi'   => 'very six',
+    'yurun' => '',
+
     // 连接池配置
-    'pools'    =>    [
+    'pools'    => [
         // 主数据库
-        'maindb'    =>    [
-            'pool'    =>    [
+        'maindb'    => [
+            'pool'    => [
                 // 同步池类名
-                'syncClass'     =>    \Imi\Db\Pool\SyncDbPool::class,
+                'syncClass'     => \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Db\Pool\CoroutineDbPool::class,
+                'asyncClass'    => \Imi\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
-                'config'        =>    [
-                    'maxResources'    =>    10,
-                    'minResources'    =>    1,
-                    'checkStateWhenGetResource' =>  false,
+                'config'        => [
+                    'maxResources'              => 10,
+                    'minResources'              => 1,
+                    'checkStateWhenGetResource' => false,
                 ],
             ],
             // 连接池资源配置
-            'resource'    =>    [
+            'resource'    => [
                 'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                 'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -98,17 +99,17 @@ return [
             ],
         ],
         // 主数据库
-        'maindb.slave'    =>    [
+        'maindb.slave'    => [
             // 同步池子
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Db\Pool\SyncDbPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+            'sync'    => [
+                'pool'    => [
+                    'class'        => \Imi\Db\Pool\SyncDbPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -118,15 +119,15 @@ return [
                 ],
             ],
             // 异步池子，worker进程使用
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Db\Pool\CoroutineDbPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+            'async'    => [
+                'pool'    => [
+                    'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                     'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -134,22 +135,22 @@ return [
                     'database'    => 'db_imi_test',
                     'charset'     => 'utf8mb4',
                 ],
-            ]
+            ],
         ],
         // swoole mysql
-        'swooleMysql'    =>    [
-            'pool'    =>    [
+        'swooleMysql'    => [
+            'pool'    => [
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Db\Pool\CoroutineDbPool::class,
+                'asyncClass'    => \Imi\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
-                'config'        =>    [
-                    'maxResources'    =>    10,
-                    'minResources'    =>    1,
-                    'checkStateWhenGetResource' =>  false,
+                'config'        => [
+                    'maxResources'              => 10,
+                    'minResources'              => 1,
+                    'checkStateWhenGetResource' => false,
                 ],
             ],
             // 连接池资源配置
-            'resource'    =>    [
+            'resource'    => [
                 'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                 'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -160,19 +161,19 @@ return [
             ],
         ],
         // mysqli
-        'mysqli'    =>    [
-            'pool'    =>    [
+        'mysqli'    => [
+            'pool'    => [
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Db\Pool\CoroutineDbPool::class,
+                'asyncClass'    => \Imi\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
-                'config'        =>    [
-                    'maxResources'    =>    10,
-                    'minResources'    =>    1,
-                    'checkStateWhenGetResource' =>  false,
+                'config'        => [
+                    'maxResources'              => 10,
+                    'minResources'              => 1,
+                    'checkStateWhenGetResource' => false,
                 ],
             ],
             // 连接池资源配置
-            'resource'    =>    [
+            'resource'    => [
                 'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
                 'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
@@ -182,190 +183,190 @@ return [
                 'dbClass'     => \Imi\Db\Drivers\Mysqli\Driver::class,
             ],
         ],
-        'redis_test'    =>    [
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+        'redis_test'    => [
+            'sync'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\SyncRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
                     'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ]
+                ],
             ],
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+            'async'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
+                'resource'    => [
                     'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
                     'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ]
-            ],
-        ],
-        'redis_cache'    =>    [
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
-                    ],
                 ],
-                'resource'    =>    [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                    'serialize'   =>    false,
-                    'db'          =>    imiGetEnv('REDIS_CACHE_DB', 1),
-                ]
-            ],
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
-                    ],
-                ],
-                'resource'    =>    [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                    'serialize'   =>    false,
-                    'db'          =>    1,
-                ]
             ],
         ],
-        'redis_manager_test'    =>    [
-            'sync'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\SyncRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+        'redis_cache'    => [
+            'sync'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\SyncRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                    'serialize'   =>    false,
-                    'db'          =>    imiGetEnv('REDIS_CACHE_DB', 1),
-                ]
+                'resource'    => [
+                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'serialize'   => false,
+                    'db'          => imiGetEnv('REDIS_CACHE_DB', 1),
+                ],
             ],
-            'async'    =>    [
-                'pool'    =>    [
-                    'class'        =>    \Imi\Redis\CoroutineRedisPool::class,
-                    'config'    =>    [
-                        'maxResources'    =>    10,
-                        'minResources'    =>    1,
+            'async'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
                     ],
                 ],
-                'resource'    =>    [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                    'serialize'   =>    false,
-                    'db'          =>    1,
-                ]
+                'resource'    => [
+                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'serialize'   => false,
+                    'db'          => 1,
+                ],
+            ],
+        ],
+        'redis_manager_test'    => [
+            'sync'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\SyncRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
+                    ],
+                ],
+                'resource'    => [
+                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'serialize'   => false,
+                    'db'          => imiGetEnv('REDIS_CACHE_DB', 1),
+                ],
+            ],
+            'async'    => [
+                'pool'    => [
+                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                    'config'       => [
+                        'maxResources'    => 10,
+                        'minResources'    => 1,
+                    ],
+                ],
+                'resource'    => [
+                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                    'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                    'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                    'serialize'   => false,
+                    'db'          => 1,
+                ],
             ],
         ],
     ],
     // db 配置
-    'db' =>  [
+    'db' => [
         // 数默认连接池名
-        'defaultPool'   =>  'maindb',
+        'defaultPool'   => 'maindb',
     ],
     // redis 配置
-    'redis' =>  [
+    'redis' => [
         // 数默认连接池名
-        'defaultPool'   =>  'redis_test',
+        'defaultPool'   => 'redis_test',
     ],
     // 缓存配置
-    'cache' =>  [
-        'default'   =>  'file1',
+    'cache' => [
+        'default'   => 'file1',
     ],
     // 缓存
-    'caches'    =>  [
-        'file1'  =>  [
-            'handlerClass'  =>  \Imi\Cache\Handler\File::class,
-            'option'    =>  [
-                'savePath'    =>    dirname(__DIR__) . '/.runtime/cache/',
-                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
+    'caches'    => [
+        'file1'  => [
+            'handlerClass'  => \Imi\Cache\Handler\File::class,
+            'option'        => [
+                'savePath'              => dirname(__DIR__) . '/.runtime/cache/',
+                'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'file2'  =>  [
-            'handlerClass'  =>  \Imi\Cache\Handler\File::class,
-            'option'    =>  [
-                'savePath'    =>    dirname(__DIR__) . '/.runtime/cache/',
+        'file2'  => [
+            'handlerClass'  => \Imi\Cache\Handler\File::class,
+            'option'        => [
+                'savePath'    => dirname(__DIR__) . '/.runtime/cache/',
                 // 保存文件名处理回调，一般可以不写
-                'saveFileNameCallback'    =>    function($savePath, $key){
+                'saveFileNameCallback'    => function ($savePath, $key) {
                     return \Imi\Util\File::path($savePath, sha1($key));
                 },
-                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
+                'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'redis' =>  [
-            'handlerClass'  =>    \Imi\Cache\Handler\Redis::class,
-            'option'        =>    [
-                'poolName'    =>    'redis_cache',
-                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
+        'redis' => [
+            'handlerClass'  => \Imi\Cache\Handler\Redis::class,
+            'option'        => [
+                'poolName'              => 'redis_cache',
+                'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
-        'redisHash' =>  [
-            'handlerClass'  =>    \Imi\Cache\Handler\RedisHash::class,
-            'option'        =>    [
-                'poolName'  =>    'redis_cache',
-                'separator' =>    '->',
-                'formatHandlerClass'    =>  \Imi\Util\Format\Json::class,
+        'redisHash' => [
+            'handlerClass'  => \Imi\Cache\Handler\RedisHash::class,
+            'option'        => [
+                'poolName'              => 'redis_cache',
+                'separator'             => '->',
+                'formatHandlerClass'    => \Imi\Util\Format\Json::class,
             ],
         ],
     ],
     // atmoic 配置
-    'atomics'    =>  [
-        'atomicLock'   =>  1,
-        'test'
+    'atomics'    => [
+        'atomicLock'   => 1,
+        'test',
     ],
     // 锁
-    'lock'  =>[
-        'list'  =>  [
-            'redis' =>  [
-                'class' =>  'RedisLock',
-                'options'   =>  [
-                    'poolName'  =>  'redis_test',
+    'lock'  => [
+        'list'  => [
+            'redis' => [
+                'class'     => 'RedisLock',
+                'options'   => [
+                    'poolName'  => 'redis_test',
                 ],
             ],
-            'atomic' =>  [
-                'class' =>  'AtomicLock',
-                'options'   =>  [
-                    'atomicName'    =>  'atomicLock',
+            'atomic' => [
+                'class'     => 'AtomicLock',
+                'options'   => [
+                    'atomicName'    => 'atomicLock',
                 ],
             ],
         ],
     ],
-    'yurun2'   =>  imiGetEnv('yurun'),
-    'tools'  =>  [
-        'generate/model'    =>  [
-            'namespace' =>  [
-                'Imi\Test\Component\Model' =>  [
-                    'tables'    =>  [
-                        'tb_tree'
+    'yurun2'   => imiGetEnv('yurun'),
+    'tools'    => [
+        'generate/model'    => [
+            'namespace' => [
+                'Imi\Test\Component\Model' => [
+                    'tables'    => [
+                        'tb_tree',
                     ],
-                    'withRecords'   =>  [
+                    'withRecords'   => [
                         'tb_tree',
                     ],
                 ],
-            ]
+            ],
         ],
     ],
 ];

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Facade;
 
 use Imi\Bean\Annotation\Bean;
@@ -12,5 +13,4 @@ class A
     {
         return $a + $b;
     }
-
 }

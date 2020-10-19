@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
@@ -31,9 +32,9 @@ class EnumTest extends BaseTest
         Assert::assertEquals('丙', TestEnum::getText(TestEnum::C));
         Assert::assertEquals(TestEnum::B, TestEnum::getValue('B'));
         Assert::assertEquals([
-            'A' =>  TestEnum::A,
-            'B' =>  TestEnum::B,
-            'C' =>  TestEnum::C,
+            'A' => TestEnum::A,
+            'B' => TestEnum::B,
+            'C' => TestEnum::C,
         ], TestEnum::getMap());
     }
 }

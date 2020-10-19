@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Util\Interfaces;
 
 interface IHashCode

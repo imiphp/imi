@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Member;
-use Imi\Test\Component\Model\UpdateTime;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
+use Imi\Test\Component\Model\UpdateTime;
 
 /**
  * @testdox Model
@@ -17,8 +18,8 @@ class ModelTest extends BaseTest
         $member->username = '1';
         $member->password = '2';
         $this->assertEquals([
-            'id'        =>  null,
-            'username'  =>  '1',
+            'id'        => null,
+            'username'  => '1',
         ], $member->toArray());
     }
 
@@ -28,19 +29,19 @@ class ModelTest extends BaseTest
         $member->username = '1';
         $member->password = '2';
         $this->assertEquals([
-            'id'        =>  null,
-            'username'  =>  '1',
+            'id'        => null,
+            'username'  => '1',
         ], $member->convertToArray());
 
         $this->assertEquals([
-            'id'        =>  null,
-            'username'  =>  '1',
+            'id'        => null,
+            'username'  => '1',
         ], $member->convertToArray(true));
 
         $this->assertEquals([
-            'id'        =>  null,
-            'username'  =>  '1',
-            'password'  =>  '2',
+            'id'        => null,
+            'username'  => '1',
+            'password'  => '2',
         ], $member->convertToArray(false));
     }
 
@@ -50,19 +51,19 @@ class ModelTest extends BaseTest
         $member->username = '1';
         $member->password = '2';
         $this->assertEquals([[
-            'id'        =>  null,
-            'username'  =>  '1',
+            'id'        => null,
+            'username'  => '1',
         ]], Member::convertListToArray([$member]));
 
         $this->assertEquals([[
-            'id'        =>  null,
-            'username'  =>  '1',
+            'id'        => null,
+            'username'  => '1',
         ]], Member::convertListToArray([$member], true));
 
         $this->assertEquals([[
-            'id'        =>  null,
-            'username'  =>  '1',
-            'password'  =>  '2',
+            'id'        => null,
+            'username'  => '1',
+            'password'  => '2',
         ]], Member::convertListToArray([$member], false));
     }
 
@@ -96,9 +97,9 @@ class ModelTest extends BaseTest
 
         $member = Member::find($id);
         $this->assertEquals([
-            'id'        =>  $id,
-            'username'  =>  '3',
-            'password'  =>  '4',
+            'id'        => $id,
+            'username'  => '3',
+            'password'  => '4',
         ], $member->convertToArray(false));
     }
 
@@ -121,9 +122,9 @@ class ModelTest extends BaseTest
 
         $member = Member::find($id);
         $this->assertEquals([
-            'id'        =>  $id,
-            'username'  =>  '3',
-            'password'  =>  '4',
+            'id'        => $id,
+            'username'  => '3',
+            'password'  => '4',
         ], $member->convertToArray(false));
     }
 
@@ -145,44 +146,44 @@ class ModelTest extends BaseTest
     {
         $member = Member::find(1);
         $this->assertEquals([
-            'id'        =>  1,
-            'username'  =>  '1',
-            'password'  =>  '2',
+            'id'        => 1,
+            'username'  => '1',
+            'password'  => '2',
         ], $member->convertToArray(false));
 
         $member = Member::find([
-            'id'    =>  1,
+            'id'    => 1,
         ]);
         $this->assertEquals([
-            'id'        =>  1,
-            'username'  =>  '1',
-            'password'  =>  '2',
+            'id'        => 1,
+            'username'  => '1',
+            'password'  => '2',
         ], $member->convertToArray(false));
     }
 
     public function testSelect()
     {
         $list = Member::select([
-            'id'    =>    1
+            'id'    => 1,
         ]);
         $this->assertEquals([
             [
-                'id'        =>  '1',
-                'username'  =>  '1',
-            ]
+                'id'        => '1',
+                'username'  => '1',
+            ],
         ], Member::convertListToArray($list));
         $this->assertEquals([
             [
-                'id'        =>  '1',
-                'username'  =>  '1',
-            ]
+                'id'        => '1',
+                'username'  => '1',
+            ],
         ], Member::convertListToArray($list, true));
         $this->assertEquals([
             [
-                'id'        =>  '1',
-                'username'  =>  '1',
-                'password'  =>  '2',
-            ]
+                'id'        => '1',
+                'username'  => '1',
+                'password'  => '2',
+            ],
         ], Member::convertListToArray($list, false));
     }
 
@@ -191,9 +192,9 @@ class ModelTest extends BaseTest
         $list = Member::dbQuery()->field('id', 'username')->where('id', '=', 1)->select()->getArray();
         $this->assertEquals([
             [
-                'id'        =>  1,
-                'username'  =>  '1',
-            ]
+                'id'        => 1,
+                'username'  => '1',
+            ],
         ], $list);
     }
 
@@ -203,7 +204,7 @@ class ModelTest extends BaseTest
         $this->assertGreaterThan(0, $count1);
 
         $result = Member::updateBatch([
-            'password'  =>  '123',
+            'password'  => '123',
         ]);
         $this->assertEquals($count1, $result->getAffectedRows());
 
@@ -222,7 +223,7 @@ class ModelTest extends BaseTest
 
         // delete max id
         $result = Member::deleteBatch([
-            'id'    =>  $maxId,
+            'id'    => $maxId,
         ]);
         $this->assertTrue($result->isSuccess());
         $this->assertEquals(1, $result->getAffectedRows());
@@ -242,7 +243,7 @@ class ModelTest extends BaseTest
     private function assertUpdateTime(UpdateTime $record, $methodName)
     {
         $time = time();
-        $bigintTime = (int)(microtime(true) * 1000);
+        $bigintTime = (int) (microtime(true) * 1000);
         $result = $record->$methodName();
         $this->assertTrue($result->isSuccess());
         $this->assertLessThanOrEqual(1, strtotime($record->date) - strtotime(date('Y-m-d', $time)), sprintf('date fail: %s', $record->date));
@@ -275,5 +276,4 @@ class ModelTest extends BaseTest
         $model['list'][] = 2;
         $this->assertEquals([1, 2], $model['list']);
     }
-
 }

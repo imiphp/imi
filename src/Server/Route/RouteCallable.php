@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Route;
 
 class RouteCallable
@@ -11,13 +12,15 @@ class RouteCallable
     public $server;
 
     /**
-     * 类名
+     * 类名.
+     *
      * @var string
      */
     public $className;
 
     /**
-     * 方法名
+     * 方法名.
+     *
      * @var string
      */
     public $methodName;
@@ -30,26 +33,29 @@ class RouteCallable
     }
 
     /**
-     * 获取可以被调用的格式
+     * 获取可以被调用的格式.
+     *
      * @param array $params
+     *
      * @return callable
      */
     public function getCallable($params = [])
     {
         $className = $this->className;
         $methodName = $this->methodName;
-        foreach($params as $name => $value)
+        foreach ($params as $name => $value)
         {
             $search = '{$' . $name . '}';
-            if(false !== strpos($className, $search))
+            if (false !== strpos($className, $search))
             {
                 $className = str_replace($search, $value, $className);
             }
-            if(false !== strpos($methodName, $search))
+            if (false !== strpos($methodName, $search))
             {
                 $methodName = str_replace($search, $value, $methodName);
             }
         }
+
         return [$this->server->getBean($className), $methodName];
     }
 }

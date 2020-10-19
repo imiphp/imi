@@ -1,13 +1,14 @@
 <?php
+
 namespace Imi\Test\Component\Inherit;
 
+use Imi\Aop\Annotation\FilterArg;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\Annotation\Callback;
+use Imi\Db\Annotation\Transaction;
+use Imi\Enum\Annotation\EnumItem;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
-use Imi\Aop\Annotation\FilterArg;
-use Imi\Bean\Annotation\Callback;
-use Imi\Enum\Annotation\EnumItem;
-use Imi\Db\Annotation\Transaction;
 
 /**
  * @Entity
@@ -49,7 +50,6 @@ class ParentClass
      */
     public function test()
     {
-
     }
 
     /**
@@ -60,7 +60,6 @@ class ParentClass
      */
     public function test2()
     {
-
     }
 
     /**
@@ -71,7 +70,5 @@ class ParentClass
      */
     public function test3()
     {
-
     }
-
 }

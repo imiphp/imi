@@ -1,11 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Util\Imi;
-use Imi\Util\File;
+use Imi\App;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
-use Imi\App;
 
 /**
  * @testdox Cache Annotation
@@ -65,38 +64,43 @@ class CacheAnnotationTest extends BaseTest
         $time = microtime(true);
         $throwables = [];
         $channel = new \Swoole\Coroutine\Channel(3);
-        for($i = 0; $i < 3; ++$i)
+        for ($i = 0; $i < 3; ++$i)
         {
             $throwables[] = null;
             $index = $i;
-            go(function() use(&$throwables, $index, $test, $id, $channel){
-                try {
+            go(function () use (&$throwables, $index, $test, $id, $channel) {
+                try
+                {
                     $result2 = $test->testCacheableLock($id);
                     Assert::assertTrue(isset($result2['id']));
                     Assert::assertTrue(isset($result2['time']));
-                } catch(\Throwable $th) {
+                }
+                catch (\Throwable $th)
+                {
                     $throwables[$index] = $th;
-                } finally {
+                }
+                finally
+                {
                     $channel->push(1);
                 }
             });
         }
         $count = 0;
-        while($ret = $channel->pop())
+        while ($ret = $channel->pop())
         {
-            if(1 === $ret)
+            if (1 === $ret)
             {
                 ++$count;
-                if($count >= 3)
+                if ($count >= 3)
                 {
                     break;
                 }
             }
         }
         $useTime = microtime(true) - $time;
-        foreach($throwables as $th)
+        foreach ($throwables as $th)
         {
-            if($th)
+            if ($th)
             {
                 throw $th;
             }
@@ -130,5 +134,4 @@ class CacheAnnotationTest extends BaseTest
         $result2 = $test->testCacheable($id);
         Assert::assertEquals($result, $result2);
     }
-
 }

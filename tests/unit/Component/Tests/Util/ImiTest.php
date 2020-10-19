@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
-use Imi\Util\Imi;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Util\Imi\TestPropertyClass;
+use Imi\Util\Imi;
 
 /**
  * @testdox Imi\Util\Imi
@@ -66,70 +67,76 @@ class ImiTest extends BaseTest
     public function testCheckCompareRules()
     {
         $rules = [
-            'a' =>  '1',
-            'b' =>  '[^1]',
+            'a' => '1',
+            'b' => '[^1]',
             'c=2',
             'd!=0',
             'e<>0',
         ];
-        $this->assertTrue(Imi::checkCompareRules($rules, function($name){
+        $this->assertTrue(Imi::checkCompareRules($rules, function ($name) {
             static $data = [
-                'a' =>  1,
-                'b' =>  0,
-                'c' =>  2,
-                'd' =>  1,
-                'e' =>  1,
+                'a' => 1,
+                'b' => 0,
+                'c' => 2,
+                'd' => 1,
+                'e' => 1,
             ];
+
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function($name){
+        $this->assertFalse(Imi::checkCompareRules($rules, function ($name) {
             static $data = [
-                'a' =>  0,
-                'b' =>  0,
-                'c' =>  2,
-                'd' =>  1,
-                'e' =>  1,
+                'a' => 0,
+                'b' => 0,
+                'c' => 2,
+                'd' => 1,
+                'e' => 1,
             ];
+
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function($name){
+        $this->assertFalse(Imi::checkCompareRules($rules, function ($name) {
             static $data = [
-                'a' =>  1,
-                'b' =>  1,
-                'c' =>  2,
-                'd' =>  1,
-                'e' =>  1,
+                'a' => 1,
+                'b' => 1,
+                'c' => 2,
+                'd' => 1,
+                'e' => 1,
             ];
+
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function($name){
+        $this->assertFalse(Imi::checkCompareRules($rules, function ($name) {
             static $data = [
-                'a' =>  1,
-                'b' =>  0,
-                'c' =>  1,
-                'd' =>  1,
-                'e' =>  1,
+                'a' => 1,
+                'b' => 0,
+                'c' => 1,
+                'd' => 1,
+                'e' => 1,
             ];
+
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function($name){
+        $this->assertFalse(Imi::checkCompareRules($rules, function ($name) {
             static $data = [
-                'a' =>  1,
-                'b' =>  0,
-                'c' =>  2,
-                'd' =>  0,
-                'e' =>  1,
+                'a' => 1,
+                'b' => 0,
+                'c' => 2,
+                'd' => 0,
+                'e' => 1,
             ];
+
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRules($rules, function($name){
+        $this->assertFalse(Imi::checkCompareRules($rules, function ($name) {
             static $data = [
-                'a' =>  1,
-                'b' =>  0,
-                'c' =>  2,
-                'd' =>  1,
-                'e' =>  0,
+                'a' => 1,
+                'b' => 0,
+                'c' => 2,
+                'd' => 1,
+                'e' => 0,
             ];
+
             return $data[$name];
         }));
     }
@@ -141,16 +148,18 @@ class ImiTest extends BaseTest
      */
     public function testCheckCompareRule()
     {
-        $this->assertTrue(Imi::checkCompareRule('a=1', function($name){
+        $this->assertTrue(Imi::checkCompareRule('a=1', function ($name) {
             static $data = [
-                'a' =>  1,
+                'a' => 1,
             ];
+
             return $data[$name];
         }));
-        $this->assertFalse(Imi::checkCompareRule('a=2', function($name){
+        $this->assertFalse(Imi::checkCompareRule('a=2', function ($name) {
             static $data = [
-                'a' =>  1,
+                'a' => 1,
             ];
+
             return $data[$name];
         }));
     }
@@ -251,7 +260,7 @@ class ImiTest extends BaseTest
     {
         $this->assertEquals([
             __DIR__,
-            dirname(__DIR__, 5) . '/src/Test/Component/Tests/Util',
+            \dirname(__DIR__, 5) . '/src/Test/Component/Tests/Util',
         ], Imi::getNamespacePaths('Imi\Test\Component\Tests\Util'));
     }
 
@@ -267,5 +276,4 @@ class ImiTest extends BaseTest
         $this->assertEquals(1, Imi::getClassPropertyValue(TestPropertyClass::class, 'a'));
         $this->assertEquals('bbb', Imi::getClassPropertyValue(TestPropertyClass::class, 'b'));
     }
-
 }

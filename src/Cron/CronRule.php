@@ -1,18 +1,19 @@
 <?php
+
 namespace Imi\Cron;
 
 use Imi\Util\Traits\TDataToProperty;
 
 /**
- * 定时规则
+ * 定时规则.
  */
 class CronRule
 {
     use TDataToProperty;
 
     /**
-     * 年
-     * 
+     * 年.
+     *
      * 指定任务执行年份，默认为 `*`。
      * `*` - 不限制
      * `2019` - 指定年
@@ -25,8 +26,8 @@ class CronRule
     private $year = '*';
 
     /**
-     * 月
-     * 
+     * 月.
+     *
      * 指定任务执行月份，默认为 `*`。
      * `*` - 不限制
      * `1` (1 月), `-1` (12 月) - 指定月份，支持负数为倒数的月
@@ -39,8 +40,8 @@ class CronRule
     private $month = '*';
 
     /**
-     * 日
-     * 
+     * 日.
+     *
      * 指定任务执行日期，默认为 `*`。
      * `*` - 不限制
      * `1` (1 日), `-1` (每月最后一天) - 指定日期，支持负数为倒数的日期
@@ -56,21 +57,21 @@ class CronRule
     private $day = '*';
 
     /**
-     * 周几
-     * 
+     * 周几.
+     *
      * 指定周几执行任务，默认为 `*`。
      * `*` - 不限制
      * `1` (周一), `-1` (周日) - 指定周几（1-7），支持负数为倒数的周
      * `1-6` (周一到周六), `-3--1` (周五到周日) - 指定周几，支持负数为倒数的周
      * `1,3,5,-1` (周一、三、五、日) - 指定多个日期，支持负数为倒数的周
-     * 
+     *
      * @var string
      */
     private $week = '*';
 
     /**
-     * 小时
-     * 
+     * 小时.
+     *
      * 指定任务执行小时，默认为 `*`。
      * `*` - 不限制
      * `0` (0 点), `-1` (23 点) - 指定小时，支持负数为倒数的小时
@@ -84,7 +85,7 @@ class CronRule
 
     /**
      * 分钟
-     * 
+     *
      * 指定任务执行分钟，默认为 `*`。
      * `*` - 不限制
      * `0` (0 分), `-1` (23 分) - 指定分钟，支持负数为倒数的分钟
@@ -97,8 +98,8 @@ class CronRule
     private $minute = '*';
 
     /**
-     * 秒
-     * 
+     * 秒.
+     *
      * 指定任务执行秒，默认为 `*`。
      * `*` - 不限制
      * `0` (0 秒), `-1` (23 秒) - 指定秒，支持负数为倒数的秒
@@ -111,50 +112,50 @@ class CronRule
     private $second = '*';
 
     /**
-     * 年
+     * 年.
      *
      * @return string
-     */ 
+     */
     public function getYear()
     {
         return $this->year;
     }
 
     /**
-     * 月
+     * 月.
      *
      * @return string
-     */ 
+     */
     public function getMonth()
     {
         return $this->month;
     }
 
     /**
-     * 日
+     * 日.
      *
      * @return string
-     */ 
+     */
     public function getDay()
     {
         return $this->day;
     }
 
     /**
-     * 周
+     * 周.
      *
      * @return string
-     */ 
+     */
     public function getWeek()
     {
         return $this->week;
     }
 
     /**
-     * 小时
+     * 小时.
      *
      * @return string
-     */ 
+     */
     public function getHour()
     {
         return $this->hour;
@@ -164,20 +165,19 @@ class CronRule
      * 分钟
      *
      * @return string
-     */ 
+     */
     public function getMinute()
     {
         return $this->minute;
     }
 
     /**
-     * 秒
+     * 秒.
      *
      * @return string
-     */ 
+     */
     public function getSecond()
     {
         return $this->second;
     }
-
 }

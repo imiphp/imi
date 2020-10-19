@@ -1,35 +1,32 @@
 <?php
+
 namespace Imi\Model\Relation;
 
-use Imi\Util\Imi;
-use Imi\Util\Text;
-use Imi\Model\BaseModel;
-use Imi\Bean\BeanFactory;
-use Imi\Model\ModelManager;
-use Imi\Model\Relation\Struct\OneToOne;
-use Imi\Model\Relation\Struct\OneToMany;
-use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Bean\BeanFactory;
 use Imi\Model\Annotation\Relation\AutoInsert;
-use Imi\Model\Relation\Struct\PolymorphicOneToOne;
-use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Annotation\Relation\AutoSave;
+use Imi\Model\Relation\Struct\ManyToMany;
+use Imi\Model\Relation\Struct\OneToMany;
+use Imi\Model\Relation\Struct\OneToOne;
 use Imi\Model\Relation\Struct\PolymorphicManyToMany;
-
+use Imi\Model\Relation\Struct\PolymorphicOneToMany;
+use Imi\Model\Relation\Struct\PolymorphicOneToOne;
 
 abstract class Insert
 {
     /**
-     * 处理插入
+     * 处理插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model          $model
+     * @param string                    $propertyName
      * @param \Imi\Bean\Annotation\Base $annotation
+     *
      * @return void
      */
     public static function parse($model, $propertyName, $annotation)
     {
-        if(!$model->$propertyName)
+        if (!$model->$propertyName)
         {
             return;
         }
@@ -37,50 +34,51 @@ abstract class Insert
         $autoInsert = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoInsert::class)[0] ?? null;
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
-        if($autoInsert)
+        if ($autoInsert)
         {
-            if(!$autoInsert->status)
+            if (!$autoInsert->status)
             {
                 return;
             }
         }
-        else if(!$autoSave || !$autoSave->status)
+        elseif (!$autoSave || !$autoSave->status)
         {
             return;
         }
 
-        if($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
+        if ($annotation instanceof \Imi\Model\Annotation\Relation\OneToOne)
         {
             static::parseByOneToOne($model, $propertyName, $annotation);
         }
-        else if($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
+        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\OneToMany)
         {
             static::parseByOneToMany($model, $propertyName, $annotation);
         }
-        else if($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
+        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\ManyToMany)
         {
             static::parseByManyToMany($model, $propertyName, $annotation);
         }
-        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
+        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToOne)
         {
             static::parseByPolymorphicOneToOne($model, $propertyName, $annotation);
         }
-        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
+        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicOneToMany)
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
-        else if($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
+        elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
             static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
         }
     }
 
     /**
-     * 处理一对一插入
+     * 处理一对一插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model                        $model
+     * @param string                                  $propertyName
      * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
+     *
      * @return void
      */
     public static function parseByOneToOne($model, $propertyName, $annotation)
@@ -95,13 +93,14 @@ abstract class Insert
         $modelField->$rightField = $model->$leftField;
         $modelField->insert();
     }
-    
+
     /**
-     * 处理一对多插入
+     * 处理一对多插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model                         $model
+     * @param string                                   $propertyName
      * @param \Imi\Model\Annotation\Relation\OneToMany $annotation
+     *
      * @return void
      */
     public static function parseByOneToMany($model, $propertyName, $annotation)
@@ -113,9 +112,9 @@ abstract class Insert
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
-        foreach($model->$propertyName as $index => $row)
+        foreach ($model->$propertyName as $index => $row)
         {
-            if(!$row instanceof $rightModel)
+            if (!$row instanceof $rightModel)
             {
                 $row = $rightModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
@@ -126,11 +125,12 @@ abstract class Insert
     }
 
     /**
-     * 处理多对多插入
+     * 处理多对多插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model                          $model
+     * @param string                                    $propertyName
      * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
+     *
      * @return void
      */
     public static function parseByManyToMany($model, $propertyName, $annotation)
@@ -142,9 +142,9 @@ abstract class Insert
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
 
-        foreach($model->$propertyName as $index => $row)
+        foreach ($model->$propertyName as $index => $row)
         {
-            if(!$row instanceof $middleModel)
+            if (!$row instanceof $middleModel)
             {
                 $row = $middleModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
@@ -155,11 +155,12 @@ abstract class Insert
     }
 
     /**
-     * 处理多态一对一插入
+     * 处理多态一对一插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model                                   $model
+     * @param string                                             $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
+     *
      * @return void
      */
     public static function parseByPolymorphicOneToOne($model, $propertyName, $annotation)
@@ -177,11 +178,12 @@ abstract class Insert
     }
 
     /**
-     * 处理多态一对多插入
+     * 处理多态一对多插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model                                    $model
+     * @param string                                              $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
+     *
      * @return void
      */
     public static function parseByPolymorphicOneToMany($model, $propertyName, $annotation)
@@ -193,9 +195,9 @@ abstract class Insert
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
-        foreach($model->$propertyName as $index => $row)
+        foreach ($model->$propertyName as $index => $row)
         {
-            if(!$row instanceof $rightModel)
+            if (!$row instanceof $rightModel)
             {
                 $row = $rightModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
@@ -207,11 +209,12 @@ abstract class Insert
     }
 
     /**
-     * 处理多态多对多插入
+     * 处理多态多对多插入.
      *
-     * @param \Imi\Model\Model $model
-     * @param string $propertyName
+     * @param \Imi\Model\Model                                     $model
+     * @param string                                               $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
+     *
      * @return void
      */
     public static function parseByPolymorphicManyToMany($model, $propertyName, $annotation)
@@ -223,9 +226,9 @@ abstract class Insert
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
 
-        foreach($model->$propertyName as $index => $row)
+        foreach ($model->$propertyName as $index => $row)
         {
-            if(!$row instanceof $middleModel)
+            if (!$row instanceof $middleModel)
             {
                 $row = $middleModel::newInstance($row);
                 $model->$propertyName[$index] = $row;

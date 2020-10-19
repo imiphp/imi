@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Validate\Annotation;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 数值验证，允许整数和小数
- * 
+ * 数值验证，允许整数和小数.
+ *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
@@ -14,35 +15,35 @@ use Imi\Bean\Annotation\Parser;
 class Number extends Condition
 {
     /**
-     * 最小值，为null不限制
+     * 最小值，为null不限制.
      *
      * @var int|null
      */
     public $min;
 
     /**
-     * 最大值，为null不限制
+     * 最大值，为null不限制.
      *
      * @var int|null
      */
     public $max;
-    
+
     /**
-     * 小数精度位数，为null不限制
+     * 小数精度位数，为null不限制.
      *
      * @var int
      */
     public $accuracy;
 
     /**
-     * 验证回调
+     * 验证回调.
      *
      * @var callable
      */
     public $callable = '\Imi\Validate\ValidatorHelper::number';
 
     /**
-     * 参数名数组
+     * 参数名数组.
      *
      * @var array
      */

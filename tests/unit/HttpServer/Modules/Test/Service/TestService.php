@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\HttpServer\Modules\Test\Service;
 
 use Imi\Bean\Annotation\Bean;
@@ -9,9 +10,10 @@ use Imi\Bean\Annotation\Bean;
 class TestService
 {
     /**
-     * 测试方法
+     * 测试方法.
      *
      * @param string $time
+     *
      * @return string
      */
     public function test($time)

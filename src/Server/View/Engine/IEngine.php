@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\View\Engine;
 
 use Imi\Server\Http\Message\Response;

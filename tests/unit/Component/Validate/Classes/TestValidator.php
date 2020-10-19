@@ -1,18 +1,17 @@
 <?php
+
 namespace Imi\Test\Component\Validate\Classes;
 
-use Imi\Validate\Validator;
-use Imi\Bean\Annotation\Bean;
-use PHPUnit\Framework\Assert;
-use Imi\Validate\Annotation\Text;
-use Imi\Validate\Annotation\InEnum;
-use Imi\Validate\Annotation\InList;
-use Imi\Validate\Annotation\Number;
 use Imi\Validate\Annotation\Compare;
 use Imi\Validate\Annotation\Decimal;
+use Imi\Validate\Annotation\InEnum;
+use Imi\Validate\Annotation\InList;
 use Imi\Validate\Annotation\Integer;
+use Imi\Validate\Annotation\Number;
 use Imi\Validate\Annotation\Required;
+use Imi\Validate\Annotation\Text;
 use Imi\Validate\Annotation\ValidateValue;
+use Imi\Validate\Validator;
 
 /**
  * @Compare(name="compare", operation="<", value=0)
@@ -29,5 +28,4 @@ use Imi\Validate\Annotation\ValidateValue;
  */
 class TestValidator extends Validator
 {
-
 }

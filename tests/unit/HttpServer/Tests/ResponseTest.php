@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\HttpServer\Tests;
 
-use Yurun\Util\HttpRequest;
 use Imi\Util\Http\Consts\StatusCode;
+use Yurun\Util\HttpRequest;
 
 /**
  * @testdox HttpResponse
@@ -10,13 +11,13 @@ use Imi\Util\Http\Consts\StatusCode;
 class ResponseTest extends BaseTest
 {
     /**
-     * Middleware
+     * Middleware.
      *
      * @return void
      */
     public function testMiddleware()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $response = $http->get($this->host . 'middleware');
         // 全局中间件
         $this->assertEquals('imiphp.com', $response->getHeaderLine('X-Powered-By'));
@@ -28,13 +29,13 @@ class ResponseTest extends BaseTest
     }
 
     /**
-     * Options Middleware
+     * Options Middleware.
      *
      * @return void
      */
     public function testOptionsMiddleware()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $response = $http->send($this->host, '', 'OPTIONS');
         // OPTIONS 中间件
         $this->assertEquals('http://127.0.0.1', $response->getHeaderLine('Access-Control-Allow-Origin'));
@@ -45,13 +46,13 @@ class ResponseTest extends BaseTest
     }
 
     /**
-     * Cookie
+     * Cookie.
      *
      * @return void
      */
     public function testCookie()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $http->get($this->host . 'cookie');
         $cookieManager = $http->getHandler()->getCookieManager();
 
@@ -79,18 +80,16 @@ class ResponseTest extends BaseTest
         $this->assertEquals('7', $g->value);
         $this->assertTrue($g->secure);
         $this->assertTrue($g->httpOnly);
-
     }
 
-    
     /**
-     * Headers
+     * Headers.
      *
      * @return void
      */
     public function testHeaders()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $response = $http->get($this->host . 'headers');
 
         $this->assertEquals('1,11', $response->getHeaderLine('a'));
@@ -98,13 +97,13 @@ class ResponseTest extends BaseTest
     }
 
     /**
-     * Redirect
+     * Redirect.
      *
      * @return void
      */
     public function testRedirect()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $http->followLocation = false;
         $response = $http->get($this->host . 'redirect');
         $this->assertEquals(StatusCode::MOVED_PERMANENTLY, $response->getStatusCode());
@@ -112,15 +111,14 @@ class ResponseTest extends BaseTest
     }
 
     /**
-     * Download
+     * Download.
      *
      * @return void
      */
     public function testDownload()
     {
-        $http = new HttpRequest;
+        $http = new HttpRequest();
         $response = $http->get($this->host . 'download');
-        $this->assertEquals(file_get_contents(dirname(__DIR__) . '/ApiServer/Controller/IndexController.php'), $response->body());
+        $this->assertEquals(file_get_contents(\dirname(__DIR__) . '/ApiServer/Controller/IndexController.php'), $response->body());
     }
-
 }

@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Aop\Aop;
 
-use Imi\Aop\PointCutType;
-use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
-use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\Annotation\InjectArg;
+use Imi\Aop\Annotation\PointCut;
+use Imi\Aop\AroundJoinPoint;
+use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Util\ClassObject;
 
@@ -16,7 +17,8 @@ use Imi\Util\ClassObject;
 class InjectArgAop
 {
     /**
-     * 方法参数注入
+     * 方法参数注入.
+     *
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
@@ -24,6 +26,7 @@ class InjectArgAop
      *         }
      * )
      * @Around
+     *
      * @return mixed
      */
     public function parse(AroundJoinPoint $joinPoint)
@@ -33,7 +36,7 @@ class InjectArgAop
         $injectArgs = AnnotationManager::getMethodAnnotations($class, $method, InjectArg::class);
         $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 
-        foreach($injectArgs as $injectArg)
+        foreach ($injectArgs as $injectArg)
         {
             $args[$injectArg->name] = $injectArg->value;
         }

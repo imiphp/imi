@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Aop\Classes;
 
 use Imi\Bean\Annotation\Bean;
@@ -17,5 +18,4 @@ class TestAfterThrowingClass
     {
         throw new \RuntimeException('test');
     }
-
 }

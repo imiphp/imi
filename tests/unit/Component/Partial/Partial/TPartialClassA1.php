@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Partial\Partial
 {
     use Imi\Bean\Annotation\Partial;
@@ -14,24 +15,20 @@ namespace Imi\Test\Component\Partial\Partial
         {
             return $this->test2Value;
         }
-
     }
-
 }
 
 namespace Imi\Test\Component\Partial\Classes
 {
-    if(false)
+    if (false)
     {
         class PartialClassA
         {
             public $test2Value;
-    
+
             public function test2()
             {
-    
             }
         }
     }
-
 }

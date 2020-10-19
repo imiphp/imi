@@ -1,9 +1,6 @@
 <?php
-namespace Imi\Model\Relation\Struct;
 
-use Imi\Util\Imi;
-use Imi\Util\Text;
-use Imi\Model\ModelManager;
+namespace Imi\Model\Relation\Struct;
 
 class PolymorphicOneToOne
 {

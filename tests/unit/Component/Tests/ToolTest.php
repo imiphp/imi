@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
@@ -11,9 +12,9 @@ class ToolTest extends BaseTest
 {
     public function testCoExit()
     {
-        if(version_compare(SWOOLE_VERSION, '4.4', '>='))
+        if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
         {
-            $cmd = cmd('"' . dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test -appNamespace "Imi\Test\Component"');
+            $cmd = cmd('"' . \dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test -appNamespace "Imi\Test\Component"');
             exec($cmd, $output, $exitCode);
             $this->assertEquals(0, $exitCode);
 
@@ -26,5 +27,4 @@ class ToolTest extends BaseTest
             $this->markTestSkipped('Swoole 4.3.x has exit bug');
         }
     }
-
 }

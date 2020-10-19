@@ -1,11 +1,11 @@
 <?php
+
 namespace Imi\Server\WebSocket;
 
-use Imi\App;
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\WebSocket\Message\IFrame;
+use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Server\WebSocket\Message\IFrame;
 
 /**
  * @Bean("WebSocketDispatcher")
@@ -13,13 +13,14 @@ use Imi\Server\DataParser\DataParser;
 class Dispatcher
 {
     /**
-     * 中间件数组
+     * 中间件数组.
+     *
      * @var string[]
      */
     protected $middlewares = [];
 
     /**
-     * 最终使用的中间件列表
+     * 最终使用的中间件列表.
      *
      * @var array
      */
@@ -29,27 +30,27 @@ class Dispatcher
     {
         $requestHandler = new MessageHandler($this->getMiddlewares());
         $responseData = $requestHandler->handle($frame);
-        if(null !== $responseData)
+        if (null !== $responseData)
         {
             RequestContext::getServer()->getSwooleServer()->push($frame->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
         }
     }
 
     /**
-     * 获取中间件列表
+     * 获取中间件列表.
      *
      * @return array
      */
     protected function getMiddlewares(): array
     {
         $finalMiddlewares = &$this->finalMiddlewares;
-        if(null === $finalMiddlewares)
+        if (null === $finalMiddlewares)
         {
             return $finalMiddlewares = array_merge($this->middlewares, [
                 \Imi\Server\WebSocket\Middleware\ActionWrapMiddleware::class,
             ]);
         }
+
         return $finalMiddlewares;
     }
-
 }

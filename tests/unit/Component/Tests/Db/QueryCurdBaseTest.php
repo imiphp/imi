@@ -1,10 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Db;
 
-use Imi\Test\BaseTest;
-use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Query\Lock\MysqlLock;
+use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -13,14 +13,14 @@ use PHPUnit\Framework\Assert;
 abstract class QueryCurdBaseTest extends BaseTest
 {
     /**
-     * 连接池名
+     * 连接池名.
      *
      * @var string
      */
     protected $poolName;
 
     /**
-     * 测试 whereEx 的 SQL
+     * 测试 whereEx 的 SQL.
      *
      * @var string
      */
@@ -31,10 +31,10 @@ abstract class QueryCurdBaseTest extends BaseTest
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->where('id', '=', 1)->select()->get();
         Assert::assertEquals([
-            'id'        =>  '1',
-            'title'     =>  'title',
-            'content'   =>  'content',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => '1',
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
     }
 
@@ -46,17 +46,17 @@ abstract class QueryCurdBaseTest extends BaseTest
         Assert::assertEquals(2, $result->getRowCount());
         Assert::assertEquals([
             [
-                'id'        =>  '1',
-                'title'     =>  'title',
-                'content'   =>  'content',
-                'time'      =>  '2019-06-21 00:00:00',
+                'id'        => '1',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
             ],
             [
-                'id'        =>  '2',
-                'title'     =>  'title',
-                'content'   =>  'content',
-                'time'      =>  '2019-06-21 00:00:00',
-            ]
+                'id'        => '2',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
+            ],
         ], $record);
     }
 
@@ -77,17 +77,17 @@ abstract class QueryCurdBaseTest extends BaseTest
     public function testPaginate()
     {
         $expectedData = [
-            'list'  =>  [
+            'list'  => [
                 [
-                    'id'        =>  '2',
-                    'title'     =>  'title',
-                    'content'   =>  'content',
-                    'time'      =>  '2019-06-21 00:00:00',
+                    'id'        => '2',
+                    'title'     => 'title',
+                    'content'   => 'content',
+                    'time'      => '2019-06-21 00:00:00',
                 ],
             ],
-            'limit'         =>  1,
-            'total'         =>  3,
-            'page_count'    =>  3,
+            'limit'         => 1,
+            'total'         => 3,
+            'page_count'    => 3,
         ];
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->paginate(2, 1);
@@ -106,21 +106,21 @@ abstract class QueryCurdBaseTest extends BaseTest
     public function testBug58()
     {
         $expectedData = [
-            'list'  =>  [
+            'list'  => [
                 [
-                    'id'        =>  '2',
-                    'title'     =>  'title',
-                    'content'   =>  'content',
-                    'time'      =>  '2019-06-21 00:00:00',
+                    'id'        => '2',
+                    'title'     => 'title',
+                    'content'   => 'content',
+                    'time'      => '2019-06-21 00:00:00',
                 ],
             ],
-            'limit'         =>  1,
-            'total'         =>  1,
-            'page_count'    =>  1,
+            'limit'         => 1,
+            'total'         => 1,
+            'page_count'    => 1,
         ];
         $result = Db::query($this->poolName)->from('tb_article')
                              ->bindValues([
-                                 ':id'  =>  2
+                                 ':id'  => 2,
                              ])
                              ->whereRaw('id = :id')
                              ->paginate(1, 1);
@@ -130,39 +130,39 @@ abstract class QueryCurdBaseTest extends BaseTest
     public function testPaginateNoTotal()
     {
         $expectedData = [
-            'list'  =>  [
+            'list'  => [
                 [
-                    'id'        =>  '1',
-                    'title'     =>  'title',
-                    'content'   =>  'content',
-                    'time'      =>  '2019-06-21 00:00:00',
+                    'id'        => '1',
+                    'title'     => 'title',
+                    'content'   => 'content',
+                    'time'      => '2019-06-21 00:00:00',
                 ],
                 [
-                    'id'        =>  '2',
-                    'title'     =>  'title',
-                    'content'   =>  'content',
-                    'time'      =>  '2019-06-21 00:00:00',
+                    'id'        => '2',
+                    'title'     => 'title',
+                    'content'   => 'content',
+                    'time'      => '2019-06-21 00:00:00',
                 ],
             ],
-            'limit'         =>  2,
+            'limit'         => 2,
         ];
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->paginate(1, 2, [
-            'total' =>  false,
+            'total' => false,
         ]);
         $this->assertEquals($expectedData, $result->toArray());
         $this->assertEquals([
             [
-                'id'        =>  '1',
-                'title'     =>  'title',
-                'content'   =>  'content',
-                'time'      =>  '2019-06-21 00:00:00',
+                'id'        => '1',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
             ],
             [
-                'id'        =>  '2',
-                'title'     =>  'title',
-                'content'   =>  'content',
-                'time'      =>  '2019-06-21 00:00:00',
+                'id'        => '2',
+                'title'     => 'title',
+                'content'   => 'content',
+                'time'      => '2019-06-21 00:00:00',
             ],
         ], $result->getList());
         $this->assertNull($result->getTotal());
@@ -173,9 +173,9 @@ abstract class QueryCurdBaseTest extends BaseTest
     public function testInsert()
     {
         $data = [
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ];
         $query = Db::query($this->poolName);
 
@@ -183,15 +183,15 @@ abstract class QueryCurdBaseTest extends BaseTest
         $id = $result->getLastInsertId();
         $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
-            'id'        =>  $id . '',
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => $id . '',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
 
         $result = $query->setData([
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
         ])
         ->setField('time', '2019-06-21 00:00:00')
         ->from('tb_article')
@@ -199,59 +199,57 @@ abstract class QueryCurdBaseTest extends BaseTest
         $id = $result->getLastInsertId();
         $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
-            'id'        =>  $id . '',
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => $id . '',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
-
     }
 
     public function testUpdate()
     {
         $data = [
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ];
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->insert($data);
         $id = $result->getLastInsertId();
 
         $result = $query->from('tb_article')->where('id', '=', $id)->update([
-            'content'   =>  'imi',
-            'time'      =>  '2018-06-21 00:00:00',
+            'content'   => 'imi',
+            'time'      => '2018-06-21 00:00:00',
         ]);
         Assert::assertEquals(1, $result->getAffectedRows());
         $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
-            'id'        =>  $id . '',
-            'title'     =>  'title-insert',
-            'content'   =>  'imi',
-            'time'      =>  '2018-06-21 00:00:00',
+            'id'        => $id . '',
+            'title'     => 'title-insert',
+            'content'   => 'imi',
+            'time'      => '2018-06-21 00:00:00',
         ], $record);
 
         $result = $query->from('tb_article')->where('id', '=', $id)->setData([
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ])->update();
         Assert::assertEquals(1, $result->getAffectedRows());
         $record = $query->from('tb_article')->where('id', '=', $id)->select()->get();
         Assert::assertEquals([
-            'id'        =>  $id . '',
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => $id . '',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
-
     }
 
     public function testDelete()
     {
         $data = [
-            'title'     =>  'title-insert',
-            'content'   =>  'content-insert',
-            'time'      =>  '2019-06-21 00:00:00',
+            'title'     => 'title-insert',
+            'content'   => 'content-insert',
+            'time'      => '2019-06-21 00:00:00',
         ];
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->insert($data);
@@ -268,9 +266,9 @@ abstract class QueryCurdBaseTest extends BaseTest
     {
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->whereEx([
-            'id'    =>  1,
-            'and'   =>  [
-                'id'    =>  ['in', [1]],
+            'id'    => 1,
+            'and'   => [
+                'id'    => ['in', [1]],
             ],
         ])->select();
         // 多条件SQL
@@ -278,10 +276,10 @@ abstract class QueryCurdBaseTest extends BaseTest
         // 查询记录
         $record = $result->get();
         Assert::assertEquals([
-            'id'        =>  '1',
-            'title'     =>  'title',
-            'content'   =>  'content',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => '1',
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
         // BUG: https://github.com/Yurunsoft/IMI/pull/25
         Assert::assertEquals('select * from `tb_article`', Db::query($this->poolName)->from('tb_article')->whereEx([])->select()->getSql());
@@ -292,19 +290,19 @@ abstract class QueryCurdBaseTest extends BaseTest
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();
         Assert::assertEquals([
-            'id'        =>  '1',
-            'title'     =>  'title',
-            'content'   =>  'content',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => '1',
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
 
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::SHARED)->select()->get();
         Assert::assertEquals([
-            'id'        =>  '1',
-            'title'     =>  'title',
-            'content'   =>  'content',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => '1',
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
     }
 
@@ -320,11 +318,10 @@ abstract class QueryCurdBaseTest extends BaseTest
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->whereIsNotNull('id')->select()->get();
         Assert::assertEquals([
-            'id'        =>  '1',
-            'title'     =>  'title',
-            'content'   =>  'content',
-            'time'      =>  '2019-06-21 00:00:00',
+            'id'        => '1',
+            'title'     => 'title',
+            'content'   => 'content',
+            'time'      => '2019-06-21 00:00:00',
         ], $record);
     }
-
 }

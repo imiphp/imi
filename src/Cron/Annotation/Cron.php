@@ -1,11 +1,13 @@
 <?php
+
 namespace Imi\Cron\Annotation;
 
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 定时任务注解
+ * 定时任务注解.
+ *
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
@@ -13,15 +15,15 @@ use Imi\Bean\Annotation\Parser;
 class Cron extends Base
 {
     /**
-     * 任务唯一ID
+     * 任务唯一ID.
      *
      * @var string
      */
     public $id;
 
     /**
-     * 任务类型
-     * 
+     * 任务类型.
+     *
      * \Imi\Cron\Consts\CronTaskType 类常量
      *
      * @var string
@@ -29,22 +31,22 @@ class Cron extends Base
     public $type;
 
     /**
-     * 数据
+     * 数据.
      *
      * @var mixed
      */
     public $data;
 
     /**
-     * 每次启动服务强制执行
+     * 每次启动服务强制执行.
      *
-     * @var boolean
+     * @var bool
      */
     public $force = false;
 
     /**
-     * 年
-     * 
+     * 年.
+     *
      * 指定任务执行年份，默认为 `*`。
      * `*` - 不限制
      * `2019` - 指定年
@@ -57,8 +59,8 @@ class Cron extends Base
     public $year = '*';
 
     /**
-     * 月
-     * 
+     * 月.
+     *
      * 指定任务执行月份，默认为 `*`。
      * `*` - 不限制
      * `1` (1 月), `-1` (12 月) - 指定月份，支持负数为倒数的月
@@ -71,8 +73,8 @@ class Cron extends Base
     public $month = '*';
 
     /**
-     * 日
-     * 
+     * 日.
+     *
      * 指定任务执行日期，默认为 `*`。
      * `*` - 不限制
      * `1` (1 日), `-1` (每月最后一天) - 指定日期，支持负数为倒数的日期
@@ -88,21 +90,21 @@ class Cron extends Base
     public $day = '*';
 
     /**
-     * 周几
-     * 
+     * 周几.
+     *
      * 指定周几执行任务，默认为 `*`。
      * `*` - 不限制
      * `1` (周一), `-1` (周日) - 指定周几（1-7），支持负数为倒数的周
      * `1-6` (周一到周六), `-3--1` (周五到周日) - 指定周几，支持负数为倒数的周
      * `1,3,5,-1` (周一、三、五、日) - 指定多个日期，支持负数为倒数的周
-     * 
+     *
      * @var string
      */
     public $week = '*';
 
     /**
-     * 小时
-     * 
+     * 小时.
+     *
      * 指定任务执行小时，默认为 `*`。
      * `*` - 不限制
      * `0` (0 点), `-1` (23 点) - 指定小时，支持负数为倒数的小时
@@ -116,7 +118,7 @@ class Cron extends Base
 
     /**
      * 分钟
-     * 
+     *
      * 指定任务执行分钟，默认为 `*`。
      * `*` - 不限制
      * `0` (0 分), `-1` (23 分) - 指定分钟，支持负数为倒数的分钟
@@ -129,8 +131,8 @@ class Cron extends Base
     public $minute = '*';
 
     /**
-     * 秒
-     * 
+     * 秒.
+     *
      * 指定任务执行秒，默认为 `*`。
      * `*` - 不限制
      * `0` (0 秒), `-1` (23 秒) - 指定秒，支持负数为倒数的秒
@@ -146,20 +148,21 @@ class Cron extends Base
      * 定时任务唯一性设置
      * 当前实例唯一: current
      * 所有实例唯一: all
-     * 不唯一: null
+     * 不唯一: null.
+     *
      * @var string|null
      */
     public $unique;
 
     /**
-     * 用于锁的 `Redis` 连接池名
+     * 用于锁的 `Redis` 连接池名.
      *
      * @var string
      */
     public $redisPool;
 
     /**
-     * 获取锁超时时间，单位：秒
+     * 获取锁超时时间，单位：秒.
      *
      * @var float
      */
@@ -167,11 +170,10 @@ class Cron extends Base
 
     /**
      * 最大运行执行时间，单位：秒。
-     * 
+     *
      * 该值与分布式锁超时时间共享，默认为 60 秒
      *
      * @var float
      */
     public $maxExecutionTime = 60;
-
 }

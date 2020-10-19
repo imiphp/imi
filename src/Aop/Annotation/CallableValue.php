@@ -1,11 +1,12 @@
 <?php
+
 namespace Imi\Aop\Annotation;
 
 use Imi\Bean\Annotation\Parser;
-use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
  * 回调注解，返回该回调的返回值
+ *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("\Imi\Bean\Parser\NullParser")
@@ -13,13 +14,15 @@ use Imi\Aop\Annotation\BaseInjectValue;
 class CallableValue extends BaseInjectValue
 {
     /**
-     * 只传一个参数时的参数名
+     * 只传一个参数时的参数名.
+     *
      * @var string
      */
     protected $defaultFieldName = 'callable';
 
     /**
-     * 回调
+     * 回调.
+     *
      * @var string
      */
     public $callable;

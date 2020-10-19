@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Inject\Classes;
 
+use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Bean;
 use PHPUnit\Framework\Assert;
-use Imi\Aop\Annotation\Inject;
 
 /**
  * @Bean("TestInjectValue")

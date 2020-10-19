@@ -1,17 +1,18 @@
 <?php
+
 namespace Imi\Event;
 
 class EventItem
 {
     /**
-     * 回调类
+     * 回调类.
      *
      * @var string
      */
     public $callbackClass;
 
     /**
-     * 真实的事件回调
+     * 真实的事件回调.
      *
      * @var callable
      */
@@ -19,14 +20,14 @@ class EventItem
 
     /**
      * 优先级
-     * 越大越先执行
+     * 越大越先执行.
      *
      * @var int
      */
     public $priority;
 
     /**
-     * 是否为一次性事件
+     * 是否为一次性事件.
      *
      * @var bool
      */
@@ -38,5 +39,4 @@ class EventItem
         $this->priority = $priority;
         $this->oneTime = $oneTime;
     }
-
 }

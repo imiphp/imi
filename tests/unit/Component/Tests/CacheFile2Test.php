@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Util\Imi;
 use Imi\Util\File;
+use Imi\Util\Imi;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -18,5 +19,4 @@ class CacheFile2Test extends BaseCacheTest
         $path = File::path(Imi::getNamespacePath('Imi\Test\Component\.runtime\cache'), sha1('imi'));
         Assert::assertTrue(is_file($path));
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Event\Classes;
 
 use Imi\Event\TEvent;
@@ -11,9 +12,10 @@ class TestClass
     {
         $return = null;
         $this->trigger('test1', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
+
         return $return;
     }
 
@@ -21,9 +23,10 @@ class TestClass
     {
         $return = null;
         $this->trigger('test2', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
+
         return $return;
     }
 
@@ -31,9 +34,10 @@ class TestClass
     {
         $return = null;
         $this->trigger('test3', [
-            'name'  =>  'imi',
-            'return'=>  &$return,
+            'name'   => 'imi',
+            'return' => &$return,
         ], $this);
+
         return $return;
     }
 }

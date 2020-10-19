@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Traits\TRaw;
-use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Interfaces\ITable;
+use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Traits\TRaw;
 
 class Table implements ITable
 {
@@ -11,19 +12,22 @@ class Table implements ITable
     use TKeyword;
 
     /**
-     * 数据库名
+     * 数据库名.
+     *
      * @var string
      */
     protected $database;
 
     /**
-     * 表名
+     * 表名.
+     *
      * @var string
      */
     protected $table;
 
     /**
-     * 别名
+     * 别名.
+     *
      * @var string
      */
     protected $alias;
@@ -36,7 +40,8 @@ class Table implements ITable
     }
 
     /**
-     * 获取数据库名
+     * 获取数据库名.
+     *
      * @return string
      */
     public function getDatabase(): string
@@ -45,7 +50,8 @@ class Table implements ITable
     }
 
     /**
-     * 获取表名
+     * 获取表名.
+     *
      * @return string
      */
     public function getTable(): string
@@ -54,17 +60,20 @@ class Table implements ITable
     }
 
     /**
-     * 获取别名
+     * 获取别名.
+     *
      * @return string
      */
     public function getAlias(): string
     {
         return $this->alias;
     }
-    
+
     /**
-     * 设置数据库名
+     * 设置数据库名.
+     *
      * @param string $database
+     *
      * @return void
      */
     public function setDatabase(string $database = null)
@@ -73,8 +82,10 @@ class Table implements ITable
     }
 
     /**
-     * 设置表名
+     * 设置表名.
+     *
      * @param string $table
+     *
      * @return void
      */
     public function setTable(string $table = null)
@@ -83,36 +94,40 @@ class Table implements ITable
     }
 
     /**
-     * 设置别名
+     * 设置别名.
+     *
      * @param string $alias
+     *
      * @return void
      */
     public function setAlias(string $alias = null)
     {
         $this->alias = $alias;
     }
-    
+
     /**
      * 设置值，可以根据传入的值自动处理
      * name——table
      * parent.name——database.table
      * name alias——table alias
-     * name as alias—— table as alias
+     * name as alias—— table as alias.
+     *
      * @param string $value
+     *
      * @return void
      */
     public function setValue($value)
     {
         $matches = $this->parseKeywordText($value);
-        if(isset($matches['keywords']))
+        if (isset($matches['keywords']))
         {
             $keywords = $matches['keywords'];
-            if(isset($keywords[1]))
+            if (isset($keywords[1]))
             {
                 $this->database = $keywords[0];
                 $this->table = $keywords[1];
             }
-            else if(isset($keywords[0]))
+            elseif (isset($keywords[0]))
             {
                 $this->database = null;
                 $this->table = $keywords[0];
@@ -123,10 +138,11 @@ class Table implements ITable
 
     public function __toString()
     {
-        if($this->isRaw)
+        if ($this->isRaw)
         {
             return $this->rawSQL;
         }
+
         return $this->parseKeywordToText([
             $this->database,
             $this->table,
@@ -134,7 +150,8 @@ class Table implements ITable
     }
 
     /**
-     * 获取绑定的数据们
+     * 获取绑定的数据们.
+     *
      * @return array
      */
     public function getBinds()

@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Server\Http\Message\Proxy;
 
-use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
+use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
-use Psr\Http\Message\UriInterface;
 use Imi\Util\Http\Contract\IServerRequest;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @Bean("HttpRequestProxy")
@@ -58,6 +59,7 @@ class RequestProxy implements IServerRequest
      * updated cookie values.
      *
      * @param array $cookies Array of key/value pairs representing cookies.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withCookieParams(array $cookies)
@@ -101,7 +103,8 @@ class RequestProxy implements IServerRequest
      * updated query string arguments.
      *
      * @param array $query Array of query string arguments, typically from
-     *     $_GET.
+     *                     $_GET.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withQueryParams(array $query)
@@ -119,7 +122,7 @@ class RequestProxy implements IServerRequest
      * instantiation, or MAY be injected via withUploadedFiles().
      *
      * @return array An array tree of UploadedFileInterface instances; an empty
-     *     array MUST be returned if no data is present.
+     *               array MUST be returned if no data is present.
      */
     public function getUploadedFiles()
     {
@@ -134,7 +137,9 @@ class RequestProxy implements IServerRequest
      * updated body parameters.
      *
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
+     *
      * @throws \InvalidArgumentException if an invalid structure is provided.
      */
     public function withUploadedFiles(array $uploadedFiles)
@@ -154,8 +159,8 @@ class RequestProxy implements IServerRequest
      * potential types MUST be arrays or objects only. A null value indicates
      * the absence of body content.
      *
-     * @return null|array|object The deserialized body parameters, if any.
-     *     These will typically be an array or object.
+     * @return array|object|null The deserialized body parameters, if any.
+     *                           These will typically be an array or object.
      */
     public function getParsedBody()
     {
@@ -184,11 +189,13 @@ class RequestProxy implements IServerRequest
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param null|array|object $data The deserialized body data. This will
-     *     typically be in an array or object.
+     * @param array|object|null $data The deserialized body data. This will
+     *                                typically be in an array or object.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
+     *
      * @throws \InvalidArgumentException if an unsupported argument type is
-     *     provided.
+     *                                   provided.
      */
     public function withParsedBody($data)
     {
@@ -222,8 +229,10 @@ class RequestProxy implements IServerRequest
      * specifying a default value to return if the attribute is not found.
      *
      * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $default Default value to return if the attribute does not exist.
+     *
+     * @param string $name    The attribute name.
+     * @param mixed  $default Default value to return if the attribute does not exist.
+     *
      * @return mixed
      */
     public function getAttribute($name, $default = null)
@@ -242,8 +251,10 @@ class RequestProxy implements IServerRequest
      * updated attribute.
      *
      * @see getAttributes()
-     * @param string $name The attribute name.
-     * @param mixed $value The value of the attribute.
+     *
+     * @param string $name  The attribute name.
+     * @param mixed  $value The value of the attribute.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withAttribute($name, $value)
@@ -262,7 +273,9 @@ class RequestProxy implements IServerRequest
      * the attribute.
      *
      * @see getAttributes()
+     *
      * @param string $name The attribute name.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withoutAttribute($name)
@@ -270,7 +283,7 @@ class RequestProxy implements IServerRequest
         return $this->getRequestInstance()->withoutAttribute($name);
     }
 
-        /**
+    /**
      * Retrieves the message's request target.
      *
      * Retrieves the message's request-target either as it will appear (for
@@ -303,9 +316,11 @@ class RequestProxy implements IServerRequest
      * immutability of the message, and MUST return an instance that has the
      * changed request target.
      *
-     * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
+     * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
+     *
      * @param mixed $requestTarget
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withRequestTarget($requestTarget)
@@ -335,7 +350,9 @@ class RequestProxy implements IServerRequest
      * changed request method.
      *
      * @param string $method Case-sensitive method.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
+     *
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod($method)
@@ -348,9 +365,10 @@ class RequestProxy implements IServerRequest
      *
      * This method MUST return a UriInterface instance.
      *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
+     *
      * @return UriInterface Returns a UriInterface instance
-     *     representing the URI of the request.
+     *                      representing the URI of the request.
      */
     public function getUri()
     {
@@ -382,9 +400,11 @@ class RequestProxy implements IServerRequest
      * immutability of the message, and MUST return an instance that has the
      * new UriInterface instance.
      *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     * @param UriInterface $uri New request URI to use.
-     * @param bool $preserveHost Preserve the original state of the Host header.
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
+     *
+     * @param UriInterface $uri          New request URI to use.
+     * @param bool         $preserveHost Preserve the original state of the Host header.
+     *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withUri(UriInterface $uri, $preserveHost = false)
@@ -392,7 +412,6 @@ class RequestProxy implements IServerRequest
         return $this->getRequestInstance()->withUri($uri, $preserveHost);
     }
 
-    
     /**
      * Retrieves the HTTP protocol version as a string.
      *
@@ -416,6 +435,7 @@ class RequestProxy implements IServerRequest
      * new protocol version.
      *
      * @param string $version HTTP protocol version
+     *
      * @return static
      */
     public function withProtocolVersion($version)
@@ -445,8 +465,8 @@ class RequestProxy implements IServerRequest
      * exact case in which headers were originally specified.
      *
      * @return string[][] Returns an associative array of the message's headers. Each
-     *     key MUST be a header name, and each value MUST be an array of strings
-     *     for that header.
+     *                    key MUST be a header name, and each value MUST be an array of strings
+     *                    for that header.
      */
     public function getHeaders()
     {
@@ -457,9 +477,10 @@ class RequestProxy implements IServerRequest
      * Checks if a header exists by the given case-insensitive name.
      *
      * @param string $name Case-insensitive header field name.
+     *
      * @return bool Returns true if any header names match the given header
-     *     name using a case-insensitive string comparison. Returns false if
-     *     no matching header name is found in the message.
+     *              name using a case-insensitive string comparison. Returns false if
+     *              no matching header name is found in the message.
      */
     public function hasHeader($name)
     {
@@ -476,9 +497,10 @@ class RequestProxy implements IServerRequest
      * empty array.
      *
      * @param string $name Case-insensitive header field name.
+     *
      * @return string[] An array of string values as provided for the given
-     *    header. If the header does not appear in the message, this method MUST
-     *    return an empty array.
+     *                  header. If the header does not appear in the message, this method MUST
+     *                  return an empty array.
      */
     public function getHeader($name)
     {
@@ -500,9 +522,10 @@ class RequestProxy implements IServerRequest
      * an empty string.
      *
      * @param string $name Case-insensitive header field name.
+     *
      * @return string A string of values as provided for the given header
-     *    concatenated together using a comma. If the header does not appear in
-     *    the message, this method MUST return an empty string.
+     *                concatenated together using a comma. If the header does not appear in
+     *                the message, this method MUST return an empty string.
      */
     public function getHeaderLine($name)
     {
@@ -519,9 +542,11 @@ class RequestProxy implements IServerRequest
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
+     *
      * @return static
+     *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
     public function withHeader($name, $value)
@@ -540,9 +565,11 @@ class RequestProxy implements IServerRequest
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string $name Case-insensitive header field name to add.
+     * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
+     *
      * @return static
+     *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
     public function withAddedHeader($name, $value)
@@ -560,6 +587,7 @@ class RequestProxy implements IServerRequest
      * the named header.
      *
      * @param string $name Case-insensitive header field name to remove.
+     *
      * @return static
      */
     public function withoutHeader($name)
@@ -587,7 +615,9 @@ class RequestProxy implements IServerRequest
      * new body stream.
      *
      * @param StreamInterface $body Body.
+     *
      * @return static
+     *
      * @throws \InvalidArgumentException When the body is not valid.
      */
     public function withBody(StreamInterface $body)
@@ -597,9 +627,11 @@ class RequestProxy implements IServerRequest
 
     /**
      * 获取 GET 参数
-     * 当 $name 为 null 时，返回所有
+     * 当 $name 为 null 时，返回所有.
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function get($name = null, $default = null)
@@ -609,9 +641,11 @@ class RequestProxy implements IServerRequest
 
     /**
      * 获取 POST 参数
-     * 当 $name 为 null 时，返回所有
+     * 当 $name 为 null 时，返回所有.
+     *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function post($name = null, $default = null)
@@ -620,9 +654,11 @@ class RequestProxy implements IServerRequest
     }
 
     /**
-     * 判断是否存在 GET 参数
+     * 判断是否存在 GET 参数.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasGet($name)
     {
@@ -630,9 +666,11 @@ class RequestProxy implements IServerRequest
     }
 
     /**
-     * 判断是否存在 POST 参数
+     * 判断是否存在 POST 参数.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasPost($name)
     {
@@ -642,10 +680,11 @@ class RequestProxy implements IServerRequest
     /**
      * 获取 REQUEST 参数
      * 当 $name 为 null 时，返回所有
-     * REQUEST 中包括：GET/POST/COOKIE
+     * REQUEST 中包括：GET/POST/COOKIE.
      *
      * @param string $name
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function request($name = null, $default = null)
@@ -655,18 +694,20 @@ class RequestProxy implements IServerRequest
 
     /**
      * 判断是否存在 REQUEST 参数
-     * REQUEST 中包括：GET/POST/COOKIE
+     * REQUEST 中包括：GET/POST/COOKIE.
      *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasRequest($name)
     {
         return $this->getRequestInstance()->hasRequest($name);
     }
-    
+
     /**
      * 获取swoole的请求对象
+     *
      * @return \Swoole\Http\Request
      */
     public function getSwooleRequest(): \Swoole\Http\Request
@@ -675,7 +716,8 @@ class RequestProxy implements IServerRequest
     }
 
     /**
-     * 获取对应的服务器
+     * 获取对应的服务器.
+     *
      * @return \Imi\Server\Base
      */
     public function getServerInstance(): \Imi\Server\Base
@@ -684,7 +726,7 @@ class RequestProxy implements IServerRequest
     }
 
     /**
-     * 获取当前上下文中的对象实例
+     * 获取当前上下文中的对象实例.
      *
      * @return \Imi\Server\Http\Message\Request
      */
@@ -694,14 +736,14 @@ class RequestProxy implements IServerRequest
     }
 
     /**
-     * 设置当前上下文中的对象实例
+     * 设置当前上下文中的对象实例.
      *
      * @param \Imi\Server\Http\Message\Request $request
+     *
      * @return void
      */
     public function setRequestInstance(Request $request)
     {
         RequestContext::set('request', $request);
     }
-
 }

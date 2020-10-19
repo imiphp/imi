@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\App;
-use Test\TestContext;
 use Imi\Test\BaseTest;
+use Test\TestContext;
 
 /**
  * @testdox AppContext
@@ -23,9 +24,8 @@ class AppContextTest extends BaseTest
         $this->assertEquals('abc', App::get('test'));
         App::set('test', 'def');
         $this->assertEquals('def', App::get('test'));
-        require_once dirname(__DIR__) . '/App/TestContext.php';
+        require_once \dirname(__DIR__) . '/App/TestContext.php';
         $this->expectException(\RuntimeException::class);
         TestContext::set();
     }
-
 }

@@ -1,19 +1,21 @@
 <?php
+
 namespace Imi\Server\ConnectContext\Model;
 
-use Imi\Model\MemoryTableModel;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\MemoryTable;
+use Imi\Model\MemoryTableModel;
 
 /**
- * fd关联表，主键为fd
+ * fd关联表，主键为fd.
+ *
  * @MemoryTable(name="imiFdRelation")
  */
 class FdRelation extends MemoryTableModel
 {
     /**
-     * worker进程ID
-     * 
+     * worker进程ID.
+     *
      * @Column(name="workerId", type="int")
      *
      * @var int
@@ -21,8 +23,8 @@ class FdRelation extends MemoryTableModel
     protected $workerId;
 
     /**
-     * 服务器名
-     * 
+     * 服务器名.
+     *
      * @Column(name="serverName", type="string", length=128)
      *
      * @var string
@@ -30,22 +32,22 @@ class FdRelation extends MemoryTableModel
     protected $serverName;
 
     /**
-     * Get worker进程ID
+     * Get worker进程ID.
      *
-     * @return  int
-     */ 
+     * @return int
+     */
     public function getWorkerId()
     {
         return $this->workerId;
     }
 
     /**
-     * Set worker进程ID
+     * Set worker进程ID.
      *
-     * @param  int  $workerId  worker进程ID
+     * @param int $workerId worker进程ID
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setWorkerId(int $workerId)
     {
         $this->workerId = $workerId;
@@ -53,24 +55,23 @@ class FdRelation extends MemoryTableModel
         return $this;
     }
 
-
     /**
-     * Get 服务器名
+     * Get 服务器名.
      *
-     * @return  string
-     */ 
+     * @return string
+     */
     public function getServerName()
     {
         return $this->serverName;
     }
 
     /**
-     * Set 服务器名
+     * Set 服务器名.
      *
-     * @param  string  $serverName  服务器名
+     * @param string $serverName 服务器名
      *
-     * @return  self
-     */ 
+     * @return self
+     */
     public function setServerName(string $serverName)
     {
         $this->serverName = $serverName;

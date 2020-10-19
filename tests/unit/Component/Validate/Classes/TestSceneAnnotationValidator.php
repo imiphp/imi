@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Test\Component\Validate\Classes;
 
-use Imi\Validate\Validator;
-use Imi\Validate\Annotation\Scene;
 use Imi\Validate\Annotation\Decimal;
 use Imi\Validate\Annotation\Integer;
+use Imi\Validate\Annotation\Scene;
+use Imi\Validate\Validator;
 
 /**
  * @Decimal(name="decimal", min=1, max=10, accuracy=2)
@@ -15,5 +16,4 @@ use Imi\Validate\Annotation\Integer;
  */
 class TestSceneAnnotationValidator extends Validator
 {
-
 }

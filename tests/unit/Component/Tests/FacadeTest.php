@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
@@ -17,14 +18,16 @@ class FacadeTest extends BaseTest
 
     public function testBind()
     {
-        try {
+        try
+        {
             FacadeA2::add(1, 2);
             $this->assertTrue(false);
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
             $this->assertTrue(true);
         }
         FacadeA2::__bindFacade('FacadeA');
         $this->assertEquals(3, FacadeA::add(1, 2));
     }
-
 }

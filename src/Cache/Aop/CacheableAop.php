@@ -1,28 +1,30 @@
 <?php
+
 namespace Imi\Cache\Aop;
 
-use Imi\Config;
-use Imi\Aop\PointCutType;
-use Imi\Util\ClassObject;
-use Imi\Cache\CacheManager;
-use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
-use Imi\Lock\Aop\TLockableParser;
-use Imi\Cache\Annotation\CachePut;
-use Imi\Cache\Annotation\Cacheable;
+use Imi\Aop\AroundJoinPoint;
+use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Cache\Annotation\Cacheable;
+use Imi\Cache\CacheManager;
+use Imi\Config;
+use Imi\Lock\Aop\TLockableParser;
+use Imi\Util\ClassObject;
 
 /**
  * @Aspect(priority=1024)
  */
 class CacheableAop
 {
-    use TLockableParser, TCacheAopHelper;
+    use TLockableParser;
+    use TCacheAopHelper;
 
     /**
-     * 处理 Cacheable 注解
+     * 处理 Cacheable 注解.
+     *
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
@@ -30,6 +32,7 @@ class CacheableAop
      *         }
      * )
      * @Around
+     *
      * @return mixed
      */
     public function parseCacheable(AroundJoinPoint $joinPoint)
@@ -47,10 +50,10 @@ class CacheableAop
 
         // 缓存名
         $name = $cacheable->name;
-        if(null === $name)
+        if (null === $name)
         {
             $name = Config::get('@currentServer.cache.default');
-            if(null === $name)
+            if (null === $name)
             {
                 throw new \RuntimeException('config "cache.default" not found');
             }
@@ -62,9 +65,9 @@ class CacheableAop
 
         // 尝试获取缓存值
         $cacheValue = $cacheInstance->get($key);
-        if(null === $cacheValue)
+        if (null === $cacheValue)
         {
-            if(null === $cacheable->lockable)
+            if (null === $cacheable->lockable)
             {
                 // 不加锁
                 $nextProceedExeced = true;
@@ -74,14 +77,14 @@ class CacheableAop
             {
                 // 加锁
                 $nextProceedExeced = false;
-                $this->parseLockable($target, $method, $joinPointArgs, $cacheable->lockable, function() use(&$cacheValue, $joinPoint, &$nextProceedExeced){
+                $this->parseLockable($target, $method, $joinPointArgs, $cacheable->lockable, function () use (&$cacheValue, $joinPoint, &$nextProceedExeced) {
                     $nextProceedExeced = true;
                     $cacheValue = $joinPoint->proceed();
-                }, function() use($cacheInstance, $key, &$cacheValue){
+                }, function () use ($cacheInstance, $key, &$cacheValue) {
                     return $cacheValue = $cacheInstance->get($key);
                 });
             }
-            if($nextProceedExeced)
+            if ($nextProceedExeced)
             {
                 $cacheInstance->set($key, $cacheValue, $cacheable->ttl);
             }
@@ -89,5 +92,4 @@ class CacheableAop
 
         return $cacheValue;
     }
-
 }

@@ -1,11 +1,13 @@
 <?php
+
 namespace Imi\Model\Annotation\Relation;
 
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 自动插入
+ * 自动插入.
+ *
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Model\Parser\RelationParser")
@@ -13,16 +15,16 @@ use Imi\Bean\Annotation\Parser;
 class AutoInsert extends Base
 {
     /**
-     * 只传一个参数时的参数名
+     * 只传一个参数时的参数名.
+     *
      * @var string
      */
     protected $defaultFieldName = 'status';
 
     /**
-     * 是否开启
+     * 是否开启.
      *
-     * @var boolean
+     * @var bool
      */
     public $status = true;
-
 }

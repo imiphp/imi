@@ -1,11 +1,8 @@
 <?php
+
 namespace Imi\Log;
 
 use Imi\App;
-use Imi\Config;
-use Imi\Worker;
-use Imi\Util\File;
-
 
 abstract class Log
 {
@@ -137,19 +134,21 @@ abstract class Log
     {
         App::getBean('Logger')->debug($message, static::parseContext($context));
     }
-    
+
     /**
-     * 获取代码调用跟踪
+     * 获取代码调用跟踪.
+     *
      * @return array
      */
     private static function getTrace()
     {
         $backtrace = debug_backtrace();
+
         return array_splice($backtrace, 3);
     }
 
     /**
-     * 获取错误文件位置
+     * 获取错误文件位置.
      *
      * @return array
      */
@@ -157,27 +156,30 @@ abstract class Log
     {
         $backtrace = debug_backtrace(0, 3);
         $secondItem = $backtrace[2] ?? null;
+
         return [$secondItem['file'] ?? '', $secondItem['line'] ?? 0];
     }
-    
+
     /**
-     * 处理context
+     * 处理context.
      *
      * @param array $context
+     *
      * @return array
      */
     private static function parseContext($context)
     {
-        if(!isset($context['trace']))
+        if (!isset($context['trace']))
         {
             $context['trace'] = static::getTrace();
         }
-        if(!isset($context['errorFile']))
+        if (!isset($context['errorFile']))
         {
             list($file, $line) = static::getErrorFile();
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
         }
+
         return $context;
     }
 }

@@ -1,145 +1,163 @@
 <?php
+
 namespace Imi\Util;
 
 /**
- * 数组帮助类
+ * 数组帮助类.
  */
 abstract class ArrayUtil
 {
     /**
-     * 从数组中移除一个或多个元素，重新组织为连续的键
+     * 从数组中移除一个或多个元素，重新组织为连续的键.
+     *
      * @param array $array
      * @param mixed $value
+     *
      * @return array
      */
     public static function remove($array, ...$value)
     {
-        foreach($value as $item)
+        foreach ($value as $item)
         {
-            while(false !== ($index = array_search($item, $array)))
+            while (false !== ($index = array_search($item, $array)))
             {
                 unset($array[$index]);
             }
         }
+
         return array_values($array);
     }
 
     /**
-     * 从数组中移除一个或多个元素，保持原有键
+     * 从数组中移除一个或多个元素，保持原有键.
+     *
      * @param array $array
      * @param mixed $value
+     *
      * @return array
      */
     public static function removeKeepKey($array, ...$value)
     {
-        foreach($value as $item)
+        foreach ($value as $item)
         {
-            while(false !== ($index = array_search($item, $array)))
+            while (false !== ($index = array_search($item, $array)))
             {
                 unset($array[$index]);
             }
         }
+
         return $array;
     }
 
     /**
-     * 多维数组递归合并
+     * 多维数组递归合并.
+     *
      * @param array ...$arrays
+     *
      * @return array
      */
     public static function recursiveMerge(...$arrays)
     {
         $merged = [];
-        foreach($arrays as $array)
+        foreach ($arrays as $array)
         {
-            if (!is_array($array))
+            if (!\is_array($array))
             {
                 continue;
             }
             $isAssoc = self::isAssoc($array);
-            foreach ( $array as $key => $value )
+            foreach ($array as $key => $value)
             {
                 if ($isAssoc)
                 {
-                    if (is_array ( $value ) && isset($merged[$key]) && is_array ( $merged [$key] ))
+                    if (\is_array($value) && isset($merged[$key]) && \is_array($merged[$key]))
                     {
-                        $merged [$key] = static::recursiveMerge ( $merged [$key], $value );
+                        $merged[$key] = static::recursiveMerge($merged[$key], $value);
                     }
                     else
                     {
-                        $merged [$key] = $value;
+                        $merged[$key] = $value;
                     }
                 }
                 else
                 {
-                    $merged [] = $value;
+                    $merged[] = $value;
                 }
             }
         }
+
         return $merged;
     }
 
     /**
-     * 将二维数组第二纬某key变为一维的key
-     * @param array $array 原数组
-     * @param string $column 列名
-     * @param boolean $keepOld 是否保留列名，默认保留
+     * 将二维数组第二纬某key变为一维的key.
+     *
+     * @param array  $array   原数组
+     * @param string $column  列名
+     * @param bool   $keepOld 是否保留列名，默认保留
+     *
      * @return array
      */
     public static function columnToKey($array, $column, $keepOld = true)
     {
         $newArray = [];
-        foreach($array as $row)
+        foreach ($array as $row)
         {
             $key = $row[$column];
-            if(!$keepOld)
+            if (!$keepOld)
             {
                 unset($row[$column]);
             }
             $newArray[$key] = $row;
         }
+
         return $newArray;
     }
 
     /**
-     * 判断数组是否为关联数组
+     * 判断数组是否为关联数组.
+     *
      * @param array $array
+     *
      * @return bool
      */
     public static function isAssoc($array)
     {
-        return array_keys($array) !== range(0, count($array) - 1);  
+        return array_keys($array) !== range(0, \count($array) - 1);
     }
 
     /**
-     * 随机获得数组中的值，返回一个保持键值对应的数组
+     * 随机获得数组中的值，返回一个保持键值对应的数组.
      *
      * @param array $array
-     * @param int $number
+     * @param int   $number
+     *
      * @return array
      */
     public static function random($array, $number = 1)
     {
         $result = [];
         $keys = array_rand($array, $number);
-        foreach($keys as $key)
+        foreach ($keys as $key)
         {
-            if(!isset($array[$key]))
+            if (!isset($array[$key]))
             {
                 break;
             }
             $result[$key] = $array[$key];
         }
+
         return $result;
     }
 
     /**
-     * 列表转树形关联结构
+     * 列表转树形关联结构.
      *
-     * @param array $list
+     * @param array  $list
      * @param string $idField
      * @param string $parentField
      * @param string $childrenField
+     *
      * @return array
      */
     public static function toTreeAssoc(array $list, $idField = 'id', $parentField = 'parent_id', $childrenField = 'children')
@@ -147,14 +165,14 @@ abstract class ArrayUtil
         // 查出所有记录
         $result = $tmpArr = [];
         // 处理成ID为键名的数组
-        foreach($list as $item)
+        foreach ($list as $item)
         {
             $item[$childrenField] = [];
             $tmpArr[$item[$idField]] = $item;
         }
-        foreach($tmpArr as $item)
+        foreach ($tmpArr as $item)
         {
-            if(isset($tmpArr[$item[$parentField]]))
+            if (isset($tmpArr[$item[$parentField]]))
             {
                 $tmpArr[$item[$parentField]][$childrenField][] = &$tmpArr[$item[$idField]];
             }
@@ -163,7 +181,7 @@ abstract class ArrayUtil
                 $result[] = &$tmpArr[$item[$idField]];
             }
         }
+
         return $result;
     }
-
 }

@@ -1,13 +1,13 @@
 <?php
+
 namespace Imi\Redis;
 
-use Imi\Pool\PoolManager;
 use Imi\Config;
-
+use Imi\Pool\PoolManager;
 
 /**
- * Redis 快捷操作类
-
+ * Redis 快捷操作类.
+ *
  * @method static mixed _prefix($key)
  * @method static mixed _serialize($value)
  * @method static mixed _unserialize($value)
@@ -250,13 +250,13 @@ abstract class Redis
 {
     public static function __callStatic($name, $arguments)
     {
-        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return RedisManager::getInstance()->$name(...$arguments);
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($name, $arguments) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($name, $arguments) {
                 return $redis->$name(...$arguments);
             });
         }
@@ -268,113 +268,117 @@ abstract class Redis
      * 本方法返回值为回调的返回值
      *
      * @param callable $callable
-     * @param string $poolName
-     * @param bool $forceUse
+     * @param string   $poolName
+     * @param bool     $forceUse
+     *
      * @return mixed
      */
     public static function use($callable, $poolName = null, $forceUse = false)
     {
-        if(!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if (!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return $callable(RedisManager::getInstance($poolName));
         }
         else
         {
-            return PoolManager::use(RedisManager::parsePoolName($poolName), function($resource, $redis) use($callable) {
+            return PoolManager::use(RedisManager::parsePoolName($poolName), function ($resource, $redis) use ($callable) {
                 return $callable($redis);
             });
         }
     }
 
     /**
-     * scan
-     * 
-     * @param int|null $iterator
+     * scan.
+     *
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public static function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
     {
-        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return RedisManager::getInstance()->scan($iterator, $pattern, $count);
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use(&$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use (&$iterator, $pattern, $count) {
                 return $redis->scan($iterator, $pattern, $count);
             });
         }
     }
 
     /**
-     * hscan
-     * 
-     * @param string $key
-     * @param int|null $iterator
+     * hscan.
+     *
+     * @param string      $key
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public static function hscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
     {
-        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return RedisManager::getInstance()->hscan($key, $iterator, $pattern, $count);
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($key, &$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($key, &$iterator, $pattern, $count) {
                 return $redis->hscan($key, $iterator, $pattern, $count);
             });
         }
     }
 
     /**
-     * sscan
-     * 
-     * @param string $key
-     * @param int|null $iterator
+     * sscan.
+     *
+     * @param string      $key
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public static function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
     {
-        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return RedisManager::getInstance()->sscan($key, $iterator, $pattern, $count);
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($key, &$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($key, &$iterator, $pattern, $count) {
                 return $redis->sscan($key, $iterator, $pattern, $count);
             });
         }
     }
 
     /**
-     * zscan
-     * 
-     * @param string $key
-     * @param int|null $iterator
+     * zscan.
+     *
+     * @param string      $key
+     * @param int|null    $iterator
      * @param string|null $pattern
-     * @param int|null $count
+     * @param int|null    $count
+     *
      * @return mixed
      */
     public static function zscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
     {
-        if(Config::get('@currentServer.redis.quickFromRequestContext', true))
+        if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
             return RedisManager::getInstance()->zscan($key, $iterator, $pattern, $count);
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function($resource, $redis) use($key, &$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($key, &$iterator, $pattern, $count) {
                 return $redis->zscan($key, $iterator, $pattern, $count);
             });
         }
     }
-
 }

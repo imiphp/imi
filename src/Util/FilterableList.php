@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Util;
 
 use Imi\Util\Interfaces\IArrayable;
@@ -11,23 +12,23 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     /**
      * 模式
      * allow-白名单
-     * deny-黑名单
+     * deny-黑名单.
      *
      * @var string
      */
     private $mode;
 
     /**
-     * 字段名数组
-     * 
+     * 字段名数组.
+     *
      * 为null则不过滤
      *
      * @var string[]|null
      */
     private $fields;
-    
+
     /**
-     * 数组列表
+     * 数组列表.
      *
      * @var array
      */
@@ -48,7 +49,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     public function &offsetGet($offset)
     {
         $list = &$this->list;
-        if(isset($list[$offset]))
+        if (isset($list[$offset]))
         {
             $value = &$list[$offset];
         }
@@ -56,16 +57,17 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         {
             $value = null;
         }
+
         return $value;
     }
 
     public function offsetSet($offset, $value)
     {
-        if(!$value instanceof $this->itemType)
+        if (!$value instanceof $this->itemType)
         {
             throw new \InvalidArgumentException('ArrayList item must be an instance of ' . $this->itemType);
         }
-        if(null === $offset)
+        if (null === $offset)
         {
             $this->list[] = $value;
         }
@@ -78,7 +80,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     public function offsetUnset($offset)
     {
         $list = $this->list;
-        if(isset($list[$offset]))
+        if (isset($list[$offset]))
         {
             unset($list[$offset]);
         }
@@ -110,7 +112,8 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     }
 
     /**
-     * 将当前对象作为数组返回
+     * 将当前对象作为数组返回.
+     *
      * @return array
      */
     public function toArray(): array
@@ -119,7 +122,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     }
 
     /**
-     * json 序列化
+     * json 序列化.
      *
      * @return array
      */
@@ -129,9 +132,10 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     }
 
     /**
-     * 从数组列表中移除
+     * 从数组列表中移除.
      *
      * @param mixed ...$value
+     *
      * @return void
      */
     public function remove(...$value)
@@ -140,7 +144,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     }
 
     /**
-     * 清空
+     * 清空.
      *
      * @return void
      */
@@ -150,52 +154,54 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     }
 
     /**
-     * 加入数组列表
+     * 加入数组列表.
      *
      * @param mixed ...$value
+     *
      * @return void
      */
     public function append(...$value)
     {
-        foreach($value as $row)
+        foreach ($value as $row)
         {
             $this[] = $row;
         }
     }
 
     /**
-     * 数组列表长度
+     * 数组列表长度.
      *
      * @return int
      */
     public function count()
     {
-        return count($this->list);
+        return \count($this->list);
     }
 
     /**
-     * 处理列表
+     * 处理列表.
      *
      * @param array $list
+     *
      * @return void
      */
     private function parseList($list)
     {
-        if(null === $this->fields)
+        if (null === $this->fields)
         {
             return $list;
         }
         $result = [];
-        foreach($list as $item)
+        foreach ($list as $item)
         {
-            if(is_object($item))
+            if (\is_object($item))
             {
                 $item = clone $item;
             }
             ObjectArrayHelper::filter($item, $this->fields, $this->mode);
             $result[] = $item;
         }
+
         return $result;
     }
-
 }

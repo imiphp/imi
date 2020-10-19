@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Traits\TRaw;
-use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Interfaces\IDatabase;
+use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Traits\TRaw;
 
 class Database implements IDatabase
 {
@@ -11,13 +12,15 @@ class Database implements IDatabase
     use TKeyword;
 
     /**
-     * 数据库名
+     * 数据库名.
+     *
      * @var string
      */
     protected $database;
 
     /**
-     * 别名
+     * 别名.
+     *
      * @var string
      */
     protected $alias;
@@ -29,7 +32,8 @@ class Database implements IDatabase
     }
 
     /**
-     * 获取数据库名
+     * 获取数据库名.
+     *
      * @return string
      */
     public function getDatabase(): string
@@ -38,17 +42,20 @@ class Database implements IDatabase
     }
 
     /**
-     * 获取别名
+     * 获取别名.
+     *
      * @return string
      */
     public function getAlias(): string
     {
         return $this->alias;
     }
-    
+
     /**
-     * 设置数据库名
+     * 设置数据库名.
+     *
      * @param string $database
+     *
      * @return void
      */
     public function setDatabase(string $database = null)
@@ -57,30 +64,34 @@ class Database implements IDatabase
     }
 
     /**
-     * 设置别名
+     * 设置别名.
+     *
      * @param string $alias
+     *
      * @return void
      */
     public function setAlias(string $alias = null)
     {
         $this->alias = $alias;
     }
-    
+
     /**
      * 设置值，可以根据传入的值自动处理
      * name——database
      * name alias——database alias
-     * name as alias——database as alias
+     * name as alias——database as alias.
+     *
      * @param string $value
+     *
      * @return void
      */
     public function setValue($value)
     {
         $matches = $this->parseKeywordText($value);
-        if(isset($matches['keywords']))
+        if (isset($matches['keywords']))
         {
             $keywords = $matches['keywords'];
-            if(isset($keywords[0]))
+            if (isset($keywords[0]))
             {
                 $this->database = $keywords[0];
             }
@@ -90,17 +101,19 @@ class Database implements IDatabase
 
     public function __toString()
     {
-        if($this->isRaw)
+        if ($this->isRaw)
         {
             return $this->rawSQL;
         }
+
         return $this->parseKeywordToText([
             $this->database,
         ], $this->alias);
     }
 
     /**
-     * 获取绑定的数据们
+     * 获取绑定的数据们.
+     *
      * @return array
      */
     public function getBinds()

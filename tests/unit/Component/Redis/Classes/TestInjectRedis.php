@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Test\Component\Redis\Classes;
 
-use Imi\Redis\RedisHandler;
 use Imi\Bean\Annotation\Bean;
-use PHPUnit\Framework\Assert;
 use Imi\Redis\Annotation\RedisInject;
+use Imi\Redis\RedisHandler;
+use PHPUnit\Framework\Assert;
 
 /**
  * @Bean("TestInjectRedis")

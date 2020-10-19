@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 /**
@@ -10,10 +11,9 @@ class LockAtomicTest extends BaseLockTest
 
     protected function check()
     {
-        if('Darwin' === PHP_OS && version_compare(SWOOLE_VERSION, '4.5.3', '<'))
+        if ('Darwin' === \PHP_OS && version_compare(\SWOOLE_VERSION, '4.5.3', '<'))
         {
             $this->markTestSkipped('bug');
         }
     }
-
 }

@@ -1,18 +1,12 @@
 <?php
+
 namespace Imi\Log;
 
-use Imi\App;
-use Imi\Config;
-use Imi\Worker;
-use Imi\Util\File;
-use Imi\Log\LogLevel;
-use Imi\Util\Coroutine;
-use Imi\Bean\BeanFactory;
-use Psr\Log\AbstractLogger;
 use Imi\Bean\Annotation\Bean;
-use Imi\Util\Imi;
-use Imi\Util\Traits\TBeanRealClass;
+use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
+use Imi\Util\Traits\TBeanRealClass;
+use Psr\Log\AbstractLogger;
 
 /**
  * @Bean("Logger")
@@ -22,7 +16,8 @@ class Logger extends AbstractLogger
     use TBeanRealClass;
 
     /**
-     * 核心处理器
+     * 核心处理器.
+     *
      * @var array
      */
     protected $coreHandlers = [
@@ -54,39 +49,41 @@ class Logger extends AbstractLogger
                     LogLevel::EMERGENCY,
                     LogLevel::ERROR,
                 ],
-                'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . PHP_EOL . 'Stack trace:' . PHP_EOL . '{trace}',
+                'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . \PHP_EOL . 'Stack trace:' . \PHP_EOL . '{trace}',
                 'length' => 1024,
             ],
-        ]
+        ],
     ];
 
     /**
-     * 扩展处理器
+     * 扩展处理器.
+     *
      * @var array
      */
     protected $exHandlers = [];
 
     /**
-     * 处理器对象数组
+     * 处理器对象数组.
      *
      * @var \Imi\Log\Handler\Base[]
      */
     protected $handlers = [];
 
     /**
-     * 日志记录
+     * 日志记录.
+     *
      * @var \Imi\Log\Record[]
      */
     protected $records = [];
-    
+
     public function __init()
     {
         $handlers = &$this->handlers;
-        foreach(array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
+        foreach (array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
         {
             $handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
         }
-        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function(){
+        Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
             $this->save();
         }, \Imi\Util\ImiPriority::IMI_MIN + 1);
     }
@@ -106,50 +103,53 @@ class Logger extends AbstractLogger
         $trace = $context['trace'];
         $logTime = time();
         $record = new Record($level, $message, $context, $trace, $logTime);
-        foreach($this->handlers as $handler)
+        foreach ($this->handlers as $handler)
         {
             $handler->log($record);
         }
     }
 
     /**
-     * 强制保存所有日志
+     * 强制保存所有日志.
+     *
      * @return void
      */
     public function save()
     {
-        foreach($this->handlers as $handler)
+        foreach ($this->handlers as $handler)
         {
             $handler->save();
         }
     }
 
     /**
-     * 获取代码调用跟踪
+     * 获取代码调用跟踪.
+     *
      * @return array
      */
     protected function getTrace($backtrace)
     {
         $index = null;
         $realClassName = static::__getRealClassName();
-        foreach($backtrace as $i => $item)
+        foreach ($backtrace as $i => $item)
         {
             $key = $i + 1;
-            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$key]['file']) && 'AbstractLogger.php' !== basename($backtrace[$key]['file']))
+            if (isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$key]['file']) && 'AbstractLogger.php' !== basename($backtrace[$key]['file']))
             {
                 $index = $i + 2;
                 break;
             }
         }
-        if(null === $index)
+        if (null === $index)
         {
             return [];
         }
+
         return array_splice($backtrace, $index);
     }
 
     /**
-     * 获取错误文件位置
+     * 获取错误文件位置.
      *
      * @return array
      */
@@ -157,50 +157,54 @@ class Logger extends AbstractLogger
     {
         $index = null;
         $realClassName = static::__getRealClassName();
-        foreach($backtrace as $i => $item)
+        foreach ($backtrace as $i => $item)
         {
             $key = $i + 1;
-            if(isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$key]['file']) && 'AbstractLogger.php' !== basename($backtrace[$key]['file']))
+            if (isset($item['file']) && $realClassName === $item['class'] && isset($backtrace[$key]['file']) && 'AbstractLogger.php' !== basename($backtrace[$key]['file']))
             {
                 $index = $key;
                 break;
             }
         }
         $backTraceItem = $backtrace[$index] ?? null;
+
         return [$backTraceItem['file'] ?? '', $backTraceItem['line'] ?? 0];
     }
 
     /**
-     * 处理context
+     * 处理context.
      *
      * @param array $context
+     *
      * @return array
      */
     private function parseContext($context)
     {
         $debugBackTrace = debug_backtrace();
-        if(!isset($context['trace']))
+        if (!isset($context['trace']))
         {
             $context['trace'] = $this->getTrace($debugBackTrace);
         }
-        if(!isset($context['errorFile']))
+        if (!isset($context['errorFile']))
         {
             list($file, $line) = $this->getErrorFile($debugBackTrace);
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
         }
+
         return $context;
     }
-    
+
     /**
-     * 增加扩展处理器
+     * 增加扩展处理器.
      *
      * @param array $exHandler
+     *
      * @return void
      */
     public function addExHandler($exHandler)
     {
-        if(in_array($exHandler, $this->exHandlers))
+        if (\in_array($exHandler, $this->exHandlers))
         {
             return; // 防止重复添加
         }

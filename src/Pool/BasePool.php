@@ -1,75 +1,81 @@
 <?php
+
 namespace Imi\Pool;
 
-use Imi\Worker;
-use Imi\Event\Event;
-use Swoole\Coroutine;
-use Imi\Util\ArrayUtil;
 use Imi\Bean\BeanFactory;
+use Imi\Event\Event;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Util\ArrayUtil;
+use Imi\Worker;
+use Swoole\Coroutine;
 
 abstract class BasePool implements IPool
 {
     /**
-     * 池子名称
+     * 池子名称.
+     *
      * @var string
      */
     protected $name;
 
     /**
-     * 池子存储
+     * 池子存储.
+     *
      * @var \Imi\Pool\PoolItem[]
      */
     protected $pool = [];
 
     /**
-     * 配置
+     * 配置.
+     *
      * @var \Imi\Pool\Interfaces\IPoolConfig
      */
     protected $config;
 
     /**
-     * 资源配置
+     * 资源配置.
+     *
      * @var mixed
      */
     protected $resourceConfig;
 
     /**
-     * 垃圾回收定时器ID
+     * 垃圾回收定时器ID.
+     *
      * @var int
      */
     protected $gcTimerId;
 
     /**
-     * 心跳定时器ID
+     * 心跳定时器ID.
      *
      * @var int
      */
     protected $heartbeatTimerId;
 
     /**
-     * 当前配置序号
+     * 当前配置序号.
      *
-     * @var integer
+     * @var int
      */
     protected $configIndex = -1;
 
     /**
-     * 正在添加中的资源数量
+     * 正在添加中的资源数量.
      *
-     * @var integer
+     * @var int
      */
     protected $addingResources = 0;
 
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         $this->name = $name;
-        if(null !== $config)
+        if (null !== $config)
         {
             $this->config = $config;
         }
-        if(!is_array($resourceConfig) || ArrayUtil::isAssoc($resourceConfig))
+        if (!\is_array($resourceConfig) || ArrayUtil::isAssoc($resourceConfig))
         {
             $this->resourceConfig = [$resourceConfig];
         }
@@ -81,14 +87,15 @@ abstract class BasePool implements IPool
 
     public function __init()
     {
-        if(is_array($this->config))
+        if (\is_array($this->config))
         {
             $this->config = BeanFactory::newInstance(PoolConfig::class, $this->config);
         }
     }
 
     /**
-     * 获取池子名称
+     * 获取池子名称.
+     *
      * @return string
      */
     public function getName(): string
@@ -97,16 +104,18 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取池子配置
+     * 获取池子配置.
+     *
      * @return \Imi\Pool\Interfaces\IPoolConfig
      */
     public function getConfig(): \Imi\Pool\Interfaces\IPoolConfig
     {
         return $this->config;
     }
-    
+
     /**
-     * 打开池子
+     * 打开池子.
+     *
      * @return void
      */
     public function open()
@@ -124,14 +133,15 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 关闭池子，释放所有资源
+     * 关闭池子，释放所有资源.
+     *
      * @return void
      */
     public function close()
     {
         $this->stopAutoGC();
         $this->stopHeartbeat();
-        foreach($this->pool as $item)
+        foreach ($this->pool as $item)
         {
             $item->getResource()->close();
         }
@@ -140,15 +150,17 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 释放资源占用
+     * 释放资源占用.
+     *
      * @param \Imi\Pool\Interfaces\IPoolResource $resource
+     *
      * @return void
      */
     public function release(IPoolResource $resource)
     {
         $hash = $resource->hashCode();
         $pool = &$this->pool;
-        if(isset($pool[$hash]))
+        if (isset($pool[$hash]))
         {
             $pool[$hash]->release();
             $resource->reset();
@@ -157,7 +169,8 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 资源回收
+     * 资源回收.
+     *
      * @return void
      */
     public function gc()
@@ -167,19 +180,18 @@ abstract class BasePool implements IPool
         $maxActiveTime = $config->getMaxActiveTime();
         $maxUsedTime = $config->getMaxUsedTime();
         $pool = &$this->pool;
-        foreach($this->pool as $key => $item)
+        foreach ($this->pool as $key => $item)
         {
-            if(
+            if (
                 (null !== $maxActiveTime && $item->isFree() && time() - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
                 || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && time() - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
-                )
-            {
+                ) {
                 $item->getResource()->close();
                 unset($pool[$key]);
                 $hasGC = true;
             }
         }
-        if($hasGC)
+        if ($hasGC)
         {
             $this->fillMinResources();
             $this->buildQueue();
@@ -187,25 +199,28 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 填充最少资源数量
+     * 填充最少资源数量.
+     *
      * @return void
      */
     public function fillMinResources()
     {
-        while($this->config->getMinResources() - $this->getCount() > 0)
+        while ($this->config->getMinResources() - $this->getCount() > 0)
         {
             $this->addResource();
         }
     }
 
     /**
-     * 添加资源
+     * 添加资源.
+     *
      * @return IPoolResource
      */
     protected function addResource()
     {
         $addingResources = &$this->addingResources;
-        try {
+        try
+        {
             ++$addingResources;
             $resource = $this->createResource();
             $resource->open();
@@ -216,49 +231,57 @@ abstract class BasePool implements IPool
             $this->push($resource);
 
             return $resource;
-        } finally {
+        }
+        finally
+        {
             --$addingResources;
         }
     }
 
     /**
-     * 初始化队列
+     * 初始化队列.
+     *
      * @return void
      */
-    protected abstract function initQueue();
+    abstract protected function initQueue();
 
     /**
-     * 建立队列
+     * 建立队列.
+     *
      * @return void
      */
-    protected abstract function buildQueue();
+    abstract protected function buildQueue();
 
     /**
-     * 创建资源
+     * 创建资源.
+     *
      * @return \Imi\Pool\Interfaces\IPoolResource
      */
-    protected abstract function createResource(): \Imi\Pool\Interfaces\IPoolResource;
+    abstract protected function createResource(): \Imi\Pool\Interfaces\IPoolResource;
 
     /**
-     * 把资源加入队列
+     * 把资源加入队列.
+     *
      * @param IPoolResource $resource
+     *
      * @return void
      */
-    protected abstract function push(IPoolResource $resource);
+    abstract protected function push(IPoolResource $resource);
 
     /**
-     * 开始自动垃圾回收
+     * 开始自动垃圾回收.
+     *
      * @return void
      */
     public function startAutoGC()
     {
-        if(null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0)
+        if (null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0)
         {
             $gcInterval = $this->config->getGCInterval();
-            if(null !== $gcInterval)
+            if (null !== $gcInterval)
             {
                 $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
-                Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function(){
+                Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
                     $this->stopAutoGC();
                 }, \Imi\Util\ImiPriority::IMI_MIN);
             }
@@ -266,19 +289,21 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 停止自动垃圾回收
+     * 停止自动垃圾回收.
+     *
      * @return void
      */
     public function stopAutoGC()
     {
-        if(null !== $this->gcTimerId)
+        if (null !== $this->gcTimerId)
         {
             \Swoole\Timer::clear($this->gcTimerId);
         }
     }
 
     /**
-     * 获得资源配置
+     * 获得资源配置.
+     *
      * @return mixed
      */
     public function getResourceConfig()
@@ -287,16 +312,18 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取当前池子中资源总数
+     * 获取当前池子中资源总数.
+     *
      * @return int
      */
     public function getCount()
     {
-        return count($this->pool) + $this->addingResources;
+        return \count($this->pool) + $this->addingResources;
     }
 
     /**
-     * 获取当前池子中正在使用的资源总数
+     * 获取当前池子中正在使用的资源总数.
+     *
      * @return int
      */
     public function getUsed()
@@ -305,37 +332,38 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 获取下一个资源配置
+     * 获取下一个资源配置.
      *
      * @return mixed
      */
     protected function getNextResourceConfig()
     {
         $resourceConfig = &$this->resourceConfig;
-        if(!isset($resourceConfig[1]))
+        if (!isset($resourceConfig[1]))
         {
             return $resourceConfig[0];
         }
-        switch($this->config->getResourceConfigMode())
+        switch ($this->config->getResourceConfigMode())
         {
             case ResourceConfigMode::RANDOM:
-                $index = mt_rand(0, count($resourceConfig) - 1);
+                $index = mt_rand(0, \count($resourceConfig) - 1);
                 break;
             default:
-                $maxIndex = count($resourceConfig) - 1;
+                $maxIndex = \count($resourceConfig) - 1;
                 $configIndex = &$this->configIndex;
-                if(++$configIndex > $maxIndex)
+                if (++$configIndex > $maxIndex)
                 {
                     $configIndex = 0;
                 }
                 $index = $configIndex;
                 break;
         }
+
         return $resourceConfig[$index];
     }
 
     /**
-     * 心跳
+     * 心跳.
      *
      * @return void
      */
@@ -343,29 +371,32 @@ abstract class BasePool implements IPool
     {
         $hasGC = false;
         $pool = &$this->pool;
-        foreach($pool as $key => $item)
+        foreach ($pool as $key => $item)
         {
-            if($item->isFree())
+            if ($item->isFree())
             {
-                try {
+                try
+                {
                     $item->lock();
                     $resource = $item->getResource();
-                    if(!$resource->checkState())
+                    if (!$resource->checkState())
                     {
                         $resource->close();
                         unset($pool[$key]);
                         $hasGC = true;
                         $item = null;
                     }
-                } finally {
-                    if($item)
+                }
+                finally
+                {
+                    if ($item)
                     {
                         $item->release();
                     }
                 }
             }
         }
-        if($hasGC)
+        if ($hasGC)
         {
             $this->fillMinResources();
             $this->buildQueue();
@@ -373,30 +404,31 @@ abstract class BasePool implements IPool
     }
 
     /**
-     * 开始心跳维持资源
+     * 开始心跳维持资源.
+     *
      * @return void
      */
     public function startHeartbeat()
     {
-        if((null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
+        if ((null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
         {
             $this->heartbeatTimerId = \Swoole\Timer::tick($heartbeatInterval * 1000, [$this, 'heartbeat']);
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function(){
+            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
                 $this->stopHeartbeat();
             }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
 
     /**
-     * 停止心跳维持资源
+     * 停止心跳维持资源.
+     *
      * @return void
      */
     public function stopHeartbeat()
     {
-        if(null !== $this->heartbeatTimerId)
+        if (null !== $this->heartbeatTimerId)
         {
             \Swoole\Timer::clear($this->heartbeatTimerId);
         }
     }
-
 }

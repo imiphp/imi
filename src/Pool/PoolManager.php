@@ -1,33 +1,36 @@
 <?php
+
 namespace Imi\Pool;
 
-use Imi\App;
-use Imi\RequestContext;
 use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\RequestContext;
 
 abstract class PoolManager
 {
     /**
-     * \池子数组
+     * \池子数组.
+     *
      * @var \Imi\Pool\Interfaces\IPool[]
      */
     protected static $pools = [];
 
     /**
-     * 最后获取资源时间
+     * 最后获取资源时间.
      *
      * @var array
      */
     protected static $lastGetResourceTime = [];
-    
+
     /**
-     * 增加对象名称
-     * @param string $name
-     * @param string $poolClassName
+     * 增加对象名称.
+     *
+     * @param string                           $name
+     * @param string                           $poolClassName
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
-     * @param array|null $resourceConfig
+     * @param array|null                       $resourceConfig
+     *
      * @return void
      */
     public static function addName(string $name, string $poolClassName, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
@@ -37,7 +40,8 @@ abstract class PoolManager
     }
 
     /**
-     * 获取所有对象名称
+     * 获取所有对象名称.
+     *
      * @return void
      */
     public static function getNames()
@@ -46,12 +50,13 @@ abstract class PoolManager
     }
 
     /**
-     * 清空池子
+     * 清空池子.
+     *
      * @return void
      */
     public static function clearPools()
     {
-        foreach(static::$pools as $pool)
+        foreach (static::$pools as $pool)
         {
             $pool->close();
         }
@@ -59,7 +64,7 @@ abstract class PoolManager
     }
 
     /**
-     * 连接池是否存在
+     * 连接池是否存在.
      */
     public static function exists(string $name)
     {
@@ -67,83 +72,97 @@ abstract class PoolManager
     }
 
     /**
-     * 获取实例
+     * 获取实例.
+     *
      * @param string $name
+     *
      * @return \Imi\Pool\Interfaces\IPool
      */
     public static function getInstance(string $name): IPool
     {
         $pools = &static::$pools;
-        if(!isset($pools[$name]))
+        if (!isset($pools[$name]))
         {
             throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
         }
+
         return $pools[$name];
     }
 
     /**
-     * 获取池子中的资源
+     * 获取池子中的资源.
+     *
      * @param string $name
+     *
      * @return IPoolResource
      */
     public static function getResource(string $name)
     {
         $resource = static::getInstance($name)->getResource();
 
-        if($resource)
+        if ($resource)
         {
             static::pushResourceToRequestContext($resource);
         }
 
         static::$lastGetResourceTime[$name] = microtime(true);
+
         return $resource;
     }
 
     /**
-     * 获取请求上下文资源，一个请求上下文通过此方法，只能获取同一个资源
+     * 获取请求上下文资源，一个请求上下文通过此方法，只能获取同一个资源.
+     *
      * @param string $name
+     *
      * @return IPoolResource|null
      */
     public static function getRequestContextResource(string $name)
     {
         $requestContext = RequestContext::getContext();
         $resource = $requestContext['poolResource.' . $name] ?? null;
-        if(null !== $resource)
+        if (null !== $resource)
         {
             $requestResourceCheckInterval = $resource->getPool()->getConfig()->getRequestResourceCheckInterval();
-            if($requestResourceCheckInterval > 0 && microtime(true) - static::$lastGetResourceTime[$name] > $requestResourceCheckInterval && !$resource->checkState())
+            if ($requestResourceCheckInterval > 0 && microtime(true) - static::$lastGetResourceTime[$name] > $requestResourceCheckInterval && !$resource->checkState())
             {
                 $resource->getPool()->release($resource);
                 $resource = null;
             }
         }
-        if(null === $resource)
+        if (null === $resource)
         {
             $resource = static::getResource($name);
             $requestContext['poolResource.' . $name] = $resource;
         }
+
         return $resource;
     }
 
     /**
-     * 尝试获取资源，获取到则返回资源，没有获取到返回false
+     * 尝试获取资源，获取到则返回资源，没有获取到返回false.
+     *
      * @param string $name
-     * @return IPoolResource|boolean
+     *
+     * @return IPoolResource|bool
      */
     public static function tryGetResource(string $name)
     {
         $resource = static::getInstance($name)->tryGetResource();
-        if($resource)
+        if ($resource)
         {
             static::pushResourceToRequestContext($resource);
         }
+
         return $resource;
     }
 
     /**
-     * 释放资源占用
-     * @param string $name
+     * 释放资源占用.
+     *
+     * @param string        $name
      * @param IPoolResource $resource
+     *
      * @return void
      */
     public static function releaseResource(IPoolResource $resource)
@@ -156,32 +175,38 @@ abstract class PoolManager
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有两个参数：$resource(资源对象), $instance(操作实例对象，如数据库、Redis等)
      * 本方法返回值为回调的返回值
-     * @param string $name
+     *
+     * @param string   $name
      * @param callable $callback
+     *
      * @return mixed
      */
     public static function use(string $name, callable $callback)
     {
         $resource = static::getResource($name);
         $result = null;
-        try{
+        try
+        {
             $result = $callback($resource, $resource->getInstance());
         }
-        finally{
+        finally
+        {
             static::releaseResource($resource);
         }
+
         return $result;
     }
 
     /**
-     * 释放当前上下文请求的未被释放的资源
+     * 释放当前上下文请求的未被释放的资源.
+     *
      * @return void
      */
     public static function destroyCurrentContext()
     {
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
-        foreach($poolResources as $resource)
+        foreach ($poolResources as $resource)
         {
             $resource->getPool()->release($resource);
         }
@@ -189,20 +214,24 @@ abstract class PoolManager
     }
 
     /**
-     * 请求上下文中是否存在资源
+     * 请求上下文中是否存在资源.
+     *
      * @param string $name
-     * @return boolean
+     *
+     * @return bool
      */
     public static function hasRequestContextResource(string $name)
     {
         $resource = RequestContext::get('poolResource.' . $name);
+
         return null !== $resource;
     }
 
     /**
-     * 把资源存放到当前上下文
+     * 把资源存放到当前上下文.
      *
      * @param IPoolResource $resource
+     *
      * @return void
      */
     private static function pushResourceToRequestContext(IPoolResource $resource)
@@ -215,8 +244,10 @@ abstract class PoolManager
     }
 
     /**
-     * 把资源从当前上下文删除
+     * 把资源从当前上下文删除.
+     *
      * @param IPoolResource $resource
+     *
      * @return void
      */
     private static function removeResourceFromRequestContext(IPoolResource $resource)
@@ -225,7 +256,7 @@ abstract class PoolManager
         $poolResources = $requestContext['poolResources'] ?? [];
         $instance = $resource->getInstance();
         $key = spl_object_hash($instance);
-        if(isset($poolResources[$key]))
+        if (isset($poolResources[$key]))
         {
             unset($poolResources[$key]);
             $requestContext['poolResources'] = $poolResources;
@@ -233,23 +264,24 @@ abstract class PoolManager
 
         $name = 'poolResource.' . $resource->getPool()->getName();
         $poolResource = RequestContext::get($name);
-        if($poolResource === $resource)
+        if ($poolResource === $resource)
         {
             $requestContext[$name] = null;
         }
     }
 
     /**
-     * 清理连接池，只允许留下指定连接池
+     * 清理连接池，只允许留下指定连接池.
      *
      * @param string[] $allowList
+     *
      * @return void
      */
     public static function cleanAllow(array $allowList)
     {
-        foreach(self::getNames() as $poolName)
+        foreach (self::getNames() as $poolName)
         {
-            if(!in_array($poolName, $allowList))
+            if (!\in_array($poolName, $allowList))
             {
                 self::getInstance($poolName)->close();
             }
@@ -257,20 +289,20 @@ abstract class PoolManager
     }
 
     /**
-     * 清理连接池，只允许留下指定连接池
+     * 清理连接池，只允许留下指定连接池.
      *
      * @param string[] $denyList
+     *
      * @return void
      */
     public static function cleanDeny(array $denyList)
     {
-        foreach(self::getNames() as $poolName)
+        foreach (self::getNames() as $poolName)
         {
-            if(in_array($poolName, $denyList))
+            if (\in_array($poolName, $denyList))
             {
                 self::getInstance($poolName)->close();
             }
         }
     }
-
 }

@@ -1,51 +1,51 @@
 <?php
 
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\WebSocketServer\MainServer\Controller',
         'Imi\Test\WebSocketServer\MainServer\Listener',
         'Imi\Test\WebSocketServer\MainServer\Error',
     ],
-    'beans'    =>    [
-        'WebSocketDispatcher'    =>    [
-            'middlewares'    =>    [
+    'beans'    => [
+        'WebSocketDispatcher'    => [
+            'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\Test\WebSocketServer\MainServer\Middleware\Test::class,
             ],
         ],
-        'GroupRedis'    =>    [
-            'redisPool'    =>    'redis',
-            'redisDb'   =>  2,
+        'GroupRedis'    => [
+            'redisPool'    => 'redis',
+            'redisDb'      => 2,
         ],
-        'HttpDispatcher'    =>    [
-            'middlewares'    =>    [
+        'HttpDispatcher'    => [
+            'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectContextRedis'    =>    [
-            'redisPool' =>  'redis',
-            'lockId'    =>  'redisConnectContextLock',
+        'ConnectContextRedis'    => [
+            'redisPool' => 'redis',
+            'lockId'    => 'redisConnectContextLock',
         ],
-        'ConnectContextStore'   =>  [
-            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Redis::class,
-            'ttl'           =>  600,
+        'ConnectContextStore'   => [
+            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\Redis::class,
+            'ttl'           => 600,
         ],
-        'ConnectContextMemoryTable' =>  [
-            'tableName' =>  'connectContext',
+        'ConnectContextMemoryTable' => [
+            'tableName' => 'connectContext',
         ],
-        'WSRouteNotFoundHandler'    =>  [
-            'handler'   =>  'RouteNotFound',
+        'WSRouteNotFoundHandler'    => [
+            'handler'   => 'RouteNotFound',
         ],
-        'ConnectionBinder'  =>  [
-            'redisPool' =>  'redis',
-            'key'       =>  'imi:wsTest:connectionBinder:map'
+        'ConnectionBinder'  => [
+            'redisPool' => 'redis',
+            'key'       => 'imi:wsTest:connectionBinder:map',
         ],
     ],
-    'controller'    =>  [
-        'singleton' =>  true,
+    'controller'    => [
+        'singleton' => true,
     ],
 ];

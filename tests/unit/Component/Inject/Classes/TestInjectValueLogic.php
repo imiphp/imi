@@ -1,13 +1,14 @@
 <?php
+
 namespace Imi\Test\Component\Inject\Classes;
 
-use Imi\Config;
-use Imi\Bean\Annotation\Bean;
-use PHPUnit\Framework\Assert;
-use Imi\Bean\Annotation\Callback;
-use Imi\Aop\Annotation\ConstValue;
 use Imi\Aop\Annotation\CallableValue;
+use Imi\Aop\Annotation\ConstValue;
+use Imi\Bean\Annotation\Bean;
+use Imi\Bean\Annotation\Callback;
+use Imi\Config;
 use Imi\Config\Annotation\ConfigValue;
+use PHPUnit\Framework\Assert;
 
 /**
  * @Bean("TestInjectValueLogic")
@@ -45,8 +46,8 @@ class TestInjectValueLogic
     public function test()
     {
         Assert::assertEquals(Config::get('@app.imi'), $this->imi);
-        Assert::assertEquals(PHP_VERSION, $this->phpVersion);
+        Assert::assertEquals(\PHP_VERSION, $this->phpVersion);
         Assert::assertEquals(['A', 'test'], $this->callable);
-        Assert::assertEquals(phpversion(), $this->callableResult);
+        Assert::assertEquals(PHP_VERSION, $this->callableResult);
     }
 }

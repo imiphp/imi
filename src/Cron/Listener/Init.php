@@ -1,21 +1,13 @@
 <?php
+
 namespace Imi\Cron\Listener;
 
-use Imi\Event\EventParam;
-use Imi\Cron\Annotation\Cron;
-use Imi\Event\IEventListener;
 use Imi\Aop\Annotation\Inject;
-use Imi\App;
-use Imi\Bean\Annotation\Listener;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Cron\Consts\CronTaskType;
-use Imi\Cron\Contract\ICronTask;
-use Imi\Process\Annotation\Process;
-use Imi\Process\IProcess;
-use Imi\Process\ProcessManager;
-use Imi\Task\Annotation\Task;
-use Imi\Task\Interfaces\ITaskHandler;
-use Imi\Task\TaskManager;
+use Imi\Bean\Annotation\Listener;
+use Imi\Cron\Annotation\Cron;
+use Imi\Event\EventParam;
+use Imi\Event\IEventListener;
 
 /**
  * @Listener(eventName="IMI.SERVERS.CREATE.AFTER",priority=Imi\Util\ImiPriority::IMI_MIN)
@@ -38,22 +30,23 @@ class Init implements IEventListener
     protected $autoRunProcessManager;
 
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(EventParam $e)
     {
         // 未启用定时任务进程不初始化
-        if(!$this->autoRunProcessManager->exists('CronProcess'))
+        if (!$this->autoRunProcessManager->exists('CronProcess'))
         {
             return;
         }
         $cronManager = $this->cronManager;
-        foreach(AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
+        foreach (AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
             $cronManager->addCronByAnnotation($point->getAnnotation(), $point->getClass());
         }
     }
-
 }

@@ -1,35 +1,35 @@
 <?php
 
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\UDPServer\MainServer\Controller',
         'Imi\Test\UDPServer\MainServer\Listener',
         'Imi\Test\UDPServer\MainServer\Error',
     ],
-    'beans'    =>    [
-        'UdpDispatcher'    =>    [
-            'middlewares'    =>    [
+    'beans'    => [
+        'UdpDispatcher'    => [
+            'middlewares'    => [
                 \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
                 \Imi\Test\UDPServer\MainServer\Middleware\Test::class,
             ],
         ],
-        'ConnectContextStore'   =>  [
-            'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        'ConnectContextStore'   => [
+            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
         ],
-        'ConnectContextMemoryTable' =>  [
-            'tableName' =>  'connectContext',
+        'ConnectContextMemoryTable' => [
+            'tableName' => 'connectContext',
         ],
-        'ServerGroup'   =>  [
-            'status'    =>  false,
+        'ServerGroup'   => [
+            'status'    => false,
         ],
-        'UdpRouteNotFoundHandler'   =>  [
-            'handler'   =>  'RouteNotFound',
+        'UdpRouteNotFoundHandler'   => [
+            'handler'   => 'RouteNotFound',
         ],
     ],
-    'controller'    =>  [
-        'singleton' =>  true,
+    'controller'    => [
+        'singleton' => true,
     ],
 ];

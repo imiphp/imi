@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Performance;
 
 /**

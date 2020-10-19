@@ -1,7 +1,7 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
-use Imi\Util\Text;
 use Imi\Test\BaseTest;
 use Imi\Util\Uri;
 
@@ -29,7 +29,7 @@ class UriTest extends BaseTest
         $this->assertEquals('id=1&name=imi', $uri->getQuery());
         $this->assertEquals('gg', $uri->getFragment());
         $this->assertEquals('www.baidu.com', Uri::getDomain($uri));
-        $this->assertEquals($url, (string)$uri);
+        $this->assertEquals($url, (string) $uri);
         $this->assertEquals($url, Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo()));
 
         $url = 'http://www.imiphp.com:4433/index.html?t=123#ggsmd';
@@ -44,8 +44,7 @@ class UriTest extends BaseTest
         $this->assertEquals('t=123', $uri->getQuery());
         $this->assertEquals('ggsmd', $uri->getFragment());
         $this->assertEquals('www.imiphp.com:4433', Uri::getDomain($uri));
-        $this->assertEquals($url, (string)$uri);
+        $this->assertEquals($url, (string) $uri);
         $this->assertEquals($url, Uri::makeUriString($uri->getHost(), $uri->getPath(), $uri->getQuery(), $uri->getPort(), $uri->getScheme(), $uri->getFragment(), $uri->getUserInfo()));
     }
-
 }

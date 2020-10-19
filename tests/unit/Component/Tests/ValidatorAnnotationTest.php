@@ -1,15 +1,14 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\BaseTest;
 use Imi\Bean\BeanFactory;
-use PHPUnit\Framework\Assert;
-use Imi\Validate\ValidatorHelper;
+use Imi\Test\BaseTest;
 use Imi\Test\Component\Enum\TestEnum;
-use Imi\Test\Component\Validate\Classes\TestValidator;
-use Imi\Test\Component\Validate\Classes\TestSceneValidator;
 use Imi\Test\Component\Validate\Classes\TestAutoConstructValidator;
 use Imi\Test\Component\Validate\Classes\TestSceneAnnotationValidator;
+use Imi\Test\Component\Validate\Classes\TestSceneValidator;
+use Imi\Test\Component\Validate\Classes\TestValidator;
 
 /**
  * @testdox Validator Annotation
@@ -47,17 +46,23 @@ class ValidatorAnnotationTest extends BaseTest
 
         // int fail
         $this->data['int'] = 1000;
-        try {
+        try
+        {
             $test = BeanFactory::newInstance(TestAutoConstructValidator::class, $this->data);
             $this->assertTrue(false, 'Construct validate property fail');
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
             $this->assertStringEndsWith('1000 不符合大于等于0且小于等于100', $th->getMessage());
         }
 
-        try {
-            $test = new TestAutoConstructValidator;
+        try
+        {
+            $test = new TestAutoConstructValidator();
             $this->assertTrue(false, 'Construct validate fail');
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
         }
     }
 
@@ -66,27 +71,30 @@ class ValidatorAnnotationTest extends BaseTest
         $this->initData();
         $test = BeanFactory::newInstance(TestAutoConstructValidator::class, $this->data);
         $this->assertEquals(1, $test->test(1));
-        try {
+        try
+        {
             $test->test(-1);
             $this->assertTrue(false, 'Method validate fail');
-        } catch(\Throwable $th) {
+        }
+        catch (\Throwable $th)
+        {
         }
     }
 
     private function initData()
     {
         $this->data = [
-            'compare'       =>  -1,
-            'decimal'       =>  1.25,
-            'enum'          =>  TestEnum::A,
-            'in'            =>  1,
-            'int'           =>  1,
-            'required'      =>  '',
-            'number'        =>  1,
-            'text'          =>  'imiphp.com',
-            'chars'         =>  'imiphp.com',
-            'validateValue' =>  -1,
-            'optional'      =>  1,
+            'compare'       => -1,
+            'decimal'       => 1.25,
+            'enum'          => TestEnum::A,
+            'in'            => 1,
+            'int'           => 1,
+            'required'      => '',
+            'number'        => 1,
+            'text'          => 'imiphp.com',
+            'chars'         => 'imiphp.com',
+            'validateValue' => -1,
+            'optional'      => 1,
         ];
     }
 
@@ -96,7 +104,7 @@ class ValidatorAnnotationTest extends BaseTest
         $result = $this->tester->validate();
         $this->assertTrue($result, $this->tester->getMessage() ?: '');
     }
-    
+
     private function compareFail()
     {
         $this->initData();
@@ -212,54 +220,54 @@ class ValidatorAnnotationTest extends BaseTest
     public function testScene()
     {
         $data = [
-            'decimal' =>  1.1,
+            'decimal' => 1.1,
         ];
         $validator = new TestSceneValidator($data);
         $this->assertTrue($validator->setCurrentScene('a')->validate());
 
         $data = [
-            'decimal' =>  'a',
+            'decimal' => 'a',
         ];
         $validator = new TestSceneValidator($data);
         $this->assertFalse($validator->setCurrentScene('a')->validate());
 
         $data = [
-            'int' =>  1,
+            'int' => 1,
         ];
         $validator = new TestSceneValidator($data);
         $this->assertTrue($validator->setCurrentScene('b')->validate());
 
         $data = [
-            'int' =>  'b',
+            'int' => 'b',
         ];
         $validator = new TestSceneValidator($data);
         $this->assertFalse($validator->setCurrentScene('b')->validate());
 
         $data = [
-            'decimal' =>  1.1,
-            'int' =>  1,
+            'decimal' => 1.1,
+            'int'     => 1,
         ];
         $validator = new TestSceneValidator($data);
         $this->assertTrue($validator->setCurrentScene('b')->validate());
 
         $data = [
-            'decimal' =>  'a',
-            'int' =>  'b',
+            'decimal' => 'a',
+            'int'     => 'b',
         ];
         $validator = new TestSceneValidator($data);
         $this->assertFalse($validator->setCurrentScene('b')->validate());
 
         // 全部
         $data = [
-            'decimal' =>  1.1,
-            'int' =>  1,
+            'decimal' => 1.1,
+            'int'     => 1,
         ];
         $validator = new TestSceneValidator($data);
         $this->assertTrue($validator->validate());
 
         $data = [
-            'decimal' =>  'a',
-            'int' =>  'b',
+            'decimal' => 'a',
+            'int'     => 'b',
         ];
         $validator = new TestSceneValidator($data);
         $this->assertFalse($validator->validate());
@@ -268,57 +276,56 @@ class ValidatorAnnotationTest extends BaseTest
     public function testSceneWithAnnotation()
     {
         $data = [
-            'decimal' =>  1.1,
+            'decimal' => 1.1,
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertTrue($validator->setCurrentScene('a')->validate());
 
         $data = [
-            'decimal' =>  'a',
+            'decimal' => 'a',
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertFalse($validator->setCurrentScene('a')->validate());
 
         $data = [
-            'int' =>  1,
+            'int' => 1,
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertTrue($validator->setCurrentScene('b')->validate());
 
         $data = [
-            'int' =>  'b',
+            'int' => 'b',
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertFalse($validator->setCurrentScene('b')->validate());
 
         $data = [
-            'decimal' =>  1.1,
-            'int' =>  1,
+            'decimal' => 1.1,
+            'int'     => 1,
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertTrue($validator->setCurrentScene('b')->validate());
 
         $data = [
-            'decimal' =>  'a',
-            'int' =>  'b',
+            'decimal' => 'a',
+            'int'     => 'b',
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertFalse($validator->setCurrentScene('b')->validate());
 
         // 全部
         $data = [
-            'decimal' =>  1.1,
-            'int' =>  1,
+            'decimal' => 1.1,
+            'int'     => 1,
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertTrue($validator->validate());
 
         $data = [
-            'decimal' =>  'a',
-            'int' =>  'b',
+            'decimal' => 'a',
+            'int'     => 'b',
         ];
         $validator = new TestSceneAnnotationValidator($data);
         $this->assertFalse($validator->validate());
     }
-
 }

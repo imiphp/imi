@@ -1,27 +1,31 @@
 <?php
+
 namespace Imi\Test\Component\Model;
 
-use Imi\Model\RedisModel;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\RedisEntity;
+use Imi\Model\RedisModel;
 
 /**
- * Test
+ * Test.
+ *
  * @Entity
  * @RedisEntity(key="imi:redisModel:test2:{id}", storage="hash_object")
  */
 class TestRedisHashObjectModel extends RedisModel
 {
     /**
-     * id
+     * id.
+     *
      * @Column(name="id")
+     *
      * @var int
      */
     protected $id;
- 
+
     /**
-     * 获取 id
+     * 获取 id.
      *
      * @return int
      */
@@ -29,27 +33,32 @@ class TestRedisHashObjectModel extends RedisModel
     {
         return $this->id;
     }
- 
+
     /**
-     * 赋值 id
+     * 赋值 id.
+     *
      * @param int $id id
+     *
      * @return static
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
- 
+
     /**
-     * name
+     * name.
+     *
      * @Column(name="name")
+     *
      * @var string
      */
     protected $name;
- 
+
     /**
-     * 获取 name
+     * 获取 name.
      *
      * @return string
      */
@@ -57,27 +66,32 @@ class TestRedisHashObjectModel extends RedisModel
     {
         return $this->name;
     }
- 
+
     /**
-     * 赋值 name
+     * 赋值 name.
+     *
      * @param string $name name
+     *
      * @return static
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
- 
+
     /**
-     * age
+     * age.
+     *
      * @Column(name="age")
+     *
      * @var string
      */
     protected $age;
- 
+
     /**
-     * 获取 age
+     * 获取 age.
      *
      * @return string
      */
@@ -85,15 +99,18 @@ class TestRedisHashObjectModel extends RedisModel
     {
         return $this->age;
     }
- 
+
     /**
-     * 赋值 age
+     * 赋值 age.
+     *
      * @param string $age age
+     *
      * @return static
      */
     public function setAge($age)
     {
         $this->age = $age;
+
         return $this;
     }
 }

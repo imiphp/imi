@@ -1,34 +1,40 @@
 <?php
+
 namespace Imi\Log;
 
 class Record
 {
     /**
-     * 日志等级
+     * 日志等级.
+     *
      * @var string
      */
     private $level;
 
     /**
-     * 消息
+     * 消息.
+     *
      * @var mixed
      */
     private $message;
 
     /**
-     * 上下文
+     * 上下文.
+     *
      * @var array
      */
     private $context;
 
     /**
-     * 代码调用跟踪
+     * 代码调用跟踪.
+     *
      * @var array
      */
     private $trace;
 
     /**
-     * 日志时间戳
+     * 日志时间戳.
+     *
      * @var int
      */
     private $logTime;
@@ -43,45 +49,50 @@ class Record
     }
 
     /**
-     * Get 日志等级
+     * Get 日志等级.
+     *
      * @return string
-     */ 
+     */
     public function getLevel()
     {
         return $this->level;
     }
 
     /**
-     * Get 消息
+     * Get 消息.
+     *
      * @return mixed
-     */ 
+     */
     public function getMessage()
     {
         return $this->message;
     }
 
     /**
-     * Get 上下文
+     * Get 上下文.
+     *
      * @return array
-     */ 
+     */
     public function getContext()
     {
         return $this->context;
     }
 
     /**
-     * Get 代码调用跟踪
+     * Get 代码调用跟踪.
+     *
      * @return array
-     */ 
+     */
     public function getTrace()
     {
         return $this->trace;
     }
 
     /**
-     * Get 日志时间戳
+     * Get 日志时间戳.
+     *
      * @return int
-     */ 
+     */
     public function getLogTime()
     {
         return $this->logTime;

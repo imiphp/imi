@@ -1,9 +1,10 @@
 <?php
+
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Traits\TRaw;
 use Imi\Db\Query\Interfaces\IField;
 use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Traits\TRaw;
 
 class Field implements IField
 {
@@ -11,25 +12,29 @@ class Field implements IField
     use TKeyword;
 
     /**
-     * 数据库名
+     * 数据库名.
+     *
      * @var string
      */
     protected $database;
 
     /**
-     * 表名
+     * 表名.
+     *
      * @var string
      */
     protected $table;
 
     /**
-     * 字段名
+     * 字段名.
+     *
      * @var string
      */
     protected $field;
 
     /**
-     * 别名
+     * 别名.
+     *
      * @var string
      */
     protected $alias;
@@ -43,7 +48,8 @@ class Field implements IField
     }
 
     /**
-     * 获取数据库名
+     * 获取数据库名.
+     *
      * @return string
      */
     public function getDatabase(): string
@@ -52,7 +58,8 @@ class Field implements IField
     }
 
     /**
-     * 获取表名
+     * 获取表名.
+     *
      * @return string
      */
     public function getTable(): string
@@ -61,7 +68,8 @@ class Field implements IField
     }
 
     /**
-     * 获取字段名
+     * 获取字段名.
+     *
      * @return string
      */
     public function getField(): string
@@ -70,17 +78,20 @@ class Field implements IField
     }
 
     /**
-     * 获取别名
+     * 获取别名.
+     *
      * @return string
      */
     public function getAlias(): string
     {
         return $this->alias;
     }
-    
+
     /**
-     * 设置数据库名
+     * 设置数据库名.
+     *
      * @param string $database
+     *
      * @return void
      */
     public function setDatabase(string $database = null)
@@ -89,8 +100,10 @@ class Field implements IField
     }
 
     /**
-     * 设置表名
+     * 设置表名.
+     *
      * @param string $table
+     *
      * @return void
      */
     public function setTable(string $table = null)
@@ -99,8 +112,10 @@ class Field implements IField
     }
 
     /**
-     * 设置字段名
+     * 设置字段名.
+     *
      * @param string $field
+     *
      * @return void
      */
     public function setField(string $field = null)
@@ -109,8 +124,10 @@ class Field implements IField
     }
 
     /**
-     * 设置别名
+     * 设置别名.
+     *
      * @param string $alias
+     *
      * @return void
      */
     public function setAlias(string $alias = null)
@@ -124,29 +141,31 @@ class Field implements IField
      * parent.name——table.field
      * parent.parent.name——database.table.field
      * name alias——field alias
-     * name as alias—— field as alias
+     * name as alias—— field as alias.
+     *
      * @param string $value
+     *
      * @return void
      */
     public function setValue($value)
     {
         $matches = $this->parseKeywordText($value);
-        if(isset($matches['keywords']))
+        if (isset($matches['keywords']))
         {
             $keywords = $matches['keywords'];
-            if(isset($keywords[2]))
+            if (isset($keywords[2]))
             {
                 $this->database = $keywords[0];
                 $this->table = $keywords[1];
                 $this->field = $keywords[2];
             }
-            else if(isset($keywords[1]))
+            elseif (isset($keywords[1]))
             {
                 $this->database = null;
                 $this->table = $keywords[0];
                 $this->field = $keywords[1];
             }
-            else if(isset($keywords[0]))
+            elseif (isset($keywords[0]))
             {
                 $this->database = null;
                 $this->table = null;
@@ -158,19 +177,21 @@ class Field implements IField
 
     public function __toString()
     {
-        if($this->isRaw)
+        if ($this->isRaw)
         {
             return $this->rawSQL;
         }
+
         return $this->parseKeywordToText([
             $this->database,
             $this->table,
-            $this->field
+            $this->field,
         ], $this->alias);
     }
 
     /**
-     * 获取绑定的数据们
+     * 获取绑定的数据们.
+     *
      * @return array
      */
     public function getBinds()

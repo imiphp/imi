@@ -1,18 +1,18 @@
 <?php
+
 namespace Imi\Test\HttpServer\ApiServer\Controller;
 
-use Imi\RequestContext;
 use Imi\Aop\Annotation\Inject;
-use Imi\Util\Http\MessageUtil;
-use Imi\Controller\HttpController;
 use Imi\Controller\SingletonHttpController;
 use Imi\Process\ProcessManager;
-use Imi\Server\View\Annotation\View;
-use Imi\Util\Http\Consts\StatusCode;
-use Imi\Server\Route\Annotation\Route;
+use Imi\RequestContext;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Route\Annotation\Middleware;
+use Imi\Server\Route\Annotation\Route;
+use Imi\Server\View\Annotation\View;
+use Imi\Util\Http\Consts\StatusCode;
+use Imi\Util\Http\MessageUtil;
 
 /**
  * @Controller(prefix="/", singleton=true)
@@ -46,7 +46,7 @@ class IndexController extends SingletonHttpController
     public function route($id)
     {
         return [
-            'id'    =>  $id,
+            'id'    => $id,
         ];
     }
 
@@ -54,24 +54,26 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route(autoEndSlash=true)
      * @View(renderType="html", template="html")
+     *
      * @return void
      */
     public function html($time)
     {
         return [
-            'time'  =>  date('Y-m-d H:i:s', $time),
+            'time'  => date('Y-m-d H:i:s', $time),
         ];
     }
 
     /**
      * @Action
      * @View(renderType="html", baseDir="index/")
+     *
      * @return void
      */
     public function html2($time)
     {
         return [
-            'time'  =>  date('Y-m-d H:i:s', $time),
+            'time'  => date('Y-m-d H:i:s', $time),
         ];
     }
 
@@ -83,7 +85,7 @@ class IndexController extends SingletonHttpController
     public function renderHtml1()
     {
         return $this->__render('test/a', [
-            'name'  =>  'yurun',
+            'name'  => 'yurun',
         ]);
     }
 
@@ -94,8 +96,8 @@ class IndexController extends SingletonHttpController
      */
     public function renderHtml2()
     {
-        return $this->__render(dirname(__DIR__, 2) . '/template/b.html', [
-            'name'  =>  'imi',
+        return $this->__render(\dirname(__DIR__, 2) . '/template/b.html', [
+            'name'  => 'imi',
         ]);
     }
 
@@ -107,8 +109,8 @@ class IndexController extends SingletonHttpController
     public function json($time)
     {
         return [
-            'time'  =>  $time,
-            'data'  =>  $this->testService->test($time),
+            'time'  => $time,
+            'data'  => $this->testService->test($time),
         ];
     }
 
@@ -121,14 +123,15 @@ class IndexController extends SingletonHttpController
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
+
         return [
-            'get'       =>  $request->get(),
-            'post'      =>  $request->post(),
-            'cookie'    =>  $request->getCookieParams(),
-            'headers'   =>  MessageUtil::headersToStringList($request->getHeaders()),
-            'server'    =>  $request->getServerParams(),
-            'request'   =>  $request->request(),
-            'uri'       =>  (string)$request->getUri(),
+            'get'       => $request->get(),
+            'post'      => $request->post(),
+            'cookie'    => $request->getCookieParams(),
+            'headers'   => MessageUtil::headersToStringList($request->getHeaders()),
+            'server'    => $request->getServerParams(),
+            'request'   => $request->request(),
+            'uri'       => (string) $request->getUri(),
         ];
     }
 
@@ -140,13 +143,13 @@ class IndexController extends SingletonHttpController
     public function superGlobalsInfo()
     {
         return [
-            'get'       =>  $_GET,
-            'post'      =>  $_POST,
-            'cookie'    =>  $_COOKIE,
-            'server'    =>  $_SERVER,
-            'request'   =>  $_REQUEST,
-            'session'   =>  $_SESSION,
-            'files'     =>  $_FILES,
+            'get'       => $_GET,
+            'post'      => $_POST,
+            'cookie'    => $_COOKIE,
+            'server'    => $_SERVER,
+            'request'   => $_REQUEST,
+            'session'   => $_SESSION,
+            'files'     => $_FILES,
         ];
     }
 
@@ -159,9 +162,10 @@ class IndexController extends SingletonHttpController
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
+
         return [
-            'get'       =>  $request->get(),
-            'post'      =>  $request->post(),
+            'get'       => $request->get(),
+            'post'      => $request->post(),
         ];
     }
 
@@ -174,11 +178,12 @@ class IndexController extends SingletonHttpController
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
+
         return [
-            'get'           =>  $request->get(),
-            'post'          =>  $request->post(),
-            'parsedBody'    =>  $request->getParsedBody(),
-            'default'       =>  $default,
+            'get'           => $request->get(),
+            'post'          => $request->post(),
+            'parsedBody'    => $request->getParsedBody(),
+            'default'       => $default,
         ];
     }
 
@@ -261,7 +266,7 @@ class IndexController extends SingletonHttpController
         $request = RequestContext::get('request');
         $files = $request->getUploadedFiles();
         $result = [];
-        foreach($files as $k => $file)
+        foreach ($files as $k => $file)
         {
             $result[$k] = [
                 'clientFilename'    => $file->getClientFilename(),
@@ -271,6 +276,7 @@ class IndexController extends SingletonHttpController
                 'hash'              => md5($file->getStream()),
             ];
         }
+
         return $result;
     }
 
@@ -282,8 +288,9 @@ class IndexController extends SingletonHttpController
     public function executeTimeout()
     {
         sleep(5);
+
         return [
-            'success'    =>  true,
+            'success'    => true,
         ];
     }
 
@@ -296,8 +303,8 @@ class IndexController extends SingletonHttpController
     public function regularExpression1($id, $page)
     {
         return [
-            'id'    =>  $id,
-            'page'  =>  $page,
+            'id'    => $id,
+            'page'  => $page,
         ];
     }
 
@@ -310,8 +317,8 @@ class IndexController extends SingletonHttpController
     public function regularExpression2($name, $page)
     {
         return [
-            'name'  =>  $name,
-            'page'  =>  $page,
+            'name'  => $name,
+            'page'  => $page,
         ];
     }
 
@@ -323,13 +330,13 @@ class IndexController extends SingletonHttpController
     public function singletonRequest()
     {
         return [
-            'get'       =>  $this->request->get(),
-            'post'      =>  $this->request->post(),
-            'cookie'    =>  $this->request->getCookieParams(),
-            'headers'   =>  MessageUtil::headersToStringList($this->request->getHeaders()),
-            'server'    =>  $this->request->getServerParams(),
-            'request'   =>  $this->request->request(),
-            'uri'       =>  (string)$this->request->getUri(),
+            'get'       => $this->request->get(),
+            'post'      => $this->request->post(),
+            'cookie'    => $this->request->getCookieParams(),
+            'headers'   => MessageUtil::headersToStringList($this->request->getHeaders()),
+            'server'    => $this->request->getServerParams(),
+            'request'   => $this->request->request(),
+            'uri'       => (string) $this->request->getUri(),
         ];
     }
 
@@ -345,7 +352,7 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     * 
+     *
      * @View(renderType="html")
      *
      * @return void
@@ -363,19 +370,20 @@ class IndexController extends SingletonHttpController
     public function process()
     {
         $process = ProcessManager::getProcessWithManager('CronProcess');
+
         return [
-            'result'    =>  $process instanceof \Swoole\Process,
+            'result'    => $process instanceof \Swoole\Process,
         ];
     }
 
     /**
      * @Action
      * @Route(url="/type/{id}/{name}/{page}")
+     *
      * @return array
      */
     public function type($id, $name, $page)
     {
         return compact('id', 'name', 'page');
     }
-
 }

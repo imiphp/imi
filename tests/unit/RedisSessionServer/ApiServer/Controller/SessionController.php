@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\RedisSessionServer\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
@@ -19,19 +20,20 @@ class SessionController extends HttpController
     public function status()
     {
         $username = Session::get('auth.username');
-        if($username)
+        if ($username)
         {
             $data = [
-                'isLogin'   =>  true,
-                'username'  =>  $username,
+                'isLogin'   => true,
+                'username'  => $username,
             ];
         }
         else
         {
             $data = [
-                'isLogin'   =>  false,
+                'isLogin'   => false,
             ];
         }
+
         return $data;
     }
 
@@ -69,14 +71,15 @@ class SessionController extends HttpController
      * @Action
      *
      * @param string $vcode
+     *
      * @return void
      */
     public function verifySms($vcode = '')
     {
         $storeVcode = Session::once('vcode');
+
         return [
-            'success'   =>  '1234' === $storeVcode,
+            'success'   => '1234' === $storeVcode,
         ];
     }
-
 }

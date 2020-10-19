@@ -1,18 +1,17 @@
 <?php
+
 namespace Imi\HttpValidate\Aop;
 
-use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
-use Imi\Bean\BeanFactory;
-use Imi\Util\ClassObject;
-use Imi\Validate\Validator;
-use Imi\Aop\Annotation\After;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\Before;
-use Imi\Server\Session\Session;
-use Imi\Util\ObjectArrayHelper;
 use Imi\Aop\Annotation\PointCut;
+use Imi\Aop\JoinPoint;
+use Imi\Aop\PointCutType;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanFactory;
+use Imi\Server\Session\Session;
+use Imi\Util\ClassObject;
+use Imi\Validate\Validator;
 
 /**
  * @Aspect
@@ -20,7 +19,8 @@ use Imi\Bean\Annotation\AnnotationManager;
 class AutoValidationAop
 {
     /**
-     * 验证 Http 参数
+     * 验证 Http 参数.
+     *
      * @PointCut(
      *         type=PointCutType::ANNOTATION,
      *         allow={
@@ -28,6 +28,7 @@ class AutoValidationAop
      *         }
      * )
      * @Before
+     *
      * @return mixed
      */
     public function validateHttp(JoinPoint $joinPoint)
@@ -37,7 +38,7 @@ class AutoValidationAop
         $methodName = $joinPoint->getMethod();
 
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName);
-        if(isset($annotations[0]))
+        if (isset($annotations[0]))
         {
             $data = ClassObject::convertArgsToKV($className, $methodName, $joinPoint->getArgs());
 
@@ -56,7 +57,7 @@ class AutoValidationAop
             $data['$this'] = $controller;
 
             $validator = new Validator($data, $annotations);
-            if(!$validator->validate())
+            if (!$validator->validate())
             {
                 $rule = $validator->getFailRule();
                 $exception = $rule->exception;
@@ -74,5 +75,4 @@ class AutoValidationAop
 
         $joinPoint->setArgs($data);
     }
-
 }

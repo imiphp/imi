@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Facade;
 
 use Imi\Facade\BaseFacade;
@@ -8,5 +9,4 @@ use Imi\Facade\BaseFacade;
  */
 abstract class FacadeA2 extends BaseFacade
 {
-
 }

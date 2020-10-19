@@ -1,14 +1,14 @@
 <?php
+
 namespace Imi\Util\Traits;
 
 use Imi\Util\ClassObject;
-
 
 trait TAnonymous
 {
     protected static function __getRealClassName()
     {
-        if(ClassObject::isAnymous(static::class))
+        if (ClassObject::isAnymous(static::class))
         {
             return get_parent_class(static::class);
         }

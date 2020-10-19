@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Partial\Partial
 {
     use Imi\Bean\Annotation\Partial;
@@ -9,19 +10,17 @@ namespace Imi\Test\Component\Partial\Partial
     trait TPartialClassA2
     {
         private $test3Value = 3;
-    
+
         public function test3()
         {
             return $this->test3Value;
         }
-    
     }
-
 }
 
 namespace Imi\Test\Component\Partial\Classes
 {
-    if(false)
+    if (false)
     {
         class PartialClassA
         {
@@ -29,9 +28,7 @@ namespace Imi\Test\Component\Partial\Classes
 
             public function test3()
             {
-
             }
         }
     }
-
 }

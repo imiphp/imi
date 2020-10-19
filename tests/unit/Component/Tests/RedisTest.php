@@ -1,14 +1,13 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\BaseTest;
 use Imi\App;
-use Imi\Log\Log;
-use Imi\Redis\RedisManager;
-use PHPUnit\Framework\Assert;
-use Imi\Redis\RedisHandler;
 use Imi\Pool\PoolManager;
 use Imi\Redis\Redis;
+use Imi\Redis\RedisHandler;
+use Imi\Test\BaseTest;
+use PHPUnit\Framework\Assert;
 
 /**
  * @testdox Redis
@@ -33,7 +32,7 @@ class RedisTest extends BaseTest
 
     public function testEvalEx()
     {
-        $value = PoolManager::use('redis_test', function($resource, RedisHandler $redis){
+        $value = PoolManager::use('redis_test', function ($resource, RedisHandler $redis) {
             return $redis->evalEx(<<<SCRIPT
 local key = KEYS[1]
 local value = ARGV[1]
@@ -60,14 +59,14 @@ SCRIPT
     public function testScanEach()
     {
         $excepted = $map = [];
-        for($i = 0; $i < 100; ++$i)
+        for ($i = 0; $i < 100; ++$i)
         {
             $key = 'imi:scanEach:' . $i;
             $excepted[$key] = 1;
             $map[$key] = 0;
             Redis::set($key, $i);
         }
-        foreach(Redis::scanEach('imi:scanEach:*', 10) as $value)
+        foreach (Redis::scanEach('imi:scanEach:*', 10) as $value)
         {
             $map[$value] = 1;
         }
@@ -79,7 +78,7 @@ SCRIPT
         $excepted = $map = $values = $exceptedValues = [];
         $key = 'imi:hscanEach';
         Redis::del($key);
-        for($i = 0; $i < 100; ++$i)
+        for ($i = 0; $i < 100; ++$i)
         {
             $member = 'value:' . $i;
             $excepted[$member] = 1;
@@ -88,7 +87,7 @@ SCRIPT
             $exceptedValues[$member] = $i;
             Redis::hset($key, $member, $i);
         }
-        foreach(Redis::hscanEach($key, 'value:*', 10) as $k => $value)
+        foreach (Redis::hscanEach($key, 'value:*', 10) as $k => $value)
         {
             $map[$k] = 1;
             $values[$k] = $value;
@@ -102,14 +101,14 @@ SCRIPT
         $excepted = $map = [];
         $key = 'imi:sscanEach';
         Redis::del($key);
-        for($i = 0; $i < 100; ++$i)
+        for ($i = 0; $i < 100; ++$i)
         {
             $value = 'value:' . $i;
             $excepted[$value] = 1;
             $map[$value] = 0;
             Redis::sAdd($key, $value);
         }
-        foreach(Redis::sscanEach($key, '*', 10) as $value)
+        foreach (Redis::sscanEach($key, '*', 10) as $value)
         {
             $map[$value] = 1;
         }
@@ -121,18 +120,17 @@ SCRIPT
         $excepted = $map = [];
         $key = 'imi:zscanEach';
         Redis::del($key);
-        for($i = 0; $i < 100; ++$i)
+        for ($i = 0; $i < 100; ++$i)
         {
             $value = 'value:' . $i;
             $excepted[$i] = 1;
             $map[$i] = 0;
             Redis::zAdd($key, $i, $value);
         }
-        foreach(Redis::zscanEach($key, '*', 10) as $score)
+        foreach (Redis::zscanEach($key, '*', 10) as $score)
         {
             $map[$score] = 1;
         }
         $this->assertEquals($excepted, $map);
     }
-
 }

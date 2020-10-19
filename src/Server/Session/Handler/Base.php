@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\Session\Handler;
 
 use Imi\RequestContext;
@@ -8,7 +9,8 @@ use Imi\Util\Format\PhpSerialize;
 abstract class Base implements ISessionHandler
 {
     /**
-     * 数据格式化处理类
+     * 数据格式化处理类.
+     *
      * @var string
      */
     protected $formatHandlerClass = PhpSerialize::class;
@@ -26,7 +28,8 @@ abstract class Base implements ISessionHandler
     }
 
     /**
-     * 生成SessionID
+     * 生成SessionID.
+     *
      * @return string
      */
     public function createSessionID()
@@ -34,12 +37,15 @@ abstract class Base implements ISessionHandler
         // md5(自增ID + 时间)
         $id = AtomicManager::add('session');
         $time = microtime(true);
+
         return md5($id . $time);
     }
 
     /**
-     * 编码为存储格式
+     * 编码为存储格式.
+     *
      * @param array $data
+     *
      * @return mixed
      */
     public function encode(array $data)
@@ -48,17 +54,20 @@ abstract class Base implements ISessionHandler
     }
 
     /**
-     * 解码为php数组
+     * 解码为php数组.
+     *
      * @param mixed $data
+     *
      * @return array
      */
     public function decode($data): array
     {
         $result = $this->formatHandler->decode($data);
-        if(!is_array($result))
+        if (!\is_array($result))
         {
             $result = [];
         }
+
         return $result;
     }
 }

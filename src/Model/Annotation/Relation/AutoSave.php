@@ -1,11 +1,13 @@
 <?php
+
 namespace Imi\Model\Annotation\Relation;
 
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
 
 /**
- * 自动保存
+ * 自动保存.
+ *
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Model\Parser\RelationParser")
@@ -13,22 +15,23 @@ use Imi\Bean\Annotation\Parser;
 class AutoSave extends Base
 {
     /**
-     * 只传一个参数时的参数名
+     * 只传一个参数时的参数名.
+     *
      * @var string
      */
     protected $defaultFieldName = 'status';
 
     /**
-     * 是否开启
+     * 是否开启.
      *
-     * @var boolean
+     * @var bool
      */
     public $status = true;
 
     /**
-     * save时，删除无关联数据
+     * save时，删除无关联数据.
      *
-     * @var boolean
+     * @var bool
      */
     public $orphanRemoval = false;
 }

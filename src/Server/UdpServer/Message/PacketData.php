@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\UdpServer\Message;
 
 use Imi\RequestContext;
@@ -7,21 +8,21 @@ use Imi\Server\DataParser\DataParser;
 class PacketData implements IPacketData
 {
     /**
-     * 数据内容
+     * 数据内容.
      *
      * @var string
      */
     protected $data;
 
     /**
-     * 接收到的数据
+     * 接收到的数据.
      *
      * @var mixed
      */
     protected $formatData;
 
     /**
-     * 客户端信息
+     * 客户端信息.
      *
      * @var array
      */
@@ -35,7 +36,8 @@ class PacketData implements IPacketData
     }
 
     /**
-     * 数据内容
+     * 数据内容.
+     *
      * @return string
      */
     public function getData()
@@ -45,6 +47,7 @@ class PacketData implements IPacketData
 
     /**
      * 获取格式化后的数据，一般是数组或对象
+     *
      * @return mixed
      */
     public function getFormatData()
@@ -53,12 +56,12 @@ class PacketData implements IPacketData
     }
 
     /**
-     * 获取客户端信息
+     * 获取客户端信息.
+     *
      * @return array
      */
     public function getClientInfo()
     {
         return $this->clientInfo;
     }
-
 }

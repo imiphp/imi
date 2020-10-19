@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\TCPServer\Tests;
 
 use Imi\Util\Uri;
@@ -13,11 +14,11 @@ class TCPTest extends BaseTest
      */
     public function test()
     {
-        $this->go(function(){
-            $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
+        $this->go(function () {
+            $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
             $client->set([
                 'open_eof_split' => true,
-                'package_eof' => "\r\n",
+                'package_eof'    => "\r\n",
             ]);
             $uri = new Uri($this->host);
             $this->assertTrue($client->connect($uri->getHost(), $uri->getPort(), 3));
@@ -26,7 +27,7 @@ class TCPTest extends BaseTest
                 'action'    => 'login',
                 'username'  => $name,
             ]) . "\r\n";
-            $this->assertEquals(strlen($sendContent), $client->send($sendContent));
+            $this->assertEquals(\strlen($sendContent), $client->send($sendContent));
             $result = $client->recv();
             $errCode = (false === $result ? $client->errCode : '');
             $this->assertEquals('{"action":"login","success":true,"middlewareData":"imi"}' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
@@ -36,7 +37,7 @@ class TCPTest extends BaseTest
                 'action'    => 'send',
                 'message'   => $time,
             ]) . "\r\n";
-            $this->assertEquals(strlen($sendContent), $client->send($sendContent));
+            $this->assertEquals(\strlen($sendContent), $client->send($sendContent));
             $result = $client->recv();
             $errCode = (false === $result ? $client->errCode : '');
             $this->assertEquals('{"action":"send","message":"' . $name . ':' . $time . '"}' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
@@ -47,18 +48,18 @@ class TCPTest extends BaseTest
 
     public function testNotFound()
     {
-        $this->go(function(){
-            $client = new \Swoole\Coroutine\Client(SWOOLE_SOCK_TCP);
+        $this->go(function () {
+            $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
             $client->set([
                 'open_eof_split' => true,
-                'package_eof' => "\r\n",
+                'package_eof'    => "\r\n",
             ]);
             $uri = new Uri($this->host);
             $this->assertTrue($client->connect($uri->getHost(), $uri->getPort(), 3));
             $sendContent = json_encode([
                 'action'    => 'gg',
             ]) . "\r\n";
-            $this->assertEquals(strlen($sendContent), $client->send($sendContent));
+            $this->assertEquals(\strlen($sendContent), $client->send($sendContent));
             $result = $client->recv();
             $errCode = (false === $result ? $client->errCode : '');
             $this->assertEquals('"gg"' . "\r\n", $result, sprintf('errorCode: %s', $errCode));
@@ -66,5 +67,4 @@ class TCPTest extends BaseTest
             $client->close();
         });
     }
-
 }

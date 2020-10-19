@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Tool\Tools\Generate\HttpController;
 
-use Imi\Util\Imi;
-use Imi\Util\File;
-use Imi\Tool\ArgType;
 use Imi\Tool\Annotation\Arg;
-use Imi\Tool\Annotation\Tool;
 use Imi\Tool\Annotation\Operation;
+use Imi\Tool\Annotation\Tool;
+use Imi\Tool\ArgType;
+use Imi\Util\File;
+use Imi\Util\Imi;
 
 /**
  * @Tool("generate")
@@ -14,7 +15,8 @@ use Imi\Tool\Annotation\Operation;
 class ControllerGenerate
 {
     /**
-     * 生成一个 Http Controller
+     * 生成一个 Http Controller.
+     *
      * @Operation("httpController")
      *
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="生成的 Controller 类名")
@@ -23,16 +25,17 @@ class ControllerGenerate
      * @Arg(name="render", type=ArgType::STRING, default="json", comments="渲染方式，默认为json，可选：html/json/xml")
      * @Arg(name="rest", type=ArgType::BOOLEAN, default=false, comments="是否生成 RESTful 风格，默认 false")
      * @Arg(name="override", type=ArgType::BOOLEAN, default=false, comments="是否覆盖已存在的文件，请慎重！(true/false)")
+     *
      * @return void
      */
     public function generate($name, $namespace, $prefix, $render, $rest, $override)
     {
-        if(null === $prefix)
+        if (null === $prefix)
         {
             $prefix = '/' . $name . '/';
         }
         $data = compact('name', 'namespace', 'prefix', 'render', 'override');
-        if($rest)
+        if ($rest)
         {
             $content = $this->renderTemplate($data, 'restTemplate');
         }
@@ -41,7 +44,7 @@ class ControllerGenerate
             $content = $this->renderTemplate($data);
         }
         $fileName = File::path(Imi::getNamespacePath($namespace), $name . '.php');
-        if(is_file($fileName) && !$override)
+        if (is_file($fileName) && !$override)
         {
             // 不覆盖
             return;
@@ -50,8 +53,10 @@ class ControllerGenerate
     }
 
     /**
-     * 渲染模版
+     * 渲染模版.
+     *
      * @param string $data
+     *
      * @return string
      */
     private function renderTemplate($data, $template = 'template')
@@ -59,7 +64,7 @@ class ControllerGenerate
         extract($data);
         ob_start();
         include __DIR__ . '/' . $template . '.tpl';
+
         return ob_get_clean();
     }
-
 }

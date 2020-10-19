@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Db\Query\Lock;
 
 class MysqlLock
@@ -12,5 +13,4 @@ class MysqlLock
      * 共享锁
      */
     const SHARED = 2;
-
 }

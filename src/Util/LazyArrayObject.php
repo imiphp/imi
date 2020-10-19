@@ -1,15 +1,17 @@
 <?php
+
 namespace Imi\Util;
 
 use Imi\Util\Interfaces\IArrayable;
 
 /**
- * 同时可以作为数组和对象访问的类
+ * 同时可以作为数组和对象访问的类.
  */
 class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable
 {
     /**
-     * 数据
+     * 数据.
+     *
      * @var array
      */
     private $__data;
@@ -21,13 +23,13 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function offsetExists($offset)
     {
-        return array_key_exists($offset, $this->__data);
+        return \array_key_exists($offset, $this->__data);
     }
 
     public function &offsetGet($offset)
     {
         $data = &$this->__data;
-        if(array_key_exists($offset, $data))
+        if (\array_key_exists($offset, $data))
         {
             $value = &$data[$offset];
         }
@@ -35,6 +37,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
         {
             $value = null;
         }
+
         return $value;
     }
 
@@ -46,7 +49,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
     public function offsetUnset($offset)
     {
         $data = &$this->__data;
-        if(array_key_exists($offset, $data))
+        if (\array_key_exists($offset, $data))
         {
             unset($data[$offset]);
         }
@@ -77,7 +80,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
         return null !== key($this->__data);
     }
 
-    public function __set($name, $value) 
+    public function __set($name, $value)
     {
         $this->__data[$name] = $value;
     }
@@ -89,29 +92,30 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     public function __isset($name)
     {
-        return array_key_exists($name, $this->__data);
+        return \array_key_exists($name, $this->__data);
     }
 
     public function __unset($name)
     {
         $data = &$this->__data;
-        if(array_key_exists($name, $data))
+        if (\array_key_exists($name, $data))
         {
             unset($data[$name]);
         }
     }
 
     /**
-     * 将当前对象作为数组返回
+     * 将当前对象作为数组返回.
+     *
      * @return array
      */
     public function toArray(): array
     {
-        return \iterator_to_array($this);
+        return iterator_to_array($this);
     }
 
     /**
-     * json 序列化
+     * json 序列化.
      *
      * @return array
      */

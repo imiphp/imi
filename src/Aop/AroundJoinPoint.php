@@ -1,10 +1,12 @@
 <?php
+
 namespace Imi\Aop;
 
 class AroundJoinPoint extends JoinPoint
 {
     /**
-     * process调用的方法
+     * process调用的方法.
+     *
      * @var callable
      */
     private $nextProceed;
@@ -16,17 +18,18 @@ class AroundJoinPoint extends JoinPoint
     }
 
     /**
-     * 调用下一个方法
+     * 调用下一个方法.
+     *
      * @return mixed
      */
     public function proceed($args = null)
     {
-        if(null === $args)
+        if (null === $args)
         {
             $args = $this->getArgs();
         }
         $result = ($this->nextProceed)($args);
-        
+
         $this->args = $args;
 
         return $result;

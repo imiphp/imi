@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -32,5 +33,4 @@ class PaginationTest extends BaseTest
         $this->assertEquals(2, $pagination->calcPageCount(11));
         $this->assertEquals(11, $pagination->calcPageCount(101));
     }
-
 }

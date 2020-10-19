@@ -1,11 +1,12 @@
 <?php
+
 namespace Imi\Aop\Listener;
 
-use Imi\Main\Helper;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Bean\Annotation\Listener;
-use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Main\Helper;
 
 /**
  * @Listener(eventName="IMI.INITED",priority=19940290)
@@ -13,38 +14,42 @@ use Imi\Bean\Annotation\AnnotationManager;
 class ImiInit implements IEventListener
 {
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(EventParam $e)
     {
         // Aop 配置注入
-        foreach(Helper::getMains() as $main)
+        foreach (Helper::getMains() as $main)
         {
             $this->parseConfigs($main->getConfig()['aop'] ?? []);
         }
     }
 
     /**
-     * 处理配置
+     * 处理配置.
+     *
      * @param array $configs
+     *
      * @return void
      */
     private function parseConfigs($configs)
     {
-        foreach($configs as $className => $classConfig)
+        foreach ($configs as $className => $classConfig)
         {
             // 类
             AnnotationManager::addClassAnnotations($className, new \Imi\Aop\Annotation\Aspect());
-            
+
             // 方法
-            foreach($classConfig['methods'] ?? [] as $methodName => $methodConfig)
+            foreach ($classConfig['methods'] ?? [] as $methodName => $methodConfig)
             {
                 $annotations = [];
-                foreach($methodConfig as $annotationName => $annotationArgs)
+                foreach ($methodConfig as $annotationName => $annotationArgs)
                 {
-                    if(class_exists($annotationName))
+                    if (class_exists($annotationName))
                     {
                         $annotationClassName = $annotationName;
                     }
@@ -58,12 +63,12 @@ class ImiInit implements IEventListener
             }
 
             // 属性
-            foreach($classConfig['properties'] ?? [] as $propName => $propConfig)
+            foreach ($classConfig['properties'] ?? [] as $propName => $propConfig)
             {
                 $annotations = [];
-                foreach($propConfig as $annotationName => $annotationArgs)
+                foreach ($propConfig as $annotationName => $annotationArgs)
                 {
-                    if(class_exists($annotationName))
+                    if (class_exists($annotationName))
                     {
                         $annotationClassName = $annotationName;
                     }

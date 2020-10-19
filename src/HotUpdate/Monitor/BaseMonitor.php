@@ -1,22 +1,26 @@
 <?php
+
 namespace Imi\HotUpdate\Monitor;
 
 abstract class BaseMonitor implements IMonitor
 {
     /**
-     * 包含的路径
+     * 包含的路径.
+     *
      * @var array
      */
     protected $includePaths;
 
     /**
-     * 排除的路径
+     * 排除的路径.
+     *
      * @var array
      */
     protected $excludePaths;
 
     /**
-     * 构造方法
+     * 构造方法.
+     *
      * @param array $includePaths 包含的路径
      * @param array $excludePaths 排除的路径
      */
@@ -28,7 +32,8 @@ abstract class BaseMonitor implements IMonitor
     }
 
     /**
-     * 初始化
+     * 初始化.
+     *
      * @return void
      */
     abstract protected function init();

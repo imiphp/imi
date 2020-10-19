@@ -1,16 +1,15 @@
 <?php
 
-use Imi\Log\LogLevel;
 return [
-    'configs'    =>    [
+    'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    =>    [
+    'beanScan'    => [
         'Imi\Test\HttpServer\HttpsTestServer\Controller',
     ],
-    'beans'    =>    [
-        'HttpDispatcher'    =>    [
-            'middlewares'    =>    [
+    'beans'    => [
+        'HttpDispatcher'    => [
+            'middlewares'    => [
                 \Imi\Test\HttpServer\Middleware\RequestLogMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],

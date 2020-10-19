@@ -1,12 +1,13 @@
 <?php
+
 namespace Imi\Test\HttpServer\Middleware;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Imi\Log\Log;
 use Imi\RequestContext;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class RequestLogMiddleware implements MiddlewareInterface
 {
@@ -17,6 +18,7 @@ class RequestLogMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         Log::info('Server: ' . RequestContext::getServer()->getName() . ', Url: ' . $request->getUri());
+
         return $handler->handle($request);
     }
 }

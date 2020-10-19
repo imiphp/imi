@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
-use Imi\Test\BaseTest;
 use Imi\App;
+use Imi\Test\BaseTest;
 use ReflectionClass;
 
 /**
@@ -11,7 +12,7 @@ use ReflectionClass;
 class PartialTest extends BaseTest
 {
     /**
-     * Partial
+     * Partial.
      *
      * @return void
      */
@@ -36,5 +37,4 @@ class PartialTest extends BaseTest
         $test2Value = $ref->getProperty('test3Value');
         $this->assertTrue($test2Value->isPrivate());
     }
-
 }

@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Util\Http\Consts;
 
 /**
- * 常见的媒体类型
+ * 常见的媒体类型.
  */
 abstract class MediaType
 {
@@ -23,37 +24,37 @@ abstract class MediaType
     const APPLICATION_PROBLEM_JSON = 'application/problem+json';
 
     const APPLICATION_PROBLEM_XML = 'application/problem+xml';
-    
+
     const APPLICATION_RSS_XML = 'application/rss+xml';
-    
+
     const APPLICATION_STREAM_JSON = 'application/stream+json';
-    
+
     const APPLICATION_XHTML_XML = 'application/xhtml+xml';
-    
+
     const APPLICATION_XML = 'application/xml';
-    
+
     const IMAGE_JPEG = 'image/jpeg';
-    
+
     const IMAGE_APNG = 'image/apng';
-    
+
     const IMAGE_PNG = 'image/png';
-    
+
     const IMAGE_GIF = 'image/gif';
-    
+
     const IMAGE_WEBP = 'image/webp';
 
     const IMAGE_ICON = 'image/x-icon';
-    
+
     const MULTIPART_FORM_DATA = 'multipart/form-data';
-    
+
     const TEXT_EVENT_STREAM = 'text/event-stream';
-    
+
     const TEXT_HTML = 'text/html';
-    
+
     const TEXT_MARKDOWN = 'text/markdown';
-    
+
     const TEXT_PLAIN = 'text/plain';
-    
+
     const TEXT_XML = 'text/xml';
 
     const GRPC = 'application/grpc';
@@ -61,5 +62,4 @@ abstract class MediaType
     const GRPC_PROTO = 'application/grpc+proto';
 
     const GRPC_JSON = 'application/grpc+json';
-
 }

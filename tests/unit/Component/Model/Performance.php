@@ -1,14 +1,15 @@
 <?php
+
 namespace Imi\Test\Component\Model;
 
 use Imi\Bean\Annotation\Inherit;
 use Imi\Test\Component\Model\Base\PerformanceBase;
 
 /**
- * Performance
+ * Performance.
+ *
  * @Inherit
  */
 class Performance extends PerformanceBase
 {
-
 }

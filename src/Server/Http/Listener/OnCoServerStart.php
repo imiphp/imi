@@ -1,11 +1,12 @@
 <?php
+
 namespace Imi\Server\Http\Listener;
 
 use Imi\App;
-use Imi\Util\Imi;
+use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Bean\Annotation\Listener;
+use Imi\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.CO_SERVER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
@@ -13,8 +14,10 @@ use Imi\Bean\Annotation\Listener;
 class OnCoServerStart implements IEventListener
 {
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(EventParam $e)

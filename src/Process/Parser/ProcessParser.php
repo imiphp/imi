@@ -1,25 +1,28 @@
 <?php
+
 namespace Imi\Process\Parser;
 
-use Imi\Process\Annotation\Process;
 use Imi\Bean\Parser\BaseParser;
+use Imi\Process\Annotation\Process;
 
 class ProcessParser extends BaseParser
 {
     /**
-     * 处理方法
+     * 处理方法.
+     *
      * @param \Imi\Bean\Annotation\Base $annotation 注解类
-     * @param string $className 类名
-     * @param string $target 注解目标类型（类/属性/方法）
-     * @param string $targetName 注解目标名称
+     * @param string                    $className  类名
+     * @param string                    $target     注解目标类型（类/属性/方法）
+     * @param string                    $targetName 注解目标名称
+     *
      * @return void
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
     {
-        if($annotation instanceof Process)
+        if ($annotation instanceof Process)
         {
             $data = &$this->data;
-            if(isset($data[$annotation->name]) && $data[$annotation->name]['className'] != $className)
+            if (isset($data[$annotation->name]) && $data[$annotation->name]['className'] != $className)
             {
                 throw new \RuntimeException(sprintf('Process %s is exists', $annotation->name));
             }
@@ -31,8 +34,10 @@ class ProcessParser extends BaseParser
     }
 
     /**
-     * 获取process信息
+     * 获取process信息.
+     *
      * @param string $name process名称
+     *
      * @return array
      */
     public function getProcess($name)

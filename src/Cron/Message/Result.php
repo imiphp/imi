@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Cron\Message;
 
 use Imi\App;
@@ -9,28 +10,28 @@ use Imi\Worker;
 class Result implements IMessage
 {
     /**
-     * 动作
+     * 动作.
      *
      * @var string
      */
     public $action;
 
     /**
-     * 定时任务ID
+     * 定时任务ID.
      *
      * @var string
      */
     public $id;
 
     /**
-     * 进程类型
+     * 进程类型.
      *
      * @var string
      */
     public $processType;
 
     /**
-     * 进程标识符
+     * 进程标识符.
      *
      * @var string
      */
@@ -44,7 +45,7 @@ class Result implements IMessage
     public $success;
 
     /**
-     * 消息
+     * 消息.
      *
      * @var string
      */
@@ -57,7 +58,7 @@ class Result implements IMessage
         $this->success = $success;
         $this->message = $message;
         $this->processType = App::get(ProcessAppContexts::PROCESS_TYPE);
-        switch($this->processType)
+        switch ($this->processType)
         {
             case ProcessType::WORKER:
             case ProcessType::TASK_WORKER:

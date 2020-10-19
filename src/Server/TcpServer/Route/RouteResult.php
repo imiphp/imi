@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\TcpServer\Route;
 
 use Imi\Server\Route\RouteCallable;
@@ -6,21 +7,21 @@ use Imi\Server\Route\RouteCallable;
 class RouteResult
 {
     /**
-     * 路由配置项
+     * 路由配置项.
      *
      * @var \Imi\Server\TcpServer\Route\RouteItem
      */
     public $routeItem;
 
     /**
-     * 参数
+     * 参数.
      *
      * @var array
      */
     public $params;
 
     /**
-     * 回调
+     * 回调.
      *
      * @var callable
      */
@@ -31,7 +32,7 @@ class RouteResult
         $this->routeItem = $routeItem;
         $this->params = $params;
         $callable = $routeItem->callable;
-        if($callable instanceof RouteCallable)
+        if ($callable instanceof RouteCallable)
         {
             $this->callable = $callable->getCallable($params);
         }
@@ -40,5 +41,4 @@ class RouteResult
             $this->callable = $callable;
         }
     }
-
 }

@@ -1,10 +1,11 @@
 <?php
+
 namespace Imi\Tool\Listener;
 
-use Imi\Tool\Tool;
+use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Bean\Annotation\Listener;
+use Imi\Tool\Tool;
 
 /**
  * @Listener(eventName="IMI.INITED")
@@ -12,13 +13,14 @@ use Imi\Bean\Annotation\Listener;
 class Run implements IEventListener
 {
     /**
-     * 事件处理方法
+     * 事件处理方法.
+     *
      * @param EventParam $e
+     *
      * @return void
      */
     public function handle(EventParam $e)
     {
         Tool::run();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Server\TcpServer\Route;
 
 use Imi\Bean\Annotation\Bean;
@@ -11,43 +12,49 @@ use Imi\Util\ObjectArrayHelper;
 class TcpRoute implements IRoute
 {
     /**
-     * 路由规则
+     * 路由规则.
+     *
      * @var \Imi\Server\TcpServer\Route\RouteItem[]
      */
     protected $rules = [];
 
     /**
-     * 路由解析处理
+     * 路由解析处理.
+     *
      * @param mixed $data
+     *
      * @return array
      */
     public function parse($data)
     {
-        foreach($this->rules as $item)
+        foreach ($this->rules as $item)
         {
-            if($this->checkCondition($data, $item->annotation))
+            if ($this->checkCondition($data, $item->annotation))
             {
                 return new RouteResult($item);
             }
         }
+
         return null;
     }
 
     /**
-     * 增加路由规则，直接使用注解方式
+     * 增加路由规则，直接使用注解方式.
+     *
      * @param Imi\Server\Route\Annotation\TcpServer\TcpRoute $annotation
-     * @param mixed $callable
-     * @param array $options
+     * @param mixed                                          $callable
+     * @param array                                          $options
+     *
      * @return void
      */
     public function addRuleAnnotation(TcpRouteAnnotation $annotation, $callable, $options = [])
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
-        if(isset($options['middlewares']))
+        if (isset($options['middlewares']))
         {
             $routeItem->middlewares = $options['middlewares'];
         }
-        if(isset($options['singleton']))
+        if (isset($options['singleton']))
         {
             $routeItem->singleton = $options['singleton'];
         }
@@ -55,7 +62,8 @@ class TcpRoute implements IRoute
     }
 
     /**
-     * 清空路由规则
+     * 清空路由规则.
+     *
      * @return void
      */
     public function clearRules()
@@ -64,9 +72,11 @@ class TcpRoute implements IRoute
     }
 
     /**
-     * 路由规则是否存在
+     * 路由规则是否存在.
+     *
      * @param Imi\Server\Route\Annotation\TcpServer\TcpRoute $rule
-     * @return boolean
+     *
+     * @return bool
      */
     public function existsRule(TcpRouteAnnotation $rule)
     {
@@ -74,7 +84,8 @@ class TcpRoute implements IRoute
     }
 
     /**
-     * 获取路由规则
+     * 获取路由规则.
+     *
      * @return \Imi\Server\TcpServer\Route\RouteItem[]
      */
     public function getRules()
@@ -83,25 +94,27 @@ class TcpRoute implements IRoute
     }
 
     /**
-     * 检查条件是否匹配
-     * @param array|object $data
+     * 检查条件是否匹配.
+     *
+     * @param array|object      $data
      * @param WSRouteAnnotation $annotation
-     * @return boolean
+     *
+     * @return bool
      */
     private function checkCondition($data, TcpRouteAnnotation $annotation)
     {
-        if([] === $annotation->condition)
+        if ([] === $annotation->condition)
         {
             return false;
         }
-        foreach($annotation->condition as $name => $value)
+        foreach ($annotation->condition as $name => $value)
         {
-            if(ObjectArrayHelper::get($data, $name) !== $value)
+            if (ObjectArrayHelper::get($data, $name) !== $value)
             {
                 return false;
             }
         }
+
         return true;
     }
-
 }

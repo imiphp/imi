@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Pool;
 
 /**
@@ -8,39 +9,43 @@ class PoolItem
 {
     /**
      * 资源对象
+     *
      * @var \Imi\Pool\Interfaces\IPoolResource
      */
     protected $resource;
 
     /**
-     * 被使用的次数
+     * 被使用的次数.
+     *
      * @var int
      */
     protected $usageCount = 0;
 
     /**
      * 是否空闲状态
-     * @var boolean
+     *
+     * @var bool
      */
     protected $isFree = true;
 
     /**
-     * 创建时间的时间戳
-     * @var integer
+     * 创建时间的时间戳.
+     *
+     * @var int
      */
     protected $createTime = 0;
 
     /**
-     * 最后一次使用的时间戳
+     * 最后一次使用的时间戳.
      *
-     * @var integer
+     * @var int
      */
     protected $lastUseTime = 0;
 
     /**
-     * 最后一次被释放的时间戳
+     * 最后一次被释放的时间戳.
      *
-     * @var integer
+     * @var int
      */
     protected $lastReleaseTime = 0;
 
@@ -52,17 +57,19 @@ class PoolItem
 
     /**
      * Get 资源对象
+     *
      * @return \Imi\Pool\Interfaces\IPoolResource
-     */ 
+     */
     public function getResource()
     {
         return $this->resource;
     }
 
     /**
-     * Get 被使用的次数
+     * Get 被使用的次数.
+     *
      * @return int
-     */ 
+     */
     public function getUsageCount()
     {
         return $this->usageCount;
@@ -70,15 +77,17 @@ class PoolItem
 
     /**
      * 是否空闲状态
-     * @return boolean
-     */ 
+     *
+     * @return bool
+     */
     public function isFree()
     {
         return $this->isFree;
     }
 
     /**
-     * 锁定
+     * 锁定.
+     *
      * @return void
      */
     public function lock()
@@ -89,7 +98,8 @@ class PoolItem
     }
 
     /**
-     * 释放
+     * 释放.
+     *
      * @return void
      */
     public function release()
@@ -99,33 +109,32 @@ class PoolItem
     }
 
     /**
-     * Get 创建时间的时间戳
+     * Get 创建时间的时间戳.
      *
-     * @return  integer
-     */ 
+     * @return int
+     */
     public function getCreateTime()
     {
         return $this->createTime;
     }
 
     /**
-     * Get 最后一次使用的时间戳
+     * Get 最后一次使用的时间戳.
      *
-     * @return  integer
-     */ 
+     * @return int
+     */
     public function getLastUseTime()
     {
         return $this->lastUseTime;
     }
 
     /**
-     * Get 最后一次被释放的时间戳
+     * Get 最后一次被释放的时间戳.
      *
-     * @return  integer
-     */ 
+     * @return int
+     */
     public function getLastReleaseTime()
     {
         return $this->lastReleaseTime;
     }
-
 }

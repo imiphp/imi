@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
@@ -128,5 +129,4 @@ class TreeModelTest extends BaseTest
             ]],
         ], json_decode(json_encode($list), true));
     }
-
 }

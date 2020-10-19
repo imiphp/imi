@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -11,25 +12,25 @@ class ArrayDataTest extends BaseTest
 {
     public function testArrayData()
     {
-        $data2 = new \stdClass;
+        $data2 = new \stdClass();
         $data2->id = 2;
         $data2->name = 'b';
         $rawData = [
-            'name'          =>  'imi',
-            'url'           =>  'https://www.imiphp.com',
-            'description'   =>  'imi is very six',
-            'data1'         =>  [
-                'id'    =>  1,
-                'name'  =>  'a',
+            'name'          => 'imi',
+            'url'           => 'https://www.imiphp.com',
+            'description'   => 'imi is very six',
+            'data1'         => [
+                'id'    => 1,
+                'name'  => 'a',
             ],
-            'data2'         =>  $data2
+            'data2'         => $data2,
         ];
         $data = new ArrayData($rawData);
 
         $this->assertEquals($rawData, $data->getRawData());
         $this->assertEquals(5, $data->length());
-        $this->assertEquals(5, count($data));
-        foreach($data as $k => $v)
+        $this->assertCount(5, $data);
+        foreach ($data as $k => $v)
         {
             $this->assertEquals($rawData[$k], $v);
         }
@@ -62,7 +63,7 @@ class ArrayDataTest extends BaseTest
         $this->assertFalse(isset($data['a']));
         $this->assertFalse($data->exists('a'));
         $data->set('a', [
-            'b' =>  1,
+            'b' => 1,
         ]);
         $this->assertTrue(isset($data->a));
         $this->assertTrue(isset($data['a']));
@@ -71,7 +72,7 @@ class ArrayDataTest extends BaseTest
         $this->assertEquals($data->a['b'], $data['a.b']);
         $this->assertEquals($data->a['b'], $data->get('a.b'));
         $this->assertEquals([
-            'b' =>  1,
+            'b' => 1,
         ], $data->get('a'));
 
         $data->setVal('x.y', 1);
@@ -79,7 +80,7 @@ class ArrayDataTest extends BaseTest
         $this->assertEquals($data->x['y'], $data['x.y']);
         $this->assertEquals($data->x['y'], $data->get('x.y'));
         $this->assertEquals([
-            'y' =>  1,
+            'y' => 1,
         ], $data->get('x'));
 
         unset($data['a']);
@@ -101,5 +102,4 @@ class ArrayDataTest extends BaseTest
         $data->clear();
         $this->assertEmpty($data->getRawData());
     }
-
 }

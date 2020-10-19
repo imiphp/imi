@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Db\Consts;
 
-use Imi\Enum\BaseEnum;
 use Imi\Enum\Annotation\EnumItem;
+use Imi\Enum\BaseEnum;
 
 abstract class LogicalOperator extends BaseEnum
 {

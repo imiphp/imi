@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Db\Query\Builder;
 
 use Imi\Db\Query\Lock\MysqlLock;
@@ -6,7 +7,8 @@ use Imi\Db\Query\Lock\MysqlLock;
 class SelectBuilder extends BaseBuilder
 {
     /**
-     * 生成SQL语句
+     * 生成SQL语句.
+     *
      * @return string
      */
     public function build(...$args)
@@ -27,22 +29,24 @@ class SelectBuilder extends BaseBuilder
                 . $this->parseLock($option->lock)
                 ;
         $query->bindValues($this->params);
+
         return $sql;
     }
 
     /**
-     * lock
+     * lock.
      *
-     * @param int|string|null|bool $lock
+     * @param int|string|bool|null $lock
+     *
      * @return string
      */
     public function parseLock($lock): string
     {
-        if(null === $lock || false === $lock)
+        if (null === $lock || false === $lock)
         {
             return '';
         }
-        switch($lock)
+        switch ($lock)
         {
             case MysqlLock::FOR_UPDATE:
                 return ' FOR UPDATE';
@@ -52,5 +56,4 @@ class SelectBuilder extends BaseBuilder
                 return ' ' . $lock;
         }
     }
-
 }

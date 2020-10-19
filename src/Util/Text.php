@@ -1,21 +1,24 @@
 <?php
+
 namespace Imi\Util;
 
 /**
- * 字符串工具类
+ * 字符串工具类.
  */
 abstract class Text
 {
     /**
-     * 字符串是否以另一个字符串开头
+     * 字符串是否以另一个字符串开头.
+     *
      * @param string $string
      * @param string $compare
-     * @param bool $caseSensitive
+     * @param bool   $caseSensitive
+     *
      * @return string
      */
     public static function startwith($string, $compare, $caseSensitive = true)
     {
-        if($caseSensitive)
+        if ($caseSensitive)
         {
             return 0 === strpos($string, $compare);
         }
@@ -26,15 +29,17 @@ abstract class Text
     }
 
     /**
-     * 字符串是否以另一个字符串结尾
+     * 字符串是否以另一个字符串结尾.
+     *
      * @param string $string
      * @param string $compare
-     * @param bool $caseSensitive
+     * @param bool   $caseSensitive
+     *
      * @return string
      */
     public static function endwith($string, $compare, $caseSensitive = true)
     {
-        if($caseSensitive)
+        if ($caseSensitive)
         {
             return $compare === strrchr($string, $compare);
         }
@@ -45,10 +50,12 @@ abstract class Text
     }
 
     /**
-     * 插入字符串
-     * @param string $string 原字符串
-     * @param int $position 位置
+     * 插入字符串.
+     *
+     * @param string $string       原字符串
+     * @param int    $position     位置
      * @param string $insertString 被插入的字符串
+     *
      * @return string
      */
     public static function insert($string, $position, $insertString)
@@ -57,9 +64,11 @@ abstract class Text
     }
 
     /**
-     * 字符串是否为空字符串或者为null
+     * 字符串是否为空字符串或者为null.
+     *
      * @param string $string
-     * @return boolean
+     *
+     * @return bool
      */
     public static function isEmpty($string)
     {
@@ -67,8 +76,10 @@ abstract class Text
     }
 
     /**
-     * 转为驼峰命名，会把下划线后字母转为大写
+     * 转为驼峰命名，会把下划线后字母转为大写.
+     *
      * @param string $name
+     *
      * @return string
      */
     public static function toCamelName($name)
@@ -77,8 +88,10 @@ abstract class Text
     }
 
     /**
-     * 转为每个单词大写的命名，会把下划线后字母转为大写
+     * 转为每个单词大写的命名，会把下划线后字母转为大写.
+     *
      * @param string $name
+     *
      * @return string
      */
     public static function toPascalName($name)
@@ -87,19 +100,21 @@ abstract class Text
     }
 
     /**
-     * 转为下划线命名
+     * 转为下划线命名.
      *
      * @param string $name
-     * @param boolean $toLower
+     * @param bool   $toLower
+     *
      * @return string
      */
     public static function toUnderScoreCase($name, $toLower = true)
     {
         $result = trim(preg_replace('/[A-Z]/', '_\0', $name), '_');
-        if($toLower)
+        if ($toLower)
         {
             $result = strtolower($result);
         }
+
         return $result;
     }
 }

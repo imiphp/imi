@@ -1,22 +1,25 @@
 <?php
+
 namespace Imi\Server\TcpServer;
 
 use Imi\App;
-use Imi\Server\Base;
-use Imi\ServerManage;
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\Base;
 use Imi\Server\Event\Param\CloseEventParam;
 use Imi\Server\Event\Param\ConnectEventParam;
 use Imi\Server\Event\Param\ReceiveEventParam;
+use Imi\ServerManage;
 
 /**
- * TCP 服务器类
+ * TCP 服务器类.
+ *
  * @Bean
  */
 class Server extends Base
 {
     /**
      * 创建 swoole 服务器对象
+     *
      * @return void
      */
     protected function createServer()
@@ -26,7 +29,8 @@ class Server extends Base
     }
 
     /**
-     * 从主服务器监听端口，作为子服务器
+     * 从主服务器监听端口，作为子服务器.
+     *
      * @return void
      */
     protected function createSubServer()
@@ -35,9 +39,9 @@ class Server extends Base
         $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $configs = &$this->config['configs'];
-        foreach(static::SWOOLE_PROTOCOLS as $protocol)
+        foreach (static::SWOOLE_PROTOCOLS as $protocol)
         {
-            if(!isset($configs[$protocol]))
+            if (!isset($configs[$protocol]))
             {
                 $configs[$protocol] = false;
             }
@@ -45,7 +49,8 @@ class Server extends Base
     }
 
     /**
-     * 获取服务器初始化需要的配置
+     * 获取服务器初始化需要的配置.
+     *
      * @return array
      */
     protected function getServerInitConfig()
@@ -53,39 +58,42 @@ class Server extends Base
         return [
             'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
             'port'      => isset($this->config['port']) ? $this->config['port'] : 8080,
-            'sockType'  => isset($this->config['sockType']) ? (SWOOLE_SOCK_TCP | $this->config['sockType']) : SWOOLE_SOCK_TCP,
-            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : SWOOLE_PROCESS,
+            'sockType'  => isset($this->config['sockType']) ? (\SWOOLE_SOCK_TCP | $this->config['sockType']) : \SWOOLE_SOCK_TCP,
+            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : \SWOOLE_PROCESS,
         ];
     }
 
     /**
-     * 绑定服务器事件
+     * 绑定服务器事件.
+     *
      * @return void
      */
     protected function __bindEvents()
     {
         $events = $this->config['events'] ?? null;
-        if($event = ($events['connect'] ?? true))
+        if ($event = ($events['connect'] ?? true))
         {
-            $this->swoolePort->on('connect', is_callable($event) ? $event : function(\Swoole\Server $server, $fd, $reactorID){
-                try{
+            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, $fd, $reactorID) {
+                try
+                {
                     $this->trigger('connect', [
                         'server'    => $this,
                         'fd'        => $fd,
                         'reactorID' => $reactorID,
                     ], $this, ConnectEventParam::class);
                 }
-                catch(\Throwable $ex)
+                catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
         }
-        
-        if($event = ($events['receive'] ?? true))
+
+        if ($event = ($events['receive'] ?? true))
         {
-            $this->swoolePort->on('receive', is_callable($event) ? $event : function(\Swoole\Server $server, $fd, $reactorID, $data){
-                try{
+            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, $fd, $reactorID, $data) {
+                try
+                {
                     $this->trigger('receive', [
                         'server'    => $this,
                         'fd'        => $fd,
@@ -93,29 +101,29 @@ class Server extends Base
                         'data'      => $data,
                     ], $this, ReceiveEventParam::class);
                 }
-                catch(\Throwable $ex)
-                {
-                    App::getBean('ErrorLog')->onException($ex);
-                }
-            });
-        }
-    
-        if($event = ($events['close'] ?? true))
-        {
-            $this->swoolePort->on('close', is_callable($event) ? $event : function(\Swoole\Server $server, $fd, $reactorID){
-                try{
-                    $this->trigger('close', [
-                        'server'    => $this,
-                        'fd'        => $fd,
-                        'reactorID' => $reactorID,
-                    ], $this, CloseEventParam::class);
-                }
-                catch(\Throwable $ex)
+                catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
             });
         }
 
+        if ($event = ($events['close'] ?? true))
+        {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, $fd, $reactorID) {
+                try
+                {
+                    $this->trigger('close', [
+                        'server'    => $this,
+                        'fd'        => $fd,
+                        'reactorID' => $reactorID,
+                    ], $this, CloseEventParam::class);
+                }
+                catch (\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
     }
 }

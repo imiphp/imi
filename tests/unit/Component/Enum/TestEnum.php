@@ -1,8 +1,9 @@
 <?php
+
 namespace Imi\Test\Component\Enum;
 
-use Imi\Enum\BaseEnum;
 use Imi\Enum\Annotation\EnumItem;
+use Imi\Enum\BaseEnum;
 
 class TestEnum extends BaseEnum
 {
@@ -20,5 +21,4 @@ class TestEnum extends BaseEnum
      * @EnumItem(text="丙", other="c3")
      */
     const C = 3;
-
 }

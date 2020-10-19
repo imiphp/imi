@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
@@ -11,19 +12,20 @@ class ObjectArrayHelperTest extends BaseTest
 {
     private function getTestData()
     {
-        $data2 = new \stdClass;
+        $data2 = new \stdClass();
         $data2->id = 2;
         $data2->name = 'b';
         $data = [
-            'name'          =>  'imi',
-            'url'           =>  'https://www.imiphp.com',
-            'description'   =>  'imi is very six',
-            'data1'         =>  [
-                'id'    =>  1,
-                'name'  =>  'a',
+            'name'          => 'imi',
+            'url'           => 'https://www.imiphp.com',
+            'description'   => 'imi is very six',
+            'data1'         => [
+                'id'    => 1,
+                'name'  => 'a',
             ],
-            'data2'         =>  $data2
+            'data2'         => $data2,
         ];
+
         return $data;
     }
 
@@ -70,20 +72,20 @@ class ObjectArrayHelperTest extends BaseTest
     public function testColumn()
     {
         $list = [
-            ['id'=>1, 'name'=>'a'],
-            ['id'=>2, 'name'=>'b'],
-            ['id'=>3, 'name'=>'c'],
+            ['id' => 1, 'name' => 'a'],
+            ['id' => 2, 'name' => 'b'],
+            ['id' => 3, 'name' => 'c'],
         ];
         $this->assertEquals(['a', 'b', 'c'], ObjectArrayHelper::column($list, 'name'));
 
         $list = [];
-        $list[] = $item = new \stdClass;
+        $list[] = $item = new \stdClass();
         $item->id = 1;
         $item->name = 'a';
-        $list[] = $item = new \stdClass;
+        $list[] = $item = new \stdClass();
         $item->id = 2;
         $item->name = 'b';
-        $list[] = $item = new \stdClass;
+        $list[] = $item = new \stdClass();
         $item->id = 3;
         $item->name = 'c';
         $this->assertEquals(['a', 'b', 'c'], ObjectArrayHelper::column($list, 'name'));
@@ -93,27 +95,27 @@ class ObjectArrayHelperTest extends BaseTest
     {
         // array
         $data = [
-            'id'    =>    1,
-            'name'    =>    'imi',
+            'id'      => 1,
+            'name'    => 'imi',
         ];
         // 只保留 name 字段
         ObjectArrayHelper::filter($data, ['name']);
         $this->assertEquals([
-            'name'    =>    'imi',
+            'name'    => 'imi',
         ], $data);
 
         $data = [
-            'id'    =>    1,
-            'name'    =>    'imi',
+            'id'      => 1,
+            'name'    => 'imi',
         ];
         // 剔除 name 字段
         ObjectArrayHelper::filter($data, ['name'], 'deny');
         $this->assertEquals([
-            'id'    =>    1,
+            'id'    => 1,
         ], $data);
 
         // object
-        $data = new \stdClass;
+        $data = new \stdClass();
         $data->id = 1;
         $data->name = 'imi';
         // 只保留 name 字段
@@ -121,7 +123,7 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertEquals('imi', $data->name);
         $this->assertFalse(ObjectArrayHelper::exists($data, 'id'));
 
-        $data = new \stdClass;
+        $data = new \stdClass();
         $data->id = 1;
         $data->name = 'imi';
         // 剔除 name 字段
@@ -129,5 +131,4 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertEquals(1, $data->id);
         $this->assertFalse(ObjectArrayHelper::exists($data, 'name'));
     }
-
 }

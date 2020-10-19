@@ -1,20 +1,19 @@
 <?php
+
 namespace Imi\Tool\Tools\Generate\Facade;
 
-use Imi\App;
-use Imi\Util\Imi;
-use Imi\Util\File;
-use Imi\Main\Helper;
-use ReflectionClass;
-use Imi\Tool\ArgType;
-use ReflectionMethod;
 use Imi\Bean\Annotation;
-use Imi\Bean\BeanFactory;
-use Imi\Tool\Annotation\Arg;
-use Imi\Tool\Annotation\Tool;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Facade\Annotation\Facade;
+use Imi\Main\Helper;
+use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Operation;
+use Imi\Tool\Annotation\Tool;
+use Imi\Tool\ArgType;
+use Imi\Util\File;
+use Imi\Util\Imi;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * @Tool("generate")
@@ -22,25 +21,27 @@ use Imi\Tool\Annotation\Operation;
 class FacadeGenerate
 {
     /**
-     * 生成门面类
+     * 生成门面类.
+     *
      * @Operation("facade")
      *
      * @Arg(name="facadeClass", type=ArgType::STRING, required=true, comments="生成的门面类")
      * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的类")
      * @Arg(name="request", type=ArgType::BOOL, default=false, comments="是否请求上下文门面")
+     *
      * @return void
      */
     public function generate($facadeClass, $class, $request)
     {
         Annotation::getInstance()->init(Helper::getAppMains());
-        if(class_exists($class))
+        if (class_exists($class))
         {
             $fromClass = $class;
         }
         else
         {
             $data = BeanParser::getInstance()->getData();
-            if(isset($data[$class]))
+            if (isset($data[$class]))
             {
                 $fromClass = $data[$class]['className'];
             }
@@ -52,33 +53,33 @@ class FacadeGenerate
         $namespace = Imi::getClassNamespace($facadeClass);
         $shortClassName = Imi::getClassShortName($facadeClass);
         $fileName = Imi::getNamespacePath($namespace);
-        if(null === $fileName)
+        if (null === $fileName)
         {
             throw new \RuntimeException(sprintf('Get namespace %s path failed', $namespace));
         }
         $fileName = File::path($fileName, $shortClassName . '.php');
         $facadeAnnotation = Annotation::toComments(new Facade([
-            'class'     =>  $class,
-            'request'   =>  $request,
+            'class'     => $class,
+            'request'   => $request,
         ]));
         $refClass = new ReflectionClass($fromClass);
         $methods = [];
-        foreach($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
+        foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
         {
             $methodName = $method->getName();
             // 构造、析构方法去除
-            if(in_array($methodName, ['__construct', '__destruct']))
+            if (\in_array($methodName, ['__construct', '__destruct']))
             {
                 continue;
             }
-            if(preg_match('/@return\s+([^\s]+)/', $method->getDocComment(), $matches) > 0)
+            if (preg_match('/@return\s+([^\s]+)/', $method->getDocComment(), $matches) > 0)
             {
                 $returnType = $matches[1];
             }
-            else if($method->hasReturnType())
+            elseif ($method->hasReturnType())
             {
                 $returnType = $method->getReturnType();
-                if($returnType->allowsNull())
+                if ($returnType->allowsNull())
                 {
                     $returnType = $returnType->getName() . '|null';
                 }
@@ -92,26 +93,26 @@ class FacadeGenerate
                 $returnType = 'mixed';
             }
             $params = [];
-            foreach($method->getParameters() as $param)
+            foreach ($method->getParameters() as $param)
             {
                 $result = '';
                 // 类型
                 $paramType = $param->getType();
-                if($paramType)
+                if ($paramType)
                 {
                     $paramType = $paramType->getName();
                 }
-                if(null !== $paramType && $param->allowsNull())
+                if (null !== $paramType && $param->allowsNull())
                 {
                     $paramType = '?' . $paramType;
                 }
-                $result .= null === $paramType ? '' : ((string)$paramType . ' ');
-                if($param->isPassedByReference())
+                $result .= null === $paramType ? '' : ((string) $paramType . ' ');
+                if ($param->isPassedByReference())
                 {
                     // 引用传参
                     $result .= '&';
                 }
-                else if($param->isVariadic())
+                elseif ($param->isVariadic())
                 {
                     // 可变参数...
                     $result .= '...';
@@ -119,9 +120,9 @@ class FacadeGenerate
                 // $参数名
                 $result .= '$' . $param->name;
                 // 默认值
-                if($param->isOptional() && !$param->isVariadic())
+                if ($param->isOptional() && !$param->isVariadic())
                 {
-                    if($param->isDefaultValueAvailable())
+                    if ($param->isDefaultValueAvailable())
                     {
                         $result .= ' = ' . var_export($param->getDefaultValue(), true);
                     }
@@ -135,12 +136,12 @@ class FacadeGenerate
             $params = implode(', ', $params);
             $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
-        $content = (function() use($namespace, $facadeAnnotation, $methods, $shortClassName){
+        $content = (function () use ($namespace, $facadeAnnotation, $methods, $shortClassName) {
             ob_start();
             include __DIR__ . '/template.tpl';
+
             return ob_get_clean();
         })();
         file_put_contents($fileName, $content);
     }
-
 }

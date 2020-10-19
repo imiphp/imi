@@ -1,7 +1,7 @@
 <?php
+
 namespace Imi\Test\HttpServer\Tests;
 
-use Yurun\Util\YurunHttp;
 use Yurun\Util\HttpRequest;
 
 /**
@@ -26,13 +26,13 @@ class Http2Test extends BaseTest
      */
     public function testUri()
     {
-        if(version_compare(SWOOLE_VERSION, '4.4', '<'))
+        if (version_compare(\SWOOLE_VERSION, '4.4', '<'))
         {
             $this->markTestSkipped('Http2 in Swoole 4.3.x has some bugs...');
         }
-        
-        $this->go(function(){
-            $http = new HttpRequest;
+
+        $this->go(function () {
+            $http = new HttpRequest();
             $http->protocolVersion = '2.0';
             $uri = $this->host . 'info?get=1';
             $response = $http->get($uri);
@@ -48,5 +48,4 @@ class Http2Test extends BaseTest
             $this->assertEquals(2, $data['connectContext']['count'] ?? null);
         });
     }
-
 }

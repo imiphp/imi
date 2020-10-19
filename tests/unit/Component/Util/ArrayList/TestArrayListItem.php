@@ -1,4 +1,5 @@
 <?php
+
 namespace Imi\Test\Component\Util\ArrayList;
 
 class TestArrayListItem

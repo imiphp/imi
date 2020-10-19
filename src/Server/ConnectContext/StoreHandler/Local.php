@@ -1,35 +1,37 @@
 <?php
+
 namespace Imi\Server\ConnectContext\StoreHandler;
 
-use Swoole\Timer;
-use Imi\Lock\Lock;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\ConnectContext\StoreHandler\IHandler;
+use Imi\Lock\Lock;
+use Swoole\Timer;
 
 /**
- * 连接上下文存储处理器-Local
+ * 连接上下文存储处理器-Local.
+ *
  * @Bean("ConnectContextLocal")
  */
 class Local implements IHandler
 {
     /**
-     * 存储集合
+     * 存储集合.
      *
      * @var array
      */
     private $storeMap = [];
 
     /**
-     * 锁 ID
+     * 锁 ID.
      *
      * @var string
      */
     protected $lockId;
 
     /**
-     * 读取数据
+     * 读取数据.
      *
      * @param string $key
+     *
      * @return array
      */
     public function read(string $key): array
@@ -38,10 +40,11 @@ class Local implements IHandler
     }
 
     /**
-     * 保存数据
+     * 保存数据.
      *
      * @param string $key
-     * @param array $data
+     * @param array  $data
+     *
      * @return void
      */
     public function save(string $key, array $data)
@@ -50,38 +53,41 @@ class Local implements IHandler
     }
 
     /**
-     * 销毁数据
+     * 销毁数据.
      *
      * @param string $key
+     *
      * @return void
      */
     public function destroy(string $key)
     {
         $storeMap = &$this->storeMap;
-        if(isset($storeMap[$key]))
+        if (isset($storeMap[$key]))
         {
             unset($storeMap[$key]);
         }
     }
 
     /**
-     * 延迟销毁数据
+     * 延迟销毁数据.
      *
      * @param string $key
-     * @param integer $ttl
+     * @param int    $ttl
+     *
      * @return void
      */
     public function delayDestroy(string $key, int $ttl)
     {
-        Timer::after($ttl * 1000, function() use($key){
+        Timer::after($ttl * 1000, function () use ($key) {
             $this->destroy($key);
         });
     }
 
     /**
-     * 数据是否存在
+     * 数据是否存在.
      *
      * @param string $key
+     *
      * @return void
      */
     public function exists(string $key)
@@ -91,10 +97,11 @@ class Local implements IHandler
 
     /**
      * 加锁
-     * 
-     * @param string $key
+     *
+     * @param string   $key
      * @param callable $callable
-     * @return boolean
+     *
+     * @return bool
      */
     public function lock(string $key, $callable = null)
     {
@@ -104,11 +111,10 @@ class Local implements IHandler
     /**
      * 解锁
      *
-     * @return boolean
+     * @return bool
      */
     public function unlock()
     {
         return Lock::unlock($this->lockId);
     }
-
 }
