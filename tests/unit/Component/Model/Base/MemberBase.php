@@ -13,8 +13,8 @@ use Imi\Model\Model;
  *
  * @Entity
  * @Table(name="tb_member", id={"id"})
- * @DDL("CREATE TABLE `tb_member` (
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * @DDL("CREATE TABLE `tb_member` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `username` varchar(32) NOT NULL COMMENT '用户名',   `password` varchar(255) NOT NULL COMMENT '密码',   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ *
  * @property int    $id
  * @property string $username 用户名
  * @property string $password 密码

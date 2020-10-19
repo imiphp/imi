@@ -13,8 +13,8 @@ use Imi\Model\Model;
  *
  * @Entity
  * @Table(name="tb_article", id={"id"})
- * @DDL("CREATE TABLE `tb_article` (
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ * @DDL("CREATE TABLE `tb_article` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `title` varchar(255) NOT NULL,   `content` mediumtext NOT NULL,   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   PRIMARY KEY (`id`) USING BTREE ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT")
+ *
  * @property int    $id
  * @property string $title
  * @property string $content
