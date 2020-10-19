@@ -163,7 +163,14 @@ class FileTest extends BaseTest
     public function testCreateDir()
     {
         $path = Imi::getRuntimePath('test/a/b');
-        $this->assertDirectoryDoesNotExist($path);
+        if(method_exists($this, 'assertDirectoryDoesNotExist'))
+        {
+            $this->assertDirectoryDoesNotExist($path);
+        }
+        else
+        {
+            $this->assertDirectoryNotExist($path);
+        }
         $this->assertTrue(File::createDir($path));
         $this->assertDirectoryExists($path);
     }
@@ -210,7 +217,14 @@ class FileTest extends BaseTest
         $path = Imi::getRuntimePath('test/test');
         $this->assertDirectoryExists($path);
         File::deleteDir($path);
-        $this->assertDirectoryDoesNotExist($path);
+        if(method_exists($this, 'assertDirectoryDoesNotExist'))
+        {
+            $this->assertDirectoryDoesNotExist($path);
+        }
+        else
+        {
+            $this->assertDirectoryNotExist($path);
+        }
     }
 
     /**
@@ -221,7 +235,14 @@ class FileTest extends BaseTest
     public function testPutContents()
     {
         $path = Imi::getRuntimePath('test/test');
-        $this->assertDirectoryDoesNotExist($path);
+        if(method_exists($this, 'assertDirectoryDoesNotExist'))
+        {
+            $this->assertDirectoryDoesNotExist($path);
+        }
+        else
+        {
+            $this->assertDirectoryNotExist($path);
+        }
         $content = uniqid();
         $fileName = $path . '/a/b/c/1.txt';
         $this->assertTrue(false !== File::putContents($fileName, $content));
