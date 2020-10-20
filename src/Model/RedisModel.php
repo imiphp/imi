@@ -250,7 +250,6 @@ abstract class RedisModel extends BaseModel
                 return $result;
             case RedisStorageMode::HASH_OBJECT:
                 return static::__getRedis()->del(...$keys);
-                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
