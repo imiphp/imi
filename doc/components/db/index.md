@@ -41,6 +41,10 @@ return [
                     // 'heartbeatInterval' => null,
                     // 当获取资源时，是否检查状态
                     // 'checkStateWhenGetResource' => true,
+                    // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
+                    // 'maxUsedTime' => null,
+                    // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
+                    // 'requestResourceCheckInterval' => 30,
                     // 负载均衡-轮流
                     // 'resourceConfigMode' => ResourceConfigMode::TURN,
                     // 负载均衡-随机
@@ -58,6 +62,8 @@ return [
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
                 // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 hook mysqli 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
@@ -94,6 +100,10 @@ return [
                     // 'heartbeatInterval' => null,
                     // 当获取资源时，是否检查状态
                     // 'checkStateWhenGetResource' => true,
+                    // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
+                    // 'maxUsedTime' => null,
+                    // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
+                    // 'requestResourceCheckInterval' => 30,
                     // 负载均衡-轮流
                     // 'resourceConfigMode' => ResourceConfigMode::TURN,
                     // 负载均衡-随机
@@ -111,6 +121,8 @@ return [
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
                 // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 hook mysqli 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
@@ -160,6 +172,10 @@ return [
                         // 'heartbeatInterval' => null,
                         // 当获取资源时，是否检查状态
                         // 'checkStateWhenGetResource' => true,
+                        // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
+                        // 'maxUsedTime' => null,
+                        // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
+                        // 'requestResourceCheckInterval' => 30,
                         // 负载均衡-轮流
                         // 'resourceConfigMode' => ResourceConfigMode::TURN,
                         // 负载均衡-随机
@@ -177,6 +193,8 @@ return [
                     // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
                     // 使用 hook pdo 驱动（缺省默认）
                     // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                    // 使用 hook mysqli 驱动
+                    // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                     // 使用 Swoole MySQL 驱动
                     // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                 ],
@@ -201,6 +219,8 @@ return [
                         // 'options' => [], // PDO连接选项
                         // 使用 hook pdo 驱动（缺省默认）
                         // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                        // 使用 hook mysqli 驱动
+                        // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                     ],
@@ -214,6 +234,8 @@ return [
                         // 'options' => [], // PDO连接选项
                         // 使用 hook pdo 驱动（缺省默认）
                         // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                        // 使用 hook mysqli 驱动
+                        // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
                     ]
@@ -470,18 +492,9 @@ public function getTransaction();
 
 imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
 
-这么写，查询返回的结果都是模型对象，或者模型对象数组：
-
 ```php
 use Imi\Db\Db;
 $query = Db::query();
-```
-
-这么写，查询永远返回数组，字段按数据库命名原样返回：
-
-```php
-use Imi\Db\Db;
-$query = Db::dbQuery();
 ```
 
 ### 事务

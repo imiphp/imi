@@ -24,7 +24,7 @@ class Column extends Base
     /**
      * 字段名.
      *
-     * @var string|array
+     * @var string|null
      */
     public $name;
 

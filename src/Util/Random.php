@@ -5,11 +5,8 @@ namespace Imi\Util;
 /**
  * 随机生成一些东西的工具类.
  */
-class Random
+abstract class Random
 {
-    private function __construct()
-    {
-    }
     /**
      * 随机整数.
      *
@@ -42,15 +39,15 @@ class Random
     /**
      * 随机生成文本.
      *
-     * @param string $chars
-     * @param int    $min
-     * @param int    $max
+     * @param string   $chars
+     * @param int      $min
+     * @param int|null $max
      *
      * @return string
      */
-    public static function text($chars, $min, $max)
+    public static function text($chars, $min, $max = null)
     {
-        $length = mt_rand($min, $max);
+        $length = mt_rand($min, $max ?? $min);
         $charLength = mb_strlen($chars);
         $result = '';
         for ($i = 0; $i < $length; ++$i)
@@ -64,39 +61,39 @@ class Random
     /**
      * 随机生成字母.
      *
-     * @param int $min
-     * @param int $max
+     * @param int      $min
+     * @param int|null $max
      *
      * @return string
      */
-    public static function letter($min, $max)
+    public static function letter($min, $max = null)
     {
-        return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', $min, $max);
+        return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', $min, $max ?? $min);
     }
 
     /**
      * 随机生成数字.
      *
-     * @param int $min
-     * @param int $max
+     * @param int      $min
+     * @param int|null $max
      *
      * @return string
      */
-    public static function digital($min, $max)
+    public static function digital($min, $max = null)
     {
-        return static::text('0123456789', $min, $max);
+        return static::text('0123456789', $min, $max ?? $min);
     }
 
     /**
      * 随机生成字母和数字.
      *
-     * @param int $min
-     * @param int $max
+     * @param int      $min
+     * @param int|null $max
      *
      * @return string
      */
-    public static function letterAndNumber($min, $max)
+    public static function letterAndNumber($min, $max = null)
     {
-        return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', $min, $max);
+        return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', $min, $max ?? $min);
     }
 }

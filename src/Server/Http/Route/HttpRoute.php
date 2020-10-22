@@ -57,6 +57,13 @@ class HttpRoute
     protected $ignoreCase = false;
 
     /**
+     * 智能尾部斜杠，无论是否存在都匹配.
+     *
+     * @var bool
+     */
+    protected $autoEndSlash = false;
+
+    /**
      * 增加路由规则.
      *
      * @param string                             $url        url规则
@@ -208,9 +215,9 @@ class HttpRoute
     public function checkUrl(string $urlRule, string $pathInfo)
     {
         $urlCheckCache = &$this->urlCheckCache;
-        $urlCheckCacheCount = &$this->urlCheckCacheCount;
         if (!isset($urlCheckCache[$pathInfo][$urlRule]))
         {
+            $urlCheckCacheCount = &$this->urlCheckCacheCount;
             $rule = $this->parseRule($urlRule, $fields, $isRegular);
             $params = [];
             if ($isRegular)
@@ -487,5 +494,25 @@ class HttpRoute
     public function getUrlCacheNumber()
     {
         return $this->urlCacheNumber;
+    }
+
+    /**
+     * Get 忽略 URL 规则大小写.
+     *
+     * @return bool
+     */
+    public function getIgnoreCase(): bool
+    {
+        return $this->ignoreCase;
+    }
+
+    /**
+     * Get 智能尾部斜杠，无论是否存在都匹配.
+     *
+     * @return bool
+     */
+    public function getAutoEndSlash(): bool
+    {
+        return $this->autoEndSlash;
     }
 }

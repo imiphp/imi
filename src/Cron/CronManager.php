@@ -257,7 +257,6 @@ class CronManager
                             $handler->run($id, $data);
                         });
                     };
-                    break;
             }
         }
         elseif (is_subclass_of($class, IProcess::class))

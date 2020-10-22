@@ -61,9 +61,11 @@ class PoolConfig implements IPoolConfig
     /**
      * 当前请求上下文资源检查状态间隔，单位：支持小数的秒.
      *
+     * 为 null 则不限制
+     *
      * @var float
      */
-    protected $requestResourceCheckInterval = 3;
+    protected $requestResourceCheckInterval = 30;
 
     /**
      * 心跳时间间隔，单位：秒.

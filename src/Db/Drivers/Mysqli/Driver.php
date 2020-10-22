@@ -1,6 +1,6 @@
 <?php
 
-namespace Imi\Db\Drivers\Swoole;
+namespace Imi\Db\Drivers\Mysqli;
 
 use Imi\Bean\BeanFactory;
 use Imi\Config;
@@ -11,17 +11,16 @@ use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
 use Imi\Db\Util\SqlUtil;
-use Swoole\Coroutine\MySQL;
 
 /**
- * Swoole Coroutine MySQL 驱动.
+ * mysqli MySQL驱动.
  */
 class Driver extends Base implements IDb
 {
     /**
      * 连接对象
      *
-     * @var \Swoole\Coroutine\MySQL
+     * @var \mysqli
      */
     protected $instance;
 
@@ -42,9 +41,16 @@ class Driver extends Base implements IDb
     /**
      * Statement.
      *
-     * @var \Swoole\Coroutine\MySQL\Statement
+     * @var \mysqli_stmt
      */
     protected $lastStmt;
+
+    /**
+     * result.
+     *
+     * @var \mysqli_result
+     */
+    protected $lastResult;
 
     /**
      * 是否缓存 Statement.
@@ -68,17 +74,21 @@ class Driver extends Base implements IDb
      * 'password'   => '数据库密码',
      * 'database'   => '数据库名',
      * 'port'       => 'MySQL端口 默认3306 可选参数',
-     * 'timeout'    => '建立连接超时时间',
      * 'charset'    => '字符集',
-     * 'strict_type'=> true, // 开启严格模式，query方法返回的数据也将转为强类型
-     * 'fetch_mode' => false, // 开启fetch模式, 可与pdo一样使用fetch/fetchAll逐行或获取全部结果集(4.0版本以上)
-     * 'options'    => [], // 其它选项
      * ].
      *
      * @param array $option
      */
     public function __construct($option = [])
     {
+        if (!isset($option['username']))
+        {
+            $option['username'] = 'root';
+        }
+        if (!isset($option['password']))
+        {
+            $option['password'] = '';
+        }
         $this->option = $option;
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction();
@@ -96,9 +106,7 @@ class Driver extends Base implements IDb
      */
     public function isConnected(): bool
     {
-        $instance = $this->instance;
-
-        return $instance && $instance->query('select 1');
+        return $this->instance->ping();
     }
 
     /**
@@ -108,25 +116,10 @@ class Driver extends Base implements IDb
      */
     public function open()
     {
-        $this->instance = $instance = new MySQL();
         $option = $this->option;
-        $serverConfig = [
-            'host'          => $option['host'] ?? '127.0.0.1',
-            'port'          => $option['port'] ?? 3306,
-            'user'          => $option['username'] ?? 'root',
-            'password'      => $option['password'] ?? '',
-            'database'      => $option['database'] ?? '',
-            'timeout'       => $option['timeout'] ?? null,
-            'charset'       => $option['charset'] ?? 'utf8',
-            'strict_type'   => $option['strict_type'] ?? true,
-            'fetch_mode'    => $option['fetch_mode'] ?? false,
-        ];
-        if (isset($option['options']))
-        {
-            $serverConfig = array_merge($serverConfig, $option['options']);
-        }
+        $this->instance = new \mysqli($option['host'] ?? '127.0.0.1', $option['username'], $option['password'], $option['database'], $option['port'] ?? 3306);
 
-        return $instance->connect($serverConfig);
+        return true;
     }
 
     /**
@@ -139,21 +132,23 @@ class Driver extends Base implements IDb
         StatementManager::clear($this);
         if (null !== $this->lastStmt)
         {
+            $this->lastStmt->close();
             $this->lastStmt = null;
         }
-        if (null !== $this->instance)
+        if (null !== $this->lastResult)
         {
-            $this->instance->close();
-            $this->instance = null;
+            $this->lastResult->close();
+            $this->lastResult = null;
         }
+        $this->instance = null;
     }
 
     /**
      * 获取原对象实例.
      *
-     * @return \Swoole\Coroutine\MySQL
+     * @return \mysqli
      */
-    public function getInstance(): \Swoole\Coroutine\MySQL
+    public function getInstance(): \mysqli
     {
         return $this->instance;
     }
@@ -165,7 +160,7 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        if (!$this->inTransaction() && !$this->instance->begin())
+        if (!$this->inTransaction() && !$this->instance->begin_transaction())
         {
             return false;
         }
@@ -285,12 +280,10 @@ class Driver extends Base implements IDb
      */
     public function exec(string $sql): int
     {
-        $this->lastStmt = null;
         $this->lastSql = $sql;
         $instance = $this->instance;
-        $instance->query($sql);
 
-        return $instance->affected_rows;
+        return $instance->query($sql) ? $instance->affected_rows : 0;
     }
 
     /**
@@ -302,14 +295,29 @@ class Driver extends Base implements IDb
      */
     public function batchExec(string $sql): array
     {
-        $result = [];
-        foreach (SqlUtil::parseMultiSql($sql) as $itemSql)
+        $this->lastSql = $sql;
+        $instance = $this->instance;
+        $this->lastResult = $lastResult = $instance->multi_query($sql);
+        if (false === $lastResult)
         {
-            $queryResult = $this->query($itemSql);
-            $result[] = $queryResult->fetchAll();
+            throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
+        $results = [];
+        do
+        {
+            $result = $instance->store_result();
+            if ($result)
+            {
+                $results[] = $result->fetch_all(\MYSQLI_ASSOC);
+                $result->close();
+            }
+            else
+            {
+                $results[] = [];
+            }
+        } while ($instance->next_result());
 
-        return $result;
+        return $results;
     }
 
     /**
@@ -356,7 +364,7 @@ class Driver extends Base implements IDb
      */
     public function rowCount(): int
     {
-        return null === $this->lastStmt ? $this->instance->affected_rows : $this->lastStmt->affected_rows;
+        return null === $this->lastStmt ? 0 : $this->lastStmt->affected_rows;
     }
 
     /**
@@ -384,7 +392,7 @@ class Driver extends Base implements IDb
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
+            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && null === $stmtCache)
             {
                 StatementManager::setNX($stmt, true);
@@ -406,13 +414,13 @@ class Driver extends Base implements IDb
     public function query(string $sql)
     {
         $this->lastSql = $sql;
-        $this->lastStmt = $lastStmt = $this->instance->query($sql);
-        if (false === $lastStmt)
+        $this->lastResult = $lastResult = $this->instance->query($sql);
+        if (false === $lastResult)
         {
             throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
 
-        return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql);
+        return BeanFactory::newInstance(Statement::class, $this, null, $lastResult, $sql);
     }
 
     /**

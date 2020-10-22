@@ -21,8 +21,6 @@
 | BeforeSave | ModelEvents::BEFORE_SAVE | 保存前，先于插入前和更新前触发 |
 | AfterSave | ModelEvents::AFTER_SAVE | 保存后，后于插入后和更新后触发 |
 | AfterQuery | ModelEvents::AFTER_QUERY | 只要最终查询出该模型就会触发 |
-| BeforeParseData | ModelEvents::BEFORE_PARSE_DATA | 处理 save、insert、update 数据前 |
-| AfterParseData | ModelEvents::AFTER_PARSE_DATA | 处理 save、insert、update 数据后 |
 
 事件传递过来的参数类型为`Imi\Model\Event\Param\事件名EventParam`
 
@@ -93,6 +91,8 @@ class BeforeInsert implements IBeforeInsertEventListener
 | AfterBatchUpdate | ModelEvents::AFTER_BATCH_UPDATE | 批量更新后 |
 | BeforeBatchDelete | ModelEvents::BEFORE_BATCH_DELETE | 批量删除前 |
 | AfterBatchDelete | ModelEvents::AFTER_BATCH_DELETE | 批量删除后 |
+| BeforeParseData | ModelEvents::BEFORE_PARSE_DATA | 处理 save、insert、update 数据前 |
+| AfterParseData | ModelEvents::AFTER_PARSE_DATA | 处理 save、insert、update 数据后 |
 
 事件传递过来的参数类型为`Imi\Model\Event\Param\事件名EventParam`
 

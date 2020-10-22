@@ -3,7 +3,6 @@
 namespace Imi\Test\WebSocketServer\Tests;
 
 use Yurun\Util\HttpRequest;
-use Yurun\Util\YurunHttp;
 
 /**
  * @testdox WebSocket

@@ -7,6 +7,8 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Main\Helper;
+use Imi\RequestContext;
 use Imi\Server\Route\Annotation\WebSocket\WSAction;
 use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute;
@@ -45,12 +47,14 @@ class WSRouteInit implements IEventListener
     private function parseAnnotations(EventParam $e)
     {
         $controllerParser = WSControllerParser::getInstance();
+        $context = RequestContext::getContext();
         foreach (ServerManage::getServers() as $name => $server)
         {
             if (!$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             /** @var \Imi\Server\WebSocket\Route\WSRoute $route */
             $route = $server->getBean('WSRoute');
             foreach ($controllerParser->getByServer($name) as $className => $classItem)
@@ -95,6 +99,7 @@ class WSRouteInit implements IEventListener
                     }
                 }
             }
+            unset($context['server']);
         }
     }
 
@@ -105,14 +110,16 @@ class WSRouteInit implements IEventListener
      */
     private function parseConfigs()
     {
+        $context = RequestContext::getContext();
         foreach (ServerManage::getServers() as $server)
         {
             if (!$server instanceof \Imi\Server\WebSocket\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('WSRoute');
-            foreach (Config::get('@server.' . $server->getName() . '.route', []) as $routeOption)
+            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
                 $routeAnnotation = new WSRoute($routeOption['route'] ?? []);
                 if (isset($routeOption['callback']))
@@ -127,6 +134,7 @@ class WSRouteInit implements IEventListener
                     'middlewares' => $routeOption['middlewares'],
                 ]);
             }
+            unset($context['server']);
         }
     }
 }

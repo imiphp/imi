@@ -26,6 +26,19 @@ class RequestTest extends BaseTest
     }
 
     /**
+     * route autoEndSlash.
+     *
+     * @return void
+     */
+    public function testAutoEndSlash()
+    {
+        $http = new HttpRequest();
+        $time = time();
+        $response = $http->get($this->host . 'html/?time=' . time());
+        $this->assertEquals('<p>' . date('Y-m-d H:i:s', $time) . '</p>', $response->body());
+    }
+
+    /**
      * $_GET.
      *
      * @return void

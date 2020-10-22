@@ -634,7 +634,7 @@ class Query implements IQuery
      */
     public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
     {
-        return $this->where($fieldName, 'is', null, $logicalOperator);
+        return $this->whereRaw((new Field(null, null, $fieldName)) . ' is null', $logicalOperator);
     }
 
     /**
@@ -646,7 +646,7 @@ class Query implements IQuery
      */
     public function orWhereIsNull(string $fieldName)
     {
-        return $this->where($fieldName, 'is', null, LogicalOperator::OR);
+        return $this->whereIsNull($fieldName, LogicalOperator::OR);
     }
 
     /**
@@ -659,7 +659,7 @@ class Query implements IQuery
      */
     public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
     {
-        return $this->where($fieldName, 'is not', null, $logicalOperator);
+        return $this->whereRaw((new Field(null, null, $fieldName)) . ' is not null', $logicalOperator);
     }
 
     /**
@@ -671,7 +671,7 @@ class Query implements IQuery
      */
     public function orWhereIsNotNull(string $fieldName)
     {
-        return $this->where($fieldName, 'is not', null, LogicalOperator::OR);
+        return $this->whereIsNotNull($fieldName, LogicalOperator::OR);
     }
 
     /**

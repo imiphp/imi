@@ -39,6 +39,13 @@ class Route extends Base
     public $ignoreCase;
 
     /**
+     * 智能尾部斜杠，无论是否存在都匹配.
+     *
+     * @var bool|null
+     */
+    public $autoEndSlash;
+
+    /**
      * 请求方法
      * 必须是这些请求方法之一才可以被调用
      * 可以是单个方法的字符串，也可以是字符串数组.

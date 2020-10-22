@@ -30,7 +30,14 @@ class RouteMiddleware implements IMiddleware
 	 */
     public function process(IFrame $frame, IMessageHandler $handler)
 	{
-		
+        // 前置处理
+        
+        // 先执行其它中间件
+        $result = $handler->handle($frame);
+        
+        // 后置处理
+        
+        return $result;
 	}
 
 }

@@ -37,6 +37,9 @@ echo Random::number(1.2, 20), PHP_EOL;
 ```php
 // 从abcdefg中随机4-6个字符
 echo Random::text('abcdefg', 4, 6), PHP_EOL;
+
+// 从abcdefg中随机5个字符
+echo Random::text('abcdefg', 5), PHP_EOL;
 ```
 
 ### letter
@@ -46,6 +49,8 @@ echo Random::text('abcdefg', 4, 6), PHP_EOL;
 ```php
 // 随机大小写字母4-6个
 echo Random::letter(4, 6), PHP_EOL;
+// 随机大小写字母5个
+echo Random::letter(5), PHP_EOL;
 ```
 
 ### digital
@@ -55,8 +60,10 @@ echo Random::letter(4, 6), PHP_EOL;
 和`Random::int()`方法不同的是，这个是生成字符串，所以不限制数值的大小。
 
 ```php
+// 随机100-200个数字
+echo Random::digital(100, 200), PHP_EOL;
 // 随机100个数字
-echo Random::digital(100, 100), PHP_EOL;
+echo Random::digital(100), PHP_EOL;
 ```
 
 ### letterAndNumber
@@ -64,4 +71,6 @@ echo Random::digital(100, 100), PHP_EOL;
 ```php
 // 随机生成4-6个字母+数字
 echo Random::letterAndNumber(4, 6);
+// 随机生成5个字母+数字
+echo Random::letterAndNumber(5);
 ```

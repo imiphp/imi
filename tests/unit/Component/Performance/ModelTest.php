@@ -2,6 +2,7 @@
 
 namespace Imi\Test\Component\Tests\Performance;
 
+use Imi\Db\Db;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Performance;
 
@@ -10,6 +11,12 @@ use Imi\Test\Component\Model\Performance;
  */
 class ModelTest extends BaseTest
 {
+    public function testTruncate()
+    {
+        $this->assertTrue(true);
+        Db::getInstance()->exec('truncate tb_performance');
+    }
+
     public function testInsert()
     {
         $this->assertTrue(true);
@@ -21,12 +28,14 @@ class ModelTest extends BaseTest
         }
     }
 
-    public function testSelect()
+    public function testUpdate()
     {
         $this->assertTrue(true);
-        for ($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
+        for ($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
-            Performance::query()->limit(mt_rand(0, 99) * 100, 100);
+            $record = Performance::find($i);
+            $record->value = static::PERFORMANCE_COUNT - $i;
+            $record->update();
         }
     }
 
@@ -39,14 +48,12 @@ class ModelTest extends BaseTest
         }
     }
 
-    public function testUpdate()
+    public function testSelect()
     {
         $this->assertTrue(true);
-        for ($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
+        for ($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
         {
-            $record = Performance::find($i);
-            $record->value = static::PERFORMANCE_COUNT - $i;
-            $record->update();
+            Performance::query()->limit(mt_rand(0, 99) * 100, 100);
         }
     }
 

@@ -7,6 +7,8 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Main\Helper;
+use Imi\RequestContext;
 use Imi\Server\Route\Annotation\Udp\UdpAction;
 use Imi\Server\Route\Annotation\Udp\UdpMiddleware;
 use Imi\Server\Route\Annotation\Udp\UdpRoute;
@@ -45,12 +47,14 @@ class UdpRouteInit implements IEventListener
     private function parseAnnotations(EventParam $e)
     {
         $controllerParser = UdpControllerParser::getInstance();
+        $context = RequestContext::getContext();
         foreach (ServerManage::getServers() as $name => $server)
         {
             if (!$server instanceof \Imi\Server\UdpServer\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('UdpRoute');
             foreach ($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -87,6 +91,7 @@ class UdpRouteInit implements IEventListener
                     }
                 }
             }
+            unset($context['server']);
         }
     }
 
@@ -97,14 +102,16 @@ class UdpRouteInit implements IEventListener
      */
     private function parseConfigs()
     {
+        $context = RequestContext::getContext();
         foreach (ServerManage::getServers() as $server)
         {
             if (!$server instanceof \Imi\Server\UdpServer\Server)
             {
                 continue;
             }
+            $context['server'] = $server;
             $route = $server->getBean('UdpRoute');
-            foreach (Config::get('@server.' . $server->getName() . '.route', []) as $routeOption)
+            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
             {
                 $routeAnnotation = new UdpRoute($routeOption['route'] ?? []);
                 if (isset($routeOption['callback']))
@@ -119,6 +126,7 @@ class UdpRouteInit implements IEventListener
                     'middlewares' => $routeOption['middlewares'],
                 ]);
             }
+            unset($context['server']);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Imi\Db\Drivers\Swoole;
+namespace Imi\Db\Drivers\Mysqli;
 
 use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
@@ -8,16 +8,21 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 
 /**
- * Swoole Coroutine MySQL 驱动 Statement.
+ * mysqli驱动Statement.
+ *
+ * @property string $queryString
  */
 class Statement extends BaseStatement implements IStatement
 {
     /**
-     * Statement.
-     *
-     * @var \Swoole\Coroutine\MySQL\Statement|array
+     * @var \mysqli_stmt|null
      */
     protected $statement;
+
+    /**
+     * @var \mysqli_result|null
+     */
+    protected $result;
 
     /**
      * 数据.
@@ -34,25 +39,18 @@ class Statement extends BaseStatement implements IStatement
     protected $db;
 
     /**
-     * 绑定数据.
-     *
-     * @var array
-     */
-    protected $bindValues = [];
-
-    /**
-     * 结果数组.
-     *
-     * @var array
-     */
-    protected $result = [];
-
-    /**
      * 最后执行过的SQL语句.
      *
      * @var string
      */
     protected $lastSql = '';
+
+    /**
+     * 绑定数据.
+     *
+     * @var array
+     */
+    protected $bindValues = [];
 
     /**
      * SQL 参数映射.
@@ -61,14 +59,11 @@ class Statement extends BaseStatement implements IStatement
      */
     protected $sqlParamsMap;
 
-    public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IDb $db, $statement, $result, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;
-        if (\is_array($statement))
-        {
-            $this->result = $statement;
-        }
+        $this->result = $result;
         $this->lastSql = $originSql;
         $this->sqlParamsMap = $sqlParamsMap;
     }
@@ -152,7 +147,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function columnCount(): int
     {
-        return \count($this->result[0] ?? []);
+        return $this->result->field_count ?? 0;
     }
 
     /**
@@ -162,7 +157,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function errorCode()
     {
-        return \is_array($this->statement) ? $this->db->errorCode() : $this->statement->errno;
+        return $this->statement->errno ?? $this->db->errorCode();
     }
 
     /**
@@ -172,7 +167,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function errorInfo(): string
     {
-        return \is_array($this->statement) ? $this->db->errorInfo() : $this->statement->error;
+        return $this->statement->error ?? $this->db->errorInfo();
     }
 
     /**
@@ -195,61 +190,44 @@ class Statement extends BaseStatement implements IStatement
     public function execute(array $inputParameters = null): bool
     {
         $statement = $this->statement;
-        if (\is_array($statement))
+        $bindValues = $this->bindValues;
+        $this->bindValues = [];
+        if (null !== $inputParameters)
         {
-            $result = $this->db->getInstance()->query($this->lastSql);
-            if (false === $result)
+            $sqlParamsMap = $this->sqlParamsMap;
+            if ($sqlParamsMap)
             {
-                throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
-            }
-        }
-        else
-        {
-            $bindValues = $this->bindValues;
-            $this->bindValues = [];
-            if (null !== $inputParameters)
-            {
-                $sqlParamsMap = $this->sqlParamsMap;
-                if ($sqlParamsMap)
+                foreach ($this->sqlParamsMap as $index => $paramName)
                 {
-                    foreach ($this->sqlParamsMap as $index => $paramName)
+                    if (isset($inputParameters[$paramName]))
                     {
-                        if (isset($inputParameters[$paramName]))
-                        {
-                            $bindValues[$index] = $inputParameters[$paramName];
-                        }
-                    }
-                }
-                else
-                {
-                    foreach ($inputParameters as $k => $v)
-                    {
-                        $bindValues[$k] = $v;
+                        $bindValues[$index] = $inputParameters[$paramName];
                     }
                 }
             }
-            if ($bindValues)
+            else
             {
-                ksort($bindValues);
-                $bindValues = array_values($bindValues);
-            }
-            $result = $statement->execute($bindValues);
-            if (true === $result)
-            {
-                $result = $statement->fetchAll();
-                if (false === $result)
+                foreach ($inputParameters as $k => $v)
                 {
-                    $result = [];
+                    $bindValues[$k] = $v;
                 }
             }
-            elseif (false === $result)
-            {
-                throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
-            }
         }
-        $this->result = (true === $result ? [] : $result);
+        if ($bindValues)
+        {
+            ksort($bindValues);
+            $bindValues = array_values($bindValues);
+            $statement->bind_param($this->getBindTypes($bindValues), ...$bindValues);
+        }
 
-        return true;
+        $result = $statement->execute();
+        if (!$result)
+        {
+            throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+        }
+        $this->result = $statement->get_result();
+
+        return $result;
     }
 
     /**
@@ -263,13 +241,20 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
     {
-        $result = current($this->result);
-        if ($result)
+        $result = $this->result;
+        switch ($fetchStyle)
         {
-            next($this->result);
+            case \PDO::FETCH_ASSOC:
+                return $result->fetch_assoc();
+            case \PDO::FETCH_BOTH:
+                return $result->fetch_array();
+            case \PDO::FETCH_NUM:
+                return $result->fetch_array(\MYSQLI_NUM);
+            case \PDO::FETCH_OBJ:
+                return $result->fetch_object();
+            default:
+                throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle));
         }
-
-        return $result;
     }
 
     /**
@@ -282,7 +267,26 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
     {
-        return $this->result;
+        $result = $this->result;
+        switch ($fetchStyle)
+        {
+            case \PDO::FETCH_ASSOC:
+                return $result->fetch_all(\MYSQLI_ASSOC);
+            case \PDO::FETCH_BOTH:
+                return $result->fetch_all(\MYSQLI_BOTH);
+            case \PDO::FETCH_NUM:
+                return $result->fetch_all(\MYSQLI_NUM);
+            case \PDO::FETCH_OBJ:
+                $return = [];
+                foreach ($result->fetch_all(\MYSQLI_ASSOC) as $item)
+                {
+                    $return[] = (object) $item;
+                }
+
+                return $return;
+            default:
+                throw new DbException(sprintf('Not support fetchStyle %s', $fetchStyle));
+        }
     }
 
     /**
@@ -294,21 +298,9 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetchColumn($columnKey = 0)
     {
-        $row = current($this->result);
-        if ($row)
-        {
-            next($this->result);
-        }
-        if (isset($row[$columnKey]))
-        {
-            return $row[$columnKey];
-        }
-        elseif (is_numeric($columnKey))
-        {
-            return array_values($row)[$columnKey] ?? null;
-        }
+        $row = $this->result->fetch_array(\MYSQLI_BOTH);
 
-        return null;
+        return $row[$columnKey] ?? null;
     }
 
     /**
@@ -321,23 +313,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
     {
-        $row = current($this->result);
-        if (false === $row)
-        {
-            return null;
-        }
-        next($this->result);
-        if ('stdClass' === $className)
-        {
-            return (object) $row;
-        }
-        $result = new $className();
-        foreach ($row as $k => $v)
-        {
-            $result->$k = $v;
-        }
-
-        return $result;
+        return $this->result->fetch_object();
     }
 
     /**
@@ -372,7 +348,15 @@ class Statement extends BaseStatement implements IStatement
      */
     public function nextRowset(): bool
     {
-        return (bool) next($this->result);
+        $statement = $this->statement;
+        $statement->next_result();
+        if ($this->result)
+        {
+            $this->result->close();
+        }
+        $this->result = $statement->get_result();
+
+        return true;
     }
 
     /**
@@ -384,7 +368,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function lastInsertId(string $name = null)
     {
-        return \is_array($this->statement) ? $this->db->lastInsertId() : $this->statement->insert_id;
+        return $this->statement->insert_id ?? $this->db->lastInsertId();
     }
 
     /**
@@ -394,7 +378,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function rowCount(): int
     {
-        return \is_array($this->statement) ? $this->db->rowCount() : $this->statement->affected_rows;
+        return $this->statement->affected_rows ?? $this->db->rowCount();
     }
 
     /**
@@ -409,26 +393,59 @@ class Statement extends BaseStatement implements IStatement
 
     public function current()
     {
-        return current($this->result);
+        throw new DbException('Not support current()');
     }
 
     public function key()
     {
-        return key($this->result);
+        throw new DbException('Not support key()');
     }
 
     public function next()
     {
-        return next($this->result);
+        throw new DbException('Not support next()');
     }
 
     public function rewind()
     {
-        return reset($this->result);
+        throw new DbException('Not support rewind()');
     }
 
     public function valid()
     {
-        return false !== $this->current();
+        throw new DbException('Not support valid()');
+    }
+
+    /**
+     * 根据值获取mysqli数据类型.
+     *
+     * @param array $values
+     *
+     * @return array
+     */
+    protected function getBindTypes(array $values): string
+    {
+        $types = '';
+        foreach ($values as $value)
+        {
+            if (null === $value)
+            {
+                $types .= 'b';
+            }
+            elseif (\is_bool($value) || \is_int($value))
+            {
+                $types .= 'i';
+            }
+            elseif (\is_float($value))
+            {
+                $types .= 'd';
+            }
+            else
+            {
+                $types .= 's';
+            }
+        }
+
+        return $types;
     }
 }
