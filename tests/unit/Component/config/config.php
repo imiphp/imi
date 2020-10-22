@@ -145,6 +145,29 @@ return [
                 'dbClass'     => \Imi\Db\Drivers\Swoole\Driver::class,
             ],
         ],
+        // mysqli
+        'mysqli'    => [
+            'pool'    => [
+                // 协程池类名
+                'class'    => \Imi\Db\Pool\CoroutineDbPool::class,
+                // 连接池配置
+                'config'        => [
+                    'maxResources'              => 10,
+                    'minResources'              => 1,
+                    'checkStateWhenGetResource' => false,
+                ],
+            ],
+            // 连接池资源配置
+            'resource'    => [
+                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
+                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'database'    => 'db_imi_test',
+                'charset'     => 'utf8mb4',
+                'dbClass'     => \Imi\Db\Drivers\Mysqli\Driver::class,
+            ],
+        ],
         'redis_test'    => [
             'pool'    => [
                 'class'        => \Imi\Redis\CoroutineRedisPool::class,

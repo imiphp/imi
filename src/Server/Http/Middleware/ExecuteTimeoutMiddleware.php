@@ -47,11 +47,8 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
         $context = RequestContext::getContext();
         $response = $context['response'];
         $server = $context['server'];
-        $timerId = Timer::after($this->maxExecuteTime, function () use ($request, $response, $server) {
-            RequestContext::muiltiSet([
-                'server'    => $server,
-                'request'   => $request,
-            ]);
+        $timerId = Timer::after($this->maxExecuteTime, function () use ($request, $response, $server, $context) {
+            RequestContext::muiltiSet((array) $context);
             /** @var \Imi\Server\Http\Error\IExecuteTimeoutHandler $handler */
             $handler = $server->getBean($this->handler);
             $handler->handle($request, $response);
