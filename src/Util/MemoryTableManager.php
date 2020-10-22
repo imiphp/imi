@@ -2,6 +2,8 @@
 
 namespace Imi\Util;
 
+use Imi\App;
+use Imi\Config;
 use Imi\Lock\Lock;
 use Imi\Util\MemoryTable\IMemoryTableOption;
 
@@ -11,33 +13,45 @@ use Imi\Util\MemoryTable\IMemoryTableOption;
 class MemoryTableManager
 {
     /**
-     * 是否已初始化过.
-     *
-     * @var bool
-     */
-    private static $isInited = false;
-
-    /**
      * \Swoole\Table 数组.
      *
      * @var \Swoole\Table[]
      */
-    private static $tables = [];
+    private static array $tables = [];
+
+    /**
+     * 是否初始化.
+     *
+     * @var bool
+     */
+    private static bool $inited = false;
 
     private function __construct()
     {
     }
 
-    /**
-     * 初始化.
-     *
-     * @return void
-     */
-    public static function init()
+    public static function init(): void
     {
-        if (static::$isInited)
+        self::$tables = [];
+        $runtimeInfo = App::getRuntimeInfo();
+        // 初始化内存表模型
+        foreach ($runtimeInfo->memoryTable as $item)
         {
-            throw new \RuntimeException('MemoryTableManager can not repeated init');
+            /** @var \Imi\Model\Annotation\MemoryTable $memoryTableAnnotation */
+            $memoryTableAnnotation = $item->getAnnotation();
+            self::addName($memoryTableAnnotation->name, [
+                'size'                  => $memoryTableAnnotation->size,
+                'conflictProportion'    => $memoryTableAnnotation->conflictProportion,
+                'columns'               => $item->columns,
+            ]);
+        }
+        // 初始化配置中的内存表
+        foreach (Config::getAliases() as $alias)
+        {
+            foreach (Config::get($alias . '.memoryTable', []) as $name => $item)
+            {
+                self::addName($name, $item);
+            }
         }
         foreach (static::$tables as $name => $option)
         {
@@ -74,7 +88,7 @@ class MemoryTableManager
                 throw new \RuntimeException('MemoryTable option error');
             }
         }
-        static::$isInited = true;
+        self::$inited = true;
     }
 
     /**
@@ -87,7 +101,7 @@ class MemoryTableManager
      */
     public static function addName(string $name, $option)
     {
-        if (static::$isInited)
+        if (static::$inited)
         {
             throw new \RuntimeException('addName failed, MemoryTableManager was inited');
         }
@@ -103,7 +117,7 @@ class MemoryTableManager
      */
     public static function setNames(array $names)
     {
-        if (static::$isInited)
+        if (static::$inited)
         {
             throw new \RuntimeException('addName failed, MemoryTableManager was inited');
         }
@@ -139,9 +153,9 @@ class MemoryTableManager
      */
     public static function getInstance(string $name): \Swoole\Table
     {
-        if (!static::$isInited)
+        if (!static::$inited)
         {
-            throw new \RuntimeException('getInstance failed, MemoryTableManager is not initialized');
+            self::init();
         }
         if (!isset(static::$tables[$name]['instance']))
         {
@@ -291,6 +305,6 @@ class MemoryTableManager
      */
     public static function isInited()
     {
-        return static::$isInited;
+        return static::$inited;
     }
 }

@@ -99,16 +99,26 @@ abstract class Base
             $this->createServer();
             $this->swoolePort = $this->swooleServer->ports[0] ?? $this->swooleServer;
         }
-        if (!empty($this->config['configs']))
+
+        if (empty($this->config['configs']))
         {
-            if ($isSubServer)
-            {
-                $this->swoolePort->set($this->config['configs']);
-            }
-            else
-            {
-                $this->swooleServer->set($this->config['configs']);
-            }
+            $configs = [];
+        }
+        else
+        {
+            $configs = $this->config['configs'];
+        }
+
+        // 强制启用 task 协程化
+        $configs['task_enable_coroutine'] = true;
+
+        if ($isSubServer)
+        {
+            $this->swoolePort->set($configs);
+        }
+        else
+        {
+            $this->swooleServer->set($configs);
         }
         $this->bindEvents();
     }
@@ -252,46 +262,23 @@ abstract class Base
             $configs = $this->config['configs'] ?? null;
             if (0 !== ($configs['task_worker_num'] ?? -1))
             {
-                if (
-                    (!isset($configs['enable_coroutine']) || $configs['enable_coroutine'])
-                    && isset($configs['task_enable_coroutine']) && $configs['task_enable_coroutine'])
-                {
-                    $this->swooleServer->on('task', function (\Swoole\Server $server, \Swoole\Server\Task $task) {
-                        try
-                        {
-                            Event::trigger('IMI.MAIN_SERVER.TASK', [
-                                'server'   => $this,
-                                'taskID'   => $task->id,
-                                'workerID' => $task->worker_id,
-                                'data'     => $task->data,
-                                'flags'    => $task->flags,
-                                'task'     => $task,
-                            ], $this, TaskEventParam::class);
-                        }
-                        catch (\Throwable $ex)
-                        {
-                            App::getBean('ErrorLog')->onException($ex);
-                        }
-                    });
-                }
-                else
-                {
-                    $this->swooleServer->on('task', function (\Swoole\Server $server, int $taskID, int $workerID, $data) {
-                        try
-                        {
-                            Event::trigger('IMI.MAIN_SERVER.TASK', [
-                                'server'   => $this,
-                                'taskID'   => $taskID,
-                                'workerID' => $workerID,
-                                'data'     => $data,
-                            ], $this, TaskEventParam::class);
-                        }
-                        catch (\Throwable $ex)
-                        {
-                            App::getBean('ErrorLog')->onException($ex);
-                        }
-                    });
-                }
+                $this->swooleServer->on('task', function (\Swoole\Server $server, \Swoole\Server\Task $task) {
+                    try
+                    {
+                        Event::trigger('IMI.MAIN_SERVER.TASK', [
+                            'server'   => $this,
+                            'taskID'   => $task->id,
+                            'workerID' => $task->worker_id,
+                            'data'     => $task->data,
+                            'flags'    => $task->flags,
+                            'task'     => $task,
+                        ], $this, TaskEventParam::class);
+                    }
+                    catch (\Throwable $ex)
+                    {
+                        App::getBean('ErrorLog')->onException($ex);
+                    }
+                });
             }
 
             $this->swooleServer->on('finish', function (\Swoole\Server $server, int $taskID, $data) {

@@ -22,13 +22,13 @@ class Lock
      */
     private static array $instances = [];
 
-    private static bool $loaded = false;
+    private static bool $inited = false;
 
     private function __construct()
     {
     }
 
-    public static function loadFromConfig(): void
+    public static function init(): void
     {
         self::$options = self::$instances = [];
         foreach (Config::getAliases() as $alias)
@@ -38,7 +38,7 @@ class Lock
                 self::add($id, $option);
             }
         }
-        self::$loaded = true;
+        self::$inited = true;
     }
 
     /**
@@ -51,9 +51,9 @@ class Lock
      */
     public static function getInstance(?string $lockConfigId = null, ?string $lockId = null): ILockHandler
     {
-        if (!self::$loaded)
+        if (!self::$inited)
         {
-            self::loadFromConfig();
+            self::init();
         }
         if (!$lockConfigId)
         {

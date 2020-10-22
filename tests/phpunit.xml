@@ -12,7 +12,7 @@
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
         </testsuite>
-        <!-- <testsuite name="HttpServer">
+        <testsuite name="HttpServer">
             <directory>unit/HttpServer/Tests</directory>
         </testsuite>
         <testsuite name="RedisSessionServer">
@@ -27,14 +27,10 @@
         <testsuite name="UDPServer">
             <directory>unit/UDPServer/Tests</directory>
         </testsuite>
-        <testsuite name="Performance">
+        <!-- <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
         </testsuite> -->
     </testsuites>
-    <!-- <listeners>
-        <listener class="Imi\Test\Component\PHPUintListener\ImiListener">
-        </listener>
-    </listeners> -->
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />
     </extensions>

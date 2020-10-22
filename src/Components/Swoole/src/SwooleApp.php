@@ -4,10 +4,13 @@ namespace Imi\Swoole;
 
 use Imi\App;
 use Imi\Bean\Annotation;
+use Imi\Cache\CacheManager;
 use Imi\Cli\CliApp;
 use Imi\Config;
 use Imi\Event\Event;
+use Imi\Lock\Lock;
 use Imi\Main\Helper;
+use Imi\Pool\PoolManager;
 use Imi\Util\AtomicManager;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
@@ -115,6 +118,13 @@ class SwooleApp extends CliApp
             AtomicManager::setNames(Config::get($alias . '.atomics', []));
         }
         AtomicManager::init();
+        $initCallback = function () {
+            PoolManager::init();
+            CacheManager::init();
+            Lock::init();
+        };
+        Event::on('IMI.PROCESS.BEGIN', $initCallback);
+        Event::on('IMI.MAIN_SERVER.WORKER.START', $initCallback);
     }
 
     private function onCommand(ConsoleCommandEvent $e): void
