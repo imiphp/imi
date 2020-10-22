@@ -31,7 +31,14 @@ class Server implements \ArrayAccess, \JsonSerializable
         }
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        $serverParams = $request->getServerParams();
+        if($request)
+        {
+            $serverParams = $request->getServerParams();
+        }
+        else
+        {
+            $serverParams = &$this->defaultServer;
+        }
         if (isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
         {
             return true;
@@ -78,7 +85,14 @@ class Server implements \ArrayAccess, \JsonSerializable
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        $serverParams = $request->getServerParams();
+        if($request)
+        {
+            $serverParams = $request->getServerParams();
+        }
+        else
+        {
+            $serverParams = &$this->defaultServer;
+        }
         if ($serverParams)
         {
             return array_merge($this->defaultServer, array_change_key_case($serverParams, \CASE_UPPER));
