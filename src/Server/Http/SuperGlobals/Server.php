@@ -59,20 +59,19 @@ class Server implements \ArrayAccess, \JsonSerializable
         if($request)
         {
             $serverParams = $request->getServerParams();
-            if (isset($serverParams[$offset]))
-            {
-                return $serverParams[$offset];
-            }
-            $lowerOffset = strtolower($offset);
-            if (isset($serverParams[$lowerOffset]))
-            {
-                return $serverParams[$lowerOffset];
-            }
         }
-        $defaultServer = &$this->defaultServer;
-        if (isset($defaultServer[$offset]))
+        else
         {
-            return $defaultServer[$offset];
+            $serverParams = &$this->defaultServer;
+        }
+        if (isset($serverParams[$offset]))
+        {
+            return $serverParams[$offset];
+        }
+        $lowerOffset = strtolower($offset);
+        if (isset($serverParams[$lowerOffset]))
+        {
+            return $serverParams[$lowerOffset];
         }
     }
 
