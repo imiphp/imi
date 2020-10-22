@@ -31,14 +31,17 @@ class Server implements \ArrayAccess, \JsonSerializable
         }
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        $serverParams = $request->getServerParams();
-        if (isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+        if($request)
         {
             $serverParams = $request->getServerParams();
-            if (isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
-            {
-                return true;
-            }
+        }
+        else
+        {
+            $serverParams = &$this->defaultServer;
+        }
+        if (isset($serverParams[$offset]) || isset($serverParams[strtolower($offset)]))
+        {
+            return true;
         }
 
         return false;
@@ -56,29 +59,19 @@ class Server implements \ArrayAccess, \JsonSerializable
         if($request)
         {
             $serverParams = $request->getServerParams();
-            if (isset($serverParams[$offset]))
-            {
-                $serverParams = $request->getServerParams();
-                if (isset($serverParams[$offset]))
-                {
-                    return $serverParams[$offset];
-                }
-                $lowerOffset = strtolower($offset);
-                if (isset($serverParams[$lowerOffset]))
-                {
-                    return $serverParams[$lowerOffset];
-                }
-            }
-            $lowerOffset = strtolower($offset);
-            if (isset($serverParams[$lowerOffset]))
-            {
-                return $serverParams[$lowerOffset];
-            }
         }
-        $defaultServer = &$this->defaultServer;
-        if (isset($defaultServer[$offset]))
+        else
         {
-            return $defaultServer[$offset];
+            $serverParams = &$this->defaultServer;
+        }
+        if (isset($serverParams[$offset]))
+        {
+            return $serverParams[$offset];
+        }
+        $lowerOffset = strtolower($offset);
+        if (isset($serverParams[$lowerOffset]))
+        {
+            return $serverParams[$lowerOffset];
         }
     }
 
@@ -91,7 +84,14 @@ class Server implements \ArrayAccess, \JsonSerializable
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        $serverParams = $request->getServerParams();
+        if($request)
+        {
+            $serverParams = $request->getServerParams();
+        }
+        else
+        {
+            $serverParams = &$this->defaultServer;
+        }
         if ($serverParams)
         {
             return array_merge($this->defaultServer, array_change_key_case($serverParams, \CASE_UPPER));
