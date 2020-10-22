@@ -5,8 +5,8 @@ namespace Imi\Test\Component\Tests;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Bean\Traits\TAutoInject;
 use Imi\Test\BaseTest;
+use Imi\Test\Component\Inject\Classes\TestTAutoInject;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -15,28 +15,12 @@ use PHPUnit\Framework\Assert;
  */
 class InjectTest extends BaseTest
 {
-    use TAutoInject;
-
-    /**
-     * @Inject("TestInjectValue")
-     *
-     * @var \Imi\Test\Component\Inject\Classes\TestInjectValue
-     */
-    protected $testInjectValue;
-
-    /**
-     * @param string $name
-     * @param string $dataName
-     */
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-    }
-
     public function testInject()
     {
-        Assert::assertNotNull($this->testInjectValue);
-        $this->testInjectValue->test();
+        $testTAutoInject = new TestTAutoInject();
+        $value = $testTAutoInject->getTestInjectValue();
+        Assert::assertNotNull($value);
+        $value->test();
     }
 
     public function testArg()

@@ -3,6 +3,7 @@
 namespace Imi\Pool;
 
 use Imi\Bean\BeanFactory;
+use Imi\Config;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\RequestContext;
@@ -14,17 +15,37 @@ class PoolManager
      *
      * @var \Imi\Pool\Interfaces\IPool[]
      */
-    protected static $pools = [];
+    protected static array $pools = [];
 
     /**
      * 最后获取资源时间.
      *
      * @var array
      */
-    protected static $lastGetResourceTime = [];
+    protected static array $lastGetResourceTime = [];
+
+    /**
+     * 是否初始化.
+     *
+     * @var bool
+     */
+    protected static bool $inited = false;
 
     private function __construct()
     {
+    }
+
+    public static function init()
+    {
+        foreach (Config::getAliases() as $alias)
+        {
+            foreach (Config::get($alias . '.pools', []) as $poolName => $poolConfig)
+            {
+                $poolPool = $poolConfig['pool'];
+                self::addName($poolName, $poolPool['class'], new PoolConfig($poolPool['config']), $poolConfig['resource']);
+            }
+        }
+        self::$inited = true;
     }
 
     /**
@@ -46,9 +67,9 @@ class PoolManager
     /**
      * 获取所有对象名称.
      *
-     * @return void
+     * @return string[]
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return array_keys(static::$pools);
     }
@@ -87,7 +108,18 @@ class PoolManager
         $pools = &static::$pools;
         if (!isset($pools[$name]))
         {
-            throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+            if (self::$inited)
+            {
+                throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+            }
+            else
+            {
+                self::init();
+                if (!isset($pools[$name]))
+                {
+                    throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+                }
+            }
         }
 
         return $pools[$name];

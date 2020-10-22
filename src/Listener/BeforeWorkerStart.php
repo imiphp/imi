@@ -32,8 +32,8 @@ class BeforeWorkerStart implements IWorkerStartEventListener
         // 重新加载项目配置及组件
         foreach (Helper::getAppMains() as $main)
         {
-            $main->loadConfig();
-            $main->loadComponents();
+            // $main->loadConfig();
+            // $main->loadComponents();
         }
 
         if ($e->server->getSwooleServer()->taskworker)
@@ -52,7 +52,5 @@ class BeforeWorkerStart implements IWorkerStartEventListener
             Imi::setProcessName('worker');
         }
 
-        // 初始化 worker
-        App::initWorker();
     }
 }

@@ -3,14 +3,13 @@
 namespace Imi;
 
 use Composer\Autoload\ClassLoader;
-use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\ReflectionContainer;
 use Imi\Bean\Scanner;
 use Imi\Cache\CacheManager;
-use Imi\Config\Dotenv\Dotenv;
 use Imi\Core\App\Contract\IApp;
+use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Main\Helper as MainHelper;
@@ -22,7 +21,6 @@ use Imi\Util\Coroutine;
 use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Imi;
 use Imi\Util\Text;
-use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class App
@@ -118,8 +116,35 @@ class App
      */
     public static function run(string $namespace, string $app): void
     {
-        self::$app = $appInstance = new $app($namespace);
+        /** @var \Imi\Core\App\Contract\IApp $appInstance */
+        $appInstance = self::$app = new $app($namespace);
         self::initFramework($namespace);
+        // 加载配置
+        $appInstance->loadConfig();
+        // 加载入口
+        $appInstance->loadMain();
+        Event::trigger('IMI.LOAD_CONFIG');
+        // 加载运行时
+        $result = $appInstance->loadRuntime();
+        if (LoadRuntimeResult::NONE === $result)
+        {
+            // 扫描 imi 框架
+            Scanner::scanImi();
+        }
+        if (!($result & LoadRuntimeResult::APP_LOADED))
+        {
+            // 扫描组件
+            Scanner::scanVendor();
+            // 扫描项目
+            Scanner::scanApp();
+        }
+        Event::trigger('IMI.LOAD_RUNTIME');
+        // 初始化
+        $appInstance->init();
+        // 注册错误日志
+        self::getBean('ErrorLog')->register();
+        Event::trigger('IMI.APP_INIT');
+        // 运行
         $appInstance->run();
     }
 
@@ -132,47 +157,23 @@ class App
      */
     public static function initFramework(string $namespace)
     {
+        \define('IMI_PATH', __DIR__);
+        // 项目命名空间
         static::$namespace = $namespace;
-        $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
-        AnnotationManager::init();
+        // 运行时资料，TODO: 移除
         static::$runtimeInfo = new RuntimeInfo();
+        // 容器类
         static::$container = new Container();
-        // .env
-        $dotenv = new Dotenv(Imi::getNamespacePaths(static::$namespace));
-        $dotenv->init();
-        // 初始化Main类
-        static::initMains();
-        // 运行时目录写权限检测
-        if (!is_writable($runtimePath = Imi::getRuntimePath()))
-        {
-            (new ConsoleOutput())->writeln('<error>Runtime path</error> <comment>' . $runtimePath . '</comment> <error>is not writable</error>');
-            exit;
-        }
-        $input = new ArgvInput();
-        // 框架运行时缓存支持
-        if ($isServerStart)
-        {
-            $result = false;
-        }
-        elseif ($file = $input->getParameterOption('--imi-runtime'))
-        {
-            // 尝试加载指定 runtime
-            $result = self::loadRuntimeInfo($file);
-        }
-        else
-        {
-            // 尝试加载默认 runtime
-            $result = self::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime.cache'));
-        }
-        if (!$result)
-        {
-            // 不使用缓存时去扫描
-            Scanner::scanImi();
-            if ($isServerStart)
-            {
-                Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
-            }
-        }
+        // 注解管理器初始化
+        AnnotationManager::init();
+        // // 初始化入口类
+        // static::initMains();
+        // // 运行时目录写权限检测
+        // if (!is_writable($runtimePath = Imi::getRuntimePath()))
+        // {
+        //     (new ConsoleOutput())->writeln('<error>Runtime path</error> <comment>' . $runtimePath . '</comment> <error>is not writable</error>');
+        //     exit;
+        // }
         static::$isInited = true;
         Event::trigger('IMI.INITED');
     }
@@ -215,11 +216,6 @@ class App
                     PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
                 }
             }
-            // 缓存初始化
-            foreach ($caches as $name => $cache)
-            {
-                CacheManager::addName($name, $cache['handlerClass'], $cache['option'] ?? []);
-            }
         }
         else
         {
@@ -238,17 +234,27 @@ class App
                     echo implode(\PHP_EOL, $output), \PHP_EOL;
                 }
             }
-            self::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
-
-            self::getBean('ErrorLog')->register();
+            Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
+            $caches = [];
             foreach (Helper::getMains() as $main)
             {
-                $config = $main->getConfig();
-                // 原子计数初始化
-                AtomicManager::setNames($config['atomics'] ?? []);
+                $caches = array_merge($caches, $main->getConfig()['caches'] ?? []);
             }
-            AtomicManager::init();
         }
+        // 缓存初始化
+        foreach ($caches as $name => $cache)
+        {
+            CacheManager::addName($name, $cache['handlerClass'], $cache['option'] ?? []);
+        }
+        self::getBean('ErrorLog')->register();
+        foreach (Helper::getMains() as $main)
+        {
+            $config = $main->getConfig();
+            // 原子计数初始化
+            var_dump($main->getNamespace() . ',' . $main->getModuleName(), $config['atomics'] ?? []);
+            AtomicManager::setNames($config['atomics'] ?? []);
+        }
+        AtomicManager::init();
     }
 
     /**
@@ -391,77 +397,77 @@ class App
      */
     public static function initWorker()
     {
-        self::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'), true);
+        // Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'), true);
 
         // Worker 进程初始化前置
-        Event::trigger('IMI.INIT.WORKER.BEFORE');
+        // Event::trigger('IMI.INIT.WORKER.BEFORE');
 
-        $appMains = MainHelper::getAppMains();
+        // $appMains = MainHelper::getAppMains();
 
         // 日志初始化
-        if (static::$container->has('Logger'))
-        {
-            $logger = static::getBean('Logger');
-            foreach ($appMains as $main)
-            {
-                foreach ($main->getConfig()['beans']['Logger']['exHandlers'] ?? [] as $exHandler)
-                {
-                    $logger->addExHandler($exHandler);
-                }
-            }
-        }
+        // if (static::$container->has('Logger'))
+        // {
+        //     $logger = static::getBean('Logger');
+        //     foreach ($appMains as $main)
+        //     {
+        //         foreach ($main->getConfig()['beans']['Logger']['exHandlers'] ?? [] as $exHandler)
+        //         {
+        //             $logger->addExHandler($exHandler);
+        //         }
+        //     }
+        // }
 
         // 初始化
-        PoolManager::clearPools();
-        if (Coroutine::isIn())
-        {
-            $pools = Config::get('@app.pools', []);
-            foreach ($appMains as $main)
-            {
-                // 协程通道队列初始化
-                CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
+        // PoolManager::clearPools();
+        // if (Coroutine::isIn())
+        // {
+        //     $pools = Config::get('@app.pools', []);
+        //     foreach ($appMains as $main)
+        //     {
+        //         // 协程通道队列初始化
+        //         CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
 
-                // 异步池子初始化
-                $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
-            }
-            foreach ($pools as $name => $pool)
-            {
-                if (isset($pool['async']))
-                {
-                    $pool = $pool['async'];
-                    $poolPool = $pool['pool'];
-                    PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
-                }
-                elseif (isset($pool['pool']['asyncClass']))
-                {
-                    $poolPool = $pool['pool'];
-                    PoolManager::addName($name, $poolPool['asyncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
-                }
-            }
-        }
-        else
-        {
-            $pools = Config::get('@app.pools', []);
-            foreach ($appMains as $main)
-            {
-                // 同步池子初始化
-                $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
-            }
-            foreach ($pools as $name => $pool)
-            {
-                if (isset($pool['sync']))
-                {
-                    $pool = $pool['sync'];
-                    $poolPool = $pool['pool'];
-                    PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
-                }
-                elseif (isset($pool['pool']['syncClass']))
-                {
-                    $poolPool = $pool['pool'];
-                    PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
-                }
-            }
-        }
+        //         // 异步池子初始化
+        //         $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
+        //     }
+        //     foreach ($pools as $name => $pool)
+        //     {
+        //         if (isset($pool['async']))
+        //         {
+        //             $pool = $pool['async'];
+        //             $poolPool = $pool['pool'];
+        //             PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
+        //         }
+        //         elseif (isset($pool['pool']['asyncClass']))
+        //         {
+        //             $poolPool = $pool['pool'];
+        //             PoolManager::addName($name, $poolPool['asyncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     $pools = Config::get('@app.pools', []);
+        //     foreach ($appMains as $main)
+        //     {
+        //         // 同步池子初始化
+        //         $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
+        //     }
+        //     foreach ($pools as $name => $pool)
+        //     {
+        //         if (isset($pool['sync']))
+        //         {
+        //             $pool = $pool['sync'];
+        //             $poolPool = $pool['pool'];
+        //             PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
+        //         }
+        //         elseif (isset($pool['pool']['syncClass']))
+        //         {
+        //             $poolPool = $pool['pool'];
+        //             PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
+        //         }
+        //     }
+        // }
 
         // 缓存初始化
         CacheManager::clearPools();
@@ -514,44 +520,6 @@ class App
     public static function getRuntimeInfo()
     {
         return static::$runtimeInfo;
-    }
-
-    /**
-     * 从文件加载运行时数据
-     * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
-     *
-     * @param string $fileName
-     * @param bool   $minimumAvailable
-     *
-     * @return bool
-     */
-    public static function loadRuntimeInfo($fileName, $minimumAvailable = false)
-    {
-        if (!is_file($fileName))
-        {
-            return false;
-        }
-        $content = file_get_contents($fileName);
-        static::$runtimeInfo = unserialize($content);
-        if (!$minimumAvailable)
-        {
-            Annotation::getInstance()->getParser()->loadStoreData(static::$runtimeInfo->annotationParserData);
-            Annotation::getInstance()->getParser()->setParsers(static::$runtimeInfo->annotationParserParsers);
-        }
-        AnnotationManager::setAnnotations(static::$runtimeInfo->annotationManagerAnnotations);
-        AnnotationManager::setAnnotationRelation(static::$runtimeInfo->annotationManagerAnnotationRelation);
-        foreach (static::$runtimeInfo->parsersData as $parserClass => $data)
-        {
-            $parser = $parserClass::getInstance();
-            $parser->setData($data);
-        }
-        Event::trigger('IMI.LOAD_RUNTIME_INFO');
-        if ($minimumAvailable)
-        {
-            static::$runtimeInfo = null;
-        }
-
-        return true;
     }
 
     /**

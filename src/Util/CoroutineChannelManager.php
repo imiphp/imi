@@ -2,20 +2,43 @@
 
 namespace Imi\Util;
 
+use Imi\Config;
+
 /**
  * 通道队列类-支持多进程.
  */
 class CoroutineChannelManager
 {
-    private function __construct()
-    {
-    }
     /**
      * \Swoole\Coroutine\Channel 数组.
      *
      * @var \Swoole\Coroutine\Channel[]
      */
-    protected static $channels = [];
+    protected static array $channels = [];
+
+    /**
+     * 是否初始化.
+     *
+     * @var bool
+     */
+    protected static bool $inited = false;
+
+    private function __construct()
+    {
+    }
+
+    public static function init()
+    {
+        foreach (Config::getAliases() as $alias)
+        {
+            $names = Config::get($alias . '.coroutineChannels');
+            if ($names)
+            {
+                self::setNames($names);
+            }
+        }
+        self::$inited = true;
+    }
 
     /**
      * 增加对象名称.
@@ -132,7 +155,18 @@ class CoroutineChannelManager
         $channels = &static::$channels;
         if (!isset($channels[$name]))
         {
-            throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+            if (self::$inited)
+            {
+                throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+            }
+            else
+            {
+                self::init();
+                if (!isset($channels[$name]))
+                {
+                    throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+                }
+            }
         }
 
         return $channels[$name];

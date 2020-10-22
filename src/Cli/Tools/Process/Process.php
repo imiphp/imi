@@ -36,7 +36,6 @@ class Process extends BaseCommand
         // 加载服务器注解
         Scanner::scanVendor();
         Scanner::scanApp();
-        App::initWorker();
         $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
         $process->start();
         $result = \Swoole\Process::wait(true);
@@ -61,7 +60,6 @@ class Process extends BaseCommand
         // 加载服务器注解
         Scanner::scanVendor();
         Scanner::scanApp();
-        App::initWorker();
         $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
         $processPool->start();
     }
@@ -80,7 +78,6 @@ class Process extends BaseCommand
         // 加载服务器注解
         Scanner::scanVendor();
         Scanner::scanApp();
-        App::initWorker();
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if (null === $processOption)
         {

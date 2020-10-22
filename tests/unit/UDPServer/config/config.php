@@ -43,33 +43,17 @@ return [
     // 连接池配置
     'pools'    => [
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+            'pool'    => [
+                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ],
+            'resource'    => [
+                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
             ],
         ],
     ],

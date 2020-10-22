@@ -6,24 +6,32 @@ use Swoole\Event;
 require dirname(__DIR__) . '/vendor/autoload.php';
 ini_set('date.timezone', date_default_timezone_get());
 
-if(version_compare(SWOOLE_VERSION, '4.4.4', '='))
-{
-    \swoole_async_set([
-        'max_thread_num'    =>  4,
-    ]);
-}
-
 $statusCode = 0;
-go(function() use(&$statusCode){
-    go(function() use(&$statusCode){
-        try {
-            if($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
+go(function () use (&$statusCode) {
+    go(function () use (&$statusCode) {
+        try
+        {
+            if ($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
             {
                 require $phpunitPath;
             }
             $statusCode = PHPUnit\TextUI\Command::main(false);
-        } catch (\Swoole\ExitException $e) {
+        }
+        catch (\Swoole\ExitException $e)
+        {
             $statusCode = $e->getStatus();
+        }
+        catch (PHPUnit\TextUI\Exception $e)
+        {
+            $previous = $e->getPrevious();
+            if ($previous instanceof \Swoole\ExitException)
+            {
+                $statusCode = $previous->getStatus();
+            }
+            else
+            {
+                throw $e;
+            }
         }
         Event::exit();
     });

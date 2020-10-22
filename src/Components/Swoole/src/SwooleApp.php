@@ -8,6 +8,8 @@ use Imi\Cli\CliApp;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
+use Imi\Util\AtomicManager;
+use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Symfony\Component\Console\ConsoleEvents;
@@ -42,9 +44,77 @@ class SwooleApp extends CliApp
         Event::one('IMI.SCAN_APP', function () {
             $this->onScanApp();
         });
-        Event::one('IMI.INIT_MAIN', function () {
-            $this->onInitMain();
-        });
+        // Event::one('IMI.INIT_MAIN', function () {
+        //     $this->onInitMain();
+        // });
+    }
+
+    /**
+     * 加载配置.
+     *
+     * @return void
+     */
+    public function loadConfig(): void
+    {
+        parent::loadConfig();
+        $namespace = Config::get('@app.mainServer.namespace');
+        $namespaces = [];
+        if (null !== $namespace)
+        {
+            $namespaces['main'] = $namespace;
+        }
+        foreach (Config::get('@app.subServers', []) as $name => $config)
+        {
+            $namespaces[$name] = $config['namespace'];
+        }
+        foreach ($namespaces as $name => $namespace)
+        {
+            // 加载服务器配置文件
+            foreach (Imi::getNamespacePaths($namespace) as $path)
+            {
+                $fileName = $path . '/config/config.php';
+                if (is_file($fileName))
+                {
+                    Config::addConfig('@server.' . $name, include $fileName);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * 加载入口.
+     *
+     * @return void
+     */
+    public function loadMain(): void
+    {
+        parent::loadMain();
+        // 服务器们
+        $servers = array_merge(['main' => Config::get('@app.mainServer')], Config::get('@app.subServers', []));
+        foreach ($servers as $serverName => $item)
+        {
+            if ($item)
+            {
+                Helper::getMain($item['namespace'], 'server.' . $serverName);
+            }
+        }
+    }
+
+    /**
+     * 初始化.
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+        parent::init();
+        foreach (Config::getAliases() as $alias)
+        {
+            // 原子计数初始化
+            AtomicManager::setNames(Config::get($alias . '.atomics', []));
+        }
+        AtomicManager::init();
     }
 
     private function onCommand(ConsoleCommandEvent $e): void
@@ -56,26 +126,31 @@ class SwooleApp extends CliApp
 
     private function onScanApp(): void
     {
-        $namespaces = [Config::get('@app.mainServer.namespace')];
-        foreach (Config::get('@app.subServers.subServers', []) as $config)
+        $namespace = Config::get('@app.mainServer.namespace');
+        $namespaces = [];
+        if (null !== $namespace)
+        {
+            $namespaces[] = $namespace;
+        }
+        foreach (Config::get('@app.subServers', []) as $config)
         {
             $namespaces[] = $config['namespace'];
         }
         Annotation::getInstance()->initByNamespace($namespaces);
     }
 
-    private function onInitMain(): void
-    {
-        // 服务器们
-        $servers = array_merge(['main' => Config::get('@app.mainServer')], Config::get('@app.subServers', []));
-        foreach ($servers as $serverName => $item)
-        {
-            if ($item)
-            {
-                Helper::getMain($item['namespace'], 'server.' . $serverName);
-            }
-        }
-    }
+    // private function onInitMain(): void
+    // {
+    //     // 服务器们
+    //     $servers = array_merge(['main' => Config::get('@app.mainServer')], Config::get('@app.subServers', []));
+    //     foreach ($servers as $serverName => $item)
+    //     {
+    //         if ($item)
+    //         {
+    //             Helper::getMain($item['namespace'], 'server.' . $serverName);
+    //         }
+    //     }
+    // }
 
     /**
      * 检查环境.

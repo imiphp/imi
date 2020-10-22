@@ -48,7 +48,6 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
         $response = $context['response'];
         $server = $context['server'];
         $timerId = Timer::after($this->maxExecuteTime, function () use ($request, $response, $server) {
-            /* @var \Imi\Server\Http\Message\Request $request */
             RequestContext::muiltiSet([
                 'server'    => $server,
                 'request'   => $request,

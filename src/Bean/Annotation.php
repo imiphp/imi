@@ -100,7 +100,7 @@ class Annotation
     private function loadModuleAnnotations($namespace)
     {
         $ignoredNamespaces = [];
-        foreach (Config::getAlias() as $alias)
+        foreach (Config::getAliases() as $alias)
         {
             $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
         }

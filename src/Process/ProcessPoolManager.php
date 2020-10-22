@@ -67,7 +67,6 @@ class ProcessPoolManager
                 // 加载服务器注解
                 Scanner::scanVendor();
                 Scanner::scanApp();
-                App::initWorker();
                 // 进程开始事件
                 Event::trigger('IMI.PROCESS_POOL.PROCESS.BEGIN', [
                     'name'          => $name,

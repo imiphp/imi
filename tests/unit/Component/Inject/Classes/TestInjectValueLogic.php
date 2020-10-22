@@ -16,7 +16,7 @@ use PHPUnit\Framework\Assert;
 class TestInjectValueLogic
 {
     /**
-     * @ConfigValue("@app.imi")
+     * @ConfigValue("@app.imi-framework")
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class TestInjectValueLogic
 
     public function test()
     {
-        Assert::assertEquals(Config::get('@app.imi'), $this->imi);
+        Assert::assertEquals(Config::get('@app.imi-framework'), $this->imi);
         Assert::assertEquals(\PHP_VERSION, $this->phpVersion);
         Assert::assertEquals(['A', 'test'], $this->callable);
         Assert::assertEquals(PHP_VERSION, $this->callableResult);

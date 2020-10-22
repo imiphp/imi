@@ -13,7 +13,7 @@ class ConfigTest extends BaseTest
 {
     public function testGet()
     {
-        Assert::assertEquals('very six', Config::get('@app.imi'));
+        Assert::assertEquals('very six', Config::get('@app.imi-framework'));
         Assert::assertEquals('666', Config::get('@app.yurun')); // .env
         Assert::assertEquals('777', Config::get('@app.yurun2')); // .env
         Assert::assertEquals('default', Config::get('@app.none', 'default'));
@@ -28,7 +28,7 @@ class ConfigTest extends BaseTest
 
     public function testHas()
     {
-        Assert::assertTrue(Config::has('@app.imi'));
+        Assert::assertTrue(Config::has('@app.imi-framework'));
     }
 
     public function testAddConfig()

@@ -24,7 +24,7 @@ abstract class AppBaseMain extends BaseMain
         // 在项目中配置 imi 启用哪些功能模块
         if ($beanScan = Config::get('@app.imi.beanScan'))
         {
-            Config::set('@Imi.beanScan', $beanScan);
+            Config::set('@imi.beanScan', $beanScan);
         }
     }
 }

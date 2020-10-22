@@ -20,6 +20,7 @@ class PartialTest extends BaseTest
     {
         /** @var \Imi\Test\Component\Partial\Classes\PartialClassA $test */
         $test = App::getBean('PartialClassA');
+        $ref = new ReflectionClass($test);
         $this->assertTrue(method_exists($test, 'test1'));
         $this->assertEquals(1, $test->test1());
         $this->assertTrue(method_exists($test, 'test2'));

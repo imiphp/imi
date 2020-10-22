@@ -28,7 +28,9 @@ return [
         'Imi\Util\Co',
     ],
     'ignoreNamespace'   => [
+        'Imi\functions',
         'Imi\Cli\bootstrap',
+        'Imi\Components\*',
     ],
     'atomics' => [
         'session',

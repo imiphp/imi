@@ -22,6 +22,7 @@ class TestTool
      */
     public function test(int $code)
     {
+        var_dump($code);
         exit($code);
     }
 }

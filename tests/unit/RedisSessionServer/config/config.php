@@ -42,103 +42,49 @@ return [
     'pools'    => [
         // 主数据库
         'maindb'    => [
-            // 同步池子
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Db\Pool\SyncDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
-                    'database'    => 'mysql',
-                    'charset'     => 'utf8mb4',
+            'pool'    => [
+                'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            // 异步池子，worker进程使用
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                    'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                    'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
-                    'database'    => 'mysql',
-                    'charset'     => 'utf8mb4',
-                ],
+            'resource'    => [
+                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
+                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
+                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
+                'database'    => 'mysql',
+                'charset'     => 'utf8mb4',
             ],
         ],
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+            'pool'    => [
+                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                ],
+            'resource'    => [
+                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
             ],
         ],
         'redisSession'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                    'serialize' => false,
+            'pool'    => [
+                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 1,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
-                    'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                    'serialize' => false,
-                ],
+            'resource'    => [
+                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => imiGetEnv('REDIS_SERVER_PORT', 6379),
+                'password'  => imiGetEnv('REDIS_SERVER_PASSWORD'),
+                'serialize' => false,
             ],
         ],
     ],

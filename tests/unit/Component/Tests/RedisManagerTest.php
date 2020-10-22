@@ -58,6 +58,7 @@ class RedisManagerTest extends BaseTest
 
             $this->assertRedisHandler($instance);
         });
+        sleep(1);
         Assert::assertEquals(1, $pool->getCount());
         Assert::assertEquals(1, $pool->getFree());
     }

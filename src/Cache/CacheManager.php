@@ -4,6 +4,7 @@ namespace Imi\Cache;
 
 use Imi\Bean\BeanFactory;
 use Imi\Cache\Handler\Base;
+use Imi\Config;
 
 class CacheManager
 {
@@ -12,10 +13,33 @@ class CacheManager
      *
      * @var \Psr\SimpleCache\CacheInterface[]
      */
-    protected static $handlers = [];
+    protected static array $handlers = [];
+
+    /**
+     * 是否初始化.
+     *
+     * @var bool
+     */
+    protected static bool $inited = false;
 
     private function __construct()
     {
+    }
+
+    public static function init()
+    {
+        foreach (Config::getAliases() as $alias)
+        {
+            $caches = Config::get($alias . '.caches');
+            if ($caches)
+            {
+                foreach ($caches as $name => $cache)
+                {
+                    self::addName($name, $cache['handlerClass'], $cache['option']);
+                }
+            }
+        }
+        self::$inited = true;
     }
 
     /**
@@ -61,12 +85,24 @@ class CacheManager
      */
     public static function getInstance(string $name): Base
     {
-        if (!isset(static::$handlers[$name]))
+        $handlers = &static::$handlers;
+        if (!isset($handlers[$name]))
         {
-            throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+            if (self::$inited)
+            {
+                throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+            }
+            else
+            {
+                self::init();
+                if (!isset($handlers[$name]))
+                {
+                    throw new \RuntimeException(sprintf('GetInstance failed, %s is not found', $name));
+                }
+            }
         }
 
-        return static::$handlers[$name];
+        return $handlers[$name];
     }
 
     /**

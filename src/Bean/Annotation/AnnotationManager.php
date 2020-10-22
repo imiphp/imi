@@ -16,22 +16,21 @@ class AnnotationManager
      *
      * @var \Imi\Bean\Annotation\Model\ClassAnnotation[]
      */
-    private static $annotations = [];
+    private static array $annotations = [];
 
     /**
      * 注解类与类、方法、属性的关联关系.
      *
      * @var \Imi\Bean\Annotation\Model\AnnotationRelation
      */
-    private static $annotationRelation;
+    private static AnnotationRelation $annotationRelation;
 
     private function __construct()
     {
     }
 
-    public static function init()
+    public static function init(): void
     {
-        static::$annotations = [];
         static::$annotationRelation = new AnnotationRelation();
     }
 
@@ -42,7 +41,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function setAnnotations($annotations)
+    public static function setAnnotations(array $annotations): void
     {
         static::$annotations = $annotations;
     }
@@ -52,7 +51,7 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getAnnotations()
+    public static function getAnnotations(): array
     {
         return static::$annotations;
     }
@@ -64,7 +63,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function setAnnotationRelation(AnnotationRelation $data)
+    public static function setAnnotationRelation(AnnotationRelation $data): void
     {
         static::$annotationRelation = $data;
     }
@@ -87,7 +86,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function addClassAnnotations($className, ...$annotations)
+    public static function addClassAnnotations(string $className, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -113,7 +112,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function setClassAnnotations($className, ...$annotations)
+    public static function setClassAnnotations(string $className, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -144,7 +143,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function addMethodAnnotations($className, $methodName, ...$annotations)
+    public static function addMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -171,7 +170,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function setMethodAnnotations($className, $methodName, ...$annotations)
+    public static function setMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -201,7 +200,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function addPropertyAnnotations($className, $propertyName, ...$annotations)
+    public static function addPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -228,7 +227,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function setPropertyAnnotations($className, $propertyName, ...$annotations)
+    public static function setPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -258,7 +257,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function addConstantAnnotations($className, $constantName, ...$annotations)
+    public static function addConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -267,7 +266,7 @@ class AnnotationManager
         }
         else
         {
-            $staticAnnotations[$className] = $classAnnotation = new Constant($className);
+            $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
         }
         $classAnnotation->addConstantAnnotations($constantName, $annotations);
         foreach ($annotations as $annotation)
@@ -285,7 +284,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function setConstantAnnotations($className, $constantName, ...$annotations)
+    public static function setConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))
@@ -314,7 +313,7 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Model\IAnnotationRelation[]
      */
-    public static function getAnnotationPoints($annotationClassName, $where = null)
+    public static function getAnnotationPoints(string $annotationClassName, ?string $where = null): array
     {
         return static::$annotationRelation->getAll($annotationClassName, $where);
     }
@@ -328,7 +327,7 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getClassAnnotations($className, $annotationClassName = null)
+    public static function getClassAnnotations(string $className, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -365,7 +364,7 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public static function getMethodAnnotations($className, $methodName, $annotationClassName = null)
+    public static function getMethodAnnotations(string $className, string $methodName, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -402,7 +401,7 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public static function getPropertyAnnotations($className, $propertyName, $annotationClassName = null)
+    public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -439,7 +438,7 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public static function getConstantAnnotations($className, $constantName, $annotationClassName = null)
+    public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -474,7 +473,7 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getMethodsAnnotations($className, $annotationClassName = null)
+    public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -514,7 +513,7 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getPropertiesAnnotations($className, $annotationClassName = null)
+    public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -554,7 +553,7 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getConstantsAnnotations($className, $annotationClassName = null)
+    public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null): array
     {
         $staticAnnotations = &static::$annotations;
         if (!isset($staticAnnotations[$className]))
@@ -593,7 +592,7 @@ class AnnotationManager
      *
      * @return void
      */
-    public static function clearClassAllAnnotations($className)
+    public static function clearClassAllAnnotations(string $className): void
     {
         $staticAnnotations = &static::$annotations;
         if (isset($staticAnnotations[$className]))

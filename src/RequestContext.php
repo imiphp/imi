@@ -187,20 +187,22 @@ class RequestContext
         $context = static::getInstance()->get(static::getCurrentFlag(), true);
         if (isset($context['container']))
         {
+            /** @var Container $container */
             $container = $context['container'];
         }
         else
         {
             if (isset($context['server']))
             {
-                $context['container'] = $container = $context['server']->getContainer()->newSubContainer();
+                /** @var Container $container */
+                $container = $context['container'] = $context['server']->getContainer()->newSubContainer();
             }
             else
             {
-                $context['container'] = $container = App::getContainer()->newSubContainer();
+                $container = $context['container'] = App::getContainer()->newSubContainer();
             }
         }
-        /* @var Container $container */
+
         return $container->get($name, ...$params);
     }
 }

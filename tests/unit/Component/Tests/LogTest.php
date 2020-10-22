@@ -13,7 +13,6 @@ class LogTest extends BaseTest
 {
     public function testLog()
     {
-        ob_start();
         Log::alert('alert');
         Log::critical('critical');
         Log::debug('debug');
@@ -23,7 +22,6 @@ class LogTest extends BaseTest
         Log::notice('notice');
         Log::warning('warning');
         Log::log(LogLevel::INFO, 'info2');
-        ob_end_clean();
         $this->assertTrue(true, 'Log fail');
     }
 }

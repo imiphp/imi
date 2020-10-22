@@ -4,14 +4,16 @@ use Imi\App;
 use Imi\Util\File;
 use Symfony\Component\Console\Input\ArgvInput;
 
-(function () {
+return function () {
+    $path = null;
+
     if (!class_exists('Imi\App'))
     {
-        (function () {
+        (function () use (&$path) {
             foreach ([
                 $_SERVER['PWD'] ?? getcwd(),
-                dirname(__DIR__),
-                dirname(__DIR__, 4), // 在非工作路径，使用绝对路径启动
+                dirname(__DIR__, 3),
+                dirname(__DIR__, 5), // 在非工作路径，使用绝对路径启动
             ] as $path)
             {
                 $fileName = $path . '/vendor/autoload.php';
@@ -30,7 +32,7 @@ use Symfony\Component\Console\Input\ArgvInput;
         })();
     }
 
-    App::run((function () {
+    App::run((function () use ($path) {
         $input = new ArgvInput();
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)
@@ -46,4 +48,4 @@ use Symfony\Component\Console\Input\ArgvInput;
 
         return $namespace;
     })(), \Imi\Cli\CliApp::class);
-})();
+};

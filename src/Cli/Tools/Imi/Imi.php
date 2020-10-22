@@ -2,7 +2,6 @@
 
 namespace Imi\Cli\Tools\Imi;
 
-use Imi\App;
 use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
@@ -45,7 +44,7 @@ class Imi extends BaseCommand
      */
     public function clearImiRuntime(): void
     {
-        $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
+        $file = ImiUtil::getRuntimePath('imi-runtime.cache');
         if (is_file($file))
         {
             unlink($file);
@@ -80,7 +79,7 @@ class Imi extends BaseCommand
             }
         }
 
-        if (!Text::isEmpty($changedFilesFile) && App::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
+        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);

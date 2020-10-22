@@ -136,8 +136,11 @@ class Driver extends Base implements IDb
         {
             $this->lastStmt = null;
         }
-        $this->instance->close();
-        $this->instance = null;
+        if (null !== $this->instance)
+        {
+            $this->instance->close();
+            $this->instance = null;
+        }
     }
 
     /**

@@ -1,7 +1,0 @@
-{
-    "require": {
-        "php": ">=7.1.0",
-        "yurunsoft/yurun-http": "^4.0.0",
-        "yurunsoft/swoole-co-pool": "~1.0"
-    }
-}

@@ -34,8 +34,8 @@ abstract class BaseMain implements IMain
     public function __construct(string $moduleName)
     {
         $this->moduleName = $moduleName;
-        $this->loadConfig();
-        $this->loadComponents();
+        // $this->loadConfig();
+        // $this->loadComponents();
         $this->__init();
     }
 

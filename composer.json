@@ -19,11 +19,12 @@
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
-        "phpunit/phpunit": ">=8"
+        "yurunsoft/yurun-http": "^4.0.0",
+        "phpunit/phpunit": "^9.4.0"
     },
     "autoload": {
-        "psr-4" : {
-            "Imi\\" : "src/"
+        "psr-4": {
+            "Imi\\": "src/"
         },
         "files": [
             "src/functions.php"
@@ -41,8 +42,8 @@
         "src/Cli/bin/imi-cli"
     ],
     "scripts": {
-      "test": "./tests/run",
-      "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
+        "test": "./tests/run",
+        "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
     },
     "extra": {
         "ide-helper": {

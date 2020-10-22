@@ -9,7 +9,7 @@ use Imi\Event\IEventListener;
 use Imi\Main\Helper;
 
 /**
- * @Listener(eventName="IMI.INITED",priority=19940290)
+ * @Listener(eventName="IMI.LOAD_RUNTIME",priority=19940290)
  */
 class ImiInit implements IEventListener
 {

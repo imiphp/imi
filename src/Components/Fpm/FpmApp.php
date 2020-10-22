@@ -17,6 +17,15 @@ class FpmApp extends BaseApp
     }
 
     /**
+     * 初始化.
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+    }
+
+    /**
      * 运行应用.
      *
      * @return void

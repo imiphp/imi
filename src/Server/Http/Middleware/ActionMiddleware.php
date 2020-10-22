@@ -4,10 +4,10 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\ReflectionContainer;
-use Imi\Controller\HttpController;
-use Imi\Controller\SingletonHttpController;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Http\Controller\HttpController;
+use Imi\Server\Http\Controller\SingletonHttpController;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;

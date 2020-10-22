@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="./bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         verbose="true">
     <testsuites>
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
         </testsuite>
-        <testsuite name="HttpServer">
+        <!-- <testsuite name="HttpServer">
             <directory>unit/HttpServer/Tests</directory>
         </testsuite>
         <testsuite name="RedisSessionServer">
@@ -29,10 +29,13 @@
         </testsuite>
         <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
-        </testsuite>
+        </testsuite> -->
     </testsuites>
-    <listeners>
+    <!-- <listeners>
         <listener class="Imi\Test\Component\PHPUintListener\ImiListener">
         </listener>
-    </listeners>
+    </listeners> -->
+    <extensions>
+        <extension class="Imi\Test\Component\PHPUnitHook" />
+    </extensions>
 </phpunit>

@@ -3,7 +3,7 @@
 namespace Imi\Test;
 
 use PHPUnit\Framework\TestCase;
-use Swoole\Coroutine;
+use function Yurun\Swoole\Coroutine\goWait;
 
 if (class_exists(TestCase::class))
 {
@@ -14,7 +14,7 @@ if (class_exists(TestCase::class))
         protected function go($callable, $finally = null)
         {
             $throwable = null;
-            $cid = imigo(function () use ($callable, &$throwable) {
+            goWait(function () use ($callable, &$throwable) {
                 try
                 {
                     $callable();
@@ -24,10 +24,6 @@ if (class_exists(TestCase::class))
                     $throwable = $th;
                 }
             });
-            while (Coroutine::exists($cid))
-            {
-                usleep(10000);
-            }
             if ($finally)
             {
                 $finally();
@@ -43,20 +39,6 @@ if (class_exists(TestCase::class))
             $cmd = \Imi\cmd('"' . \PHP_BINARY . "\" \"{$phpFile}\" {$args}");
 
             return `{$cmd}`;
-        }
-
-        public function startTest()
-        {
-            static $run = false;
-            if (!$run)
-            {
-                $run = true;
-                $this->__startTest();
-            }
-        }
-
-        public function __startTest()
-        {
         }
     }
 }

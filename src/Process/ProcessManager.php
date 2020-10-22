@@ -114,7 +114,6 @@ class ProcessManager
                     // 加载服务器注解
                     Scanner::scanVendor();
                     Scanner::scanApp();
-                    App::initWorker();
                     // 进程开始事件
                     Event::trigger('IMI.PROCESS.BEGIN', [
                         'name'      => $name,

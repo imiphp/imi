@@ -4,7 +4,6 @@ namespace Imi\Model\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
-use Imi\Cli\Tool;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
@@ -25,7 +24,7 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        if ('server' !== Tool::getToolName() || 'start' !== Tool::getToolOperation() || MemoryTableManager::isInited())
+        if (('server/start' !== ($_SERVER['argv'][1] ?? null)) || MemoryTableManager::isInited())
         {
             return;
         }

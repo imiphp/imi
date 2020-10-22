@@ -4,6 +4,7 @@ namespace Imi\Lock;
 
 use Imi\App;
 use Imi\Config;
+use Imi\Lock\Handler\ILockHandler;
 
 class Lock
 {
@@ -12,17 +13,32 @@ class Lock
      *
      * @var \Imi\Lock\LockConfigOption[]
      */
-    private static $options = [];
+    private static array $options = [];
 
     /**
      * 对象列表.
      *
      * @var \Imi\Lock\Handler\ILockHandler[]
      */
-    private static $instances = [];
+    private static array $instances = [];
+
+    private static bool $loaded = false;
 
     private function __construct()
     {
+    }
+
+    public static function loadFromConfig(): void
+    {
+        self::$options = self::$instances = [];
+        foreach (Config::getAliases() as $alias)
+        {
+            foreach (Config::get($alias . '.lock.list', []) as $id => $option)
+            {
+                self::add($id, $option);
+            }
+        }
+        self::$loaded = true;
     }
 
     /**
@@ -33,8 +49,12 @@ class Lock
      *
      * @return \Imi\Lock\Handler\ILockHandler
      */
-    public static function getInstance($lockConfigId = null, $lockId = null)
+    public static function getInstance(?string $lockConfigId = null, ?string $lockId = null): ILockHandler
     {
+        if (!self::$loaded)
+        {
+            self::loadFromConfig();
+        }
         if (!$lockConfigId)
         {
             $lockConfigId = static::getDefaultId();
@@ -63,9 +83,9 @@ class Lock
     /**
      * 获取默认锁ID.
      *
-     * @return void
+     * @return string
      */
-    public static function getDefaultId()
+    public static function getDefaultId(): string
     {
         return Config::get('@currentServer.lock.default');
     }
@@ -78,7 +98,7 @@ class Lock
      *
      * @return void
      */
-    public static function add($id, $option)
+    public static function add(string $id, array $option): void
     {
         static::$options[$id] = new LockConfigOption($option);
     }
@@ -92,7 +112,7 @@ class Lock
      *
      * @return bool
      */
-    public static function lock($id = null, $taskCallable = null, $afterLockCallable = null)
+    public static function lock(?string $id = null, ?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
     {
         return static::getInstance($id)->lock($taskCallable, $afterLockCallable);
     }
@@ -105,7 +125,7 @@ class Lock
      *
      * @return bool
      */
-    public static function tryLock($id = null, $taskCallable = null)
+    public static function tryLock(?string $id = null, ?callable $taskCallable = null): bool
     {
         return static::getInstance($id)->tryLock($taskCallable);
     }
@@ -117,7 +137,7 @@ class Lock
      *
      * @return bool
      */
-    public static function unlock($id = null)
+    public static function unlock(?string $id = null): bool
     {
         return static::getInstance($id)->unlock($id);
     }
@@ -129,7 +149,7 @@ class Lock
      *
      * @return bool
      */
-    public static function isLocked($id = null)
+    public static function isLocked(?string $id = null): bool
     {
         return static::getInstance($id)->isLocked();
     }

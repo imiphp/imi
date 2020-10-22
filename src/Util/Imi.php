@@ -9,6 +9,7 @@ use Imi\Bean\BeanProxy;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
+use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\MemoryTable;
@@ -423,9 +424,9 @@ class Imi
      *
      * @param string ...$path
      *
-     * @return void
+     * @return string
      */
-    public static function getRuntimePath(...$path)
+    public static function getRuntimePath(string ...$path): string
     {
         $parentPath = Config::get('@app.runtimePath');
         if (null === $parentPath)
@@ -881,5 +882,36 @@ class Imi
         }
 
         return false;
+    }
+
+    /**
+     * 从文件加载运行时数据
+     * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
+     *
+     * @param string $fileName
+     *
+     * @return bool
+     */
+    public static function loadRuntimeInfo($fileName): bool
+    {
+        if (!is_file($fileName))
+        {
+            return false;
+        }
+        $runtimeInfo = unserialize(file_get_contents($fileName));
+
+        Annotation::getInstance()->getParser()->loadStoreData($runtimeInfo->annotationParserData);
+        Annotation::getInstance()->getParser()->setParsers($runtimeInfo->annotationParserParsers);
+
+        AnnotationManager::setAnnotations($runtimeInfo->annotationManagerAnnotations);
+        AnnotationManager::setAnnotationRelation($runtimeInfo->annotationManagerAnnotationRelation);
+        foreach ($runtimeInfo->parsersData as $parserClass => $data)
+        {
+            $parser = $parserClass::getInstance();
+            $parser->setData($data);
+        }
+        Event::trigger('IMI.LOAD_RUNTIME_INFO');
+
+        return true;
     }
 }

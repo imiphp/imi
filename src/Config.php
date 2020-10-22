@@ -228,7 +228,7 @@ class Config
      *
      * @return array
      */
-    public static function getAlias()
+    public static function getAliases()
     {
         return array_keys(static::$configs);
     }
