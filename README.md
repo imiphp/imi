@@ -53,19 +53,19 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 
 ### 扩展组件
 
-* [MQTT](/imiphp/imi-mqtt)
-* [RPC](/imiphp/imi-rpc)
-* [gRPC](/imiphp/imi-grpc)
-* [Hprose](/imiphp/imi-hprose)
-* [AMQP](/imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
-* [JWT](/imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
-* [权限控制](/imiphp/imi-access-control)
-* [Smarty 模版引擎](/imiphp/imi-smarty)
-* [限流](/imiphp/imi-rate-limit)
-* [跨进程变量共享](/imiphp/imi-shared-memory)
-* [Swoole Tracker](/imiphp/imi-swoole-tracker)
-* [雪花算法发号器](/imiphp/imi-snowflake)
-* [Swagger API 文档生成](/imiphp/imi-apidoc)
+* [MQTT](../../../../imiphp/imi-mqtt)
+* [RPC](../../../../imiphp/imi-rpc)
+* [gRPC](../../../../imiphp/imi-grpc)
+* [Hprose](../../../../imiphp/imi-hprose)
+* [AMQP](../../../../imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
+* [JWT](../../../../imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
+* [权限控制](../../../../imiphp/imi-access-control)
+* [Smarty 模版引擎](../../../../imiphp/imi-smarty)
+* [限流](../../../../imiphp/imi-rate-limit)
+* [跨进程变量共享](../../../../imiphp/imi-shared-memory)
+* [Swoole Tracker](../../../../imiphp/imi-swoole-tracker)
+* [雪花算法发号器](../../../../imiphp/imi-snowflake)
+* [Swagger API 文档生成](../../../../imiphp/imi-apidoc)
 
 ## 开始使用
 
