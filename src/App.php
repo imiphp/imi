@@ -17,11 +17,8 @@ use Imi\Pool\PoolConfig;
 use Imi\Pool\PoolManager;
 use Imi\Util\AtomicManager;
 use Imi\Util\Composer;
-use Imi\Util\Coroutine;
-use Imi\Util\CoroutineChannelManager;
 use Imi\Util\Imi;
 use Imi\Util\Text;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 class App
 {
@@ -166,14 +163,6 @@ class App
         static::$container = new Container();
         // 注解管理器初始化
         AnnotationManager::init();
-        // // 初始化入口类
-        // static::initMains();
-        // // 运行时目录写权限检测
-        // if (!is_writable($runtimePath = Imi::getRuntimePath()))
-        // {
-        //     (new ConsoleOutput())->writeln('<error>Runtime path</error> <comment>' . $runtimePath . '</comment> <error>is not writable</error>');
-        //     exit;
-        // }
         static::$isInited = true;
         Event::trigger('IMI.INITED');
     }
@@ -388,101 +377,6 @@ class App
     public static function isInited()
     {
         return static::$isInited;
-    }
-
-    /**
-     * 初始化 Worker，但不一定是 Worker 进程.
-     *
-     * @return void
-     */
-    public static function initWorker()
-    {
-        // Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'), true);
-
-        // Worker 进程初始化前置
-        // Event::trigger('IMI.INIT.WORKER.BEFORE');
-
-        // $appMains = MainHelper::getAppMains();
-
-        // 日志初始化
-        // if (static::$container->has('Logger'))
-        // {
-        //     $logger = static::getBean('Logger');
-        //     foreach ($appMains as $main)
-        //     {
-        //         foreach ($main->getConfig()['beans']['Logger']['exHandlers'] ?? [] as $exHandler)
-        //         {
-        //             $logger->addExHandler($exHandler);
-        //         }
-        //     }
-        // }
-
-        // 初始化
-        // PoolManager::clearPools();
-        // if (Coroutine::isIn())
-        // {
-        //     $pools = Config::get('@app.pools', []);
-        //     foreach ($appMains as $main)
-        //     {
-        //         // 协程通道队列初始化
-        //         CoroutineChannelManager::setNames($main->getConfig()['coroutineChannels'] ?? []);
-
-        //         // 异步池子初始化
-        //         $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
-        //     }
-        //     foreach ($pools as $name => $pool)
-        //     {
-        //         if (isset($pool['async']))
-        //         {
-        //             $pool = $pool['async'];
-        //             $poolPool = $pool['pool'];
-        //             PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
-        //         }
-        //         elseif (isset($pool['pool']['asyncClass']))
-        //         {
-        //             $poolPool = $pool['pool'];
-        //             PoolManager::addName($name, $poolPool['asyncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     $pools = Config::get('@app.pools', []);
-        //     foreach ($appMains as $main)
-        //     {
-        //         // 同步池子初始化
-        //         $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
-        //     }
-        //     foreach ($pools as $name => $pool)
-        //     {
-        //         if (isset($pool['sync']))
-        //         {
-        //             $pool = $pool['sync'];
-        //             $poolPool = $pool['pool'];
-        //             PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
-        //         }
-        //         elseif (isset($pool['pool']['syncClass']))
-        //         {
-        //             $poolPool = $pool['pool'];
-        //             PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
-        //         }
-        //     }
-        // }
-
-        // 缓存初始化
-        CacheManager::clearPools();
-        $caches = Config::get('@app.caches', []);
-        foreach ($appMains as $main)
-        {
-            $caches = array_merge($caches, $main->getConfig()['caches'] ?? []);
-        }
-        foreach ($caches as $name => $cache)
-        {
-            CacheManager::addName($name, $cache['handlerClass'], $cache['option']);
-        }
-
-        // Worker 进程初始化后置
-        Event::trigger('IMI.INIT.WORKER.AFTER');
     }
 
     /**

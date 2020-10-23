@@ -47,9 +47,6 @@ class SwooleApp extends CliApp
         Event::one('IMI.SCAN_APP', function () {
             $this->onScanApp();
         });
-        // Event::one('IMI.INIT_MAIN', function () {
-        //     $this->onInitMain();
-        // });
     }
 
     /**
@@ -148,19 +145,6 @@ class SwooleApp extends CliApp
         }
         Annotation::getInstance()->initByNamespace($namespaces);
     }
-
-    // private function onInitMain(): void
-    // {
-    //     // 服务器们
-    //     $servers = array_merge(['main' => Config::get('@app.mainServer')], Config::get('@app.subServers', []));
-    //     foreach ($servers as $serverName => $item)
-    //     {
-    //         if ($item)
-    //         {
-    //             Helper::getMain($item['namespace'], 'server.' . $serverName);
-    //         }
-    //     }
-    // }
 
     /**
      * 检查环境.

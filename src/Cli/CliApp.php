@@ -9,16 +9,10 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
-use Imi\Event\Event;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\ConsoleEvents;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleErrorEvent;
-use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -38,11 +32,6 @@ class CliApp extends BaseApp
      * @var ArgvInput
      */
     protected ArgvInput $input;
-
-    /**
-     * @var bool
-     */
-    private bool $isAppRuntime = false;
 
     /**
      * @var bool
@@ -92,18 +81,6 @@ class CliApp extends BaseApp
                 false,
             )
         );
-
-        // $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
-        //     // $this->initApp($e->getInput());
-        //     $this->init();
-        // }, \PHP_INT_MAX);
-        // $this->cliEventDispatcher->addListener(ConsoleEvents::ERROR, function (ConsoleErrorEvent $e) {
-        //     $this->onError($e);
-        // }, \PHP_INT_MAX);
-
-        // Event::one('IMI.INITED', function () use ($cli) {
-        //     $this->addCommands();
-        // });
     }
 
     /**
@@ -172,19 +149,6 @@ class CliApp extends BaseApp
         $this->addCommands();
     }
 
-    private function onError(ConsoleErrorEvent $e): void
-    {
-        if (!$this->inited && $e->getError() instanceof CommandNotFoundException)
-        {
-            $e->stopPropagation();
-            // 尝试加载项目
-            // $this->initApp($e->getInput());
-            $this->init();
-            $this->addCommands();
-            $this->run();
-        }
-    }
-
     private function addCommands(): void
     {
         foreach (AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
@@ -202,15 +166,6 @@ class CliApp extends BaseApp
             }
         }
     }
-
-    // private function initApp(Input $input): void
-    // {
-    //     if (!$this->initApped)
-    //     {
-    //         $this->initApped = true;
-    //         App::initApp((bool) $input->getOption('no-app-cache'));
-    //     }
-    // }
 
     /**
      * 获取应用类型.
