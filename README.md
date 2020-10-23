@@ -12,6 +12,7 @@
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
+[![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
 ## 介绍
 
@@ -52,19 +53,19 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 
 ### 扩展组件
 
-* [MQTT](https://github.com/imiphp/imi-mqtt)
-* [RPC](https://github.com/imiphp/imi-rpc)
-* [gRPC](https://github.com/imiphp/imi-grpc)
-* [Hprose](https://github.com/imiphp/imi-hprose)
-* [AMQP](https://github.com/imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
-* [JWT](https://github.com/imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
-* [权限控制](https://github.com/imiphp/imi-access-control)
-* [Smarty 模版引擎](https://github.com/imiphp/imi-smarty)
-* [限流](https://github.com/imiphp/imi-rate-limit)
-* [跨进程变量共享](https://github.com/imiphp/imi-shared-memory)
-* [Swoole Tracker](https://github.com/imiphp/imi-swoole-tracker)
-* [雪花算法发号器](https://github.com/imiphp/imi-snowflake)
-* [Swagger API 文档生成](https://github.com/imiphp/imi-apidoc)
+* [MQTT](/imiphp/imi-mqtt)
+* [RPC](/imiphp/imi-rpc)
+* [gRPC](/imiphp/imi-grpc)
+* [Hprose](/imiphp/imi-hprose)
+* [AMQP](/imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
+* [JWT](/imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
+* [权限控制](/imiphp/imi-access-control)
+* [Smarty 模版引擎](/imiphp/imi-smarty)
+* [限流](/imiphp/imi-rate-limit)
+* [跨进程变量共享](/imiphp/imi-shared-memory)
+* [Swoole Tracker](/imiphp/imi-swoole-tracker)
+* [雪花算法发号器](/imiphp/imi-snowflake)
+* [Swagger API 文档生成](/imiphp/imi-apidoc)
 
 ## 开始使用
 
