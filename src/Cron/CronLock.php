@@ -56,6 +56,7 @@ class CronLock
                 default:
                     throw new \InvalidArgumentException(sprintf('Invalid unique type %s', $task->getUnique()));
             }
+            /** @var \Imi\Lock\Handler\ILockHandler $lock */
             $lock = $locks[$id] = App::getBean('RedisLock', $id, [
                 'poolName'      => $task->getRedisPool(),
                 'waitTimeout'   => $task->getLockWaitTimeout() * 1000,
@@ -63,7 +64,6 @@ class CronLock
                 'keyPrefix'     => $keyPrefix,
             ]);
         }
-        /* @var \Imi\Lock\Handler\ILockHandler $lock */
         return $lock->lock();
     }
 
