@@ -4,7 +4,7 @@ os: linux
 
 jobs:
   include:
-    - env: PHP_VERSION=7.4 SWOOLE_VERSION="v4.5.4" INSTALL_REDIS_EXT=true DISABLE_XDEBUG=false
+    - env: PHP_VERSION=7.4 SWOOLE_VERSION="v4.5.5" INSTALL_REDIS_EXT=true DISABLE_XDEBUG=false
       os: osx
       osx_image: xcode12
     - php: "7.1"
