@@ -354,7 +354,7 @@ class ResponseProxy implements IResponse
     }
 
     /**
-     * 获取 Trailer.
+     * 设置 Trailer.
      *
      * @param string $name
      * @param string $value

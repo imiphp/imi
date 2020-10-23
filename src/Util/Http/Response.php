@@ -141,7 +141,7 @@ class Response extends AbstractMessage implements ResponseInterface
     }
 
     /**
-     * 获取 Trailer.
+     * 设置 Trailer.
      *
      * @param string $name
      * @param string $value

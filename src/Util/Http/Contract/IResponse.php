@@ -290,7 +290,7 @@ interface IResponse extends ResponseInterface
     public function getTrailer($name);
 
     /**
-     * 获取 Trailer.
+     * 设置 Trailer.
      *
      * @param string $name
      * @param string $value
