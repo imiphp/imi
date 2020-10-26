@@ -259,7 +259,7 @@ abstract class File
             if ('.' !== $file && '..' !== $file)
             {
                 $fullpath = $dir . '/' . $file;
-                if (is_dir($fullpath))
+                if (is_dir($fullpath) && !is_link($fullpath))
                 {
                     self::deleteDir($fullpath);
                 }
