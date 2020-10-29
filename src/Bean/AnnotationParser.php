@@ -173,7 +173,7 @@ class AnnotationParser
      */
     public function parseMethods(\ReflectionClass $ref)
     {
-        foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
+        foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
         {
             $this->parseMethod($ref, $method);
         }
