@@ -36,16 +36,31 @@ class Transaction
     {
         $offEvents = [];
         $levels = &$this->transactionLevels;
-        for ($i = $levels; $i >= 0; --$i)
+        try
         {
-            $this->trigger('transaction.' . $i . '.commit', [
-                'db'    => $this,
-                'level' => $i,
-            ]);
-            $offEvents[] = 'transaction.' . $i . '.rollback';
+            for ($i = $levels; $i >= 0; --$i)
+            {
+                $this->trigger('transaction.' . $i . '.commit', [
+                    'db'    => $this,
+                    'level' => $i,
+                ]);
+                $offEvents[] = 'transaction.' . $i . '.rollback';
+            }
         }
-        $this->off($offEvents);
-        $levels = 0;
+        catch (\Throwable $th)
+        {
+            for (; $i >= 0; --$i)
+            {
+                $offEvents[] = 'transaction.' . $i . '.commit';
+                $offEvents[] = 'transaction.' . $i . '.rollback';
+            }
+            throw $th;
+        }
+        finally
+        {
+            $this->off($offEvents);
+            $levels = 0;
+        }
 
         return true;
     }
@@ -64,19 +79,14 @@ class Transaction
         $transactionLevels = &$this->transactionLevels;
         if (null === $levels)
         {
-            for ($i = $transactionLevels; $i >= 0; --$i)
-            {
-                $this->trigger('transaction.' . $i . '.rollback', [
-                    'db'    => $this,
-                    'level' => $i,
-                ]);
-                $offEvents[] = 'transaction.' . $i . '.commit';
-            }
-            $transactionLevels = 0;
+            $final = 0;
         }
         else
         {
             $final = $transactionLevels - $levels;
+        }
+        try
+        {
             for ($i = $transactionLevels; $i >= $final; --$i)
             {
                 $this->trigger('transaction.' . $i . '.rollback', [
@@ -85,9 +95,21 @@ class Transaction
                 ]);
                 $offEvents[] = 'transaction.' . $i . '.commit';
             }
-            $transactionLevels = $final;
         }
-        $this->off($offEvents);
+        catch (\Throwable $th)
+        {
+            for (; $i >= $final; --$i)
+            {
+                $offEvents[] = 'transaction.' . $i . '.commit';
+                $offEvents[] = 'transaction.' . $i . '.rollback';
+            }
+            throw $th;
+        }
+        finally
+        {
+            $transactionLevels = $final;
+            $this->off($offEvents);
+        }
 
         return true;
     }
