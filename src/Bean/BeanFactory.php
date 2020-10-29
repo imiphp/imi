@@ -232,7 +232,7 @@ TPL;
     private static function getMethodsTpl($ref)
     {
         $tpl = '';
-        foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC) as $method)
+        foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
         {
             $methodName = $method->name;
             if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $method))
