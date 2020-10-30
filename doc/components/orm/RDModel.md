@@ -235,6 +235,8 @@ abstract class ArticleBase extends Model
 
 > 当你指定`type=json`时，写入数据库时自动`json_encode`，从数据实例化到对象时自动`json_decode`
 
+> 当你指定`type=list`并且设置了`listSeparator`分割符时，写入数据库时自动`implode`，从数据实例化到对象时自动`explode`
+
 `updateTime`：save/update 模型时是否将当前时间写入该字段。支持 date/time/datetime/timestamp/year/int/bigint。当字段为 int 类型，写入秒级时间戳。当字段为 bigint 类型，写入毫秒级时间戳。
 
 ### @Serializable

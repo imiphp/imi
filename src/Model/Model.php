@@ -735,6 +735,12 @@ abstract class Model extends BaseModel
                         $value = json_encode($value);
                     }
                     break;
+                case 'list':
+                    if (null !== $value && null !== $column->listSeparator)
+                    {
+                        $value = implode($column->listSeparator, $value);
+                    }
+                    break;
             }
             $result[$name] = $value;
         }
