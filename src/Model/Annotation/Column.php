@@ -100,4 +100,13 @@ class Column extends Base
      * @var bool
      */
     public $updateTime = false;
+
+    /**
+     * 列表分割字符串.
+     *
+     * 如果字段类型为list，并且此字段不为null，读取时会处理为数组，写入时会处理为字符串
+     *
+     * @var string|null
+     */
+    public $listSeparator = null;
 }

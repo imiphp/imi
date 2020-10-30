@@ -64,6 +64,7 @@ class CronLock
                 'keyPrefix'     => $keyPrefix,
             ]);
         }
+
         return $lock->lock();
     }
 
