@@ -5,6 +5,8 @@ namespace Imi\Test\Component\Tests;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
+use Imi\Test\Component\Model\TestJson;
+use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\UpdateTime;
 
 /**
@@ -275,5 +277,27 @@ class ModelTest extends BaseTest
         $this->assertEquals([1], $model->list);
         $model['list'][] = 2;
         $this->assertEquals([1, 2], $model['list']);
+    }
+
+    public function testJson()
+    {
+        $record = TestJson::newInstance();
+        $record->jsonData = ['a' => 1, 'b' => 2, 'c' => 3];
+        $record->insert();
+
+        $record2 = TestJson::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
+    }
+
+    public function testList()
+    {
+        $record = TestList::newInstance();
+        $record->list = [1, 2, 3];
+        $record->insert();
+
+        $record2 = TestList::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertEquals($record->list, $record2->list);
     }
 }

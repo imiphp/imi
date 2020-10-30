@@ -90,13 +90,20 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             if (isset($fieldAnnotations[$k]))
             {
-                switch ($fieldAnnotations[$k]->type)
+                $fieldAnnotation = $fieldAnnotations[$k];
+                switch ($fieldAnnotation->type)
                 {
                     case 'json':
                         $value = json_decode($v, true);
                         if (\is_array($value))
                         {
                             $v = new LazyArrayObject($value);
+                        }
+                        break;
+                    case 'list':
+                        if (null !== $v && null !== $fieldAnnotation->listSeparator)
+                        {
+                            $v = explode($fieldAnnotation->listSeparator, $v);
                         }
                         break;
                 }
