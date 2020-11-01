@@ -36,6 +36,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->textFail();
         $this->textCharFail();
         $this->validateValueFail();
+        $this->regexFail();
         $this->optional();
     }
 
@@ -95,6 +96,7 @@ class ValidatorAnnotationTest extends BaseTest
             'chars'         => 'imiphp.com',
             'validateValue' => -1,
             'optional'      => 1,
+            'regex'         => 123,
         ];
     }
 
@@ -204,6 +206,13 @@ class ValidatorAnnotationTest extends BaseTest
     {
         $this->initData();
         $this->data['validateValue'] = '1';
+        $this->assertFalse($this->tester->validate());
+    }
+
+    private function regexFail()
+    {
+        $this->initData();
+        $this->data['regex'] = 'a1';
         $this->assertFalse($this->tester->validate());
     }
 
