@@ -47,6 +47,10 @@ abstract class ConnectContext
         if (!$toFd)
         {
             $toFd = RequestContext::get('fd');
+            if (null === $toFd)
+            {
+                return;
+            }
         }
         $data = static::getContext($fromFd);
         static::use(function ($contextData) use ($data, $toFd) {
@@ -69,6 +73,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return;
+            }
         }
         /** @var \Imi\Server\ConnectContext\StoreHandler $store */
         $store = RequestContext::getServerBean('ConnectContextStore');
@@ -94,6 +102,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return false;
+            }
         }
 
         return RequestContext::getServerBean('ConnectContextStore')->exists($fd);
@@ -113,6 +125,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return $default;
+            }
         }
         $data = RequestContext::getServerBean('ConnectContextStore')->read($fd);
         if (null === $name)
@@ -139,6 +155,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return;
+            }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
         $result = $store->lock($fd, function () use ($store, $name, $value, $fd) {
@@ -165,6 +185,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return;
+            }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
         $result = $store->lock($fd, function () use ($store, $data, $fd) {
@@ -194,6 +218,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return;
+            }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
         $store->lock($fd, function () use ($callable, $store, $fd) {
@@ -231,6 +259,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return;
+            }
         }
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -250,6 +282,10 @@ abstract class ConnectContext
         if (!$fd)
         {
             $fd = RequestContext::get('fd');
+            if (null === $fd)
+            {
+                return false;
+            }
         }
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -365,6 +401,10 @@ abstract class ConnectContext
         if (!$toFd)
         {
             $toFd = RequestContext::get('fd');
+            if (null === $toFd)
+            {
+                return;
+            }
         }
         static::load($fromFd, $toFd);
         static::bind($flag, $toFd);
