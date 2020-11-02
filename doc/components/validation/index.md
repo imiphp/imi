@@ -271,6 +271,12 @@ $result = in_array($value, [1, 2, 3]);
 
 `@InEnum(name="type", enum="EnumClass")`
 
+### @Regex
+
+正则验证
+
+`@Regex(name="regex", pattern="/\d+/")`
+
 ## 可选验证
 
 可选验证，只有当值存在时，才对值进行验证。没有该值时不验证，可以用于一些可选参数的验证场景。

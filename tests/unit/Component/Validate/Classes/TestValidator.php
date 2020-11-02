@@ -8,6 +8,7 @@ use Imi\Validate\Annotation\InEnum;
 use Imi\Validate\Annotation\InList;
 use Imi\Validate\Annotation\Integer;
 use Imi\Validate\Annotation\Number;
+use Imi\Validate\Annotation\Regex;
 use Imi\Validate\Annotation\Required;
 use Imi\Validate\Annotation\Text;
 use Imi\Validate\Annotation\ValidateValue;
@@ -25,6 +26,7 @@ use Imi\Validate\Validator;
  * @Text(name="chars", char=true, min=6, max=12, message="{name}参数长度必须>={min} && <={max}")
  * @Compare(name="validateValue", value=@ValidateValue("{:data.compare}"), operation="==")
  * @Integer(name="optional", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}", optional=true)
+ * @Regex(name="regex", pattern="/^\d+$/")
  */
 class TestValidator extends Validator
 {
