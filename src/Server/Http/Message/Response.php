@@ -15,13 +15,6 @@ class Response extends \Imi\Util\Http\Response
     protected $swooleResponse;
 
     /**
-     * cookies.
-     *
-     * @var array
-     */
-    protected $cookies = [];
-
-    /**
      * 对应的服务器.
      *
      * @var \Imi\Server\Base
@@ -66,35 +59,6 @@ class Response extends \Imi\Util\Http\Response
     }
 
     /**
-     * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
-     *
-     * @return static
-     */
-    public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
-    {
-        $self = clone $this;
-        $self->cookies[] = [
-            'key'       => $key,
-            'value'     => $value,
-            'expire'    => $expire,
-            'path'      => $path,
-            'domain'    => $domain,
-            'secure'    => $secure,
-            'httponly'  => $httponly,
-        ];
-
-        return $self;
-    }
-
-    /**
      * 输出内容，但不发送
      *
      * @param string $content
@@ -128,7 +92,7 @@ class Response extends \Imi\Util\Http\Response
      *
      * @return static
      */
-    public function redirect($url, $status = StatusCode::FOUND)
+    public function redirect(string $url, int $status = StatusCode::FOUND): self
     {
         return $this->withStatus($status)->withHeader('location', $url);
     }
@@ -195,7 +159,7 @@ class Response extends \Imi\Util\Http\Response
      *
      * @return static
      */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0)
+    public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
         $swooleResponse = $this->swooleResponse;
         $swooleResponse->isEnded = true;

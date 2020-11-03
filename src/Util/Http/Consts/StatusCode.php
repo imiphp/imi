@@ -66,7 +66,7 @@ class StatusCode
     const NOT_EXTENDED = 510;
     const NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-    protected static $reasonPhrases = [
+    protected static array $reasonPhrases = [
         self::CONTINUE                        => 'Continue',
         self::SWITCHING_PROTOCOLS             => 'Switching Protocols',
         self::PROCESSING                      => 'Processing',
@@ -141,7 +141,7 @@ class StatusCode
      *
      * @return string
      */
-    public static function getReasonPhrase($value)
+    public static function getReasonPhrase(int $value): string
     {
         return static::$reasonPhrases[$value] ?? 'Unknown';
     }

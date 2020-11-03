@@ -30,6 +30,25 @@ class RequestProxy implements IServerRequest
     }
 
     /**
+     * Return an instance with the specified cookies.
+     *
+     * The data IS NOT REQUIRED to come from the $_COOKIE superglobal, but MUST
+     * be compatible with the structure of $_COOKIE. Typically, this data will
+     * be injected at instantiation.
+     *
+     * This method MUST NOT update the related Cookie header of the request
+     * instance, nor related values in the server params.
+     *
+     * @param array $cookies array of key/value pairs representing cookies
+     *
+     * @return \Imi\Util\Http\Contract\IServerRequest
+     */
+    public function setCookieParams(array $cookies): IServerRequest
+    {
+        return $this->getRequestInstance()->setCookieParams($cookies);
+    }
+
+    /**
      * Retrieve cookies.
      *
      * Retrieves cookies sent by the client to the server.
@@ -42,6 +61,19 @@ class RequestProxy implements IServerRequest
     public function getCookieParams()
     {
         return $this->getRequestInstance()->getCookieParams();
+    }
+
+    /**
+     * 获取cookie值
+     *
+     * @param string $name
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getCookie(string $name, $default = null)
+    {
+        return $this->getRequestInstance()->getCookie($name, $default);
     }
 
     /**
@@ -65,6 +97,30 @@ class RequestProxy implements IServerRequest
     public function withCookieParams(array $cookies)
     {
         return $this->getRequestInstance()->withCookieParams($cookies);
+    }
+
+    /**
+     * Return an instance with the specified query string arguments.
+     *
+     * These values SHOULD remain immutable over the course of the incoming
+     * request. They MAY be injected during instantiation, such as from PHP's
+     * $_GET superglobal, or MAY be derived from some other value such as the
+     * URI. In cases where the arguments are parsed from the URI, the data
+     * MUST be compatible with what PHP's parse_str() would return for
+     * purposes of how duplicate query parameters are handled, and how nested
+     * sets are handled.
+     *
+     * Setting query string arguments MUST NOT change the URI stored by the
+     * request, nor the values in the server params.
+     *
+     * @param array $query array of query string arguments, typically from
+     *                     $_GET
+     *
+     * @return \Imi\Util\Http\Contract\IServerRequest
+     */
+    public function setQueryParams(array $query): IServerRequest
+    {
+        return $this->getRequestInstance()->setQueryParams($query);
     }
 
     /**
@@ -148,6 +204,20 @@ class RequestProxy implements IServerRequest
     }
 
     /**
+     * Create a new instance with the specified uploaded files.
+     *
+     * @param array $uploadedFiles an array tree of UploadedFileInterface instances
+     *
+     * @return \Imi\Util\Http\Contract\IServerRequest
+     *
+     * @throws \InvalidArgumentException if an invalid structure is provided
+     */
+    public function setUploadedFiles(array $uploadedFiles): IServerRequest
+    {
+        return $this->getRequestInstance()->setUploadedFiles($uploadedFiles);
+    }
+
+    /**
      * Retrieve any parameters provided in the request body.
      *
      * If the request Content-Type is either application/x-www-form-urlencoded
@@ -203,6 +273,37 @@ class RequestProxy implements IServerRequest
     }
 
     /**
+     * Return an instance with the specified body parameters.
+     *
+     * These MAY be injected during instantiation.
+     *
+     * If the request Content-Type is either application/x-www-form-urlencoded
+     * or multipart/form-data, and the request method is POST, use this method
+     * ONLY to inject the contents of $_POST.
+     *
+     * The data IS NOT REQUIRED to come from $_POST, but MUST be the results of
+     * deserializing the request body content. Deserialization/parsing returns
+     * structured data, and, as such, this method ONLY accepts arrays or objects,
+     * or a null value if nothing was available to parse.
+     *
+     * As an example, if content negotiation determines that the request data
+     * is a JSON payload, this method could be used to create a request
+     * instance with the deserialized parameters.
+     *
+     * @param array|object|null $data The deserialized body data. This will
+     *                                typically be in an array or object.
+     *
+     * @return \Imi\Util\Http\Contract\IServerRequest
+     *
+     * @throws \InvalidArgumentException if an unsupported argument type is
+     *                                   provided
+     */
+    public function setParsedBody($data): IServerRequest
+    {
+        return $this->getRequestInstance()->setParsedBody($data);
+    }
+
+    /**
      * Retrieve attributes derived from the request.
      *
      * The request "attributes" may be used to allow injection of any
@@ -237,7 +338,7 @@ class RequestProxy implements IServerRequest
      */
     public function getAttribute($name, $default = null)
     {
-        return $this->getRequestInstance()->withAttribute($name, $default);
+        return $this->getRequestInstance()->getAttribute($name, $default);
     }
 
     /**
@@ -263,6 +364,24 @@ class RequestProxy implements IServerRequest
     }
 
     /**
+     * Return an instance with the specified derived request attribute.
+     *
+     * This method allows setting a single derived request attribute as
+     * described in getAttributes().
+     *
+     * @see getAttributes()
+     *
+     * @param string $name  the attribute name
+     * @param mixed  $value the value of the attribute
+     *
+     * @return \Imi\Util\Http\Contract\IServerRequest
+     */
+    public function setAttribute(string $name, $value): IServerRequest
+    {
+        return $this->getRequestInstance()->setAttribute($name, $value);
+    }
+
+    /**
      * Return an instance that removes the specified derived request attribute.
      *
      * This method allows removing a single derived request attribute as
@@ -281,6 +400,23 @@ class RequestProxy implements IServerRequest
     public function withoutAttribute($name)
     {
         return $this->getRequestInstance()->withoutAttribute($name);
+    }
+
+    /**
+     * Return an instance that removes the specified derived request attribute.
+     *
+     * This method allows removing a single derived request attribute as
+     * described in getAttributes().
+     *
+     * @see getAttributes()
+     *
+     * @param string $name the attribute name
+     *
+     * @return \Imi\Util\Http\Contract\IServerRequest
+     */
+    public function removeAttribute(string $name): IServerRequest
+    {
+        return $this->getRequestInstance()->removeAttribute($name);
     }
 
     /**
@@ -329,6 +465,26 @@ class RequestProxy implements IServerRequest
     }
 
     /**
+     * Return an instance with the specific request-target.
+     *
+     * If the request needs a non-origin-form request-target — e.g., for
+     * specifying an absolute-form, authority-form, or asterisk-form —
+     * this method may be used to create an instance with the specified
+     * request-target, verbatim.
+     *
+     * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
+     *     request-target forms allowed in request messages)
+     *
+     * @param mixed $requestTarget
+     *
+     * @return IServerRequest
+     */
+    public function setRequestTarget($requestTarget): IServerRequest
+    {
+        return $this->getRequestInstance()->setRequestTarget($requestTarget);
+    }
+
+    /**
      * Retrieves the HTTP method of the request.
      *
      * @return string Returns the request method.
@@ -358,6 +514,24 @@ class RequestProxy implements IServerRequest
     public function withMethod($method)
     {
         return $this->getRequestInstance()->withMethod($method);
+    }
+
+    /**
+     * Return an instance with the provided HTTP method.
+     *
+     * While HTTP method names are typically all uppercase characters, HTTP
+     * method names are case-sensitive and thus implementations SHOULD NOT
+     * modify the given string.
+     *
+     * @param string $method case-sensitive method
+     *
+     * @return IServerRequest
+     *
+     * @throws \InvalidArgumentException for invalid HTTP methods
+     */
+    public function setMethod(string $method): IServerRequest
+    {
+        return $this->getRequestInstance()->setMethod($method);
     }
 
     /**
@@ -413,6 +587,39 @@ class RequestProxy implements IServerRequest
     }
 
     /**
+     * Returns an instance with the provided URI.
+     *
+     * This method MUST update the Host header of the returned request by
+     * default if the URI contains a host component. If the URI does not
+     * contain a host component, any pre-existing Host header MUST be carried
+     * over to the returned request.
+     *
+     * You can opt-in to preserving the original state of the Host header by
+     * setting `$preserveHost` to `true`. When `$preserveHost` is set to
+     * `true`, this method interacts with the Host header in the following ways:
+     *
+     * - If the Host header is missing or empty, and the new URI contains
+     *   a host component, this method MUST update the Host header in the returned
+     *   request.
+     * - If the Host header is missing or empty, and the new URI does not contain a
+     *   host component, this method MUST NOT update the Host header in the returned
+     *   request.
+     * - If a Host header is present and non-empty, this method MUST NOT update
+     *   the Host header in the returned request.
+     *
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
+     *
+     * @param UriInterface $uri          new request URI to use
+     * @param bool         $preserveHost preserve the original state of the Host header
+     *
+     * @return IServerRequest
+     */
+    public function setUri(UriInterface $uri, bool $preserveHost = false): IServerRequest
+    {
+        return $this->getRequestInstance()->setUri($uri, $preserveHost);
+    }
+
+    /**
      * Retrieves the HTTP protocol version as a string.
      *
      * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
@@ -436,7 +643,7 @@ class RequestProxy implements IServerRequest
      *
      * @param string $version HTTP protocol version
      *
-     * @return static
+     * @return IResponse
      */
     public function withProtocolVersion($version)
     {
@@ -545,7 +752,7 @@ class RequestProxy implements IServerRequest
      * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      *
-     * @return static
+     * @return IResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
@@ -568,7 +775,7 @@ class RequestProxy implements IServerRequest
      * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      *
-     * @return static
+     * @return IResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
@@ -588,7 +795,7 @@ class RequestProxy implements IServerRequest
      *
      * @param string $name Case-insensitive header field name to remove.
      *
-     * @return static
+     * @return IResponse
      */
     public function withoutHeader($name)
     {
@@ -616,7 +823,7 @@ class RequestProxy implements IServerRequest
      *
      * @param StreamInterface $body Body.
      *
-     * @return static
+     * @return IResponse
      *
      * @throws \InvalidArgumentException When the body is not valid.
      */
@@ -629,12 +836,12 @@ class RequestProxy implements IServerRequest
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param string|null $name
+     * @param mixed       $default
      *
      * @return mixed
      */
-    public function get($name = null, $default = null)
+    public function get(?string $name = null, $default = null)
     {
         return $this->getRequestInstance()->get($name, $default);
     }
@@ -643,12 +850,12 @@ class RequestProxy implements IServerRequest
      * 获取 POST 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param string|null $name
+     * @param mixed       $default
      *
      * @return mixed
      */
-    public function post($name = null, $default = null)
+    public function post(?string $name = null, $default = null)
     {
         return $this->getRequestInstance()->post($name, $default);
     }
@@ -660,7 +867,7 @@ class RequestProxy implements IServerRequest
      *
      * @return bool
      */
-    public function hasGet($name)
+    public function hasGet(string $name): bool
     {
         return $this->getRequestInstance()->hasGet($name);
     }
@@ -672,7 +879,7 @@ class RequestProxy implements IServerRequest
      *
      * @return bool
      */
-    public function hasPost($name)
+    public function hasPost(string $name): bool
     {
         return $this->getRequestInstance()->hasPost($name);
     }
@@ -687,7 +894,7 @@ class RequestProxy implements IServerRequest
      *
      * @return mixed
      */
-    public function request($name = null, $default = null)
+    public function request(?string $name = null, $default = null)
     {
         return $this->getRequestInstance()->request($name, $default);
     }
@@ -700,9 +907,81 @@ class RequestProxy implements IServerRequest
      *
      * @return bool
      */
-    public function hasRequest($name)
+    public function hasRequest(string $name): bool
     {
         return $this->getRequestInstance()->hasRequest($name);
+    }
+
+    /**
+     * 设置 GET 数据.
+     *
+     * @param array $get
+     *
+     * @return IServerRequest
+     */
+    public function withGet(array $get): IServerRequest
+    {
+        return $this->getRequestInstance()->withGet($get);
+    }
+
+    /**
+     * 设置 GET 数据.
+     *
+     * @param array $get
+     *
+     * @return IServerRequest
+     */
+    public function setGet(array $get): IServerRequest
+    {
+        return $this->getRequestInstance()->setGet($get);
+    }
+
+    /**
+     * 设置 POST 数据.
+     *
+     * @param array $post
+     *
+     * @return IServerRequest
+     */
+    public function withPost(array $post): IServerRequest
+    {
+        return $this->getRequestInstance()->withPost($post);
+    }
+
+    /**
+     * 设置 POST 数据.
+     *
+     * @param array $post
+     *
+     * @return IServerRequest
+     */
+    public function setPost(array $post): IServerRequest
+    {
+        return $this->getRequestInstance()->setPost($post);
+    }
+
+    /**
+     * 设置 Request 数据.
+     *
+     * @param array $get
+     *
+     * @return IServerRequest
+     */
+    public function withRequest(array $request): IServerRequest
+    {
+        return $this->getRequestInstance()->withRequest($request);
+    }
+
+    /**
+     * 设置 Request 数据.
+     *
+     * @param array $get
+     *
+     * @return IServerRequest
+     */
+    public function setRequest(array $request): IServerRequest
+    {
+        return $this->getRequestInstance()->setRequest($request);
     }
 
     /**

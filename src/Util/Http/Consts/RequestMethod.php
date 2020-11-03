@@ -22,6 +22,7 @@ class RequestMethod
     const OPTIONS = 'OPTIONS';
 
     const TRACE = 'TRACE';
+
     private function __construct()
     {
     }

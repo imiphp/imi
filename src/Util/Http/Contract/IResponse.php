@@ -5,17 +5,28 @@ namespace Imi\Util\Http\Contract;
 use Imi\Util\Http\Consts\StatusCode;
 use Psr\Http\Message\ResponseInterface;
 
-interface IResponse extends ResponseInterface
+interface IResponse extends ResponseInterface, IMessage
 {
     /**
-     * 获取实例对象
+     * Return an instance with the specified status code and, optionally, reason phrase.
      *
-     * @param \Imi\Server\Base      $server
-     * @param \Swoole\Http\Response $response
+     * If no reason phrase is specified, implementations MAY choose to default
+     * to the RFC 7231 or IANA recommended reason phrase for the response's
+     * status code.
+     *
+     * @see http://tools.ietf.org/html/rfc7231#section-6
+     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     *
+     * @param int    $code         The 3-digit integer result code to set.
+     * @param string $reasonPhrase The reason phrase to use with the
+     *                             provided status code; if none is provided, implementations MAY
+     *                             use the defaults as suggested in the HTTP specification.
      *
      * @return static
+     *
+     * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response);
+    public function setStatus(int $code, string $reasonPhrase = ''): self;
 
     /**
      * 设置cookie.
@@ -30,14 +41,51 @@ interface IResponse extends ResponseInterface
      *
      * @return static
      */
-    public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false);
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
+
+    /**
+     * 设置cookie.
+     *
+     * @param string $key
+     * @param string $value
+     * @param int    $expire
+     * @param string $path
+     * @param string $domain
+     * @param bool   $secure
+     * @param bool   $httponly
+     *
+     * @return static
+     */
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
+
+    /**
+     * Retrieve cookies.
+     *
+     * Retrieves cookies sent by the client to the server.
+     *
+     * The data MUST be compatible with the structure of the $_COOKIE
+     * superglobal.
+     *
+     * @return array
+     */
+    public function getCookieParams(): array;
+
+    /**
+     * 获取cookie值
+     *
+     * @param string $name
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getCookie(string $name, $default = null);
 
     /**
      * 获取 Trailer 列表.
      *
      * @return array
      */
-    public function getTrailers();
+    public function getTrailers(): array;
 
     /**
      * Trailer 是否存在.
@@ -46,7 +94,7 @@ interface IResponse extends ResponseInterface
      *
      * @return bool
      */
-    public function hasTrailer($name);
+    public function hasTrailer(string $name): bool;
 
     /**
      * 获取 Trailer 值
@@ -55,33 +103,27 @@ interface IResponse extends ResponseInterface
      *
      * @return string|null
      */
-    public function getTrailer($name);
+    public function getTrailer(string $name): ?string;
 
     /**
-     * 获取 Trailer.
+     * 设置 Trailer.
      *
      * @param string $name
      * @param string $value
      *
      * @return static
      */
-    public function withTrailer($name, $value);
+    public function withTrailer(string $name, string $value): self;
 
     /**
-     * 输出内容，但不发送
+     * 设置 Trailer.
      *
-     * @param string $content
+     * @param string $name
+     * @param string $value
      *
      * @return static
      */
-    public function write(string $content);
-
-    /**
-     * 清空内容.
-     *
-     * @return static
-     */
-    public function clear();
+    public function setTrailer(string $name, string $value): self;
 
     /**
      * 设置服务器端重定向
@@ -92,21 +134,7 @@ interface IResponse extends ResponseInterface
      *
      * @return static
      */
-    public function redirect($url, $status = StatusCode::FOUND);
-
-    /**
-     * 发送头部信息，没有特别需求，无需手动调用.
-     *
-     * @return static
-     */
-    public function sendHeaders();
-
-    /**
-     * 发送所有响应数据.
-     *
-     * @return static
-     */
-    public function send();
+    public function redirect(string $url, int $status = StatusCode::FOUND): self;
 
     /**
      * 发送文件，一般用于文件下载.
@@ -117,26 +145,12 @@ interface IResponse extends ResponseInterface
      *
      * @return static
      */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0);
+    public function sendFile(string $filename, int $offset = 0, int $length = 0): self;
 
     /**
-     * 获取swoole响应对象
+     * 获取发送文件参数.
      *
-     * @return \Swoole\Http\Response
+     * @return array
      */
-    public function getSwooleResponse(): \Swoole\Http\Response;
-
-    /**
-     * 获取对应的服务器.
-     *
-     * @return \Imi\Server\Base
-     */
-    public function getServerInstance(): \Imi\Server\Base;
-
-    /**
-     * 是否已结束请求
-     *
-     * @return bool
-     */
-    public function isEnded();
+    public function getSendFile(): array;
 }

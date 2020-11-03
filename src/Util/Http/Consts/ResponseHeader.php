@@ -44,6 +44,7 @@ class ResponseHeader
     const VIA = 'Via';
     const WARNING = 'Warning';
     const WWW_AUTHENTICATE = 'WWW-Authenticate';
+
     private function __construct()
     {
     }

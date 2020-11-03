@@ -21,7 +21,7 @@ class ResponseProxy implements IResponse
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
      *
-     * @return int Status code.
+     * @return int status code
      */
     public function getStatusCode()
     {
@@ -42,18 +42,42 @@ class ResponseProxy implements IResponse
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @param int    $code         The 3-digit integer result code to set.
-     * @param string $reasonPhrase The reason phrase to use with the
+     * @param int    $code         the 3-digit integer result code to set
+     * @param string $reasonPhrase the reason phrase to use with the
      *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification.
+     *                             use the defaults as suggested in the HTTP specification
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
-     * @throws \InvalidArgumentException For invalid status code arguments.
+     * @throws \InvalidArgumentException for invalid status code arguments
      */
     public function withStatus($code, $reasonPhrase = '')
     {
         return static::getResponseInstance()->withStatus($code, $reasonPhrase);
+    }
+
+    /**
+     * Return an instance with the specified status code and, optionally, reason phrase.
+     *
+     * If no reason phrase is specified, implementations MAY choose to default
+     * to the RFC 7231 or IANA recommended reason phrase for the response's
+     * status code.
+     *
+     * @see http://tools.ietf.org/html/rfc7231#section-6
+     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     *
+     * @param int    $code         the 3-digit integer result code to set
+     * @param string $reasonPhrase the reason phrase to use with the
+     *                             provided status code; if none is provided, implementations MAY
+     *                             use the defaults as suggested in the HTTP specification
+     *
+     * @return IResponse
+     *
+     * @throws \InvalidArgumentException for invalid status code arguments
+     */
+    public function setStatus(int $code, string $reasonPhrase = ''): IResponse
+    {
+        return static::getResponseInstance()->setStatus($code, $reasonPhrase);
     }
 
     /**
@@ -68,7 +92,7 @@ class ResponseProxy implements IResponse
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @return string Reason phrase; must return an empty string if none present.
+     * @return string reason phrase; must return an empty string if none present
      */
     public function getReasonPhrase()
     {
@@ -80,7 +104,7 @@ class ResponseProxy implements IResponse
      *
      * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
      *
-     * @return string HTTP protocol version.
+     * @return string HTTP protocol version
      */
     public function getProtocolVersion()
     {
@@ -99,11 +123,26 @@ class ResponseProxy implements IResponse
      *
      * @param string $version HTTP protocol version
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function withProtocolVersion($version)
     {
         return static::getResponseInstance()->withProtocolVersion($version);
+    }
+
+    /**
+     * Return an instance with the specified HTTP protocol version.
+     *
+     * The version string MUST contain only the HTTP version number (e.g.,
+     * "1.1", "1.0").
+     *
+     * @param string $version HTTP protocol version
+     *
+     * @return IResponse
+     */
+    public function setProtocolVersion(string $version): IResponse
+    {
+        return static::getResponseInstance()->setProtocolVersion($version);
     }
 
     /**
@@ -139,7 +178,7 @@ class ResponseProxy implements IResponse
     /**
      * Checks if a header exists by the given case-insensitive name.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return bool Returns true if any header names match the given header
      *              name using a case-insensitive string comparison. Returns false if
@@ -159,7 +198,7 @@ class ResponseProxy implements IResponse
      * If the header does not appear in the message, this method MUST return an
      * empty array.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return string[] An array of string values as provided for the given
      *                  header. If the header does not appear in the message, this method MUST
@@ -184,7 +223,7 @@ class ResponseProxy implements IResponse
      * If the header does not appear in the message, this method MUST return
      * an empty string.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return string A string of values as provided for the given header
      *                concatenated together using a comma. If the header does not appear in
@@ -205,16 +244,34 @@ class ResponseProxy implements IResponse
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string          $name  Case-insensitive header field name.
-     * @param string|string[] $value Header value(s).
+     * @param string          $name  case-insensitive header field name
+     * @param string|string[] $value header value(s)
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws \InvalidArgumentException for invalid header names or values
      */
     public function withHeader($name, $value)
     {
         return static::getResponseInstance()->withHeader($name, $value);
+    }
+
+    /**
+     * Return an instance with the provided value replacing the specified header.
+     *
+     * While header names are case-insensitive, the casing of the header will
+     * be preserved by this function, and returned from getHeaders().
+     *
+     * @param string          $name  case-insensitive header field name
+     * @param string|string[] $value header value(s)
+     *
+     * @return IResponse
+     *
+     * @throws \InvalidArgumentException for invalid header names or values
+     */
+    public function setHeader(string $name, $value): IResponse
+    {
+        return static::getResponseInstance()->setHeader($name, $value);
     }
 
     /**
@@ -228,16 +285,35 @@ class ResponseProxy implements IResponse
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string          $name  Case-insensitive header field name to add.
-     * @param string|string[] $value Header value(s).
+     * @param string          $name  case-insensitive header field name to add
+     * @param string|string[] $value header value(s)
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws \InvalidArgumentException for invalid header names or values
      */
     public function withAddedHeader($name, $value)
     {
         return static::getResponseInstance()->withAddedHeader($name, $value);
+    }
+
+    /**
+     * Return an instance with the specified header appended with the given value.
+     *
+     * Existing values for the specified header will be maintained. The new
+     * value(s) will be appended to the existing list. If the header did not
+     * exist previously, it will be added.
+     *
+     * @param string          $name  case-insensitive header field name to add
+     * @param string|string[] $value header value(s)
+     *
+     * @return IResponse
+     *
+     * @throws \InvalidArgumentException for invalid header names or values
+     */
+    public function addHeader(string $name, $value): IResponse
+    {
+        return static::getResponseInstance()->addHeader($name, $value);
     }
 
     /**
@@ -249,9 +325,9 @@ class ResponseProxy implements IResponse
      * immutability of the message, and MUST return an instance that removes
      * the named header.
      *
-     * @param string $name Case-insensitive header field name to remove.
+     * @param string $name case-insensitive header field name to remove
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function withoutHeader($name)
     {
@@ -259,9 +335,23 @@ class ResponseProxy implements IResponse
     }
 
     /**
+     * Return an instance without the specified header.
+     *
+     * Header resolution MUST be done without case-sensitivity.
+     *
+     * @param string $name case-insensitive header field name to remove
+     *
+     * @return IResponse
+     */
+    public function removeHeader(string $name): IResponse
+    {
+        return static::getResponseInstance()->removeHeader($name);
+    }
+
+    /**
      * Gets the body of the message.
      *
-     * @return StreamInterface Returns the body as a stream.
+     * @return StreamInterface returns the body as a stream
      */
     public function getBody()
     {
@@ -277,15 +367,31 @@ class ResponseProxy implements IResponse
      * immutability of the message, and MUST return a new instance that has the
      * new body stream.
      *
-     * @param StreamInterface $body Body.
+     * @param StreamInterface $body body
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
-     * @throws \InvalidArgumentException When the body is not valid.
+     * @throws \InvalidArgumentException when the body is not valid
      */
     public function withBody(StreamInterface $body)
     {
         return static::getResponseInstance()->withBody($body);
+    }
+
+    /**
+     * Return an instance with the specified message body.
+     *
+     * The body MUST be a StreamInterface object.
+     *
+     * @param StreamInterface $body body
+     *
+     * @return IResponse
+     *
+     * @throws \InvalidArgumentException when the body is not valid
+     */
+    public function setBody(StreamInterface $body): IResponse
+    {
+        return static::getResponseInstance()->setBody($body);
     }
 
     /**
@@ -294,7 +400,7 @@ class ResponseProxy implements IResponse
      * @param \Imi\Server\Base      $server
      * @param \Swoole\Http\Response $response
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
@@ -312,11 +418,57 @@ class ResponseProxy implements IResponse
      * @param bool   $secure
      * @param bool   $httponly
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
-    public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IResponse
     {
         return static::getResponseInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+    }
+
+    /**
+     * 设置cookie.
+     *
+     * @param string $key
+     * @param string $value
+     * @param int    $expire
+     * @param string $path
+     * @param string $domain
+     * @param bool   $secure
+     * @param bool   $httponly
+     *
+     * @return IResponse
+     */
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IResponse
+    {
+        return static::getResponseInstance()->setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+    }
+
+    /**
+     * Retrieve cookies.
+     *
+     * Retrieves cookies sent by the client to the server.
+     *
+     * The data MUST be compatible with the structure of the $_COOKIE
+     * superglobal.
+     *
+     * @return array
+     */
+    public function getCookieParams(): array
+    {
+        return static::getResponseInstance()->getCookieParams();
+    }
+
+    /**
+     * 获取cookie值
+     *
+     * @param string $name
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getCookie(string $name, $default = null)
+    {
+        return static::getResponseInstance()->getCookie($name, $default);
     }
 
     /**
@@ -324,7 +476,7 @@ class ResponseProxy implements IResponse
      *
      * @return array
      */
-    public function getTrailers()
+    public function getTrailers(): array
     {
         return static::getResponseInstance()->getTrailers();
     }
@@ -336,7 +488,7 @@ class ResponseProxy implements IResponse
      *
      * @return bool
      */
-    public function hasTrailer($name)
+    public function hasTrailer(string $name): bool
     {
         return static::getResponseInstance()->hasTrailer($name);
     }
@@ -348,44 +500,35 @@ class ResponseProxy implements IResponse
      *
      * @return string|null
      */
-    public function getTrailer($name)
+    public function getTrailer(string $name): ?string
     {
         return static::getResponseInstance()->getTrailer($name);
     }
 
     /**
-     * 获取 Trailer.
+     * 设置 Trailer.
      *
      * @param string $name
      * @param string $value
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
-    public function withTrailer($name, $value)
+    public function withTrailer(string $name, string $value): IResponse
     {
         return static::getResponseInstance()->withTrailer($name, $value);
     }
 
     /**
-     * 输出内容，但不发送
+     * 设置 Trailer.
      *
-     * @param string $content
+     * @param string $name
+     * @param string $value
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
-    public function write(string $content)
+    public function setTrailer(string $name, string $value): IResponse
     {
-        return static::getResponseInstance()->write($content);
-    }
-
-    /**
-     * 清空内容.
-     *
-     * @return \Imi\Server\Http\Message\Response
-     */
-    public function clear()
-    {
-        return static::getResponseInstance()->clear();
+        return static::getResponseInstance()->setTrailer($name, $value);
     }
 
     /**
@@ -395,31 +538,11 @@ class ResponseProxy implements IResponse
      * @param string $url
      * @param int    $status
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
-    public function redirect($url, $status = StatusCode::FOUND)
+    public function redirect(string $url, int $status = StatusCode::FOUND): IResponse
     {
         return static::getResponseInstance()->redirect($url, $status);
-    }
-
-    /**
-     * 发送头部信息，没有特别需求，无需手动调用.
-     *
-     * @return \Imi\Server\Http\Message\Response
-     */
-    public function sendHeaders()
-    {
-        return static::getResponseInstance()->sendHeaders();
-    }
-
-    /**
-     * 发送所有响应数据.
-     *
-     * @return \Imi\Server\Http\Message\Response
-     */
-    public function send()
-    {
-        return static::getResponseInstance()->send();
     }
 
     /**
@@ -429,47 +552,27 @@ class ResponseProxy implements IResponse
      * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
      * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0)
+    public function sendFile(string $filename, int $offset = 0, int $length = 0): IResponse
     {
         return static::getResponseInstance()->sendFile($filename, $offset, $length);
     }
 
     /**
-     * 获取swoole响应对象
+     * 获取发送文件参数.
      *
-     * @return \Swoole\Http\Response
+     * @return array
      */
-    public function getSwooleResponse(): \Swoole\Http\Response
+    public function getSendFile(): array
     {
-        return static::getResponseInstance()->getSwooleResponse();
-    }
-
-    /**
-     * 获取对应的服务器.
-     *
-     * @return \Imi\Server\Base
-     */
-    public function getServerInstance(): \Imi\Server\Base
-    {
-        return static::getResponseInstance()->getServerInstance();
-    }
-
-    /**
-     * 是否已结束请求
-     *
-     * @return bool
-     */
-    public function isEnded()
-    {
-        return static::getResponseInstance()->isEnded();
+        return static::getResponseInstance()->getSendFile();
     }
 
     /**
      * 获取当前上下文中的对象实例.
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public static function getResponseInstance(): Response
     {
@@ -479,7 +582,7 @@ class ResponseProxy implements IResponse
     /**
      * 设置当前上下文中的对象实例.
      *
-     * @param \Imi\Server\Http\Message\Response $response
+     * @param IResponse $response
      *
      * @return void
      */
