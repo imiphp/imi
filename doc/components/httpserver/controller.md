@@ -105,6 +105,10 @@ request 数据包含 get/post/cookie
 
 当`$name`为`null`时，返回全部
 
+### 获取 JSON/XML 传参数据
+
+`public function getParsedBody()`
+
 #### 是否存在 GET 参数
 
 `public function hasGet($name)`

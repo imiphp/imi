@@ -8,6 +8,8 @@
 
 **[error] Uncaught RuntimeException: Tool /xxx/imi/vendor/yurunsoft/imi/bin/imi does not exists!**
 
+**Could not find package imiphp/project-http with stability stable**
+
 解决方案：
 
 1. 如果你是 Windows 用户，请不要使用 Windows 中的 Composer！
