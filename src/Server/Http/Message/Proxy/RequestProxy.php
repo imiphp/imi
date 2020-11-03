@@ -237,7 +237,7 @@ class RequestProxy implements IServerRequest
      */
     public function getAttribute($name, $default = null)
     {
-        return $this->getRequestInstance()->withAttribute($name, $default);
+        return $this->getRequestInstance()->getAttribute($name, $default);
     }
 
     /**
