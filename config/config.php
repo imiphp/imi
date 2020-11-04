@@ -25,6 +25,7 @@ return [
         'Imi\Facade',
         'Imi\Cron',
         'Imi\Util\Co',
+        'Imi\RequestContextProxy',
     ],
     'atomics' => [
         'session',
