@@ -25,6 +25,8 @@ class Php implements IEngine
         ob_start();
         $closure($fileName, $data);
 
-        return $response->write(ob_get_clean());
+        $response->getBody()->write(ob_get_clean());
+
+        return $response;
     }
 }

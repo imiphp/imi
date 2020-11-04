@@ -16,6 +16,8 @@ use Imi\Server\Http\Listener\Http2BeforeClose;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\ServerManage;
+use Imi\Swoole\Http\Message\SwooleRequest;
+use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
 
@@ -168,8 +170,8 @@ class Server extends Base
                         'swooleResponse' => $swooleResponse,
                     ]);
                     $this->trigger('request', [
-                        'request'   => Request::getInstance($this, $swooleRequest),
-                        'response'  => Response::getInstance($this, $swooleResponse),
+                        'request'  => new SwooleRequest($this, $swooleRequest),
+                        'response' => new SwooleResponse($this, $swooleResponse),
                     ], $this, RequestEventParam::class);
                 }
                 catch (\Throwable $ex)

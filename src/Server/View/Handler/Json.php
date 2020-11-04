@@ -41,7 +41,9 @@ class Json implements IHandler
 
     public function handle($data, array $options, Response $response): Response
     {
-        return $response->withHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
-                        ->write(json_encode($data, $this->options, $this->depth));
+        $response->setHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
+                 ->getBody()
+                 ->write(json_encode($data, $this->options, $this->depth));
+        return $response;
     }
 }

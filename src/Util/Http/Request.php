@@ -5,7 +5,6 @@ namespace Imi\Util\Http;
 use Imi\Util\Http\Consts\RequestMethod;
 use Imi\Util\Http\Contract\IRequest;
 use Imi\Util\Uri;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
 class Request extends AbstractMessage implements IRequest
@@ -18,43 +17,25 @@ class Request extends AbstractMessage implements IRequest
     protected Uri $uri;
 
     /**
-     * 请求目标.
-     *
-     * @var mixed
-     */
-    protected $requestTarget;
-
-    /**
      * 请求方法.
      *
      * @var string
      */
-    protected string $method;
+    protected string $method = RequestMethod::GET;
 
     /**
-     * 构造方法.
+     * uri 是否初始化.
      *
-     * @param string|\Imi\Util\Uri   $url
-     * @param array                  $headers
-     * @param string|StreamInterface $body
-     * @param string                 $method
-     * @param string                 $version
+     * @var bool
      */
-    public function __construct($uri = '', array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1')
-    {
-        parent::__construct($body);
-        if (\is_string($uri))
-        {
-            $this->uri = new Uri($uri);
-        }
-        elseif ($uri instanceof Uri)
-        {
-            $this->uri = $uri;
-        }
-        $this->setHeaders($headers);
-        $this->method = strtoupper($method);
-        $this->protocolVersion = $version;
-    }
+    protected bool $uriInited = false;
+
+    /**
+     * method 是否初始化.
+     *
+     * @var bool
+     */
+    protected bool $methodInited = false;
 
     /**
      * Retrieves the message's request target.
@@ -74,7 +55,7 @@ class Request extends AbstractMessage implements IRequest
      */
     public function getRequestTarget()
     {
-        return $this->requestTarget ?? (string) $this->uri;
+        return (string) $this->uri;
     }
 
     /**
@@ -99,7 +80,7 @@ class Request extends AbstractMessage implements IRequest
     public function withRequestTarget($requestTarget)
     {
         $self = clone $this;
-        $self->requestTarget = $requestTarget;
+        $self->withUri(new Uri($requestTarget));
 
         return $self;
     }
@@ -121,9 +102,18 @@ class Request extends AbstractMessage implements IRequest
      */
     public function setRequestTarget($requestTarget): self
     {
-        $this->requestTarget = $requestTarget;
+        $this->setUri(new Uri($requestTarget));
 
         return $this;
+    }
+
+    /**
+     * 初始化 method.
+     *
+     * @return void
+     */
+    protected function initMethod()
+    {
     }
 
     /**
@@ -133,6 +123,12 @@ class Request extends AbstractMessage implements IRequest
      */
     public function getMethod()
     {
+        if (!$this->methodInited)
+        {
+            $this->initMethod();
+            $this->methodInited = true;
+        }
+
         return $this->method;
     }
 
@@ -157,6 +153,7 @@ class Request extends AbstractMessage implements IRequest
     {
         $self = clone $this;
         $self->method = $method;
+        $self->methodInited = true;
 
         return $self;
     }
@@ -177,8 +174,18 @@ class Request extends AbstractMessage implements IRequest
     public function setMethod(string $method): self
     {
         $this->method = $method;
+        $this->methodInited = true;
 
         return $this;
+    }
+
+    /**
+     * 初始化 uri.
+     *
+     * @return void
+     */
+    protected function initUri()
+    {
     }
 
     /**
@@ -193,6 +200,12 @@ class Request extends AbstractMessage implements IRequest
      */
     public function getUri()
     {
+        if (!$this->uriInited)
+        {
+            $this->initUri();
+            $this->uriInited = true;
+        }
+
         return $this->uri;
     }
 
@@ -265,11 +278,17 @@ class Request extends AbstractMessage implements IRequest
      */
     public function setUri(UriInterface $uri, bool $preserveHost = false): self
     {
+        if (!$this->uriInited)
+        {
+            $this->initUri();
+            $this->uriInited = true;
+        }
         $this->uri = $uri;
         if (!$preserveHost)
         {
             $this->headers = [];
             $this->headerNames = [];
+            $this->headersInited = true;
         }
 
         return $this;

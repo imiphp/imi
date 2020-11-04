@@ -13,9 +13,9 @@ use Imi\Server\Event\Param\MessageEventParam;
 use Imi\Server\Event\Param\RequestEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Http\Listener\BeforeRequest;
-use Imi\Server\Http\Message\Request;
-use Imi\Server\Http\Message\Response;
 use Imi\ServerManage;
+use Imi\Swoole\Http\Message\SwooleRequest;
+use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
 
@@ -117,8 +117,8 @@ class Server extends Base
                         'swooleResponse' => $swooleResponse,
                     ]);
                     $this->trigger('handShake', [
-                        'request'   => new Request($this, $swooleRequest),
-                        'response'  => new Response($this, $swooleResponse),
+                        'request'   => new SwooleRequest($this, $swooleRequest),
+                        'response'  => new SwooleResponse($this, $swooleResponse),
                     ], $this, HandShakeEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -180,8 +180,8 @@ class Server extends Base
                         'swooleResponse' => $swooleResponse,
                     ]);
                     $this->trigger('request', [
-                        'request'   => Request::getInstance($this, $swooleRequest),
-                        'response'  => Response::getInstance($this, $swooleResponse),
+                        'request'  => new SwooleRequest($this, $swooleRequest),
+                        'response' => new SwooleResponse($this, $swooleResponse),
                     ], $this, RequestEventParam::class);
                 }
                 catch (\Throwable $ex)

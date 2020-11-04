@@ -21,6 +21,8 @@ class IndexController extends SingletonHttpController
      */
     public function index()
     {
-        return RequestContext::get('response')->write('imi');
+        $response = RequestContext::get('response');
+        $response->getBody()->write('imi');
+        return $response;
     }
 }

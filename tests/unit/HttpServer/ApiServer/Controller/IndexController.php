@@ -13,6 +13,7 @@ use Imi\Server\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
+use Imi\Util\Stream\MemoryStream;
 
 /**
  * @Controller(prefix="/", singleton=true)
@@ -34,7 +35,10 @@ class IndexController extends SingletonHttpController
      */
     public function index()
     {
-        return RequestContext::get('response')->write('imi');
+        $response = RequestContext::get('response');
+        $response->getBody()->write('imi');
+
+        return $response;
     }
 
     /**
@@ -347,7 +351,10 @@ class IndexController extends SingletonHttpController
      */
     public function singletonResponse1()
     {
-        return $this->response->write('imi niubi-1');
+        $response = $this->response->getResponseInstance();
+        $response->getBody()->write('imi niubi-1');
+
+        return $response;
     }
 
     /**
@@ -359,7 +366,7 @@ class IndexController extends SingletonHttpController
      */
     public function singletonResponse2()
     {
-        $this->response->setResponseInstance($this->response->write('imi niubi-2'));
+        $this->response->setResponseInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
 
     /**

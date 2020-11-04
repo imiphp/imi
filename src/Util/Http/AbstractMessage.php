@@ -3,7 +3,6 @@
 namespace Imi\Util\Http;
 
 use Imi\Util\Http\Contract\IMessage;
-use Imi\Util\Stream\MemoryStream;
 use Psr\Http\Message\StreamInterface;
 
 abstract class AbstractMessage implements IMessage
@@ -38,18 +37,33 @@ abstract class AbstractMessage implements IMessage
     protected StreamInterface $body;
 
     /**
-     * @param string|StreamInterface $body
+     * 协议版本是否初始化.
+     *
+     * @var bool
      */
-    public function __construct($body)
+    protected bool $protocolVersionInited = false;
+
+    /**
+     * headers 是否初始化.
+     *
+     * @var bool
+     */
+    protected bool $headersInited = false;
+
+    /**
+     * body 是否初始化.
+     *
+     * @var bool
+     */
+    protected bool $bodyInited = false;
+
+    /**
+     * 初始化协议版本.
+     *
+     * @return void
+     */
+    protected function initProtocolVersion()
     {
-        if (\is_string($body))
-        {
-            $this->body = new MemoryStream($body);
-        }
-        elseif ($body instanceof \Psr\Http\Message\StreamInterface)
-        {
-            $this->body = $body;
-        }
     }
 
     /**
@@ -61,6 +75,12 @@ abstract class AbstractMessage implements IMessage
      */
     public function getProtocolVersion()
     {
+        if (!$this->protocolVersionInited)
+        {
+            $this->initProtocolVersion();
+            $this->protocolVersionInited = true;
+        }
+
         return $this->protocolVersion;
     }
 
@@ -82,6 +102,7 @@ abstract class AbstractMessage implements IMessage
     {
         $self = clone $this;
         $self->protocolVersion = $version;
+        $self->protocolVersionInited = true;
 
         return $self;
     }
@@ -99,8 +120,18 @@ abstract class AbstractMessage implements IMessage
     public function setProtocolVersion(string $version): self
     {
         $this->protocolVersion = $version;
+        $this->protocolVersionInited = true;
 
         return $this;
+    }
+
+    /**
+     * 初始化 headers.
+     *
+     * @return void
+     */
+    protected function initHeaders()
+    {
     }
 
     /**
@@ -130,6 +161,12 @@ abstract class AbstractMessage implements IMessage
      */
     public function getHeaders()
     {
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
+
         return $this->headers;
     }
 
@@ -144,6 +181,11 @@ abstract class AbstractMessage implements IMessage
      */
     public function hasHeader($name)
     {
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
         $lowerName = strtolower($name);
         $headerNames = $this->headerNames;
         if (isset($headerNames[$lowerName]))
@@ -171,6 +213,11 @@ abstract class AbstractMessage implements IMessage
      */
     public function getHeader($name)
     {
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
         $lowerName = strtolower($name);
         $headerNames = $this->headerNames;
         if (isset($headerNames[$lowerName]))
@@ -210,6 +257,11 @@ abstract class AbstractMessage implements IMessage
      */
     public function getHeaderLine($name)
     {
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
         $lowerName = strtolower($name);
         $headerNames = $this->headerNames;
         if (isset($headerNames[$lowerName]))
@@ -245,8 +297,13 @@ abstract class AbstractMessage implements IMessage
     public function withHeader($name, $value)
     {
         $self = clone $this;
+        if (!$self->headersInited)
+        {
+            $self->initHeaders();
+            $self->headersInited = true;
+        }
 
-        return $this->setHeaders([$name => $value], $self);
+        return $this->mergeHeaders([$name => $value], $self);
     }
 
     /**
@@ -264,7 +321,13 @@ abstract class AbstractMessage implements IMessage
      */
     public function setHeader(string $name, $value): self
     {
-        return $this->setHeaders([$name => $value]);
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
+
+        return $this->mergeHeaders([$name => $value]);
     }
 
     /**
@@ -288,6 +351,11 @@ abstract class AbstractMessage implements IMessage
     public function withAddedHeader($name, $value)
     {
         $self = clone $this;
+        if (!$self->headersInited)
+        {
+            $self->initHeaders();
+            $self->headersInited = true;
+        }
 
         return $self->addHeader($name, $value);
     }
@@ -308,6 +376,11 @@ abstract class AbstractMessage implements IMessage
      */
     public function addHeader(string $name, $value): self
     {
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
         $lowerName = strtolower($name);
         $headerNames = &$this->headerNames;
         if (isset($headerNames[$lowerName]))
@@ -357,6 +430,11 @@ abstract class AbstractMessage implements IMessage
     public function withoutHeader($name)
     {
         $self = clone $this;
+        if (!$self->headersInited)
+        {
+            $self->initHeaders();
+            $self->headersInited = true;
+        }
 
         return $self->removeHeader($name);
     }
@@ -372,6 +450,11 @@ abstract class AbstractMessage implements IMessage
      */
     public function removeHeader(string $name): self
     {
+        if (!$this->headersInited)
+        {
+            $this->initHeaders();
+            $this->headersInited = true;
+        }
         $lowerName = strtolower($name);
         if (isset($this->headerNames[$lowerName]))
         {
@@ -386,12 +469,27 @@ abstract class AbstractMessage implements IMessage
     }
 
     /**
+     * 初始化 body.
+     *
+     * @return void
+     */
+    protected function initBody()
+    {
+    }
+
+    /**
      * Gets the body of the message.
      *
      * @return StreamInterface returns the body as a stream
      */
     public function getBody()
     {
+        if (!$this->bodyInited)
+        {
+            $this->initBody();
+            $this->bodyInited = true;
+        }
+
         return $this->body;
     }
 
@@ -414,6 +512,7 @@ abstract class AbstractMessage implements IMessage
     {
         $self = clone $this;
         $self->body = $body;
+        $self->bodyInited = true;
 
         return $self;
     }
@@ -432,6 +531,7 @@ abstract class AbstractMessage implements IMessage
     public function setBody(StreamInterface $body): self
     {
         $this->body = $body;
+        $this->bodyInited = true;
 
         return $this;
     }
@@ -443,7 +543,7 @@ abstract class AbstractMessage implements IMessage
      *
      * @return static
      */
-    protected function setHeaders(array $headers, self $object = null): self
+    protected function mergeHeaders(array $headers, self $object = null): self
     {
         if (null === $object)
         {

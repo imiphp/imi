@@ -6,7 +6,6 @@ use Imi\Config;
 use Imi\Server\Http\Message\UploadedFile;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\RequestHeader;
-use Imi\Util\Http\Consts\RequestMethod;
 use Imi\Util\Http\Contract\IServerRequest;
 use Imi\Util\Uri;
 
@@ -59,7 +58,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      *
      * @var array|object|null
      */
-    protected $parsedBody;
+    protected $parsedBody = null;
 
     /**
      * 属性数组.
@@ -69,25 +68,33 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     protected array $attributes = [];
 
     /**
-     * @param string|\Imi\Util\Uri   $uri
-     * @param array                  $headers
-     * @param string|StreamInterface $body
-     * @param string                 $method
-     * @param string                 $version
-     * @param array                  $server
-     * @param array                  $cookies
-     * @param array                  $get
-     * @param array                  $post
-     * @param array                  $files
+     * server 是否初始化.
+     *
+     * @var bool
      */
-    public function __construct($uri = '', array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1', array $server = [], array $cookies = [], array $get = [], array $post = [], array $files = [])
+    protected bool $serverInited = false;
+
+    /**
+     * 请求参数是否初始化.
+     *
+     * @var bool
+     */
+    protected bool $requestParamsInited = false;
+
+    /**
+     * 上传文件是否初始化.
+     *
+     * @var bool
+     */
+    protected bool $uploadedFilesInited = false;
+
+    /**
+     * 初始化 server.
+     *
+     * @return void
+     */
+    protected function initServer()
     {
-        $this->server = $server;
-        $this->cookies = $cookies;
-        $this->get = $get;
-        $this->post = $post;
-        parent::__construct($uri, $headers, $body, $method, $version);
-        $this->setUploadedFiles($files);
     }
 
     /**
@@ -101,6 +108,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function getServerParams(): array
     {
+        if (!$this->serverInited)
+        {
+            $this->initServer();
+            $this->serverInited = true;
+        }
+
         return $this->server;
     }
 
@@ -114,7 +127,22 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function getServerParam($name, $default = null)
     {
+        if (!$this->serverInited)
+        {
+            $this->initServer();
+            $this->serverInited = true;
+        }
+
         return $this->server[$name] ?? $default;
+    }
+
+    /**
+     * 初始化请求参数.
+     *
+     * @return void
+     */
+    protected function initRequestParams()
+    {
     }
 
     /**
@@ -133,6 +161,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function setCookieParams(array $cookies): self
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $this->cookies = $cookies;
 
         return $this;
@@ -150,6 +183,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function getCookieParams()
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
+
         return $this->cookies;
     }
 
@@ -174,6 +213,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     public function withCookieParams(array $cookies)
     {
         $self = clone $this;
+        if (!$self->requestParamsInited)
+        {
+            $self->initRequestParams();
+            $self->requestParamsInited = true;
+        }
         $self->cookies = $cookies;
 
         return $self;
@@ -189,6 +233,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function getCookie(string $name, $default = null)
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
+
         return $this->cookies[$name] ?? $default;
     }
 
@@ -213,6 +263,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function setQueryParams(array $query): self
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $this->get = $query;
 
         return $this;
@@ -232,6 +287,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function getQueryParams()
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
+
         return $this->get;
     }
 
@@ -261,9 +322,23 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     public function withQueryParams(array $query)
     {
         $self = clone $this;
+        if (!$self->requestParamsInited)
+        {
+            $self->initRequestParams();
+            $self->requestParamsInited = true;
+        }
         $self->get = $query;
 
         return $self;
+    }
+
+    /**
+     * 初始化上传文件.
+     *
+     * @return void
+     */
+    protected function initUploadedFiles()
+    {
     }
 
     /**
@@ -280,6 +355,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function getUploadedFiles()
     {
+        if (!$this->uploadedFilesInited)
+        {
+            $this->initUploadedFiles();
+            $this->uploadedFilesInited = true;
+        }
+
         return $this->files;
     }
 
@@ -300,7 +381,29 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     {
         $self = clone $this;
 
-        return $this->setUploadedFiles($uploadedFiles);
+        return $self->setUploadedFiles($uploadedFiles);
+    }
+
+    /**
+     * Create a new instance with the specified uploaded files.
+     *
+     * @param array $uploadedFiles an array tree of UploadedFileInterface instances
+     *
+     * @return static
+     *
+     * @throws \InvalidArgumentException if an invalid structure is provided
+     */
+    public function setUploadedFiles(array $uploadedFiles): self
+    {
+        $objectFiles = &$this->files;
+        $objectFiles = [];
+        foreach ($uploadedFiles as $key => $file)
+        {
+            $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+        }
+        $this->uploadedFilesInited = true;
+
+        return $this;
     }
 
     /**
@@ -323,7 +426,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
         $parsedBody = &$this->parsedBody;
         if (null === $parsedBody)
         {
-            $body = $this->body;
+            if (!$this->bodyInited)
+            {
+                $this->initBody();
+                $this->bodyInited = true;
+            }
             $contentType = strtolower($this->getHeaderLine(RequestHeader::CONTENT_TYPE));
             // post
             if ('POST' === $this->method && \in_array($contentType, [
@@ -339,7 +446,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 MediaType::APPLICATION_JSON_UTF8,
             ]))
             {
-                $parsedBody = json_decode($body, !Config::get('@currentServer.jsonBodyIsObject', false));
+                $parsedBody = json_decode($this->body, !Config::get('@currentServer.jsonBodyIsObject', false));
             }
             // xml
             elseif (\in_array($contentType, [
@@ -351,12 +458,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             ]))
             {
                 $parsedBody = new \DOMDocument();
-                $parsedBody->loadXML($body);
+                $parsedBody->loadXML($this->body);
             }
             // 其它
             else
             {
-                $parsedBody = (object) (string) $body;
+                $parsedBody = (object) (string) $this->body;
             }
         }
 
@@ -575,27 +682,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     }
 
     /**
-     * Create a new instance with the specified uploaded files.
-     *
-     * @param array $uploadedFiles an array tree of UploadedFileInterface instances
-     *
-     * @return static
-     *
-     * @throws \InvalidArgumentException if an invalid structure is provided
-     */
-    public function setUploadedFiles(array $uploadedFiles): self
-    {
-        $objectFiles = &$this->files;
-        $objectFiles = [];
-        foreach ($uploadedFiles as $key => $file)
-        {
-            $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
-        }
-
-        return $this;
-    }
-
-    /**
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
      *
@@ -606,6 +692,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function get(?string $name = null, $default = null)
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         if (null === $name)
         {
             return $this->get;
@@ -627,6 +718,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function post(?string $name = null, $default = null)
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         if (null === $name)
         {
             return $this->post;
@@ -646,6 +742,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function hasGet(string $name): bool
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
+
         return isset($this->get[$name]);
     }
 
@@ -658,6 +760,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function hasPost(string $name): bool
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
+
         return isset($this->post[$name]);
     }
 
@@ -673,6 +781,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function request(?string $name = null, $default = null)
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $request = &$this->request;
         if (null === $request)
         {
@@ -698,6 +811,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function hasRequest(string $name): bool
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $request = &$this->request;
         if (null === $request)
         {
@@ -717,6 +835,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     public function withGet(array $get): self
     {
         $self = clone $this;
+        if (!$self->requestParamsInited)
+        {
+            $self->initRequestParams();
+            $self->requestParamsInited = true;
+        }
         $self->get = $get;
 
         return $self;
@@ -731,6 +854,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function setGet(array $get): self
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $this->get = $get;
 
         return $this;
@@ -746,6 +874,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     public function withPost(array $post): self
     {
         $self = clone $this;
+        if (!$self->requestParamsInited)
+        {
+            $self->initRequestParams();
+            $self->requestParamsInited = true;
+        }
         $self->post = $post;
 
         return $self;
@@ -760,6 +893,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function setPost(array $post): self
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $this->post = $post;
 
         return $this;
@@ -775,6 +913,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     public function withRequest(array $request): self
     {
         $self = clone $this;
+        if (!$self->requestParamsInited)
+        {
+            $self->initRequestParams();
+            $self->requestParamsInited = true;
+        }
         $self->request = $request;
 
         return $self;
@@ -789,6 +932,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      */
     public function setRequest(array $request): self
     {
+        if (!$this->requestParamsInited)
+        {
+            $this->initRequestParams();
+            $this->requestParamsInited = true;
+        }
         $this->request = $request;
 
         return $this;

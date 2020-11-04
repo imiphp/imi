@@ -48,6 +48,8 @@ class IndexController extends HttpController
      */
     public function http()
     {
-        return $this->response->write('http');
+        $response = $this->response;
+        $response->getBody()->write('http');
+        return $response;
     }
 }

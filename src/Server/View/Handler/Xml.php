@@ -19,15 +19,17 @@ class Xml implements IHandler
         $response = $response->withHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
         if ($data instanceof \DOMDocument)
         {
-            return $response->write($data->saveXML());
+            $response->getBody()->write($data->saveXML());
         }
         elseif ($data instanceof \SimpleXMLElement)
         {
-            return $response->write($data->asXML());
+            $response->getBody()->write($data->asXML());
         }
         else
         {
             throw new \RuntimeException('Unsupport xml object type: ' . \gettype($data));
         }
+
+        return $response;
     }
 }

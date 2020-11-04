@@ -4,6 +4,7 @@ namespace Imi\Util\Http;
 
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\Contract\IResponse;
+use Imi\Util\Stream\MemoryStream;
 
 class Response extends AbstractMessage implements IResponse
 {
@@ -44,9 +45,9 @@ class Response extends AbstractMessage implements IResponse
 
     public function __construct()
     {
-        parent::__construct('');
         $this->statusCode = $statusCode = StatusCode::OK;
         $this->reasonPhrase = StatusCode::getReasonPhrase($statusCode);
+        $this->body = new MemoryStream();
     }
 
     /**
@@ -302,45 +303,5 @@ class Response extends AbstractMessage implements IResponse
         $this->trailers[$name] = $value;
 
         return $this;
-    }
-
-    /**
-     * 设置服务器端重定向
-     * 默认状态码为302.
-     *
-     * @param string $url
-     * @param int    $status
-     *
-     * @return static
-     */
-    public function redirect(string $url, int $status = StatusCode::FOUND): self
-    {
-        return $this->setStatus($status)->setHeader('location', $url);
-    }
-
-    /**
-     * 发送文件，一般用于文件下载.
-     *
-     * @param string $filename 要发送的文件名称，文件不存在或没有访问权限sendfile会失败
-     * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
-     * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
-     *
-     * @return static
-     */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0): self
-    {
-        $this->sendFile = [$filename, $offset, $length];
-
-        return $this;
-    }
-
-    /**
-     * 获取发送文件参数.
-     *
-     * @return array
-     */
-    public function getSendFile(): array
-    {
-        return $this->sendFile;
     }
 }

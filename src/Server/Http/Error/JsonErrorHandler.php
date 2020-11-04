@@ -50,10 +50,12 @@ class JsonErrorHandler implements IErrorHandler
                 'message' => 'error',
             ];
         }
-        RequestContext::get('response')
-        ->withAddedHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
-        ->write(json_encode($data))
-        ->send();
+        /** @var \Imi\Server\Http\Message\Response $response */
+        $response = RequestContext::get('response');
+        $response->addHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
+                 ->getBody()
+                 ->write(json_encode($data));
+        $response->send();
 
         return $this->cancelThrow;
     }
