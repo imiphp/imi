@@ -27,7 +27,7 @@ class FacadeTest extends BaseTest
         {
             $this->assertTrue(true);
         }
-        FacadeA2::__bindFacade('FacadeA');
-        $this->assertEquals(3, FacadeA::add(1, 2));
+        FacadeA2::__bindFacade(FacadeA2::class, 'FacadeA');
+        $this->assertEquals(3, FacadeA2::add(1, 2));
     }
 }
