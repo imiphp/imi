@@ -25,6 +25,7 @@ return [
         'Imi\Test\Component\Annotation',
         'Imi\Test\Component\Partial',
         'Imi\Test\Component\Tool',
+        'Imi\Test\Component\RequestContextProxy',
     ],
     'ignoreNamespace'   => [
         'Imi\Test\Component\Annotation\A\*',
