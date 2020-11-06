@@ -5,6 +5,8 @@ namespace Imi\Server\Http\Middleware;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Http\Error\IHttpNotFoundHandler;
+use Imi\Server\Http\Route\HttpRoute;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -20,14 +22,14 @@ class RouteMiddleware implements MiddlewareInterface
      *
      * @var \Imi\Server\Http\Route\HttpRoute
      */
-    protected $route;
+    protected HttpRoute $route;
 
     /**
      * @ServerInject("HttpNotFoundHandler")
      *
      * @var \Imi\Server\Http\Error\IHttpNotFoundHandler
      */
-    protected $notFoundHandler;
+    protected IHttpNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.

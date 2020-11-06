@@ -20,7 +20,7 @@ class ActionWrapMiddleware implements MiddlewareInterface
      *
      * @var string
      */
-    protected $actionMiddleware = ActionMiddleware::class;
+    protected string $actionMiddleware = ActionMiddleware::class;
 
     /**
      * 处理方法.
@@ -33,6 +33,7 @@ class ActionWrapMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 获取路由结果
+        /** @var \Imi\Server\Http\Route\RouteResult $result */
         $result = RequestContext::get('routeResult');
         if (null === $result)
         {

@@ -24,9 +24,9 @@ class RequestContextProxy extends Base
     /**
      * 代理类名.
      *
-     * @var string
+     * @var string|null
      */
-    public string $class;
+    public ?string $class;
 
     /**
      * 请求上下文中的名称.

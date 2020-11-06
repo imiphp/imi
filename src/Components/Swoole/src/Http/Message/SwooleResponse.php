@@ -12,14 +12,14 @@ class SwooleResponse extends Response
      *
      * @var \Swoole\Http\Response
      */
-    protected $swooleResponse;
+    protected \Swoole\Http\Response $swooleResponse;
 
     /**
      * 对应的服务器.
      *
      * @var \Imi\Server\Base
      */
-    protected $serverInstance;
+    protected \Imi\Server\Base $serverInstance;
 
     public function __construct(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
@@ -45,9 +45,12 @@ class SwooleResponse extends Response
             }
         }
         // header
-        foreach ($this->headers as $name => $headers)
+        if ($this->headers)
         {
-            $swooleResponse->header($name, $this->getHeaderLine($name));
+            foreach ($this->headers as $name => $headers)
+            {
+                $swooleResponse->header($name, $this->getHeaderLine($name));
+            }
         }
         // trailer
         if ($this->trailers)

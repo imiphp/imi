@@ -3,6 +3,7 @@
 namespace Imi\Server\Http;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 
 /**
@@ -15,14 +16,14 @@ class Dispatcher
      *
      * @var string[]
      */
-    protected $middlewares = [];
+    protected array $middlewares = [];
 
     /**
      * 最终使用的中间件列表.
      *
      * @var array
      */
-    private $finalMiddlewares;
+    private array $finalMiddlewares;
 
     /**
      * 调度.
@@ -31,7 +32,7 @@ class Dispatcher
      *
      * @return \Imi\Server\Http\Message\Response
      */
-    public function dispatch($request): Response
+    public function dispatch(Request $request): Response
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
         $response = $requestHandler->handle($request);
@@ -50,14 +51,13 @@ class Dispatcher
      */
     protected function getMiddlewares(): array
     {
-        $finalMiddlewares = &$this->finalMiddlewares;
-        if (null === $finalMiddlewares)
+        if (!isset($this->finalMiddlewares))
         {
-            return $finalMiddlewares = array_merge($this->middlewares, [
+            return $this->finalMiddlewares = array_merge($this->middlewares, [
                 \Imi\Server\Http\Middleware\ActionWrapMiddleware::class,
             ]);
         }
 
-        return $finalMiddlewares;
+        return $this->finalMiddlewares;
     }
 }

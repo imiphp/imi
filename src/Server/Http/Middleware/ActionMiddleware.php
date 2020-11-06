@@ -8,9 +8,12 @@ use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Controller\SingletonHttpController;
+use Imi\Server\Http\Message\Proxy\RequestProxy;
+use Imi\Server\Http\Message\Proxy\ResponseProxy;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;
+use Imi\Server\View\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -26,28 +29,28 @@ class ActionMiddleware implements MiddlewareInterface
      *
      * @var \Imi\Server\View\View
      */
-    protected $view;
+    protected View $view;
 
     /**
      * @ServerInject("HttpRequestProxy")
      *
      * @var \Imi\Server\Http\Message\Proxy\RequestProxy
      */
-    protected $requestProxy;
+    protected RequestProxy $requestProxy;
 
     /**
      * @ServerInject("HttpResponseProxy")
      *
      * @var \Imi\Server\Http\Message\Proxy\ResponseProxy
      */
-    protected $responseProxy;
+    protected ResponseProxy $responseProxy;
 
     /**
      * 动作方法参数缓存.
      *
      * @var \ReflectionParameter[]
      */
-    private $actionMethodParams = [];
+    private array $actionMethodParams = [];
 
     /**
      * 处理方法.
@@ -152,7 +155,7 @@ class ActionMiddleware implements MiddlewareInterface
      *
      * @return array
      */
-    private function prepareActionParams(Request $request, RouteResult $routeResult)
+    private function prepareActionParams(Request $request, RouteResult $routeResult): array
     {
         $callable = $routeResult->callable;
         // 根据动作回调类型获取反射

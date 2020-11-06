@@ -3,6 +3,7 @@
 namespace Imi\Server\Http\Route;
 
 use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Route\Annotation\WebSocket\WSConfig;
 use Imi\Server\View\Annotation\View;
 
 class RouteItem
@@ -12,7 +13,7 @@ class RouteItem
      *
      * @var \Imi\Server\Route\Annotation\Route
      */
-    public $annotation;
+    public Route $annotation;
 
     /**
      * 回调.
@@ -26,35 +27,35 @@ class RouteItem
      *
      * @var array
      */
-    public $middlewares = [];
+    public array $middlewares = [];
 
     /**
      * WebSocket 配置.
      *
-     * @var array
+     * @var WSConfig
      */
-    public $wsConfig = [];
+    public ?WSConfig $wsConfig = null;
 
     /**
      * 其它配置项.
      *
      * @var array
      */
-    public $options;
+    public array $options;
 
     /**
      * 是否为单例控制器.
      *
      * @var bool
      */
-    public $singleton = false;
+    public bool $singleton = false;
 
     /**
      * 视图注解.
      *
      * @var \Imi\Server\View\Annotation\View
      */
-    public $view;
+    public View $view;
 
     public function __construct(Route $annotation, $callable, View $view, array $options = [])
     {

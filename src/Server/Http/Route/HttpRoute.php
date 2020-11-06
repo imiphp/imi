@@ -19,49 +19,49 @@ class HttpRoute
      *
      * @var \Imi\Server\Http\Route\RouteItem[][]
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * url规则缓存.
      *
      * @var array
      */
-    private $rulesCache = [];
+    private array $rulesCache = [];
 
     /**
      * 检查URL是否匹配的缓存.
      *
      * @var \Imi\Server\Http\Route\UrlCheckResult[][]
      */
-    private $urlCheckCache = [];
+    private array $urlCheckCache = [];
 
     /**
      * url匹配缓存数量.
      *
      * @var int
      */
-    private $urlCheckCacheCount = 0;
+    private int $urlCheckCacheCount = 0;
 
     /**
      * URL是否匹配的缓存数量.
      *
      * @var int
      */
-    protected $urlCacheNumber = 1024;
+    protected int $urlCacheNumber = 1024;
 
     /**
      * 忽略 URL 规则大小写.
      *
      * @var bool
      */
-    protected $ignoreCase = false;
+    protected bool $ignoreCase = false;
 
     /**
      * 智能尾部斜杠，无论是否存在都匹配.
      *
      * @var bool
      */
-    protected $autoEndSlash = false;
+    protected bool $autoEndSlash = false;
 
     /**
      * 增加路由规则.
@@ -92,7 +92,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
+    public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, array $options = [])
     {
         $routeItem = new RouteItem($annotation, $callable, ViewParser::getInstance()->getByCallable($callable), $options);
         if (isset($options['middlewares']))
@@ -127,7 +127,7 @@ class HttpRoute
      *
      * @return bool
      */
-    public function existsRule(RouteAnnotation $rule)
+    public function existsRule(RouteAnnotation $rule): bool
     {
         return isset($this->rules[$rule->url][spl_object_hash($rule)]);
     }
@@ -137,7 +137,7 @@ class HttpRoute
      *
      * @return array
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -149,7 +149,7 @@ class HttpRoute
      *
      * @return \Imi\Server\Http\Route\RouteResult|null
      */
-    public function parse(Request $request)
+    public function parse(Request $request): ?RouteResult
     {
         $pathInfo = $request->getUri()->getPath();
         $thisRules = &$this->rules;
@@ -208,11 +208,11 @@ class HttpRoute
      * 检查验证url是否匹配.
      *
      * @param string $urlRule
-     * @param array  $params  url路由中的自定义参数
+     * @param string $pathInfo
      *
      * @return \Imi\Server\Http\Route\UrlCheckResult
      */
-    public function checkUrl(string $urlRule, string $pathInfo)
+    public function checkUrl(string $urlRule, string $pathInfo): UrlCheckResult
     {
         $urlCheckCache = &$this->urlCheckCache;
         if (!isset($urlCheckCache[$pathInfo][$urlRule]))
@@ -271,13 +271,13 @@ class HttpRoute
     /**
      * 处理规则为正则.
      *
-     * @param string $rule
-     * @param array  $fields    规则中包含的自定义参数
-     * @param bool   $isRegular 是否为正则
+     * @param string     $rule
+     * @param array|null $fields    规则中包含的自定义参数
+     * @param bool|null  $isRegular 是否为正则
      *
      * @return string
      */
-    private function parseRule($rule, &$fields, &$isRegular)
+    private function parseRule(string $rule, ?array &$fields, ?bool &$isRegular): string
     {
         $rulesCache = &$this->rulesCache;
         if (isset($rulesCache[$rule]))
@@ -346,7 +346,7 @@ class HttpRoute
      *
      * @return bool
      */
-    private function checkMethod(Request $request, $method)
+    private function checkMethod(Request $request, $method): bool
     {
         if (null === $method)
         {
@@ -365,12 +365,13 @@ class HttpRoute
     /**
      * 检查验证域名是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $domain
+     * @param Request    $request
+     * @param mixed      $domain
+     * @param array|null $params
      *
      * @return bool
      */
-    private function checkDomain(Request $request, $domain, &$params)
+    private function checkDomain(Request $request, $domain, ?array &$params): bool
     {
         $params = [];
         if (null === $domain)
@@ -416,7 +417,7 @@ class HttpRoute
      *
      * @return bool
      */
-    private function checkParamsGet(Request $request, $params)
+    private function checkParamsGet(Request $request, $params): bool
     {
         if (null === $params)
         {
@@ -436,7 +437,7 @@ class HttpRoute
      *
      * @return bool
      */
-    private function checkParamsPost(Request $request, $params)
+    private function checkParamsPost(Request $request, $params): bool
     {
         if (null === $params)
         {
@@ -456,7 +457,7 @@ class HttpRoute
      *
      * @return bool
      */
-    private function checkHeader(Request $request, $header)
+    private function checkHeader(Request $request, $header): bool
     {
         if (null === $header)
         {
@@ -476,7 +477,7 @@ class HttpRoute
      *
      * @return bool
      */
-    private function checkRequestMime(Request $request, $requestMime)
+    private function checkRequestMime(Request $request, $requestMime): bool
     {
         if (null === $requestMime)
         {
@@ -491,7 +492,7 @@ class HttpRoute
      *
      * @return int
      */
-    public function getUrlCacheNumber()
+    public function getUrlCacheNumber(): int
     {
         return $this->urlCacheNumber;
     }

@@ -12,21 +12,21 @@ trait TEvent
      *
      * @var \Imi\Event\EventItem[][]
      */
-    private $events = [];
+    private array $events = [];
 
     /**
      * 事件队列，按执行顺序排.
      *
      * @var \SplPriorityQueue[]
      */
-    private $eventQueue = [];
+    private array $eventQueue = [];
 
     /**
      * 事件更改记录.
      *
      * @var array
      */
-    private $eventChangeRecords = [];
+    private array $eventChangeRecords = [];
 
     /**
      * 事件监听.
@@ -37,7 +37,7 @@ trait TEvent
      *
      * @return void
      */
-    public function on($name, $callback, $priority = 0)
+    public function on($name, $callback, int $priority = 0)
     {
         foreach ((array) $name as $eventName)
         {
@@ -71,7 +71,7 @@ trait TEvent
      *
      * @return void
      */
-    public function one($name, $callback, $priority = 0)
+    public function one($name, $callback, int $priority = 0)
     {
         foreach ((array) $name as $eventName)
         {
@@ -143,14 +143,14 @@ trait TEvent
      *
      * @return void
      */
-    public function trigger($name, $data = [], $target = null, $paramClass = EventParam::class)
+    public function trigger($name, array $data = [], $target = null, string $paramClass = EventParam::class)
     {
         $eventQueue = &$this->eventQueue;
         // 获取回调列表
         if (!isset($eventQueue[$name]))
         {
             $classEventdata = ClassEventParser::getInstance()->getData();
-            if (empty($classEventdata) && empty($this->events[$name]))
+            if (!$classEventdata && empty($this->events[$name]))
             {
                 return;
             }
@@ -229,7 +229,7 @@ trait TEvent
      *
      * @return void
      */
-    private function rebuildEventQueue($name)
+    private function rebuildEventQueue(string $name)
     {
         $this->eventQueue[$name] = $queue = new \SplPriorityQueue();
         foreach ($this->events[$name] ?? [] as $item)

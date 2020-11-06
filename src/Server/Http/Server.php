@@ -13,8 +13,6 @@ use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Http\Listener\BeforeRequest;
 use Imi\Server\Http\Listener\Http2AfterClose;
 use Imi\Server\Http\Listener\Http2BeforeClose;
-use Imi\Server\Http\Message\Request;
-use Imi\Server\Http\Message\Response;
 use Imi\ServerManage;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
@@ -33,14 +31,14 @@ class Server extends Base
      *
      * @var bool
      */
-    private $https;
+    private bool $https;
 
     /**
      * 是否为 http2 服务
      *
      * @var bool
      */
-    private $http2;
+    private bool $http2;
 
     /**
      * 创建 swoole 服务器对象
@@ -118,9 +116,18 @@ class Server extends Base
             $this->swooleServer->handle('/', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    $request = new SwooleRequest($this, $swooleRequest);
+                    $response = new SwooleResponse($this, $swooleResponse);
+                    RequestContext::muiltiSet([
+                        'server'         => $this,
+                        'swooleRequest'  => $swooleRequest,
+                        'swooleResponse' => $swooleResponse,
+                        'request'        => $request,
+                        'response'       => $response,
+                    ]);
                     $this->trigger('request', [
-                        'request'   => Request::getInstance($this, $swooleRequest),
-                        'response'  => Response::getInstance($this, $swooleResponse),
+                        'request'   => $request,
+                        'response'  => $response,
                     ], $this, RequestEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -164,19 +171,27 @@ class Server extends Base
             $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    $request = new SwooleRequest($this, $swooleRequest);
+                    $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::muiltiSet([
                         'server'         => $this,
                         'swooleRequest'  => $swooleRequest,
                         'swooleResponse' => $swooleResponse,
+                        'request'        => $request,
+                        'response'       => $response,
                     ]);
                     $this->trigger('request', [
-                        'request'  => new SwooleRequest($this, $swooleRequest),
-                        'response' => new SwooleResponse($this, $swooleResponse),
+                        'request'  => $request,
+                        'response' => $response,
                     ], $this, RequestEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    App::getBean('ErrorLog')->onException($ex);
+                    App::getBean('ErrorLog')->onException($th);
+                    if (true !== $this->getBean('HttpErrorHandler')->handle($th))
+                    {
+                        throw $th;
+                    }
                 }
             });
         }

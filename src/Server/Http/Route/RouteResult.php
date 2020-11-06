@@ -11,21 +11,21 @@ class RouteResult
      *
      * @var \Imi\Server\Http\Route\RouteItem
      */
-    public $routeItem;
+    public RouteItem $routeItem;
 
     /**
      * URL 检测结果.
      *
      * @var \Imi\Server\Http\Route\UrlCheckResult
      */
-    public $urlCheckResult;
+    public UrlCheckResult $urlCheckResult;
 
     /**
      * 参数.
      *
      * @var array
      */
-    public $params;
+    public array $params;
 
     /**
      * 回调.
@@ -34,7 +34,7 @@ class RouteResult
      */
     public $callable;
 
-    public function __construct(RouteItem $routeItem, UrlCheckResult $urlCheckResult, $params)
+    public function __construct(RouteItem $routeItem, UrlCheckResult $urlCheckResult, array $params)
     {
         $this->routeItem = $routeItem;
         $this->urlCheckResult = $urlCheckResult;

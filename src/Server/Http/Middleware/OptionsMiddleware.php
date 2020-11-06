@@ -30,28 +30,28 @@ class OptionsMiddleware implements MiddlewareInterface
      *
      * @var string
      */
-    protected $allowHeaders = 'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie';
+    protected string $allowHeaders = 'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie';
 
     /**
      * 允许的跨域请求头.
      *
      * @var string
      */
-    protected $exposeHeaders = 'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie';
+    protected string $exposeHeaders = 'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie';
 
     /**
      * 允许的请求方法.
      *
      * @var string
      */
-    protected $allowMethods = 'GET, POST, PATCH, PUT, DELETE';
+    protected string $allowMethods = 'GET, POST, PATCH, PUT, DELETE';
 
     /**
      * 是否允许跨域 Cookie.
      *
      * @var string
      */
-    protected $allowCredentials = 'true';
+    protected string $allowCredentials = 'true';
 
     /**
      * 当请求为 OPTIONS 时，是否中止后续中间件和路由逻辑.
@@ -60,7 +60,7 @@ class OptionsMiddleware implements MiddlewareInterface
      *
      * @var bool
      */
-    protected $optionsBreak = false;
+    protected bool $optionsBreak = false;
 
     /**
      * 处理方法.

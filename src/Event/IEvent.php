@@ -13,7 +13,7 @@ interface IEvent
      *
      * @return void
      */
-    public function on($name, $callback, $priority = 0);
+    public function on($name, $callback, int $priority = 0);
 
     /**
      * 监听事件，仅触发一次
@@ -24,7 +24,7 @@ interface IEvent
      *
      * @return void
      */
-    public function one($name, $callback, $priority = 0);
+    public function one($name, $callback, int $priority = 0);
 
     /**
      * 取消事件监听.
@@ -46,5 +46,5 @@ interface IEvent
      *
      * @return void
      */
-    public function trigger($name, $data = [], $target = null, $paramClass = EventParam::class);
+    public function trigger($name, array $data = [], $target = null, string $paramClass = EventParam::class);
 }

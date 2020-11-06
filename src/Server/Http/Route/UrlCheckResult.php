@@ -9,23 +9,23 @@ class UrlCheckResult
      *
      * @var bool
      */
-    public $result;
+    public bool $result;
 
     /**
      * 参数.
      *
      * @var array
      */
-    public $params;
+    public array $params;
 
     /**
      * 结果忽略大小写.
      *
      * @var bool
      */
-    public $resultIgnoreCase;
+    public bool $resultIgnoreCase;
 
-    public function __construct($result, $params = [], $resultIgnoreCase = false)
+    public function __construct(bool $result, array $params = [], bool $resultIgnoreCase = false)
     {
         $this->result = $result;
         $this->params = $params;

@@ -21,36 +21,19 @@ class BeforeRequest implements IRequestEventListener
      */
     public function handle(RequestEventParam $e)
     {
-        try
+        $request = $e->request;
+        $response = $e->response;
+        $context = RequestContext::getContext();
+        /** @var \Imi\Server\Http\Server $server */
+        $server = $context['server'];
+        if ($server->isHttp2())
         {
-            $request = $e->request;
-            $response = $e->response;
-            // 上下文创建
-            RequestContext::muiltiSet([
-                'request'   => $request,
-                'response'  => $response,
-            ]);
-            $context = RequestContext::getContext();
-            $server = $context['server'];
-            if ($server->isHttp2())
-            {
-                RequestContext::set('fd', $context['swooleRequest']->fd);
-                ConnectContext::create();
-            }
-            // 中间件
-            $dispatcher = $server->getBean('HttpDispatcher');
-            $dispatcher->dispatch($request, $response);
+            $context['fd'] = $context['swooleRequest']->fd;
+            ConnectContext::create();
         }
-        catch (\Throwable $th)
-        {
-            if (!$server)
-            {
-                throw $th;
-            }
-            if (true !== $server->getBean('HttpErrorHandler')->handle($th))
-            {
-                throw $th;
-            }
-        }
+        // 中间件
+        /** @var \Imi\Server\Http\Dispatcher $dispatcher */
+        $dispatcher = $server->getBean('HttpDispatcher');
+        $dispatcher->dispatch($request, $response);
     }
 }

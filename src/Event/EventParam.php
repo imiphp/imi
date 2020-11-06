@@ -9,12 +9,12 @@ class EventParam
      *
      * @var string
      */
-    protected $__eventName;
+    protected string $__eventName;
 
     /**
      * 触发该事件的对象
      *
-     * @var object
+     * @var mixed
      */
     protected $__target;
 
@@ -23,16 +23,16 @@ class EventParam
      *
      * @var array
      */
-    protected $__data = [];
+    protected array $__data = [];
 
     /**
      * 阻止事件继续传播.
      *
      * @var bool
      */
-    protected $__stopPropagation = false;
+    protected bool $__stopPropagation = false;
 
-    public function __construct($eventName, $data = [], $target = null)
+    public function __construct(string $eventName, array $data = [], $target = null)
     {
         $this->__eventName = $eventName;
         $this->__target = $target;
@@ -48,7 +48,7 @@ class EventParam
      *
      * @return string
      */
-    public function getEventName()
+    public function getEventName(): string
     {
         return $this->__eventName;
     }
@@ -56,7 +56,7 @@ class EventParam
     /**
      * 获取触发该事件的对象
      *
-     * @return object
+     * @return mixed
      */
     public function getTarget()
     {
@@ -68,7 +68,7 @@ class EventParam
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->__data;
     }
@@ -78,7 +78,7 @@ class EventParam
      *
      * @param bool $isStop 是否阻止事件继续传播
      */
-    public function stopPropagation($isStop = true)
+    public function stopPropagation(bool $isStop = true)
     {
         $this->__stopPropagation = $isStop;
     }
@@ -88,7 +88,7 @@ class EventParam
      *
      * @return bool
      */
-    public function isPropagationStopped()
+    public function isPropagationStopped(): bool
     {
         return $this->__stopPropagation;
     }

@@ -25,14 +25,14 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
      *
      * @var int
      */
-    protected $maxExecuteTime = 30000;
+    protected int $maxExecuteTime = 30000;
 
     /**
      * 超时处理器.
      *
      * @var string
      */
-    protected $handler = \Imi\Server\Http\Error\ExecuteTimeoutHandler::class;
+    protected string $handler = \Imi\Server\Http\Error\ExecuteTimeoutHandler::class;
 
     /**
      * 处理方法.

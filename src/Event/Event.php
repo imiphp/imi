@@ -19,13 +19,13 @@ class Event
     /**
      * 事件监听.
      *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
-     * @param int    $priority 优先级，越大越先执行
+     * @param string|string[] $name     事件名称
+     * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param int             $priority 优先级，越大越先执行
      *
      * @return void
      */
-    public static function on($name, $callback, $priority = 0)
+    public static function on($name, $callback, int $priority = 0)
     {
         static::getInstance()->__on($name, $callback, $priority);
     }
@@ -33,13 +33,13 @@ class Event
     /**
      * 监听事件，仅触发一次
      *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
-     * @param int    $priority 优先级，越大越先执行
+     * @param string|string[] $name     事件名称
+     * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param int             $priority 优先级，越大越先执行
      *
      * @return void
      */
-    public static function one($name, $callback, $priority = 0)
+    public static function one($name, $callback, int $priority = 0)
     {
         static::getInstance()->__one($name, $callback, $priority);
     }
@@ -47,12 +47,12 @@ class Event
     /**
      * 取消事件监听.
      *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param string|string[] $name     事件名称
+     * @param mixed|null      $callback 回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
      *
      * @return void
      */
-    public static function off($name, $callback)
+    public static function off($name, $callback = null)
     {
         static::getInstance()->__off($name, $callback);
     }
@@ -67,7 +67,7 @@ class Event
      *
      * @return void
      */
-    public static function trigger($name, $data = [], $target = null, $paramClass = EventParam::class)
+    public static function trigger($name, array $data = [], $target = null, string $paramClass = EventParam::class)
     {
         static::getInstance()->__trigger($name, $data, $target, $paramClass);
     }

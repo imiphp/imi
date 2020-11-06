@@ -14,14 +14,14 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @var string[]
      */
-    protected $middlewares = [];
+    protected array $middlewares = [];
 
     /**
      * 当前执行第几个.
      *
      * @var int
      */
-    protected $index = 0;
+    protected int $index = 0;
 
     /**
      * 构造方法.
@@ -35,6 +35,10 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Handle the request and return a response.
+     *
+     * @param \Imi\Server\Http\Message\Request $request
+     *
+     * @return \Imi\Server\Http\Message\Response
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -65,7 +69,7 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @return static
      */
-    protected function next()
+    protected function next(): self
     {
         ++$this->index;
 
@@ -77,7 +81,7 @@ class RequestHandler implements RequestHandlerInterface
      *
      * @return bool
      */
-    public function isLast()
+    public function isLast(): bool
     {
         return !isset($this->middlewares[$this->index]);
     }

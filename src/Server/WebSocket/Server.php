@@ -111,14 +111,18 @@ class Server extends Base
             $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    $request = new SwooleRequest($this, $swooleRequest);
+                    $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::muiltiSet([
                         'server'         => $this,
                         'swooleRequest'  => $swooleRequest,
                         'swooleResponse' => $swooleResponse,
+                        'request'        => $request,
+                        'response'       => $response,
                     ]);
                     $this->trigger('handShake', [
-                        'request'   => new SwooleRequest($this, $swooleRequest),
-                        'response'  => new SwooleResponse($this, $swooleResponse),
+                        'request'   => $request,
+                        'response'  => $response,
                     ], $this, HandShakeEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -174,14 +178,18 @@ class Server extends Base
             $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
+                    $request = new SwooleRequest($this, $swooleRequest);
+                    $response = new SwooleResponse($this, $swooleResponse);
                     RequestContext::muiltiSet([
                         'server'         => $this,
                         'swooleRequest'  => $swooleRequest,
                         'swooleResponse' => $swooleResponse,
+                        'request'        => $request,
+                        'response'       => $response,
                     ]);
                     $this->trigger('request', [
-                        'request'  => new SwooleRequest($this, $swooleRequest),
-                        'response' => new SwooleResponse($this, $swooleResponse),
+                        'request'  => $request,
+                        'response' => $response,
                     ], $this, RequestEventParam::class);
                 }
                 catch (\Throwable $ex)
