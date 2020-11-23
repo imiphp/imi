@@ -16,8 +16,8 @@
 | ------ | ------ | ------ |
 | model | `string` | 模型类名 |
 | propertyName | `string` | 模型属性名 |
-| annotation | `OneToOne|OneToMany|ManyToMany|PolymorphicOneToOne|PolymorphicOneToMany|PolymorphicManyToMany|PolymorphicToOne|PolymorphicToMany` | 注解，命名空间前缀`\Imi\Model\Annotation\Relation\` |
-| struct | `OneToOne|OneToMany|ManyToMany|PolymorphicOneToOne|PolymorphicOneToMany|PolymorphicManyToMany` | 用于获取一些信息的结构，命名空间前缀`\Imi\Model\Relation\Struct\` |
+| annotation | `OneToOne OneToMany ManyToMany PolymorphicOneToOne PolymorphicOneToMany PolymorphicManyToMany PolymorphicToOne PolymorphicToMany` | 注解，命名空间前缀`\Imi\Model\Annotation\Relation\` |
+| struct | `OneToOne OneToMany ManyToMany PolymorphicOneToOne PolymorphicOneToMany PolymorphicManyToMany` | 用于获取一些信息的结构，命名空间前缀`\Imi\Model\Relation\Struct\` |
 
 ### 更新事件
 
@@ -51,6 +51,6 @@
 | ------ | ------ | ------ |
 | model | `string` | 模型类名 |
 | propertyName | `string` | 模型属性名 |
-| annotation | `OneToOne|OneToMany|ManyToMany|PolymorphicOneToOne|PolymorphicOneToMany|PolymorphicManyToMany|PolymorphicToOne|PolymorphicToMany` | 注解，命名空间前缀`\Imi\Model\Annotation\Relation\` |
-| struct | `OneToOne|OneToMany|ManyToMany|PolymorphicOneToOne|PolymorphicOneToMany|PolymorphicManyToMany` | 用于获取一些信息的结构，命名空间前缀`\Imi\Model\Relation\Struct\`。`annotation`为`PolymorphicToOne`时不会有该参数。 |
+| annotation | `OneToOne OneToMany ManyToMany PolymorphicOneToOne PolymorphicOneToMany PolymorphicManyToMany PolymorphicToOne PolymorphicToMany` | 注解，命名空间前缀`\Imi\Model\Annotation\Relation\` |
+| struct | `OneToOne OneToMany ManyToMany PolymorphicOneToOne PolymorphicOneToMany PolymorphicManyToMany` | 用于获取一些信息的结构，命名空间前缀`\Imi\Model\Relation\Struct\`。`annotation`为`PolymorphicToOne`时不会有该参数。 |
 | query | `\Imi\Db\Query\Interfaces\IQuery` | 查询构建器对象，为前置事件时必传 |

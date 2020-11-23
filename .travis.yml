@@ -4,33 +4,33 @@ os: linux
 
 jobs:
   include:
-    - env: PHP_VERSION=7.4 SWOOLE_VERSION="v4.5.5" INSTALL_REDIS_EXT=true DISABLE_XDEBUG=false
+    - env: PHP_VERSION=7.4 SWOOLE_VERSION="v4.5.8" INSTALL_REDIS_EXT=true DISABLE_XDEBUG=false
       os: osx
       osx_image: xcode12
     - php: "7.1"
       language: php
-      env: SWOOLE_VERSION="v4.5.5"
+      env: SWOOLE_VERSION="v4.5.8"
     - php: "7.2"
       language: php
-      env: SWOOLE_VERSION="v4.5.5"
+      env: SWOOLE_VERSION="v4.5.8"
     - php: "7.3"
       language: php
-      env: SWOOLE_VERSION="v4.5.5"
+      env: SWOOLE_VERSION="v4.5.8"
     - php: "7.4"
       language: php
-      env: SWOOLE_VERSION="v4.5.5"
+      env: SWOOLE_VERSION="v4.5.8"
     - php: "7.1"
       language: php
-      env: SWOOLE_VERSION="v4.4.21"
+      env: SWOOLE_VERSION="v4.4.22"
     - php: "7.2"
       language: php
-      env: SWOOLE_VERSION="v4.4.21"
+      env: SWOOLE_VERSION="v4.4.22"
     - php: "7.3"
       language: php
-      env: SWOOLE_VERSION="v4.4.21"
+      env: SWOOLE_VERSION="v4.4.22"
     - php: "7.4"
       language: php
-      env: SWOOLE_VERSION="v4.4.21"
+      env: SWOOLE_VERSION="v4.4.22"
     - php: "7.1"
       language: php
       env: SWOOLE_VERSION="v4.3.6"
