@@ -12,6 +12,7 @@ use Imi\Process\BaseProcess;
 use Imi\Process\Annotation\Process;
 
 /**
+ * 定义进程tp1
  * @Process("tp1")
  */
 class TestProcess extends BaseProcess
@@ -155,11 +156,11 @@ public static function runWithManager($name, $args = [], $redirectStdinStdout = 
 [
     'AutoRunProcessManager' =>  [
         'processes' =>  [
-            // 进程类名或Bean名称
+            // 方式一：最简单用法，@Process 注解定义的进程名称
             'XXXProcess',
-            // 指定别名 A 为指定进程 XXXProcess，并指定参数
+            // 方式二：支持指定参数
             'A' =>  [
-                'process'   =>  'XXXProcess',
+                'process'   =>  'XXXProcess', // @Process 注解定义的进程名称
                 'args'      =>  ['id' => 123],
             ],
         ],
