@@ -4,6 +4,7 @@ namespace Imi\Model\Relation;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
+use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoInsert;
 use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Relation\Struct\ManyToMany;
@@ -88,10 +89,24 @@ abstract class Insert
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $modelField = $model->$propertyName;
         $modelField->$rightField = $model->$leftField;
         $modelField->insert();
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -111,6 +126,14 @@ abstract class Insert
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
+        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         foreach ($model->$propertyName as $index => $row)
         {
@@ -122,6 +145,12 @@ abstract class Insert
             $row[$rightField] = $model->$leftField;
             $row->insert();
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -141,6 +170,14 @@ abstract class Insert
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
+        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         foreach ($model->$propertyName as $index => $row)
         {
@@ -152,6 +189,12 @@ abstract class Insert
             $row[$middleLeftField] = $model->$leftField;
             $row->insert();
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -170,11 +213,25 @@ abstract class Insert
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $modelField = $model->$propertyName;
         $modelField->$rightField = $model->$leftField;
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->insert();
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -194,6 +251,14 @@ abstract class Insert
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
+        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         foreach ($model->$propertyName as $index => $row)
         {
@@ -206,6 +271,12 @@ abstract class Insert
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -225,6 +296,14 @@ abstract class Insert
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
+        $eventName = 'IMI.MODEL.RELATION.INSERT.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         foreach ($model->$propertyName as $index => $row)
         {
@@ -237,5 +316,11 @@ abstract class Insert
             $row[$annotation->type] = $annotation->typeValue;
             $row->insert();
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 }

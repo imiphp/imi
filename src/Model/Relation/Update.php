@@ -5,6 +5,7 @@ namespace Imi\Model\Relation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Annotation\Relation\AutoUpdate;
 use Imi\Model\Annotation\Relation\RelationBase;
@@ -90,10 +91,24 @@ abstract class Update
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $modelField = $model->$propertyName;
         $modelField->$rightField = $model->$leftField;
         $modelField->update();
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -130,6 +145,14 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $modelLeftValue = $model->$leftField;
         if ($orphanRemoval)
         {
@@ -173,6 +196,12 @@ abstract class Update
                 $row->save();
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -210,6 +239,14 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $modelLeftValue = $model->$leftField;
         if ($orphanRemoval)
         {
@@ -232,7 +269,7 @@ abstract class Update
             if ($deleteIDs)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs) {
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $modelLeftValue) {
                     $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
                 });
             }
@@ -246,6 +283,12 @@ abstract class Update
                 $row->save();
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -324,11 +367,25 @@ abstract class Update
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $modelField = $model->$propertyName;
         $modelField->$rightField = $model->$leftField;
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->update();
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -365,6 +422,14 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $modelLeftValue = $model->$leftField;
         if ($orphanRemoval)
         {
@@ -409,6 +474,12 @@ abstract class Update
                 $row->save();
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -446,6 +517,14 @@ abstract class Update
             $orphanRemoval = false;
         }
 
+        $eventName = 'IMI.MODEL.RELATION.UPDATE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $modelLeftValue = $model->$leftField;
         if ($orphanRemoval)
         {
@@ -469,7 +548,7 @@ abstract class Update
             if ($deleteIDs)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation) {
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation, $modelLeftValue) {
                     $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
                 });
             }
@@ -484,5 +563,11 @@ abstract class Update
                 $row->save();
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 }
