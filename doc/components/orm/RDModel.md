@@ -16,6 +16,8 @@
 
 `@DDL` 定义表结构的 SQL 语句
 
+> 建议使用模型生成工具：<https://doc.imiphp.com/dev/generate/model.html>
+
 具体定义看下面代码：
 
 ```php
@@ -334,9 +336,14 @@ $query = TestModel::dbQuery();
 ```php
 // where id = 1
 $testModel = TestModel::find(1);
-// 复合主键 where a = 1 and a = 'abc'
+// 复合主键 where a = 1 and b = 'abc'
 $testModel = TestModel::find(1, 'abc');
 echo $testModel->getId();
+// 指定多个字段条件 where a = 1 and b = 'abc'
+$testModel = TestModel::find([
+    'a' => 1,
+    'b' => 'abc',
+]);
 ```
 
 ### 批量查询记录
