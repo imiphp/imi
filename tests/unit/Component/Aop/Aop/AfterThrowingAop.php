@@ -7,7 +7,6 @@ use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Bean\BeanFactory;
-use Imi\Bean\BeanProxy;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -30,7 +29,6 @@ class AfterThrowingAop
         Assert::assertEquals([], $joinPoint->getArgs());
         Assert::assertEquals('testCancelThrow', $joinPoint->getMethod());
         Assert::assertEquals(\Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::class, BeanFactory::getObjectClass($joinPoint->getTarget()));
-        Assert::assertEquals(BeanProxy::class, \get_class($joinPoint->getThis()));
         Assert::assertEquals('afterThrowing', $joinPoint->getType());
 
         $throwable = $joinPoint->getThrowable();
@@ -54,7 +52,6 @@ class AfterThrowingAop
         Assert::assertEquals([], $joinPoint->getArgs());
         Assert::assertEquals('testNotCancelThrow', $joinPoint->getMethod());
         Assert::assertEquals(\Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::class, BeanFactory::getObjectClass($joinPoint->getTarget()));
-        Assert::assertEquals(BeanProxy::class, \get_class($joinPoint->getThis()));
         Assert::assertEquals('afterThrowing', $joinPoint->getType());
 
         $throwable = $joinPoint->getThrowable();

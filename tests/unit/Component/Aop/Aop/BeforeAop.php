@@ -7,7 +7,6 @@ use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\JoinPoint;
 use Imi\Bean\BeanFactory;
-use Imi\Bean\BeanProxy;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -30,7 +29,6 @@ class BeforeAop
         Assert::assertEquals([1], $joinPoint->getArgs());
         Assert::assertEquals('test', $joinPoint->getMethod());
         Assert::assertEquals(\Imi\Test\Component\Aop\Classes\TestBeforeClass::class, BeanFactory::getObjectClass($joinPoint->getTarget()));
-        Assert::assertEquals(BeanProxy::class, \get_class($joinPoint->getThis()));
         Assert::assertEquals('before', $joinPoint->getType());
         $joinPoint->setArgs([2]);
     }

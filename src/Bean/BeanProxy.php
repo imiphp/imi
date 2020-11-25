@@ -16,7 +16,6 @@ use Imi\Bean\Parser\BeanParser;
 use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Text;
-use Imi\Worker;
 
 class BeanProxy
 {
@@ -35,92 +34,147 @@ class BeanProxy
     private static array $aspectCache = [];
 
     /**
-     * 工作进程中的切面缓存.
-     *
-     * @var array
-     */
-    private static array $workerAspectCache = [];
-
-    /**
-     * 当前代理类是否属于worker进程.
-     *
-     * @var bool
-     */
-    private bool $isWorker;
-
-    /**
-     * 类名.
-     *
-     * @var string
-     */
-    private string $className;
-
-    public function __construct($object)
-    {
-        $this->isWorker = null !== Worker::getWorkerID();
-        $this->init($object);
-    }
-
-    /**
      * 魔术方法.
      *
      * @param object   $object
+     * @param string   $className
      * @param string   $method
-     * @param callable $method
+     * @param callable $callback
      * @param array    $args
      *
      * @return mixed
      */
-    public function call($object, string $method, callable $callback, array &$args)
+    public static function call(object $object, string $className, string $method, callable $callback, array &$args)
     {
         try
         {
             // 先尝试环绕
-            if ($this->parseAround($object, $method, $args, $result, $callback))
-            {
-                return $result;
-            }
-            else
+            $aroundAspectDoList = [];
+            self::doAspect($className, $method, 'around', function ($aspectClassName, $methodName) use (&$aroundAspectDoList) {
+                $aroundAspectDoList[] = [new $aspectClassName(), $methodName];
+            });
+            if (!isset($aroundAspectDoList[0]))
             {
                 // 正常请求
-                return $this->callOrigin($object, $method, $args, $callback);
+                return self::callOrigin($object, $className, $method, $args, $callback);
             }
+            $aroundAspectDoList = array_reverse($aroundAspectDoList);
+
+            $nextJoinPoint = null;
+            $nextAroundAspectDo = null;
+
+            foreach ($aroundAspectDoList as $aroundAspectDo)
+            {
+                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, (null === $nextJoinPoint ? function ($inArgs = null) use ($object, $className, $method, &$args, $callback) {
+                    if (null !== $inArgs)
+                    {
+                        $args = $inArgs;
+                    }
+
+                    return self::callOrigin($object, $className, $method, $args, $callback);
+                } : function ($inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
+                    if (null !== $inArgs)
+                    {
+                        $args = $inArgs;
+                    }
+
+                    return $nextAroundAspectDo($nextJoinPoint);
+                }));
+                $nextJoinPoint = $joinPoint;
+                $nextAroundAspectDo = $aroundAspectDo;
+            }
+
+            return $nextAroundAspectDo($nextJoinPoint);
         }
         catch (\Throwable $throwable)
         {
             // 异常
-            $this->parseAfterThrowing($object, $method, $args, $throwable);
+            $isCancelThrow = false;
+            self::doAspect($className, $method, 'afterThrowing', function ($aspectClassName, $methodName, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
+                // 验证异常是否捕获
+                if (isset($annotation->allow[0]) || isset($annotation->deny[0]))
+                {
+                    $throwableClassName = \get_class($throwable);
+                    if (isset($annotation->allow[0]))
+                    {
+                        $allowResult = false;
+                        foreach ($annotation->allow as $rule)
+                        {
+                            $allowResult = Imi::checkRuleMatch($rule, $throwableClassName);
+                            if ($allowResult)
+                            {
+                                break;
+                            }
+                        }
+                        if (!$allowResult)
+                        {
+                            return;
+                        }
+                    }
+                    $denyResult = false;
+                    foreach ($annotation->deny as $rule)
+                    {
+                        $denyResult = Imi::checkRuleMatch($rule, $throwableClassName);
+                        if ($denyResult)
+                        {
+                            return;
+                        }
+                    }
+                }
+                // 处理
+                $joinPoint = new AfterThrowingJoinPoint('afterThrowing', $method, $args, $object, $throwable);
+                $aspectObject = new $aspectClassName();
+                $aspectObject->$methodName($joinPoint);
+                if (!$isCancelThrow && $joinPoint->isCancelThrow())
+                {
+                    $isCancelThrow = true;
+                }
+            });
+            // 不取消依旧抛出
+            if (!$isCancelThrow)
+            {
+                throw $throwable;
+            }
         }
     }
 
     /**
      * 初始化.
      *
-     * @param object $object
+     * @param string $className
      *
      * @return void
      */
-    private function init($object): void
+    public static function init(string $className)
     {
-        $this->className = $className = BeanFactory::getObjectClass($object);
-        $refClass = ReflectionContainer::getClassReflection($className);
         // 每个类只需处理一次
         $staticAspects = &static::$aspects;
-        if (!isset($staticAspects[$className]))
+        if (isset($staticAspects[$className]))
         {
-            $staticAspects[$className] = $aspect = new \SplPriorityQueue();
-            $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
-            foreach ($aspects as $item)
+            return;
+        }
+        $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
+        if (!$aspects)
+        {
+            return;
+        }
+        $refClass = ReflectionContainer::getClassReflection($className);
+        $staticAspects[$className] = $aspect = new \SplPriorityQueue();
+        foreach ($aspects as $item)
+        {
+            $itemClass = $item->getClass();
+            $itemPriority = $item->getAnnotation()->priority;
+            // 判断是否属于当前类方法的切面
+            $pointCutsSet = AnnotationManager::getMethodsAnnotations($itemClass, PointCut::class);
+            if (!$pointCutsSet)
             {
-                $itemClass = $item->getClass();
-                $itemPriority = $item->getAnnotation()->priority;
-                // 判断是否属于当前类方法的切面
-                $pointCutsSet = AnnotationManager::getMethodsAnnotations($itemClass, PointCut::class);
-                foreach ($pointCutsSet as $methodName => $pointCuts)
+                continue;
+            }
+            foreach ($pointCutsSet as $methodName => $pointCuts)
+            {
+                foreach ($pointCuts as $pointCut)
                 {
-                    foreach ($pointCuts as $pointCut)
-                    {
-                        switch ($pointCut->type)
+                    switch ($pointCut->type)
                         {
                             case PointCutType::METHOD:
                                 foreach ($pointCut->allow as $allowItem)
@@ -157,17 +211,6 @@ class BeanProxy
                                     }
                                 }
                                 break;
-                        }
-                    }
-                }
-                // 判断是否属于当前类的切面
-                $pointCuts = AnnotationManager::getMethodsAnnotations($itemClass, PointCut::class);
-                foreach ($pointCuts as $methodName => $pointCuts)
-                {
-                    foreach ($pointCuts as $pointCut)
-                    {
-                        switch ($pointCut->type)
-                        {
                             case PointCutType::CONSTRUCT:
                                 // 构造方法
                                 foreach ($pointCut->allow as $allowItem)
@@ -185,7 +228,10 @@ class BeanProxy
                                 break;
                             case PointCutType::ANNOTATION_CONSTRUCT:
                                 // 注解构造方法
-                                $classAnnotations = AnnotationManager::getClassAnnotations($className);
+                                if (!isset($classAnnotations))
+                                {
+                                    $classAnnotations = AnnotationManager::getClassAnnotations($className);
+                                }
                                 foreach ($pointCut->allow as $allowItem)
                                 {
                                     foreach ($classAnnotations as $annotation)
@@ -203,7 +249,6 @@ class BeanProxy
                                 }
                                 break;
                         }
-                    }
                 }
             }
         }
@@ -213,13 +258,13 @@ class BeanProxy
      * 注入属性.
      *
      * @param object $object
+     * @param string $className
      *
      * @return void
      */
-    public function injectProps($object): void
+    public static function injectProps(object $object, string $className)
     {
-        $className = $this->className;
-        list($injects, $configs) = static::getInjects($className);
+        [$injects, $configs] = static::getInjects($className);
         if (!$injects && !$configs)
         {
             return;
@@ -227,24 +272,30 @@ class BeanProxy
         $refClass = ReflectionContainer::getClassReflection($className);
 
         // @inject()和@requestInject()注入
-        foreach ($injects as $propName => $annotations)
+        if ($injects)
         {
-            $annotation = reset($annotations);
-            $propRef = $refClass->getProperty($propName);
-            $propRef->setAccessible(true);
-            $propRef->setValue($object, $annotation->getRealValue());
+            foreach ($injects as $propName => $annotations)
+            {
+                $annotation = reset($annotations);
+                $propRef = $refClass->getProperty($propName);
+                $propRef->setAccessible(true);
+                $propRef->setValue($object, $annotation->getRealValue());
+            }
         }
 
         // 配置注入
-        foreach ($configs as $name => $value)
+        if ($configs)
         {
-            $propRef = $refClass->getProperty($name);
-            if (null === $propRef)
+            foreach ($configs as $name => $value)
             {
-                continue;
+                $propRef = $refClass->getProperty($name);
+                if (null === $propRef)
+                {
+                    continue;
+                }
+                $propRef->setAccessible(true);
+                $propRef->setValue($object, $value);
             }
-            $propRef->setAccessible(true);
-            $propRef->setValue($object, $value);
         }
     }
 
@@ -279,7 +330,7 @@ class BeanProxy
     /**
      * 获取注入类属性的注解和配置.
      *
-     * [$annotations, $configs]
+     * 返回：[$annotations, $configs]
      *
      * @param string $className
      *
@@ -289,7 +340,7 @@ class BeanProxy
     {
         $injects = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
         $configs = static::getConfigInjects($className);
-        if ($configs)
+        if ($configs && $injects)
         {
             foreach ($configs as $key => $value)
             {
@@ -306,212 +357,54 @@ class BeanProxy
     /**
      * 正常请求
      *
-     * @param object   $object
-     * @param string   $method
-     * @param array    $args
-     * @param callable $callback
+     * @param object $object
+     * @param string $className
+     * @param string $method
+     * @param array  $args
      *
      * @return mixed
      */
-    private function callOrigin($object, string $method, array &$args, callable $callback)
+    private static function callOrigin(object $object, string $className, string $method, array &$args, callable $callback)
     {
-        $this->parseBefore($object, $method, $args);
+        // before
+        self::doAspect($className, $method, 'before', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
+            $joinPoint = new JoinPoint('before', $method, $args, $object);
+            $aspectObject = new $aspectClassName();
+            $aspectObject->$methodName($joinPoint);
+        });
         // 原始方法调用
         $result = $callback(...$args);
-        $this->parseAfter($object, $method, $args);
-        $this->parseAfterReturning($object, $method, $args, $result);
+        // after
+        self::doAspect($className, $method, 'after', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
+            $joinPoint = new JoinPoint('after', $method, $args, $object);
+            $aspectObject = new $aspectClassName();
+            $aspectObject->$methodName($joinPoint);
+        });
+        // afterReturning
+        self::doAspect($className, $method, 'afterReturning', function ($aspectClassName, $methodName) use ($object, $method, &$args, &$result) {
+            $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object);
+            $joinPoint->setReturnValue($result);
+            $aspectObject = new $aspectClassName();
+            $aspectObject->$methodName($joinPoint);
+            $result = $joinPoint->getReturnValue();
+        });
 
         return $result;
     }
 
     /**
-     * 处理前置.
-     *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
-     *
-     * @return void
-     */
-    private function parseBefore($object, string $method, array &$args): void
-    {
-        $this->doAspect($method, 'before', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
-            $joinPoint = new JoinPoint('before', $method, $args, $object, $this);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
-        });
-    }
-
-    /**
-     * 处理后置.
-     *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
-     *
-     * @return void
-     */
-    private function parseAfter($object, string $method, array &$args): void
-    {
-        $this->doAspect($method, 'after', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
-            $joinPoint = new JoinPoint('after', $method, $args, $object, $this);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
-        });
-    }
-
-    /**
-     * 处理返回值
-     *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
-     * @param mixed  $returnValue
-     *
-     * @return void
-     */
-    private function parseAfterReturning($object, string $method, array &$args, &$returnValue): void
-    {
-        $this->doAspect($method, 'afterReturning', function ($aspectClassName, $methodName) use ($object, $method, &$args, &$returnValue) {
-            $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object, $this);
-            $joinPoint->setReturnValue($returnValue);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
-            $returnValue = $joinPoint->getReturnValue();
-        });
-    }
-
-    /**
-     * 处理环绕.
-     *
-     * @param object   $object
-     * @param string   $method
-     * @param array    $args
-     * @param mixed    $returnValue
-     * @param callable $callback
-     *
-     * @return bool
-     */
-    private function parseAround($object, string $method, array &$args, &$returnValue, callable $callback): bool
-    {
-        $aroundAspectDoList = [];
-        $this->doAspect($method, 'around', function ($aspectClassName, $methodName) use (&$aroundAspectDoList) {
-            $aroundAspectDoList[] = [new $aspectClassName(), $methodName];
-        });
-        if (!isset($aroundAspectDoList[0]))
-        {
-            return false;
-        }
-        $aroundAspectDoList = array_reverse($aroundAspectDoList);
-
-        $nextJoinPoint = null;
-        $nextAroundAspectDo = null;
-
-        foreach ($aroundAspectDoList as $aroundAspectDo)
-        {
-            $joinPoint = new AroundJoinPoint('around', $method, $args, $object, $this, (null === $nextJoinPoint ? function ($inArgs = null) use ($object, $method, &$args, $callback) {
-                if (null !== $inArgs)
-                {
-                    $args = $inArgs;
-                }
-
-                return $this->callOrigin($object, $method, $args, $callback);
-            } : function ($inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
-                if (null !== $inArgs)
-                {
-                    $args = $inArgs;
-                }
-
-                return $nextAroundAspectDo($nextJoinPoint);
-            }));
-            $nextJoinPoint = $joinPoint;
-            $nextAroundAspectDo = $aroundAspectDo;
-        }
-        $returnValue = $nextAroundAspectDo($nextJoinPoint);
-
-        return true;
-    }
-
-    /**
-     * 处理异常.
-     *
-     * @param object     $object
-     * @param string     $method
-     * @param array      $args
-     * @param \Throwable $throwable
-     *
-     * @return void
-     */
-    private function parseAfterThrowing($object, string $method, array &$args, \Throwable $throwable): void
-    {
-        $isCancelThrow = false;
-        $this->doAspect($method, 'afterThrowing', function ($aspectClassName, $methodName, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
-            // 验证异常是否捕获
-            if (isset($annotation->allow[0]) || isset($annotation->deny[0]))
-            {
-                $throwableClassName = \get_class($throwable);
-                if (isset($annotation->allow[0]))
-                {
-                    $allowResult = false;
-                    foreach ($annotation->allow as $rule)
-                    {
-                        $allowResult = Imi::checkRuleMatch($rule, $throwableClassName);
-                        if ($allowResult)
-                        {
-                            break;
-                        }
-                    }
-                    if (!$allowResult)
-                    {
-                        return;
-                    }
-                }
-                $denyResult = false;
-                foreach ($annotation->deny as $rule)
-                {
-                    $denyResult = Imi::checkRuleMatch($rule, $throwableClassName);
-                    if ($denyResult)
-                    {
-                        return;
-                    }
-                }
-            }
-            // 处理
-            $joinPoint = new AfterThrowingJoinPoint('afterThrowing', $method, $args, $object, $this, $throwable);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
-            if (!$isCancelThrow && $joinPoint->isCancelThrow())
-            {
-                $isCancelThrow = true;
-            }
-        });
-        // 不取消依旧抛出
-        if (!$isCancelThrow)
-        {
-            throw $throwable;
-        }
-    }
-
-    /**
      * 执行切面操作.
      *
+     * @param string   $className
      * @param string   $method    方法名
      * @param string   $pointType 切入点类型
      * @param callable $callback  回调
      *
      * @return void
      */
-    private function doAspect(string $method, string $pointType, callable $callback): void
+    private static function doAspect(string $className, string $method, string $pointType, callable $callback)
     {
-        if ($this->isWorker)
-        {
-            $aspectCache = &static::$workerAspectCache;
-        }
-        else
-        {
-            $aspectCache = &static::$aspectCache;
-        }
-        $className = $this->className;
+        $aspectCache = &static::$aspectCache;
         if (isset($aspectCache[$className][$method][$pointType]))
         {
             $tmpItem = $aspectCache[$className][$method][$pointType];
@@ -605,9 +498,12 @@ class BeanProxy
             $aspectCache[$className][$method][$pointType] = $tmpItem;
         }
 
-        foreach ($tmpItem as $item)
+        if ($tmpItem)
         {
-            $callback(...$item);
+            foreach ($tmpItem as $item)
+            {
+                $callback(...$item);
+            }
         }
     }
 
@@ -621,7 +517,7 @@ class BeanProxy
      */
     public static function getInjectValue(string $className, string $propertyName)
     {
-        list($annotations, $configs) = static::getInjects($className);
+        [$annotations, $configs] = static::getInjects($className);
         if (isset($configs[$propertyName]))
         {
             return $configs[$propertyName];

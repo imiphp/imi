@@ -97,10 +97,7 @@ class BeanFactory
     public static function initInstance($object, $args = [])
     {
         $ref = ReflectionContainer::getClassReflection(\get_class($object));
-        $beanProxy = $ref->getProperty('beanProxy');
-        $beanProxy->setAccessible(true);
-        $beanProxy->getValue($object)
-                  ->injectProps($object);
+        BeanProxy::injectProps($object, self::getObjectClass($object));
         if ($ref->hasMethod('__init'))
         {
             $ref->getMethod('__init')->invoke($object, ...$args);
@@ -141,8 +138,9 @@ class BeanFactory
                 $aopConstruct = <<<TPL
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
-        \$__result__ = \$beanProxy->call(
+        \$__result__ = \Imi\Bean\BeanProxy::call(
             \$this,
+            parent::class,
             '__construct',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();
@@ -205,18 +203,17 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 
     public function __construct({$constructDefine})
     {
-        \$this->beanProxy = \$beanProxy = new \Imi\Bean\BeanProxy(\$this);
         {$aopConstruct}
     }
 
     public function __clone()
     {
-        \$this->beanProxy = \$beanProxy = new \Imi\Bean\BeanProxy(\$this);
-        \$beanProxy->injectProps(\$this);
+        \Imi\Bean\BeanProxy::injectProps(\$this, parent::class);
         {$parentClone}
     }
 {$methodsTpl}
 }
+\Imi\Bean\BeanProxy::init({$class}::class);
 TPL;
 
         return $tpl;
@@ -247,8 +244,9 @@ TPL;
     {
         \$__args__ = func_get_args();
         {$paramsTpls['set_args']}
-        \$__result__ = \$this->beanProxy->call(
+        \$__result__ = \Imi\Bean\BeanProxy::call(
             \$this,
+            parent::class,
             '{$methodName}',
             function({$paramsTpls['define']}){
                 \$__args__ = func_get_args();

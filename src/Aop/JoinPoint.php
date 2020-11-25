@@ -32,20 +32,12 @@ class JoinPoint
      */
     private $target;
 
-    /**
-     * 代理对象本身.
-     *
-     * @var \Imi\Bean\BeanProxy
-     */
-    private $_this;
-
-    public function __construct($type, $method, &$args, $target, $_this)
+    public function __construct($type, $method, &$args, $target)
     {
         $this->type = $type;
         $this->method = $method;
         $this->args = &$args;
         $this->target = $target;
-        $this->_this = $_this;
     }
 
     /**
@@ -86,16 +78,6 @@ class JoinPoint
     public function getTarget()
     {
         return $this->target;
-    }
-
-    /**
-     * 获取代理对象本身.
-     *
-     * @return \Imi\Bean\BeanProxy
-     */
-    public function getThis()
-    {
-        return $this->_this;
     }
 
     /**
