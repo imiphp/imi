@@ -4,16 +4,16 @@ namespace Imi\Server\Http\Message\Proxy;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\Http\Message\Response;
 use Imi\Util\Http\Consts\StatusCode;
-use Imi\Util\Http\Contract\IResponse;
 use Psr\Http\Message\StreamInterface;
 
 /**
  * @Bean("HttpResponseProxy")
  * 自动切换协程上下文的响应代理类
  */
-class ResponseProxy implements IResponse
+class ResponseProxy implements IHttpResponse
 {
     /**
      * Gets the response status code.
@@ -47,7 +47,7 @@ class ResponseProxy implements IResponse
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException for invalid status code arguments
      */
@@ -71,11 +71,11 @@ class ResponseProxy implements IResponse
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException for invalid status code arguments
      */
-    public function setStatus(int $code, string $reasonPhrase = ''): IResponse
+    public function setStatus(int $code, string $reasonPhrase = ''): IHttpResponse
     {
         return static::getResponseInstance()->setStatus($code, $reasonPhrase);
     }
@@ -123,7 +123,7 @@ class ResponseProxy implements IResponse
      *
      * @param string $version HTTP protocol version
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
     public function withProtocolVersion($version)
     {
@@ -138,9 +138,9 @@ class ResponseProxy implements IResponse
      *
      * @param string $version HTTP protocol version
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function setProtocolVersion(string $version): IResponse
+    public function setProtocolVersion(string $version): IHttpResponse
     {
         return static::getResponseInstance()->setProtocolVersion($version);
     }
@@ -247,7 +247,7 @@ class ResponseProxy implements IResponse
      * @param string          $name  case-insensitive header field name
      * @param string|string[] $value header value(s)
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
@@ -265,11 +265,11 @@ class ResponseProxy implements IResponse
      * @param string          $name  case-insensitive header field name
      * @param string|string[] $value header value(s)
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
-    public function setHeader(string $name, $value): IResponse
+    public function setHeader(string $name, $value): IHttpResponse
     {
         return static::getResponseInstance()->setHeader($name, $value);
     }
@@ -288,7 +288,7 @@ class ResponseProxy implements IResponse
      * @param string          $name  case-insensitive header field name to add
      * @param string|string[] $value header value(s)
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
@@ -307,11 +307,11 @@ class ResponseProxy implements IResponse
      * @param string          $name  case-insensitive header field name to add
      * @param string|string[] $value header value(s)
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
-    public function addHeader(string $name, $value): IResponse
+    public function addHeader(string $name, $value): IHttpResponse
     {
         return static::getResponseInstance()->addHeader($name, $value);
     }
@@ -327,7 +327,7 @@ class ResponseProxy implements IResponse
      *
      * @param string $name case-insensitive header field name to remove
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
     public function withoutHeader($name)
     {
@@ -341,9 +341,9 @@ class ResponseProxy implements IResponse
      *
      * @param string $name case-insensitive header field name to remove
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function removeHeader(string $name): IResponse
+    public function removeHeader(string $name): IHttpResponse
     {
         return static::getResponseInstance()->removeHeader($name);
     }
@@ -369,7 +369,7 @@ class ResponseProxy implements IResponse
      *
      * @param StreamInterface $body body
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException when the body is not valid
      */
@@ -385,26 +385,13 @@ class ResponseProxy implements IResponse
      *
      * @param StreamInterface $body body
      *
-     * @return IResponse
+     * @return IHttpResponse
      *
      * @throws \InvalidArgumentException when the body is not valid
      */
-    public function setBody(StreamInterface $body): IResponse
+    public function setBody(StreamInterface $body): IHttpResponse
     {
         return static::getResponseInstance()->setBody($body);
-    }
-
-    /**
-     * 获取实例对象
-     *
-     * @param \Imi\Server\Base      $server
-     * @param \Swoole\Http\Response $response
-     *
-     * @return IResponse
-     */
-    public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
-    {
-        return static::getResponseInstance()->getInstance($server, $response);
     }
 
     /**
@@ -418,9 +405,9 @@ class ResponseProxy implements IResponse
      * @param bool   $secure
      * @param bool   $httponly
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IResponse
+    public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IHttpResponse
     {
         return static::getResponseInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
@@ -436,9 +423,9 @@ class ResponseProxy implements IResponse
      * @param bool   $secure
      * @param bool   $httponly
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IResponse
+    public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IHttpResponse
     {
         return static::getResponseInstance()->setCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
@@ -511,9 +498,9 @@ class ResponseProxy implements IResponse
      * @param string $name
      * @param string $value
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function withTrailer(string $name, string $value): IResponse
+    public function withTrailer(string $name, string $value): IHttpResponse
     {
         return static::getResponseInstance()->withTrailer($name, $value);
     }
@@ -524,9 +511,9 @@ class ResponseProxy implements IResponse
      * @param string $name
      * @param string $value
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function setTrailer(string $name, string $value): IResponse
+    public function setTrailer(string $name, string $value): IHttpResponse
     {
         return static::getResponseInstance()->setTrailer($name, $value);
     }
@@ -538,11 +525,21 @@ class ResponseProxy implements IResponse
      * @param string $url
      * @param int    $status
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function redirect(string $url, int $status = StatusCode::FOUND): IResponse
+    public function redirect(string $url, int $status = StatusCode::FOUND): IHttpResponse
     {
         return static::getResponseInstance()->redirect($url, $status);
+    }
+
+    /**
+     * 发送所有响应数据.
+     *
+     * @return static
+     */
+    public function send(): IHttpResponse
+    {
+        return static::getResponseInstance()->send();
     }
 
     /**
@@ -552,29 +549,29 @@ class ResponseProxy implements IResponse
      * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
      * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public function sendFile(string $filename, int $offset = 0, int $length = 0): IResponse
+    public function sendFile(string $filename, int $offset = 0, int $length = 0): IHttpResponse
     {
         return static::getResponseInstance()->sendFile($filename, $offset, $length);
     }
 
     /**
-     * 获取发送文件参数.
+     * 是否已结束请求
      *
-     * @return array
+     * @return bool
      */
-    public function getSendFile(): array
+    public function isEnded(): bool
     {
-        return static::getResponseInstance()->getSendFile();
+        return static::getResponseInstance()->isEnded();
     }
 
     /**
      * 获取当前上下文中的对象实例.
      *
-     * @return IResponse
+     * @return IHttpResponse
      */
-    public static function getResponseInstance(): Response
+    public static function getResponseInstance(): IHttpResponse
     {
         return RequestContext::get('response');
     }
@@ -582,11 +579,11 @@ class ResponseProxy implements IResponse
     /**
      * 设置当前上下文中的对象实例.
      *
-     * @param IResponse $response
+     * @param IHttpResponse $response
      *
      * @return void
      */
-    public function setResponseInstance(Response $response)
+    public function setResponseInstance(IHttpResponse $response)
     {
         RequestContext::set('response', $response);
     }

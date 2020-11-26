@@ -21,7 +21,7 @@ class WSController extends Base
      *
      * @var bool|null
      */
-    public $singleton;
+    public ?bool $singleton = null;
 
     /**
      * http 路由.
@@ -30,5 +30,5 @@ class WSController extends Base
      *
      * @var string|null
      */
-    public $route;
+    public ?string $route = null;
 }

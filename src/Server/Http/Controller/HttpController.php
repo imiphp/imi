@@ -2,6 +2,9 @@
 
 namespace Imi\Server\Http\Controller;
 
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
+
 /**
  * Http 控制器.
  */
@@ -10,16 +13,16 @@ abstract class HttpController
     /**
      * 请求
      *
-     * @var \Imi\Server\Http\Message\Request
+     * @var \Imi\Server\Http\Message\Contract\IHttpRequest
      */
-    public $request;
+    public IHttpRequest $request;
 
     /**
      * 响应.
      *
-     * @var \Imi\Server\Http\Message\Response
+     * @var \Imi\Server\Http\Message\Contract\IHttpResponse
      */
-    public $response;
+    public IHttpResponse $response;
 
     /**
      * 渲染页面.
@@ -29,7 +32,7 @@ abstract class HttpController
      *
      * @return \Imi\Server\View\Annotation\View
      */
-    protected function __render($template, $data = [])
+    protected function __render(string $template, array $data = [])
     {
         return new \Imi\Server\View\Annotation\View([
             'template'      => $template,

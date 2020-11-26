@@ -46,22 +46,15 @@ class RequestHandler implements RequestHandlerInterface
         $index = $this->index;
         if (isset($middlewares[$index]))
         {
-            $middleware = $middlewares[$index];
-            if (\is_object($middleware))
-            {
-                $requestHandler = $middleware;
-            }
-            else
-            {
-                $requestHandler = RequestContext::getServerBean($middleware);
-            }
+            /** @var \Psr\Http\Server\MiddlewareInterface $requestHandler */
+            $requestHandler = RequestContext::getServerBean($middlewares[$index]);
+
+            return $requestHandler->process($request, $this->next());
         }
         else
         {
             return RequestContext::get('response');
         }
-
-        return $requestHandler->process($request, $this->next());
     }
 
     /**

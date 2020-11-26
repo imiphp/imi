@@ -25,7 +25,7 @@ class SuperGlobals implements IWorkerStartEventListener
      *
      * @var bool
      */
-    protected $enable = false;
+    protected bool $enable = false;
 
     /**
      * 事件处理方法.

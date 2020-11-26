@@ -26,5 +26,5 @@ class UdpRoute extends Base
      *
      * @var array
      */
-    public $condition = [];
+    public array $condition = [];
 }

@@ -20,12 +20,12 @@ class WSConfig extends Base
      *
      * @var string
      */
-    public $parserClass;
+    public string $parserClass;
 
     /**
      * 该动作仅作为 websocket 动作，握手失败则返回 400 错误.
      *
      * @var bool
      */
-    public $wsOnly = true;
+    public bool $wsOnly = true;
 }

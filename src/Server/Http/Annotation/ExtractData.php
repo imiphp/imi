@@ -25,19 +25,19 @@ class ExtractData extends Base
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 导出数据到的参数名.
      *
      * @var string
      */
-    public $to;
+    public string $to;
 
     /**
      * 参数不存在时的默认值
      *
      * @var mixed
      */
-    public $default;
+    public $default = null;
 }

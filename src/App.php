@@ -240,7 +240,6 @@ class App
         {
             $config = $main->getConfig();
             // 原子计数初始化
-            var_dump($main->getNamespace() . ',' . $main->getModuleName(), $config['atomics'] ?? []);
             AtomicManager::setNames($config['atomics'] ?? []);
         }
         AtomicManager::init();

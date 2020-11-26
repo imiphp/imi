@@ -26,7 +26,7 @@ class WSRoute extends Base
      *
      * @var array
      */
-    public $condition = [];
+    public array $condition = [];
 
     /**
      * http 路由.
@@ -35,5 +35,5 @@ class WSRoute extends Base
      *
      * @var string|null
      */
-    public $route;
+    public ?string $route = null;
 }

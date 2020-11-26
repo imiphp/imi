@@ -9,9 +9,12 @@ trait TMiddleware
     /**
      * 获取真实的中间件列表.
      *
-     * @return string[]
+     * @param string|string[] $middlewares
+     * @param string          $serverName
+     *
+     * @return array
      */
-    protected function getMiddlewares($middlewares, $serverName)
+    protected function getMiddlewares($middlewares, string $serverName): array
     {
         if (\is_array($middlewares))
         {

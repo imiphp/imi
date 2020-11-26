@@ -24,9 +24,9 @@ class Route extends Base
     /**
      * 请求地址规则.
      *
-     * @var string
+     * @var string|null
      */
-    public $url;
+    public ?string $url = null;
 
     /**
      * 忽略请求地址大小写
@@ -36,14 +36,14 @@ class Route extends Base
      *
      * @var bool|null
      */
-    public $ignoreCase;
+    public ?bool $ignoreCase = null;
 
     /**
      * 智能尾部斜杠，无论是否存在都匹配.
      *
      * @var bool|null
      */
-    public $autoEndSlash;
+    public ?bool $autoEndSlash = null;
 
     /**
      * 请求方法

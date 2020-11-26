@@ -46,6 +46,7 @@ class BeforeHandShake implements IHandShakeEventListener
         ConnectContext::create();
 
         // 中间件
+        /** @var \Imi\Server\Http\Dispatcher $dispatcher */
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
         $dispatcher->dispatch($request, $response);
     }

@@ -67,7 +67,7 @@ class Event
      *
      * @return void
      */
-    public static function trigger($name, array $data = [], $target = null, string $paramClass = EventParam::class)
+    public static function trigger(string $name, array $data = [], $target = null, string $paramClass = EventParam::class)
     {
         static::getInstance()->__trigger($name, $data, $target, $paramClass);
     }

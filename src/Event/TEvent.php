@@ -143,7 +143,7 @@ trait TEvent
      *
      * @return void
      */
-    public function trigger($name, array $data = [], $target = null, string $paramClass = EventParam::class)
+    public function trigger(string $name, array $data = [], $target = null, string $paramClass = EventParam::class)
     {
         $eventQueue = &$this->eventQueue;
         // 获取回调列表

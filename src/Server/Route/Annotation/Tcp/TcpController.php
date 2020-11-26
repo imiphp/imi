@@ -28,5 +28,5 @@ class TcpController extends Base
      *
      * @var bool|null
      */
-    public $singleton;
+    public ?bool $singleton = null;
 }

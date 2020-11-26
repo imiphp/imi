@@ -4,6 +4,7 @@ namespace Imi\Server\Http\Message\Proxy;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Request;
 use Imi\Util\Http\Contract\IServerRequest;
 use Psr\Http\Message\StreamInterface;
@@ -13,7 +14,7 @@ use Psr\Http\Message\UriInterface;
  * @Bean("HttpRequestProxy")
  * 自动切换协程上下文的请求代理类
  */
-class RequestProxy implements IServerRequest
+class RequestProxy implements IHttpRequest
 {
     /**
      * Retrieve server parameters.

@@ -2,6 +2,8 @@
 
 namespace Imi\Server\Route;
 
+use Imi\Server\Base;
+
 class RouteCallable
 {
     /**
@@ -9,23 +11,23 @@ class RouteCallable
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 类名.
      *
      * @var string
      */
-    public $className;
+    public string $className;
 
     /**
      * 方法名.
      *
      * @var string
      */
-    public $methodName;
+    public string $methodName;
 
-    public function __construct($server, $className, $methodName)
+    public function __construct(Base $server, string $className, string $methodName)
     {
         $this->server = $server;
         $this->className = $className;
@@ -39,7 +41,7 @@ class RouteCallable
      *
      * @return callable
      */
-    public function getCallable($params = [])
+    public function getCallable(array $params = []): callable
     {
         $className = $this->className;
         $methodName = $this->methodName;

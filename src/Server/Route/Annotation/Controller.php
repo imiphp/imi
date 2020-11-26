@@ -24,9 +24,9 @@ class Controller extends Base
     /**
      * 路由前缀
      *
-     * @var string
+     * @var string|null
      */
-    public $prefix;
+    public ?string $prefix = null;
 
     /**
      * 是否为单例控制器.
@@ -35,5 +35,5 @@ class Controller extends Base
      *
      * @var bool|null
      */
-    public $singleton;
+    public ?bool $singleton = null;
 }

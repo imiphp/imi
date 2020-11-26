@@ -150,7 +150,7 @@ class Server extends Base
 
         Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e) {
             // 内置事件监听
-            $this->on('request', [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
+            $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
             if ($this->http2)
             {
                 $this->on('close', [new Http2BeforeClose(), 'handle'], ImiPriority::IMI_MAX);
