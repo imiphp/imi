@@ -28,7 +28,7 @@ class OnPipeMessage implements IPipeMessageEventListener
             return;
         }
         Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-            'workerId'  => $e->workerID,
+            'workerID'  => $e->workerID,
             'data'      => $data,
         ]);
     }
