@@ -13,7 +13,7 @@ return [
             // 驱动实例配置
             'option'        =>    [
                 'savePath'    =>    '文件缓存保存路径',
-                'formatHandlerClass'    =>    '', // 数据读写修改器
+                'formatHandlerClass'    =>    null, // 数据读写修改器
                 // 保存文件名处理回调，一般可以不写
                 // 'saveFileNameCallback'    =>    function($savePath, $key){
                 //     return '';
