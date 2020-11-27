@@ -14,14 +14,14 @@ class JsonErrorHandler implements IErrorHandler
      *
      * @var bool
      */
-    protected $releaseShow = false;
+    protected bool $releaseShow = false;
 
     /**
      * 取消继续抛出异常.
      *
      * @var bool
      */
-    protected $cancelThrow = false;
+    protected bool $cancelThrow = false;
 
     /**
      * 捕获错误

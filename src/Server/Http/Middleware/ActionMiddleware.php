@@ -8,11 +8,10 @@ use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Controller\SingletonHttpController;
-use Imi\Server\Http\Message\Proxy\RequestProxy;
-use Imi\Server\Http\Message\Proxy\ResponseProxy;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;
+use Imi\Server\Http\Struct\ActionMethodItem;
 use Imi\Server\View\View;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,25 +31,18 @@ class ActionMiddleware implements MiddlewareInterface
     protected View $view;
 
     /**
-     * @ServerInject("HttpRequestProxy")
-     *
-     * @var \Imi\Server\Http\Message\Proxy\RequestProxy
-     */
-    protected RequestProxy $requestProxy;
-
-    /**
-     * @ServerInject("HttpResponseProxy")
-     *
-     * @var \Imi\Server\Http\Message\Proxy\ResponseProxy
-     */
-    protected ResponseProxy $responseProxy;
-
-    /**
      * 动作方法参数缓存.
      *
      * @var \ReflectionParameter[]
      */
     private array $actionMethodParams = [];
+
+    /**
+     * 动作方法缓存.
+     *
+     * @var ActionMethodItem[][]
+     */
+    private array $actionMethodCaches = [];
 
     /**
      * 处理方法.
@@ -87,13 +79,7 @@ class ActionMiddleware implements MiddlewareInterface
         $isObject = $callable[0] instanceof HttpController;
         if ($isObject)
         {
-            if ($isSingletonController = ($object instanceof SingletonHttpController))
-            {
-                // 传入Request和Response代理对象
-                $object->request = $this->requestProxy;
-                $object->response = $this->responseProxy;
-            }
-            else
+            if (!($isSingletonController = ($object instanceof SingletonHttpController)))
             {
                 // 传入Request和Response对象
                 $object->request = $request;
@@ -141,7 +127,12 @@ class ActionMiddleware implements MiddlewareInterface
                 $finalResponse = $context['response'];
             }
             // 视图渲染
-            $finalResponse = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $viewAnnotation->toArray(), $finalResponse);
+            $finalResponse = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, [
+                'baseDir'     => $viewAnnotation->baseDir,
+                'template'    => $viewAnnotation->template,
+                'renderType'  => $viewAnnotation->renderType,
+                'data'        => $viewAnnotation->data,
+            ], $finalResponse);
         }
 
         return $finalResponse;
@@ -157,78 +148,112 @@ class ActionMiddleware implements MiddlewareInterface
      */
     private function prepareActionParams(Request $request, RouteResult $routeResult): array
     {
-        $callable = $routeResult->callable;
-        // 根据动作回调类型获取反射
-        if (\is_array($callable))
+        if (isset($this->actionMethodCaches[$routeResult->id]))
         {
-            if (\is_string($callable[0]))
-            {
-                $class = $callable[0];
-            }
-            else
-            {
-                $class = \get_class($callable[0]);
-            }
-            $method = $callable[1];
-            $actionMethodParams = &$this->actionMethodParams;
-            if (isset($actionMethodParams[$class][$method]))
-            {
-                $params = $actionMethodParams[$class][$method];
-            }
-            else
-            {
-                $ref = ReflectionContainer::getMethodReflection($class, $method);
-                $params = $actionMethodParams[$class][$method] = $ref->getParameters();
-            }
-        }
-        elseif (!$callable instanceof \Closure)
-        {
-            $ref = new \ReflectionFunction($callable);
-            $params = $ref->getParameters();
+            $actionMethodCache = $this->actionMethodCaches[$routeResult->id];
         }
         else
+        {
+            $callable = $routeResult->callable;
+            // 根据动作回调类型获取反射
+            if (\is_array($callable))
+            {
+                if (\is_string($callable[0]))
+                {
+                    $class = $callable[0];
+                }
+                else
+                {
+                    $class = \get_class($callable[0]);
+                }
+                $method = $callable[1];
+                $actionMethodParams = &$this->actionMethodParams;
+                if (isset($actionMethodParams[$class][$method]))
+                {
+                    $params = $actionMethodParams[$class][$method];
+                }
+                else
+                {
+                    $ref = ReflectionContainer::getMethodReflection($class, $method);
+                    $params = $actionMethodParams[$class][$method] = $ref->getParameters();
+                }
+            }
+            elseif (!$callable instanceof \Closure)
+            {
+                $ref = new \ReflectionFunction($callable);
+                $params = $ref->getParameters();
+            }
+            else
+            {
+                $this->actionMethodCaches[$routeResult->id] = [];
+
+                return [];
+            }
+            if (!$params)
+            {
+                $this->actionMethodCaches[$routeResult->id] = [];
+
+                return [];
+            }
+            $actionMethodCache = [];
+            /** @var \ReflectionParameter[] $params */
+            foreach ($params as $param)
+            {
+                $actionMethodCache[] = new ActionMethodItem(
+                    $param->name,
+                    $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null,
+                );
+            }
+            $this->actionMethodCaches[$routeResult->id] = $actionMethodCache;
+        }
+        if (!$actionMethodCache)
         {
             return [];
         }
         $result = [];
-        foreach ($params as $param)
+        $get = $request->get();
+        $post = $request->post();
+        $parsedBody = $request->getParsedBody();
+        $parsedBodyIsObject = \is_object($parsedBody);
+        if ($parsedBodyIsObject)
         {
-            $paramName = $param->name;
+            $parsedBodyIsArray = false;
+        }
+        else
+        {
+            $parsedBodyIsArray = \is_array($parsedBody);
+        }
+        /** @var ActionMethodItem[] $actionMethodCache */
+        foreach ($actionMethodCache as $actionMethodCacheItem)
+        {
+            $paramName = $actionMethodCacheItem->getName();
             if (isset($routeResult->params[$paramName]))
             {
                 // 路由解析出来的参数
                 $result[] = $routeResult->params[$paramName];
             }
-            elseif ($request->hasPost($paramName))
+            elseif (isset($post[$paramName]))
             {
                 // post
-                $result[] = $request->post($paramName);
+                $result[] = $post[$paramName];
             }
-            elseif (null !== ($value = $request->get($paramName)))
+            elseif (isset($get[$paramName]))
             {
                 // get
-                $result[] = $value;
+                $result[] = $get[$paramName];
+            }
+            elseif ($parsedBodyIsObject && isset($parsedBody->{$paramName}))
+            {
+                $result[] = $parsedBody->{$paramName};
+            }
+            elseif ($parsedBodyIsArray && isset($parsedBody[$paramName]))
+            {
+                $result[] = $parsedBody[$paramName];
             }
             else
             {
-                $parsedBody = $request->getParsedBody();
-                if (\is_object($parsedBody) && isset($parsedBody->{$paramName}))
-                {
-                    $result[] = $parsedBody->{$paramName};
-                }
-                elseif (\is_array($parsedBody) && isset($parsedBody[$paramName]))
-                {
-                    $result[] = $parsedBody[$paramName];
-                }
-                elseif ($param->isOptional())
-                {
-                    // 方法默认值
-                    $result[] = $param->getDefaultValue();
-                }
-                else
-                {
-                    $result[] = null;
-                }
+                // 方法默认值
+                $result[] = $actionMethodCacheItem->getDefault();
             }
         }
 

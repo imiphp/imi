@@ -12,14 +12,14 @@ class ReceiveHandler implements IReceiveHandler
      *
      * @var string[]
      */
-    protected $middlewares = [];
+    protected array $middlewares = [];
 
     /**
      * 当前执行第几个.
      *
      * @var int
      */
-    protected $index = 0;
+    protected int $index = 0;
 
     /**
      * 构造方法.
@@ -67,7 +67,7 @@ class ReceiveHandler implements IReceiveHandler
      *
      * @return static
      */
-    protected function next()
+    protected function next(): self
     {
         $self = clone $this;
         ++$self->index;
@@ -80,7 +80,7 @@ class ReceiveHandler implements IReceiveHandler
      *
      * @return bool
      */
-    public function isLast()
+    public function isLast(): bool
     {
         return !isset($this->middlewares[$this->index]);
     }

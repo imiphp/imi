@@ -2,11 +2,13 @@
 
 namespace Imi\Server\WebSocket\Middleware;
 
-use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
+use Imi\Bean\Annotation\Bean;
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\WebSocket\IMessageHandler;
+use Imi\Server\WebSocket\Route\WSRoute;
 use Imi\Server\WebSocket\Message\IFrame;
+use Imi\Server\WebSocket\IMessageHandler;
+use Imi\Server\WebSocket\Error\IWSRouteNotFoundHandler;
 
 /**
  * @Bean("WebSocketRouteMiddleware")
@@ -18,14 +20,14 @@ class RouteMiddleware implements IMiddleware
      *
      * @var \Imi\Server\WebSocket\Route\WSRoute
      */
-    protected $route;
+    protected WSRoute $route;
 
     /**
      * @ServerInject("WSRouteNotFoundHandler")
      *
      * @var \Imi\Server\Http\Error\IWSRouteNotFoundHandler
      */
-    protected $notFoundHandler;
+    protected IWSRouteNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.

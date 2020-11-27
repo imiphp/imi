@@ -3,6 +3,8 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
+use Swoole\Server\Task;
 
 class TaskEventParam extends EventParam
 {
@@ -11,21 +13,21 @@ class TaskEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 任务ID.
      *
      * @var int
      */
-    public $taskID;
+    public int $taskId;
 
     /**
      * worker进程ID.
      *
      * @var int
      */
-    public $workerID;
+    public int $workerId;
 
     /**
      * 任务数据.
@@ -46,5 +48,5 @@ class TaskEventParam extends EventParam
      *
      * @var \Swoole\Server\Task
      */
-    public $task;
+    public Task $task;
 }

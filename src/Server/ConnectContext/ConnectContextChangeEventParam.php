@@ -12,16 +12,16 @@ class ConnectContextChangeEventParam
      *
      * @var int
      */
-    private $fd;
+    private int $fd;
 
     /**
      * 服务器名.
      *
      * @var string
      */
-    private $serverName;
+    private string $serverName;
 
-    public function __construct($fd, $serverName)
+    public function __construct(int $fd, string $serverName)
     {
         $this->fd = $fd;
         $this->serverName = $serverName;
@@ -32,7 +32,7 @@ class ConnectContextChangeEventParam
      *
      * @return int
      */
-    public function getFd()
+    public function getFd(): int
     {
         return $this->fd;
     }
@@ -42,7 +42,7 @@ class ConnectContextChangeEventParam
      *
      * @return string
      */
-    public function getServerName()
+    public function getServerName(): string
     {
         return $this->serverName;
     }

@@ -24,7 +24,7 @@ class WorkerStart implements IWorkerStartEventListener
      */
     public function handle(WorkerStartEventParam $e)
     {
-        if (0 === Worker::getWorkerID())
+        if (0 === Worker::getWorkerId())
         {
             go(function () {
                 sleep(1);

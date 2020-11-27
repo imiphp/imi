@@ -65,7 +65,8 @@ class ServerUtilTest extends BaseTest
                 $channel->push($recvData['fd']);
                 for ($i = 0; $i < $recvCount; ++$i)
                 {
-                    $this->assertEquals($dataStr, $client->recv(10));
+                    $result = $client->recv(10);
+                    $this->assertEquals($dataStr, $result);
                 }
                 $client->close();
             };

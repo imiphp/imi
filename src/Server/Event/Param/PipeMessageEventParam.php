@@ -3,6 +3,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
 
 class PipeMessageEventParam extends EventParam
 {
@@ -11,14 +12,14 @@ class PipeMessageEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * Worker进程ID.
      *
      * @var int
      */
-    public $workerID;
+    public int $workerId;
 
     /**
      * 消息内容，可以是任意PHP类型.

@@ -10,11 +10,11 @@ interface ISessionHandler
     /**
      * 销毁session数据.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return void
      */
-    public function destroy($sessionID);
+    public function destroy(string $sessionId);
 
     /**
      * 垃圾回收.
@@ -23,34 +23,34 @@ interface ISessionHandler
      *
      * @return void
      */
-    public function gc($maxLifeTime);
+    public function gc(int $maxLifeTime);
 
     /**
      * 读取session.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return mixed
      */
-    public function read($sessionID);
+    public function read(string $sessionId);
 
     /**
      * 写入session.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      * @param string $sessionData
-     * @param string $maxLifeTime
+     * @param int    $maxLifeTime
      *
      * @return void
      */
-    public function write($sessionID, $sessionData, $maxLifeTime);
+    public function write(string $sessionId, string $sessionData, int $maxLifeTime);
 
     /**
-     * 生成SessionID.
+     * 生成SessionId.
      *
      * @return string
      */
-    public function createSessionID();
+    public function createSessionId(): string;
 
     /**
      * 编码为存储格式.

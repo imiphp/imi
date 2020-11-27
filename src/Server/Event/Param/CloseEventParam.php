@@ -3,6 +3,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
 
 class CloseEventParam extends EventParam
 {
@@ -11,19 +12,19 @@ class CloseEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 客户端连接的标识符.
      *
      * @var int
      */
-    public $fd;
+    public int $fd;
 
     /**
      * 来自那个reactor线程.
      *
      * @var int
      */
-    public $reactorID;
+    public int $reactorId;
 }

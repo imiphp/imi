@@ -12,12 +12,12 @@ class Frame implements IFrame
      *
      * @var \Swoole\Websocket\Frame
      */
-    protected $frame;
+    protected \Swoole\WebSocket\Frame $frame;
 
     /**
      * 格式化后的数据.
      *
-     * @var array
+     * @var mixed
      */
     protected $data;
 
@@ -42,7 +42,7 @@ class Frame implements IFrame
      *
      * @return string
      */
-    public function getData()
+    public function getData(): string
     {
         return $this->frame->data;
     }
@@ -64,7 +64,7 @@ class Frame implements IFrame
      *
      * @return int
      */
-    public function getOpcode()
+    public function getOpcode(): int
     {
         return $this->frame->opcode;
     }
@@ -74,7 +74,7 @@ class Frame implements IFrame
      *
      * @return bool
      */
-    public function isFinish()
+    public function isFinish(): bool
     {
         return $this->frame->finish;
     }

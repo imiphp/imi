@@ -5,6 +5,7 @@ namespace Imi\Server\WebSocket\Route;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute as WSRouteAnnotation;
 use Imi\Util\ObjectArrayHelper;
 
@@ -18,23 +19,23 @@ class WSRoute implements IRoute
      *
      * @var \Imi\Server\WebSocket\Route\RouteItem[]
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * @ServerInject("HttpRoute")
      *
      * @var \Imi\Server\Http\Route\HttpRoute
      */
-    protected $httpRoute;
+    protected HttpRoute $httpRoute;
 
     /**
      * 路由解析处理.
      *
      * @param mixed $data
      *
-     * @return \Imi\Server\WebSocket\Route\RouteResult
+     * @return RouteResult|null
      */
-    public function parse($data)
+    public function parse($data): ?RouteResult
     {
         /** @var \Imi\Util\Uri $uri */
         $uri = ConnectContext::get('uri');
@@ -63,7 +64,7 @@ class WSRoute implements IRoute
      *
      * @return void
      */
-    public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, $options = [])
+    public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, array $options = [])
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))
@@ -94,7 +95,7 @@ class WSRoute implements IRoute
      *
      * @return bool
      */
-    public function existsRule(WSRouteAnnotation $rule)
+    public function existsRule(WSRouteAnnotation $rule): bool
     {
         return isset($this->rules[spl_object_hash($rule)]);
     }
@@ -104,7 +105,7 @@ class WSRoute implements IRoute
      *
      * @return \Imi\Server\WebSocket\Route\RouteItem[]
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -117,7 +118,7 @@ class WSRoute implements IRoute
      *
      * @return bool
      */
-    private function checkCondition($data, WSRouteAnnotation $annotation)
+    private function checkCondition($data, WSRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

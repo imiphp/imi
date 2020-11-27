@@ -3,6 +3,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
 
 class StartEventParam extends EventParam
 {
@@ -11,5 +12,5 @@ class StartEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 }

@@ -5,8 +5,10 @@ namespace Imi\Server\TcpServer\Middleware;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\TcpServer\Error\ITcpRouteNotFoundHandler;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
+use Imi\Server\TcpServer\Route\TcpRoute;
 
 /**
  * @Bean("TCPRouteMiddleware")
@@ -18,14 +20,14 @@ class RouteMiddleware implements IMiddleware
      *
      * @var \Imi\Server\TcpServer\Route\TcpRoute
      */
-    protected $route;
+    protected TcpRoute $route;
 
     /**
      * @ServerInject("TcpRouteNotFoundHandler")
      *
      * @var \Imi\Server\TcpServer\Error\ITcpRouteNotFoundHandler
      */
-    protected $notFoundHandler;
+    protected ITcpRouteNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.

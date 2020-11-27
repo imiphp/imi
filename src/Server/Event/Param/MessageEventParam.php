@@ -2,7 +2,9 @@
 
 namespace Imi\Server\Event\Param;
 
+use Imi\Server\Base;
 use Imi\Event\EventParam;
+use Swoole\WebSocket\Frame;
 
 class MessageEventParam extends EventParam
 {
@@ -11,12 +13,12 @@ class MessageEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * swoole 数据帧对象
      *
      * @var \Swoole\WebSocket\Frame
      */
-    public $frame;
+    public Frame $frame;
 }

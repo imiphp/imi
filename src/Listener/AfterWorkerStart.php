@@ -31,7 +31,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
         if (!$e->server->getSwooleServer()->taskworker)
         {
             $initFlagFile = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.app.init');
-            if (0 === Worker::getWorkerID() && !$this->checkInitFlagFile($initFlagFile))
+            if (0 === Worker::getWorkerId() && !$this->checkInitFlagFile($initFlagFile))
             {
                 Event::trigger('IMI.APP.INIT', [
                 ], $e->getTarget(), AppInitEventParam::class);

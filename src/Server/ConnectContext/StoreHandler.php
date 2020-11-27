@@ -18,7 +18,7 @@ class StoreHandler implements IHandler
      *
      * @var string
      */
-    protected $handlerClass = \Imi\Server\ConnectContext\StoreHandler\Redis::class;
+    protected string $handlerClass = \Imi\Server\ConnectContext\StoreHandler\Redis::class;
 
     /**
      * 数据有效期，单位：秒
@@ -27,7 +27,7 @@ class StoreHandler implements IHandler
      *
      * @var int
      */
-    protected $ttl = 0;
+    protected int $ttl = 0;
 
     /**
      * 读取数据.
@@ -84,9 +84,9 @@ class StoreHandler implements IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
-    public function exists(string $key)
+    public function exists(string $key): bool
     {
         return $this->getHandler()->exists($key);
     }
@@ -99,7 +99,7 @@ class StoreHandler implements IHandler
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null)
+    public function lock(string $key, $callable = null): bool
     {
         return $this->getHandler()->lock($key, $callable);
     }
@@ -109,7 +109,7 @@ class StoreHandler implements IHandler
      *
      * @return bool
      */
-    public function unlock()
+    public function unlock(): bool
     {
         return $this->getHandler()->unlock();
     }
@@ -129,7 +129,7 @@ class StoreHandler implements IHandler
      *
      * @return int
      */
-    public function getTtl()
+    public function getTtl(): int
     {
         return $this->ttl;
     }

@@ -18,27 +18,27 @@ class ConnectionBinder
     /**
      * Redis 连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    protected $redisPool;
+    protected ?string $redisPool = null;
 
     /**
      * redis中第几个库.
      *
      * @var int
      */
-    protected $redisDb = 0;
+    protected int $redisDb = 0;
 
     /**
      * 键.
      *
      * @var string
      */
-    protected $key = 'imi:connectionBinder:map';
+    protected string $key = 'imi:connectionBinder:map';
 
     public function __init()
     {
-        if (0 === Worker::getWorkerID())
+        if (0 === Worker::getWorkerId())
         {
             $this->useRedis(function (RedisHandler $redis) {
                 $key = $this->key;
@@ -200,7 +200,7 @@ class ConnectionBinder
      */
     private function useRedis($callback)
     {
-        return Redis::use(function ($redis) use ($callback) {
+        return Redis::use(function (RedisHandler $redis) use ($callback) {
             $redis->select($this->redisDb);
 
             return $callback($redis);

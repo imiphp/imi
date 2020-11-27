@@ -6,6 +6,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
+use Imi\Server\Session\SessionManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -17,9 +18,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 class HttpSessionMiddleware implements MiddlewareInterface
 {
     /**
-     * SessionID处理器.
+     * SessionId处理器.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $sessionIdHandler = null;
 
@@ -32,16 +33,16 @@ class HttpSessionMiddleware implements MiddlewareInterface
         /** @var \Imi\Server\Session\SessionManager $sessionManager */
         $sessionManager = RequestContext::getBean('SessionManager');
 
-        $sessionID = '';
+        $sessionId = '';
         $sessionIdHandler = $this->sessionIdHandler;
         if (null !== $sessionIdHandler && \is_callable($sessionIdHandler))
         {
-            $sessionID = ($sessionIdHandler)($request);
+            $sessionId = ($sessionIdHandler)($request);
         }
-        $sessionID = $sessionID ?: $request->getCookie($sessionManager->getName());
+        $sessionId = $sessionId ?: $request->getCookie($sessionManager->getName());
 
         // 开启session
-        $this->start($sessionManager, $sessionID);
+        $this->start($sessionManager, $sessionId);
 
         try
         {
@@ -69,13 +70,13 @@ class HttpSessionMiddleware implements MiddlewareInterface
      * 开启session.
      *
      * @param \Imi\Server\Session\SessionManager $sessionManager
-     * @param string                             $sessionID
+     * @param string|null                        $sessionId
      *
      * @return void
      */
-    private function start($sessionManager, $sessionID)
+    private function start(SessionManager $sessionManager, ?string $sessionId)
     {
-        $sessionManager->start($sessionID);
+        $sessionManager->start($sessionId);
     }
 
     /**
@@ -86,11 +87,11 @@ class HttpSessionMiddleware implements MiddlewareInterface
      *
      * @return ResponseInterface
      */
-    private function sendCookie($sessionManager, Response $response): ResponseInterface
+    private function sendCookie(SessionManager $sessionManager, Response $response): ResponseInterface
     {
         $config = $sessionManager->getConfig();
         $cookie = $config->cookie;
 
-        return $response->withCookie($sessionManager->getName(), $sessionManager->getID(), 0 === $cookie->lifetime ? 0 : (time() + $cookie->lifetime), $cookie->path, $cookie->domain, $cookie->secure, $cookie->httponly);
+        return $response->withCookie($sessionManager->getName(), $sessionManager->getId(), 0 === $cookie->lifetime ? 0 : (time() + $cookie->lifetime), $cookie->path, $cookie->domain, $cookie->secure, $cookie->httponly);
     }
 }

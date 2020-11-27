@@ -13,7 +13,7 @@ class WSControllerParser extends BaseParser
 {
     use TServerAnnotationParser;
 
-    protected $controllerAnnotationClass = WSController::class;
+    protected string $controllerAnnotationClass = WSController::class;
 
     /**
      * 处理方法.

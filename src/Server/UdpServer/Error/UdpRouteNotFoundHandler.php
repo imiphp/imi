@@ -17,9 +17,9 @@ class UdpRouteNotFoundHandler implements IUdpRouteNotFoundHandler
     /**
      * 处理器类名，如果为null则使用默认处理.
      *
-     * @var string
+     * @var string|null
      */
-    protected $handler = null;
+    protected ?string $handler = null;
 
     /**
      * 处理方法.

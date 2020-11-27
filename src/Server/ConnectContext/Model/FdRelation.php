@@ -20,7 +20,7 @@ class FdRelation extends MemoryTableModel
      *
      * @var int
      */
-    protected $workerId;
+    protected int $workerId;
 
     /**
      * 服务器名.
@@ -29,14 +29,14 @@ class FdRelation extends MemoryTableModel
      *
      * @var string
      */
-    protected $serverName;
+    protected string $serverName;
 
     /**
      * Get worker进程ID.
      *
      * @return int
      */
-    public function getWorkerId()
+    public function getWorkerId(): int
     {
         return $this->workerId;
     }
@@ -48,7 +48,7 @@ class FdRelation extends MemoryTableModel
      *
      * @return self
      */
-    public function setWorkerId(int $workerId)
+    public function setWorkerId(int $workerId): self
     {
         $this->workerId = $workerId;
 
@@ -60,7 +60,7 @@ class FdRelation extends MemoryTableModel
      *
      * @return string
      */
-    public function getServerName()
+    public function getServerName(): string
     {
         return $this->serverName;
     }
@@ -72,7 +72,7 @@ class FdRelation extends MemoryTableModel
      *
      * @return self
      */
-    public function setServerName(string $serverName)
+    public function setServerName(string $serverName): self
     {
         $this->serverName = $serverName;
 

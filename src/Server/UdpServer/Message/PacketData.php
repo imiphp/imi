@@ -12,7 +12,7 @@ class PacketData implements IPacketData
      *
      * @var string
      */
-    protected $data;
+    protected string $data;
 
     /**
      * 接收到的数据.
@@ -26,9 +26,9 @@ class PacketData implements IPacketData
      *
      * @var array
      */
-    protected $clientInfo;
+    protected array $clientInfo;
 
-    public function __construct($data, $clientInfo)
+    public function __construct(string $data, array $clientInfo)
     {
         $this->data = $data;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
@@ -40,7 +40,7 @@ class PacketData implements IPacketData
      *
      * @return string
      */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }
@@ -60,7 +60,7 @@ class PacketData implements IPacketData
      *
      * @return array
      */
-    public function getClientInfo()
+    public function getClientInfo(): array
     {
         return $this->clientInfo;
     }

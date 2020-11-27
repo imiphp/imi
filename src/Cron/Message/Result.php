@@ -62,10 +62,10 @@ class Result implements IMessage
         {
             case ProcessType::WORKER:
             case ProcessType::TASK_WORKER:
-                $this->processId = Worker::getWorkerID();
+                $this->processId = Worker::getWorkerId();
                 break;
             case ProcessType::PROCESS:
-                $this->processId = App::get(ProcessAppContexts::PROCESS_NAME) . '#' . Worker::getWorkerID();
+                $this->processId = App::get(ProcessAppContexts::PROCESS_NAME) . '#' . Worker::getWorkerId();
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid process type %s', $this->processType));

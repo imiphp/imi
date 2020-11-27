@@ -18,14 +18,14 @@ class Local implements IHandler
      *
      * @var array
      */
-    private $storeMap = [];
+    private array $storeMap = [];
 
     /**
      * 锁 ID.
      *
-     * @var string
+     * @var string|null
      */
-    protected $lockId;
+    protected ?string $lockId = null;
 
     /**
      * 读取数据.
@@ -88,9 +88,9 @@ class Local implements IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
-    public function exists(string $key)
+    public function exists(string $key): bool
     {
         return isset($this->storeMap[$key]);
     }
@@ -98,12 +98,12 @@ class Local implements IHandler
     /**
      * 加锁
      *
-     * @param string   $key
-     * @param callable $callable
+     * @param string        $key
+     * @param callable|null $callable
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null)
+    public function lock(string $key, $callable = null): bool
     {
         return Lock::getInstance($this->lockId, $key)->lock($callable);
     }
@@ -113,7 +113,7 @@ class Local implements IHandler
      *
      * @return bool
      */
-    public function unlock()
+    public function unlock(): bool
     {
         return Lock::unlock($this->lockId);
     }

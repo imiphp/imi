@@ -30,14 +30,14 @@ class Json implements IHandler
      *
      * @var int
      */
-    protected $options = 0;
+    protected int $options = 0;
 
     /**
      * 设置最大深度。 必须大于0。
      *
      * @var int
      */
-    protected $depth = 512;
+    protected int $depth = 512;
 
     public function handle($data, array $options, Response $response): Response
     {

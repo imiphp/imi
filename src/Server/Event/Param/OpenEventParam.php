@@ -3,6 +3,8 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
 
 class OpenEventParam extends EventParam
 {
@@ -11,12 +13,12 @@ class OpenEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 客户端连接的标识符.
      *
-     * @var \Imi\Server\Http\Message\Request
+     * @var \Imi\Server\Http\Message\Contract\IHttpRequest
      */
-    public $request;
+    public IHttpRequest $request;
 }

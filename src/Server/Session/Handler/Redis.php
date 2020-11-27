@@ -16,19 +16,19 @@ class Redis extends Base
      *
      * @var string
      */
-    protected $poolName;
+    protected string $poolName;
 
     /**
      * Redis中存储的key前缀，可以用于多系统session的分离.
      *
      * @var string
      */
-    protected $keyPrefix;
+    protected string $keyPrefix;
 
     public function __init()
     {
         parent::__init();
-        if (null === $this->keyPrefix)
+        if (!isset($this->keyPrefix))
         {
             $this->keyPrefix = 'imi:' . App::getNamespace() . ':';
         }
@@ -37,14 +37,14 @@ class Redis extends Base
     /**
      * 销毁session数据.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return void
      */
-    public function destroy($sessionID)
+    public function destroy(string $sessionId)
     {
-        ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionID) {
-            $redis->del($this->getKey($sessionID));
+        ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionId) {
+            $redis->del($this->getKey($sessionId));
         }, $this->poolName, true);
     }
 
@@ -55,7 +55,7 @@ class Redis extends Base
      *
      * @return void
      */
-    public function gc($maxLifeTime)
+    public function gc(int $maxLifeTime)
     {
         // 用redis数据自动过期，这里什么都不需要做
     }
@@ -63,42 +63,42 @@ class Redis extends Base
     /**
      * 读取session.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return mixed
      */
-    public function read($sessionID)
+    public function read(string $sessionId)
     {
-        return ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionID) {
-            return $redis->get($this->getKey($sessionID));
+        return ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionId) {
+            return $redis->get($this->getKey($sessionId));
         }, $this->poolName, true);
     }
 
     /**
      * 写入session.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      * @param string $sessionData
-     * @param string $maxLifeTime
+     * @param int    $maxLifeTime
      *
      * @return void
      */
-    public function write($sessionID, $sessionData, $maxLifeTime)
+    public function write(string $sessionId, string $sessionData, int $maxLifeTime)
     {
-        ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionID, $sessionData, $maxLifeTime) {
-            $redis->set($this->getKey($sessionID), $sessionData, $maxLifeTime);
+        ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionId, $sessionData, $maxLifeTime) {
+            $redis->set($this->getKey($sessionId), $sessionData, $maxLifeTime);
         }, $this->poolName, true);
     }
 
     /**
      * 获取在Redis中存储的key.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return string
      */
-    public function getKey($sessionID)
+    public function getKey(string $sessionId): string
     {
-        return $this->keyPrefix . $sessionID;
+        return $this->keyPrefix . $sessionId;
     }
 }

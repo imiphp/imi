@@ -6,7 +6,9 @@ use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\Base;
 use Imi\Server\Group\Exception\MethodNotFoundException;
+use Imi\Server\Group\Handler\IGroupHandler;
 use Imi\Util\ArrayUtil;
 
 /**
@@ -27,42 +29,42 @@ class Group
      *
      * @var \Imi\Server\Base
      */
-    protected $server;
+    protected Base $server;
 
     /**
      * 组中最大允许的客户端数量.
      *
      * @var int
      */
-    protected $maxClients;
+    protected int $maxClients;
 
     /**
      * 组名.
      *
      * @var string
      */
-    protected $groupName;
+    protected string $groupName;
 
     /**
      * 分组处理器.
      *
      * @var string
      */
-    protected $groupHandler = \Imi\Server\Group\Handler\Redis::class;
+    protected string $groupHandler = \Imi\Server\Group\Handler\Redis::class;
 
     /**
      * 处理器.
      *
      * @var \Imi\Server\Group\Handler\IGroupHandler
      */
-    protected $handler;
+    protected IGroupHandler $handler;
 
     /**
      * 是否启用逻辑分组.
      *
      * @var bool
      */
-    protected $status = true;
+    protected bool $status = true;
 
     public function __construct(\Imi\Server\Base $server, string $groupName, int $maxClients = -1)
     {
@@ -85,7 +87,7 @@ class Group
      *
      * @return \Imi\Server\Group\Handler\IGroupHandler
      */
-    public function getHandler()
+    public function getHandler(): IGroupHandler
     {
         return $this->handler;
     }
@@ -97,7 +99,7 @@ class Group
      *
      * @return void
      */
-    public function join($fd)
+    public function join(int $fd)
     {
         $groupName = $this->groupName;
         if ($this->handler->joinGroup($groupName, $fd))
@@ -123,7 +125,7 @@ class Group
      *
      * @return void
      */
-    public function leave($fd)
+    public function leave(int $fd)
     {
         $groupName = $this->groupName;
         if ($this->handler->leaveGroup($groupName, $fd))
@@ -150,7 +152,7 @@ class Group
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->handler->count($this->groupName);
     }
@@ -170,7 +172,7 @@ class Group
      *
      * @return \Imi\Server\Base
      */
-    public function getServer()
+    public function getServer(): Base
     {
         return $this->server;
     }
@@ -180,7 +182,7 @@ class Group
      *
      * @return int
      */
-    public function getMaxClients()
+    public function getMaxClients(): int
     {
         return $this->maxClients;
     }

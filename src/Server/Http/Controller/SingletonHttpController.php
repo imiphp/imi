@@ -2,6 +2,7 @@
 
 namespace Imi\Server\Http\Controller;
 
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 
@@ -13,12 +14,16 @@ abstract class SingletonHttpController extends HttpController
     /**
      * 请求
      *
+     * @ServerInject("HttpRequestProxy")
+     *
      * @var \Imi\Server\Http\Message\Contract\IHttpRequest
      */
     public IHttpRequest $request;
 
     /**
      * 响应.
+     *
+     * @ServerInject("HttpResponseProxy")
      *
      * @var \Imi\Server\Http\Message\Proxy\ResponseProxy
      */

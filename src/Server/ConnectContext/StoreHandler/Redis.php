@@ -24,80 +24,80 @@ class Redis implements IHandler
     /**
      * Redis 连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    protected $redisPool;
+    protected ?string $redisPool = null;
 
     /**
      * redis中第几个库.
      *
      * @var int
      */
-    protected $redisDb = 0;
+    protected int $redisDb = 0;
 
     /**
      * 键.
      *
      * @var string
      */
-    protected $key;
+    protected string $key;
 
     /**
      * 心跳时间，单位：秒.
      *
      * @var int
      */
-    protected $heartbeatTimespan = 5;
+    protected int $heartbeatTimespan = 5;
 
     /**
      * 心跳数据过期时间，单位：秒.
      *
      * @var int
      */
-    protected $heartbeatTtl = 8;
+    protected int $heartbeatTtl = 8;
 
     /**
      * 数据写入前编码回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataEncode = null;
 
     /**
      * 数据读出后处理回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataDecode = null;
 
     /**
      * 锁 ID.
      *
-     * @var string
+     * @var string|null
      */
-    protected $lockId;
+    protected ?string $lockId = null;
 
     /**
      * 心跳Timer的ID.
      *
-     * @var int
+     * @var int|null
      */
-    private $timerID;
+    private ?int $timerId = null;
 
     /**
      * 主进程 ID.
      *
      * @var int
      */
-    private $masterPID;
+    private int $masterPID;
 
     public function __init()
     {
-        if (null === $this->key)
+        if (!isset($this->key))
         {
             $this->key = 'imi:' . App::getNamespace() . ':connect_context';
         }
-        if (null === $this->redisPool)
+        if (!isset($this->redisPool))
         {
             return;
         }
@@ -105,7 +105,7 @@ class Redis implements IHandler
         {
             throw new \RuntimeException('ConnectContextRedis lockId must be set');
         }
-        $workerId = Worker::getWorkerID();
+        $workerId = Worker::getWorkerId();
         $this->masterPID = $masterPID = Swoole::getMasterPID();
         $masterPidKey = $this->key . ':master_pid';
         if (0 === $workerId)
@@ -157,12 +157,12 @@ class Redis implements IHandler
     /**
      * 初始化redis数据.
      *
-     * @param mixed $redis
-     * @param int   $storeMasterPID
+     * @param RedisHandler $redis
+     * @param int|null     $storeMasterPID
      *
      * @return void
      */
-    private function initRedis($redis, $storeMasterPID = null)
+    private function initRedis(RedisHandler $redis, ?int $storeMasterPID = null)
     {
         if (null !== $storeMasterPID)
         {
@@ -178,19 +178,19 @@ class Redis implements IHandler
     /**
      * 开始ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return void
      */
-    private function startPing($redis)
+    private function startPing(RedisHandler $redis)
     {
         if ($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
+            $this->timerId = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
             Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
-                \Swoole\Timer::clear($this->timerID);
-                $this->timerID = null;
+                \Swoole\Timer::clear($this->timerId);
+                $this->timerId = null;
             }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
@@ -202,7 +202,7 @@ class Redis implements IHandler
      */
     public function pingTimer()
     {
-        $this->useRedis(function ($redis) {
+        $this->useRedis(function (RedisHandler $redis) {
             $this->ping($redis);
         });
     }
@@ -210,9 +210,9 @@ class Redis implements IHandler
     /**
      * 获取redis中存储ping的key.
      *
-     * @return void
+     * @return string
      */
-    private function getPingKey()
+    private function getPingKey(): string
     {
         return $this->key . ':ping';
     }
@@ -220,11 +220,11 @@ class Redis implements IHandler
     /**
      * ping操作.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
-    private function ping($redis)
+    private function ping(RedisHandler $redis): bool
     {
         $key = $this->getPingKey();
         $redis->multi();
@@ -249,11 +249,11 @@ class Redis implements IHandler
     /**
      * 是否有ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
-    private function hasPing($redis)
+    private function hasPing(RedisHandler $redis): bool
     {
         $key = $this->getPingKey();
 
@@ -262,9 +262,9 @@ class Redis implements IHandler
 
     public function __destruct()
     {
-        if (null !== $this->timerID)
+        if (null !== $this->timerId)
         {
-            \Swoole\Timer::clear($this->timerID);
+            \Swoole\Timer::clear($this->timerId);
         }
     }
 
@@ -277,7 +277,7 @@ class Redis implements IHandler
      */
     public function read(string $key): array
     {
-        return $this->useRedis(function ($redis) use ($key) {
+        return $this->useRedis(function (RedisHandler $redis) use ($key) {
             $result = $redis->hget($this->getStoreKey(), $key);
             if ($result)
             {
@@ -307,7 +307,7 @@ class Redis implements IHandler
      */
     public function save(string $key, array $data)
     {
-        $this->useRedis(function ($redis) use ($key, $data) {
+        $this->useRedis(function (RedisHandler $redis) use ($key, $data) {
             if ($this->dataEncode)
             {
                 $data = ($this->dataEncode)($data);
@@ -325,7 +325,7 @@ class Redis implements IHandler
      */
     public function destroy(string $key)
     {
-        $this->useRedis(function ($redis) use ($key) {
+        $this->useRedis(function (RedisHandler $redis) use ($key) {
             $redis->hdel($this->getStoreKey(), $key);
         });
     }
@@ -350,11 +350,11 @@ class Redis implements IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
-    public function exists(string $key)
+    public function exists(string $key): bool
     {
-        return $this->useRedis(function ($redis) use ($key) {
+        return $this->useRedis(function (RedisHandler $redis) use ($key) {
             return $redis->hexists($this->getStoreKey(), $key);
         });
     }
@@ -378,7 +378,7 @@ class Redis implements IHandler
      */
     private function useRedis($callback)
     {
-        return ImiRedis::use(function ($redis) use ($callback) {
+        return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
             $redis->select($this->redisDb);
 
             return $callback($redis);
@@ -388,12 +388,12 @@ class Redis implements IHandler
     /**
      * 加锁
      *
-     * @param string   $key
-     * @param callable $callable
+     * @param string        $key
+     * @param callable|null $callable
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null)
+    public function lock(string $key, $callable = null): bool
     {
         return Lock::getInstance($this->lockId, $key)->lock($callable);
     }
@@ -403,7 +403,7 @@ class Redis implements IHandler
      *
      * @return bool
      */
-    public function unlock()
+    public function unlock(): bool
     {
         return Lock::unlock($this->lockId);
     }

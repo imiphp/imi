@@ -275,7 +275,7 @@ abstract class BasePool implements IPool
      */
     public function startAutoGC()
     {
-        if (null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0)
+        if (null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0)
         {
             $gcInterval = $this->config->getGCInterval();
             if (null !== $gcInterval)
@@ -410,7 +410,7 @@ abstract class BasePool implements IPool
      */
     public function startHeartbeat()
     {
-        if ((null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
+        if ((null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
         {
             $this->heartbeatTimerId = \Swoole\Timer::tick($heartbeatInterval * 1000, [$this, 'heartbeat']);
             Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {

@@ -41,7 +41,7 @@ class Server
         $server = ServerManage::getServer('main');
         $swooleServer = $server->getSwooleServer();
         $success = 0;
-        $currentWorkerId = Worker::getWorkerID();
+        $currentWorkerId = Worker::getWorkerId();
         foreach ((array) $workerId as $tmpWorkerId)
         {
             if ($tmpWorkerId === $currentWorkerId)
@@ -80,9 +80,10 @@ class Server
         {
             $workerId = range(0, Worker::getWorkerNum() - 1);
         }
-        $server = ServerManage::getServer('main')->getSwooleServer();
+        $server = ServerManage::getServer('main');
+        $swooleServer = $server->getSwooleServer();
         $success = 0;
-        $currentWorkerId = Worker::getWorkerID();
+        $currentWorkerId = Worker::getWorkerId();
         foreach ((array) $workerId as $tmpWorkerId)
         {
             if ($tmpWorkerId === $currentWorkerId)
@@ -96,7 +97,7 @@ class Server
                 });
                 ++$success;
             }
-            elseif ($server->sendMessage($message, $tmpWorkerId))
+            elseif ($swooleServer->sendMessage($message, $tmpWorkerId))
             {
                 ++$success;
             }
@@ -134,7 +135,7 @@ class Server
      *
      * @return int
      */
-    public static function sendRaw(string $data, $fd = null, $serverName = null): int
+    public static function sendRaw(string $data, $fd = null, ?string $serverName = null): int
     {
         $server = static::getServer($serverName);
         $swooleServer = $server->getSwooleServer();
@@ -177,7 +178,7 @@ class Server
      *
      * @return int
      */
-    public static function sendToAll($data, $serverName = null, bool $toAllWorkers = true): int
+    public static function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
@@ -197,7 +198,7 @@ class Server
      *
      * @return int
      */
-    public static function sendRawToAll(string $data, $serverName = null, bool $toAllWorkers = true): int
+    public static function sendRawToAll(string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
         $swooleServer = $server->getSwooleServer();
@@ -261,7 +262,7 @@ class Server
      *
      * @return int
      */
-    public static function sendToGroup($groupName, $data, $serverName = null): int
+    public static function sendToGroup($groupName, $data, ?string $serverName = null): int
     {
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
@@ -281,7 +282,7 @@ class Server
      *
      * @return int
      */
-    public static function sendRawToGroup($groupName, string $data, $serverName = null): int
+    public static function sendRawToGroup($groupName, string $data, ?string $serverName = null): int
     {
         $server = static::getServer($serverName);
         if ($server instanceof \Imi\Server\WebSocket\Server)

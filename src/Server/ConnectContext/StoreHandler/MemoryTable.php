@@ -33,14 +33,14 @@ class MemoryTable implements IHandler
      *
      * @var string
      */
-    protected $tableName;
+    protected string $tableName;
 
     /**
      * 锁 ID.
      *
-     * @var string
+     * @var string|null
      */
-    protected $lockId;
+    protected ?string $lockId = null;
 
     /**
      * 读取数据.
@@ -118,9 +118,9 @@ class MemoryTable implements IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
-    public function exists(string $key)
+    public function exists(string $key): bool
     {
         return MemoryTableManager::exist($this->tableName, $key);
     }
@@ -128,12 +128,12 @@ class MemoryTable implements IHandler
     /**
      * 加锁
      *
-     * @param string   $key
-     * @param callable $callable
+     * @param string        $key
+     * @param callable|null $callable
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null)
+    public function lock(string $key, $callable = null): bool
     {
         if ($this->lockId)
         {
@@ -150,7 +150,7 @@ class MemoryTable implements IHandler
      *
      * @return bool
      */
-    public function unlock()
+    public function unlock(): bool
     {
         if ($this->lockId)
         {

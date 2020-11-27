@@ -10,7 +10,7 @@ use Imi\RequestContext;
  */
 class ErrorHandler implements IErrorHandler
 {
-    protected $handler = JsonErrorHandler::class;
+    protected string $handler = JsonErrorHandler::class;
 
     public function handle(\Throwable $throwable): bool
     {

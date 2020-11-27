@@ -41,6 +41,6 @@ class BeforeReceive implements IReceiveEventListener
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('TcpDispatcher');
-        $dispatcher->dispatch(new ReceiveData($fd, $e->reactorID, $e->data));
+        $dispatcher->dispatch(new ReceiveData($fd, $e->reactorId, $e->data));
     }
 }

@@ -4,6 +4,7 @@ namespace Imi\Server\Session\Handler;
 
 use Imi\RequestContext;
 use Imi\Util\AtomicManager;
+use Imi\Util\Format\IFormat;
 use Imi\Util\Format\PhpSerialize;
 
 abstract class Base implements ISessionHandler
@@ -13,14 +14,14 @@ abstract class Base implements ISessionHandler
      *
      * @var string
      */
-    protected $formatHandlerClass = PhpSerialize::class;
+    protected string $formatHandlerClass = PhpSerialize::class;
 
     /**
      * 数据格式化处理器对象
      *
      * @var \Imi\Util\Format\IFormat
      */
-    private $formatHandler;
+    private IFormat $formatHandler;
 
     public function __init()
     {
@@ -28,11 +29,11 @@ abstract class Base implements ISessionHandler
     }
 
     /**
-     * 生成SessionID.
+     * 生成SessionId.
      *
      * @return string
      */
-    public function createSessionID()
+    public function createSessionId(): string
     {
         // md5(自增ID + 时间)
         $id = AtomicManager::add('session');

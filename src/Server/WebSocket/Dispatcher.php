@@ -17,14 +17,14 @@ class Dispatcher
      *
      * @var string[]
      */
-    protected $middlewares = [];
+    protected array $middlewares = [];
 
     /**
      * 最终使用的中间件列表.
      *
      * @var array
      */
-    private $finalMiddlewares;
+    private array $finalMiddlewares;
 
     public function dispatch(IFrame $frame)
     {
@@ -43,14 +43,13 @@ class Dispatcher
      */
     protected function getMiddlewares(): array
     {
-        $finalMiddlewares = &$this->finalMiddlewares;
-        if (null === $finalMiddlewares)
+        if (!isset($this->finalMiddlewares))
         {
-            return $finalMiddlewares = array_merge($this->middlewares, [
+            return $this->finalMiddlewares = array_merge($this->middlewares, [
                 \Imi\Server\WebSocket\Middleware\ActionWrapMiddleware::class,
             ]);
         }
 
-        return $finalMiddlewares;
+        return $this->finalMiddlewares;
     }
 }

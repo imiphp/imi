@@ -24,10 +24,10 @@ class Test implements ITaskHandler
 	 * @param TaskParam $param
 	 * @param \Swoole\Server $server
 	 * @param integer $taskID
-	 * @param integer $WorkerID
+	 * @param integer $WorkerId
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerId)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();
@@ -122,10 +122,10 @@ class Test implements ITaskHandler
 	 * @param TaskParam $param
 	 * @param \Swoole\Server $server
 	 * @param integer $taskID
-	 * @param integer $WorkerID
+	 * @param integer $WorkerId
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerId)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();

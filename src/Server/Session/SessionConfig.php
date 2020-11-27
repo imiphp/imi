@@ -15,14 +15,14 @@ class SessionConfig
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * @RequestInject("SessionCookie")
      *
-     * @var \Imi\Server\Session\SessionCookie
+     * @var \Imi\Server\Session\SessionCookie|null
      */
-    public $cookie;
+    public ?SessionCookie $cookie;
 
     /**
      * 每次请求完成后触发垃圾回收的概率，默认为1%
@@ -30,23 +30,23 @@ class SessionConfig
      *
      * @var float
      */
-    public $gcProbability;
+    public float $gcProbability;
 
     /**
      * 最大存活时间，默认30天，单位秒.
      *
      * @var int
      */
-    public $maxLifeTime;
+    public int $maxLifeTime;
 
     /**
      * Session 前缀
      *
-     * @var string
+     * @var string|null
      */
-    public $prefix;
+    public ?string $prefix;
 
-    public function __construct(string $name = 'imisid', SessionCookie $cookie = null, float $gcProbability = 0.01, int $maxLifeTime = 86400 * 30, string $prefix = null)
+    public function __construct(string $name = 'imisid', ?SessionCookie $cookie = null, float $gcProbability = 0.01, int $maxLifeTime = 86400 * 30, ?string $prefix = null)
     {
         $this->name = $name;
         if (null !== $cookie)

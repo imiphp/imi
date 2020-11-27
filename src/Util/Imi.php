@@ -502,10 +502,10 @@ class Imi
             case 'manager':
                 break;
             case 'worker':
-                $data['workerId'] = Worker::getWorkerID();
+                $data['workerId'] = Worker::getWorkerId();
                 break;
             case 'taskWorker':
-                $data['workerId'] = Worker::getWorkerID();
+                $data['workerId'] = Worker::getWorkerId();
                 break;
             case 'process':
                 if (!isset($data['processName']))

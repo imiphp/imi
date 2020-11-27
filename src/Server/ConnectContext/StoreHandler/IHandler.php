@@ -50,24 +50,24 @@ interface IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
-    public function exists(string $key);
+    public function exists(string $key): bool;
 
     /**
      * 加锁
      *
-     * @param string   $key
-     * @param callable $callable
+     * @param string        $key
+     * @param callable|null $callable
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null);
+    public function lock(string $key, $callable = null): bool;
 
     /**
      * 解锁
      *
      * @return bool
      */
-    public function unlock();
+    public function unlock(): bool;
 }

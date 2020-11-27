@@ -21,56 +21,56 @@ class SessionManager
      *
      * @var \Imi\Server\Session\SessionConfig
      */
-    protected $config;
+    protected SessionConfig $config;
 
     /**
      * 是否已经启动.
      *
      * @var bool
      */
-    private $isStart = false;
+    private bool $isStart = false;
 
     /**
      * Session处理对象
      *
      * @var \Imi\Server\Session\Handler\ISessionHandler
      */
-    private $handler;
+    private ISessionHandler $handler;
 
     /**
      * session id.
      *
      * @var string
      */
-    private $id;
+    private string $id;
 
     /**
      * Session 数据.
      *
      * @var array
      */
-    private $data = [];
+    private array $data = [];
 
     /**
      * 是否对Session数据有修改.
      *
      * @var bool
      */
-    private $isChanged = false;
+    private bool $isChanged = false;
 
     /**
      * 当前是否是新的会话.
      *
      * @var bool
      */
-    private $isNewSession;
+    private bool $isNewSession;
 
     /**
      * Session处理类.
      *
      * @var string
      */
-    protected $handlerClass = \Imi\Server\Session\Handler\File::class;
+    protected string $handlerClass = \Imi\Server\Session\Handler\File::class;
 
     public function __construct(SessionConfig $config = null)
     {
@@ -83,24 +83,26 @@ class SessionManager
     /**
      * 开启session.
      *
+     * @param string|null $sessionId
+     *
      * @return void
      */
-    public function start(string $sessionID = null)
+    public function start(?string $sessionId = null)
     {
         if ($this->isStart)
         {
             throw new \RuntimeException('Session can not repeated start');
         }
         $this->handler = $handler = RequestContext::getServerBean($this->handlerClass);
-        $this->isNewSession = $isNewSession = null === $sessionID;
+        $this->isNewSession = $isNewSession = null === $sessionId;
         if ($isNewSession)
         {
-            $this->id = $handler->createSessionID();
+            $this->id = $handler->createSessionId();
         }
         else
         {
-            $this->id = $sessionID;
-            $data = $handler->read($sessionID);
+            $this->id = $sessionId;
+            $data = $handler->read($sessionId);
             $this->data = $handler->decode($data);
         }
         $this->isStart = true;
@@ -168,7 +170,7 @@ class SessionManager
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->config->name;
     }
@@ -178,7 +180,7 @@ class SessionManager
      *
      * @return string
      */
-    public function getID()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -219,12 +221,12 @@ class SessionManager
     /**
      * 获取Session值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param string|null $name
+     * @param mixed       $default
      *
      * @return mixed
      */
-    public function get($name = null, $default = null)
+    public function get(?string $name = null, $default = null)
     {
         if (null === $name)
         {
@@ -243,7 +245,7 @@ class SessionManager
      *
      * @return void
      */
-    public function set($name, $value)
+    public function set(string $name, $value)
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::set($this->data, $name, $value);
@@ -257,7 +259,7 @@ class SessionManager
      *
      * @return void
      */
-    public function delete($name)
+    public function delete(string $name)
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::remove($this->data, $name);
@@ -272,7 +274,7 @@ class SessionManager
      *
      * @return mixed
      */
-    public function once($name, $default = null)
+    public function once(string $name, $default = null)
     {
         $name = $this->parseName($name);
         $value = $this->get($name, $default);
@@ -312,7 +314,7 @@ class SessionManager
      *
      * @return string
      */
-    public function parseName($name)
+    public function parseName(string $name): string
     {
         if (null !== $this->config->prefix)
         {
@@ -329,7 +331,7 @@ class SessionManager
      *
      * @return bool
      */
-    public function isChanged()
+    public function isChanged(): bool
     {
         return $this->isChanged;
     }
@@ -339,7 +341,7 @@ class SessionManager
      *
      * @return bool
      */
-    public function isNewSession()
+    public function isNewSession(): bool
     {
         return $this->isNewSession;
     }

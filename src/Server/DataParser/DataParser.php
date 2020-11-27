@@ -58,7 +58,7 @@ class DataParser
      *
      * @return string
      */
-    public function getParserClass(?string $serverName = null)
+    public function getParserClass(?string $serverName = null): string
     {
         $requestContext = RequestContext::getContext();
         if ($serverName)

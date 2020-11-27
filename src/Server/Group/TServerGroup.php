@@ -11,7 +11,7 @@ trait TServerGroup
      *
      * @var \Imi\Server\Group\Group[]
      */
-    private $groups = [];
+    private array $groups = [];
 
     /**
      * 组是否存在.
@@ -20,7 +20,7 @@ trait TServerGroup
      *
      * @return bool
      */
-    public function hasGroup(string $groupName)
+    public function hasGroup(string $groupName): bool
     {
         return isset($this->groups[$groupName]);
     }
@@ -33,7 +33,7 @@ trait TServerGroup
      *
      * @return \Imi\Server\Group\Group
      */
-    public function createGroup(string $groupName, int $maxClients = -1)
+    public function createGroup(string $groupName, int $maxClients = -1): Group
     {
         $groups = &$this->groups;
         if (!isset($groups[$groupName]))
@@ -51,7 +51,7 @@ trait TServerGroup
      *
      * @return \Imi\Server\Group\Group|null
      */
-    public function getGroup(string $groupName)
+    public function getGroup(string $groupName): ?Group
     {
         return $this->groups[$groupName] ?? null;
     }
@@ -89,7 +89,7 @@ trait TServerGroup
      * @param string $methodName
      * @param mixed  ...$args
      *
-     * @return array
+     * @return mixed
      */
     public function groupCall(string $groupName, string $methodName, ...$args)
     {

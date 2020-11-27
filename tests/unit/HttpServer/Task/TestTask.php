@@ -16,12 +16,12 @@ class TestTask implements ITaskHandler
      *
      * @param TaskParam      $param
      * @param \Swoole\Server $server
-     * @param int            $taskID
-     * @param int            $WorkerID
+     * @param int            $taskId
+     * @param int            $WorkerId
      *
      * @return void
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
     {
         $data = $param->getData();
 
@@ -37,7 +37,7 @@ class TestTask implements ITaskHandler
      *
      * @return void
      */
-    public function finish(\Swoole\Server $server, int $taskID, $data)
+    public function finish(\Swoole\Server $server, int $taskId, $data)
     {
     }
 }

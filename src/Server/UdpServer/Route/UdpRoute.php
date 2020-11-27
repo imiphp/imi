@@ -16,16 +16,16 @@ class UdpRoute implements IRoute
      *
      * @var \Imi\Server\UdpServer\Route\RouteItem[]
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * 路由解析处理.
      *
      * @param mixed $data
      *
-     * @return array
+     * @return RouteResult|null
      */
-    public function parse($data)
+    public function parse($data): ?RouteResult
     {
         foreach ($this->rules as $item)
         {
@@ -47,7 +47,7 @@ class UdpRoute implements IRoute
      *
      * @return void
      */
-    public function addRuleAnnotation(UdpRouteAnnotation $annotation, $callable, $options = [])
+    public function addRuleAnnotation(UdpRouteAnnotation $annotation, $callable, array $options = [])
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))
@@ -78,7 +78,7 @@ class UdpRoute implements IRoute
      *
      * @return bool
      */
-    public function existsRule(UdpRouteAnnotation $rule)
+    public function existsRule(UdpRouteAnnotation $rule): bool
     {
         return isset($this->rules[spl_object_hash($rule)]);
     }
@@ -88,7 +88,7 @@ class UdpRoute implements IRoute
      *
      * @return \Imi\Server\UdpServer\Route\RouteItem[]
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -101,7 +101,7 @@ class UdpRoute implements IRoute
      *
      * @return bool
      */
-    private function checkCondition($data, UdpRouteAnnotation $annotation)
+    private function checkCondition($data, UdpRouteAnnotation $annotation): bool
     {
         if ([] === $annotation->condition)
         {

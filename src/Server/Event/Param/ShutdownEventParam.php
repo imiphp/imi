@@ -2,6 +2,7 @@
 
 namespace Imi\Server\Event\Param;
 
+use Imi\Server\Base;
 use Imi\Event\EventParam;
 
 class ShutdownEventParam extends EventParam
@@ -11,5 +12,5 @@ class ShutdownEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 }

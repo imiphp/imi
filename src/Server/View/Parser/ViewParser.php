@@ -23,7 +23,7 @@ class ViewParser extends BaseParser
      *
      * @var \Imi\Server\View\Annotation\View[]
      */
-    private $viewCache = [];
+    private array $viewCache = [];
 
     /**
      * 处理方法.
@@ -46,7 +46,7 @@ class ViewParser extends BaseParser
      *
      * @return \Imi\Server\View\Annotation\View
      */
-    public function getByCallable($callable)
+    public function getByCallable($callable): View
     {
         if ($callable instanceof RouteCallable)
         {

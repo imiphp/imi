@@ -2,6 +2,9 @@
 
 namespace Imi\Server\UdpServer\Controller;
 
+use Imi\Server\UdpServer\Server;
+use Imi\Server\UdpServer\Message\IPacketData;
+
 /**
  * UDP 控制器.
  */
@@ -12,12 +15,12 @@ abstract class UdpController
      *
      * @var \Imi\Server\UdpServer\Server
      */
-    public $server;
+    public Server $server;
 
     /**
      * 桢.
      *
      * @var \Imi\Server\UdpServer\Message\IPacketData
      */
-    public $data;
+    public IPacketData $data;
 }

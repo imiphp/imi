@@ -5,6 +5,7 @@ namespace Imi\Server\View\Handler;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Http\Message\Response;
+use Imi\Server\View\Engine\IEngine;
 use Imi\Util\File;
 
 /**
@@ -17,16 +18,16 @@ class Html implements IHandler
     /**
      * 模版文件根路径.
      *
-     * @var string
+     * @var string|null
      */
-    protected $templatePath;
+    protected ?string $templatePath = null;
 
     /**
      * 支持的模版文件扩展名，优先级按先后顺序.
      *
      * @var array
      */
-    protected $fileSuffixs = [
+    protected array $fileSuffixs = [
         'tpl',
         'html',
         'php',
@@ -37,14 +38,14 @@ class Html implements IHandler
      *
      * @var string
      */
-    protected $templateEngine = \Imi\Server\View\Engine\Php::class;
+    protected string $templateEngine = \Imi\Server\View\Engine\Php::class;
 
     /**
      * 模版引擎处理对象
      *
      * @var \Imi\Server\View\Engine\IEngine
      */
-    protected $templateEngineInstance;
+    protected IEngine $templateEngineInstance;
 
     public function __init()
     {

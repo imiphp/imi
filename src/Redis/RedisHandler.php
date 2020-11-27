@@ -58,7 +58,7 @@ namespace Imi\Redis;
  * @method mixed getLastError()
  * @method mixed getMode()
  * @method mixed getOption($option)
- * @method mixed getPersistentID()
+ * @method mixed getPersistentId()
  * @method mixed getPort()
  * @method mixed getRange($key, $start, $end)
  * @method mixed getReadTimeout()

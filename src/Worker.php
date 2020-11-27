@@ -8,11 +8,11 @@ use Imi\Server\Event\Param\WorkerStartEventParam;
 class Worker
 {
     /**
-     * 当前进程的WorkerID.
+     * 当前进程的WorkerId.
      *
      * @var int
      */
-    private static $workerID;
+    private static $workerId;
 
     /**
      * 是否初始化完毕.
@@ -52,26 +52,26 @@ class Worker
      *
      * @return int|null
      */
-    public static function getWorkerID()
+    public static function getWorkerId()
     {
-        if (null === static::$workerID)
+        if (null === static::$workerId)
         {
             $main = ServerManage::getServer('main');
             if ($main instanceof \Imi\Server\Base)
             {
-                $workerID = $main->getSwooleServer()->worker_id;
-                if ($workerID > -1)
+                $workerId = $main->getSwooleServer()->worker_id;
+                if ($workerId > -1)
                 {
-                    static::$workerID = $workerID;
+                    static::$workerId = $workerId;
                 }
             }
             elseif ($main instanceof \Imi\Server\CoServer)
             {
-                static::$workerID = $main->getWorkerId();
+                static::$workerId = $main->getWorkerId();
             }
         }
 
-        return static::$workerID;
+        return static::$workerId;
     }
 
     /**
@@ -111,7 +111,7 @@ class Worker
             // 触发项目的workerstart事件
             Event::trigger('IMI.MAIN_SERVER.WORKER.START.APP', [
                 'server'    => $server,
-                'workerID'  => static::$workerID,
+                'workerId'  => static::$workerId,
             ], $target, WorkerStartEventParam::class);
             static::$workerStartAppComplete = true;
         }

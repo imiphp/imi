@@ -145,26 +145,26 @@ class Update
             }
             $pk = $pks[0];
 
-            $oldIDs = $rightModel::query()->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
+            $oldIds = $rightModel::query()->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
-            $updateIDs = [];
+            $updateIds = [];
             foreach ($model->$propertyName as $row)
             {
                 if (null !== $row->$pk)
                 {
-                    $updateIDs[] = $row->$pk;
+                    $updateIds[] = $row->$pk;
                 }
                 $row->$rightField = $modelLeftValue;
                 $row->save();
             }
 
-            $deleteIDs = array_diff($oldIDs, $updateIDs);
+            $deleteIds = array_diff($oldIds, $updateIds);
 
-            if ($deleteIDs)
+            if ($deleteIds)
             {
                 // 批量删除
-                $rightModel::deleteBatch(function (IQuery $query) use ($pk, $deleteIDs) {
-                    $query->whereIn($pk, $deleteIDs);
+                $rightModel::deleteBatch(function (IQuery $query) use ($pk, $deleteIds) {
+                    $query->whereIn($pk, $deleteIds);
                 });
             }
         }
@@ -218,26 +218,26 @@ class Update
         if ($orphanRemoval)
         {
             // 删除无关联数据
-            $oldRightIDs = $middleModel::query()->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
+            $oldRightIds = $middleModel::query()->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
-            $updateIDs = [];
+            $updateIds = [];
             foreach ($model->$propertyName as $row)
             {
                 if (null !== $row->$middleRightField)
                 {
-                    $updateIDs[] = $row->$middleRightField;
+                    $updateIds[] = $row->$middleRightField;
                 }
                 $row->$middleLeftField = $modelLeftValue;
                 $row->save();
             }
 
-            $deleteIDs = array_diff($oldRightIDs, $updateIDs);
+            $deleteIds = array_diff($oldRightIds, $updateIds);
 
-            if ($deleteIDs)
+            if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs) {
-                    $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIds) {
+                    $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }
         }
@@ -380,27 +380,27 @@ class Update
             }
             $pk = $pks[0];
 
-            $oldIDs = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
+            $oldIds = $rightModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $modelLeftValue)->field($pk)->select()->getColumn();
 
-            $updateIDs = [];
+            $updateIds = [];
             foreach ($model->$propertyName as $row)
             {
                 if (null !== $row->$pk)
                 {
-                    $updateIDs[] = $row->$pk;
+                    $updateIds[] = $row->$pk;
                 }
                 $row->$rightField = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
 
-            $deleteIDs = array_diff($oldIDs, $updateIDs);
+            $deleteIds = array_diff($oldIds, $updateIds);
 
-            if ($deleteIDs)
+            if ($deleteIds)
             {
                 // 批量删除
-                $rightModel::deleteBatch(function (IQuery $query) use ($pk, $deleteIDs) {
-                    $query->whereIn($pk, $deleteIDs);
+                $rightModel::deleteBatch(function (IQuery $query) use ($pk, $deleteIds) {
+                    $query->whereIn($pk, $deleteIds);
                 });
             }
         }
@@ -454,27 +454,27 @@ class Update
         if ($orphanRemoval)
         {
             // 删除无关联数据
-            $oldRightIDs = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
+            $oldRightIds = $middleModel::query()->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->field($middleRightField)->select()->getColumn();
 
-            $updateIDs = [];
+            $updateIds = [];
             foreach ($model->$propertyName as $row)
             {
                 if (null !== $row->$middleRightField)
                 {
-                    $updateIDs[] = $row->$middleRightField;
+                    $updateIds[] = $row->$middleRightField;
                 }
                 $row->$middleLeftField = $modelLeftValue;
                 $row->{$annotation->type} = $annotation->typeValue;
                 $row->save();
             }
 
-            $deleteIDs = array_diff($oldRightIDs, $updateIDs);
+            $deleteIds = array_diff($oldRightIds, $updateIds);
 
-            if ($deleteIDs)
+            if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation) {
-                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIds, $annotation) {
+                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }
         }

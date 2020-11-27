@@ -18,7 +18,7 @@ class View
      *
      * @var array
      */
-    protected $coreHandlers = [
+    protected array $coreHandlers = [
         'html'  => \Imi\Server\View\Handler\Html::class,
         'json'  => \Imi\Server\View\Handler\Json::class,
         'xml'   => \Imi\Server\View\Handler\Xml::class,
@@ -29,21 +29,21 @@ class View
      *
      * @var array
      */
-    protected $exHandlers = [];
+    protected array $exHandlers = [];
 
     /**
      * 传入视图处理器的数据.
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * 视图处理器对象列表.
      *
      * @var \Imi\Server\View\Handler\IHandler[]
      */
-    protected $handlers;
+    protected array $handlers = [];
 
     public function __init()
     {
@@ -57,7 +57,7 @@ class View
         }
     }
 
-    public function render($renderType, $data, $options, Response $response = null): Response
+    public function render(string $renderType, $data, array $options, Response $response = null): Response
     {
         $handlers = &$this->handlers;
         if (isset($handlers[$renderType]))

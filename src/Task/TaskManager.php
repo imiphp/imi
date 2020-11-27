@@ -17,13 +17,13 @@ class TaskManager
      * 调用成功返回任务ID，失败返回false.
      *
      * @param TaskInfo $taskInfo
-     * @param int      $workerID
+     * @param int      $workerId
      *
      * @return int|bool
      */
-    public static function post(TaskInfo $taskInfo, int $workerID = -1)
+    public static function post(TaskInfo $taskInfo, int $workerId = -1)
     {
-        return ServerManage::getServer('main')->getSwooleServer()->task($taskInfo, $workerID, [$taskInfo->getTaskHandler(), 'finish']);
+        return ServerManage::getServer('main')->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
     }
 
     /**
@@ -32,13 +32,13 @@ class TaskManager
      *
      * @param string $name
      * @param mixed  $data
-     * @param int    $workerID
+     * @param int    $workerId
      *
      * @return int|bool
      */
-    public static function nPost(string $name, $data, int $workerID = -1)
+    public static function nPost(string $name, $data, int $workerId = -1)
     {
-        return static::post(self::getTaskInfo($name, $data), $workerID);
+        return static::post(self::getTaskInfo($name, $data), $workerId);
     }
 
     /**
@@ -47,14 +47,14 @@ class TaskManager
      *
      * @param TaskInfo $taskInfo
      * @param float    $timeout
-     * @param int      $workerID
+     * @param int      $workerId
      *
      * @return string|bool
      */
-    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerID = -1)
+    public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1)
     {
         $server = ServerManage::getServer('main')->getSwooleServer();
-        $result = $server->taskwait($taskInfo, $timeout, $workerID);
+        $result = $server->taskwait($taskInfo, $timeout, $workerId);
         $taskInfo->getTaskHandler()->finish($server, -1, $result);
 
         return $result;
@@ -67,13 +67,13 @@ class TaskManager
      * @param string $name
      * @param mixed  $data
      * @param float  $timeout
-     * @param int    $workerID
+     * @param int    $workerId
      *
      * @return string|bool
      */
-    public static function nPostWait(string $name, $data, float $timeout, int $workerID = -1)
+    public static function nPostWait(string $name, $data, float $timeout, int $workerId = -1)
     {
-        return static::postWait(self::getTaskInfo($name, $data), $timeout, $workerID);
+        return static::postWait(self::getTaskInfo($name, $data), $timeout, $workerId);
     }
 
     /**

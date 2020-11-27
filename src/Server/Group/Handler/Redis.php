@@ -21,70 +21,70 @@ class Redis implements IGroupHandler
     /**
      * Redis 连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    protected $redisPool;
+    protected ?string $redisPool = null;
 
     /**
      * redis中第几个库.
      *
      * @var int
      */
-    protected $redisDb = 0;
+    protected int $redisDb = 0;
 
     /**
      * 心跳时间，单位：秒.
      *
      * @var int
      */
-    protected $heartbeatTimespan = 5;
+    protected int $heartbeatTimespan = 5;
 
     /**
      * 心跳数据过期时间，单位：秒.
      *
      * @var int
      */
-    protected $heartbeatTtl = 8;
+    protected int $heartbeatTtl = 8;
 
     /**
      * 该服务的分组键.
      *
      * @var string
      */
-    protected $key;
+    protected string $key;
 
     /**
      * 心跳Timer的ID.
      *
-     * @var int
+     * @var int|null
      */
-    private $timerID;
+    private ?int $timerId = null;
 
     /**
      * 组配置.
      *
      * @var array
      */
-    private $groups = [];
+    private array $groups = [];
 
     /**
      * 主进程 ID.
      *
      * @var int
      */
-    private $masterPID;
+    private int $masterPID;
 
     public function __init()
     {
-        if (null === $this->key)
+        if (!isset($this->key))
         {
             $this->key = 'imi:' . App::getNamespace() . ':connect_group';
         }
-        if (null === $this->redisPool)
+        if (!isset($this->redisPool))
         {
             return;
         }
-        $workerId = Worker::getWorkerID();
+        $workerId = Worker::getWorkerId();
         $this->masterPID = $masterPID = Swoole::getMasterPID();
         $masterPidKey = $this->key . ':master_pid';
         if (0 === $workerId)
@@ -136,12 +136,12 @@ class Redis implements IGroupHandler
     /**
      * 初始化redis数据.
      *
-     * @param mixed $redis
-     * @param int   $storeMasterPID
+     * @param RedisHandler $redis
+     * @param int|null     $storeMasterPID
      *
      * @return void
      */
-    private function initRedis($redis, $storeMasterPID = null)
+    private function initRedis(RedisHandler $redis, ?int $storeMasterPID = null)
     {
         if (null !== $storeMasterPID)
         {
@@ -182,19 +182,19 @@ class Redis implements IGroupHandler
     /**
      * 开始ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return void
      */
-    private function startPing($redis)
+    private function startPing(RedisHandler $redis)
     {
         if ($this->ping($redis))
         {
             // 心跳定时器
-            $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
+            $this->timerId = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
             Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
-                \Swoole\Timer::clear($this->timerID);
-                $this->timerID = null;
+                \Swoole\Timer::clear($this->timerId);
+                $this->timerId = null;
             }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
@@ -214,9 +214,9 @@ class Redis implements IGroupHandler
     /**
      * 获取redis中存储ping的key.
      *
-     * @return void
+     * @return string
      */
-    private function getPingKey()
+    private function getPingKey(): string
     {
         return $this->key . ':ping';
     }
@@ -224,11 +224,11 @@ class Redis implements IGroupHandler
     /**
      * ping操作.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
-    private function ping($redis)
+    private function ping(RedisHandler $redis): bool
     {
         $key = $this->getPingKey();
         $redis->multi();
@@ -253,11 +253,11 @@ class Redis implements IGroupHandler
     /**
      * 是否有ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
-    private function hasPing($redis)
+    private function hasPing(RedisHandler $redis): bool
     {
         $key = $this->getPingKey();
 
@@ -266,9 +266,9 @@ class Redis implements IGroupHandler
 
     public function __destruct()
     {
-        if (null !== $this->timerID)
+        if (null !== $this->timerId)
         {
-            \Swoole\Timer::clear($this->timerID);
+            \Swoole\Timer::clear($this->timerId);
         }
     }
 
@@ -279,7 +279,7 @@ class Redis implements IGroupHandler
      *
      * @return bool
      */
-    public function hasGroup(string $groupName)
+    public function hasGroup(string $groupName): bool
     {
         return true;
     }
@@ -297,7 +297,7 @@ class Redis implements IGroupHandler
         $groups = &$this->groups;
         if (!isset($groups[$groupName]))
         {
-            $this->useRedis(function ($redis) use ($groupName) {
+            $this->useRedis(function (RedisHandler $redis) use ($groupName) {
                 $redis->sAdd($this->getGroupsKey(), $groupName);
             });
             $groups[$groupName] = [
@@ -315,7 +315,7 @@ class Redis implements IGroupHandler
      */
     public function closeGroup(string $groupName)
     {
-        $this->useRedis(function ($redis) use ($groupName) {
+        $this->useRedis(function (RedisHandler $redis) use ($groupName) {
             $key = $this->getGroupNameKey($groupName);
             $redis->del($key);
             $redis->sRem($this->getGroupsKey(), $groupName);
@@ -332,7 +332,7 @@ class Redis implements IGroupHandler
      */
     public function joinGroup(string $groupName, int $fd): bool
     {
-        return $this->useRedis(function ($redis) use ($groupName, $fd) {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $fd) {
             $key = $this->getGroupNameKey($groupName);
 
             return $redis->sadd($key, $fd) > 0;
@@ -349,7 +349,7 @@ class Redis implements IGroupHandler
      */
     public function leaveGroup(string $groupName, int $fd): bool
     {
-        return $this->useRedis(function ($redis) use ($groupName, $fd) {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $fd) {
             $key = $this->getGroupNameKey($groupName);
 
             return $redis->srem($key, $fd) > 0;
@@ -366,7 +366,7 @@ class Redis implements IGroupHandler
      */
     public function isInGroup(string $groupName, int $fd): bool
     {
-        return $this->useRedis(function ($redis) use ($groupName, $fd) {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $fd) {
             $key = $this->getGroupNameKey($groupName);
             $redis->sIsMember($key, $fd);
         });
@@ -383,7 +383,7 @@ class Redis implements IGroupHandler
     {
         $groups = $this->groups;
 
-        return $this->useRedis(function ($redis) use ($groupName, $groups) {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $groups) {
             $key = $this->getGroupNameKey($groupName);
             if ($groups[$groupName]['maxClient'] > 0)
             {
@@ -415,7 +415,7 @@ class Redis implements IGroupHandler
      */
     public function count(string $groupName): int
     {
-        return $this->useRedis(function ($redis) use ($groupName) {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName) {
             $key = $this->getGroupNameKey($groupName);
 
             return $redis->scard($key);
@@ -458,7 +458,7 @@ class Redis implements IGroupHandler
      */
     private function useRedis($callback)
     {
-        return ImiRedis::use(function ($redis) use ($callback) {
+        return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
             $redis->select($this->redisDb);
 
             return $callback($redis);

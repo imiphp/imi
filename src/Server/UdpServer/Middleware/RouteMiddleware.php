@@ -5,8 +5,10 @@ namespace Imi\Server\UdpServer\Middleware;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\UdpServer\Error\IUdpRouteNotFoundHandler;
 use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
+use Imi\Server\UdpServer\Route\UdpRoute;
 
 /**
  * @Bean("UDPRouteMiddleware")
@@ -18,14 +20,14 @@ class RouteMiddleware implements IMiddleware
      *
      * @var \Imi\Server\UdpServer\Route\UdpRoute
      */
-    protected $route;
+    protected UdpRoute $route;
 
     /**
      * @ServerInject("UdpRouteNotFoundHandler")
      *
      * @var \Imi\Server\UdpServer\Error\IUdpRouteNotFoundHandler
      */
-    protected $notFoundHandler;
+    protected IUdpRouteNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.

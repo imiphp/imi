@@ -11,14 +11,14 @@ class RouteResult
      *
      * @var \Imi\Server\WebSocket\Route\RouteItem
      */
-    public $routeItem;
+    public RouteItem $routeItem;
 
     /**
      * 参数.
      *
      * @var array
      */
-    public $params;
+    public array $params;
 
     /**
      * 回调.
@@ -27,7 +27,7 @@ class RouteResult
      */
     public $callable;
 
-    public function __construct(RouteItem $routeItem, $params = [])
+    public function __construct(RouteItem $routeItem, array $params = [])
     {
         $this->routeItem = $routeItem;
         $this->params = $params;

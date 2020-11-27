@@ -3,6 +3,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
 
 class ReceiveEventParam extends EventParam
 {
@@ -11,26 +12,26 @@ class ReceiveEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 客户端连接的标识符.
      *
      * @var int
      */
-    public $fd;
+    public int $fd;
 
     /**
      * Reactor线程ID.
      *
      * @var int
      */
-    public $reactorID;
+    public int $reactorId;
 
     /**
      * 接收到的数据.
      *
      * @var string
      */
-    public $data;
+    public string $data;
 }

@@ -16,7 +16,7 @@ class FdMap
      *
      * @var array
      */
-    protected $map = [];
+    protected array $map = [];
 
     /**
      * 获取fd绑定的所有的组.
@@ -25,7 +25,7 @@ class FdMap
      *
      * @return \Imi\Server\Group\Group[]
      */
-    public function getGroups(int $fd)
+    public function getGroups(int $fd): array
     {
         return $this->map[$fd] ?? [];
     }

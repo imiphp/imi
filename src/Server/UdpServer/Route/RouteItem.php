@@ -11,7 +11,7 @@ class RouteItem
      *
      * @var \Imi\Server\Route\Annotation\Udp\UdpRoute
      */
-    public $annotation;
+    public UdpRoute $annotation;
 
     /**
      * 回调.
@@ -25,21 +25,21 @@ class RouteItem
      *
      * @var array
      */
-    public $middlewares = [];
+    public array $middlewares = [];
 
     /**
      * 其它配置项.
      *
      * @var array
      */
-    public $options;
+    public array $options;
 
     /**
      * 是否为单例控制器.
      *
      * @var bool
      */
-    public $singleton = false;
+    public bool $singleton = false;
 
     public function __construct(UdpRoute $annotation, $callable, array $options = [])
     {

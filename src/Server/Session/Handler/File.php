@@ -3,7 +3,6 @@
 namespace Imi\Server\Session\Handler;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Util\Coroutine;
 use Imi\Util\File as FileUtil;
 
 /**
@@ -16,7 +15,7 @@ class File extends Base
      *
      * @var string
      */
-    protected $savePath;
+    protected string $savePath;
 
     /**
      * 执行初始化操作.
@@ -30,13 +29,13 @@ class File extends Base
     /**
      * 销毁session数据.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return void
      */
-    public function destroy($sessionID)
+    public function destroy(string $sessionId)
     {
-        $fileName = $this->getFileName($sessionID);
+        $fileName = $this->getFileName($sessionId);
         if (is_file($fileName))
         {
             unlink($fileName);
@@ -50,7 +49,7 @@ class File extends Base
      *
      * @return void
      */
-    public function gc($maxLifeTime)
+    public function gc(int $maxLifeTime)
     {
         $files = new \FilesystemIterator($this->savePath);
         $maxTime = time() - $maxLifeTime;
@@ -67,16 +66,16 @@ class File extends Base
     /**
      * 读取session.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
-     * @return mixed
+     * @return string
      */
-    public function read($sessionID)
+    public function read(string $sessionId): string
     {
-        $fileName = $this->getFileName($sessionID);
+        $fileName = $this->getFileName($sessionId);
         if (is_file($fileName))
         {
-            return Coroutine::readFile($fileName);
+            return file_get_contents($fileName);
         }
         else
         {
@@ -87,26 +86,26 @@ class File extends Base
     /**
      * 写入session.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      * @param string $sessionData
-     * @param string $maxLifeTime
+     * @param int    $maxLifeTime
      *
      * @return void
      */
-    public function write($sessionID, $sessionData, $maxLifeTime)
+    public function write(string $sessionId, string $sessionData, int $maxLifeTime)
     {
-        Coroutine::writeFile($this->getFileName($sessionID), $sessionData, \LOCK_EX);
+        file_put_contents($this->getFileName($sessionId), $sessionData, \LOCK_EX);
     }
 
     /**
      * 获取文件存储的完整文件名.
      *
-     * @param string $sessionID
+     * @param string $sessionId
      *
      * @return string
      */
-    public function getFileName($sessionID)
+    public function getFileName(string $sessionId): string
     {
-        return FileUtil::path($this->savePath, $sessionID . '.session');
+        return FileUtil::path($this->savePath, $sessionId . '.session');
     }
 }

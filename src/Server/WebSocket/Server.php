@@ -18,6 +18,7 @@ use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Util\Bit;
 use Imi\Util\ImiPriority;
+use Swoole\WebSocket\Server as WebSocketServer;
 
 /**
  * WebSocket 服务器类.
@@ -31,21 +32,21 @@ class Server extends Base
      *
      * @var bool
      */
-    private $wss;
+    private bool $wss;
 
     /**
      * 是否为 https 服务
      *
      * @var bool
      */
-    private $https;
+    private bool $https;
 
     /**
      * 是否为 http2 服务
      *
      * @var bool
      */
-    private $http2;
+    private bool $http2;
 
     /**
      * 创建 swoole 服务器对象
@@ -83,7 +84,7 @@ class Server extends Base
      *
      * @return array
      */
-    protected function getServerInitConfig()
+    protected function getServerInitConfig(): array
     {
         return [
             'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
@@ -134,7 +135,7 @@ class Server extends Base
 
         if ($event = ($events['message'] ?? true))
         {
-            $this->swoolePort->on('message', \is_callable($event) ? $event : function ($server, \Swoole\WebSocket\Frame $frame) {
+            $this->swoolePort->on('message', \is_callable($event) ? $event : function (WebSocketServer $server, \Swoole\WebSocket\Frame $frame) {
                 try
                 {
                     RequestContext::muiltiSet([
@@ -154,7 +155,7 @@ class Server extends Base
 
         if ($event = ($events['close'] ?? true))
         {
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function ($server, $fd, $reactorID) {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (WebSocketServer $server, int $fd, int $reactorId) {
                 try
                 {
                     RequestContext::muiltiSet([
@@ -163,7 +164,7 @@ class Server extends Base
                     $this->trigger('close', [
                         'server'    => $this,
                         'fd'        => $fd,
-                        'reactorID' => $reactorID,
+                        'reactorId' => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -205,7 +206,7 @@ class Server extends Base
      *
      * @return bool
      */
-    public function isSSL()
+    public function isSSL(): bool
     {
         return $this->wss;
     }
@@ -215,7 +216,7 @@ class Server extends Base
      *
      * @return bool
      */
-    public function isHttps()
+    public function isHttps(): bool
     {
         return $this->https;
     }

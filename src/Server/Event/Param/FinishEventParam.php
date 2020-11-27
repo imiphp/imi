@@ -3,6 +3,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
 
 class FinishEventParam extends EventParam
 {
@@ -11,14 +12,14 @@ class FinishEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 任务ID.
      *
      * @var int
      */
-    public $taskID;
+    public int $taskId;
 
     /**
      * 任务数据.

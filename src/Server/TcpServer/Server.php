@@ -53,7 +53,7 @@ class Server extends Base
      *
      * @return array
      */
-    protected function getServerInitConfig()
+    protected function getServerInitConfig(): array
     {
         return [
             'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
@@ -73,13 +73,13 @@ class Server extends Base
         $events = $this->config['events'] ?? null;
         if ($event = ($events['connect'] ?? true))
         {
-            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, $fd, $reactorID) {
+            $this->swoolePort->on('connect', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
                     $this->trigger('connect', [
                         'server'    => $this,
                         'fd'        => $fd,
-                        'reactorID' => $reactorID,
+                        'reactorId' => $reactorId,
                     ], $this, ConnectEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -91,13 +91,13 @@ class Server extends Base
 
         if ($event = ($events['receive'] ?? true))
         {
-            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, $fd, $reactorID, $data) {
+            $this->swoolePort->on('receive', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId, string $data) {
                 try
                 {
                     $this->trigger('receive', [
                         'server'    => $this,
                         'fd'        => $fd,
-                        'reactorID' => $reactorID,
+                        'reactorId' => $reactorId,
                         'data'      => $data,
                     ], $this, ReceiveEventParam::class);
                 }
@@ -110,13 +110,13 @@ class Server extends Base
 
         if ($event = ($events['close'] ?? true))
         {
-            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, $fd, $reactorID) {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (\Swoole\Server $server, int $fd, int $reactorId) {
                 try
                 {
                     $this->trigger('close', [
                         'server'    => $this,
                         'fd'        => $fd,
-                        'reactorID' => $reactorID,
+                        'reactorId' => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
                 catch (\Throwable $ex)

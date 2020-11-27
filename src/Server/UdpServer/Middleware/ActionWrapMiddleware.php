@@ -18,7 +18,7 @@ class ActionWrapMiddleware implements IMiddleware
      *
      * @var string
      */
-    protected $actionMiddleware = ActionMiddleware::class;
+    protected string $actionMiddleware = ActionMiddleware::class;
 
     /**
      * 处理方法.

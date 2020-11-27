@@ -3,6 +3,7 @@
 namespace Imi\Server\Event\Param;
 
 use Imi\Event\EventParam;
+use Imi\Server\Base;
 
 class PacketEventParam extends EventParam
 {
@@ -11,19 +12,19 @@ class PacketEventParam extends EventParam
      *
      * @var \Imi\Server\Base
      */
-    public $server;
+    public Base $server;
 
     /**
      * 数据.
      *
      * @var string
      */
-    public $data;
+    public string $data;
 
     /**
      * 客户端信息.
      *
      * @var array
      */
-    public $clientInfo;
+    public array $clientInfo;
 }

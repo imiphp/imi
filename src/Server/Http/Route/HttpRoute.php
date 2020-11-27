@@ -193,7 +193,7 @@ class HttpRoute
                                 $params = array_merge($resultParams, $domainParams);
                             }
 
-                            return new RouteResult(clone $item, $result, $params);
+                            return new RouteResult(spl_object_id($item), clone $item, $result, $params);
                         }
                     }
                 }
@@ -301,7 +301,7 @@ class HttpRoute
             }
             $pattern = preg_replace_callback(
                 '/\{(([^\}:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
-                function ($matches) use (&$fields) {
+                function (array $matches) use (&$fields) {
                     if (isset($matches[4]))
                     {
                         // 正则
@@ -424,7 +424,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($params, function ($name) use ($request) {
+        return Imi::checkCompareRules($params, function (string $name) use ($request) {
             return $request->get($name);
         });
     }
@@ -444,7 +444,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($params, function ($name) use ($request) {
+        return Imi::checkCompareRules($params, function (string $name) use ($request) {
             return $request->post($name);
         });
     }
@@ -464,7 +464,7 @@ class HttpRoute
             return true;
         }
 
-        return Imi::checkCompareRules($header, function ($name) use ($request) {
+        return Imi::checkCompareRules($header, function (string $name) use ($request) {
             return $request->getHeaderLine($name);
         });
     }

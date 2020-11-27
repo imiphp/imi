@@ -2,6 +2,9 @@
 
 namespace Imi\Server\WebSocket\Controller;
 
+use Imi\Server\WebSocket\Message\IFrame;
+use Imi\Server\WebSocket\Server;
+
 /**
  * WebSocket 控制器.
  */
@@ -12,12 +15,12 @@ abstract class WebSocketController
      *
      * @var \Imi\Server\WebSocket\Server
      */
-    public $server;
+    public Server $server;
 
     /**
      * 桢.
      *
      * @var \Imi\Server\WebSocket\Message\IFrame
      */
-    public $frame;
+    public IFrame $frame;
 }

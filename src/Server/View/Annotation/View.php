@@ -26,28 +26,28 @@ class View extends Base
      * abc-配置中设定的路径/abc/
      * /abc/-绝对路径.
      *
-     * @var string
+     * @var string|null
      */
-    public $baseDir;
+    public ?string $baseDir = null;
 
     /**
      * 模版路径.
      *
-     * @var string
+     * @var string|null
      */
-    public $template;
+    public ?string $template = null;
 
     /**
      * 渲染类型.
      *
      * @var string
      */
-    public $renderType = 'json';
+    public string $renderType = 'json';
 
     /**
      * 附加数据.
      *
-     * @var array
+     * @var array|null
      */
-    public $data = [];
+    public ?array $data = [];
 }

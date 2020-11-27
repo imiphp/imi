@@ -2,15 +2,17 @@
 
 namespace Imi\Server\WebSocket\Middleware;
 
-use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\RequestContext;
-use Imi\Server\Event\Param\OpenEventParam;
+use Imi\Bean\Annotation\Bean;
 use Imi\Util\Http\Consts\StatusCode;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Imi\Server\Event\Param\OpenEventParam;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 
 /**
  * @Bean("HandShakeMiddleware")
@@ -63,12 +65,12 @@ class HandShakeMiddleware implements MiddlewareInterface
     /**
      * 默认握手处理.
      *
-     * @param \Imi\Server\Http\Message\Request  $request
-     * @param \Imi\Server\Http\Message\Response $response
+     * @param IHttpRequest  $request
+     * @param IHttpResponse $response
      *
      * @return void
      */
-    private function defaultHandShake($request, $response)
+    private function defaultHandShake(IHttpRequest $request, IHttpResponse $response)
     {
         $secWebSocketKey = $request->getHeaderLine('sec-websocket-key');
         if (0 === preg_match('#^[+/0-9A-Za-z]{21}[AQgw]==$#', $secWebSocketKey) || 16 !== \strlen(base64_decode($secWebSocketKey)))

@@ -9,13 +9,13 @@ use Imi\Server\Http\Message\Response;
  */
 class Php implements IEngine
 {
-    public function render(Response $response, $fileName, $data = []): Response
+    public function render(Response $response, string $fileName, array $data = []): Response
     {
         if (!is_file($fileName))
         {
             return $response;
         }
-        $closure = function ($__renderFileName, $__renderData) {
+        $closure = function (string $__renderFileName, $__renderData) {
             if (\is_array($__renderData))
             {
                 extract($__renderData);

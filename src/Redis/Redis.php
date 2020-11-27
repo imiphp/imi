@@ -61,7 +61,7 @@ use Imi\Pool\PoolManager;
  * @method static mixed getLastError()
  * @method static mixed getMode()
  * @method static mixed getOption($option)
- * @method static mixed getPersistentID()
+ * @method static mixed getPersistentId()
  * @method static mixed getPort()
  * @method static mixed getRange($key, $start, $end)
  * @method static mixed getReadTimeout()

@@ -51,7 +51,7 @@ class Server extends Base
      *
      * @return array
      */
-    protected function getServerInitConfig()
+    protected function getServerInitConfig(): array
     {
         return [
             'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
@@ -70,7 +70,7 @@ class Server extends Base
     {
         if ($event = ($this->config['events']['packet'] ?? true))
         {
-            $this->swoolePort->on('packet', \is_callable($event) ? $event : function (\Swoole\Server $server, $data, $clientInfo) {
+            $this->swoolePort->on('packet', \is_callable($event) ? $event : function (\Swoole\Server $server, string $data, array $clientInfo) {
                 try
                 {
                     $this->trigger('packet', [

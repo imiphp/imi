@@ -22,21 +22,21 @@ class CoServer
      *
      * @var bool
      */
-    private $running = false;
+    private bool $running = false;
 
     /**
      * 配置.
      *
      * @var array
      */
-    private $config;
+    private array $config;
 
     /**
      * 服务器名.
      *
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * 工作进程数量
@@ -44,44 +44,44 @@ class CoServer
      *
      * @var int
      */
-    private $workerNum;
+    private int $workerNum;
 
     /**
      * 实际的进程数量.
      *
      * @var int
      */
-    private $realWorkerNum;
+    private int $realWorkerNum;
 
     /**
      * 用户自定义进程数量.
      *
      * @var int
      */
-    private $processNum = 0;
+    private int $processNum = 0;
 
     /**
      * 父进程ID.
      *
      * @var int
      */
-    private $pid;
+    private int $pid;
 
     /**
      * 工作进程ID.
      *
      * @var int
      */
-    private $workerId = -1;
+    private int $workerId = -1;
 
     /**
      * 用户自定义进程回调列表.
      *
      * @var callable[]
      */
-    private $processes = [];
+    private array $processes = [];
 
-    public function __construct($name, $workerNum)
+    public function __construct(string $name, int $workerNum)
     {
         $this->name = $name;
         $this->workerNum = $workerNum;
@@ -138,7 +138,7 @@ class CoServer
                     $this->parseServer($server, $this->workerId);
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
                         'server'    => $server,
-                        'workerID'  => $this->workerId,
+                        'workerId'  => $this->workerId,
                     ], $this, WorkerStartEventParam::class);
                     $server->getSwooleServer()->start();
                 }
@@ -153,7 +153,7 @@ class CoServer
             go(function () use ($e) {
                 Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [
                     'server'    => $this,
-                    'workerID'  => $e->getWorkerId(),
+                    'workerId'  => $e->getWorkerId(),
                 ], $this, WorkerExitEventParam::class);
             });
         });
@@ -161,7 +161,7 @@ class CoServer
             go(function () use ($e) {
                 Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
                     'server'    => ServerManage::getServer($this->name),
-                    'workerID'  => $e->getWorkerId(),
+                    'workerId'  => $e->getWorkerId(),
                 ], $this, WorkerStopEventParam::class);
             });
         });
@@ -216,7 +216,7 @@ class CoServer
      *
      * @return void
      */
-    private function parseServer(\Imi\Server\Base $server, $workerId)
+    private function parseServer(\Imi\Server\Base $server, int $workerId)
     {
         $swooleServer = $server->getSwooleServer();
         $swooleServer->worker_id = $workerId;
@@ -232,9 +232,9 @@ class CoServer
     /**
      * 获取配置.
      *
-     * @return void
+     * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -242,9 +242,9 @@ class CoServer
     /**
      * 获取服务器名.
      *
-     * @return void
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -252,9 +252,9 @@ class CoServer
     /**
      * 获取工作进程数.
      *
-     * @return void
+     * @return int
      */
-    public function getWorkerNum()
+    public function getWorkerNum(): int
     {
         return $this->workerNum;
     }
@@ -262,9 +262,9 @@ class CoServer
     /**
      * 获取进程 PID.
      *
-     * @return void
+     * @return int
      */
-    public function getPID()
+    public function getPID(): int
     {
         return $this->pid;
     }
@@ -272,9 +272,9 @@ class CoServer
     /**
      * 获取工作进程 ID.
      *
-     * @return void
+     * @return int
      */
-    public function getWorkerId()
+    public function getWorkerId(): int
     {
         return $this->workerId;
     }

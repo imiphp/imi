@@ -9,7 +9,7 @@ interface IRoute
      *
      * @param mixed $data
      *
-     * @return array
+     * @return RouteResult|null
      */
-    public function parse($data);
+    public function parse($data): ?RouteResult;
 }

@@ -30,5 +30,5 @@ interface IReceiveData
      *
      * @return int
      */
-    public function getReactorID(): int;
+    public function getReactorId(): int;
 }

@@ -7,6 +7,13 @@ use Imi\Server\Route\RouteCallable;
 class RouteResult
 {
     /**
+     * 路由ID.
+     *
+     * @var int
+     */
+    public int $id;
+
+    /**
      * 路由配置项.
      *
      * @var \Imi\Server\Http\Route\RouteItem
@@ -34,8 +41,9 @@ class RouteResult
      */
     public $callable;
 
-    public function __construct(RouteItem $routeItem, UrlCheckResult $urlCheckResult, array $params)
+    public function __construct(int $id, RouteItem $routeItem, UrlCheckResult $urlCheckResult, array $params)
     {
+        $this->id = $id;
         $this->routeItem = $routeItem;
         $this->urlCheckResult = $urlCheckResult;
         $this->params = $params;

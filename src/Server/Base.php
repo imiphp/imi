@@ -3,6 +3,7 @@
 namespace Imi\Server;
 
 use Imi\App;
+use Imi\Bean\Container;
 use Imi\Event\Event;
 use Imi\Event\TEvent;
 use Imi\Server\Event\Param\FinishEventParam;
@@ -17,6 +18,8 @@ use Imi\Server\Event\Param\WorkerExitEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Param\WorkerStopEventParam;
 use Imi\Server\Group\TServerGroup;
+use Swoole\Server;
+use Swoole\Server\Port;
 
 abstract class Base
 {
@@ -39,42 +42,42 @@ abstract class Base
      *
      * @var \Swoole\Server
      */
-    protected $swooleServer;
+    protected Server $swooleServer;
 
     /**
      * swoole 监听端口.
      *
      * @var \Swoole\Server\Port
      */
-    protected $swoolePort;
+    protected Port $swoolePort;
 
     /**
      * 服务器配置.
      *
      * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * 是否为子服务器.
      *
      * @var bool
      */
-    protected $isSubServer;
+    protected bool $isSubServer;
 
     /**
      * 服务器名称.
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 容器.
      *
      * @var \Imi\Bean\Container
      */
-    protected $container;
+    protected Container $container;
 
     /**
      * 构造方法.
@@ -84,7 +87,7 @@ abstract class Base
      * @param \Swoole\Server $serverInstance
      * @param bool           $subServer      是否为子服务器
      */
-    public function __construct($name, $config, $isSubServer = false)
+    public function __construct(string $name, array $config, bool $isSubServer = false)
     {
         $this->container = App::getContainer()->newSubContainer();
         $this->name = $name;
@@ -128,7 +131,7 @@ abstract class Base
      *
      * @return \Swoole\Server
      */
-    public function getSwooleServer()
+    public function getSwooleServer(): Server
     {
         return $this->swooleServer;
     }
@@ -138,7 +141,7 @@ abstract class Base
      *
      * @return \Swoole\Server\Port
      */
-    public function getSwoolePort()
+    public function getSwoolePort(): Port
     {
         return $this->swoolePort;
     }
@@ -148,7 +151,7 @@ abstract class Base
      *
      * @return bool
      */
-    public function isSubServer()
+    public function isSubServer(): bool
     {
         return $this->isSubServer;
     }
@@ -191,12 +194,12 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerStart', function (\Swoole\Server $server, int $workerID) {
+            $this->swooleServer->on('WorkerStart', function (\Swoole\Server $server, int $workerId) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
                         'server'    => $this,
-                        'workerID'  => $workerID,
+                        'workerId'  => $workerId,
                     ], $this, WorkerStartEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -205,12 +208,12 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerStop', function (\Swoole\Server $server, int $workerID) {
+            $this->swooleServer->on('WorkerStop', function (\Swoole\Server $server, int $workerId) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
                         'server'    => $this,
-                        'workerID'  => $workerID,
+                        'workerId'  => $workerId,
                     ], $this, WorkerStopEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -219,12 +222,12 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerExit', function (\Swoole\Server $server, int $workerID) {
+            $this->swooleServer->on('WorkerExit', function (\Swoole\Server $server, int $workerId) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [
                         'server'    => $this,
-                        'workerID'  => $workerID,
+                        'workerId'  => $workerId,
                     ], $this, WorkerExitEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -267,8 +270,8 @@ abstract class Base
                     {
                         Event::trigger('IMI.MAIN_SERVER.TASK', [
                             'server'   => $this,
-                            'taskID'   => $task->id,
-                            'workerID' => $task->worker_id,
+                            'taskId'   => $task->id,
+                            'workerId' => $task->worker_id,
                             'data'     => $task->data,
                             'flags'    => $task->flags,
                             'task'     => $task,
@@ -281,12 +284,12 @@ abstract class Base
                 });
             }
 
-            $this->swooleServer->on('finish', function (\Swoole\Server $server, int $taskID, $data) {
+            $this->swooleServer->on('finish', function (\Swoole\Server $server, int $taskId, $data) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.FINISH', [
                         'server'    => $this,
-                        'taskID'    => $taskID,
+                        'taskId'    => $taskId,
                         'data'      => $data,
                     ], $this, FinishEventParam::class);
                 }
@@ -296,12 +299,12 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('PipeMessage', function (\Swoole\Server $server, int $workerID, $message) {
+            $this->swooleServer->on('PipeMessage', function (\Swoole\Server $server, int $workerId, string $message) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $this,
-                        'workerID'  => $workerID,
+                        'workerId'  => $workerId,
                         'message'   => $message,
                     ], $this, PipeMessageEventParam::class);
                 }
@@ -311,12 +314,12 @@ abstract class Base
                 }
             });
 
-            $this->swooleServer->on('WorkerError', function (\Swoole\Server $server, int $workerID, int $workerPid, int $exitCode, int $signal) {
+            $this->swooleServer->on('WorkerError', function (\Swoole\Server $server, int $workerId, int $workerPid, int $exitCode, int $signal) {
                 try
                 {
                     Event::trigger('IMI.MAIN_SERVER.WORKER_ERROR', [
                         'server'    => $this,
-                        'workerID'  => $workerID,
+                        'workerId'  => $workerId,
                         'workerPid' => $workerPid,
                         'exitCode'  => $exitCode,
                         'signal'    => $signal,
@@ -336,7 +339,7 @@ abstract class Base
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -346,7 +349,7 @@ abstract class Base
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -356,7 +359,7 @@ abstract class Base
      *
      * @return \Imi\Bean\Container
      */
-    public function getContainer()
+    public function getContainer(): Container
     {
         return $this->container;
     }
@@ -368,7 +371,7 @@ abstract class Base
      *
      * @return mixed
      */
-    public function getBean($name, ...$params)
+    public function getBean(string $name, ...$params)
     {
         return $this->container->get($name, ...$params);
     }
