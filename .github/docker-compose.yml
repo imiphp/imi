@@ -5,6 +5,7 @@ services:
       container_name: mysql
       environment:
           - "MYSQL_ROOT_PASSWORD=root"
+          - "MYSQL_DATABASE=db_imi_test"
           - "TZ=Asia/Shanghai"
       ports:
           - 3306:3306
@@ -22,6 +23,7 @@ services:
       - redis
     environment:
         - "MYSQL_SERVER_HOST=mysql"
+        - "REDIS_SERVER_HOST=redis"
     build:
       context: .
       dockerfile: ./swoole.dockerfile
@@ -41,7 +43,8 @@ services:
       - mysql
       - redis
     environment:
-        - "REDIS_SERVER_HOST=mysql"
+        - "MYSQL_SERVER_HOST=mysql"
+        - "REDIS_SERVER_HOST=redis"
     build:
       context: .
       dockerfile: ./swoole-php8.dockerfile
