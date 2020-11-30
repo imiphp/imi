@@ -1,0 +1,56 @@
+version: '3.4'
+services:
+  mysql:
+      image: mysql:5.7.32
+      container_name: mysql
+      environment:
+          - "MYSQL_ROOT_PASSWORD=root"
+          - "TZ=Asia/Shanghai"
+      ports:
+          - 3306:3306
+
+  redis:
+      image: redis:6.0.9-alpine
+      container_name: mysql
+      ports:
+          - 6379:6379
+
+  swoole:
+    container_name: "swoole"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+        - "MYSQL_SERVER_HOST=mysql"
+    build:
+      context: .
+      dockerfile: ./swoole.dockerfile
+      args:
+        SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
+    volumes:
+      - "${GITHUB_WORKSPACE}:/imi:rw"
+    working_dir: /imi
+    ulimits:
+      core: -1
+    privileged: true
+    command: tail -f /etc/group
+
+  php8:
+    container_name: "php8"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+        - "REDIS_SERVER_HOST=mysql"
+    build:
+      context: .
+      dockerfile: ./swoole-php8.dockerfile
+      args:
+        SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
+    volumes:
+      - "${GITHUB_WORKSPACE}:/imi:rw"
+    working_dir: /imi
+    ulimits:
+      core: -1
+    privileged: true
+    command: tail -f /etc/group
