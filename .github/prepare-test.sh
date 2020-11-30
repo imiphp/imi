@@ -12,5 +12,5 @@ docker-compose up -d $containerName \
 && docker exec $containerName composer -V \
 && docker ps -a \
 && docker exec $containerName composer update \
-&& docker exec $containerName cd tests && composer update \
+&& docker exec $containerName bash -c "cd tests && composer update" \
 && docker exec $containerName bash tests/db/install-db.sh
