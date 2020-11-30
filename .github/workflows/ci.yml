@@ -62,8 +62,14 @@ jobs:
       - name: test
         run: docker exec php8 php tests/run
 
-  build-macos:
+  ci-macos:
     runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4]
+        swoole: [4.5]
 
     steps:
       - uses: actions/checkout@v1
@@ -81,7 +87,5 @@ jobs:
           composer update
 
       - name: test
-        env:
-
         run: |
           sudo composer test
