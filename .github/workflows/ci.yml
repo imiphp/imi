@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: install php
-        run: sudo .github/macos/install-php7.4-mac.sh
+        run: .github/macos/install-php7.4-mac.sh
 
       - name: install swoole
         run: sudo .github/macos/install-swoole4.5.sh
