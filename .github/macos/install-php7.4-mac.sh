@@ -11,9 +11,3 @@ curl -o composer.phar https://getcomposer.org/composer-stable.phar && chmod +x c
 
 # redis
 echo "no" | pecl install -f redis;
-
-PHP_INI_FILE=$(php -r "echo php_ini_loaded_file();")
-if [[ $PHP_INI_FILE == "" ]]; then
-    PHP_INI_FILE="/usr/local/etc/php/$(php -r "echo (double)PHP_VERSION;")/php.ini";
-fi
-echo "extension = redis.so" >> $PHP_INI_FILE
