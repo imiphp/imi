@@ -30,15 +30,17 @@ jobs:
       - name: install swoole
         run: sudo .github/macos/install-swoole4.5.sh
 
-      - name: composer
+      - name: prepare
         run: |
           composer update
           cd tests
           composer update
+          cd ../
+          tests/db/install-db.sh
 
       - name: test
         run: |
-          sudo composer test
+          composer test
 
   ci-php8:
     runs-on: ubuntu-latest
