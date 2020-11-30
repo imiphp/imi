@@ -26,7 +26,7 @@ jobs:
         ./.github/prepare-test.sh swoole
 
     - name: test
-      run: docker exec swoole tests/run
+      run: docker exec swoole php tests/run
 
   ci-php8:
     runs-on: ubuntu-latest
@@ -49,4 +49,4 @@ jobs:
         ./.github/prepare-test.sh php8
 
     - name: test
-      run: docker exec php8 tests/run
+      run: docker exec php8 php tests/run
