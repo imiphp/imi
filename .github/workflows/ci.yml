@@ -15,6 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: install db
+        run: |
+          brew install redis mysql
+          brew services start redis
+          brew services start mysql
+
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
 
