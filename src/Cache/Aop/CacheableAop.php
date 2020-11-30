@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cache\Aop;
 
 use Imi\Aop\Annotation\Around;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Tool\Annotation;
 
 use Imi\Bean\Annotation\Parser;

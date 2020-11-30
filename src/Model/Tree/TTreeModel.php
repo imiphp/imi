@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Model\Tree;
 
 use Imi\Db\Query\Interfaces\IQuery;

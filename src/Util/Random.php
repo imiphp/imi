@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 /**
@@ -33,7 +35,7 @@ abstract class Random
     {
         $value = round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
 
-        return Digital::scientificToNum($value, $precision);
+        return Digital::scientificToNum((string) $value, $precision);
     }
 
     /**

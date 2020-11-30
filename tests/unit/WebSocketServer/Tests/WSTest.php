@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\WebSocketServer\Tests;
 
 use Yurun\Util\HttpRequest;
@@ -70,10 +72,13 @@ class WSTest extends BaseTest
                     'token'     => $token,
                 ])));
                 $recv = $client->recv();
-                $recvData = json_decode($recv, true);
-                if (null !== $recvData)
+                if (false !== $recv)
                 {
-                    break;
+                    $recvData = json_decode($recv, true);
+                    if (null !== $recvData)
+                    {
+                        break;
+                    }
                 }
                 sleep(1);
             }

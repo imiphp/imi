@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test;
 
 use Yurun\Doctrine\Common\Annotations\AnnotationReader;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\TcpServer\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;

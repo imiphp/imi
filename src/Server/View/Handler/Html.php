@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\View\Handler;
 
 use Imi\Bean\Annotation\Bean;
@@ -56,7 +58,7 @@ class Html implements IHandler
     {
         $fileName = $this->getTemplateFilePath($options);
 
-        if (!is_file($fileName))
+        if (false === $fileName || !is_file($fileName))
         {
             return $response;
         }
@@ -74,7 +76,7 @@ class Html implements IHandler
     protected function getTemplateFilePath(array $options)
     {
         $fileName = realpath($options['template']);
-        if (is_file($fileName))
+        if ($fileName && is_file($fileName))
         {
             return $fileName;
         }

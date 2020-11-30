@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\WebSocket\Error;
 
 use Imi\App;

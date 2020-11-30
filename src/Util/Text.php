@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 /**
@@ -10,6 +12,7 @@ class Text
     private function __construct()
     {
     }
+
     /**
      * 字符串是否以另一个字符串开头.
      *

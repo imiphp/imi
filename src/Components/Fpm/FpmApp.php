@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Fpm;
 
 use Imi\Core\App\Contract\BaseApp;

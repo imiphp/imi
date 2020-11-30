@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Db\Statement;
 
 use Imi\Db\Interfaces\IDb;

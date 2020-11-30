@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\HttpServer\Tests;
 
 use Imi\Util\Http\Consts\StatusCode;

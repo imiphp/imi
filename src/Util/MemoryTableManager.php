@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 use Imi\App;
@@ -190,7 +192,14 @@ class MemoryTableManager
      */
     public static function get(string $name, string $key, string $field = null)
     {
-        return static::getInstance($name)->get($key, $field);
+        if (null === $field)
+        {
+            return static::getInstance($name)->get($key);
+        }
+        else
+        {
+            return static::getInstance($name)->get($key, $field);
+        }
     }
 
     /**

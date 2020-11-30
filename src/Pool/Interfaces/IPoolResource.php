@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Pool\Interfaces;
 
 use Imi\Util\Interfaces\IHashCode;

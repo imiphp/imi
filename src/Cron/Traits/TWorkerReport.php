@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cron\Traits;
 
 use Imi\Cron\Util\CronUtil;

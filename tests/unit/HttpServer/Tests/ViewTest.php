@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\HttpServer\Tests;
 
 use PHPUnit\Framework\Assert;
@@ -14,7 +16,7 @@ class ViewTest extends BaseTest
     {
         $http = new HttpRequest();
         $time = time();
-        $response = $http->get($this->host . 'html?time=' . time());
+        $response = $http->get($this->host . 'html?time=' . $time);
         Assert::assertEquals('<p>' . date('Y-m-d H:i:s', $time) . '</p>', $response->body());
     }
 
@@ -22,7 +24,7 @@ class ViewTest extends BaseTest
     {
         $http = new HttpRequest();
         $time = time();
-        $response = $http->get($this->host . 'html2?time=' . time());
+        $response = $http->get($this->host . 'html2?time=' . $time);
         Assert::assertEquals('<p>tpl2:' . date('Y-m-d H:i:s', $time) . '</p>', $response->body());
     }
 
@@ -46,7 +48,7 @@ class ViewTest extends BaseTest
     {
         $http = new HttpRequest();
         $time = time();
-        $response = $http->get($this->host . 'json?time=' . time());
+        $response = $http->get($this->host . 'json?time=' . $time);
         Assert::assertEquals([
             'time'  => $time . '',
             'data'  => 'now: ' . date('Y-m-d H:i:s', $time),

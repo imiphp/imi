@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\WebSocket\Controller;
 
 use Imi\Server\WebSocket\Message\IFrame;

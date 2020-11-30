@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Enum\Annotation\Parser;
 
 use Imi\Bean\Parser\BaseParser;

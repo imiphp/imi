@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\Group\Listener;
 
 use Imi\Bean\Annotation\Listener;

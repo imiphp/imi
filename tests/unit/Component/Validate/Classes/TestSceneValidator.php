@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\Component\Validate\Classes;
 
 use Imi\Validate\Annotation\Decimal;

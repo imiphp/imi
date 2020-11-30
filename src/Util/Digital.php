@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 /**
@@ -10,6 +12,7 @@ class Digital
     private function __construct()
     {
     }
+
     /**
      * 科学计数转小数形式的.
      *
@@ -18,13 +21,13 @@ class Digital
      *
      * @return string
      */
-    public static function scientificToNum($num, $precision = 5)
+    public static function scientificToNum(string $num, int $precision = 5): string
     {
         if (false !== stripos($num, 'e'))
         {
             $a = explode('e', strtolower($num));
 
-            return bcmul($a[0], bcpow(10, $a[1], $precision), $precision);
+            return bcmul($a[0], bcpow('10', $a[1], $precision), $precision);
         }
 
         return $num;

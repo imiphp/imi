@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Imi\Log\LogLevel;
 
 $rootPath = dirname(__DIR__) . '/';

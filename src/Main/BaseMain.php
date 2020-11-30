@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Main;
 
 use Imi\Bean\ReflectionContainer;

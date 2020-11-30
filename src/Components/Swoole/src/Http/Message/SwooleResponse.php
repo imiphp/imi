@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Swoole\Http\Message;
 
 use Imi\Server\Http\Message\Response;

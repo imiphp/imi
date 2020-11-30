@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\WebSocket\Route;
 
 use Imi\Server\Route\Annotation\WebSocket\WSRoute;

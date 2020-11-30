@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\TCPServer\MainServer;
 
 use Imi\Main\BaseMain;

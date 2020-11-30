@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\WebSocketServer\MainServer\Controller\Http;
 
 use Imi\Controller\HttpController;

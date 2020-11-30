@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\UdpServer\Middleware;
 
 use Imi\Server\UdpServer\IPacketHandler;

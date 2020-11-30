@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Event;
 
 use Imi\Bean\BeanFactory;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cli\Contract;
 
 use Imi\Cli\ImiCommand;

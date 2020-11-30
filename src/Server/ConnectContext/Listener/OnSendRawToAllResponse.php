@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\ConnectContext\Listener;
 
 use Imi\Bean\Annotation\Listener;

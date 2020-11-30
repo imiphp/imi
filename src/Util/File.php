@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 use Imi\Util\File\FileEnumItem;
@@ -12,6 +14,7 @@ class File
     private function __construct()
     {
     }
+
     /**
      * 枚举文件.
      *
@@ -90,9 +93,10 @@ class File
             {
                 $item = new FileEnumItem($dirPath, $file);
                 yield $item;
-                if (is_dir($item) && $item->getContinue())
+                $fullPath = $item->getFullPath();
+                if (is_dir($fullPath) && $item->getContinue())
                 {
-                    foreach (static::enumFile($item) as $fileItem)
+                    foreach (static::enumFile($fullPath) as $fileItem)
                     {
                         yield $fileItem;
                     }

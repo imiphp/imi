@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Redis\Annotation;
 
 use Imi\Aop\Annotation\RequestInject;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Bean\Traits;
 
 use Imi\Bean\BeanFactory;

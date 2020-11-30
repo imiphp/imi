@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Redis;
 
 use Imi\App;
@@ -37,7 +39,7 @@ class RedisResource extends BasePoolResource
     {
         $config = $this->config;
         $redis = $this->redis;
-        $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? null);
+        $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
         if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
         {
             throw new \RedisException('Redis auth failed');

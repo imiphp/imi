@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\Session;
 
 use Imi\Facade\Annotation\Facade;

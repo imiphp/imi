@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\View\Parser;
 
 use Imi\Bean\Annotation\AnnotationManager;

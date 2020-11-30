@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\Http\Struct;
 
 class ActionMethodItem
@@ -18,10 +20,21 @@ class ActionMethodItem
      */
     protected $default;
 
-    public function __construct(string $name, $default)
+    /**
+     * 类型.
+     *
+     * @var string|null
+     */
+    protected ?string $type = null;
+
+    public function __construct(string $name, $default, ?\ReflectionType $type)
     {
         $this->name = $name;
         $this->default = $default;
+        if ($type)
+        {
+            $this->type = $type->getName();
+        }
     }
 
     /**
@@ -42,5 +55,15 @@ class ActionMethodItem
     public function getDefault()
     {
         return $this->default;
+    }
+
+    /**
+     * Get 类型.
+     *
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 }

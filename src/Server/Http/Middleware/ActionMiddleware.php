@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\Http\Middleware;
 
 use Imi\Bean\Annotation\Bean;
@@ -202,6 +204,7 @@ class ActionMiddleware implements MiddlewareInterface
                 $actionMethodCache[] = new ActionMethodItem(
                     $param->name,
                     $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null,
+                    $param->getType()
                 );
             }
             $this->actionMethodCaches[$routeResult->id] = $actionMethodCache;
@@ -230,31 +233,44 @@ class ActionMiddleware implements MiddlewareInterface
             if (isset($routeResult->params[$paramName]))
             {
                 // 路由解析出来的参数
-                $result[] = $routeResult->params[$paramName];
+                $value = $routeResult->params[$paramName];
             }
             elseif (isset($post[$paramName]))
             {
                 // post
-                $result[] = $post[$paramName];
+                $value = $post[$paramName];
             }
             elseif (isset($get[$paramName]))
             {
                 // get
-                $result[] = $get[$paramName];
+                $value = $get[$paramName];
             }
             elseif ($parsedBodyIsObject && isset($parsedBody->{$paramName}))
             {
-                $result[] = $parsedBody->{$paramName};
+                $value = $parsedBody->{$paramName};
             }
             elseif ($parsedBodyIsArray && isset($parsedBody[$paramName]))
             {
-                $result[] = $parsedBody[$paramName];
+                $value = $parsedBody[$paramName];
             }
             else
             {
                 // 方法默认值
-                $result[] = $actionMethodCacheItem->getDefault();
+                $value = $actionMethodCacheItem->getDefault();
             }
+            switch ($actionMethodCacheItem->getType())
+            {
+                case 'int':
+                    $value = (int) $value;
+                    break;
+                case 'float':
+                    $value = (float) $value;
+                    break;
+                case 'bool':
+                    $value = (bool) $value;
+                    break;
+            }
+            $result[] = $value;
         }
 
         return $result;

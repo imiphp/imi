@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\TCPServer\MainServer\Parser;
 
 class JsonObjectParser extends \Imi\Server\DataParser\JsonObjectParser

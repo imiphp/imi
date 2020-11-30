@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Imi\App;
 use Imi\Util\File;
 use Symfony\Component\Console\Input\ArgvInput;

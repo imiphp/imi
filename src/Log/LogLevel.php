@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Log;
 
 class LogLevel extends \Psr\Log\LogLevel

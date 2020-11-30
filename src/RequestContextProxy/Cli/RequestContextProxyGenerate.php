@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\RequestContextProxy\Cli;
 
 use Imi\Bean\Annotation;

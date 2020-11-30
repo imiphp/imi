@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\Event\Listener;
 
 use Imi\Server\Event\Param\StartEventParam;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\TCPServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;

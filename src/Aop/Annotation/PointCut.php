@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Aop\Annotation;
 
 use Imi\Aop\PointCutType;

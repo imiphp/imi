@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Model\Annotation\Relation;
 
 use Imi\Bean\Annotation\Base;

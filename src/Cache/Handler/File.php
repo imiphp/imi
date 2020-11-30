@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cache\Handler;
 
 use Imi\Bean\Annotation\Bean;
@@ -182,8 +184,9 @@ class File extends Base
      */
     public function clear()
     {
-        foreach (FileUtil::enumAll($this->savePath) as $fileName)
+        foreach (FileUtil::enumAll($this->savePath) as $fileIterator)
         {
+            $fileName = (string) $fileIterator;
             if (is_file($fileName))
             {
                 unlink($fileName);

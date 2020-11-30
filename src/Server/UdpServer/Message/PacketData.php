@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\UdpServer\Message;
 
 use Imi\RequestContext;

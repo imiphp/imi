@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Controller\HttpController;

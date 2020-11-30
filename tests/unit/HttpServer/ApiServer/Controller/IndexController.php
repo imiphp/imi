@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Aop\Annotation\Inject;
@@ -61,7 +63,7 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
-    public function html($time)
+    public function html(int $time)
     {
         return [
             'time'  => date('Y-m-d H:i:s', $time),
@@ -74,7 +76,7 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
-    public function html2($time)
+    public function html2(int $time)
     {
         return [
             'time'  => date('Y-m-d H:i:s', $time),
@@ -110,7 +112,7 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
-    public function json($time)
+    public function json(int $time)
     {
         return [
             'time'  => $time,
@@ -277,7 +279,7 @@ class IndexController extends SingletonHttpController
                 'clientMediaType'   => $file->getClientMediaType(),
                 'error'             => $file->getError(),
                 'size'              => $file->getSize(),
-                'hash'              => md5($file->getStream()),
+                'hash'              => md5($file->getStream()->getContents()),
             ];
         }
 

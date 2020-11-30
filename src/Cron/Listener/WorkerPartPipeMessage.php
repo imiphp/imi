@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cron\Listener;
 
 use Imi\Aop\Annotation\Inject;

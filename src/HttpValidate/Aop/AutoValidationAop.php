@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\HttpValidate\Aop;
 
 use Imi\Aop\Annotation\Aspect;

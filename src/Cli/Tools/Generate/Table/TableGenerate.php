@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cli\Tools\Generate\Table;
 
 use Imi\Bean\Annotation\AnnotationManager;

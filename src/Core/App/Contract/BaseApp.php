@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Core\App\Contract;
 
 use Imi\Config;

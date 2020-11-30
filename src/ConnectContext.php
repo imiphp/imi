@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi;
 
 use Imi\Event\Event;
@@ -72,7 +74,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function destroy($fd = null)
+    public static function destroy(?int $fd = null)
     {
         if (!$fd)
         {
@@ -86,11 +88,11 @@ class ConnectContext
         $store = RequestContext::getServerBean('ConnectContextStore');
         if (($ttl = $store->getTtl()) > 0)
         {
-            $store->delayDestroy($fd, $ttl);
+            $store->delayDestroy((string) $fd, $ttl);
         }
         else
         {
-            $store->destroy($fd);
+            $store->destroy((string) $fd);
         }
     }
 
@@ -101,7 +103,7 @@ class ConnectContext
      *
      * @return bool
      */
-    public static function exists($fd = null)
+    public static function exists(?int $fd = null): bool
     {
         if (!$fd)
         {
@@ -112,7 +114,7 @@ class ConnectContext
             }
         }
 
-        return RequestContext::getServerBean('ConnectContextStore')->exists($fd);
+        return RequestContext::getServerBean('ConnectContextStore')->exists((string) $fd);
     }
 
     /**
@@ -124,7 +126,7 @@ class ConnectContext
      *
      * @return mixed
      */
-    public static function get($name = null, $default = null, $fd = null)
+    public static function get(?string $name = null, $default = null, ?int $fd = null)
     {
         if (!$fd)
         {
@@ -134,7 +136,7 @@ class ConnectContext
                 return $default;
             }
         }
-        $data = RequestContext::getServerBean('ConnectContextStore')->read($fd);
+        $data = RequestContext::getServerBean('ConnectContextStore')->read((string) $fd);
         if (null === $name)
         {
             return $data;
@@ -154,7 +156,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function set($name, $value, $fd = null)
+    public static function set(?string $name, $value, ?int $fd = null)
     {
         if (!$fd)
         {
@@ -165,10 +167,11 @@ class ConnectContext
             }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $result = $store->lock($fd, function () use ($store, $name, $value, $fd) {
-            $data = $store->read($fd);
+        $fdStr = (string) $fd;
+        $result = $store->lock($fdStr, function () use ($store, $name, $value, $fdStr) {
+            $data = $store->read($fdStr);
             $data[$name] = $value;
-            $store->save($fd, $data);
+            $store->save($fdStr, $data);
         });
         if (!$result)
         {
@@ -184,7 +187,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function muiltiSet(array $data, $fd = null)
+    public static function muiltiSet(array $data, ?int $fd = null)
     {
         if (!$fd)
         {
@@ -195,13 +198,14 @@ class ConnectContext
             }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $result = $store->lock($fd, function () use ($store, $data, $fd) {
-            $storeData = $store->read($fd);
+        $fdStr = (string) $fd;
+        $result = $store->lock($fdStr, function () use ($store, $data, $fdStr) {
+            $storeData = $store->read($fdStr);
             foreach ($data as $name => $value)
             {
                 $storeData[$name] = $value;
             }
-            $store->save($fd, $storeData);
+            $store->save($fdStr, $storeData);
         });
         if (!$result)
         {
@@ -217,7 +221,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function use($callable, $fd = null)
+    public static function use(callable $callable, ?int $fd = null)
     {
         if (!$fd)
         {
@@ -228,12 +232,13 @@ class ConnectContext
             }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $store->lock($fd, function () use ($callable, $store, $fd) {
-            $data = $store->read($fd);
+        $fdStr = (string) $fd;
+        $store->lock($fdStr, function () use ($callable, $store, $fdStr) {
+            $data = $store->read($fdStr);
             $result = $callable($data);
             if ($result)
             {
-                $store->save($fd, $result);
+                $store->save($fdStr, $result);
             }
         });
     }
@@ -245,7 +250,7 @@ class ConnectContext
      *
      * @return array
      */
-    public static function getContext($fd = null)
+    public static function getContext(?int $fd = null): array
     {
         return static::get(null, null, $fd);
     }
@@ -305,7 +310,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function unbind(string $flag, int $keepTime = null)
+    public static function unbind(string $flag, ?int $keepTime = null)
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');

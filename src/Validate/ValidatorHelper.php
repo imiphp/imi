@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Validate;
 
 /**
@@ -17,7 +19,7 @@ class ValidatorHelper
      */
     public static function regex($value, $rule)
     {
-        return preg_match($rule, $value) > 0;
+        return preg_match($rule, (string) $value) > 0;
     }
 
     /**
@@ -45,10 +47,10 @@ class ValidatorHelper
         // 小数精度
         if (null !== $accuracy)
         {
-            return preg_match('/^-?\d+\.\d{1,' . ((int) $accuracy) . '}$/', $value) > 0;
+            return preg_match('/^-?\d+\.\d{1,' . ((int) $accuracy) . '}$/', (string) $value) > 0;
         }
 
-        return is_numeric($value) && false !== strpos($value, '.');
+        return is_numeric($value) && false !== strpos((string) $value, '.');
     }
 
     /**
@@ -101,7 +103,7 @@ class ValidatorHelper
         // 小数精度
         if (null !== $accuracy)
         {
-            return preg_match('/^-?\d+(\.\d{1,' . ((int) $accuracy) . '})?$/', $value) > 0;
+            return preg_match('/^-?\d+(\.\d{1,' . ((int) $accuracy) . '})?$/', (string) $value) > 0;
         }
 
         return is_numeric($value);

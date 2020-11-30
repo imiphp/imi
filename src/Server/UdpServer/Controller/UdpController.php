@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\UdpServer\Controller;
 
 use Imi\Server\UdpServer\Server;

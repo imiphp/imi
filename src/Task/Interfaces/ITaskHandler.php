@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Task\Interfaces;
 
 use Imi\Task\TaskParam;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cron\Process;
 
 use Imi\Aop\Annotation\Inject;
@@ -173,7 +175,7 @@ class CronProcess extends BaseProcess
                 $sleep = 1 - (microtime(true) - $time);
                 if ($sleep > 0)
                 {
-                    usleep($sleep * 1000000);
+                    usleep((int) ($sleep * 1000000));
                 }
             } while ($running);
         });

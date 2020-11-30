@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Swoole\Context;
 
 use ArrayObject;
@@ -34,7 +36,7 @@ class CoroutineContextManager implements IContextManager
     {
         if ($flag > -1)
         {
-            $context = Coroutine::getContext($flag);
+            $context = Coroutine::getContext((int) $flag);
             // destroy
             if (!($context['__bindDestroy'] ?? false))
             {
@@ -97,7 +99,7 @@ class CoroutineContextManager implements IContextManager
     {
         if ($flag > -1)
         {
-            $context = Coroutine::getContext($flag);
+            $context = Coroutine::getContext((int) $flag);
             // destroy
             if (!($context['__bindDestroy'] ?? false))
             {
@@ -148,7 +150,7 @@ class CoroutineContextManager implements IContextManager
      */
     public function getCurrentFlag(): string
     {
-        return Coroutine::getCid();
+        return (string) Coroutine::getCid();
     }
 
     /**

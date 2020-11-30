@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\Component\Inject\Classes;
 
 use Imi\Aop\Annotation\Inject;

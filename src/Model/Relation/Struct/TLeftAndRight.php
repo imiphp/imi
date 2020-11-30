@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Model\Relation\Struct;
 
 use Imi\Bean\Annotation\AnnotationManager;

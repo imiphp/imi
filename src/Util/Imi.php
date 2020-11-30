@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 use Imi\App;
@@ -105,7 +107,7 @@ class Imi
                     return false;
                 }
             }
-            elseif (preg_match('/^' . $rule . '$/', $valueCallback($fieldName)) <= 0)
+            elseif (preg_match('/^' . $rule . '$/', (string) $valueCallback($fieldName)) <= 0)
             {
                 return false;
             }

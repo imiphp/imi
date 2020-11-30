@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Db\Query\Builder;
 
 use Imi\Util\ArrayUtil;

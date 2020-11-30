@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\Component\Db\Classes;
 
 use Imi\Bean\Annotation\Bean;

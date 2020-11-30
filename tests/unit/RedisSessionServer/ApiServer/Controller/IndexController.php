@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\RedisSessionServer\ApiServer\Controller;
 
 use Imi\Controller\SingletonHttpController;

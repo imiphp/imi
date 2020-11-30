@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util\Stream;
 
 use Imi\Util\Text;

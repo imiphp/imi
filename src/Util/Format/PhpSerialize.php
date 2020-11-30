@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util\Format;
 
 class PhpSerialize implements IFormat

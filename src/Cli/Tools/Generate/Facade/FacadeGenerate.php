@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cli\Tools\Generate\Facade;
 
 use Imi\Bean\Annotation;

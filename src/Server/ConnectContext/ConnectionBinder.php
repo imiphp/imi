@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\ConnectContext;
 
 use Imi\Bean\Annotation\Bean;
@@ -186,9 +188,17 @@ class ConnectionBinder
      */
     public function getOldFdByFlag(string $flag): ?int
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($flag) {
+        $result = $this->useRedis(function (RedisHandler $redis) use ($flag) {
             return $redis->get($this->key . ':old:' . $flag);
         });
+        if (false === $result)
+        {
+            return null;
+        }
+        else
+        {
+            return $result;
+        }
     }
 
     /**

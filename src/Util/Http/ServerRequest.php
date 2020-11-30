@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util\Http;
 
 use Imi\Config;
@@ -446,7 +448,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 MediaType::APPLICATION_JSON_UTF8,
             ]))
             {
-                $parsedBody = json_decode($this->body, !Config::get('@currentServer.jsonBodyIsObject', false));
+                $parsedBody = json_decode($this->body->getContents(), !Config::get('@currentServer.jsonBodyIsObject', false));
             }
             // xml
             elseif (\in_array($contentType, [
@@ -458,12 +460,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             ]))
             {
                 $parsedBody = new \DOMDocument();
-                $parsedBody->loadXML($this->body);
+                $parsedBody->loadXML($this->body->getContents());
             }
             // 其它
             else
             {
-                $parsedBody = (object) (string) $this->body;
+                $parsedBody = (object) $this->body->getContents();
             }
         }
 

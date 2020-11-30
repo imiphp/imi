@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\HttpServer\Tests;
 
 use PHPUnit\Framework\Assert;
@@ -17,6 +19,7 @@ class TaskTest extends BaseTest
         $response = $http->get($this->host . 'task/test');
         $data = $response->json(true);
 
+        Assert::assertIsArray($data);
         Assert::assertIsInt($data['post']);
         Assert::assertIsInt($data['nPost']);
         Assert::assertEquals('2019-06-21 00:00:00', $data['nPostWait']);

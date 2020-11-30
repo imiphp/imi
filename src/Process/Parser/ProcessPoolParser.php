@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Process\Parser;
 
 use Imi\Bean\Parser\BaseParser;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 /**
@@ -10,6 +12,7 @@ class DateTime
     private function __construct()
     {
     }
+
     /**
      * 将一个 \DateInterval，与当前时间进行计算，获取秒数.
      *

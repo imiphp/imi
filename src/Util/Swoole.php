@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 use Imi\ServerManage;
@@ -9,6 +11,7 @@ class Swoole
     private function __construct()
     {
     }
+
     /**
      * 获取master进程pid.
      *

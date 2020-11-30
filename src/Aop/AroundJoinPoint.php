@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Aop;
 
 class AroundJoinPoint extends JoinPoint

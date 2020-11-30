@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Util;
 
 /**
@@ -11,6 +13,7 @@ class ObjectArrayHelper
     private function __construct()
     {
     }
+
     /**
      * 获取值
      *

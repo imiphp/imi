@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\UDPServer\MainServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Bean\Parser;
 
 use Imi\Util\Traits\TSingleton;

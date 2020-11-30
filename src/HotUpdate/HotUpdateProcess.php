@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\HotUpdate;
 
 use Imi\Aop\Annotation\Inject;

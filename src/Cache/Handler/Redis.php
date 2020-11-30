@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Cache\Handler;
 
 use Imi\Bean\Annotation\Bean;

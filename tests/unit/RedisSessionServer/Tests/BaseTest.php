@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\RedisSessionServer\Tests;
 
 abstract class BaseTest extends \Imi\Test\BaseTest
