@@ -7,7 +7,7 @@
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)](https://packagist.org/packages/yurunsoft/imi)
-![Cirrus CI - Base Branch Build Status](https://img.shields.io/cirrus/github/Yurunsoft/imi)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Yurunsoft/imi/ci/dev)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
@@ -22,7 +22,7 @@ imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpAp
 
 imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动通信、企业软件、云计算、网络游戏、物联网（IOT）、车联网、智能家居等领域。可以使企业 IT 研发团队的效率大大提升，更加专注于开发创新产品。
 
-> 目前 imi v2 版本已经开始开发了（2020-09），v1 版本进入维护期，仅修复问题不再加入新特性。如果有任何问题，欢迎联系我们！
+> 目前 imi v2 版本已经开始开发了（2020-09），如果有任何问题或建议，欢迎联系我们！
 
 imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
