@@ -126,27 +126,27 @@ function startServer()
     }
 
     $servers = [
-        'HttpServer'    =>  [
+        'HttpServer'    => [
             'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
-        'RedisSessionServer'    =>  [
-            'start'         => __DIR__ . '/unit/RedisSessionServer/bin/' . (version_compare(SWOOLE_VERSION, '4.4', '>=') ? 'start.sh' : 'start-sw4.3.sh'),
+        'RedisSessionServer'    => [
+            'start'         => __DIR__ . '/unit/RedisSessionServer/bin/' . (version_compare(\SWOOLE_VERSION, '4.4', '>=') ? 'start.sh' : 'start-sw4.3.sh'),
             'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
             'checkStatus'   => 'checkRedisSessionServerStatus',
         ],
-        'WebSocketServer'    =>  [
+        'WebSocketServer'    => [
             'start'         => __DIR__ . '/unit/WebSocketServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/WebSocketServer/bin/stop.sh',
             'checkStatus'   => 'checkWebSocketServerStatus',
         ],
-        'TCPServer'    =>  [
+        'TCPServer'    => [
             'start'         => __DIR__ . '/unit/TCPServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/TCPServer/bin/stop.sh',
             'checkStatus'   => 'checkTCPServerStatus',
         ],
-        'UDPServer'    =>  [
+        'UDPServer'    => [
             'start'         => __DIR__ . '/unit/UDPServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/UDPServer/bin/stop.sh',
             'checkStatus'   => 'checkUDPServerStatus',
@@ -198,7 +198,17 @@ function startServer()
             }
             else
             {
-                throw new \RuntimeException("{$name} start failed");
+                echo $name, ' start failed', \PHP_EOL;
+                $filename = __DIR__ . '/unit/' . $name . '/logs/cli.log';
+                echo '[', $name, '] ', \PHP_EOL, 'File: ', $filename, \PHP_EOL;
+                if (is_file($filename))
+                {
+                    echo file_get_contents($filename), \PHP_EOL;
+                }
+                else
+                {
+                    echo 'File not found', \PHP_EOL;
+                }
             }
         }, function (ITaskParam $param, $data) use (&$completeTaskCount, $taskCount, $pool) {
             // 异步回调

@@ -4,7 +4,8 @@ services:
         image: mysql:${MYSQL_DOCKER_VERSION}
         container_name: mysql
         environment:
-            - "MYSQL_ROOT_PASSWORD=root"
+            - "MYSQL_ROOT_PASSWORD="
+            - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
             - "MYSQL_DATABASE=db_imi_test"
             - "TZ=Asia/Shanghai"
         command: --default-authentication-plugin=mysql_native_password
@@ -25,6 +26,7 @@ services:
         environment:
             - "MYSQL_SERVER_HOST=mysql"
             - "REDIS_SERVER_HOST=redis"
+            - "MYSQL_SERVER_PASSWORD="
         build:
             context: .
             dockerfile: ./swoole.dockerfile
@@ -46,6 +48,7 @@ services:
         environment:
             - "MYSQL_SERVER_HOST=mysql"
             - "REDIS_SERVER_HOST=redis"
+            - "MYSQL_SERVER_PASSWORD="
         build:
             context: .
             dockerfile: ./swoole-php8.dockerfile

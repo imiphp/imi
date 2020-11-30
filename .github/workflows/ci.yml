@@ -3,7 +3,70 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  ci:
+  ci-macos:
+    runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4]
+        swoole: [4.5]
+
+    env:
+      MYSQL_SERVER_PASSWORD: ""
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install db
+        run: |
+          brew install redis mysql
+          brew services start redis
+          brew services start mysql
+
+      - name: install php
+        run: .github/macos/install-php7.4-mac.sh
+
+      - name: install swoole
+        run: sudo .github/macos/install-swoole4.5.sh
+
+      - name: prepare
+        run: |
+          composer update
+          cd tests
+          composer update
+          cd ../
+          mysql -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          tests/db/install-db.sh
+
+      - name: test
+        run: |
+          composer test
+
+  ci-php8:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [4.5.9-php8.0]
+        mysql: [5.7, 8.0]
+
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: prepare
+        run: |
+          ./.github/prepare-test.sh php8
+
+      - name: test
+        run: docker exec php8 php tests/run
+
+  ci-php7:
     runs-on: ubuntu-latest
 
     strategy:
@@ -38,26 +101,3 @@ jobs:
 
       - name: test
         run: docker exec swoole php tests/run
-
-  ci-php8:
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole: [4.5.9-php8.0]
-        mysql: [5.7, 8.0]
-
-    env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: prepare
-        run: |
-          ./.github/prepare-test.sh php8
-
-      - name: test
-        run: docker exec php8 php tests/run
