@@ -193,7 +193,7 @@ class HttpRoute
                                 $params = array_merge($resultParams, $domainParams);
                             }
 
-                            return new RouteResult(spl_object_id($item), clone $item, $result, $params);
+                            return new RouteResult(spl_object_id($item), clone $item, $params);
                         }
                     }
                 }

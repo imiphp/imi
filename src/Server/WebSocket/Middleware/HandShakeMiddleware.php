@@ -2,17 +2,17 @@
 
 namespace Imi\Server\WebSocket\Middleware;
 
+use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\RequestContext;
-use Imi\Bean\Annotation\Bean;
-use Imi\Util\Http\Consts\StatusCode;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Imi\Server\Event\Param\OpenEventParam;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Util\Http\Consts\StatusCode;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @Bean("HandShakeMiddleware")
@@ -24,6 +24,7 @@ class HandShakeMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var IHttpResponse $response */
         $response = $handler->handle($request);
         if ('websocket' !== $request->getHeaderLine('Upgrade'))
         {
@@ -31,7 +32,7 @@ class HandShakeMiddleware implements MiddlewareInterface
             $routeResult = RequestContext::get('routeResult');
             if ($routeResult->routeItem->wsConfig['wsOnly'] ?? false)
             {
-                $response = $response->withStatus(StatusCode::BAD_REQUEST);
+                $response = $response->setStatus(StatusCode::BAD_REQUEST);
             }
 
             return $response;
@@ -94,10 +95,10 @@ class HandShakeMiddleware implements MiddlewareInterface
 
         foreach ($headers as $key => $val)
         {
-            $response = $response->withHeader($key, $val);
+            $response = $response->setHeader($key, $val);
         }
 
-        $response = $response->withStatus(StatusCode::SWITCHING_PROTOCOLS);
+        $response = $response->setStatus(StatusCode::SWITCHING_PROTOCOLS);
 
         return $response;
     }

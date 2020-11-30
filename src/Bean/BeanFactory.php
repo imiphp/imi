@@ -16,14 +16,14 @@ class BeanFactory
      *
      * @var int
      */
-    private static $counter = 0;
+    private static int $counter = 0;
 
     /**
      * 类名映射.
      *
      * @var array
      */
-    private static $classNameMap = [];
+    private static array $classNameMap = [];
 
     private function __construct()
     {
@@ -37,7 +37,7 @@ class BeanFactory
      *
      * @return mixed
      */
-    public static function newInstance($class, ...$args)
+    public static function newInstance(string $class, ...$args)
     {
         $classNameMap = &static::$classNameMap;
         if (isset($classNameMap[$class]))
@@ -66,7 +66,7 @@ class BeanFactory
      *
      * @return void
      */
-    public static function newInstanceNoInit($class, ...$args)
+    public static function newInstanceNoInit(string $class, ...$args)
     {
         $classNameMap = &static::$classNameMap;
         if (isset($classNameMap[$class]))
@@ -88,13 +88,12 @@ class BeanFactory
     /**
      * 初始化Bean对象
      *
-     * @param object           $object
-     * @param array            $args
-     * @param \ReflectionClass $ref
+     * @param object $object
+     * @param array  $args
      *
      * @return void
      */
-    public static function initInstance($object, $args = [])
+    public static function initInstance(object $object, array $args = [])
     {
         $ref = ReflectionContainer::getClassReflection(\get_class($object));
         BeanProxy::injectProps($object, self::getObjectClass($object));
@@ -109,7 +108,7 @@ class BeanFactory
      *
      * @return string
      */
-    private static function getNewClassName($className)
+    private static function getNewClassName(string $className): string
     {
         return $className . '__Bean__' . (++static::$counter);
     }
@@ -122,7 +121,7 @@ class BeanFactory
      *
      * @return string
      */
-    private static function getTpl($ref, $newClassName)
+    private static function getTpl(\ReflectionClass $ref, string $newClassName): string
     {
         $class = $ref->getName();
         $methodsTpl = static::getMethodsTpl($ref);
@@ -208,7 +207,7 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 
     public function __clone()
     {
-        \Imi\Bean\BeanProxy::injectProps(\$this, parent::class);
+        \Imi\Bean\BeanProxy::injectProps(\$this, parent::class, true);
         {$parentClone}
     }
 {$methodsTpl}
@@ -226,13 +225,13 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodsTpl($ref)
+    private static function getMethodsTpl(\ReflectionClass $ref): string
     {
         $tpl = '';
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
         {
             $methodName = $method->name;
-            if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $method))
+            if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $method->getName()))
             {
                 continue;
             }
@@ -270,9 +269,9 @@ TPL;
      *
      * @param \ReflectionClass $ref
      *
-     * @return string
+     * @return array
      */
-    private static function getMethodParamTpls(\ReflectionMethod $method)
+    private static function getMethodParamTpls(\ReflectionMethod $method): array
     {
         $args = $define = $call = [];
         $setArgs = $setArgsBack = '';
@@ -325,7 +324,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodParamArgsTpl(\ReflectionParameter $param)
+    private static function getMethodParamArgsTpl(\ReflectionParameter $param): string
     {
         $reference = $param->isPassedByReference() ? '&' : '';
 
@@ -339,7 +338,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodParamDefineTpl(\ReflectionParameter $param)
+    private static function getMethodParamDefineTpl(\ReflectionParameter $param): string
     {
         $result = '';
         // 类型
@@ -388,7 +387,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodParamCallTpl(\ReflectionParameter $param)
+    private static function getMethodParamCallTpl(\ReflectionParameter $param): string
     {
         return ($param->isVariadic() ? '...' : '') . '$' . $param->name;
     }
@@ -400,7 +399,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodReturnType(\ReflectionMethod $method)
+    private static function getMethodReturnType(\ReflectionMethod $method): string
     {
         if (!$method->hasReturnType())
         {
@@ -418,7 +417,7 @@ TPL;
      *
      * @return string
      */
-    public static function getObjectClass($object)
+    public static function getObjectClass($object): string
     {
         if (\is_object($object))
         {
@@ -440,12 +439,12 @@ TPL;
     /**
      * 是否有Aop注入当前方法.
      *
-     * @param \ReflectionClass  $class
-     * @param \ReflectionMethod $method
+     * @param \ReflectionClass $class
+     * @param string           $method
      *
      * @return bool
      */
-    private static function hasAop($class, $method)
+    private static function hasAop(\ReflectionClass $class, string $method): bool
     {
         $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
         $className = $class->getName();
@@ -491,7 +490,7 @@ TPL;
         }
         else
         {
-            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
+            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method);
             foreach ($aspects as $item)
             {
                 // 判断是否属于当前类的切面

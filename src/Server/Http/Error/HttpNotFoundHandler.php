@@ -4,9 +4,9 @@ namespace Imi\Server\Http\Error;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Util\Http\Consts\StatusCode;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
@@ -23,11 +23,11 @@ class HttpNotFoundHandler implements IHttpNotFoundHandler
      */
     protected string $handler;
 
-    public function handle(RequestHandlerInterface $requesthandler, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function handle(RequestHandlerInterface $requesthandler, IHttpRequest $request, IHttpResponse $response): IHttpResponse
     {
         if (!isset($this->handler))
         {
-            return $response->withStatus(StatusCode::NOT_FOUND);
+            return $response->setStatus(StatusCode::NOT_FOUND);
         }
         else
         {

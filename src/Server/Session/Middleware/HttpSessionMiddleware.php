@@ -4,6 +4,8 @@ namespace Imi\Server\Session\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Session\SessionManager;
@@ -27,6 +29,9 @@ class HttpSessionMiddleware implements MiddlewareInterface
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
+     *
+     * @param IHttpRequest            $request
+     * @param RequestHandlerInterface $handler
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -85,13 +90,13 @@ class HttpSessionMiddleware implements MiddlewareInterface
      * @param \Imi\Server\Session\SessionManager $sessionManager
      * @param Response                           $response
      *
-     * @return ResponseInterface
+     * @return IHttpResponse
      */
-    private function sendCookie(SessionManager $sessionManager, Response $response): ResponseInterface
+    private function sendCookie(SessionManager $sessionManager, Response $response): IHttpResponse
     {
         $config = $sessionManager->getConfig();
         $cookie = $config->cookie;
 
-        return $response->withCookie($sessionManager->getName(), $sessionManager->getId(), 0 === $cookie->lifetime ? 0 : (time() + $cookie->lifetime), $cookie->path, $cookie->domain, $cookie->secure, $cookie->httponly);
+        return $response->setCookie($sessionManager->getName(), $sessionManager->getId(), 0 === $cookie->lifetime ? 0 : (time() + $cookie->lifetime), $cookie->path, $cookie->domain, $cookie->secure, $cookie->httponly);
     }
 }

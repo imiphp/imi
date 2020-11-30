@@ -7,6 +7,7 @@ use Imi\Aop\AfterThrowingJoinPoint;
 use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\BaseInjectValue;
+use Imi\Aop\Annotation\Inject;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
@@ -32,6 +33,13 @@ class BeanProxy
      * @var array
      */
     private static array $aspectCache = [];
+
+    /**
+     * 类注入缓存.
+     *
+     * @var array
+     */
+    private static array $classInjectsCache = [];
 
     /**
      * 魔术方法.
@@ -259,10 +267,11 @@ class BeanProxy
      *
      * @param object $object
      * @param string $className
+     * @param bool   $reInit
      *
      * @return void
      */
-    public static function injectProps(object $object, string $className)
+    public static function injectProps(object $object, string $className, bool $reInit = false)
     {
         [$injects, $configs] = static::getInjects($className);
         if (!$injects && !$configs)
@@ -277,6 +286,10 @@ class BeanProxy
             foreach ($injects as $propName => $annotations)
             {
                 $annotation = reset($annotations);
+                if ($reInit && $annotation instanceof Inject)
+                {
+                    continue;
+                }
                 $propRef = $refClass->getProperty($propName);
                 $propRef->setAccessible(true);
                 $propRef->setValue($object, $annotation->getRealValue());
@@ -318,13 +331,17 @@ class BeanProxy
         {
             $beanName = $className;
         }
-        $beanProperties = Config::get('@currentServer.beans.' . $beanName);
-        if (null === $beanProperties && $beanName !== $className)
+        $beans = Config::get('@currentServer.beans');
+        if (isset($beans[$beanName]))
         {
-            $beanProperties = Config::get('@currentServer.beans.' . $className);
+            return $beans[$beanName];
+        }
+        elseif ($beanName !== $className)
+        {
+            return $beans[$className] ?? [];
         }
 
-        return $beanProperties ?? [];
+        return [];
     }
 
     /**
@@ -338,7 +355,14 @@ class BeanProxy
      */
     public static function getInjects(string $className): array
     {
-        $injects = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
+        if (isset(self::$classInjectsCache[$className]))
+        {
+            $injects = self::$classInjectsCache[$className];
+        }
+        else
+        {
+            $injects = self::$classInjectsCache[$className] = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
+        }
         $configs = static::getConfigInjects($className);
         if ($configs && $injects)
         {

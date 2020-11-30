@@ -2,7 +2,7 @@
 
 namespace Imi\Server\Annotation;
 
-use Imi\Aop\Annotation\Inject;
+use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\App;
 use Imi\Bean\Annotation\Parser;
 use Imi\RequestContext;
@@ -16,8 +16,27 @@ use Imi\Util\Coroutine;
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
  */
-class ServerInject extends Inject
+class ServerInject extends BaseInjectValue
 {
+    /**
+     * 只传一个参数时的参数名.
+     *
+     * @var string
+     */
+    protected ?string $defaultFieldName = 'name';
+
+    /**
+     * Bean名称或类名.
+     */
+    public $name;
+
+    /**
+     * Bean实例化参数.
+     *
+     * @var array
+     */
+    public $args = [];
+
     /**
      * 获取注入值的真实值
      *

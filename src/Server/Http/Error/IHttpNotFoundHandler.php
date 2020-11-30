@@ -2,8 +2,8 @@
 
 namespace Imi\Server\Http\Error;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
@@ -11,5 +11,5 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 interface IHttpNotFoundHandler
 {
-    public function handle(RequestHandlerInterface $requesthandler, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface;
+    public function handle(RequestHandlerInterface $requesthandler, IHttpRequest $request, IHttpResponse $response): IHttpResponse;
 }

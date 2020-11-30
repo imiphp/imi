@@ -21,13 +21,6 @@ class RouteResult
     public RouteItem $routeItem;
 
     /**
-     * URL 检测结果.
-     *
-     * @var \Imi\Server\Http\Route\UrlCheckResult
-     */
-    public UrlCheckResult $urlCheckResult;
-
-    /**
      * 参数.
      *
      * @var array
@@ -41,16 +34,15 @@ class RouteResult
      */
     public $callable;
 
-    public function __construct(int $id, RouteItem $routeItem, UrlCheckResult $urlCheckResult, array $params)
+    public function __construct(int $id, RouteItem $routeItem, array $params)
     {
         $this->id = $id;
         $this->routeItem = $routeItem;
-        $this->urlCheckResult = $urlCheckResult;
         $this->params = $params;
         $callable = $routeItem->callable;
         if ($callable instanceof RouteCallable)
         {
-            $this->callable = $callable->getCallable($urlCheckResult->params);
+            $this->callable = $callable->getCallable($params);
         }
         else
         {

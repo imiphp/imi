@@ -2,7 +2,7 @@
 
 namespace Imi\Pool\Annotation;
 
-use Imi\Aop\Annotation\Inject;
+use Imi\Aop\Annotation\RequestInject;
 use Imi\Bean\Annotation\Parser;
 use Imi\Pool\PoolManager;
 
@@ -13,7 +13,7 @@ use Imi\Pool\PoolManager;
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
  */
-class PoolResource extends Inject
+class PoolResource extends RequestInject
 {
     /**
      * 获取注入值的真实值

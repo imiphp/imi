@@ -2,7 +2,7 @@
 
 namespace Imi\Redis\Annotation;
 
-use Imi\Aop\Annotation\Inject;
+use Imi\Aop\Annotation\RequestInject;
 use Imi\Bean\Annotation\Parser;
 use Imi\Redis\RedisManager;
 
@@ -13,7 +13,7 @@ use Imi\Redis\RedisManager;
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
  */
-class RedisInject extends Inject
+class RedisInject extends RequestInject
 {
     /**
      * 获取注入值的真实值

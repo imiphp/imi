@@ -30,7 +30,7 @@ class BeforeHandShake implements IHandShakeEventListener
         $response = $e->response;
         if (!Worker::isWorkerStartAppComplete())
         {
-            $response->withStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
+            $response->setStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
             $e->stopPropagation();
 
             return;

@@ -4,9 +4,9 @@ namespace Imi\Test\HttpServer\ApiServer\Error;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Error\IHttpNotFoundHandler;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Util\Stream\MemoryStream;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class HttpNotFoundHandler implements IHttpNotFoundHandler
 {
-    public function handle(RequestHandlerInterface $requesthandler, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function handle(RequestHandlerInterface $requesthandler, IHttpRequest $request, IHttpResponse $response): IHttpResponse
     {
         return $response->withBody(new MemoryStream('gg'));
     }

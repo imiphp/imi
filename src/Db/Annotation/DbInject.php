@@ -2,7 +2,7 @@
 
 namespace Imi\Db\Annotation;
 
-use Imi\Aop\Annotation\Inject;
+use Imi\Aop\Annotation\RequestInject;
 use Imi\Bean\Annotation\Parser;
 use Imi\Db\Db;
 use Imi\Db\Query\QueryType;
@@ -14,7 +14,7 @@ use Imi\Db\Query\QueryType;
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Aop\Parser\AopParser")
  */
-class DbInject extends Inject
+class DbInject extends RequestInject
 {
     /**
      * 查询类型.

@@ -2,13 +2,13 @@
 
 namespace Imi\Server\Http\Error;
 
-use Imi\Server\Http\Message\Request;
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 
 /**
  * 执行超时接口.
  */
 interface IExecuteTimeoutHandler
 {
-    public function handle(Request $request, Response $response);
+    public function handle(IHttpRequest $request, IHttpResponse $response);
 }

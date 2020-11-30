@@ -4,6 +4,8 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -65,7 +67,7 @@ class OptionsMiddleware implements MiddlewareInterface
     /**
      * 处理方法.
      *
-     * @param ServerRequestInterface  $request
+     * @param IHttpRequest            $request
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
@@ -73,33 +75,34 @@ class OptionsMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $requestContext = RequestContext::getContext();
+        /** @var IHttpResponse $response */
         $response = $requestContext['response'] ?? null;
         if ($isOptions = ('OPTIONS' === $request->getMethod()))
         {
             if (null !== $this->allowHeaders)
             {
-                $response = $response->withHeader('Access-Control-Allow-Headers', $this->allowHeaders);
+                $response->setHeader('Access-Control-Allow-Headers', $this->allowHeaders);
             }
             if (null !== $this->exposeHeaders)
             {
-                $response = $response->withHeader('Access-Control-Expose-Headers', $this->exposeHeaders);
+                $response->setHeader('Access-Control-Expose-Headers', $this->exposeHeaders);
             }
             if (null !== $this->allowMethods)
             {
-                $response = $response->withHeader('Access-Control-Allow-Methods', $this->allowMethods);
+                $response->setHeader('Access-Control-Allow-Methods', $this->allowMethods);
             }
         }
         if (null === $this->allowOrigin || (\is_array($this->allowOrigin) && \in_array($request->getHeaderLine('Origin'), $this->allowOrigin)))
         {
-            $response = $response->withHeader('Access-Control-Allow-Origin', $request->getHeaderLine('Origin'));
+            $response->setHeader('Access-Control-Allow-Origin', $request->getHeaderLine('Origin'));
         }
         elseif (!\is_array($this->allowOrigin))
         {
-            $response = $response->withHeader('Access-Control-Allow-Origin', $this->allowOrigin);
+            $response->setHeader('Access-Control-Allow-Origin', $this->allowOrigin);
         }
         if (null !== $this->allowCredentials)
         {
-            $response = $response->withHeader('Access-Control-Allow-Credentials', $this->allowCredentials);
+            $response->setHeader('Access-Control-Allow-Credentials', $this->allowCredentials);
         }
         $requestContext['response'] = $response;
         if ($isOptions && $this->optionsBreak)
