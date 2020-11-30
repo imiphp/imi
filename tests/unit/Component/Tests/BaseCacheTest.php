@@ -57,7 +57,7 @@ abstract class BaseCacheTest extends BaseTest
         {
             $this->markTestSkipped('Handler does not support TTL');
         }
-        for ($i = 0; $i < 3; ++$i)
+        for ($_ = 0; $_ < 3; ++$_)
         {
             try
             {

@@ -111,6 +111,7 @@ class ServerUtilTest extends BaseTest
                             break;
                         }
                     }
+                    break;
                 }
                 catch (\Throwable $th)
                 {
@@ -185,6 +186,7 @@ class ServerUtilTest extends BaseTest
                             break;
                         }
                     }
+                    break;
                 }
                 catch (\Throwable $th)
                 {

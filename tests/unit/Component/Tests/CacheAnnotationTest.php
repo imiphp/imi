@@ -18,7 +18,7 @@ class CacheAnnotationTest extends BaseTest
      */
     public function testCacheableTTL()
     {
-        for ($i = 0; $i < 3; ++$i)
+        for ($_ = 0; $_ < 3; ++$_)
         {
             try
             {
@@ -43,6 +43,7 @@ class CacheAnnotationTest extends BaseTest
                 Assert::assertTrue(isset($result2['id']));
                 Assert::assertTrue(isset($result2['time']));
                 Assert::assertNotEquals($result['time'], $result2['time']);
+            break;
             }
             catch (\Throwable $th)
             {
