@@ -11,7 +11,7 @@ services:
 
   redis:
       image: redis:6.0.9-alpine
-      container_name: mysql
+      container_name: redis
       ports:
           - 6379:6379
 
