@@ -7,7 +7,7 @@
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)](https://packagist.org/packages/yurunsoft/imi)
-[![Travis](https://img.shields.io/travis/Yurunsoft/IMI.svg)](https://travis-ci.org/Yurunsoft/IMI)
+![Cirrus CI - Base Branch Build Status](https://img.shields.io/cirrus/github/Yurunsoft/imi)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
