@@ -316,7 +316,15 @@ class Driver extends Base implements IDb
             {
                 $results[] = [];
             }
-        } while ($instance->next_result());
+            if ($instance->more_results())
+            {
+                $instance->next_result();
+            }
+            else
+            {
+                break;
+            }
+        } while (true);
 
         return $results;
     }

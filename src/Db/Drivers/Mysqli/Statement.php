@@ -349,6 +349,10 @@ class Statement extends BaseStatement implements IStatement
     public function nextRowset(): bool
     {
         $statement = $this->statement;
+        if (!$statement->more_results())
+        {
+            return false;
+        }
         $statement->next_result();
         if ($this->result)
         {
