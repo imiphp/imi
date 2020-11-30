@@ -11,7 +11,7 @@ rm swoole.tar.gz
 
 cd $swooleDir
 
-phpize && ./configure && make -j && make install
+phpize && ./configure --enable-openssl --enable-http2 --enable-mysqlnd --with-openssl-dir=$(brew --prefix openssl) && make -j && make install
 
 PHP_INI_FILE=$(php -r "echo php_ini_loaded_file();")
 if [[ $PHP_INI_FILE == "" ]]; then
