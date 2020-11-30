@@ -14,9 +14,11 @@ jobs:
           ,4.4.22-php7.1, 4.4.22-php7.2, 4.4.22-php7.3, 4.4.22-php7.4
           ,4.3.6-php7.1, 4.3.6-php7.2, 4.3.6-php7.3
         ]
+        mysql: [5.7, 8.0]
 
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
 
     steps:
     - uses: actions/checkout@v1
@@ -37,9 +39,11 @@ jobs:
         swoole: [
           4.5.9-php8.0
         ]
+        mysql: [5.7, 8.0]
 
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
 
     steps:
     - uses: actions/checkout@v1
