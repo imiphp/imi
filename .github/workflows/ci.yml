@@ -12,6 +12,9 @@ jobs:
         php: [7.4]
         swoole: [4.5]
 
+    env:
+      MYSQL_SERVER_PASSWORD: ""
+
     steps:
       - uses: actions/checkout@v1
 
