@@ -117,7 +117,8 @@ class Driver extends Base implements IDb
     public function open()
     {
         $option = $this->option;
-        $this->instance = new \mysqli($option['host'] ?? '127.0.0.1', $option['username'], $option['password'], $option['database'], $option['port'] ?? 3306);
+        $this->instance = $instance = new \mysqli($option['host'] ?? '127.0.0.1', $option['username'], $option['password'], $option['database'], $option['port'] ?? 3306);
+        $instance->set_charset($option['charset']);
 
         return true;
     }
