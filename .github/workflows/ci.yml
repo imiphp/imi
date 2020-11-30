@@ -61,3 +61,27 @@ jobs:
 
       - name: test
         run: docker exec php8 php tests/run
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: sudo .github/macos/install-php7.4-mac.sh
+
+      - name: install swoole
+        run: sudo .github/macos/install-swoole4.5.sh
+
+      - name: composer
+        run: |
+          composer update
+          cd tests
+          composer update
+
+      - name: test
+        env:
+
+        run: |
+          sudo composer test
