@@ -161,16 +161,13 @@ TPL;
             $aopConstruct = '';
         }
         // partial 处理
-        $classes = [$class];
-        $parentClass = $ref;
-        while ($parentClass = $parentClass->getParentClass())
-        {
-            $classes[] = $parentClass->getName();
-        }
+        $classes = class_parents($class);
         if (isset($classes[1]))
         {
-            $classes = array_reverse(array_unique($classes));
+            $classes = array_reverse($classes);
         }
+        $classes[] = $class;
+
         $partialData = PartialParser::getInstance()->getData();
         $traits = [];
         foreach ($classes as $currentClass)
