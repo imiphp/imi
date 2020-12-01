@@ -43,7 +43,7 @@ class CacheAnnotationTest extends BaseTest
                 Assert::assertTrue(isset($result2['id']));
                 Assert::assertTrue(isset($result2['time']));
                 Assert::assertNotEquals($result['time'], $result2['time']);
-            break;
+                break;
             }
             catch (\Throwable $th)
             {
@@ -58,71 +58,87 @@ class CacheAnnotationTest extends BaseTest
 
     public function testCacheableLock()
     {
-        $test = App::getBean('TestCacheAnnotation');
-        $id = 1;
-        $result = $test->testCacheableLock($id);
-        Assert::assertTrue(isset($result['id']));
-        Assert::assertTrue(isset($result['time']));
-        Assert::assertEquals($id, $result['id']);
-
-        $result2 = $test->testCacheableLock($id);
-        Assert::assertTrue(isset($result2['id']));
-        Assert::assertTrue(isset($result2['time']));
-        Assert::assertEquals($result['time'], $result2['time']);
-
-        sleep(1);
-
-        $result2 = $test->testCacheableLock($id);
-        Assert::assertTrue(isset($result2['id']));
-        Assert::assertTrue(isset($result2['time']));
-        Assert::assertNotEquals($result['time'], $result2['time']);
-
-        $time = microtime(true);
-        $throwables = [];
-        $channel = new \Swoole\Coroutine\Channel(3);
-        for ($i = 0; $i < 3; ++$i)
+        for ($_ = 0; $_ < 3; ++$_)
         {
-            $throwables[] = null;
-            $index = $i;
-            go(function () use (&$throwables, $index, $test, $id, $channel) {
-                try
-                {
-                    $result2 = $test->testCacheableLock($id);
-                    Assert::assertTrue(isset($result2['id']));
-                    Assert::assertTrue(isset($result2['time']));
-                }
-                catch (\Throwable $th)
-                {
-                    $throwables[$index] = $th;
-                }
-                finally
-                {
-                    $channel->push(1);
-                }
-            });
-        }
-        $count = 0;
-        while ($ret = $channel->pop())
-        {
-            if (1 === $ret)
+            try
             {
-                ++$count;
-                if ($count >= 3)
+                $th = null;
+                $test = App::getBean('TestCacheAnnotation');
+                $id = 1;
+                $result = $test->testCacheableLock($id);
+                Assert::assertTrue(isset($result['id']));
+                Assert::assertTrue(isset($result['time']));
+                Assert::assertEquals($id, $result['id']);
+
+                $result2 = $test->testCacheableLock($id);
+                Assert::assertTrue(isset($result2['id']));
+                Assert::assertTrue(isset($result2['time']));
+                Assert::assertEquals($result['time'], $result2['time']);
+
+                sleep(1);
+
+                $result2 = $test->testCacheableLock($id);
+                Assert::assertTrue(isset($result2['id']));
+                Assert::assertTrue(isset($result2['time']));
+                Assert::assertNotEquals($result['time'], $result2['time']);
+
+                $time = microtime(true);
+                $throwables = [];
+                $channel = new \Swoole\Coroutine\Channel(3);
+                for ($i = 0; $i < 3; ++$i)
                 {
-                    break;
+                    $throwables[] = null;
+                    $index = $i;
+                    go(function () use (&$throwables, $index, $test, $id, $channel) {
+                        try
+                        {
+                            $result2 = $test->testCacheableLock($id);
+                            Assert::assertTrue(isset($result2['id']));
+                            Assert::assertTrue(isset($result2['time']));
+                        }
+                        catch (\Throwable $th)
+                        {
+                            $throwables[$index] = $th;
+                        }
+                        finally
+                        {
+                            $channel->push(1);
+                        }
+                    });
                 }
+                $count = 0;
+                while ($ret = $channel->pop())
+                {
+                    if (1 === $ret)
+                    {
+                        ++$count;
+                        if ($count >= 3)
+                        {
+                            break;
+                        }
+                    }
+                }
+                $useTime = microtime(true) - $time;
+                foreach ($throwables as $th)
+                {
+                    if ($th)
+                    {
+                        throw $th;
+                    }
+                }
+                $channel->close();
+                Assert::assertLessThanOrEqual(1, $useTime);
+                break;
+            }
+            catch (\Throwable $th)
+            {
+                sleep(1);
             }
         }
-        $useTime = microtime(true) - $time;
-        foreach ($throwables as $th)
+        if (isset($th))
         {
-            if ($th)
-            {
-                throw $th;
-            }
+            throw $th;
         }
-        $channel->close();
-        Assert::assertLessThanOrEqual(1, $useTime);
     }
 
     public function testCacheEvict()
