@@ -7,6 +7,7 @@ use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
 use Imi\Server\View\Parser\ViewParser;
 use Imi\Util\Imi;
+use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Uri;
 
 /**
@@ -181,7 +182,7 @@ class HttpRoute
                             $this->checkDomain($request, $itemAnnotation->domain, $domainParams) &&
                             $this->checkParamsGet($request, $itemAnnotation->paramsGet) &&
                             $this->checkParamsPost($request, $itemAnnotation->paramsPost) &&
-                            $this->checkParamsBody($request, $itemAnnotation->paramsBody) &&
+                            $this->checkParamsBody($request, $itemAnnotation->paramsBody, $itemAnnotation->paramsBodyMultiLevel) &&
                             $this->checkHeader($request, $itemAnnotation->header) &&
                             $this->checkRequestMime($request, $itemAnnotation->requestMime)
                         ) {
@@ -454,10 +455,11 @@ class HttpRoute
      *
      * @param Request $request
      * @param mixed   $params
+     * @param bool    $paramsBodyMultiLevel
      *
      * @return bool
      */
-    private function checkParamsBody(Request $request, $params)
+    private function checkParamsBody(Request $request, $params, bool $paramsBodyMultiLevel)
     {
         if (null === $params)
         {
@@ -467,8 +469,12 @@ class HttpRoute
         $parsedBody = $request->getParsedBody();
         $isObject = \is_object($parsedBody);
 
-        return Imi::checkCompareRules($params, function ($name) use ($parsedBody, $isObject) {
-            if ($isObject)
+        return Imi::checkCompareRules($params, function ($name) use ($parsedBody, $isObject, $paramsBodyMultiLevel) {
+            if ($paramsBodyMultiLevel)
+            {
+                return ObjectArrayHelper::get($parsedBody, $name);
+            }
+            elseif ($isObject)
             {
                 return $parsedBody->$name ?? null;
             }

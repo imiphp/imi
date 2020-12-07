@@ -62,6 +62,7 @@ return [
 | paramsGet | 判断`GET`参数，只有符合条件才允许访问。<br>可以是字符串或数组。<br>`id=100`必须包含id，并且值为100<br>`id!=100`或`id<>100`必须包含id，并且值不为100<br>`id`必须包含id参数<br>`!id`必须不包含id参数</br>`["id" => "\d+"]`支持正则</br> |
 | paramsPost | 判断`POST`参数，用法同`paramsGet` |
 | paramsBody | 判断 JSON、XML 参数，用法同`paramsGet` |
+| paramsBodyMultiLevel | JSON、XML参数条件支持以 . 作为分隔符，支持多级参数获取，默认为`true` |
 | header | 判断请求头，用法同`paramsGet` |
 | requestMime | 请求的mime类型判断<br>判断请求头中的Content-Type中是否包含这些mime类型之一<br>支持字符串和字符串数组<br> |
 | ignoreCase | 忽略请求地址大小写<br>`null`-取HttpRoute中默认值<br>`true`-忽略大小写<br>`false`-严格判断 |
