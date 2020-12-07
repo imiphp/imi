@@ -91,6 +91,20 @@ class Route extends Base
     public $paramsPost;
 
     /**
+     * JSON、XML参数条件
+     * 可以是单个字符串，也可以是数组
+     * 取值：
+     * id=100 必须包含id，并且值为100
+     * id!=100 或 id<>100 必须包含id，并且值不为100
+     * id 必须包含id参数
+     * !id 必须不包含id参数
+     * "id" => "\d+" 支持正则.
+     *
+     * @var string|array
+     */
+    public $paramsBody;
+
+    /**
      * 请求头条件
      * 可以是单个字符串，也可以是数组
      * 取值：

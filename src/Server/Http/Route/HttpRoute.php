@@ -181,6 +181,7 @@ class HttpRoute
                             $this->checkDomain($request, $itemAnnotation->domain, $domainParams) &&
                             $this->checkParamsGet($request, $itemAnnotation->paramsGet) &&
                             $this->checkParamsPost($request, $itemAnnotation->paramsPost) &&
+                            $this->checkParamsBody($request, $itemAnnotation->paramsBody) &&
                             $this->checkHeader($request, $itemAnnotation->header) &&
                             $this->checkRequestMime($request, $itemAnnotation->requestMime)
                         ) {
@@ -445,6 +446,36 @@ class HttpRoute
 
         return Imi::checkCompareRules($params, function ($name) use ($request) {
             return $request->post($name);
+        });
+    }
+
+    /**
+     * 检查验证 JSON、XML 参数是否匹配.
+     *
+     * @param Request $request
+     * @param mixed   $params
+     *
+     * @return bool
+     */
+    private function checkParamsBody(Request $request, $params)
+    {
+        if (null === $params)
+        {
+            return true;
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $isObject = \is_object($parsedBody);
+
+        return Imi::checkCompareRules($params, function ($name) use ($parsedBody, $isObject) {
+            if ($isObject)
+            {
+                return $parsedBody->$name ?? null;
+            }
+            else
+            {
+                return $parsedBody[$name] ?? null;
+            }
         });
     }
 
