@@ -6,6 +6,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Server\Event\Param\OpenEventParam;
+use Imi\Util\Coroutine;
 use Imi\Util\Http\Consts\StatusCode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -51,10 +52,12 @@ class HandShakeMiddleware implements MiddlewareInterface
             ]);
 
             $server = RequestContext::get('server');
-            $server->trigger('open', [
-                'server'   => &$server,
-                'request'  => &$request,
-            ], $this, OpenEventParam::class);
+            Coroutine::defer(function () use ($server, $request) {
+                $server->trigger('open', [
+                    'server'   => &$server,
+                    'request'  => &$request,
+                ], $this, OpenEventParam::class);
+            });
         }
 
         return $response;
