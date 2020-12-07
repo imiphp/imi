@@ -12,5 +12,12 @@ docker-compose up -d $containerName \
 && docker exec $containerName composer -V \
 && docker ps -a \
 && docker exec $containerName composer update \
-&& docker exec $containerName bash -c "cd tests && composer update" \
-&& docker exec $containerName bash tests/db/install-db.sh
+&& docker exec $containerName bash -c "cd tests && composer update";
+
+n=0
+until [ $n -ge 5 ]
+do
+  docker exec $containerName bash tests/db/install-db.sh && break
+  n=$[$n+1]
+  sleep 1
+done
