@@ -39,25 +39,3 @@ services:
             core: -1
         privileged: true
         command: tail -f /etc/group
-
-    php8:
-        container_name: "php8"
-        depends_on:
-            - mysql
-            - redis
-        environment:
-            - "MYSQL_SERVER_HOST=mysql"
-            - "REDIS_SERVER_HOST=redis"
-            - "MYSQL_SERVER_PASSWORD="
-        build:
-            context: .
-            dockerfile: ./swoole-php8.dockerfile
-            args:
-                SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
-        volumes:
-            - "${GITHUB_WORKSPACE}:/imi:rw"
-        working_dir: /imi
-        ulimits:
-            core: -1
-        privileged: true
-        command: tail -f /etc/group
