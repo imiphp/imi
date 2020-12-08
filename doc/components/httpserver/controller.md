@@ -214,6 +214,13 @@ string(47) "/xxx.html"
 $ip = $this->request->getServerParam('remote_addr');
 ```
 
+#### 获取 Swoole Request 对象
+
+```php
+/** @var \Swoole\Http\Request $swooleRequest */
+$swooleRequest = $this->request->getSwooleRequest();
+```
+
 ### $response
 
 响应对象，遵循 PSR-7 标准。
@@ -310,4 +317,11 @@ $reponse->withHeader('test', ['v2', 'v3']);
 $reponse->withAddedHeader('test', 'v1');
 $reponse->withAddedHeader('test', ['v2', 'v3']);
 // 最终header中test为v1,v2,v3
+```
+
+#### 获取 Swoole Response 对象
+
+```php
+/** @var \Swoole\Http\Response $swooleResponse */
+$swooleResponse = $this->request->getSwooleResponse();
 ```

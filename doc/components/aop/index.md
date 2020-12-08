@@ -331,9 +331,11 @@ class Test
 	 */
 	public function afterThrowing(AfterThrowingJoinPoint $joinPoint)
 	{
-		// 异常不会被继续抛出
+		// 异常不会被继续抛出，也不会记录日志
 		$joinPoint->cancelThrow();
 		var_dump('异常捕获:' . $joinPoint->getThrowable()->getMessage());
+		// 如有需要，可以手动记录下日志：
+		\Imi\App::getBean('ErrorLog')->onException($joinPoint->getThrowable());
 	}
 }
 
