@@ -6,6 +6,30 @@ imi 支持对 WebSocket 的连接（fd）进行逻辑分组，你可以方便地
 
 ## 分组的使用
 
+### 配置
+
+服务器配置文件：
+
+```php
+[
+    'beans' => [
+        // 分组
+        'ServerGroup' => [
+            'status' => true , // 启用
+            'groupHandler' => \Imi\Server\Group\Handler\Redis::class, // 分组处理器，目前仅支持 Redis
+        ],
+        // 分组 Redis 驱动
+        'GroupRedis' => [
+            'redisPool' => '连接池名',
+            'redisDb' => 0, // redis中第几个库
+            'heartbeatTimespan' => 5, // 心跳时间，单位：秒.
+            'heartbeatTtl' => 8, // 心跳数据过期时间，单位：秒.
+            'key' => null, // 该服务的分组键，默认为 imi:命名空间:connect_group
+        ],
+    ],
+]
+```
+
 ### 分组创建
 
 ```php
