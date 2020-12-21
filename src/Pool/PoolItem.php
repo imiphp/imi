@@ -88,13 +88,22 @@ class PoolItem
     /**
      * 锁定.
      *
-     * @return void
+     * @return bool
      */
     public function lock()
     {
-        ++$this->usageCount;
-        $this->isFree = false;
-        $this->lastUseTime = microtime(true);
+        if ($this->isFree)
+        {
+            ++$this->usageCount;
+            $this->isFree = false;
+            $this->lastUseTime = microtime(true);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**

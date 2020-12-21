@@ -74,17 +74,25 @@ abstract class BaseAsyncPool extends BasePool
         {
             $poolItem = $selectResult;
         }
+        /** @var \Imi\Pool\PoolItem $poolItem */
         if (!$poolItem)
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
-        /** @var \Imi\Pool\PoolItem $poolItem */
-        $resource = $poolItem->getResource();
-        if (!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
-        {
-            throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
-        }
         $poolItem->lock();
+        try
+        {
+            $resource = $poolItem->getResource();
+            if (!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+            {
+                throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
+            }
+        }
+        catch (\Throwable $th)
+        {
+            $poolItem->release();
+            throw $th;
+        }
 
         return $resource;
     }
@@ -123,17 +131,25 @@ abstract class BaseAsyncPool extends BasePool
         {
             $poolItem = $result;
         }
+        /** @var \Imi\Pool\PoolItem $poolItem */
         if (!$poolItem)
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
-        /** @var \Imi\Pool\PoolItem $poolItem */
-        $resource = $poolItem->getResource();
-        if (!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
-        {
-            throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
-        }
         $poolItem->lock();
+        try
+        {
+            $resource = $poolItem->getResource();
+            if (!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+            {
+                throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
+            }
+        }
+        catch (\Throwable $th)
+        {
+            $poolItem->release();
+            throw $th;
+        }
 
         return $resource;
     }
