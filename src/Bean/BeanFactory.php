@@ -361,16 +361,9 @@ TPL;
         // $参数名
         $result .= '$' . $param->name;
         // 默认值
-        if ($param->isOptional() && !$param->isVariadic())
+        if ($param->isDefaultValueAvailable())
         {
-            if ($param->isDefaultValueAvailable())
-            {
-                $result .= ' = ' . var_export($param->getDefaultValue(), true);
-            }
-            else
-            {
-                $result .= ' = null';
-            }
+            $result .= ' = ' . var_export($param->getDefaultValue(), true);
         }
 
         return $result;

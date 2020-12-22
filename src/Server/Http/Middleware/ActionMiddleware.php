@@ -190,6 +190,7 @@ class ActionMiddleware implements MiddlewareInterface
         $result = [];
         foreach ($params as $param)
         {
+            /** @var \ReflectionParameter $param */
             $paramName = $param->name;
             if (isset($routeResult->params[$paramName]))
             {
@@ -217,7 +218,7 @@ class ActionMiddleware implements MiddlewareInterface
                 {
                     $result[] = $parsedBody[$paramName];
                 }
-                elseif ($param->isOptional())
+                elseif ($param->isDefaultValueAvailable())
                 {
                     // 方法默认值
                     $result[] = $param->getDefaultValue();

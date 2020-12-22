@@ -260,7 +260,7 @@ abstract class Tool
             $annotation = $annotations[$param->name] ?? null;
             if (null === $annotation)
             {
-                $value = $param->isOptional() ? $param->getDefaultValue() : null;
+                $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
             }
             elseif (Args::exists($annotation->name))
             {
