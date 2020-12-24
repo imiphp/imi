@@ -49,4 +49,32 @@ class TestController extends \Imi\Controller\TcpController
         ];
         $this->server->groupCall('g1', 'send', $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($message));
     }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @TcpAction
+     * @TcpRoute({"duplicated"="1"})
+     *
+     * @param
+     *
+     * @return void
+     */
+    public function duplicated1($data)
+    {
+    }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @TcpAction
+     * @TcpRoute({"duplicated"="1"})
+     *
+     * @param
+     *
+     * @return void
+     */
+    public function duplicated2($data)
+    {
+    }
 }

@@ -16,6 +16,7 @@ use Imi\Server\Route\Parser\TcpControllerParser;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
 use Imi\ServerManage;
+use Imi\Worker;
 
 /**
  * TCP 服务器路由初始化.
@@ -55,6 +56,7 @@ class TcpRouteInit implements IEventListener
                 continue;
             }
             $context['server'] = $server;
+            /** @var \Imi\Server\TcpServer\Route\TcpRoute $route */
             $route = $server->getBean('TcpRoute');
             foreach ($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -90,6 +92,10 @@ class TcpRouteInit implements IEventListener
                         ]);
                     }
                 }
+            }
+            if (0 === Worker::getWorkerID())
+            {
+                $route->checkDuplicateRoutes();
             }
             unset($context['server']);
         }

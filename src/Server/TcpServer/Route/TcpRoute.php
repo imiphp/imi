@@ -3,7 +3,10 @@
 namespace Imi\Server\TcpServer\Route;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
+use Imi\Log\Log;
 use Imi\Server\Route\Annotation\Tcp\TcpRoute as TcpRouteAnnotation;
+use Imi\Server\Route\RouteCallable;
 use Imi\Util\ObjectArrayHelper;
 
 /**
@@ -116,5 +119,54 @@ class TcpRoute implements IRoute
         }
 
         return true;
+    }
+
+    /**
+     * 检查重复路由.
+     *
+     * @return void
+     */
+    public function checkDuplicateRoutes()
+    {
+        $first = true;
+        $map = [];
+        foreach ($this->rules as $routeItem)
+        {
+            $string = (string) $routeItem->annotation;
+            if (isset($map[$string]))
+            {
+                if ($first)
+                {
+                    $first = false;
+                    $this->logDuplicated($map[$string]);
+                }
+                $this->logDuplicated($routeItem);
+            }
+            else
+            {
+                $map[$string] = $routeItem;
+            }
+        }
+    }
+
+    private function logDuplicated(RouteItem $routeItem)
+    {
+        $callable = $routeItem->callable;
+        $route = 'condition=' . json_encode($routeItem->annotation->condition, \JSON_UNESCAPED_UNICODE);
+        if ($callable instanceof RouteCallable)
+        {
+            $logString = sprintf('TCP Route %s duplicated (%s::%s)', $route, $callable->className, $callable->methodName);
+        }
+        elseif (\is_array($callable))
+        {
+            $class = BeanFactory::getObjectClass($callable[0]);
+            $method = $callable[1];
+            $logString = sprintf('TCP Route "%s" duplicated (%s::%s)', $route, $class, $method);
+        }
+        else
+        {
+            $logString = sprintf('TCP Route "%s" duplicated', $route);
+        }
+        Log::warning($logString);
     }
 }
