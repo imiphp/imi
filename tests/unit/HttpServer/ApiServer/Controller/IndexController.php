@@ -386,4 +386,28 @@ class IndexController extends SingletonHttpController
     {
         return compact('id', 'name', 'page');
     }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @Action
+     * @Route("/duplicated")
+     *
+     * @return void
+     */
+    public function duplicated1()
+    {
+    }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @Action
+     * @Route("/duplicated")
+     *
+     * @return void
+     */
+    public function duplicated2()
+    {
+    }
 }

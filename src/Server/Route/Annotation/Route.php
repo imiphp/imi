@@ -142,4 +142,9 @@ class Route extends Base
      * @var string|string[]
      */
     public $responseMime;
+
+    public function __toString()
+    {
+        return http_build_query($this->toArray());
+    }
 }

@@ -3,8 +3,11 @@
 namespace Imi\Server\Http\Route;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
+use Imi\Log\Log;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
+use Imi\Server\Route\RouteCallable;
 use Imi\Server\View\Parser\ViewParser;
 use Imi\Util\Imi;
 use Imi\Util\ObjectArrayHelper;
@@ -551,5 +554,56 @@ class HttpRoute
     public function getAutoEndSlash(): bool
     {
         return $this->autoEndSlash;
+    }
+
+    /**
+     * 检查重复路由.
+     *
+     * @return void
+     */
+    public function checkDuplicateRoutes()
+    {
+        foreach ($this->rules as $rules)
+        {
+            $first = true;
+            $map = [];
+            foreach ($rules as $routeItem)
+            {
+                $string = (string) $routeItem->annotation;
+                if (isset($map[$string]))
+                {
+                    if ($first)
+                    {
+                        $first = false;
+                        $this->logDuplicated($map[$string]);
+                    }
+                    $this->logDuplicated($routeItem);
+                }
+                else
+                {
+                    $map[$string] = $routeItem;
+                }
+            }
+        }
+    }
+
+    private function logDuplicated(RouteItem $routeItem)
+    {
+        $callable = $routeItem->callable;
+        if ($callable instanceof RouteCallable)
+        {
+            $logString = sprintf('Route "%s" duplicated (%s::%s)', $routeItem->annotation->url, $callable->className, $callable->methodName);
+        }
+        elseif (\is_array($callable))
+        {
+            $class = BeanFactory::getObjectClass($callable[0]);
+            $method = $callable[1];
+            $logString = sprintf('Route "%s" duplicated (%s::%s)', $routeItem->annotation->url, $class, $method);
+        }
+        else
+        {
+            $logString = sprintf('Route "%s" duplicated', $routeItem->annotation->url);
+        }
+        Log::warning($logString);
     }
 }
