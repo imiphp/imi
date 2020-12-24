@@ -27,4 +27,9 @@ class UdpRoute extends Base
      * @var array
      */
     public $condition = [];
+
+    public function __toString()
+    {
+        return http_build_query($this->toArray());
+    }
 }
