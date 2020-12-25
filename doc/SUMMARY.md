@@ -187,6 +187,7 @@
 
 ## 进阶开发
 
+* [断点调试](adv/debug.md)
 * [性能优化](adv/performance.md)
 * [参与框架开发](adv/devp.md)
 
