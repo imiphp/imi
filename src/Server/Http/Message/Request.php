@@ -69,7 +69,7 @@ class Request extends ServerRequest implements IServerRequest
         $instance->serverInstance = $server;
         $instance->swooleRequest = $request;
         $instance->get = $request->get ?? [];
-        $instance->uri = $instance->uri->withQuery([] === $instance->get ? '' : (http_build_query($instance->get, null, '&')));
+        $instance->uri = $instance->uri->withQuery([] === $instance->get ? '' : (http_build_query($instance->get, '', '&')));
         $instance->post = $request->post ?? [];
         $rawContent = $request->rawContent();
         $instance->body = new MemoryStream(false === $rawContent ? '' : $rawContent);
@@ -108,7 +108,18 @@ class Request extends ServerRequest implements IServerRequest
         $swooleRequest = $this->swooleRequest;
         $get = $swooleRequest->get;
 
-        return Uri::makeUri($swooleRequest->header['host'], $swooleRequest->server['path_info'], null === $get ? '' : (http_build_query($get, null, '&')), null, $scheme);
+        $host = $swooleRequest->header['host'] ?? null;
+        if ($host)
+        {
+            $port = null;
+        }
+        else
+        {
+            $host = '127.0.0.1';
+            $port = $swooleRequest->server['server_port'];
+        }
+
+        return Uri::makeUri($host, $swooleRequest->server['path_info'], null === $get ? '' : (http_build_query($get, '', '&')), $port, $scheme);
     }
 
     /**
