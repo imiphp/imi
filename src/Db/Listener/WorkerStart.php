@@ -2,6 +2,7 @@
 
 namespace Imi\Db\Listener;
 
+use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
@@ -22,6 +23,7 @@ class WorkerStart implements IEventListener
      */
     public function handle(EventParam $e)
     {
+        App::getBean('DbQueryLog');
         Event::on('IMI.REQUEST_CONTENT.DESTROY', [new \Imi\Db\Listener\RequestContextDestroy(), 'handle'], ImiPriority::IMI_MIN - 20);
     }
 }

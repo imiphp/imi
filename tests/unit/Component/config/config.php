@@ -55,6 +55,16 @@ return [
                     ],
                 ],
                 [
+                    'class'        => \Imi\Log\Handler\File::class,
+                    'options'      => [
+                        'levels'        => [
+                            LogLevel::INFO,
+                        ],
+                        'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
+                        'format'        => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
+                    ],
+                ],
+                [
                     'class'     => \Imi\Log\Handler\Console::class,
                     'options'   => [
                         'levels'        => [
@@ -68,6 +78,9 @@ return [
         ],
         'ErrorLog'          => [
             // 'level' =>  ,
+        ],
+        'DbQueryLog' => [
+            'enable' => true,
         ],
     ],
     'imi'   => 'very six',

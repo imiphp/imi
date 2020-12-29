@@ -90,7 +90,9 @@
 
 * [配置读写](components/config/index.md)
 * [连接池](components/pool/index.md)
-* [数据库操作](components/db/index.md)
+* [数据库 (Db)](components/db/index.md)
+  * [数据库操作](components/db/index.md)
+  * [SQL 监听](components/db/sqlListener.md)
 * [ORM](components/orm/index.md)
   * [使用说明](components/orm/index.md)
   * [数据库表模型](components/orm/RDModel.md)
