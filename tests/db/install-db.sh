@@ -2,4 +2,4 @@
 
 __DIR__=$(cd `dirname $0`; pwd)
 
-$__DIR__/../../bin/imi generate/table -appNamespace "Imi\Test\Component"
+$__DIR__/../../src/Cli/bin/imi-cli generate/table -appNamespace "Imi\Test\Component"
