@@ -481,6 +481,8 @@ class CloseEventParam extends EventParam
 
 #### handShake
 
+握手事件
+
 事件参数：
 
 ```php
@@ -497,6 +499,31 @@ class HandShakeEventParam extends EventParam
      * @var \Imi\Server\Http\Message\Response
      */
     public $response;
+}
+```
+
+#### open
+
+握手完成后打开连接事件
+
+事件参数：
+
+```php
+class OpenEventParam extends EventParam
+{
+    /**
+     * 服务器对象
+     *
+     * @var \Imi\Server\Base
+     */
+    public $server;
+
+    /**
+     * 客户端连接的标识符.
+     *
+     * @var \Imi\Server\Http\Message\Request
+     */
+    public $request;
 }
 ```
 

@@ -50,6 +50,6 @@ class TestInjectValueLogic
         Assert::assertEquals(Config::get('@app.imi-framework'), $this->imi);
         Assert::assertEquals(\PHP_VERSION, $this->phpVersion);
         Assert::assertEquals(['A', 'test'], $this->callable);
-        Assert::assertEquals(PHP_VERSION, $this->callableResult);
+        Assert::assertEquals(\PHP_VERSION, $this->callableResult);
     }
 }

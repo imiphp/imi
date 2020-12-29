@@ -7,11 +7,12 @@
 </p>
 
 [![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)](https://packagist.org/packages/yurunsoft/imi)
-[![Travis](https://img.shields.io/travis/Yurunsoft/IMI.svg)](https://travis-ci.org/Yurunsoft/IMI)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Yurunsoft/imi/ci/dev)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
+[![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
 ## 介绍
 
@@ -21,7 +22,7 @@ imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpAp
 
 imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动通信、企业软件、云计算、网络游戏、物联网（IOT）、车联网、智能家居等领域。可以使企业 IT 研发团队的效率大大提升，更加专注于开发创新产品。
 
-> 目前 imi v2 版本已经开始开发了（2020-09），v1 版本进入维护期，仅修复问题不再加入新特性。如果有任何问题，欢迎联系我们！
+> 目前 imi v2 版本已经开始开发了（2020-09），如果有任何问题或建议，欢迎联系我们！
 
 imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
@@ -52,19 +53,19 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 
 ### 扩展组件
 
-* [MQTT](https://github.com/imiphp/imi-mqtt)
-* [RPC](https://github.com/imiphp/imi-rpc)
-* [gRPC](https://github.com/imiphp/imi-grpc)
-* [Hprose](https://github.com/imiphp/imi-hprose)
-* [AMQP](https://github.com/imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
-* [JWT](https://github.com/imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
-* [权限控制](https://github.com/imiphp/imi-access-control)
-* [Smarty 模版引擎](https://github.com/imiphp/imi-smarty)
-* [限流](https://github.com/imiphp/imi-rate-limit)
-* [跨进程变量共享](https://github.com/imiphp/imi-shared-memory)
-* [Swoole Tracker](https://github.com/imiphp/imi-swoole-tracker)
-* [雪花算法发号器](https://github.com/imiphp/imi-snowflake)
-* [Swagger API 文档生成](https://github.com/imiphp/imi-apidoc)
+* [MQTT](../../../../imiphp/imi-mqtt)
+* [RPC](../../../../imiphp/imi-rpc)
+* [gRPC](../../../../imiphp/imi-grpc)
+* [Hprose](../../../../imiphp/imi-hprose)
+* [AMQP](../../../../imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
+* [JWT](../../../../imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
+* [权限控制](../../../../imiphp/imi-access-control)
+* [Smarty 模版引擎](../../../../imiphp/imi-smarty)
+* [限流](../../../../imiphp/imi-rate-limit)
+* [跨进程变量共享](../../../../imiphp/imi-shared-memory)
+* [Swoole Tracker](../../../../imiphp/imi-swoole-tracker)
+* [雪花算法发号器](../../../../imiphp/imi-snowflake)
+* [Swagger API 文档生成](../../../../imiphp/imi-apidoc)
 
 ## 开始使用
 

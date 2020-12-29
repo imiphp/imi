@@ -93,6 +93,27 @@ class Route extends Base
     public $paramsPost;
 
     /**
+     * JSON、XML参数条件
+     * 可以是单个字符串，也可以是数组
+     * 取值：
+     * id=100 必须包含id，并且值为100
+     * id!=100 或 id<>100 必须包含id，并且值不为100
+     * id 必须包含id参数
+     * !id 必须不包含id参数
+     * "id" => "\d+" 支持正则.
+     *
+     * @var string|array
+     */
+    public $paramsBody;
+
+    /**
+     * JSON、XML参数条件支持以 . 作为分隔符，支持多级参数获取.
+     *
+     * @var boolean
+     */
+    public $paramsBodyMultiLevel = true;
+
+    /**
      * 请求头条件
      * 可以是单个字符串，也可以是数组
      * 取值：
@@ -123,4 +144,9 @@ class Route extends Base
      * @var string|string[]
      */
     public $responseMime;
+
+    public function __toString()
+    {
+        return http_build_query($this->toArray());
+    }
 }

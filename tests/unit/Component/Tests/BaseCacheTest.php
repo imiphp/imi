@@ -59,18 +59,34 @@ abstract class BaseCacheTest extends BaseTest
         {
             $this->markTestSkipped('Handler does not support TTL');
         }
-        $values = [
-            'k1'    => 'v1',
-            'k2'    => 'v2',
-        ];
-        Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values, 1));
-        $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
-        Assert::assertEquals($values, $getValues);
-        usleep(1100000);
-        Assert::assertEquals([
-            'k1'    => 'none',
-            'k2'    => 'none',
-        ], CacheManager::getMultiple($this->cacheName, array_keys($values), 'none'));
+        for ($_ = 0; $_ < 3; ++$_)
+        {
+            try
+            {
+                $th = null;
+                $values = [
+                    'k1'    => 'v1',
+                    'k2'    => 'v2',
+                ];
+                Assert::assertTrue(CacheManager::setMultiple($this->cacheName, $values, 1));
+                $getValues = CacheManager::getMultiple($this->cacheName, array_keys($values));
+                Assert::assertEquals($values, $getValues);
+                usleep(1100000);
+                Assert::assertEquals([
+                    'k1'    => 'none',
+                    'k2'    => 'none',
+                ], CacheManager::getMultiple($this->cacheName, array_keys($values), 'none'));
+                break;
+            }
+            catch (\Throwable $th)
+            {
+                sleep(1);
+            }
+        }
+        if (isset($th))
+        {
+            throw $th;
+        }
     }
 
     public function testDelete()

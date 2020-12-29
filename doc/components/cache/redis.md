@@ -15,7 +15,7 @@ return [
             'option'        =>    [
                 'poolName'              =>  '连接池名称',
                 'prefix'                =>  '', // 缓存键前缀
-                'formatHandlerClass'    =>  '', // 数据读写修改器
+                'formatHandlerClass'    =>  null, // 数据读写修改器
                 'replaceDot'            =>  false, // 将 key 中的 "." 替换为 ":"
             ],
         ],

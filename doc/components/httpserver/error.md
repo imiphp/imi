@@ -29,7 +29,7 @@ return [
 		\Imi\Server\Http\Error\JsonErrorHandler::class	=>	[
 			// debug 为 false时也显示错误信息
 			'releaseShow'	=>	false,
-			// 取消继续抛出异常
+			// 取消继续抛出异常，也不会记录日志
 			'cancelThrow'	=>	true,
 		],
 	],
@@ -89,6 +89,10 @@ class JsonErrorHandler implements IErrorHandler
 		->withAddedHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
 		->write(Json::encode($data))
 		->send();
+
+		// 如有需要，可以手动记录下日志：
+		\Imi\App::getBean('ErrorLog')->onException($throwable);
+
 		return $this->cancelThrow;
 	}
 }

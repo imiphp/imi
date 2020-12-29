@@ -210,7 +210,7 @@ class ImiCommand extends Command
             }
             else
             {
-                $value = $param->isOptional() ? $param->getDefaultValue() : null;
+                $value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
             }
             $args[] = $value;
         }

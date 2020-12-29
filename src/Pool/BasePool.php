@@ -375,11 +375,10 @@ abstract class BasePool implements IPool
         $pool = &$this->pool;
         foreach ($pool as $key => $item)
         {
-            if ($item->isFree())
+            if ($item->isFree() && $item->lock())
             {
                 try
                 {
-                    $item->lock();
                     $resource = $item->getResource();
                     if (!$resource->checkState())
                     {

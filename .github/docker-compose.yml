@@ -1,0 +1,41 @@
+version: "3.4"
+services:
+    mysql:
+        image: mysql:${MYSQL_DOCKER_VERSION}
+        container_name: mysql
+        environment:
+            - "MYSQL_ROOT_PASSWORD="
+            - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+            - "MYSQL_DATABASE=db_imi_test"
+            - "TZ=Asia/Shanghai"
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - 3306:3306
+
+    redis:
+        image: redis:6.0.9-alpine
+        container_name: redis
+        ports:
+            - 6379:6379
+
+    swoole:
+        container_name: "swoole"
+        depends_on:
+            - mysql
+            - redis
+        environment:
+            - "MYSQL_SERVER_HOST=mysql"
+            - "REDIS_SERVER_HOST=redis"
+            - "MYSQL_SERVER_PASSWORD="
+        build:
+            context: .
+            dockerfile: ./swoole.dockerfile
+            args:
+                SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
+        volumes:
+            - "${GITHUB_WORKSPACE}:/imi:rw"
+        working_dir: /imi
+        ulimits:
+            core: -1
+        privileged: true
+        command: tail -f /etc/group

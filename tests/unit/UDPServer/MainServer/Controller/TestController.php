@@ -33,4 +33,32 @@ class TestController extends \Imi\Controller\UdpController
             'middlewareData'    => RequestContext::get('middlewareData'),
         ];
     }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @UdpAction
+     * @UdpRoute({"duplicated"="1"})
+     *
+     * @param
+     *
+     * @return void
+     */
+    public function duplicated1($data)
+    {
+    }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @UdpAction
+     * @UdpRoute({"duplicated"="1"})
+     *
+     * @param
+     *
+     * @return void
+     */
+    public function duplicated2($data)
+    {
+    }
 }

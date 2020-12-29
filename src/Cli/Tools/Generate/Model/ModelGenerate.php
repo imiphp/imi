@@ -185,7 +185,7 @@ class ModelGenerate extends BaseCommand
                 'ddl'           => $ddl,
                 'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
             ];
-            $fields = $query->bindValue(':table', $table)->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
+            $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');

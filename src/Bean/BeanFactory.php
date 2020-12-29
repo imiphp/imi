@@ -164,16 +164,13 @@ TPL;
             $aopConstruct = '';
         }
         // partial 处理
-        $classes = [$class];
-        $parentClass = $ref;
-        while ($parentClass = $parentClass->getParentClass())
-        {
-            $classes[] = $parentClass->getName();
-        }
+        $classes = class_parents($class);
         if (isset($classes[1]))
         {
-            $classes = array_reverse(array_unique($classes));
+            $classes = array_reverse($classes);
         }
+        $classes[] = $class;
+
         $partialData = PartialParser::getInstance()->getData();
         $traits = [];
         foreach ($classes as $currentClass)
@@ -367,16 +364,9 @@ TPL;
         // $参数名
         $result .= '$' . $param->name;
         // 默认值
-        if ($param->isOptional() && !$param->isVariadic())
+        if ($param->isDefaultValueAvailable())
         {
-            if ($param->isDefaultValueAvailable())
-            {
-                $result .= ' = ' . var_export($param->getDefaultValue(), true);
-            }
-            else
-            {
-                $result .= ' = null';
-            }
+            $result .= ' = ' . var_export($param->getDefaultValue(), true);
         }
 
         return $result;

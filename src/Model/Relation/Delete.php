@@ -7,6 +7,7 @@ namespace Imi\Model\Relation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoDelete;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
@@ -87,7 +88,20 @@ class Delete
 
         $modelField = $model->$propertyName;
         $modelField->$rightField = $model->$leftField;
+        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $modelField->delete();
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -107,10 +121,23 @@ class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
+        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $rightModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $rightField) {
             $query->where($rightField, '=', $model->$leftField);
         });
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -130,10 +157,23 @@ class Delete
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
+        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
 
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
         $middleModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $middleLeftField) {
             $query->where($middleLeftField, '=', $model->$leftField);
         });
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -152,11 +192,25 @@ class Delete
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $modelField = $model->$propertyName;
         $modelField->$rightField = $model->$leftField;
         $modelField->{$annotation->type} = $annotation->typeValue;
         $modelField->delete();
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -176,10 +230,24 @@ class Delete
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
+        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $rightModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $rightField, $annotation) {
             $query->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
         });
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -199,9 +267,23 @@ class Delete
         $middleModel = $struct->getMiddleModel();
         $middleLeftField = $struct->getMiddleLeftField();
         $leftField = $struct->getLeftField();
+        $eventName = 'IMI.MODEL.RELATION.DELETE.' . $className . '.' . $propertyName;
+
+        Event::trigger($eventName . '.BEFORE', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
 
         $middleModel::deleteBatch(function (IQuery $query) use ($model, $leftField, $middleLeftField, $annotation) {
             $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $model->$leftField);
         });
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 }

@@ -38,4 +38,9 @@ class WSRoute extends Base
      * @var string|null
      */
     public ?string $route = null;
+
+    public function __toString()
+    {
+        return http_build_query($this->toArray());
+    }
 }

@@ -84,7 +84,7 @@ abstract class Base implements CacheInterface
     {
         if (!\is_string($key))
         {
-            throw new InvalidArgumentException('invalid key: ' . $key);
+            throw new InvalidArgumentException('Key must be a string');
         }
     }
 

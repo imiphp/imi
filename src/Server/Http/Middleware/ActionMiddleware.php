@@ -255,8 +255,24 @@ class ActionMiddleware implements MiddlewareInterface
             }
             else
             {
-                // 方法默认值
-                $value = $actionMethodCacheItem->getDefault();
+                $parsedBody = $request->getParsedBody();
+                if (\is_object($parsedBody) && isset($parsedBody->{$paramName}))
+                {
+                    $result[] = $parsedBody->{$paramName};
+                }
+                elseif (\is_array($parsedBody) && isset($parsedBody[$paramName]))
+                {
+                    $result[] = $parsedBody[$paramName];
+                }
+                elseif ($param->isDefaultValueAvailable())
+                {
+                    // 方法默认值
+                    $result[] = $actionMethodCacheItem->getDefault();
+                }
+                else
+                {
+                    $result[] = null;
+                }
             }
             switch ($actionMethodCacheItem->getType())
             {

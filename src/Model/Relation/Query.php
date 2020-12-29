@@ -7,6 +7,7 @@ namespace Imi\Model\Relation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
+use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\RelationBase;
 use Imi\Model\Relation\Struct\ManyToMany;
@@ -111,6 +112,7 @@ class Query
         $struct = new OneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         if (null === $model->$leftField)
         {
@@ -118,7 +120,15 @@ class Query
         }
         else
         {
-            $rightModel = $modelClass::query()->where($rightField, '=', $model->$leftField)->select()->get();
+            $query = $modelClass::query()->where($rightField, '=', $model->$leftField);
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
+            $rightModel = $query->select()->get();
             if (null === $rightModel)
             {
                 $rightModel = $modelClass::newInstance();
@@ -126,6 +136,12 @@ class Query
         }
 
         $model->$propertyName = $rightModel;
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -153,6 +169,7 @@ class Query
         $struct = new OneToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         $model->$propertyName = new ArrayList($modelClass);
         if (null !== $model->$leftField)
@@ -162,12 +179,25 @@ class Query
             {
                 $query->orderRaw($annotation->order);
             }
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
             $list = $query->select()->getArray();
             if (null !== $list)
             {
                 $model->$propertyName->append(...$list);
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -194,6 +224,7 @@ class Query
 
         $model->$propertyName = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         if (null !== $model->$leftField)
         {
@@ -206,6 +237,13 @@ class Query
             {
                 $query->orderRaw($annotation->order);
             }
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
             $list = $query->select()
                           ->getArray();
             if (null !== $list)
@@ -217,6 +255,12 @@ class Query
                 static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -244,6 +288,7 @@ class Query
         $struct = new PolymorphicOneToOne($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         if (null === $model->$leftField)
         {
@@ -251,7 +296,15 @@ class Query
         }
         else
         {
-            $rightModel = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField)->select()->get();
+            $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
+            $rightModel = $query->select()->get();
             if (null === $rightModel)
             {
                 $rightModel = $modelClass::newInstance();
@@ -259,6 +312,12 @@ class Query
         }
 
         $model->$propertyName = $rightModel;
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -286,6 +345,7 @@ class Query
         $struct = new PolymorphicOneToMany($className, $propertyName, $annotation);
         $leftField = $struct->getLeftField();
         $rightField = $struct->getRightField();
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         $model->$propertyName = $modelPropery = new ArrayList($modelClass);
         if (null !== $model->$leftField)
@@ -295,12 +355,25 @@ class Query
             {
                 $query->orderRaw($annotation->order);
             }
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
             $list = $query->select()->getArray();
             if (null !== $list)
             {
                 $modelPropery->append(...$list);
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -314,7 +387,8 @@ class Query
      */
     public static function initByPolymorphicToOne($model, $propertyName, $annotation)
     {
-        $modelClassName = BeanFactory::getObjectClass($model);
+        $className = BeanFactory::getObjectClass($model);
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
         foreach ($annotation as $annotationItem)
         {
             if ($model->{$annotationItem->type} == $annotationItem->typeValue)
@@ -327,7 +401,7 @@ class Query
                 }
                 else
                 {
-                    $modelClass = $modelClassName . '\\' . $annotationItem->model;
+                    $modelClass = $className . '\\' . $annotationItem->model;
                 }
                 if (null === $model->$rightField)
                 {
@@ -335,7 +409,14 @@ class Query
                 }
                 else
                 {
-                    $leftModel = $modelClass::query()->where($leftField, '=', $model->$rightField)->select()->get();
+                    $query = $modelClass::query()->where($leftField, '=', $model->$rightField);
+                    Event::trigger($eventName . '.BEFORE', [
+                        'model'        => $model,
+                        'propertyName' => $propertyName,
+                        'annotation'   => $annotation,
+                        'query'        => $query,
+                    ]);
+                    $leftModel = $query->select()->get();
                     if (null === $leftModel)
                     {
                         $leftModel = $modelClass::newInstance();
@@ -345,6 +426,11 @@ class Query
                 break;
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+        ]);
     }
 
     /**
@@ -370,6 +456,7 @@ class Query
         $fields = static::mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields);
 
         $model->$propertyName = new ArrayList($struct->getRightModel());
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         if (null !== $model->$leftField)
         {
@@ -383,6 +470,13 @@ class Query
             {
                 $query->orderRaw($annotation->order);
             }
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
             $list = $query->select()
                           ->getArray();
             if (null !== $list)
@@ -391,6 +485,12 @@ class Query
                 static::appendMany($model->$propertyName, $list, $rightFields, $struct->getRightModel());
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**
@@ -417,17 +517,25 @@ class Query
 
         $model->$propertyName = new ArrayList($struct->getMiddleModel());
         $model->{$annotation->rightMany} = new ArrayList($struct->getRightModel());
+        $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
 
         if (null !== $model->$leftField)
         {
-            $list = Db::query($className::__getMeta()->getDbPoolName())
+            $query = Db::query($className::__getMeta()->getDbPoolName())
                         ->table($rightTable)
                         ->field(...$fields)
                         ->join($middleTable, $middleTable . '.' . $struct->getMiddleRightField(), '=', $rightTable . '.' . $rightField)
                         ->where($middleTable . '.' . $annotation->type, '=', $annotation->typeValue)
-                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField)
-                        ->select()
-                        ->getArray();
+                        ->where($middleTable . '.' . $struct->getMiddleLeftField(), '=', $model->$leftField);
+            Event::trigger($eventName . '.BEFORE', [
+                'model'        => $model,
+                'propertyName' => $propertyName,
+                'annotation'   => $annotation,
+                'struct'       => $struct,
+                'query'        => $query,
+            ]);
+            $list = $query->select()
+                          ->getArray();
             if (null !== $list)
             {
                 // 关联数据
@@ -437,6 +545,12 @@ class Query
                 static::appendMany($model->{$annotation->rightMany}, $list, $rightFields, $struct->getRightModel());
             }
         }
+        Event::trigger($eventName . '.AFTER', [
+            'model'        => $model,
+            'propertyName' => $propertyName,
+            'annotation'   => $annotation,
+            'struct'       => $struct,
+        ]);
     }
 
     /**

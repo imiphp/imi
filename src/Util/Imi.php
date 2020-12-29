@@ -529,7 +529,7 @@ class Imi
             {
                 continue;
             }
-            $result = str_replace('{' . $k . '}', $v, $result);
+            $result = str_replace('{' . $k . '}', (string) $v, $result);
         }
 
         return $result;

@@ -33,7 +33,7 @@ class Server implements \ArrayAccess, \JsonSerializable
         }
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        if($request)
+        if ($request)
         {
             $serverParams = $request->getServerParams();
         }
@@ -58,7 +58,7 @@ class Server implements \ArrayAccess, \JsonSerializable
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        if($request)
+        if ($request)
         {
             $serverParams = $request->getServerParams();
         }
@@ -86,7 +86,7 @@ class Server implements \ArrayAccess, \JsonSerializable
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
-        if($request)
+        if ($request)
         {
             $serverParams = $request->getServerParams();
         }

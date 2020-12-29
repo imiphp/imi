@@ -129,4 +129,32 @@ class TestController extends WebSocketController
     {
         return ['data' => $data];
     }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @WSAction
+     * @WSRoute({"duplicated"=1})
+     *
+     * @param
+     *
+     * @return void
+     */
+    public function duplicated1($data)
+    {
+    }
+
+    /**
+     * 测试重复路由警告.
+     *
+     * @WSAction
+     * @WSRoute({"duplicated"=1})
+     *
+     * @param
+     *
+     * @return void
+     */
+    public function duplicated2($data)
+    {
+    }
 }

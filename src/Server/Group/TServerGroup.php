@@ -24,7 +24,15 @@ trait TServerGroup
      */
     public function hasGroup(string $groupName): bool
     {
-        return isset($this->groups[$groupName]);
+        if (!isset($this->groups[$groupName]))
+        {
+            /** @var \Imi\Server\Group\Group $serverGroup */
+            $serverGroup = RequestContext::getServerBean('ServerGroup', $this, $groupName);
+
+            return $serverGroup->getHandler()->hasGroup($groupName);
+        }
+
+        return true;
     }
 
     /**
@@ -55,7 +63,19 @@ trait TServerGroup
      */
     public function getGroup(string $groupName): ?Group
     {
-        return $this->groups[$groupName] ?? null;
+        $groups = &$this->groups;
+        if (!isset($groups[$groupName]))
+        {
+            /** @var \Imi\Server\Group\Group $serverGroup */
+            $serverGroup = RequestContext::getServerBean('ServerGroup', $this, $groupName);
+
+            if ($serverGroup->getHandler()->hasGroup($groupName))
+            {
+                return $groups[$groupName] = $serverGroup;
+            }
+        }
+
+        return $groups[$groupName];
     }
 
     /**

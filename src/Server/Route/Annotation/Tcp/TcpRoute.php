@@ -29,4 +29,9 @@ class TcpRoute extends Base
      * @var array
      */
     public array $condition = [];
+
+    public function __toString()
+    {
+        return http_build_query($this->toArray());
+    }
 }

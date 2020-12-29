@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Route;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
+use Imi\Log\Log;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Route\Annotation\Route as RouteAnnotation;
+use Imi\Server\Route\RouteCallable;
 use Imi\Server\View\Parser\ViewParser;
 use Imi\Util\Imi;
+use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Uri;
 
 /**
@@ -183,6 +187,7 @@ class HttpRoute
                             $this->checkDomain($request, $itemAnnotation->domain, $domainParams) &&
                             $this->checkParamsGet($request, $itemAnnotation->paramsGet) &&
                             $this->checkParamsPost($request, $itemAnnotation->paramsPost) &&
+                            $this->checkParamsBody($request, $itemAnnotation->paramsBody, $itemAnnotation->paramsBodyMultiLevel) &&
                             $this->checkHeader($request, $itemAnnotation->header) &&
                             $this->checkRequestMime($request, $itemAnnotation->requestMime)
                         ) {
@@ -452,6 +457,41 @@ class HttpRoute
     }
 
     /**
+     * 检查验证 JSON、XML 参数是否匹配.
+     *
+     * @param Request $request
+     * @param mixed   $params
+     * @param bool    $paramsBodyMultiLevel
+     *
+     * @return bool
+     */
+    private function checkParamsBody(Request $request, $params, bool $paramsBodyMultiLevel)
+    {
+        if (null === $params)
+        {
+            return true;
+        }
+
+        $parsedBody = $request->getParsedBody();
+        $isObject = \is_object($parsedBody);
+
+        return Imi::checkCompareRules($params, function ($name) use ($parsedBody, $isObject, $paramsBodyMultiLevel) {
+            if ($paramsBodyMultiLevel)
+            {
+                return ObjectArrayHelper::get($parsedBody, $name);
+            }
+            elseif ($isObject)
+            {
+                return $parsedBody->$name ?? null;
+            }
+            else
+            {
+                return $parsedBody[$name] ?? null;
+            }
+        });
+    }
+
+    /**
      * 检查验证请求头是否匹配.
      *
      * @param Request $request
@@ -517,5 +557,56 @@ class HttpRoute
     public function getAutoEndSlash(): bool
     {
         return $this->autoEndSlash;
+    }
+
+    /**
+     * 检查重复路由.
+     *
+     * @return void
+     */
+    public function checkDuplicateRoutes()
+    {
+        foreach ($this->rules as $rules)
+        {
+            $first = true;
+            $map = [];
+            foreach ($rules as $routeItem)
+            {
+                $string = (string) $routeItem->annotation;
+                if (isset($map[$string]))
+                {
+                    if ($first)
+                    {
+                        $first = false;
+                        $this->logDuplicated($map[$string]);
+                    }
+                    $this->logDuplicated($routeItem);
+                }
+                else
+                {
+                    $map[$string] = $routeItem;
+                }
+            }
+        }
+    }
+
+    private function logDuplicated(RouteItem $routeItem)
+    {
+        $callable = $routeItem->callable;
+        if ($callable instanceof RouteCallable)
+        {
+            $logString = sprintf('Route "%s" duplicated (%s::%s)', $routeItem->annotation->url, $callable->className, $callable->methodName);
+        }
+        elseif (\is_array($callable))
+        {
+            $class = BeanFactory::getObjectClass($callable[0]);
+            $method = $callable[1];
+            $logString = sprintf('Route "%s" duplicated (%s::%s)', $routeItem->annotation->url, $class, $method);
+        }
+        else
+        {
+            $logString = sprintf('Route "%s" duplicated', $routeItem->annotation->url);
+        }
+        Log::warning($logString);
     }
 }

@@ -18,6 +18,7 @@ use Imi\Server\Route\Parser\WSControllerParser;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
 use Imi\ServerManage;
+use Imi\Worker;
 
 /**
  * WebSocket 服务器路由初始化.
@@ -100,6 +101,10 @@ class WSRouteInit implements IEventListener
                         ]);
                     }
                 }
+            }
+            if (0 === Worker::getWorkerID())
+            {
+                $route->checkDuplicateRoutes();
             }
             unset($context['server']);
         }

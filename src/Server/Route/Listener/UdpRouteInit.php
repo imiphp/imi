@@ -18,6 +18,7 @@ use Imi\Server\Route\Parser\UdpControllerParser;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
 use Imi\ServerManage;
+use Imi\Worker;
 
 /**
  * UDP 服务器路由初始化.
@@ -57,6 +58,7 @@ class UdpRouteInit implements IEventListener
                 continue;
             }
             $context['server'] = $server;
+            /** @var \Imi\Server\UdpServer\Route\UdpRoute $route */
             $route = $server->getBean('UdpRoute');
             foreach ($controllerParser->getByServer($name) as $className => $classItem)
             {
@@ -92,6 +94,10 @@ class UdpRouteInit implements IEventListener
                         ]);
                     }
                 }
+            }
+            if (0 === Worker::getWorkerID())
+            {
+                $route->checkDuplicateRoutes();
             }
             unset($context['server']);
         }

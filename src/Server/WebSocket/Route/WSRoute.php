@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Imi\Server\WebSocket\Route;
 
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\ConnectContext;
+use Imi\Log\Log;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute as WSRouteAnnotation;
+use Imi\Server\Route\RouteCallable;
 use Imi\Util\ObjectArrayHelper;
+use Imi\Util\Text;
 
 /**
  * @Bean("WSRoute")
@@ -136,5 +140,55 @@ class WSRoute implements IRoute
         }
 
         return true;
+    }
+
+    /**
+     * 检查重复路由.
+     *
+     * @return void
+     */
+    public function checkDuplicateRoutes()
+    {
+        $first = true;
+        $map = [];
+        foreach ($this->rules as $routeItem)
+        {
+            $string = (string) $routeItem->annotation;
+            if (isset($map[$string]))
+            {
+                if ($first)
+                {
+                    $first = false;
+                    $this->logDuplicated($map[$string]);
+                }
+                $this->logDuplicated($routeItem);
+            }
+            else
+            {
+                $map[$string] = $routeItem;
+            }
+        }
+    }
+
+    private function logDuplicated(RouteItem $routeItem)
+    {
+        $callable = $routeItem->callable;
+        $annotation = $routeItem->annotation;
+        $route = (Text::isEmpty($annotation->route) ? '' : ('url=' . $annotation->route . ', ')) . 'condition=' . json_encode($annotation->condition, \JSON_UNESCAPED_UNICODE);
+        if ($callable instanceof RouteCallable)
+        {
+            $logString = sprintf('WebSocket Route %s duplicated (%s::%s)', $route, $callable->className, $callable->methodName);
+        }
+        elseif (\is_array($callable))
+        {
+            $class = BeanFactory::getObjectClass($callable[0]);
+            $method = $callable[1];
+            $logString = sprintf('WebSocket Route "%s" duplicated (%s::%s)', $route, $class, $method);
+        }
+        else
+        {
+            $logString = sprintf('WebSocket Route "%s" duplicated', $route);
+        }
+        Log::warning($logString);
     }
 }
