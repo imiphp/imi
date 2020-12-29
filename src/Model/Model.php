@@ -100,6 +100,7 @@ abstract class Model extends BaseModel
                     {
                         $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
                     }
+                    $query->limit(1);
                 })->bindValues($bindValues);
             }
             else
@@ -122,6 +123,7 @@ abstract class Model extends BaseModel
                     {
                         $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
                     }
+                    $query->limit(1);
                 })->bindValues($bindValues);
             }
         }
@@ -277,6 +279,7 @@ abstract class Model extends BaseModel
             {
                 $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
             }
+            $query->limit(1);
         })->bindValues($bindValues)->update($data);
 
         // 更新后
@@ -431,6 +434,7 @@ abstract class Model extends BaseModel
                     $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
                 }
             }
+            $query->limit(1);
         })->bindValues($bindValues)->delete();
 
         // 删除后
