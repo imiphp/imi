@@ -311,7 +311,13 @@ class Driver extends Base implements IDb
     {
         $this->lastSql = $sql;
 
-        return $this->instance->exec($sql);
+        $result = $this->instance->exec($sql);
+        if (false === $result)
+        {
+            throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
+        }
+
+        return $result;
     }
 
     /**
