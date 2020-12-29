@@ -469,7 +469,7 @@ abstract class Model extends BaseModel
         {
             if (isset($propertyAnnotations[$name]))
             {
-                $this->parseExtractProperty($name, $propertyAnnotations[$name]);
+                $this->__parseExtractProperty($name, $propertyAnnotations[$name]);
             }
         }
     }
