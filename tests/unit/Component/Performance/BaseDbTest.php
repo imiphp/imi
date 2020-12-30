@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests\Performance;
 
+use Imi\App;
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
 
@@ -13,6 +14,7 @@ abstract class BaseDbTest extends BaseTest
 
     public function testTruncate()
     {
+        App::set('DB_LOG', false);
         $this->assertTrue(true);
         Db::getInstance($this->getPoolName())->exec('truncate tb_performance');
     }

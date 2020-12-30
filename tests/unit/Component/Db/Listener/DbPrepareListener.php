@@ -2,6 +2,7 @@
 
 namespace Imi\Test\Component\Db\Listener;
 
+use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Event\Param\DbPrepareEventParam;
 use Imi\Event\EventParam;
@@ -22,6 +23,9 @@ class DbPrepareListener implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        Log::info(sprintf('[prepare] %s', $e->sql));
+        if (false !== App::get('DB_LOG'))
+        {
+            Log::info(sprintf('[prepare] %s', $e->sql));
+        }
     }
 }

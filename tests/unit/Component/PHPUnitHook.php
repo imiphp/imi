@@ -13,8 +13,6 @@ use PHPUnit\Runner\BeforeFirstTestHook;
 
 class PHPUnitHook implements BeforeFirstTestHook
 {
-    private $isLoadedImi = false;
-
     public function executeBeforeFirstTest(): void
     {
         Event::on('IMI.APP_INIT', function (EventParam $param) {

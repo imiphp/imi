@@ -33,8 +33,6 @@ jobs:
       - name: prepare
         run: |
           composer update
-          cd tests
-          composer update
           cd ../
           mysql -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           tests/db/install-db.sh

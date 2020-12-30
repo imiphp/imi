@@ -2,6 +2,7 @@
 
 namespace Imi\Test\Component\Db\Listener;
 
+use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Db\Event\Param\DbExecuteEventParam;
 use Imi\Event\EventParam;
@@ -22,6 +23,9 @@ class DbExecuteListener implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        Log::info(sprintf('[%ss] %s', round($e->time, 3), $e->sql));
+        if (false !== App::get('DB_LOG'))
+        {
+            Log::info(sprintf('[%ss] %s', round($e->time, 3), $e->sql));
+        }
     }
 }
