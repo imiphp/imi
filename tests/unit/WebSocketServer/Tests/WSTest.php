@@ -28,6 +28,7 @@ class WSTest extends BaseTest
                 'username'  => 'test',
             ])));
             $recv = $client->recv();
+            $this->assertNotFalse($recv);
             $recvData = json_decode($recv, true);
             if (!isset($recvData['token']))
             {

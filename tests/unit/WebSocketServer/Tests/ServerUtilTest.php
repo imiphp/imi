@@ -64,6 +64,7 @@ class ServerUtilTest extends BaseTest
                             'action'    => 'info',
                         ])));
                         $recv = $client->recv();
+                        $this->assertNotFalse($recv);
                         $recvData = json_decode($recv, true);
                         if (!isset($recvData['fd']))
                         {
@@ -151,6 +152,7 @@ class ServerUtilTest extends BaseTest
                             'username'  => uniqid('', true),
                         ])));
                         $recv = $client->recv();
+                        $this->assertNotFalse($recv);
                         $recvData = json_decode($recv, true);
                         $this->assertTrue($recvData['success'] ?? null, 'Not found success');
                         $waitChannel->push(1);
