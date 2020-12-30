@@ -159,7 +159,8 @@ class CronCalculator
             return range($min, $max);
         }
         // 区间
-        if (strpos($rule, '-') > 0)
+        $index = strpos($rule, '-', 1);
+        if (false !== $index && $index > 0)
         {
             [$begin, $end] = explode('-', substr($rule, 1), 2);
             $begin = substr($rule, 0, 1) . $begin;
