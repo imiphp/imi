@@ -12,6 +12,7 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\Tools\Imi\Imi as ToolImi;
+use Imi\Event\Event;
 use Imi\Pool\PoolManager;
 use Imi\ServerManage;
 use Imi\Util\Imi;
@@ -33,33 +34,35 @@ class Server extends BaseCommand
      */
     public function start(?string $name, ?int $workerNum, $d): void
     {
-        $this->outImi();
-        $this->outStartupInfo();
-        PoolManager::clearPools();
-        CacheManager::clearPools();
-        if (null === $name)
-        {
-            App::createServers();
-            $swooleServer = ServerManage::getServer('main')->getSwooleServer();
-            // 守护进程支持
-            if ($d)
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $workerNum, $d) {
+            $this->outImi();
+            $this->outStartupInfo();
+            PoolManager::clearPools();
+            CacheManager::clearPools();
+            if (null === $name)
             {
-                $options = [
-                    'daemonize' => 1,
-                ];
-                if (true !== $d)
+                App::createServers();
+                $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                // 守护进程支持
+                if ($d)
                 {
-                    $options['log_file'] = $d;
+                    $options = [
+                        'daemonize' => 1,
+                    ];
+                    if (true !== $d)
+                    {
+                        $options['log_file'] = $d;
+                    }
+                    $swooleServer->set($options);
                 }
-                $swooleServer->set($options);
+                $swooleServer->start();
             }
-            $swooleServer->start();
-        }
-        else
-        {
-            $server = App::createCoServer($name, $workerNum);
-            $server->run();
-        }
+            else
+            {
+                $server = App::createCoServer($name, $workerNum);
+                $server->run();
+            }
+        });
     }
 
     /**

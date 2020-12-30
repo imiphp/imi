@@ -55,6 +55,7 @@ class CliApp extends BaseApp
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
         $this->cli = $cli = new Application('imi', App::getImiVersion());
         $cli->setDispatcher($dispatcher);
+        $cli->setCatchExceptions(false);
 
         $definition = $cli->getDefinition();
         $definition->addOption(

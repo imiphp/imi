@@ -11,6 +11,7 @@ use Imi\Cli\Annotation\Command as CommandAnnotation;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\Parser\ToolParser;
+use Imi\Event\Event;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -170,15 +171,18 @@ class ImiCommand extends Command
     {
         try
         {
+            Event::trigger('IMI.COMMAND.BEFORE');
             $instance = new $this->className($this, $this->input, $this->output);
             $args = $this->getCallToolArgs();
             $instance->{$this->methodName}(...$args);
+            Event::trigger('IMI.COMMAND.AFTER');
         }
         catch (\Throwable $th)
         {
             /** @var \Imi\Log\ErrorLog $errorLog */
             $errorLog = App::getBean('ErrorLog');
             $errorLog->onException($th);
+            throw $th;
         }
 
         return Command::SUCCESS;

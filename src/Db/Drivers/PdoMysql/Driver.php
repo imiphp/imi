@@ -93,11 +93,6 @@ class Driver extends Base implements IDb
         $this->transaction = new Transaction();
     }
 
-    public function __destruct()
-    {
-        $this->close();
-    }
-
     /**
      * 构建DNS字符串.
      *

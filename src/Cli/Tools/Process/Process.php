@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Cli\Tools\Process;
 
-use Imi\App;
 use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
@@ -12,6 +11,7 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Event\Event;
 use Imi\Process\Parser\ProcessParser;
 use Imi\Process\ProcessManager;
 use Imi\Process\ProcessPoolManager;
@@ -35,14 +35,16 @@ class Process extends BaseCommand
      */
     public function start(string $name, ?string $redirectStdinStdout, ?string $pipeType): void
     {
-        // 加载服务器注解
-        Scanner::scanVendor();
-        Scanner::scanApp();
-        $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
-        $process->start();
-        $result = \Swoole\Process::wait(true);
-        $this->output->writeln('Process exit! pid:' . $result['pid'] . ', code:' . $result['code'] . ', signal:' . $result['signal']);
-        exit($result['code']);
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType) {
+            // 加载服务器注解
+            Scanner::scanVendor();
+            Scanner::scanApp();
+            $process = ProcessManager::create($name, $_SERVER['argv'], $redirectStdinStdout, $pipeType);
+            $process->start();
+            $result = \Swoole\Process::wait(true);
+            $this->output->writeln('Process exit! pid:' . $result['pid'] . ', code:' . $result['code'] . ', signal:' . $result['signal']);
+            exit($result['code']);
+        });
     }
 
     /**
@@ -59,11 +61,13 @@ class Process extends BaseCommand
      */
     public function pool(string $name, ?int $worker, ?int $ipcType, ?string $msgQueueKey): void
     {
-        // 加载服务器注解
-        Scanner::scanVendor();
-        Scanner::scanApp();
-        $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
-        $processPool->start();
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $worker, $ipcType, $msgQueueKey) {
+            // 加载服务器注解
+            Scanner::scanVendor();
+            Scanner::scanApp();
+            $processPool = ProcessPoolManager::create($name, $worker, $_SERVER['argv'], $ipcType, $msgQueueKey);
+            $processPool->start();
+        });
     }
 
     /**

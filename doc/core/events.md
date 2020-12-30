@@ -18,6 +18,30 @@
 
 无
 
+### IMI.COMMAND.BEFORE
+
+命令行执行前置事件
+
+事件参数：
+
+无
+
+### IMI.COMMAND.AFTER
+
+命令行执行后置事件
+
+事件参数：
+
+无
+
+### IMI.SWOOLE.MAIN_COROUTINE.AFTER
+
+Swoole 主协程执行完毕后置事件
+
+事件参数：
+
+无
+
 ### IMI.LOAD_RUNTIME_INFO
 
 加载 runtime 事件，在此事件中，绝对可以使用 `App::getRuntimeInfo()` 获取到数据。
