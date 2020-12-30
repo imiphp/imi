@@ -287,7 +287,7 @@ class Validator implements IValidator
         $message = $annotation->message;
         if (false !== strpos($message, '{:value}'))
         {
-            $message = str_replace('{:value}', ObjectArrayHelper::get($data, $annotation->name), $message);
+            $message = str_replace('{:value}', (string) ObjectArrayHelper::get($data, $annotation->name), $message);
         }
         $message = preg_replace_callback('/\{([^\}]+)\}/', function ($matches) use ($data, $annotation) {
             $name = $matches[1];
