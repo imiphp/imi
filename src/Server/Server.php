@@ -51,7 +51,7 @@ class Server
                 go(function () use ($server, $currentWorkerId, $message) {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $server,
-                        'workerID'  => $currentWorkerId,
+                        'workerId'  => $currentWorkerId,
                         'message'   => $message,
                     ], $server, PipeMessageEventParam::class);
                 });
@@ -93,7 +93,7 @@ class Server
                 go(function () use ($server, $currentWorkerId, $message) {
                     Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
                         'server'    => $server,
-                        'workerID'  => $currentWorkerId,
+                        'workerId'  => $currentWorkerId,
                         'message'   => $message,
                     ], $server, PipeMessageEventParam::class);
                 });
