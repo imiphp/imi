@@ -41,6 +41,10 @@ jobs:
         run: |
           composer test
 
+      - name: print logs
+        if: failure()
+        run: php .github/print-logs.php
+
   ci-php:
     runs-on: ubuntu-latest
 
@@ -63,3 +67,7 @@ jobs:
 
       - name: test
         run: docker exec swoole php tests/run
+
+      - name: print logs
+        if: failure()
+        run: docker exec swoole php .github/print-logs.php
