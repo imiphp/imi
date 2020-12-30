@@ -22,14 +22,14 @@ abstract class BaseBuilder implements IBuilder
      *
      * @var \Imi\Db\Query\Interfaces\IQuery
      */
-    protected $query;
+    protected IQuery $query;
 
     /**
      * 绑定参数.
      *
      * @var array
      */
-    protected $params = [];
+    protected array $params = [];
 
     /**
      * 生成SQL语句.
@@ -58,9 +58,11 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    public function build(...$args)
+    public function build(...$args): string
     {
         $this->params = [];
+
+        return '';
     }
 
     /**
@@ -70,7 +72,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseDistinct(bool $distinct)
+    protected function parseDistinct(bool $distinct): string
     {
         return $distinct ? 'distinct ' : '';
     }
@@ -82,7 +84,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseField($fields)
+    protected function parseField(array $fields): string
     {
         if (!isset($fields[0]))
         {
@@ -120,7 +122,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseJoin($join)
+    protected function parseJoin(array $join): string
     {
         $result = implode(' ', $join);
         $params = &$this->params;
@@ -139,7 +141,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseWhere($where)
+    protected function parseWhere(array $where): string
     {
         $result = [];
         $params = &$this->params;
@@ -163,12 +165,12 @@ abstract class BaseBuilder implements IBuilder
     /**
      * limit.
      *
-     * @param int $offset
-     * @param int $limit
+     * @param int|null $offset
+     * @param int|null $limit
      *
      * @return string
      */
-    protected function parseLimit($offset, $limit)
+    protected function parseLimit(?int $offset, ?int $limit)
     {
         $params = &$this->params;
         $query = $this->query;
@@ -201,7 +203,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseOrder($order)
+    protected function parseOrder(array $order): string
     {
         if (isset($order[0]))
         {
@@ -227,7 +229,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseGroup($group)
+    protected function parseGroup(array $group): string
     {
         if (isset($group[0]))
         {
@@ -246,7 +248,7 @@ abstract class BaseBuilder implements IBuilder
      *
      * @return string
      */
-    protected function parseHaving($having)
+    protected function parseHaving(array $having): string
     {
         $params = &$this->params;
         $query = $this->query;

@@ -16,7 +16,7 @@ trait TKeyword
      *
      * @return array
      */
-    public function parseKeywordText($string)
+    public function parseKeywordText(string $string): array
     {
         $split = explode('->', $string);
         static $pattern = '/(?P<keywords>[^\s\.]+)(\s+(?:as\s+)?(?P<alias>.+))?/';
@@ -65,9 +65,9 @@ trait TKeyword
      * @param string|null $alias
      * @param array|null jsonKeywords
      *
-     * @return void
+     * @return string
      */
-    public function parseKeywordToText($keywords, $alias = null, $jsonKeywords = null)
+    public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string
     {
         foreach ($keywords as $k => $v)
         {
@@ -101,7 +101,7 @@ trait TKeyword
      *
      * @return string
      */
-    public function parseKeyword($string)
+    public function parseKeyword(string $string): string
     {
         $matches = $this->parseKeywordText($string);
 

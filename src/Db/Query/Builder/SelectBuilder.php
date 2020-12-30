@@ -8,12 +8,7 @@ use Imi\Db\Query\Lock\MysqlLock;
 
 class SelectBuilder extends BaseBuilder
 {
-    /**
-     * 生成SQL语句.
-     *
-     * @return string
-     */
-    public function build(...$args)
+    public function build(...$args): string
     {
         parent::build(...$args);
         $query = $this->query;

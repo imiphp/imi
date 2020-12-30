@@ -13,7 +13,7 @@ interface IBaseWhere extends IBase
      *
      * @return string
      */
-    public function toStringWithoutLogic(IQuery $query);
+    public function toStringWithoutLogic(IQuery $query): string;
 
     /**
      * 逻辑运算符.

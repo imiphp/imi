@@ -6,7 +6,7 @@ namespace Imi\Db\Query\Builder;
 
 class ReplaceBuilder extends BaseBuilder
 {
-    public function build(...$args)
+    public function build(...$args): string
     {
         parent::build(...$args);
         $query = $this->query;

@@ -16,32 +16,32 @@ class Field implements IField
     /**
      * 数据库名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $database;
+    protected ?string $database;
 
     /**
      * 表名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $table;
+    protected ?string $table;
 
     /**
      * 字段名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $field;
+    protected ?string $field;
 
     /**
      * 别名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $alias;
+    protected ?string $alias;
 
-    public function __construct(string $database = null, string $table = null, string $field = null, string $alias = null)
+    public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null)
     {
         $this->database = $database;
         $this->table = $table;
@@ -52,9 +52,9 @@ class Field implements IField
     /**
      * 获取数据库名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDatabase(): string
+    public function getDatabase(): ?string
     {
         return $this->database;
     }
@@ -62,9 +62,9 @@ class Field implements IField
     /**
      * 获取表名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getTable(): string
+    public function getTable(): ?string
     {
         return $this->table;
     }
@@ -72,9 +72,9 @@ class Field implements IField
     /**
      * 获取字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getField(): string
+    public function getField(): ?string
     {
         return $this->field;
     }
@@ -82,9 +82,9 @@ class Field implements IField
     /**
      * 获取别名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAlias(): string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -92,11 +92,11 @@ class Field implements IField
     /**
      * 设置数据库名.
      *
-     * @param string $database
+     * @param string|null $database
      *
      * @return void
      */
-    public function setDatabase(string $database = null)
+    public function setDatabase(?string $database = null)
     {
         $this->database = $database;
     }
@@ -104,11 +104,11 @@ class Field implements IField
     /**
      * 设置表名.
      *
-     * @param string $table
+     * @param string|null $table
      *
      * @return void
      */
-    public function setTable(string $table = null)
+    public function setTable(?string $table = null)
     {
         $this->table = $table;
     }
@@ -116,11 +116,11 @@ class Field implements IField
     /**
      * 设置字段名.
      *
-     * @param string $field
+     * @param string|null $field
      *
      * @return void
      */
-    public function setField(string $field = null)
+    public function setField(?string $field = null)
     {
         $this->field = $field;
     }
@@ -128,11 +128,11 @@ class Field implements IField
     /**
      * 设置别名.
      *
-     * @param string $alias
+     * @param string|null $alias
      *
      * @return void
      */
-    public function setAlias(string $alias = null)
+    public function setAlias(?string $alias = null)
     {
         $this->alias = $alias;
     }
@@ -149,7 +149,7 @@ class Field implements IField
      *
      * @return void
      */
-    public function setValue($value)
+    public function setValue(string $value)
     {
         $matches = $this->parseKeywordText($value);
         if (isset($matches['keywords']))
@@ -196,7 +196,7 @@ class Field implements IField
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return [];
     }

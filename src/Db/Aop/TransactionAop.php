@@ -15,6 +15,7 @@ use Imi\Db\Annotation\RollbackType;
 use Imi\Db\Annotation\Transaction;
 use Imi\Db\Annotation\TransactionType;
 use Imi\Db\Db;
+use Imi\Db\Interfaces\IDb;
 
 /**
  * @Aspect
@@ -111,7 +112,7 @@ class TransactionAop
      *
      * @return \Imi\Db\Interfaces\IDb|null
      */
-    private function getDb($transaction, $object)
+    private function getDb(Transaction $transaction, object $object): ?IDb
     {
         if ($object instanceof \Imi\Model\Model)
         {

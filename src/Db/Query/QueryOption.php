@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use Imi\Db\Query\Interfaces\ITable;
+
 class QueryOption
 {
     /**
@@ -11,56 +13,56 @@ class QueryOption
      *
      * @var \Imi\Db\Query\Interfaces\ITable
      */
-    public $table;
+    public ITable $table;
 
     /**
      * distinct.
      *
      * @var bool
      */
-    public $distinct = false;
+    public bool $distinct = false;
 
     /**
      * 查询字段.
      *
      * @var array
      */
-    public $field = [];
+    public array $field = [];
 
     /**
      * where 条件.
      *
      * @var \Imi\Db\Query\Interfaces\IBaseWhere[]
      */
-    public $where = [];
+    public array $where = [];
 
     /**
      * join.
      *
      * @var \Imi\Db\Query\Interfaces\IJoin[]
      */
-    public $join = [];
+    public array $join = [];
 
     /**
      * order by.
      *
      * @var \Imi\Db\Query\Interfaces\IOrder[]
      */
-    public $order = [];
+    public array $order = [];
 
     /**
      * group by.
      *
      * @var \Imi\Db\Query\Interfaces\IGroup[]
      */
-    public $group = [];
+    public array $group = [];
 
     /**
      * having.
      *
      * @var \Imi\Db\Query\Interfaces\IHaving[]
      */
-    public $having = [];
+    public array $having = [];
 
     /**
      * 保存的数据.
@@ -72,23 +74,23 @@ class QueryOption
     /**
      * 记录从第几个开始取出.
      *
-     * @var int
+     * @var int|null
      */
-    public $offset;
+    public ?int $offset = null;
 
     /**
      * 查询几条记录.
      *
-     * @var int
+     * @var int|null
      */
-    public $limit;
+    public ?int $limit = null;
 
     /**
      * 锁配置.
      *
      * @var int|string|null
      */
-    public $lock;
+    public $lock = null;
 
     public function __construct()
     {

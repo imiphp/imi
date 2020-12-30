@@ -25,42 +25,42 @@ class Driver extends Base implements IDb
      *
      * @var \Swoole\Coroutine\MySQL
      */
-    protected $instance;
+    protected MySQL $instance;
 
     /**
      * 连接配置.
      *
      * @var array
      */
-    protected $option;
+    protected array $option;
 
     /**
      * 最后执行过的SQL语句.
      *
      * @var string
      */
-    protected $lastSql = '';
+    protected string $lastSql = '';
 
     /**
      * Statement.
      *
-     * @var \Swoole\Coroutine\MySQL\Statement
+     * @var \Swoole\Coroutine\MySQL\Statement|array|null
      */
-    protected $lastStmt;
+    protected $lastStmt = null;
 
     /**
      * 是否缓存 Statement.
      *
      * @var bool
      */
-    protected $isCacheStatement;
+    protected bool $isCacheStatement;
 
     /**
      * 事务管理.
      *
      * @var \Imi\Db\Transaction\Transaction
      */
-    protected $transaction;
+    protected Transaction $transaction;
 
     /**
      * 参数格式：
@@ -79,7 +79,7 @@ class Driver extends Base implements IDb
      *
      * @param array $option
      */
-    public function __construct($option = [])
+    public function __construct(array $option = [])
     {
         $this->option = $option;
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
@@ -108,7 +108,7 @@ class Driver extends Base implements IDb
      *
      * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $this->instance = $instance = new MySQL();
         $option = $this->option;
@@ -191,11 +191,11 @@ class Driver extends Base implements IDb
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
      *
-     * @param int $levels
+     * @param int|null $levels
      *
      * @return bool
      */
-    public function rollBack($levels = null): bool
+    public function rollBack(?int $levels = null): bool
     {
         if (null === $levels)
         {
@@ -273,7 +273,7 @@ class Driver extends Base implements IDb
      *
      * @return string
      */
-    public function lastSql()
+    public function lastSql(): string
     {
         return $this->lastSql;
     }
@@ -342,11 +342,11 @@ class Driver extends Base implements IDb
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
-     * @return string
+     * @return string|int
      */
-    public function lastInsertId(string $name = null)
+    public function lastInsertId(?string $name = null)
     {
         return $this->instance->insert_id;
     }
@@ -368,10 +368,8 @@ class Driver extends Base implements IDb
      * @param array  $driverOptions
      *
      * @return IStatement
-     *
-     * @throws DbException
      */
-    public function prepare(string $sql, array $driverOptions = [])
+    public function prepare(string $sql, array $driverOptions = []): IStatement
     {
         if ($this->isCacheStatement && $stmtCache = StatementManager::get($this, $sql))
         {
@@ -397,15 +395,13 @@ class Driver extends Base implements IDb
     }
 
     /**
-     * 执行一条SQL语句，返回一个结果集作为Statement对象
+     * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
      *
      * @param string $sql
      *
      * @return IStatement
-     *
-     * @throws DbException
      */
-    public function query(string $sql)
+    public function query(string $sql): IStatement
     {
         $this->lastSql = $sql;
         $this->lastStmt = $lastStmt = $this->instance->query($sql);
@@ -422,7 +418,7 @@ class Driver extends Base implements IDb
      *
      * @return \Imi\Db\Transaction\Transaction
      */
-    public function getTransaction()
+    public function getTransaction(): Transaction
     {
         return $this->transaction;
     }

@@ -18,16 +18,16 @@ class Order implements IOrder
      *
      * @var string
      */
-    protected $fieldName;
+    protected string $fieldName;
 
     /**
      * 排序方向：asc/desc.
      *
      * @var string
      */
-    protected $direction;
+    protected string $direction;
 
-    public function __construct(string $fieldName = null, string $direction = 'asc')
+    public function __construct(string $fieldName = '', string $direction = 'asc')
     {
         $this->fieldName = $fieldName;
         $this->direction = $direction;
@@ -38,7 +38,7 @@ class Order implements IOrder
      *
      * @return string
      */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
@@ -48,7 +48,7 @@ class Order implements IOrder
      *
      * @return string
      */
-    public function getDirection()
+    public function getDirection(): string
     {
         return $this->direction;
     }
@@ -92,7 +92,7 @@ class Order implements IOrder
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return [];
     }

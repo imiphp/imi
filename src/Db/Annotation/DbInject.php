@@ -23,7 +23,7 @@ class DbInject extends RequestInject
      *
      * @var int
      */
-    public $queryType = QueryType::WRITE;
+    public int $queryType = QueryType::WRITE;
 
     /**
      * 获取注入值的真实值

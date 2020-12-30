@@ -9,9 +9,9 @@ interface IField extends ITable
     /**
      * 获取字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getField(): string;
+    public function getField(): ?string;
 
     /**
      * 设置字段名.
@@ -34,5 +34,5 @@ interface IField extends ITable
      *
      * @return void
      */
-    public function setValue($value);
+    public function setValue(string $value);
 }

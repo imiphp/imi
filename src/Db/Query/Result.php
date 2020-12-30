@@ -20,36 +20,34 @@ class Result implements IResult
      *
      * @var IStatement
      */
-    private $statement;
+    private IStatement $statement;
 
     /**
      * 是否执行成功
      *
      * @var bool
      */
-    private $isSuccess;
+    private bool $isSuccess;
 
     /**
      * 查询结果类的类名，为null则为数组.
      *
-     * @var string
+     * @var string|null
      */
-    private $modelClass;
+    private ?string $modelClass;
 
     /**
      * 记录列表.
      *
      * @var array
      */
-    private $statementRecords = [];
+    private array $statementRecords = [];
 
     /**
-     * Undocumented function.
-     *
-     * @param \Imi\Db\Interfaces\IStatement $statement
-     * @param string|null                   $modelClass
+     * @param \Imi\Db\Interfaces\IStatement|bool $statement
+     * @param string|null                        $modelClass
      */
-    public function __construct($statement, $modelClass = null)
+    public function __construct($statement, ?string $modelClass = null)
     {
         $this->modelClass = $modelClass;
         if ($statement instanceof IStatement)
@@ -85,7 +83,7 @@ class Result implements IResult
     /**
      * 获取最后插入的ID.
      *
-     * @return string
+     * @return int|string
      */
     public function getLastInsertId()
     {
@@ -102,7 +100,7 @@ class Result implements IResult
      *
      * @return int
      */
-    public function getAffectedRows()
+    public function getAffectedRows(): int
     {
         if (!$this->isSuccess)
         {
@@ -115,11 +113,11 @@ class Result implements IResult
     /**
      * 返回一行数据，数组或对象，失败返回null.
      *
-     * @param string $className 实体类名，为null则返回数组
+     * @param string|null $className 实体类名，为null则返回数组
      *
      * @return mixed|null
      */
-    public function get($className = null)
+    public function get(?string $className = null)
     {
         if (!$this->isSuccess)
         {
@@ -165,13 +163,13 @@ class Result implements IResult
     }
 
     /**
-     * 返回数组，失败返回null.
+     * 返回数组.
      *
-     * @param string $className 实体类名，为null则数组每个成员为数组
+     * @param string|null $className 实体类名，为null则数组每个成员为数组
      *
-     * @return array|null
+     * @return array
      */
-    public function getArray($className = null)
+    public function getArray(?string $className = null): array
     {
         if (!$this->isSuccess)
         {
@@ -217,9 +215,11 @@ class Result implements IResult
     /**
      * 获取一列数据.
      *
+     * @param string|int $column
+     *
      * @return array
      */
-    public function getColumn($column = 0)
+    public function getColumn($column = 0): array
     {
         if (!$this->isSuccess)
         {
@@ -279,7 +279,7 @@ class Result implements IResult
      *
      * @return int
      */
-    public function getRowCount()
+    public function getRowCount(): int
     {
         if (!$this->isSuccess)
         {
@@ -294,7 +294,7 @@ class Result implements IResult
      *
      * @return string
      */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->statement->getSql();
     }

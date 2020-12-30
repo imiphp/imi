@@ -15,7 +15,7 @@ class StatementManager
      *
      * @var array
      */
-    private static $statements = [];
+    private static array $statements = [];
 
     private function __construct()
     {
@@ -50,7 +50,7 @@ class StatementManager
      *
      * @return bool
      */
-    public static function setNX(IStatement $statement, bool $using)
+    public static function setNX(IStatement $statement, bool $using): bool
     {
         $hashCode = $statement->getDb()->hashCode();
         $sql = $statement->getSql();
@@ -169,7 +169,7 @@ class StatementManager
      *
      * @return array
      */
-    public static function select(IDb $db)
+    public static function select(IDb $db): array
     {
         return static::$statements[$db->hashCode()] ?? [];
     }
@@ -226,7 +226,7 @@ class StatementManager
      *
      * @return array
      */
-    public static function getAll()
+    public static function getAll(): array
     {
         return static::$statements;
     }

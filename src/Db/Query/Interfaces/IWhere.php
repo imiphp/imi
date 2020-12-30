@@ -9,16 +9,16 @@ interface IWhere extends IBaseWhere
     /**
      * 字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getFieldName(): string;
+    public function getFieldName(): ?string;
 
     /**
      * 比较符.
      *
-     * @return string
+     * @return string|null
      */
-    public function getOperation(): string;
+    public function getOperation(): ?string;
 
     /**
      * 值
@@ -30,20 +30,20 @@ interface IWhere extends IBaseWhere
     /**
      * 字段名.
      *
-     * @param string $fieldName
+     * @param string|null $fieldName
      *
      * @return void
      */
-    public function setFieldName(string $fieldName);
+    public function setFieldName(?string $fieldName);
 
     /**
      * 比较符.
      *
-     * @param string $operation
+     * @param string|null $operation
      *
      * @return void
      */
-    public function setOperation(string $operation);
+    public function setOperation(?string $operation);
 
     /**
      * 值

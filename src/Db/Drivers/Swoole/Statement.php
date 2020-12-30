@@ -26,42 +26,42 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * 数据库操作对象
      *
      * @var IDb
      */
-    protected $db;
+    protected IDb $db;
 
     /**
      * 绑定数据.
      *
      * @var array
      */
-    protected $bindValues = [];
+    protected array $bindValues = [];
 
     /**
      * 结果数组.
      *
      * @var array
      */
-    protected $result = [];
+    protected array $result = [];
 
     /**
      * 最后执行过的SQL语句.
      *
      * @var string
      */
-    protected $lastSql = '';
+    protected string $lastSql = '';
 
     /**
      * SQL 参数映射.
      *
-     * @var array
+     * @var array|null
      */
-    protected $sqlParamsMap;
+    protected ?array $sqlParamsMap;
 
     public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
     {
@@ -88,15 +88,15 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一列到一个 PHP 变量.
      *
-     * @param mixed $column
-     * @param mixed $param
-     * @param int   $type
-     * @param int   $maxLen
-     * @param mixed $driverData
+     * @param mixed    $column
+     * @param mixed    $param
+     * @param int|null $type
+     * @param int|null $maxLen
+     * @param mixed    $driverData
      *
      * @return bool
      */
-    public function bindColumn($column, &$param, int $type = null, int $maxLen = null, $driverData = null): bool
+    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool
     {
         $this->bindValues[$column] = $param;
 
@@ -106,15 +106,15 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一个参数到指定的变量名.
      *
-     * @param mixed $parameter
-     * @param mixed $variable
-     * @param int   $dataType
-     * @param int   $length
-     * @param mixed $driverOptions
+     * @param mixed    $parameter
+     * @param mixed    $variable
+     * @param int      $dataType
+     * @param int|null $length
+     * @param mixed    $driverOptions
      *
      * @return bool
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, int $length = null, $driverOptions = null): bool
+    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool
     {
         $this->bindValues[$parameter] = $variable;
 
@@ -182,7 +182,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @return string
      */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->lastSql;
     }

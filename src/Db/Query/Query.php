@@ -37,86 +37,86 @@ class Query implements IQuery
      *
      * @var QueryOption
      */
-    protected $option;
+    protected QueryOption $option;
 
     /**
      * 数据绑定.
      *
      * @var array
      */
-    protected $binds = [];
+    protected array $binds = [];
 
     /**
      * 数据库操作对象
      *
-     * @var IDb
+     * @var IDb|null
      */
-    protected $db;
+    protected ?IDb $db;
 
     /**
      * 连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    protected $poolName;
+    protected ?string $poolName;
 
     /**
      * 查询结果类的类名，为null则为数组.
      *
-     * @var string
+     * @var string|null
      */
-    protected $modelClass;
+    protected ?string $modelClass;
 
     /**
      * 查询类型.
      *
-     * @var int
+     * @var int|null
      */
-    protected $queryType;
+    protected ?int $queryType;
 
     /**
      * 是否初始化时候就设定了查询类型.
      *
      * @var bool
      */
-    protected $isInitQueryType;
+    protected bool $isInitQueryType;
 
     /**
      * 是否初始化时候就设定了连接.
      *
      * @var bool
      */
-    protected $isInitDb;
+    protected bool $isInitDb;
 
     /**
      * 数据库字段自增.
      *
      * @var int
      */
-    protected $dbParamInc = 0;
+    protected int $dbParamInc = 0;
 
     /**
      * 查询器别名集合.
      *
      * @var \Imi\Db\Query\Interfaces\IQuery[]
      */
-    protected static $aliasMap = [];
+    protected static array $aliasMap = [];
 
     /**
      * 当前别名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $alias;
+    protected ?string $alias = null;
 
     /**
      * 别名 Sql 集合.
      *
      * @var string[]
      */
-    protected static $aliasSqls = [];
+    protected static array $aliasSqls = [];
 
-    public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
+    public function __construct(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null)
     {
         $this->db = $db;
         $this->isInitDb = null !== $db;
@@ -160,7 +160,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setOption(QueryOption $option)
+    public function setOption(QueryOption $option): self
     {
         $this->dbParamInc = 0;
         $this->option = $option;
@@ -181,13 +181,13 @@ class Query implements IQuery
     /**
      * 设置表名.
      *
-     * @param string $table    表名
-     * @param string $alias    别名
-     * @param string $database 数据库名
+     * @param string      $table    表名
+     * @param string|null $alias    别名
+     * @param string|null $database 数据库名
      *
      * @return static
      */
-    public function table(string $table, string $alias = null, string $database = null)
+    public function table(string $table, string $alias = null, string $database = null): self
     {
         $optionTable = $this->option->table;
         $optionTable->useRaw(false);
@@ -205,7 +205,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function tableRaw(string $raw)
+    public function tableRaw(string $raw): self
     {
         $optionTable = $this->option->table;
         $optionTable->useRaw(true);
@@ -217,13 +217,13 @@ class Query implements IQuery
     /**
      * 设置表名，table()的别名.
      *
-     * @param string $table    表名
-     * @param string $alias    别名
-     * @param string $database 数据库名
+     * @param string      $table    表名
+     * @param string      $alias    别名
+     * @param string|null $database 数据库名
      *
      * @return static
      */
-    public function from(string $table, string $alias = null, string $database = null)
+    public function from(string $table, string $alias = null, string $database = null): self
     {
         return $this->table($table, $alias, $database);
     }
@@ -235,7 +235,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function fromRaw(string $raw)
+    public function fromRaw(string $raw): self
     {
         return $this->fromRaw($raw);
     }
@@ -247,7 +247,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function distinct($isDistinct = true)
+    public function distinct(bool $isDistinct = true): self
     {
         $this->option->distinct = $isDistinct;
 
@@ -261,7 +261,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function field(...$fields)
+    public function field(string ...$fields): self
     {
         $option = $this->option;
         if (!isset($fields[1]) && \is_array($fields[0]))
@@ -283,7 +283,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function fieldRaw(string $raw)
+    public function fieldRaw(string $raw): self
     {
         $field = new Field();
         $field->useRaw();
@@ -303,7 +303,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND)
+    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->where[] = new Where($fieldName, $operation, $value, $logicalOperator);
 
@@ -318,7 +318,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND)
+    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self
     {
         $where = new Where();
         $where->useRaw();
@@ -337,7 +337,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND)
+    public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->where[] = new WhereBrackets($callback, $logicalOperator);
 
@@ -352,7 +352,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND)
+    public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->where[] = $where;
 
@@ -379,7 +379,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND)
+    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND): self
     {
         if (!$condition)
         {
@@ -462,7 +462,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND)
+    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->where($fieldName, 'between', [$begin, $end], $logicalOperator);
     }
@@ -476,7 +476,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereBetween(string $fieldName, $begin, $end)
+    public function orWhereBetween(string $fieldName, $begin, $end): self
     {
         return $this->where($fieldName, 'between', [$begin, $end], LogicalOperator::OR);
     }
@@ -491,7 +491,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND)
+    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->where($fieldName, 'not between', [$begin, $end], $logicalOperator);
     }
@@ -505,7 +505,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereNotBetween(string $fieldName, $begin, $end)
+    public function orWhereNotBetween(string $fieldName, $begin, $end): self
     {
         return $this->where($fieldName, 'not between', [$begin, $end], LogicalOperator::OR);
     }
@@ -519,7 +519,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhere(string $fieldName, string $operation, $value)
+    public function orWhere(string $fieldName, string $operation, $value): self
     {
         return $this->where($fieldName, $operation, $value, LogicalOperator::OR);
     }
@@ -531,7 +531,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereRaw(string $where)
+    public function orWhereRaw(string $where): self
     {
         return $this->whereRaw($where, LogicalOperator::OR);
     }
@@ -543,7 +543,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereBrackets(callable $callback)
+    public function orWhereBrackets(callable $callback): self
     {
         return $this->whereBrackets($callback, LogicalOperator::OR);
     }
@@ -555,7 +555,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereStruct(IBaseWhere $where)
+    public function orWhereStruct(IBaseWhere $where): self
     {
         return $this->whereStruct($where, LogicalOperator::OR);
     }
@@ -567,7 +567,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereEx(array $condition)
+    public function orWhereEx(array $condition): self
     {
         return $this->whereEx($condition, LogicalOperator::OR);
     }
@@ -581,7 +581,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND)
+    public function whereIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->where($fieldName, 'in', $list, $logicalOperator);
     }
@@ -594,7 +594,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereIn(string $fieldName, $list)
+    public function orWhereIn(string $fieldName, array $list): self
     {
         return $this->where($fieldName, 'in', $list, LogicalOperator::OR);
     }
@@ -608,7 +608,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereNotIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND)
+    public function whereNotIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->where($fieldName, 'not in', $list, $logicalOperator);
     }
@@ -621,7 +621,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereNotIn(string $fieldName, $list)
+    public function orWhereNotIn(string $fieldName, array $list): self
     {
         return $this->where($fieldName, 'not in', $list, LogicalOperator::OR);
     }
@@ -634,7 +634,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
+    public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->whereRaw((new Field(null, null, $fieldName)) . ' is null', $logicalOperator);
     }
@@ -646,7 +646,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereIsNull(string $fieldName)
+    public function orWhereIsNull(string $fieldName): self
     {
         return $this->whereIsNull($fieldName, LogicalOperator::OR);
     }
@@ -659,7 +659,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND)
+    public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
     {
         return $this->whereRaw((new Field(null, null, $fieldName)) . ' is not null', $logicalOperator);
     }
@@ -671,7 +671,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orWhereIsNotNull(string $fieldName)
+    public function orWhereIsNotNull(string $fieldName): self
     {
         return $this->whereIsNotNull($fieldName, LogicalOperator::OR);
     }
@@ -689,7 +689,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner')
+    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
     {
         $this->option->join[] = new Join($table, $left, $operation, $right, $tableAlias, $where, $type);
 
@@ -703,7 +703,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function joinRaw(string $raw)
+    public function joinRaw(string $raw): self
     {
         $join = new Join();
         $join->useRaw();
@@ -725,7 +725,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
+    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'left');
     }
@@ -742,7 +742,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
+    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'right');
     }
@@ -759,7 +759,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null)
+    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self
     {
         return $this->join($table, $left, $operation, $right, $tableAlias, $where, 'cross');
     }
@@ -772,7 +772,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function order(string $field, string $direction = 'asc')
+    public function order(string $field, string $direction = 'asc'): self
     {
         $this->option->order[] = new Order($field, $direction);
 
@@ -789,7 +789,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function orderRaw($raw)
+    public function orderRaw($raw): self
     {
         $optionOrder = &$this->option->order;
         if (\is_array($raw))
@@ -824,12 +824,12 @@ class Query implements IQuery
      * 设置分页
      * 传入当前页码和每页显示数量，自动计算offset和limit.
      *
-     * @param int $page
-     * @param int $count
+     * @param int|null $page
+     * @param int|null $count
      *
      * @return static
      */
-    public function page($page, $count)
+    public function page(?int $page, ?int $count): self
     {
         $pagination = new Pagination($page, $count);
         $option = $this->option;
@@ -842,11 +842,11 @@ class Query implements IQuery
     /**
      * 设置记录从第几个开始取出.
      *
-     * @param int $offset
+     * @param int|null $offset
      *
      * @return static
      */
-    public function offset($offset)
+    public function offset(?int $offset): self
     {
         $this->option->offset = $offset;
 
@@ -856,11 +856,11 @@ class Query implements IQuery
     /**
      * 设置查询几条记录.
      *
-     * @param int $offset
+     * @param int|null $offset
      *
      * @return static
      */
-    public function limit($limit)
+    public function limit(?int $limit): self
     {
         $this->option->limit = $limit;
 
@@ -874,7 +874,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function group(...$groups)
+    public function group(string ...$groups): self
     {
         $optionGroup = &$this->option->group;
         foreach ($groups as $item)
@@ -894,7 +894,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function groupRaw(string $raw)
+    public function groupRaw(string $raw): self
     {
         $group = new Group();
         $group->useRaw();
@@ -914,7 +914,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND)
+    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->having[] = new Having($fieldName, $operation, $value, $logicalOperator);
 
@@ -929,7 +929,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND)
+    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self
     {
         $having = new Having();
         $having->useRaw();
@@ -948,7 +948,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND)
+    public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->having[] = new HavingBrackets($callback, $logicalOperator);
 
@@ -963,7 +963,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND)
+    public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND): self
     {
         $this->option->having[] = $having;
 
@@ -979,7 +979,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function bindValue($name, $value, $dataType = \PDO::PARAM_STR)
+    public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self
     {
         $this->binds[$name] = $value;
 
@@ -993,7 +993,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function bindValues($values)
+    public function bindValues(array $values): self
     {
         $binds = &$this->binds;
         foreach ($values as $k => $v)
@@ -1009,7 +1009,7 @@ class Query implements IQuery
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return $this->binds;
     }
@@ -1043,12 +1043,13 @@ class Query implements IQuery
     /**
      * 分页查询.
      *
-     * @param bool  $status  设置为true时，查询结果会返回为分页格式
+     * @param int   $page
+     * @param int   $count
      * @param array $options
      *
      * @return \Imi\Db\Query\Interfaces\IPaginateResult
      */
-    public function paginate($page, $count, $options = []): IPaginateResult
+    public function paginate(int $page, int $count, array $options = []): IPaginateResult
     {
         if ($options['total'] ?? true)
         {
@@ -1068,7 +1069,7 @@ class Query implements IQuery
     /**
      * 插入记录.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -1107,7 +1108,7 @@ class Query implements IQuery
      * 批量插入数据
      * 以第 0 个成员作为字段标准.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -1122,7 +1123,7 @@ class Query implements IQuery
     /**
      * 更新记录.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -1152,7 +1153,7 @@ class Query implements IQuery
     /**
      * 替换数据（Replace）.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -1209,9 +1210,9 @@ class Query implements IQuery
      *
      * @return int
      */
-    public function count($field = '*')
+    public function count(string $field = '*'): int
     {
-        return $this->aggregate('count', $field);
+        return (int) $this->aggregate('count', $field);
     }
 
     /**
@@ -1219,9 +1220,9 @@ class Query implements IQuery
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function sum($field)
+    public function sum(string $field)
     {
         return $this->aggregate('sum', $field);
     }
@@ -1231,9 +1232,9 @@ class Query implements IQuery
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function avg($field)
+    public function avg(string $field)
     {
         return $this->aggregate('avg', $field);
     }
@@ -1243,9 +1244,9 @@ class Query implements IQuery
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function max($field)
+    public function max(string $field)
     {
         return $this->aggregate('max', $field);
     }
@@ -1255,9 +1256,9 @@ class Query implements IQuery
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function min($field)
+    public function min(string $field)
     {
         return $this->aggregate('min', $field);
     }
@@ -1270,7 +1271,7 @@ class Query implements IQuery
      *
      * @return mixed
      */
-    public function aggregate($functionName, $fieldName)
+    public function aggregate(string $functionName, string $fieldName)
     {
         $field = new Field();
         $field->useRaw();
@@ -1289,7 +1290,7 @@ class Query implements IQuery
      *
      * @return IResult
      */
-    public function execute($sql)
+    public function execute(string $sql): IResult
     {
         try
         {
@@ -1327,7 +1328,7 @@ class Query implements IQuery
      *
      * @return string
      */
-    public function getAutoParamName()
+    public function getAutoParamName(): string
     {
         $dbParamInc = &$this->dbParamInc;
         if ($dbParamInc >= 65535)
@@ -1346,7 +1347,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setData($data)
+    public function setData($data): self
     {
         $this->option->saveData = $data;
 
@@ -1361,7 +1362,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setField($fieldName, $value)
+    public function setField(string $fieldName, $value): self
     {
         $this->option->saveData[$fieldName] = $value;
 
@@ -1376,7 +1377,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setFieldExp($fieldName, $exp)
+    public function setFieldExp(string $fieldName, string $exp): self
     {
         $this->option->saveData[$fieldName] = new Raw($exp);
 
@@ -1391,7 +1392,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setFieldInc($fieldName, float $incValue = 1)
+    public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
         $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' + ' . $incValue);
 
@@ -1406,7 +1407,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setFieldDec($fieldName, float $decValue = 1)
+    public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
         $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
 
@@ -1418,7 +1419,7 @@ class Query implements IQuery
      *
      * @return bool
      */
-    private function isInTransaction()
+    private function isInTransaction(): bool
     {
         $poolName = $this->poolName;
         if (null === $poolName)
@@ -1446,7 +1447,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function alias($name, $callable = null)
+    public function alias(string $name, $callable = null): self
     {
         $aliasMap = &static::$aliasMap;
         if (!isset($aliasMap[$name]))
@@ -1469,7 +1470,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function lock($value)
+    public function lock($value): self
     {
         $this->option->lock = $value;
 

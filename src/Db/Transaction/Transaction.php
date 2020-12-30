@@ -15,7 +15,7 @@ class Transaction
      *
      * @var int
      */
-    private $transactionLevels = 0;
+    private int $transactionLevels = 0;
 
     /**
      * 启动一个事务
@@ -71,11 +71,11 @@ class Transaction
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
      *
-     * @param int $levels
+     * @param int|null $levels
      *
      * @return bool
      */
-    public function rollBack($levels = null): bool
+    public function rollBack(?int $levels = null): bool
     {
         $offEvents = [];
         $transactionLevels = &$this->transactionLevels;

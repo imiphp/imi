@@ -21,7 +21,7 @@ class DbQueryLog
      *
      * @var bool
      */
-    protected $enable = false;
+    protected bool $enable = false;
 
     public function __init()
     {

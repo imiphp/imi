@@ -8,7 +8,7 @@ use Imi\Util\ArrayUtil;
 
 class InsertBuilder extends BaseBuilder
 {
-    public function build(...$args)
+    public function build(...$args): string
     {
         parent::build(...$args);
         $query = $this->query;

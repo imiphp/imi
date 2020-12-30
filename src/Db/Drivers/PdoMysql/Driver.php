@@ -12,6 +12,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
+use PDO;
 
 /**
  * PDO MySQL驱动.
@@ -21,44 +22,44 @@ class Driver extends Base implements IDb
     /**
      * 连接对象
      *
-     * @var \PDO
+     * @var \PDO|null
      */
-    protected $instance;
+    protected ?PDO $instance = null;
 
     /**
      * 连接配置.
      *
      * @var array
      */
-    protected $option;
+    protected array $option;
 
     /**
      * 最后执行过的SQL语句.
      *
      * @var string
      */
-    protected $lastSql = '';
+    protected string $lastSql = '';
 
     /**
      * Statement.
      *
-     * @var Statement
+     * @var Statement|null|false
      */
-    protected $lastStmt;
+    protected $lastStmt = null;
 
     /**
      * 是否缓存 Statement.
      *
      * @var bool
      */
-    protected $isCacheStatement;
+    protected bool $isCacheStatement;
 
     /**
      * 事务管理.
      *
      * @var \Imi\Db\Transaction\Transaction
      */
-    protected $transaction;
+    protected Transaction $transaction;
 
     /**
      * 参数格式：
@@ -74,7 +75,7 @@ class Driver extends Base implements IDb
      *
      * @param array $option
      */
-    public function __construct($option = [])
+    public function __construct(array $option = [])
     {
         if (!isset($option['username']))
         {
@@ -98,7 +99,7 @@ class Driver extends Base implements IDb
      *
      * @return string
      */
-    protected function buildDSN()
+    protected function buildDSN(): string
     {
         $option = $this->option;
         if (isset($option['dsn']))
@@ -138,7 +139,7 @@ class Driver extends Base implements IDb
      *
      * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $option = $this->option;
         $this->instance = new \PDO($this->buildDSN(), $option['username'], $option['password'], $option['options']);
@@ -202,11 +203,11 @@ class Driver extends Base implements IDb
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
      *
-     * @param int $levels
+     * @param int|null $levels
      *
      * @return bool
      */
-    public function rollBack($levels = null): bool
+    public function rollBack(?int $levels = null): bool
     {
         if (null === $levels)
         {
@@ -290,7 +291,7 @@ class Driver extends Base implements IDb
      *
      * @return string
      */
-    public function lastSql()
+    public function lastSql(): string
     {
         return $this->lastSql;
     }
@@ -376,11 +377,11 @@ class Driver extends Base implements IDb
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
-     * @return string
+     * @return string|int
      */
-    public function lastInsertId(string $name = null)
+    public function lastInsertId(?string $name = null)
     {
         return $this->instance->lastInsertId($name);
     }
@@ -402,10 +403,8 @@ class Driver extends Base implements IDb
      * @param array  $driverOptions
      *
      * @return IStatement
-     *
-     * @throws DbException
      */
-    public function prepare(string $sql, array $driverOptions = [])
+    public function prepare(string $sql, array $driverOptions = []): IStatement
     {
         if ($this->isCacheStatement && $stmtCache = StatementManager::get($this, $sql))
         {
@@ -435,10 +434,8 @@ class Driver extends Base implements IDb
      * @param string $sql
      *
      * @return IStatement
-     *
-     * @throws DbException
      */
-    public function query(string $sql)
+    public function query(string $sql): IStatement
     {
         $this->lastSql = $sql;
         $this->lastStmt = $lastStmt = $this->instance->query($sql);
@@ -455,7 +452,7 @@ class Driver extends Base implements IDb
      *
      * @return \Imi\Db\Transaction\Transaction
      */
-    public function getTransaction()
+    public function getTransaction(): Transaction
     {
         return $this->transaction;
     }

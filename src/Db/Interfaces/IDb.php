@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Interfaces;
 
+use Imi\Db\Transaction\Transaction;
 use Imi\Util\Interfaces\IHashCode;
 
 interface IDb extends IHashCode
@@ -13,7 +14,7 @@ interface IDb extends IHashCode
      *
      * @return bool
      */
-    public function open();
+    public function open(): bool;
 
     /**
      * 关闭.
@@ -47,11 +48,11 @@ interface IDb extends IHashCode
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
      *
-     * @param int $levels
+     * @param int|null $levels
      *
      * @return bool
      */
-    public function rollBack($levels = null): bool;
+    public function rollBack(?int $levels = null): bool;
 
     /**
      * 获取事务层数.
@@ -79,7 +80,7 @@ interface IDb extends IHashCode
      *
      * @return string
      */
-    public function lastSql();
+    public function lastSql(): string;
 
     /**
      * 执行一条 SQL 语句，并返回受影响的行数.
@@ -128,11 +129,11 @@ interface IDb extends IHashCode
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
-     * @return string
+     * @return string|int
      */
-    public function lastInsertId(string $name = null);
+    public function lastInsertId(?string $name = null);
 
     /**
      * 返回受上一个 SQL 语句影响的行数.
@@ -147,18 +148,18 @@ interface IDb extends IHashCode
      * @param string $sql
      * @param array  $driverOptions
      *
-     * @return IStatement|bool
+     * @return IStatement
      */
-    public function prepare(string $sql, array $driverOptions = []);
+    public function prepare(string $sql, array $driverOptions = []): IStatement;
 
     /**
      * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
      *
      * @param string $sql
      *
-     * @return IStatement|bool
+     * @return IStatement
      */
-    public function query(string $sql);
+    public function query(string $sql): IStatement;
 
     /**
      * 获取原对象实例.
@@ -172,5 +173,5 @@ interface IDb extends IHashCode
      *
      * @return \Imi\Db\Transaction\Transaction
      */
-    public function getTransaction();
+    public function getTransaction(): Transaction;
 }

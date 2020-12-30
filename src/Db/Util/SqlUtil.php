@@ -24,7 +24,7 @@ class SqlUtil
      *
      * @return string
      */
-    public static function parseSqlWithColonParams(string $sql, ?array &$map)
+    public static function parseSqlWithColonParams(string $sql, ?array &$map): string
     {
         $map = [];
 

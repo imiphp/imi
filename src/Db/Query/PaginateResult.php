@@ -15,51 +15,51 @@ class PaginateResult implements IPaginateResult
      *
      * @var \Imi\Db\Query\Interfaces\IResult
      */
-    protected $result;
+    protected IResult $result;
 
     /**
      * 数组数据.
      *
-     * @var array
+     * @var array|null
      */
-    protected $arrayData;
+    protected ?array $arrayData = null;
 
     /**
      * 页码
      *
      * @var int
      */
-    protected $page;
+    protected int $page;
 
     /**
      * 查询几条记录.
      *
      * @var int
      */
-    protected $limit;
+    protected int $limit;
 
     /**
      * 记录总数.
      *
-     * @var int
+     * @var int|null
      */
-    protected $total;
+    protected ?int $total;
 
     /**
      * 总页数.
      *
-     * @var int
+     * @var int|null
      */
-    protected $pageCount;
+    protected ?int $pageCount;
 
     /**
      * 自定义选项.
      *
      * @var array
      */
-    protected $options;
+    protected array $options;
 
-    public function __construct(IResult $result, $page, $limit, $total, $pageCount, $options)
+    public function __construct(IResult $result, int $page, int $limit, ?int $total, ?int $pageCount, array $options)
     {
         $this->result = $result;
         $this->page = $page;
@@ -82,7 +82,7 @@ class PaginateResult implements IPaginateResult
     /**
      * 获取最后插入的ID.
      *
-     * @return string
+     * @return int|string
      */
     public function getLastInsertId()
     {
@@ -94,7 +94,7 @@ class PaginateResult implements IPaginateResult
      *
      * @return int
      */
-    public function getAffectedRows()
+    public function getAffectedRows(): int
     {
         return $this->result->getAffectedRows();
     }
@@ -102,11 +102,11 @@ class PaginateResult implements IPaginateResult
     /**
      * 返回一行数据，数组或对象
      *
-     * @param string $className 实体类名，为null则返回数组
+     * @param string|null $className 实体类名，为null则返回数组
      *
      * @return mixed
      */
-    public function get($className = null)
+    public function get(?string $className = null)
     {
         return $this->result->get($className);
     }
@@ -114,11 +114,11 @@ class PaginateResult implements IPaginateResult
     /**
      * 返回数组.
      *
-     * @param string $className 实体类名，为null则数组每个成员为数组
+     * @param string|null $className 实体类名，为null则数组每个成员为数组
      *
      * @return array
      */
-    public function getArray($className = null)
+    public function getArray(?string $className = null): array
     {
         return $this->result->getArray($className);
     }
@@ -128,7 +128,7 @@ class PaginateResult implements IPaginateResult
      *
      * @return array
      */
-    public function getColumn($column = 0)
+    public function getColumn($column = 0): array
     {
         return $this->result->getColumn($column);
     }
@@ -148,7 +148,7 @@ class PaginateResult implements IPaginateResult
      *
      * @return int
      */
-    public function getRowCount()
+    public function getRowCount(): int
     {
         return $this->result->getRowCount();
     }
@@ -158,7 +158,7 @@ class PaginateResult implements IPaginateResult
      *
      * @return string
      */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->result->getSql();
     }
@@ -176,9 +176,9 @@ class PaginateResult implements IPaginateResult
     /**
      * 获取数组数据.
      *
-     * @return void
+     * @return array
      */
-    public function getList()
+    public function getList(): array
     {
         return $this->result->getArray();
     }
@@ -186,9 +186,9 @@ class PaginateResult implements IPaginateResult
     /**
      * 获取记录总数.
      *
-     * @return int
+     * @return int|null
      */
-    public function getTotal()
+    public function getTotal(): ?int
     {
         return $this->total;
     }
@@ -198,7 +198,7 @@ class PaginateResult implements IPaginateResult
      *
      * @return int
      */
-    public function getLimit()
+    public function getLimit(): int
     {
         return $this->limit;
     }
@@ -206,9 +206,9 @@ class PaginateResult implements IPaginateResult
     /**
      * 获取总页数.
      *
-     * @return int
+     * @return int|null
      */
-    public function getPageCount()
+    public function getPageCount(): ?int
     {
         return $this->pageCount;
     }

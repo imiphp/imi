@@ -16,28 +16,28 @@ interface IStatement extends \Iterator
     /**
      * 绑定一列到一个 PHP 变量.
      *
-     * @param mixed $column
-     * @param mixed $param
-     * @param int   $type
-     * @param int   $maxLen
-     * @param mixed $driverData
+     * @param mixed    $column
+     * @param mixed    $param
+     * @param int|null $type
+     * @param int|null $maxLen
+     * @param mixed    $driverData
      *
      * @return bool
      */
-    public function bindColumn($column, &$param, int $type = null, int $maxLen = null, $driverData = null): bool;
+    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool;
 
     /**
      * 绑定一个参数到指定的变量名.
      *
-     * @param mixed $parameter
-     * @param mixed $variable
-     * @param int   $dataType
-     * @param int   $length
-     * @param mixed $driverOptions
+     * @param mixed    $parameter
+     * @param mixed    $variable
+     * @param int      $dataType
+     * @param int|null $length
+     * @param mixed    $driverOptions
      *
      * @return bool
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, int $length = null, $driverOptions = null): bool;
+    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool;
 
     /**
      * 把一个值绑定到一个参数.
@@ -83,7 +83,7 @@ interface IStatement extends \Iterator
      *
      * @return string
      */
-    public function getSql();
+    public function getSql(): string;
 
     /**
      * 执行一条预处理语句.

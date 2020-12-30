@@ -30,7 +30,7 @@ class DbResource extends BasePoolResource
      *
      * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $db = $this->db;
 

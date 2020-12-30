@@ -13,6 +13,7 @@ use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
 use Imi\Db\Util\SqlUtil;
+use mysqli;
 
 /**
  * mysqli MySQL驱动.
@@ -22,51 +23,51 @@ class Driver extends Base implements IDb
     /**
      * 连接对象
      *
-     * @var \mysqli
+     * @var \mysqli|null
      */
-    protected $instance;
+    protected ?mysqli $instance;
 
     /**
      * 连接配置.
      *
      * @var array
      */
-    protected $option;
+    protected array $option;
 
     /**
      * 最后执行过的SQL语句.
      *
      * @var string
      */
-    protected $lastSql = '';
+    protected string $lastSql = '';
 
     /**
      * Statement.
      *
-     * @var \mysqli_stmt
+     * @var \mysqli_stmt|null|false
      */
-    protected $lastStmt;
+    protected $lastStmt = null;
 
     /**
      * result.
      *
-     * @var \mysqli_result
+     * @var \mysqli_result|null|false
      */
-    protected $lastResult;
+    protected $lastResult = null;
 
     /**
      * 是否缓存 Statement.
      *
      * @var bool
      */
-    protected $isCacheStatement;
+    protected bool $isCacheStatement;
 
     /**
      * 事务管理.
      *
      * @var \Imi\Db\Transaction\Transaction
      */
-    protected $transaction;
+    protected Transaction $transaction;
 
     /**
      * 参数格式：
@@ -81,7 +82,7 @@ class Driver extends Base implements IDb
      *
      * @param array $option
      */
-    public function __construct($option = [])
+    public function __construct(array $option = [])
     {
         if (!isset($option['username']))
         {
@@ -116,7 +117,7 @@ class Driver extends Base implements IDb
      *
      * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $option = $this->option;
         $this->instance = $instance = new \mysqli($option['host'] ?? '127.0.0.1', $option['username'], $option['password'], $option['database'], $option['port'] ?? 3306);
@@ -187,11 +188,11 @@ class Driver extends Base implements IDb
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
      *
-     * @param int $levels
+     * @param int|null $levels
      *
      * @return bool
      */
-    public function rollBack($levels = null): bool
+    public function rollBack(?int $levels = null): bool
     {
         if (null === $levels)
         {
@@ -269,7 +270,7 @@ class Driver extends Base implements IDb
      *
      * @return string
      */
-    public function lastSql()
+    public function lastSql(): string
     {
         return $this->lastSql;
     }
@@ -359,11 +360,11 @@ class Driver extends Base implements IDb
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
-     * @return string
+     * @return string|int
      */
-    public function lastInsertId(string $name = null)
+    public function lastInsertId(?string $name = null)
     {
         return $this->instance->insert_id;
     }
@@ -385,10 +386,8 @@ class Driver extends Base implements IDb
      * @param array  $driverOptions
      *
      * @return IStatement
-     *
-     * @throws DbException
      */
-    public function prepare(string $sql, array $driverOptions = [])
+    public function prepare(string $sql, array $driverOptions = []): IStatement
     {
         if ($this->isCacheStatement && $stmtCache = StatementManager::get($this, $sql))
         {
@@ -414,15 +413,13 @@ class Driver extends Base implements IDb
     }
 
     /**
-     * 执行一条SQL语句，返回一个结果集作为Statement对象
+     * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
      *
      * @param string $sql
      *
      * @return IStatement
-     *
-     * @throws DbException
      */
-    public function query(string $sql)
+    public function query(string $sql): IStatement
     {
         $this->lastSql = $sql;
         $this->lastResult = $lastResult = $this->instance->query($sql);
@@ -439,7 +436,7 @@ class Driver extends Base implements IDb
      *
      * @return \Imi\Db\Transaction\Transaction
      */
-    public function getTransaction()
+    public function getTransaction(): Transaction
     {
         return $this->transaction;
     }

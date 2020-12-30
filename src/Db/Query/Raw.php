@@ -26,7 +26,7 @@ class Raw implements IBase
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return [];
     }

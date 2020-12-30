@@ -18,16 +18,16 @@ class Where extends BaseWhere implements IWhere
     /**
      * 字段名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $fieldName;
+    protected ?string $fieldName;
 
     /**
      * 比较符.
      *
-     * @var string
+     * @var string|null
      */
-    protected $operation;
+    protected ?string $operation;
 
     /**
      * 值
@@ -41,9 +41,9 @@ class Where extends BaseWhere implements IWhere
      *
      * @var array
      */
-    protected $binds = [];
+    protected array $binds = [];
 
-    public function __construct(string $fieldName = null, string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
+    public function __construct(?string $fieldName = null, ?string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->fieldName = $fieldName;
         $this->operation = $operation;
@@ -54,9 +54,9 @@ class Where extends BaseWhere implements IWhere
     /**
      * 字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getFieldName(): string
+    public function getFieldName(): ?string
     {
         return $this->fieldName;
     }
@@ -64,9 +64,9 @@ class Where extends BaseWhere implements IWhere
     /**
      * 比较符.
      *
-     * @return string
+     * @return string|null
      */
-    public function getOperation(): string
+    public function getOperation(): ?string
     {
         return $this->operation;
     }
@@ -94,11 +94,11 @@ class Where extends BaseWhere implements IWhere
     /**
      * 字段名.
      *
-     * @param string $fieldName
+     * @param string|null $fieldName
      *
      * @return void
      */
-    public function setFieldName(string $fieldName)
+    public function setFieldName(?string $fieldName)
     {
         $this->fieldName = $fieldName;
     }
@@ -106,11 +106,11 @@ class Where extends BaseWhere implements IWhere
     /**
      * 比较符.
      *
-     * @param string $operation
+     * @param string|null $operation
      *
      * @return void
      */
-    public function setOperation(string $operation)
+    public function setOperation(?string $operation)
     {
         $this->operation = $operation;
     }
@@ -146,7 +146,7 @@ class Where extends BaseWhere implements IWhere
      *
      * @return string
      */
-    public function toStringWithoutLogic(IQuery $query)
+    public function toStringWithoutLogic(IQuery $query): string
     {
         $binds = &$this->binds;
         $binds = [];
@@ -194,7 +194,7 @@ class Where extends BaseWhere implements IWhere
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return $this->binds;
     }

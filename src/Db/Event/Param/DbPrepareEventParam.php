@@ -2,6 +2,7 @@
 
 namespace Imi\Db\Event\Param;
 
+use Imi\Db\Interfaces\IStatement;
 use Imi\Event\EventParam;
 
 class DbPrepareEventParam extends EventParam
@@ -11,12 +12,12 @@ class DbPrepareEventParam extends EventParam
      *
      * @var \Imi\Db\Interfaces\IStatement
      */
-    public $statement;
+    public IStatement $statement;
 
     /**
      * sql 语句.
      *
      * @var string
      */
-    public $sql;
+    public string $sql;
 }

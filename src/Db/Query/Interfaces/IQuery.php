@@ -27,7 +27,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setOption(QueryOption $option);
+    public function setOption(QueryOption $option): self;
 
     /**
      * 获取数据库操作对象
@@ -39,13 +39,13 @@ interface IQuery
     /**
      * 设置表名.
      *
-     * @param string $table    表名
-     * @param string $alias    别名
-     * @param string $database 数据库名
+     * @param string      $table    表名
+     * @param string|null $alias    别名
+     * @param string|null $database 数据库名
      *
      * @return static
      */
-    public function table(string $table, string $alias = null, string $database = null);
+    public function table(string $table, string $alias = null, string $database = null): self;
 
     /**
      * 设置表名，使用SQL原生语句.
@@ -54,18 +54,18 @@ interface IQuery
      *
      * @return static
      */
-    public function tableRaw(string $raw);
+    public function tableRaw(string $raw): self;
 
     /**
      * 设置表名，table()的别名.
      *
-     * @param string $table    表名
-     * @param string $alias    别名
-     * @param string $database 数据库名
+     * @param string      $table    表名
+     * @param string      $alias    别名
+     * @param string|null $database 数据库名
      *
      * @return static
      */
-    public function from(string $table, string $alias = null, string $database = null);
+    public function from(string $table, string $alias = null, string $database = null): self;
 
     /**
      * 设置表名，使用SQL原生语句.
@@ -74,7 +74,7 @@ interface IQuery
      *
      * @return static
      */
-    public function fromRaw(string $raw);
+    public function fromRaw(string $raw): self;
 
     /**
      * 设置 distinct.
@@ -83,7 +83,7 @@ interface IQuery
      *
      * @return static
      */
-    public function distinct($isDistinct = true);
+    public function distinct(bool $isDistinct = true): self;
 
     /**
      * 指定查询字段.
@@ -92,7 +92,7 @@ interface IQuery
      *
      * @return static
      */
-    public function field(...$fields);
+    public function field(string ...$fields): self;
 
     /**
      * 指定查询字段，使用SQL原生语句.
@@ -101,7 +101,7 @@ interface IQuery
      *
      * @return static
      */
-    public function fieldRaw(string $raw);
+    public function fieldRaw(string $raw): self;
 
     /**
      * 设置 where 条件，一般用于 =、>、<、like等.
@@ -113,7 +113,7 @@ interface IQuery
      *
      * @return static
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND);
+    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 where 条件，用原生语句.
@@ -123,7 +123,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND);
+    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 where 条件，传入回调，回调中的条件加括号.
@@ -133,7 +133,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND);
+    public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 where 条件，使用 IBaseWhere 结构.
@@ -143,7 +143,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND);
+    public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 where 条件，支持语法如下：.
@@ -165,7 +165,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND);
+    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * where between $begin end $end.
@@ -177,7 +177,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND);
+    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * or where between $begin end $end.
@@ -188,7 +188,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereBetween(string $fieldName, $begin, $end);
+    public function orWhereBetween(string $fieldName, $begin, $end): self;
 
     /**
      * where not between $begin end $end.
@@ -200,7 +200,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND);
+    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * or where not between $begin end $end.
@@ -211,7 +211,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereNotBetween(string $fieldName, $begin, $end);
+    public function orWhereNotBetween(string $fieldName, $begin, $end): self;
 
     /**
      * 设置 where or 条件.
@@ -222,7 +222,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhere(string $fieldName, string $operation, $value);
+    public function orWhere(string $fieldName, string $operation, $value): self;
 
     /**
      * 设置 where or 条件，用原生语句.
@@ -231,7 +231,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereRaw(string $where);
+    public function orWhereRaw(string $where): self;
 
     /**
      * 设置 where or 条件，传入回调，回调中的条件加括号.
@@ -240,7 +240,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereBrackets(callable $callback);
+    public function orWhereBrackets(callable $callback): self;
 
     /**
      * 设置 where or 条件，使用 IBaseWhere 结构.
@@ -249,7 +249,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereStruct(IBaseWhere $where);
+    public function orWhereStruct(IBaseWhere $where): self;
 
     /**
      * 设置 where or 条件，支持语法参考 whereEx 方法.
@@ -258,7 +258,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereEx(array $condition);
+    public function orWhereEx(array $condition): self;
 
     /**
      * where field in (list).
@@ -269,7 +269,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND);
+    public function whereIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * or where field in (list).
@@ -279,7 +279,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereIn(string $fieldName, $list);
+    public function orWhereIn(string $fieldName, array $list): self;
 
     /**
      * where field not in (list).
@@ -290,7 +290,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereNotIn(string $fieldName, $list, string $logicalOperator = LogicalOperator::AND);
+    public function whereNotIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * or where field not in (list).
@@ -300,7 +300,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereNotIn(string $fieldName, $list);
+    public function orWhereNotIn(string $fieldName, array $list): self;
 
     /**
      * where field is null.
@@ -310,7 +310,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND);
+    public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * or where field is null.
@@ -319,7 +319,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereIsNull(string $fieldName);
+    public function orWhereIsNull(string $fieldName): self;
 
     /**
      * where field is not null.
@@ -329,7 +329,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND);
+    public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * or where field is not null.
@@ -338,7 +338,7 @@ interface IQuery
      *
      * @return static
      */
-    public function orWhereIsNotNull(string $fieldName);
+    public function orWhereIsNotNull(string $fieldName): self;
 
     /**
      * join.
@@ -353,7 +353,7 @@ interface IQuery
      *
      * @return static
      */
-    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner');
+    public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self;
 
     /**
      * join，使用SQL原生语句.
@@ -362,7 +362,7 @@ interface IQuery
      *
      * @return static
      */
-    public function joinRaw(string $raw);
+    public function joinRaw(string $raw): self;
 
     /**
      * left join.
@@ -376,7 +376,7 @@ interface IQuery
      *
      * @return static
      */
-    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null);
+    public function leftJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * right join.
@@ -390,7 +390,7 @@ interface IQuery
      *
      * @return static
      */
-    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null);
+    public function rightJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * cross join.
@@ -404,7 +404,7 @@ interface IQuery
      *
      * @return static
      */
-    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null);
+    public function crossJoin(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null): self;
 
     /**
      * 排序.
@@ -414,7 +414,7 @@ interface IQuery
      *
      * @return static
      */
-    public function order(string $field, string $direction = 'asc');
+    public function order(string $field, string $direction = 'asc'): self;
 
     /**
      * 排序
@@ -426,36 +426,36 @@ interface IQuery
      *
      * @return static
      */
-    public function orderRaw($raw);
+    public function orderRaw($raw): self;
 
     /**
      * 设置分页
      * 传入当前页码和每页显示数量，自动计算offset和limit.
      *
-     * @param int $page
-     * @param int $show
+     * @param int|null $page
+     * @param int|null $show
      *
      * @return static
      */
-    public function page($page, $show);
+    public function page(?int $page, ?int $show): self;
 
     /**
      * 设置记录从第几个开始取出.
      *
-     * @param int $offset
+     * @param int|null $offset
      *
      * @return static
      */
-    public function offset($offset);
+    public function offset(?int $offset): self;
 
     /**
      * 设置查询几条记录.
      *
-     * @param int $offset
+     * @param int|null $offset
      *
      * @return static
      */
-    public function limit($limit);
+    public function limit(?int $limit): self;
 
     /**
      * group by.
@@ -464,7 +464,7 @@ interface IQuery
      *
      * @return static
      */
-    public function group(...$groups);
+    public function group(string ...$groups): self;
 
     /**
      * group by，使用SQL原生语句.
@@ -473,7 +473,7 @@ interface IQuery
      *
      * @return static
      */
-    public function groupRaw(string $raw);
+    public function groupRaw(string $raw): self;
 
     /**
      * 设置 having 条件.
@@ -485,7 +485,7 @@ interface IQuery
      *
      * @return static
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND);
+    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 having 条件，用原生语句.
@@ -495,7 +495,7 @@ interface IQuery
      *
      * @return static
      */
-    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND);
+    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 having 条件，传入回调，回调中的条件加括号.
@@ -505,7 +505,7 @@ interface IQuery
      *
      * @return static
      */
-    public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND);
+    public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 设置 having 条件，使用 IHaving 结构.
@@ -515,7 +515,7 @@ interface IQuery
      *
      * @return static
      */
-    public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND);
+    public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND): self;
 
     /**
      * 绑定预处理参数.
@@ -526,7 +526,7 @@ interface IQuery
      *
      * @return static
      */
-    public function bindValue($name, $value, $dataType = \PDO::PARAM_STR);
+    public function bindValue($name, $value, int $dataType = \PDO::PARAM_STR): self;
 
     /**
      * 批量绑定预处理参数.
@@ -535,14 +535,14 @@ interface IQuery
      *
      * @return static
      */
-    public function bindValues($values);
+    public function bindValues(array $values): self;
 
     /**
      * 获取绑定预处理参数关系.
      *
      * @return array
      */
-    public function getBinds();
+    public function getBinds(): array;
 
     /**
      * 查询所有记录，返回数组.
@@ -554,17 +554,18 @@ interface IQuery
     /**
      * 分页查询.
      *
-     * @param bool  $status  设置为true时，查询结果会返回为分页格式
+     * @param int   $page
+     * @param int   $count
      * @param array $options
      *
      * @return \Imi\Db\Query\Interfaces\IPaginateResult
      */
-    public function paginate($page, $count, $options = []): IPaginateResult;
+    public function paginate(int $page, int $count, array $options = []): IPaginateResult;
 
     /**
-     * 插入数据.
+     * 插入记录.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -574,7 +575,7 @@ interface IQuery
      * 批量插入数据
      * 以第 0 个成员作为字段标准.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -583,7 +584,7 @@ interface IQuery
     /**
      * 更新数据.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -592,7 +593,7 @@ interface IQuery
     /**
      * 替换数据（Replace）.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -612,7 +613,7 @@ interface IQuery
      *
      * @return IResult
      */
-    public function execute($sql);
+    public function execute(string $sql): IResult;
 
     /**
      * 统计数量.
@@ -621,43 +622,43 @@ interface IQuery
      *
      * @return int
      */
-    public function count($field = '*');
+    public function count(string $field = '*'): int;
 
     /**
      * 求和.
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function sum($field);
+    public function sum(string $field);
 
     /**
      * 平均值
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function avg($field);
+    public function avg(string $field);
 
     /**
      * 最大值
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function max($field);
+    public function max(string $field);
 
     /**
      * 最小值
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public function min($field);
+    public function min(string $field);
 
     /**
      * 聚合函数.
@@ -667,7 +668,7 @@ interface IQuery
      *
      * @return mixed
      */
-    public function aggregate($functionName, $fieldName);
+    public function aggregate(string $functionName, string $fieldName);
 
     /**
      * 设置update/insert/replace数据.
@@ -676,7 +677,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setData($data);
+    public function setData($data): self;
 
     /**
      * 设置update/insert/replace的字段.
@@ -686,7 +687,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setField($fieldName, $value);
+    public function setField(string $fieldName, $value): self;
 
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入.
@@ -696,7 +697,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setFieldExp($fieldName, $exp);
+    public function setFieldExp(string $fieldName, string $exp): self;
 
     /**
      * 设置递增字段.
@@ -706,7 +707,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setFieldInc($fieldName, float $incValue = 1);
+    public function setFieldInc(string $fieldName, float $incValue = 1): self;
 
     /**
      * 设置递减字段.
@@ -716,14 +717,14 @@ interface IQuery
      *
      * @return static
      */
-    public function setFieldDec($fieldName, float $decValue = 1);
+    public function setFieldDec(string $fieldName, float $decValue = 1): self;
 
     /**
      * 获取自动起名的参数名称.
      *
      * @return string
      */
-    public function getAutoParamName();
+    public function getAutoParamName(): string;
 
     /**
      * 查询器别名.
@@ -733,7 +734,7 @@ interface IQuery
      *
      * @return static
      */
-    public function alias($name, $callable = null);
+    public function alias(string $name, $callable = null): self;
 
     /**
      * 加锁
@@ -742,5 +743,5 @@ interface IQuery
      *
      * @return static
      */
-    public function lock($value);
+    public function lock($value): self;
 }

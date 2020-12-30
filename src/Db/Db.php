@@ -22,12 +22,12 @@ class Db
     /**
      * 获取新的数据库连接实例.
      *
-     * @param string $poolName  连接池名称
-     * @param int    $queryType 查询类型
+     * @param string|null $poolName  连接池名称
+     * @param int         $queryType 查询类型
      *
      * @return \Imi\Db\Interfaces\IDb
      */
-    public static function getNewInstance($poolName = null, $queryType = QueryType::WRITE): IDb
+    public static function getNewInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
         return PoolManager::getResource(static::parsePoolName($poolName, $queryType))->getInstance();
     }
@@ -35,12 +35,12 @@ class Db
     /**
      * 获取数据库连接实例，每个RequestContext中共用一个.
      *
-     * @param string $poolName  连接池名称
-     * @param int    $queryType 查询类型
+     * @param string|null $poolName  连接池名称
+     * @param int         $queryType 查询类型
      *
      * @return \Imi\Db\Interfaces\IDb|null
      */
-    public static function getInstance($poolName = null, $queryType = QueryType::WRITE): IDb
+    public static function getInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
         return PoolManager::getRequestContextResource(static::parsePoolName($poolName, $queryType))->getInstance();
     }
@@ -52,7 +52,7 @@ class Db
      *
      * @return void
      */
-    public static function release($db)
+    public static function release(IDb $db)
     {
         $resource = RequestContext::get('poolResources.' . spl_object_hash($db));
         if (null !== $resource)
@@ -64,13 +64,13 @@ class Db
     /**
      * 返回一个查询器.
      *
-     * @param string $poolName
-     * @param string $modelClass
-     * @param int    $queryType
+     * @param string|null $poolName
+     * @param string|null $modelClass
+     * @param int|null    $queryType
      *
      * @return IQuery
      */
-    public static function query($poolName = null, $modelClass = null, $queryType = null): IQuery
+    public static function query(?string $poolName = null, ?string $modelClass = null, ?int $queryType = null): IQuery
     {
         return BeanFactory::newInstance(Query::class, null, $modelClass, $poolName, $queryType);
     }
@@ -78,12 +78,12 @@ class Db
     /**
      * 处理连接池名称.
      *
-     * @param string $poolName
-     * @param int    $queryType
+     * @param string|null $poolName
+     * @param int         $queryType
      *
      * @return string
      */
-    private static function parsePoolName($poolName = null, $queryType = QueryType::WRITE)
+    private static function parsePoolName(?string $poolName = null, int $queryType = QueryType::WRITE): string
     {
         if (null === $poolName)
         {
@@ -116,7 +116,7 @@ class Db
      *
      * @return string
      */
-    public static function getDefaultPoolName($queryType = QueryType::WRITE)
+    public static function getDefaultPoolName(int $queryType = QueryType::WRITE): string
     {
         $poolName = Config::get('@currentServer.db.defaultPool');
         if (null !== $poolName)
@@ -132,13 +132,13 @@ class Db
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
      *
-     * @param callable $callable
-     * @param string   $poolName
-     * @param int      $queryType
+     * @param callable    $callable
+     * @param string|null $poolName
+     * @param int         $queryType
      *
      * @return mixed
      */
-    public static function use($callable, $poolName = null, $queryType = QueryType::WRITE)
+    public static function use(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
         return PoolManager::use(static::parsePoolName($poolName, $queryType), function ($resource, $db) use ($callable) {
             return $callable($db);
@@ -150,13 +150,13 @@ class Db
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
      *
-     * @param callable $callable
-     * @param string   $poolName
-     * @param int      $queryType
+     * @param callable    $callable
+     * @param string|null $poolName
+     * @param int         $queryType
      *
      * @return mixed
      */
-    public static function transUse($callable, $poolName = null, $queryType = QueryType::WRITE)
+    public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
         return PoolManager::use(static::parsePoolName($poolName, $queryType), function ($resource, IDb $db) use ($callable) {
             return static::trans($db, $callable);
@@ -168,13 +168,13 @@ class Db
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
      *
-     * @param callable $callable
-     * @param string   $poolName
-     * @param int      $queryType
+     * @param callable    $callable
+     * @param string|null $poolName
+     * @param int         $queryType
      *
      * @return mixed
      */
-    public static function transContext($callable, $poolName = null, $queryType = QueryType::WRITE)
+    public static function transContext(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
         $db = static::getInstance($poolName, $queryType);
 
@@ -189,7 +189,7 @@ class Db
      *
      * @return mixed
      */
-    public static function trans(IDb $db, $callable)
+    public static function trans(IDb $db, callable $callable)
     {
         try
         {

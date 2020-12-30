@@ -21,7 +21,7 @@ class Transaction extends Base
      *
      * @var string|null
      */
-    public $dbPoolName = null;
+    public ?string $dbPoolName = null;
 
     /**
      * 事务类型
@@ -29,14 +29,14 @@ class Transaction extends Base
      *
      * @var string
      */
-    public $type = TransactionType::AUTO;
+    public string $type = TransactionType::AUTO;
 
     /**
      * 自动提交事务
      *
      * @var bool
      */
-    public $autoCommit = true;
+    public bool $autoCommit = true;
 
     /**
      * 回滚类型
@@ -44,7 +44,7 @@ class Transaction extends Base
      *
      * @var string
      */
-    public $rollbackType = RollbackType::ALL;
+    public string $rollbackType = RollbackType::ALL;
 
     /**
      * 回滚层数，默认为1
@@ -52,5 +52,5 @@ class Transaction extends Base
      *
      * @var int
      */
-    public $rollbackLevels = 1;
+    public int $rollbackLevels = 1;
 }

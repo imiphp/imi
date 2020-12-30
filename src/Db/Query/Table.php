@@ -16,25 +16,25 @@ class Table implements ITable
     /**
      * 数据库名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $database;
+    protected ?string $database;
 
     /**
      * 表名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $table;
+    protected ?string $table;
 
     /**
      * 别名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $alias;
+    protected ?string $alias;
 
-    public function __construct(string $database = null, string $table = null, string $alias = null)
+    public function __construct(?string $database = null, ?string $table = null, ?string $alias = null)
     {
         $this->database = $database;
         $this->table = $table;
@@ -44,9 +44,9 @@ class Table implements ITable
     /**
      * 获取数据库名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDatabase(): string
+    public function getDatabase(): ?string
     {
         return $this->database;
     }
@@ -54,9 +54,9 @@ class Table implements ITable
     /**
      * 获取表名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getTable(): string
+    public function getTable(): ?string
     {
         return $this->table;
     }
@@ -64,9 +64,9 @@ class Table implements ITable
     /**
      * 获取别名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAlias(): string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -74,11 +74,11 @@ class Table implements ITable
     /**
      * 设置数据库名.
      *
-     * @param string $database
+     * @param string|null $database
      *
      * @return void
      */
-    public function setDatabase(string $database = null)
+    public function setDatabase(?string $database = null)
     {
         $this->database = $database;
     }
@@ -86,11 +86,11 @@ class Table implements ITable
     /**
      * 设置表名.
      *
-     * @param string $table
+     * @param string|null $table
      *
      * @return void
      */
-    public function setTable(string $table = null)
+    public function setTable(?string $table = null)
     {
         $this->table = $table;
     }
@@ -98,11 +98,11 @@ class Table implements ITable
     /**
      * 设置别名.
      *
-     * @param string $alias
+     * @param string|null $alias
      *
      * @return void
      */
-    public function setAlias(string $alias = null)
+    public function setAlias(?string $alias = null)
     {
         $this->alias = $alias;
     }
@@ -118,7 +118,7 @@ class Table implements ITable
      *
      * @return void
      */
-    public function setValue($value)
+    public function setValue(string $value)
     {
         $matches = $this->parseKeywordText($value);
         if (isset($matches['keywords']))
@@ -156,7 +156,7 @@ class Table implements ITable
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return [];
     }

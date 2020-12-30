@@ -16,18 +16,18 @@ class Database implements IDatabase
     /**
      * 数据库名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $database;
+    protected ?string $database;
 
     /**
      * 别名.
      *
-     * @var string
+     * @var string|null
      */
-    protected $alias;
+    protected ?string $alias;
 
-    public function __construct(string $database = null, string $alias = null)
+    public function __construct(?string $database = null, ?string $alias = null)
     {
         $this->database = $database;
         $this->alias = $alias;
@@ -36,9 +36,9 @@ class Database implements IDatabase
     /**
      * 获取数据库名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDatabase(): string
+    public function getDatabase(): ?string
     {
         return $this->database;
     }
@@ -46,9 +46,9 @@ class Database implements IDatabase
     /**
      * 获取别名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAlias(): string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -56,11 +56,11 @@ class Database implements IDatabase
     /**
      * 设置数据库名.
      *
-     * @param string $database
+     * @param string|null $database
      *
      * @return void
      */
-    public function setDatabase(string $database = null)
+    public function setDatabase(?string $database = null)
     {
         $this->database = $database;
     }
@@ -68,11 +68,11 @@ class Database implements IDatabase
     /**
      * 设置别名.
      *
-     * @param string $alias
+     * @param string|null $alias
      *
      * @return void
      */
-    public function setAlias(string $alias = null)
+    public function setAlias(?string $alias = null)
     {
         $this->alias = $alias;
     }
@@ -87,7 +87,7 @@ class Database implements IDatabase
      *
      * @return void
      */
-    public function setValue($value)
+    public function setValue(string $value)
     {
         $matches = $this->parseKeywordText($value);
         if (isset($matches['keywords']))
@@ -118,7 +118,7 @@ class Database implements IDatabase
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return [];
     }

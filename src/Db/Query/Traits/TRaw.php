@@ -11,14 +11,14 @@ trait TRaw
      *
      * @var bool
      */
-    protected $isRaw;
+    protected bool $isRaw = false;
 
     /**
      * 原生语句.
      *
      * @var string
      */
-    protected $rawSQL;
+    protected string $rawSQL = '';
 
     /**
      * 获取是否使用原生语句.
@@ -37,7 +37,7 @@ trait TRaw
      *
      * @return void
      */
-    public function useRaw($isRaw = true)
+    public function useRaw(bool $isRaw = true)
     {
         $this->isRaw = $isRaw;
     }

@@ -20,7 +20,7 @@ interface IBase
      *
      * @return void
      */
-    public function useRaw($isRaw = true);
+    public function useRaw(bool $isRaw = true);
 
     /**
      * 设置原生语句.
@@ -38,5 +38,5 @@ interface IBase
      *
      * @return array
      */
-    public function getBinds();
+    public function getBinds(): array;
 }

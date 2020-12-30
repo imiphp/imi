@@ -9,6 +9,7 @@ use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Util\Text;
+use PDOStatement;
 
 /**
  * PDO MySQL驱动Statement.
@@ -22,30 +23,30 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var \PDOStatement
      */
-    protected $statement;
+    protected PDOStatement $statement;
 
     /**
      * 数据.
      *
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * 数据库操作对象
      *
      * @var IDb
      */
-    protected $db;
+    protected IDb $db;
 
     /**
      * 最后插入ID.
      *
      * @var int
      */
-    protected $lastInsertId;
+    protected int $lastInsertId;
 
-    public function __construct(IDb $db, $statement)
+    public function __construct(IDb $db, PDOStatement $statement)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -65,15 +66,15 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一列到一个 PHP 变量.
      *
-     * @param mixed $column
-     * @param mixed $param
-     * @param int   $type
-     * @param int   $maxLen
-     * @param mixed $driverData
+     * @param mixed    $column
+     * @param mixed    $param
+     * @param int|null $type
+     * @param int|null $maxLen
+     * @param mixed    $driverData
      *
      * @return bool
      */
-    public function bindColumn($column, &$param, int $type = null, int $maxLen = null, $driverData = null): bool
+    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool
     {
         return $this->statement->bindColumn($column, $param, $type, $maxLen, $driverData);
     }
@@ -81,15 +82,15 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一个参数到指定的变量名.
      *
-     * @param mixed $parameter
-     * @param mixed $variable
-     * @param int   $dataType
-     * @param int   $length
-     * @param mixed $driverOptions
+     * @param mixed    $parameter
+     * @param mixed    $variable
+     * @param int      $dataType
+     * @param int|null $length
+     * @param mixed    $driverOptions
      *
      * @return bool
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, int $length = null, $driverOptions = null): bool
+    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool
     {
         return $this->statement->bindParam($parameter, $variable, $dataType, $length, $driverOptions);
     }
@@ -159,7 +160,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @return string
      */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->statement->queryString;
     }
@@ -361,7 +362,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @return int
      */
-    protected function getDataTypeByValue($value)
+    protected function getDataTypeByValue($value): int
     {
         if (null === $value)
         {

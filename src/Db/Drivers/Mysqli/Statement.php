@@ -8,6 +8,7 @@ use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
+use mysqli_stmt;
 
 /**
  * mysqli驱动Statement.
@@ -19,10 +20,10 @@ class Statement extends BaseStatement implements IStatement
     /**
      * @var \mysqli_stmt|null
      */
-    protected $statement;
+    protected ?mysqli_stmt $statement;
 
     /**
-     * @var \mysqli_result|null
+     * @var \mysqli_result|false
      */
     protected $result;
 
@@ -31,37 +32,37 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var array
      */
-    protected $data;
+    protected array $data;
 
     /**
      * 数据库操作对象
      *
      * @var IDb
      */
-    protected $db;
+    protected IDb $db;
 
     /**
      * 最后执行过的SQL语句.
      *
      * @var string
      */
-    protected $lastSql = '';
+    protected string $lastSql = '';
 
     /**
      * 绑定数据.
      *
      * @var array
      */
-    protected $bindValues = [];
+    protected array $bindValues = [];
 
     /**
      * SQL 参数映射.
      *
-     * @var array
+     * @var array|null
      */
-    protected $sqlParamsMap;
+    protected ?array $sqlParamsMap;
 
-    public function __construct(IDb $db, $statement, $result, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IDb $db, ?mysqli_stmt $statement, $result, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -83,15 +84,15 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一列到一个 PHP 变量.
      *
-     * @param mixed $column
-     * @param mixed $param
-     * @param int   $type
-     * @param int   $maxLen
-     * @param mixed $driverData
+     * @param mixed    $column
+     * @param mixed    $param
+     * @param int|null $type
+     * @param int|null $maxLen
+     * @param mixed    $driverData
      *
      * @return bool
      */
-    public function bindColumn($column, &$param, int $type = null, int $maxLen = null, $driverData = null): bool
+    public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool
     {
         $this->bindValues[$column] = $param;
 
@@ -101,15 +102,15 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一个参数到指定的变量名.
      *
-     * @param mixed $parameter
-     * @param mixed $variable
-     * @param int   $dataType
-     * @param int   $length
-     * @param mixed $driverOptions
+     * @param mixed    $parameter
+     * @param mixed    $variable
+     * @param int      $dataType
+     * @param int|null $length
+     * @param mixed    $driverOptions
      *
      * @return bool
      */
-    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, int $length = null, $driverOptions = null): bool
+    public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool
     {
         $this->bindValues[$parameter] = $variable;
 
@@ -177,7 +178,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @return string
      */
-    public function getSql()
+    public function getSql(): string
     {
         return $this->lastSql;
     }
@@ -427,7 +428,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @param array $values
      *
-     * @return array
+     * @return string
      */
     protected function getBindTypes(array $values): string
     {

@@ -13,5 +13,5 @@ interface IBuilder
      *
      * @return string
      */
-    public function build(...$args);
+    public function build(...$args): string;
 }

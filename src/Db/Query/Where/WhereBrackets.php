@@ -26,7 +26,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      *
      * @var array
      */
-    protected $binds = [];
+    protected array $binds = [];
 
     public function __construct(callable $callback = null, string $logicalOperator = LogicalOperator::AND)
     {
@@ -85,7 +85,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      *
      * @return string
      */
-    public function toStringWithoutLogic(IQuery $query)
+    public function toStringWithoutLogic(IQuery $query): string
     {
         if ($this->isRaw)
         {
@@ -133,7 +133,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return $this->binds;
     }

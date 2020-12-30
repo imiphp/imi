@@ -18,7 +18,7 @@ interface IResult
     /**
      * 获取最后插入的ID.
      *
-     * @return string
+     * @return int|string
      */
     public function getLastInsertId();
 
@@ -27,32 +27,34 @@ interface IResult
      *
      * @return int
      */
-    public function getAffectedRows();
+    public function getAffectedRows(): int;
 
     /**
      * 返回一行数据，数组或对象
      *
-     * @param string $className 实体类名，为null则返回数组
+     * @param string|null $className 实体类名，为null则返回数组
      *
      * @return mixed
      */
-    public function get($className = null);
+    public function get(?string $className = null);
 
     /**
      * 返回数组.
      *
-     * @param string $className 实体类名，为null则数组每个成员为数组
+     * @param string|null $className 实体类名，为null则数组每个成员为数组
      *
      * @return array
      */
-    public function getArray($className = null);
+    public function getArray(?string $className = null): array;
 
     /**
      * 获取一列.
      *
+     * @param string|int $column
+     *
      * @return array
      */
-    public function getColumn($column = 0);
+    public function getColumn($column = 0): array;
 
     /**
      * 获取标量结果.
@@ -66,14 +68,14 @@ interface IResult
      *
      * @return int
      */
-    public function getRowCount();
+    public function getRowCount(): int;
 
     /**
      * 获取执行的SQL语句.
      *
      * @return string
      */
-    public function getSql();
+    public function getSql(): string;
 
     /**
      * 获取结果集对象

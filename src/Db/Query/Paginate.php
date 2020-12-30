@@ -11,16 +11,16 @@ class Paginate
      *
      * @var int
      */
-    public $page;
+    public int $page;
 
     /**
      * 每页记录数.
      *
      * @var int
      */
-    public $count;
+    public int $count;
 
-    public function __construct($page, $count)
+    public function __construct(int $page, int $count)
     {
         $this->page = $page;
         $this->count = $count;
