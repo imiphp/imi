@@ -10,8 +10,8 @@ use Symfony\Component\Console\Input\InputDefinition;
 
 class ImiArgvInput extends Input
 {
-    private $tokens;
-    private $parsed;
+    private array $tokens;
+    private array $parsed;
 
     /**
      * 是否启用动态参数支持

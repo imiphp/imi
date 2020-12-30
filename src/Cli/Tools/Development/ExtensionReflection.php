@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Cli\Tools\Development;
 
+use ReflectionClass;
+use ReflectionExtension;
+
 class ExtensionReflection
 {
     /**
@@ -11,18 +14,18 @@ class ExtensionReflection
      *
      * @var ReflectionExtension
      */
-    private $ref;
+    private ReflectionExtension $ref;
 
     /**
      * 保存路径.
      *
      * @var string
      */
-    private $savePath;
+    private string $savePath;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
-        $this->ref = new \ReflectionExtension($name);
+        $this->ref = new ReflectionExtension($name);
     }
 
     /**
@@ -32,7 +35,7 @@ class ExtensionReflection
      *
      * @return void
      */
-    public function save($path)
+    public function save(string $path)
     {
         $this->savePath = $path;
         if (!is_dir($path))
@@ -142,7 +145,7 @@ CODE;
      *
      * @return string
      */
-    private static function getMethodParamDefine(\ReflectionParameter $param)
+    private static function getMethodParamDefine(\ReflectionParameter $param): string
     {
         $result = '';
         // 类型
@@ -184,7 +187,7 @@ CODE;
      *
      * @return string
      */
-    private function getClassConsts($class)
+    private function getClassConsts(ReflectionClass $class): string
     {
         $result = '';
         foreach ($class->getConstants() as $name => $value)
@@ -205,9 +208,9 @@ CODE;
      *
      * @param \ReflectionClass $class
      *
-     * @return void
+     * @return string
      */
-    private function getClassMethods($class)
+    private function getClassMethods(ReflectionClass $class): string
     {
         $result = '';
 
@@ -265,9 +268,9 @@ CODE;
      *
      * @param \ReflectionClass $class
      *
-     * @return void
+     * @return string
      */
-    public function getClassProperties($class)
+    public function getClassProperties(ReflectionClass $class): string
     {
         $result = '';
         foreach ($class->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
@@ -290,7 +293,7 @@ CODE;
      *
      * @return void
      */
-    private function generateInterface($class)
+    private function generateInterface(ReflectionClass $class)
     {
         $consts = $this->getClassConsts($class);
         $methods = $this->getClassMethods($class);
@@ -327,7 +330,7 @@ CODE;
      *
      * @return void
      */
-    private function generateTrait($class)
+    private function generateTrait(ReflectionClass $class)
     {
         $consts = $this->getClassConsts($class);
         $methods = $this->getClassMethods($class);
@@ -365,7 +368,7 @@ CODE;
      *
      * @return void
      */
-    private function generateClass($class)
+    private function generateClass(ReflectionClass $class)
     {
         $consts = $this->getClassConsts($class);
         $methods = $this->getClassMethods($class);

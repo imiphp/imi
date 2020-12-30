@@ -47,12 +47,12 @@ class ImiCommand extends Command
     /**
      * @var InputInterface
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var OutputInterface
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * Get 类名.

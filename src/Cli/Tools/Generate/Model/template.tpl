@@ -1,16 +1,18 @@
-<?= '<?php' ?>
+<?= '<?php'; ?>
 
-namespace <?= $namespace ?>;
+declare(strict_types=1);
+
+namespace <?= $namespace; ?>;
 
 use Imi\Bean\Annotation\Inherit;
-use <?= $namespace ?>\Base\<?= $className ?>Base;
+use <?= $namespace; ?>\Base\<?= $className; ?>Base;
 
 /**
- * <?= $tableComment ?>
+ * <?= $tableComment; ?>
 
  * @Inherit
  */
-class <?= $className ?> extends <?= $className ?>Base
+class <?= $className; ?> extends <?= $className; ?>Base
 {
 
 }

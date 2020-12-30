@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Cli\Parser;
 
-use Imi\App;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
@@ -58,61 +57,6 @@ class ToolParser extends BaseParser
         elseif ($annotation instanceof Option)
         {
             $data['class'][$className]['Methods'][$targetName]['Options'][$annotation->name] = $annotation;
-        }
-    }
-
-    /**
-     * 获取回调，根据工具名和操作名.
-     *
-     * @param string $tool
-     * @param string $operation
-     *
-     * @return array
-     */
-    public function getCallable($tool, $operation)
-    {
-        $data = &$this->data;
-        if (isset($data['tool'][$tool][$operation]))
-        {
-            $callable = $data['tool'][$tool][$operation];
-            $callable[0] = App::getBean($callable[0]);
-
-            return $callable;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * 获取工具类名和方法名.
-     *
-     * 返回格式：[
-     *     'class'  =>  '',
-     *     'method' =>  '',
-     * ]
-     *
-     * @param string $tool
-     * @param string $operation
-     *
-     * @return array|null
-     */
-    public function getToolClassAndMethod($tool, $operation)
-    {
-        $data = &$this->data;
-        if (isset($data['tool'][$tool][$operation]))
-        {
-            $callable = $data['tool'][$tool][$operation];
-
-            return [
-                'class'     => $callable[0],
-                'method'    => $callable[1],
-            ];
-        }
-        else
-        {
-            return null;
         }
     }
 }

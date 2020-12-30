@@ -96,7 +96,7 @@ class Server extends BaseCommand
             $imi = new ToolImi($this->command, $this->input, $this->output);
             $this->output->writeln('<info>Building runtime...</info>');
             $time = microtime(true);
-            $imi->buildRuntime('', null, false, null);
+            $imi->buildRuntime(null, false);
             $useTime = microtime(true) - $time;
             $this->output->writeln("<info>Runtime build complete! {$useTime}s</info>");
         }

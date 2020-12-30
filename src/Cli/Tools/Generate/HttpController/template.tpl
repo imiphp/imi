@@ -1,6 +1,8 @@
-<?='<?php'?>
+<?='<?php'; ?>
 
-namespace <?= $namespace ?>;
+declare(strict_types=1);
+
+namespace <?= $namespace; ?>;
 
 use Imi\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
@@ -8,10 +10,10 @@ use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 
 /**
- * @Controller("<?= $prefix ?>")
- * @View(renderType="<?= $render ?>")
+ * @Controller("<?= $prefix; ?>")
+ * @View(renderType="<?= $render; ?>")
  */
-class <?= $name ?> extends HttpController
+class <?= $name; ?> extends HttpController
 {
     /**
      * index
