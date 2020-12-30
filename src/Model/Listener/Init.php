@@ -13,7 +13,7 @@ use Imi\Util\Imi;
 use Imi\Util\MemoryTableManager;
 
 /**
- * @Listener(eventName="IMI.LOAD_RUNTIME_INFO")
+ * @Listener(eventName="IMI.SWOOLE.SERVER.BEFORE_START")
  */
 class Init implements IEventListener
 {
@@ -26,11 +26,6 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        if (('server/start' !== ($_SERVER['argv'][1] ?? null)) || MemoryTableManager::isInited())
-        {
-            return;
-        }
-
         $runtimeInfo = App::getRuntimeInfo();
 
         // 初始化内存表模型

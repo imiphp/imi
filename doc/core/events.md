@@ -42,6 +42,14 @@ Swoole 主协程执行完毕后置事件
 
 无
 
+### IMI.SWOOLE.SERVER.BEFORE_START
+
+Swoole 服务器开始前
+
+事件参数：
+
+无
+
 ### IMI.LOAD_RUNTIME_INFO
 
 加载 runtime 事件，在此事件中，绝对可以使用 `App::getRuntimeInfo()` 获取到数据。

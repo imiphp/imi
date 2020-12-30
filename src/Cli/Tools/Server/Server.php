@@ -39,6 +39,7 @@ class Server extends BaseCommand
             $this->outStartupInfo();
             PoolManager::clearPools();
             CacheManager::clearPools();
+            Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
             if (null === $name)
             {
                 App::createServers();
