@@ -19,14 +19,14 @@ class FilterArg extends Base
     /**
      * 参数名.
      *
-     * @var string
+     * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 过滤器.
      *
-     * @var callable
+     * @var callable|null
      */
-    public $filter;
+    public $filter = null;
 }

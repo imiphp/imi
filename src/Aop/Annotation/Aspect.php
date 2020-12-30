@@ -21,5 +21,5 @@ class Aspect extends Base
      *
      * @var int
      */
-    public $priority = 0;
+    public int $priority = 0;
 }

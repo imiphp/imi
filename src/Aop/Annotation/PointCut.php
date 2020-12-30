@@ -22,19 +22,19 @@ class PointCut extends Base
      *
      * @var int
      */
-    public $type = PointCutType::METHOD;
+    public int $type = PointCutType::METHOD;
 
     /**
      * 允许的切入点.
      *
      * @var array
      */
-    public $allow = [];
+    public array $allow = [];
 
     /**
      * 不允许的切入点，即使包含中有的，也可以被排除.
      *
      * @var array
      */
-    public $deny = [];
+    public array $deny = [];
 }

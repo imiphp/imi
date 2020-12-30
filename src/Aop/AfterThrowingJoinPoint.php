@@ -11,16 +11,16 @@ class AfterThrowingJoinPoint extends JoinPoint
      *
      * @var \Throwable
      */
-    private $throwable;
+    private \Throwable $throwable;
 
     /**
      * 是否取消抛出异常.
      *
      * @var bool
      */
-    private $isCancelThrow = false;
+    private bool $isCancelThrow = false;
 
-    public function __construct($type, $method, $args, $target, \Throwable $throwable)
+    public function __construct(string $type, string $method, array &$args, object $target, \Throwable $throwable)
     {
         parent::__construct($type, $method, $args, $target);
         $this->throwable = $throwable;
@@ -31,7 +31,7 @@ class AfterThrowingJoinPoint extends JoinPoint
      *
      * @return \Throwable
      */
-    public function getThrowable()
+    public function getThrowable(): \Throwable
     {
         return $this->throwable;
     }
@@ -41,9 +41,9 @@ class AfterThrowingJoinPoint extends JoinPoint
      *
      * @param bool $isCancelThrow 是否取消，默认为true
      *
-     * @return bool
+     * @return void
      */
-    public function cancelThrow($isCancelThrow = true)
+    public function cancelThrow(bool $isCancelThrow = true)
     {
         $this->isCancelThrow = $isCancelThrow;
     }
@@ -53,7 +53,7 @@ class AfterThrowingJoinPoint extends JoinPoint
      *
      * @return bool
      */
-    public function isCancelThrow()
+    public function isCancelThrow(): bool
     {
         return $this->isCancelThrow;
     }

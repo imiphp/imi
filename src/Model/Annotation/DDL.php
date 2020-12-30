@@ -19,7 +19,7 @@ class DDL extends Base
     /**
      * 只传一个参数时的参数名.
      *
-     * @var string
+     * @var string|null
      */
     protected ?string $defaultFieldName = 'sql';
 

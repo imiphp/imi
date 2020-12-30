@@ -18,8 +18,10 @@ class InjectArg extends Base
 {
     /**
      * 参数名.
+     *
+     * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 注入的值

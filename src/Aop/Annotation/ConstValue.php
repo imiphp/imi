@@ -20,7 +20,7 @@ class ConstValue extends BaseInjectValue
     /**
      * 只传一个参数时的参数名.
      *
-     * @var string
+     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
@@ -29,14 +29,14 @@ class ConstValue extends BaseInjectValue
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 常量不存在时，返回的默认值
      *
      * @var mixed
      */
-    public $default;
+    public $default = null;
 
     /**
      * 获取注入值的真实值

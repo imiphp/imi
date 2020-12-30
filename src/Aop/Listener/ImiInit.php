@@ -38,7 +38,7 @@ class ImiInit implements IEventListener
      *
      * @return void
      */
-    private function parseConfigs($configs)
+    private function parseConfigs(array $configs)
     {
         foreach ($configs as $className => $classConfig)
         {

@@ -11,30 +11,30 @@ class JoinPoint
      *
      * @var string
      */
-    private $type;
+    private string $type;
 
     /**
      * 请求方法名.
      *
      * @var string
      */
-    private $method;
+    private string $method;
 
     /**
      * 请求参数.
      *
      * @var array
      */
-    private $args;
+    private array $args;
 
     /**
      * 连接点所在的目标对象
      *
-     * @var mixed
+     * @var object
      */
-    private $target;
+    private object $target;
 
-    public function __construct($type, $method, &$args, $target)
+    public function __construct(string $type, string $method, array &$args, object $target)
     {
         $this->type = $type;
         $this->method = $method;
@@ -47,7 +47,7 @@ class JoinPoint
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -57,7 +57,7 @@ class JoinPoint
      *
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -67,7 +67,7 @@ class JoinPoint
      *
      * @return array
      */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->args;
     }
@@ -75,9 +75,9 @@ class JoinPoint
     /**
      * 获取连接点所在的目标对象
      *
-     * @return mixed
+     * @return object
      */
-    public function getTarget()
+    public function getTarget(): object
     {
         return $this->target;
     }
@@ -87,7 +87,7 @@ class JoinPoint
      *
      * @param array $args 请求参数
      *
-     * @return voie
+     * @return void
      */
     public function setArgs(array $args)
     {

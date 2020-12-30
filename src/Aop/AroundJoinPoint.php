@@ -13,7 +13,7 @@ class AroundJoinPoint extends JoinPoint
      */
     private $nextProceed;
 
-    public function __construct($type, $method, &$args, $target, $nextProceed)
+    public function __construct(string $type, string $method, array &$args, object $target, callable $nextProceed)
     {
         parent::__construct($type, $method, $args, $target);
         $this->nextProceed = $nextProceed;
@@ -22,9 +22,11 @@ class AroundJoinPoint extends JoinPoint
     /**
      * 调用下一个方法.
      *
+     * @param array|null $args
+     *
      * @return mixed
      */
-    public function proceed($args = null)
+    public function proceed(?array $args = null)
     {
         if (null === $args)
         {
