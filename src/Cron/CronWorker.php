@@ -20,17 +20,19 @@ class CronWorker
      *
      * @var \Imi\Cron\CronManager
      */
-    protected $cronManager;
+    protected CronManager $cronManager;
 
     /**
      * 执行任务
      *
-     * @param string $id
-     * @param mixed  $data
+     * @param string          $id
+     * @param mixed           $data
+     * @param string|callable $task
+     * @param string          $type
      *
      * @return mixed
      */
-    public function exec($id, $data, $task, $type)
+    public function exec(string $id, $data, $task, string $type)
     {
         $message = '';
         try

@@ -19,14 +19,14 @@ class CronLock
      *
      * @var \Imi\Lock\Handler\ILockHandler[]
      */
-    private $locks = [];
+    private array $locks = [];
 
     /**
      * 无需锁的列表.
      *
      * @var array
      */
-    private $noLocks = [];
+    private array $noLocks = [];
 
     /**
      * 加锁
@@ -35,7 +35,7 @@ class CronLock
      *
      * @return bool
      */
-    public function lock($task)
+    public function lock(CronTask $task): bool
     {
         $id = $task->getId();
         $locks = &$this->locks;
@@ -78,7 +78,7 @@ class CronLock
      *
      * @return bool
      */
-    public function unlock($task)
+    public function unlock(CronTask $task): bool
     {
         $id = $task->getId();
         $locks = &$this->locks;

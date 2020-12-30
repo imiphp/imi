@@ -33,23 +33,23 @@ class CronManager
      *
      * @var array
      */
-    protected $tasks = [];
+    protected array $tasks = [];
 
     /**
      * socket 文件路径.
      *
      * 不支持 samba 文件共享
      *
-     * @var string
+     * @var string|null
      */
-    protected $socketFile;
+    protected ?string $socketFile = null;
 
     /**
      * 真实的任务对象列表.
      *
      * @var \Imi\Cron\CronTask[]
      */
-    private $realTasks = [];
+    private array $realTasks = [];
 
     public function __init()
     {
@@ -113,7 +113,7 @@ class CronManager
      *
      * @return void
      */
-    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
+    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
     {
         if (isset($this->tasks[$id]))
         {
@@ -160,7 +160,7 @@ class CronManager
      *
      * @return \Imi\Cron\CronTask[]
      */
-    public function getRealTasks()
+    public function getRealTasks(): array
     {
         return $this->realTasks;
     }
@@ -172,7 +172,7 @@ class CronManager
      *
      * @return \Imi\Cron\CronTask|null
      */
-    public function getTask($id)
+    public function getTask($id): ?CronTask
     {
         return $this->realTasks[$id] ?? null;
     }
@@ -182,7 +182,7 @@ class CronManager
      *
      * @return string
      */
-    public function getSocketFile()
+    public function getSocketFile(): string
     {
         return $this->socketFile;
     }
@@ -217,7 +217,7 @@ class CronManager
      *
      * @return string|callable
      */
-    public function getTaskCallable(string $cronId, $class, ?string &$cronType)
+    public function getTaskCallable(string $cronId, string $class, ?string &$cronType)
     {
         $task = $class;
         if (is_subclass_of($class, ICronTask::class))

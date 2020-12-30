@@ -31,14 +31,14 @@ class ConfigValue extends BaseInjectValue
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 配置不存在时，返回的默认值
      *
      * @var mixed
      */
-    public $default;
+    public $default = null;
 
     /**
      * 获取注入值的真实值

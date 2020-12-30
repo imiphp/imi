@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Cron\Message;
 
+use Imi\Cron\Annotation\Cron;
+
 class AddCron implements IMessage
 {
     /**
@@ -11,12 +13,12 @@ class AddCron implements IMessage
      *
      * @var \Imi\Cron\Annotation\Cron
      */
-    public $cronAnnotation;
+    public Cron $cronAnnotation;
 
     /**
      * 任务
      *
      * @var string
      */
-    public $task;
+    public string $task;
 }

@@ -21,7 +21,7 @@ class CronCalculator
      *
      * @return int
      */
-    public function getNextTickTime($lastTime, array $cronRules)
+    public function getNextTickTime(int $lastTime, array $cronRules)
     {
         $times = [];
         foreach ($cronRules as $cronRule)
@@ -51,18 +51,18 @@ class CronCalculator
         }
     }
 
-    private function generateTime($lastTime, $years, $months, $weeks, $days, $hours, $minutes, $seconds)
+    private function generateTime(int $lastTime, array $years, array $months, array $weeks, array $days, array $hours, array $minutes, array $seconds): int
     {
         if ($lastTime < 0)
         {
             $lastTime = time();
         }
-        $nowYear = date('Y', $lastTime);
-        $nowMonth = date('m', $lastTime);
-        $nowDay = date('d', $lastTime);
-        $nowHour = date('H', $lastTime);
-        $nowMinute = date('i', $lastTime);
-        $nowSecond = date('s', $lastTime);
+        $nowYear = (int) date('Y', $lastTime);
+        $nowMonth = (int) date('m', $lastTime);
+        $nowDay = (int) date('d', $lastTime);
+        $nowHour = (int) date('H', $lastTime);
+        $nowMinute = (int) date('i', $lastTime);
+        $nowSecond = (int) date('s', $lastTime);
         foreach ($years as $year)
         {
             if ($year < $nowYear)
@@ -92,6 +92,9 @@ class CronCalculator
                             $timestamp = strtotime($year . '-01-01') + 86400 * ((int) $day - 1);
                         }
                         [$y, $m, $d] = explode('-', date('Y-m-d', $timestamp));
+                        $y = (int) $y;
+                        $m = (int) $m;
+                        $d = (int) $d;
                         if (($y == $nowYear && (($m == $nowMonth && $d < $nowDay) || ($m < $nowMonth))) || !\in_array(date('N', $timestamp), $weeks))
                         {
                             continue;
@@ -102,7 +105,7 @@ class CronCalculator
                     {
                         if ($day < 0)
                         {
-                            $day = date('d', strtotime($year . '-' . $month . '-' . date('t', strtotime($year . '-' . $month . '-01'))) + 86400 * ((int) $day + 1));
+                            $day = (int) date('d', strtotime($year . '-' . $month . '-' . date('t', strtotime($year . '-' . $month . '-01'))) + 86400 * ((int) $day + 1));
                         }
                         if (($year == $nowYear && $month == $nowMonth && $day < $nowDay) || !\in_array(date('N', strtotime("{$year}-{$month}-{$day}")), $weeks))
                         {
@@ -119,7 +122,7 @@ class CronCalculator
         }
     }
 
-    private function parseHis($year, $month, $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond)
+    private function parseHis(int $year, int $month, int $day, ?array $hours, ?array $minutes, ?array $seconds, int $nowYear, int $nowMonth, int $nowDay, int $nowHour, int $nowMinute, int $nowSecond): ?int
     {
         foreach ($hours ?: [] as $hour)
         {
@@ -144,9 +147,11 @@ class CronCalculator
                 }
             }
         }
+
+        return null;
     }
 
-    public function getAll($rule, $name, $min, $max, $dateFormat, $lastTime)
+    public function getAll(string $rule, string $name, int $min, int $max, string $dateFormat, int $lastTime): array
     {
         // 所有
         if ('*' === $rule)
@@ -197,13 +202,26 @@ class CronCalculator
         $list = explode(',', $rule);
         if ('day' !== $name)
         {
-            // 处理负数
             foreach ($list as &$item)
             {
                 if ($item < $min)
                 {
-                    $item = $max + 1 + (int) $item;
+                    // 处理负数
+                    $item = $max + 1 + $item;
                 }
+                else
+                {
+                    // 转为int
+                    $item = (int) $item;
+                }
+            }
+        }
+        else
+        {
+            foreach ($list as &$item)
+            {
+                // 转为int
+                $item = (int) $item;
             }
         }
         // 从小到大排序
@@ -218,11 +236,11 @@ class CronCalculator
      * @param string $year
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllYear($year, $lastTime)
+    public function getAllYear(string $year, int $lastTime): array
     {
-        $min = date('Y', $lastTime);
+        $min = (int) date('Y', $lastTime);
         $max = 2100; // 我觉得 2100 年不可能还在用这个代码了吧……
 
         return $this->getAll($year, 'year', $min, $max, 'Y', $lastTime);
@@ -234,9 +252,9 @@ class CronCalculator
      * @param string $month
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllMonth($month, $lastTime)
+    public function getAllMonth(string $month, int $lastTime): array
     {
         return $this->getAll($month, 'month', 1, 12, 'm', $lastTime);
     }
@@ -247,9 +265,9 @@ class CronCalculator
      * @param string $day
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllDay($day, $lastTime)
+    public function getAllDay(string $day, int $lastTime): array
     {
         if ('year ' === substr($day, 0, 5))
         {
@@ -285,9 +303,9 @@ class CronCalculator
      * @param string $week
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllWeek($week, $lastTime)
+    public function getAllWeek(string $week, int $lastTime): array
     {
         return $this->getAll($week, 'week', 1, 7, 'N', $lastTime);
     }
@@ -298,9 +316,9 @@ class CronCalculator
      * @param string $hour
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllHour($hour, $lastTime)
+    public function getAllHour(string $hour, int $lastTime): array
     {
         return $this->getAll($hour, 'hour', 0, 23, 'H', $lastTime);
     }
@@ -311,9 +329,9 @@ class CronCalculator
      * @param string $minute
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllMinute($minute, $lastTime)
+    public function getAllMinute(string $minute, int $lastTime): array
     {
         return $this->getAll($minute, 'minute', 0, 59, 'i', $lastTime);
     }
@@ -324,9 +342,9 @@ class CronCalculator
      * @param string $second
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
-    public function getAllSecond($second, $lastTime)
+    public function getAllSecond($second, $lastTime): array
     {
         return $this->getAll($second, 'second', 0, 59, 's', $lastTime);
     }
@@ -337,9 +355,9 @@ class CronCalculator
      * @param \Imi\Cron\CronRule $cronRule
      * @param int                $lastTime
      *
-     * @return void
+     * @return int|false
      */
-    private function parseN($cronRule, $lastTime)
+    private function parseN(CronRule $cronRule, int $lastTime)
     {
         if ($lastTime < 0)
         {

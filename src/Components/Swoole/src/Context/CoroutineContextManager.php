@@ -22,7 +22,7 @@ class CoroutineContextManager implements IContextManager
      *
      * @var Context[]
      */
-    private array $contexts;
+    private array $contexts = [];
 
     /**
      * 创建上下文.

@@ -27,63 +27,63 @@ class Scheduler
      *
      * @var \Imi\Cron\CronManager
      */
-    protected $cronManager;
+    protected CronManager $cronManager;
 
     /**
      * @Inject("CronCalculator")
      *
      * @var \Imi\Cron\CronCalculator
      */
-    protected $cronCalculator;
+    protected CronCalculator $cronCalculator;
 
     /**
      * @Inject("CronLock")
      *
      * @var \Imi\Cron\CronLock
      */
-    protected $cronLock;
+    protected CronLock $cronLock;
 
     /**
      * 协程工作池的协程数量.
      *
      * @var int
      */
-    protected $poolCoCount = 16;
+    protected int $poolCoCount = 16;
 
     /**
      * 协程工作池的队列长度.
      *
      * @var int
      */
-    protected $poolQueueLength = 1024;
+    protected int $poolQueueLength = 1024;
 
     /**
      * 协程工作池.
      *
      * @var \Yurun\Swoole\CoPool\CoPool
      */
-    private $coPool;
+    private CoPool $coPool;
 
     /**
      * 下次执行时间集合.
      *
      * @var array
      */
-    private $nextTickTimeMap = [];
+    private array $nextTickTimeMap = [];
 
     /**
      * 正在执行的任务列表.
      *
      * @var \Imi\Cron\CronTask[]
      */
-    private $runningTasks = [];
+    private array $runningTasks = [];
 
     /**
      * 首次执行记录集合.
      *
      * @var array
      */
-    private $firstRunMap = [];
+    private array $firstRunMap = [];
 
     public function __construct()
     {
@@ -165,7 +165,7 @@ class Scheduler
      *
      * @return \Imi\Cron\CronTask[]
      */
-    public function schedule()
+    public function schedule(): \Generator
     {
         $now = time();
         $runningTasks = &$this->runningTasks;
@@ -213,7 +213,7 @@ class Scheduler
      *
      * @return void
      */
-    public function runTask($task)
+    public function runTask(CronTask $task)
     {
         if (!$this->cronLock->lock($task))
         {

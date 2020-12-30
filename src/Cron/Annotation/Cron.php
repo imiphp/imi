@@ -19,32 +19,32 @@ class Cron extends Base
     /**
      * 任务唯一ID.
      *
-     * @var string
+     * @var string|null
      */
-    public $id;
+    public ?string $id = null;
 
     /**
      * 任务类型.
      *
      * \Imi\Cron\Consts\CronTaskType 类常量
      *
-     * @var string
+     * @var string|null
      */
-    public $type;
+    public ?string $type = null;
 
     /**
      * 数据.
      *
      * @var mixed
      */
-    public $data;
+    public $data = null;
 
     /**
      * 每次启动服务强制执行.
      *
      * @var bool
      */
-    public $force = false;
+    public bool $force = false;
 
     /**
      * 年.
@@ -58,7 +58,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $year = '*';
+    public string $year = '*';
 
     /**
      * 月.
@@ -72,7 +72,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $month = '*';
+    public string $month = '*';
 
     /**
      * 日.
@@ -89,7 +89,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $day = '*';
+    public string $day = '*';
 
     /**
      * 周几.
@@ -102,7 +102,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $week = '*';
+    public string $week = '*';
 
     /**
      * 小时.
@@ -116,7 +116,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $hour = '*';
+    public string $hour = '*';
 
     /**
      * 分钟
@@ -130,7 +130,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $minute = '*';
+    public string $minute = '*';
 
     /**
      * 秒.
@@ -144,7 +144,7 @@ class Cron extends Base
      *
      * @var string
      */
-    public $second = '*';
+    public string $second = '*';
 
     /**
      * 定时任务唯一性设置
@@ -154,21 +154,21 @@ class Cron extends Base
      *
      * @var string|null
      */
-    public $unique;
+    public ?string $unique = null;
 
     /**
      * 用于锁的 `Redis` 连接池名.
      *
-     * @var string
+     * @var string|null
      */
-    public $redisPool;
+    public ?string $redisPool = null;
 
     /**
      * 获取锁超时时间，单位：秒.
      *
      * @var float
      */
-    public $lockWaitTimeout = 3;
+    public float $lockWaitTimeout = 3;
 
     /**
      * 最大运行执行时间，单位：秒。
@@ -177,5 +177,5 @@ class Cron extends Base
      *
      * @var float
      */
-    public $maxExecutionTime = 60;
+    public float $maxExecutionTime = 60;
 }

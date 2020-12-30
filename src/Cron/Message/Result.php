@@ -16,44 +16,44 @@ class Result implements IMessage
      *
      * @var string
      */
-    public $action;
+    public string $action;
 
     /**
      * 定时任务ID.
      *
      * @var string
      */
-    public $id;
+    public string $id;
 
     /**
      * 进程类型.
      *
      * @var string
      */
-    public $processType;
+    public string $processType;
 
     /**
      * 进程标识符.
      *
-     * @var string
+     * @var string|null
      */
-    public $processId;
+    public ?string $processId = null;
 
     /**
      * 是否成功
      *
      * @var bool
      */
-    public $success;
+    public bool $success;
 
     /**
      * 消息.
      *
      * @var string
      */
-    public $message;
+    public string $message;
 
-    public function __construct($action, $id, $success, $message)
+    public function __construct(string $action, string $id, bool $success, string $message)
     {
         $this->action = $action;
         $this->id = $id;
@@ -64,7 +64,7 @@ class Result implements IMessage
         {
             case ProcessType::WORKER:
             case ProcessType::TASK_WORKER:
-                $this->processId = Worker::getWorkerId();
+                $this->processId = (string) Worker::getWorkerId();
                 break;
             case ProcessType::PROCESS:
                 $this->processId = App::get(ProcessAppContexts::PROCESS_NAME) . '#' . Worker::getWorkerId();

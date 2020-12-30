@@ -14,7 +14,7 @@ class CronTask
      *
      * @var string
      */
-    private $id;
+    private string $id;
 
     /**
      * 任务类型.
@@ -23,12 +23,12 @@ class CronTask
      *
      * @var string
      */
-    private $type;
+    private string $type;
 
     /**
      * 任务执行回调，可以是callable类型，也可以是 task、process 名.
      *
-     * @var string
+     * @var string|callable
      */
     private $task;
 
@@ -37,7 +37,7 @@ class CronTask
      *
      * @var \Imi\Cron\CronRule[]
      */
-    private $cronRules;
+    private array $cronRules;
 
     /**
      * 数据.
@@ -52,44 +52,44 @@ class CronTask
      * 所有实例唯一: all
      * 不唯一: null.
      *
-     * @var string
+     * @var string|null
      */
-    private $unique;
+    private ?string $unique = null;
 
     /**
      * 用于锁的 `Redis` 连接池名.
      *
-     * @var string
+     * @var string|null
      */
-    private $redisPool;
+    private ?string $redisPool = null;
 
     /**
      * 获取锁超时时间，单位：秒.
      *
      * @var float
      */
-    private $lockWaitTimeout;
+    private float $lockWaitTimeout;
 
     /**
      * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
      *
      * @var float
      */
-    private $maxExecutionTime;
+    private float $maxExecutionTime;
 
     /**
      * 获取上一次运行时间.
      *
      * @var int
      */
-    private $lastRunTime = -1;
+    private int $lastRunTime = -1;
 
     /**
      * 每次启动服务强制执行.
      *
      * @var bool
      */
-    private $force = false;
+    private bool $force = false;
 
     /**
      * 构造方法.
@@ -105,7 +105,7 @@ class CronTask
      * @param float           $lockWaitTimeout
      * @param bool            $force
      */
-    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, $unique = null, $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
+    public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
     {
         $this->id = $id;
         $this->type = $type;
@@ -126,7 +126,7 @@ class CronTask
      *
      * @return \Imi\Cron\CronRule[]
      */
-    private function parseCronRule($cronRules)
+    private function parseCronRule(array $cronRules): array
     {
         $result = [];
         foreach ($cronRules as $rule)
@@ -142,7 +142,7 @@ class CronTask
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -152,7 +152,7 @@ class CronTask
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -160,7 +160,7 @@ class CronTask
     /**
      * Get 任务执行回调，可以是callable类型，也可以是 task、process 名.
      *
-     * @return string
+     * @return string|callable
      */
     public function getTask()
     {
@@ -172,7 +172,7 @@ class CronTask
      *
      * @return \Imi\Cron\CronRule[]
      */
-    public function getCronRules()
+    public function getCronRules(): array
     {
         return $this->cronRules;
     }
@@ -190,9 +190,9 @@ class CronTask
     /**
      * Get 在当前服务实例中唯一，只能同时执行一个.
      *
-     * @return bool
+     * @return string|null
      */
-    public function getUnique()
+    public function getUnique(): ?string
     {
         return $this->unique;
     }
@@ -202,7 +202,7 @@ class CronTask
      *
      * @return string
      */
-    public function getRedisPool()
+    public function getRedisPool(): string
     {
         return $this->redisPool;
     }
@@ -212,7 +212,7 @@ class CronTask
      *
      * @return float
      */
-    public function getLockWaitTimeout()
+    public function getLockWaitTimeout(): float
     {
         return $this->lockWaitTimeout;
     }
@@ -222,9 +222,9 @@ class CronTask
      *
      * 返回秒级时间戳
      *
-     * @return void
+     * @return int
      */
-    public function getLastRunTime()
+    public function getLastRunTime(): int
     {
         return $this->lastRunTime;
     }
@@ -234,7 +234,7 @@ class CronTask
      *
      * @return float
      */
-    public function getMaxExecutionTime()
+    public function getMaxExecutionTime(): float
     {
         return $this->maxExecutionTime;
     }
@@ -246,7 +246,7 @@ class CronTask
      *
      * @return void
      */
-    public function updateLastRunTime($time)
+    public function updateLastRunTime(int $time)
     {
         $this->lastRunTime = $time;
     }
@@ -256,7 +256,7 @@ class CronTask
      *
      * @return bool
      */
-    public function getForce()
+    public function getForce(): bool
     {
         return $this->force;
     }

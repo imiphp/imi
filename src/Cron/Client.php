@@ -15,21 +15,21 @@ class Client
      *
      * @var string
      */
-    private $socketFile;
+    private string $socketFile;
 
     /**
      * socket 资源.
      *
      * @var resource
      */
-    private $socket;
+    private $socket = null;
 
     /**
      * 是否已连接.
      *
      * @var bool
      */
-    private $connected;
+    private bool $connected = false;
 
     /**
      * 构造方法.

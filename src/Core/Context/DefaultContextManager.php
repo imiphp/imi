@@ -19,7 +19,7 @@ class DefaultContextManager implements IContextManager
      *
      * @var ArrayObject[]
      */
-    private array $contexts;
+    private array $contexts = [];
 
     /**
      * 创建上下文.

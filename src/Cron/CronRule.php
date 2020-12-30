@@ -25,7 +25,7 @@ class CronRule
      *
      * @var string
      */
-    private $year = '*';
+    private string $year = '*';
 
     /**
      * 月.
@@ -39,7 +39,7 @@ class CronRule
      *
      * @var string
      */
-    private $month = '*';
+    private string $month = '*';
 
     /**
      * 日.
@@ -56,7 +56,7 @@ class CronRule
      *
      * @var string
      */
-    private $day = '*';
+    private string $day = '*';
 
     /**
      * 周几.
@@ -69,7 +69,7 @@ class CronRule
      *
      * @var string
      */
-    private $week = '*';
+    private string $week = '*';
 
     /**
      * 小时.
@@ -83,7 +83,7 @@ class CronRule
      *
      * @var string
      */
-    private $hour = '*';
+    private string $hour = '*';
 
     /**
      * 分钟
@@ -97,7 +97,7 @@ class CronRule
      *
      * @var string
      */
-    private $minute = '*';
+    private string $minute = '*';
 
     /**
      * 秒.
@@ -111,14 +111,14 @@ class CronRule
      *
      * @var string
      */
-    private $second = '*';
+    private string $second = '*';
 
     /**
      * 年.
      *
      * @return string
      */
-    public function getYear()
+    public function getYear(): string
     {
         return $this->year;
     }
@@ -128,7 +128,7 @@ class CronRule
      *
      * @return string
      */
-    public function getMonth()
+    public function getMonth(): string
     {
         return $this->month;
     }
@@ -138,7 +138,7 @@ class CronRule
      *
      * @return string
      */
-    public function getDay()
+    public function getDay(): string
     {
         return $this->day;
     }
@@ -148,7 +148,7 @@ class CronRule
      *
      * @return string
      */
-    public function getWeek()
+    public function getWeek(): string
     {
         return $this->week;
     }
@@ -158,7 +158,7 @@ class CronRule
      *
      * @return string
      */
-    public function getHour()
+    public function getHour(): string
     {
         return $this->hour;
     }
@@ -168,7 +168,7 @@ class CronRule
      *
      * @return string
      */
-    public function getMinute()
+    public function getMinute(): string
     {
         return $this->minute;
     }
@@ -178,7 +178,7 @@ class CronRule
      *
      * @return string
      */
-    public function getSecond()
+    public function getSecond(): string
     {
         return $this->second;
     }
