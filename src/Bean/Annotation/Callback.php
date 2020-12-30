@@ -27,7 +27,7 @@ class Callback extends BaseInjectValue
      *
      * @var string
      */
-    public $method;
+    public string $method;
 
     /**
      * 获取注入值的真实值

@@ -24,5 +24,5 @@ class Parser extends Base
      *
      * @var string
      */
-    public $className;
+    public string $className;
 }

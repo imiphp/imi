@@ -35,9 +35,9 @@ abstract class BaseParser implements IParser
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
-    private function __construct($data = [])
+    private function __construct(array $data = [])
     {
         $this->data = $data;
     }
@@ -47,7 +47,7 @@ abstract class BaseParser implements IParser
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -59,7 +59,7 @@ abstract class BaseParser implements IParser
      *
      * @return void
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         $this->data = $data;
     }
@@ -69,7 +69,7 @@ abstract class BaseParser implements IParser
      *
      * @return bool
      */
-    protected static function isChildClassSingleton()
+    protected static function isChildClassSingleton(): bool
     {
         return true;
     }

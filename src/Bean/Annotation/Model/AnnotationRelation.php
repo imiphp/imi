@@ -9,44 +9,44 @@ class AnnotationRelation
     /**
      * 类关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\ClassAnnotationRelation[]
+     * @var \Imi\Bean\Annotation\Model\ClassAnnotationRelation[][]
      */
-    private $classRelations = [];
+    private array $classRelations = [];
 
     /**
      * 方法关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\MethodAnnotationRelation[]
+     * @var \Imi\Bean\Annotation\Model\MethodAnnotationRelation[][]
      */
-    private $methodRelations = [];
+    private array $methodRelations = [];
 
     /**
      * 属性关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[]
+     * @var \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[][]
      */
-    private $propertyRelations = [];
+    private array $propertyRelations = [];
 
     /**
      * 常量关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[]
+     * @var \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[][]
      */
-    private $constantRelations = [];
+    private array $constantRelations = [];
 
     /**
      * 所有关联列表.
      *
      * @var \Imi\Bean\Annotation\Model\IAnnotationRelation[]
      */
-    private $allRelations = [];
+    private array $allRelations = [];
 
     /**
      * Get 类关联列表.
      *
      * @return \Imi\Bean\Annotation\Model\ClassAnnotationRelation[]
      */
-    public function getClassRelations()
+    public function getClassRelations(): array
     {
         return $this->classRelations;
     }
@@ -78,7 +78,7 @@ class AnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Model\MethodAnnotationRelation[]
      */
-    public function getMethodRelations()
+    public function getMethodRelations(): array
     {
         return $this->methodRelations;
     }
@@ -110,7 +110,7 @@ class AnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[]
      */
-    public function getpropertyRelations()
+    public function getpropertyRelations(): array
     {
         return $this->propertyRelations;
     }
@@ -142,7 +142,7 @@ class AnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[]
      */
-    public function getConstantRelations()
+    public function getConstantRelations(): array
     {
         return $this->constantRelations;
     }
@@ -178,7 +178,7 @@ class AnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Model\IAnnotationRelation[]
      */
-    public function getAll($className, $where = null)
+    public function getAll(string $className, ?string $where = null): array
     {
         if (null === $where)
         {
@@ -207,7 +207,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeClassRelation($annotationClassName, $className)
+    public function removeClassRelation(string $annotationClassName, string $className)
     {
         $classRelations = &$this->classRelations;
         if (isset($classRelations[$annotationClassName]))

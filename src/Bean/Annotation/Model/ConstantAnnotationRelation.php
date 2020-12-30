@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation\Model;
 
+use Imi\Bean\Annotation\Base;
+
 class ConstantAnnotationRelation implements IAnnotationRelation
 {
     /**
@@ -11,23 +13,23 @@ class ConstantAnnotationRelation implements IAnnotationRelation
      *
      * @var string
      */
-    private $class;
+    private string $class;
 
     /**
      * 常量名.
      *
      * @var string
      */
-    private $constant;
+    private string $constant;
 
     /**
      * 注解.
      *
      * @var \Imi\Bean\Annotation\Base
      */
-    private $annotation;
+    private Base $annotation;
 
-    public function __construct(string $class, string $constant, \Imi\Bean\Annotation\Base $annotation)
+    public function __construct(string $class, string $constant, Base $annotation)
     {
         $this->class = $class;
         $this->constant = $constant;
@@ -39,7 +41,7 @@ class ConstantAnnotationRelation implements IAnnotationRelation
      *
      * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -49,7 +51,7 @@ class ConstantAnnotationRelation implements IAnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Base
      */
-    public function getAnnotation()
+    public function getAnnotation(): Base
     {
         return $this->annotation;
     }
@@ -59,7 +61,7 @@ class ConstantAnnotationRelation implements IAnnotationRelation
      *
      * @return string
      */
-    public function getConstant()
+    public function getConstant(): string
     {
         return $this->constant;
     }

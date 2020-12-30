@@ -40,11 +40,11 @@ class Annotation
     /**
      * 初始化.
      *
-     * @param \Imi\Main\BaseMain[] $mains
+     * @param \Imi\Main\BaseMain[]|null $mains
      *
      * @return void
      */
-    public function init($mains = null): void
+    public function init(?array $mains = null): void
     {
         if (null === $mains)
         {
@@ -77,7 +77,7 @@ class Annotation
      *
      * @return AnnotationLoader
      */
-    public function getLoader()
+    public function getLoader(): AnnotationLoader
     {
         return $this->loader;
     }
@@ -87,7 +87,7 @@ class Annotation
      *
      * @return AnnotationParser
      */
-    public function getParser()
+    public function getParser(): AnnotationParser
     {
         return $this->parser;
     }
@@ -99,7 +99,7 @@ class Annotation
      *
      * @return void
      */
-    private function loadModuleAnnotations($namespace)
+    private function loadModuleAnnotations(string $namespace)
     {
         $ignoredNamespaces = [];
         foreach (Config::getAliases() as $alias)
@@ -141,7 +141,7 @@ class Annotation
      *
      * @return string
      */
-    public static function toComments(\Imi\Bean\Annotation\Base $annotation, $skipDefaultValue = true): string
+    public static function toComments(\Imi\Bean\Annotation\Base $annotation, bool $skipDefaultValue = true): string
     {
         $result = '@' . Imi::getClassShortName(\get_class($annotation));
         $properties = [];

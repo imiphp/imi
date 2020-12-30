@@ -16,23 +16,23 @@ class Container implements ContainerInterface
      *
      * @var array
      */
-    private $singletonObjects = [];
+    private array $singletonObjects = [];
 
     /**
      * Bean处理器.
      *
      * @var \Imi\Bean\Parser\BeanParser
      */
-    private $beanParser;
+    private BeanParser $beanParser;
 
     /**
      * 绑定列表.
      *
      * @var array
      */
-    private $binds;
+    private array $binds;
 
-    public function __construct($binds = [])
+    public function __construct(array $binds = [])
     {
         $this->binds = $binds;
         $this->beanParser = BeanParser::getInstance();
@@ -46,7 +46,7 @@ class Container implements ContainerInterface
      * @throws NotFoundExceptionInterface  没有找到对象
      * @throws ContainerExceptionInterface 检索时出错
      *
-     * @return mixed Entry.
+     * @return mixed entry
      */
     public function get($id)
     {
@@ -127,7 +127,7 @@ class Container implements ContainerInterface
      *
      * @return void
      */
-    public function bind($name, $class)
+    public function bind(string $name, string $class)
     {
         $this->binds[$name] = $class;
     }
@@ -137,7 +137,7 @@ class Container implements ContainerInterface
      *
      * @return array
      */
-    public function getBinds()
+    public function getBinds(): array
     {
         return $this->binds;
     }
@@ -147,7 +147,7 @@ class Container implements ContainerInterface
      *
      * @return static
      */
-    public function newSubContainer()
+    public function newSubContainer(): self
     {
         return new static($this->binds);
     }

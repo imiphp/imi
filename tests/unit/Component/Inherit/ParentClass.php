@@ -20,7 +20,7 @@ class ParentClass
 {
     /**
      * @Column
-     * @Callback
+     * @Callback(class="Test", method="test")
      *
      * @var int
      */
@@ -28,7 +28,7 @@ class ParentClass
 
     /**
      * @Column
-     * @Callback
+     * @Callback(class="Test", method="test")
      *
      * @var int
      */

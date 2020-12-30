@@ -33,18 +33,18 @@ class Bean extends Base
     /**
      * Bean名称，留空则为当前类名（包含完整命名空间）.
      *
-     * @var string
+     * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 实例化类型，默认为单例模式.
      *
-     * @var string
+     * @var string|null
      */
-    public $instanceType;
+    public ?string $instanceType = null;
 
-    public function __construct($data)
+    public function __construct(array $data = [])
     {
         parent::__construct($data);
         if (null === $this->instanceType)

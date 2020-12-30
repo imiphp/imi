@@ -25,12 +25,12 @@ class Listener extends Base
      *
      * @var string
      */
-    public $eventName;
+    public string $eventName;
 
     /**
      * 优先级，越大越先执行.
      *
      * @var int
      */
-    public $priority = 0;
+    public int $priority = 0;
 }

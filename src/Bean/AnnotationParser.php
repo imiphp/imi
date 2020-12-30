@@ -24,28 +24,28 @@ class AnnotationParser
      *
      * @var string[]
      */
-    private $classes = [];
+    private array $classes = [];
 
     /**
      * 处理器类名映射.
      *
      * @var array
      */
-    private $parsers = [];
+    private array $parsers = [];
 
     /**
      * 文件映射.
      *
      * @var array
      */
-    private $files = [];
+    private array $files = [];
 
     /**
      * 注解读取器.
      *
      * @var \Yurun\Doctrine\Common\Annotations\AnnotationReader
      */
-    private $reader;
+    private AnnotationReader $reader;
 
     public function __construct()
     {
@@ -56,7 +56,7 @@ class AnnotationParser
         $this->reader = new AnnotationReader();
     }
 
-    public function parse($className)
+    public function parse(string $className)
     {
         if (!class_exists($className) && !interface_exists($className) && !trait_exists($className))
         {
@@ -80,7 +80,7 @@ class AnnotationParser
         $this->parseAnnotationParsers($ref);
     }
 
-    public function execParse($className)
+    public function execParse(string $className)
     {
         // 执行处理器
         $this->doParser($className);
@@ -456,7 +456,7 @@ class AnnotationParser
      *
      * @return bool
      */
-    private function checkAnnotations($annotations)
+    private function checkAnnotations(array $annotations): bool
     {
         return [] !== $annotations;
     }
@@ -506,7 +506,7 @@ class AnnotationParser
      *
      * @return bool
      */
-    public function hasParser(string $className)
+    public function hasParser(string $className): bool
     {
         return isset($this->parsers[$className]);
     }
@@ -518,7 +518,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function setParsers($parsers)
+    public function setParsers(array $parsers)
     {
         $this->parsers = $parsers;
     }
@@ -530,7 +530,7 @@ class AnnotationParser
      *
      * @return \Imi\Bean\Parser\BaseParser
      */
-    public function getParser(string $className)
+    public function getParser(string $className): BaseParser
     {
         return $this->parsers[$className]::getInstance();
     }
@@ -540,7 +540,7 @@ class AnnotationParser
      *
      * @return array
      */
-    public function getParsers()
+    public function getParsers(): array
     {
         return $this->parsers;
     }
@@ -648,9 +648,9 @@ class AnnotationParser
     /**
      * 获取类名列表.
      *
-     * @return string
+     * @return string[]
      */
-    public function getClasses()
+    public function getClasses(): array
     {
         return array_keys($this->classes);
     }
@@ -658,9 +658,9 @@ class AnnotationParser
     /**
      * Get 文件数据映射.
      *
-     * @return array
+     * @return string[]
      */
-    public function getFiles()
+    public function getFiles(): array
     {
         return $this->files;
     }
@@ -668,11 +668,11 @@ class AnnotationParser
     /**
      * 处理增量更新.
      *
-     * @param string $files
+     * @param string[] $files
      *
      * @return void
      */
-    public function parseIncr($files)
+    public function parseIncr(array $files)
     {
         $thisFiles = &$this->files;
         $thisClasses = &$this->classes;
@@ -729,7 +729,7 @@ class AnnotationParser
      *
      * @return bool
      */
-    public function isParsed($className)
+    public function isParsed(string $className): bool
     {
         return isset($this->classes[$className]);
     }
@@ -737,9 +737,9 @@ class AnnotationParser
     /**
      * 获取存储数据.
      *
-     * @return void
+     * @return array
      */
-    public function getStoreData()
+    public function getStoreData(): array
     {
         return [
             $this->files,
@@ -754,7 +754,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function loadStoreData($data)
+    public function loadStoreData(array $data)
     {
         $this->files = $data[0];
         $this->classes = $data[1];

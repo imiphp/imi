@@ -18,19 +18,19 @@ class ClassEventListener extends Base
      *
      * @var string
      */
-    public $className;
+    public string $className;
 
     /**
      * 事件名.
      *
      * @var string
      */
-    public $eventName;
+    public string $eventName;
 
     /**
      * 优先级，越大越先执行.
      *
      * @var int
      */
-    public $priority = 0;
+    public int $priority = 0;
 }

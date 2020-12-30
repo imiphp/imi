@@ -5,19 +5,13 @@ declare(strict_types=1);
 namespace Imi\Bean\Traits;
 
 use Imi\Bean\BeanFactory;
+use Imi\Bean\BeanProxy;
 
 /**
  * 自动注入属性.
  */
 trait TAutoInject
 {
-    /**
-     * beanProxy.
-     *
-     * @var \Imi\Bean\BeanProxy
-     */
-    protected $beanProxy;
-
     public function __construct()
     {
         $this->__autoInject();
@@ -30,7 +24,6 @@ trait TAutoInject
      */
     protected function __autoInject()
     {
-        $this->beanProxy = new \Imi\Bean\BeanProxy($this);
-        BeanFactory::initInstance($this);
+        BeanProxy::injectProps($this, BeanFactory::getObjectClass($this));
     }
 }

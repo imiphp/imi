@@ -36,7 +36,7 @@ class ListenerParser extends BaseParser
      *
      * @return void
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         foreach ($this->data as $args)
         {

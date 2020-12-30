@@ -27,7 +27,7 @@ abstract class Base extends LazyArrayObject
      */
     protected $__alias;
 
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
         parent::__construct([]);
 
@@ -77,6 +77,8 @@ abstract class Base extends LazyArrayObject
 
     /**
      * Get the value of alias.
+     *
+     * @return string|string[]
      */
     public function getAlias()
     {

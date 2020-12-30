@@ -18,21 +18,21 @@ class ReflectionContainer
      *
      * @var array
      */
-    private static $classReflectionMap = [];
+    private static array $classReflectionMap = [];
 
     /**
      * 方法反射集合.
      *
      * @var array
      */
-    private static $methodReflectionMap = [];
+    private static array $methodReflectionMap = [];
 
     /**
      * 属性反射集合.
      *
      * @var array
      */
-    private static $propertyReflectionMap = [];
+    private static array $propertyReflectionMap = [];
 
     private function __construct()
     {

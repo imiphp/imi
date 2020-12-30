@@ -11,37 +11,37 @@ class ClassAnnotation
      *
      * @var string
      */
-    private $className;
+    private string $className;
 
     /**
      * 类注解列表.
      *
      * @var \Imi\Bean\Annotation\Base[]
      */
-    private $classAnnotations = [];
+    private array $classAnnotations = [];
 
     /**
      * 方法注解列表.
      *
      * @var \Imi\Bean\Annotation\Base[]
      */
-    private $methodAnnotations = [];
+    private array $methodAnnotations = [];
 
     /**
      * 属性注解列表.
      *
      * @var \Imi\Bean\Annotation\Base[]
      */
-    private $propertyAnnotations = [];
+    private array $propertyAnnotations = [];
 
     /**
      * 常量注解列表.
      *
      * @var \Imi\Bean\Annotation\Base[]
      */
-    private $constantAnnotations = [];
+    private array $constantAnnotations = [];
 
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
     }
@@ -51,7 +51,7 @@ class ClassAnnotation
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public function getClassAnnotations()
+    public function getClassAnnotations(): array
     {
         return $this->classAnnotations;
     }
@@ -63,7 +63,7 @@ class ClassAnnotation
      *
      * @return self
      */
-    public function addClassAnnotations(array $classAnnotations)
+    public function addClassAnnotations(array $classAnnotations): self
     {
         $this->classAnnotations = array_merge($this->classAnnotations, $classAnnotations);
 
@@ -77,7 +77,7 @@ class ClassAnnotation
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public function getMethodAnnotations($methodName = null)
+    public function getMethodAnnotations($methodName = null): array
     {
         if (null === $methodName)
         {
@@ -97,7 +97,7 @@ class ClassAnnotation
      *
      * @return self
      */
-    public function addMethodAnnotations(string $methodName, array $methodAnnotations)
+    public function addMethodAnnotations(string $methodName, array $methodAnnotations): self
     {
         $this->methodAnnotations[$methodName] = array_merge($this->methodAnnotations[$methodName] ?? [], $methodAnnotations);
 
@@ -111,7 +111,7 @@ class ClassAnnotation
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public function getPropertyAnnotations($propertyName = null)
+    public function getPropertyAnnotations(?string $propertyName = null): array
     {
         if (null === $propertyName)
         {
@@ -131,7 +131,7 @@ class ClassAnnotation
      *
      * @return self
      */
-    public function addpropertyAnnotations(string $propertyName, array $propertyAnnotations)
+    public function addpropertyAnnotations(string $propertyName, array $propertyAnnotations): self
     {
         $this->propertyAnnotations[$propertyName] = array_merge($this->propertyAnnotations[$propertyName] ?? [], $propertyAnnotations);
 
@@ -145,7 +145,7 @@ class ClassAnnotation
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public function getConstantAnnotations($constantName = null)
+    public function getConstantAnnotations(?string $constantName = null): array
     {
         if (null === $constantName)
         {
@@ -165,7 +165,7 @@ class ClassAnnotation
      *
      * @return self
      */
-    public function addConstantAnnotations(string $constantName, array $constantAnnotations)
+    public function addConstantAnnotations(string $constantName, array $constantAnnotations): self
     {
         $this->constantAnnotations[$constantName] = array_merge($this->constantAnnotations[$constantName] ?? [], $constantAnnotations);
 
@@ -177,7 +177,7 @@ class ClassAnnotation
      *
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }

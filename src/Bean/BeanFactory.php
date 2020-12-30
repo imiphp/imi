@@ -37,9 +37,9 @@ class BeanFactory
      * @param string $class
      * @param mixed  ...$args
      *
-     * @return mixed
+     * @return object
      */
-    public static function newInstance(string $class, ...$args)
+    public static function newInstance(string $class, ...$args): object
     {
         $classNameMap = &static::$classNameMap;
         if (isset($classNameMap[$class]))
@@ -66,9 +66,9 @@ class BeanFactory
      * @param string $class
      * @param mixed  ...$args
      *
-     * @return void
+     * @return object
      */
-    public static function newInstanceNoInit(string $class, ...$args)
+    public static function newInstanceNoInit(string $class, ...$args): object
     {
         $classNameMap = &static::$classNameMap;
         if (isset($classNameMap[$class]))
@@ -196,8 +196,6 @@ TPL;
 class {$newClassName} extends {$class} implements \Imi\Bean\IBean
 {
     {$traitsTpl}
-
-    protected \$beanProxy;
 
     public function __construct({$constructDefine})
     {

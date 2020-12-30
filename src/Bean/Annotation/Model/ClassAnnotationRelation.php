@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation\Model;
 
+use Imi\Bean\Annotation\Base;
+
 class ClassAnnotationRelation implements IAnnotationRelation
 {
     /**
@@ -11,16 +13,16 @@ class ClassAnnotationRelation implements IAnnotationRelation
      *
      * @var string
      */
-    private $class;
+    private string $class;
 
     /**
      * 注解.
      *
      * @var \Imi\Bean\Annotation\Base
      */
-    private $annotation;
+    private Base $annotation;
 
-    public function __construct(string $class, \Imi\Bean\Annotation\Base $annotation)
+    public function __construct(string $class, Base $annotation)
     {
         $this->class = $class;
         $this->annotation = $annotation;
@@ -31,7 +33,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
      *
      * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -41,7 +43,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
      *
      * @return \Imi\Bean\Annotation\Base
      */
-    public function getAnnotation()
+    public function getAnnotation(): Base
     {
         return $this->annotation;
     }
