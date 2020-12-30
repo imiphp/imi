@@ -46,7 +46,7 @@ class SessionConfig
      *
      * @var string|null
      */
-    public ?string $prefix;
+    public ?string $prefix = null;
 
     public function __construct(string $name = 'imisid', ?SessionCookie $cookie = null, float $gcProbability = 0.01, int $maxLifeTime = 86400 * 30, ?string $prefix = null)
     {

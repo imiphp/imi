@@ -15,11 +15,11 @@ abstract class Base implements CacheInterface
      * 数据读写格式化处理器
      * 为null时不做任何处理.
      *
-     * @var string
+     * @var string|null
      */
-    protected $formatHandlerClass;
+    protected ?string $formatHandlerClass = null;
 
-    public function __construct($option = [])
+    public function __construct(array $option = [])
     {
         foreach ($option as $k => $v)
         {
@@ -32,9 +32,9 @@ abstract class Base implements CacheInterface
      *
      * @param mixed $data
      *
-     * @return mixed
+     * @return string
      */
-    protected function encode($data)
+    protected function encode($data): string
     {
         if (null === $this->formatHandlerClass)
         {
@@ -53,11 +53,11 @@ abstract class Base implements CacheInterface
     /**
      * 读出解码
      *
-     * @param mixed $data
+     * @param string $data
      *
      * @return mixed
      */
-    protected function decode($data)
+    protected function decode(string $data)
     {
         if (null === $this->formatHandlerClass)
         {
@@ -80,7 +80,7 @@ abstract class Base implements CacheInterface
      *
      * @return void
      */
-    protected function checkKey($key)
+    protected function checkKey(string $key)
     {
         if (!\is_string($key))
         {

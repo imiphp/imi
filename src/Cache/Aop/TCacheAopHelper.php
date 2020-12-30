@@ -19,7 +19,7 @@ trait TCacheAopHelper
      *
      * @return string
      */
-    protected function getKey(JoinPoint $joinPoint, $args, $cacheable)
+    protected function getKey(JoinPoint $joinPoint, array $args, $cacheable): string
     {
         if (null === $cacheable->key)
         {

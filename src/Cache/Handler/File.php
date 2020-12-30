@@ -19,7 +19,7 @@ class File extends Base
      *
      * @var string
      */
-    protected $savePath;
+    protected string $savePath;
 
     /**
      * 缓存文件名的处理回调，用于需要自定义的情况.
@@ -340,7 +340,7 @@ class File extends Base
      *
      * @return string
      */
-    public function getFileName($key)
+    public function getFileName(string $key): string
     {
         if (\is_callable($this->saveFileNameCallback))
         {
@@ -361,7 +361,7 @@ class File extends Base
      *
      * @return string
      */
-    public function getExDataFileName($fileName)
+    public function getExDataFileName(string $fileName): string
     {
         return $fileName . '.ex';
     }
@@ -373,7 +373,7 @@ class File extends Base
      *
      * @return bool
      */
-    protected function checkExpire($fileName)
+    protected function checkExpire(string $fileName): bool
     {
         if (!is_file($fileName))
         {
@@ -405,12 +405,12 @@ class File extends Base
     /**
      * 写入扩展数据.
      *
-     * @param string $fileName
-     * @param int    $ttl
+     * @param string   $fileName
+     * @param int|null $ttl
      *
      * @return void
      */
-    protected function writeExData($fileName, $ttl)
+    protected function writeExData(string $fileName, ?int $ttl)
     {
         file_put_contents($this->getExDataFileName($fileName), serialize([
             'ttl' => $ttl,

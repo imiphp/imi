@@ -18,32 +18,32 @@ class RedisHash extends Base
      *
      * @var string
      */
-    protected $poolName;
+    protected string $poolName;
 
     /**
      * 默认缺省的 hash key.
      *
      * @var string
      */
-    protected $defaultHashKey = 'imi:RedisHashCache';
+    protected string $defaultHashKey = 'imi:RedisHashCache';
 
     /**
      * 分隔符，分隔 hash key和 member.
      *
      * @var string
      */
-    protected $separator = '->';
+    protected string $separator = '->';
 
     /**
      * Fetches a value from the cache.
      *
-     * @param string $key     The unique key of this item in the cache.
-     * @param mixed  $default Default value to return if the key does not exist.
+     * @param string $key     the unique key of this item in the cache
+     * @param mixed  $default default value to return if the key does not exist
      *
-     * @return mixed The value of the item from the cache, or $default in case of cache miss.
+     * @return mixed the value of the item from the cache, or $default in case of cache miss
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *                                                   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value
      */
     public function get($key, $default = null)
     {
@@ -64,14 +64,14 @@ class RedisHash extends Base
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
      *
-     * @param string                 $key   The key of the item to store.
-     * @param mixed                  $value The value of the item to store, must be serializable.
+     * @param string                 $key   the key of the item to store
+     * @param mixed                  $value the value of the item to store, must be serializable
      * @param int|\DateInterval|null $ttl   本驱动中无效
      *
-     * @return bool True on success and false on failure.
+     * @return bool true on success and false on failure
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *                                                   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value
      */
     public function set($key, $value, $ttl = null)
     {
@@ -85,12 +85,12 @@ class RedisHash extends Base
     /**
      * Delete an item from the cache by its unique key.
      *
-     * @param string $key The unique cache key of the item to delete.
+     * @param string $key the unique cache key of the item to delete
      *
      * @return bool True if the item was successfully removed. False if there was an error.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *                                                   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value
      */
     public function delete($key)
     {
@@ -111,7 +111,7 @@ class RedisHash extends Base
     /**
      * Wipes clean the entire cache's keys.
      *
-     * @return bool True on success and false on failure.
+     * @return bool true on success and false on failure
      */
     public function clear()
     {
@@ -123,14 +123,14 @@ class RedisHash extends Base
     /**
      * Obtains multiple cache items by their unique keys.
      *
-     * @param iterable $keys    A list of keys that can obtained in a single operation.
-     * @param mixed    $default Default value to return for keys that do not exist.
+     * @param iterable $keys    a list of keys that can obtained in a single operation
+     * @param mixed    $default default value to return for keys that do not exist
      *
      * @return iterable A list of key => value pairs. Cache keys that do not exist or are stale will have $default as value.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *                                                   MUST be thrown if $keys is neither an array nor a Traversable,
-     *                                                   or if any of the $keys are not a legal value.
+     *                                                   or if any of the $keys are not a legal value
      */
     public function getMultiple($keys, $default = null)
     {
@@ -183,14 +183,14 @@ SCRIPT;
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
      *
-     * @param iterable               $values A list of key => value pairs for a multiple-set operation.
+     * @param iterable               $values a list of key => value pairs for a multiple-set operation
      * @param int|\DateInterval|null $ttl    本驱动中无效
      *
-     * @return bool True on success and false on failure.
+     * @return bool true on success and false on failure
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *                                                   MUST be thrown if $values is neither an array nor a Traversable,
-     *                                                   or if any of the $values are not a legal value.
+     *                                                   or if any of the $values are not a legal value
      */
     public function setMultiple($values, $ttl = null)
     {
@@ -239,13 +239,13 @@ SCRIPT;
     /**
      * Deletes multiple cache items in a single operation.
      *
-     * @param iterable $keys A list of string-based keys to be deleted.
+     * @param iterable $keys a list of string-based keys to be deleted
      *
      * @return bool True if the items were successfully removed. False if there was an error.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      *                                                   MUST be thrown if $keys is neither an array nor a Traversable,
-     *                                                   or if any of the $keys are not a legal value.
+     *                                                   or if any of the $keys are not a legal value
      */
     public function deleteMultiple($keys)
     {
@@ -291,12 +291,12 @@ SCRIPT;
      * is subject to a race condition where your has() will return true and immediately after,
      * another script can remove it making the state of your app out of date.
      *
-     * @param string $key The cache item key.
+     * @param string $key the cache item key
      *
      * @return bool
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *                                                   MUST be thrown if the $key string is not a legal value.
+     *                                                   MUST be thrown if the $key string is not a legal value
      */
     public function has($key)
     {
@@ -310,13 +310,12 @@ SCRIPT;
     /**
      * 处理key.
      *
-     * @param string $key
-     * @param string $member
-     * @param bool   $allowNoMember 是否允许没有 $member，默认false
+     * @param string|null $key
+     * @param string|null $member
      *
      * @return void
      */
-    protected function parseKey(&$key, &$member)
+    protected function parseKey(?string &$key, ?string &$member)
     {
         if (!\is_string($key))
         {

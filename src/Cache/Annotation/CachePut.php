@@ -25,7 +25,7 @@ class CachePut extends Base
      *
      * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 键名
@@ -35,28 +35,28 @@ class CachePut extends Base
      *
      * @var string
      */
-    public $key;
+    public string $key;
 
     /**
      * 写入缓存的值
      * 默认为null时，返回值作为缓存的值
      * 如果为字符串时（如：a.b），则将返回值作为数组或对象，取value->a->b下的值
      *
-     * @var string
+     * @var string|null
      */
-    public $value;
+    public ?string $value = null;
 
     /**
      * 缓存超时时间，单位：秒.
      *
-     * @var int
+     * @var int|null
      */
-    public $ttl;
+    public ?int $ttl = null;
 
     /**
      * 可以指定 hash 方法，默认为：md5.
      *
      * @var string
      */
-    public $hashMethod = 'md5';
+    public string $hashMethod = 'md5';
 }

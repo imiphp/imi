@@ -25,7 +25,7 @@ class CacheEvict extends Base
      *
      * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 键名
@@ -35,19 +35,19 @@ class CacheEvict extends Base
      *
      * @var string
      */
-    public $key;
+    public string $key;
 
     /**
      * 在方法执行前删除缓存，默认为false.
      *
      * @var bool
      */
-    public $beforeInvocation = false;
+    public bool $beforeInvocation = false;
 
     /**
      * 可以指定 hash 方法，默认为：md5.
      *
      * @var string
      */
-    public $hashMethod = 'md5';
+    public string $hashMethod = 'md5';
 }

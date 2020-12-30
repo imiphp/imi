@@ -67,7 +67,7 @@ class CacheEvictAop
         return $result;
     }
 
-    private function deleteCache($cacheEvict, $joinPoint, $args)
+    private function deleteCache(CacheEvict $cacheEvict, AroundJoinPoint $joinPoint, array $args)
     {
         // 缓存名
         $name = $cacheEvict->name;

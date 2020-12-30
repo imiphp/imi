@@ -61,9 +61,9 @@ class CacheManager
     /**
      * 获取所有对象名称.
      *
-     * @return void
+     * @return string[]
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return array_keys(static::$handlers);
     }

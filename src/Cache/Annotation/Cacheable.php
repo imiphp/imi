@@ -7,6 +7,7 @@ namespace Imi\Cache\Annotation;
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Base;
 use Imi\Bean\Annotation\Parser;
+use Imi\Lock\Annotation\Lockable;
 
 /**
  * 缓存注解.
@@ -25,7 +26,7 @@ class Cacheable extends Base
      *
      * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 缓存键名
@@ -35,23 +36,23 @@ class Cacheable extends Base
      *
      * @var string
      */
-    public $key;
+    public string $key;
 
     /**
      * 缓存超时时间，单位：秒.
      *
-     * @var int
+     * @var int|null
      */
-    public $ttl;
+    public ?int $ttl = null;
 
     /**
      * Lock 注解.
      *
      * 在调用方法体前后加锁
      *
-     * @var \Imi\Lock\Annotation\Lockable
+     * @var \Imi\Lock\Annotation\Lockable|null
      */
-    public $lockable;
+    public ?Lockable $lockable = null;
 
     /**
      * 防止缓存击穿
@@ -61,12 +62,12 @@ class Cacheable extends Base
      *
      * @var bool
      */
-    public $preventBreakdown = false;
+    public bool $preventBreakdown = false;
 
     /**
      * 可以指定 hash 方法，默认为：md5.
      *
      * @var string
      */
-    public $hashMethod = 'md5';
+    public string $hashMethod = 'md5';
 }
