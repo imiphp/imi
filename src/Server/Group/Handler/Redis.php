@@ -97,7 +97,7 @@ class Redis implements IGroupHandler
                 if (!$storeMasterPID)
                 {
                     // 没有存储master进程pid
-                    $this->initRedis($redis, $storeMasterPID);
+                    $this->initRedis($redis);
                 }
                 elseif ($masterPID != $storeMasterPID)
                 {
