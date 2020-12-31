@@ -166,7 +166,7 @@ class Group
      */
     public function clear()
     {
-        return $this->handler->clear();
+        $this->handler->clear();
     }
 
     /**
@@ -197,7 +197,7 @@ class Group
      *
      * @return array
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         $server = $this->server->getSwooleServer();
         if (!method_exists($server, $name))

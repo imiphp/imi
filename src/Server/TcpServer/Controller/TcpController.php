@@ -31,9 +31,9 @@ abstract class TcpController
      *
      * @param mixed $data
      *
-     * @return mixed
+     * @return string
      */
-    protected function encodeMessage($data)
+    protected function encodeMessage($data): string
     {
         return $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($data);
     }

@@ -14,14 +14,14 @@ class TaskInfo
      *
      * @var \Imi\Task\Interfaces\ITaskHandler
      */
-    private $taskHandler;
+    private ITaskHandler $taskHandler;
 
     /**
      * 任务参数.
      *
      * @var \Imi\Task\Interfaces\ITaskParam
      */
-    private $param;
+    private ITaskParam $param;
 
     public function __construct(ITaskHandler $taskHandler, ITaskParam $param)
     {
@@ -34,7 +34,7 @@ class TaskInfo
      *
      * @return \Imi\Task\Interfaces\ITaskHandler
      */
-    public function getTaskHandler()
+    public function getTaskHandler(): ITaskHandler
     {
         return $this->taskHandler;
     }
@@ -44,7 +44,7 @@ class TaskInfo
      *
      * @return \Imi\Task\Interfaces\ITaskParam
      */
-    public function getParam()
+    public function getParam(): ITaskParam
     {
         return $this->param;
     }

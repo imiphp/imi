@@ -11,9 +11,9 @@ class JsonObjectParser extends \Imi\Server\DataParser\JsonObjectParser
      *
      * @param mixed $data
      *
-     * @return mixed
+     * @return string
      */
-    public function encode($data)
+    public function encode($data): string
     {
         return json_encode($data) . "\r\n";
     }

@@ -228,7 +228,7 @@ class Server extends Base
      *
      * @return bool
      */
-    public function isHttp2()
+    public function isHttp2(): bool
     {
         return $this->http2;
     }

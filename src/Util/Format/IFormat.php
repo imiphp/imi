@@ -11,16 +11,16 @@ interface IFormat
      *
      * @param mixed $data
      *
-     * @return mixed
+     * @return string
      */
-    public function encode($data);
+    public function encode($data): string;
 
     /**
      * 解码为php变量.
      *
-     * @param mixed $data
+     * @param string $data
      *
      * @return mixed
      */
-    public function decode($data);
+    public function decode(string $data);
 }

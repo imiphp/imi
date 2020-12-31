@@ -30,4 +30,8 @@ class Type
      * 异步服务器，支持TCP、UDP、UnixSocket.
      */
     const UDP_SERVER = 'UdpServer';
+
+    private function __construct()
+    {
+    }
 }

@@ -59,7 +59,7 @@ class View
         }
     }
 
-    public function render(string $renderType, $data, array $options, Response $response = null): Response
+    public function render(string $renderType, $data, array $options, ?Response $response = null): Response
     {
         $handlers = &$this->handlers;
         if (isset($handlers[$renderType]))

@@ -227,7 +227,7 @@ class UploadedFile implements UploadedFileInterface
      *
      * @return string
      */
-    public function getTmpFileName()
+    public function getTmpFileName(): string
     {
         return $this->tmpFileName;
     }

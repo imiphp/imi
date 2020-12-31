@@ -105,7 +105,7 @@ class Local implements IHandler
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null): bool
+    public function lock(string $key, ?callable $callable = null): bool
     {
         return Lock::getInstance($this->lockId, $key)->lock($callable);
     }

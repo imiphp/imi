@@ -13,7 +13,7 @@ interface IGroupHandler
      *
      * @return bool
      */
-    public function hasGroup(string $groupName);
+    public function hasGroup(string $groupName): bool;
 
     /**
      * 创建组，返回组对象
@@ -21,7 +21,7 @@ interface IGroupHandler
      * @param string $groupName
      * @param int    $maxClients
      *
-     * @return \Imi\Server\Group\Group
+     * @return void
      */
     public function createGroup(string $groupName, int $maxClients = -1);
 

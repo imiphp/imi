@@ -330,7 +330,7 @@ class Redis implements IGroupHandler
      * @param string $groupName
      * @param int    $fd
      *
-     * @return void
+     * @return bool
      */
     public function joinGroup(string $groupName, int $fd): bool
     {
@@ -347,7 +347,7 @@ class Redis implements IGroupHandler
      * @param string $groupName
      * @param int    $fd
      *
-     * @return void
+     * @return bool
      */
     public function leaveGroup(string $groupName, int $fd): bool
     {
@@ -458,7 +458,7 @@ class Redis implements IGroupHandler
      *
      * @return mixed
      */
-    private function useRedis($callback)
+    private function useRedis(callable $callback)
     {
         return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
             $redis->select($this->redisDb);

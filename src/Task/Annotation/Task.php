@@ -29,12 +29,12 @@ class Task extends Base
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 参数类.
      *
      * @var string
      */
-    public $paramClass = TaskParam::class;
+    public string $paramClass = TaskParam::class;
 }

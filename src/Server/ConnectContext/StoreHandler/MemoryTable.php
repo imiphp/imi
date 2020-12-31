@@ -135,7 +135,7 @@ class MemoryTable implements IHandler
      *
      * @return bool
      */
-    public function lock(string $key, $callable = null): bool
+    public function lock(string $key, ?callable $callable = null): bool
     {
         if ($this->lockId)
         {

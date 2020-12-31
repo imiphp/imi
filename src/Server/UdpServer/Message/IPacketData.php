@@ -11,7 +11,7 @@ interface IPacketData
      *
      * @return string
      */
-    public function getData();
+    public function getData(): string;
 
     /**
      * 获取格式化后的数据，一般是数组或对象
@@ -25,5 +25,5 @@ interface IPacketData
      *
      * @return array
      */
-    public function getClientInfo();
+    public function getClientInfo(): array;
 }

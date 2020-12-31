@@ -18,7 +18,7 @@ interface IReceiveData
      *
      * @return string
      */
-    public function getData();
+    public function getData(): string;
 
     /**
      * 获取格式化后的数据，一般是数组或对象

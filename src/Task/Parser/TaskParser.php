@@ -40,9 +40,9 @@ class TaskParser extends BaseParser
      *
      * @param string $name task名称
      *
-     * @return array
+     * @return array|null
      */
-    public function getTask($name)
+    public function getTask(string $name): ?array
     {
         return $this->data[$name] ?? null;
     }

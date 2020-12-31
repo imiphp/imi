@@ -18,7 +18,7 @@ interface IFrame
      *
      * @return string
      */
-    public function getData();
+    public function getData(): string;
 
     /**
      * 获取格式化后的数据，一般是数组或对象
@@ -34,14 +34,14 @@ interface IFrame
      *
      * @return int
      */
-    public function getOpcode();
+    public function getOpcode(): int;
 
     /**
      * 表示数据帧是否完整.
      *
      * @return bool
      */
-    public function isFinish();
+    public function isFinish(): bool;
 
     /**
      * 获取 \Swoole\Websocket\Frame 对象

@@ -49,9 +49,9 @@ abstract class Base implements ISessionHandler
      *
      * @param array $data
      *
-     * @return mixed
+     * @return string
      */
-    public function encode(array $data)
+    public function encode(array $data): string
     {
         return $this->formatHandler->encode($data);
     }
@@ -59,11 +59,11 @@ abstract class Base implements ISessionHandler
     /**
      * 解码为php数组.
      *
-     * @param mixed $data
+     * @param string $data
      *
      * @return array
      */
-    public function decode($data): array
+    public function decode(string $data): array
     {
         $result = $this->formatHandler->decode($data);
         if (!\is_array($result))

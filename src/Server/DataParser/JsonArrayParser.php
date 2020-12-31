@@ -11,9 +11,9 @@ class JsonArrayParser implements IParser
      *
      * @param mixed $data
      *
-     * @return mixed
+     * @return string
      */
-    public function encode($data)
+    public function encode($data): string
     {
         return json_encode($data);
     }
@@ -21,11 +21,11 @@ class JsonArrayParser implements IParser
     /**
      * 解码为php变量.
      *
-     * @param mixed $data
+     * @param string $data
      *
      * @return mixed
      */
-    public function decode($data)
+    public function decode(string $data)
     {
         return json_decode($data, true);
     }

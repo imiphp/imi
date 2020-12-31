@@ -15,7 +15,7 @@ class BeanTaskHandler implements ITaskHandler
      *
      * @var string
      */
-    private $taskHandlerClass;
+    private string $taskHandlerClass;
 
     public function __construct(string $taskHandlerClass)
     {

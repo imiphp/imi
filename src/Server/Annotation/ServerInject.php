@@ -30,14 +30,14 @@ class ServerInject extends BaseInjectValue
     /**
      * Bean名称或类名.
      */
-    public $name;
+    public string $name;
 
     /**
      * Bean实例化参数.
      *
      * @var array
      */
-    public $args = [];
+    public array $args = [];
 
     /**
      * 获取注入值的真实值

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\UdpServer\Route;
 
 use Imi\Server\Route\RouteCallable;
-use Imi\Server\UdpServer\Route\RouteItem;
 
 class RouteResult
 {
@@ -30,7 +29,7 @@ class RouteResult
      */
     public $callable;
 
-    public function __construct(RouteItem $routeItem, array$params = [])
+    public function __construct(RouteItem $routeItem, array $params = [])
     {
         $this->routeItem = $routeItem;
         $this->params = $params;

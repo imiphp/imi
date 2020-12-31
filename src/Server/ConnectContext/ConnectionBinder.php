@@ -208,7 +208,7 @@ class ConnectionBinder
      *
      * @return mixed
      */
-    private function useRedis($callback)
+    private function useRedis(callable $callback)
     {
         return Redis::use(function (RedisHandler $redis) use ($callback) {
             $redis->select($this->redisDb);

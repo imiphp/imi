@@ -8,6 +8,9 @@ use Imi\Task\Interfaces\ITaskParam;
 
 class TaskParam implements ITaskParam
 {
+    /**
+     * @var mixed
+     */
     protected $data = [];
 
     public function __construct($data = [])
