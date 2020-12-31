@@ -308,6 +308,8 @@ class PoolConfig implements IPoolConfig
     public function setHeartbeatInterval($heartbeatInterval)
     {
         $this->heartbeatInterval = $heartbeatInterval;
+
+        return $this;
     }
 
     /**
@@ -330,5 +332,7 @@ class PoolConfig implements IPoolConfig
     public function setCheckStateWhenGetResource($checkStateWhenGetResource)
     {
         $this->checkStateWhenGetResource = $checkStateWhenGetResource;
+
+        return $this;
     }
 }
