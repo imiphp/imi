@@ -222,34 +222,34 @@ abstract class RedisModel extends BaseModel
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
-        $keys = [];
-        foreach ($conditions as $condition)
-        {
-            $keys[] = static::generateKey($condition);
-        }
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                return static::__getRedis()->del(...$keys);
-            case RedisStorageMode::HASH:
-                $members = [];
+                $keys = [];
                 foreach ($conditions as $condition)
                 {
-                    $members[] = static::generateMember($condition);
+                    $keys[] = static::generateKey($condition);
                 }
-                $result = true;
-                foreach (array_unique($keys) as $key)
+
+                return static::__getRedis()->del(...$keys) ?: 0;
+            case RedisStorageMode::HASH:
+                $result = 0;
+                foreach ($conditions as $condition)
                 {
-                    if (false === static::__getRedis()->hDel($key, ...$members))
-                    {
-                        $result = false;
-                        break;
-                    }
+                    $key = static::generateKey($condition);
+                    $member = static::generateMember($condition);
+                    $result += (static::__getRedis()->hDel($key, $member) ?: 0);
                 }
 
                 return $result;
             case RedisStorageMode::HASH_OBJECT:
-                return static::__getRedis()->del(...$keys);
+                $keys = [];
+                foreach ($conditions as $condition)
+                {
+                    $keys[] = static::generateKey($condition);
+                }
+
+                return static::__getRedis()->del(...$keys) ?: 0;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
