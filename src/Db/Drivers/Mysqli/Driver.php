@@ -25,7 +25,7 @@ class Driver extends Base implements IDb
      *
      * @var \mysqli|null
      */
-    protected ?mysqli $instance;
+    protected ?mysqli $instance = null;
 
     /**
      * 连接配置.

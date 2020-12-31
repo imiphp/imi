@@ -25,7 +25,7 @@ class Driver extends Base implements IDb
      *
      * @var \Swoole\Coroutine\MySQL|null
      */
-    protected ?MySQL $instance;
+    protected ?MySQL $instance = null;
 
     /**
      * 连接配置.
