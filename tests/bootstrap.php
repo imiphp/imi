@@ -1,11 +1,10 @@
-#!/usr/bin/env php
 <?php
 
-use Swoole\Event;
-use Swoole\Runtime;
 use Yurun\Swoole\CoPool\CoPool;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
+
+use function Yurun\Swoole\Coroutine\goWait;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -212,51 +211,4 @@ function startServer()
     $pool->stop();
 }
 
-function test()
-{
-    $descriptorspec = [
-        ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据
-        ['pipe', 'w'],  // 标准输出，子进程向此管道中写入数据
-    ];
-    $cmd = __DIR__ . '/phpunit -c ' . __DIR__ . '/phpunit.xml';
-    $pipes = null;
-    $processHndler = proc_open($cmd, $descriptorspec, $pipes);
-    $records2 = [];
-    while (!feof($pipes[1]))
-    {
-        $content = fgets($pipes[1]);
-        if (false !== $content)
-        {
-            if (2 === count($records2))
-            {
-                array_shift($records2);
-            }
-            $records2[] = $content;
-            echo $content;
-        }
-    }
-
-    do
-    {
-        $status = proc_get_status($processHndler);
-    } while ($status['running'] ?? false);
-    foreach ($pipes as $pipe)
-    {
-        fclose($pipe);
-    }
-    proc_close($processHndler);
-
-    exit($status['exitcode'] ?? 0);
-}
-
-register_shutdown_function(function () {
-    echo 'Shutdown memory:', \PHP_EOL, `free -m`, \PHP_EOL;
-});
-
-echo 'Before start server memory:', \PHP_EOL, `free -m`, \PHP_EOL;
-Runtime::enableCoroutine();
-go('startServer');
-Event::wait();
-Runtime::enableCoroutine(false);
-echo 'After start server memory:', \PHP_EOL, `free -m`, \PHP_EOL;
-test();
+goWait('startServer');

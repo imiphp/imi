@@ -86,11 +86,6 @@ class Driver extends Base implements IDb
         $this->transaction = new Transaction();
     }
 
-    public function __destruct()
-    {
-        $this->close();
-    }
-
     /**
      * 是否已连接.
      *

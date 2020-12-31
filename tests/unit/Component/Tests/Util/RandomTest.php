@@ -30,7 +30,7 @@ class RandomTest extends BaseTest
 
         $val = Random::number(1, 3, 1);
         $this->assertTrue($val >= 1 && $val <= 3);
-        [, $afterDot] = explode('.', $val);
+        [, $afterDot] = explode('.', $val . '.0');
         $this->assertLessThanOrEqual(1, \strlen($afterDot));
     }
 
