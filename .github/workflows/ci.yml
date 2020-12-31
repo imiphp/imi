@@ -65,7 +65,7 @@ jobs:
           ./.github/prepare-test.sh swoole
 
       - name: test
-        run: docker exec swoole php tests/run
+        run: docker exec swoole composer test
 
       - name: print logs
         if: failure()
