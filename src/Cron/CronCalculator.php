@@ -39,7 +39,11 @@ class CronCalculator
             $hours = $this->getAllHour($cronRule->getHour(), $lastTime);
             $minutes = $this->getAllMinute($cronRule->getMinute(), $lastTime);
             $seconds = $this->getAllSecond($cronRule->getSecond(), $lastTime);
-            $times[] = $this->generateTime($lastTime, $years, $months, $weeks, $days, $hours, $minutes, $seconds);
+            $time = $this->generateTime($lastTime, $years, $months, $weeks, $days, $hours, $minutes, $seconds);
+            if (null !== $time)
+            {
+                $times[] = $time;
+            }
         }
         if (isset($times[1]))
         {
@@ -51,7 +55,7 @@ class CronCalculator
         }
     }
 
-    private function generateTime(int $lastTime, array $years, array $months, array $weeks, array $days, array $hours, array $minutes, array $seconds): int
+    private function generateTime(int $lastTime, array $years, array $months, array $weeks, array $days, array $hours, array $minutes, array $seconds): ?int
     {
         if ($lastTime < 0)
         {
@@ -111,7 +115,7 @@ class CronCalculator
                         {
                             continue;
                         }
-                        $result = $this->parseHis($year, $month, $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond);
+                        $result = $this->parseHis((int) $year, (int) $month, (int) $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond);
                     }
                     if (null !== $result)
                     {
@@ -120,6 +124,8 @@ class CronCalculator
                 }
             }
         }
+
+        return null;
     }
 
     private function parseHis(int $year, int $month, int $day, ?array $hours, ?array $minutes, ?array $seconds, int $nowYear, int $nowMonth, int $nowDay, int $nowHour, int $nowMinute, int $nowSecond): ?int
@@ -159,8 +165,7 @@ class CronCalculator
             return range($min, $max);
         }
         // 区间
-        $index = strpos($rule, '-', 1);
-        if (false !== $index && $index > 0)
+        if (strpos($rule, '-') > 0)
         {
             [$begin, $end] = explode('-', substr($rule, 1), 2);
             $begin = substr($rule, 0, 1) . $begin;
@@ -203,26 +208,13 @@ class CronCalculator
         $list = explode(',', $rule);
         if ('day' !== $name)
         {
+            // 处理负数
             foreach ($list as &$item)
             {
                 if ($item < $min)
                 {
-                    // 处理负数
-                    $item = $max + 1 + $item;
+                    $item = $max + 1 + (int) $item;
                 }
-                else
-                {
-                    // 转为int
-                    $item = (int) $item;
-                }
-            }
-        }
-        else
-        {
-            foreach ($list as &$item)
-            {
-                // 转为int
-                $item = (int) $item;
             }
         }
         // 从小到大排序
