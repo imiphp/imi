@@ -14,7 +14,7 @@ class Inotify extends BaseMonitor
      *
      * @var array
      */
-    private $paths = [];
+    private array $paths = [];
 
     /**
      * inotify_init() 返回值
@@ -28,14 +28,14 @@ class Inotify extends BaseMonitor
      *
      * @var int
      */
-    protected $mask = IN_MODIFY | IN_MOVE | IN_CREATE | IN_DELETE;
+    protected int $mask = \IN_MODIFY | \IN_MOVE | \IN_CREATE | \IN_DELETE;
 
     /**
      * 更改的文件们.
      *
      * @var string[]
      */
-    private $changedFiles = [];
+    private array $changedFiles = [];
 
     /**
      * 初始化.
@@ -131,7 +131,7 @@ class Inotify extends BaseMonitor
                 {
                     $changedFiles[] = $filePath;
                 }
-                if ((Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
+                if ((Bit::has($item['mask'], \IN_CREATE) || Bit::has($item['mask'], \IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
                 {
                     $paths[$filePath] = inotify_add_watch($handler, $filePath, $mask);
                 }
@@ -156,7 +156,7 @@ class Inotify extends BaseMonitor
      *
      * @return bool
      */
-    protected function isExclude($filePath)
+    protected function isExclude(string $filePath): bool
     {
         return preg_match("/^(?!{$this->excludeRule}).+$/i", $filePath) > 0;
     }

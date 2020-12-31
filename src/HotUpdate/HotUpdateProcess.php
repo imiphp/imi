@@ -9,6 +9,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
+use Imi\Log\ErrorLog;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Process\Annotation\Process;
 use Imi\Process\BaseProcess;
@@ -24,44 +25,44 @@ class HotUpdateProcess extends BaseProcess
     /**
      * 监视器类.
      *
-     * @var \Imi\HotUpdate\Monitor\BaseMonitor
+     * @var string
      */
-    protected $monitorClass = \Imi\HotUpdate\Monitor\FileMTime::class;
+    protected string $monitorClass = \Imi\HotUpdate\Monitor\FileMTime::class;
 
     /**
      * 每次检测时间间隔，单位：秒（有可能真实时间会大于设定的时间）.
      *
      * @var int
      */
-    protected $timespan = 1;
+    protected int $timespan = 1;
 
     /**
      * 包含的路径.
      *
      * @var array
      */
-    protected $includePaths = [];
+    protected array $includePaths = [];
 
     /**
      * 排除的路径.
      *
      * @var array
      */
-    protected $excludePaths = [];
+    protected array $excludePaths = [];
 
     /**
      * 默认监视路径.
      *
-     * @var array
+     * @var array|null
      */
-    protected $defaultPath = null;
+    protected ?array $defaultPath = null;
 
     /**
      * 是否开启热更新，默认开启.
      *
      * @var bool
      */
-    protected $status = true;
+    protected bool $status = true;
 
     /**
      * 热更新检测，更改的文件列表，储存在的文件名.
@@ -73,44 +74,44 @@ class HotUpdateProcess extends BaseProcess
     /**
      * buildRuntime resource.
      *
-     * @var \resource
+     * @var \resource|null
      */
     private $buildRuntimeHandler = null;
 
     /**
      * buildRuntime pipes.
      *
-     * @var array
+     * @var array|null
      */
-    private $buildRuntimePipes = null;
+    private ?array $buildRuntimePipes = null;
 
     /**
      * @Inject("ErrorLog")
      *
      * @var \Imi\Log\ErrorLog
      */
-    protected $errorLog;
+    protected ErrorLog $errorLog;
 
     /**
      * 开始时间.
      *
      * @var float
      */
-    private $beginTime;
+    private float $beginTime;
 
     /**
      * 是否正在构建中.
      *
      * @var bool
      */
-    private $building = false;
+    private bool $building = false;
 
     /**
      * 构建运行时计时器ID.
      *
      * @var int
      */
-    private $buildRuntimeTimerId;
+    private int $buildRuntimeTimerId;
 
     /**
      * @PoolClean
@@ -249,7 +250,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function beginBuildRuntime($changedFiles)
+    private function beginBuildRuntime(array $changedFiles)
     {
         $this->beginTime = microtime(true);
         $result = null;

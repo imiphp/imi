@@ -13,14 +13,14 @@ class FileMTime extends BaseMonitor
      *
      * @var array
      */
-    private $files = [];
+    private array $files = [];
 
     /**
      * 更改的文件们.
      *
      * @var array
      */
-    private $changedFiles = [];
+    private array $changedFiles = [];
 
     /**
      * 初始化.
@@ -70,7 +70,7 @@ class FileMTime extends BaseMonitor
      *
      * @return void
      */
-    protected function parseInitFile($fileName)
+    protected function parseInitFile(string $fileName)
     {
         if (is_file($fileName))
         {
@@ -150,7 +150,7 @@ class FileMTime extends BaseMonitor
      *
      * @return bool
      */
-    protected function parseCheckFile($fileName)
+    protected function parseCheckFile(string $fileName): bool
     {
         $files = &$this->files;
         $isFile = is_file($fileName);

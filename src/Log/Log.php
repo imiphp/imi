@@ -146,7 +146,7 @@ class Log
      *
      * @return array
      */
-    private static function getTrace()
+    private static function getTrace(): array
     {
         $backtrace = debug_backtrace();
 
@@ -158,7 +158,7 @@ class Log
      *
      * @return array
      */
-    private static function getErrorFile()
+    private static function getErrorFile(): array
     {
         $backtrace = debug_backtrace(0, 3);
         $secondItem = $backtrace[2] ?? null;
@@ -173,7 +173,7 @@ class Log
      *
      * @return array
      */
-    private static function parseContext($context)
+    private static function parseContext(array $context): array
     {
         if (!isset($context['trace']))
         {

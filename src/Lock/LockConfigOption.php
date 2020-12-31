@@ -18,12 +18,12 @@ class LockConfigOption
      *
      * @var string
      */
-    public $class;
+    public string $class;
 
     /**
      * 配置项.
      *
      * @var array
      */
-    public $options = [];
+    public array $options = [];
 }

@@ -19,7 +19,7 @@ abstract class BaseFacade
      *
      * @var \Imi\Facade\Annotation\Facade[]
      */
-    protected static $cache = [];
+    protected static array $cache = [];
 
     private function __construct()
     {
@@ -59,13 +59,13 @@ abstract class BaseFacade
     /**
      * 绑定门面.
      *
-     * @param string $facadeClass
-     * @param string $bindClass
-     * @param mixed  ...$args
+     * @param string      $facadeClass
+     * @param string|null $bindClass
+     * @param mixed       ...$args
      *
      * @return void
      */
-    public static function __bindFacade($facadeClass, $bindClass = null, ...$args)
+    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, ...$args)
     {
         $cache = &self::$cache;
         if (isset($cache[$facadeClass]))
@@ -88,7 +88,7 @@ abstract class BaseFacade
         self::$cache = [];
     }
 
-    public static function __callStatic($method, $arguments)
+    public static function __callStatic(string $method, array $arguments)
     {
         return static::__getFacadeInstance()->$method(...$arguments);
     }

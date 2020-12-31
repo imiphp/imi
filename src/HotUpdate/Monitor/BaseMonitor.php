@@ -11,14 +11,14 @@ abstract class BaseMonitor implements IMonitor
      *
      * @var array
      */
-    protected $includePaths;
+    protected array $includePaths;
 
     /**
      * 排除的路径.
      *
      * @var array
      */
-    protected $excludePaths;
+    protected array $excludePaths;
 
     /**
      * 构造方法.

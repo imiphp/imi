@@ -11,37 +11,37 @@ class Record
      *
      * @var string
      */
-    private $level;
+    private string $level;
 
     /**
      * 消息.
      *
-     * @var mixed
+     * @var string
      */
-    private $message;
+    private string $message;
 
     /**
      * 上下文.
      *
      * @var array
      */
-    private $context;
+    private array $context;
 
     /**
      * 代码调用跟踪.
      *
      * @var array
      */
-    private $trace;
+    private array $trace;
 
     /**
      * 日志时间戳.
      *
      * @var int
      */
-    private $logTime;
+    private int $logTime;
 
-    public function __construct($level, $message, array $context, $trace, $logTime)
+    public function __construct(string $level, string $message, array $context, array $trace, int $logTime)
     {
         $this->level = $level;
         $this->message = $message;
@@ -55,7 +55,7 @@ class Record
      *
      * @return string
      */
-    public function getLevel()
+    public function getLevel(): string
     {
         return $this->level;
     }
@@ -63,9 +63,9 @@ class Record
     /**
      * Get 消息.
      *
-     * @return mixed
+     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -75,7 +75,7 @@ class Record
      *
      * @return array
      */
-    public function getContext()
+    public function getContext(): array
     {
         return $this->context;
     }
@@ -85,7 +85,7 @@ class Record
      *
      * @return array
      */
-    public function getTrace()
+    public function getTrace(): array
     {
         return $this->trace;
     }
@@ -95,7 +95,7 @@ class Record
      *
      * @return int
      */
-    public function getLogTime()
+    public function getLogTime(): int
     {
         return $this->logTime;
     }

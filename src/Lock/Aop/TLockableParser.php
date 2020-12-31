@@ -111,7 +111,7 @@ trait TLockableParser
      *
      * @return string
      */
-    private function getLockerId($class, $method, $args, Lockable $lockable)
+    private function getLockerId(string $class, string $method, array $args, Lockable $lockable): string
     {
         $args = ClassObject::convertArgsToKV($class, $method, $args);
         if (null === $lockable->id)

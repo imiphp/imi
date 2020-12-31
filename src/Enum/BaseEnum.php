@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Enum;
 
+use Imi\Enum\Annotation\EnumItem;
 use Imi\Enum\Annotation\Parser\EnumParser;
 
 abstract class BaseEnum
@@ -15,7 +16,7 @@ abstract class BaseEnum
      *
      * @return string|null
      */
-    public static function getName($value)
+    public static function getName($value): ?string
     {
         $map = EnumParser::getInstance()->getMap(static::class);
         $key = array_search($value, $map);
@@ -30,7 +31,7 @@ abstract class BaseEnum
      *
      * @return mixed
      */
-    public static function getValue($name)
+    public static function getValue(string $name)
     {
         return \constant(static::class . '::' . $name);
     }
@@ -42,7 +43,7 @@ abstract class BaseEnum
      *
      * @return string|null
      */
-    public static function getText($value)
+    public static function getText($value): ?string
     {
         $enumItem = EnumParser::getInstance()->getEnumItem(static::class, $value);
         if ($enumItem)
@@ -60,9 +61,9 @@ abstract class BaseEnum
      *
      * @param mixed $value
      *
-     * @return \Imi\Enum\Annotation\EnumItem
+     * @return \Imi\Enum\Annotation\EnumItem|null
      */
-    public static function getData($value)
+    public static function getData($value): ?EnumItem
     {
         return EnumParser::getInstance()->getEnumItem(static::class, $value);
     }
@@ -72,7 +73,7 @@ abstract class BaseEnum
      *
      * @return string[]
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return EnumParser::getInstance()->getNames(static::class);
     }
@@ -82,7 +83,7 @@ abstract class BaseEnum
      *
      * @return array
      */
-    public static function getValues()
+    public static function getValues(): array
     {
         return EnumParser::getInstance()->getValues(static::class);
     }
@@ -92,7 +93,7 @@ abstract class BaseEnum
      *
      * @return array
      */
-    public static function getMap()
+    public static function getMap(): array
     {
         return EnumParser::getInstance()->getMap(static::class);
     }

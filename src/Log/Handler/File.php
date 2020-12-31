@@ -19,42 +19,42 @@ class File extends Base
      *
      * @var string
      */
-    protected $fileName;
+    protected string $fileName;
 
     /**
      * 单文件最大体积，单位字节，默认1G.
      *
      * @var int
      */
-    protected $maxSize = 1073741824;
+    protected int $maxSize = 1073741824;
 
     /**
      * 当前保存的日志文件代表日期时间戳，精确到：小时.
      *
      * @var int
      */
-    private $currentFileDateTime;
+    private int $currentFileDateTime = 0;
 
     /**
      * 当前文件序号.
      *
      * @var int
      */
-    private $currentFileIndex = 0;
+    private int $currentFileIndex = 0;
 
     /**
      * 当前日志文件扩展名.
      *
      * @var string
      */
-    private $currentFileExt;
+    private string $currentFileExt;
 
     /**
      * 当前无序号的文件名.
      *
      * @var string
      */
-    private $currentNoIndexFileName;
+    private string $currentNoIndexFileName;
 
     /**
      * 真正的保存操作实现.
@@ -87,9 +87,11 @@ class File extends Base
     /**
      * 获取新日期的初始文件名.
      *
+     * @param int $timestamp
+     *
      * @return string
      */
-    private function getNewDateFileName($timestamp)
+    private function getNewDateFileName(int $timestamp): string
     {
         $this->currentFileDateTime = $timestamp;
         $this->currentFileIndex = 0;
@@ -104,7 +106,7 @@ class File extends Base
      *
      * @return string
      */
-    private function getFileName()
+    private function getFileName(): string
     {
         $currentFileIndex = &$this->currentFileIndex;
         --$currentFileIndex;

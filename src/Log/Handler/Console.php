@@ -14,9 +14,9 @@ class Console extends Base
     /**
      * 要限制输出的字符数量，为null则不限制.
      *
-     * @var int
+     * @var int|null
      */
-    protected $length;
+    protected ?int $length = null;
 
     /**
      * 真正的保存操作实现.

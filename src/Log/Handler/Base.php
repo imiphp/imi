@@ -11,14 +11,14 @@ abstract class Base
      *
      * @var \Imi\Log\Record[]
      */
-    protected $records = [];
+    protected array $records = [];
 
     /**
      * 允许记录的日志等级们.
      *
      * @var string[]
      */
-    protected $levels = [];
+    protected array $levels = [];
 
     /**
      * 日志缓存数量
@@ -26,28 +26,28 @@ abstract class Base
      *
      * @var int
      */
-    protected $logCacheNumber = 1;
+    protected int $logCacheNumber = 1;
 
     /**
      * 日志格式.
      *
      * @var string
      */
-    protected $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}';
+    protected string $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}';
 
     /**
      * 调用跟踪格式.
      *
      * @var string
      */
-    protected $traceFormat = '#{index}  {call} called at [{file}:{line}]';
+    protected string $traceFormat = '#{index}  {call} called at [{file}:{line}]';
 
     /**
      * 限制 trace 条目数量，默认为 -1 不限制.
      *
      * @var int
      */
-    protected $traceLimit = -1;
+    protected int $traceLimit = -1;
 
     /**
      * date()函数支持的格式.
@@ -97,9 +97,9 @@ abstract class Base
      *
      * @var string
      */
-    private $dateFormatsCacheStr;
+    private string $dateFormatsCacheStr;
 
-    public function __construct($option = [])
+    public function __construct(array $option = [])
     {
         foreach ($option as $k => $v)
         {
@@ -174,11 +174,11 @@ abstract class Base
     /**
      * 获取日期时间.
      *
-     * @param string $time 不传则使用当前时间
+     * @param string|null $time 不传则使用当前时间
      *
      * @return string
      */
-    public function getDateTime($time = null)
+    public function getDateTime(?string $time = null): string
     {
         if (null === $time)
         {
@@ -195,7 +195,7 @@ abstract class Base
      *
      * @return string
      */
-    public function getLogString(\Imi\Log\Record $record)
+    public function getLogString(\Imi\Log\Record $record): string
     {
         $logTime = $record->getLogTime();
         $vars = [
@@ -232,7 +232,7 @@ abstract class Base
      *
      * @return string
      */
-    public function parseTrace(\Imi\Log\Record $record)
+    public function parseTrace(\Imi\Log\Record $record): string
     {
         $result = [];
         $trace = $record->getTrace();
@@ -263,9 +263,11 @@ abstract class Base
     /**
      * 获取调用跟踪的调用.
      *
+     * @param array $trace
+     *
      * @return string
      */
-    public function getTraceCall($trace)
+    public function getTraceCall(array $trace): string
     {
         $call = '';
         if (isset($trace['class'], $trace['type']))
@@ -285,9 +287,11 @@ abstract class Base
     /**
      * 获取调用跟踪的方法参数.
      *
+     * @param array $trace
+     *
      * @return string
      */
-    public function getTraceArgs($trace)
+    public function getTraceArgs(array $trace): string
     {
         $result = [];
         foreach ($trace['args'] ?? [] as $value)
@@ -311,9 +315,9 @@ abstract class Base
      * @param string $string
      * @param int    $timestamp
      *
-     * @return void
+     * @return string
      */
-    protected function replaceDateTime($string, $timestamp)
+    protected function replaceDateTime(string $string, int $timestamp): string
     {
         $list = explode('#', date($this->dateFormatsCacheStr, $timestamp));
         $replaces = [];

@@ -13,37 +13,37 @@ abstract class BaseLock implements ILockHandler
      *
      * @var string
      */
-    protected $id;
+    protected string $id;
 
     /**
      * 是否已加锁
      *
      * @var bool
      */
-    protected $isLocked = false;
+    protected bool $isLocked = false;
 
     /**
      * 等待锁超时时间，单位：毫秒，0为不限制.
      *
      * @var int
      */
-    protected $waitTimeout = 3000;
+    protected int $waitTimeout = 3000;
 
     /**
      * 锁超时时间，单位：毫秒.
      *
      * @var int
      */
-    protected $lockExpire = 3000;
+    protected int $lockExpire = 3000;
 
     /**
      * 获得锁的协程ID.
      *
      * @var int
      */
-    private $lockCoId = -1;
+    private int $lockCoId = -1;
 
-    public function __construct($id, $options = [])
+    public function __construct(string $id, array $options = [])
     {
         $this->id = $id;
         foreach ($options as $k => $v)
@@ -65,12 +65,12 @@ abstract class BaseLock implements ILockHandler
     /**
      * 加锁，会挂起协程.
      *
-     * @param callable $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
-     * @param callable $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
+     * @param callable|null $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable|null $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
      *
      * @return bool
      */
-    public function lock($taskCallable = null, $afterLockCallable = null): bool
+    public function lock(?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
     {
         if ($this->isLocked())
         {
@@ -108,11 +108,11 @@ abstract class BaseLock implements ILockHandler
     /**
      * 尝试获取锁
      *
-     * @param callable $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable|null $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      *
      * @return bool
      */
-    public function tryLock($taskCallable = null): bool
+    public function tryLock(?callable $taskCallable = null): bool
     {
         if ($this->isLocked())
         {

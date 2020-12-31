@@ -6,26 +6,26 @@ namespace Imi\Lock\Handler;
 
 interface ILockHandler
 {
-    public function __construct($id, $options = []);
+    public function __construct(string $id, array $options = []);
 
     /**
      * 加锁，会挂起协程.
      *
-     * @param callable $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
-     * @param callable $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
+     * @param callable|null $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable|null $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
      *
      * @return bool
      */
-    public function lock($taskCallable = null, $afterLockCallable = null): bool;
+    public function lock(?callable $taskCallable = null, ?callable $afterLockCallable = null): bool;
 
     /**
      * 尝试获取锁
      *
-     * @param callable $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable|null $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      *
      * @return bool
      */
-    public function tryLock($taskCallable = null): bool;
+    public function tryLock(?callable $taskCallable = null): bool;
 
     /**
      * 解锁

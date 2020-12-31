@@ -108,9 +108,9 @@ class Lock
     /**
      * 加锁，会挂起协程.
      *
-     * @param string|null $id
-     * @param callable    $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
-     * @param callable    $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
+     * @param string|null   $id
+     * @param callable|null $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param callable|null $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
      *
      * @return bool
      */
@@ -122,8 +122,8 @@ class Lock
     /**
      * 尝试获取锁
      *
-     * @param string|null $id
-     * @param callable    $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
+     * @param string|null   $id
+     * @param callable|null $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      *
      * @return bool
      */

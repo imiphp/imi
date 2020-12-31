@@ -28,19 +28,19 @@ class Facade extends Base
      *
      * @var string
      */
-    public $class;
+    public string $class;
 
     /**
      * 为 true 时，使用当前请求上下文的 Bean 对象
      *
      * @var bool
      */
-    public $request = false;
+    public bool $request = false;
 
     /**
      * 实例化参数.
      *
      * @var array
      */
-    public $args = [];
+    public array $args = [];
 }

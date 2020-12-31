@@ -36,9 +36,9 @@ class EnumParser extends BaseParser
      * @param string $className
      * @param mixed  $value
      *
-     * @return \Imi\Enum\Annotation\EnumItem
+     * @return \Imi\Enum\Annotation\EnumItem|null
      */
-    public function getEnumItem($className, $value)
+    public function getEnumItem(string $className, $value): ?EnumItem
     {
         return $this->data['EnumItem'][$className][$value] ?? null;
     }
@@ -50,7 +50,7 @@ class EnumParser extends BaseParser
      *
      * @return string[]
      */
-    public function getMap($className)
+    public function getMap(string $className): array
     {
         return $this->data['map'][$className] ?? [];
     }
@@ -62,7 +62,7 @@ class EnumParser extends BaseParser
      *
      * @return string[]
      */
-    public function getNames($className)
+    public function getNames(string $className): array
     {
         return array_keys($this->data['map'][$className] ?? []);
     }
@@ -74,7 +74,7 @@ class EnumParser extends BaseParser
      *
      * @return array
      */
-    public function getValues($className)
+    public function getValues(string $className): array
     {
         $data = &$this->data;
         if (isset($data['EnumItem'][$className]))

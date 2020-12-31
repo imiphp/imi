@@ -22,7 +22,7 @@ class Logger extends AbstractLogger
      *
      * @var array
      */
-    protected $coreHandlers = [
+    protected array $coreHandlers = [
         [
             'class'     => \Imi\Log\Handler\Console::class,
             'options'   => [
@@ -62,21 +62,21 @@ class Logger extends AbstractLogger
      *
      * @var array
      */
-    protected $exHandlers = [];
+    protected array $exHandlers = [];
 
     /**
      * 处理器对象数组.
      *
      * @var \Imi\Log\Handler\Base[]
      */
-    protected $handlers = [];
+    protected array $handlers = [];
 
     /**
      * 日志记录.
      *
      * @var \Imi\Log\Record[]
      */
-    protected $records = [];
+    protected array $records = [];
 
     public function __init()
     {
@@ -127,9 +127,11 @@ class Logger extends AbstractLogger
     /**
      * 获取代码调用跟踪.
      *
+     * @param array $backtrace
+     *
      * @return array
      */
-    protected function getTrace($backtrace)
+    protected function getTrace(array $backtrace): array
     {
         $index = null;
         $realClassName = static::__getRealClassName();
@@ -153,9 +155,11 @@ class Logger extends AbstractLogger
     /**
      * 获取错误文件位置.
      *
+     * @param array $backtrace
+     *
      * @return array
      */
-    public function getErrorFile($backtrace)
+    public function getErrorFile(array $backtrace): array
     {
         $index = null;
         $realClassName = static::__getRealClassName();
@@ -180,7 +184,7 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    private function parseContext($context)
+    private function parseContext(array $context): array
     {
         $debugBackTrace = debug_backtrace();
         if (!isset($context['trace']))
@@ -204,7 +208,7 @@ class Logger extends AbstractLogger
      *
      * @return void
      */
-    public function addExHandler($exHandler)
+    public function addExHandler(array $exHandler)
     {
         if (\in_array($exHandler, $this->exHandlers))
         {

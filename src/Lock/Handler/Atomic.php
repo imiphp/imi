@@ -20,21 +20,21 @@ class Atomic extends BaseLock
      *
      * @var string
      */
-    public $atomicName;
+    public string $atomicName;
 
     /**
      * 同时获得锁的数量.
      *
      * @var int
      */
-    public $quantity = 1;
+    public int $quantity = 1;
 
     /**
      * 超时 timerid.
      *
-     * @var int
+     * @var int|null
      */
-    private $timeoutTimerId = null;
+    private ?int $timeoutTimerId = null;
 
     /**
      * 加锁，会阻塞进程.

@@ -24,7 +24,7 @@ class Lockable extends Base
      *
      * @var string|null
      */
-    public $id;
+    public ?string $id = null;
 
     /**
      * 锁类型，如：RedisLock
@@ -32,28 +32,28 @@ class Lockable extends Base
      *
      * @var string|null
      */
-    public $type;
+    public ?string $type = null;
 
     /**
      * 等待锁超时时间，单位：毫秒，0为不限制.
      *
      * @var int
      */
-    public $waitTimeout = 3000;
+    public int $waitTimeout = 3000;
 
     /**
      * 锁超时时间，单位：毫秒.
      *
      * @var int
      */
-    public $lockExpire = 3000;
+    public int $lockExpire = 3000;
 
     /**
      * 锁初始化参数.
      *
      * @var array
      */
-    public $options = [];
+    public array $options = [];
 
     /**
      * 当获得锁后执行的回调。该回调返回非 null 则不执行加锁后的方法，本回调的返回值将作为返回值

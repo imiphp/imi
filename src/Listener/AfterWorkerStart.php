@@ -54,7 +54,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
      *
      * @return bool
      */
-    private function checkInitFlagFile($initFlagFile)
+    private function checkInitFlagFile(string $initFlagFile): bool
     {
         return is_file($initFlagFile) && file_get_contents($initFlagFile) == Swoole::getMasterPID();
     }

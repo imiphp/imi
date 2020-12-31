@@ -20,7 +20,7 @@ class ErrorLog
      *
      * @var int
      */
-    protected $level = 0;
+    protected int $level = 0;
 
     /**
      * 注册错误监听.
@@ -44,7 +44,7 @@ class ErrorLog
      *
      * @return void
      */
-    public function onError($errno, $errstr, $errfile, $errline)
+    public function onError(int $errno, string $errstr, string $errfile, int $errline)
     {
         if (error_reporting() & $errno)
         {
@@ -120,6 +120,8 @@ class ErrorLog
     /**
      * 致命错误.
      *
+     * @param \Throwable $th
+     *
      * @return void
      */
     public function onException(\Throwable $th)
@@ -152,7 +154,7 @@ class ErrorLog
      *
      * @return array
      */
-    protected function getTrace()
+    protected function getTrace(): array
     {
         $backtrace = debug_backtrace();
         $index = null;
