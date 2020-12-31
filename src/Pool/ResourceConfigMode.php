@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Pool;
 
-abstract class ResourceConfigMode
+class ResourceConfigMode
 {
     /**
      * 轮流
@@ -15,4 +15,8 @@ abstract class ResourceConfigMode
      * 随机.
      */
     const RANDOM = 2;
+
+    private function __construct()
+    {
+    }
 }

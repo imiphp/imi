@@ -19,21 +19,21 @@ class PoolConfig implements IPoolConfig
      *
      * @var int
      */
-    protected $maxResources = 10;
+    protected int $maxResources = 10;
 
     /**
      * 池子中最少资源数.
      *
      * @var int
      */
-    protected $minResources = 1;
+    protected int $minResources = 1;
 
     /**
      * 资源回收时间间隔，单位：秒.
      *
      * @var int
      */
-    protected $gcInterval = 60;
+    protected int $gcInterval = 60;
 
     /**
      * 资源最大存活时间，单位：秒.
@@ -42,14 +42,14 @@ class PoolConfig implements IPoolConfig
      *
      * @var int|null
      */
-    protected $maxActiveTime;
+    protected ?int $maxActiveTime = null;
 
     /**
      * 等待资源最大超时时间，单位：毫秒.
      *
      * @var int
      */
-    protected $waitTimeout = 3000;
+    protected int $waitTimeout = 3000;
 
     /**
      * 每次获取资源最长使用时间，单位：秒.
@@ -58,7 +58,7 @@ class PoolConfig implements IPoolConfig
      *
      * @var float|null
      */
-    protected $maxUsedTime;
+    protected ?float $maxUsedTime = null;
 
     /**
      * 当前请求上下文资源检查状态间隔，单位：支持小数的秒.
@@ -67,28 +67,28 @@ class PoolConfig implements IPoolConfig
      *
      * @var float
      */
-    protected $requestResourceCheckInterval = 30;
+    protected float $requestResourceCheckInterval = 30;
 
     /**
      * 心跳时间间隔，单位：秒.
      *
-     * @var float
+     * @var float|null
      */
-    protected $heartbeatInterval;
+    protected ?float $heartbeatInterval = null;
 
     /**
      * 资源配置模式.
      *
      * @var int
      */
-    protected $resourceConfigMode = ResourceConfigMode::TURN;
+    protected int $resourceConfigMode = ResourceConfigMode::TURN;
 
     /**
      * 当获取资源时，是否检查状态
      *
      * @var bool
      */
-    protected $checkStateWhenGetResource = true;
+    protected bool $checkStateWhenGetResource = true;
 
     public function __construct($option = [])
     {
@@ -103,7 +103,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return int
      */
-    public function getMaxResources()
+    public function getMaxResources(): int
     {
         return $this->maxResources;
     }
@@ -113,7 +113,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return int
      */
-    public function getMinResources()
+    public function getMinResources(): int
     {
         return $this->minResources;
     }
@@ -123,7 +123,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return int|null
      */
-    public function getGCInterval()
+    public function getGCInterval(): ?int
     {
         return $this->gcInterval;
     }
@@ -131,9 +131,9 @@ class PoolConfig implements IPoolConfig
     /**
      * 获取资源最大存活时间，单位：秒.
      *
-     * @return int
+     * @return int|null
      */
-    public function getMaxActiveTime()
+    public function getMaxActiveTime(): ?int
     {
         return $this->maxActiveTime;
     }
@@ -143,7 +143,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return int
      */
-    public function getWaitTimeout()
+    public function getWaitTimeout(): int
     {
         return $this->waitTimeout;
     }
@@ -155,7 +155,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setMaxResources($maxResources)
+    public function setMaxResources(int $maxResources): self
     {
         $this->maxResources = $maxResources;
 
@@ -169,7 +169,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setMinResources($minResources)
+    public function setMinResources(int $minResources): self
     {
         $this->minResources = $minResources;
 
@@ -183,7 +183,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setGcInterval($gcInterval)
+    public function setGcInterval(?int $gcInterval): self
     {
         $this->gcInterval = $gcInterval;
 
@@ -193,11 +193,11 @@ class PoolConfig implements IPoolConfig
     /**
      * Set 资源最大存活时间，单位：秒.
      *
-     * @param int $maxActiveTime 获取资源最大存活时间，单位：秒
+     * @param int|null $maxActiveTime 获取资源最大存活时间，单位：秒
      *
      * @return static
      */
-    public function setMaxActiveTime($maxActiveTime)
+    public function setMaxActiveTime(?int $maxActiveTime): self
     {
         $this->maxActiveTime = $maxActiveTime;
 
@@ -211,7 +211,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setWaitTimeout($waitTimeout)
+    public function setWaitTimeout(int $waitTimeout): self
     {
         $this->waitTimeout = $waitTimeout;
 
@@ -223,7 +223,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return int
      */
-    public function getResourceConfigMode()
+    public function getResourceConfigMode(): int
     {
         return $this->resourceConfigMode;
     }
@@ -235,7 +235,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setResourceConfigMode($resourceConfigMode)
+    public function setResourceConfigMode(int $resourceConfigMode): self
     {
         $this->resourceConfigMode = $resourceConfigMode;
 
@@ -247,7 +247,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return float|null
      */
-    public function getMaxUsedTime()
+    public function getMaxUsedTime(): ?float
     {
         return $this->maxUsedTime;
     }
@@ -259,7 +259,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setMaxUsedTime($maxUsedTime)
+    public function setMaxUsedTime(?float $maxUsedTime): self
     {
         $this->maxUsedTime = $maxUsedTime;
 
@@ -271,7 +271,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return float
      */
-    public function getRequestResourceCheckInterval()
+    public function getRequestResourceCheckInterval(): float
     {
         return $this->requestResourceCheckInterval;
     }
@@ -283,7 +283,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setRequestResourceCheckInterval($value)
+    public function setRequestResourceCheckInterval(float $value): self
     {
         $this->requestResourceCheckInterval = $value;
 
@@ -293,9 +293,9 @@ class PoolConfig implements IPoolConfig
     /**
      * 获取心跳时间间隔，单位：秒.
      *
-     * @return float
+     * @return float|null
      */
-    public function getHeartbeatInterval()
+    public function getHeartbeatInterval(): ?float
     {
         return $this->heartbeatInterval;
     }
@@ -307,9 +307,11 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setHeartbeatInterval($heartbeatInterval)
+    public function setHeartbeatInterval(?float $heartbeatInterval): self
     {
         $this->heartbeatInterval = $heartbeatInterval;
+
+        return $this;
     }
 
     /**
@@ -317,7 +319,7 @@ class PoolConfig implements IPoolConfig
      *
      * @return bool
      */
-    public function isCheckStateWhenGetResource()
+    public function isCheckStateWhenGetResource(): bool
     {
         return $this->checkStateWhenGetResource;
     }
@@ -329,8 +331,10 @@ class PoolConfig implements IPoolConfig
      *
      * @return static
      */
-    public function setCheckStateWhenGetResource($checkStateWhenGetResource)
+    public function setCheckStateWhenGetResource(bool $checkStateWhenGetResource): self
     {
         $this->checkStateWhenGetResource = $checkStateWhenGetResource;
+
+        return $this;
     }
 }

@@ -42,7 +42,7 @@ interface IPool
      *
      * @return IPoolResource
      */
-    public function getResource();
+    public function getResource(): IPoolResource;
 
     /**
      * 尝试获取资源，获取到则返回资源，没有获取到返回false.
@@ -79,21 +79,21 @@ interface IPool
      *
      * @return int
      */
-    public function getCount();
+    public function getCount(): int;
 
     /**
      * 获取当前池子中空闲资源总数.
      *
      * @return int
      */
-    public function getFree();
+    public function getFree(): int;
 
     /**
      * 获取当前池子中正在使用的资源总数.
      *
      * @return int
      */
-    public function getUsed();
+    public function getUsed(): int;
 
     /**
      * 获得资源配置.

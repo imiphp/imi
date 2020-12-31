@@ -23,12 +23,12 @@ class PoolClean extends Base
      *
      * @var string
      */
-    public $mode = 'allow';
+    public string $mode = 'allow';
 
     /**
      * 连接池名称列表.
      *
      * @var array
      */
-    public $list = [];
+    public array $list = [];
 }

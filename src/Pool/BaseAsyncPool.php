@@ -19,7 +19,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @var \Swoole\Coroutine\Channel
      */
-    protected $queue;
+    protected Channel $queue;
 
     /**
      * 关闭池子，释放所有资源.
@@ -47,7 +47,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return IPoolResource
      */
-    public function getResource()
+    public function getResource(): IPoolResource
     {
         $selectResult = true;
         $queue = $this->queue;
@@ -208,7 +208,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return int
      */
-    public function getFree()
+    public function getFree(): int
     {
         return $this->queue->length();
     }

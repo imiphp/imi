@@ -35,7 +35,7 @@ class RedisResource extends BasePoolResource
      *
      * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $config = $this->config;
         $redis = $this->redis;

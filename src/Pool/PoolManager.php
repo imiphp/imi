@@ -92,6 +92,10 @@ class PoolManager
 
     /**
      * 连接池是否存在.
+     *
+     * @param string $name
+     *
+     * @return void
      */
     public static function exists(string $name)
     {
@@ -258,7 +262,7 @@ class PoolManager
      *
      * @return bool
      */
-    public static function hasRequestContextResource(string $name)
+    public static function hasRequestContextResource(string $name): bool
     {
         $resource = RequestContext::get('poolResource.' . $name);
 

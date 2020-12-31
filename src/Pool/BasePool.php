@@ -7,6 +7,7 @@ namespace Imi\Pool;
 use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
 use Imi\Pool\Interfaces\IPool;
+use Imi\Pool\Interfaces\IPoolConfig;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Util\ArrayUtil;
 use Imi\Worker;
@@ -19,21 +20,21 @@ abstract class BasePool implements IPool
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 池子存储.
      *
      * @var \Imi\Pool\PoolItem[]
      */
-    protected $pool = [];
+    protected array $pool = [];
 
     /**
      * 配置.
      *
      * @var \Imi\Pool\Interfaces\IPoolConfig
      */
-    protected $config;
+    protected IPoolConfig $config;
 
     /**
      * 资源配置.
@@ -45,30 +46,30 @@ abstract class BasePool implements IPool
     /**
      * 垃圾回收定时器ID.
      *
-     * @var int
+     * @var int|null
      */
-    protected $gcTimerId;
+    protected ?int $gcTimerId = null;
 
     /**
      * 心跳定时器ID.
      *
-     * @var int
+     * @var int|null
      */
-    protected $heartbeatTimerId;
+    protected ?int $heartbeatTimerId = null;
 
     /**
      * 当前配置序号.
      *
      * @var int
      */
-    protected $configIndex = -1;
+    protected int $configIndex = -1;
 
     /**
      * 正在添加中的资源数量.
      *
      * @var int
      */
-    protected $addingResources = 0;
+    protected int $addingResources = 0;
 
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
@@ -218,7 +219,7 @@ abstract class BasePool implements IPool
      *
      * @return IPoolResource
      */
-    protected function addResource()
+    protected function addResource(): IPoolResource
     {
         $addingResources = &$this->addingResources;
         try
@@ -318,7 +319,7 @@ abstract class BasePool implements IPool
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return \count($this->pool) + $this->addingResources;
     }
@@ -328,7 +329,7 @@ abstract class BasePool implements IPool
      *
      * @return int
      */
-    public function getUsed()
+    public function getUsed(): int
     {
         return $this->getCount() - $this->getFree();
     }

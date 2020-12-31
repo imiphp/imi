@@ -17,7 +17,7 @@ abstract class BasePoolResource implements IPoolResource
      *
      * @var IPool
      */
-    private $pool;
+    private IPool $pool;
 
     public function __construct(IPool $pool)
     {

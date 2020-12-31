@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Pool;
 
+use Imi\Pool\Interfaces\IPoolResource;
+
 /**
  * 池子中存储的对象
  */
@@ -14,42 +16,42 @@ class PoolItem
      *
      * @var \Imi\Pool\Interfaces\IPoolResource
      */
-    protected $resource;
+    protected IPoolResource $resource;
 
     /**
      * 被使用的次数.
      *
      * @var int
      */
-    protected $usageCount = 0;
+    protected int $usageCount = 0;
 
     /**
      * 是否空闲状态
      *
      * @var bool
      */
-    protected $isFree = true;
+    protected bool $isFree = true;
 
     /**
      * 创建时间的时间戳.
      *
-     * @var int
+     * @var float
      */
-    protected $createTime = 0;
+    protected float $createTime = 0;
 
     /**
      * 最后一次使用的时间戳.
      *
-     * @var int
+     * @var float
      */
-    protected $lastUseTime = 0;
+    protected float $lastUseTime = 0;
 
     /**
      * 最后一次被释放的时间戳.
      *
-     * @var int
+     * @var float
      */
-    protected $lastReleaseTime = 0;
+    protected float $lastReleaseTime = 0;
 
     public function __construct(\Imi\Pool\Interfaces\IPoolResource $resource)
     {
@@ -62,7 +64,7 @@ class PoolItem
      *
      * @return \Imi\Pool\Interfaces\IPoolResource
      */
-    public function getResource()
+    public function getResource(): IPoolResource
     {
         return $this->resource;
     }
@@ -72,7 +74,7 @@ class PoolItem
      *
      * @return int
      */
-    public function getUsageCount()
+    public function getUsageCount(): int
     {
         return $this->usageCount;
     }
@@ -82,7 +84,7 @@ class PoolItem
      *
      * @return bool
      */
-    public function isFree()
+    public function isFree(): bool
     {
         return $this->isFree;
     }
@@ -92,7 +94,7 @@ class PoolItem
      *
      * @return bool
      */
-    public function lock()
+    public function lock(): bool
     {
         if ($this->isFree)
         {
@@ -122,9 +124,9 @@ class PoolItem
     /**
      * Get 创建时间的时间戳.
      *
-     * @return int
+     * @return float
      */
-    public function getCreateTime()
+    public function getCreateTime(): float
     {
         return $this->createTime;
     }
@@ -132,9 +134,9 @@ class PoolItem
     /**
      * Get 最后一次使用的时间戳.
      *
-     * @return int
+     * @return float
      */
-    public function getLastUseTime()
+    public function getLastUseTime(): float
     {
         return $this->lastUseTime;
     }
@@ -142,9 +144,9 @@ class PoolItem
     /**
      * Get 最后一次被释放的时间戳.
      *
-     * @return int
+     * @return float
      */
-    public function getLastReleaseTime()
+    public function getLastReleaseTime(): float
     {
         return $this->lastReleaseTime;
     }

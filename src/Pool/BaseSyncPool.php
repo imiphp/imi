@@ -17,7 +17,7 @@ abstract class BaseSyncPool extends BasePool
      *
      * @var \SplQueue
      */
-    protected $queue;
+    protected \SplQueue $queue;
 
     public function __destruct()
     {
@@ -38,7 +38,7 @@ abstract class BaseSyncPool extends BasePool
      *
      * @return IPoolResource
      */
-    public function getResource()
+    public function getResource(): IPoolResource
     {
         $config = $this->config;
         if ($this->getFree() <= 0)
@@ -142,7 +142,7 @@ abstract class BaseSyncPool extends BasePool
      *
      * @return int
      */
-    public function getFree()
+    public function getFree(): int
     {
         return $this->queue->count();
     }
