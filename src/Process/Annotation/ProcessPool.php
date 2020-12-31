@@ -28,26 +28,26 @@ class ProcessPool extends Base
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 进程数量.
      *
      * @var int
      */
-    public $workerNum = 1;
+    public int $workerNum = 1;
 
     /**
      * 进程间通信的模式，默认为0表示不使用任何进程间通信特性.
      *
      * @var int
      */
-    public $ipcType = 0;
+    public int $ipcType = 0;
 
     /**
      * 消息队列key.
      *
-     * @var string
+     * @var string|null
      */
-    public $msgQueueKey = null;
+    public ?string $msgQueueKey = null;
 }

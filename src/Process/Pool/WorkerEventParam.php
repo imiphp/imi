@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Imi\Process\Pool;
 
 use Imi\Event\EventParam;
+use Imi\Process\Pool;
+use Imi\Process\Process;
 
 class WorkerEventParam extends EventParam
 {
@@ -13,28 +15,28 @@ class WorkerEventParam extends EventParam
      *
      * @var \Imi\Process\Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * 工作进程.
      *
      * @var \Imi\Process\Process
      */
-    protected $worker;
+    protected Process $worker;
 
     /**
      * 工作进程ID.
      *
      * @var int
      */
-    protected $workerId;
+    protected int $workerId;
 
     /**
      * Get 进程池对象
      *
      * @return \Imi\Process\Pool
      */
-    public function getPool()
+    public function getPool(): Pool
     {
         return $this->pool;
     }
@@ -44,7 +46,7 @@ class WorkerEventParam extends EventParam
      *
      * @return \Imi\Process\Process
      */
-    public function getWorker()
+    public function getWorker(): Process
     {
         return $this->worker;
     }
@@ -54,7 +56,7 @@ class WorkerEventParam extends EventParam
      *
      * @return int
      */
-    public function getWorkerId()
+    public function getWorkerId(): int
     {
         return $this->workerId;
     }

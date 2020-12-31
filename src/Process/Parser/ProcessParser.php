@@ -40,9 +40,9 @@ class ProcessParser extends BaseParser
      *
      * @param string $name process名称
      *
-     * @return array
+     * @return array|null
      */
-    public function getProcess($name)
+    public function getProcess(string $name): ?array
     {
         return $this->data[$name] ?? null;
     }

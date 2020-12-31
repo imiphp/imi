@@ -28,14 +28,14 @@ class ProcessManager
      *
      * @var array
      */
-    private static $lockMap = [];
+    private static array $lockMap = [];
 
     /**
      * 挂载在管理进程下的进程列表.
      *
      * @var \Swoole\Process[]
      */
-    private static $managerProcesses = [];
+    private static array $managerProcesses = [];
 
     private function __construct()
     {
@@ -48,13 +48,13 @@ class ProcessManager
      *
      * @param string      $name
      * @param array       $args
-     * @param bool        $redirectStdinStdout
-     * @param int         $pipeType
+     * @param bool|null   $redirectStdinStdout
+     * @param int|null    $pipeType
      * @param string|null $alias
      *
      * @return \Swoole\Process
      */
-    public static function create($name, $args = [], $redirectStdinStdout = null, $pipeType = null, ?string $alias = null): \Swoole\Process
+    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): \Swoole\Process
     {
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if (null === $processOption)
@@ -88,7 +88,7 @@ class ProcessManager
      *
      * @return callable
      */
-    public static function getProcessCallable($args, $name, $processOption, ?string $alias = null)
+    public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null): callable
     {
         return function (\Swoole\Process $swooleProcess) use ($args, $name, $processOption, $alias) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
@@ -172,7 +172,7 @@ class ProcessManager
      *
      * @return bool
      */
-    public static function isRunning($name)
+    public static function isRunning(string $name): bool
     {
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if (null === $processOption)
@@ -216,14 +216,14 @@ class ProcessManager
      *     'output' => '',
      * );.
      *
-     * @param string $name
-     * @param array  $args
-     * @param bool   $redirectStdinStdout
-     * @param int    $pipeType
+     * @param string    $name
+     * @param array     $args
+     * @param bool|null $redirectStdinStdout
+     * @param int|null  $pipeType
      *
      * @return array
      */
-    public static function run($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+    public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): array
     {
         $cmd = Imi::getImiCmd('process/run', [$name], $args);
         if (null !== $redirectStdinStdout)
@@ -247,14 +247,14 @@ class ProcessManager
      *     'output' => '',
      * );.
      *
-     * @param string $name
-     * @param array  $args
-     * @param bool   $redirectStdinStdout
-     * @param int    $pipeType
+     * @param string    $name
+     * @param array     $args
+     * @param bool|null $redirectStdinStdout
+     * @param int|null  $pipeType
      *
      * @return void
      */
-    public static function coRun($name, $args = [], $redirectStdinStdout = null, $pipeType = null)
+    public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null)
     {
         go(function () use ($name, $args, $redirectStdinStdout, $pipeType) {
             static::run($name, $args, $redirectStdinStdout, $pipeType);
@@ -266,13 +266,13 @@ class ProcessManager
      *
      * @param string      $name
      * @param array       $args
-     * @param bool        $redirectStdinStdout
-     * @param int         $pipeType
+     * @param bool|null   $redirectStdinStdout
+     * @param int|null    $pipeType
      * @param string|null $alias
      *
      * @return \Swoole\Process|null
      */
-    public static function runWithManager($name, $args = [], $redirectStdinStdout = null, $pipeType = null, ?string $alias = null)
+    public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
         if (App::isCoServer())
         {
@@ -316,7 +316,7 @@ class ProcessManager
      *
      * @return bool
      */
-    private static function lockProcess($name)
+    private static function lockProcess(string $name): bool
     {
         $fileName = static::getLockFileName($name);
         $fp = fopen($fileName, 'w+');
@@ -345,7 +345,7 @@ class ProcessManager
      *
      * @return bool
      */
-    private static function unlockProcess($name)
+    private static function unlockProcess(string $name): bool
     {
         $lockMap = &static::$lockMap;
         if (!isset($lockMap[$name]))
@@ -372,7 +372,7 @@ class ProcessManager
      *
      * @return string
      */
-    private static function getLockFileName($name)
+    private static function getLockFileName(string $name): string
     {
         $path = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()), 'processLock');
         if (!is_dir($path))

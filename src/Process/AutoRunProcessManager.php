@@ -21,7 +21,7 @@ class AutoRunProcessManager
      *
      * @var array
      */
-    protected $processes = [];
+    protected array $processes = [];
 
     /**
      * 添加进程.
@@ -32,7 +32,7 @@ class AutoRunProcessManager
      *
      * @return void
      */
-    public function add($name, $process, $args = [])
+    public function add(string $name, string $process, array $args = [])
     {
         $this->processes[$name] = [
             'process'   => $process,
@@ -47,7 +47,7 @@ class AutoRunProcessManager
      *
      * @return void
      */
-    public function remove($name)
+    public function remove(string $name)
     {
         $processes = &$this->processes;
         if (isset($processes[$name]))
@@ -67,7 +67,7 @@ class AutoRunProcessManager
      *
      * @return bool
      */
-    public function exists($name): bool
+    public function exists(string $name): bool
     {
         $processes = $this->processes;
 

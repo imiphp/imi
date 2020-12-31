@@ -22,5 +22,5 @@ interface IPoolProcess
      *
      * @return void
      */
-    public function run(\Swoole\Process\Pool $pool, int $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
+    public function run(\Swoole\Process\Pool $pool, int $workerId, string $name, int $workerNum, array $args, int $ipcType, string $msgQueueKey);
 }

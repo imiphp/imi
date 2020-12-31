@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Process;
 
-use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\Scanner;
 use Imi\Event\Event;
@@ -25,15 +24,15 @@ class ProcessPoolManager
      * 本方法无法在控制器中使用
      * 返回\Swoole\Process\Pool对象实例.
      *
-     * @param string $name
-     * @param int    $workerNum   指定工作进程的数量
-     * @param array  $args
-     * @param int    $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
-     * @param string $msgQueueKey
+     * @param string      $name
+     * @param int|null    $workerNum   指定工作进程的数量
+     * @param array       $args
+     * @param int         $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
+     * @param string|null $msgQueueKey
      *
      * @return \Swoole\Process\Pool
      */
-    public static function create($name, $workerNum = null, $args = [], $ipcType = 0, $msgQueueKey = null): \Swoole\Process\Pool
+    public static function create(string $name, ?int $workerNum = null, array $args = [], int $ipcType = 0, ?string $msgQueueKey = null): \Swoole\Process\Pool
     {
         $processPoolOption = ProcessPoolParser::getInstance()->getProcessPool($name);
         if (null === $processPoolOption)

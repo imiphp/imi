@@ -23,7 +23,7 @@ class Pool
      *
      * @var int
      */
-    private $workerNum;
+    private int $workerNum;
 
     /**
      * 工作进程列表
@@ -31,30 +31,30 @@ class Pool
      *
      * @var \Swoole\Process[]
      */
-    private $workers = [];
+    private array $workers = [];
 
     /**
      * 以进程 PID 为 key 的映射.
      *
      * @var int[]
      */
-    private $workerIdMap = [];
+    private array $workerIdMap = [];
 
     /**
      * 是否工作.
      *
      * @var bool
      */
-    private $working = false;
+    private bool $working = false;
 
     /**
      * 主进程 PID.
      *
      * @var int
      */
-    private $masterPID;
+    private int $masterPID;
 
-    public function __construct($workerNum)
+    public function __construct(int $workerNum)
     {
         $this->workerNum = $workerNum;
     }
@@ -158,7 +158,7 @@ class Pool
      *
      * @return void
      */
-    public function restartWorker(...$workerIds)
+    public function restartWorker(int ...$workerIds)
     {
         $workers = &$this->workers;
         foreach ($workerIds as $workerId)
@@ -182,7 +182,7 @@ class Pool
      *
      * @return void
      */
-    private function startWorker($workerId)
+    private function startWorker(int $workerId)
     {
         $workers = &$this->workers;
         if (isset($workers[$workerId]))

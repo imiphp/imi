@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Process\Pool;
 
 use Imi\Event\EventParam;
+use Imi\Process\Pool;
 
 class BeforeStartEventParam extends EventParam
 {
@@ -13,14 +14,14 @@ class BeforeStartEventParam extends EventParam
      *
      * @var \Imi\Process\Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Get 进程池对象
      *
      * @return \Imi\Process\Pool
      */
-    public function getPool()
+    public function getPool(): Pool
     {
         return $this->pool;
     }
