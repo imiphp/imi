@@ -35,7 +35,7 @@ class TestAutoConstructValidator extends LazyArrayObject
      *
      * @var int
      */
-    public $int;
+    public int $int;
 
     /**
      * @AutoValidation

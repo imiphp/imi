@@ -28,7 +28,7 @@ class Required extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:data}',
         '{name}',
     ];

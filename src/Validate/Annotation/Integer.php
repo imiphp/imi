@@ -21,14 +21,14 @@ class Integer extends Condition
      *
      * @var int|null
      */
-    public $min;
+    public ?int $min = null;
 
     /**
      * 最大值，为null不限制.
      *
      * @var int|null
      */
-    public $max;
+    public ?int $max = null;
 
     /**
      * 验证回调.
@@ -42,7 +42,7 @@ class Integer extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{min}',
         '{max}',

@@ -21,7 +21,7 @@ class InList extends Condition
      *
      * @var array
      */
-    public $list;
+    public array $list;
 
     /**
      * 验证回调.
@@ -35,7 +35,7 @@ class InList extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{list}',
     ];

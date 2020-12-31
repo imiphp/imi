@@ -22,12 +22,12 @@ class Scene extends Base
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 需要验证的字段名列表.
      *
      * @var array
      */
-    public $fields = [];
+    public array $fields = [];
 }

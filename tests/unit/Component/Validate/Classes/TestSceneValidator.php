@@ -19,7 +19,7 @@ class TestSceneValidator extends Validator
      *
      * @var array|null
      */
-    protected $scene = [
+    protected ?array $scene = [
         'a' => ['decimal'],
         'b' => ['int'],
         'c' => ['decimal', 'int'],

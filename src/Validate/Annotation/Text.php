@@ -23,21 +23,21 @@ class Text extends Condition
      *
      * @var bool
      */
-    public $char = false;
+    public bool $char = false;
 
     /**
      * 最短长度.
      *
      * @var int
      */
-    public $min = 0;
+    public int $min = 0;
 
     /**
      * 最长长度，为null则不限制长度.
      *
      * @var int|null
      */
-    public $max;
+    public ?int $max = null;
 
     /**
      * 验证回调.
@@ -51,7 +51,7 @@ class Text extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{min}',
         '{max}',

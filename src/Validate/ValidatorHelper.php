@@ -17,7 +17,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function regex($value, $rule)
+    public static function regex($value, string $rule): bool
     {
         return preg_match($rule, (string) $value) > 0;
     }
@@ -25,14 +25,14 @@ class ValidatorHelper
     /**
      * 小数验证
      *
-     * @param float      $value
+     * @param mixed      $value
      * @param float|null $min
      * @param float|null $max
-     * @param int        $accuracy
+     * @param int|null   $accuracy
      *
      * @return bool
      */
-    public static function decimal($value, $min = null, $max = null, $accuracy = null)
+    public static function decimal($value, ?float $min = null, ?float $max = null, ?int $accuracy = null): bool
     {
         // 最小值
         if (null !== $min && $value < $min)
@@ -56,13 +56,13 @@ class ValidatorHelper
     /**
      * 整数验证
      *
-     * @param int      $value
+     * @param mixed    $value
      * @param int|null $min
      * @param int|null $max
      *
      * @return bool
      */
-    public static function int($value, $min = null, $max = null)
+    public static function int($value, ?int $min = null, ?int $max = null): bool
     {
         // 最小值
         if (null !== $min && $value < $min)
@@ -81,14 +81,14 @@ class ValidatorHelper
     /**
      * 数值验证，允许整数和小数.
      *
-     * @param float      $value
-     * @param float|null $min
-     * @param float|null $max
-     * @param int|null   $accuracy
+     * @param mixed          $value
+     * @param float|int|null $min
+     * @param float|int|null $max
+     * @param int|null       $accuracy
      *
      * @return bool
      */
-    public static function number($value, $min = null, $max = null, $accuracy = null)
+    public static function number($value, $min = null, $max = null, ?int $accuracy = null): bool
     {
         // 最小值
         if (null !== $min && $value < $min)
@@ -118,7 +118,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function length($val, $min, $max = null)
+    public static function length(string $val, int $min, ?int $max = null): bool
     {
         return isset($val[$min - 1]) && (null === $max || !isset($val[$max]));
     }
@@ -126,13 +126,13 @@ class ValidatorHelper
     /**
      * 判断文本长度，以字符为单位.
      *
-     * @param string $val
-     * @param int    $min
-     * @param int    $max
+     * @param string   $val
+     * @param int      $min
+     * @param int|null $max
      *
      * @return bool
      */
-    public static function lengthChar($val, $min, $max = null)
+    public static function lengthChar(string $val, int $min, ?int $max = null): bool
     {
         $len = mb_strlen($val, 'utf8');
         $result = ($len >= $min);
@@ -151,7 +151,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function emptyStr($str)
+    public static function emptyStr(string $str): bool
     {
         return '' === $str;
     }
@@ -163,7 +163,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function notEmptyStr($str)
+    public static function notEmptyStr(string $str): bool
     {
         return '' !== $str;
     }
@@ -175,7 +175,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function email($email)
+    public static function email(string $email): bool
     {
         return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/', $email) > 0;
     }
@@ -187,7 +187,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function cnMobile($str)
+    public static function cnMobile(string $str): bool
     {
         return preg_match('/1\d{10}/', $str) > 0;
     }
@@ -199,7 +199,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function tel($str)
+    public static function tel(string $str): bool
     {
         return preg_match('/^(((\d{3,4}-)?(\d{7,8}){1}(-\d{2,4})?)|((\d{3,4}-)?(\d{3,4}){1}(-\d{3,4})))$/', $str) > 0;
     }
@@ -211,7 +211,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function mobile($str)
+    public static function mobile(string $str): bool
     {
         return preg_match('/^(1(([35789][0-9])|(47)))\d{8}$/', $str) > 0;
     }
@@ -221,9 +221,9 @@ class ValidatorHelper
      *
      * @param string $str
      *
-     * @return string
+     * @return bool
      */
-    public static function phone($str)
+    public static function phone(string $str): bool
     {
         return static::mobile($str) || static::tel($str);
     }
@@ -235,7 +235,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function postcode($str)
+    public static function postcode(string $str): bool
     {
         return preg_match('/^\d{6}$/', $str) > 0;
     }
@@ -247,7 +247,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function url($str)
+    public static function url(string $str): bool
     {
         return preg_match('/^([a-z]*:\/\/)?(localhost|(([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?))\.?\/?/i', $str) > 0;
     }
@@ -259,7 +259,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function qq($str)
+    public static function qq(string $str): bool
     {
         return preg_match('/^[1-9]{1}[0-9]{4,10}$/', $str) > 0;
     }
@@ -271,7 +271,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function ip($str)
+    public static function ip(string $str): bool
     {
         return static::ipv4($str) || static::ipv6($str);
     }
@@ -283,7 +283,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function ipv4($str)
+    public static function ipv4(string $str): bool
     {
         return preg_match('/\A((([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]?[0-9])|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\Z/', $str) > 0;
     }
@@ -295,7 +295,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function ipv6($str)
+    public static function ipv6(string $str): bool
     {
         return preg_match('/\A 
 (?: 
@@ -332,13 +332,13 @@ class ValidatorHelper
     /**
      * 在两个数之间，不包含这2个数字.
      *
-     * @param float $value
-     * @param float $max
-     * @param float $min
+     * @param float|int $value
+     * @param float|int $max
+     * @param float|int $min
      *
      * @return bool
      */
-    public static function between($value, $min, $max)
+    public static function between($value, $min, $max): bool
     {
         return $value > $min && $value < $max;
     }
@@ -346,13 +346,13 @@ class ValidatorHelper
     /**
      * 在两个数之间，包含这2个数字.
      *
-     * @param float $value
-     * @param float $max
-     * @param float $min
+     * @param float|int $value
+     * @param float|int $max
+     * @param float|int $min
      *
      * @return bool
      */
-    public static function betweenEqual($value, $min, $max)
+    public static function betweenEqual($value, $min, $max): bool
     {
         return $value >= $min && $value <= $max;
     }
@@ -360,12 +360,12 @@ class ValidatorHelper
     /**
      * 小于.
      *
-     * @param float $value
-     * @param float $num
+     * @param float|int $value
+     * @param float|int $num
      *
      * @return bool
      */
-    public static function lt($value, $num)
+    public static function lt($value, $num): bool
     {
         return $value < $num;
     }
@@ -373,12 +373,12 @@ class ValidatorHelper
     /**
      * 小于等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param float|int $value
+     * @param float|int $num
      *
      * @return bool
      */
-    public static function ltEqual($value, $num)
+    public static function ltEqual($value, $num): bool
     {
         return $value <= $num;
     }
@@ -386,12 +386,12 @@ class ValidatorHelper
     /**
      * 大于.
      *
-     * @param float $value
-     * @param float $num
+     * @param float|int $value
+     * @param float|int $num
      *
      * @return bool
      */
-    public static function gt($value, $num)
+    public static function gt($value, $num): bool
     {
         return $value > $num;
     }
@@ -399,12 +399,12 @@ class ValidatorHelper
     /**
      * 大于等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param float|int $value
+     * @param float|int $num
      *
      * @return bool
      */
-    public static function gtEqual($value, $num)
+    public static function gtEqual($value, $num): bool
     {
         return $value >= $num;
     }
@@ -412,12 +412,12 @@ class ValidatorHelper
     /**
      * 等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
-    public static function equal($value, $num)
+    public static function equal($value, $num): bool
     {
         return $value == $num;
     }
@@ -425,12 +425,12 @@ class ValidatorHelper
     /**
      * 不等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
-    public static function unequal($value, $num)
+    public static function unequal($value, $num): bool
     {
         return $value != $num;
     }
@@ -438,13 +438,13 @@ class ValidatorHelper
     /**
      * 比较.
      *
-     * @param string $valueLeft
+     * @param mixed  $valueLeft
      * @param string $operation
-     * @param string $valueRight
+     * @param mixed  $valueRight
      *
      * @return bool
      */
-    public static function compare($valueLeft, $operation, $valueRight)
+    public static function compare($valueLeft, string $operation, $valueRight): bool
     {
         //eval is not safe、abandoned
         switch ($operation) {
@@ -472,12 +472,12 @@ class ValidatorHelper
     /**
      * 值在范围内.
      *
-     * @param float $value
-     * @param mixed $list  array | string(1,2,3)
+     * @param mixed $value
+     * @param mixed $list
      *
      * @return bool
      */
-    public static function in($value, $list)
+    public static function in($value, array $list): bool
     {
         if (!\is_array($list))
         {
@@ -490,12 +490,12 @@ class ValidatorHelper
     /**
      * 值不在范围内.
      *
-     * @param float $value
-     * @param mixed $list  array | string(1,2,3)
+     * @param mixed $value
+     * @param array $list
      *
      * @return bool
      */
-    public static function notIn($value, $list)
+    public static function notIn($value, array $list): bool
     {
         if (!\is_array($list))
         {
@@ -508,12 +508,12 @@ class ValidatorHelper
     /**
      * 值在枚举值范围内.
      *
-     * @param float  $value
+     * @param mixed  $value
      * @param string $enumClass
      *
      * @return bool
      */
-    public static function inEnum($value, $enumClass)
+    public static function inEnum($value, string $enumClass): bool
     {
         return \in_array($value, $enumClass::getValues());
     }
@@ -521,12 +521,12 @@ class ValidatorHelper
     /**
      * 值不在枚举值范围内.
      *
-     * @param float  $value
+     * @param mixed  $value
      * @param string $enumClass
      *
      * @return bool
      */
-    public static function notInEnum($value, $enumClass)
+    public static function notInEnum($value, string $enumClass): bool
     {
         return !\in_array($value, $enumClass::getValues());
     }
@@ -538,7 +538,7 @@ class ValidatorHelper
      *
      * @return bool
      */
-    public static function cnIdcard($id_card)
+    public static function cnIdcard(string $id_card): bool
     {
         /**
          * 计算身份证校验码，根据国家标准GB 11643-1999.

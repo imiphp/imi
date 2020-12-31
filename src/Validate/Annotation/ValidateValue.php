@@ -32,5 +32,5 @@ class ValidateValue extends Base
      *
      * @var string
      */
-    public $value;
+    public string $value;
 }

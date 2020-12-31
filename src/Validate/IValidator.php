@@ -29,14 +29,14 @@ interface IValidator
      *
      * @return void
      */
-    public function setRules($rules);
+    public function setRules(array $rules);
 
     /**
      * 获得所有校验规则.
      *
      * @return \Imi\Validate\Annotation\Condition[]
      */
-    public function getRules();
+    public function getRules(): array;
 
     /**
      * Get 场景定义.
@@ -75,7 +75,7 @@ interface IValidator
      *
      * @return \Imi\Validate\Annotation\Condition[]
      */
-    public function getAnnotationRules();
+    public function getAnnotationRules(): array;
 
     /**
      * 验证，返回是否通过
@@ -83,26 +83,26 @@ interface IValidator
      *
      * @return bool
      */
-    public function validate();
+    public function validate(): bool;
 
     /**
      * 验证所有，返回是否通过.
      *
      * @return bool
      */
-    public function validateAll();
+    public function validateAll(): bool;
 
     /**
      * 获取第一条失败信息.
      *
-     * @return string
+     * @return string|null
      */
-    public function getMessage();
+    public function getMessage(): ?string;
 
     /**
      * 获取所有验证结果.
      *
      * @return array
      */
-    public function getResults();
+    public function getResults(): array;
 }

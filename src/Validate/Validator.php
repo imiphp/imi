@@ -29,60 +29,60 @@ class Validator implements IValidator
     /**
      * 第一条失败信息.
      *
-     * @var string
+     * @var string|null
      */
-    protected $message;
+    protected ?string $message = null;
 
     /**
      * 验证结果.
      *
      * @var array
      */
-    protected $results;
+    protected array $results = [];
 
     /**
      * 第一条失败的规则.
      *
-     * @var \Imi\Validate\Annotation\Condition
+     * @var \Imi\Validate\Annotation\Condition|null
      */
-    protected $failRule;
+    protected ?Condition $failRule = null;
 
     /**
      * 验证失败的规则列表.
      *
      * @var array
      */
-    protected $failRules;
+    protected array $failRules = [];
 
     /**
      * 场景定义.
      *
      * @var array|null
      */
-    protected $scene;
+    protected ?array $scene = null;
 
     /**
      * 当前场景.
      *
      * @var string|null
      */
-    protected $currentScene;
+    protected ?string $currentScene = null;
 
     /**
      * 校验规则.
      *
      * @var \Imi\Validate\Annotation\Condition[]
      */
-    private $rules;
+    private array $rules = [];
 
     /**
      * 注解校验规则集合.
      *
      * @var array
      */
-    private static $annotationRules;
+    private static array $annotationRules = [];
 
-    public function __construct(&$data = [], $rules = null)
+    public function __construct(?array &$data = [], ?array $rules = null)
     {
         $this->data = &$data;
         if (null === $rules)
@@ -131,7 +131,7 @@ class Validator implements IValidator
      *
      * @return void
      */
-    public function setRules($rules)
+    public function setRules(array $rules)
     {
         $this->rules = $rules;
     }
@@ -141,7 +141,7 @@ class Validator implements IValidator
      *
      * @return \Imi\Validate\Annotation\Condition[]
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -151,7 +151,7 @@ class Validator implements IValidator
      *
      * @return \Imi\Validate\Annotation\Condition[]
      */
-    public function getAnnotationRules()
+    public function getAnnotationRules(): array
     {
         $className = static::__getRealClassName();
         $selfAnnotationRules = &self::$annotationRules;
@@ -182,7 +182,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    public function validate()
+    public function validate(): bool
     {
         return $this->__validateAll($this->data, true);
     }
@@ -192,7 +192,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    public function validateAll()
+    public function validateAll(): bool
     {
         return $this->__validateAll($this->data, false);
     }
@@ -200,9 +200,9 @@ class Validator implements IValidator
     /**
      * 获取第一条失败信息.
      *
-     * @return string
+     * @return string|null
      */
-    public function getMessage()
+    public function getMessage(): ?string
     {
         return $this->message;
     }
@@ -212,7 +212,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->results;
     }
@@ -225,7 +225,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function __validateAll(&$data, $break)
+    protected function __validateAll(&$data, bool $break): bool
     {
         $thisMessage = &$this->message;
         $thisResults = &$this->results;
@@ -282,7 +282,7 @@ class Validator implements IValidator
      *
      * @return string
      */
-    protected function buildMessage($data, $annotation)
+    protected function buildMessage($data, Condition $annotation): string
     {
         $message = $annotation->message;
         if (false !== strpos($message, '{:value}'))
@@ -326,7 +326,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function validateByAnnotation($data, $annotation)
+    protected function validateByAnnotation($data, Condition $annotation): bool
     {
         if ($annotation->optional && !ObjectArrayHelper::exists($data, $annotation->name))
         {
@@ -375,7 +375,7 @@ class Validator implements IValidator
      *
      * @return mixed
      */
-    protected function getArgValue($data, $arg, $annotation, $includeAnnotationProperty = true)
+    protected function getArgValue($data, $arg, Condition $annotation, bool $includeAnnotationProperty = true)
     {
         if (!\is_string($arg))
         {
@@ -420,7 +420,7 @@ class Validator implements IValidator
      *
      * @return \Imi\Validate\Annotation\Condition
      */
-    public function getFailRule()
+    public function getFailRule(): Condition
     {
         return $this->failRule;
     }
@@ -430,7 +430,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    public function getFailRules()
+    public function getFailRules(): array
     {
         return $this->failRules;
     }
@@ -452,7 +452,7 @@ class Validator implements IValidator
      *
      * @return self
      */
-    public function setScene(?array $scene)
+    public function setScene(?array $scene): self
     {
         $this->scene = $scene;
 
@@ -476,7 +476,7 @@ class Validator implements IValidator
      *
      * @return self
      */
-    public function setCurrentScene(?string $currentScene)
+    public function setCurrentScene(?string $currentScene): self
     {
         $this->currentScene = $currentScene;
 
@@ -488,7 +488,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    public function getAnnotationScene()
+    public function getAnnotationScene(): array
     {
         $className = static::__getRealClassName();
         /** @var \Imi\Validate\Annotation\Scene[] $scenes */

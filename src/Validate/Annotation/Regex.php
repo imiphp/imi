@@ -21,7 +21,7 @@ class Regex extends Condition
      *
      * @var string
      */
-    public $pattern;
+    public string $pattern;
 
     /**
      * 验证回调.
@@ -35,7 +35,7 @@ class Regex extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{pattern}',
     ];

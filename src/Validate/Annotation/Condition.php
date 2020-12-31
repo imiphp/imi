@@ -23,16 +23,16 @@ class Condition extends Base
      * 参数名称
      * 属性注解可省略.
      *
-     * @var string
+     * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 非必验证，只有当值存在才验证
      *
      * @var bool
      */
-    public $optional = false;
+    public bool $optional = false;
 
     /**
      * 当值不符合条件时的默认值
@@ -46,7 +46,7 @@ class Condition extends Base
      *
      * @var bool
      */
-    public $inverseResult = false;
+    public bool $inverseResult = false;
 
     /**
      * 当验证条件不符合时的信息.
@@ -57,7 +57,7 @@ class Condition extends Base
      *
      * @var string
      */
-    public $message = '{name} validate failed';
+    public string $message = '{name} validate failed';
 
     /**
      * 验证回调.
@@ -77,23 +77,23 @@ class Condition extends Base
      *
      * @var array
      */
-    public $args = ['{:value}'];
+    public array $args = ['{:value}'];
 
     /**
      * 异常类.
      *
-     * @var string
+     * @var string|null
      */
-    public $exception = null;
+    public ?string $exception = null;
 
     /**
      * 异常编码
      *
-     * @var int
+     * @var int|null
      */
-    public $exCode = null;
+    public ?int $exCode = null;
 
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
         parent::__construct($data);
         if (null === $this->exception)

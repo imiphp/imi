@@ -21,7 +21,7 @@ class InEnum extends Condition
      *
      * @var string
      */
-    public $enum;
+    public string $enum;
 
     /**
      * 验证回调.
@@ -35,7 +35,7 @@ class InEnum extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{enum}',
     ];

@@ -30,7 +30,7 @@ class Compare extends Condition
      *
      * @var string
      */
-    public $operation = '==';
+    public string $operation = '==';
 
     /**
      * 验证回调.
@@ -44,7 +44,7 @@ class Compare extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{operation}',
         '{value}',

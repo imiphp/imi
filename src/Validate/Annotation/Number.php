@@ -19,23 +19,23 @@ class Number extends Condition
     /**
      * 最小值，为null不限制.
      *
-     * @var int|null
+     * @var int|float|null
      */
-    public $min;
+    public $min = null;
 
     /**
      * 最大值，为null不限制.
      *
-     * @var int|null
+     * @var int|float|null
      */
-    public $max;
+    public $max = null;
 
     /**
      * 小数精度位数，为null不限制.
      *
      * @var int
      */
-    public $accuracy;
+    public ?int $accuracy = null;
 
     /**
      * 验证回调.
@@ -49,7 +49,7 @@ class Number extends Condition
      *
      * @var array
      */
-    public $args = [
+    public array $args = [
         '{:value}',
         '{min}',
         '{max}',
