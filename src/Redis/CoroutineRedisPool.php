@@ -15,9 +15,9 @@ class CoroutineRedisPool extends BaseAsyncPool
     /**
      * 数据库操作类.
      *
-     * @var mixed
+     * @var string
      */
-    protected $handlerClass = \Redis::class;
+    protected string $handlerClass = \Redis::class;
 
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {

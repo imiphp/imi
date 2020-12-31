@@ -18,7 +18,7 @@ abstract class BaseRequestContextProxy
      *
      * @var \Imi\RequestContextProxy\Annotation\RequestContextProxy[]
      */
-    protected static $cache = [];
+    protected static array $cache = [];
 
     /**
      * 获取实例.
@@ -79,12 +79,12 @@ abstract class BaseRequestContextProxy
         self::$cache = [];
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         return static::__getProxyInstance()->$name(...$arguments);
     }
 
-    public static function __callStatic($method, $arguments)
+    public static function __callStatic(string $method, array $arguments)
     {
         return static::__getProxyInstance()->$method(...$arguments);
     }

@@ -33,7 +33,7 @@ class RequestContextProxyGenerate
      *
      * @return void
      */
-    public function generate($target, $class, $name)
+    public function generate(string $target, string $class, string $name)
     {
         Annotation::getInstance()->init(Helper::getAppMains());
         if (class_exists($class))

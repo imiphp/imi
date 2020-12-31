@@ -254,7 +254,7 @@ class Redis
     {
     }
 
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))
         {
@@ -273,13 +273,13 @@ class Redis
      * 回调有 1 个参数：$instance(操作实例对象，\Imi\Redis\RedisHandler 类型)
      * 本方法返回值为回调的返回值
      *
-     * @param callable $callable
-     * @param string   $poolName
-     * @param bool     $forceUse
+     * @param callable    $callable
+     * @param string|null $poolName
+     * @param bool        $forceUse
      *
      * @return mixed
      */
-    public static function use($callable, $poolName = null, $forceUse = false)
+    public static function use(callable $callable, ?string $poolName = null, bool $forceUse = false)
     {
         if (!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true))
         {

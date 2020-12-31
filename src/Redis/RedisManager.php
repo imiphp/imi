@@ -17,11 +17,11 @@ class RedisManager
     /**
      * 获取新的 Redis 连接实例.
      *
-     * @param string $poolName 连接池名称
+     * @param string|null $poolName 连接池名称
      *
      * @return \Imi\Redis\RedisHandler
      */
-    public static function getNewInstance($poolName = null)
+    public static function getNewInstance(?string $poolName = null): RedisHandler
     {
         $resource = PoolManager::getResource(static::parsePoolName($poolName));
         $redis = $resource->getInstance();
@@ -33,11 +33,11 @@ class RedisManager
     /**
      * 获取 Redis 连接实例，每个RequestContext中共用一个.
      *
-     * @param string $poolName 连接池名称
+     * @param string|null $poolName 连接池名称
      *
      * @return \Imi\Redis\RedisHandler|null
      */
-    public static function getInstance($poolName = null)
+    public static function getInstance(?string $poolName = null): ?RedisHandler
     {
         return PoolManager::getRequestContextResource(static::parsePoolName($poolName))->getInstance();
     }
@@ -49,7 +49,7 @@ class RedisManager
      *
      * @return void
      */
-    public static function release($redis)
+    public static function release(RedisHandler $redis)
     {
         $resource = RequestContext::get('poolResources.' . spl_object_hash($redis));
         if (null !== $resource)
@@ -61,11 +61,11 @@ class RedisManager
     /**
      * 处理连接池 名称.
      *
-     * @param string $poolName
+     * @param string|null $poolName
      *
      * @return string
      */
-    public static function parsePoolName($poolName = null)
+    public static function parsePoolName(?string $poolName = null): string
     {
         if (null === $poolName)
         {
@@ -80,7 +80,7 @@ class RedisManager
      *
      * @return string
      */
-    public static function getDefaultPoolName()
+    public static function getDefaultPoolName(): string
     {
         return Config::get('@currentServer.redis.defaultPool');
     }

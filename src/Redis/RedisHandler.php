@@ -247,14 +247,14 @@ class RedisHandler
      *
      * @var \Redis
      */
-    private $redis;
+    private \Redis $redis;
 
-    public function __construct($redis)
+    public function __construct(\Redis $redis)
     {
         $this->redis = $redis;
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         return $this->redis->$name(...$arguments);
     }
@@ -264,7 +264,7 @@ class RedisHandler
      *
      * @return \Redis
      */
-    public function getInstance()
+    public function getInstance(): \Redis
     {
         return $this->redis;
     }
@@ -274,20 +274,20 @@ class RedisHandler
      *
      * 优先使用 evalSha 尝试，失败则使用 eval 方法
      *
-     * @param string $script
-     * @param array  $args
-     * @param int    $num_keys
+     * @param string     $script
+     * @param array|null $args
+     * @param int|null   $numKeys
      *
      * @return mixed
      */
-    public function evalEx($script, $args = null, $num_keys = null)
+    public function evalEx(string $script, ?array $args = null, ?int $numKeys = null)
     {
         $sha1 = sha1($script);
         $this->clearLastError();
-        $result = $this->evalSha($sha1, $args, $num_keys);
+        $result = $this->evalSha($sha1, $args, $numKeys);
         if ('NOSCRIPT No matching script. Please use EVAL.' === $this->getLastError())
         {
-            $result = $this->eval($script, $args, $num_keys);
+            $result = $this->eval($script, $args, $numKeys);
         }
 
         return $result;
