@@ -28,5 +28,5 @@ class AutoDelete extends Base
      *
      * @var bool
      */
-    public $status = true;
+    public bool $status = true;
 }

@@ -28,14 +28,14 @@ class MemoryTable extends Base
      *
      * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * 指定表格的最大行数，如果$size不是为2的N次方，如1024、8192,65536等，底层会自动调整为接近的一个数字，如果小于1024则默认成1024，即1024是最小值
      *
      * @var int
      */
-    public $size = 1024;
+    public int $size = 1024;
 
     /**
      * 冲突比例
@@ -43,5 +43,5 @@ class MemoryTable extends Base
      *
      * @var float
      */
-    public $conflictProportion = 0.2;
+    public float $conflictProportion = 0.2;
 }

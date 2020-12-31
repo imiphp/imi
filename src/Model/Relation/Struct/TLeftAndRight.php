@@ -7,6 +7,7 @@ namespace Imi\Model\Relation\Struct;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Relation\JoinFrom;
 use Imi\Model\Annotation\Relation\JoinTo;
+use Imi\Model\Annotation\Relation\RelationBase;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 
@@ -17,32 +18,32 @@ trait TLeftAndRight
      *
      * @var string
      */
-    protected $leftField;
+    protected string $leftField;
 
     /**
      * 右侧表字段.
      *
      * @var string
      */
-    protected $rightField;
+    protected string $rightField;
 
     /**
      * 右侧模型类.
      *
      * @var string
      */
-    protected $rightModel;
+    protected string $rightModel;
 
     /**
      * 初始化左右关联.
      *
-     * @param \Imi\Model\Model                        $model
-     * @param string                                  $propertyName
-     * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
+     * @param string       $className
+     * @param string       $propertyName
+     * @param RelationBase $annotation
      *
      * @return void
      */
-    public function initLeftAndRight($className, $propertyName, $annotation)
+    public function initLeftAndRight(string $className, string $propertyName, RelationBase $annotation)
     {
         if (class_exists($annotation->model))
         {
@@ -77,16 +78,20 @@ trait TLeftAndRight
 
     /**
      * Get the value of leftField.
+     *
+     * @return string
      */
-    public function getLeftField()
+    public function getLeftField(): string
     {
         return $this->leftField;
     }
 
     /**
      * Get the value of rightField.
+     *
+     * @return string
      */
-    public function getRightField()
+    public function getRightField(): string
     {
         return $this->rightField;
     }
@@ -96,7 +101,7 @@ trait TLeftAndRight
      *
      * @return string
      */
-    public function getRightModel()
+    public function getRightModel(): string
     {
         return $this->rightModel;
     }

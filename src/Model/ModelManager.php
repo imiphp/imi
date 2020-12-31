@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Base;
 use Imi\Bean\BeanFactory;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
@@ -21,70 +22,70 @@ class ModelManager
      *
      * @var array
      */
-    private static $annotation = [];
+    private static array $annotation = [];
 
     /**
      * 模型类属性注解缓存.
      *
      * @var array
      */
-    private static $propertyAnnotation = [];
+    private static array $propertyAnnotation = [];
 
     /**
      * 驼峰命名缓存.
      *
      * @var array
      */
-    private static $isCamelCache = [];
+    private static array $isCamelCache = [];
 
     /**
      * 键规则缓存.
      *
      * @var array
      */
-    private static $keyRules = [];
+    private static array $keyRules = [];
 
     /**
      * member规则缓存.
      *
      * @var array
      */
-    private static $memberRules = [];
+    private static array $memberRules = [];
 
     /**
      * 字段缓存.
      *
      * @var array
      */
-    private static $fields = [];
+    private static array $fields = [];
 
     /**
      * 表名缓存.
      *
      * @var array
      */
-    private static $table = [];
+    private static array $table = [];
 
     /**
      * 数据库连接池名缓存.
      *
      * @var array
      */
-    private static $dbPoolName = [];
+    private static array $dbPoolName = [];
 
     /**
      * 主键缓存.
      *
      * @var array
      */
-    private static $id = [];
+    private static array $id = [];
 
     /**
      * 模型类的提取属性注解缓存.
      *
      * @var array
      */
-    private static $extractPropertys;
+    private static array $extractPropertys = [];
 
     private function __construct()
     {
@@ -98,7 +99,7 @@ class ModelManager
      *
      * @return \Imi\Bean\Annotation\Base|null
      */
-    public static function getAnnotation($object, $annotationClass)
+    public static function getAnnotation($object, string $annotationClass): ?Base
     {
         $objectClass = BeanFactory::getObjectClass($object);
         $staticAnnotation = &static::$annotation;
@@ -121,7 +122,7 @@ class ModelManager
      *
      * @return \Imi\Bean\Annotation\Base|null
      */
-    public static function getPropertyAnnotation($object, $propertyName, $annotationClass)
+    public static function getPropertyAnnotation($object, string $propertyName, string $annotationClass): ?Base
     {
         $objectClass = BeanFactory::getObjectClass($object);
         $staticPropertyAnnotation = &static::$propertyAnnotation;
@@ -142,7 +143,7 @@ class ModelManager
      *
      * @return string
      */
-    public static function getTable($object)
+    public static function getTable($object): string
     {
         $objectClass = BeanFactory::getObjectClass($object);
         $staticTable = &static::$table;
@@ -165,7 +166,7 @@ class ModelManager
      *
      * @return string
      */
-    public static function getDbPoolName($object)
+    public static function getDbPoolName($object): string
     {
         $objectClass = BeanFactory::getObjectClass($object);
         $staticDbPoolName = &static::$dbPoolName;
@@ -212,7 +213,7 @@ class ModelManager
      *
      * @return string|null
      */
-    public static function getFirstId($object)
+    public static function getFirstId($object): ?string
     {
         $id = self::getId($object);
 
@@ -226,7 +227,7 @@ class ModelManager
      *
      * @return \Imi\Model\Annotation\Column[]
      */
-    public static function getFields($object)
+    public static function getFields($object): array
     {
         $objectClass = BeanFactory::getObjectClass($object);
         $staticFields = &static::$fields;
@@ -255,7 +256,7 @@ class ModelManager
      *
      * @return string[]
      */
-    public static function getFieldNames($object)
+    public static function getFieldNames($object): array
     {
         return array_keys(static::getFields($object));
     }
@@ -267,7 +268,7 @@ class ModelManager
      *
      * @return bool
      */
-    public static function isCamel($object)
+    public static function isCamel($object): bool
     {
         $class = BeanFactory::getObjectClass($object);
         $staticIsCamelCache = &static::$isCamelCache;
@@ -288,7 +289,7 @@ class ModelManager
      *
      * @return \Imi\Model\Key\KeyRule
      */
-    public static function getKeyRule($object)
+    public static function getKeyRule($object): KeyRule
     {
         $class = BeanFactory::getObjectClass($object);
         $staticKeyRules = &static::$keyRules;
@@ -312,7 +313,7 @@ class ModelManager
      *
      * @return \Imi\Model\Key\KeyRule
      */
-    public static function getMemberRule($object)
+    public static function getMemberRule($object): KeyRule
     {
         $class = BeanFactory::getObjectClass($object);
         $staticMemberRules = &static::$memberRules;
@@ -336,7 +337,7 @@ class ModelManager
      *
      * @return \Imi\Model\Annotation\RedisEntity|null
      */
-    public static function getRedisEntity($object)
+    public static function getRedisEntity($object): ?RedisEntity
     {
         return static::getAnnotation($object, RedisEntity::class);
     }
@@ -346,9 +347,9 @@ class ModelManager
      *
      * @param string|object $object
      *
-     * @return \Imi\Model\Annotation\Serializables
+     * @return \Imi\Model\Annotation\Serializables|null
      */
-    public static function getSerializables($object)
+    public static function getSerializables($object): ?Serializables
     {
         return static::getAnnotation($object, Serializables::class);
     }
@@ -358,9 +359,9 @@ class ModelManager
      *
      * @param string|object $object
      *
-     * @return \Imi\Model\Annotation\ExtractProperty[]
+     * @return \Imi\Model\Annotation\ExtractProperty[][]
      */
-    public static function getExtractPropertys($object)
+    public static function getExtractPropertys($object): array
     {
         $class = BeanFactory::getObjectClass($object);
         $staticExtractPropertys = &static::$extractPropertys;

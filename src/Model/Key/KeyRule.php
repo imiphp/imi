@@ -11,16 +11,16 @@ class KeyRule
      *
      * @var string
      */
-    public $rule;
+    public string $rule;
 
     /**
      * 参数名数组.
      *
      * @var string[]
      */
-    public $paramNames;
+    public array $paramNames;
 
-    public function __construct($rule, $paramNames)
+    public function __construct(string $rule, array $paramNames)
     {
         $this->rule = $rule;
         $this->paramNames = $paramNames;

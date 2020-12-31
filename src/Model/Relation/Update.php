@@ -11,6 +11,7 @@ use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSave;
 use Imi\Model\Annotation\Relation\AutoUpdate;
 use Imi\Model\Annotation\Relation\RelationBase;
+use Imi\Model\Model;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -27,13 +28,13 @@ class Update
     /**
      * 处理更新.
      *
-     * @param \Imi\Model\Model          $model
-     * @param string                    $propertyName
-     * @param \Imi\Bean\Annotation\Base $annotation
+     * @param \Imi\Model\Model $model
+     * @param string           $propertyName
+     * @param RelationBase     $annotation
      *
      * @return void
      */
-    public static function parse($model, $propertyName, $annotation)
+    public static function parse(Model $model, string $propertyName, RelationBase $annotation)
     {
         if (!$model->$propertyName)
         {
@@ -90,7 +91,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByOneToOne($model, $propertyName, $annotation)
+    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -126,7 +127,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByOneToMany($model, $propertyName, $annotation)
+    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -219,7 +220,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByManyToMany($model, $propertyName, $annotation)
+    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -275,8 +276,8 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $modelLeftValue) {
-                    $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIds, $modelLeftValue) {
+                    $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }
         }
@@ -301,11 +302,11 @@ class Update
      * 模型类（可指定字段）是否包含更新关联关系.
      *
      * @param string $className
-     * @param string $propertyName
+     * @param string|null $propertyName
      *
      * @return bool
      */
-    public static function hasUpdateRelation($className, $propertyName = null)
+    public static function hasUpdateRelation(string $className, ?string $propertyName = null):bool
     {
         $relations = AnnotationManager::getPropertiesAnnotations($className, RelationBase::class);
 
@@ -366,7 +367,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToOne($model, $propertyName, $annotation)
+    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -403,7 +404,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToMany($model, $propertyName, $annotation)
+    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -497,7 +498,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByPolymorphicManyToMany($model, $propertyName, $annotation)
+    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -554,8 +555,8 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation, $modelLeftValue) {
-                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIds, $annotation, $modelLeftValue) {
+                    $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }
         }

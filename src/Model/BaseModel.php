@@ -31,44 +31,44 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @var array
      */
-    protected $__fieldNames;
+    protected array $__fieldNames;
 
     /**
      * 驼峰缓存.
      *
      * @var array
      */
-    protected static $__camelCache = [];
+    protected static array $__camelCache = [];
 
     /**
      * 方法引用.
      *
      * @var array
      */
-    protected static $__methodReference = [];
+    protected static array $__methodReference = [];
 
     /**
      * 元数据集合.
      *
      * @var \Imi\Model\Meta[]
      */
-    protected static $__metas;
+    protected static array $__metas = [];
 
     /**
      * 当前对象 meta 缓存.
      *
      * @var \Imi\Model\Meta
      */
-    protected $__meta;
+    protected Meta $__meta;
 
     /**
      * 真实类名.
      *
      * @var string
      */
-    protected $__realClass;
+    protected string $__realClass;
 
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
         $this->__meta = $meta = static::__getMeta();
         $this->__fieldNames = $meta->getRealFieldNames();
@@ -79,7 +79,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    public function __init($data = [])
+    public function __init(array $data = [])
     {
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
@@ -127,7 +127,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return static
      */
-    public static function newInstance(...$args)
+    public static function newInstance(...$args): self
     {
         return BeanFactory::newInstance(static::class, ...$args);
     }
@@ -223,22 +223,22 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    public function &__get($name)
+    public function &__get(string $name)
     {
         return $this[$name];
     }
 
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         $this[$name] = $value;
     }
 
-    public function __isset($name)
+    public function __isset(string $name)
     {
         return isset($this[$name]);
     }
 
-    public function __unset($name)
+    public function __unset(string $name)
     {
         unset($this[$name]);
     }
@@ -404,7 +404,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return string
      */
-    protected function __getCamelName($name)
+    protected function __getCamelName(string $name): string
     {
         $__camelCache = &self::$__camelCache;
         if (!isset($__camelCache[$name]))
@@ -418,9 +418,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 获取字段名.
      *
-     * @param string $fieldName
+     * @param string|bool $fieldName
      *
-     * @return void
+     * @return string|bool
      */
     protected function __getFieldName($fieldName)
     {
@@ -446,7 +446,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return void
      */
-    protected function __parseExtractProperty($propertyName, $annotations)
+    protected function __parseExtractProperty(string $propertyName, array $annotations)
     {
         foreach ($annotations as $annotation)
         {
@@ -470,7 +470,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return \Imi\Model\Meta
      */
-    public static function __getMeta($object = null)
+    public static function __getMeta($object = null): Meta
     {
         if ($object)
         {

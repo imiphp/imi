@@ -28,7 +28,7 @@ class AutoSelect extends Base
      *
      * @var bool
      */
-    public $status = true;
+    public bool $status = true;
 
     /**
      * 是否总是显示该属性
@@ -36,5 +36,5 @@ class AutoSelect extends Base
      *
      * @var bool
      */
-    public $alwaysShow = true;
+    public bool $alwaysShow = true;
 }

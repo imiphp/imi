@@ -16,53 +16,53 @@ class PolymorphicManyToMany
      *
      * @var string
      */
-    private $leftField;
+    private string $leftField;
 
     /**
      * 右侧表字段.
      *
      * @var string
      */
-    private $rightField;
+    private string $rightField;
 
     /**
      * 右侧模型类.
      *
      * @var string
      */
-    private $rightModel;
+    private string $rightModel;
 
     /**
      * 中间表与左表关联的字段.
      *
      * @var string
      */
-    private $middleLeftField;
+    private string $middleLeftField;
 
     /**
      * 中间表与右表关联的字段.
      *
      * @var string
      */
-    private $middleRightField;
+    private string $middleRightField;
 
     /**
      * 中间表模型类.
      *
      * @var string
      */
-    private $middleModel;
+    private string $middleModel;
 
     /**
      * 初始化多对多结构.
      *
-     * @param \Imi\Model\Model                          $model
-     * @param string                                    $propertyName
-     * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
+     * @param string                                                                                                $className
+     * @param string                                                                                                $propertyName
+     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany|\Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
      *
      * @return void
      */
-    public function __construct($className, $propertyName, $annotation)
+    public function __construct(string $className, string $propertyName, $annotation)
     {
         if (class_exists($annotation->model))
         {
@@ -106,7 +106,7 @@ class PolymorphicManyToMany
      *
      * @return string
      */
-    public function getLeftField()
+    public function getLeftField(): string
     {
         return $this->leftField;
     }
@@ -116,7 +116,7 @@ class PolymorphicManyToMany
      *
      * @return string
      */
-    public function getRightField()
+    public function getRightField(): string
     {
         return $this->rightField;
     }
@@ -126,7 +126,7 @@ class PolymorphicManyToMany
      *
      * @return string
      */
-    public function getRightModel()
+    public function getRightModel(): string
     {
         return $this->rightModel;
     }
@@ -136,7 +136,7 @@ class PolymorphicManyToMany
      *
      * @return string
      */
-    public function getMiddleLeftField()
+    public function getMiddleLeftField(): string
     {
         return $this->middleLeftField;
     }
@@ -146,7 +146,7 @@ class PolymorphicManyToMany
      *
      * @return string
      */
-    public function getMiddleRightField()
+    public function getMiddleRightField(): string
     {
         return $this->middleRightField;
     }
@@ -156,7 +156,7 @@ class PolymorphicManyToMany
      *
      * @return string
      */
-    public function getMiddleModel()
+    public function getMiddleModel(): string
     {
         return $this->middleModel;
     }

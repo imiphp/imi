@@ -29,5 +29,5 @@ class OneToOne extends RelationBase
      *
      * @var string
      */
-    public $model;
+    public string $model;
 }

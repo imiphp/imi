@@ -9,9 +9,9 @@ namespace Imi\Main;
  */
 class Helper
 {
-    private static $mains = [];
+    private static array $mains = [];
 
-    private static $nameMap = [];
+    private static array $nameMap = [];
 
     private function __construct()
     {
@@ -20,12 +20,12 @@ class Helper
     /**
      * 获取主类实例对象
      *
-     * @param string $namespace
-     * @param string $componentName
+     * @param string|null $namespace
+     * @param string|null $componentName
      *
-     * @return \Imi\Main\BaseMain
+     * @return \Imi\Main\BaseMain|null
      */
-    public static function getMain($namespace, $componentName = null)
+    public static function getMain(?string $namespace, ?string $componentName = null): ?BaseMain
     {
         if (null !== $namespace)
         {
@@ -77,7 +77,7 @@ class Helper
      *
      * @return \Imi\Main\BaseMain[]
      */
-    public static function getMains()
+    public static function getMains(): array
     {
         return static::$mains;
     }
@@ -87,7 +87,7 @@ class Helper
      *
      * @return \Imi\Main\BaseMain[]
      */
-    public static function getAppMains()
+    public static function getAppMains(): array
     {
         $mains = static::$mains;
         unset($mains['Imi']);
@@ -95,7 +95,7 @@ class Helper
         return $mains;
     }
 
-    private static function newInstance($namespace, $componentName)
+    private static function newInstance(string $namespace, string $componentName): ?BaseMain
     {
         $className = $namespace . '\\Main';
         if (class_exists($className))

@@ -10,6 +10,7 @@ use Imi\Db\Db;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\RelationBase;
+use Imi\Model\Model;
 use Imi\Model\Relation\Struct\ManyToMany;
 use Imi\Model\Relation\Struct\OneToMany;
 use Imi\Model\Relation\Struct\OneToOne;
@@ -36,7 +37,7 @@ class Query
      *
      * @return void
      */
-    public static function init($model, $propertyName, $annotation, $forceInit = false)
+    public static function init(Model $model, string $propertyName, $annotation, bool $forceInit = false)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -96,7 +97,7 @@ class Query
      *
      * @return void
      */
-    public static function initByOneToOne($model, $propertyName, $annotation)
+    public static function initByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -153,7 +154,7 @@ class Query
      *
      * @return void
      */
-    public static function initByOneToMany($model, $propertyName, $annotation)
+    public static function initByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -209,7 +210,7 @@ class Query
      *
      * @return void
      */
-    public static function initByManyToMany($model, $propertyName, $annotation)
+    public static function initByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -272,7 +273,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicOneToOne($model, $propertyName, $annotation)
+    public static function initByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -329,7 +330,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicOneToMany($model, $propertyName, $annotation)
+    public static function initByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -385,7 +386,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicToOne($model, $propertyName, $annotation)
+    public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
@@ -442,7 +443,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicToMany($model, $propertyName, $annotation)
+    public static function initByPolymorphicToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -502,7 +503,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicManyToMany($model, $propertyName, $annotation)
+    public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation)
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -561,7 +562,7 @@ class Query
      *
      * @return void
      */
-    public static function initRelations($model, $propertyName)
+    public static function initRelations(Model $model, string $propertyName)
     {
         $className = BeanFactory::getObjectClass($model);
         $annotation = AnnotationManager::getPropertyAnnotations($className, $propertyName, RelationBase::class)[0] ?? null;
@@ -601,14 +602,14 @@ class Query
     /**
      * 处理多对多查询用的字段，需要是"表名.字段名"，防止冲突
      *
-     * @param string $middleModel
-     * @param string $rightModel
-     * @param array  $middleFields
-     * @param array  $rightFields
+     * @param string     $middleModel
+     * @param string     $rightModel
+     * @param array|null $middleFields
+     * @param array|null $rightFields
      *
      * @return void
      */
-    private static function parseManyToManyQueryFields($middleModel, $rightModel, &$middleFields, &$rightFields)
+    private static function parseManyToManyQueryFields(string $middleModel, string $rightModel, ?array &$middleFields, ?array &$rightFields)
     {
         $middleFields = [];
         $rightFields = [];
@@ -630,14 +631,14 @@ class Query
     /**
      * 合并多对多查询字段.
      *
-     * @param string $middleModel
-     * @param string $rightModel
+     * @param string $middleTable
      * @param array  $middleFields
+     * @param string $rightTable
      * @param array  $rightFields
      *
      * @return array
      */
-    private static function mergeManyToManyFields($middleTable, $middleFields, $rightTable, $rightFields)
+    private static function mergeManyToManyFields(string $middleTable, array $middleFields, string $rightTable, array $rightFields): array
     {
         $result = [];
         foreach ($middleFields as $alias => $fieldName)
@@ -662,7 +663,7 @@ class Query
      *
      * @return void
      */
-    private static function appendMany($manyList, $dataList, $fields, $modelClass)
+    private static function appendMany(ArrayList $manyList, array $dataList, array $fields, string $modelClass)
     {
         foreach ($dataList as $row)
         {

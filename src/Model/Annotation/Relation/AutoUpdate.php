@@ -28,12 +28,12 @@ class AutoUpdate extends Base
      *
      * @var bool
      */
-    public $status = true;
+    public bool $status = true;
 
     /**
      * save时，删除无关联数据.
      *
      * @var bool
      */
-    public $orphanRemoval = false;
+    public bool $orphanRemoval = false;
 }

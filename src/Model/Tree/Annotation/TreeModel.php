@@ -22,19 +22,19 @@ class TreeModel extends Base
      *
      * @var string|null
      */
-    public $idField;
+    public ?string $idField = null;
 
     /**
      * 父级ID字段名.
      *
      * @var string
      */
-    public $parentField = 'parent_id';
+    public string $parentField = 'parent_id';
 
     /**
      * 子集字段名.
      *
      * @var string
      */
-    public $childrenField = 'children';
+    public string $childrenField = 'children';
 }

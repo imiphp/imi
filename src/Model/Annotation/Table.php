@@ -26,21 +26,21 @@ class Table extends Base
     /**
      * 表名.
      *
-     * @var string
+     * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 数据库连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    public $dbPoolName;
+    public ?string $dbPoolName = null;
 
     /**
      * 主键，支持数组方式设置联合索引.
      *
-     * @var string|array
+     * @var string|array|null
      */
-    public $id;
+    public $id = null;
 }

@@ -19,7 +19,7 @@ trait TTreeModel
      *
      * @return \Imi\Model\Tree\Annotation\TreeModel
      */
-    private static function __getTreeModel()
+    private static function __getTreeModel(): TreeModel
     {
         return ModelManager::getAnnotation(static::__getRealClassName(), TreeModel::class);
     }
@@ -29,7 +29,7 @@ trait TTreeModel
      *
      * @return string
      */
-    private static function __getIdField()
+    private static function __getIdField(): string
     {
         $treeModel = static::__getTreeModel();
         if ($treeModel->idField)
@@ -45,11 +45,11 @@ trait TTreeModel
     /**
      * 获取关联列表.
      *
-     * @param \Imi\Db\Query\Interfaces\IQuery $query
+     * @param \Imi\Db\Query\Interfaces\IQuery|null $query
      *
      * @return array
      */
-    public static function getAssocList(IQuery $query = null)
+    public static function getAssocList(?IQuery $query = null): array
     {
         if (null === $query)
         {
@@ -66,14 +66,13 @@ trait TTreeModel
      *
      * 非递归实现，相比递归实现性能更高，更省内存
      *
-     * @param int|null $parentId
-     * @param bool     $includeParentId 包含父级ID
-     * @param int      $limitLevel      限制层级
-     * @param int      $level           当前层数，内部参数不要手动传
+     * @param mixed|array|null $parentId
+     * @param bool             $includeParentId 包含父级ID
+     * @param int              $limitLevel      限制层级
      *
-     * @return int[]
+     * @return array
      */
-    public function getChildrenIds($parentId = null, $includeParentId = false, $limitLevel = -1)
+    public function getChildrenIds($parentId = null, bool $includeParentId = false, int $limitLevel = -1): array
     {
         $idField = static::__getIdField();
         if (\is_array($parentId))
@@ -128,11 +127,11 @@ trait TTreeModel
     /**
      * 获取一级子节点的ID们.
      *
-     * @param int|null $parentId
+     * @param mixed|array|null $parentId
      *
-     * @return int[]
+     * @return array
      */
-    public function getChildIds($parentId = null)
+    public function getChildIds($parentId = null): array
     {
         $idField = static::__getIdField();
 
@@ -142,12 +141,12 @@ trait TTreeModel
     /**
      * 获取子成员对象列表，可以指定层级，默认无限级.
      *
-     * @param int $parentId
-     * @param int $limitLevel
+     * @param mixed|array|null $parentId
+     * @param int              $limitLevel
      *
      * @return static[]
      */
-    public function getChildrenList($parentId = null, $limitLevel = -1)
+    public function getChildrenList($parentId = null, int $limitLevel = -1): array
     {
         $ids = $this->getChildrenIds($parentId, false, $limitLevel);
         if (!$ids)
@@ -161,9 +160,9 @@ trait TTreeModel
     /**
      * 获取父级对象
      *
-     * @return static
+     * @return static|null
      */
-    public function getParent()
+    public function getParent(): ?self
     {
         return static::find($this[static::__getTreeModel()->parentField]);
     }
@@ -173,7 +172,7 @@ trait TTreeModel
      *
      * @return static[]
      */
-    public function getParents()
+    public function getParents(): array
     {
         $parents = [];
         $treeItem = $this;

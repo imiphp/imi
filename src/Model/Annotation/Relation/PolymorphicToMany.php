@@ -29,28 +29,28 @@ class PolymorphicToMany extends RelationBase
      *
      * @var string
      */
-    public $model;
+    public string $model;
 
     /**
      * 关联的模型用于关联的字段.
      *
      * @var string
      */
-    public $modelField;
+    public string $modelField;
 
     /**
      * 当前模型用于关联的字段.
      *
      * @var string
      */
-    public $field;
+    public string $field;
 
     /**
      * 多态类型字段名.
      *
      * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * 多态类型字段值
@@ -66,5 +66,5 @@ class PolymorphicToMany extends RelationBase
      *
      * @var string
      */
-    public $middle;
+    public string $middle;
 }

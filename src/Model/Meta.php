@@ -7,6 +7,7 @@ namespace Imi\Model;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Serializable;
+use Imi\Model\Annotation\Serializables;
 use Imi\Model\Annotation\Table;
 
 /**
@@ -19,100 +20,100 @@ class Meta
      *
      * @var string
      */
-    private $className;
+    private string $className;
 
     /**
      * 表名.
      *
-     * @var string
+     * @var string|null
      */
-    private $tableName;
+    private ?string $tableName;
 
     /**
      * 数据库连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    private $dbPoolName;
+    private ?string $dbPoolName;
 
     /**
      * 主键.
      *
-     * @var array
+     * @var array|null
      */
-    private $id;
+    private ?array $id;
 
     /**
      * 第一个主键.
      *
-     * @var string
+     * @var string|null
      */
-    private $firstId;
+    private ?string $firstId;
 
     /**
      * 字段配置.
      *
      * @var \Imi\Model\Annotation\Column[]
      */
-    private $fields;
+    private array $fields;
 
     /**
      * 字段名列表.
      *
      * @var string[]
      */
-    private $fieldNames;
+    private array $fieldNames;
 
     /**
      * 字段名列表，会包含关联模型的导出字段.
      *
      * @var string[]
      */
-    private $realFieldNames;
+    private array $realFieldNames;
 
     /**
      * 模型是否为驼峰命名.
      *
      * @var bool
      */
-    private $camel;
+    private bool $camel = true;
 
     /**
      * 序列化注解.
      *
-     * @var \Imi\Model\Annotation\Serializables
+     * @var \Imi\Model\Annotation\Serializables|null
      */
-    private $serializables;
+    private ?Serializables $serializables;
 
     /**
      * 序列化注解列表.
      *
      * @var \Imi\Model\Annotation\Serializable[]
      */
-    private $serializableSets;
+    private array $serializableSets;
 
     /**
      * 提取属性注解.
      *
-     * @var \Imi\Model\Annotation\ExtractProperty[]
+     * @var \Imi\Model\Annotation\ExtractProperty[][]
      */
-    private $extractPropertys;
+    private array $extractPropertys;
 
     /**
      * 是否有关联.
      *
      * @var bool
      */
-    private $relation;
+    private bool $relation;
 
     /**
      * 自增字段名.
      *
-     * @var string
+     * @var string|null
      */
-    private $autoIncrementField;
+    private ?string $autoIncrementField = null;
 
-    public function __construct($modelClass)
+    public function __construct(string $modelClass)
     {
         $this->className = $modelClass;
         /** @var \Imi\Model\Annotation\Table $table */
@@ -157,9 +158,9 @@ class Meta
     /**
      * Get 表名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getTableName()
+    public function getTableName(): ?string
     {
         return $this->tableName;
     }
@@ -167,9 +168,9 @@ class Meta
     /**
      * Get 数据库连接池名称.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDbPoolName()
+    public function getDbPoolName(): ?string
     {
         return $this->dbPoolName;
     }
@@ -177,9 +178,9 @@ class Meta
     /**
      * Get 主键.
      *
-     * @return array
+     * @return array|null
      */
-    public function getId()
+    public function getId(): ?array
     {
         return $this->id;
     }
@@ -187,9 +188,9 @@ class Meta
     /**
      * Get 第一个主键.
      *
-     * @return string
+     * @return string|null
      */
-    public function getFirstId()
+    public function getFirstId(): ?string
     {
         return $this->firstId;
     }
@@ -199,7 +200,7 @@ class Meta
      *
      * @return \Imi\Model\Annotation\Column[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -209,7 +210,7 @@ class Meta
      *
      * @return string[]
      */
-    public function getFieldNames()
+    public function getFieldNames(): array
     {
         return $this->fieldNames;
     }
@@ -219,7 +220,7 @@ class Meta
      *
      * @return bool
      */
-    public function isCamel()
+    public function isCamel(): bool
     {
         return $this->camel;
     }
@@ -229,7 +230,7 @@ class Meta
      *
      * @return string[]
      */
-    public function getRealFieldNames()
+    public function getRealFieldNames(): array
     {
         return $this->realFieldNames;
     }
@@ -239,7 +240,7 @@ class Meta
      *
      * @return bool
      */
-    public function hasRelation()
+    public function hasRelation(): bool
     {
         return $this->relation;
     }
@@ -247,9 +248,9 @@ class Meta
     /**
      * Get 序列化注解.
      *
-     * @return \Imi\Model\Annotation\Serializables
+     * @return \Imi\Model\Annotation\Serializables|null
      */
-    public function getSerializables()
+    public function getSerializables(): ?Serializables
     {
         return $this->serializables;
     }
@@ -257,9 +258,9 @@ class Meta
     /**
      * Get 提取属性注解.
      *
-     * @return \Imi\Model\Annotation\ExtractProperty[]
+     * @return \Imi\Model\Annotation\ExtractProperty[][]
      */
-    public function getExtractPropertys()
+    public function getExtractPropertys(): array
     {
         return $this->extractPropertys;
     }
@@ -269,7 +270,7 @@ class Meta
      *
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
@@ -279,7 +280,7 @@ class Meta
      *
      * @return \Imi\Model\Annotation\Serializable[]
      */
-    public function getSerializableSets()
+    public function getSerializableSets(): array
     {
         return $this->serializableSets;
     }
@@ -287,9 +288,9 @@ class Meta
     /**
      * Get 自增字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAutoIncrementField()
+    public function getAutoIncrementField(): ?string
     {
         return $this->autoIncrementField;
     }

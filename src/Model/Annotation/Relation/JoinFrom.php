@@ -26,7 +26,7 @@ class JoinFrom extends Base
     /**
      * 字段名.
      *
-     * @var string
+     * @var string|null
      */
-    public $field;
+    public ?string $field = null;
 }

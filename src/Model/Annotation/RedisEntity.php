@@ -27,23 +27,23 @@ class RedisEntity extends Base
     /**
      * redis 连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    public $poolName;
+    public ?string $poolName = null;
 
     /**
      * 第几个库，不传为null时使用连接池默认配置.
      *
-     * @var int
+     * @var int|null
      */
-    public $db = null;
+    public ?int $db = null;
 
     /**
      * 键，支持定义多个参数，格式：{key}.
      *
      * @var string
      */
-    public $key = '{key}';
+    public string $key = '{key}';
 
     /**
      * hash 成员标识，支持定义多个参数，格式：{key}
@@ -51,15 +51,15 @@ class RedisEntity extends Base
      *
      * @var string
      */
-    public $member = '{member}';
+    public string $member = '{member}';
 
     /**
      * 数据默认的过期时间，null为永不过期
      * hash 存储模式不支持过期
      *
-     * @var int
+     * @var int|null
      */
-    public $ttl = null;
+    public ?int $ttl = null;
 
     /**
      * Redis 实体类存储模式.
@@ -68,5 +68,5 @@ class RedisEntity extends Base
      *
      * @var string
      */
-    public $storage = RedisStorageMode::STRING;
+    public string $storage = RedisStorageMode::STRING;
 }

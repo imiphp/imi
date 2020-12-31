@@ -16,9 +16,9 @@ class RedisHash extends Base
     /**
      * Redis连接池名称.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 默认缺省的 hash key.

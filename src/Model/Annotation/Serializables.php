@@ -24,12 +24,12 @@ class Serializables extends Base
      *
      * @var string
      */
-    public $mode;
+    public string $mode;
 
     /**
      * 字段名数组.
      *
      * @var string[]
      */
-    public $fields;
+    public array $fields = [];
 }

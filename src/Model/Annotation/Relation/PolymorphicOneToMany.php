@@ -29,14 +29,14 @@ class PolymorphicOneToMany extends RelationBase
      *
      * @var string
      */
-    public $model;
+    public string $model;
 
     /**
      * 多态类型字段名.
      *
      * @var string
      */
-    public $type;
+    public string $type;
 
     /**
      * 多态类型字段值
@@ -50,7 +50,7 @@ class PolymorphicOneToMany extends RelationBase
      *
      * 例：age desc, id desc
      *
-     * @var string
+     * @var string|null
      */
-    public $order;
+    public ?string $order = null;
 }

@@ -16,17 +16,4 @@ class Main extends BaseMain
     {
     }
 
-    /**
-     * 加载配置.
-     *
-     * @return void
-     */
-    public function loadConfig()
-    {
-        $fileName = File::path(\dirname($this->getPath()), 'config/config.php');
-        if (is_file($fileName))
-        {
-            Config::addConfig('@' . $this->moduleName, include $fileName);
-        }
-    }
 }

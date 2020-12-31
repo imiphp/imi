@@ -17,7 +17,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @var string
      */
-    protected $__key;
+    protected string $__key;
 
     /**
      * 查找一条记录.
@@ -26,7 +26,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return static
      */
-    public static function find($key)
+    public static function find(string $key): self
     {
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
@@ -49,7 +49,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return static[]
      */
-    public static function select()
+    public static function select(): array
     {
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
@@ -103,7 +103,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return void
      */
-    public static function deleteBatch(...$keys)
+    public static function deleteBatch(string ...$keys)
     {
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
@@ -125,7 +125,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return int
      */
-    public static function count()
+    public static function count(): int
     {
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
@@ -141,7 +141,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return string
      */
-    public function __getKey()
+    public function __getKey(): string
     {
         return $this->__key;
     }
@@ -153,7 +153,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return static
      */
-    public function __setKey($key)
+    public function __setKey(string $key): self
     {
         $this->__key = $key;
 

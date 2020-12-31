@@ -29,14 +29,14 @@ class OneToMany extends RelationBase
      *
      * @var string
      */
-    public $model;
+    public string $model;
 
     /**
      * 排序规则字符串.
      *
      * 例：age desc, id desc
      *
-     * @var string
+     * @var string|null
      */
-    public $order;
+    public ?string $order = null;
 }

@@ -15,46 +15,28 @@ abstract class BaseMain implements IMain
     /**
      * 当前模块根路径.
      *
-     * @var string
+     * @var string|null
      */
-    protected $path;
+    protected ?string $path = null;
 
     /**
      * 当前模块命名空间.
      *
-     * @var string
+     * @var string|null
      */
-    protected $namespace;
+    protected ?string $namespace = null;
 
     /**
      * 模块名称.
      *
      * @var string
      */
-    protected $moduleName;
+    protected string $moduleName;
 
     public function __construct(string $moduleName)
     {
         $this->moduleName = $moduleName;
-        // $this->loadConfig();
-        // $this->loadComponents();
         $this->__init();
-    }
-
-    /**
-     * 加载配置.
-     *
-     * @return void
-     */
-    public function loadConfig()
-    {
-        $fileName = $this->getPath() . \DIRECTORY_SEPARATOR . 'config/config.php';
-        if (is_file($fileName))
-        {
-            $name = '@' . $this->moduleName;
-            Config::removeConfig($name);
-            Config::addConfig($name, include $fileName);
-        }
     }
 
     /**
@@ -103,7 +85,7 @@ abstract class BaseMain implements IMain
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return Config::get('@' . $this->moduleName, []);
     }
@@ -116,21 +98,5 @@ abstract class BaseMain implements IMain
     public function getModuleName(): string
     {
         return $this->moduleName;
-    }
-
-    /**
-     * 加载组件.
-     *
-     * @return void
-     */
-    public function loadComponents()
-    {
-        foreach (Config::get('@' . $this->moduleName . '.components', []) as $componentName => $namespace)
-        {
-            if (!Helper::getMain($namespace, $componentName))
-            {
-                throw new \RuntimeException(sprintf('Component [%s] must have the class %s\\Main', $componentName, $namespace));
-            }
-        }
     }
 }

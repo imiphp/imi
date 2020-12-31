@@ -28,35 +28,35 @@ class Column extends Base
      *
      * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * 字段类型.
      *
-     * @var string
+     * @var string|null
      */
-    public $type;
+    public ?string $type = null;
 
     /**
      * 字段长度.
      *
      * @var int
      */
-    public $length = -1;
+    public int $length = -1;
 
     /**
      * 是否允许为null.
      *
      * @var bool
      */
-    public $nullable = true;
+    public bool $nullable = true;
 
     /**
      * 精度，小数位后几位.
      *
      * @var int
      */
-    public $accuracy = 0;
+    public int $accuracy = 0;
 
     /**
      * 默认值
@@ -70,28 +70,28 @@ class Column extends Base
      *
      * @var bool
      */
-    public $isPrimaryKey = false;
+    public bool $isPrimaryKey = false;
 
     /**
      * 联合主键中的第几个，从0开始.
      *
      * @var int
      */
-    public $primaryKeyIndex = -1;
+    public int $primaryKeyIndex = -1;
 
     /**
      * 是否为自增字段.
      *
      * @var bool
      */
-    public $isAutoIncrement = false;
+    public bool $isAutoIncrement = false;
 
     /**
      * 虚拟字段，不参与数据库操作.
      *
      * @var bool
      */
-    public $virtual = false;
+    public bool $virtual = false;
 
     /**
      * save/update 模型时是否将当前时间写入该字段
@@ -101,7 +101,7 @@ class Column extends Base
      *
      * @var bool
      */
-    public $updateTime = false;
+    public bool $updateTime = false;
 
     /**
      * 列表分割字符串.
@@ -110,5 +110,5 @@ class Column extends Base
      *
      * @var string|null
      */
-    public $listSeparator = null;
+    public ?string $listSeparator = null;
 }

@@ -21,7 +21,7 @@ class ModelRelationManager
      *
      * @var array
      */
-    private static $relationFieldsNames = [];
+    private static array $relationFieldsNames = [];
 
     private function __construct()
     {
@@ -54,7 +54,7 @@ class ModelRelationManager
      *
      * @return bool
      */
-    public static function hasRelation($model)
+    public static function hasRelation($model): bool
     {
         return (bool) AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class);
     }
@@ -67,7 +67,7 @@ class ModelRelationManager
      *
      * @return void
      */
-    public static function queryModelRelations($model, ...$names)
+    public static function queryModelRelations($model, string ...$names)
     {
         $relations = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class);
         foreach ($names as $name)
@@ -146,7 +146,7 @@ class ModelRelationManager
      *
      * @return string[]
      */
-    public static function getRelationFieldNames($object)
+    public static function getRelationFieldNames($object): array
     {
         $class = BeanFactory::getObjectClass($object);
         $staticRelationFieldsNames = &static::$relationFieldsNames;

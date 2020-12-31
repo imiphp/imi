@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\Model\Enum\RedisStorageMode;
+use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
 
 /**
@@ -17,23 +18,23 @@ abstract class RedisModel extends BaseModel
      *
      * @var string
      */
-    protected $key;
+    protected string $key;
 
     /**
      * 默认的member.
      *
      * @var string
      */
-    protected $__member;
+    protected string $__member;
 
     /**
      * set时，设置的数据过期时间.
      *
-     * @var int
+     * @var int|null
      */
-    protected $__ttl;
+    protected ?int $__ttl;
 
-    public function __init($data = [])
+    public function __init(array $data = [])
     {
         parent::__init($data);
         $this->__ttl = ModelManager::getRedisEntity($this)->ttl;
@@ -44,9 +45,9 @@ abstract class RedisModel extends BaseModel
      *
      * @param string|array $condition
      *
-     * @return static
+     * @return static|null
      */
-    public static function find($condition)
+    public static function find($condition): ?self
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
@@ -83,9 +84,11 @@ abstract class RedisModel extends BaseModel
     /**
      * 查询多条记录.
      *
+     * @param mixed $conditions
+     *
      * @return static[]
      */
-    public static function select(...$conditions)
+    public static function select(...$conditions): array
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
@@ -158,7 +161,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return bool
      */
-    public function save()
+    public function save(): bool
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
@@ -196,7 +199,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
@@ -216,42 +219,42 @@ abstract class RedisModel extends BaseModel
     /**
      * 批量删除.
      *
-     * @param string ...$conditions
+     * @param mixed ...$conditions
      *
      * @return int
      */
-    public static function deleteBatch(...$conditions)
+    public static function deleteBatch(...$conditions): int
     {
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
-        $keys = [];
-        foreach ($conditions as $condition)
-        {
-            $keys[] = static::generateKey($condition);
-        }
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                return static::__getRedis()->del(...$keys);
-            case RedisStorageMode::HASH:
-                $members = [];
+                $keys = [];
                 foreach ($conditions as $condition)
                 {
-                    $members[] = static::generateMember($condition);
+                    $keys[] = static::generateKey($condition);
                 }
-                $result = true;
-                foreach (array_unique($keys) as $key)
+
+                return static::__getRedis()->del(...$keys) ?: 0;
+            case RedisStorageMode::HASH:
+                $result = 0;
+                foreach ($conditions as $condition)
                 {
-                    if (false === static::__getRedis()->hDel($key, ...$members))
-                    {
-                        $result = false;
-                        break;
-                    }
+                    $key = static::generateKey($condition);
+                    $member = static::generateMember($condition);
+                    $result += (static::__getRedis()->hDel($key, $member) ?: 0);
                 }
 
                 return $result;
             case RedisStorageMode::HASH_OBJECT:
-                return static::__getRedis()->del(...$keys);
+                $keys = [];
+                foreach ($conditions as $condition)
+                {
+                    $keys[] = static::generateKey($condition);
+                }
+
+                return static::__getRedis()->del(...$keys) ?: 0;
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid RedisEntity->storage %s', $redisEntity->storage));
         }
@@ -262,7 +265,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return string
      */
-    public function __getKey()
+    public function __getKey(): string
     {
         $rule = ModelManager::getKeyRule($this);
         $replaces = [];
@@ -285,7 +288,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return string
      */
-    public static function generateKey($condition)
+    public static function generateKey($condition): string
     {
         if (\is_string($condition))
         {
@@ -315,7 +318,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return string
      */
-    public static function generateMember($condition)
+    public static function generateMember($condition): string
     {
         if (\is_string($condition))
         {
@@ -343,7 +346,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return string
      */
-    public function __getMember()
+    public function __getMember(): string
     {
         $rule = ModelManager::getMemberRule($this);
         $replaces = [];
@@ -366,7 +369,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return \Imi\Redis\RedisHandler
      */
-    public static function __getRedis(self $redisModel = null)
+    public static function __getRedis(self $redisModel = null): RedisHandler
     {
         $annotation = ModelManager::getRedisEntity(null === $redisModel ? static::class : $redisModel);
         $redis = RedisManager::getInstance($annotation->poolName);
@@ -383,7 +386,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return string
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -395,7 +398,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return self
      */
-    public function setKey(string $key)
+    public function setKey(string $key): self
     {
         $this->key = $key;
 
@@ -407,7 +410,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return string
      */
-    public function getMember()
+    public function getMember(): string
     {
         return $this->__member;
     }
@@ -419,7 +422,7 @@ abstract class RedisModel extends BaseModel
      *
      * @return self
      */
-    public function setMember(string $member)
+    public function setMember(string $member): self
     {
         $this->__member = $member;
 

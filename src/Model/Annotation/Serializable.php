@@ -28,5 +28,5 @@ class Serializable extends Base
      *
      * @var bool
      */
-    public $allow = true;
+    public bool $allow = true;
 }

@@ -22,7 +22,7 @@ use Imi\Util\Text;
  */
 abstract class Model extends BaseModel
 {
-    public function __init($data = [])
+    public function __init(array $data = [])
     {
         if ($this->__meta->hasRelation())
         {
@@ -42,7 +42,7 @@ abstract class Model extends BaseModel
      *
      * @return \Imi\Db\Query\Interfaces\IQuery
      */
-    public static function query($object = null, $poolName = null, $queryType = null)
+    public static function query($object = null, ?string $poolName = null, ?int $queryType = null): IQuery
     {
         $meta = static::__getMeta($object);
 
@@ -58,7 +58,7 @@ abstract class Model extends BaseModel
      *
      * @return \Imi\Db\Query\Interfaces\IQuery
      */
-    public static function dbQuery($object = null, $poolName = null, $queryType = null)
+    public static function dbQuery($object = null, ?string $poolName = null, ?int $queryType = null): IQuery
     {
         $meta = static::__getMeta($object);
 
@@ -70,9 +70,9 @@ abstract class Model extends BaseModel
      *
      * @param callable|mixed ...$ids
      *
-     * @return static
+     * @return static|null
      */
-    public static function find(...$ids)
+    public static function find(...$ids): ?self
     {
         if (!isset($ids[0]))
         {
@@ -150,11 +150,11 @@ abstract class Model extends BaseModel
     /**
      * 查询多条记录.
      *
-     * @param array|callable $where
+     * @param array|callable|null $where
      *
      * @return static[]
      */
-    public static function select($where = null)
+    public static function select($where = null): array
     {
         $realClassName = static::__getRealClassName();
         $query = static::parseWhere(static::query(), $where);
@@ -461,7 +461,7 @@ abstract class Model extends BaseModel
      *
      * @return void
      */
-    public function queryRelations(...$names)
+    public function queryRelations(string ...$names)
     {
         ModelRelationManager::queryModelRelations($this, ...$names);
 
@@ -483,7 +483,7 @@ abstract class Model extends BaseModel
      *
      * @return void
      */
-    public function initRelations(...$names)
+    public function initRelations(string ...$names)
     {
         foreach ($names as $name)
         {
@@ -526,7 +526,7 @@ abstract class Model extends BaseModel
      *
      * @return int
      */
-    public static function count($field = '*')
+    public static function count(string $field = '*'): int
     {
         return static::aggregate('count', $field);
     }
@@ -536,9 +536,9 @@ abstract class Model extends BaseModel
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public static function sum($field)
+    public static function sum(string $field)
     {
         return static::aggregate('sum', $field);
     }
@@ -548,9 +548,9 @@ abstract class Model extends BaseModel
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public static function avg($field)
+    public static function avg(string $field)
     {
         return static::aggregate('avg', $field);
     }
@@ -560,9 +560,9 @@ abstract class Model extends BaseModel
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public static function max($field)
+    public static function max(string $field)
     {
         return static::aggregate('max', $field);
     }
@@ -572,9 +572,9 @@ abstract class Model extends BaseModel
      *
      * @param string $field
      *
-     * @return float
+     * @return int|float
      */
-    public static function min($field)
+    public static function min(string $field): float
     {
         return static::aggregate('min', $field);
     }
@@ -582,13 +582,13 @@ abstract class Model extends BaseModel
     /**
      * 聚合函数.
      *
-     * @param string   $functionName
-     * @param string   $fieldName
-     * @param callable $queryCallable
+     * @param string        $functionName
+     * @param string        $fieldName
+     * @param callable|null $queryCallable
      *
      * @return mixed
      */
-    public static function aggregate($functionName, $fieldName, callable $queryCallable = null)
+    public static function aggregate(string $functionName, string $fieldName, ?callable $queryCallable = null)
     {
         $query = static::query();
         if (null !== $queryCallable)
@@ -604,11 +604,11 @@ abstract class Model extends BaseModel
      * 处理where条件.
      *
      * @param IQuery $query
-     * @param array  $where
+     * @param mixed  $where
      *
      * @return IQuery
      */
-    private static function parseWhere(IQuery $query, $where)
+    private static function parseWhere(IQuery $query, $where): IQuery
     {
         if (null === $where)
         {
@@ -645,9 +645,9 @@ abstract class Model extends BaseModel
      * @param string        $type
      * @param object|string $object
      *
-     * @return array
+     * @return LazyArrayObject
      */
-    private static function parseSaveData($data, $type, $object = null)
+    private static function parseSaveData($data, string $type, $object = null): LazyArrayObject
     {
         $meta = static::__getMeta($object);
         $realClassName = static::__getRealClassName();

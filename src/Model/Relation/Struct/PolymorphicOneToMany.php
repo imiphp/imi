@@ -8,7 +8,7 @@ class PolymorphicOneToMany
 {
     use TLeftAndRight;
 
-    public function __construct($className, $propertyName, $annotation)
+    public function __construct(string $className, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
     {
         $this->initLeftAndRight($className, $propertyName, $annotation);
     }

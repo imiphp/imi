@@ -28,5 +28,5 @@ class Entity extends Base
      *
      * @var bool
      */
-    public $camel = true;
+    public bool $camel = true;
 }
