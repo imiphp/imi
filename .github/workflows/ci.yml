@@ -43,28 +43,28 @@ jobs:
         run: |
           composer test
 
-  ci-php8-jit:
-    runs-on: ubuntu-latest
+  # ci-php8-jit:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole: [4.6.0-php8.0, 4.5.10-php8.0]
-        mysql: [8.0]
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       swoole: [4.6.0-php8.0, 4.5.10-php8.0]
+  #       mysql: [8.0]
 
-    env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+  #   env:
+  #     SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+  #     MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
 
-    steps:
-      - uses: actions/checkout@v1
+  #   steps:
+  #     - uses: actions/checkout@v1
 
-      - name: prepare
-        run: |
-          ./.github/prepare-test.sh swoole-php8
+  #     - name: prepare
+  #       run: |
+  #         ./.github/prepare-test.sh swoole-php8
 
-      - name: test
-        run: docker exec swoole-php8 php tests/run
+  #     - name: test
+  #       run: docker exec swoole-php8 php tests/run
 
   ci-php:
     runs-on: ubuntu-latest
