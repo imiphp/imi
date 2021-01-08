@@ -26,7 +26,7 @@ if (class_exists(TestCase::class))
             });
             while (Coroutine::exists($cid))
             {
-                usleep(10000);
+                Coroutine::sleep(0.01);
             }
             if ($finally)
             {

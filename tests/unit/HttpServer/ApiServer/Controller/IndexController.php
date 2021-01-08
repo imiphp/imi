@@ -13,6 +13,7 @@ use Imi\Server\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
+use Swoole\Coroutine;
 
 /**
  * @Controller(prefix="/", singleton=true)
@@ -287,7 +288,7 @@ class IndexController extends SingletonHttpController
      */
     public function executeTimeout()
     {
-        sleep(5);
+        Coroutine::sleep(5);
 
         return [
             'success'    => true,

@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Swoole\Coroutine;
 use Swoole\Event;
 use Swoole\Runtime;
 use Yurun\Swoole\CoPool\CoPool;
@@ -22,7 +23,7 @@ function startServer()
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
         {
-            sleep(1);
+            Coroutine::sleep(1);
             $context = stream_context_create(['http' => ['timeout' => 1]]);
             if ('imi' === @file_get_contents(imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
@@ -39,7 +40,7 @@ function startServer()
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
         {
-            sleep(1);
+            Coroutine::sleep(1);
             $context = stream_context_create(['http' => ['timeout' => 1]]);
             if ('imi' === @file_get_contents('http://127.0.0.1:13001/', false, $context))
             {
@@ -56,7 +57,7 @@ function startServer()
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
         {
-            sleep(1);
+            Coroutine::sleep(1);
             $context = stream_context_create(['http' => ['timeout' => 1]]);
             @file_get_contents('http://127.0.0.1:13002/', false, $context);
             if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
@@ -74,7 +75,7 @@ function startServer()
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
         {
-            sleep(1);
+            Coroutine::sleep(1);
             try
             {
                 $sock = socket_create(\AF_INET, \SOCK_STREAM, \SOL_TCP);
@@ -98,7 +99,7 @@ function startServer()
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
         {
-            sleep(1);
+            Coroutine::sleep(1);
             try
             {
                 $handle = @stream_socket_client('udp://127.0.0.1:13004', $errno, $errstr);
@@ -218,7 +219,7 @@ function startServer()
 
     while ($completeTaskCount < $taskCount)
     {
-        usleep(10000);
+        Coroutine::sleep(0.01);
     }
     $pool->stop();
 }
