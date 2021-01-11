@@ -269,11 +269,17 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         // 禁止序列化支持
         $serializables = $meta->getSerializables();
         $serializableSets = $meta->getSerializableSets();
-        if ($serializables || $serializableSets)
+        // JsonNotNull 注解支持
+        $propertyJsonNotNullMap = $meta->getPropertyJsonNotNullMap();
+        if ($serializables || $serializableSets || $propertyJsonNotNullMap)
         {
             foreach ($result as $propertyName => $value)
             {
-                if (isset($serializableSets[$propertyName]))
+                if (null === $value && isset($propertyJsonNotNullMap[$propertyName]))
+                {
+                    unset($result[$propertyName]);
+                }
+                elseif (isset($serializableSets[$propertyName]))
                 {
                     // 单独属性上的 @Serializable 注解
                     if (!$serializableSets[$propertyName][0]->allow)

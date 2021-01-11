@@ -4,6 +4,7 @@ namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\JsonNotNull;
 use Imi\Model\Annotation\Serializable;
 use Imi\Model\Annotation\Table;
 
@@ -110,6 +111,13 @@ class Meta
      */
     private $autoIncrementField;
 
+    /**
+     * JsonNotNull 注解集合.
+     *
+     * @var \Imi\Model\Annotation\JsonNotNull[]
+     */
+    private $propertyJsonNotNullMap;
+
     public function __construct($modelClass)
     {
         $this->className = $modelClass;
@@ -141,6 +149,7 @@ class Meta
         $this->serializables = ModelManager::getSerializables($modelClass);
         $this->serializableSets = AnnotationManager::getPropertiesAnnotations($modelClass, Serializable::class);
         $this->extractPropertys = ModelManager::getExtractPropertys($modelClass);
+        $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($modelClass, JsonNotNull::class);
         $this->relation = ModelRelationManager::hasRelation($modelClass);
         if ($this->relation)
         {
@@ -290,5 +299,15 @@ class Meta
     public function getAutoIncrementField()
     {
         return $this->autoIncrementField;
+    }
+
+    /**
+     * Get jsonNotNull 注解集合.
+     *
+     * @return \Imi\Model\Annotation\JsonNotNull[]
+     */
+    public function getPropertyJsonNotNullMap()
+    {
+        return $this->propertyJsonNotNullMap;
     }
 }
