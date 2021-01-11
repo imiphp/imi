@@ -241,6 +241,12 @@ abstract class ArticleBase extends Model
 
 `updateTime`：save/update 模型时是否将当前时间写入该字段。支持 date/time/datetime/timestamp/year/int/bigint。当字段为 int 类型，写入秒级时间戳。当字段为 bigint 类型，写入毫秒级时间戳。
 
+### @JsonNotNull
+
+写在属性上，无参数。
+
+当字段值不为 null 时才序列化到 json
+
 ### @Serializable
 
 写在属性上，序列化注解

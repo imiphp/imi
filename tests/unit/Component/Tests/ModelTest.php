@@ -46,6 +46,7 @@ class ModelTest extends BaseTest
             'id'        => null,
             'username'  => '1',
             'password'  => '2',
+            'notInJson' => null,
         ], $member->convertToArray(false));
     }
 
@@ -68,6 +69,7 @@ class ModelTest extends BaseTest
             'id'        => null,
             'username'  => '1',
             'password'  => '2',
+            'notInJson' => null,
         ]], Member::convertListToArray([$member], false));
     }
 
@@ -104,6 +106,7 @@ class ModelTest extends BaseTest
             'id'        => $id,
             'username'  => '3',
             'password'  => '4',
+            'notInJson' => null,
         ], $member->convertToArray(false));
     }
 
@@ -129,6 +132,7 @@ class ModelTest extends BaseTest
             'id'        => $id,
             'username'  => '3',
             'password'  => '4',
+            'notInJson' => null,
         ], $member->convertToArray(false));
     }
 
@@ -153,6 +157,7 @@ class ModelTest extends BaseTest
             'id'        => 1,
             'username'  => '1',
             'password'  => '2',
+            'notInJson' => null,
         ], $member->convertToArray(false));
 
         $member = Member::find([
@@ -162,6 +167,7 @@ class ModelTest extends BaseTest
             'id'        => 1,
             'username'  => '1',
             'password'  => '2',
+            'notInJson' => null,
         ], $member->convertToArray(false));
     }
 
@@ -187,6 +193,7 @@ class ModelTest extends BaseTest
                 'id'        => '1',
                 'username'  => '1',
                 'password'  => '2',
+                'notInJson' => null,
             ],
         ], Member::convertListToArray($list, false));
     }
