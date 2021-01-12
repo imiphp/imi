@@ -26,10 +26,6 @@ if (class_exists(TestCase::class))
                     $throwable = $th;
                 }
             });
-            while (Coroutine::exists($cid))
-            {
-                Coroutine::sleep(0.01);
-            }
             if ($finally)
             {
                 $finally();
