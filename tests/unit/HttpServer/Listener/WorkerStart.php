@@ -11,6 +11,7 @@ use Imi\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Test\HttpServer\Cron\CronDWorker;
 use Imi\Worker;
+use function Yurun\Swoole\Coroutine\goWait;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.START")
@@ -28,7 +29,7 @@ class WorkerStart implements IWorkerStartEventListener
     {
         if (0 === Worker::getWorkerId())
         {
-            go(function () {
+            goWait(function () {
                 sleep(1);
                 $cron = new Cron();
                 $cron->id = 'CronRandomWorkerTest';

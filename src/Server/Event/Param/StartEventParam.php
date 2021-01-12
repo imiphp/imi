@@ -12,7 +12,7 @@ class StartEventParam extends EventParam
     /**
      * 服务器对象
      *
-     * @var \Imi\Server\Base
+     * @var \Imi\Server\Base|null
      */
-    public Base $server;
+    public ?Base $server;
 }

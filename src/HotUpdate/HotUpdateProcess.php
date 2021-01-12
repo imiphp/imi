@@ -122,7 +122,6 @@ class HotUpdateProcess extends BaseProcess
      */
     public function run(\Swoole\Process $process)
     {
-        \Swoole\Runtime::enableCoroutine(true);
         if (!$this->status)
         {
             return;

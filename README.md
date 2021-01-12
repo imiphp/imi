@@ -8,8 +8,8 @@
 
 [![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)](https://packagist.org/packages/yurunsoft/imi)
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Yurunsoft/imi/ci/dev)
-[![Php Version](https://img.shields.io/badge/php-%3E=7.1-brightgreen.svg)](https://secure.php.net/)
-[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.3.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
+[![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
+[![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.6.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
 [![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
 [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
@@ -82,9 +82,9 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 ## 运行环境
 
 * Linux 系统 (Swoole 不支持在 Windows 上运行)
-* [PHP](https://php.net/) >= 7.1
+* [PHP](https://php.net/) >= 7.4
 * [Composer](https://getcomposer.org/)
-* [Swoole](https://www.swoole.com/) >= 4.3.0
+* [Swoole](https://www.swoole.com/) >= 4.6.0
 * Redis、PDO 扩展
 
 ## Docker

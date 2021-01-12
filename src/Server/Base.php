@@ -20,8 +20,6 @@ use Imi\Server\Event\Param\WorkerExitEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Param\WorkerStopEventParam;
 use Imi\Server\Group\TServerGroup;
-use Swoole\Server;
-use Swoole\Server\Port;
 
 abstract class Base
 {
@@ -42,16 +40,16 @@ abstract class Base
     /**
      * swoole 服务器对象
      *
-     * @var \Swoole\Server
+     * @var \Swoole\Server|Swoole\Coroutine\Http\Server
      */
-    protected Server $swooleServer;
+    protected $swooleServer;
 
     /**
      * swoole 监听端口.
      *
-     * @var \Swoole\Server\Port
+     * @var \Swoole\Server\Port|Swoole\Coroutine\Http\Server
      */
-    protected Port $swoolePort;
+    protected $swoolePort;
 
     /**
      * 服务器配置.
@@ -131,9 +129,9 @@ abstract class Base
     /**
      * 获取 swoole 服务器对象
      *
-     * @return \Swoole\Server
+     * @return \Swoole\Server|Swoole\Coroutine\Http\Server
      */
-    public function getSwooleServer(): Server
+    public function getSwooleServer()
     {
         return $this->swooleServer;
     }
@@ -141,9 +139,9 @@ abstract class Base
     /**
      * 获取 swoole 监听端口.
      *
-     * @return \Swoole\Server\Port
+     * @return \Swoole\Server\Port|Swoole\Coroutine\Http\Server
      */
-    public function getSwoolePort(): Port
+    public function getSwoolePort()
     {
         return $this->swoolePort;
     }

@@ -59,11 +59,9 @@ class ProcessPoolManager
                 'processPoolName'   => $name,
                 'workerId'          => $workerId,
             ]);
-            // 强制开启进程协程化
-            \Swoole\Runtime::enableCoroutine(true);
             // 随机数播种
             mt_srand();
-            imigo(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
+            \Co\run(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
                 $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
                 // 加载服务器注解
                 Scanner::scanVendor();
@@ -81,7 +79,6 @@ class ProcessPoolManager
                 // 执行任务
                 $processInstance->run($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey);
             });
-            \Swoole\Event::wait();
         });
 
         $pool->on('WorkerStop', imiCallable(function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey) {

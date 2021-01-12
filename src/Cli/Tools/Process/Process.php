@@ -81,16 +81,18 @@ class Process extends BaseCommand
      */
     public function run(string $name): void
     {
-        // 加载服务器注解
-        Scanner::scanVendor();
-        Scanner::scanApp();
-        $processOption = ProcessParser::getInstance()->getProcess($name);
-        if (null === $processOption)
-        {
-            throw new RuntimeException(sprintf('Not found process %s', $name));
-        }
-        $callable = ProcessManager::getProcessCallable($_SERVER['argv'], $name, $processOption);
-        $callable(new \Imi\Process\Process(function () {
-        }));
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name) {
+            // 加载服务器注解
+            Scanner::scanVendor();
+            Scanner::scanApp();
+            $processOption = ProcessParser::getInstance()->getProcess($name);
+            if (null === $processOption)
+            {
+                throw new RuntimeException(sprintf('Not found process %s', $name));
+            }
+            $callable = ProcessManager::getProcessCallable($_SERVER['argv'], $name, $processOption);
+            $callable(new \Imi\Process\Process(function () {
+            }));
+        });
     }
 }

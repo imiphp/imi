@@ -196,7 +196,7 @@ abstract class BaseAsyncPool extends BasePool
             }
             else
             {
-                go(function () use ($poolItem) {
+                \Co\run(function () use ($poolItem) {
                     $this->queue->push($poolItem);
                 });
             }

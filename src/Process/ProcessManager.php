@@ -150,9 +150,7 @@ class ProcessManager
             if ($processOption['Process']->co)
             {
                 // 强制开启进程协程化
-                \Swoole\Runtime::enableCoroutine(true);
-                imigo($callable);
-                \Swoole\Event::wait();
+                \Co\run($callable);
             }
             else
             {

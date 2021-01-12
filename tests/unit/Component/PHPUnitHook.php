@@ -11,13 +11,14 @@ use Imi\Event\EventParam;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use PHPUnit\Runner\BeforeFirstTestHook;
+use function Yurun\Swoole\Coroutine\goWait;
 
 class PHPUnitHook implements BeforeFirstTestHook
 {
     public function executeBeforeFirstTest(): void
     {
         Event::on('IMI.APP_INIT', function (EventParam $param) {
-            go(function () use ($param) {
+            goWait(function () use ($param) {
                 $param->stopPropagation();
                 PoolManager::use('maindb', function (IPoolResource $resource, IDb $db) {
                     $truncateList = [
