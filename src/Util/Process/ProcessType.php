@@ -33,6 +33,7 @@ class ProcessType
      * 进程.
      */
     const PROCESS = 'process';
+
     private function __construct()
     {
     }

@@ -31,6 +31,7 @@ class ImiPriority
      * 大于这个值，可以先于框架最大优先级执行.
      */
     const IMI_MAX = 19940312;
+
     private function __construct()
     {
     }

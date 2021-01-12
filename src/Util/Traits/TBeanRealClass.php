@@ -14,14 +14,14 @@ trait TBeanRealClass
      *
      * @var array
      */
-    public static $realClassNames;
+    public static array $realClassNames = [];
 
     /**
      * 获取当前Bean类真实类名.
      *
      * @return string
      */
-    protected static function __getRealClassName()
+    protected static function __getRealClassName(): string
     {
         if (!isset(TBeanRealClass::$realClassNames[static::class]))
         {

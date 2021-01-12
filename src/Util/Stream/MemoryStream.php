@@ -14,21 +14,21 @@ class MemoryStream implements StreamInterface
      *
      * @var string
      */
-    protected $content;
+    protected string $content;
 
     /**
      * 大小.
      *
      * @var int
      */
-    protected $size;
+    protected int $size;
 
     /**
      * 当前位置.
      *
      * @var int
      */
-    protected $position = 0;
+    protected int $position = 0;
 
     public function __construct(string $content = '')
     {

@@ -16,16 +16,16 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      *
      * @var string
      */
-    private $itemType;
+    private string $itemType;
 
     /**
      * 数组列表.
      *
      * @var array
      */
-    private $list = [];
+    private array $list = [];
 
-    public function __construct($itemType, $list = [])
+    public function __construct(string $itemType, array $list = [])
     {
         $this->itemType = $itemType;
         foreach ($list as $item)
@@ -166,7 +166,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->list);
     }

@@ -20,7 +20,7 @@ class DateTime
      *
      * @return int
      */
-    public static function getSecondsByInterval(\DateInterval $dateInterval)
+    public static function getSecondsByInterval(\DateInterval $dateInterval): int
     {
         $dateTime = new \DateTime();
         $dateTime->add($dateInterval);
@@ -39,7 +39,7 @@ class DateTime
      *
      * @return string|int
      */
-    public static function getYesterday($format = null, $timestamp = null)
+    public static function getYesterday(?string $format = null, ?int $timestamp = null)
     {
         if (null === $timestamp)
         {
@@ -65,7 +65,7 @@ class DateTime
      *
      * @return string|int
      */
-    public static function getTomorrow($format = null, $timestamp = null)
+    public static function getTomorrow(?string $format = null, ?int $timestamp = null)
     {
         if (null === $timestamp)
         {
@@ -91,9 +91,9 @@ class DateTime
      * @param string|null $format
      * @param int|null    $timestamp
      *
-     * @return void
+     * @return string|int
      */
-    public static function getNextWeek($weekNo = null, $format = null, $timestamp = null)
+    public static function getNextWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
     {
         if (null === $timestamp)
         {
@@ -120,9 +120,9 @@ class DateTime
      * @param string|null $format
      * @param int|null    $timestamp
      *
-     * @return void
+     * @return string|int
      */
-    public static function getLastWeek($weekNo = null, $format = null, $timestamp = null)
+    public static function getLastWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
     {
         if (null === $timestamp)
         {
@@ -147,9 +147,9 @@ class DateTime
      *
      * @param int|null $timestamp
      *
-     * @return void
+     * @return int
      */
-    public static function getWeekOfMonth($timestamp = null)
+    public static function getWeekOfMonth(?int $timestamp = null): int
     {
         if (null === $timestamp)
         {
@@ -188,7 +188,7 @@ class DateTime
      *
      * @return int
      */
-    public static function getMonthWeekCount($year, $month)
+    public static function getMonthWeekCount(int $year, int $month): int
     {
         $firstDay = strtotime($year . '-' . $month . '-1');
         $week = date('N', $firstDay);

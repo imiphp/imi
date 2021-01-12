@@ -18,7 +18,7 @@ class Process
      *
      * @var array
      */
-    private $events = [];
+    private array $events = [];
 
     /**
      * 设置异步信号监听.

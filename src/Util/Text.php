@@ -20,9 +20,9 @@ class Text
      * @param string $compare
      * @param bool   $caseSensitive
      *
-     * @return string
+     * @return bool
      */
-    public static function startwith($string, $compare, $caseSensitive = true)
+    public static function startwith(string $string, string $compare, bool $caseSensitive = true): bool
     {
         if ($caseSensitive)
         {
@@ -41,9 +41,9 @@ class Text
      * @param string $compare
      * @param bool   $caseSensitive
      *
-     * @return string
+     * @return bool
      */
-    public static function endwith($string, $compare, $caseSensitive = true)
+    public static function endwith(string $string, string $compare, bool $caseSensitive = true): bool
     {
         if ($caseSensitive)
         {
@@ -64,7 +64,7 @@ class Text
      *
      * @return string
      */
-    public static function insert($string, $position, $insertString)
+    public static function insert(string $string, int $position, string $insertString): string
     {
         return substr_replace($string, $insertString, $position, 0);
     }
@@ -72,11 +72,11 @@ class Text
     /**
      * 字符串是否为空字符串或者为null.
      *
-     * @param string $string
+     * @param string|null $string
      *
      * @return bool
      */
-    public static function isEmpty($string)
+    public static function isEmpty(?string $string): bool
     {
         return '' === $string || null === $string;
     }
@@ -88,7 +88,7 @@ class Text
      *
      * @return string
      */
-    public static function toCamelName($name)
+    public static function toCamelName(string $name): string
     {
         return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $name))));
     }
@@ -100,7 +100,7 @@ class Text
      *
      * @return string
      */
-    public static function toPascalName($name)
+    public static function toPascalName(string $name): string
     {
         return ucfirst(static::toCamelName($name));
     }
@@ -113,7 +113,7 @@ class Text
      *
      * @return string
      */
-    public static function toUnderScoreCase($name, $toLower = true)
+    public static function toUnderScoreCase(string $name, bool $toLower = true): string
     {
         $result = trim(preg_replace('/[A-Z]/', '_\0', $name), '_');
         if ($toLower)

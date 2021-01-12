@@ -18,14 +18,14 @@ class AtomicManager
      *
      * @var bool
      */
-    private static $isInited = false;
+    private static bool $isInited = false;
 
     /**
      * \Swoole\Atomic 数组.
      *
      * @var \Swoole\Atomic[]
      */
-    private static $atomics = [];
+    private static array $atomics = [];
 
     /**
      * 初始化.
@@ -90,9 +90,9 @@ class AtomicManager
     /**
      * 获取所有原子计数对象名称.
      *
-     * @return void
+     * @return array
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return array_keys(static::$atomics);
     }
@@ -126,7 +126,7 @@ class AtomicManager
      *
      * @return int
      */
-    public static function add(string $name, int $value = 1)
+    public static function add(string $name, int $value = 1): int
     {
         return static::getInstance($name)->add($value);
     }
@@ -139,7 +139,7 @@ class AtomicManager
      *
      * @return int
      */
-    public static function sub(string $name, int $value = 1)
+    public static function sub(string $name, int $value = 1): int
     {
         return static::getInstance($name)->sub($value);
     }
@@ -151,7 +151,7 @@ class AtomicManager
      *
      * @return int
      */
-    public static function get(string $name)
+    public static function get(string $name): int
     {
         return static::getInstance($name)->get();
     }
@@ -179,7 +179,7 @@ class AtomicManager
      *
      * @return bool
      */
-    public static function cmpset(string $name, int $cmpValue, int $setValue)
+    public static function cmpset(string $name, int $cmpValue, int $setValue): bool
     {
         return static::getInstance($name)->cmpset($cmpValue, $setValue);
     }
@@ -196,7 +196,7 @@ class AtomicManager
      *
      * @return bool
      */
-    public static function wait(string $name, float $timeout = -1)
+    public static function wait(string $name, float $timeout = -1): bool
     {
         return static::getInstance($name)->wait($timeout);
     }
@@ -213,7 +213,7 @@ class AtomicManager
      *
      * @return bool
      */
-    public static function wakeup(string $name, int $n = 1)
+    public static function wakeup(string $name, int $n = 1): bool
     {
         return static::getInstance($name)->wakeup($n);
     }

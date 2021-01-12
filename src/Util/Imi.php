@@ -34,7 +34,7 @@ class Imi
      *
      * @return string
      */
-    public static function parseRule($rule)
+    public static function parseRule(string $rule): string
     {
         return strtr(preg_quote($rule), [
             '/'     => '\/',
@@ -50,7 +50,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkRuleMatch($rule, $string)
+    public static function checkRuleMatch(string $rule, string $string): bool
     {
         $rule = '/^' . static::parseRule($rule) . '$/';
 
@@ -66,7 +66,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkClassMethodRule($rule, $className, $methodName)
+    public static function checkClassMethodRule(string $rule, string $className, string $methodName): bool
     {
         list($classRule, $methodRule) = explode('::', $rule, 2);
 
@@ -81,7 +81,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkClassRule($rule, $className)
+    public static function checkClassRule(string $rule, string $className): bool
     {
         list($classRule) = explode('::', $rule, 2);
 
@@ -96,7 +96,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkCompareRules($rules, $valueCallback)
+    public static function checkCompareRules($rules, callable $valueCallback): bool
     {
         foreach ((array) $rules as $fieldName => $rule)
         {
@@ -128,7 +128,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkCompareRule($rule, $valueCallback)
+    public static function checkCompareRule(string $rule, callable $valueCallback): bool
     {
         if (isset($rule[0]) && '!' === $rule[0])
         {
@@ -163,7 +163,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkCompareValues($rules, $value)
+    public static function checkCompareValues($rules, $value): bool
     {
         foreach ((array) $rules as $rule)
         {
@@ -184,7 +184,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkCompareValue($rule, $value)
+    public static function checkCompareValue($rule, $value): bool
     {
         if (isset($rule[0]) && '!' === $rule[0])
         {
@@ -203,9 +203,9 @@ class Imi
      *
      * @param string $rule
      *
-     * @return string[]|false
+     * @return string[]
      */
-    public static function parseDotRule($rule)
+    public static function parseDotRule(string $rule): array
     {
         $result = preg_split('#(?<!\\\)\.#', $rule);
         $result = str_replace('\.', '.', $result);
@@ -220,7 +220,7 @@ class Imi
      *
      * @return string
      */
-    public static function getClassNamespace(string $className)
+    public static function getClassNamespace(string $className): string
     {
         return implode('\\', \array_slice(explode('\\', $className), 0, -1));
     }
@@ -232,7 +232,7 @@ class Imi
      *
      * @return string
      */
-    public static function getClassShortName(string $className)
+    public static function getClassShortName(string $className): string
     {
         return implode('', \array_slice(explode('\\', $className), -1));
     }
@@ -244,7 +244,7 @@ class Imi
      *
      * @return string|null
      */
-    public static function getNamespacePath($namespace)
+    public static function getNamespacePath(string $namespace): ?string
     {
         if ('\\' !== substr($namespace, -1, 1))
         {
@@ -305,7 +305,7 @@ class Imi
      *
      * @return string[]
      */
-    public static function getNamespacePaths($namespace): array
+    public static function getNamespacePaths(string $namespace): array
     {
         $resultPaths = [];
         if ('\\' !== substr($namespace, -1, 1))
@@ -367,7 +367,7 @@ class Imi
      *
      * @return mixed
      */
-    public static function getClassPropertyValue($className, $propertyName)
+    public static function getClassPropertyValue(string $className, string $propertyName)
     {
         $value = BeanProxy::getInjectValue($className, $propertyName);
         if (null === $value)
@@ -462,7 +462,7 @@ class Imi
      *
      * @return void
      */
-    public static function setProcessName($type, $data = [])
+    public static function setProcessName(string $type, array $data = [])
     {
         if ('Darwin' === \PHP_OS)
         {
@@ -479,9 +479,9 @@ class Imi
      * @param string $type
      * @param array  $data
      *
-     * @return string|bool
+     * @return string
      */
-    public static function getProcessName($type, $data = [])
+    public static function getProcessName(string $type, array $data = []): string
     {
         static $defaults = [
             'master'        => 'imi:master:{namespace}',
@@ -538,11 +538,11 @@ class Imi
     /**
      * 构建运行时缓存.
      *
-     * @param string $runtimeFile 如果为空则默认为runtime.cache
+     * @param string|null $runtimeFile 如果为空则默认为runtime.cache
      *
      * @return void
      */
-    public static function buildRuntime($runtimeFile = null)
+    public static function buildRuntime(?string $runtimeFile = null)
     {
         /**
          * 处理列类型和大小.
@@ -632,7 +632,7 @@ class Imi
      *
      * @return void
      */
-    public static function incrUpdateRuntime($files)
+    public static function incrUpdateRuntime(array $files)
     {
         $parser = Annotation::getInstance()->getParser();
         $parser->parseIncr($files);
@@ -712,7 +712,7 @@ class Imi
      *
      * @return bool
      */
-    public static function checkReusePort()
+    public static function checkReusePort(): bool
     {
         return 'Linux' === \PHP_OS && version_compare(php_uname('r'), '3.9', '>=');
     }
@@ -722,7 +722,7 @@ class Imi
      *
      * @var int
      */
-    private static $evalAtomic = 0;
+    private static int $evalAtomic = 0;
 
     /**
      * eval() 函数的安全替代方法.
@@ -894,7 +894,7 @@ class Imi
      *
      * @return bool
      */
-    public static function loadRuntimeInfo($fileName): bool
+    public static function loadRuntimeInfo(string $fileName): bool
     {
         if (!is_file($fileName))
         {

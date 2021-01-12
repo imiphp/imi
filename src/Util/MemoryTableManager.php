@@ -101,7 +101,7 @@ class MemoryTableManager
      *
      * @return void
      */
-    public static function addName(string $name, $option)
+    public static function addName(string $name, array $option)
     {
         if (static::$inited)
         {
@@ -139,9 +139,9 @@ class MemoryTableManager
     /**
      * 获取所有内存表对象名称.
      *
-     * @return void
+     * @return array
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return array_keys(static::$tables);
     }
@@ -280,7 +280,7 @@ class MemoryTableManager
      *
      * @return bool
      */
-    public static function lock(string $name, $taskCallable = null, $afterLockCallable = null): bool
+    public static function lock(string $name, ?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
     {
         if (!isset(static::$tables[$name]['lockId']))
         {
@@ -312,7 +312,7 @@ class MemoryTableManager
      *
      * @return bool
      */
-    public static function isInited()
+    public static function isInited(): bool
     {
         return static::$inited;
     }

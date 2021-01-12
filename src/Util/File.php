@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\Util\File\FileEnumItem;
+use RecursiveIteratorIterator;
 
 /**
  * 文件相关工具类.
@@ -20,9 +21,9 @@ class File
      *
      * @param string $dirPath
      *
-     * @return \RecursiveIteratorIterator|\ArrayIterator
+     * @return \RecursiveIteratorIterator
      */
-    public static function enum($dirPath)
+    public static function enum(string $dirPath): RecursiveIteratorIterator
     {
         if (!is_dir($dirPath))
         {
@@ -41,7 +42,7 @@ class File
      *
      * @return \RecursiveIteratorIterator|\ArrayIterator
      */
-    public static function enumAll($dirPath)
+    public static function enumAll(string $dirPath)
     {
         if (!is_dir($dirPath))
         {
@@ -58,9 +59,9 @@ class File
      *
      * @param string $dirPath
      *
-     * @return \RegexIterator|ArrayIterator
+     * @return \RegexIterator|\ArrayIterator
      */
-    public static function enumPHPFile($dirPath)
+    public static function enumPHPFile(string $dirPath)
     {
         if (!is_dir($dirPath))
         {
@@ -113,7 +114,7 @@ class File
      *
      * @return string
      */
-    public static function path(...$args)
+    public static function path(string ...$args)
     {
         static $dsds = \DIRECTORY_SEPARATOR . \DIRECTORY_SEPARATOR;
         $result = implode(\DIRECTORY_SEPARATOR, $args);
@@ -137,11 +138,11 @@ class File
     /**
      * 根据文件打开句柄，读取文件所有内容.
      *
-     * @param mixed $fp
+     * @param resource $fp
      *
      * @return string
      */
-    public static function readAll($fp)
+    public static function readAll($fp): string
     {
         $data = '';
         while (!feof($fp))
@@ -158,9 +159,9 @@ class File
      * @param string $dir  目录路径
      * @param int    $mode 目录的权限
      *
-     * @return false|true
+     * @return bool
      */
-    public static function createDir($dir, $mode = 0775)
+    public static function createDir(string $dir, int $mode = 0775): bool
     {
         if (empty($dir))
         {
@@ -187,9 +188,9 @@ class File
      * @param string $content
      * @param int    $mode    文件的权限
      *
-     * @return false|true
+     * @return bool
      */
-    public static function createFile($file, $content = '', $mode = 0775)
+    public static function createFile(string $file, string $content = '', int $mode = 0775): bool
     {
         if (empty($file))
         {
@@ -223,7 +224,7 @@ class File
      *
      * @return bool
      */
-    public static function isEmptyDir($dir)
+    public static function isEmptyDir(string $dir): bool
     {
         try
         {
@@ -258,7 +259,7 @@ class File
      *
      * @return bool
      */
-    public static function deleteDir($dir)
+    public static function deleteDir(string $dir): bool
     {
         $dh = opendir($dir);
         while ($file = readdir($dh))
@@ -286,13 +287,13 @@ class File
      * 如果目录不存在自动创建多级目录.
      *
      * @param string   $fileName
-     * @param mixed    $data
+     * @param string   $data
      * @param int      $flags
      * @param resource $context
      *
      * @return int|false
      */
-    public static function putContents($fileName, $data, $flags = 0, $context = null)
+    public static function putContents(string $fileName, string $data, int $flags = 0, $context = null)
     {
         $dir = \dirname($fileName);
         if (!is_dir($dir) && !static::createDir($dir))

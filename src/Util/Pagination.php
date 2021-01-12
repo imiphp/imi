@@ -14,30 +14,30 @@ class Pagination
      *
      * @var int
      */
-    private $page;
+    private int $page;
 
     /**
      * 每页显示数量.
      *
      * @var int
      */
-    private $count;
+    private int $count;
 
     /**
      * 偏移量.
      *
      * @var int
      */
-    private $limitOffset;
+    private int $limitOffset;
 
     /**
      * 结束的偏移量（limitOffset + count - 1）.
      *
      * @var int
      */
-    private $limitEndOffset;
+    private int $limitEndOffset;
 
-    public function __construct($page, $count)
+    public function __construct(int $page, int $count)
     {
         $this->page = $page;
         $this->count = $count;
@@ -49,7 +49,7 @@ class Pagination
      *
      * @return int
      */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
@@ -61,7 +61,7 @@ class Pagination
      *
      * @return self
      */
-    public function setPage(int $page)
+    public function setPage(int $page): self
     {
         $this->page = $page;
 
@@ -75,7 +75,7 @@ class Pagination
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -87,7 +87,7 @@ class Pagination
      *
      * @return self
      */
-    public function setCount(int $count)
+    public function setCount(int $count): self
     {
         $this->count = $count;
 
@@ -113,7 +113,7 @@ class Pagination
      *
      * @return int
      */
-    public function getLimitOffset()
+    public function getLimitOffset(): int
     {
         return $this->limitOffset;
     }
@@ -123,7 +123,7 @@ class Pagination
      *
      * @return int
      */
-    public function getLimitEndOffset()
+    public function getLimitEndOffset(): int
     {
         return $this->limitEndOffset;
     }
@@ -135,7 +135,7 @@ class Pagination
      *
      * @return int
      */
-    public function calcPageCount($records)
+    public function calcPageCount(int $records): int
     {
         $count = $this->count;
         if (0 === $records % $count)

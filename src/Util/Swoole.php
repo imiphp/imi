@@ -17,7 +17,7 @@ class Swoole
      *
      * @return int
      */
-    public static function getMasterPID()
+    public static function getMasterPID(): int
     {
         return ServerManage::getServer('main')->getSwooleServer()->master_pid;
     }
@@ -27,7 +27,7 @@ class Swoole
      *
      * @return int
      */
-    public static function getManagerPID()
+    public static function getManagerPID(): int
     {
         return ServerManage::getServer('main')->getSwooleServer()->manager_pid;
     }

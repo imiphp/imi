@@ -9,9 +9,9 @@ trait THashCode
     /**
      * hashCode.
      *
-     * @var string
+     * @var string|null
      */
-    protected $hashCode;
+    protected ?string $hashCode = null;
 
     public function hashCode(): string
     {

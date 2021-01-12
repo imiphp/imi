@@ -58,7 +58,7 @@ class TextTest extends BaseTest
     {
         $this->assertTrue(Text::isEmpty(''));
         $this->assertTrue(Text::isEmpty(null));
-        $this->assertFalse(Text::isEmpty(0));
+        $this->assertFalse(Text::isEmpty('0'));
         $this->assertFalse(Text::isEmpty('1'));
     }
 

@@ -23,7 +23,7 @@ class ObjectArrayHelper
      *
      * @return mixed
      */
-    public static function get(&$object, $name, $default = null)
+    public static function get(&$object, string $name, $default = null)
     {
         $names = explode('.', $name);
         $result = &$object;
@@ -77,7 +77,7 @@ class ObjectArrayHelper
      *
      * @return void
      */
-    public static function set(&$object, $name, $value)
+    public static function set(&$object, string $name, $value)
     {
         $names = explode('.', $name);
         $lastName = array_pop($names);
@@ -119,7 +119,7 @@ class ObjectArrayHelper
      *
      * @return void
      */
-    public static function remove(&$object, $name)
+    public static function remove(&$object, string $name)
     {
         $names = explode('.', $name);
         $lastName = array_pop($names);
@@ -161,7 +161,7 @@ class ObjectArrayHelper
      *
      * @return bool
      */
-    public static function exists($object, $name)
+    public static function exists($object, string $name): bool
     {
         return null !== static::get($object, $name);
     }
@@ -175,7 +175,7 @@ class ObjectArrayHelper
      *
      * @return array
      */
-    public static function column($array, $columnName)
+    public static function column(array $array, string $columnName): array
     {
         $result = [];
         foreach ($array as $row)
@@ -204,7 +204,7 @@ class ObjectArrayHelper
      *
      * @return void
      */
-    public static function filter(&$object, array $fields, $mode = 'allow')
+    public static function filter(&$object, array $fields, string $mode = 'allow')
     {
         if ('allow' === $mode)
         {

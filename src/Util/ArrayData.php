@@ -12,9 +12,9 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 数据.
      */
-    protected $__data = [];
+    protected array $__data = [];
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->__data = $data;
     }
@@ -22,10 +22,12 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 设置数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string|array $name
+     * @param mixed        $value
+     *
+     * @return bool
      */
-    public function set($name, $value = null)
+    public function set($name, $value = null): bool
     {
         if (\is_array($name))
         {
@@ -44,12 +46,12 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 设置数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string|array $name
+     * @param mixed        $value
      *
      * @return bool
      */
-    public function setVal($name, $value = null)
+    public function setVal($name, $value = null): bool
     {
         if (\is_string($name))
         {
@@ -77,14 +79,14 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 获取数据.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param string|array|null $name
+     * @param mixed             $default
      *
      * @return mixed
      */
     public function &get($name = null, $default = false)
     {
-        if (empty($name))
+        if (null === $name)
         {
             return $this->__data;
         }
@@ -141,9 +143,11 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 删除数据.
      *
-     * @param string $name
+     * @param string|array $name
+     *
+     * @return bool
      */
-    public function remove($name)
+    public function remove($name): bool
     {
         if (!\is_array($name))
         {
@@ -187,7 +191,7 @@ class ArrayData implements \ArrayAccess, \Countable
      *
      * @return int
      */
-    public function length()
+    public function length(): int
     {
         return \count($this->__data);
     }
@@ -197,7 +201,7 @@ class ArrayData implements \ArrayAccess, \Countable
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->__data);
     }
@@ -209,7 +213,7 @@ class ArrayData implements \ArrayAccess, \Countable
      *
      * @return bool
      */
-    public function exists($name)
+    public function exists(string $name): bool
     {
         return isset($this->__data[$name]);
     }

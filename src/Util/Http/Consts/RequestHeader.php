@@ -42,6 +42,7 @@ class RequestHeader
     const VIA = 'Via';
     const WARNING = 'Warning';
     const TRAILER = 'trailer';
+
     private function __construct()
     {
     }

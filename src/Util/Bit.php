@@ -21,7 +21,7 @@ class Bit
      *
      * @return bool
      */
-    public static function has($value, $subValue)
+    public static function has(int $value, int $subValue): bool
     {
         return $value === $subValue || ($subValue === ($value & $subValue));
     }

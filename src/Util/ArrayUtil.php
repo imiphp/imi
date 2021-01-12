@@ -21,7 +21,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function remove($array, ...$value)
+    public static function remove(array $array, ...$value): array
     {
         foreach ($value as $item)
         {
@@ -42,7 +42,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function removeKeepKey($array, ...$value)
+    public static function removeKeepKey(array $array, ...$value): array
     {
         foreach ($value as $item)
         {
@@ -62,7 +62,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function recursiveMerge(...$arrays)
+    public static function recursiveMerge(array ...$arrays): array
     {
         $merged = [];
         foreach ($arrays as $array)
@@ -98,13 +98,13 @@ class ArrayUtil
     /**
      * 将二维数组第二纬某key变为一维的key.
      *
-     * @param array  $array   原数组
-     * @param string $column  列名
-     * @param bool   $keepOld 是否保留列名，默认保留
+     * @param array      $array   原数组
+     * @param string|int $column  列名
+     * @param bool       $keepOld 是否保留列名，默认保留
      *
      * @return array
      */
-    public static function columnToKey($array, $column, $keepOld = true)
+    public static function columnToKey(array $array, $column, bool $keepOld = true): array
     {
         $newArray = [];
         foreach ($array as $row)
@@ -127,7 +127,7 @@ class ArrayUtil
      *
      * @return bool
      */
-    public static function isAssoc($array)
+    public static function isAssoc(array $array): bool
     {
         return array_keys($array) !== range(0, \count($array) - 1);
     }
@@ -140,7 +140,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function random($array, $number = 1)
+    public static function random(array $array, int $number = 1): array
     {
         $result = [];
         $keys = array_rand($array, $number);
@@ -166,7 +166,7 @@ class ArrayUtil
      *
      * @return array
      */
-    public static function toTreeAssoc(array $list, $idField = 'id', $parentField = 'parent_id', $childrenField = 'children')
+    public static function toTreeAssoc(array $list, string $idField = 'id', string $parentField = 'parent_id', string $childrenField = 'children'): array
     {
         // 查出所有记录
         $result = $tmpArr = [];

@@ -17,7 +17,7 @@ abstract class Random
      *
      * @return int
      */
-    public static function int($min = \PHP_INT_MIN, $max = \PHP_INT_MAX)
+    public static function int(int $min = \PHP_INT_MIN, int $max = \PHP_INT_MAX): int
     {
         return mt_rand($min, $max);
     }
@@ -29,9 +29,9 @@ abstract class Random
      * @param float $max
      * @param int   $precision 最大小数位数
      *
-     * @return float
+     * @return string
      */
-    public static function number($min = \PHP_INT_MIN, $max = \PHP_INT_MAX, $precision = 2)
+    public static function number(int $min = \PHP_INT_MIN, int $max = \PHP_INT_MAX, int $precision = 2): string
     {
         $value = round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
 
@@ -47,7 +47,7 @@ abstract class Random
      *
      * @return string
      */
-    public static function text($chars, $min, $max = null)
+    public static function text(string $chars, int $min, ?int $max = null): string
     {
         $length = mt_rand($min, $max ?? $min);
         $charLength = mb_strlen($chars);
@@ -68,7 +68,7 @@ abstract class Random
      *
      * @return string
      */
-    public static function letter($min, $max = null)
+    public static function letter(int $min, ?int $max = null): string
     {
         return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', $min, $max ?? $min);
     }
@@ -81,7 +81,7 @@ abstract class Random
      *
      * @return string
      */
-    public static function digital($min, $max = null)
+    public static function digital(int $min, ?int $max = null): string
     {
         return static::text('0123456789', $min, $max ?? $min);
     }
@@ -94,7 +94,7 @@ abstract class Random
      *
      * @return string
      */
-    public static function letterAndNumber($min, $max = null)
+    public static function letterAndNumber(int $min, ?int $max = null): string
     {
         return static::text('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', $min, $max ?? $min);
     }

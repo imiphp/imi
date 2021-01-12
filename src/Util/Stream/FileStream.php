@@ -14,7 +14,7 @@ class FileStream implements StreamInterface
      *
      * @var \Imi\Util\Uri
      */
-    protected $uri;
+    protected Uri $uri;
 
     /**
      * 流对象
@@ -28,9 +28,9 @@ class FileStream implements StreamInterface
      *
      * @var string
      */
-    protected $mode;
+    protected string $mode;
 
-    public function __construct($uri, $mode = StreamMode::READ_WRITE)
+    public function __construct($uri, string $mode = StreamMode::READ_WRITE)
     {
         if (\is_string($uri))
         {

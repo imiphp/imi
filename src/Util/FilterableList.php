@@ -18,7 +18,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @var string
      */
-    private $mode;
+    private string $mode;
 
     /**
      * 字段名数组.
@@ -27,16 +27,16 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @var string[]|null
      */
-    private $fields;
+    private ?array $fields;
 
     /**
      * 数组列表.
      *
      * @var array
      */
-    private $list = [];
+    private array $list;
 
-    public function __construct($list = [], $fields = null, $mode = 'allow')
+    public function __construct(array $list = [], ?array $fields = null, string $mode = 'allow')
     {
         $this->mode = $mode;
         $this->fields = $fields;
@@ -175,7 +175,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->list);
     }
@@ -185,9 +185,9 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @param array $list
      *
-     * @return void
+     * @return array
      */
-    private function parseList($list)
+    private function parseList(array $list): array
     {
         if (null === $this->fields)
         {

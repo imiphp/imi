@@ -73,9 +73,9 @@ class CoroutineChannelManager
     /**
      * 获取所有对象名称.
      *
-     * @return void
+     * @return array
      */
-    public static function getNames()
+    public static function getNames(): array
     {
         return array_keys(static::$channels);
     }
@@ -93,7 +93,7 @@ class CoroutineChannelManager
      *
      * @return bool
      */
-    public static function push(string $name, $data)
+    public static function push(string $name, $data): bool
     {
         return static::getInstance($name)->push($data);
     }
@@ -109,7 +109,7 @@ class CoroutineChannelManager
      *
      * @return mixed
      */
-    public static function pop(string $name, $timeout = 0)
+    public static function pop(string $name, float $timeout = 0)
     {
         return static::getInstance($name)->pop($timeout);
     }
@@ -150,7 +150,7 @@ class CoroutineChannelManager
      *
      * @param string $name
      *
-     * @return \Swoole\Atomic
+     * @return \Swoole\Coroutine\Channel
      */
     public static function getInstance(string $name): \Swoole\Coroutine\Channel
     {

@@ -22,7 +22,7 @@ class ClassObject
      *
      * @return bool
      */
-    public static function isAnymous($object)
+    public static function isAnymous($object): bool
     {
         if (!\is_string($object))
         {
@@ -43,7 +43,7 @@ class ClassObject
      *
      * @return string
      */
-    public static function parseSameLevelClassName($className, $sameLevelClass)
+    public static function parseSameLevelClassName(string $className, string $sameLevelClass): string
     {
         if (class_exists($className))
         {
@@ -65,7 +65,7 @@ class ClassObject
      *
      * @return array
      */
-    public static function convertArgsToKV($class, $method, $args, $keepNotExistArgs = true)
+    public static function convertArgsToKV(string $class, string $method, array $args, bool $keepNotExistArgs = true): array
     {
         $methodRef = ReflectionContainer::getMethodReflection($class, $method);
 
@@ -113,7 +113,7 @@ class ClassObject
      *
      * @return string[]
      */
-    public static function getSubClasses($class, $classList = null)
+    public static function getSubClasses(string $class, ?array $classList = null): array
     {
         $list = [];
         foreach ($classList ?? get_declared_classes() as $tClass)
@@ -133,9 +133,9 @@ class ClassObject
      * @param string $namespace
      * @param string $subClass
      *
-     * @return void
+     * @return bool
      */
-    public static function inNamespace($namespace, $class)
+    public static function inNamespace(string $namespace, string $class): bool
     {
         if ('' !== $namespace && '\\' !== substr($namespace, -1, 1))
         {

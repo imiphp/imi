@@ -80,7 +80,7 @@ class Html implements IHandler
         {
             return $fileName;
         }
-        $fileName = File::path($this->templatePath, $options['baseDir'] ?? '', $options['template']);
+        $fileName = File::path($this->templatePath ?: '', $options['baseDir'] ?? '', $options['template']);
         foreach ($this->fileSuffixs as $suffix)
         {
             $tryFileName = $fileName . '.' . $suffix;

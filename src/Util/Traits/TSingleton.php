@@ -12,16 +12,16 @@ trait TSingleton
     /**
      * 实例对象
      *
-     * @var mixed
+     * @var object|null
      */
-    protected static $instance;
+    protected static ?object $instance = null;
 
     /**
      * 实例对象数组.
      *
      * @var array
      */
-    protected static $instances = [];
+    protected static array $instances = [];
 
     private function __construct()
     {
@@ -65,7 +65,7 @@ trait TSingleton
      *
      * @return bool
      */
-    protected static function isChildClassSingleton()
+    protected static function isChildClassSingleton(): bool
     {
         return false;
     }

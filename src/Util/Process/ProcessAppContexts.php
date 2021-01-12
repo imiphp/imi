@@ -28,6 +28,7 @@ class ProcessAppContexts
      * 当前进程脚本名称.
      */
     const SCRIPT_NAME = 'script_name';
+
     private function __construct()
     {
     }

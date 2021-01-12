@@ -13,30 +13,30 @@ class FileEnumItem
      *
      * @var string
      */
-    private $path;
+    private string $path;
 
     /**
      * 文件名.
      *
      * @var string
      */
-    private $fileName;
+    private string $fileName;
 
     /**
      * 完整路径.
      *
      * @var string
      */
-    private $fullPath;
+    private string $fullPath;
 
     /**
      * 如果是目录，是否继续向下遍历.
      *
      * @var bool
      */
-    private $continue = true;
+    private bool $continue = true;
 
-    public function __construct($path, $fileName)
+    public function __construct(string $path, string $fileName)
     {
         $this->path = $path;
         $this->fileName = $fileName;
@@ -48,7 +48,7 @@ class FileEnumItem
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -58,7 +58,7 @@ class FileEnumItem
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -68,12 +68,12 @@ class FileEnumItem
      *
      * @return string
      */
-    public function getFullPath()
+    public function getFullPath(): string
     {
         return $this->fullPath;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->fullPath;
     }
@@ -83,7 +83,7 @@ class FileEnumItem
      *
      * @return bool
      */
-    public function getContinue()
+    public function getContinue(): bool
     {
         return $this->continue;
     }
@@ -95,7 +95,7 @@ class FileEnumItem
      *
      * @return self
      */
-    public function setContinue(bool $continue)
+    public function setContinue(bool $continue): self
     {
         $this->continue = $continue;
 
