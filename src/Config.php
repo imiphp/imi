@@ -28,7 +28,7 @@ class Config
      *
      * @return bool
      */
-    public static function addConfig($name, array $config)
+    public static function addConfig($name, array $config): bool
     {
         $nameSplit = explode('.', $name);
 
@@ -84,7 +84,7 @@ class Config
      * @param string $name
      * @param array  $config
      *
-     * @return bool
+     * @return void
      */
     public static function setConfig($name, array $config)
     {
@@ -98,7 +98,7 @@ class Config
      *
      * @return bool
      */
-    public static function removeConfig($name)
+    public static function removeConfig(string $name): bool
     {
         $configs = &static::$configs;
         if (isset($configs[$name]))
@@ -121,7 +121,7 @@ class Config
      *
      * @return bool
      */
-    public static function set(string $name, $value)
+    public static function set(string $name, $value): bool
     {
         $names = Imi::parseDotRule($name);
         if (isset($names[0]))
@@ -203,7 +203,7 @@ class Config
      *
      * @return bool
      */
-    public static function has(string $name)
+    public static function has(string $name): bool
     {
         $names = Imi::parseDotRule($name);
         if (isset($names[0]))
@@ -230,7 +230,7 @@ class Config
      *
      * @return array
      */
-    public static function getAliases()
+    public static function getAliases(): array
     {
         return array_keys(static::$configs);
     }

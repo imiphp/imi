@@ -53,7 +53,7 @@ namespace
      *
      * @return callable
      */
-    function imiCallable(callable $callable, bool $withGo = false)
+    function imiCallable(callable $callable, bool $withGo = false): callable
     {
         $server = RequestContext::get('server');
         $resultCallable = function (...$args) use ($callable, $server) {
@@ -81,8 +81,10 @@ namespace
      * @param string $varname
      * @param mixed  $default
      * @param bool   $localOnly
+     *
+     * @return mixed
      */
-    function imiGetEnv($varname = null, $default = null, $localOnly = false)
+    function imiGetEnv(?string $varname = null, $default = null, bool $localOnly = false)
     {
         $result = getenv($varname, $localOnly);
         if (false === $result)

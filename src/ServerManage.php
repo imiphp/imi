@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Event\Event;
+use Imi\Server\Base;
 use Imi\Server\CoServer;
 
 class ServerManage
@@ -14,14 +15,14 @@ class ServerManage
      *
      * @var array
      */
-    private static $servers = [];
+    private static array $servers = [];
 
     /**
      * 协程服务器.
      *
      * @var \Imi\Server\CoServer
      */
-    private static $coServer;
+    private static CoServer $coServer;
 
     private function __construct()
     {
@@ -32,7 +33,7 @@ class ServerManage
      *
      * @return \Imi\Server\Base[]
      */
-    public static function getServers()
+    public static function getServers(): array
     {
         return static::$servers;
     }
@@ -44,7 +45,7 @@ class ServerManage
      *
      * @return \Imi\Server\Base|null
      */
-    public static function getServer($name)
+    public static function getServer(string $name): ?Base
     {
         return static::$servers[$name] ?? null;
     }
@@ -58,7 +59,7 @@ class ServerManage
      *
      * @return \Imi\Server\Base
      */
-    public static function createServer($name, $config, $isSubServer = false): \Imi\Server\Base
+    public static function createServer(string $name, array $config, bool $isSubServer = false): \Imi\Server\Base
     {
         // 创建服务器对象前置操作
         Event::trigger('IMI.SERVER.CREATE.BEFORE', [
@@ -89,7 +90,7 @@ class ServerManage
      *
      * @return \Imi\Server\CoServer
      */
-    public static function createCoServer($name, $workerNum): CoServer
+    public static function createCoServer(string $name, int $workerNum): CoServer
     {
         return static::$coServer = new CoServer($name, $workerNum);
     }

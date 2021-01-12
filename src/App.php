@@ -9,15 +9,9 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\ReflectionContainer;
 use Imi\Bean\Scanner;
-use Imi\Cache\CacheManager;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
-use Imi\Main\Helper;
-use Imi\Main\Helper as MainHelper;
-use Imi\Pool\PoolConfig;
-use Imi\Pool\PoolManager;
-use Imi\Util\AtomicManager;
 use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
@@ -170,127 +164,6 @@ class App
     }
 
     /**
-     * 初始化应用.
-     *
-     * @param bool $noAppCache
-     *
-     * @return void
-     */
-    public static function initApp(bool $noAppCache): void
-    {
-        if ($noAppCache)
-        {
-            // 扫描组件
-            Scanner::scanVendor();
-            // 扫描项目
-            Scanner::scanApp();
-
-            // 获取配置
-            $pools = $caches = [];
-            foreach (Helper::getMains() as $main)
-            {
-                $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
-                $caches = array_merge($caches, $main->getConfig()['caches'] ?? []);
-            }
-            // 同步池子初始化
-            foreach ($pools as $name => $pool)
-            {
-                if (isset($pool['sync']))
-                {
-                    $pool = $pool['sync'];
-                    $poolPool = $pool['pool'];
-                    PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
-                }
-                elseif (isset($pool['pool']['syncClass']))
-                {
-                    $poolPool = $pool['pool'];
-                    PoolManager::addName($name, $poolPool['syncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
-                }
-            }
-        }
-        else
-        {
-            while (true)
-            {
-                exec(Imi::getImiCmd('imi/buildRuntime', [], [
-                    'imi-runtime'   => Imi::getRuntimePath('imi-runtime-bak.cache'),
-                    'no-app-cache'  => true,
-                ]), $output, $code);
-                if (0 === $code)
-                {
-                    break;
-                }
-                else
-                {
-                    echo implode(\PHP_EOL, $output), \PHP_EOL;
-                }
-            }
-            Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime.cache'));
-            $caches = [];
-            foreach (Helper::getMains() as $main)
-            {
-                $caches = array_merge($caches, $main->getConfig()['caches'] ?? []);
-            }
-        }
-        // 缓存初始化
-        foreach ($caches as $name => $cache)
-        {
-            CacheManager::addName($name, $cache['handlerClass'], $cache['option'] ?? []);
-        }
-        self::getBean('ErrorLog')->register();
-        foreach (Helper::getMains() as $main)
-        {
-            $config = $main->getConfig();
-            // 原子计数初始化
-            AtomicManager::setNames($config['atomics'] ?? []);
-        }
-        AtomicManager::init();
-    }
-
-    /**
-     * 初始化Main类.
-     *
-     * @return void
-     */
-    private static function initMains()
-    {
-        // 框架
-        if (!MainHelper::getMain('Imi', 'Imi'))
-        {
-            throw new \RuntimeException('Framework imi must have the class Imi\\Main');
-        }
-        // 项目
-        MainHelper::getMain(static::$namespace, 'app');
-        Event::trigger('IMI.INIT_MAIN');
-    }
-
-    /**
-     * 创建服务器对象们.
-     *
-     * @return void
-     */
-    public static function createServers()
-    {
-        // 创建服务器对象们前置操作
-        Event::trigger('IMI.SERVERS.CREATE.BEFORE');
-        $mainServer = Config::get('@app.mainServer');
-        if (null === $mainServer)
-        {
-            throw new \RuntimeException('config.mainServer not found');
-        }
-        // 主服务器
-        ServerManage::createServer('main', $mainServer);
-        // 创建监听子服务器端口
-        $subServers = Config::get('@app.subServers', []);
-        foreach ($subServers as $name => $config)
-        {
-            ServerManage::createServer($name, $config, true);
-        }
-        // 创建服务器对象们后置操作
-        Event::trigger('IMI.SERVERS.CREATE.AFTER');
-    }
-
-    /**
      * 创建协程服务器.
      *
      * @param string $name
@@ -298,7 +171,7 @@ class App
      *
      * @return \Imi\Server\CoServer
      */
-    public static function createCoServer($name, $workerNum)
+    public static function createCoServer(string $name, int $workerNum): \Imi\Server\CoServer
     {
         static::$isCoServer = true;
         $server = ServerManage::createCoServer($name, $workerNum);
@@ -311,7 +184,7 @@ class App
      *
      * @return bool
      */
-    public static function isCoServer()
+    public static function isCoServer(): bool
     {
         return static::$isCoServer;
     }
@@ -321,7 +194,7 @@ class App
      *
      * @return string
      */
-    public static function getNamespace()
+    public static function getNamespace(): string
     {
         return static::$namespace;
     }
@@ -331,7 +204,7 @@ class App
      *
      * @return \Imi\Bean\Container
      */
-    public static function getContainer()
+    public static function getContainer(): Container
     {
         return static::$container;
     }
@@ -340,10 +213,11 @@ class App
      * 获取Bean对象
      *
      * @param string $name
+     * @param array  $params
      *
      * @return mixed
      */
-    public static function getBean($name, ...$params)
+    public static function getBean(string $name, ...$params)
     {
         return static::$container->get($name, ...$params);
     }
@@ -353,7 +227,7 @@ class App
      *
      * @return bool
      */
-    public static function isDebug()
+    public static function isDebug(): bool
     {
         return static::$isDebug;
     }
@@ -365,7 +239,7 @@ class App
      *
      * @return void
      */
-    public static function setDebug($isDebug)
+    public static function setDebug(bool $isDebug)
     {
         static::$isDebug = $isDebug;
     }
@@ -375,7 +249,7 @@ class App
      *
      * @return bool
      */
-    public static function isInited()
+    public static function isInited(): bool
     {
         return static::$isInited;
     }
@@ -397,7 +271,7 @@ class App
      *
      * @return \Composer\Autoload\ClassLoader|null
      */
-    public static function getLoader()
+    public static function getLoader(): ?ClassLoader
     {
         if (null == static::$loader)
         {
@@ -412,7 +286,7 @@ class App
      *
      * @return RuntimeInfo
      */
-    public static function getRuntimeInfo()
+    public static function getRuntimeInfo(): RuntimeInfo
     {
         return static::$runtimeInfo;
     }
@@ -425,7 +299,7 @@ class App
      *
      * @return mixed
      */
-    public static function get($name, $default = null)
+    public static function get(string $name, $default = null)
     {
         return static::$context[$name] ?? $default;
     }
@@ -439,7 +313,7 @@ class App
      *
      * @return void
      */
-    public static function set($name, $value, $readonly = false)
+    public static function set(string $name, $value, bool $readonly = false)
     {
         if (isset(static::$contextReadonly[$name]))
         {

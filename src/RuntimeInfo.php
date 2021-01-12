@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi;
 
+use Imi\Bean\Annotation\Model\AnnotationRelation;
+
 /**
  * 运行时数据.
  */
@@ -14,40 +16,40 @@ class RuntimeInfo
      *
      * @var array
      */
-    public $memoryTable = [];
+    public array $memoryTable = [];
 
     /**
      * AnnotationParser->$data & AnnotationParser->$files.
      *
      * @var array
      */
-    public $annotationParserData = [];
+    public array $annotationParserData = [];
 
     /**
      * AnnotationParser->$parsers.
      *
      * @var array
      */
-    public $annotationParserParsers = [];
+    public array $annotationParserParsers = [];
 
     /**
      * AnnotationManager->$annotations.
      *
      * @var array
      */
-    public $annotationManagerAnnotations = [];
+    public array $annotationManagerAnnotations = [];
 
     /**
      * AnnotationManager->$annotationRelation.
      *
-     * @var array
+     * @var AnnotationRelation
      */
-    public $annotationManagerAnnotationRelation = [];
+    public AnnotationRelation $annotationManagerAnnotationRelation;
 
     /**
      * 处理器们的数据.
      *
      * @var array
      */
-    public $parsersData = [];
+    public array $parsersData = [];
 }

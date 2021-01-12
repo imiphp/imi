@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Event\Event;
+use Imi\Server\Base;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 
 class Worker
@@ -12,37 +13,37 @@ class Worker
     /**
      * 当前进程的WorkerId.
      *
-     * @var int
+     * @var int|null
      */
-    private static $workerId;
+    private static ?int $workerId = null;
 
     /**
      * 是否初始化完毕.
      *
      * @return bool
      */
-    private static $isInited = false;
+    private static bool $isInited = false;
 
     /**
      * IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕.
      *
      * @var bool
      */
-    private static $workerStartAppComplete = false;
+    private static bool $workerStartAppComplete = false;
 
     /**
      * Worker 进程数量.
      *
-     * @var int
+     * @var int|null
      */
-    private static $workerNum;
+    private static ?int $workerNum = null;
 
     /**
      * task 进程数量.
      *
-     * @var int
+     * @var int|null
      */
-    private static $taskWorkerNum;
+    private static ?int $taskWorkerNum = null;
 
     private function __construct()
     {
@@ -54,7 +55,7 @@ class Worker
      *
      * @return int|null
      */
-    public static function getWorkerId()
+    public static function getWorkerId(): ?int
     {
         if (null === static::$workerId)
         {
@@ -102,11 +103,11 @@ class Worker
      * 触发 IMI.MAIN_SERVER.WORKER.START.APP 事件.
      *
      * @param \Imi\Server\Base $server
-     * @param mixed            $target
+     * @param object           $target
      *
      * @return void
      */
-    public static function workerStartApp($server, $target)
+    public static function workerStartApp(Base $server, object $target)
     {
         if (!static::$workerStartAppComplete)
         {

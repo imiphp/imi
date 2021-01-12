@@ -8,6 +8,7 @@ use ArrayObject;
 use Imi\Bean\Container;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\DefaultContextManager;
+use Imi\Server\Base;
 
 class RequestContext
 {
@@ -93,7 +94,7 @@ class RequestContext
      *
      * @return mixed
      */
-    public static function get($name, $default = null)
+    public static function get(string $name, $default = null)
     {
         $context = static::getInstance()->get(static::getCurrentFlag(), true);
 
@@ -108,7 +109,7 @@ class RequestContext
      *
      * @return void
      */
-    public static function set($name, $value)
+    public static function set(string $name, $value)
     {
         $context = static::getInstance()->get(static::getCurrentFlag(), true);
         $context[$name] = $value;
@@ -148,9 +149,9 @@ class RequestContext
     /**
      * 获取当前上下文.
      *
-     * @return array
+     * @return ArrayObject
      */
-    public static function getContext()
+    public static function getContext(): ArrayObject
     {
         return static::getInstance()->get(static::getCurrentFlag(), true);
     }
@@ -160,7 +161,7 @@ class RequestContext
      *
      * @return \Imi\Server\Base|null
      */
-    public static function getServer()
+    public static function getServer(): ?Base
     {
         return static::get('server');
     }
@@ -169,10 +170,11 @@ class RequestContext
      * 在当前服务器上下文中获取Bean对象
      *
      * @param string $name
+     * @param array  $params
      *
-     * @return mixed
+     * @return object
      */
-    public static function getServerBean($name, ...$params)
+    public static function getServerBean(string $name, ...$params): object
     {
         return static::get('server')->getBean($name, ...$params);
     }
@@ -181,10 +183,11 @@ class RequestContext
      * 在当前请求上下文中获取Bean对象
      *
      * @param string $name
+     * @param array  $params
      *
-     * @return mixed
+     * @return object
      */
-    public static function getBean($name, ...$params)
+    public static function getBean(string $name, ...$params): object
     {
         $context = static::getInstance()->get(static::getCurrentFlag(), true);
         if (isset($context['container']))

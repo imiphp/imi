@@ -12,6 +12,7 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Cli\Tools\Imi\Imi as ToolImi;
+use Imi\Config;
 use Imi\Event\Event;
 use Imi\Pool\PoolManager;
 use Imi\ServerManage;
@@ -42,7 +43,24 @@ class Server extends BaseCommand
             Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
             if (null === $name)
             {
-                App::createServers();
+                // 创建服务器对象们前置操作
+                Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+                $mainServer = Config::get('@app.mainServer');
+                if (null === $mainServer)
+                {
+                    throw new \RuntimeException('config.mainServer not found');
+                }
+                // 主服务器
+                ServerManage::createServer('main', $mainServer);
+                // 创建监听子服务器端口
+                $subServers = Config::get('@app.subServers', []);
+                foreach ($subServers as $name => $config)
+                {
+                    ServerManage::createServer($name, $config, true);
+                }
+                // 创建服务器对象们后置操作
+                Event::trigger('IMI.SERVERS.CREATE.AFTER');
+
                 $swooleServer = ServerManage::getServer('main')->getSwooleServer();
                 // 守护进程支持
                 if ($d)

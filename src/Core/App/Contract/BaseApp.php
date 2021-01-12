@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Core\App\Contract;
 
 use Imi\Config;
+use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Imi;
 
@@ -66,5 +67,6 @@ abstract class BaseApp implements IApp
             throw new \RuntimeException('Framework imi must have the class Imi\\Main');
         }
         Helper::getMain($this->namespace, 'app');
+        Event::trigger('IMI.INIT_MAIN');
     }
 }
