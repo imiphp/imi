@@ -50,7 +50,7 @@ class AnnotationParser
     public function __construct()
     {
         // 注册注解自动加载
-        AnnotationRegistry::registerLoader(function ($class) {
+        AnnotationRegistry::registerLoader(function (string $class): bool {
             return class_exists($class) || interface_exists($class);
         });
         $this->reader = new AnnotationReader();

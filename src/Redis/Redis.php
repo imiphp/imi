@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Redis;
 
 use Imi\Config;
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 
 /**
@@ -262,7 +263,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($name, $arguments) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function (IPoolResource $resource, RedisHandler $redis) use ($name, $arguments) {
                 return $redis->$name(...$arguments);
             });
         }
@@ -287,7 +288,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::parsePoolName($poolName), function ($resource, $redis) use ($callable) {
+            return PoolManager::use(RedisManager::parsePoolName($poolName), function (IPoolResource $resource, RedisHandler $redis) use ($callable) {
                 return $callable($redis);
             });
         }
@@ -310,7 +311,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use (&$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function (IPoolResource $resource, RedisHandler $redis) use (&$iterator, $pattern, $count) {
                 return $redis->scan($iterator, $pattern, $count);
             });
         }
@@ -334,7 +335,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($key, &$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function (IPoolResource $resource, RedisHandler $redis) use ($key, &$iterator, $pattern, $count) {
                 return $redis->hscan($key, $iterator, $pattern, $count);
             });
         }
@@ -358,7 +359,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($key, &$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function (IPoolResource $resource, RedisHandler $redis) use ($key, &$iterator, $pattern, $count) {
                 return $redis->sscan($key, $iterator, $pattern, $count);
             });
         }
@@ -382,7 +383,7 @@ class Redis
         }
         else
         {
-            return PoolManager::use(RedisManager::getDefaultPoolName(), function ($resource, $redis) use ($key, &$iterator, $pattern, $count) {
+            return PoolManager::use(RedisManager::getDefaultPoolName(), function (IPoolResource $resource, RedisHandler $redis) use ($key, &$iterator, $pattern, $count) {
                 return $redis->zscan($key, $iterator, $pattern, $count);
             });
         }

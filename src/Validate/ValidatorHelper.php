@@ -545,7 +545,7 @@ class ValidatorHelper
          *
          * @param string $idcard_base
          *
-         * @return int
+         * @return int|false
          */
         $idcard_verify_number = function () use (&$id_card) {
             if (17 !== \strlen($id_card))
@@ -574,7 +574,7 @@ class ValidatorHelper
          *
          * @return bool
          */
-        $idcard_checksum18 = function () use (&$id_card, $idcard_verify_number) {
+        $idcard_checksum18 = function () use (&$id_card, $idcard_verify_number): bool {
             if (18 !== \strlen($id_card))
             {
                 return false;
@@ -591,7 +591,7 @@ class ValidatorHelper
          *
          * @return string
          */
-        $idcard_15to18 = function () use (&$id_card, $idcard_verify_number) {
+        $idcard_15to18 = function () use (&$id_card, $idcard_verify_number): string {
             if (15 !== \strlen($id_card))
             {
                 return false;

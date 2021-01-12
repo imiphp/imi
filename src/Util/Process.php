@@ -34,7 +34,7 @@ class Process
         $instance = self::getInstance();
         if (!isset($instance->events[$signalNo]))
         {
-            \Swoole\Process::signal($signalNo, function ($signalNo) {
+            \Swoole\Process::signal($signalNo, function (int $signalNo) {
                 foreach (self::getInstance()->events[$signalNo] ?? [] as $callbacks)
                 {
                     foreach ($callbacks as $callback)

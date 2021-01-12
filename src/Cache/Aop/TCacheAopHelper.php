@@ -34,7 +34,7 @@ trait TCacheAopHelper
         }
         else
         {
-            return preg_replace_callback('/\{([^\}]+)\}/', function ($matches) use ($args, $cacheable) {
+            return preg_replace_callback('/\{([^\}]+)\}/', function (array $matches) use ($args, $cacheable): string {
                 $argName = $matches[1];
                 if (':args' === $argName)
                 {
@@ -45,7 +45,7 @@ trait TCacheAopHelper
                     $value = ObjectArrayHelper::get($args, $argName);
                     if (is_scalar($value))
                     {
-                        return $value;
+                        return (string) $value;
                     }
                     else
                     {

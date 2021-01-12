@@ -60,7 +60,7 @@ class BeanProxy
         {
             // 先尝试环绕
             $aroundAspectDoList = [];
-            self::doAspect($className, $method, 'around', function ($aspectClassName, $methodName) use (&$aroundAspectDoList) {
+            self::doAspect($className, $method, 'around', function (string $aspectClassName, string $methodName) use (&$aroundAspectDoList) {
                 $aroundAspectDoList[] = [new $aspectClassName(), $methodName];
             });
             if (!isset($aroundAspectDoList[0]))
@@ -75,14 +75,14 @@ class BeanProxy
 
             foreach ($aroundAspectDoList as $aroundAspectDo)
             {
-                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, (null === $nextJoinPoint ? function ($inArgs = null) use ($object, $className, $method, &$args, $callback) {
+                $joinPoint = new AroundJoinPoint('around', $method, $args, $object, (null === $nextJoinPoint ? function (?array $inArgs = null) use ($object, $className, $method, &$args, $callback) {
                     if (null !== $inArgs)
                     {
                         $args = $inArgs;
                     }
 
                     return self::callOrigin($object, $className, $method, $args, $callback);
-                } : function ($inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
+                } : function (?array $inArgs = null) use ($nextAroundAspectDo, $nextJoinPoint, &$args) {
                     if (null !== $inArgs)
                     {
                         $args = $inArgs;
@@ -100,7 +100,7 @@ class BeanProxy
         {
             // 异常
             $isCancelThrow = false;
-            self::doAspect($className, $method, 'afterThrowing', function ($aspectClassName, $methodName, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
+            self::doAspect($className, $method, 'afterThrowing', function (string $aspectClassName, string $methodName, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
                 // 验证异常是否捕获
                 if (isset($annotation->allow[0]) || isset($annotation->deny[0]))
                 {
@@ -393,7 +393,7 @@ class BeanProxy
     private static function callOrigin(object $object, string $className, string $method, array &$args, callable $callback)
     {
         // before
-        self::doAspect($className, $method, 'before', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'before', function (string $aspectClassName, string $methodName) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('before', $method, $args, $object);
             $aspectObject = new $aspectClassName();
             $aspectObject->$methodName($joinPoint);
@@ -401,13 +401,13 @@ class BeanProxy
         // 原始方法调用
         $result = $callback(...$args);
         // after
-        self::doAspect($className, $method, 'after', function ($aspectClassName, $methodName) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'after', function (string $aspectClassName, string $methodName) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('after', $method, $args, $object);
             $aspectObject = new $aspectClassName();
             $aspectObject->$methodName($joinPoint);
         });
         // afterReturning
-        self::doAspect($className, $method, 'afterReturning', function ($aspectClassName, $methodName) use ($object, $method, &$args, &$result) {
+        self::doAspect($className, $method, 'afterReturning', function (string $aspectClassName, string $methodName) use ($object, $method, &$args, &$result) {
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object);
             $joinPoint->setReturnValue($result);
             $aspectObject = new $aspectClassName();

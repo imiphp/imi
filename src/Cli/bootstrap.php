@@ -34,7 +34,7 @@ return function () {
         })();
     }
 
-    App::run((function () use ($path) {
+    App::run((function () use ($path): string {
         $input = new ArgvInput();
         $namespace = $input->getParameterOption('--app-namespace');
         if (false === $namespace)

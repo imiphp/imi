@@ -73,7 +73,7 @@ class Pool
             'pool'  => $this,
         ], $this, BeforeStartEventParam::class);
 
-        \Imi\Util\Process::signal(\SIGCHLD, function ($sig) {
+        \Imi\Util\Process::signal(\SIGCHLD, function (int $sig) {
             while (!empty($this->workers))
             {
                 foreach ($this->workers as $worker)

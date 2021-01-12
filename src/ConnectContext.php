@@ -23,7 +23,7 @@ class ConnectContext
         $requestContextData = RequestContext::getContext();
         if (!static::get() && $fd = ($requestContextData['fd'] ?? null))
         {
-            static::use(function ($contextData) use ($data, $fd, $requestContextData) {
+            static::use(function (array $contextData) use ($data, $fd, $requestContextData): array {
                 if ($contextData)
                 {
                     $contextData = array_merge($contextData, $data);
@@ -59,7 +59,7 @@ class ConnectContext
             }
         }
         $data = static::getContext($fromFd);
-        static::use(function ($contextData) use ($data, $toFd) {
+        static::use(function (array $contextData) use ($data, $toFd): array {
             $contextData = $data;
             $contextData['fd'] = $toFd;
 

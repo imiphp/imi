@@ -65,7 +65,7 @@ trait TLockableParser
         $result = null;
         if (null !== $lockableAfterLock)
         {
-            $afterLockCallable = function () use ($lockableAfterLock, &$result) {
+            $afterLockCallable = function () use ($lockableAfterLock, &$result): bool {
                 $result = $lockableAfterLock();
 
                 return null !== $result;
@@ -75,7 +75,7 @@ trait TLockableParser
         if (null !== $afterLock)
         {
             $firstAfterLockCallable = $afterLockCallable;
-            $afterLockCallable = function () use ($firstAfterLockCallable, $afterLock, &$result) {
+            $afterLockCallable = function () use ($firstAfterLockCallable, $afterLock, &$result): bool {
                 if (null !== $firstAfterLockCallable)
                 {
                     $result = $firstAfterLockCallable();
@@ -127,11 +127,11 @@ trait TLockableParser
         }
         else
         {
-            return preg_replace_callback('/\{([^\}]+)\}/', function ($matches) use ($args) {
+            return preg_replace_callback('/\{([^\}]+)\}/', function (array $matches) use ($args): string {
                 $value = ObjectArrayHelper::get($args, $matches[1]);
                 if (is_scalar($value))
                 {
-                    return $value;
+                    return (string) $value;
                 }
                 else
                 {

@@ -23,7 +23,7 @@ class IndexController extends HttpController
      */
     public function info()
     {
-        ConnectContext::use(function ($context) {
+        ConnectContext::use(function (array $context) {
             $context['count'] = ($context['count'] ?? 0) + 1;
 
             return $context;

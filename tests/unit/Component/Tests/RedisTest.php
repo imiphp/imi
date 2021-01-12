@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\App;
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use Imi\Redis\Redis;
 use Imi\Redis\RedisHandler;
@@ -34,7 +35,7 @@ class RedisTest extends BaseTest
 
     public function testEvalEx()
     {
-        $value = PoolManager::use('redis_test', function ($resource, RedisHandler $redis) {
+        $value = PoolManager::use('redis_test', function (IPoolResource $resource, RedisHandler $redis) {
             return $redis->evalEx(<<<SCRIPT
 local key = KEYS[1]
 local value = ARGV[1]

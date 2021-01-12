@@ -54,7 +54,7 @@ class ProcessPoolManager
 
         $pool = new \Swoole\Process\Pool($workerNum, $ipcType, $msgQueueKey);
 
-        $pool->on('WorkerStart', function ($pool, $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
+        $pool->on('WorkerStart', function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
             Imi::setProcessName('processPool', [
                 'processPoolName'   => $name,
                 'workerId'          => $workerId,
@@ -84,7 +84,7 @@ class ProcessPoolManager
             \Swoole\Event::wait();
         });
 
-        $pool->on('WorkerStop', imiCallable(function ($pool, $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey) {
+        $pool->on('WorkerStop', imiCallable(function (\Swoole\Process\Pool $pool, int $workerId) use ($name, $workerNum, $args, $ipcType, $msgQueueKey) {
             // 进程结束事件
             Event::trigger('IMI.PROCESS_POOL.PROCESS.END', [
                 'name'          => $name,

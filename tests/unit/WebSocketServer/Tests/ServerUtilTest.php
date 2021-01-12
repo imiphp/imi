@@ -50,7 +50,7 @@ class ServerUtilTest extends BaseTest
                 {
                     $th = null;
                     $channel = new Channel(1);
-                    $func = function ($recvCount) use ($channel) {
+                    $func = function (int $recvCount) use ($channel) {
                         $dataStr = json_encode([
                             'data'  => 'test',
                         ]);
@@ -137,7 +137,7 @@ class ServerUtilTest extends BaseTest
                 {
                     $th = null;
                     $waitChannel = new Channel(1);
-                    $func = function ($recvCount) use ($waitChannel) {
+                    $func = function (int $recvCount) use ($waitChannel) {
                         $dataStr = json_encode([
                             'data'  => 'test',
                         ]);

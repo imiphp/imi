@@ -10,6 +10,7 @@ use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Query;
 use Imi\Db\Query\QueryType;
+use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
 
@@ -140,7 +141,7 @@ class Db
      */
     public static function use(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
-        return PoolManager::use(static::parsePoolName($poolName, $queryType), function ($resource, $db) use ($callable) {
+        return PoolManager::use(static::parsePoolName($poolName, $queryType), function (IPoolResource $resource, IDb $db) use ($callable) {
             return $callable($db);
         });
     }
@@ -158,7 +159,7 @@ class Db
      */
     public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
-        return PoolManager::use(static::parsePoolName($poolName, $queryType), function ($resource, IDb $db) use ($callable) {
+        return PoolManager::use(static::parsePoolName($poolName, $queryType), function (IPoolResource $resource, IDb $db) use ($callable) {
             return static::trans($db, $callable);
         });
     }

@@ -308,7 +308,7 @@ class HttpRoute
             }
             $pattern = preg_replace_callback(
                 '/\{(([^\}:]+?)|([^:]+?):(?:([^{}]*(?:\{(?-1)\}[^{}]*)*))?)\}/',
-                function (array $matches) use (&$fields) {
+                function (array $matches) use (&$fields): string {
                     if (isset($matches[4]))
                     {
                         // 正则
@@ -475,7 +475,7 @@ class HttpRoute
         $parsedBody = $request->getParsedBody();
         $isObject = \is_object($parsedBody);
 
-        return Imi::checkCompareRules($params, function ($name) use ($parsedBody, $isObject, $paramsBodyMultiLevel) {
+        return Imi::checkCompareRules($params, function (string $name) use ($parsedBody, $isObject, $paramsBodyMultiLevel) {
             if ($paramsBodyMultiLevel)
             {
                 return ObjectArrayHelper::get($parsedBody, $name);

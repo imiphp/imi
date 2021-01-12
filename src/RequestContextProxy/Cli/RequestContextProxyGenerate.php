@@ -136,7 +136,7 @@ class RequestContextProxyGenerate
                 $methods[] = '@method static ' . $item;
             }
         }
-        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName) {
+        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName): string {
             ob_start();
             include __DIR__ . '/template.tpl';
 

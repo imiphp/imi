@@ -391,7 +391,7 @@ class ImiArgvInput extends Input
      */
     public function __toString()
     {
-        $tokens = array_map(function ($token) {
+        $tokens = array_map(function (string $token): string {
             if (preg_match('{^(-[^=]+=)(.+)}', $token, $match))
             {
                 return $match[1] . $this->escapeToken($match[2]);

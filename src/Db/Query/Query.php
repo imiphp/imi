@@ -385,7 +385,7 @@ class Query implements IQuery
         {
             return $this;
         }
-        $func = function ($condition) use (&$func) {
+        $func = function (array $condition) use (&$func): array {
             $result = [];
             foreach ($condition as $key => $value)
             {

@@ -226,14 +226,14 @@ class CronManager
             {
                 case CronTaskType::ALL_WORKER:
                 case CronTaskType::RANDOM_WORKER:
-                    $task = function ($id, $data) use ($class) {
+                    $task = function (string $id, $data) use ($class) {
                         /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);
                     };
                     break;
                 case CronTaskType::TASK:
-                    $task = function ($id, $data) use ($class) {
+                    $task = function (string $id, $data) use ($class) {
                         TaskManager::nPost('imiCronTask', [
                             'id'    => $id,
                             'data'  => $data,
@@ -242,7 +242,7 @@ class CronManager
                     };
                     break;
                 case CronTaskType::PROCESS:
-                    $task = function ($id, $data) use ($class) {
+                    $task = function (string $id, $data) use ($class) {
                         ProcessManager::run('CronWorkerProcess', [
                             'id'         => $id,
                             'data'       => json_encode($data),
@@ -252,7 +252,7 @@ class CronManager
                     };
                     break;
                 case CronTaskType::CRON_PROCESS:
-                    return function ($id, $data) use ($class) {
+                    return function (string $id, $data) use ($class) {
                         goWait(function () use ($class, $id, $data) {
                             /** @var \Imi\Cron\Contract\ICronTask $handler */
                             $handler = App::getBean($class);
@@ -270,7 +270,7 @@ class CronManager
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
             }
-            $task = function ($id, $data) use ($process) {
+            $task = function (string $id, $data) use ($process) {
                 ProcessManager::run($process->name, [
                     'id'         => $id,
                     'data'       => json_encode($data),
@@ -287,7 +287,7 @@ class CronManager
             {
                 throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cronId, $class));
             }
-            $task = function ($id, $data) use ($taskAnnotation) {
+            $task = function (string $id, $data) use ($taskAnnotation) {
                 TaskManager::nPost($taskAnnotation->name, $data);
             };
         }

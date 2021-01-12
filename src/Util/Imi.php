@@ -551,7 +551,7 @@ class Imi
          *
          * @return [$type, $size]
          */
-        $parseColumnTypeAndSize = function ($column) {
+        $parseColumnTypeAndSize = function (Column $column): array {
             $type = $column->type;
             switch ($type)
             {
@@ -583,7 +583,7 @@ class Imi
          *
          * @return array
          */
-        $getMemoryTableColumns = function ($columnAnnotationsSet) use ($parseColumnTypeAndSize) {
+        $getMemoryTableColumns = function (array $columnAnnotationsSet) use ($parseColumnTypeAndSize): array {
             $columns = [];
 
             foreach ($columnAnnotationsSet as $annotations)

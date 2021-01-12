@@ -107,7 +107,7 @@ class Group
         if ($this->handler->joinGroup($groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
-            ConnectContext::use(function ($contextData) use ($groupName) {
+            ConnectContext::use(function (array $contextData) use ($groupName): array {
                 $contextData['__groups'][] = $groupName;
 
                 return $contextData;
@@ -133,7 +133,7 @@ class Group
         if ($this->handler->leaveGroup($groupName, $fd))
         {
             RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
-            ConnectContext::use(function ($contextData) use ($groupName) {
+            ConnectContext::use(function (array $contextData) use ($groupName) {
                 if (isset($contextData['__groups']))
                 {
                     $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $groupName);

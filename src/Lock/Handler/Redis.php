@@ -6,6 +6,7 @@ namespace Imi\Lock\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Redis\Redis as ImiRedis;
+use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
 use Imi\Util\Coroutine;
 
@@ -114,7 +115,7 @@ class Redis extends BaseLock
      */
     protected function __tryLock(): bool
     {
-        return ImiRedis::use(function ($redis) {
+        return ImiRedis::use(function (RedisHandler $redis): bool {
             return 1 == $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
@@ -149,7 +150,7 @@ SCRIPT
      */
     protected function __unlock(): bool
     {
-        return ImiRedis::use(function ($redis) {
+        return ImiRedis::use(function (RedisHandler $redis): bool {
             return false !== $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]

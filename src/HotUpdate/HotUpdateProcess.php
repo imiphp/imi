@@ -322,7 +322,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function closeBuildRuntime()
     {
-        $closePipes = function ($buildRuntimePipes) {
+        $closePipes = function (?array $buildRuntimePipes) {
             if (null !== $buildRuntimePipes)
             {
                 foreach ($buildRuntimePipes as $pipe)

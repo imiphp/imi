@@ -90,7 +90,7 @@ class FileMTime extends BaseMonitor
     {
         $changed = false;
         $files = &$this->files;
-        $files = array_map(function ($item) {
+        $files = array_map(function (array $item): array {
             $item['exists'] = false;
 
             return $item;

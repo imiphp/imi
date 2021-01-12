@@ -134,7 +134,7 @@ class FacadeGenerate extends BaseCommand
             $params = implode(', ', $params);
             $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
-        $content = (function () use ($namespace, $facadeAnnotation, $methods, $shortClassName) {
+        $content = (function () use ($namespace, $facadeAnnotation, $methods, $shortClassName): string {
             ob_start();
             include __DIR__ . '/template.tpl';
 
