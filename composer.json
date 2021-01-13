@@ -20,6 +20,7 @@
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
         "yurunsoft/yurun-http": "^4.0.0",
+        "swoole/ide-helper": "^4.6",
         "phpunit/phpunit": "^9.4.0"
     },
     "autoload": {
@@ -48,7 +49,6 @@
     "extra": {
         "ide-helper": {
             "list": [
-                "swoole",
                 "redis"
             ]
         }
