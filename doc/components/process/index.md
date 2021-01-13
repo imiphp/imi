@@ -181,7 +181,7 @@ $process = ProcessManager::getProcessWithManager('processName');
 相比 Swoole 的监听，此方法支持触发多次事件
 
 ```php
-\Imi\Util\Process::signal(SIGTERM, function($signo) {
+\Imi\Swoole\Util\Process::signal(SIGTERM, function($signo) {
      echo "shutdown.";
 });
 ```

@@ -1,6 +1,6 @@
 # Swoole
 
-**类名:** `Imi\Util\Swoole`
+**类名:** `Imi\Swoole\Util\Swoole`
 
 Swoole 环境下的一些工具类。
 

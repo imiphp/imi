@@ -7,7 +7,7 @@ namespace Imi\Swoole\Server\ConnectContext\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\Co\ChannelContainer;
+use Imi\Swoole\Util\Co\ChannelContainer;
 
 /**
  * 发送给所有 Worker 进程的连接-响应.

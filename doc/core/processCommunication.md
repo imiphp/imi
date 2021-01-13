@@ -90,7 +90,7 @@ class TestMessage implements IEventListener
 
 ```php
 use Imi\Swoole\Server\Server;
-use Imi\Util\Co\ChannelContainer;
+use Imi\Swoole\Util\Co\ChannelContainer;
 
 // 生成一个随机ID
 $id = uniqid('', true);
@@ -163,7 +163,7 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Server;
-use Imi\Util\Co\ChannelContainer;
+use Imi\Swoole\Util\Co\ChannelContainer;
 
 /**
  * @Listener("IMI.PIPE_MESSAGE.testResponse")

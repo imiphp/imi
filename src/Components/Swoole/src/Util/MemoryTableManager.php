@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Util;
+namespace Imi\Swoole\Util;
 
-use Imi\App;
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Config;
 use Imi\Lock\Lock;
+use Imi\Model\Annotation\Column;
 use Imi\Util\MemoryTable\IMemoryTableOption;
 
 /**
@@ -35,16 +36,15 @@ class MemoryTableManager
     public static function init(): void
     {
         self::$tables = [];
-        $runtimeInfo = App::getRuntimeInfo();
         // 初始化内存表模型
-        foreach ($runtimeInfo->memoryTable as $item)
+        foreach (AnnotationManager::getAnnotationPoints(\Imi\Model\Annotation\MemoryTable::class, 'class') as $item)
         {
             /** @var \Imi\Model\Annotation\MemoryTable $memoryTableAnnotation */
             $memoryTableAnnotation = $item->getAnnotation();
             self::addName($memoryTableAnnotation->name, [
                 'size'                  => $memoryTableAnnotation->size,
                 'conflictProportion'    => $memoryTableAnnotation->conflictProportion,
-                'columns'               => $item->columns,
+                'columns'               => self::getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [],
             ]);
         }
         // 初始化配置中的内存表
@@ -91,6 +91,64 @@ class MemoryTableManager
             }
         }
         self::$inited = true;
+    }
+
+    /**
+     * 处理列类型和大小.
+     *
+     * @param \Imi\Model\Annotation\Column $column
+     *
+     * @return array
+     */
+    private static function parseColumnTypeAndSize(Column $column): array
+    {
+        $type = $column->type;
+        switch ($type)
+        {
+            case 'string':
+                $type = \Swoole\Table::TYPE_STRING;
+                $size = $column->length;
+                break;
+            case 'int':
+                $type = \Swoole\Table::TYPE_INT;
+                $size = $column->length;
+                if (!\in_array($size, [1, 2, 4, 8]))
+                {
+                    $size = 4;
+                }
+                break;
+            case 'float':
+                $type = \Swoole\Table::TYPE_FLOAT;
+                $size = 8;
+                break;
+        }
+
+        return [$type, $size];
+    }
+
+    /**
+     * 获取内存表列.
+     *
+     * @param array $columnAnnotationsSet
+     *
+     * @return array
+     */
+    private static function getMemoryTableColumns(array $columnAnnotationsSet): array
+    {
+        $columns = [];
+
+        foreach ($columnAnnotationsSet as $annotations)
+        {
+            $columnAnnotation = $annotations[0];
+            list($type, $size) = self::parseColumnTypeAndSize($columnAnnotation);
+            $columns[] = [
+                'name' => $columnAnnotation->name,
+                'type' => $type,
+                'size' => $size,
+            ];
+        }
+
+        return $columns;
     }
 
     /**

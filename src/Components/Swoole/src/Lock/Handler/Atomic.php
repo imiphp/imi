@@ -6,7 +6,7 @@ namespace Imi\Swoole\Lock\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Handler\BaseLock;
-use Imi\Util\AtomicManager;
+use Imi\Swoole\Util\AtomicManager;
 use Swoole\Timer;
 
 /**

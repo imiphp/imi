@@ -8,7 +8,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Redis\Redis as ImiRedis;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisManager;
-use Imi\Util\Coroutine;
 
 /**
  * Redis + Lua 实现的分布式锁，需要 Redis >= 2.6.0.
@@ -90,14 +89,7 @@ class Redis extends BaseLock
             }
             if (0 === $waitTimeout || microtime(true) - $beginTime < $waitTimeout / 1000)
             {
-                if (Coroutine::isIn())
-                {
-                    Coroutine::sleep($waitSleepTime / 1000);
-                }
-                else
-                {
-                    usleep($waitSleepTime * 1000);
-                }
+                usleep($waitSleepTime * 1000);
             }
             else
             {

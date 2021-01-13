@@ -8,7 +8,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\App;
 use Imi\Bean\Annotation\Parser;
 use Imi\RequestContext;
-use Imi\Util\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 
 /**
  * 服务器容器对象注入

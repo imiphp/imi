@@ -8,10 +8,11 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
+use Imi\Swoole\Util\Imi as SwooleImi;
+use Imi\Swoole\Util\Swoole;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
-use Imi\Util\Swoole;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START",priority=Imi\Util\ImiPriority::IMI_MAX)
@@ -28,7 +29,7 @@ class OnManagerStart implements IManagerStartEventListener
     public function handle(ManagerStartEventParam $e)
     {
         App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::MANAGER, true);
-        Imi::setProcessName('manager');
+        SwooleImi::setProcessName('manager');
 
         // 随机数播种
         mt_srand();

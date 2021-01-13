@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Lock\Handler;
 
-use Imi\Util\Coroutine;
+use Imi\RequestContext;
 
 abstract class BaseLock implements ILockHandler
 {
@@ -39,9 +39,9 @@ abstract class BaseLock implements ILockHandler
     /**
      * 获得锁的协程ID.
      *
-     * @var int
+     * @var string
      */
-    private int $lockCoId = -1;
+    private string $lockCoId = '';
 
     public function __construct(string $id, array $options = [])
     {
@@ -81,7 +81,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
-        $this->lockCoId = Coroutine::getuid();
+        $this->lockCoId = RequestContext::getCurrentFlag();
         if (null === $taskCallable)
         {
             return true;
@@ -123,7 +123,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = true;
-        $this->lockCoId = Coroutine::getuid();
+        $this->lockCoId = RequestContext::getCurrentFlag();
         if (null !== $taskCallable)
         {
             try
@@ -155,7 +155,7 @@ abstract class BaseLock implements ILockHandler
             return false;
         }
         $this->isLocked = false;
-        $this->lockCoId = -1;
+        $this->lockCoId = '';
 
         return true;
     }
@@ -167,7 +167,7 @@ abstract class BaseLock implements ILockHandler
      */
     public function isLocked(): bool
     {
-        return $this->isLocked && $this->lockCoId === Coroutine::getuid();
+        return $this->isLocked && $this->lockCoId === RequestContext::getCurrentFlag();
     }
 
     /**
@@ -235,11 +235,11 @@ abstract class BaseLock implements ILockHandler
     }
 
     /**
-     * 获取获得锁的协程ID.
+     * 获取获得锁的标志.
      *
-     * @return int
+     * @return string
      */
-    public function getLockCoId(): int
+    public function getLockFlag(): string
     {
         return $this->lockCoId;
     }

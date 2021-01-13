@@ -73,7 +73,7 @@ class Pool
             'pool'  => $this,
         ], $this, BeforeStartEventParam::class);
 
-        \Imi\Util\Process::signal(\SIGCHLD, function (int $sig) {
+        \Imi\Swoole\Util\Process::signal(\SIGCHLD, function (int $sig) {
             while (!empty($this->workers))
             {
                 foreach ($this->workers as $worker)
@@ -103,7 +103,7 @@ class Pool
             }
         });
 
-        \Imi\Util\Process::signal(\SIGTERM, function () {
+        \Imi\Swoole\Util\Process::signal(\SIGTERM, function () {
             $this->working = false;
             foreach ($this->workers as $worker)
             {
@@ -190,8 +190,8 @@ class Pool
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
         $worker = new \Imi\Swoole\Process\Process(function (Process $worker) use ($workerId) {
-            \Imi\Util\Process::clearNotInheritableSignalListener();
-            \Imi\Util\Process::signal(\SIGTERM, function () use ($worker, $workerId) {
+            \Imi\Swoole\Util\Process::clearNotInheritableSignalListener();
+            \Imi\Swoole\Util\Process::signal(\SIGTERM, function () use ($worker, $workerId) {
                 $this->trigger('WorkerExit', [
                     'pool'      => $this,
                     'worker'    => $worker,

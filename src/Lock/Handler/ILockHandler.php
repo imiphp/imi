@@ -70,9 +70,9 @@ interface ILockHandler
     public function getLockExpire(): int;
 
     /**
-     * 获取获得锁的协程ID.
+     * 获取获得锁的标志.
      *
-     * @return int
+     * @return string
      */
-    public function getLockCoId(): int;
+    public function getLockFlag(): string;
 }

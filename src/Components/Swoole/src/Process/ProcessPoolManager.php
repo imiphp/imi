@@ -8,7 +8,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Swoole\Process\Parser\ProcessPoolParser;
-use Imi\Util\Imi;
+use Imi\Swoole\Util\Imi;
 
 /**
  * 进程池管理类.

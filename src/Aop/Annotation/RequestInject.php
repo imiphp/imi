@@ -7,7 +7,7 @@ namespace Imi\Aop\Annotation;
 use Imi\App;
 use Imi\Bean\Annotation\Parser;
 use Imi\RequestContext;
-use Imi\Util\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 
 /**
  * 属性注入

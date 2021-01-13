@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Imi\Swoole\Listener;
 
 use Imi\App;
-use Imi\Bean\Annotation\Listener;
 use Imi\ServerManage;
-use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
+use Imi\Swoole\Util\Imi;
+use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
-use Imi\Util\Imi;
+use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START")

@@ -18,7 +18,7 @@
 ## 使用方式
 
 ```php
-use \Imi\Util\CoroutineChannelManager;
+use \Imi\Swoole\Util\CoroutineChannelManager;
 
 // 获取 Swoole\Coroutine\Channel 对象
 $channel = CoroutineChannelManager::getInstance('name1');

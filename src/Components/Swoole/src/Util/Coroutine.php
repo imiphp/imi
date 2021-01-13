@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Util;
+namespace Imi\Swoole\Util;
 
 class Coroutine extends \Swoole\Coroutine
 {

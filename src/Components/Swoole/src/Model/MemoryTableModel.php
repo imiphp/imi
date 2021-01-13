@@ -7,7 +7,7 @@ namespace Imi\Swoole\Model;
 use Imi\Model\Annotation\MemoryTable;
 use Imi\Model\BaseModel;
 use Imi\Model\ModelManager;
-use Imi\Util\MemoryTableManager;
+use Imi\Swoole\Util\MemoryTableManager;
 
 /**
  * Swoole Table 模型.

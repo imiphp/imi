@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Util;
+namespace Imi\Swoole\Util;
 
 use Imi\Util\Traits\TSingleton;
 

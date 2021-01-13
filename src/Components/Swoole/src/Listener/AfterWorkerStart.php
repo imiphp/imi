@@ -10,9 +10,9 @@ use Imi\Event\Event;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
+use Imi\Swoole\Util\Swoole;
 use Imi\Swoole\Worker;
 use Imi\Util\Imi;
-use Imi\Util\Swoole;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**

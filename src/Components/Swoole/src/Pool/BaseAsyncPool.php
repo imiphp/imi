@@ -7,8 +7,8 @@ namespace Imi\Swoole\Pool;
 use Imi\Event\Event;
 use Imi\Pool\BasePool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\Swoole\Util\Coroutine;
 use Imi\Swoole\Worker;
-use Imi\Util\Coroutine;
 use Swoole\Coroutine\Channel;
 
 /**

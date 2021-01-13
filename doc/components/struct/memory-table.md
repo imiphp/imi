@@ -29,7 +29,7 @@ imi 支持 [MemoryTableModel](/components/orm/MemoryTableModel.html)，也支持
 ### 写入
 
 ```php
-use Imi\Util\MemoryTableManager;
+use Imi\Swoole\Util\MemoryTableManager;
 $key = 'a'; // 主键
 $value = [
     'name'      =>  'abc',

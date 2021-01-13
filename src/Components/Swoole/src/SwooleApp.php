@@ -13,7 +13,7 @@ use Imi\Event\Event;
 use Imi\Lock\Lock;
 use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
-use Imi\Util\AtomicManager;
+use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;

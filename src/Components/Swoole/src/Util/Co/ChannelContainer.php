@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Util\Co;
+namespace Imi\Swoole\Util\Co;
 
 use Imi\Facade\Annotation\Facade;
 use Imi\Facade\BaseFacade;

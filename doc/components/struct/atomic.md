@@ -19,7 +19,7 @@
 ## 使用方式
 
 ```php
-use \Imi\Util\AtomicManager;
+use \Imi\Swoole\Util\AtomicManager;
 
 // 获取 Swoole\Atomic 对象
 $atomic = AtomicManager::getInstance('name1');

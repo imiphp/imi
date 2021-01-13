@@ -13,9 +13,6 @@ use Imi\Bean\ReflectionContainer;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
-use Imi\Model\Annotation\Column;
-use Imi\Model\Annotation\MemoryTable;
-use Imi\Swoole\Worker;
 use Imi\Util\Process\ProcessAppContexts;
 
 /**
@@ -455,87 +452,6 @@ class Imi
     }
 
     /**
-     * 设置当前进程名.
-     *
-     * @param string $type
-     * @param array  $data
-     *
-     * @return void
-     */
-    public static function setProcessName(string $type, array $data = [])
-    {
-        if ('Darwin' === \PHP_OS)
-        {
-            // 苹果 MacOS 不允许设置进程名
-            return;
-        }
-        cli_set_process_title(static::getProcessName($type, $data));
-    }
-
-    /**
-     * 获取 imi 进程名
-     * 返回false则失败.
-     *
-     * @param string $type
-     * @param array  $data
-     *
-     * @return string
-     */
-    public static function getProcessName(string $type, array $data = []): string
-    {
-        static $defaults = [
-            'master'        => 'imi:master:{namespace}',
-            'manager'       => 'imi:manager:{namespace}',
-            'worker'        => 'imi:worker-{workerId}:{namespace}',
-            'taskWorker'    => 'imi:taskWorker-{workerId}:{namespace}',
-            'process'       => 'imi:process-{processName}:{namespace}',
-            'processPool'   => 'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
-        ];
-        if (!isset($defaults[$type]))
-        {
-            return false;
-        }
-        $rule = Config::get('@app.process.' . $type, $defaults[$type]);
-        $data['namespace'] = App::getNamespace();
-        switch ($type)
-        {
-            case 'master':
-                break;
-            case 'manager':
-                break;
-            case 'worker':
-                $data['workerId'] = Worker::getWorkerId();
-                break;
-            case 'taskWorker':
-                $data['workerId'] = Worker::getWorkerId();
-                break;
-            case 'process':
-                if (!isset($data['processName']))
-                {
-                    return false;
-                }
-                break;
-            case 'processPool':
-                if (!isset($data['processPoolName'], $data['workerId']))
-                {
-                    return false;
-                }
-                break;
-        }
-        $result = $rule;
-        foreach ($data as $k => $v)
-        {
-            if (!is_scalar($v))
-            {
-                continue;
-            }
-            $result = str_replace('{' . $k . '}', (string) $v, $result);
-        }
-
-        return $result;
-    }
-
-    /**
      * 构建运行时缓存.
      *
      * @param string|null $runtimeFile 如果为空则默认为runtime.cache
@@ -544,70 +460,7 @@ class Imi
      */
     public static function buildRuntime(?string $runtimeFile = null)
     {
-        /**
-         * 处理列类型和大小.
-         *
-         * @param \Imi\Model\Annotation\Column $column
-         *
-         * @return [$type, $size]
-         */
-        $parseColumnTypeAndSize = function (Column $column): array {
-            $type = $column->type;
-            switch ($type)
-            {
-                case 'string':
-                    $type = \Swoole\Table::TYPE_STRING;
-                    $size = $column->length;
-                    break;
-                case 'int':
-                    $type = \Swoole\Table::TYPE_INT;
-                    $size = $column->length;
-                    if (!\in_array($size, [1, 2, 4, 8]))
-                    {
-                        $size = 4;
-                    }
-                    break;
-                case 'float':
-                    $type = \Swoole\Table::TYPE_FLOAT;
-                    $size = 8;
-                    break;
-            }
-
-            return [$type, $size];
-        };
-
-        /**
-         * 获取内存表列.
-         *
-         * @param array $columnAnnotationsSet
-         *
-         * @return array
-         */
-        $getMemoryTableColumns = function (array $columnAnnotationsSet) use ($parseColumnTypeAndSize): array {
-            $columns = [];
-
-            foreach ($columnAnnotationsSet as $annotations)
-            {
-                $columnAnnotation = $annotations[0];
-                list($type, $size) = $parseColumnTypeAndSize($columnAnnotation);
-                $columns[] = [
-                    'name' => $columnAnnotation->name,
-                    'type' => $type,
-                    'size' => $size,
-                ];
-            }
-
-            return $columns;
-        };
-
         $runtimeInfo = App::getRuntimeInfo();
-        $annotationsSet = AnnotationManager::getAnnotationPoints(MemoryTable::class, 'class');
-        foreach ($annotationsSet as &$item)
-        {
-            $item = clone $item;
-            $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
-        }
-        $runtimeInfo->memoryTable = $annotationsSet;
         $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getStoreData();
         $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
         $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();

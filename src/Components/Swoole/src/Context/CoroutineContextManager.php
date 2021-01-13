@@ -9,7 +9,7 @@ use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
 use Imi\Event\Event;
-use Imi\Util\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 use Swoole\Coroutine\Context;
 
 /**

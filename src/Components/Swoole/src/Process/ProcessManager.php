@@ -11,6 +11,7 @@ use Imi\Event\Event;
 use Imi\ServerManage;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Process\Parser\ProcessParser;
+use Imi\Swoole\Util\Imi as SwooleImi;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
@@ -99,7 +100,7 @@ class ProcessManager
             {
                 $processName .= '#' . $processName;
             }
-            Imi::setProcessName('process', [
+            SwooleImi::setProcessName('process', [
                 'processName'   => $processName,
             ]);
             // 随机数播种
@@ -112,7 +113,7 @@ class ProcessManager
                     {
                         throw new \RuntimeException('lock process lock file error');
                     }
-                    \Imi\Util\Process::clearNotInheritableSignalListener();
+                    \Imi\Swoole\Util\Process::clearNotInheritableSignalListener();
                     // 加载服务器注解
                     Scanner::scanVendor();
                     Scanner::scanApp();

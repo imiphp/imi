@@ -24,7 +24,7 @@ return [
         'Imi\Lock',
         'Imi\Facade',
         'Imi\Cron',
-        'Imi\Util\Co',
+        'Imi\Swoole\Util\Co',
         'Imi\RequestContextProxy',
     ],
     'ignoreNamespace'   => [

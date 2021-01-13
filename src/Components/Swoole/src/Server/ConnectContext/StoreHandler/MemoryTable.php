@@ -6,7 +6,7 @@ namespace Imi\Swoole\Server\ConnectContext\StoreHandler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Lock;
-use Imi\Util\MemoryTableManager;
+use Imi\Swoole\Util\MemoryTableManager;
 use Swoole\Timer;
 
 /**

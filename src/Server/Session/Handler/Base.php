@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\Session\Handler;
 
 use Imi\RequestContext;
-use Imi\Util\AtomicManager;
+use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Format\IFormat;
 use Imi\Util\Format\PhpSerialize;
 

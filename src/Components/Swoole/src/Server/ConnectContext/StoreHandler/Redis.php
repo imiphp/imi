@@ -12,9 +12,9 @@ use Imi\Log\Log;
 use Imi\Redis\Redis as ImiRedis;
 use Imi\Redis\RedisHandler;
 use Imi\ServerManage;
+use Imi\Swoole\Util\AtomicManager;
+use Imi\Swoole\Util\Swoole;
 use Imi\Swoole\Worker;
-use Imi\Util\AtomicManager;
-use Imi\Util\Swoole;
 
 /**
  * 连接上下文存储处理器-Redis.

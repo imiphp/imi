@@ -120,7 +120,7 @@ class CoServer
         $this->realWorkerNum = $this->workerNum + $this->processNum;
         $processPool = new Pool($this->realWorkerNum);
         $processPool->on('Init', function (InitEventParam $e) {
-            \Imi\Util\Process::signal(\SIGUSR1, function () use ($e) {
+            \Imi\Swoole\Util\Process::signal(\SIGUSR1, function () use ($e) {
                 $workerIds = [];
                 for ($i = 0; $i < $this->workerNum; ++$i)
                 {

@@ -1,6 +1,6 @@
 # Coroutine
 
-**类名:** `Imi\Util\Coroutine`
+**类名:** `Imi\Swoole\Util\Coroutine`
 
 协程帮助类
 

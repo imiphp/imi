@@ -12,13 +12,6 @@ use Imi\Bean\Annotation\Model\AnnotationRelation;
 class RuntimeInfo
 {
     /**
-     * Swoole Memory Table 配置.
-     *
-     * @var array
-     */
-    public array $memoryTable = [];
-
-    /**
      * AnnotationParser->$data & AnnotationParser->$files.
      *
      * @var array

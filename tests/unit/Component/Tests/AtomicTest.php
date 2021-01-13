@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component\Tests;
 
+use Imi\Swoole\Util\AtomicManager;
 use Imi\Test\BaseTest;
-use Imi\Util\AtomicManager;
 use PHPUnit\Framework\Assert;
 
 /**

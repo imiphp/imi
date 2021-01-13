@@ -8,7 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
-use Imi\Util\Imi;
+use Imi\Swoole\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 

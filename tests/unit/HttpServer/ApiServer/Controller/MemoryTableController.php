@@ -7,7 +7,7 @@ namespace Imi\Test\HttpServer\ApiServer\Controller;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
-use Imi\Util\MemoryTableManager;
+use Imi\Swoole\Util\MemoryTableManager;
 
 /**
  * @Controller("/memoryTable/")
