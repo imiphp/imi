@@ -15,8 +15,8 @@ use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\MemoryTable;
+use Imi\Swoole\Worker;
 use Imi\Util\Process\ProcessAppContexts;
-use Imi\Worker;
 
 /**
  * 框架里杂七杂八的各种工具方法.

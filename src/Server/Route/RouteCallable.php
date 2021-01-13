@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\Server\Route;
 
-use Imi\Server\Base;
+use Imi\Swoole\Server\Base;
 
 class RouteCallable
 {
     /**
      * 服务器对象
      *
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public Base $server;
 

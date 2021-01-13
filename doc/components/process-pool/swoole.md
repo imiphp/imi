@@ -8,12 +8,12 @@ imi 中对进程池的创建和运行做了简单封装，基于`Swoole\Process\
 <?php
 namespace XinchengApi\api\ProcessPool;
 
-use Imi\Process\Annotation\ProcessPool;
+use Imi\Swoole\Process\Annotation\ProcessPool;
 
 /**
  * @ProcessPool(name="进程名称")
  */
-class Sms extends \Imi\Process\BasePoolProcess
+class Sms extends \Imi\Swoole\Process\BasePoolProcess
 {
 	public function run(\Swoole\Process\Pool $pool, int $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey)
 	{

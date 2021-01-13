@@ -6,8 +6,8 @@ namespace Imi\Server\Session;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Session\Handler\ISessionHandler;
+use Imi\Swoole\Server\Annotation\ServerInject;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Random;
 

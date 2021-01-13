@@ -6,9 +6,9 @@ namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Util\CronUtil;
-use Imi\Task\Annotation\Task;
-use Imi\Task\Interfaces\ITaskHandler;
-use Imi\Task\TaskParam;
+use Imi\Swoole\Task\Annotation\Task;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskParam;
 
 /**
  * @Cron(id="TaskCron", second="3n", data={"id":"TaskCron"})

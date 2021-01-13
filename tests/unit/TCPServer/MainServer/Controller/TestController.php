@@ -6,9 +6,9 @@ namespace Imi\Test\TCPServer\MainServer\Controller;
 
 use Imi\ConnectContext;
 use Imi\RequestContext;
-use Imi\Server\Route\Annotation\Tcp\TcpAction;
-use Imi\Server\Route\Annotation\Tcp\TcpController;
-use Imi\Server\Route\Annotation\Tcp\TcpRoute;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpAction;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpController;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute;
 
 /**
  * 数据收发测试.
@@ -49,7 +49,7 @@ class TestController extends \Imi\Controller\TcpController
             'action'     => 'send',
             'message'    => ConnectContext::get('username') . ':' . $data->message,
         ];
-        $this->server->groupCall('g1', 'send', $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($message));
+        $this->server->groupCall('g1', 'send', $this->server->getBean(\Imi\Swoole\Server\DataParser\DataParser::class)->encode($message));
     }
 
     /**

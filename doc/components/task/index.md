@@ -14,8 +14,8 @@
 <?php
 namespace Test;
 
-use Imi\Task\TaskParam;
-use Imi\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskParam;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
 class Test implements ITaskHandler
 {
@@ -108,9 +108,9 @@ TaskManager::postCo([new TaskInfo(
 <?php
 namespace Test;
 
-use Imi\Task\TaskParam;
-use Imi\Task\Annotation\Task;
-use Imi\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskParam;
+use Imi\Swoole\Task\Annotation\Task;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
 /**
  * @Task("testTask")

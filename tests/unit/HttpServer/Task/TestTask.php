@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Test\HttpServer\Task;
 
-use Imi\Task\Annotation\Task;
-use Imi\Task\Interfaces\ITaskHandler;
-use Imi\Task\TaskParam;
+use Imi\Swoole\Task\Annotation\Task;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskParam;
 
 /**
  * @Task("Test1")

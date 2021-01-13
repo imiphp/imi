@@ -133,8 +133,8 @@ class Pool
 运行效果：
 
 ```
-after Imi\Redis\CoroutineRedisPool::getResource(): 0/1
-after Imi\Redis\CoroutineRedisPool::release(): 1/1
+after Imi\Swoole\Redis\Pool\CoroutineRedisPool::getResource(): 0/1
+after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 ```
 
 类名、方法名和命名空间没有要求，只要`beanScan`里能扫描到即可。

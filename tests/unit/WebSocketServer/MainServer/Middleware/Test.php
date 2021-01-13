@@ -6,9 +6,9 @@ namespace Imi\Test\WebSocketServer\MainServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\WebSocket\IMessageHandler;
-use Imi\Server\WebSocket\Message\IFrame;
-use Imi\Server\WebSocket\Middleware\IMiddleware;
+use Imi\Swoole\Server\WebSocket\IMessageHandler;
+use Imi\Swoole\Server\WebSocket\Message\IFrame;
+use Imi\Swoole\Server\WebSocket\Middleware\IMiddleware;
 
 /**
  * @Bean

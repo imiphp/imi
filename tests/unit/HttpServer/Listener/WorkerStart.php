@@ -7,10 +7,10 @@ namespace Imi\Test\HttpServer\Listener;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Util\CronUtil;
-use Imi\Server\Event\Listener\IWorkerStartEventListener;
-use Imi\Server\Event\Param\WorkerStartEventParam;
+use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
+use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
+use Imi\Swoole\Worker;
 use Imi\Test\HttpServer\Cron\CronDWorker;
-use Imi\Worker;
 use function Yurun\Swoole\Coroutine\goWait;
 
 /**

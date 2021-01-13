@@ -6,11 +6,11 @@ namespace Imi\Test\WebSocketServer\MainServer\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\ConnectContext;
-use Imi\Server\Event\Listener\IOpenEventListener;
-use Imi\Server\Event\Param\OpenEventParam;
+use Imi\Swoole\Server\Event\Listener\IOpenEventListener;
+use Imi\Swoole\Server\Event\Param\OpenEventParam;
 
 /**
- * @ClassEventListener(className="Imi\Server\WebSocket\Server",eventName="open")
+ * @ClassEventListener(className="Imi\Swoole\Server\WebSocket\Server",eventName="open")
  */
 class OnOpen implements IOpenEventListener
 {

@@ -7,9 +7,9 @@
 namespace ImiDemo\TcpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Server\Route\Annotation\Tcp\TcpRoute;
-use Imi\Server\Route\Annotation\Tcp\TcpAction;
-use Imi\Server\Route\Annotation\Tcp\TcpController;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpAction;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpController;
 
 /**
  * 数据收发测试
@@ -150,7 +150,7 @@ public function hasGroup(string $groupName);
  *
  * @param string $groupName
  * @param integer $maxClients
- * @return \Imi\Server\Group\Group
+ * @return \Imi\Swoole\Server\Group\Group
  */
 public function createGroup(string $groupName, int $maxClients = -1);
 ```
@@ -160,7 +160,7 @@ public function createGroup(string $groupName, int $maxClients = -1);
  * 获取组对象，不存在返回null
  *
  * @param string $groupName
- * @return \Imi\Server\Group\Group|null
+ * @return \Imi\Swoole\Server\Group\Group|null
  */
 public function getGroup(string $groupName);
 ```
@@ -203,7 +203,7 @@ public function groupCall(string $groupName, string $methodName, ...$args);
 /**
  * 获取所有组列表
  *
- * @return \Imi\Server\Group\Group[]
+ * @return \Imi\Swoole\Server\Group\Group[]
  */
 public function getGroups(): array;
 ```

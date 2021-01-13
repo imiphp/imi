@@ -40,11 +40,11 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 <?php
 namespace Imi\Test\HttpServer\Cron;
 
-use Imi\Task\TaskParam;
+use Imi\Swoole\Task\TaskParam;
 use Imi\Cron\Annotation\Cron;
-use Imi\Task\Annotation\Task;
+use Imi\Swoole\Task\Annotation\Task;
 use Imi\Cron\Traits\TWorkerReport;
-use Imi\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
 
 /**
  * @Cron(id="TaskCron", second="3n", data={"id":"TaskCron"})
@@ -92,10 +92,10 @@ class TaskCron implements ITaskHandler
 namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Util\Args;
-use Imi\Process\IProcess;
+use Imi\Swoole\Process\IProcess;
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Traits\TWorkerReport;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\Annotation\Process;
 use Swoole\Event;
 
 /**

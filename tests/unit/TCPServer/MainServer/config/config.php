@@ -15,7 +15,7 @@ return [
         'TcpDispatcher'    => [
             'middlewares'    => [
                 \Imi\Test\TCPServer\Middleware\RequestLogMiddleware::class,
-                \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
+                \Imi\Swoole\Server\TcpServer\Middleware\RouteMiddleware::class,
                 \Imi\Test\TCPServer\MainServer\Middleware\Test::class,
             ],
         ],
@@ -25,7 +25,7 @@ return [
             'redisDb'      => 2,
         ],
         'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
         ],
         'ConnectContextMemoryTable' => [
             'tableName' => 'connectContext',

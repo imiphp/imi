@@ -169,9 +169,9 @@ class App
      * @param string $name
      * @param int    $workerNum
      *
-     * @return \Imi\Server\CoServer
+     * @return \Imi\Swoole\Server\CoServer
      */
-    public static function createCoServer(string $name, int $workerNum): \Imi\Server\CoServer
+    public static function createCoServer(string $name, int $workerNum): \Imi\Swoole\Server\CoServer
     {
         static::$isCoServer = true;
         $server = ServerManage::createCoServer($name, $workerNum);

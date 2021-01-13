@@ -6,7 +6,7 @@ AtomicLock 是单机进程锁，会阻塞。
 
 > 注意！会阻塞当前进程，不建议在 worker 进程中使用！
 
-类：`Imi\Lock\Handler\Atomic`
+类：`Imi\Swoole\Lock\Handler\Atomic`
 
 Bean 名：`AtomicLock`
 

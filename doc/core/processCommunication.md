@@ -30,7 +30,7 @@
 **发送：**
 
 ```php
-use Imi\Server\Server;
+use Imi\Swoole\Server\Server;
 
 // 发送给所有 Worker 进程
 Server::sendMessage('test', [
@@ -89,7 +89,7 @@ class TestMessage implements IEventListener
 **发送请求并等待响应：**
 
 ```php
-use Imi\Server\Server;
+use Imi\Swoole\Server\Server;
 use Imi\Util\Co\ChannelContainer;
 
 // 生成一个随机ID
@@ -124,7 +124,7 @@ namespace App\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
-use Imi\Server\Server;
+use Imi\Swoole\Server\Server;
 
 /**
  * @Listener("IMI.PIPE_MESSAGE.testRequest")
@@ -162,7 +162,7 @@ namespace App\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Bean\Annotation\Listener;
-use Imi\Server\Server;
+use Imi\Swoole\Server\Server;
 use Imi\Util\Co\ChannelContainer;
 
 /**

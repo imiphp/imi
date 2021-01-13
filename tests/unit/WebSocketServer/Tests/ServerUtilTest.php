@@ -8,7 +8,7 @@ use Swoole\Coroutine\Channel;
 use Yurun\Util\HttpRequest;
 
 /**
- * @testdox Imi\Server\Server
+ * @testdox Imi\Swoole\Server\Server
  */
 class ServerUtilTest extends BaseTest
 {
@@ -46,10 +46,10 @@ class ServerUtilTest extends BaseTest
         $this->go(function () {
             for ($_ = 0; $_ < 3; ++$_)
             {
+                $th = null;
+                $channel = new Channel(1);
                 try
                 {
-                    $th = null;
-                    $channel = new Channel(1);
                     $func = function (int $recvCount) use ($channel) {
                         $dataStr = json_encode([
                             'data'  => 'test',
@@ -120,6 +120,10 @@ class ServerUtilTest extends BaseTest
                 {
                     sleep(1);
                 }
+                finally
+                {
+                    $channel->close();
+                }
             }
             if (isset($th))
             {
@@ -133,10 +137,10 @@ class ServerUtilTest extends BaseTest
         $this->go(function () {
             for ($_ = 0; $_ < 3; ++$_)
             {
+                $th = null;
+                $waitChannel = new Channel(1);
                 try
                 {
-                    $th = null;
-                    $waitChannel = new Channel(1);
                     $func = function (int $recvCount) use ($waitChannel) {
                         $dataStr = json_encode([
                             'data'  => 'test',
@@ -195,6 +199,10 @@ class ServerUtilTest extends BaseTest
                 catch (\Throwable $th)
                 {
                     sleep(1);
+                }
+                finally
+                {
+                    $waitChannel->close();
                 }
             }
             if (isset($th))

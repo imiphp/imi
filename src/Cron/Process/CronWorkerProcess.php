@@ -6,8 +6,8 @@ namespace Imi\Cron\Process;
 
 use Imi\App;
 use Imi\Cron\Util\CronUtil;
-use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\Annotation\Process;
+use Imi\Swoole\Process\BaseProcess;
 use Symfony\Component\Console\Input\ArgvInput;
 
 /**

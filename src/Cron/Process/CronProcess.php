@@ -12,8 +12,8 @@ use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Cron\Scheduler;
 use Imi\Log\ErrorLog;
-use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\Annotation\Process;
+use Imi\Swoole\Process\BaseProcess;
 
 /**
  * 定时任务进程.

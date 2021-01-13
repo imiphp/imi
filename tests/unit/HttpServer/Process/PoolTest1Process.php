@@ -6,8 +6,8 @@ namespace Imi\Test\HttpServer\Process;
 
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Pool\PoolManager;
-use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\Annotation\Process;
+use Imi\Swoole\Process\BaseProcess;
 
 /**
  * @Process("PoolTest1")

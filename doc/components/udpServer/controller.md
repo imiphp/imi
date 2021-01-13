@@ -7,9 +7,9 @@
 namespace ImiDemo\UdpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Server\Route\Annotation\Udp\UdpRoute;
-use Imi\Server\Route\Annotation\Udp\UdpAction;
-use Imi\Server\Route\Annotation\Udp\UdpController;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpAction;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpController;
 
 /**
  * 数据收发测试
@@ -87,7 +87,7 @@ return [
 			'task_worker_num'	=>	8,
 		],
 		// 数据处理器
-		'dataParser'	=>	Imi\Server\DataParser\JsonObjectParser::class,
+		'dataParser'	=>	Imi\Swoole\Server\DataParser\JsonObjectParser::class,
 	],
 }
 ```

@@ -6,9 +6,9 @@ namespace <?= $namespace; ?>;
 
 use Imi\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * @Controller("<?= $prefix; ?>")

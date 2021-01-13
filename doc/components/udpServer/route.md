@@ -9,7 +9,7 @@ return [
 	'beans'	=>	[
 		'UdpDispatcher'	=>	[
 			'middlewares'	=>	[
-				\Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
+				\Imi\Swoole\Server\UdpServer\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -30,7 +30,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Server\UdpServer\Route\RouteItem
+ * @var \Imi\Swoole\Server\UdpServer\Route\RouteItem
  */
 public $routeItem;
 
@@ -55,7 +55,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Server\Route\Annotation\Udp\UdpRoute
+ * @var \Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute
  */
 public $annotation;
 

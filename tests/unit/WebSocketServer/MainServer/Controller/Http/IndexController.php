@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Imi\Test\WebSocketServer\MainServer\Controller\Http;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\WebSocket\WSConfig;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSConfig;
 
 /**
  * 测试.
@@ -22,7 +22,7 @@ class IndexController extends HttpController
     /**
      * @Action
      * @Route("/")
-     * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
+     * @WSConfig(parserClass=\Imi\Swoole\Server\DataParser\JsonObjectParser::class)
      *
      * @return void
      */
@@ -34,7 +34,7 @@ class IndexController extends HttpController
     /**
      * @Action
      * @Route("/test2")
-     * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
+     * @WSConfig(parserClass=\Imi\Swoole\Server\DataParser\JsonObjectParser::class)
      *
      * @return void
      */
@@ -52,6 +52,7 @@ class IndexController extends HttpController
     {
         $response = $this->response;
         $response->getBody()->write('http');
+
         return $response;
     }
 }

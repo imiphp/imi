@@ -66,10 +66,10 @@ return [
             'Imi\Redis',
             'Imi\Listener',
             'Imi\Model',
-            'Imi\Task',
+            'Imi\Swoole\Task',
             'Imi\Cli',
-            'Imi\Process',
-            'Imi\HotUpdate',
+            'Imi\Swoole\Process',
+            'Imi\Swoole\HotUpdate',
             'Imi\Validate',
             'Imi\HttpValidate',
             'Imi\Enum',
@@ -82,7 +82,7 @@ return [
         // 指定服务器命名空间
         'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
         // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-        'type'		=>	\Imi\Server\Type::HTTP,
+        'type'		=>	\Imi\Swoole\Server\Type::HTTP,
         // 监听的IP地址，可选
         'host'		=>	'0.0.0.0',
         // 监听的端口

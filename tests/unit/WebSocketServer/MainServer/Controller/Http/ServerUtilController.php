@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Test\WebSocketServer\MainServer\Controller\Http;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Server;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Swoole\Server\Server;
 
 /**
  * 服务器工具类.

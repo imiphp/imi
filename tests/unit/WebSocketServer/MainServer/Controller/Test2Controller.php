@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Test\WebSocketServer\MainServer\Controller;
 
 use Imi\Controller\WebSocketController;
-use Imi\Server\Route\Annotation\WebSocket\WSAction;
-use Imi\Server\Route\Annotation\WebSocket\WSController;
-use Imi\Server\Route\Annotation\WebSocket\WSRoute;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
 
 /**
  * 数据收发测试.

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Imi\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Task\TaskInfo;
-use Imi\Task\TaskManager;
-use Imi\Task\TaskParam;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Swoole\Task\TaskInfo;
+use Imi\Swoole\Task\TaskManager;
+use Imi\Swoole\Task\TaskParam;
 use Imi\Test\HttpServer\Task\TestTask;
 
 /**

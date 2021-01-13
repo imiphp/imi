@@ -9,9 +9,9 @@
 namespace Test;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * 一个简单的控制器
@@ -46,9 +46,9 @@ hello imi!
 namespace Test;
 
 use Imi\Controller\SingletonHttpController;
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * 一个简单的控制器
@@ -163,7 +163,7 @@ request 数据包含 get/post/cookie
 
 #### 获取 imi 中对应服务器的对象
 
-`public function getServerInstance(): \Imi\Server\Http\Server`
+`public function getServerInstance(): \Imi\Swoole\Server\Http\Server`
 
 #### 获取上传的文件
 
@@ -294,7 +294,7 @@ public function sendFile(string $filename, int $offset = 0, int $length = 0)
 
 #### 获取对应的服务器
 
-`public function getServerInstance(): \Imi\Server\Http\Server`
+`public function getServerInstance(): \Imi\Swoole\Server\Http\Server`
 
 #### 设置状态码
 

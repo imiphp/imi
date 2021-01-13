@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Session\Session;
 
 /**

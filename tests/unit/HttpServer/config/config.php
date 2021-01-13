@@ -27,12 +27,13 @@ return [
 
     // 组件命名空间
     'components'    => [
+        'Swoole' => 'Imi\Swoole',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\Test\HttpServer\ApiServer',
-        'type'         => Imi\Server\Type::HTTP,
+        'type'         => Imi\Swoole\Server\Type::HTTP,
         'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'         => 13000,
         'mode'         => \SWOOLE_BASE,
@@ -46,13 +47,13 @@ return [
     'subServers'    => [
         'SessionTest'   => [
             'namespace' => 'Imi\Test\HttpServer\SessionTestServer',
-            'type'      => Imi\Server\Type::HTTP,
+            'type'      => Imi\Swoole\Server\Type::HTTP,
             'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      => 13005,
         ],
         'HttpsTest'     => [
             'namespace' => 'Imi\Test\HttpServer\HttpsTestServer',
-            'type'      => Imi\Server\Type::HTTP,
+            'type'      => Imi\Swoole\Server\Type::HTTP,
             'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      => 13006,
             'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
@@ -63,7 +64,7 @@ return [
         ],
         'Http2Test'   => [
             'namespace' => 'Imi\Test\HttpServer\Http2TestServer',
-            'type'      => Imi\Server\Type::HTTP,
+            'type'      => Imi\Swoole\Server\Type::HTTP,
             'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      => 13007,
             'sockType'  => \SWOOLE_SOCK_TCP | \SWOOLE_SSL,
@@ -80,7 +81,7 @@ return [
         // 主数据库
         'maindb'    => [
             'pool'    => [
-                'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
+                'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -97,7 +98,7 @@ return [
         ],
         'redis'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -133,7 +134,7 @@ return [
             'lockId'    => 'memoryTableLock',
         ],
         'connectContext'    => [
-            'class'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+            'class'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
             'lockId' => 'redisConnectContextLock',
         ],
     ],

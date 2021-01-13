@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Imi\Swoole\Server\Event\Param;
+
+use Imi\Event\EventParam;
+use Imi\Swoole\Server\Base;
+use Swoole\WebSocket\Frame;
+
+class MessageEventParam extends EventParam
+{
+    /**
+     * 服务器对象
+     *
+     * @var \Imi\Swoole\Server\Base
+     */
+    public Base $server;
+
+    /**
+     * swoole 数据帧对象
+     *
+     * @var \Swoole\WebSocket\Frame
+     */
+    public Frame $frame;
+}

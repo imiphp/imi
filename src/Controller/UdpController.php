@@ -7,6 +7,6 @@ namespace Imi\Controller;
 /**
  * {@inheritdoc}
  */
-abstract class UdpController extends \Imi\Server\UdpServer\Controller\UdpController
+abstract class UdpController extends \Imi\Swoole\Server\UdpServer\Controller\UdpController
 {
 }

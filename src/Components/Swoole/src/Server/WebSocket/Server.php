@@ -1,0 +1,235 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Imi\Swoole\Server\WebSocket;
+
+use Imi\App;
+use Imi\Bean\Annotation\Bean;
+use Imi\Event\Event;
+use Imi\RequestContext;
+use Imi\ServerManage;
+use Imi\Swoole\Http\Message\SwooleRequest;
+use Imi\Swoole\Http\Message\SwooleResponse;
+use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Event\Param\CloseEventParam;
+use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
+use Imi\Swoole\Server\Event\Param\MessageEventParam;
+use Imi\Swoole\Server\Event\Param\RequestEventParam;
+use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
+use Imi\Swoole\Server\Http\Listener\BeforeRequest;
+use Imi\Util\Bit;
+use Imi\Util\ImiPriority;
+use Swoole\WebSocket\Server as WebSocketServer;
+
+/**
+ * WebSocket 服务器类.
+ *
+ * @Bean("WebSocketServer")
+ */
+class Server extends Base
+{
+    /**
+     * 是否为 wss 服务
+     *
+     * @var bool
+     */
+    private bool $wss;
+
+    /**
+     * 是否为 https 服务
+     *
+     * @var bool
+     */
+    private bool $https;
+
+    /**
+     * 是否为 http2 服务
+     *
+     * @var bool
+     */
+    private bool $http2;
+
+    /**
+     * 创建 swoole 服务器对象
+     *
+     * @return void
+     */
+    protected function createServer()
+    {
+        $config = $this->getServerInitConfig();
+        $this->swooleServer = new \Swoole\WebSocket\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
+        $this->https = $this->wss = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
+        $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
+    }
+
+    /**
+     * 从主服务器监听端口，作为子服务器.
+     *
+     * @return void
+     */
+    protected function createSubServer()
+    {
+        $config = $this->getServerInitConfig();
+        $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
+        $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
+        $thisConfig = &$this->config;
+        if (!isset($thisConfig['configs']['open_websocket_protocol']))
+        {
+            $thisConfig['configs']['open_websocket_protocol'] = true;
+        }
+        $this->wss = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
+    }
+
+    /**
+     * 获取服务器初始化需要的配置.
+     *
+     * @return array
+     */
+    protected function getServerInitConfig(): array
+    {
+        return [
+            'host'      => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
+            'port'      => isset($this->config['port']) ? $this->config['port'] : 8080,
+            'sockType'  => isset($this->config['sockType']) ? $this->config['sockType'] : \SWOOLE_SOCK_TCP,
+            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : \SWOOLE_PROCESS,
+        ];
+    }
+
+    /**
+     * 绑定服务器事件.
+     *
+     * @return void
+     */
+    protected function __bindEvents()
+    {
+        Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e) {
+            // 内置事件监听
+            $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
+        });
+
+        $events = $this->config['events'] ?? null;
+        if ($event = ($events['handshake'] ?? true))
+        {
+            $this->swoolePort->on('handshake', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
+                try
+                {
+                    $request = new SwooleRequest($this, $swooleRequest);
+                    $response = new SwooleResponse($this, $swooleResponse);
+                    RequestContext::muiltiSet([
+                        'server'         => $this,
+                        'swooleRequest'  => $swooleRequest,
+                        'swooleResponse' => $swooleResponse,
+                        'request'        => $request,
+                        'response'       => $response,
+                    ]);
+                    $this->trigger('handShake', [
+                        'request'   => $request,
+                        'response'  => $response,
+                    ], $this, HandShakeEventParam::class);
+                }
+                catch (\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
+
+        if ($event = ($events['message'] ?? true))
+        {
+            $this->swoolePort->on('message', \is_callable($event) ? $event : function (WebSocketServer $server, \Swoole\WebSocket\Frame $frame) {
+                try
+                {
+                    RequestContext::muiltiSet([
+                        'server'        => $this,
+                    ]);
+                    $this->trigger('message', [
+                        'server'    => $this,
+                        'frame'     => $frame,
+                    ], $this, MessageEventParam::class);
+                }
+                catch (\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
+
+        if ($event = ($events['close'] ?? true))
+        {
+            $this->swoolePort->on('close', \is_callable($event) ? $event : function (WebSocketServer $server, int $fd, int $reactorId) {
+                try
+                {
+                    RequestContext::muiltiSet([
+                        'server'        => $this,
+                    ]);
+                    $this->trigger('close', [
+                        'server'    => $this,
+                        'fd'        => $fd,
+                        'reactorId' => $reactorId,
+                    ], $this, CloseEventParam::class);
+                }
+                catch (\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
+
+        if ($event = ($events['request'] ?? true))
+        {
+            $this->swoolePort->on('request', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
+                try
+                {
+                    $request = new SwooleRequest($this, $swooleRequest);
+                    $response = new SwooleResponse($this, $swooleResponse);
+                    RequestContext::muiltiSet([
+                        'server'         => $this,
+                        'swooleRequest'  => $swooleRequest,
+                        'swooleResponse' => $swooleResponse,
+                        'request'        => $request,
+                        'response'       => $response,
+                    ]);
+                    $this->trigger('request', [
+                        'request'  => $request,
+                        'response' => $response,
+                    ], $this, RequestEventParam::class);
+                }
+                catch (\Throwable $ex)
+                {
+                    App::getBean('ErrorLog')->onException($ex);
+                }
+            });
+        }
+    }
+
+    /**
+     * 是否为 wss 服务
+     *
+     * @return bool
+     */
+    public function isSSL(): bool
+    {
+        return $this->wss;
+    }
+
+    /**
+     * 是否为 https 服务
+     *
+     * @return bool
+     */
+    public function isHttps(): bool
+    {
+        return $this->https;
+    }
+
+    /**
+     * 是否为 http2 服务
+     *
+     * @return bool
+     */
+    public function isHttp2(): bool
+    {
+        return $this->http2;
+    }
+}

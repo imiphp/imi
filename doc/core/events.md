@@ -65,7 +65,7 @@ class WorkerStartEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -172,7 +172,7 @@ string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $
 事件参数：
 
 ```php
-\Imi\Server\Base $server, string $groupName, int $fd
+\Imi\Swoole\Server\Base $server, string $groupName, int $fd
 ```
 
 ### IMI.SERVER.GROUP.LEAVE
@@ -182,7 +182,7 @@ string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $
 事件参数：
 
 ```php
-\Imi\Server\Base $server, string $groupName, int $fd
+\Imi\Swoole\Server\Base $server, string $groupName, int $fd
 ```
 
 ### IMI.REQUEST_CONTENT.CREATE
@@ -210,7 +210,7 @@ class StartEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -228,7 +228,7 @@ class ShutdownEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -246,7 +246,7 @@ class WorkerStartEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -269,7 +269,7 @@ class WorkerStopEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -292,7 +292,7 @@ class ManagerStartEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -310,7 +310,7 @@ class ManagerStopEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -328,7 +328,7 @@ class TaskEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -363,7 +363,7 @@ class FinishEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -392,7 +392,7 @@ class PipeMessageEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -421,7 +421,7 @@ class WorkerErrorEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -490,7 +490,7 @@ class CloseEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -546,7 +546,7 @@ class OpenEventParam extends EventParam
     /**
      * 服务器对象
      *
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -568,7 +568,7 @@ class MessageEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -589,7 +589,7 @@ class CloseEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -619,7 +619,7 @@ class ConnectEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -646,7 +646,7 @@ class ReceiveEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -680,7 +680,7 @@ class CloseEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -708,7 +708,7 @@ class BufferEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -729,7 +729,7 @@ class BufferEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 
@@ -750,7 +750,7 @@ class PacketEventParam extends EventParam
 {
     /**
      * 服务器对象
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
     public $server;
 

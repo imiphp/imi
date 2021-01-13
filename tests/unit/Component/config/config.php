@@ -33,6 +33,12 @@ return [
         'Imi\Test\Component\Annotation\A\*',
         'Imi\Test\Component\Annotation\B\TestB',
     ],
+
+    // 组件命名空间
+    'components'    => [
+        'Swoole' => 'Imi\Swoole',
+    ],
+
     'beans'    => [
         'TestPropertyClass' => [
             'b' => 'bbb',
@@ -98,7 +104,7 @@ return [
         'maindb'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -120,7 +126,7 @@ return [
         'maindb.slave'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -142,7 +148,7 @@ return [
         'swooleMysql'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -158,14 +164,14 @@ return [
                 'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
-                'dbClass'     => \Imi\Db\Drivers\Swoole\Driver::class,
+                'dbClass'     => \Imi\Swoole\Db\Driver\Swoole\Driver::class,
             ],
         ],
         // mysqli
         'mysqli'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -186,7 +192,7 @@ return [
         ],
         'redis_test'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -200,7 +206,7 @@ return [
         ],
         'redis_cache'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -216,7 +222,7 @@ return [
         ],
         'redis_manager_test'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,

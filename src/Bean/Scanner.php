@@ -6,6 +6,7 @@ namespace Imi\Bean;
 
 use FilesystemIterator;
 use Imi\App;
+use Imi\Config;
 use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Main\Helper;
@@ -89,11 +90,16 @@ class Scanner
                     {
                         // 此目录为 imi 组件目录
                         $namespaces[] = $namespace;
-                        Helper::getMain($namespace);
+                        Helper::getMain($namespace, basename($pathName));
                         break;
                     }
                 }
             }
+        }
+        foreach (Config::get('@app.components') as $name => $namespace)
+        {
+            $namespaces[] = $namespace;
+            Helper::getMain($namespace, $name);
         }
         Annotation::getInstance()->initByNamespace($namespaces);
         Event::trigger('IMI.SCAN_VENDOR');
@@ -115,7 +121,7 @@ class Scanner
     {
         $time = microtime(true);
         $namespace = App::getNamespace();
-        Helper::getMain($namespace);
+        Helper::getMain($namespace, 'app');
         Annotation::getInstance()->initByNamespace($namespace);
         Event::trigger('IMI.SCAN_APP');
         if ($statistics)

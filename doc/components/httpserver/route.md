@@ -85,9 +85,9 @@ return [
 namespace Test;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * 一个简单的控制器
@@ -182,7 +182,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Server\UdpServer\Route\RouteItem
+ * @var \Imi\Swoole\Server\UdpServer\Route\RouteItem
  */
 public $routeItem;
 
@@ -207,7 +207,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Server\Route\Annotation\Route
+ * @var \Imi\Server\Http\Route\Annotation\Route
  */
 public $annotation;
 

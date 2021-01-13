@@ -9,7 +9,7 @@ return [
 	'beans'	=>	[
 		'TcpDispatcher'	=>	[
 			'middlewares'	=>	[
-				\Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
+				\Imi\Swoole\Server\TcpServer\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -30,7 +30,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Server\TcpServer\Route\RouteItem
+ * @var \Imi\Swoole\Server\TcpServer\Route\RouteItem
  */
 public $routeItem;
 
@@ -55,7 +55,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Server\Route\Annotation\Tcp\TcpRoute
+ * @var \Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute
  */
 public $annotation;
 

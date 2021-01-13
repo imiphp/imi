@@ -6,9 +6,9 @@ namespace Imi\Test\TCPServer\MainServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\TcpServer\IReceiveHandler;
-use Imi\Server\TcpServer\Message\IReceiveData;
-use Imi\Server\TcpServer\Middleware\IMiddleware;
+use Imi\Swoole\Server\TcpServer\IReceiveHandler;
+use Imi\Swoole\Server\TcpServer\Message\IReceiveData;
+use Imi\Swoole\Server\TcpServer\Middleware\IMiddleware;
 
 /**
  * @Bean

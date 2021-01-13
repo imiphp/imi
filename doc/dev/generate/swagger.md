@@ -48,10 +48,10 @@ Swagger 书写文档说明：<https://zircote.github.io/swagger-php/Getting-star
 <?php
 namespace ImiApp\ApiServer\Controller;
 
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Controller\SingletonHttpController;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * @OA\Info(title="My First API", version="0.1")

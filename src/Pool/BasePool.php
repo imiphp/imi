@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Imi\Pool;
 
 use Imi\Bean\BeanFactory;
-use Imi\Event\Event;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolConfig;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Util\ArrayUtil;
-use Imi\Worker;
-use Swoole\Coroutine;
 
 abstract class BasePool implements IPool
 {
@@ -42,20 +39,6 @@ abstract class BasePool implements IPool
      * @var mixed
      */
     protected $resourceConfig;
-
-    /**
-     * 垃圾回收定时器ID.
-     *
-     * @var int|null
-     */
-    protected ?int $gcTimerId = null;
-
-    /**
-     * 心跳定时器ID.
-     *
-     * @var int|null
-     */
-    protected ?int $heartbeatTimerId = null;
 
     /**
      * 当前配置序号.
@@ -127,12 +110,6 @@ abstract class BasePool implements IPool
         $this->initQueue();
         // 填充最少资源数
         $this->fillMinResources();
-        // 定时资源回收
-        $this->stopAutoGC();
-        $this->startAutoGC();
-        // 心跳
-        $this->stopHeartbeat();
-        $this->startHeartbeat();
     }
 
     /**
@@ -142,8 +119,6 @@ abstract class BasePool implements IPool
      */
     public function close()
     {
-        $this->stopAutoGC();
-        $this->stopHeartbeat();
         foreach ($this->pool as $item)
         {
             $item->getResource()->close();
@@ -272,39 +247,6 @@ abstract class BasePool implements IPool
     abstract protected function push(IPoolResource $resource);
 
     /**
-     * 开始自动垃圾回收.
-     *
-     * @return void
-     */
-    public function startAutoGC()
-    {
-        if (null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0)
-        {
-            $gcInterval = $this->config->getGCInterval();
-            if (null !== $gcInterval)
-            {
-                $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
-                Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
-                    $this->stopAutoGC();
-                }, \Imi\Util\ImiPriority::IMI_MIN);
-            }
-        }
-    }
-
-    /**
-     * 停止自动垃圾回收.
-     *
-     * @return void
-     */
-    public function stopAutoGC()
-    {
-        if (null !== $this->gcTimerId)
-        {
-            \Swoole\Timer::clear($this->gcTimerId);
-        }
-    }
-
-    /**
      * 获得资源配置.
      *
      * @return mixed
@@ -363,74 +305,5 @@ abstract class BasePool implements IPool
         }
 
         return $resourceConfig[$index];
-    }
-
-    /**
-     * 心跳.
-     *
-     * @return void
-     */
-    public function heartbeat()
-    {
-        $hasGC = false;
-        $pool = &$this->pool;
-        foreach ($pool as $key => $item)
-        {
-            if ($item->isFree() && $item->lock())
-            {
-                try
-                {
-                    $resource = $item->getResource();
-                    if (!$resource->checkState())
-                    {
-                        $resource->close();
-                        unset($pool[$key]);
-                        $hasGC = true;
-                        $item = null;
-                    }
-                }
-                finally
-                {
-                    if ($item)
-                    {
-                        $item->release();
-                    }
-                }
-            }
-        }
-        if ($hasGC)
-        {
-            $this->fillMinResources();
-            $this->buildQueue();
-        }
-    }
-
-    /**
-     * 开始心跳维持资源.
-     *
-     * @return void
-     */
-    public function startHeartbeat()
-    {
-        if ((null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
-        {
-            $this->heartbeatTimerId = \Swoole\Timer::tick($heartbeatInterval * 1000, [$this, 'heartbeat']);
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
-                $this->stopHeartbeat();
-            }, \Imi\Util\ImiPriority::IMI_MIN);
-        }
-    }
-
-    /**
-     * 停止心跳维持资源.
-     *
-     * @return void
-     */
-    public function stopHeartbeat()
-    {
-        if (null !== $this->heartbeatTimerId)
-        {
-            \Swoole\Timer::clear($this->heartbeatTimerId);
-        }
     }
 }

@@ -27,7 +27,7 @@ class Init implements IEventListener
     /**
      * @Inject("AutoRunProcessManager")
      *
-     * @var \Imi\Process\AutoRunProcessManager
+     * @var \Imi\Swoole\Process\AutoRunProcessManager
      */
     protected $autoRunProcessManager;
 

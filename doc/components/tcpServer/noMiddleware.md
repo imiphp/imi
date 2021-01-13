@@ -6,19 +6,19 @@ imi中内置实现了中间件+控制器方式开发tcp，在一些场景也可�
 
 ```php
 <?php
-namespace Imi\Server\TcpServer\Listener;
+namespace Imi\Swoole\Server\TcpServer\Listener;
 
 use Imi\App;
 use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\Server\Event\Param\ReceiveEventParam;
-use Imi\Server\Event\Listener\IReceiveEventListener;
-use Imi\Server\TcpServer\Message\ReceiveData;
+use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
+use Imi\Swoole\Server\Event\Listener\IReceiveEventListener;
+use Imi\Swoole\Server\TcpServer\Message\ReceiveData;
 
 /**
  * Receive事件前置处理
- * @ClassEventListener(className="Imi\Server\TcpServer\Server",eventName="receive",priority=PHP_INT_MAX)
+ * @ClassEventListener(className="Imi\Swoole\Server\TcpServer\Server",eventName="receive",priority=PHP_INT_MAX)
  */
 class BeforeReceive implements IReceiveEventListener
 {

@@ -8,13 +8,13 @@ imi 实现了一个可以替代 Swoole 进程池的更强大的进程池。支�
 
 ```php
 $workerNum = 4;
-$processPool = new \Imi\Process\Pool($workerNum);
+$processPool = new \Imi\Swoole\Process\Pool($workerNum);
 // 初始化事件-可选
-$processPool->on('Init', function(\Imi\Process\Pool\InitEventParam $e){
+$processPool->on('Init', function(\Imi\Swoole\Process\Pool\InitEventParam $e){
     var_dump('init');
 });
 // 工作进程开始事件-必选
-$processPool->on('WorkerStart', function(\Imi\Process\Pool\WorkerEventParam $e){
+$processPool->on('WorkerStart', function(\Imi\Swoole\Process\Pool\WorkerEventParam $e){
     // 业务代码写这
     while(true)
     {
@@ -26,15 +26,15 @@ $processPool->on('WorkerStart', function(\Imi\Process\Pool\WorkerEventParam $e){
     }
 });
 // 工作进程退出事件-可选
-$processPool->on('WorkerExit', function(\Imi\Process\Pool\WorkerEventParam $e){
+$processPool->on('WorkerExit', function(\Imi\Swoole\Process\Pool\WorkerEventParam $e){
     // 做一些释放操作
 });
 // 工作进程停止事件-可选
-$processPool->on('WorkerStop', function(\Imi\Process\Pool\WorkerEventParam $e){
+$processPool->on('WorkerStop', function(\Imi\Swoole\Process\Pool\WorkerEventParam $e){
 
 });
 // 工作进程停止事件-可选
-$processPool->on('Message', function(\Imi\Process\Pool\MessageEventParam $e){
+$processPool->on('Message', function(\Imi\Swoole\Process\Pool\MessageEventParam $e){
     $data = $e->getData();
      // $data['a'] 约定是操作名，其它成员为参数
     switch($data['a'])

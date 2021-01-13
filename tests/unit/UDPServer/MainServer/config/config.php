@@ -14,12 +14,12 @@ return [
     'beans'    => [
         'UdpDispatcher'    => [
             'middlewares'    => [
-                \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
+                \Imi\Swoole\Server\UdpServer\Middleware\RouteMiddleware::class,
                 \Imi\Test\UDPServer\MainServer\Middleware\Test::class,
             ],
         ],
         'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
         ],
         'ConnectContextMemoryTable' => [
             'tableName' => 'connectContext',

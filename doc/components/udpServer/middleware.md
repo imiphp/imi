@@ -8,7 +8,7 @@
 
 ```php
 <?php
-namespace Imi\Server\UdpServer\Middleware;
+namespace Imi\Swoole\Server\UdpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 
@@ -64,9 +64,9 @@ return [
 namespace ImiDemo\UdpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Server\Route\Annotation\Udp\UdpRoute;
-use Imi\Server\Route\Annotation\Udp\UdpAction;
-use Imi\Server\Route\Annotation\Udp\UdpController;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpAction;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpController;
 
 /**
  * 数据收发测试

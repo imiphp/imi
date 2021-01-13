@@ -6,17 +6,17 @@ namespace Imi\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\Controller\SingletonHttpController;
-use Imi\Process\ProcessManager;
 use Imi\RequestContext;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Middleware;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Middleware;
+use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
+use Imi\Swoole\Process\ProcessManager;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
-use Swoole\Coroutine;
 use Imi\Util\Stream\MemoryStream;
+use Swoole\Coroutine;
 
 /**
  * @Controller(prefix="/", singleton=true)

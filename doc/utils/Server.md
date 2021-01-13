@@ -1,6 +1,6 @@
 # 服务器工具类
 
-**类名:** `Imi\Server\Server`
+**类名:** `Imi\Swoole\Server\Server`
 
 服务器工具类
 

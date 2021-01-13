@@ -17,7 +17,7 @@ http 和 WebSocket 同时做在一个项目中，代码之间没有隔阂，可�
         // 指定服务器命名空间
         'namespace'	=>	'ImiDemo\HttpDemo\MainServer',
         // 服务器类型(http/WebSocket/TcpServer/UdpServer)
-        'type'		=>	\Imi\Server\Type::HTTP,
+        'type'		=>	\Imi\Swoole\Server\Type::HTTP,
         // 监听的IP地址，可选
         'host'		=>	'0.0.0.0',
         // 监听的端口

@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
 use Imi\Server\Http\Message\Request;
-use Imi\Server\Route\Annotation\Route as RouteAnnotation;
+use Imi\Server\Http\Route\Annotation\Route as RouteAnnotation;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\View\Parser\ViewParser;
 use Imi\Util\Imi;
@@ -72,17 +72,17 @@ class HttpRoute
     /**
      * 增加路由规则.
      *
-     * @param string                             $url        url规则
-     * @param mixed                              $callable   回调
-     * @param \Imi\Server\Route\Annotation\Route $annotation 路由定义注解，可选
+     * @param string                                  $url        url规则
+     * @param mixed                                   $callable   回调
+     * @param \Imi\Server\Http\Route\Annotation\Route $annotation 路由定义注解，可选
      *
      * @return void
      */
-    public function addRule(string $url, $callable, \Imi\Server\Route\Annotation\Route $annotation = null)
+    public function addRule(string $url, $callable, \Imi\Server\Http\Route\Annotation\Route $annotation = null)
     {
         if (null === $annotation)
         {
-            $annotation = new \Imi\Server\Route\Annotation\Route([
+            $annotation = new \Imi\Server\Http\Route\Annotation\Route([
                 'url' => $url,
             ]);
         }
@@ -92,13 +92,13 @@ class HttpRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param \Imi\Server\Route\Annotation\Route $annotation
-     * @param mixed                              $callable
-     * @param array                              $options
+     * @param \Imi\Server\Http\Route\Annotation\Route $annotation
+     * @param mixed                                   $callable
+     * @param array                                   $options
      *
      * @return void
      */
-    public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, array $options = [])
+    public function addRuleAnnotation(\Imi\Server\Http\Route\Annotation\Route $annotation, $callable, array $options = [])
     {
         $routeItem = new RouteItem($annotation, $callable, ViewParser::getInstance()->getByCallable($callable), $options);
         if (isset($options['middlewares']))
@@ -129,7 +129,7 @@ class HttpRoute
     /**
      * 路由规则是否存在.
      *
-     * @param \Imi\Server\Route\Annotation\Route $rule
+     * @param \Imi\Server\Http\Route\Annotation\Route $rule
      *
      * @return bool
      */

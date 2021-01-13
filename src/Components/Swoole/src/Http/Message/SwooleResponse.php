@@ -19,11 +19,11 @@ class SwooleResponse extends Response
     /**
      * 对应的服务器.
      *
-     * @var \Imi\Server\Base
+     * @var \Imi\Swoole\Server\Base
      */
-    protected \Imi\Server\Base $serverInstance;
+    protected \Imi\Swoole\Server\Base $serverInstance;
 
-    public function __construct(\Imi\Server\Base $server, \Swoole\Http\Response $response)
+    public function __construct(\Imi\Swoole\Server\Base $server, \Swoole\Http\Response $response)
     {
         $this->swooleResponse = $response;
         $this->serverInstance = $server;
@@ -130,9 +130,9 @@ class SwooleResponse extends Response
     /**
      * 获取对应的服务器.
      *
-     * @return \Imi\Server\Base
+     * @return \Imi\Swoole\Server\Base
      */
-    public function getServerInstance(): \Imi\Server\Base
+    public function getServerInstance(): \Imi\Swoole\Server\Base
     {
         return $this->serverInstance;
     }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Test\TCPServer\MainServer\Error;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\TcpServer\Error\ITcpRouteNotFoundHandler;
-use Imi\Server\TcpServer\IReceiveHandler;
-use Imi\Server\TcpServer\Message\IReceiveData;
+use Imi\Swoole\Server\TcpServer\Error\ITcpRouteNotFoundHandler;
+use Imi\Swoole\Server\TcpServer\IReceiveHandler;
+use Imi\Swoole\Server\TcpServer\Message\IReceiveData;
 
 /**
  * @Bean("RouteNotFound")
@@ -17,8 +17,8 @@ class RouteNotFound implements ITcpRouteNotFoundHandler
     /**
      * 处理方法.
      *
-     * @param \Imi\Server\TcpServer\Message\IReceiveData $data
-     * @param \Imi\Server\TcpServer\IReceiveHandler      $handler
+     * @param \Imi\Swoole\Server\TcpServer\Message\IReceiveData $data
+     * @param \Imi\Swoole\Server\TcpServer\IReceiveHandler      $handler
      *
      * @return void
      */

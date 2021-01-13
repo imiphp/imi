@@ -9,14 +9,14 @@ imi 支持服务监听多个端口、多个协议，该类用于管理监听端�
 ```php
 /**
  * 获取服务器数组
- * @return \Imi\Server\Base[]
+ * @return \Imi\Swoole\Server\Base[]
  */
 public static function getServers();
 
 /**
  * 获取服务器对象
  * @param string $name
- * @return \Imi\Server\Base
+ * @return \Imi\Swoole\Server\Base
  */
 public static function getServer($name);
 ```

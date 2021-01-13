@@ -100,15 +100,15 @@ Event::trigger('事件名称', '传入事件回调的数据', '目标对象', '�
 
 ```php
 <?php
-namespace Imi\Server\Http\Listener;
+namespace Imi\Swoole\Server\Http\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\Server\Event\Param\RequestEventParam;
-use Imi\Server\Event\Listener\IRequestEventListener;
+use Imi\Swoole\Server\Event\Param\RequestEventParam;
+use Imi\Swoole\Server\Event\Listener\IRequestEventListener;
 
 /**
  * request事件前置处理
- * @ClassEventListener(className="Imi\Server\Http\Server",eventName="request",priority=PHP_INT_MAX)
+ * @ClassEventListener(className="Imi\Swoole\Server\Http\Server",eventName="request",priority=PHP_INT_MAX)
  */
 class BeforeRequest implements IRequestEventListener
 {

@@ -23,12 +23,13 @@ return [
 
     // 组件命名空间
     'components'    => [
+        'Swoole' => 'Imi\Swoole',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\Test\WebSocketServer\MainServer',
-        'type'         => Imi\Server\Type::WEBSOCKET,
+        'type'         => Imi\Swoole\Server\Type::WEBSOCKET,
         'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'         => 13002,
         'configs'      => [
@@ -44,7 +45,7 @@ return [
     'pools'    => [
         'redis'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 0,
@@ -67,7 +68,7 @@ return [
     // 内存表配置
     'memoryTable'   => [
         'connectContext'    => [
-            'class'      => \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+            'class'      => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
             'lockId'     => 'atomic',
             'dataLength' => 2048,
         ],

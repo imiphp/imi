@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Http\Message;
 
-use Imi\Server\Base;
 use Imi\Server\Http\Message\Request;
+use Imi\Swoole\Server\Base;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
@@ -21,11 +21,11 @@ class SwooleRequest extends Request
     /**
      * 对应的服务器.
      *
-     * @var \Imi\Server\Http\Server|\Imi\Server\WebSocket\Server
+     * @var \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server
      */
     protected Base $serverInstance;
 
-    public function __construct(\Imi\Server\Base $server, \Swoole\Http\Request $request)
+    public function __construct(\Imi\Swoole\Server\Base $server, \Swoole\Http\Request $request)
     {
         $this->swooleRequest = $request;
         $this->serverInstance = $server;
@@ -69,11 +69,11 @@ class SwooleRequest extends Request
     protected function initUri()
     {
         $serverInstance = $this->serverInstance;
-        if ($serverInstance instanceof \Imi\Server\Http\Server)
+        if ($serverInstance instanceof \Imi\Swoole\Server\Http\Server)
         {
             $scheme = $serverInstance->isSSL() ? 'https' : 'http';
         }
-        elseif ($serverInstance instanceof \Imi\Server\WebSocket\Server)
+        elseif ($serverInstance instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $scheme = $serverInstance->isSSL() ? 'wss' : 'ws';
         }

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Route;
 
-use Imi\Server\Route\Annotation\Route;
-use Imi\Server\Route\Annotation\WebSocket\WSConfig;
+use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSConfig;
 
 class RouteItem
 {
     /**
      * 注解.
      *
-     * @var \Imi\Server\Route\Annotation\Route
+     * @var \Imi\Server\Http\Route\Annotation\Route
      */
     public Route $annotation;
 

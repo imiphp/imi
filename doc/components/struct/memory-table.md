@@ -18,7 +18,7 @@ imi 支持 [MemoryTableModel](/components/orm/MemoryTableModel.html)，也支持
     ],
     'connectContext'    =>  [
         // 指定实现了 Imi\Util\MemoryTable\IMemoryTableOption 接口的来，来定义表结构
-        'class' =>  \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+        'class' =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
         'lockId'=>  'atomic', // 同上
     ],
 ],
@@ -100,7 +100,7 @@ MemoryTableManager::lock($tableName, function(){
 
 ```php
 <?php
-namespace Imi\Server\ConnectContext\StoreHandler\MemoryTable;
+namespace Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable;
 
 use Imi\Util\MemoryTable\IMemoryTableOption;
 

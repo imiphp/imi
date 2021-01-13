@@ -24,7 +24,7 @@ return [
                 // 同步池类名
                 'syncClass'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Db\Pool\CoroutineDbPool::class,
+                'asyncClass'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数
@@ -65,7 +65,7 @@ return [
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
-                // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -83,7 +83,7 @@ return [
                 // 同步池类名
                 'syncClass'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Db\Pool\CoroutineDbPool::class,
+                'asyncClass'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数
@@ -124,7 +124,7 @@ return [
                 // 使用 hook mysqli 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
-                // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -196,13 +196,13 @@ return [
                     // 使用 hook mysqli 驱动
                     // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                     // 使用 Swoole MySQL 驱动
-                    // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                    // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
                 ],
             ],
             // 异步池子，worker进程使用
             'async' => [
                 'pool'	=>	[
-                    'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
+                    'class'		=>	\Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                     'config'	=>	[
                         // 同上
                     ],
@@ -222,7 +222,7 @@ return [
                         // 使用 hook mysqli 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
-                        // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                        // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
                     ],
                     [
                         'host'		=> '127.0.0.2',
@@ -237,7 +237,7 @@ return [
                         // 使用 hook mysqli 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
-                        // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                        // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
                     ]
                 ],
             ],
@@ -278,7 +278,7 @@ return [
             // 异步池子，worker进程使用
             'async' => [
                 'pool'	=>	[
-                    'class'		=>	\Imi\Db\Pool\CoroutineDbPool::class,
+                    'class'		=>	\Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                     'config'	=>	[
                         // 同上
                     ],

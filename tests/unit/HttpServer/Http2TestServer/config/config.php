@@ -17,7 +17,7 @@ return [
             ],
         ],
         'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\Redis::class,
+            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\Redis::class,
         ],
         'ConnectContextRedis'    => [
             'redisPool' => 'redis',

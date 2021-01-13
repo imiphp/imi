@@ -343,9 +343,9 @@ class TestConsumer extends BaseConsumer
 <?php
 namespace ImiApp\Process;
 
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\BaseProcess;
 use Imi\Aop\Annotation\Inject;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\Annotation\Process;
 
 /**
  * @Process(name="TestProcess")

@@ -8,9 +8,9 @@ namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
-use Imi\Server\Route\Annotation\WebSocket\WSRoute;
-use Imi\Server\Route\Annotation\WebSocket\WSAction;
-use Imi\Server\Route\Annotation\WebSocket\WSController;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
 
 /**
  * 数据收发测试
@@ -127,7 +127,7 @@ public function hasGroup(string $groupName);
  *
  * @param string $groupName
  * @param integer $maxClients
- * @return \Imi\Server\Group\Group
+ * @return \Imi\Swoole\Server\Group\Group
  */
 public function createGroup(string $groupName, int $maxClients = -1);
 ```
@@ -137,7 +137,7 @@ public function createGroup(string $groupName, int $maxClients = -1);
  * 获取组对象，不存在返回null
  *
  * @param string $groupName
- * @return \Imi\Server\Group\Group|null
+ * @return \Imi\Swoole\Server\Group\Group|null
  */
 public function getGroup(string $groupName);
 ```
@@ -180,7 +180,7 @@ public function groupCall(string $groupName, string $methodName, ...$args);
 /**
  * 获取所有组列表
  *
- * @return \Imi\Server\Group\Group[]
+ * @return \Imi\Swoole\Server\Group\Group[]
  */
 public function getGroups(): array;
 ```

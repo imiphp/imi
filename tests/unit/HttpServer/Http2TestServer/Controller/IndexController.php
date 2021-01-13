@@ -7,8 +7,8 @@ namespace Imi\Test\HttpServer\Http2TestServer\Controller;
 use Imi\ConnectContext;
 use Imi\Controller\HttpController;
 use Imi\RequestContext;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\Http\MessageUtil;
 
 /**

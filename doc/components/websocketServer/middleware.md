@@ -8,13 +8,13 @@
 
 ```php
 <?php
-namespace Imi\Server\WebSocket\Middleware;
+namespace Imi\Swoole\Server\WebSocket\Middleware;
 
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\WebSocket\Message\IFrame;
-use Imi\Server\WebSocket\MessageHandler;
-use Imi\Server\WebSocket\IMessageHandler;
+use Imi\Swoole\Server\WebSocket\Message\IFrame;
+use Imi\Swoole\Server\WebSocket\MessageHandler;
+use Imi\Swoole\Server\WebSocket\IMessageHandler;
 
 /**
  * @Bean
@@ -52,7 +52,7 @@ return [
 		'WebSocketDispatcher'	=>	[
 			'middlewares'	=>	[
 				// 中间件
-				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
+				\Imi\Swoole\Server\WebSocket\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -69,10 +69,10 @@ namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
-use Imi\Server\Route\Annotation\WebSocket\WSRoute;
-use Imi\Server\Route\Annotation\WebSocket\WSAction;
-use Imi\Server\Route\Annotation\WebSocket\WSController;
-use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSMiddleware;
 
 /**
  * 数据收发测试

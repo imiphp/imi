@@ -6,19 +6,19 @@ imi中内置实现了中间件+控制器方式开发tcp，在一些场景也可�
 
 ```php
 <?php
-namespace Imi\Server\UdpServer\Listener;
+namespace Imi\Swoole\Server\UdpServer\Listener;
 
 use Imi\ServerManage;
 use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\Server\Event\Param\PacketEventParam;
-use Imi\Server\UdpServer\Message\PacketData;
-use Imi\Server\Event\Listener\IPacketEventListener;
+use Imi\Swoole\Server\Event\Param\PacketEventParam;
+use Imi\Swoole\Server\UdpServer\Message\PacketData;
+use Imi\Swoole\Server\Event\Listener\IPacketEventListener;
 
 /**
  * Packet事件前置处理
- * @ClassEventListener(className="Imi\Server\UdpServer\Server",eventName="packet",priority=PHP_INT_MAX)
+ * @ClassEventListener(className="Imi\Swoole\Server\UdpServer\Server",eventName="packet",priority=PHP_INT_MAX)
  */
 class BeforePacket implements IPacketEventListener
 {

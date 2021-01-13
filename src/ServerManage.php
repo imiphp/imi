@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Event\Event;
-use Imi\Server\Base;
-use Imi\Server\CoServer;
+use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\CoServer;
 
 class ServerManage
 {
@@ -20,7 +20,7 @@ class ServerManage
     /**
      * 协程服务器.
      *
-     * @var \Imi\Server\CoServer
+     * @var \Imi\Swoole\Server\CoServer
      */
     private static CoServer $coServer;
 
@@ -31,7 +31,7 @@ class ServerManage
     /**
      * 获取服务器数组.
      *
-     * @return \Imi\Server\Base[]
+     * @return \Imi\Swoole\Server\Base[]
      */
     public static function getServers(): array
     {
@@ -43,7 +43,7 @@ class ServerManage
      *
      * @param string $name
      *
-     * @return \Imi\Server\Base|null
+     * @return \Imi\Swoole\Server\Base|null
      */
     public static function getServer(string $name): ?Base
     {
@@ -57,9 +57,9 @@ class ServerManage
      * @param array  $config
      * @param bool   $subServer 是否为子服务器
      *
-     * @return \Imi\Server\Base
+     * @return \Imi\Swoole\Server\Base
      */
-    public static function createServer(string $name, array $config, bool $isSubServer = false): \Imi\Server\Base
+    public static function createServer(string $name, array $config, bool $isSubServer = false): \Imi\Swoole\Server\Base
     {
         // 创建服务器对象前置操作
         Event::trigger('IMI.SERVER.CREATE.BEFORE', [
@@ -67,10 +67,8 @@ class ServerManage
             'config'        => $config,
             'isSubServer'   => $isSubServer,
         ]);
-        // 服务器类名
-        $serverClassName = 'Imi\Server\\' . $config['type'] . '\Server';
         // 主服务器实例对象
-        $server = App::getBean($serverClassName, $name, $config, $isSubServer);
+        $server = App::getBean($config['type'], $name, $config, $isSubServer);
         static::$servers[$name] = $server;
         // 创建服务器对象后置操作
         Event::trigger('IMI.SERVER.CREATE.AFTER', [
@@ -88,7 +86,7 @@ class ServerManage
      * @param string $name
      * @param int    $workerNum
      *
-     * @return \Imi\Server\CoServer
+     * @return \Imi\Swoole\Server\CoServer
      */
     public static function createCoServer(string $name, int $workerNum): CoServer
     {
@@ -98,7 +96,7 @@ class ServerManage
     /**
      * 获取协程服务器.
      *
-     * @return \Imi\Server\CoServer
+     * @return \Imi\Swoole\Server\CoServer
      */
     public static function getCoServer(): CoServer
     {

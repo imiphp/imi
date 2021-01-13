@@ -8,8 +8,8 @@ imi 中对进程的创建和运行做了简单封装。
 <?php
 namespace ImiDemo\HttpDemo\MainServer\Process;
 
-use Imi\Process\BaseProcess;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\BaseProcess;
+use Imi\Swoole\Process\Annotation\Process;
 
 /**
  * 定义进程tp1
@@ -171,7 +171,7 @@ public static function runWithManager($name, $args = [], $redirectStdinStdout = 
 ### 获取随服务启动的进程对象
 
 ```php
-use \Imi\Process\ProcessManager;
+use \Imi\Swoole\Process\ProcessManager;
 /** @var \Swoole\Process $process */
 $process = ProcessManager::getProcessWithManager('processName');
 ```

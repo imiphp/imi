@@ -6,8 +6,8 @@ namespace Imi\Test\HttpServer\Cron;
 
 use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Util\CronUtil;
-use Imi\Process\Annotation\Process;
-use Imi\Process\IProcess;
+use Imi\Swoole\Process\Annotation\Process;
+use Imi\Swoole\Process\IProcess;
 use Symfony\Component\Console\Input\ArgvInput;
 
 /**

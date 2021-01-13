@@ -10,14 +10,14 @@ return [
 		// 配置 http 为了握手
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [
-                \Imi\Server\WebSocket\Middleware\HandShakeMiddleware::class,
+                \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
 		],
 		// WebSocket 配置
 		'WebSocketDispatcher'	=>	[
 			'middlewares'	=>	[
-				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
+				\Imi\Swoole\Server\WebSocket\Middleware\RouteMiddleware::class,
 			],
 		],
 	],
@@ -51,7 +51,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Server\WebSocket\Route\RouteItem
+ * @var \Imi\Swoole\Server\WebSocket\Route\RouteItem
  */
 public $routeItem;
 
@@ -76,7 +76,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Server\Route\Annotation\WebSocket\WSRoute
+ * @var \Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute
  */
 public $annotation;
 

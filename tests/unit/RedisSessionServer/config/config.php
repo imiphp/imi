@@ -23,12 +23,13 @@ return [
 
     // 组件命名空间
     'components'    => [
+        'Swoole' => 'Imi\Swoole',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\Test\RedisSessionServer\ApiServer',
-        'type'         => Imi\Server\Type::HTTP,
+        'type'         => Imi\Swoole\Server\Type::HTTP,
         'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'         => 13001,
         'configs'      => [
@@ -45,7 +46,7 @@ return [
         // 主数据库
         'maindb'    => [
             'pool'    => [
-                'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
+                'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 0,
@@ -62,7 +63,7 @@ return [
         ],
         'redis'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 0,
@@ -76,7 +77,7 @@ return [
         ],
         'redisSession'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,

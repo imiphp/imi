@@ -15,7 +15,7 @@
     // 主服务器配置
     'mainServer'    =>    [
         'namespace' =>  'ImiApp\WebSocketServer',
-        'type'      =>  Imi\Server\Type::WEBSOCKET,
+        'type'      =>  Imi\Swoole\Server\Type::WEBSOCKET,
         'host'      =>  '127.0.0.1',
         'port'      =>  8082,
         'mode'      =>  SWOOLE_BASE,
@@ -34,7 +34,7 @@
     'subServers'        =>    [
         'ApiServer'     =>  [
             'namespace' =>  'ImiApp\ApiServer',
-            'type'      =>  Imi\Server\Type::HTTP,
+            'type'      =>  Imi\Swoole\Server\Type::HTTP,
             'host'      =>  '127.0.0.1',
             'port'      =>  8080,
             'sockType'  =>  SWOOLE_SOCK_TCP | SWOOLE_SSL, // SSL 需要设置一下 sockType

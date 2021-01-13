@@ -6,9 +6,9 @@ namespace Imi\Cron\Task;
 
 use Imi\App;
 use Imi\Cron\Util\CronUtil;
-use Imi\Task\Annotation\Task;
-use Imi\Task\Interfaces\ITaskHandler;
-use Imi\Task\TaskParam;
+use Imi\Swoole\Task\Annotation\Task;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskParam;
 
 /**
  * @Task("imiCronTask")

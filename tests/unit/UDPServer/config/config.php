@@ -23,19 +23,20 @@ return [
 
     // 组件命名空间
     'components'    => [
+        'Swoole' => 'Imi\Swoole',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\Test\UDPServer\MainServer',
-        'type'         => Imi\Server\Type::UDP_SERVER,
+        'type'         => Imi\Swoole\Server\Type::UDP_SERVER,
         'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'         => 13004,
         'configs'      => [
             'worker_num'    => 1,
         ],
         // 数据处理器
-        'dataParser'    => Imi\Server\DataParser\JsonObjectParser::class,
+        'dataParser'    => Imi\Swoole\Server\DataParser\JsonObjectParser::class,
     ],
 
     // 子服务器（端口监听）配置
@@ -46,7 +47,7 @@ return [
     'pools'    => [
         'redis'    => [
             'pool'    => [
-                'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 0,

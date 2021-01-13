@@ -13,7 +13,7 @@
 ```php
 namespace Test;
 
-use Imi\Model\MemoryTableModel;
+use Imi\Swoole\Model\MemoryTableModel;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\MemoryTable;
 
