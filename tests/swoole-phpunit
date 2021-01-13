@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Swoole\Event;
+use Swoole\Timer;
 
 if (version_compare('7.3.0', \PHP_VERSION, '>'))
 {
@@ -85,7 +85,7 @@ Co\run(function () use (&$code) {
     }
     finally
     {
-        Event::exit();
+        Timer::clearAll();
     }
 });
 exit($code);
