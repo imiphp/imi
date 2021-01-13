@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [7.4]
-        swoole: [4.5]
+        swoole: [4.6]
 
     env:
       MYSQL_SERVER_PASSWORD: ""
@@ -28,7 +28,7 @@ jobs:
         run: .github/macos/install-php7.4-mac.sh
 
       - name: install swoole
-        run: sudo .github/macos/install-swoole4.5.sh
+        run: sudo .github/macos/install-swoole4.6.sh
 
       - name: prepare
         run: |
