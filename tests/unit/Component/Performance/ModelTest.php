@@ -2,6 +2,7 @@
 
 namespace Imi\Test\Component\Tests\Performance;
 
+use Imi\App;
 use Imi\Db\Db;
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Performance;
@@ -13,6 +14,7 @@ class ModelTest extends BaseTest
 {
     public function testTruncate()
     {
+        App::set('DB_LOG', false);
         $this->assertTrue(true);
         Db::getInstance()->exec('truncate tb_performance');
     }
