@@ -15,7 +15,6 @@ return [
         'Imi\Db',
         'Imi\Redis',
         'Imi\Model',
-        'Imi\Swoole\Task',
         'Imi\Tool',
         'Imi\Cli',
         'Imi\Validate',
@@ -24,7 +23,6 @@ return [
         'Imi\Lock',
         'Imi\Facade',
         'Imi\Cron',
-        'Imi\Swoole\Util\Co',
         'Imi\RequestContextProxy',
     ],
     'ignoreNamespace'   => [

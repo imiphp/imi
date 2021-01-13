@@ -1,9 +1,6 @@
 <?php
 
-use Yurun\Swoole\CoPool\CoPool;
-use Yurun\Swoole\CoPool\Interfaces\ICoTask;
-use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
-
+use function Yurun\Swoole\Coroutine\batch;
 use function Yurun\Swoole\Coroutine\goWait;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -151,32 +148,10 @@ function startServer()
         ],
     ];
 
-    $pool = new CoPool(swoole_cpu_num(), 16,
-        // 定义任务匿名类，当然你也可以定义成普通类，传入完整类名
-        new class() implements ICoTask {
-            /**
-             * 执行任务
-             *
-             * @param ITaskParam $param
-             *
-             * @return mixed
-             */
-            public function run(ITaskParam $param)
-            {
-                ($param->getData())();
-                // 执行任务
-                return true; // 返回任务执行结果，非必须
-            }
-        }
-    );
-    $pool->run();
-
-    $taskCount = count($servers);
-    $completeTaskCount = 0;
+    $callbacks = [];
     foreach ($servers as $name => $options)
     {
-        // 增加任务，异步回调
-        $pool->addTaskAsync(function () use ($options, $name) {
+        $callbacks[] = function () use ($options, $name) {
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
@@ -198,17 +173,10 @@ function startServer()
             {
                 throw new \RuntimeException("{$name} start failed");
             }
-        }, function (ITaskParam $param, $data) use (&$completeTaskCount, $taskCount, $pool) {
-            // 异步回调
-            ++$completeTaskCount;
-        });
+        };
     }
 
-    while ($completeTaskCount < $taskCount)
-    {
-        usleep(10000);
-    }
-    $pool->stop();
+    batch($callbacks, 120, swoole_cpu_num());
 }
 
 goWait('startServer');
