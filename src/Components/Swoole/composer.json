@@ -3,12 +3,17 @@
     "type": "library",
     "license": "MulanPSL-1.0",
     "description": "imi swoole component",
+    "require": {
+        "ext-swoole": ">=4.6",
+        "yurunsoft/swoole-co-pool": "^1.1.0"
+    },
     "require-dev": {
-        "phpunit/phpunit": ">=8"
+        "phpunit/phpunit": ">=8",
+        "swoole/ide-helper": "^4.6"
     },
     "autoload": {
-        "psr-4" : {
-            "Imi\\Swoole\\" : "src/"
+        "psr-4": {
+            "Imi\\Swoole\\": "src/"
         }
     },
     "bin": [
