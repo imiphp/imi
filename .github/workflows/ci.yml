@@ -38,7 +38,7 @@ jobs:
 
       - name: test
         run: |
-          composer test
+          composer test-all
 
       - name: print logs
         if: failure()
@@ -65,7 +65,7 @@ jobs:
           ./.github/prepare-test.sh swoole
 
       - name: test
-        run: docker exec swoole composer test
+        run: docker exec swoole composer test-all
 
       - name: print logs
         if: failure()
