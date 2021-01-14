@@ -1,5 +1,5 @@
 /vendor
-/composer.lock
+composer.lock
 /ide-helper
 .runtime
 *.log
@@ -7,3 +7,4 @@
 /.idea
 /.vscode
 *.cache
+/src/Components/*/vendor

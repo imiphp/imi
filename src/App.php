@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi;
 
-use Composer\Autoload\ClassLoader;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Container;
 use Imi\Bean\ReflectionContainer;
@@ -45,13 +44,6 @@ class App
      * @var bool
      */
     private static bool $isDebug = false;
-
-    /**
-     * Composer ClassLoader.
-     *
-     * @var \Composer\Autoload\ClassLoader
-     */
-    private static ?ClassLoader $loader = null;
 
     /**
      * 运行时数据.
@@ -255,33 +247,6 @@ class App
     }
 
     /**
-     * 设置 Composer ClassLoader.
-     *
-     * @param \Composer\Autoload\ClassLoader $loader
-     *
-     * @return void
-     */
-    public static function setLoader(\Composer\Autoload\ClassLoader $loader)
-    {
-        static::$loader = $loader;
-    }
-
-    /**
-     * 获取 Composer ClassLoader.
-     *
-     * @return \Composer\Autoload\ClassLoader|null
-     */
-    public static function getLoader(): ?ClassLoader
-    {
-        if (null == static::$loader)
-        {
-            static::$loader = Composer::getClassLoader();
-        }
-
-        return static::$loader;
-    }
-
-    /**
      * 获取运行时数据.
      *
      * @return RuntimeInfo
@@ -346,19 +311,22 @@ class App
             return static::$imiVersion;
         }
         // composer
-        $loader = static::getLoader();
-        if ($loader)
+        $loaders = Composer::getClassLoaders();
+        if ($loaders)
         {
-            $ref = ReflectionContainer::getClassReflection(\get_class($loader));
-            $fileName = \dirname($ref->getFileName(), 3) . '/composer.lock';
-            if (is_file($fileName))
+            foreach ($loaders as $loader)
             {
-                $data = json_decode(file_get_contents($fileName), true);
-                foreach ($data['packages'] ?? [] as $item)
+                $ref = ReflectionContainer::getClassReflection(\get_class($loader));
+                $fileName = \dirname($ref->getFileName(), 3) . '/composer.lock';
+                if (is_file($fileName))
                 {
-                    if ('yurunsoft/imi' === $item['name'])
+                    $data = json_decode(file_get_contents($fileName), true);
+                    foreach ($data['packages'] ?? [] as $item)
                     {
-                        return static::$imiVersion = $item['version'];
+                        if ('yurunsoft/imi' === $item['name'])
+                        {
+                            return static::$imiVersion = $item['version'];
+                        }
                     }
                 }
             }

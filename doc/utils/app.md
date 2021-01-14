@@ -44,18 +44,6 @@ $obj = App::getBean('aaa');
 
 `public static function setDebug($isDebug)`
 
-### setLoader
-
-设置 Composer ClassLoader
-
-`public static function setLoader(\Composer\Autoload\ClassLoader $loader)`
-
-### getLoader
-
-获取 Composer ClassLoader
-
-`public static function getLoader()`
-
 ### get
 
 获取应用上下文数据

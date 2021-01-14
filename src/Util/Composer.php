@@ -11,7 +11,7 @@ use Composer\Autoload\ClassLoader;
  */
 class Composer
 {
-    private static ClassLoader $classLoader;
+    private static array $classLoaders;
 
     private function __construct()
     {
@@ -20,21 +20,24 @@ class Composer
     /**
      * 获取 Composer ClassLoader 对象
      *
-     * @return \Composer\Autoload\ClassLoader|null
+     * @return \Composer\Autoload\ClassLoader[]
      */
-    public static function getClassLoader(): ?ClassLoader
+    public static function getClassLoaders(): array
     {
-        if (isset(self::$classLoader))
+        if (isset(self::$classLoaders))
         {
-            return self::$classLoader;
+            return self::$classLoaders;
         }
+        $classLoaders = [];
         foreach (get_declared_classes() as $class)
         {
             if (Text::startwith($class, 'ComposerAutoloaderInit'))
             {
-                return self::$classLoader = $class::getLoader();
+                $classLoaders[] = $class::getLoader();
             }
         }
+
+        return self::$classLoaders = $classLoaders;
     }
 
     /**
@@ -46,16 +49,18 @@ class Composer
      */
     public static function getPathNamespaces(string $path): array
     {
-        $classLoader = self::getClassLoader();
         $result = [];
-        $realPath = realpath($path);
-        foreach ($classLoader->getPrefixesPsr4() as $namespace => $namespacePaths)
+        foreach (self::getClassLoaders() as $classLoader)
         {
-            foreach ($namespacePaths as $namespacePath)
+            $realPath = realpath($path);
+            foreach ($classLoader->getPrefixesPsr4() as $namespace => $namespacePaths)
             {
-                if ($realPath === realpath($namespacePath))
+                foreach ($namespacePaths as $namespacePath)
                 {
-                    $result[] = $namespace;
+                    if ($realPath === realpath($namespacePath))
+                    {
+                        $result[] = $namespace;
+                    }
                 }
             }
         }

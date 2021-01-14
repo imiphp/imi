@@ -1,0 +1,14 @@
+{
+    "name": "imiphp/fpm",
+    "type": "library",
+    "license": "MulanPSL-1.0",
+    "description": "imi php-fpm component",
+    "require-dev": {
+        "phpunit/phpunit": ">=8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\Fpm\\": "src/"
+        }
+    }
+}
