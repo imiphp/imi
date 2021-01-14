@@ -19,46 +19,52 @@ class LockAnnotationTest extends BaseTest
         $time = microtime(true);
         $throwables = [];
         $channel = new \Swoole\Coroutine\Channel(3);
-        for ($i = 0; $i < 3; ++$i)
+        try
         {
-            $throwables[] = null;
-            $index = $i;
-            go(function () use (&$throwables, $index, $test, $channel) {
-                try
-                {
-                    $test->test();
-                }
-                catch (\Throwable $th)
-                {
-                    $throwables[$index] = $th;
-                }
-                finally
-                {
-                    $channel->push(1);
-                }
-            });
-        }
-        $count = 0;
-        while ($ret = $channel->pop())
-        {
-            if (1 === $ret)
+            for ($i = 0; $i < 3; ++$i)
             {
-                ++$count;
-                if ($count >= 3)
+                $throwables[] = null;
+                $index = $i;
+                go(function () use (&$throwables, $index, $test, $channel) {
+                    try
+                    {
+                        $test->test();
+                    }
+                    catch (\Throwable $th)
+                    {
+                        $throwables[$index] = $th;
+                    }
+                    finally
+                    {
+                        $channel->push(1);
+                    }
+                });
+            }
+            $count = 0;
+            while ($ret = $channel->pop())
+            {
+                if (1 === $ret)
                 {
-                    break;
+                    ++$count;
+                    if ($count >= 3)
+                    {
+                        break;
+                    }
+                }
+            }
+            $useTime = microtime(true) - $time;
+            foreach ($throwables as $th)
+            {
+                if ($th)
+                {
+                    throw $th;
                 }
             }
         }
-        $useTime = microtime(true) - $time;
-        foreach ($throwables as $th)
+        finally
         {
-            if ($th)
-            {
-                throw $th;
-            }
+            $channel->close();
         }
-        $channel->close();
         Assert::assertGreaterThan(0.3, $useTime);
     }
 

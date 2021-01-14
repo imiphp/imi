@@ -11,7 +11,7 @@ class ClassAnnotation
      *
      * @var string
      */
-    private string $className;
+    private string $className = '';
 
     /**
      * 类注解列表.

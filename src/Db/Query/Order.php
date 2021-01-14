@@ -18,14 +18,14 @@ class Order implements IOrder
      *
      * @var string
      */
-    protected string $fieldName;
+    protected string $fieldName = '';
 
     /**
      * 排序方向：asc/desc.
      *
      * @var string
      */
-    protected string $direction;
+    protected string $direction = '';
 
     public function __construct(string $fieldName = '', string $direction = 'asc')
     {

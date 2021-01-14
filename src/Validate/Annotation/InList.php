@@ -21,7 +21,7 @@ class InList extends Condition
      *
      * @var array
      */
-    public array $list;
+    public array $list = [];
 
     /**
      * 验证回调.

@@ -21,7 +21,7 @@ class ExtensionReflection
      *
      * @var string
      */
-    private string $savePath;
+    private string $savePath = '';
 
     public function __construct(string $name)
     {

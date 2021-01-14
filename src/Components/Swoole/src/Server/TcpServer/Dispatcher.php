@@ -26,7 +26,7 @@ class Dispatcher
      *
      * @var array
      */
-    private array $finalMiddlewares;
+    private array $finalMiddlewares = [];
 
     public function dispatch(IReceiveData $data)
     {
@@ -45,7 +45,7 @@ class Dispatcher
      */
     protected function getMiddlewares(): array
     {
-        if (!isset($this->finalMiddlewares))
+        if (!$this->finalMiddlewares)
         {
             return $this->finalMiddlewares = array_merge($this->middlewares, [
                 \Imi\Swoole\Server\TcpServer\Middleware\ActionWrapMiddleware::class,

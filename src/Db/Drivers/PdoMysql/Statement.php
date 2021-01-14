@@ -30,7 +30,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var array
      */
-    protected array $data;
+    protected array $data = [];
 
     /**
      * 数据库操作对象
@@ -44,7 +44,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var int
      */
-    protected int $lastInsertId;
+    protected int $lastInsertId = 0;
 
     public function __construct(IDb $db, PDOStatement $statement)
     {

@@ -27,14 +27,14 @@ class Result implements IResult
      *
      * @var bool
      */
-    private bool $isSuccess;
+    private bool $isSuccess = false;
 
     /**
      * 查询结果类的类名，为null则为数组.
      *
      * @var string|null
      */
-    private ?string $modelClass;
+    private ?string $modelClass = null;
 
     /**
      * 记录列表.

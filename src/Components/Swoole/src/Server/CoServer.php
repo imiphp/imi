@@ -31,14 +31,14 @@ class CoServer
      *
      * @var array
      */
-    private array $config;
+    private array $config = [];
 
     /**
      * 服务器名.
      *
      * @var string
      */
-    private string $name;
+    private string $name = '';
 
     /**
      * 工作进程数量
@@ -46,14 +46,14 @@ class CoServer
      *
      * @var int
      */
-    private int $workerNum;
+    private int $workerNum = 0;
 
     /**
      * 实际的进程数量.
      *
      * @var int
      */
-    private int $realWorkerNum;
+    private int $realWorkerNum = 0;
 
     /**
      * 用户自定义进程数量.
@@ -67,7 +67,7 @@ class CoServer
      *
      * @var int
      */
-    private int $pid;
+    private int $pid = 0;
 
     /**
      * 工作进程ID.

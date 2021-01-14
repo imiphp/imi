@@ -13,14 +13,14 @@ class MethodAnnotationRelation implements IAnnotationRelation
      *
      * @var string
      */
-    private string $class;
+    private string $class = '';
 
     /**
      * 方法名.
      *
      * @var string
      */
-    private string $method;
+    private string $method = '';
 
     /**
      * 注解.

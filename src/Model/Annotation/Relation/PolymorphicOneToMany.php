@@ -29,14 +29,14 @@ class PolymorphicOneToMany extends RelationBase
      *
      * @var string
      */
-    public string $model;
+    public string $model = '';
 
     /**
      * 多态类型字段名.
      *
      * @var string
      */
-    public string $type;
+    public string $type = '';
 
     /**
      * 多态类型字段值

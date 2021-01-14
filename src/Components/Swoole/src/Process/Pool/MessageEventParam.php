@@ -11,7 +11,7 @@ class MessageEventParam extends WorkerEventParam
      *
      * @var array
      */
-    protected array $data;
+    protected array $data = [];
 
     /**
      * Get 数据.

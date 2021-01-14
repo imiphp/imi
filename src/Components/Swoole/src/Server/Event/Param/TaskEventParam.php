@@ -22,14 +22,14 @@ class TaskEventParam extends EventParam
      *
      * @var int
      */
-    public int $taskId;
+    public int $taskId = 0;
 
     /**
      * worker进程ID.
      *
      * @var int
      */
-    public int $workerId;
+    public int $workerId = 0;
 
     /**
      * 任务数据.

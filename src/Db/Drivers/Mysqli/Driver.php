@@ -32,7 +32,7 @@ class Driver extends Base implements IDb
      *
      * @var array
      */
-    protected array $option;
+    protected array $option = [];
 
     /**
      * 最后执行过的SQL语句.
@@ -60,7 +60,7 @@ class Driver extends Base implements IDb
      *
      * @var bool
      */
-    protected bool $isCacheStatement;
+    protected bool $isCacheStatement = false;
 
     /**
      * 事务管理.

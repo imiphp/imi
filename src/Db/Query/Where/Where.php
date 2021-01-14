@@ -20,14 +20,14 @@ class Where extends BaseWhere implements IWhere
      *
      * @var string|null
      */
-    protected ?string $fieldName;
+    protected ?string $fieldName = null;
 
     /**
      * 比较符.
      *
      * @var string|null
      */
-    protected ?string $operation;
+    protected ?string $operation = null;
 
     /**
      * 值

@@ -11,5 +11,5 @@ class RemoveCron implements IMessage
      *
      * @var string
      */
-    public string $id;
+    public string $id = '';
 }

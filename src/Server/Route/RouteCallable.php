@@ -20,14 +20,14 @@ class RouteCallable
      *
      * @var string
      */
-    public string $className;
+    public string $className = '';
 
     /**
      * 方法名.
      *
      * @var string
      */
-    public string $methodName;
+    public string $methodName = '';
 
     public function __construct(Base $server, string $className, string $methodName)
     {

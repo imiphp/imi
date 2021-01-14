@@ -26,14 +26,14 @@ class EventItem
      *
      * @var int
      */
-    public int $priority;
+    public int $priority = 0;
 
     /**
      * 是否为一次性事件.
      *
      * @var bool
      */
-    public bool $oneTime;
+    public bool $oneTime = false;
 
     public function __construct(callable $callback, int $priority = 0, bool $oneTime = false)
     {

@@ -19,5 +19,5 @@ class DbPrepareEventParam extends EventParam
      *
      * @var string
      */
-    public string $sql;
+    public string $sql = '';
 }

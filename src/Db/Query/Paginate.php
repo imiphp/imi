@@ -11,14 +11,14 @@ class Paginate
      *
      * @var int
      */
-    public int $page;
+    public int $page = 0;
 
     /**
      * 每页记录数.
      *
      * @var int
      */
-    public int $count;
+    public int $count = 0;
 
     public function __construct(int $page, int $count)
     {

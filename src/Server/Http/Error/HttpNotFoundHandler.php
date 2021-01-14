@@ -23,11 +23,11 @@ class HttpNotFoundHandler implements IHttpNotFoundHandler
      *
      * @var string
      */
-    protected string $handler;
+    protected string $handler = '';
 
     public function handle(RequestHandlerInterface $requesthandler, IHttpRequest $request, IHttpResponse $response): IHttpResponse
     {
-        if (!isset($this->handler))
+        if ('' === $this->handler)
         {
             return $response->setStatus(StatusCode::NOT_FOUND);
         }

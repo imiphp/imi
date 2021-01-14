@@ -21,26 +21,26 @@ class WorkerErrorEventParam extends EventParam
      *
      * @var int
      */
-    public int $workerId;
+    public int $workerId = 0;
 
     /**
      * Worker进程PID.
      *
      * @var int
      */
-    public int $workerPid;
+    public int $workerPid = 0;
 
     /**
      * 退出的状态码，范围是 1 ～255.
      *
      * @var int
      */
-    public int $exitCode;
+    public int $exitCode = 0;
 
     /**
      * 进程退出的信号.
      *
      * @var int
      */
-    public int $signal;
+    public int $signal = 0;
 }

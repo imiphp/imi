@@ -26,7 +26,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var array
      */
-    protected array $data;
+    protected array $data = [];
 
     /**
      * 数据库操作对象
@@ -61,7 +61,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @var array|null
      */
-    protected ?array $sqlParamsMap;
+    protected ?array $sqlParamsMap = null;
 
     public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
     {

@@ -21,12 +21,12 @@ class PacketEventParam extends EventParam
      *
      * @var string
      */
-    public string $data;
+    public string $data = '';
 
     /**
      * 客户端信息.
      *
      * @var array
      */
-    public array $clientInfo;
+    public array $clientInfo = [];
 }

@@ -19,7 +19,7 @@ class File extends Base
      *
      * @var string
      */
-    protected string $fileName;
+    protected string $fileName = '';
 
     /**
      * 单文件最大体积，单位字节，默认1G.
@@ -47,14 +47,14 @@ class File extends Base
      *
      * @var string
      */
-    private string $currentFileExt;
+    private string $currentFileExt = '';
 
     /**
      * 当前无序号的文件名.
      *
      * @var string
      */
-    private string $currentNoIndexFileName;
+    private string $currentNoIndexFileName = '';
 
     /**
      * 真正的保存操作实现.

@@ -128,13 +128,19 @@ class CacheAnnotationTest extends BaseTest
                         throw $th;
                     }
                 }
-                $channel->close();
                 Assert::assertLessThanOrEqual(1, $useTime);
                 break;
             }
             catch (\Throwable $th)
             {
                 sleep(1);
+            }
+            finally
+            {
+                if (isset($channel))
+                {
+                    $channel->close();
+                }
             }
         }
         if (isset($th))

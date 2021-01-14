@@ -14,21 +14,21 @@ class ReceiveData implements IReceiveData
      *
      * @var int
      */
-    protected int $fd;
+    protected int $fd = 0;
 
     /**
      * Reactor线程ID.
      *
      * @var int
      */
-    protected int $reactorId;
+    protected int $reactorId = 0;
 
     /**
      * 接收到的数据.
      *
      * @var string
      */
-    protected string $data;
+    protected string $data = '';
 
     /**
      * 接收到的数据.

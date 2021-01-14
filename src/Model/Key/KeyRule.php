@@ -11,14 +11,14 @@ class KeyRule
      *
      * @var string
      */
-    public string $rule;
+    public string $rule = '';
 
     /**
      * 参数名数组.
      *
      * @var string[]
      */
-    public array $paramNames;
+    public array $paramNames = [];
 
     public function __construct(string $rule, array $paramNames)
     {

@@ -11,7 +11,7 @@ class EventParam
      *
      * @var string
      */
-    protected string $__eventName;
+    protected string $__eventName = '';
 
     /**
      * 触发该事件的对象

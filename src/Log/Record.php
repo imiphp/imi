@@ -11,35 +11,35 @@ class Record
      *
      * @var string
      */
-    private string $level;
+    private string $level = '';
 
     /**
      * 消息.
      *
      * @var string
      */
-    private string $message;
+    private string $message = '';
 
     /**
      * 上下文.
      *
      * @var array
      */
-    private array $context;
+    private array $context = [];
 
     /**
      * 代码调用跟踪.
      *
      * @var array
      */
-    private array $trace;
+    private array $trace = [];
 
     /**
      * 日志时间戳.
      *
      * @var int
      */
-    private int $logTime;
+    private int $logTime = 0;
 
     public function __construct(string $level, string $message, array $context, array $trace, int $logTime)
     {

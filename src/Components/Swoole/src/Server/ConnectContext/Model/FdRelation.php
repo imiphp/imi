@@ -22,7 +22,7 @@ class FdRelation extends MemoryTableModel
      *
      * @var int
      */
-    protected int $workerId;
+    protected int $workerId = 0;
 
     /**
      * 服务器名.
@@ -31,7 +31,7 @@ class FdRelation extends MemoryTableModel
      *
      * @var string
      */
-    protected string $serverName;
+    protected string $serverName = '';
 
     /**
      * Get worker进程ID.

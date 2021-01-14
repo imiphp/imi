@@ -18,19 +18,19 @@ class Redis extends Base
      *
      * @var string
      */
-    protected string $poolName;
+    protected string $poolName = '';
 
     /**
      * Redis中存储的key前缀，可以用于多系统session的分离.
      *
      * @var string
      */
-    protected string $keyPrefix;
+    protected string $keyPrefix = '';
 
     public function __init()
     {
         parent::__init();
-        if (!isset($this->keyPrefix))
+        if ('' === $this->keyPrefix)
         {
             $this->keyPrefix = 'imi:' . App::getNamespace() . ':';
         }

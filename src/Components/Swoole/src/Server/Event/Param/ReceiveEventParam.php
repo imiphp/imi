@@ -21,19 +21,19 @@ class ReceiveEventParam extends EventParam
      *
      * @var int
      */
-    public int $fd;
+    public int $fd = 0;
 
     /**
      * Reactor线程ID.
      *
      * @var int
      */
-    public int $reactorId;
+    public int $reactorId = 0;
 
     /**
      * 接收到的数据.
      *
      * @var string
      */
-    public string $data;
+    public string $data = '';
 }

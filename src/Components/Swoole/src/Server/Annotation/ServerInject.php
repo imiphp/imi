@@ -30,7 +30,7 @@ class ServerInject extends BaseInjectValue
     /**
      * Bean名称或类名.
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * Bean实例化参数.

@@ -28,7 +28,7 @@ class ProcessPool extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 进程数量.

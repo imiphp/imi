@@ -15,7 +15,7 @@ class Client
      *
      * @var string
      */
-    private string $socketFile;
+    private string $socketFile = '';
 
     /**
      * socket 资源.

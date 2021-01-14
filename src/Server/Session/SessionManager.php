@@ -44,7 +44,7 @@ class SessionManager
      *
      * @var string
      */
-    private string $id;
+    private string $id = '';
 
     /**
      * Session 数据.
@@ -65,7 +65,7 @@ class SessionManager
      *
      * @var bool
      */
-    private bool $isNewSession;
+    private bool $isNewSession = false;
 
     /**
      * Session处理类.

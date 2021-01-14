@@ -18,7 +18,7 @@ class LockConfigOption
      *
      * @var string
      */
-    public string $class;
+    public string $class = '';
 
     /**
      * 配置项.

@@ -29,35 +29,35 @@ class PaginateResult implements IPaginateResult
      *
      * @var int
      */
-    protected int $page;
+    protected int $page = 0;
 
     /**
      * 查询几条记录.
      *
      * @var int
      */
-    protected int $limit;
+    protected int $limit = 0;
 
     /**
      * 记录总数.
      *
      * @var int|null
      */
-    protected ?int $total;
+    protected ?int $total = null;
 
     /**
      * 总页数.
      *
      * @var int|null
      */
-    protected ?int $pageCount;
+    protected ?int $pageCount = null;
 
     /**
      * 自定义选项.
      *
      * @var array
      */
-    protected array $options;
+    protected array $options = [];
 
     public function __construct(IResult $result, int $page, int $limit, ?int $total, ?int $pageCount, array $options)
     {

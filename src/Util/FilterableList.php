@@ -18,7 +18,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @var string
      */
-    private string $mode;
+    private string $mode = '';
 
     /**
      * 字段名数组.
@@ -27,14 +27,14 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @var string[]|null
      */
-    private ?array $fields;
+    private ?array $fields = null;
 
     /**
      * 数组列表.
      *
      * @var array
      */
-    private array $list;
+    private array $list = [];
 
     public function __construct(array $list = [], ?array $fields = null, string $mode = 'allow')
     {

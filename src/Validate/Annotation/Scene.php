@@ -22,7 +22,7 @@ class Scene extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 需要验证的字段名列表.

@@ -42,7 +42,7 @@ class Redis implements IHandler
      *
      * @var string
      */
-    protected string $key;
+    protected string $key = '';
 
     /**
      * 心跳时间，单位：秒.
@@ -91,15 +91,15 @@ class Redis implements IHandler
      *
      * @var int
      */
-    private int $masterPID;
+    private int $masterPID = 0;
 
     public function __init()
     {
-        if (!isset($this->key))
+        if ('' === $this->key)
         {
             $this->key = 'imi:' . App::getNamespace() . ':connect_context';
         }
-        if (!isset($this->redisPool))
+        if (null === $this->redisPool)
         {
             return;
         }

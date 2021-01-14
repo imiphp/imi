@@ -29,7 +29,7 @@ class ConstValue extends BaseInjectValue
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 常量不存在时，返回的默认值

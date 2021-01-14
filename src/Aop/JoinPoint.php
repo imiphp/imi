@@ -11,21 +11,21 @@ class JoinPoint
      *
      * @var string
      */
-    private string $type;
+    private string $type = '';
 
     /**
      * 请求方法名.
      *
      * @var string
      */
-    private string $method;
+    private string $method = '';
 
     /**
      * 请求参数.
      *
      * @var array
      */
-    private array $args;
+    private array $args = [];
 
     /**
      * 连接点所在的目标对象

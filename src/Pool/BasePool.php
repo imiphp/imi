@@ -17,7 +17,7 @@ abstract class BasePool implements IPool
      *
      * @var string
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 池子存储.

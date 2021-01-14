@@ -15,14 +15,14 @@ class Response extends AbstractMessage implements IResponse
      *
      * @var int
      */
-    protected int $statusCode;
+    protected int $statusCode = 0;
 
     /**
      * 状态码原因短语.
      *
      * @var string
      */
-    protected string $reasonPhrase;
+    protected string $reasonPhrase = '';
 
     /**
      * Trailer 列表.

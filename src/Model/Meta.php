@@ -21,56 +21,56 @@ class Meta
      *
      * @var string
      */
-    private string $className;
+    private string $className = '';
 
     /**
      * 表名.
      *
      * @var string|null
      */
-    private ?string $tableName;
+    private ?string $tableName = null;
 
     /**
      * 数据库连接池名称.
      *
      * @var string|null
      */
-    private ?string $dbPoolName;
+    private ?string $dbPoolName = null;
 
     /**
      * 主键.
      *
      * @var array|null
      */
-    private ?array $id;
+    private ?array $id = null;
 
     /**
      * 第一个主键.
      *
      * @var string|null
      */
-    private ?string $firstId;
+    private ?string $firstId = null;
 
     /**
      * 字段配置.
      *
      * @var \Imi\Model\Annotation\Column[]
      */
-    private array $fields;
+    private array $fields = [];
 
     /**
      * 字段名列表.
      *
      * @var string[]
      */
-    private array $fieldNames;
+    private array $fieldNames = [];
 
     /**
      * 字段名列表，会包含关联模型的导出字段.
      *
      * @var string[]
      */
-    private array $realFieldNames;
+    private array $realFieldNames = [];
 
     /**
      * 模型是否为驼峰命名.
@@ -91,21 +91,21 @@ class Meta
      *
      * @var \Imi\Model\Annotation\Serializable[]
      */
-    private array $serializableSets;
+    private array $serializableSets = [];
 
     /**
      * 提取属性注解.
      *
      * @var \Imi\Model\Annotation\ExtractProperty[][]
      */
-    private array $extractPropertys;
+    private array $extractPropertys = [];
 
     /**
      * 是否有关联.
      *
      * @var bool
      */
-    private bool $relation;
+    private bool $relation = false;
 
     /**
      * 自增字段名.
@@ -119,7 +119,7 @@ class Meta
      *
      * @var \Imi\Model\Annotation\JsonNotNull[]
      */
-    private array $propertyJsonNotNullMap;
+    private array $propertyJsonNotNullMap = [];
 
     public function __construct(string $modelClass)
     {

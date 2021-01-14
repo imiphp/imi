@@ -13,7 +13,7 @@ class RouteResult
      *
      * @var int
      */
-    public int $id;
+    public int $id = 0;
 
     /**
      * 路由配置项.
@@ -27,7 +27,7 @@ class RouteResult
      *
      * @var array
      */
-    public array $params;
+    public array $params = [];
 
     /**
      * 回调.

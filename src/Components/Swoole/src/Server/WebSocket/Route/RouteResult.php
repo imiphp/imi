@@ -20,7 +20,7 @@ class RouteResult
      *
      * @var array
      */
-    public array $params;
+    public array $params = [];
 
     /**
      * 回调.

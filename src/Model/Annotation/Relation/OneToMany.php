@@ -29,7 +29,7 @@ class OneToMany extends RelationBase
      *
      * @var string
      */
-    public string $model;
+    public string $model = '';
 
     /**
      * 排序规则字符串.

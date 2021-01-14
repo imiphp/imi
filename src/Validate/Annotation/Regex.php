@@ -21,7 +21,7 @@ class Regex extends Condition
      *
      * @var string
      */
-    public string $pattern;
+    public string $pattern = '';
 
     /**
      * 验证回调.

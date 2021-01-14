@@ -28,7 +28,7 @@ class Process extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 重定向子进程的标准输入和输出。启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。

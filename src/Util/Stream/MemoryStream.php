@@ -14,14 +14,14 @@ class MemoryStream implements StreamInterface
      *
      * @var string
      */
-    protected string $content;
+    protected string $content = '';
 
     /**
      * 大小.
      *
      * @var int
      */
-    protected int $size;
+    protected int $size = 0;
 
     /**
      * 当前位置.

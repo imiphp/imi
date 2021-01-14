@@ -30,5 +30,5 @@ class DDL extends Base
      *
      * @var string
      */
-    public string $sql;
+    public string $sql = '';
 }

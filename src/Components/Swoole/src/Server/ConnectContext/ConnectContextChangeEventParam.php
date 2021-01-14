@@ -14,14 +14,14 @@ class ConnectContextChangeEventParam
      *
      * @var int
      */
-    private int $fd;
+    private int $fd = 0;
 
     /**
      * 服务器名.
      *
      * @var string
      */
-    private string $serverName;
+    private string $serverName = '';
 
     public function __construct(int $fd, string $serverName)
     {

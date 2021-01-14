@@ -21,12 +21,12 @@ class CloseEventParam extends EventParam
      *
      * @var int
      */
-    public int $fd;
+    public int $fd = 0;
 
     /**
      * 来自那个reactor线程.
      *
      * @var int
      */
-    public int $reactorId;
+    public int $reactorId = 0;
 }

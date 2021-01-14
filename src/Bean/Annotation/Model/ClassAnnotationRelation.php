@@ -13,7 +13,7 @@ class ClassAnnotationRelation implements IAnnotationRelation
      *
      * @var string
      */
-    private string $class;
+    private string $class = '';
 
     /**
      * 注解.

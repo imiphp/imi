@@ -34,14 +34,14 @@ class Server extends Base
      *
      * @var bool
      */
-    private bool $https;
+    private bool $https = false;
 
     /**
      * 是否为 http2 服务
      *
      * @var bool
      */
-    private bool $http2;
+    private bool $http2 = false;
 
     /**
      * 创建 swoole 服务器对象

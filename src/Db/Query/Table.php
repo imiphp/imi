@@ -18,21 +18,21 @@ class Table implements ITable
      *
      * @var string|null
      */
-    protected ?string $database;
+    protected ?string $database = null;
 
     /**
      * 表名.
      *
      * @var string|null
      */
-    protected ?string $table;
+    protected ?string $table = null;
 
     /**
      * 别名.
      *
      * @var string|null
      */
-    protected ?string $alias;
+    protected ?string $alias = null;
 
     public function __construct(?string $database = null, ?string $table = null, ?string $alias = null)
     {

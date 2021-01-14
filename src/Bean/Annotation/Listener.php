@@ -25,7 +25,7 @@ class Listener extends Base
      *
      * @var string
      */
-    public string $eventName;
+    public string $eventName = '';
 
     /**
      * 优先级，越大越先执行.

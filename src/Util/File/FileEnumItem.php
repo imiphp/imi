@@ -13,21 +13,21 @@ class FileEnumItem
      *
      * @var string
      */
-    private string $path;
+    private string $path = '';
 
     /**
      * 文件名.
      *
      * @var string
      */
-    private string $fileName;
+    private string $fileName = '';
 
     /**
      * 完整路径.
      *
      * @var string
      */
-    private string $fullPath;
+    private string $fullPath = '';
 
     /**
      * 如果是目录，是否继续向下遍历.

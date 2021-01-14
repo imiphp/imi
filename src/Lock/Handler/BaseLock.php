@@ -13,7 +13,7 @@ abstract class BaseLock implements ILockHandler
      *
      * @var string
      */
-    protected string $id;
+    protected string $id = '';
 
     /**
      * 是否已加锁

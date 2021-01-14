@@ -38,14 +38,14 @@ class Group
      *
      * @var int
      */
-    protected int $maxClients;
+    protected int $maxClients = 0;
 
     /**
      * 组名.
      *
      * @var string
      */
-    protected string $groupName;
+    protected string $groupName = '';
 
     /**
      * 分组处理器.

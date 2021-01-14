@@ -17,7 +17,7 @@ class File extends Base
      *
      * @var string
      */
-    protected string $savePath;
+    protected string $savePath = '';
 
     /**
      * 执行初始化操作.

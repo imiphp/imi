@@ -28,12 +28,12 @@ class ExtractProperty extends Base
      *
      * @var string
      */
-    public string $fieldName;
+    public string $fieldName = '';
 
     /**
      * 提取到当前模型中的字段别名，不设置默认为原始字段名.
      *
      * @var string
      */
-    public string $alias;
+    public string $alias = '';
 }

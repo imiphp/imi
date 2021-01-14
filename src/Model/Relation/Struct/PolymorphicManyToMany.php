@@ -16,42 +16,42 @@ class PolymorphicManyToMany
      *
      * @var string
      */
-    private string $leftField;
+    private string $leftField = '';
 
     /**
      * 右侧表字段.
      *
      * @var string
      */
-    private string $rightField;
+    private string $rightField = '';
 
     /**
      * 右侧模型类.
      *
      * @var string
      */
-    private string $rightModel;
+    private string $rightModel = '';
 
     /**
      * 中间表与左表关联的字段.
      *
      * @var string
      */
-    private string $middleLeftField;
+    private string $middleLeftField = '';
 
     /**
      * 中间表与右表关联的字段.
      *
      * @var string
      */
-    private string $middleRightField;
+    private string $middleRightField = '';
 
     /**
      * 中间表模型类.
      *
      * @var string
      */
-    private string $middleModel;
+    private string $middleModel = '';
 
     /**
      * 初始化多对多结构.

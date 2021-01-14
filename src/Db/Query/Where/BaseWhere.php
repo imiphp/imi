@@ -11,7 +11,7 @@ abstract class BaseWhere
      *
      * @var string
      */
-    protected string $logicalOperator;
+    protected string $logicalOperator = '';
 
     public function __toString()
     {

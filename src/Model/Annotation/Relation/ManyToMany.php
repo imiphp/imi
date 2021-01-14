@@ -22,7 +22,7 @@ class ManyToMany extends RelationBase
      *
      * @var string
      */
-    public string $model;
+    public string $model = '';
 
     /**
      * 中间表模型
@@ -31,14 +31,14 @@ class ManyToMany extends RelationBase
      *
      * @var string
      */
-    public string $middle;
+    public string $middle = '';
 
     /**
      * 属性名，赋值为关联的模型对象列表.
      *
      * @var string
      */
-    public string $rightMany;
+    public string $rightMany = '';
 
     /**
      * 排序规则字符串.

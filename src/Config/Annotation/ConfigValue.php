@@ -31,7 +31,7 @@ class ConfigValue extends BaseInjectValue
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 配置不存在时，返回的默认值

@@ -16,7 +16,7 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
      *
      * @var array
      */
-    private array $__data;
+    private array $__data = [];
 
     public function __construct(array $data = [])
     {

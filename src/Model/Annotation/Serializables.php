@@ -24,7 +24,7 @@ class Serializables extends Base
      *
      * @var string
      */
-    public string $mode;
+    public string $mode = '';
 
     /**
      * 字段名数组.

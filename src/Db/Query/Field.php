@@ -18,28 +18,28 @@ class Field implements IField
      *
      * @var string|null
      */
-    protected ?string $database;
+    protected ?string $database = null;
 
     /**
      * 表名.
      *
      * @var string|null
      */
-    protected ?string $table;
+    protected ?string $table = null;
 
     /**
      * 字段名.
      *
      * @var string|null
      */
-    protected ?string $field;
+    protected ?string $field = null;
 
     /**
      * 别名.
      *
      * @var string|null
      */
-    protected ?string $alias;
+    protected ?string $alias = null;
 
     public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null)
     {

@@ -22,7 +22,7 @@ class App
      *
      * @var string
      */
-    private static string $namespace;
+    private static string $namespace = '';
 
     /**
      * 容器.

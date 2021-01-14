@@ -18,21 +18,21 @@ abstract class RedisModel extends BaseModel
      *
      * @var string
      */
-    protected string $key;
+    protected string $key = '';
 
     /**
      * 默认的member.
      *
      * @var string
      */
-    protected string $__member;
+    protected string $__member = '';
 
     /**
      * set时，设置的数据过期时间.
      *
      * @var int|null
      */
-    protected ?int $__ttl;
+    protected ?int $__ttl = null;
 
     public function __init(array $data = [])
     {

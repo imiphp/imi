@@ -16,7 +16,7 @@ abstract class BaseApp implements IApp
      *
      * @var string
      */
-    protected string $namespace;
+    protected string $namespace = '';
 
     /**
      * 构造方法.

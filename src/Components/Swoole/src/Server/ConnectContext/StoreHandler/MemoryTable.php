@@ -35,7 +35,7 @@ class MemoryTable implements IHandler
      *
      * @var string
      */
-    protected string $tableName;
+    protected string $tableName = '';
 
     /**
      * 锁 ID.

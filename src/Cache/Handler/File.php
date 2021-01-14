@@ -19,7 +19,7 @@ class File extends Base
      *
      * @var string
      */
-    protected string $savePath;
+    protected string $savePath = '';
 
     /**
      * 缓存文件名的处理回调，用于需要自定义的情况.

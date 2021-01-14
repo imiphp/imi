@@ -11,21 +11,21 @@ class UrlCheckResult
      *
      * @var bool
      */
-    public bool $result;
+    public bool $result = false;
 
     /**
      * 参数.
      *
      * @var array
      */
-    public array $params;
+    public array $params = [];
 
     /**
      * 结果忽略大小写.
      *
      * @var bool
      */
-    public bool $resultIgnoreCase;
+    public bool $resultIgnoreCase = false;
 
     public function __construct(bool $result, array $params = [], bool $resultIgnoreCase = false)
     {

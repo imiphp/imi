@@ -44,7 +44,7 @@ class Redis extends BaseLock
      *
      * @var string
      */
-    public string $key;
+    public string $key = '';
 
     /**
      * Redis key 前置.
@@ -58,7 +58,7 @@ class Redis extends BaseLock
      *
      * @var string
      */
-    private string $guid;
+    private string $guid = '';
 
     public function __construct(string $id, array $options = [])
     {

@@ -20,5 +20,5 @@ class AddCron implements IMessage
      *
      * @var string
      */
-    public string $task;
+    public string $task = '';
 }

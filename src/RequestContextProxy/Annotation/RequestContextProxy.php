@@ -35,5 +35,5 @@ class RequestContextProxy extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 }

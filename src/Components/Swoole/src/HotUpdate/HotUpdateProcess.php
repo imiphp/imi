@@ -111,7 +111,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @var int
      */
-    private int $buildRuntimeTimerId;
+    private int $buildRuntimeTimerId = 0;
 
     /**
      * @PoolClean

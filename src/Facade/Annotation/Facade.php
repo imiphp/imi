@@ -28,7 +28,7 @@ class Facade extends Base
      *
      * @var string
      */
-    public string $class;
+    public string $class = '';
 
     /**
      * 为 true 时，使用当前请求上下文的 Bean 对象

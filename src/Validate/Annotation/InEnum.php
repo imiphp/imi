@@ -21,7 +21,7 @@ class InEnum extends Condition
      *
      * @var string
      */
-    public string $enum;
+    public string $enum = '';
 
     /**
      * 验证回调.

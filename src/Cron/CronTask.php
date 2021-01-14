@@ -14,7 +14,7 @@ class CronTask
      *
      * @var string
      */
-    private string $id;
+    private string $id = '';
 
     /**
      * 任务类型.
@@ -23,7 +23,7 @@ class CronTask
      *
      * @var string
      */
-    private string $type;
+    private string $type = '';
 
     /**
      * 任务执行回调，可以是callable类型，也可以是 task、process 名.
@@ -37,7 +37,7 @@ class CronTask
      *
      * @var \Imi\Cron\CronRule[]
      */
-    private array $cronRules;
+    private array $cronRules = [];
 
     /**
      * 数据.

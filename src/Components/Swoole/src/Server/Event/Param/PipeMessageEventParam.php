@@ -21,7 +21,7 @@ class PipeMessageEventParam extends EventParam
      *
      * @var int
      */
-    public int $workerId;
+    public int $workerId = 0;
 
     /**
      * 消息内容，可以是任意PHP类型.

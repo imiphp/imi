@@ -13,14 +13,14 @@ class PropertyAnnotationRelation implements IAnnotationRelation
      *
      * @var string
      */
-    private string $class;
+    private string $class = '';
 
     /**
      * 属性名.
      *
      * @var string
      */
-    private string $property;
+    private string $property = '';
 
     /**
      * 注解.

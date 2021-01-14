@@ -27,7 +27,7 @@ class DbExecuteEventParam extends EventParam
      *
      * @var string
      */
-    public string $sql;
+    public string $sql = '';
 
     /**
      * 执行开始时间.

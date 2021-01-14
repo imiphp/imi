@@ -16,21 +16,21 @@ class Result implements IMessage
      *
      * @var string
      */
-    public string $action;
+    public string $action = '';
 
     /**
      * 定时任务ID.
      *
      * @var string
      */
-    public string $id;
+    public string $id = '';
 
     /**
      * 进程类型.
      *
      * @var string
      */
-    public string $processType;
+    public string $processType = '';
 
     /**
      * 进程标识符.
@@ -44,14 +44,14 @@ class Result implements IMessage
      *
      * @var bool
      */
-    public bool $success;
+    public bool $success = false;
 
     /**
      * 消息.
      *
      * @var string
      */
-    public string $message;
+    public string $message = '';
 
     public function __construct(string $action, string $id, bool $success, string $message)
     {

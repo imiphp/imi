@@ -58,35 +58,35 @@ class Query implements IQuery
      *
      * @var string|null
      */
-    protected ?string $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 查询结果类的类名，为null则为数组.
      *
      * @var string|null
      */
-    protected ?string $modelClass;
+    protected ?string $modelClass = null;
 
     /**
      * 查询类型.
      *
      * @var int|null
      */
-    protected ?int $queryType;
+    protected ?int $queryType = null;
 
     /**
      * 是否初始化时候就设定了查询类型.
      *
      * @var bool
      */
-    protected bool $isInitQueryType;
+    protected bool $isInitQueryType = false;
 
     /**
      * 是否初始化时候就设定了连接.
      *
      * @var bool
      */
-    protected bool $isInitDb;
+    protected bool $isInitDb = false;
 
     /**
      * 数据库字段自增.

@@ -26,21 +26,21 @@ class Join implements IJoin
      *
      * @var string
      */
-    protected string $left;
+    protected string $left = '';
 
     /**
      * 在 join b on a.id=b.id 中的 =.
      *
      * @var string
      */
-    protected string $operation;
+    protected string $operation = '';
 
     /**
      * join b on a.id=b.id 中的 b.id.
      *
      * @var string
      */
-    protected string $right;
+    protected string $right = '';
 
     /**
      * where条件.

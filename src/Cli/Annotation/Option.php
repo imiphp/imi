@@ -28,7 +28,7 @@ class Option extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 短名称.

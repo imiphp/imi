@@ -53,7 +53,7 @@ class Redis implements IGroupHandler
      *
      * @var string
      */
-    protected string $key;
+    protected string $key = '';
 
     /**
      * 心跳Timer的ID.
@@ -74,15 +74,15 @@ class Redis implements IGroupHandler
      *
      * @var int
      */
-    private int $masterPID;
+    private int $masterPID = 0;
 
     public function __init()
     {
-        if (!isset($this->key))
+        if ('' === $this->key)
         {
             $this->key = 'imi:' . App::getNamespace() . ':connect_group';
         }
-        if (!isset($this->redisPool))
+        if (null === $this->redisPool)
         {
             return;
         }

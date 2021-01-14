@@ -21,5 +21,5 @@ class WorkerExitEventParam extends EventParam
      *
      * @var int
      */
-    public int $workerId;
+    public int $workerId = 0;
 }

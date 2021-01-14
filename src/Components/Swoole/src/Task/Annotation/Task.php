@@ -29,7 +29,7 @@ class Task extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 参数类.

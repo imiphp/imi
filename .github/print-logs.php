@@ -1,7 +1,7 @@
 <?php
 
 echo '[Base Component]', \PHP_EOL;
-$fileName = dirname(__DIR__) . '/tests/unit/Components/logs/' . date('Y-m-d') . '.log';
+$fileName = dirname(__DIR__) . '/tests/unit/Component/logs/' . date('Y-m-d') . '.log';
 if (is_file($fileName))
 {
     echo file_get_contents($fileName), \PHP_EOL;

@@ -11,7 +11,7 @@ class ActionMethodItem
      *
      * @var string
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 默认值

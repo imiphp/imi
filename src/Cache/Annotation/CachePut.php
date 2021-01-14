@@ -35,7 +35,7 @@ class CachePut extends Base
      *
      * @var string
      */
-    public string $key;
+    public string $key = '';
 
     /**
      * 写入缓存的值

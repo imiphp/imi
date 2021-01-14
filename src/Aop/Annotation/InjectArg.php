@@ -21,7 +21,7 @@ class InjectArg extends Base
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * 注入的值

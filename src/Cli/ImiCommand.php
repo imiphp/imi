@@ -25,14 +25,14 @@ class ImiCommand extends Command
      *
      * @var string
      */
-    protected string $className;
+    protected string $className = '';
 
     /**
      * 方法名.
      *
      * @var string
      */
-    protected string $methodName;
+    protected string $methodName = '';
 
     /**
      * @var \Imi\Cli\Annotation\Command

@@ -97,7 +97,7 @@ abstract class Base
      *
      * @var string
      */
-    private string $dateFormatsCacheStr;
+    private string $dateFormatsCacheStr = '';
 
     public function __construct(array $option = [])
     {

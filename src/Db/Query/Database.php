@@ -18,14 +18,14 @@ class Database implements IDatabase
      *
      * @var string|null
      */
-    protected ?string $database;
+    protected ?string $database = null;
 
     /**
      * 别名.
      *
      * @var string|null
      */
-    protected ?string $alias;
+    protected ?string $alias = null;
 
     public function __construct(?string $database = null, ?string $alias = null)
     {

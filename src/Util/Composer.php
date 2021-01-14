@@ -11,7 +11,7 @@ use Composer\Autoload\ClassLoader;
  */
 class Composer
 {
-    private static array $classLoaders;
+    private static ?array $classLoaders = null;
 
     private function __construct()
     {
@@ -24,7 +24,7 @@ class Composer
      */
     public static function getClassLoaders(): array
     {
-        if (isset(self::$classLoaders))
+        if (null !== self::$classLoaders)
         {
             return self::$classLoaders;
         }

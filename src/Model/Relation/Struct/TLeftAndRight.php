@@ -18,21 +18,21 @@ trait TLeftAndRight
      *
      * @var string
      */
-    protected string $leftField;
+    protected string $leftField = '';
 
     /**
      * 右侧表字段.
      *
      * @var string
      */
-    protected string $rightField;
+    protected string $rightField = '';
 
     /**
      * 右侧模型类.
      *
      * @var string
      */
-    protected string $rightModel;
+    protected string $rightModel = '';
 
     /**
      * 初始化左右关联.

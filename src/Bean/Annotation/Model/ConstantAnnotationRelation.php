@@ -13,14 +13,14 @@ class ConstantAnnotationRelation implements IAnnotationRelation
      *
      * @var string
      */
-    private string $class;
+    private string $class = '';
 
     /**
      * 常量名.
      *
      * @var string
      */
-    private string $constant;
+    private string $constant = '';
 
     /**
      * 注解.

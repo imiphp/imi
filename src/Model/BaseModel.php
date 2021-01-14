@@ -31,7 +31,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @var array
      */
-    protected array $__fieldNames;
+    protected array $__fieldNames = [];
 
     /**
      * 驼峰缓存.
@@ -66,7 +66,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @var string
      */
-    protected string $__realClass;
+    protected string $__realClass = '';
 
     public function __construct(array $data = [])
     {

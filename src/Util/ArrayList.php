@@ -16,7 +16,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      *
      * @var string
      */
-    private string $itemType;
+    private string $itemType = '';
 
     /**
      * 数组列表.

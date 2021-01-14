@@ -29,7 +29,7 @@ class WorkerEventParam extends EventParam
      *
      * @var int
      */
-    protected int $workerId;
+    protected int $workerId = 0;
 
     /**
      * Get 进程池对象

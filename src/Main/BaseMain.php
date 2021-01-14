@@ -31,7 +31,7 @@ abstract class BaseMain implements IMain
      *
      * @var string
      */
-    protected string $moduleName;
+    protected string $moduleName = '';
 
     public function __construct(string $moduleName)
     {

@@ -34,7 +34,7 @@ class RouteItem
      *
      * @var array
      */
-    public array $options;
+    public array $options = [];
 
     /**
      * 是否为单例控制器.

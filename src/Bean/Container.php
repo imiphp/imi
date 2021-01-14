@@ -30,7 +30,7 @@ class Container implements ContainerInterface
      *
      * @var array
      */
-    private array $binds;
+    private array $binds = [];
 
     public function __construct(array $binds = [])
     {

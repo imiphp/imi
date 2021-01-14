@@ -23,7 +23,7 @@ class Pool
      *
      * @var int
      */
-    private int $workerNum;
+    private int $workerNum = 0;
 
     /**
      * 工作进程列表
@@ -52,7 +52,7 @@ class Pool
      *
      * @var int
      */
-    private int $masterPID;
+    private int $masterPID = 0;
 
     public function __construct(int $workerNum)
     {

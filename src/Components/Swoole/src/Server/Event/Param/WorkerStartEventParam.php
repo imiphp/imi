@@ -21,5 +21,5 @@ class WorkerStartEventParam extends EventParam
      *
      * @var int
      */
-    public int $workerId;
+    public int $workerId = 0;
 }

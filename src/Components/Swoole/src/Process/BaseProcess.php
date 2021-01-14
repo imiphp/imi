@@ -11,7 +11,7 @@ abstract class BaseProcess implements IProcess
      *
      * @var array
      */
-    protected array $data;
+    protected array $data = [];
 
     public function __construct(array $data = [])
     {

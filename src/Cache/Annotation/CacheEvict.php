@@ -35,7 +35,7 @@ class CacheEvict extends Base
      *
      * @var string
      */
-    public string $key;
+    public string $key = '';
 
     /**
      * 在方法执行前删除缓存，默认为false.

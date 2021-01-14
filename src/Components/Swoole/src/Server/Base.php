@@ -56,21 +56,21 @@ abstract class Base
      *
      * @var array
      */
-    protected array $config;
+    protected array $config = [];
 
     /**
      * 是否为子服务器.
      *
      * @var bool
      */
-    protected bool $isSubServer;
+    protected bool $isSubServer = false;
 
     /**
      * 服务器名称.
      *
      * @var string
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 容器.

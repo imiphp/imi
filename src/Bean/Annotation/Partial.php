@@ -18,7 +18,7 @@ class Partial extends Base
      *
      * @var string
      */
-    public string $class;
+    public string $class = '';
 
     /**
      * 只传一个参数时的参数名.

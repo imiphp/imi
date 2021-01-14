@@ -13,21 +13,21 @@ class Uri implements UriInterface
      *
      * @var string
      */
-    protected string $scheme;
+    protected string $scheme = '';
 
     /**
      * 主机名.
      *
      * @var string
      */
-    protected string $host;
+    protected string $host = '';
 
     /**
      * 端口号.
      *
      * @var int|null
      */
-    protected ?int $port;
+    protected ?int $port = null;
 
     /**
      * 用户信息
@@ -35,28 +35,28 @@ class Uri implements UriInterface
      *
      * @var string
      */
-    protected string $userInfo;
+    protected string $userInfo = '';
 
     /**
      * 路径.
      *
      * @var string
      */
-    protected string $path;
+    protected string $path = '';
 
     /**
      * 查询参数，在?后的.
      *
      * @var string
      */
-    protected string $query;
+    protected string $query = '';
 
     /**
      * 锚点，在#后的.
      *
      * @var string
      */
-    protected string $fragment;
+    protected string $fragment = '';
 
     /**
      * 协议标准端口.

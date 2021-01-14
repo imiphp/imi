@@ -21,7 +21,7 @@ class FinishEventParam extends EventParam
      *
      * @var int
      */
-    public int $taskId;
+    public int $taskId = 0;
 
     /**
      * 任务数据.

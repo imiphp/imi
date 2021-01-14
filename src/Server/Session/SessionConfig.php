@@ -17,7 +17,7 @@ class SessionConfig
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * @RequestInject("SessionCookie")
@@ -39,7 +39,7 @@ class SessionConfig
      *
      * @var int
      */
-    public int $maxLifeTime;
+    public int $maxLifeTime = 0;
 
     /**
      * Session 前缀

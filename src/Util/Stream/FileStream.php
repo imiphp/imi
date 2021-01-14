@@ -28,7 +28,7 @@ class FileStream implements StreamInterface
      *
      * @var string
      */
-    protected string $mode;
+    protected string $mode = '';
 
     public function __construct($uri, string $mode = StreamMode::READ_WRITE)
     {

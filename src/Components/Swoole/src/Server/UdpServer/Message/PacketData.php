@@ -14,7 +14,7 @@ class PacketData implements IPacketData
      *
      * @var string
      */
-    protected string $data;
+    protected string $data = '';
 
     /**
      * 接收到的数据.
@@ -28,7 +28,7 @@ class PacketData implements IPacketData
      *
      * @var array
      */
-    protected array $clientInfo;
+    protected array $clientInfo = [];
 
     public function __construct(string $data, array $clientInfo)
     {

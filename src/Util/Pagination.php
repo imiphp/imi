@@ -14,28 +14,28 @@ class Pagination
      *
      * @var int
      */
-    private int $page;
+    private int $page = 0;
 
     /**
      * 每页显示数量.
      *
      * @var int
      */
-    private int $count;
+    private int $count = 0;
 
     /**
      * 偏移量.
      *
      * @var int
      */
-    private int $limitOffset;
+    private int $limitOffset = 0;
 
     /**
      * 结束的偏移量（limitOffset + count - 1）.
      *
      * @var int
      */
-    private int $limitEndOffset;
+    private int $limitEndOffset = 0;
 
     public function __construct(int $page, int $count)
     {

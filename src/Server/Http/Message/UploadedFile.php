@@ -14,35 +14,35 @@ class UploadedFile implements UploadedFileInterface
      *
      * @var string
      */
-    protected string $fileName;
+    protected string $fileName = '';
 
     /**
      * 文件mime类型.
      *
      * @var string
      */
-    protected string $mediaType;
+    protected string $mediaType = '';
 
     /**
      * 临时文件名.
      *
      * @var string
      */
-    protected string $tmpFileName;
+    protected string $tmpFileName = '';
 
     /**
      * 文件大小，单位：字节
      *
      * @var int
      */
-    protected int $size;
+    protected int $size = 0;
 
     /**
      * 错误码
      *
      * @var int
      */
-    protected int $error;
+    protected int $error = 0;
 
     /**
      * 文件流

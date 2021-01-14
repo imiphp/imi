@@ -29,7 +29,7 @@ class Inject extends BaseInjectValue
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * Bean实例化参数.

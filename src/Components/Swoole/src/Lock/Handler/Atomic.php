@@ -21,7 +21,7 @@ class Atomic extends BaseLock
      *
      * @var string
      */
-    public string $atomicName;
+    public string $atomicName = '';
 
     /**
      * 同时获得锁的数量.

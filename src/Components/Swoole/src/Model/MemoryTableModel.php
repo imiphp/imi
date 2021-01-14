@@ -19,7 +19,7 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @var string
      */
-    protected string $__key;
+    protected string $__key = '';
 
     /**
      * 查找一条记录.

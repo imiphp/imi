@@ -36,7 +36,7 @@ class Cacheable extends Base
      *
      * @var string
      */
-    public string $key;
+    public string $key = '';
 
     /**
      * 缓存超时时间，单位：秒.
