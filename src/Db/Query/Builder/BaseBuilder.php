@@ -168,27 +168,17 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseLimit($offset, $limit)
     {
-        $params = &$this->params;
-        $query = $this->query;
         if (null === $limit)
         {
             return '';
         }
         elseif (null === $offset)
         {
-            $limitName = $query->getAutoParamName();
-            $params[$limitName] = (int) $limit;
-
-            return ' limit ' . $limitName;
+            return ' limit ' . ((int) $limit);
         }
         else
         {
-            $offsetName = $query->getAutoParamName();
-            $params[$offsetName] = (int) $offset;
-            $limitName = $query->getAutoParamName();
-            $params[$limitName] = (int) $limit;
-
-            return ' limit ' . $offsetName . ',' . $limitName;
+            return ' limit ' . ((int) $offset) . ',' . ((int) $limit);
         }
     }
 
