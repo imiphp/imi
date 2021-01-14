@@ -45,8 +45,10 @@
         "post-autoload-dump": [
             "Imi\\Dev\\Plugin::dev"
         ],
-        "test": "./tests/swoole-phpunit -c ./tests/phpunit.xml",
-        "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test"
+        "test": "vendor/bin/phpunit -c ./tests/phpunit.xml",
+        "install-test": "php --ri swoole && composer install && cd ../ && composer test",
+        "test-all": "@composer test && src/Components/Swoole/tests/swoole-phpunit -c src/Components/Swoole/tests/phpunit.xml",
+        "install-test-all": "php --ri swoole && composer install && cd ../ && composer test-all"
     },
     "extra": {
         "ide-helper": {

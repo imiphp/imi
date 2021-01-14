@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'configs'    => [
+    ],
+    // bean扫描目录
+    'beanScan'    => [
+        'Imi\Swoole\Test\WebSocketServer\MainServer\Controller',
+        'Imi\Swoole\Test\WebSocketServer\MainServer\Listener',
+        'Imi\Swoole\Test\WebSocketServer\MainServer\Error',
+    ],
+    'beans'    => [
+        'WebSocketDispatcher'    => [
+            'middlewares'    => [
+                \Imi\Swoole\Server\WebSocket\Middleware\RouteMiddleware::class,
+                \Imi\Swoole\Test\WebSocketServer\MainServer\Middleware\Test::class,
+            ],
+        ],
+        'GroupRedis'    => [
+            'redisPool'    => 'redis',
+            'redisDb'      => 2,
+        ],
+        'HttpDispatcher'    => [
+            'middlewares'    => [
+                \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
+                \Imi\Server\Http\Middleware\RouteMiddleware::class,
+            ],
+        ],
+        'ConnectContextRedis'    => [
+            'redisPool' => 'redis',
+            'lockId'    => 'redisConnectContextLock',
+        ],
+        'ConnectContextStore'   => [
+            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\Redis::class,
+            'ttl'           => 600,
+        ],
+        'ConnectContextMemoryTable' => [
+            'tableName' => 'connectContext',
+        ],
+        'WSRouteNotFoundHandler'    => [
+            'handler'   => 'RouteNotFound',
+        ],
+        'ConnectionBinder'  => [
+            'redisPool' => 'redis',
+            'key'       => 'imi:wsTest:connectionBinder:map',
+        ],
+    ],
+    'controller'    => [
+        'singleton' => true,
+    ],
+];

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Imi\Log\LogLevel;
-use Imi\Swoole\Context\CoroutineContextManager;
 
 return [
     'configs'    => [
@@ -36,7 +35,6 @@ return [
 
     // 组件命名空间
     'components'    => [
-        'Swoole' => 'Imi\Swoole',
     ],
 
     'beans'    => [
@@ -92,9 +90,6 @@ return [
             'enable' => true,
         ],
     ],
-    'imi'   => [
-        'RequestContext' => CoroutineContextManager::class,
-    ],
     'imi-framework'   => 'very six',
     'yurun'           => getenv('APP_YURUN') ?: '',
 
@@ -104,7 +99,7 @@ return [
         'maindb'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -126,7 +121,7 @@ return [
         'maindb.slave'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -142,36 +137,13 @@ return [
                 'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
-            ],
-        ],
-        // 主数据库
-        'swooleMysql'    => [
-            'pool'    => [
-                // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                // 连接池配置
-                'config'        => [
-                    'maxResources'              => 10,
-                    'minResources'              => 1,
-                    'checkStateWhenGetResource' => false,
-                ],
-            ],
-            // 连接池资源配置
-            'resource'    => [
-                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                'port'        => imiGetEnv('MYSQL_SERVER_PORT', 3306),
-                'username'    => imiGetEnv('MYSQL_SERVER_USERNAME', 'root'),
-                'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
-                'database'    => 'db_imi_test',
-                'charset'     => 'utf8mb4',
-                'dbClass'     => \Imi\Swoole\Db\Driver\Swoole\Driver::class,
             ],
         ],
         // mysqli
         'mysqli'    => [
             'pool'    => [
                 // 协程池类名
-                'class'    => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'    => \Imi\Db\Pool\SyncDbPool::class,
                 // 连接池配置
                 'config'        => [
                     'maxResources'              => 10,
@@ -192,7 +164,7 @@ return [
         ],
         'redis_test'    => [
             'pool'    => [
-                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -206,7 +178,7 @@ return [
         ],
         'redis_cache'    => [
             'pool'    => [
-                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -222,7 +194,7 @@ return [
         ],
         'redis_manager_test'    => [
             'pool'    => [
-                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'class'        => \Imi\Redis\SyncRedisPool::class,
                 'config'       => [
                     'maxResources'    => 10,
                     'minResources'    => 1,
@@ -289,7 +261,6 @@ return [
     ],
     // atmoic 配置
     'atomics'    => [
-        'atomicLock'   => 1,
         'test',
     ],
     // 锁
@@ -299,12 +270,6 @@ return [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis_test',
-                ],
-            ],
-            'atomic' => [
-                'class'     => 'AtomicLock',
-                'options'   => [
-                    'atomicName'    => 'atomicLock',
                 ],
             ],
         ],

@@ -1,5 +1,16 @@
 <?php
 
+echo '[Base Component]', \PHP_EOL;
+$fileName = dirname(__DIR__) . '/tests/unit/Components/logs/' . date('Y-m-d') . '.log';
+if (is_file($fileName))
+{
+    echo file_get_contents($fileName), \PHP_EOL;
+}
+else
+{
+    echo 'Not found!', \PHP_EOL;
+}
+
 foreach ([
     'Component',
     'HttpServer',
@@ -10,7 +21,7 @@ foreach ([
 ] as $name)
 {
     echo '[', $name, ']', \PHP_EOL;
-    $fileName = dirname(__DIR__) . '/tests/unit/' . $name . '/logs/' . date('Y-m-d') . '.log';
+    $fileName = dirname(__DIR__) . '/src/Components/Swoole/tests/unit/' . $name . '/logs/' . date('Y-m-d') . '.log';
     if (is_file($fileName))
     {
         echo file_get_contents($fileName), \PHP_EOL;

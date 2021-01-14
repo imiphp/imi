@@ -29,8 +29,7 @@ return function () {
                 echo 'No file vendor/autoload.php', \PHP_EOL;
                 exit;
             }
-            $loader = require $fileName;
-            App::setLoader($loader);
+            require $fileName;
         })();
     }
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Test;
 
 use PHPUnit\Framework\TestCase;
-use function Yurun\Swoole\Coroutine\goWait;
 
 if (class_exists(TestCase::class))
 {
@@ -15,24 +14,20 @@ if (class_exists(TestCase::class))
 
         protected function go($callable, $finally = null)
         {
-            $throwable = null;
-            goWait(function () use ($callable, &$throwable) {
-                try
-                {
-                    $callable();
-                }
-                catch (\Throwable $th)
-                {
-                    $throwable = $th;
-                }
-            });
-            if ($finally)
+            try
             {
-                $finally();
+                $callable();
             }
-            if ($throwable)
+            catch (\Throwable $th)
             {
-                throw $throwable;
+                throw $th;
+            }
+            finally
+            {
+                if ($finally)
+                {
+                    $finally();
+                }
             }
         }
 

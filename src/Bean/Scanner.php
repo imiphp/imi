@@ -54,11 +54,11 @@ class Scanner
     public static function scanVendor(bool $statistics = true): void
     {
         $time = microtime(true);
+        $namespaces = [];
         foreach (Composer::getClassLoaders() as $classLoader)
         {
             $ref = new ReflectionClass($classLoader);
             $vendorPath = \dirname($ref->getFileName(), 2);
-            $namespaces = [];
             // 遍历第一层
             foreach (new FilesystemIterator($vendorPath, FilesystemIterator::SKIP_DOTS) as $dir1)
             {
@@ -79,7 +79,7 @@ class Scanner
                     {
                         continue;
                     }
-                    foreach (Composer::getPathNamespaces($pathName) as $namespace)
+                    foreach (Composer::getPathNamespaces($pathName . '/src') as $namespace)
                     {
                         if ('Imi\\' === $namespace)
                         {

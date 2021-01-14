@@ -14,7 +14,7 @@ class ToolTest extends BaseTest
 {
     public function testCoExit()
     {
-        $cmd = \Imi\cmd('"' . \dirname(Imi::getNamespacePath('Imi')) . '/src/Components/Swoole/bin/imi-swoole" TestTool/test --app-namespace "Imi\Test\Component"');
+        $cmd = \Imi\cmd('"' . \dirname(Imi::getNamespacePath('Imi')) . '/src/Cli/bin/imi-cli" TestTool/test --app-namespace "Imi\Test\Component"');
         exec($cmd, $output, $exitCode);
         $this->assertEquals(0, $exitCode);
 

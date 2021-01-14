@@ -41,8 +41,10 @@ abstract class BaseApp implements IApp
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
 
         $paths = Imi::getNamespacePaths($this->namespace);
+
         // 加载项目目录下的 env
-        \Dotenv\Dotenv::createImmutable($paths)->load();
+        \Dotenv\Dotenv::createImmutable($paths)->safeLoad();
+
         // 加载项目配置文件
         foreach ($paths as $path)
         {

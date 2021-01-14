@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+use Imi\Util\Imi;
+
+require_once dirname(__DIR__, 7) . '/vendor/' . 'autoload.php';
+require_once dirname(__DIR__, 4) . '/vendor/' . 'autoload.php';
+
+\Imi\App::setDebug(true);
+
+(require dirname(Imi::getNamespacePath('Imi\Swoole')) . '/bootstrap.php')();

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Lock\Lock;
+use Imi\RequestContext;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
-use Swoole\Coroutine;
 
 abstract class BaseLockTest extends BaseTest
 {
@@ -27,7 +27,7 @@ abstract class BaseLockTest extends BaseTest
         {
             Assert::assertTrue($result);
             Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
         }
         finally
         {
@@ -47,7 +47,7 @@ abstract class BaseLockTest extends BaseTest
         {
             Assert::assertTrue($result);
             Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
         }
         finally
         {
@@ -63,7 +63,7 @@ abstract class BaseLockTest extends BaseTest
         Assert::assertFalse(Lock::isLocked($this->lockId));
         $result = Lock::lock($this->lockId, function () {
             Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
         });
         Assert::assertTrue($result);
         Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -76,7 +76,7 @@ abstract class BaseLockTest extends BaseTest
         Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
         $result = Lock::tryLock($this->lockId, function () {
             Assert::assertTrue(Lock::isLocked($this->lockId));
-            Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
         });
         Assert::assertTrue($result);
         Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -91,7 +91,7 @@ abstract class BaseLockTest extends BaseTest
         $result = Lock::lock($this->lockId, function () {
             Assert::assertTrue(false);
         }, function () {
-            Assert::assertEquals(Coroutine::getuid(), Lock::getInstance($this->lockId)->getLockFlag());
+            Assert::assertEquals(RequestContext::getCurrentFlag(), Lock::getInstance($this->lockId)->getLockFlag());
 
             return true;
         });

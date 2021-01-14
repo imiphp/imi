@@ -68,8 +68,6 @@ class AnnotationLoader
             {
                 $this->loadModuleAnnotations($namespace, $callback);
             }
-
-            return;
         }
         foreach ($namespacePaths as $path)
         {

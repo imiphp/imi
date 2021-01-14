@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Imi\Test\Component;
 
 use Imi\App;
+use Imi\Cli\CliApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
-use Imi\Swoole\SwooleApp;
 
-class TestApp extends SwooleApp
+class TestApp extends CliApp
 {
     /**
      * 运行应用.

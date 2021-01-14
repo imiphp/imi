@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Test\Component\Tests\Performance;
+namespace Imi\Test\Component\Performance;
 
 use Imi\App;
 use Imi\Db\Db;

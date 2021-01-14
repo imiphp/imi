@@ -62,7 +62,7 @@ class RedisManagerTest extends BaseTest
         });
         sleep(1);
         Assert::assertEquals(1, $pool->getCount());
-        Assert::assertEquals(1, $pool->getFree());
+        Assert::assertEquals(0, $pool->getFree());
     }
 
     /**

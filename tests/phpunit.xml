@@ -13,21 +13,6 @@
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
         </testsuite>
-        <testsuite name="HttpServer">
-            <directory>unit/HttpServer/Tests</directory>
-        </testsuite>
-        <testsuite name="RedisSessionServer">
-            <directory>unit/RedisSessionServer/Tests</directory>
-        </testsuite>
-        <testsuite name="WebSocketServer">
-            <directory>unit/WebSocketServer/Tests</directory>
-        </testsuite>
-        <testsuite name="TCPServer">
-            <directory>unit/TCPServer/Tests</directory>
-        </testsuite>
-        <testsuite name="UDPServer">
-            <directory>unit/UDPServer/Tests</directory>
-        </testsuite>
         <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
         </testsuite>

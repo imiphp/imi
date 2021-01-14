@@ -264,7 +264,10 @@ class Imi
                             return null;
                         }
                         $result = File::path($paths[0], str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
-                        break;
+                        if (is_dir($result))
+                        {
+                            break 2;
+                        }
                     }
                 }
             }
@@ -286,7 +289,10 @@ class Imi
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
                     $path = \dirname($refClass->getFileName());
                     $result = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
-                    break;
+                    if (is_dir($result))
+                    {
+                        break;
+                    }
                 }
             }
         }

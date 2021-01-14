@@ -16,6 +16,11 @@
             "Imi\\Swoole\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Swoole\\Test\\": "tests/unit/"
+        }
+    },
     "bin": [
         "src/bin/imi-swoole"
     ]
