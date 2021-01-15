@@ -99,6 +99,11 @@ class PoolManager
      */
     public static function exists(string $name)
     {
+        if (!self::$inited)
+        {
+            self::init();
+        }
+
         return isset(static::$pools[$name]);
     }
 
