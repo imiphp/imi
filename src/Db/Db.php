@@ -48,7 +48,7 @@ abstract class Db
      */
     public static function release($db)
     {
-        $resource = RequestContext::get('poolResources.' . spl_object_hash($db));
+        $resource = RequestContext::get('poolResources')[spl_object_hash($db)] ?? null;
         if (null !== $resource)
         {
             PoolManager::releaseResource($resource);

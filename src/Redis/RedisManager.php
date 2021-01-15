@@ -41,7 +41,7 @@ abstract class RedisManager
      */
     public static function release($redis)
     {
-        $resource = RequestContext::get('poolResources.' . spl_object_hash($redis));
+        $resource = RequestContext::get('poolResources')[spl_object_hash($redis)] ?? null;
         if (null !== $resource)
         {
             PoolManager::releaseResource($resource);
