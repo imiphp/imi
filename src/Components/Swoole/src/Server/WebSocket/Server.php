@@ -8,10 +8,11 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
 use Imi\Swoole\Server\Event\Param\MessageEventParam;
@@ -71,7 +72,9 @@ class Server extends Base
     protected function createSubServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $this->swooleServer = $server->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $thisConfig = &$this->config;
         if (!isset($thisConfig['configs']['open_websocket_protocol']))
@@ -231,5 +234,15 @@ class Server extends Base
     public function isHttp2(): bool
     {
         return $this->http2;
+    }
+
+    /**
+     * 是否为长连接服务
+     *
+     * @return bool
+     */
+    public function isLongConnection(): bool
+    {
+        return true;
     }
 }

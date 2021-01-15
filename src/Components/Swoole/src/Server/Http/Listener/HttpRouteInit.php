@@ -18,7 +18,8 @@ use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Route\RouteCallable;
 use Imi\Server\Route\TMiddleware;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\WebSocket\Route\Annotation\WSConfig;
 use Imi\Swoole\Worker;
 
@@ -53,7 +54,7 @@ class HttpRouteInit implements IEventListener
     {
         $controllerParser = ControllerParser::getInstance();
         $context = RequestContext::getContext();
-        foreach (ServerManage::getServers() as $name => $server)
+        foreach (ServerManager::getServers(ISwooleServer::class) as $name => $server)
         {
             if (!$server instanceof \Imi\Swoole\Server\Http\Server && !$server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {
@@ -141,7 +142,7 @@ class HttpRouteInit implements IEventListener
     private function parseConfigs()
     {
         $context = RequestContext::getContext();
-        foreach (ServerManage::getServers() as $server)
+        foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {
             if (!$server instanceof \Imi\Swoole\Server\Http\Server && !$server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {

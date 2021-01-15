@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server;
 
 use Imi\App;
-use Imi\Bean\Container;
 use Imi\Event\Event;
-use Imi\Event\TEvent;
+use Imi\Server\Contract\BaseServer;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\FinishEventParam;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
 use Imi\Swoole\Server\Event\Param\ManagerStopEventParam;
@@ -20,10 +20,11 @@ use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
 use Imi\Swoole\Server\Group\TServerGroup;
+use Swoole\Server;
+use Swoole\Server\Port;
 
-abstract class Base
+abstract class Base extends BaseServer implements ISwooleServer
 {
-    use TEvent;
     use TServerGroup;
 
     /**
@@ -52,13 +53,6 @@ abstract class Base
     protected $swoolePort;
 
     /**
-     * 服务器配置.
-     *
-     * @var array
-     */
-    protected array $config = [];
-
-    /**
      * 是否为子服务器.
      *
      * @var bool
@@ -66,32 +60,15 @@ abstract class Base
     protected bool $isSubServer = false;
 
     /**
-     * 服务器名称.
-     *
-     * @var string
-     */
-    protected string $name = '';
-
-    /**
-     * 容器.
-     *
-     * @var \Imi\Bean\Container
-     */
-    protected Container $container;
-
-    /**
      * 构造方法.
      *
-     * @param string         $name
-     * @param array          $config
-     * @param \Swoole\Server $serverInstance
-     * @param bool           $subServer      是否为子服务器
+     * @param string $name
+     * @param array  $config
+     * @param bool   $isSubServer 是否为子服务器
      */
     public function __construct(string $name, array $config, bool $isSubServer = false)
     {
-        $this->container = App::getContainer()->newSubContainer();
-        $this->name = $name;
-        $this->config = $config;
+        parent::__construct($name, $config);
         $this->isSubServer = $isSubServer;
         if ($isSubServer)
         {
@@ -129,9 +106,9 @@ abstract class Base
     /**
      * 获取 swoole 服务器对象
      *
-     * @return \Swoole\Server|Swoole\Coroutine\Http\Server
+     * @return \Swoole\Server
      */
-    public function getSwooleServer()
+    public function getSwooleServer(): Server
     {
         return $this->swooleServer;
     }
@@ -139,9 +116,9 @@ abstract class Base
     /**
      * 获取 swoole 监听端口.
      *
-     * @return \Swoole\Server\Port|Swoole\Coroutine\Http\Server
+     * @return \Swoole\Server\Port
      */
-    public function getSwoolePort()
+    public function getSwoolePort(): Port
     {
         return $this->swoolePort;
     }
@@ -332,58 +309,6 @@ abstract class Base
             });
         }
         $this->__bindEvents();
-    }
-
-    /**
-     * 获取配置信息.
-     *
-     * @return array
-     */
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
-
-    /**
-     * 获取服务器名称.
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * 获取容器对象
-     *
-     * @return \Imi\Bean\Container
-     */
-    public function getContainer(): Container
-    {
-        return $this->container;
-    }
-
-    /**
-     * 获取Bean对象
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    public function getBean(string $name, ...$params)
-    {
-        return $this->container->get($name, ...$params);
-    }
-
-    /**
-     * 是否为长连接服务
-     *
-     * @return bool
-     */
-    public function isLongConnection(): bool
-    {
-        return true;
     }
 
     /**

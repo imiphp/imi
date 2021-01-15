@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Http;
 
 use Imi\App;
-use Imi\Bean\Annotation\Bean;
+use Imi\Util\Bit;
 use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\ServerManage;
+use Imi\Util\ImiPriority;
+use Imi\Swoole\Server\Base;
+use Imi\Bean\Annotation\Bean;
+use Imi\Server\ServerManager;
+use Swoole\Http\Server as HttpServer;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
-use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
-use Imi\Swoole\Server\Event\Param\RequestEventParam;
-use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Http\Listener\BeforeRequest;
+use Imi\Swoole\Server\Event\Param\RequestEventParam;
 use Imi\Swoole\Server\Http\Listener\Http2AfterClose;
 use Imi\Swoole\Server\Http\Listener\Http2BeforeClose;
-use Imi\Util\Bit;
-use Imi\Util\ImiPriority;
-use Swoole\Http\Server as HttpServer;
+use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 
 /**
  * Http 服务器类.
@@ -71,7 +72,9 @@ class Server extends Base
     protected function createSubServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $this->swooleServer = $server->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $thisConfig = &$this->config;
         if (!isset($thisConfig['configs']['open_http_protocol']))

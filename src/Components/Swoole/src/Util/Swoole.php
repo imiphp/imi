@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Util;
 
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 
 class Swoole
 {
@@ -19,7 +20,10 @@ class Swoole
      */
     public static function getMasterPID(): int
     {
-        return ServerManage::getServer('main')->getSwooleServer()->master_pid;
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+
+        return $server->getSwooleServer()->master_pid;
     }
 
     /**
@@ -29,6 +33,9 @@ class Swoole
      */
     public static function getManagerPID(): int
     {
-        return ServerManage::getServer('main')->getSwooleServer()->manager_pid;
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+
+        return $server->getSwooleServer()->manager_pid;
     }
 }

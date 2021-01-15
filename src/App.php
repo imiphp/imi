@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Imi;
 
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\Container;
-use Imi\Bean\ReflectionContainer;
-use Imi\Bean\Scanner;
-use Imi\Core\App\Contract\IApp;
-use Imi\Core\App\Enum\LoadRuntimeResult;
-use Imi\Event\Event;
-use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
+use Imi\Event\Event;
+use Imi\Bean\Scanner;
+use Imi\Util\Composer;
+use Imi\Bean\Container;
+use Imi\Server\ServerManager;
+use Imi\Core\App\Contract\IApp;
+use Imi\Bean\ReflectionContainer;
+use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Bean\Annotation\AnnotationManager;
 
 class App
 {
@@ -166,7 +167,7 @@ class App
     public static function createCoServer(string $name, int $workerNum): \Imi\Swoole\Server\CoServer
     {
         static::$isCoServer = true;
-        $server = ServerManage::createCoServer($name, $workerNum);
+        $server = ServerManager::createCoServer($name, $workerNum);
 
         return $server;
     }

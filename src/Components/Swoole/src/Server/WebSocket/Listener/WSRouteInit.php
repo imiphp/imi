@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\WebSocket\Listener;
 
-use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\Annotation\Listener;
 use Imi\Config;
+use Imi\Main\Helper;
+use Imi\Swoole\Worker;
+use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Main\Helper;
-use Imi\RequestContext;
-use Imi\Server\Route\RouteCallable;
+use Imi\Server\ServerManager;
+use Imi\Bean\Annotation\Listener;
 use Imi\Server\Route\TMiddleware;
-use Imi\ServerManage;
+use Imi\Server\Route\RouteCallable;
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
 use Imi\Swoole\Server\WebSocket\Parser\WSControllerParser;
 use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
 use Imi\Swoole\Server\WebSocket\Route\Annotation\WSMiddleware;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
-use Imi\Swoole\Worker;
 
 /**
  * WebSocket 服务器路由初始化.
@@ -51,7 +52,7 @@ class WSRouteInit implements IEventListener
     {
         $controllerParser = WSControllerParser::getInstance();
         $context = RequestContext::getContext();
-        foreach (ServerManage::getServers() as $name => $server)
+        foreach (ServerManager::getServers(ISwooleServer::class) as $name => $server)
         {
             if (!$server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {
@@ -118,7 +119,7 @@ class WSRouteInit implements IEventListener
     private function parseConfigs()
     {
         $context = RequestContext::getContext();
-        foreach (ServerManage::getServers() as $server)
+        foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {
             if (!$server instanceof \Imi\Swoole\Server\WebSocket\Server)
             {

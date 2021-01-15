@@ -36,7 +36,7 @@ $object = \Imi\App::getBean('XXX');
 只针对目标服务器的容器，该容器中目前存储了该服务器的路由对象及配置等等。
 
 ```php
-$object = \Imi\ServerManage::getServer('main')->getBean('XXX');
+$object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
 ```
 
 ### 请求上下文容器

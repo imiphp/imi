@@ -1,6 +1,6 @@
 # ServerManage
 
-类名：`Imi\ServerManage`
+类名：`Imi\Server\ServerManager`
 
 imi 支持服务监听多个端口、多个协议，该类用于管理监听端口的服务。
 
@@ -26,5 +26,5 @@ public static function getServer($name);
 ### 获取 Swoole 服务器对象
 
 ```php
-$swooleServer = ServerManage::getServer('main')->getSwooleServer();
+$swooleServer = ServerManager::getServer('main')->getSwooleServer();
 ```

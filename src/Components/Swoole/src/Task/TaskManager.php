@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Task;
 
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Task\Handler\BeanTaskHandler;
 use Imi\Swoole\Task\Parser\TaskParser;
 
@@ -25,7 +26,10 @@ class TaskManager
      */
     public static function post(TaskInfo $taskInfo, int $workerId = -1)
     {
-        return ServerManage::getServer('main')->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+
+        return $server->getSwooleServer()->task($taskInfo, $workerId, [$taskInfo->getTaskHandler(), 'finish']);
     }
 
     /**
@@ -55,7 +59,9 @@ class TaskManager
      */
     public static function postWait(TaskInfo $taskInfo, float $timeout, int $workerId = -1)
     {
-        $server = ServerManage::getServer('main')->getSwooleServer();
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $server = $server->getSwooleServer();
         $result = $server->taskwait($taskInfo, $timeout, $workerId);
         $taskInfo->getTaskHandler()->finish($server, -1, $result);
 
@@ -93,7 +99,9 @@ class TaskManager
      */
     public static function postCo(array $tasks, float $timeout): array
     {
-        $server = ServerManage::getServer('main')->getSwooleServer();
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $server = $server->getSwooleServer();
         foreach ($tasks as $i => $item)
         {
             if (!$item instanceof TaskInfo)

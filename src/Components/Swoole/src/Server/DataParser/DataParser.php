@@ -6,7 +6,8 @@ namespace Imi\Swoole\Server\DataParser;
 
 use Imi\ConnectContext;
 use Imi\RequestContext;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
  * 数据处理器.
@@ -25,7 +26,7 @@ class DataParser
     {
         if ($serverName)
         {
-            return ServerManage::getServer($serverName)->getBean($this->getParserClass($serverName))->encode($data);
+            return ServerManager::getServer($serverName, ISwooleServer::class)->getBean($this->getParserClass($serverName))->encode($data);
         }
         else
         {
@@ -45,7 +46,7 @@ class DataParser
     {
         if ($serverName)
         {
-            return ServerManage::getServer($serverName)->getBean($this->getParserClass($serverName))->decode($data);
+            return ServerManager::getServer($serverName, ISwooleServer::class)->getBean($this->getParserClass($serverName))->decode($data);
         }
         else
         {
@@ -65,7 +66,7 @@ class DataParser
         $requestContext = RequestContext::getContext();
         if ($serverName)
         {
-            $server = ServerManage::getServer($serverName);
+            $server = ServerManager::getServer($serverName, ISwooleServer::class);
         }
         else
         {

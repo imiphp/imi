@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\UdpServer;
 
 use Imi\App;
-use Imi\Bean\Annotation\Bean;
-use Imi\ServerManage;
 use Imi\Swoole\Server\Base;
+use Imi\Bean\Annotation\Bean;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
 
 /**
@@ -17,6 +18,13 @@ use Imi\Swoole\Server\Event\Param\PacketEventParam;
  */
 class Server extends Base
 {
+    /**
+     * 是否支持 SSL.
+     *
+     * @var bool
+     */
+    private bool $ssl = false;
+
     /**
      * 创建 swoole 服务器对象
      *
@@ -36,7 +44,9 @@ class Server extends Base
     protected function createSubServer()
     {
         $config = $this->getServerInitConfig();
-        $this->swooleServer = ServerManage::getServer('main')->getSwooleServer();
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $this->swooleServer = $server->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $configs = &$this->config['configs'];
         foreach (static::SWOOLE_PROTOCOLS as $protocol)
@@ -87,6 +97,16 @@ class Server extends Base
                 }
             });
         }
+    }
+
+    /**
+     * 是否为 https 服务
+     *
+     * @return bool
+     */
+    public function isSSL(): bool
+    {
+        return $this->ssl;
     }
 
     /**

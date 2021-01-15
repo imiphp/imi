@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server;
 
 use Imi\Config;
-use Imi\Event\Event;
 use Imi\Log\Log;
-use Imi\ServerManage;
+use Imi\Util\Imi;
+use Imi\Event\Event;
 use Imi\Swoole\Process\Pool;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Pool\InitEventParam;
 use Imi\Swoole\Process\Pool\WorkerEventParam;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\StartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
-use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
-use Imi\Util\Imi;
+use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 
 class CoServer
 {
@@ -136,7 +137,7 @@ class CoServer
                 if ($this->workerId <= $this->workerNum - 1)
                 {
                     // 处理请求的 worker 进程
-                    $server = ServerManage::createServer($this->name, $this->config);
+                    $server = ServerManager::createServer($this->name, $this->config);
                     $this->parseServer($server, $this->workerId);
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
                         'server'    => $server,
@@ -162,7 +163,7 @@ class CoServer
         $processPool->on('WorkerStop', function (WorkerEventParam $e) {
             go(function () use ($e) {
                 Event::trigger('IMI.MAIN_SERVER.WORKER.STOP', [
-                    'server'    => ServerManage::getServer($this->name),
+                    'server'    => ServerManager::getServer($this->name, ISwooleServer::class),
                     'workerId'  => $e->getWorkerId(),
                 ], $this, WorkerStopEventParam::class);
             });

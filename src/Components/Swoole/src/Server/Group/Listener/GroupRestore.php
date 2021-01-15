@@ -6,9 +6,10 @@ namespace Imi\Swoole\Server\Group\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\ConnectContext;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\ConnectContext\Event\Listener\IConnectContextRestoreListener;
 use Imi\Swoole\Server\ConnectContext\Event\Param\ConnectContextRestoreParam;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
  * @Listener(eventName="IMI.CONNECT_CONTEXT.RESTORE")
@@ -32,7 +33,8 @@ class GroupRestore implements IConnectContextRestoreListener
         {
             return;
         }
-        $server = ServerManage::getServer($connectContextData['__serverName']);
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer($connectContextData['__serverName'], ISwooleServer::class);
         foreach ($groups as $group)
         {
             $server->joinGroup($group, $toFd);

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Imi\Swoole;
 
 use Imi\Event\Event;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 
 class Worker
@@ -60,7 +61,7 @@ class Worker
     {
         if (null === static::$workerId)
         {
-            $main = ServerManage::getServer('main');
+            $main = ServerManager::getServer('main', ISwooleServer::class);
             if ($main instanceof \Imi\Swoole\Server\Base)
             {
                 $workerId = $main->getSwooleServer()->worker_id;
@@ -96,7 +97,7 @@ class Worker
     public static function inited()
     {
         static::$isInited = true;
-        $mainServer = ServerManage::getServer('main');
+        $mainServer = ServerManager::getServer('main', ISwooleServer::class);
         static::workerStartApp($mainServer, $mainServer);
     }
 
@@ -138,7 +139,10 @@ class Worker
      */
     public static function isTask(): bool
     {
-        return ServerManage::getServer('main')->getSwooleServer()->taskworker;
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+
+        return $server->getSwooleServer()->taskworker;
     }
 
     /**
@@ -150,7 +154,9 @@ class Worker
     {
         if (!static::$workerNum)
         {
-            static::$workerNum = ServerManage::getServer('main')->getSwooleServer()->setting['worker_num'];
+            /** @var ISwooleServer $server */
+            $server = ServerManager::getServer('main', ISwooleServer::class);
+            static::$workerNum = $server->getSwooleServer()->setting['worker_num'];
         }
 
         return static::$workerNum;
@@ -165,7 +171,9 @@ class Worker
     {
         if (!static::$taskWorkerNum)
         {
-            static::$taskWorkerNum = ServerManage::getServer('main')->getSwooleServer()->setting['task_worker_num'];
+            /** @var ISwooleServer $server */
+            $server = ServerManager::getServer('main', ISwooleServer::class);
+            static::$taskWorkerNum = $server->getSwooleServer()->setting['task_worker_num'];
         }
 
         return static::$taskWorkerNum;

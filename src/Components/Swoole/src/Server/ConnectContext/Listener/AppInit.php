@@ -7,7 +7,8 @@ namespace Imi\Swoole\Server\ConnectContext\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\RequestContext;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Listener\IAppInitEventListener;
 use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Util\Imi;
@@ -26,7 +27,7 @@ class AppInit implements IAppInitEventListener
      */
     public function handle(AppInitEventParam $e)
     {
-        foreach (ServerManage::getServers() as $server)
+        foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {
             if ($server->isLongConnection())
             {

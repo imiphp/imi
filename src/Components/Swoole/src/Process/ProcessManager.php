@@ -8,9 +8,10 @@ use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Bean\Scanner;
 use Imi\Event\Event;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
 use Imi\Swoole\Process\Parser\ProcessParser;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Imi as SwooleImi;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -280,14 +281,14 @@ class ProcessManager
             {
                 return null;
             }
-            ServerManage::getCoServer()->addProcess(static::getProcessCallable($args, $name, $processOption, $alias));
+            ServerManager::getCoServer()->addProcess(static::getProcessCallable($args, $name, $processOption, $alias));
 
             return null;
         }
         else
         {
             $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
-            $server = ServerManage::getServer('main')->getSwooleServer();
+            $server = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
             $server->addProcess($process);
             static::$managerProcesses[$name][$alias] = $process;
 

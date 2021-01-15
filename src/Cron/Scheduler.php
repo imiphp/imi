@@ -10,7 +10,8 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Cron\Consts\CronTaskType;
 use Imi\Cron\Message\Result;
 use Imi\Log\Log;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Yurun\Swoole\CoPool\CoPool;
 use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
@@ -106,7 +107,9 @@ class Scheduler
                     switch ($type = $task->getType())
                     {
                         case CronTaskType::RANDOM_WORKER:
-                            $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                            /** @var ISwooleServer $server */
+                            $server = ServerManager::getServer('main', ISwooleServer::class);
+                            $swooleServer = $server->getSwooleServer();
                             $taskClass = $task->getTask();
                             $swooleServer->sendMessage(json_encode([
                                 'action'    => 'cronTask',
@@ -117,7 +120,9 @@ class Scheduler
                             ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
                             break;
                         case CronTaskType::ALL_WORKER:
-                            $swooleServer = ServerManage::getServer('main')->getSwooleServer();
+                            /** @var ISwooleServer $server */
+                            $server = ServerManager::getServer('main', ISwooleServer::class);
+                            $swooleServer = $server->getSwooleServer();
                             $taskClass = $task->getTask();
                             $message = json_encode([
                                 'action'    => 'cronTask',

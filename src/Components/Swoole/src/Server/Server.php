@@ -6,7 +6,8 @@ namespace Imi\Swoole\Server;
 
 use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\DataParser\DataParser;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
@@ -40,7 +41,8 @@ class Server
         }
         $data['action'] = $action;
         $message = json_encode($data);
-        $server = ServerManage::getServer('main');
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
         $swooleServer = $server->getSwooleServer();
         $success = 0;
         $currentWorkerId = Worker::getWorkerId();
@@ -82,7 +84,8 @@ class Server
         {
             $workerId = range(0, Worker::getWorkerNum() - 1);
         }
-        $server = ServerManage::getServer('main');
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
         $swooleServer = $server->getSwooleServer();
         $success = 0;
         $currentWorkerId = Worker::getWorkerId();
@@ -334,6 +337,6 @@ class Server
             $serverName = 'main';
         }
 
-        return ServerManage::getServer($serverName);
+        return ServerManager::getServer($serverName, ISwooleServer::class);
     }
 }

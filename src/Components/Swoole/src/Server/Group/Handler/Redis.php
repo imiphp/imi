@@ -10,7 +10,8 @@ use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Redis\Redis as ImiRedis;
 use Imi\Redis\RedisHandler;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\AtomicManager;
 use Imi\Swoole\Util\Swoole;
 use Imi\Swoole\Worker;
@@ -112,7 +113,9 @@ class Redis implements IGroupHandler
                     {
                         // 与master进程ID不等
                         Log::emergency('Redis server group key has been used');
-                        ServerManage::getServer('main')->getSwooleServer()->shutdown();
+                        /** @var ISwooleServer $server */
+                        $server = ServerManager::getServer('main', ISwooleServer::class);
+                        $server->getSwooleServer()->shutdown();
                     }
                     else
                     {

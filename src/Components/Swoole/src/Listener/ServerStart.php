@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Imi\Swoole\Listener;
 
 use Imi\App;
-use Imi\ServerManage;
-use Imi\Swoole\Util\Imi;
 use Imi\Bean\Annotation\Listener;
-use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
+use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
+use Imi\Swoole\Util\Imi;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START")
@@ -35,11 +36,13 @@ class ServerStart implements IManagerStartEventListener
         }
         else
         {
-            $server = ServerManage::getServer('main');
+            /** @var ISwooleServer $server */
+            $server = ServerManager::getServer('main', ISwooleServer::class);
             $mainSwooleServer = $server->getSwooleServer();
             echo 'WorkerNum: ', $mainSwooleServer->setting['worker_num'], ', TaskWorkerNum: ', $mainSwooleServer->setting['task_worker_num'], \PHP_EOL;
-            foreach (ServerManage::getServers() as $server)
+            foreach (ServerManager::getServers(ISwooleServer::class) as $server)
             {
+                /** @var ISwooleServer $server */
                 $serverPort = $server->getSwoolePort();
                 echo '[', $server->getConfig()['type'], '] ', $server->getName(), '; listen: ', $serverPort->host, ':', $serverPort->port, \PHP_EOL;
             }

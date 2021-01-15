@@ -8,7 +8,7 @@ imi中内置实现了中间件+控制器方式开发tcp，在一些场景也可�
 <?php
 namespace Imi\Swoole\Server\UdpServer\Listener;
 
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
