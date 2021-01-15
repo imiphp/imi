@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Drivers\Mysqli;
 
+use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
@@ -17,6 +18,8 @@ use mysqli;
 
 /**
  * mysqli MySQL驱动.
+ *
+ * @Bean("MysqliDriver")
  */
 class Driver extends Base implements IDb
 {

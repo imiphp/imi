@@ -67,72 +67,29 @@ return [
 ];
 ```
 
-旧写法：
+## 请求上下文单例配置
 
-> 依然支持，但不再推荐
+> 用于 php-fpm、Workerman 下
 
 ```php
 <?php
+
 return [
     'redis'	=>	[
-        'defaultPool'	=>	'alias1', // 默认连接池
+        'defaultPool'	=>	'alias1', // 默认连接名
         'quickFromRequestContext'	=>	true, // 从当前上下文中获取公用连接
-    ],
-    'pools' => [
-        // 连接池名称
-        'alias1' => [
-            // 同步池子，task进程使用
-            'sync' => [
-                'pool' => [
-                    'class'		=>	\Imi\Redis\SyncRedisPool::class,
-                    'config' => [
-                        // 池子中最多资源数
-                        // 'maxResources' => 10,
-                        // 池子中最少资源数
-                        // 'minResources' => 2,
-                        // 资源回收时间间隔，单位：秒
-                        // 'gcInterval' => 60,
-                        // 获取资源最大存活时间，单位：秒
-                        // 'maxActiveTime' => 3600,
-                        // 等待资源最大超时时间，单位：毫秒
-                        // 'waitTimeout' => 3000,
-                        // 心跳时间间隔，单位：秒
-                        // 'heartbeatInterval' => null,
-                        // 当获取资源时，是否检查状态
-                        // 'checkStateWhenGetResource' => true,
-                        // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
-                        // 'maxUsedTime' => null,
-                        // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
-                        // 'requestResourceCheckInterval' => 30,
-                        // 负载均衡-轮流
-                        // 'resourceConfigMode' => ResourceConfigMode::TURN,
-                        // 负载均衡-随机
-                        // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
-                    ],
-                ],
-                'resource' => [
-                    // 'host'	=>	'127.0.0.1',
-                    // 'port'	=>	6379,
-                    // 是否自动序列化变量
-                    // 'serialize'	=>	true,
-                    // 密码
-                    // 'password'	=>	null,
-                    // 第几个库
-                    // 'db'	=>	0,
-                ],
+        'connections'   => [
+            'alias1' => [
+                // 'host'	=>	'127.0.0.1',
+                // 'port'	=>	6379,
+                // 是否自动序列化变量
+                // 'serialize'	=>	true,
+                // 密码
+                // 'password'	=>	null,
+                // 第几个库
+                // 'db'	=>	0,
             ],
-            // 异步池子，worker进程使用
-            'async' => [
-                'pool'	=>	[
-                    'class'		=>	\Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
-                    'config'	=>	[
-                        // 同上
-                    ],
-                ],
-                // uri方式，以分号;分隔多个，参数使用query参数格式，特殊字符需要转码
-                'resource'  =>  'tcp://192.168.0.222&timeout=60;tcp://192.168.0.222',
-            ],
-        ]
+        ],
     ],
 ];
 ```

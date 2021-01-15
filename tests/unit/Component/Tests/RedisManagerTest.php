@@ -15,9 +15,29 @@ use PHPUnit\Framework\Assert;
  */
 class RedisManagerTest extends BaseTest
 {
+    const CONNECTION_NAME = 'tradition';
+
     public function testDefaultPoolName()
     {
         Assert::assertEquals('redis_test', RedisManager::getDefaultPoolName());
+    }
+
+    public function testGetInstance()
+    {
+        $a = RedisManager::getInstance(self::CONNECTION_NAME);
+        $b = RedisManager::getInstance(self::CONNECTION_NAME);
+        $this->assertEquals(spl_object_hash($a), spl_object_hash($b));
+        $this->assertTrue($a->set('test', 'imi'));
+        $this->assertEquals('imi', $a->get('test'));
+    }
+
+    public function testGetNewInstance()
+    {
+        $a = RedisManager::getInstance(self::CONNECTION_NAME);
+        $b = RedisManager::getNewInstance(self::CONNECTION_NAME);
+        $this->assertNotEquals(spl_object_hash($a), spl_object_hash($b));
+        $this->assertTrue($b->set('test', 'imi'));
+        $this->assertEquals('imi', $b->get('test'));
     }
 
     public function testNewInstance()

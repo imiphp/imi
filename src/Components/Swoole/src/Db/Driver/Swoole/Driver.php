@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Db\Driver\Swoole;
 
+use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
@@ -17,6 +18,8 @@ use Swoole\Coroutine\MySQL;
 
 /**
  * Swoole Coroutine MySQL 驱动.
+ *
+ * @Bean("SwooleMysqlDriver")
  */
 class Driver extends Base implements IDb
 {

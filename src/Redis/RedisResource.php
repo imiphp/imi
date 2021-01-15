@@ -37,29 +37,7 @@ class RedisResource extends BasePoolResource
      */
     public function open(): bool
     {
-        $config = $this->config;
-        $redis = $this->redis;
-        $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
-        if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
-        {
-            throw new \RedisException('Redis auth failed');
-        }
-        if (isset($config['db']) && !$redis->select($config['db']))
-        {
-            throw new \RedisException('Redis select db failed');
-        }
-        $options = $config['options'] ?? [];
-        if (($config['serialize'] ?? true) && !isset($options[\Redis::OPT_SERIALIZER]))
-        {
-            $options[\Redis::OPT_SERIALIZER] = \Redis::SERIALIZER_PHP;
-        }
-        foreach ($options as $key => $value)
-        {
-            if (!$redis->setOption($key, $value))
-            {
-                throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', $key, $value));
-            }
-        }
+        RedisManager::initRedisConnection($this->redis, $this->config);
 
         return true;
     }

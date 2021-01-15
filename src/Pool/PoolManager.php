@@ -138,7 +138,7 @@ class PoolManager
      *
      * @return IPoolResource
      */
-    public static function getResource(string $name)
+    public static function getResource(string $name): IPoolResource
     {
         $resource = static::getInstance($name)->getResource();
 
@@ -157,9 +157,9 @@ class PoolManager
      *
      * @param string $name
      *
-     * @return IPoolResource|null
+     * @return IPoolResource
      */
-    public static function getRequestContextResource(string $name)
+    public static function getRequestContextResource(string $name): IPoolResource
     {
         $requestContext = RequestContext::getContext();
         $resource = $requestContext['poolResource.' . $name] ?? null;
@@ -202,7 +202,6 @@ class PoolManager
     /**
      * 释放资源占用.
      *
-     * @param string        $name
      * @param IPoolResource $resource
      *
      * @return void

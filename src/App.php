@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Imi;
 
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Container;
+use Imi\Bean\ReflectionContainer;
+use Imi\Bean\Scanner;
+use Imi\Core\App\Contract\IApp;
+use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Event\Event;
+use Imi\Server\ServerManager;
+use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
-use Imi\Event\Event;
-use Imi\Bean\Scanner;
-use Imi\Util\Composer;
-use Imi\Bean\Container;
-use Imi\Server\ServerManager;
-use Imi\Core\App\Contract\IApp;
-use Imi\Bean\ReflectionContainer;
-use Imi\Core\App\Enum\LoadRuntimeResult;
-use Imi\Bean\Annotation\AnnotationManager;
 
 class App
 {
@@ -208,9 +208,9 @@ class App
      * @param string $name
      * @param array  $params
      *
-     * @return mixed
+     * @return object
      */
-    public static function getBean(string $name, ...$params)
+    public static function getBean(string $name, ...$params): object
     {
         return static::$container->get($name, ...$params);
     }

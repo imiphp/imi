@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Drivers\PdoMysql;
 
+use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
@@ -16,6 +17,8 @@ use PDO;
 
 /**
  * PDO MySQL驱动.
+ *
+ * @Bean("PdoMysqlDriver")
  */
 class Driver extends Base implements IDb
 {

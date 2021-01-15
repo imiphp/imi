@@ -137,169 +137,36 @@ return [
 ];
 ```
 
-旧写法：
+## 请求上下文单例配置
 
-> 依然支持，但不再推荐
+> 用于 php-fpm、Workerman 下
 
 ```php
 <?php
+
 return [
     'db'    => [
-        'defaultPool'   => 'alias1', // 默认连接池
+        'defaultPool'   => 'alias1', // 默认连接名
         'statement'     =>  [
             'cache' =>  true, // 是否开启 statement 缓存，默认开启
         ],
-    ],
-    'pools' => [
-        // 连接池名称
-        'alias1' => [
-            // 同步池子，task进程使用
-            'sync' => [
-                'pool' => [
-                    'class' => \Imi\Db\Pool\SyncDbPool::class,
-                    'config' => [
-                        // 池子中最多资源数
-                        // 'maxResources' => 10,
-                        // 池子中最少资源数
-                        // 'minResources' => 2,
-                        // 资源回收时间间隔，单位：秒
-                        // 'gcInterval' => 60,
-                        // 获取资源最大存活时间，单位：秒
-                        // 'maxActiveTime' => 3600,
-                        // 等待资源最大超时时间，单位：毫秒
-                        // 'waitTimeout' => 3000,
-                        // 心跳时间间隔，单位：秒
-                        // 'heartbeatInterval' => null,
-                        // 当获取资源时，是否检查状态
-                        // 'checkStateWhenGetResource' => true,
-                        // 每次获取资源最长使用时间，单位：秒；为 null 则不限制
-                        // 'maxUsedTime' => null,
-                        // 当前请求上下文资源检查状态间隔，单位：支持小数的秒；为 null 则不限制
-                        // 'requestResourceCheckInterval' => 30,
-                        // 负载均衡-轮流
-                        // 'resourceConfigMode' => ResourceConfigMode::TURN,
-                        // 负载均衡-随机
-                        // 'resourceConfigMode' => ResourceConfigMode::RANDOM,
-                    ],
-                ],
-                'resource' => [
-                    'host' => '127.0.0.1',
-                    'username' => 'root',
-                    'password' => 'root',
-                    'database' => 'database',
-                    // 'port'    => '3306',
-                    // 'timeout' => '建立连接超时时间',
-                    // 'charset' => '',
-                    // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
-                    // 使用 hook pdo 驱动（缺省默认）
-                    // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                    // 使用 hook mysqli 驱动
-                    // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
-                    // 使用 Swoole MySQL 驱动
-                    // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
-                ],
-            ],
-            // 异步池子，worker进程使用
-            'async' => [
-                'pool'	=>	[
-                    'class'		=>	\Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                    'config'	=>	[
-                        // 同上
-                    ],
-                ],
-                // resource也可以定义多个连接
-                'resource'	=>	[
-                    [
-                        'host'		=> '127.0.0.1',
-                        'username'		=> 'root',
-                        'password'	=> 'root',
-                        'database'	=> 'database',
-                        // 'timeout' => '建立连接超时时间',
-                        // 'charset' => '',
-                        // 'options' => [], // PDO连接选项
-                        // 使用 hook pdo 驱动（缺省默认）
-                        // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                        // 使用 hook mysqli 驱动
-                        // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
-                        // 使用 Swoole MySQL 驱动
-                        // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
-                    ],
-                    [
-                        'host'		=> '127.0.0.2',
-                        'username'		=> 'root',
-                        'password'	=> 'root',
-                        'database'	=> 'database',
-                        // 'timeout' => '建立连接超时时间',
-                        // 'charset' => '',
-                        // 'options' => [], // PDO连接选项
-                        // 使用 hook pdo 驱动（缺省默认）
-                        // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                        // 使用 hook mysqli 驱动
-                        // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
-                        // 使用 Swoole MySQL 驱动
-                        // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
-                    ]
-                ],
+        'connections' => [
+            'alias1' => [
+                'host' => '127.0.0.1',
+                'username' => 'root',
+                'password' => 'root',
+                'database' => 'database',
+                // 'port'    => '3306',
+                // 'timeout' => '建立连接超时时间',
+                // 'charset' => '',
+                // 使用 hook pdo 驱动（缺省默认）
+                // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 使用 hook mysqli 驱动
+                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
+                // 使用 Swoole MySQL 驱动
+                // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
             ],
         ],
-        // 从库配置
-        // 原连接池名后加.slave即为从库配置，非必设
-        // 如果配置了，默认查询走从库，增删改走主库
-        // 如果在事务中，默认都走主库
-        'alias1.slave' => [
-            // 同步池子，task进程使用
-            'sync' => [
-                'pool' => [
-                    'class' => \Imi\Db\Pool\SyncDbPool::class,
-                    'config' => [
-                        // 池子中最多资源数
-                        // 'maxResources' => 10,
-                        // 池子中最少资源数
-                        // 'minResources' => 2,
-                        // 资源回收时间间隔，单位：秒
-                        // 'gcInterval' => 60,
-                        // 获取资源最大存活时间，单位：秒
-                        // 'maxActiveTime' => 3600,
-                        // 等待资源最大超时时间，单位：毫秒
-                        // 'waitTimeout' => 3000,
-                    ],
-                ],
-                'resource' => [
-                    'host' => '127.0.0.1',
-                    'username' => 'root',
-                    'password' => 'root',
-                    'database' => 'database',
-                    // 'port'    => '3306',
-                    // 'timeout' => '建立连接超时时间',
-                    // 'charset' => '',
-                    // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
-                ],
-            ],
-            // 异步池子，worker进程使用
-            'async' => [
-                'pool'	=>	[
-                    'class'		=>	\Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                    'config'	=>	[
-                        // 同上
-                    ],
-                ],
-                'resource'	=>	[
-                    'host'		=> '127.0.0.1',
-                    'username'		=> 'root',
-                    'password'	=> 'root',
-                    'database'	=> 'database',
-                    // 'timeout' => '建立连接超时时间',
-                    // 'charset' => '',
-                    // 'options' => [], // PDO连接选项
-                ],
-                // uri 写法
-                // 'resource'  =>  [
-                //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-                //     'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-                // ],
-                // 'resource'  =>  'tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60;tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60',
-            ],
-        ]
     ],
 ];
 ```

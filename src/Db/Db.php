@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db;
 
+use Imi\App;
 use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Interfaces\IDb;
@@ -30,7 +31,25 @@ class Db
      */
     public static function getNewInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
-        return PoolManager::getResource(static::parsePoolName($poolName, $queryType))->getInstance();
+        $poolName = static::parsePoolName($poolName, $queryType);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getResource($poolName)->getInstance();
+        }
+        else
+        {
+            $config = Config::get('@app.db.connections.' . $poolName);
+            if (null === $config)
+            {
+                throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+            }
+
+            /** @var IDb $db */
+            $db = App::getBean($config['dbClass'] ?? \Imi\Db\Drivers\PdoMysql\Driver::class, $config);
+            $db->open();
+
+            return $db;
+        }
     }
 
     /**
@@ -39,11 +58,34 @@ class Db
      * @param string|null $poolName  连接池名称
      * @param int         $queryType 查询类型
      *
-     * @return \Imi\Db\Interfaces\IDb|null
+     * @return \Imi\Db\Interfaces\IDb
      */
     public static function getInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
-        return PoolManager::getRequestContextResource(static::parsePoolName($poolName, $queryType))->getInstance();
+        $poolName = static::parsePoolName($poolName, $queryType);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::getRequestContextResource($poolName)->getInstance();
+        }
+        else
+        {
+            $requestContextKey = '__db.' . $poolName;
+            $context = RequestContext::getContext();
+            $db = $context[$requestContextKey] ?? null;
+            if (null === $db)
+            {
+                $config = Config::get('@app.db.connections.' . $poolName);
+                if (null === $config)
+                {
+                    throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
+                }
+                /** @var IDb $db */
+                $db = $context[$requestContextKey] = App::getBean($config['dbClass'] ?? \Imi\Db\Drivers\PdoMysql\Driver::class, $config);
+                $db->open();
+            }
+
+            return $db;
+        }
     }
 
     /**
@@ -55,7 +97,7 @@ class Db
      */
     public static function release(IDb $db)
     {
-        $resource = RequestContext::get('poolResources.' . spl_object_hash($db));
+        $resource = RequestContext::get('poolResources')[spl_object_hash($db)] ?? null;
         if (null !== $resource)
         {
             PoolManager::releaseResource($resource);
@@ -141,9 +183,18 @@ class Db
      */
     public static function use(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
-        return PoolManager::use(static::parsePoolName($poolName, $queryType), function (IPoolResource $resource, IDb $db) use ($callable) {
-            return $callable($db);
-        });
+        $poolName = static::parsePoolName($poolName, $queryType);
+
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::use($poolName, function (IPoolResource $resource, IDb $db) use ($callable) {
+                return $callable($db);
+            });
+        }
+        else
+        {
+            return $callable(static::getInstance($poolName));
+        }
     }
 
     /**
@@ -159,9 +210,17 @@ class Db
      */
     public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
     {
-        return PoolManager::use(static::parsePoolName($poolName, $queryType), function (IPoolResource $resource, IDb $db) use ($callable) {
-            return static::trans($db, $callable);
-        });
+        $poolName = static::parsePoolName($poolName, $queryType);
+        if (PoolManager::exists($poolName))
+        {
+            return PoolManager::use($poolName, function (IPoolResource $resource, IDb $db) use ($callable) {
+                return static::trans($db, $callable);
+            });
+        }
+        else
+        {
+            return static::trans(static::getInstance($poolName), $callable);
+        }
     }
 
     /**

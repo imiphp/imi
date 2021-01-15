@@ -24,7 +24,6 @@ use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
-use Imi\Pool\PoolManager;
 use Imi\Util\Pagination;
 
 /**
@@ -1426,17 +1425,8 @@ class Query implements IQuery
         {
             $poolName = Db::getDefaultPoolName();
         }
-        if (PoolManager::hasRequestContextResource($poolName))
-        {
-            $resource = PoolManager::getRequestContextResource($poolName);
-            $db = $resource->getInstance();
 
-            return $db->inTransaction();
-        }
-        else
-        {
-            return false;
-        }
+        return Db::getInstance($poolName)->inTransaction();
     }
 
     /**
