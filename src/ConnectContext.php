@@ -286,7 +286,7 @@ class ConnectContext
      *
      * @return bool
      */
-    public static function bindNx(string $flag, ?int $fd = null)
+    public static function bindNx(string $flag, ?int $fd = null): bool
     {
         if (!$fd)
         {

@@ -28,7 +28,7 @@ class Config
      *
      * @return bool
      */
-    public static function addConfig($name, array $config): bool
+    public static function addConfig(string $name, array $config): bool
     {
         $nameSplit = explode('.', $name);
 
@@ -66,11 +66,12 @@ class Config
     /**
      * 加载配置列表.
      *
-     * @param array $configList
+     * @param string $name
+     * @param array  $configList
      *
      * @return void
      */
-    public static function load($name, array $configList)
+    public static function load(string $name, array $configList)
     {
         foreach ($configList as $alias => $fileName)
         {
@@ -86,7 +87,7 @@ class Config
      *
      * @return void
      */
-    public static function setConfig($name, array $config)
+    public static function setConfig(string $name, array $config)
     {
         static::$configs[$name] = new ArrayData($config);
     }
