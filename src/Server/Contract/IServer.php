@@ -55,4 +55,11 @@ interface IServer extends IEvent
      * @return bool
      */
     public function isSSL(): bool;
+
+    /**
+     * 开启服务
+     *
+     * @return void
+     */
+    public function start();
 }

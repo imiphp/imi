@@ -134,6 +134,20 @@ abstract class Base extends BaseServer implements ISwooleServer
     }
 
     /**
+     * 开启服务
+     *
+     * @return void
+     */
+    public function start()
+    {
+        if ($this->isSubServer())
+        {
+            throw new \RuntimeException('Subserver cannot start, please start the main server');
+        }
+        $this->swooleServer->start();
+    }
+
+    /**
      * 绑定服务器事件.
      *
      * @return void
