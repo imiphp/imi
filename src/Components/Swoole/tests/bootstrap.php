@@ -177,7 +177,7 @@ function startServer()
         };
     }
 
-    batch($callbacks, 120, swoole_cpu_num());
+    batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
 }
 
 goWait('startServer');
