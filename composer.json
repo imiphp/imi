@@ -49,7 +49,7 @@
         "install-test": "php --ri swoole && composer install && cd ../ && composer test",
         "test-swoole": "src/Components/Swoole/tests/swoole-phpunit -c src/Components/Swoole/tests/phpunit.xml",
         "test-workerman": "tests/phpunit -c src/Components/Workerman/tests/phpunit.xml",
-        "test-all": "@composer test && @composer test-swoole && @composer test-workerman",
+        "test-all": "composer test && composer test-swoole && composer test-workerman",
         "install-test-all": "php --ri swoole && composer install && cd ../ && composer test-all"
     },
     "extra": {
