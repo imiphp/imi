@@ -9,7 +9,7 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSConfig;
+use Imi\Server\WebSocket\Route\Annotation\WSConfig;
 
 /**
  * 测试.

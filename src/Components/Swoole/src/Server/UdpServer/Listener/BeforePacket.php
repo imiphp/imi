@@ -9,7 +9,7 @@ use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IPacketEventListener;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
 use Imi\Swoole\Server\UdpServer\Message\PacketData;
-use Imi\Swoole\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * Packet事件前置处理.
@@ -27,7 +27,7 @@ class BeforePacket implements IPacketEventListener
      */
     public function handle(PacketEventParam $e)
     {
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             return;
         }

@@ -6,7 +6,7 @@ namespace Imi\Swoole\Server\UdpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Swoole\Server\Annotation\ServerInject;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Swoole\Server\UdpServer\Error\IUdpRouteNotFoundHandler;
 use Imi\Swoole\Server\UdpServer\IPacketHandler;
 use Imi\Swoole\Server\UdpServer\Message\IPacketData;

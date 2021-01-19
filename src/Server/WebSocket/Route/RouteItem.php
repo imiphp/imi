@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\WebSocket\Route;
+namespace Imi\Server\WebSocket\Route;
 
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 
 class RouteItem
 {
     /**
      * 注解.
      *
-     * @var \Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute
+     * @var \Imi\Server\WebSocket\Route\Annotation\WSRoute
      */
     public WSRoute $annotation;
 

@@ -8,9 +8,9 @@ namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute;
+use Imi\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Server\WebSocket\Route\Annotation\WSController;
 
 /**
  * 数据收发测试

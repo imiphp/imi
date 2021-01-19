@@ -9,8 +9,8 @@ use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IHandShakeEventListener;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
-use Imi\Swoole\Worker;
 use Imi\Util\Http\Consts\StatusCode;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * HandShake事件前置处理.
@@ -30,7 +30,7 @@ class BeforeHandShake implements IHandShakeEventListener
     {
         $request = $e->request;
         $response = $e->response;
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             $response->setStatus(StatusCode::SERVICE_UNAVAILABLE)->send();
             $e->stopPropagation();

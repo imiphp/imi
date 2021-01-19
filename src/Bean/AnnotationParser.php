@@ -51,14 +51,14 @@ class AnnotationParser
     {
         // 注册注解自动加载
         AnnotationRegistry::registerLoader(function (string $class): bool {
-            return class_exists($class) || interface_exists($class);
+            return class_exists($class) || interface_exists($class, false);
         });
         $this->reader = new AnnotationReader();
     }
 
     public function parse(string $className)
     {
-        if (!class_exists($className) && !interface_exists($className) && !trait_exists($className))
+        if (!class_exists($className) && !interface_exists($className, false) && !trait_exists($className, false))
         {
             return;
         }

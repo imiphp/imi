@@ -173,7 +173,7 @@ class Response extends AbstractMessage implements IResponse
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
         $self = clone $this;
-        $self->cookies[] = [
+        $self->cookies[$key] = [
             'key'       => $key,
             'value'     => $value,
             'expire'    => $expire,
@@ -201,7 +201,7 @@ class Response extends AbstractMessage implements IResponse
      */
     public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
     {
-        $this->cookies[] = [
+        $this->cookies[$key] = [
             'key'       => $key,
             'value'     => $value,
             'expire'    => $expire,

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\WebSocket\Route;
+namespace Imi\Server\WebSocket\Route;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\ConnectContext;
 use Imi\Log\Log;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Route\RouteCallable;
-use Imi\Swoole\Server\Annotation\ServerInject;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute as WSRouteAnnotation;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute as WSRouteAnnotation;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
 
@@ -23,7 +23,7 @@ class WSRoute implements IRoute
     /**
      * 路由规则.
      *
-     * @var \Imi\Swoole\Server\WebSocket\Route\RouteItem[]
+     * @var \Imi\Server\WebSocket\Route\RouteItem[]
      */
     protected array $rules = [];
 
@@ -64,9 +64,9 @@ class WSRoute implements IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute $annotation
-     * @param mixed                                                $callable
-     * @param array                                                $options
+     * @param Imi\Server\WebSocket\Route\Annotation\WSRoute $annotation
+     * @param mixed                                         $callable
+     * @param array                                         $options
      *
      * @return void
      */
@@ -97,7 +97,7 @@ class WSRoute implements IRoute
     /**
      * 路由规则是否存在.
      *
-     * @param Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute $rule
+     * @param Imi\Server\WebSocket\Route\Annotation\WSRoute $rule
      *
      * @return bool
      */
@@ -109,7 +109,7 @@ class WSRoute implements IRoute
     /**
      * 获取路由规则.
      *
-     * @return \Imi\Swoole\Server\WebSocket\Route\RouteItem[]
+     * @return \Imi\Server\WebSocket\Route\RouteItem[]
      */
     public function getRules(): array
     {

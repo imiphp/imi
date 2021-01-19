@@ -11,7 +11,7 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\DataParser\DataParser;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
-use Imi\Swoole\Worker;
+use Imi\Worker;
 
 /**
  * 服务器工具类.

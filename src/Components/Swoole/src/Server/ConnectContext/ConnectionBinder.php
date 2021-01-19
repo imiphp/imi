@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Redis\Redis;
 use Imi\Redis\RedisHandler;
-use Imi\Swoole\Worker;
+use Imi\Worker;
 
 /**
  * 连接绑定器.

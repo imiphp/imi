@@ -27,7 +27,7 @@ class ActionMiddleware implements IMiddleware
     {
         $requestContext = RequestContext::getContext();
         // 获取路由结果
-        /** @var \Imi\Swoole\Server\WebSocket\Route\RouteResult $result */
+        /** @var \Imi\Server\WebSocket\Route\RouteResult $result */
         $result = $requestContext['routeResult'] ?? null;
         if (null === $result)
         {

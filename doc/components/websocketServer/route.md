@@ -51,7 +51,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Swoole\Server\WebSocket\Route\RouteItem
+ * @var \Imi\Server\WebSocket\Route\RouteItem
  */
 public $routeItem;
 
@@ -76,7 +76,7 @@ public $callable;
 /**
  * 注解
  *
- * @var \Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute
+ * @var \Imi\Server\WebSocket\Route\Annotation\WSRoute
  */
 public $annotation;
 

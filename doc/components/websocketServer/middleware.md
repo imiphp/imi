@@ -69,10 +69,10 @@ namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSMiddleware;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute;
+use Imi\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Server\WebSocket\Route\Annotation\WSMiddleware;
 
 /**
  * 数据收发测试

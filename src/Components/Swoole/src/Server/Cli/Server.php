@@ -62,6 +62,7 @@ class Server extends BaseCommand
                 // 创建服务器对象们后置操作
                 Event::trigger('IMI.SERVERS.CREATE.AFTER');
 
+                /** @var ISwooleServer $server */
                 $server = ServerManager::getServer('main', ISwooleServer::class);
                 $swooleServer = $server->getSwooleServer();
                 // 守护进程支持

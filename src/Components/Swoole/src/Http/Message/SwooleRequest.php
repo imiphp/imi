@@ -130,4 +130,24 @@ class SwooleRequest extends Request
     {
         $this->setUploadedFiles($this->swooleRequest->files ?? []);
     }
+
+    /**
+     * Get swoole的http请求对象
+     *
+     * @return \Swoole\Http\Request
+     */
+    public function getSwooleRequest(): \Swoole\Http\Request
+    {
+        return $this->swooleRequest;
+    }
+
+    /**
+     * 获取对应的服务器.
+     *
+     * @return \Imi\Swoole\Server\Base
+     */
+    public function getServerInstance(): \Imi\Swoole\Server\Base
+    {
+        return $this->serverInstance;
+    }
 }

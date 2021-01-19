@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Server\Route;
 
-use Imi\Swoole\Server\Base;
+use Imi\Server\Contract\IServer;
 
 class RouteCallable
 {
     /**
      * 服务器对象
      *
-     * @var \Imi\Swoole\Server\Base
+     * @var IServer
      */
-    public Base $server;
+    public IServer $server;
 
     /**
      * 类名.
@@ -29,7 +29,7 @@ class RouteCallable
      */
     public string $methodName = '';
 
-    public function __construct(Base $server, string $className, string $methodName)
+    public function __construct(IServer $server, string $className, string $methodName)
     {
         $this->server = $server;
         $this->className = $className;

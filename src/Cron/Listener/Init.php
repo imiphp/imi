@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\Cron\Listener;
 
-use Imi\Aop\Annotation\Inject;
+use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
  * @Listener(eventName="IMI.SERVERS.CREATE.AFTER",priority=Imi\Util\ImiPriority::IMI_MIN)
@@ -17,20 +19,6 @@ use Imi\Event\IEventListener;
  */
 class Init implements IEventListener
 {
-    /**
-     * @Inject("CronManager")
-     *
-     * @var \Imi\Cron\CronManager
-     */
-    protected $cronManager;
-
-    /**
-     * @Inject("AutoRunProcessManager")
-     *
-     * @var \Imi\Swoole\Process\AutoRunProcessManager
-     */
-    protected $autoRunProcessManager;
-
     /**
      * 事件处理方法.
      *
@@ -40,12 +28,21 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        // 未启用定时任务进程不初始化
-        if (!$this->autoRunProcessManager->exists('CronProcess'))
+        $servers = ServerManager::getServers();
+        $server = reset($servers);
+        if (!$server instanceof ISwooleServer)
         {
             return;
         }
-        $cronManager = $this->cronManager;
+        /** @var \Imi\Cron\CronManager $cronManager */
+        $cronManager = App::getBean('CronManager');
+        /** @var \Imi\Swoole\Process\AutoRunProcessManager $autoRunProcessManager */
+        $autoRunProcessManager = App::getBean('AutoRunProcessManager');
+        // 未启用定时任务进程不初始化
+        if (!$autoRunProcessManager->exists('CronProcess'))
+        {
+            return;
+        }
         foreach (AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
             $cronManager->addCronByAnnotation($point->getAnnotation(), $point->getClass());

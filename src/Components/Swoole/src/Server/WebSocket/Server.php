@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
@@ -50,6 +51,16 @@ class Server extends Base
      * @var bool
      */
     private bool $http2 = false;
+
+    /**
+     * 获取协议名称.
+     *
+     * @return string
+     */
+    public function getProtocol(): string
+    {
+        return Protocol::WEBSOCKET;
+    }
 
     /**
      * 创建 swoole 服务器对象

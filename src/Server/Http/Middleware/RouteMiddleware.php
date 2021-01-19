@@ -6,9 +6,9 @@ namespace Imi\Server\Http\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Error\IHttpNotFoundHandler;
 use Imi\Server\Http\Route\HttpRoute;
-use Imi\Swoole\Server\Annotation\ServerInject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

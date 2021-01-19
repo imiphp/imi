@@ -72,20 +72,6 @@ class SwooleResponse extends Response
     }
 
     /**
-     * 设置服务器端重定向
-     * 默认状态码为302.
-     *
-     * @param string $url
-     * @param int    $status
-     *
-     * @return static
-     */
-    public function redirect(string $url, int $status = StatusCode::FOUND): self
-    {
-        return $this->setStatus($status)->setHeader('location', $url);
-    }
-
-    /**
      * 发送所有响应数据.
      *
      * @return static

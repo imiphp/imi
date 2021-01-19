@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\WebSocket\Parser;
+namespace Imi\Server\WebSocket\Parser;
 
 use Imi\Bean\Parser\BaseParser;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Server\WebSocket\Route\Annotation\WSController;
 use Imi\Util\Traits\TServerAnnotationParser;
 
 /**

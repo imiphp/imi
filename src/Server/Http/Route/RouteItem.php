@@ -6,7 +6,7 @@ namespace Imi\Server\Http\Route;
 
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSConfig;
+use Imi\Server\WebSocket\Route\Annotation\WSConfig;
 
 class RouteItem
 {

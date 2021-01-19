@@ -7,7 +7,7 @@ namespace Imi\Swoole\Server\Http\Listener;
 use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\ICloseEventListener;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
-use Imi\Swoole\Worker;
+use Imi\Swoole\SwooleWorker;
 
 class Http2BeforeClose implements ICloseEventListener
 {
@@ -20,7 +20,7 @@ class Http2BeforeClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e)
     {
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             $e->stopPropagation();
 

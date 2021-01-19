@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Controller;
 
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
-use Imi\Swoole\Server\Annotation\ServerInject;
 
 /**
  * 单例 Http 控制器.

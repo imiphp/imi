@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\WebSocket\Route;
+namespace Imi\Server\WebSocket\Route;
 
 interface IRoute
 {

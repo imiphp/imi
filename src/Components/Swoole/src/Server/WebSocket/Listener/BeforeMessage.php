@@ -9,7 +9,7 @@ use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IMessageEventListener;
 use Imi\Swoole\Server\Event\Param\MessageEventParam;
 use Imi\Swoole\Server\WebSocket\Message\Frame;
-use Imi\Swoole\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * Message事件前置处理.
@@ -28,7 +28,7 @@ class BeforeMessage implements IMessageEventListener
     public function handle(MessageEventParam $e)
     {
         $frame = $e->frame;
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             $e->server->getSwooleServer()->close($frame->fd);
             $e->stopPropagation();

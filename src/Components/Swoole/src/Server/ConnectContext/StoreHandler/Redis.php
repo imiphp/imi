@@ -15,7 +15,7 @@ use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\AtomicManager;
 use Imi\Swoole\Util\Swoole;
-use Imi\Swoole\Worker;
+use Imi\Worker;
 
 /**
  * 连接上下文存储处理器-Redis.

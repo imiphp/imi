@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\Annotation;
+namespace Imi\Server\Annotation;
 
 use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\App;
 use Imi\Bean\Annotation\Parser;
 use Imi\RequestContext;
-use Imi\Swoole\Util\Coroutine;
 
 /**
  * 服务器容器对象注入
@@ -46,7 +45,7 @@ class ServerInject extends BaseInjectValue
      */
     public function getRealValue()
     {
-        if (Coroutine::isIn() && $server = RequestContext::getServer())
+        if ($server = RequestContext::getServer())
         {
             return $server->getBean($this->name, ...$this->args);
         }

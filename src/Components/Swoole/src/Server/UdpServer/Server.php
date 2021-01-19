@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\UdpServer;
 
 use Imi\App;
-use Imi\Swoole\Server\Base;
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
 
@@ -24,6 +25,16 @@ class Server extends Base
      * @var bool
      */
     private bool $ssl = false;
+
+    /**
+     * 获取协议名称.
+     *
+     * @return string
+     */
+    public function getProtocol(): string
+    {
+        return Protocol::UDP;
+    }
 
     /**
      * 创建 swoole 服务器对象

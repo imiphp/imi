@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Cron\Message;
 
 use Imi\App;
-use Imi\Swoole\Worker;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
+use Imi\Worker;
 
 class Result implements IMessage
 {

@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\WebSocket\Listener;
 
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Main\Helper;
-use Imi\Swoole\Worker;
-use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Server\ServerManager;
-use Imi\Bean\Annotation\Listener;
-use Imi\Server\Route\TMiddleware;
+use Imi\Main\Helper;
+use Imi\RequestContext;
 use Imi\Server\Route\RouteCallable;
-use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Server\Route\TMiddleware;
+use Imi\Server\ServerManager;
+use Imi\Server\WebSocket\Parser\WSControllerParser;
+use Imi\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Server\WebSocket\Route\Annotation\WSMiddleware;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 use Imi\Swoole\Server\Contract\ISwooleServer;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
-use Imi\Swoole\Server\WebSocket\Parser\WSControllerParser;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSMiddleware;
+use Imi\Worker;
 
 /**
  * WebSocket 服务器路由初始化.
@@ -59,11 +59,11 @@ class WSRouteInit implements IEventListener
                 continue;
             }
             $context['server'] = $server;
-            /** @var \Imi\Swoole\Server\WebSocket\Route\WSRoute $route */
+            /** @var \Imi\Server\WebSocket\Route\WSRoute $route */
             $route = $server->getBean('WSRoute');
             foreach ($controllerParser->getByServer($name) as $className => $classItem)
             {
-                /** @var \Imi\Swoole\Server\WebSocket\Route\Annotation\WSController $classAnnotation */
+                /** @var \Imi\Server\WebSocket\Route\Annotation\WSController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
@@ -73,7 +73,7 @@ class WSRouteInit implements IEventListener
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, WSAction::class) as $methodName => $actionAnnotations)
                 {
-                    /** @var \Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute[] $routes */
+                    /** @var \Imi\Server\WebSocket\Route\Annotation\WSRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, WSRoute::class);
                     if (!isset($routes[0]))
                     {

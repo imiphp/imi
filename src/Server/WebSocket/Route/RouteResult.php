@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\WebSocket\Route;
+namespace Imi\Server\WebSocket\Route;
 
 use Imi\Server\Route\RouteCallable;
 
@@ -11,7 +11,7 @@ class RouteResult
     /**
      * 路由配置项.
      *
-     * @var \Imi\Swoole\Server\WebSocket\Route\RouteItem
+     * @var \Imi\Server\WebSocket\Route\RouteItem
      */
     public RouteItem $routeItem;
 

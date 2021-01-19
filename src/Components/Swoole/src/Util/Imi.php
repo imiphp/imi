@@ -6,7 +6,7 @@ namespace Imi\Swoole\Util;
 
 use Imi\App;
 use Imi\Config;
-use Imi\Swoole\Worker;
+use Imi\Worker;
 
 class Imi
 {

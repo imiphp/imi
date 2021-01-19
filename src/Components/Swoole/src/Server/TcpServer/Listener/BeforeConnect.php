@@ -9,7 +9,7 @@ use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IConnectEventListener;
 use Imi\Swoole\Server\Event\Param\ConnectEventParam;
-use Imi\Swoole\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * Connect事件前置处理.
@@ -27,7 +27,7 @@ class BeforeConnect implements IConnectEventListener
      */
     public function handle(ConnectEventParam $e)
     {
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             $e->server->getSwooleServer()->close($e->fd);
             $e->stopPropagation();

@@ -440,7 +440,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 MediaType::MULTIPART_FORM_DATA,
             ]))
             {
-                $parsedBody = $this->post;
+                $parsedBody = $this->post();
             }
             // json
             elseif (\in_array($contentType, [
@@ -448,7 +448,16 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
                 MediaType::APPLICATION_JSON_UTF8,
             ]))
             {
-                $parsedBody = json_decode($this->body->getContents(), !Config::get('@currentServer.jsonBodyIsObject', false));
+                $content = $this->body->getContents();
+                $this->post = $data = json_decode($content, true);
+                if (Config::get('@currentServer.jsonBodyIsObject', false))
+                {
+                    $parsedBody = json_decode($content, false);
+                }
+                else
+                {
+                    $parsedBody = $data;
+                }
             }
             // xml
             elseif (\in_array($contentType, [
@@ -465,7 +474,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             // 其它
             else
             {
-                $parsedBody = (object) $this->body->getContents();
+                $parsedBody = null;
+                $this->post = [];
             }
         }
 

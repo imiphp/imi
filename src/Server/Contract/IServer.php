@@ -20,6 +20,13 @@ interface IServer extends IEvent
     public function getName(): string;
 
     /**
+     * 获取协议名称.
+     *
+     * @return string
+     */
+    public function getProtocol(): string;
+
+    /**
      * 获取配置信息.
      *
      * @return array

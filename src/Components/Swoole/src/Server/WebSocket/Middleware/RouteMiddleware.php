@@ -6,11 +6,11 @@ namespace Imi\Swoole\Server\WebSocket\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Swoole\Server\Annotation\ServerInject;
+use Imi\Server\Annotation\ServerInject;
+use Imi\Server\WebSocket\Route\WSRoute;
 use Imi\Swoole\Server\WebSocket\Error\IWSRouteNotFoundHandler;
 use Imi\Swoole\Server\WebSocket\IMessageHandler;
 use Imi\Swoole\Server\WebSocket\Message\IFrame;
-use Imi\Swoole\Server\WebSocket\Route\WSRoute;
 
 /**
  * @Bean("WebSocketRouteMiddleware")
@@ -20,7 +20,7 @@ class RouteMiddleware implements IMiddleware
     /**
      * @ServerInject("WSRoute")
      *
-     * @var \Imi\Swoole\Server\WebSocket\Route\WSRoute
+     * @var \Imi\Server\WebSocket\Route\WSRoute
      */
     protected WSRoute $route;
 

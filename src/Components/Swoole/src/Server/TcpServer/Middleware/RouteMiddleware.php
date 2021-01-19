@@ -6,7 +6,7 @@ namespace Imi\Swoole\Server\TcpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Swoole\Server\Annotation\ServerInject;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Swoole\Server\TcpServer\Error\ITcpRouteNotFoundHandler;
 use Imi\Swoole\Server\TcpServer\IReceiveHandler;
 use Imi\Swoole\Server\TcpServer\Message\IReceiveData;

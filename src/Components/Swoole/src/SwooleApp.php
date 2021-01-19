@@ -17,22 +17,13 @@ use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
+use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
 {
-    /**
-     * 获取应用类型.
-     *
-     * @return string
-     */
-    public function getType(): string
-    {
-        return 'swoole';
-    }
-
     /**
      * 构造方法.
      *
@@ -49,6 +40,16 @@ class SwooleApp extends CliApp
         Event::one('IMI.SCAN_APP', function () {
             $this->onScanApp();
         });
+    }
+
+    /**
+     * 获取应用类型.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return 'swoole';
     }
 
     /**
@@ -117,6 +118,7 @@ class SwooleApp extends CliApp
             AtomicManager::setNames(Config::get($alias . '.atomics', []));
         }
         AtomicManager::init();
+        Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
         $initCallback = function () {
             PoolManager::init();
             CacheManager::init();

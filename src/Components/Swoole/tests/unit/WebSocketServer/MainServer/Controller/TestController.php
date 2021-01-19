@@ -7,10 +7,10 @@ namespace Imi\Swoole\Test\WebSocketServer\MainServer\Controller;
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
 use Imi\RequestContext;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSAction;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSController;
-use Imi\Swoole\Server\WebSocket\Route\Annotation\WSRoute;
-use Imi\Swoole\Worker;
+use Imi\Server\WebSocket\Route\Annotation\WSAction;
+use Imi\Server\WebSocket\Route\Annotation\WSController;
+use Imi\Server\WebSocket\Route\Annotation\WSRoute;
+use Imi\Worker;
 
 /**
  * 数据收发测试.

@@ -8,7 +8,7 @@ use ArrayObject;
 use Imi\Bean\Container;
 use Imi\Core\Context\Contract\IContextManager;
 use Imi\Core\Context\DefaultContextManager;
-use Imi\Swoole\Server\Base;
+use Imi\Server\Contract\IServer;
 
 class RequestContext
 {
@@ -159,9 +159,9 @@ class RequestContext
     /**
      * 获取当前的服务器对象
      *
-     * @return \Imi\Swoole\Server\Base|null
+     * @return IServer|null
      */
-    public static function getServer(): ?Base
+    public static function getServer(): ?IServer
     {
         return static::get('server');
     }

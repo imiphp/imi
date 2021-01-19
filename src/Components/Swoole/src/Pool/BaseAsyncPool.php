@@ -8,7 +8,7 @@ use Imi\Event\Event;
 use Imi\Pool\BasePool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Swoole\Util\Coroutine;
-use Imi\Swoole\Worker;
+use Imi\Worker;
 use Swoole\Coroutine\Channel;
 
 /**

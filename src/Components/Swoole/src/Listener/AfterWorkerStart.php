@@ -11,8 +11,8 @@ use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Util\Swoole;
-use Imi\Swoole\Worker;
 use Imi\Util\Imi;
+use Imi\Worker;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**

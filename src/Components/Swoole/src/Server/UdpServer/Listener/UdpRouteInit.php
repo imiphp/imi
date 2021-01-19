@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\UdpServer\Listener;
 
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Main\Helper;
-use Imi\Swoole\Worker;
-use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Server\ServerManager;
-use Imi\Bean\Annotation\Listener;
-use Imi\Server\Route\TMiddleware;
+use Imi\Main\Helper;
+use Imi\RequestContext;
 use Imi\Server\Route\RouteCallable;
-use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Server\Route\TMiddleware;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute;
 use Imi\Swoole\Server\UdpServer\Parser\UdpControllerParser;
 use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpAction;
 use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpMiddleware;
+use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute;
+use Imi\Worker;
 
 /**
  * UDP 服务器路由初始化.

@@ -223,7 +223,9 @@ class RequestTest extends BaseTest
         $data = $response->json(true);
         $this->assertEquals([
             'get'           => ['get' => 1],
-            'post'          => [],
+            'post'          => [
+                'parsedBody'    => 3,
+            ],
             'parsedBody'    => [
                 'parsedBody'    => 3,
             ],

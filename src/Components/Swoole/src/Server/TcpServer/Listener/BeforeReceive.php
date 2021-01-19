@@ -9,7 +9,7 @@ use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IReceiveEventListener;
 use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
 use Imi\Swoole\Server\TcpServer\Message\ReceiveData;
-use Imi\Swoole\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * Receive事件前置处理.
@@ -28,7 +28,7 @@ class BeforeReceive implements IReceiveEventListener
     public function handle(ReceiveEventParam $e)
     {
         $fd = $e->fd;
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             $e->server->getSwooleServer()->close($fd);
             $e->stopPropagation();

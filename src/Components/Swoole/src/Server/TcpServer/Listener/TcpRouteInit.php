@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\TcpServer\Listener;
 
+use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\Annotation\Listener;
 use Imi\Config;
-use Imi\Main\Helper;
-use Imi\Swoole\Worker;
-use Imi\RequestContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Server\ServerManager;
-use Imi\Bean\Annotation\Listener;
-use Imi\Server\Route\TMiddleware;
+use Imi\Main\Helper;
+use Imi\RequestContext;
 use Imi\Server\Route\RouteCallable;
-use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Server\Route\TMiddleware;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute;
 use Imi\Swoole\Server\TcpServer\Parser\TcpControllerParser;
 use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpMiddleware;
+use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute;
+use Imi\Worker;
 
 /**
  * TCP 服务器路由初始化.
