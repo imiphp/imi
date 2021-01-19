@@ -40,6 +40,7 @@ class Scanner
         if ($statistics)
         {
             $time = microtime(true) - $time;
+            debug_print_backtrace();
             Log::info('scanImi ' . $time . 's');
         }
     }
