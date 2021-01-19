@@ -590,6 +590,13 @@ class Imi
     private static int $evalAtomic = 0;
 
     /**
+     * 临时目录地址
+     *
+     * @var string
+     */
+    private static string $tmpPath = '';
+
+    /**
      * eval() 函数的安全替代方法.
      *
      * @param string $code
@@ -598,7 +605,23 @@ class Imi
      */
     public static function eval(string $code)
     {
-        $fileName = (is_dir('/run/shm') ? '/run/shm/' : '/tmp/') . 'imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
+        $tmpPath = &static::$tmpPath;
+        if ('' === $tmpPath)
+        {
+            if (is_dir('/run/shm'))
+            {
+                $tmpPath = '/run/shm';
+            }
+            elseif (is_dir('/tmp'))
+            {
+                $tmpPath = '/tmp';
+            }
+            else
+            {
+                $tmpPath = sys_get_temp_dir();
+            }
+        }
+        $fileName = $tmpPath . '/imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
         $fp = fopen($fileName, 'x');
         if (false === $fp)
         {

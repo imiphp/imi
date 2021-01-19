@@ -27,7 +27,7 @@ return [
 ];
 ```
 
-### 项目配置文件
+### Swoole 项目配置文件
 
 ```php
 return [
@@ -50,32 +50,6 @@ return [
         'process'       =>  'imi:process-{processName}:{namespace}',
         'processPool'   =>  'imi:process-pool-{processPoolName}-{workerId}:{namespace}',
         'tool'          =>  'imi:{toolName}/{toolOperation}:{namespace}',
-    ],
-    'imi'   =>  [
-        // 覆盖 imi 框架默认的 beanScan，可以禁用某些用不到的模块
-        'beanScan'  =>  [
-            'Imi\Config',
-            'Imi\Bean',
-            'Imi\Aop',
-            'Imi\Annotation',
-            'Imi\Cache',
-            'Imi\Server',
-            'Imi\Log',
-            'Imi\Pool',
-            'Imi\Db',
-            'Imi\Redis',
-            'Imi\Listener',
-            'Imi\Model',
-            'Imi\Swoole\Task',
-            'Imi\Cli',
-            'Imi\Swoole\Process',
-            'Imi\Swoole\HotUpdate',
-            'Imi\Validate',
-            'Imi\HttpValidate',
-            'Imi\Enum',
-            'Imi\Lock',
-            'Imi\Facade',
-        ],
     ],
     // 主服务器配置
     'mainServer'	=>	[
@@ -104,6 +78,36 @@ return [
         'alias1'	=>	[
             // 这里同主服务器配置
         ]
+    ],
+];
+```
+
+### Workerman 项目配置文件
+
+```php
+return [
+    // 忽略扫描的命名空间
+    'ignoreNamespace'   =>  [
+        'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
+        'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
+    ],
+    // runtime目录设置，默认可不设置，为当前项目下的.runtime目录
+    // 注意，多个项目不可设置为相同目录！
+    'runtimePath'   =>  '/tmp/imidemo-runtime/',
+    // Workerman 服务器配置
+    'workermanServer' => [
+        // 服务器名
+        'http' => [
+            // 指定服务器命名空间
+            'namespace' => 'Imi\Workerman\Test\HttpServer\ApiServer',
+            // 服务器类型
+            'type'      => Imi\Workerman\Server\Type::HTTP,
+            'host'      => '0.0.0.0',
+            'port'      => 8080,
+            'configs'   => [
+                // 支持设置 Workerman 参数
+            ],
+        ],
     ],
 ];
 ```

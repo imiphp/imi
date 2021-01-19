@@ -1,0 +1,25 @@
+{
+    "name": "imiphp/workerman",
+    "type": "library",
+    "license": "MulanPSL-1.0",
+    "description": "imi workerman component",
+    "require": {
+        "workerman/workerman": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\Workerman\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Workerman\\Test\\": "tests/unit/"
+        }
+    },
+    "bin": [
+        "src/bin/imi-workerman"
+    ]
+}

@@ -19,7 +19,7 @@
 * [中间件](core/middleware.md)
 * [进程名称管理](core/processNameManager.md)
 * [错误转为异常捕获](core/handleError.md)
-* [子服务器（单项目多端口多协议）](core/subServer.md)
+* [Swoole 子服务器（单项目多端口多协议）](core/subServer.md)
 * [内部进程间通讯](core/processCommunication.md)
 
 ## Http 服务
