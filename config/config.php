@@ -31,7 +31,6 @@ return [
         'Imi\Components\*',
     ],
     'atomics' => [
-        'session',
         'imi.ConnectContextRedisLock',
         'imi.GroupRedisLock',
     ],

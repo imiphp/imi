@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\Session\Handler;
 
 use Imi\RequestContext;
-use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Format\IFormat;
 use Imi\Util\Format\PhpSerialize;
 
@@ -25,8 +24,23 @@ abstract class Base implements ISessionHandler
      */
     private IFormat $formatHandler;
 
+    /**
+     * 进程ID.
+     *
+     * @var int
+     */
+    private int $pid;
+
+    /**
+     * 自增值
+     *
+     * @var int
+     */
+    private int $atomic = 0;
+
     public function __init()
     {
+        $this->pid = getmypid();
         $this->formatHandler = RequestContext::getServerBean($this->formatHandlerClass);
     }
 
@@ -37,11 +51,7 @@ abstract class Base implements ISessionHandler
      */
     public function createSessionId(): string
     {
-        // md5(自增ID + 时间)
-        $id = AtomicManager::add('session');
-        $time = microtime(true);
-
-        return md5($id . $time);
+        return md5($this->pid . '/' . ++$this->atomic . microtime(true));
     }
 
     /**
