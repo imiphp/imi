@@ -14,6 +14,7 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
+use Swoole\Process;
 
 /**
  * 框架里杂七杂八的各种工具方法.
@@ -542,7 +543,7 @@ class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
-            $cmd = \Imi\cmd('kill ' . $pid['masterPID']);
+            Process::kill($pid['masterPID']);
             $return['cmd'] = $cmd;
             $result = `{$cmd}`;
             $return['result'] = $result;
@@ -571,7 +572,7 @@ class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
-            $cmd = \Imi\cmd('kill -USR1 ' . $pid['masterPID']);
+            Process::kill($pid['masterPID'], \SIGUSR1);
             $return['cmd'] = $cmd;
             $result = `{$cmd}`;
             $return['result'] = $result;
