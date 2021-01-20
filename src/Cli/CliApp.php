@@ -60,7 +60,7 @@ class CliApp extends BaseApp
                     'levels'    => [
                         LogLevel::INFO,
                     ],
-                    'format'    => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
+                    'format'    => '{Y}-{m}-{d} {H}:{i}:{s} <info>[{level}]</info> {message}',
                 ],
             ],
             [
@@ -71,6 +71,7 @@ class CliApp extends BaseApp
                         LogLevel::NOTICE,
                         LogLevel::WARNING,
                     ],
+                    'format' => '{Y}-{m}-{d} {H}:{i}:{s} <comment>[{level}]</comment> {message} {errorFile}:{errorLine}',
                 ],
             ],
             [
@@ -82,7 +83,7 @@ class CliApp extends BaseApp
                         LogLevel::EMERGENCY,
                         LogLevel::ERROR,
                     ],
-                    'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . \PHP_EOL . 'Stack trace:' . \PHP_EOL . '{trace}',
+                    'format' => '{Y}-{m}-{d} {H}:{i}:{s} <fg=red>[{level}]</> <comment>{message}</comment> {errorFile}:{errorLine}' . \PHP_EOL . 'Stack trace:' . \PHP_EOL . '{trace}',
                     'length' => 1024,
                 ],
             ],

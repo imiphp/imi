@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Log\Handler;
 
 use Imi\Bean\Annotation\Bean;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @Bean("ConsoleLog")
@@ -25,6 +26,7 @@ class Console extends Base
      */
     protected function __save()
     {
+        $output = new ConsoleOutput();
         $length = $this->length;
         foreach ($this->records as $record)
         {
@@ -33,7 +35,7 @@ class Console extends Base
             {
                 $content = mb_substr($content, 0, $length) . '...';
             }
-            fwrite(\STDOUT, $content . \PHP_EOL);
+            $output->writeln($content);
         }
     }
 }
