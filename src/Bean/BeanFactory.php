@@ -41,20 +41,7 @@ class BeanFactory
      */
     public static function newInstance(string $class, ...$args): object
     {
-        $classNameMap = &static::$classNameMap;
-        if (isset($classNameMap[$class]))
-        {
-            $className = $classNameMap[$class];
-        }
-        else
-        {
-            $ref = ReflectionContainer::getClassReflection($class);
-            $className = static::getNewClassName($ref->getShortName());
-            $tpl = static::getTpl($ref, $className);
-            Imi::eval($tpl);
-            $classNameMap[$class] = $className;
-        }
-        $object = new $className(...$args);
+        $object = self::newInstanceNoInit($class, ...$args);
         static::initInstance($object, $args);
 
         return $object;

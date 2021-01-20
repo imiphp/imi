@@ -13,7 +13,7 @@ use Imi\Model\Enum\RedisStorageMode;
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Model\Parser\ModelParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class RedisEntity extends Base
 {

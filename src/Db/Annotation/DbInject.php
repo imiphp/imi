@@ -14,7 +14,7 @@ use Imi\Db\Query\QueryType;
  *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class DbInject extends RequestInject
 {

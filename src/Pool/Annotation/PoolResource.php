@@ -13,7 +13,7 @@ use Imi\Pool\PoolManager;
  *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class PoolResource extends RequestInject
 {

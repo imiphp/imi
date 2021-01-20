@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target({"ANNOTATION"})
- * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
+ * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class ValidateValue extends Base
 {

@@ -94,8 +94,7 @@ class ServerManager
             'args'   => $args,
         ]);
         // 主服务器实例对象
-        $server = App::getBean($config['type'], $name, $config, ...$args);
-        static::$servers[$name] = $server;
+        $server = static::$servers[$name] = App::getBean($config['type'], $name, $config, ...$args);
         // 创建服务器对象后置操作
         Event::trigger('IMI.SERVER.CREATE.AFTER', [
             'name'   => $name,

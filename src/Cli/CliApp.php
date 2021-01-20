@@ -11,6 +11,8 @@ use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
+use Imi\Log\LogAppContexts;
+use Imi\Log\LogLevel;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\Application;
@@ -51,6 +53,40 @@ class CliApp extends BaseApp
     {
         parent::__construct($namespace);
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
+        App::set(LogAppContexts::CORE_HANDLERS, [
+            [
+                'class'     => \Imi\Log\Handler\Console::class,
+                'options'   => [
+                    'levels'    => [
+                        LogLevel::INFO,
+                    ],
+                    'format'    => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
+                ],
+            ],
+            [
+                'class'     => \Imi\Log\Handler\Console::class,
+                'options'   => [
+                    'levels' => [
+                        LogLevel::DEBUG,
+                        LogLevel::NOTICE,
+                        LogLevel::WARNING,
+                    ],
+                ],
+            ],
+            [
+                'class'     => \Imi\Log\Handler\Console::class,
+                'options'   => [
+                    'levels' => [
+                        LogLevel::ALERT,
+                        LogLevel::CRITICAL,
+                        LogLevel::EMERGENCY,
+                        LogLevel::ERROR,
+                    ],
+                    'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . \PHP_EOL . 'Stack trace:' . \PHP_EOL . '{trace}',
+                    'length' => 1024,
+                ],
+            ],
+        ], true);
         $this->input = new ArgvInput();
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
         $this->cli = $cli = new Application('imi', App::getImiVersion());

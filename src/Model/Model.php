@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Imi\Model;
 
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Db\Db;
+use Imi\Util\Text;
+use Imi\Event\Event;
 use Imi\Db\Query\Field;
+use Imi\Bean\BeanFactory;
+use Imi\Model\Relation\Query;
+use Imi\Util\LazyArrayObject;
+use Imi\Model\Relation\Update;
+use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
-use Imi\Event\Event;
-use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\InitEventParam;
-use Imi\Model\Relation\Query;
-use Imi\Model\Relation\Update;
-use Imi\Util\LazyArrayObject;
-use Imi\Util\Text;
 
 /**
  * 常用的数据库模型.
@@ -46,7 +47,7 @@ abstract class Model extends BaseModel
     {
         $meta = static::__getMeta($object);
 
-        return BeanFactory::newInstance(ModelQuery::class, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
+        return App::getBean(ModelQuery::class, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
     }
 
     /**

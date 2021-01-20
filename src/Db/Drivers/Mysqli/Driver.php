@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Imi\Db\Drivers\Mysqli;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\Bean\BeanFactory;
+use mysqli;
+use Imi\App;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
-use Imi\Db\Exception\DbException;
-use Imi\Db\Interfaces\IDb;
-use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Statement\StatementManager;
-use Imi\Db\Transaction\Transaction;
 use Imi\Db\Util\SqlUtil;
-use mysqli;
+use Imi\Bean\BeanFactory;
+use Imi\Db\Interfaces\IDb;
+use Imi\Bean\Annotation\Bean;
+use Imi\Db\Exception\DbException;
+use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Transaction\Transaction;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * mysqli MySQL驱动.
@@ -400,7 +401,7 @@ class Driver extends Base implements IDb
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
+            $stmt = App::getBean(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && null === $stmtCache)
             {
                 StatementManager::setNX($stmt, true);
@@ -426,7 +427,7 @@ class Driver extends Base implements IDb
             throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
 
-        return BeanFactory::newInstance(Statement::class, $this, null, $lastResult, $sql);
+        return App::getBean(Statement::class, $this, null, $lastResult, $sql);
     }
 
     /**

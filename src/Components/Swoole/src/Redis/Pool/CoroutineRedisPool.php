@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Redis\Pool;
 
+use Imi\App;
 use Imi\Bean\BeanFactory;
-use Imi\Pool\TUriResourceConfig;
 use Imi\Redis\RedisHandler;
 use Imi\Redis\RedisResource;
+use Imi\Pool\TUriResourceConfig;
 use Imi\Swoole\Pool\BaseAsyncPool;
 
 class CoroutineRedisPool extends BaseAsyncPool
@@ -36,7 +37,7 @@ class CoroutineRedisPool extends BaseAsyncPool
     {
         $config = $this->getNextResourceConfig();
         $class = $config['handlerClass'] ?? $this->handlerClass;
-        $db = BeanFactory::newInstance(RedisHandler::class, new $class());
+        $db = App::getBean(RedisHandler::class, new $class());
 
         return new RedisResource($this, $db, $config);
     }

@@ -13,7 +13,7 @@ use Imi\Redis\RedisManager;
  *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class RedisInject extends RequestInject
 {

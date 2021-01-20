@@ -15,7 +15,7 @@ use Imi\Config;
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
- * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
+ * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class Condition extends Base
 {

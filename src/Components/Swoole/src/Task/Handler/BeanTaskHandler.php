@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Task\Handler;
 
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
 use Imi\Swoole\Task\TaskParam;
 
@@ -35,7 +35,7 @@ class BeanTaskHandler implements ITaskHandler
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
     {
         /** @var ITaskHandler $taskHandler */
-        $taskHandler = BeanFactory::newInstance($this->taskHandlerClass);
+        $taskHandler = App::getBean($this->taskHandlerClass);
 
         return $taskHandler->handle($param, $server, $taskId, $workerId);
     }
@@ -52,7 +52,7 @@ class BeanTaskHandler implements ITaskHandler
     public function finish(\Swoole\Server $server, int $taskId, $data)
     {
         /** @var ITaskHandler $taskHandler */
-        $taskHandler = BeanFactory::newInstance($this->taskHandlerClass);
+        $taskHandler = App::getBean($this->taskHandlerClass);
         $taskHandler->finish($server, $taskId, $data);
     }
 }

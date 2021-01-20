@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Redis;
 
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
@@ -39,7 +39,7 @@ class RedisManager
 
             $class = $config['handlerClass'] ?? \Redis::class;
             /** @var RedisHandler $redis */
-            $redis = BeanFactory::newInstance(RedisHandler::class, new $class());
+            $redis = App::getBean(RedisHandler::class, new $class());
             self::initRedisConnection($redis, $config);
 
             return $redis;
@@ -75,7 +75,7 @@ class RedisManager
 
                 $class = $config['handlerClass'] ?? \Redis::class;
                 /** @var RedisHandler $redis */
-                $redis = $context[$requestContextKey] = BeanFactory::newInstance(RedisHandler::class, new $class());
+                $redis = $context[$requestContextKey] = App::getBean(RedisHandler::class, new $class());
                 self::initRedisConnection($redis, $config);
             }
 

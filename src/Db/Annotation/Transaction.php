@@ -12,7 +12,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Db\Parser\DbParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class Transaction extends Base
 {

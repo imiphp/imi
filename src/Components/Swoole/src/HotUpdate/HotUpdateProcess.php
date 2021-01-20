@@ -7,7 +7,6 @@ namespace Imi\Swoole\HotUpdate;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
 use Imi\Pool\Annotation\PoolClean;
@@ -134,7 +133,7 @@ class HotUpdateProcess extends BaseProcess
         }
         $this->excludePaths[] = Imi::getRuntimePath();
         echo 'Process [hotUpdate] start', \PHP_EOL;
-        $monitor = BeanFactory::newInstance($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
+        $monitor = App::getBean($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
         $this->initBuildRuntime();
         $this->startBuildRuntimeTimer();

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
-use Imi\Bean\BeanFactory;
-use Imi\Bean\Scanner;
+use Imi\App;
 use Imi\Event\Event;
-use Imi\Swoole\Process\Parser\ProcessPoolParser;
+use Imi\Bean\Scanner;
 use Imi\Swoole\Util\Imi;
+use Imi\Bean\BeanFactory;
+use Imi\Swoole\Process\Parser\ProcessPoolParser;
 
 /**
  * 进程池管理类.
@@ -62,7 +63,7 @@ class ProcessPoolManager
             // 随机数播种
             mt_srand();
             \Co\run(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
-                $processInstance = BeanFactory::newInstance($processPoolOption['className'], $args);
+                $processInstance = App::getBean($processPoolOption['className'], $args);
                 // 加载服务器注解
                 Scanner::scanVendor();
                 Scanner::scanApp();

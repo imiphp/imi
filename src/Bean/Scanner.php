@@ -98,7 +98,7 @@ class Scanner
                 }
             }
         }
-        foreach (Config::get('@app.components') as $name => $namespace)
+        foreach (Config::get('@app.components', []) as $name => $namespace)
         {
             $namespaces[] = $namespace;
             Helper::getMain($namespace, $name);

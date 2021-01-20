@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
+ * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class ExtractData extends Base
 {

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
+use Imi\App;
+use Imi\Model\Model;
+use Imi\Event\IEvent;
 use Imi\Bean\BeanFactory;
+use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Statement\StatementManager;
-use Imi\Event\IEvent;
-use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
-use Imi\Model\Model;
 
 class Result implements IResult
 {
@@ -141,7 +142,7 @@ class Result implements IResult
         {
             if (is_subclass_of($className, Model::class))
             {
-                $object = BeanFactory::newInstance($className, $record);
+                $object = App::getBean($className, $record);
             }
             else
             {
@@ -193,7 +194,7 @@ class Result implements IResult
             {
                 if ($isModelClass)
                 {
-                    $object = BeanFactory::newInstance($className, $item);
+                    $object = App::getBean($className, $item);
                 }
                 else
                 {

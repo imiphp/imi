@@ -16,7 +16,7 @@ use Imi\Lock\Annotation\Lockable;
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Cache\Annotation\Parser\CacheParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class Cacheable extends Base
 {

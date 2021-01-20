@@ -15,7 +15,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Cache\Annotation\Parser\CacheParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class CachePut extends Base
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Redis;
 
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Pool\BaseSyncPool;
 use Imi\Pool\TUriResourceConfig;
 
@@ -34,7 +34,7 @@ class SyncRedisPool extends BaseSyncPool
     {
         $config = $this->getNextResourceConfig();
         $class = $config['handlerClass'] ?? $this->handlerClass;
-        $db = BeanFactory::newInstance(RedisHandler::class, new $class());
+        $db = App::getBean(RedisHandler::class, new $class());
 
         return new RedisResource($this, $db, $config);
     }

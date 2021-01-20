@@ -599,11 +599,12 @@ class Imi
     /**
      * eval() 函数的安全替代方法.
      *
-     * @param string $code
+     * @param string      $code
+     * @param string|null $fileName
      *
      * @return mixed
      */
-    public static function eval(string $code)
+    public static function eval(string $code, ?string $fileName = null)
     {
         $tmpPath = &static::$tmpPath;
         if ('' === $tmpPath)
@@ -621,9 +622,9 @@ class Imi
                 $tmpPath = sys_get_temp_dir();
             }
         }
-        $fileName = $tmpPath . '/imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
-        $fp = fopen($fileName, 'x');
-        if (false === $fp)
+        $fileName = $tmpPath . '/' . ($fileName ?? ('imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php'));
+
+        if (false === file_put_contents($fileName, '<?php ' . $code))
         {
             return eval($code);
         }
@@ -631,21 +632,10 @@ class Imi
         {
             try
             {
-                if (!fwrite($fp, '<?php ' . $code))
-                {
-                    throw new \RuntimeException(sprintf('Unable to write temporary file: %s', $fileName));
-                }
-                fclose($fp);
-                $closed = true;
-
                 return require $fileName;
             }
             finally
             {
-                if (!isset($closed))
-                {
-                    fclose($fp);
-                }
                 unlink($fileName);
             }
         }

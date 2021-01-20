@@ -12,7 +12,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
- * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
+ * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class Integer extends Condition
 {

@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\Db\Drivers\PdoMysql;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\Bean\BeanFactory;
+use PDO;
+use Imi\App;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
-use Imi\Db\Exception\DbException;
+use Imi\Bean\BeanFactory;
 use Imi\Db\Interfaces\IDb;
+use Imi\Bean\Annotation\Bean;
+use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
-use PDO;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * PDO MySQL驱动.
@@ -421,7 +422,7 @@ class Driver extends Base implements IDb
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt);
+            $stmt = App::getBean(Statement::class, $this, $lastStmt);
             if ($this->isCacheStatement && null === $stmtCache)
             {
                 StatementManager::setNX($stmt, true);
@@ -447,7 +448,7 @@ class Driver extends Base implements IDb
             throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
 
-        return BeanFactory::newInstance(Statement::class, $this, $lastStmt);
+        return App::getBean(Statement::class, $this, $lastStmt);
     }
 
     /**

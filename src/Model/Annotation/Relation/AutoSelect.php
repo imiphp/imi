@@ -12,7 +12,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Model\Parser\RelationParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class AutoSelect extends Base
 {

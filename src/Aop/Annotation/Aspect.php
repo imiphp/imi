@@ -12,7 +12,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Aop\Parser\AopParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class Aspect extends Base
 {

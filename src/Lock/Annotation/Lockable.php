@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target({"METHOD", "ANNOTATION"})
- * @Parser("Imi\Lock\Annotation\Parser\LockParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class Lockable extends Base
 {

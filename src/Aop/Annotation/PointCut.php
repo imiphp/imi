@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("METHOD")
- * @Parser("Imi\Aop\Parser\AopParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class PointCut extends Base
 {

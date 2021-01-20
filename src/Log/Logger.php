@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Log;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
@@ -22,40 +23,7 @@ class Logger extends AbstractLogger
      *
      * @var array
      */
-    protected array $coreHandlers = [
-        [
-            'class'     => \Imi\Log\Handler\Console::class,
-            'options'   => [
-                'levels'    => [
-                    LogLevel::INFO,
-                ],
-                'format'    => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
-            ],
-        ],
-        [
-            'class'     => \Imi\Log\Handler\Console::class,
-            'options'   => [
-                'levels' => [
-                    LogLevel::DEBUG,
-                    LogLevel::NOTICE,
-                    LogLevel::WARNING,
-                ],
-            ],
-        ],
-        [
-            'class'     => \Imi\Log\Handler\Console::class,
-            'options'   => [
-                'levels' => [
-                    LogLevel::ALERT,
-                    LogLevel::CRITICAL,
-                    LogLevel::EMERGENCY,
-                    LogLevel::ERROR,
-                ],
-                'format' => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}' . \PHP_EOL . 'Stack trace:' . \PHP_EOL . '{trace}',
-                'length' => 1024,
-            ],
-        ],
-    ];
+    protected array $coreHandlers = [];
 
     /**
      * 扩展处理器.
@@ -78,12 +46,17 @@ class Logger extends AbstractLogger
      */
     protected array $records = [];
 
+    public function __construct()
+    {
+        $this->coreHandlers = App::get(LogAppContexts::CORE_HANDLERS, []);
+    }
+
     public function __init()
     {
         $handlers = &$this->handlers;
         foreach (array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)
         {
-            $handlers[] = BeanFactory::newInstance($handlerOption['class'], $handlerOption['options']);
+            $handlers[] = App::getBean($handlerOption['class'], $handlerOption['options']);
         }
         Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
             $this->save();
@@ -215,6 +188,6 @@ class Logger extends AbstractLogger
             return; // 防止重复添加
         }
         $this->exHandlers[] = $exHandler;
-        $this->handlers[] = BeanFactory::newInstance($exHandler['class'], $exHandler['options']);
+        $this->handlers[] = App::getBean($exHandler['class'], $exHandler['options']);
     }
 }

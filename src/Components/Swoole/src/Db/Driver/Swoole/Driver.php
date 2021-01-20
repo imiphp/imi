@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Db\Driver\Swoole;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
-use Imi\Db\Exception\DbException;
-use Imi\Db\Interfaces\IDb;
-use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Statement\StatementManager;
-use Imi\Db\Transaction\Transaction;
 use Imi\Db\Util\SqlUtil;
+use Imi\Bean\BeanFactory;
+use Imi\Db\Interfaces\IDb;
 use Swoole\Coroutine\MySQL;
+use Imi\Bean\Annotation\Bean;
+use Imi\Db\Exception\DbException;
+use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Transaction\Transaction;
+use Imi\Db\Statement\StatementManager;
 
 /**
  * Swoole Coroutine MySQL 驱动.
@@ -382,7 +383,7 @@ class Driver extends Base implements IDb
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
-            $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
+            $stmt = App::getBean(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
             if ($this->isCacheStatement && null === $stmtCache)
             {
                 StatementManager::setNX($stmt, true);
@@ -408,7 +409,7 @@ class Driver extends Base implements IDb
             throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
         }
 
-        return BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql);
+        return App::getBean(Statement::class, $this, $lastStmt, $sql);
     }
 
     /**

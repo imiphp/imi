@@ -115,7 +115,7 @@ class Db
      */
     public static function query(?string $poolName = null, ?string $modelClass = null, ?int $queryType = null): IQuery
     {
-        return BeanFactory::newInstance(Query::class, null, $modelClass, $poolName, $queryType);
+        return App::getBean(Query::class, null, $modelClass, $poolName, $queryType);
     }
 
     /**

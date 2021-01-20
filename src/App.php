@@ -124,7 +124,6 @@ class App
             // 扫描项目
             Scanner::scanApp();
         }
-        Event::trigger('IMI.LOAD_RUNTIME');
         // 初始化
         $appInstance->init();
         // 注册错误日志
@@ -146,8 +145,6 @@ class App
         \define('IMI_PATH', __DIR__);
         // 项目命名空间
         static::$namespace = $namespace;
-        // 运行时资料，TODO: 移除
-        static::$runtimeInfo = new RuntimeInfo();
         // 容器类
         static::$container = new Container();
         // 注解管理器初始化
@@ -254,6 +251,11 @@ class App
      */
     public static function getRuntimeInfo(): RuntimeInfo
     {
+        if (null === static::$runtimeInfo)
+        {
+            return static::$runtimeInfo = new RuntimeInfo();
+        }
+
         return static::$runtimeInfo;
     }
 

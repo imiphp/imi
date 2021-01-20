@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Cache;
 
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Cache\Handler\Base;
 use Imi\Config;
 
@@ -55,7 +55,7 @@ class CacheManager
      */
     public static function addName(string $name, string $handlerClass, array $option = [])
     {
-        static::$handlers[$name] = BeanFactory::newInstance($handlerClass, $option);
+        static::$handlers[$name] = App::getBean($handlerClass, $option);
     }
 
     /**

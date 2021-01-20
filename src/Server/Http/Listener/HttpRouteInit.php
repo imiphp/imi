@@ -38,7 +38,7 @@ class HttpRouteInit implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        $this->parseAnnotations($e);
+        $this->parseAnnotations();
         $this->parseConfigs();
     }
 
@@ -47,7 +47,7 @@ class HttpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseAnnotations(EventParam $e)
+    private function parseAnnotations()
     {
         $controllerParser = ControllerParser::getInstance();
         $context = RequestContext::getContext();
@@ -147,20 +147,24 @@ class HttpRouteInit implements IEventListener
             }
             $context['server'] = $server;
             $route = $server->getBean('HttpRoute');
-            foreach (Helper::getMain($server->getConfig()['namespace'])->getConfig()['route'] ?? [] as $routeOption)
+            $main = Helper::getMain($server->getConfig()['namespace']);
+            if ($main)
             {
-                $routeAnnotation = new Route($routeOption['route'] ?? []);
-                if (isset($routeOption['callback']))
+                foreach ($main->getConfig()['route'] ?? [] as $routeOption)
                 {
-                    $callable = $routeOption['callback'];
+                    $routeAnnotation = new Route($routeOption['route'] ?? []);
+                    if (isset($routeOption['callback']))
+                    {
+                        $callable = $routeOption['callback'];
+                    }
+                    else
+                    {
+                        $callable = new RouteCallable($server, $routeOption['controller'], $routeOption['method']);
+                    }
+                    $route->addRuleAnnotation($routeAnnotation, $callable, [
+                        'middlewares' => $routeOption['middlewares'] ?? [],
+                    ]);
                 }
-                else
-                {
-                    $callable = new RouteCallable($server, $routeOption['controller'], $routeOption['method']);
-                }
-                $route->addRuleAnnotation($routeAnnotation, $callable, [
-                    'middlewares' => $routeOption['middlewares'] ?? [],
-                ]);
             }
             unset($context['server']);
         }

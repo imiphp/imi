@@ -10,7 +10,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Model\Parser\ModelParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class JsonNotNull extends Base
 {

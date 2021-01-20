@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class Inject extends BaseInjectValue
 {

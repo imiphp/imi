@@ -124,7 +124,7 @@ class ProcessManager
                         'process'   => $swooleProcess,
                     ]);
                     // 执行任务
-                    $processInstance = BeanFactory::newInstance($processOption['className'], $args);
+                    $processInstance = App::getBean($processOption['className'], $args);
                     $processInstance->run($swooleProcess);
                     if ($processOption['Process']->unique)
                     {

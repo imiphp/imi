@@ -15,7 +15,7 @@ use Imi\Config;
  *
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Config\Annotation\Parser\ConfigParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 class ConfigValue extends BaseInjectValue
 {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Core\App\Contract;
 
+use Imi\App;
+use Imi\AppContexts;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
@@ -40,19 +42,33 @@ abstract class BaseApp implements IApp
         // 加载框架配置
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
 
-        $paths = Imi::getNamespacePaths($this->namespace);
-
-        // 加载项目目录下的 env
-        \Dotenv\Dotenv::createImmutable($paths)->safeLoad();
-
-        // 加载项目配置文件
-        foreach ($paths as $path)
+        $appPath = App::get(AppContexts::APP_PATH);
+        if ($appPath)
         {
-            $fileName = $path . '/config/config.php';
+            // 加载项目目录下的 env
+            \Dotenv\Dotenv::createImmutable([$appPath])->safeLoad();
+            $fileName = $appPath . '/config/config.php';
             if (is_file($fileName))
             {
                 Config::addConfig('@app', include $fileName);
-                break;
+            }
+        }
+        else
+        {
+            $paths = Imi::getNamespacePaths($this->namespace);
+
+            // 加载项目目录下的 env
+            \Dotenv\Dotenv::createImmutable($paths)->safeLoad();
+
+            // 加载项目配置文件
+            foreach ($paths as $path)
+            {
+                $fileName = $path . '/config/config.php';
+                if (is_file($fileName))
+                {
+                    Config::addConfig('@app', include $fileName);
+                    break;
+                }
             }
         }
     }

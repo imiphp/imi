@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target({"CLASS", "METHOD"})
- * @Parser("\Imi\Validate\Annotation\Parser\ValidateConditionParser")
+ * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class AutoValidation extends Base
 {

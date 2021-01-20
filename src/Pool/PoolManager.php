@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Pool;
 
-use Imi\Bean\BeanFactory;
+use Imi\App;
 use Imi\Config;
+use Imi\RequestContext;
+use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
-use Imi\RequestContext;
 
 class PoolManager
 {
@@ -62,7 +63,7 @@ class PoolManager
      */
     public static function addName(string $name, string $poolClassName, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
-        static::$pools[$name] = $pool = BeanFactory::newInstance($poolClassName, $name, $config, $resourceConfig);
+        static::$pools[$name] = $pool = App::getBean($poolClassName, $name, $config, $resourceConfig);
         $pool->open();
     }
 

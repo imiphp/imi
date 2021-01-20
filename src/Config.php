@@ -179,7 +179,14 @@ class Config
             $configs = &static::$configs;
             if (isset($configs[$first]))
             {
-                $result = $configs[$first]->get($names, null);
+                if ($names)
+                {
+                    $result = $configs[$first]->get($names, null);
+                }
+                else
+                {
+                    $result = $configs[$first]->getRawData();
+                }
             }
             if (isset($result))
             {
@@ -190,7 +197,14 @@ class Config
                 $first = '@app';
                 unset($names[0]);
 
-                return $configs[$first]->get($names, $default);
+                if ($names)
+                {
+                    return $configs[$first]->get($names, $default);
+                }
+                else
+                {
+                    return $configs[$first]->getRawData();
+                }
             }
         }
 
