@@ -71,7 +71,6 @@ class Server extends BaseServer
     {
         // 初始化路由
         (new HttpRouteInit())->handle(new EventParam(''));
-        $time = microtime(true);
         $request = new FpmRequest();
         $response = new FpmResponse();
         RequestContext::muiltiSet([
@@ -81,7 +80,6 @@ class Server extends BaseServer
         ]);
         /** @var \Imi\Server\Http\Dispatcher $dispatcher */
         $dispatcher = App::getBean('HttpDispatcher');
-        $time = microtime(true);
         $dispatcher->dispatch($request, $response);
     }
 }

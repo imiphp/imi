@@ -484,8 +484,9 @@ class Imi
     public static function buildRuntime(?string $runtimeFile = null)
     {
         $runtimeInfo = App::getRuntimeInfo();
-        $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getStoreData();
-        $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
+        $parser = Annotation::getInstance()->getParser();
+        $runtimeInfo->annotationParserData = $parser->getStoreData();
+        $runtimeInfo->annotationParserParsers = $parser->getParsers();
         $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
         $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
         $runtimeInfo->parsersData = [];
@@ -800,10 +801,12 @@ class Imi
         {
             return false;
         }
+        /** @var \Imi\RuntimeInfo $runtimeInfo */
         $runtimeInfo = unserialize(file_get_contents($fileName));
 
-        Annotation::getInstance()->getParser()->loadStoreData($runtimeInfo->annotationParserData);
-        Annotation::getInstance()->getParser()->setParsers($runtimeInfo->annotationParserParsers);
+        $parser = Annotation::getInstance()->getParser();
+        $parser->loadStoreData($runtimeInfo->annotationParserData);
+        $parser->setParsers($runtimeInfo->annotationParserParsers);
 
         AnnotationManager::setAnnotations($runtimeInfo->annotationManagerAnnotations);
         AnnotationManager::setAnnotationRelation($runtimeInfo->annotationManagerAnnotationRelation);

@@ -24,7 +24,10 @@ return [
     ],
 
     'ignoreNamespace'   => [
-        'Imi\Fpm\Test\Web\public\index',
+        'Imi\Fpm\Test\Web\public\*',
+        'Imi\Swoole\*',
+        'Imi\Workerman\*',
+        'Imi\Cron\*',
     ],
 
     // 数据库配置

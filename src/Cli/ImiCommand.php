@@ -196,9 +196,10 @@ class ImiCommand extends Command
     private function getCallToolArgs(): array
     {
         $methodRef = new \ReflectionMethod($this->className, $this->methodName);
-        $argumentAnnotations = ToolParser::getInstance()->getData()['class'][$this->className]['Methods'][$this->methodName]['Arguments'] ?? [];
+        $data = ToolParser::getInstance()->getData();
+        $argumentAnnotations = $data['class'][$this->className]['Methods'][$this->methodName]['Arguments'] ?? [];
         $args = [];
-        $optionAnnotations = ToolParser::getInstance()->getData()['class'][$this->className]['Methods'][$this->methodName]['Options'] ?? [];
+        $optionAnnotations = $data['class'][$this->className]['Methods'][$this->methodName]['Options'] ?? [];
         $args = [];
         foreach ($methodRef->getParameters() as $param)
         {
