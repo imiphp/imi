@@ -4,16 +4,47 @@ declare(strict_types=1);
 
 namespace Imi\Fpm;
 
+use Imi\App;
+use Imi\Bean\BeanContexts;
 use Imi\Bean\Scanner;
 use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Fpm\Server\Type;
 use Imi\Server\ServerManager;
+use Imi\Util\File;
 use Imi\Util\Imi;
 
 class FpmApp extends BaseApp
 {
+    /**
+     * 构造方法.
+     *
+     * @param string $namespace
+     *
+     * @return void
+     */
+    public function __construct(string $namespace)
+    {
+        parent::__construct($namespace);
+        App::set(BeanContexts::FIXED_EVAL_NAME, true);
+    }
+
+    /**
+     * 加载配置.
+     *
+     * @return void
+     */
+    public function loadConfig(): void
+    {
+        parent::loadConfig();
+        $dir = Imi::getRuntimePath('classes');
+        if (!is_dir($dir))
+        {
+            File::createDir($dir);
+        }
+    }
+
     /**
      * 加载运行时.
      *

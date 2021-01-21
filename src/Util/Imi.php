@@ -431,6 +431,13 @@ class Imi
     }
 
     /**
+     * 运行时目录路径.
+     *
+     * @return string
+     */
+    private static string $runtimePath = '';
+
+    /**
      * 获取运行时目录路径.
      *
      * @param string ...$path
@@ -439,28 +446,32 @@ class Imi
      */
     public static function getRuntimePath(string ...$path): string
     {
-        $parentPath = Config::get('@app.runtimePath');
-        if (null === $parentPath)
+        if ('' === static::$runtimePath)
         {
-            $namespacePaths = self::getNamespacePaths($namespace = App::getNamespace());
-            $resultNamespacePath = null;
-            foreach ($namespacePaths as $namespacePath)
+            $parentPath = Config::get('@app.runtimePath');
+            if (null === $parentPath)
             {
-                if (is_dir($namespacePath))
+                $namespacePaths = self::getNamespacePaths($namespace = App::getNamespace());
+                $resultNamespacePath = null;
+                foreach ($namespacePaths as $namespacePath)
                 {
-                    $resultNamespacePath = $namespacePath;
-                    break;
+                    if (is_dir($namespacePath))
+                    {
+                        $resultNamespacePath = $namespacePath;
+                        break;
+                    }
                 }
+                if (null === $resultNamespacePath)
+                {
+                    throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
+                }
+                $parentPath = File::path($resultNamespacePath, '.runtime');
             }
-            if (null === $resultNamespacePath)
-            {
-                throw new \RuntimeException(sprintf('Cannot found path of namespace %s. You can set the config @app.runtimePath.', $namespace));
-            }
-            $parentPath = File::path($resultNamespacePath, '.runtime');
+            File::createDir($parentPath);
+            static::$runtimePath = $parentPath;
         }
-        File::createDir($parentPath);
 
-        return File::path($parentPath, ...$path);
+        return File::path(static::$runtimePath, ...$path);
     }
 
     /**
@@ -601,10 +612,11 @@ class Imi
      *
      * @param string      $code
      * @param string|null $fileName
+     * @param bool        $deleteFile
      *
      * @return mixed
      */
-    public static function eval(string $code, ?string $fileName = null)
+    public static function eval(string $code, ?string $fileName = null, bool $deleteFile = true)
     {
         $tmpPath = &static::$tmpPath;
         if ('' === $tmpPath)
@@ -622,7 +634,10 @@ class Imi
                 $tmpPath = sys_get_temp_dir();
             }
         }
-        $fileName = $tmpPath . '/' . ($fileName ?? ('imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php'));
+        if (null === $fileName)
+        {
+            $fileName = $tmpPath . '/' . 'imi-' . getmypid() . '-' . (++static::$evalAtomic) . '.php';
+        }
 
         if (false === file_put_contents($fileName, '<?php ' . $code))
         {
@@ -630,13 +645,20 @@ class Imi
         }
         else
         {
-            try
+            if ($deleteFile)
+            {
+                try
+                {
+                    return require $fileName;
+                }
+                finally
+                {
+                    unlink($fileName);
+                }
+            }
+            else
             {
                 return require $fileName;
-            }
-            finally
-            {
-                unlink($fileName);
             }
         }
     }

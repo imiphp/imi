@@ -7,6 +7,7 @@ namespace Imi\Bean;
 use Imi\Aop\Annotation\Aspect;
 use Imi\Aop\Annotation\PointCut;
 use Imi\Aop\PointCutType;
+use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Parser\PartialParser;
 use Imi\Util\Imi;
@@ -65,9 +66,25 @@ class BeanFactory
         else
         {
             $ref = ReflectionContainer::getClassReflection($class);
-            $className = static::getNewClassName($ref->getShortName());
-            $tpl = static::getTpl($ref, $className);
-            Imi::eval($tpl);
+            if (App::get(BeanContexts::FIXED_EVAL_NAME, false))
+            {
+                static::parseEvalName($class, $fileName, $className);
+                if (is_file($fileName))
+                {
+                    require $fileName;
+                }
+                else
+                {
+                    $tpl = static::getTpl($ref, $className);
+                    Imi::eval($tpl, $fileName, false);
+                }
+            }
+            else
+            {
+                $className = static::getNewClassName($ref->getShortName());
+                $tpl = static::getTpl($ref, $className);
+                Imi::eval($tpl);
+            }
             $classNameMap[$class] = $className;
         }
 
@@ -506,5 +523,11 @@ TPL;
         }
 
         return false;
+    }
+
+    public static function parseEvalName(string $class, ?string &$fileName, ?string &$className)
+    {
+        $className = str_replace('\\', '__', $class) . '__Bean__';
+        $fileName = Imi::getRuntimePath('classes/' . sha1($class) . '.php');
     }
 }
