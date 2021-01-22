@@ -59,29 +59,37 @@ class Server extends BaseCommand
         $serverConfigs = Config::get('@app.workermanServer');
         if (null === $name)
         {
-            if (1 === \count($serverConfigs))
+            if ('Windows' === \PHP_OS)
             {
-                $name = key($serverConfigs);
+                throw new \RuntimeException('You are using Windows system, please add option --name {serverName}');
             }
-            else
+            foreach ($serverConfigs as $name => $config)
             {
-                throw new \RuntimeException('Please add option --name {serverName}');
+                /** @var IWorkermanServer $server */
+                $server = ServerManager::createServer($name, $config);
+                if ($workerNum > 0)
+                {
+                    $server->getWorker()->count = $workerNum;
+                }
             }
         }
         elseif (!isset($serverConfigs[$name]))
         {
-            throw new \RuntimeException(sprintf('Server %s not found', $name));
+            throw new \RuntimeException(sprintf('Server [%s] not found', $name));
         }
-        /** @var IWorkermanServer $server */
-        $server = ServerManager::createServer($name, $serverConfigs[$name]);
-        if ($workerNum > 0)
+        else
         {
-            $server->getWorker()->count = $workerNum;
+            /** @var IWorkermanServer $server */
+            $server = ServerManager::createServer($name, $serverConfigs[$name]);
+            if ($workerNum > 0)
+            {
+                $server->getWorker()->count = $workerNum;
+            }
         }
         ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
-        $server->start();
+        Worker::runAll();
     }
 
     /**

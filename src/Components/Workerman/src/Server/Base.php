@@ -63,7 +63,6 @@ abstract class Base extends BaseServer implements IWorkermanServer
      */
     public function start()
     {
-        Worker::runAll();
     }
 
     /**
