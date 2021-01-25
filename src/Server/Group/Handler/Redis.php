@@ -368,7 +368,8 @@ class Redis implements IGroupHandler
     {
         return $this->useRedis(function ($redis) use ($groupName, $fd) {
             $key = $this->getGroupNameKey($groupName);
-            $redis->sIsMember($key, $fd);
+
+            return $redis->sIsMember($key, $fd);
         });
     }
 
