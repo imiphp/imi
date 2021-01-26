@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\WebSocketServer\MainServer\Error;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Swoole\Server\WebSocket\Error\IWSRouteNotFoundHandler;
-use Imi\Swoole\Server\WebSocket\IMessageHandler;
-use Imi\Swoole\Server\WebSocket\Message\IFrame;
+use Imi\Server\WebSocket\Error\IWSRouteNotFoundHandler;
+use Imi\Server\WebSocket\IMessageHandler;
+use Imi\Server\WebSocket\Message\IFrame;
 
 /**
  * @Bean("RouteNotFound")

@@ -14,6 +14,11 @@ class Protocol
 
     const UDP = 'udp';
 
+    const LONG_CONNECTION_PROTOCOLS = [
+        self::WEBSOCKET,
+        self::TCP,
+    ];
+
     private function __construct()
     {
     }

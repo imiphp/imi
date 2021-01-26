@@ -18,7 +18,7 @@
 [
     // 连接上下文存储器
     'ConnectContextStore'   =>  [
-        'handlerClass'  =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\Redis::class,
+        'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Redis::class,
         // 断开连接后，上下文数据保留时长，单位：秒
         'ttl'           =>  600,
     ],

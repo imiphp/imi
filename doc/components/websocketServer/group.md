@@ -16,7 +16,7 @@ imi 支持对 WebSocket 的连接（fd）进行逻辑分组，你可以方便地
         // 分组
         'ServerGroup' => [
             'status' => true , // 启用
-            'groupHandler' => \Imi\Swoole\Server\Group\Handler\Redis::class, // 分组处理器，目前仅支持 Redis
+            'groupHandler' => \Imi\Server\Group\Handler\Redis::class, // 分组处理器，目前仅支持 Redis
         ],
         // 分组 Redis 驱动
         'GroupRedis' => [
@@ -55,7 +55,7 @@ $this->server->leaveGroup('分组名称', $this->frame->getFd());
 ## 获取分组对象
 
 ```php
-// 不存在则为null，否则为\Imi\Swoole\Server\Group\Group对象
+// 不存在则为null，否则为\Imi\Server\Group\Group对象
 $this->server->getGroup('分组名称');
 ```
 
@@ -80,7 +80,7 @@ $this->server->getGroups();
 
 ## 分组对象详解
 
-类`\Imi\Swoole\Server\Group\Group`
+类`\Imi\Server\Group\Group`
 
 ### 加入组
 

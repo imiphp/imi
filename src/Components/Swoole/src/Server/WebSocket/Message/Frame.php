@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\WebSocket\Message;
 
 use Imi\RequestContext;
-use Imi\Swoole\Server\DataParser\DataParser;
+use Imi\Server\DataParser\DataParser;
 
-class Frame implements IFrame
+class Frame implements ISwooleWebSocketFrame
 {
     /**
      * swoole websocket frame.

@@ -47,7 +47,7 @@ class HttpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseAnnotations()
+    protected function parseAnnotations()
     {
         $controllerParser = ControllerParser::getInstance();
         $context = RequestContext::getContext();
@@ -136,7 +136,7 @@ class HttpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseConfigs()
+    protected function parseConfigs()
     {
         $context = RequestContext::getContext();
         foreach (ServerManager::getServers() as $server)

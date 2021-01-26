@@ -13,6 +13,7 @@ use Imi\Event\Event;
 use Imi\Lock\Lock;
 use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
+use Imi\Swoole\Context\CoroutineContextManager;
 use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
@@ -82,6 +83,15 @@ class SwooleApp extends CliApp
                     break;
                 }
             }
+        }
+        // @app.imi 配置检测
+        if (null === Config::get('@app.imi.RequestContext'))
+        {
+            Config::set('@app.imi.RequestContext', CoroutineContextManager::class);
+        }
+        if (null === Config::get('@app.imi.Timer'))
+        {
+            Config::set('@app.imi.Timer', SwooleTimer::class);
         }
     }
 

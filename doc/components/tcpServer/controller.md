@@ -150,7 +150,7 @@ public function hasGroup(string $groupName);
  *
  * @param string $groupName
  * @param integer $maxClients
- * @return \Imi\Swoole\Server\Group\Group
+ * @return \Imi\Server\Group\Group
  */
 public function createGroup(string $groupName, int $maxClients = -1);
 ```
@@ -160,7 +160,7 @@ public function createGroup(string $groupName, int $maxClients = -1);
  * 获取组对象，不存在返回null
  *
  * @param string $groupName
- * @return \Imi\Swoole\Server\Group\Group|null
+ * @return \Imi\Server\Group\Group|null
  */
 public function getGroup(string $groupName);
 ```
@@ -203,7 +203,7 @@ public function groupCall(string $groupName, string $methodName, ...$args);
 /**
  * 获取所有组列表
  *
- * @return \Imi\Swoole\Server\Group\Group[]
+ * @return \Imi\Server\Group\Group[]
  */
 public function getGroups(): array;
 ```

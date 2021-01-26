@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Workerman\Worker;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\ServerManager;
+use Imi\RequestContext;
 use Imi\Workerman\Contract\IWorkermanWorker;
-use Imi\Workerman\Server\Contract\IWorkermanServer;
+use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Worker;
 
 /**
@@ -38,11 +38,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     {
         if (null === $this->worker)
         {
-            $servers = ServerManager::getServers();
-            /** @var IWorkermanServer $server */
-            $server = reset($servers);
-
-            return $this->worker = $server->getWorker();
+            return $this->worker = RequestContext::get('worker');
         }
         else
         {
@@ -89,5 +85,15 @@ class WorkermanWorkerHandler implements IWorkermanWorker
     public function inited()
     {
         $this->isInited = true;
+    }
+
+    /**
+     * 获取服务器 master 进程 PID.
+     *
+     * @return int
+     */
+    public function getMasterPid(): int
+    {
+        return WorkermanServerWorker::getMasterPid();
     }
 }

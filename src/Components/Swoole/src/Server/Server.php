@@ -6,9 +6,9 @@ namespace Imi\Swoole\Server;
 
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
-use Imi\Swoole\Server\DataParser\DataParser;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Worker;
@@ -125,7 +125,7 @@ class Server
     public static function send($data, $fd = null, $serverName = null): int
     {
         $server = static::getServer($serverName);
-        /** @var \Imi\Swoole\Server\DataParser\DataParser $dataParser */
+        /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
 
         return static::sendRaw($dataParser->encode($data, $serverName), $fd, $server->getName());
@@ -186,7 +186,7 @@ class Server
     public static function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
-        /** @var \Imi\Swoole\Server\DataParser\DataParser $dataParser */
+        /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
 
         return static::sendRawToAll($dataParser->encode($data, $serverName), $server->getName(), $toAllWorkers);
@@ -270,7 +270,7 @@ class Server
     public static function sendToGroup($groupName, $data, ?string $serverName = null): int
     {
         $server = static::getServer($serverName);
-        /** @var \Imi\Swoole\Server\DataParser\DataParser $dataParser */
+        /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
 
         return static::sendRawToGroup($groupName, $dataParser->encode($data, $serverName), $server->getName());

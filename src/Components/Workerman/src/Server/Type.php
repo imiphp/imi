@@ -7,9 +7,14 @@ namespace Imi\Workerman\Server;
 class Type
 {
     /**
-     * HTTP服务器.
+     * HTTP 服务器.
      */
     const HTTP = 'WorkermanHttpServer';
+
+    /**
+     * WebSocket 服务器.
+     */
+    const WEBSOCKET = 'WorkermanWebSocketServer';
 
     private function __construct()
     {

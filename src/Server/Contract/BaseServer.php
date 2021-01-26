@@ -90,4 +90,17 @@ abstract class BaseServer implements IServer
     {
         return $this->container->get($name, ...$params);
     }
+
+    /**
+     * 调用服务器方法.
+     *
+     * @param string $methodName
+     * @param mixed  ...$args
+     *
+     * @return mixed
+     */
+    public function callServerMethod(string $methodName, ...$args)
+    {
+        return null;
+    }
 }

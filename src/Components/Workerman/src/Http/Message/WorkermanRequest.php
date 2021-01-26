@@ -26,11 +26,19 @@ class WorkermanRequest extends Request
      */
     protected Worker $worker;
 
-    public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request)
+    /**
+     * 协议
+     * 
+     * @var string
+     */
+    protected string $scheme;
+
+    public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request, string $scheme = 'http')
     {
         $this->workermanRequest = $request;
         $this->worker = $worker;
         $this->connection = $connection;
+        $this->scheme = $scheme;
     }
 
     /**
@@ -72,7 +80,11 @@ class WorkermanRequest extends Request
     {
         $worker = $this->worker;
         $isSSL = 'ssl' === $worker->transport;
-        $scheme = $isSSL ? 'https' : 'http';
+        $scheme = $this->scheme;
+        if($isSSL)
+        {
+            $scheme .= 's';
+        }
         $workerRequest = $this->workermanRequest;
 
         $get = $workerRequest->get();

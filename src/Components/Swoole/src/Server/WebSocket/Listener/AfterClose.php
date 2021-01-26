@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\WebSocket\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\Swoole\Server\ConnectContext\Traits\TConnectContextRelease;
+use Imi\Server\ConnectContext\Traits\TConnectContextRelease;
 use Imi\Swoole\Server\Event\Listener\ICloseEventListener;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 

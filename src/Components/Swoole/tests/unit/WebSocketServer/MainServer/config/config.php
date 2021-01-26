@@ -14,7 +14,7 @@ return [
     'beans'    => [
         'WebSocketDispatcher'    => [
             'middlewares'    => [
-                \Imi\Swoole\Server\WebSocket\Middleware\RouteMiddleware::class,
+                \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\WebSocketServer\MainServer\Middleware\Test::class,
             ],
         ],
@@ -24,7 +24,7 @@ return [
         ],
         'HttpDispatcher'    => [
             'middlewares'    => [
-                \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
+                'HandShakeMiddleware',
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
@@ -33,7 +33,7 @@ return [
             'lockId'    => 'redisConnectContextLock',
         ],
         'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\Redis::class,
+            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\Redis::class,
             'ttl'           => 600,
         ],
         'ConnectContextMemoryTable' => [

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Event\Event;
-use Imi\Swoole\Server\ConnectContext\Event\Param\ConnectContextRestoreParam;
+use Imi\Server\ConnectContext\Event\Param\ConnectContextRestoreParam;
 
 class ConnectContext
 {
@@ -84,7 +84,7 @@ class ConnectContext
                 return;
             }
         }
-        /** @var \Imi\Swoole\Server\ConnectContext\StoreHandler $store */
+        /** @var \Imi\Server\ConnectContext\StoreHandler $store */
         $store = RequestContext::getServerBean('ConnectContextStore');
         if (($ttl = $store->getTtl()) > 0)
         {
@@ -273,7 +273,7 @@ class ConnectContext
                 return;
             }
         }
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
         $connectionBinder->bind($flag, $fd);
     }
@@ -296,7 +296,7 @@ class ConnectContext
                 return false;
             }
         }
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
         return $connectionBinder->bindNx($flag, $fd);
@@ -312,7 +312,7 @@ class ConnectContext
      */
     public static function unbind(string $flag, ?int $keepTime = null)
     {
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
         $connectionBinder->unbind($flag, $keepTime);
     }
@@ -326,7 +326,7 @@ class ConnectContext
      */
     public static function getFdByFlag(string $flag): ?int
     {
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
         return $connectionBinder->getFdByFlag($flag);
@@ -341,7 +341,7 @@ class ConnectContext
      */
     public static function getFdsByFlags(array $flags): array
     {
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
         return $connectionBinder->getFdsByFlags($flags);
@@ -356,7 +356,7 @@ class ConnectContext
      */
     public static function getFlagByFd(int $fd): ?string
     {
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
         return $connectionBinder->getFlagByFd($fd);
@@ -371,7 +371,7 @@ class ConnectContext
      */
     public static function getFlagsByFds(array $fds): array
     {
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
         return $connectionBinder->getFlagsByFds($fds);
@@ -386,7 +386,7 @@ class ConnectContext
      */
     public static function getOldFdByFlag(string $flag): ?int
     {
-        /** @var \Imi\Swoole\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
         return $connectionBinder->getOldFdByFlag($flag);

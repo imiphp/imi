@@ -10,14 +10,11 @@
          stopOnFailure="false"
          verbose="true">
     <testsuites>
-        <!-- <testsuite name="Components">
-            <directory>unit/Component/Tests</directory>
-        </testsuite> -->
         <testsuite name="HttpServer">
-            <directory>unit/HttpServer/Tests</directory>
+            <directory>unit/AppServer/Tests/Http</directory>
+        </testsuite>
+        <testsuite name="WebSocketServer">
+            <directory>unit/AppServer/Tests/WebSocket</directory>
         </testsuite>
     </testsuites>
-    <!-- <extensions>
-        <extension class="Imi\Workerman\Test\Component\PHPUnitHook" />
-    </extensions> -->
 </phpunit>

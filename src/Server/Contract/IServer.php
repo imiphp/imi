@@ -69,4 +69,28 @@ interface IServer extends IEvent
      * @return void
      */
     public function start();
+
+    /**
+     * 终止服务
+     *
+     * @return void
+     */
+    public function shutdown();
+
+    /**
+     * 重载服务
+     *
+     * @return void
+     */
+    public function reload();
+
+    /**
+     * 调用服务器方法.
+     *
+     * @param string $methodName
+     * @param mixed  ...$args
+     *
+     * @return mixed
+     */
+    public function callServerMethod(string $methodName, ...$args);
 }

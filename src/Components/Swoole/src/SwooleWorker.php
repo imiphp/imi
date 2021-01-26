@@ -37,4 +37,14 @@ class SwooleWorker extends Worker
     {
         return static::$workerHandler ? static::$workerHandler->isWorkerStartAppComplete() : false;
     }
+
+    /**
+     * 获取服务器 manager 进程 PID.
+     *
+     * @return int
+     */
+    public static function getManagerPid(): int
+    {
+        return static::$workerHandler ? static::$workerHandler->getManagerPid() : false;
+    }
 }

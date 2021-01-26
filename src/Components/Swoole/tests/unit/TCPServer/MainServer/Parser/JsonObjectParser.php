@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\TCPServer\MainServer\Parser;
 
-class JsonObjectParser extends \Imi\Swoole\Server\DataParser\JsonObjectParser
+class JsonObjectParser extends \Imi\Server\DataParser\JsonObjectParser
 {
     /**
      * 编码为存储格式.

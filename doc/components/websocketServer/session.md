@@ -51,7 +51,7 @@ Redis:
 ```php
 'beans' =>  [
     'ConnectContextStore'   =>  [
-        'handlerClass'  =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\Redis::class,
+        'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Redis::class,
     ],
     'ConnectContextRedis'    =>    [
         'redisPool'    => 'redis', // Redis 连接池名称
@@ -75,7 +75,7 @@ Local:
 ```php
 'beans' =>  [
     'ConnectContextStore'   =>  [
-        'handlerClass'  =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\Local::class,
+        'handlerClass'  =>  \Imi\Server\ConnectContext\StoreHandler\Local::class,
     ],
     'ConnectContextLocal'    =>    [
         'lockId'    =>  null, // 必设，需要用锁来防止数据错乱问题

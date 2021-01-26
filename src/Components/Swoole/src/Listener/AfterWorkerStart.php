@@ -10,7 +10,7 @@ use Imi\Event\Event;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
-use Imi\Swoole\Util\Swoole;
+use Imi\Swoole\SwooleWorker;
 use Imi\Util\Imi;
 use Imi\Worker;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -38,7 +38,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
                 Event::trigger('IMI.APP.INIT', [
                 ], $e->getTarget(), AppInitEventParam::class);
 
-                file_put_contents($initFlagFile, Swoole::getMasterPID());
+                file_put_contents($initFlagFile, SwooleWorker::getMasterPid());
 
                 (new ConsoleOutput())->writeln('<info>App Inited</info>');
             }
@@ -56,6 +56,6 @@ class AfterWorkerStart implements IWorkerStartEventListener
      */
     private function checkInitFlagFile(string $initFlagFile): bool
     {
-        return is_file($initFlagFile) && file_get_contents($initFlagFile) == Swoole::getMasterPID();
+        return is_file($initFlagFile) && file_get_contents($initFlagFile) == SwooleWorker::getMasterPid();
     }
 }

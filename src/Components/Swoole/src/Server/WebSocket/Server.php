@@ -10,6 +10,7 @@ use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
+use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Swoole\Http\Message\SwooleRequest;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Base;
@@ -29,7 +30,7 @@ use Swoole\WebSocket\Server as WebSocketServer;
  *
  * @Bean("WebSocketServer")
  */
-class Server extends Base
+class Server extends Base implements IWebSocketServer
 {
     /**
      * 是否为 wss 服务
@@ -255,5 +256,19 @@ class Server extends Base
     public function isLongConnection(): bool
     {
         return true;
+    }
+
+    /**
+     * 向客户端推送消息.
+     *
+     * @param int    $fd
+     * @param string $data
+     * @param int    $opcode
+     *
+     * @return bool
+     */
+    public function push(int $fd, string $data, int $opcode = 1): bool
+    {
+        return $this->getSwooleServer()->push($fd, $data, $opcode);
     }
 }

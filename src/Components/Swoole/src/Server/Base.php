@@ -6,7 +6,9 @@ namespace Imi\Swoole\Server;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\Group\Exception\MethodNotFoundException;
 use Imi\Server\Contract\BaseServer;
+use Imi\Server\Group\TServerGroup;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\FinishEventParam;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
@@ -19,7 +21,6 @@ use Imi\Swoole\Server\Event\Param\WorkerErrorEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
-use Imi\Swoole\Server\Group\TServerGroup;
 use Swoole\Server;
 use Swoole\Server\Port;
 
@@ -145,6 +146,45 @@ abstract class Base extends BaseServer implements ISwooleServer
             throw new \RuntimeException('Subserver cannot start, please start the main server');
         }
         $this->swooleServer->start();
+    }
+
+    /**
+     * 终止服务
+     *
+     * @return void
+     */
+    public function shutdown()
+    {
+        $this->swooleServer->shutdown();
+    }
+
+    /**
+     * 重载服务
+     *
+     * @return void
+     */
+    public function reload()
+    {
+        $this->swooleServer->reload();
+    }
+
+    /**
+     * 调用服务器方法.
+     *
+     * @param string $methodName
+     * @param mixed  ...$args
+     *
+     * @return mixed
+     */
+    public function callServerMethod(string $methodName, ...$args)
+    {
+        $server = $this->swooleServer;
+        if (!method_exists($server, $methodName))
+        {
+            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($server), $methodName));
+        }
+
+        return $server->$methodName(...$args);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\ConnectContext\StoreHandler;
+namespace Imi\Server\ConnectContext\StoreHandler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Lock;

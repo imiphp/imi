@@ -22,7 +22,5 @@ class ExecuteTimeoutHandler implements IExecuteTimeoutHandler
     {
         $context = RequestContext::getContext();
         $response->setStatus(StatusCode::INTERNAL_SERVER_ERROR)->setBody(new MemoryStream('<h1>Request execute timeout</h1>'))->send();
-        $server = $context['server']->getSwooleServer();
-        $server->close($context['swooleRequest']->fd);
     }
 }

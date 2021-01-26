@@ -87,7 +87,7 @@ return [
 			'task_worker_num'	=>	8,
 		],
 		// 数据处理器
-		'dataParser'	=>	Imi\Swoole\Server\DataParser\JsonObjectParser::class,
+		'dataParser'	=>	Imi\Server\DataParser\JsonObjectParser::class,
 	],
 }
 ```

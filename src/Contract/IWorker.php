@@ -34,4 +34,11 @@ interface IWorker
      * @return void
      */
     public function inited();
+
+    /**
+     * 获取服务器 master 进程 PID.
+     *
+     * @return int
+     */
+    public function getMasterPid(): int;
 }

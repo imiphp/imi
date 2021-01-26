@@ -8,8 +8,8 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
+use Imi\Swoole\SwooleWorker;
 use Imi\Swoole\Util\Imi as SwooleImi;
-use Imi\Swoole\Util\Swoole;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
@@ -37,8 +37,8 @@ class OnManagerStart implements IManagerStartEventListener
         // 进程PID记录
         $fileName = Imi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
         file_put_contents($fileName, json_encode([
-            'masterPID'     => Swoole::getMasterPID(),
-            'managerPID'    => Swoole::getManagerPID(),
+            'masterPID'     => SwooleWorker::getMasterPid(),
+            'managerPID'    => SwooleWorker::getManagerPid(),
         ]));
     }
 }

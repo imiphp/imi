@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Imi\Log\LogLevel;
-use Imi\Swoole\Context\CoroutineContextManager;
 
 return [
     'configs'    => [
@@ -72,9 +71,6 @@ return [
         'DbQueryLog' => [
             'enable' => true,
         ],
-    ],
-    'imi'   => [
-        'RequestContext' => CoroutineContextManager::class,
     ],
 
     // 连接池配置

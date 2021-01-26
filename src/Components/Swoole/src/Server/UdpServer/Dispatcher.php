@@ -6,7 +6,7 @@ namespace Imi\Swoole\Server\UdpServer;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Swoole\Server\DataParser\DataParser;
+use Imi\Server\DataParser\DataParser;
 use Imi\Swoole\Server\UdpServer\Message\IPacketData;
 
 /**

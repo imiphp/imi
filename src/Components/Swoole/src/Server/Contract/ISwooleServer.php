@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Contract;
 
 use Imi\Server\Contract\IServer;
-use Imi\Swoole\Server\Group\Contract\IServerGroup;
+use Imi\Server\Group\Contract\IServerGroup;
 use Swoole\Server;
 use Swoole\Server\Port;
 

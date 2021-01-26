@@ -166,4 +166,30 @@ class SwooleWorkerHandler implements ISwooleWorker
 
         return $server->getSwooleServer()->taskworker;
     }
+
+    /**
+     * 获取服务器 master 进程 PID.
+     *
+     * @return int
+     */
+    public function getMasterPid(): int
+    {
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+
+        return $server->getSwooleServer()->master_pid;
+    }
+
+    /**
+     * 获取服务器 manager 进程 PID.
+     *
+     * @return int
+     */
+    public function getManagerPid(): int
+    {
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+
+        return $server->getSwooleServer()->manager_pid;
+    }
 }

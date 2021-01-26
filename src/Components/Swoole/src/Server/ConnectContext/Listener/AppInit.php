@@ -35,7 +35,7 @@ class AppInit implements IAppInitEventListener
                 $server->getBean('ConnectContextStore')->getHandler();
                 if (Imi::getClassPropertyValue('ServerGroup', 'status'))
                 {
-                    /** @var \Imi\Swoole\Server\Group\Handler\IGroupHandler $groupHandler */
+                    /** @var \Imi\Server\Group\Handler\IGroupHandler $groupHandler */
                     $groupHandler = $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
                     $groupHandler->clear();
                 }

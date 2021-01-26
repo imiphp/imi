@@ -79,4 +79,14 @@ class Server extends Base
             ], $this);
         };
     }
+
+    /**
+     * 获取实例化 Worker 用的协议.
+     *
+     * @return string
+     */
+    protected function getWorkerScheme(): string
+    {
+        return 'http';
+    }
 }

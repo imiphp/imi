@@ -28,9 +28,9 @@ function startServer()
     }
 
     $servers = [
-        'HttpServer'    => [
-            'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
-            'stop'          => __DIR__ . '/unit/HttpServer/bin/stop.sh',
+        'AppServer'    => [
+            'start'         => __DIR__ . '/unit/AppServer/bin/start.sh',
+            'stop'          => __DIR__ . '/unit/AppServer/bin/stop.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
     ];

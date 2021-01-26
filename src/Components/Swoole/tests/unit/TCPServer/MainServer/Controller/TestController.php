@@ -49,7 +49,7 @@ class TestController extends \Imi\Controller\TcpController
             'action'     => 'send',
             'message'    => ConnectContext::get('username') . ':' . $data->message,
         ];
-        $this->server->groupCall('g1', 'send', $this->server->getBean(\Imi\Swoole\Server\DataParser\DataParser::class)->encode($message));
+        $this->server->groupCall('g1', 'send', $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($message));
     }
 
     /**

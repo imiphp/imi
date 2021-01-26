@@ -11,11 +11,6 @@ return [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
-    // imi 核心配置
-    'imi'   => [
-        'RequestContext'    => \Imi\Swoole\Context\CoroutineContextManager::class,
-    ],
-
     // 扫描目录
     'beanScan'    => [
         'Imi\Swoole\Test\HttpServer\Listener',

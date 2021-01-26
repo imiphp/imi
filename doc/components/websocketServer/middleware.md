@@ -8,13 +8,13 @@
 
 ```php
 <?php
-namespace Imi\Swoole\Server\WebSocket\Middleware;
+namespace Imi\Server\WebSocket\Middleware;
 
 use Imi\RequestContext;
 use Imi\Bean\Annotation\Bean;
-use Imi\Swoole\Server\WebSocket\Message\IFrame;
-use Imi\Swoole\Server\WebSocket\MessageHandler;
-use Imi\Swoole\Server\WebSocket\IMessageHandler;
+use Imi\Server\WebSocket\Message\IFrame;
+use Imi\Server\WebSocket\MessageHandler;
+use Imi\Server\WebSocket\IMessageHandler;
 
 /**
  * @Bean
@@ -52,7 +52,7 @@ return [
 		'WebSocketDispatcher'	=>	[
 			'middlewares'	=>	[
 				// 中间件
-				\Imi\Swoole\Server\WebSocket\Middleware\RouteMiddleware::class,
+				\Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
 			],
 		],
 	],

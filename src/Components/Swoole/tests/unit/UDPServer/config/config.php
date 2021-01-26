@@ -11,11 +11,6 @@ return [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
-    // imi 核心配置
-    'imi'   => [
-        'RequestContext'    => \Imi\Swoole\Context\CoroutineContextManager::class,
-    ],
-
     // 扫描目录
     'beanScan'    => [
         'Imi\Swoole\Test\UDPServer\Listener',
@@ -36,7 +31,7 @@ return [
             'worker_num'    => 1,
         ],
         // 数据处理器
-        'dataParser'    => Imi\Swoole\Server\DataParser\JsonObjectParser::class,
+        'dataParser'    => Imi\Server\DataParser\JsonObjectParser::class,
     ],
 
     // 子服务器（端口监听）配置

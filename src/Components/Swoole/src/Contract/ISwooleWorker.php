@@ -28,4 +28,11 @@ interface ISwooleWorker extends IWorker
      * @return bool
      */
     public function isWorkerStartAppComplete(): bool;
+
+    /**
+     * 获取服务器 manager 进程 PID.
+     *
+     * @return int
+     */
+    public function getManagerPid(): int;
 }

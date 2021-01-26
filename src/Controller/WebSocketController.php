@@ -7,6 +7,6 @@ namespace Imi\Controller;
 /**
  * {@inheritdoc}
  */
-abstract class WebSocketController extends \Imi\Swoole\Server\WebSocket\Controller\WebSocketController
+abstract class WebSocketController extends \Imi\Server\WebSocket\Controller\WebSocketController
 {
 }

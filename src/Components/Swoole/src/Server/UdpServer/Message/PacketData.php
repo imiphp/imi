@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\UdpServer\Message;
 
 use Imi\RequestContext;
-use Imi\Swoole\Server\DataParser\DataParser;
+use Imi\Server\DataParser\DataParser;
 
 class PacketData implements IPacketData
 {

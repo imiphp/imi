@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\TcpServer\Message;
 
 use Imi\RequestContext;
-use Imi\Swoole\Server\DataParser\DataParser;
+use Imi\Server\DataParser\DataParser;
 
 class ReceiveData implements IReceiveData
 {

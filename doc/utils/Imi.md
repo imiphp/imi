@@ -56,7 +56,7 @@ var_dump(Imi::getNamespacePaths('Imi'));
 构造方法赋值无法取出
 
 ```php
-// 默认为Imi\Swoole\Server\Group\Handler\Redis
+// 默认为Imi\Server\Group\Handler\Redis
 echo Imi::getClassPropertyValue('ServerGroup', 'groupHandler');
 ```
 

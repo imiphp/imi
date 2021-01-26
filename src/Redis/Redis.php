@@ -282,13 +282,14 @@ class Redis
      */
     public static function use(callable $callable, ?string $poolName = null, bool $forceUse = false)
     {
-        if (!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true))
+        $poolName = RedisManager::parsePoolName($poolName);
+        if (!$forceUse && Config::get('@currentServer.redis.quickFromRequestContext', true) || !PoolManager::exists($poolName))
         {
             return $callable(RedisManager::getInstance($poolName));
         }
         else
         {
-            return PoolManager::use(RedisManager::parsePoolName($poolName), function (IPoolResource $resource, RedisHandler $redis) use ($callable) {
+            return PoolManager::use($poolName, function (IPoolResource $resource, RedisHandler $redis) use ($callable) {
                 return $callable($redis);
             });
         }

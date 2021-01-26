@@ -59,6 +59,11 @@ class WorkermanApp extends CliApp
                 }
             }
         }
+        // @app.imi 配置检测
+        if (null === Config::get('@app.imi.Timer'))
+        {
+            Config::set('@app.imi.Timer', WorkermanTimer::class);
+        }
     }
 
     /**

@@ -35,6 +35,6 @@ abstract class TcpController
      */
     protected function encodeMessage($data): string
     {
-        return $this->server->getBean(\Imi\Swoole\Server\DataParser\DataParser::class)->encode($data);
+        return $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($data);
     }
 }

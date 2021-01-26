@@ -67,4 +67,14 @@ class Worker
     {
         return static::$workerHandler ? static::$workerHandler->getWorkerNum() : 0;
     }
+
+    /**
+     * 获取服务器 master 进程 PID.
+     *
+     * @return int
+     */
+    public static function getMasterPid(): int
+    {
+        return static::$workerHandler ? static::$workerHandler->getMasterPid() : 0;
+    }
 }
