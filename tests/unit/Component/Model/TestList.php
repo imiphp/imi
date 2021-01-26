@@ -22,7 +22,7 @@ class TestList extends TestListBase
      *
      * @Column(name="list", type="list", listSeparator=",", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      *
-     * @var string
+     * @var array
      */
     protected $list;
 }

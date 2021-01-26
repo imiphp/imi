@@ -4,8 +4,7 @@
     "license": "MulanPSL-1.0",
     "description": "imi workerman component",
     "require": {
-        "workerman/workerman": "^4.0",
-        "workerman/channel": "^1.0"
+        "workerman/workerman": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=8",

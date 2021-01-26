@@ -39,7 +39,7 @@ abstract class <?= $className; ?>Base extends Model
      * @var <?= $field['phpType']; ?>
 
      */
-    protected <?= $field['phpType']; ?> $<?= $field['varName']; ?>;
+    protected <?php if ($field['typeDefinition'] && $field['phpDefinitionType']):?><?= $field['phpDefinitionType']; ?> <?php endif; ?>$<?= $field['varName']; ?> = null;
 
     /**
      * 获取 <?= $field['varName']; ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']); ?>
@@ -48,7 +48,8 @@ abstract class <?= $className; ?>Base extends Model
      * @return <?= $field['phpType']; ?>
 
      */ 
-    public function get<?= ucfirst($field['varName']); ?>(): <?= $field['phpType']; ?>
+    public function get<?= ucfirst($field['varName']); ?>()<?php if ($field['typeDefinition'] && $field['phpDefinitionType']):?>: <?= $field['phpDefinitionType']; ?><?php endif; ?>
+
     {
         return $this-><?= $field['varName']; ?>;
     }
@@ -60,7 +61,7 @@ abstract class <?= $className; ?>Base extends Model
 
      * @return static
      */ 
-    public function set<?= ucfirst($field['varName']); ?>(<?= $field['phpType']; ?> $<?= $field['varName']; ?>)
+    public function set<?= ucfirst($field['varName']); ?>(<?php if ($field['typeDefinition'] && $field['phpDefinitionType']):?><?= $field['phpDefinitionType']; ?> <?php endif; ?>$<?= $field['varName']; ?>) 
     {
         $this-><?= $field['varName']; ?> = $<?= $field['varName']; ?>;
         return $this;

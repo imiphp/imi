@@ -20,14 +20,14 @@ class ReferenceGetterTestModel extends TreeBase
      *
      * @var int[]
      */
-    protected $list = [];
+    protected array $list = [];
 
     /**
      * Get the value of list.
      *
      * @return int[]
      */
-    public function &getList()
+    public function &getList(): array
     {
         return $this->list;
     }
@@ -39,7 +39,7 @@ class ReferenceGetterTestModel extends TreeBase
      *
      * @return self
      */
-    public function setList($list)
+    public function setList(array $list)
     {
         $this->list = $list;
 

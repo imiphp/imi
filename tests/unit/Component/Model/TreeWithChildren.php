@@ -25,14 +25,14 @@ class TreeWithChildren extends Tree
      *
      * @var static[]
      */
-    protected $children = [];
+    protected array $children = [];
 
     /**
      * Get 子节点集合.
      *
      * @return static[]
      */
-    public function &getChildren()
+    public function &getChildren(): array
     {
         return $this->children;
     }
@@ -44,7 +44,7 @@ class TreeWithChildren extends Tree
      *
      * @return self
      */
-    public function setChildren($children)
+    public function setChildren(array $children): self
     {
         $this->children = $children;
 

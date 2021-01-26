@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\Db\Drivers\PdoMysql;
 
-use PDO;
 use Imi\App;
+use Imi\Bean\Annotation\Bean;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
-use Imi\Bean\BeanFactory;
-use Imi\Db\Interfaces\IDb;
-use Imi\Bean\Annotation\Bean;
 use Imi\Db\Exception\DbException;
+use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Transaction\Transaction;
 use Imi\Db\Statement\StatementManager;
+use Imi\Db\Transaction\Transaction;
+use Imi\Db\Util\SqlUtil;
+use PDO;
 
 /**
  * PDO MySQL驱动.
@@ -92,6 +92,15 @@ class Driver extends Base implements IDb
         if (!isset($option['options']))
         {
             $option['options'] = [];
+        }
+        $options = &$option['options'];
+        if (!isset($options[\PDO::ATTR_STRINGIFY_FETCHES]))
+        {
+            $options[\PDO::ATTR_STRINGIFY_FETCHES] = false;
+        }
+        if (!isset($options[\PDO::ATTR_EMULATE_PREPARES]))
+        {
+            $options[\PDO::ATTR_EMULATE_PREPARES] = false;
         }
         $this->option = $option;
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
@@ -329,26 +338,12 @@ class Driver extends Base implements IDb
      */
     public function batchExec(string $sql): array
     {
-        $queryResult = $this->query($sql);
         $result = [];
-        do
+        foreach (SqlUtil::parseMultiSql($sql) as $itemSql)
         {
-            try
-            {
-                $result[] = $queryResult->fetchAll();
-            }
-            catch (\PDOException $pe)
-            {
-                if ('SQLSTATE[HY000]: General error' === $pe->getMessage())
-                {
-                    $result[] = [];
-                }
-                else
-                {
-                    throw $pe;
-                }
-            }
-        } while ($queryResult->nextRowset());
+            $queryResult = $this->query($itemSql);
+            $result[] = $queryResult->fetchAll();
+        }
 
         return $result;
     }

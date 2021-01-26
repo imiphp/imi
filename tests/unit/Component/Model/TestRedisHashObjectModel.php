@@ -24,14 +24,14 @@ class TestRedisHashObjectModel extends RedisModel
      *
      * @var int
      */
-    protected $id;
+    protected int $id;
 
     /**
      * 获取 id.
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -43,7 +43,7 @@ class TestRedisHashObjectModel extends RedisModel
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -57,14 +57,14 @@ class TestRedisHashObjectModel extends RedisModel
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 获取 name.
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -76,7 +76,7 @@ class TestRedisHashObjectModel extends RedisModel
      *
      * @return static
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -88,16 +88,16 @@ class TestRedisHashObjectModel extends RedisModel
      *
      * @Column(name="age")
      *
-     * @var string
+     * @var int
      */
-    protected $age;
+    protected int $age;
 
     /**
      * 获取 age.
      *
-     * @return string
+     * @return int
      */
-    public function getAge()
+    public function getAge(): int
     {
         return $this->age;
     }
@@ -105,11 +105,11 @@ class TestRedisHashObjectModel extends RedisModel
     /**
      * 赋值 age.
      *
-     * @param string $age age
+     * @param int $age age
      *
      * @return static
      */
-    public function setAge($age)
+    public function setAge($age): self
     {
         $this->age = $age;
 

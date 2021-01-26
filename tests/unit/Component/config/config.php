@@ -296,6 +296,15 @@ return [
     'yurun2'   => imiGetEnv('yurun'),
     'tools'    => [
         'generate/model'    => [
+            'relation' => [
+                'tb_test_list' => [
+                    'fields' => [
+                        'list' => [
+                            'typeDefinition' => false,
+                        ],
+                    ],
+                ],
+            ],
             'namespace' => [
                 'Imi\Test\Component\Model' => [
                     'tables'    => [

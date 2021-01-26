@@ -29,7 +29,7 @@ class ModelTest extends BaseTest
         for ($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
         {
             Performance::newInstance([
-                'value' => $i + 1,
+                'value' => (string) ($i + 1),
             ])->insert();
         }
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
@@ -42,7 +42,7 @@ class ModelTest extends BaseTest
         for ($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record = Performance::find($i);
-            $record->value = static::PERFORMANCE_COUNT - $i;
+            $record->value = (string) (static::PERFORMANCE_COUNT - $i);
             $record->update();
         }
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');

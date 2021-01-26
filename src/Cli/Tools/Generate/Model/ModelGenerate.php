@@ -53,7 +53,7 @@ class ModelGenerate extends BaseCommand
             default:
                 $override = (bool) json_decode($override);
         }
-        if (\in_array($config, ['true', 'false']))
+        if (\in_array($config, ['true', 'false'], true))
         {
             $config = (bool) json_decode($config);
         }
@@ -116,7 +116,7 @@ class ModelGenerate extends BaseCommand
             if (isset($configData['relation'][$table]))
             {
                 $configItem = $configData['relation'][$table];
-                $modelNamespace = $configItem['namespace'];
+                $modelNamespace = $configItem['namespace'] ?? $namespace;
                 $path = Imi::getNamespacePath($modelNamespace);
                 if (null === $path)
                 {
@@ -186,7 +186,7 @@ class ModelGenerate extends BaseCommand
                 'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
             ];
             $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
-            $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
+            $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE'], $table, $configData);
 
             $baseFileName = File::path($basePath, $className . 'Base.php');
             if (!is_file($baseFileName) || true === $override || 'base' === $override)
@@ -251,13 +251,15 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理字段信息.
      *
-     * @param array $fields
-     * @param array $data
-     * @param bool  $isView
+     * @param array  $fields
+     * @param array  $data
+     * @param bool   $isView
+     * @param string $table
+     * @param array  $config
      *
      * @return void
      */
-    private function parseFields(array $fields, ?array &$data, bool $isView): void
+    private function parseFields(array $fields, ?array &$data, bool $isView, string $table, array $config): void
     {
         $idCount = 0;
         foreach ($fields as $i => $field)
@@ -271,11 +273,17 @@ class ModelGenerate extends BaseCommand
             {
                 $isPk = 'PRI' === $field['Key'];
             }
+            [$phpType, $phpDefinitionType] = $this->dbFieldTypeToPhp($typeName);
+            if (!empty($phpDefinitionType))
+            {
+                $phpDefinitionType = '?' . $phpDefinitionType;
+            }
             $data['fields'][] = [
                 'name'              => $field['Field'],
                 'varName'           => Text::toCamelName($field['Field']),
                 'type'              => $typeName,
-                'phpType'           => $this->dbFieldTypeToPhp($typeName),
+                'phpType'           => $phpType . '|null',
+                'phpDefinitionType' => $phpDefinitionType,
                 'length'            => $length,
                 'accuracy'          => $accuracy,
                 'nullable'          => 'YES' === $field['Null'],
@@ -284,6 +292,7 @@ class ModelGenerate extends BaseCommand
                 'primaryKeyIndex'   => $isPk ? $idCount : -1,
                 'isAutoIncrement'   => false !== strpos($field['Extra'], 'auto_increment'),
                 'comment'           => $field['Comment'],
+                'typeDefinition'    => $config['relation'][$table]['fields'][$field['Field']]['typeDefinition'] ?? true,
             ];
             if ($isPk)
             {
@@ -350,28 +359,30 @@ class ModelGenerate extends BaseCommand
     /**
      * 数据库字段类型转PHP的字段类型.
      *
+     * 返回格式：[显示类型，定义类型]
+     *
      * @param string $type
      *
-     * @return string
+     * @return array
      */
-    private function dbFieldTypeToPhp(string $type): string
+    private function dbFieldTypeToPhp(string $type): array
     {
         $firstType = explode(' ', $type)[0];
         static $map = [
-            'int'       => 'int',
-            'smallint'  => 'int',
-            'tinyint'   => 'int',
-            'mediumint' => 'int',
-            'bigint'    => 'int',
-            'bit'       => 'boolean',
-            'year'      => 'int',
-            'double'    => 'float',
-            'float'     => 'float',
-            'decimal'   => 'float',
-            'json'      => \Imi\Util\LazyArrayObject::class,
+            'int'       => ['int', 'int'],
+            'smallint'  => ['int', 'int'],
+            'tinyint'   => ['int', 'int'],
+            'mediumint' => ['int', 'int'],
+            'bigint'    => ['int', 'int'],
+            'bit'       => ['bool', 'bool'],
+            'year'      => ['int', 'int'],
+            'double'    => ['float', 'float'],
+            'float'     => ['float', 'float'],
+            'decimal'   => ['float', 'float'],
+            'json'      => ['\\' . \Imi\Util\LazyArrayObject::class . '|array', ''],
         ];
 
-        return $map[$firstType] ?? 'string';
+        return $map[$firstType] ?? ['string', 'string'];
     }
 
     /**

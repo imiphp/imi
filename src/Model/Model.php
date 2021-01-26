@@ -6,17 +6,16 @@ namespace Imi\Model;
 
 use Imi\App;
 use Imi\Db\Db;
-use Imi\Util\Text;
-use Imi\Event\Event;
 use Imi\Db\Query\Field;
-use Imi\Bean\BeanFactory;
-use Imi\Model\Relation\Query;
-use Imi\Util\LazyArrayObject;
-use Imi\Model\Relation\Update;
-use Imi\Model\Event\ModelEvents;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Event\Event;
+use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\InitEventParam;
+use Imi\Model\Relation\Query;
+use Imi\Model\Relation\Update;
+use Imi\Util\LazyArrayObject;
+use Imi\Util\Text;
 
 /**
  * 常用的数据库模型.
@@ -704,7 +703,7 @@ abstract class Model extends BaseModel
                         $value = (int) (microtime(true) * 1000);
                         break;
                     case 'year':
-                        $value = date('Y');
+                        $value = (int) date('Y');
                         break;
                     default:
                         throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $column->name, $column->type));
