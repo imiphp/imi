@@ -114,7 +114,7 @@ class ModelGenerate
             if (isset($configData['relation'][$table]))
             {
                 $configItem = $configData['relation'][$table];
-                $modelNamespace = $configItem['namespace'];
+                $modelNamespace = $configItem['namespace'] ?? $namespace;
                 $path = Imi::getNamespacePath($modelNamespace);
                 if (null === $path)
                 {
@@ -372,7 +372,7 @@ class ModelGenerate
             'double'    => 'float',
             'float'     => 'float',
             'decimal'   => 'float',
-            'json'      => \Imi\Util\LazyArrayObject::class,
+            'json'      => '\\' . \Imi\Util\LazyArrayObject::class,
         ];
 
         return $map[$firstType] ?? 'string';
