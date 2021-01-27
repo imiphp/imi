@@ -211,20 +211,6 @@ class Redis implements IGroupHandler
         return true;
     }
 
-    /**
-     * 是否有ping.
-     *
-     * @param RedisHandler $redis
-     *
-     * @return bool
-     */
-    private function hasPing(RedisHandler $redis): bool
-    {
-        $key = $this->getPingKey();
-
-        return 1 == $redis->exists($key);
-    }
-
     public function __destruct()
     {
         if (null !== $this->timerId)

@@ -208,20 +208,6 @@ class Redis implements IHandler
         return true;
     }
 
-    /**
-     * 是否有ping.
-     *
-     * @param RedisHandler $redis
-     *
-     * @return bool
-     */
-    private function hasPing(RedisHandler $redis): bool
-    {
-        $key = $this->getPingKey();
-
-        return 1 == $redis->exists($key);
-    }
-
     public function __destruct()
     {
         if (null !== $this->timerId)
@@ -249,7 +235,7 @@ class Redis implements IHandler
                 }
                 else
                 {
-                    throw new \RuntimeException('ConnectContextRedis->dataDecode must be set in beans');
+                    return $result;
                 }
             }
             else

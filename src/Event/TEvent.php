@@ -157,7 +157,7 @@ trait TEvent
                 return;
             }
             $eventsMap = &$this->events[$name];
-            $this->rebuildEventQueue($name);
+            $queue = $this->rebuildEventQueue($name);
             foreach ($classEventdata as $className => $option)
             {
                 if (isset($option[$name]) && $this instanceof $className)
@@ -169,7 +169,7 @@ trait TEvent
                             $obj = BeanFactory::newInstance($callback['className']);
                             $obj->handle($param);
                         }, $callback['priority']);
-                        $eventQueue[$name]->insert($item, $callback['priority']);
+                        $queue->insert($item, $callback['priority']);
                     }
                 }
             }
@@ -180,9 +180,13 @@ trait TEvent
         }
         elseif (isset($this->eventChangeRecords[$name]))
         {
-            $this->rebuildEventQueue($name);
+            $queue = $this->rebuildEventQueue($name);
         }
-        $callbacks = clone $eventQueue[$name];
+        else
+        {
+            $queue = $eventQueue[$name];
+        }
+        $callbacks = clone $queue;
         // 实例化参数
         $param = new $paramClass($name, $data, $target);
         $oneTimeCallbacks = [];
@@ -229,9 +233,9 @@ trait TEvent
     /**
      * 重建事件队列.
      *
-     * @return void
+     * @return \SplPriorityQueue
      */
-    private function rebuildEventQueue(string $name)
+    private function rebuildEventQueue(string $name): \SplPriorityQueue
     {
         $this->eventQueue[$name] = $queue = new \SplPriorityQueue();
         foreach ($this->events[$name] ?? [] as $item)
@@ -239,5 +243,7 @@ trait TEvent
             $queue->insert($item, $item->priority);
         }
         $this->eventChangeRecords[$name] = null;
+
+        return $queue;
     }
 }
