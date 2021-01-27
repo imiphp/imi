@@ -121,6 +121,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->worker->onClose = function (ConnectionInterface $connection) {
             RequestContext::muiltiSet([
                 'server' => $this,
+                'fd'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
                 'server'     => $this,
@@ -131,6 +132,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->worker->onConnect = function (ConnectionInterface $connection) {
             RequestContext::muiltiSet([
                 'server' => $this,
+                'fd'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
                 'server'     => $this,
@@ -141,6 +143,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
             RequestContext::muiltiSet([
                 'server' => $this,
+                'fd'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
                 'server'     => $this,

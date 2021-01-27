@@ -13,7 +13,6 @@ use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\Frame;
 use Imi\Workerman\Http\Message\WorkermanRequest;
 use Imi\Workerman\Server\Base;
-use Workerman\Connection\ConnectionInterface;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Protocols\Websocket;
@@ -84,7 +83,7 @@ class Server extends Base implements IWebSocketServer
             ], $this);
         };
 
-        $this->worker->onMessage = function (ConnectionInterface $connection, string $data) {
+        $this->worker->onMessage = function (TcpConnection $connection, string $data) {
             $fd = $connection->id;
             RequestContext::muiltiSet([
                 'server' => $this,

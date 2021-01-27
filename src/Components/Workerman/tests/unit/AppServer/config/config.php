@@ -39,6 +39,15 @@ return [
             'configs'   => [
             ],
         ],
+        'tcp' => [
+            'namespace' => 'Imi\Workerman\Test\AppServer\TcpServer',
+            'type'      => Imi\Workerman\Server\Type::TCP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13003,
+            'configs'   => [
+                'protocol' => \Workerman\Protocols\Text::class,
+            ],
+        ],
     ],
 
     // 数据库配置
@@ -56,7 +65,6 @@ return [
                 'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'        => imiGetEnv('REDIS_SERVER_PORT', 6379),
                 'password'    => imiGetEnv('REDIS_SERVER_PASSWORD'),
-                'serialize'   => false,
             ],
         ],
     ],

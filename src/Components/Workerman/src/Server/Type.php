@@ -16,6 +16,11 @@ class Type
      */
     const WEBSOCKET = 'WorkermanWebSocketServer';
 
+    /**
+     * TCP 服务器.
+     */
+    const TCP = 'WorkermanTcpServer';
+
     private function __construct()
     {
     }

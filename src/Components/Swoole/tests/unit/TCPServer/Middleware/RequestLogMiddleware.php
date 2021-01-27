@@ -6,9 +6,9 @@ namespace Imi\Swoole\Test\TCPServer\Middleware;
 
 use Imi\Log\Log;
 use Imi\RequestContext;
-use Imi\Swoole\Server\TcpServer\IReceiveHandler;
-use Imi\Swoole\Server\TcpServer\Message\IReceiveData;
-use Imi\Swoole\Server\TcpServer\Middleware\IMiddleware;
+use Imi\Server\TcpServer\IReceiveHandler;
+use Imi\Server\TcpServer\Message\IReceiveData;
+use Imi\Server\TcpServer\Middleware\IMiddleware;
 
 class RequestLogMiddleware implements IMiddleware
 {

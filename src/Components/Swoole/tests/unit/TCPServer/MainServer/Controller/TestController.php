@@ -6,9 +6,9 @@ namespace Imi\Swoole\Test\TCPServer\MainServer\Controller;
 
 use Imi\ConnectContext;
 use Imi\RequestContext;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpAction;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpController;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute;
+use Imi\Server\TcpServer\Route\Annotation\TcpAction;
+use Imi\Server\TcpServer\Route\Annotation\TcpController;
+use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
 
 /**
  * 数据收发测试.

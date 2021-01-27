@@ -8,7 +8,7 @@
 
 ```php
 <?php
-namespace Imi\Swoole\Server\TcpServer\Middleware;
+namespace Imi\Server\TcpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 
@@ -64,9 +64,9 @@ return [
 namespace ImiDemo\TcpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpRoute;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpAction;
-use Imi\Swoole\Server\TcpServer\Route\Annotation\TcpController;
+use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
+use Imi\Server\TcpServer\Route\Annotation\TcpAction;
+use Imi\Server\TcpServer\Route\Annotation\TcpController;
 
 /**
  * 数据收发测试

@@ -15,7 +15,7 @@ return [
         'TcpDispatcher'    => [
             'middlewares'    => [
                 \Imi\Swoole\Test\TCPServer\Middleware\RequestLogMiddleware::class,
-                \Imi\Swoole\Server\TcpServer\Middleware\RouteMiddleware::class,
+                \Imi\Server\TcpServer\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\TCPServer\MainServer\Middleware\Test::class,
             ],
         ],

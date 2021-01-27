@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\ConnectContext\StoreHandler;
+namespace Imi\Swoole\Server\ConnectContext\StoreHandler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Lock\Lock;
+use Imi\Server\ConnectContext\StoreHandler\IHandler;
 use Imi\Swoole\Util\MemoryTableManager;
 use Swoole\Timer;
 

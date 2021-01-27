@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
+use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
@@ -19,7 +20,7 @@ use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
  *
  * @Bean("TcpServer")
  */
-class Server extends Base
+class Server extends Base implements ITcpServer
 {
     /**
      * 是否支持 SSL.
@@ -168,5 +169,18 @@ class Server extends Base
     public function isLongConnection(): bool
     {
         return true;
+    }
+
+    /**
+     * 向客户端发送消息.
+     *
+     * @param int    $fd
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function send(int $fd, string $data): bool
+    {
+        return $this->getSwooleServer()->send($fd, $data);
     }
 }

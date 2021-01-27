@@ -16,5 +16,8 @@
         <testsuite name="WebSocketServer">
             <directory>unit/AppServer/Tests/WebSocket</directory>
         </testsuite>
+        <testsuite name="TcpServer">
+            <directory>unit/AppServer/Tests/Tcp</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
