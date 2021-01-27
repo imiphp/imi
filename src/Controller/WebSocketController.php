@@ -8,7 +8,7 @@ namespace Imi\Controller;
 abstract class WebSocketController
 {
     /**
-     * 请求
+     * 服务器.
      *
      * @var \Imi\Server\WebSocket\Server
      */

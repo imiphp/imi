@@ -8,7 +8,7 @@ namespace Imi\Controller;
 abstract class HttpController
 {
     /**
-     * 请求
+     * 请求.
      *
      * @var \Imi\Server\Http\Message\Request
      */

@@ -8,14 +8,14 @@ namespace Imi\Controller;
 abstract class TcpController
 {
     /**
-     * 请求
+     * 服务器.
      *
      * @var \Imi\Server\TcpServer\Server
      */
     public $server;
 
     /**
-     * 桢.
+     * 数据.
      *
      * @var \Imi\Server\TcpServer\Message\IReceiveData
      */

@@ -8,14 +8,14 @@ namespace Imi\Controller;
 abstract class UdpController
 {
     /**
-     * 请求
+     * 服务器.
      *
      * @var \Imi\Server\UdpServer\Server
      */
     public $server;
 
     /**
-     * 桢.
+     * 包数据.
      *
      * @var \Imi\Server\UdpServer\Message\IPacketData
      */
