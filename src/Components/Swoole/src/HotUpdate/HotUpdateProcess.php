@@ -9,6 +9,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
+use Imi\Log\Log;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
@@ -132,7 +133,7 @@ class HotUpdateProcess extends BaseProcess
             $this->defaultPath = Imi::getNamespacePaths(App::getNamespace());
         }
         $this->excludePaths[] = Imi::getRuntimePath();
-        echo 'Process [hotUpdate] start', \PHP_EOL;
+        Log::info('Process [hotUpdate] start');
         $monitor = App::getBean($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
         $this->initBuildRuntime();
@@ -162,9 +163,9 @@ class HotUpdateProcess extends BaseProcess
             if ($monitor->isChanged())
             {
                 $changedFiles = $monitor->getChangedFiles();
-                echo 'Found ', \count($changedFiles) , ' changed Files:', \PHP_EOL, implode(\PHP_EOL, $changedFiles), \PHP_EOL;
+                Log::info('Found ' . \count($changedFiles) . ' changed Files:' . \PHP_EOL . implode(\PHP_EOL, $changedFiles));
                 file_put_contents($this->changedFilesFile, implode("\n", $changedFiles));
-                echo 'Building runtime...', \PHP_EOL;
+                Log::info('Building runtime...');
                 if ($this->building)
                 {
                     $this->stopBuildRuntimeTimer();
@@ -292,15 +293,15 @@ class HotUpdateProcess extends BaseProcess
 
             if (0 !== $status['exitcode'])
             {
-                echo 'Build runtime failed!', \PHP_EOL;
+                Log::error('Build runtime failed!');
 
                 return;
             }
             // 清除各种缓存
             $this->clearCache();
-            echo 'Build time use: ', microtime(true) - $this->beginTime, ' sec', \PHP_EOL;
+            Log::info('Build time use: ' . (microtime(true) - $this->beginTime) . ' sec');
             // 执行重新加载
-            echo 'Reloading server...', \PHP_EOL;
+            Log::info('Reloading server...');
             Imi::reloadServer();
         }
         catch (\Throwable $th)

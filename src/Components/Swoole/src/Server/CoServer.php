@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server;
 
 use Imi\Config;
-use Imi\Log\Log;
-use Imi\Util\Imi;
 use Imi\Event\Event;
-use Imi\Swoole\Process\Pool;
+use Imi\Log\Log;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Process\Pool;
 use Imi\Swoole\Process\Pool\InitEventParam;
 use Imi\Swoole\Process\Pool\WorkerEventParam;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\StartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
-use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
+use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
+use Imi\Util\Imi;
 
 class CoServer
 {
@@ -188,9 +188,7 @@ class CoServer
         }
         if (!$this->config)
         {
-            echo 'Not found server ', $this->name, \PHP_EOL;
-
-            return;
+            throw new \RuntimeException('Not found server ' . $this->name);
         }
         $this->config['coServer'] = true;
     }

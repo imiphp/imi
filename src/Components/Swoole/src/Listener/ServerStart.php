@@ -6,11 +6,13 @@ namespace Imi\Swoole\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
+use Imi\Log\Log;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Listener\IManagerStartEventListener;
 use Imi\Swoole\Server\Event\Param\ManagerStartEventParam;
 use Imi\Swoole\Util\Imi;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.MANAGER.START")
@@ -27,24 +29,25 @@ class ServerStart implements IManagerStartEventListener
     public function handle(ManagerStartEventParam $e)
     {
         Imi::setProcessName('master');
-        echo 'Server start', \PHP_EOL;
+        Log::info('Server start');
+        $output = new ConsoleOutput();
         if (App::isCoServer())
         {
             $data = $e->getData();
-            echo 'WorkerNum: ', $data['workerNum'], ', TaskWorkerNum: 0', \PHP_EOL;
-            echo '[', $data['config']['type'], '] ', $data['name'], '; listen: ', $data['config']['host'], ':', $data['config']['port'], \PHP_EOL;
+            $output->writeln('<info>WorkerNum: </info>' . $data['workerNum'] . ', <info>TaskWorkerNum: </info>0');
+            $output->writeln('<info>[' . $data['config']['type'] . ']</info>; <info>listen:</info> ' . $data['config']['host'] . ':' . $data['config']['port']);
         }
         else
         {
             /** @var ISwooleServer $server */
             $server = ServerManager::getServer('main', ISwooleServer::class);
             $mainSwooleServer = $server->getSwooleServer();
-            echo 'WorkerNum: ', $mainSwooleServer->setting['worker_num'], ', TaskWorkerNum: ', $mainSwooleServer->setting['task_worker_num'], \PHP_EOL;
+            $output->writeln('<info>WorkerNum: </info>' . $mainSwooleServer->setting['worker_num'] . ', <info>TaskWorkerNum: </info>' . $mainSwooleServer->setting['task_worker_num']);
             foreach (ServerManager::getServers(ISwooleServer::class) as $server)
             {
                 /** @var ISwooleServer $server */
                 $serverPort = $server->getSwoolePort();
-                echo '[', $server->getConfig()['type'], '] ', $server->getName(), '; listen: ', $serverPort->host, ':', $serverPort->port, \PHP_EOL;
+                $output->writeln('<info>[' . $server->getConfig()['type'] . ']</info> <comment>' . $server->getName() . '</comment>; <info>listen:</info> ' . $serverPort->host . ':' . $serverPort->port);
             }
         }
     }

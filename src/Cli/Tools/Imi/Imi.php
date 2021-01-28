@@ -10,6 +10,7 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Log\Log;
 use Imi\Pool\Annotation\PoolClean;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Util\Text;
@@ -92,7 +93,7 @@ class Imi extends BaseCommand
             Scanner::scanApp();
         }
         ImiUtil::buildRuntime();
-        echo 'Build app runtime complete' . \PHP_EOL;
+        Log::info('Build app runtime complete');
     }
 
     /**
