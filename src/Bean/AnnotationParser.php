@@ -642,7 +642,7 @@ class AnnotationParser
     /**
      * 获取类名列表.
      *
-     * @return string
+     * @return array
      */
     public function getClasses()
     {
@@ -662,7 +662,7 @@ class AnnotationParser
     /**
      * 处理增量更新.
      *
-     * @param string $files
+     * @param array $files
      *
      * @return void
      */
