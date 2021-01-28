@@ -26,6 +26,7 @@ class CheckDuplicateRoutesAop
      *          "Imi\Server\Http\Route\HttpRoute::checkDuplicateRoutes",
      *          "Imi\Server\WebSocket\Route\WSRoute::checkDuplicateRoutes",
      *          "Imi\Server\TcpServer\Route\TcpRoute::checkDuplicateRoutes",
+     *          "Imi\Server\UdpServer\Route\UdpRoute::checkDuplicateRoutes",
      *      }
      * )
      * @Around

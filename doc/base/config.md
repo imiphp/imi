@@ -101,7 +101,7 @@ return [
             // 指定服务器命名空间
             'namespace' => 'Imi\Workerman\Test\HttpServer\ApiServer',
             // 服务器类型
-            'type'      => Imi\Workerman\Server\Type::HTTP, // HTTP、WEBSOCKET、TCP
+            'type'      => Imi\Workerman\Server\Type::HTTP, // HTTP、WEBSOCKET、TCP、UDP
             'host'      => '0.0.0.0',
             'port'      => 8080,
             'configs'   => [

@@ -13,12 +13,12 @@ use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
-use Imi\Swoole\Server\UdpServer\Message\PacketData;
+use Imi\Server\UdpServer\Message\PacketData;
 use Imi\Swoole\Server\Event\Listener\IPacketEventListener;
 
 /**
  * Packet事件前置处理
- * @ClassEventListener(className="Imi\Swoole\Server\UdpServer\Server",eventName="packet",priority=PHP_INT_MAX)
+ * @ClassEventListener(className="Imi\Server\UdpServer\Server",eventName="packet",priority=PHP_INT_MAX)
  */
 class BeforePacket implements IPacketEventListener
 {

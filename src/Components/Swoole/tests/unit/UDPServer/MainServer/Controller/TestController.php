@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\UDPServer\MainServer\Controller;
 
 use Imi\RequestContext;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpAction;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpController;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute;
+use Imi\Server\UdpServer\Route\Annotation\UdpAction;
+use Imi\Server\UdpServer\Route\Annotation\UdpController;
+use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
 
 /**
  * 数据收发测试.

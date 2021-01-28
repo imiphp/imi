@@ -7,9 +7,9 @@
 namespace ImiDemo\UdpDemo\MainServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpRoute;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpAction;
-use Imi\Swoole\Server\UdpServer\Route\Annotation\UdpController;
+use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
+use Imi\Server\UdpServer\Route\Annotation\UdpAction;
+use Imi\Server\UdpServer\Route\Annotation\UdpController;
 
 /**
  * 数据收发测试

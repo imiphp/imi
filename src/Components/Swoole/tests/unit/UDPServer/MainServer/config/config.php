@@ -14,7 +14,7 @@ return [
     'beans'    => [
         'UdpDispatcher'    => [
             'middlewares'    => [
-                \Imi\Swoole\Server\UdpServer\Middleware\RouteMiddleware::class,
+                \Imi\Server\UdpServer\Middleware\RouteMiddleware::class,
                 \Imi\Swoole\Test\UDPServer\MainServer\Middleware\Test::class,
             ],
         ],

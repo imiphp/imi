@@ -182,7 +182,7 @@ $routeResult = RequestContext::get('routeResult');
 /**
  * 路由配置项
  *
- * @var \Imi\Swoole\Server\UdpServer\Route\RouteItem
+ * @var \Imi\Server\Http\Route\RouteItem
  */
 public $routeItem;
 

@@ -23,9 +23,9 @@ abstract class BaseRequestContextProxy
     /**
      * 获取实例.
      *
-     * @return mixed
+     * @return object
      */
-    public static function __getProxyInstance()
+    public static function __getProxyInstance(): object
     {
         $cache = &self::$cache;
         if (isset($cache[static::class]))

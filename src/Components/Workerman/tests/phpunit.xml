@@ -19,5 +19,8 @@
         <testsuite name="TcpServer">
             <directory>unit/AppServer/Tests/Tcp</directory>
         </testsuite>
+        <testsuite name="UdpServer">
+            <directory>unit/AppServer/Tests/Udp</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

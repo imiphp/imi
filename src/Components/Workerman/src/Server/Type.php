@@ -21,6 +21,11 @@ class Type
      */
     const TCP = 'WorkermanTcpServer';
 
+    /**
+     * UDP 服务器.
+     */
+    const UDP = 'WorkermanUdpServer';
+
     private function __construct()
     {
     }

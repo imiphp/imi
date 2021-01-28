@@ -31,15 +31,15 @@ class BeforePacket implements IPacketEventListener
         {
             return;
         }
+
         $clientInfo = $e->clientInfo;
-        // 上下文创建
-        RequestContext::muiltiSet([
-            'clientInfo'    => $clientInfo,
-            'server'        => $e->getTarget(),
-        ]);
+        $requestContext = RequestContext::getContext();
+        $requestContext['clientInfo'] = $clientInfo;
+        $requestContext['server'] = $e->getTarget();
+        $packetData = $requestContext['packetData'] = new PacketData($clientInfo['address'], $clientInfo['port'], $e->data, $clientInfo);
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('UdpDispatcher');
-        $dispatcher->dispatch(new PacketData($e->data, $clientInfo));
+        $dispatcher->dispatch($packetData);
     }
 }

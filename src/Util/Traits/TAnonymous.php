@@ -8,7 +8,7 @@ use Imi\Util\ClassObject;
 
 trait TAnonymous
 {
-    protected static function __getRealClassName()
+    protected static function __getRealClassName(): string
     {
         if (ClassObject::isAnymous(static::class))
         {

@@ -6,9 +6,9 @@ namespace Imi\Swoole\Test\UDPServer\MainServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Swoole\Server\UdpServer\IPacketHandler;
-use Imi\Swoole\Server\UdpServer\Message\IPacketData;
-use Imi\Swoole\Server\UdpServer\Middleware\IMiddleware;
+use Imi\Server\UdpServer\IPacketHandler;
+use Imi\Server\UdpServer\Message\IPacketData;
+use Imi\Server\UdpServer\Middleware\IMiddleware;
 
 /**
  * @Bean

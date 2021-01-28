@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Protocol;
 use Imi\Server\ServerManager;
+use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Event\Param\PacketEventParam;
@@ -17,7 +18,7 @@ use Imi\Swoole\Server\Event\Param\PacketEventParam;
  *
  * @Bean("UdpServer")
  */
-class Server extends Base
+class Server extends Base implements IUdpServer
 {
     /**
      * 是否支持 SSL.
@@ -128,5 +129,19 @@ class Server extends Base
     public function isLongConnection(): bool
     {
         return false;
+    }
+
+    /**
+     * 向客户端发送消息.
+     *
+     * @param string $ip
+     * @param int    $port
+     * @param string $data
+     *
+     * @return bool
+     */
+    public function sendTo(string $ip, int $port, string $data): bool
+    {
+        return $this->getSwooleServer()->sendto($ip, $port, $data);
     }
 }

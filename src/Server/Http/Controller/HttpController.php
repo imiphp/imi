@@ -6,6 +6,7 @@ namespace Imi\Server\Http\Controller;
 
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\View;
 
 /**
  * Http 控制器.
@@ -13,7 +14,7 @@ use Imi\Server\Http\Message\Contract\IHttpResponse;
 abstract class HttpController
 {
     /**
-     * 请求
+     * 请求.
      *
      * @var \Imi\Server\Http\Message\Contract\IHttpRequest
      */
@@ -34,9 +35,9 @@ abstract class HttpController
      *
      * @return \Imi\Server\View\Annotation\View
      */
-    protected function __render(string $template, array $data = [])
+    protected function __render(string $template, array $data = []): View
     {
-        return new \Imi\Server\View\Annotation\View([
+        return new View([
             'template'      => $template,
             'renderType'    => 'html',
             'data'          => $data,

@@ -15,7 +15,7 @@ return [
         'WebSocketDispatcher'    => [
             'middlewares'    => [
                 \Imi\Server\WebSocket\Middleware\RouteMiddleware::class,
-                \Imi\Swoole\Test\WebSocketServer\MainServer\Middleware\Test::class,
+                \Imi\Workerman\Test\AppServer\WebSocketServer\Middleware\Test::class,
             ],
         ],
         'GroupRedis'    => [

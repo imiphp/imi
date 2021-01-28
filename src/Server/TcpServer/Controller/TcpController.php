@@ -13,14 +13,14 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 abstract class TcpController
 {
     /**
-     * 请求
+     * 服务器.
      *
      * @var ITcpServer
      */
     public ITcpServer $server;
 
     /**
-     * 桢.
+     * 数据.
      *
      * @var \Imi\Server\TcpServer\Message\IReceiveData
      */

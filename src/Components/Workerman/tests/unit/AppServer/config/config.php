@@ -48,6 +48,14 @@ return [
                 'protocol' => \Workerman\Protocols\Text::class,
             ],
         ],
+        'udp' => [
+            'namespace' => 'Imi\Workerman\Test\AppServer\UdpServer',
+            'type'      => Imi\Workerman\Server\Type::UDP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13004,
+            'configs'   => [
+            ],
+        ],
     ],
 
     // 数据库配置
