@@ -654,16 +654,10 @@ abstract class Imi
         {
             throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
         }
-        $return = [];
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
             Process::kill($pid['masterPID']);
-            $return['cmd'] = $cmd;
-            $result = `{$cmd}`;
-            $return['result'] = $result;
-
-            return $return;
         }
         else
         {
@@ -683,16 +677,10 @@ abstract class Imi
         {
             throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
         }
-        $return = [];
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
             Process::kill($pid['masterPID'], \SIGUSR1);
-            $return['cmd'] = $cmd;
-            $result = `{$cmd}`;
-            $return['result'] = $result;
-
-            return $return;
         }
         else
         {
