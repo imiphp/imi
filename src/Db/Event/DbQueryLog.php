@@ -28,7 +28,7 @@ class DbQueryLog
         if ($this->enable)
         {
             // 类
-            AnnotationManager::addClassAnnotations(static::class, new \Imi\Aop\Annotation\Aspect());
+            AnnotationManager::setClassAnnotations(static::class, new \Imi\Aop\Annotation\Aspect());
 
             // 方法
             $annotations = [];
@@ -39,7 +39,7 @@ class DbQueryLog
                 'Imi\Db\Drivers\*\Driver::query',
                 'Imi\Db\Drivers\*\Driver::batchExec',
             ];
-            AnnotationManager::addMethodAnnotations(static::class, 'aopExecute', ...$annotations);
+            AnnotationManager::setMethodAnnotations(static::class, 'aopExecute', ...$annotations);
 
             $annotations = [];
             $annotations[] = new Around();
@@ -47,7 +47,7 @@ class DbQueryLog
             $pointCut->allow = [
                 'Imi\Db\Drivers\*\Driver::prepare',
             ];
-            AnnotationManager::addMethodAnnotations(static::class, 'aopPrepare', ...$annotations);
+            AnnotationManager::setMethodAnnotations(static::class, 'aopPrepare', ...$annotations);
 
             $annotations = [];
             $annotations[] = new Around();
@@ -55,7 +55,7 @@ class DbQueryLog
             $pointCut->allow = [
                 'Imi\Db\Drivers\*\Statement::execute',
             ];
-            AnnotationManager::addMethodAnnotations(static::class, 'aopStatementExecute', ...$annotations);
+            AnnotationManager::setMethodAnnotations(static::class, 'aopStatementExecute', ...$annotations);
         }
     }
 

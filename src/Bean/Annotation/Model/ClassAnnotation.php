@@ -23,21 +23,21 @@ class ClassAnnotation
     /**
      * 方法注解列表.
      *
-     * @var \Imi\Bean\Annotation\Base[]
+     * @var \Imi\Bean\Annotation\Base[][]
      */
     private array $methodAnnotations = [];
 
     /**
      * 属性注解列表.
      *
-     * @var \Imi\Bean\Annotation\Base[]
+     * @var \Imi\Bean\Annotation\Base[][]
      */
     private array $propertyAnnotations = [];
 
     /**
      * 常量注解列表.
      *
-     * @var \Imi\Bean\Annotation\Base[]
+     * @var \Imi\Bean\Annotation\Base[][]
      */
     private array $constantAnnotations = [];
 
@@ -131,7 +131,7 @@ class ClassAnnotation
      *
      * @return self
      */
-    public function addpropertyAnnotations(string $propertyName, array $propertyAnnotations): self
+    public function addPropertyAnnotations(string $propertyName, array $propertyAnnotations): self
     {
         $this->propertyAnnotations[$propertyName] = array_merge($this->propertyAnnotations[$propertyName] ?? [], $propertyAnnotations);
 
@@ -170,6 +170,73 @@ class ClassAnnotation
         $this->constantAnnotations[$constantName] = array_merge($this->constantAnnotations[$constantName] ?? [], $constantAnnotations);
 
         return $this;
+    }
+
+    /**
+     * 清空类注解.
+     *
+     * @return void
+     */
+    public function clearClassAnnotations()
+    {
+        $this->classAnnotations = [];
+    }
+
+    /**
+     * 清空方法注解.
+     *
+     * @param string|null $methodName
+     *
+     * @return void
+     */
+    public function clearMethodAnnotations(?string $methodName = null)
+    {
+        if (null === $methodName)
+        {
+            $this->methodAnnotations = [];
+        }
+        elseif (isset($this->methodAnnotations[$methodName]))
+        {
+            unset($this->methodAnnotations[$methodName]);
+        }
+    }
+
+    /**
+     * 清空属性注解.
+     *
+     * @param string|null $propertyName
+     *
+     * @return void
+     */
+    public function clearPropertyAnnotations(?string $propertyName = null)
+    {
+        if (null === $propertyName)
+        {
+            $this->propertyAnnotations = [];
+        }
+        elseif (isset($this->propertyAnnotations[$propertyName]))
+        {
+            unset($this->propertyAnnotations[$propertyName]);
+        }
+    }
+
+    /**
+     * 清空常量注解.
+     *
+     * @param string|null $constantName
+     *
+     * @return void
+     */
+    public function clearConstantAnnotations(?string $constantName = null)
+    {
+        if (null === $constantName)
+        {
+            $this->constantAnnotations = [];
+        }
+        elseif (isset($this->constantAnnotations[$constantName]))
+        {
+            unset($this->constantAnnotations[$constantName]);
+        }
     }
 
     /**

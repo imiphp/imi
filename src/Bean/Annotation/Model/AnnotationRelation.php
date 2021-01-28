@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation\Model;
 
+use Imi\Log\Log;
+
 class AnnotationRelation
 {
     /**
@@ -207,7 +209,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeClassRelation(string $annotationClassName, string $className)
+    public function removeClassAnnotationRelation(string $annotationClassName, string $className)
     {
         $classRelations = &$this->classRelations;
         if (isset($classRelations[$annotationClassName]))
@@ -226,7 +228,7 @@ class AnnotationRelation
     }
 
     /**
-     * 移除类注解关联.
+     * 移除方法注解关联.
      *
      * @param string $annotationClassName
      * @param string $className
@@ -234,7 +236,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeMethodRelation(string $annotationClassName, string $className, string $methodName)
+    public function removeMethodAnnotationRelation(string $annotationClassName, string $className, string $methodName)
     {
         $methodRelations = &$this->methodRelations;
         if (isset($methodRelations[$annotationClassName]))
@@ -253,7 +255,7 @@ class AnnotationRelation
     }
 
     /**
-     * 移除类注解关联.
+     * 移除属性注解关联.
      *
      * @param string $annotationClassName
      * @param string $className
@@ -261,7 +263,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removePropertyRelation(string $annotationClassName, string $className, string $propertyName)
+    public function removePropertyAnnotationRelation(string $annotationClassName, string $className, string $propertyName)
     {
         $propertyRelations = &$this->propertyRelations;
         if (isset($propertyRelations[$annotationClassName]))
@@ -280,7 +282,7 @@ class AnnotationRelation
     }
 
     /**
-     * 移除类注解关联.
+     * 移除常量注解关联.
      *
      * @param string $annotationClassName
      * @param string $className
@@ -288,7 +290,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeConstantRelation(string $annotationClassName, string $className, string $constantName)
+    public function removeConstantAnnotationRelation(string $annotationClassName, string $className, string $constantName)
     {
         $constantRelations = &$this->constantRelations;
         if (isset($constantRelations[$annotationClassName]))
@@ -304,5 +306,124 @@ class AnnotationRelation
             $constantRelationsItem = array_values($constantRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
+    }
+
+    /**
+     * 移除类所有注解关联.
+     *
+     * @param string $className
+     *
+     * @return void
+     */
+    public function removeClassRelation(string $className)
+    {
+        $classRelations = &$this->classRelations;
+        foreach ($classRelations as $annotationClass => &$list)
+        {
+            $haveUnset = false;
+            foreach ($list as $i => $item)
+            {
+                if ($item->getClass() === $className)
+                {
+                    unset($list[$i]);
+                    $haveUnset = true;
+                }
+            }
+            if ($haveUnset)
+            {
+                $list = array_values($list);
+                $this->allRelations[$annotationClass] = null;
+            }
+        }
+    }
+
+    /**
+     * 移除方法所有注解关联.
+     *
+     * @param string $className
+     * @param string $methodName
+     *
+     * @return void
+     */
+    public function removeMethodRelation(string $className, string $methodName)
+    {
+        $methodRelations = &$this->methodRelations;
+        foreach ($methodRelations as $annotationClass => &$list)
+        {
+            $haveUnset = false;
+            foreach ($list as $i => $item)
+            {
+                if ($item->getClass() === $className && $item->getMethod() === $methodName)
+                {
+                    unset($list[$i]);
+                    $haveUnset = true;
+                }
+            }
+            if ($haveUnset)
+            {
+                $list = array_values($list);
+                $this->allRelations[$annotationClass] = null;
+            }
+        }
+    }
+
+    /**
+     * 移除属性所有注解关联.
+     *
+     * @param string $className
+     * @param string $propertyName
+     *
+     * @return void
+     */
+    public function removePropertyRelation(string $className, string $propertyName)
+    {
+        $propertyRelations = &$this->propertyRelations;
+        foreach ($propertyRelations as $annotationClass => &$list)
+        {
+            $haveUnset = false;
+            foreach ($list as $i => $item)
+            {
+                if ($item->getClass() === $className && $item->getProperty() === $propertyName)
+                {
+                    unset($list[$i]);
+                    $haveUnset = true;
+                }
+            }
+            if ($haveUnset)
+            {
+                $list = array_values($list);
+                $this->allRelations[$annotationClass] = null;
+            }
+        }
+    }
+
+    /**
+     * 移除常量所有注解关联.
+     *
+     * @param string $className
+     * @param string $constantName
+     *
+     * @return void
+     */
+    public function removeConstantRelation(string $className, string $constantName)
+    {
+        $constantRelations = &$this->constantRelations;
+        foreach ($constantRelations as $annotationClass => &$list)
+        {
+            $haveUnset = false;
+            foreach ($list as $i => $item)
+            {
+                if ($item->getClass() === $className && $item->getConstant() === $constantName)
+                {
+                    unset($list[$i]);
+                    $haveUnset = true;
+                }
+            }
+            if ($haveUnset)
+            {
+                $list = array_values($list);
+                $this->allRelations[$annotationClass] = null;
+            }
+        }
     }
 }
