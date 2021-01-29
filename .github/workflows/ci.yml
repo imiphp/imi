@@ -23,12 +23,11 @@ jobs:
         with:
           docker_channel: stable
           docker_version: "20.10"
-        run: |
-          docker version
 
       - name: install db
         run: |
           cd .github
+          docker version
           docker-compose up -d mysql
           docker-compose up -d redis
 
