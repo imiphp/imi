@@ -18,63 +18,47 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: install docker
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_channel: stable
-          docker_version: "20.10"
-
       - name: install db
         run: |
-          cd .github
-          docker version
-          docker-compose up -d mysql
-          docker-compose up -d redis
-
+          brew install mysql redis
+          mysqld --initialize-insecure
+          brew services start mysql
+          brew services start redis
+          mysql -uroot -e 'select version()'
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
-
       - name: install swoole
         run: sudo .github/macos/install-swoole4.6.sh
-
       - name: prepare
         run: |
           composer update
           cd tests
           composer update
           cd ../
+          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           tests/db/install-db.sh
-
       - name: test
         run: |
           composer test
-
   # ci-php8-jit:
   #   runs-on: ubuntu-latest
-
   #   strategy:
   #     fail-fast: false
   #     matrix:
   #       swoole: [4.6.0-php8.0, 4.5.10-php8.0]
   #       mysql: [8.0]
-
   #   env:
   #     SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
   #     MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-
   #   steps:
   #     - uses: actions/checkout@v1
-
   #     - name: prepare
   #       run: |
   #         ./.github/prepare-test.sh swoole-php8
-
   #     - name: test
   #       run: docker exec swoole-php8 php tests/run
-
   ci-php:
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -98,17 +82,13 @@ jobs:
             4.3.6-php7.3,
           ]
         mysql: [5.7, 8.0]
-
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-
     steps:
       - uses: actions/checkout@v1
-
       - name: prepare
         run: |
           ./.github/prepare-test.sh swoole
-
       - name: test
         run: docker exec swoole php tests/run
