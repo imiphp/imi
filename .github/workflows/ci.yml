@@ -20,6 +20,7 @@ jobs:
 
       - name: install db
         run: |
+          cd .github
           docker-compose up -d mysql
           docker-compose up -d redis
 
