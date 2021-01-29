@@ -18,6 +18,14 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: install docker
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker_channel: stable
+          docker_version: "20.10"
+        run: |
+          docker version
+
       - name: install db
         run: |
           cd .github
