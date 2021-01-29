@@ -20,9 +20,10 @@ jobs:
 
       - name: install db
         run: |
-          brew install redis mysql
+          brew install redis mysql@5.7
+          brew link --force mysql@5.7
+          brew services start mysql@5.7
           brew services start redis
-          brew services start mysql
 
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
@@ -36,7 +37,7 @@ jobs:
           cd tests
           composer update
           cd ../
-          mysql -u root -h 127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          mysql -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           tests/db/install-db.sh
 
       - name: test
