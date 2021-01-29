@@ -77,6 +77,8 @@ imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://s
 
 创建 UDP Server 项目：`composer create-project imiphp/project-udp`
 
+创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt`
+
 [完全开发手册](https://doc.imiphp.com)
 
 ## 运行环境

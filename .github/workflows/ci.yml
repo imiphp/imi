@@ -36,7 +36,7 @@ jobs:
           cd tests
           composer update
           cd ../
-          mysql -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          mysql -u root -h 127.0.0.1 -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           tests/db/install-db.sh
 
       - name: test
