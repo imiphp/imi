@@ -10,7 +10,11 @@
 
 创建 UDP Server 项目：`composer create-project imiphp/project-udp`
 
+创建 MQTT Server 项目：`composer create-project imiphp/project-mqtt`
+
 > 如何运行请看上面项目中的`README.md`
+
+> 项目最终使用什么协议，和上面的命令行无绝对关系。命令行创建项目只是提供一个快捷途径，服务的通信协议，可以通过修改配置文件来更换。
 
 ## 流程说明
 
@@ -34,6 +38,3 @@ public function __init()
 ```
 
 你可以在里面做一些初始化的事情，不过大多数时候什么都不需要做。
-
-
-
