@@ -20,7 +20,9 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 
 ### 启用定时任务进程
 
-在项目 `config.php` 的 `beans` 中加入：
+必须在项目 `config.php` 的 `beans` 中加入配置启用定时任务进程，否则所有定时任务都无法生效。
+
+配置代码：
 
 ```php
 'AutoRunProcessManager'   =>  [
@@ -34,7 +36,7 @@ imi 通过增加一个 `CronProcess` 进程用于定时任务的调度和执行�
 
 #### Task 任务
 
-与异步任务写法基本一致，多了`@Cron`注解
+与异步任务写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
 
 ```php
 <?php
@@ -43,7 +45,7 @@ namespace Imi\Test\HttpServer\Cron;
 use Imi\Task\TaskParam;
 use Imi\Cron\Annotation\Cron;
 use Imi\Task\Annotation\Task;
-use Imi\Cron\Traits\TWorkerReport;
+use Imi\Cron\Util\CronUtil;
 use Imi\Task\Interfaces\ITaskHandler;
 
 /**
@@ -52,8 +54,6 @@ use Imi\Task\Interfaces\ITaskHandler;
  */
 class TaskCron implements ITaskHandler
 {
-    use TWorkerReport;
-
     /**
      * 任务处理方法
      * @param TaskParam $param
@@ -65,7 +65,7 @@ class TaskCron implements ITaskHandler
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
     {
         // 上报任务完成
-        $this->reportCronResult($param->getData()['id'], true, '');
+        CronUtil::reportCronResult($param->getData()['id'], true, '');
         return date('Y-m-d H:i:s');
     }
  
@@ -85,7 +85,7 @@ class TaskCron implements ITaskHandler
 
 #### Process 任务
 
-与进程写法基本一致，多了`@Cron`注解
+与进程写法基本一致，多了`@Cron`注解，并且需要**上报任务完成**！
 
 ```php
 <?php
@@ -94,7 +94,7 @@ namespace Imi\Test\HttpServer\Cron;
 use Imi\Util\Args;
 use Imi\Process\IProcess;
 use Imi\Cron\Annotation\Cron;
-use Imi\Cron\Traits\TWorkerReport;
+use Imi\Cron\Util\CronUtil;
 use Imi\Process\Annotation\Process;
 use Swoole\Event;
 
@@ -104,8 +104,6 @@ use Swoole\Event;
  */
 class TaskProcess implements IProcess
 {
-    use TWorkerReport;
-
     public function run(\Swoole\Process $process)
     {
         $success = false;
@@ -123,7 +121,7 @@ class TaskProcess implements IProcess
             throw $th;
         } finally {
             // 上报任务完成
-            $this->reportCronResult($id, $success, $message);
+            CronUtil::reportCronResult($id, $success, $message);
         }
     }
 
@@ -132,7 +130,7 @@ class TaskProcess implements IProcess
 
 #### 协程任务
 
-实现 `Imi\Cron\Contract\ICronTask` 接口、`run()` 方法
+实现 `Imi\Cron\Contract\ICronTask` 接口、`run()` 方法，无需手动上报任务完成。
 
 ```php
 <?php
@@ -173,11 +171,11 @@ class CronRandomWorker implements ICronTask
 
 ##### 属性
 
-###### id
+**id**
 
 使用`@Cron`注解时的任务唯一ID。如果是 `Task`、`Process`，默认使用 `Task` 或 `Process` + 名称。
 
-##### type
+**type**
 
 任务类型
 
@@ -193,11 +191,11 @@ class CronRandomWorker implements ICronTask
 
 `cron_process`-定时任务进程
 
-###### force
+**force**
 
 每次启动服务强制执行，默认为`false`
 
-###### year
+**year**
 
 指定任务执行年份，默认为 `*`。
 
@@ -211,7 +209,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 年，其它以此类推
 
-###### month
+**month**
 
 指定任务执行月份，默认为 `*`。
 
@@ -225,7 +223,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 个月，其它以此类推
 
-###### day
+**day**
 
 指定任务执行日期，默认为 `*`。
 
@@ -249,7 +247,7 @@ class CronRandomWorker implements ICronTask
 
 `year 1,3,5,-1` (每年 1、3、5、最后一天) - 指定一年中的多个日期，支持负数为倒数的日期
 
-###### week
+**week**
 
 指定周几执行任务，默认为 `*`。
 `*` - 不限制
@@ -257,7 +255,7 @@ class CronRandomWorker implements ICronTask
 `1-6` (周一到周六), `-3--1` (周五到周日) - 指定周几，支持负数为倒数的周
 `1,3,5,-1` (周一、三、五、日) - 指定多个日期，支持负数为倒数的周
 
-##### hour
+**hour**
 
 指定任务执行小时，默认为 `*`。
 
@@ -271,7 +269,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 小时，其它以此类推
 
-##### minute
+**minute**
 
 指定任务执行分钟，默认为 `*`。
 
@@ -285,7 +283,7 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 分钟，其它以此类推
 
-##### second
+**second**
 
 指定任务执行秒，默认为 `*`。
 
@@ -299,22 +297,22 @@ class CronRandomWorker implements ICronTask
 
 `2n` - 每 2 秒，其它以此类推
 
-##### unique
+**unique**
 
 定时任务唯一性设置
 当前实例唯一: current
 所有实例唯一: all
 不唯一: null
 
-##### redisPool
+**redisPool**
 
 用于锁的 `Redis` 连接池名
 
-##### lockWaitTimeout
+**lockWaitTimeout**
 
 获取锁超时时间，单位：秒
 
-##### maxExecutionTime
+**maxExecutionTime**
 
 最大运行执行时间，单位：秒。
 
