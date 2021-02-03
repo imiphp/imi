@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean;
 
-use Imi\Aop\Annotation\Aspect;
-use Imi\Aop\Annotation\PointCut;
-use Imi\Aop\PointCutType;
+use Imi\Aop\AopManager;
 use Imi\App;
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Parser\PartialParser;
 use Imi\Util\Imi;
 
@@ -440,89 +437,9 @@ TPL;
      */
     private static function hasAop(\ReflectionClass $class, string $method): bool
     {
-        $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
         $className = $class->getName();
-        if ('__construct' === $method)
-        {
-            foreach ($aspects as $item)
-            {
-                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item->getClass(), PointCut::class);
-                foreach ($pointCutsSet as $pointCuts)
-                {
-                    foreach ($pointCuts as $pointCut)
-                    {
-                        switch ($pointCut->type)
-                        {
-                            case PointCutType::CONSTRUCT:
-                                // 构造方法
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    if (Imi::checkRuleMatch($allowItem, $className))
-                                    {
-                                        return true;
-                                    }
-                                }
-                                break;
-                            case PointCutType::ANNOTATION_CONSTRUCT:
-                                // 注解构造方法
-                                $classAnnotations = AnnotationManager::getClassAnnotations($className);
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    foreach ($classAnnotations as $annotation)
-                                    {
-                                        if ($annotation instanceof $allowItem)
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method);
-            foreach ($aspects as $item)
-            {
-                // 判断是否属于当前类的切面
-                $pointCutsSet = AnnotationManager::getMethodsAnnotations($item->getClass(), PointCut::class);
-                foreach ($pointCutsSet as $pointCuts)
-                {
-                    foreach ($pointCuts as $pointCut)
-                    {
-                        switch ($pointCut->type)
-                        {
-                            case PointCutType::METHOD:
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    if (Imi::checkClassRule($allowItem, $className))
-                                    {
-                                        return true;
-                                    }
-                                }
-                                break;
-                            case PointCutType::ANNOTATION:
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    foreach ($methodAnnotations as $annotation)
-                                    {
-                                        if ($annotation instanceof $allowItem)
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
-        }
 
-        return false;
+        return AopManager::getBeforeItems($className, $method) || AopManager::getAfterItems($className, $method) || AopManager::getAroundItems($className, $method) || AopManager::getAfterReturningItems($className, $method) || AopManager::getAfterThrowingItems($className, $method);
     }
 
     public static function parseEvalName(string $class, ?string &$fileName, ?string &$className)

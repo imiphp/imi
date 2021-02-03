@@ -82,4 +82,23 @@ class Server extends BaseServer
         $dispatcher = App::getBean('HttpDispatcher');
         $dispatcher->dispatch($request, $response);
     }
+
+    /**
+     * 终止服务
+     *
+     * @return void
+     */
+    public function shutdown()
+    {
+        exit;
+    }
+
+    /**
+     * 重载服务
+     *
+     * @return void
+     */
+    public function reload()
+    {
+    }
 }

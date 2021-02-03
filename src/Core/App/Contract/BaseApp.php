@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Core\App\Contract;
 
+use Imi\Aop\AopAnnotationLoader;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Config;
@@ -21,6 +22,11 @@ abstract class BaseApp implements IApp
     protected string $namespace = '';
 
     /**
+     * AOP 强制使用注解扫描.
+     */
+    protected bool $aopForceFromAnnotation = true;
+
+    /**
      * 构造方法.
      *
      * @param string $namespace
@@ -30,6 +36,16 @@ abstract class BaseApp implements IApp
     public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
+    }
+
+    /**
+     * 初始化.
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+        AopAnnotationLoader::load($this->aopForceFromAnnotation);
     }
 
     /**
@@ -71,6 +87,8 @@ abstract class BaseApp implements IApp
                 }
             }
         }
+
+        App::setDebug(Config::get('@app.debug', true));
     }
 
     /**

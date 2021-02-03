@@ -6,14 +6,17 @@ namespace Imi\Bean;
 
 use Imi\Aop\AfterReturningJoinPoint;
 use Imi\Aop\AfterThrowingJoinPoint;
+use Imi\Aop\Annotation\After;
+use Imi\Aop\Annotation\AfterReturning;
 use Imi\Aop\Annotation\AfterThrowing;
-use Imi\Aop\Annotation\Aspect;
+use Imi\Aop\Annotation\Around;
 use Imi\Aop\Annotation\BaseInjectValue;
+use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\Inject;
-use Imi\Aop\Annotation\PointCut;
+use Imi\Aop\AopManager;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
-use Imi\Aop\PointCutType;
+use Imi\Aop\Model\AopItem;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Config;
@@ -60,8 +63,8 @@ class BeanProxy
         {
             // 先尝试环绕
             $aroundAspectDoList = [];
-            self::doAspect($className, $method, 'around', function (string $aspectClassName, string $methodName) use (&$aroundAspectDoList) {
-                $aroundAspectDoList[] = [new $aspectClassName(), $methodName];
+            self::doAspect($className, $method, 'around', function (AopItem $aopItem, Around $annotation) use (&$aroundAspectDoList) {
+                $aroundAspectDoList[] = $aopItem->getCallback();
             });
             if (!isset($aroundAspectDoList[0]))
             {
@@ -100,7 +103,7 @@ class BeanProxy
         {
             // 异常
             $isCancelThrow = false;
-            self::doAspect($className, $method, 'afterThrowing', function (string $aspectClassName, string $methodName, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
+            self::doAspect($className, $method, 'afterThrowing', function (AopItem $aopItem, AfterThrowing $annotation) use ($object, $method, &$args, $throwable, &$isCancelThrow) {
                 // 验证异常是否捕获
                 if (isset($annotation->allow[0]) || isset($annotation->deny[0]))
                 {
@@ -133,8 +136,7 @@ class BeanProxy
                 }
                 // 处理
                 $joinPoint = new AfterThrowingJoinPoint('afterThrowing', $method, $args, $object, $throwable);
-                $aspectObject = new $aspectClassName();
-                $aspectObject->$methodName($joinPoint);
+                ($aopItem->getCallback())($joinPoint);
                 if (!$isCancelThrow && $joinPoint->isCancelThrow())
                 {
                     $isCancelThrow = true;
@@ -157,111 +159,6 @@ class BeanProxy
      */
     public static function init(string $className)
     {
-        // 每个类只需处理一次
-        $staticAspects = &static::$aspects;
-        if (isset($staticAspects[$className]))
-        {
-            return;
-        }
-        $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
-        if (!$aspects)
-        {
-            return;
-        }
-        $refClass = ReflectionContainer::getClassReflection($className);
-        $staticAspects[$className] = $aspect = new \SplPriorityQueue();
-        foreach ($aspects as $item)
-        {
-            $itemClass = $item->getClass();
-            $itemPriority = $item->getAnnotation()->priority;
-            // 判断是否属于当前类方法的切面
-            $pointCutsSet = AnnotationManager::getMethodsAnnotations($itemClass, PointCut::class);
-            if (!$pointCutsSet)
-            {
-                continue;
-            }
-            foreach ($pointCutsSet as $methodName => $pointCuts)
-            {
-                foreach ($pointCuts as $pointCut)
-                {
-                    switch ($pointCut->type)
-                        {
-                            case PointCutType::METHOD:
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    if (Imi::checkClassRule($allowItem, $className))
-                                    {
-                                        $aspect->insert([
-                                            'class'     => $itemClass,
-                                            'method'    => $methodName,
-                                            'pointCut'  => $pointCut,
-                                        ], $itemPriority);
-                                        break;
-                                    }
-                                }
-                                break;
-                            case PointCutType::ANNOTATION:
-                                foreach ($refClass->getMethods() as $method)
-                                {
-                                    $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
-                                    foreach ($pointCut->allow as $allowItem)
-                                    {
-                                        foreach ($methodAnnotations as $annotation)
-                                        {
-                                            if ($annotation instanceof $allowItem)
-                                            {
-                                                $aspect->insert([
-                                                    'class'     => $itemClass,
-                                                    'method'    => $methodName,
-                                                    'pointCut'  => $pointCut,
-                                                ], $itemPriority);
-                                                break 3;
-                                            }
-                                        }
-                                    }
-                                }
-                                break;
-                            case PointCutType::CONSTRUCT:
-                                // 构造方法
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    if (Imi::checkRuleMatch($allowItem, $className))
-                                    {
-                                        $aspect->insert([
-                                            'class'     => $itemClass,
-                                            'method'    => $methodName,
-                                            'pointCut'  => $pointCut,
-                                        ], $itemPriority);
-                                        break;
-                                    }
-                                }
-                                break;
-                            case PointCutType::ANNOTATION_CONSTRUCT:
-                                // 注解构造方法
-                                if (!isset($classAnnotations))
-                                {
-                                    $classAnnotations = AnnotationManager::getClassAnnotations($className);
-                                }
-                                foreach ($pointCut->allow as $allowItem)
-                                {
-                                    foreach ($classAnnotations as $annotation)
-                                    {
-                                        if ($annotation instanceof $allowItem)
-                                        {
-                                            $aspect->insert([
-                                                'class'     => $itemClass,
-                                                'method'    => $methodName,
-                                                'pointCut'  => $pointCut,
-                                            ], $itemPriority);
-                                            break 2;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                }
-            }
-        }
     }
 
     /**
@@ -393,25 +290,22 @@ class BeanProxy
     private static function callOrigin(object $object, string $className, string $method, array &$args, callable $callback)
     {
         // before
-        self::doAspect($className, $method, 'before', function (string $aspectClassName, string $methodName) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'before', function (AopItem $aopItem, Before $annotation) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('before', $method, $args, $object);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
+            ($aopItem->getCallback())($joinPoint);
         });
         // 原始方法调用
         $result = $callback(...$args);
         // after
-        self::doAspect($className, $method, 'after', function (string $aspectClassName, string $methodName) use ($object, $method, &$args) {
+        self::doAspect($className, $method, 'after', function (AopItem $aopItem, After $annotation) use ($object, $method, &$args) {
             $joinPoint = new JoinPoint('after', $method, $args, $object);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
+            ($aopItem->getCallback())($joinPoint);
         });
         // afterReturning
-        self::doAspect($className, $method, 'afterReturning', function (string $aspectClassName, string $methodName) use ($object, $method, &$args, &$result) {
+        self::doAspect($className, $method, 'afterReturning', function (AopItem $aopItem, AfterReturning $annotation) use ($object, $method, &$args, &$result) {
             $joinPoint = new AfterReturningJoinPoint('afterReturning', $method, $args, $object);
             $joinPoint->setReturnValue($result);
-            $aspectObject = new $aspectClassName();
-            $aspectObject->$methodName($joinPoint);
+            ($aopItem->getCallback())($joinPoint);
             $result = $joinPoint->getReturnValue();
         });
 
@@ -430,106 +324,31 @@ class BeanProxy
      */
     private static function doAspect(string $className, string $method, string $pointType, callable $callback)
     {
-        $aspectCache = &static::$aspectCache;
-        if (isset($aspectCache[$className][$method][$pointType]))
+        switch ($pointType)
         {
-            $tmpItem = $aspectCache[$className][$method][$pointType];
+            case 'before':
+                $items = AopManager::getBeforeItems($className, $method);
+                break;
+            case 'after':
+                $items = AopManager::getAfterItems($className, $method);
+                break;
+            case 'around':
+                $items = AopManager::getAroundItems($className, $method);
+                break;
+            case 'afterReturning':
+                $items = AopManager::getAfterReturningItems($className, $method);
+                break;
+            case 'afterThrowing':
+                $items = AopManager::getAfterThrowingItems($className, $method);
+                break;
+            default:
+                throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType));
         }
-        else
+        $class = 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType);
+        foreach ($items as $item)
         {
-            $tmpItem = [];
-            $list = clone static::$aspects[$className];
-            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method);
-            foreach ($list as $option)
-            {
-                $aspectClassName = $option['class'];
-                $methodName = $option['method'];
-                $pointCut = $option['pointCut'];
-                $allowResult = false;
-                switch ($pointCut->type)
-                {
-                    case PointCutType::METHOD:
-                        foreach ($pointCut->allow as $rule)
-                        {
-                            $allowResult = Imi::checkClassMethodRule($rule, $className, $method);
-                            if ($allowResult)
-                            {
-                                break;
-                            }
-                        }
-                        break;
-                    case PointCutType::ANNOTATION:
-                        foreach ($pointCut->allow as $rule)
-                        {
-                            foreach ($methodAnnotations as $annotation)
-                            {
-                                $allowResult = $annotation instanceof $rule;
-                                if ($allowResult)
-                                {
-                                    break 2;
-                                }
-                            }
-                        }
-                        break;
-                    case PointCutType::CONSTRUCT:
-                    case PointCutType::ANNOTATION_CONSTRUCT:
-                        if ('__construct' === $method)
-                        {
-                            $allowResult = true;
-                        }
-                        break;
-                }
-                if ($allowResult)
-                {
-                    $denyResult = false;
-
-                    switch ($pointCut->type)
-                    {
-                        case PointCutType::METHOD:
-                            foreach ($pointCut->deny as $rule)
-                            {
-                                $denyResult = Imi::checkClassMethodRule($rule, $className, $method);
-                                if ($denyResult)
-                                {
-                                    break;
-                                }
-                            }
-                            break;
-                        case PointCutType::ANNOTATION:
-                            foreach ($pointCut->deny as $rule)
-                            {
-                                foreach ($methodAnnotations as $annotation)
-                                {
-                                    $denyResult = $annotation instanceof $rule;
-                                    if ($denyResult)
-                                    {
-                                        break 2;
-                                    }
-                                }
-                            }
-                            break;
-                    }
-
-                    if ($denyResult)
-                    {
-                        continue;
-                    }
-                    $point = AnnotationManager::getMethodAnnotations($aspectClassName, $methodName, 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType))[0] ?? null;
-                    if (null !== $point)
-                    {
-                        $tmpItem[] = [$aspectClassName, $methodName, $point];
-                    }
-                }
-            }
-            $aspectCache[$className][$method][$pointType] = $tmpItem;
-        }
-
-        if ($tmpItem)
-        {
-            foreach ($tmpItem as $item)
-            {
-                $callback(...$item);
-            }
+            $point = new $class($item->getOptions()['extra']);
+            $callback($item, $point);
         }
     }
 

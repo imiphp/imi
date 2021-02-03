@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Cli;
 
+use Imi\Aop\AopAnnotationLoader;
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Scanner;
@@ -36,11 +37,6 @@ class CliApp extends BaseApp
      * @var ArgvInput
      */
     protected ArgvInput $input;
-
-    /**
-     * @var bool
-     */
-    private bool $inited = false;
 
     /**
      * 构造方法.
@@ -181,11 +177,8 @@ class CliApp extends BaseApp
      */
     public function init(): void
     {
-        if ($this->inited)
-        {
-            return;
-        }
-        $this->inited = true;
+        parent::init();
+        AopAnnotationLoader::saveConfig();
         $this->addCommands();
     }
 

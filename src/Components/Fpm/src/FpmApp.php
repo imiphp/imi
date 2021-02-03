@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Fpm;
 
+use Imi\Aop\AopAnnotationLoader;
 use Imi\App;
 use Imi\Bean\BeanContexts;
 use Imi\Bean\Scanner;
@@ -43,6 +44,7 @@ class FpmApp extends BaseApp
         {
             File::createDir($dir);
         }
+        $this->aopForceFromAnnotation = App::isDebug();
     }
 
     /**
@@ -83,6 +85,8 @@ class FpmApp extends BaseApp
      */
     public function init(): void
     {
+        parent::init();
+        AopAnnotationLoader::saveConfig(App::isDebug());
     }
 
     /**
