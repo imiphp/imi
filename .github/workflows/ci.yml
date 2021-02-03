@@ -24,7 +24,6 @@ jobs:
           mysqld --initialize-insecure
           brew services start mysql
           brew services start redis
-          mysql -uroot -e 'select version()'
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
       - name: install swoole
