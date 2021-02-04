@@ -20,9 +20,10 @@ jobs:
 
       - name: install db
         run: |
-          brew install redis mysql
-          brew services start redis
+          brew install mysql redis
+          mysqld --initialize-insecure
           brew services start mysql
+          brew services start redis
 
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
