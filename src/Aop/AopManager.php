@@ -18,7 +18,7 @@ class AopManager
     private static array $cache = [];
 
     /**
-     * @var AopItem[][]
+     * @var AopItem[][][][]
      */
     private static array $parsedCache = [];
 
