@@ -35,7 +35,8 @@ class Transaction
     public function commit(): bool
     {
         $offEvents = [];
-        $levels = &$this->transactionLevels;
+        $levels = $this->transactionLevels;
+        $this->transactionLevels = 0;
         try
         {
             for ($i = $levels; $i >= 0; --$i)
@@ -59,7 +60,6 @@ class Transaction
         finally
         {
             $this->off($offEvents);
-            $levels = 0;
         }
 
         return true;
