@@ -100,7 +100,7 @@ class TableGenerate extends BaseCommand
             /** @var \Imi\Model\Annotation\DDL $ddlAnnotation */
             $ddlAnnotation = $point->getAnnotation();
             // 创建表
-            Db::getInstance()->batchExec($ddlAnnotation->sql);
+            Db::getInstance()->batchExec($ddlAnnotation->sql . ';');
             $tables[] = $table;
             $this->output->writeln('Create <info>' . $table . '</info>');
         }
