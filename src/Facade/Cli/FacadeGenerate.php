@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cli\Tools\Generate\Facade;
+namespace Imi\Facade\Cli;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Parser\BeanParser;

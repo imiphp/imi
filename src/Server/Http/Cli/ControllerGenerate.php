@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cli\Tools\Generate\HttpController;
+namespace Imi\Server\Http\Cli;
 
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;

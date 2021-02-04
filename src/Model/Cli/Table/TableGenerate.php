@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cli\Tools\Generate\Table;
+namespace Imi\Model\Cli\Table;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Scanner;

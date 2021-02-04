@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cli\Tools\Generate\Model;
+namespace Imi\Model\Cli\Model;
 
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
