@@ -200,7 +200,7 @@ class Statement extends BaseStatement implements IStatement
             $result = $this->db->getInstance()->query($this->lastSql);
             if (false === $result)
             {
-                throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
             }
         }
         else
@@ -244,7 +244,7 @@ class Statement extends BaseStatement implements IStatement
             }
             elseif (false === $result)
             {
-                throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+                throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
             }
         }
         $this->result = (true === $result ? [] : $result);
