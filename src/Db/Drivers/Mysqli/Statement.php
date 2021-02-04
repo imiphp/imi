@@ -226,7 +226,7 @@ class Statement extends BaseStatement implements IStatement
         $result = $statement->execute();
         if (!$result)
         {
-            throw new DbException('sql query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
+            throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
         }
         $this->result = $statement->get_result();
 
