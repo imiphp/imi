@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Server\UdpServer\Message;
+namespace Imi\Workerman\Server\Udp\Message;
 
 use Workerman\Connection\UdpConnection;
 
