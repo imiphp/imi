@@ -58,7 +58,7 @@ foreach ([
     }
 }
 
-echo '[FPM ', $name, ']', \PHP_EOL;
+echo '[FPM]', \PHP_EOL;
 $fileName = dirname(__DIR__) . '/src/Components/Fpm/tests/HttpServer/logs/cli.log';
 if (is_file($fileName))
 {
