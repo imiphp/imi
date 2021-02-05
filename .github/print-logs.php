@@ -57,3 +57,14 @@ foreach ([
         echo 'Not found!', \PHP_EOL;
     }
 }
+
+echo '[FPM ', $name, ']', \PHP_EOL;
+$fileName = dirname(__DIR__) . '/src/Components/Fpm/tests/HttpServer/logs/cli.log';
+if (is_file($fileName))
+{
+    echo file_get_contents($fileName), \PHP_EOL;
+}
+else
+{
+    echo 'Not found!', \PHP_EOL;
+}
