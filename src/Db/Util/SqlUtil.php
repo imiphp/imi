@@ -59,7 +59,7 @@ class SqlUtil
                     {
                         $sqlString = trim(substr($sql, $begin, $i + 1 - $begin));
                         $begin = $i + 1;
-                        if ('' !== $sqlString)
+                        if ('' !== $sqlString && ';' !== $sqlString)
                         {
                             $result[] = $sqlString;
                         }
