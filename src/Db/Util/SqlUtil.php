@@ -51,11 +51,11 @@ abstract class SqlUtil
                 case ';':
                     if ($closeApostrophe)
                     {
-                        $sql = trim(substr($sql, $begin, $i + 1 - $begin));
+                        $sqlString = trim(substr($sql, $begin, $i + 1 - $begin));
                         $begin = $i + 1;
-                        if ('' !== $sql)
+                        if ('' !== $sqlString)
                         {
-                            $result[] = $sql;
+                            $result[] = $sqlString;
                         }
                     }
                     break;
