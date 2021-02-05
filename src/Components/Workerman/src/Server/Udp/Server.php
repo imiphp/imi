@@ -10,7 +10,7 @@ use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Workerman\Server\Base;
-use Imi\Workerman\Server\UdpServer\Message\PacketData;
+use Imi\Workerman\Server\Udp\Message\PacketData;
 use Workerman\Connection\UdpConnection;
 
 /**
