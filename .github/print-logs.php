@@ -43,7 +43,7 @@ foreach ([
 }
 
 foreach ([
-    'HttpServer',
+    'AppServer',
 ] as $name)
 {
     echo '[Workerman ', $name, ']', \PHP_EOL;
