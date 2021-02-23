@@ -108,7 +108,7 @@ class AnnotationParser
         }
         $className = $ref->getName();
         $thisClasses = &$this->classes;
-        if ($this->checkAnnotations($annotations))
+        if ($annotations)
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
@@ -206,7 +206,7 @@ class AnnotationParser
             }
         }
         $thisClasses = &$this->classes;
-        if ($this->checkAnnotations($annotations))
+        if ($annotations)
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
@@ -299,7 +299,7 @@ class AnnotationParser
         $className = $ref->getName();
         $propertyName = $prop->getName();
         $thisClasses = &$this->classes;
-        if ($this->checkAnnotations($annotations))
+        if ($annotations)
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
@@ -392,7 +392,7 @@ class AnnotationParser
         $className = $ref->getName();
         $constName = $const->getName();
         $thisClasses = &$this->classes;
-        if ($this->checkAnnotations($annotations))
+        if ($annotations)
         {
             $fileName = $ref->getFileName();
             $thisClasses[$className] = $fileName;
@@ -447,18 +447,6 @@ class AnnotationParser
         }
 
         AnnotationManager::setConstantAnnotations($className, $constName, ...$annotations, ...$inheritAnnotations ?? []);
-    }
-
-    /**
-     * 检查注解.
-     *
-     * @param array $annotations
-     *
-     * @return bool
-     */
-    private function checkAnnotations(array $annotations): bool
-    {
-        return [] !== $annotations;
     }
 
     /**
@@ -566,12 +554,11 @@ class AnnotationParser
             else
             {
                 $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className) {
-                    $annotationClassName = \get_class($annotation);
                     if ($this->hasParser($annotationClassName))
                     {
                         $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CLASS, $className);
                     }
-                });
+                }, 10);
             }
         }
         // 属性
@@ -588,12 +575,11 @@ class AnnotationParser
                 else
                 {
                     $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $propName) {
-                        $annotationClassName = \get_class($annotation);
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_PROPERTY, $propName);
                         }
-                    });
+                    }, 9);
                 }
             }
         }
@@ -611,12 +597,11 @@ class AnnotationParser
                 else
                 {
                     $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $methodName) {
-                        $annotationClassName = \get_class($annotation);
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_METHOD, $methodName);
                         }
-                    });
+                    }, 8);
                 }
             }
         }
@@ -634,12 +619,11 @@ class AnnotationParser
                 else
                 {
                     $this->one('parseComplete.' . $annotationClassName, function () use ($annotationClassName, $annotation, $className, $constName) {
-                        $annotationClassName = \get_class($annotation);
                         if ($this->hasParser($annotationClassName))
                         {
                             $this->getParser($annotationClassName)->parse($annotation, $className, BaseParser::TARGET_CONST, $constName);
                         }
-                    });
+                    }, 7);
                 }
             }
         }

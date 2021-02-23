@@ -6,7 +6,6 @@ namespace Imi\Bean;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Exception\ContainerException;
-use Imi\Bean\Parser\BeanParser;
 use Psr\Container\ContainerInterface;
 
 class Container implements ContainerInterface
@@ -19,13 +18,6 @@ class Container implements ContainerInterface
     private array $singletonObjects = [];
 
     /**
-     * Bean处理器.
-     *
-     * @var \Imi\Bean\Parser\BeanParser
-     */
-    private BeanParser $beanParser;
-
-    /**
      * 绑定列表.
      *
      * @var array
@@ -35,7 +27,6 @@ class Container implements ContainerInterface
     public function __construct(array $binds = [])
     {
         $this->binds = $binds;
-        $this->beanParser = BeanParser::getInstance();
     }
 
     /**
@@ -81,10 +72,10 @@ class Container implements ContainerInterface
         }
         else
         {
-            $data = $this->beanParser->getData();
-            if (isset($data[$id]))
+            $data = BeanManager::get($id);
+            if ($data)
             {
-                $object = BeanFactory::newInstanceNoInit($data[$id]['className'], ...$params);
+                $object = BeanFactory::newInstanceNoInit($data['className'], ...$params);
             }
             elseif (class_exists($id))
             {
@@ -96,7 +87,7 @@ class Container implements ContainerInterface
             }
 
             // 传参实例化强制不使用单例
-            if ([] === $params && (!isset($data[$id]['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data[$id]['instanceType']))
+            if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
             {
                 $singletonObjects[$id] = $object;
             }

@@ -7,12 +7,56 @@ namespace Imi\Swoole\Task;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Task\Handler\BeanTaskHandler;
-use Imi\Swoole\Task\Parser\TaskParser;
 
 class TaskManager
 {
+    private static array $map = [];
+
     private function __construct()
     {
+    }
+
+    public static function getMap(): array
+    {
+        return self::$map;
+    }
+
+    public static function setMap(array $map)
+    {
+        self::$map = $map;
+    }
+
+    /**
+     * 增加映射关系.
+     *
+     * @param string $taskName
+     * @param string $className
+     * @param array  $options
+     *
+     * @return void
+     */
+    public static function add(string $name, string $className, array $options)
+    {
+        if (isset($data[$name]))
+        {
+            throw new \RuntimeException(sprintf('Task %s is exists', $name));
+        }
+        self::$map[$name] = [
+            'className' => $className,
+            'options'   => $options,
+        ];
+    }
+
+    /**
+     * 获取配置.
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
+    public static function get(string $name): ?array
+    {
+        return self::$map[$name] ?? null;
     }
 
     /**
@@ -128,8 +172,8 @@ class TaskManager
      */
     public static function getTaskInfo(string $name, $data): TaskInfo
     {
-        $task = TaskParser::getInstance()->getTask($name);
-        $paramClass = $task['Task']->paramClass;
+        $task = self::get($name);
+        $paramClass = $task['options']['paramClass'];
 
         return new TaskInfo(new BeanTaskHandler($task['className']), new $paramClass($data));
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Bean\Parser;
 
 use Imi\Event\Event;
+use Imi\Event\EventManager;
 
 class ListenerParser extends BaseParser
 {
@@ -24,28 +25,8 @@ class ListenerParser extends BaseParser
         {
             $eventName = $annotation->eventName;
             $priority = $annotation->priority;
-            $this->data[] = [$eventName, $className, $priority];
+            EventManager::add($eventName, $className, $priority);
             Event::on($eventName, $className, $priority);
-        }
-    }
-
-    /**
-     * 设置数据.
-     *
-     * @param array $data
-     *
-     * @return void
-     */
-    public function setData(array $data)
-    {
-        foreach ($this->data as $args)
-        {
-            Event::off(...$args);
-        }
-        $this->data = $data;
-        foreach ($this->data as $args)
-        {
-            Event::on(...$args);
         }
     }
 }

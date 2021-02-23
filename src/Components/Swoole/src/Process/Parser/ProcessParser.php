@@ -6,6 +6,7 @@ namespace Imi\Swoole\Process\Parser;
 
 use Imi\Bean\Parser\BaseParser;
 use Imi\Swoole\Process\Annotation\Process;
+use Imi\Swoole\Process\ProcessManager;
 
 class ProcessParser extends BaseParser
 {
@@ -23,27 +24,7 @@ class ProcessParser extends BaseParser
     {
         if ($annotation instanceof Process)
         {
-            $data = &$this->data;
-            if (isset($data[$annotation->name]) && $data[$annotation->name]['className'] != $className)
-            {
-                throw new \RuntimeException(sprintf('Process %s is exists', $annotation->name));
-            }
-            $data[$annotation->name] = [
-                'className' => $className,
-                'Process'   => $annotation,
-            ];
+            ProcessManager::add($annotation->name, $className, $annotation->toArray());
         }
-    }
-
-    /**
-     * 获取process信息.
-     *
-     * @param string $name process名称
-     *
-     * @return array|null
-     */
-    public function getProcess(string $name): ?array
-    {
-        return $this->data[$name] ?? null;
     }
 }

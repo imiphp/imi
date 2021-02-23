@@ -5,19 +5,62 @@ declare(strict_types=1);
 namespace Imi\Swoole\Process;
 
 use Imi\App;
-use Imi\Event\Event;
 use Imi\Bean\Scanner;
+use Imi\Event\Event;
 use Imi\Swoole\Util\Imi;
-use Imi\Bean\BeanFactory;
-use Imi\Swoole\Process\Parser\ProcessPoolParser;
 
 /**
  * 进程池管理类.
  */
 class ProcessPoolManager
 {
+    private static array $map = [];
+
     private function __construct()
     {
+    }
+
+    public static function getMap(): array
+    {
+        return self::$map;
+    }
+
+    public static function setMap(array $map)
+    {
+        self::$map = $map;
+    }
+
+    /**
+     * 增加映射关系.
+     *
+     * @param string $name
+     * @param string $class
+     * @param array  $options
+     *
+     * @return void
+     */
+    public static function add(string $name, string $className, array $options)
+    {
+        if (isset($data[$name]))
+        {
+            throw new \RuntimeException(sprintf('Process pool %s is exists', $name));
+        }
+        self::$map[$name] = [
+            'className' => $className,
+            'options'   => $options,
+        ];
+    }
+
+    /**
+     * 获取配置.
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
+    public static function get(string $name): ?array
+    {
+        return self::$map[$name] ?? null;
     }
 
     /**
@@ -35,22 +78,22 @@ class ProcessPoolManager
      */
     public static function create(string $name, ?int $workerNum = null, array $args = [], int $ipcType = 0, ?string $msgQueueKey = null): \Swoole\Process\Pool
     {
-        $processPoolOption = ProcessPoolParser::getInstance()->getProcessPool($name);
+        $processPoolOption = self::get($name);
         if (null === $processPoolOption)
         {
             return null;
         }
         if (null === $workerNum)
         {
-            $workerNum = $processPoolOption['ProcessPool']->workerNum;
+            $workerNum = $processPoolOption['options']['workerNum'];
         }
         if (null === $ipcType)
         {
-            $ipcType = $processPoolOption['ProcessPool']->ipcType;
+            $ipcType = $processPoolOption['options']['ipcType'];
         }
         if (null === $msgQueueKey)
         {
-            $msgQueueKey = $processPoolOption['ProcessPool']->msgQueueKey;
+            $msgQueueKey = $processPoolOption['options']['msgQueueKey'];
         }
 
         $pool = new \Swoole\Process\Pool($workerNum, $ipcType, $msgQueueKey);

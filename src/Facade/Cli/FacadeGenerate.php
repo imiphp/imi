@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Facade\Cli;
 
 use Imi\Bean\Annotation;
-use Imi\Bean\Parser\BeanParser;
+use Imi\Bean\BeanManager;
 use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
@@ -45,10 +45,10 @@ class FacadeGenerate extends BaseCommand
         }
         else
         {
-            $data = BeanParser::getInstance()->getData();
-            if (isset($data[$class]))
+            $data = BeanManager::get($class);
+            if ($data)
             {
-                $fromClass = $data[$class]['className'];
+                $fromClass = $data['className'];
             }
             else
             {

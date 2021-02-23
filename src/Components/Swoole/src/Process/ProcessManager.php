@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Imi\Swoole\Process;
 
 use Imi\App;
-use Imi\Bean\BeanFactory;
 use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Process\Exception\ProcessAlreadyRunException;
-use Imi\Swoole\Process\Parser\ProcessParser;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Util\Imi as SwooleImi;
 use Imi\Util\File;
@@ -25,6 +23,8 @@ use Swoole\Process;
  */
 class ProcessManager
 {
+    private static array $map = [];
+
     /**
      * 锁集合.
      *
@@ -43,6 +43,49 @@ class ProcessManager
     {
     }
 
+    public static function getMap(): array
+    {
+        return self::$map;
+    }
+
+    public static function setMap(array $map)
+    {
+        self::$map = $map;
+    }
+
+    /**
+     * 增加映射关系.
+     *
+     * @param string $name
+     * @param string $class
+     * @param array  $options
+     *
+     * @return void
+     */
+    public static function add(string $name, string $className, array $options)
+    {
+        if (isset($data[$name]))
+        {
+            throw new \RuntimeException(sprintf('Process %s is exists', $name));
+        }
+        self::$map[$name] = [
+            'className' => $className,
+            'options'   => $options,
+        ];
+    }
+
+    /**
+     * 获取配置.
+     *
+     * @param string $name
+     *
+     * @return array|null
+     */
+    public static function get(string $name): ?array
+    {
+        return self::$map[$name] ?? null;
+    }
+
     /**
      * 创建进程
      * 本方法无法在控制器中使用
@@ -58,22 +101,22 @@ class ProcessManager
      */
     public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): \Swoole\Process
     {
-        $processOption = ProcessParser::getInstance()->getProcess($name);
+        $processOption = self::get($name);
         if (null === $processOption)
         {
             return null;
         }
-        if ($processOption['Process']->unique && static::isRunning($name))
+        if ($processOption['options']['unique'] && static::isRunning($name))
         {
             throw new ProcessAlreadyRunException(sprintf('Process %s already run', $name));
         }
         if (null === $redirectStdinStdout)
         {
-            $redirectStdinStdout = $processOption['Process']->redirectStdinStdout;
+            $redirectStdinStdout = $processOption['options']['redirectStdinStdout'];
         }
         if (null === $pipeType)
         {
-            $pipeType = $processOption['Process']->pipeType;
+            $pipeType = $processOption['options']['pipeType'];
         }
         $process = new \Swoole\Process(static::getProcessCallable($args, $name, $processOption, $alias), $redirectStdinStdout, $pipeType);
 
@@ -110,7 +153,7 @@ class ProcessManager
             $callable = function () use ($swooleProcess, $args, $name, $processOption, &$exitCode) {
                 try
                 {
-                    if ($processOption['Process']->unique && !static::lockProcess($name))
+                    if ($processOption['options']['unique'] && !static::lockProcess($name))
                     {
                         throw new \RuntimeException('lock process lock file error');
                     }
@@ -126,7 +169,7 @@ class ProcessManager
                     // 执行任务
                     $processInstance = App::getBean($processOption['className'], $args);
                     $processInstance->run($swooleProcess);
-                    if ($processOption['Process']->unique)
+                    if ($processOption['options']['unique'])
                     {
                         static::unlockProcess($name);
                     }
@@ -149,7 +192,7 @@ class ProcessManager
                     ]);
                 }
             };
-            if ($processOption['Process']->co)
+            if ($processOption['options']['co'])
             {
                 // 强制开启进程协程化
                 \Co\run($callable);
@@ -174,12 +217,12 @@ class ProcessManager
      */
     public static function isRunning(string $name): bool
     {
-        $processOption = ProcessParser::getInstance()->getProcess($name);
+        $processOption = self::get($name);
         if (null === $processOption)
         {
             return false;
         }
-        if (!$processOption['Process']->unique)
+        if (!$processOption['options']['unique'])
         {
             return false;
         }
@@ -276,7 +319,7 @@ class ProcessManager
     {
         if (App::isCoServer())
         {
-            $processOption = ProcessParser::getInstance()->getProcess($name);
+            $processOption = self::get($name);
             if (null === $processOption)
             {
                 return null;

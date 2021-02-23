@@ -7,10 +7,7 @@ namespace Imi\Cli;
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Cli\Annotation\Argument;
-use Imi\Cli\Annotation\Command as CommandAnnotation;
-use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
-use Imi\Cli\Parser\ToolParser;
 use Imi\Event\Event;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +17,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImiCommand extends Command
 {
+    /**
+     * 命令名称.
+     *
+     * @var string|null
+     */
+    protected ?string $commandName = null;
+
+    /**
+     * 命令动作名称.
+     *
+     * @var string
+     */
+    protected string $actionName = '';
+
     /**
      * 类名.
      *
@@ -35,14 +46,11 @@ class ImiCommand extends Command
     protected string $methodName = '';
 
     /**
-     * @var \Imi\Cli\Annotation\Command
+     * 是否启用动态参数支持.
+     *
+     * @var bool
      */
-    protected CommandAnnotation $commandAnnotation;
-
-    /**
-     * @var \Imi\Cli\Annotation\CommandAction
-     */
-    protected CommandAction $commandActionAnnotation;
+    protected bool $dynamicOptions = false;
 
     /**
      * @var InputInterface
@@ -74,21 +82,23 @@ class ImiCommand extends Command
         return $this->methodName;
     }
 
-    public function __construct(CommandAnnotation $commandAnnotation, CommandAction $commandActionAnnotation, string $className, string $methodName)
+    public function __construct(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false)
     {
+        $this->commandName = $commandName;
+        $this->actionName = $actionName;
         $this->className = $className;
         $this->methodName = $methodName;
-        $this->commandAnnotation = $commandAnnotation;
-        $this->commandActionAnnotation = $commandActionAnnotation;
-        if (null === $commandAnnotation->name)
+        $this->dynamicOptions = $dynamicOptions;
+
+        if (null === $commandName)
         {
-            $commandName = $commandActionAnnotation->name ?? $methodName;
+            $finalCommandName = $actionName ?? $methodName;
         }
         else
         {
-            $commandName = $commandAnnotation->name . '/' . ($commandActionAnnotation->name ?? $methodName);
+            $finalCommandName = $commandName . '/' . ($actionName ?? $methodName);
         }
-        parent::__construct($commandName);
+        parent::__construct($finalCommandName);
     }
 
     protected function configure()
@@ -133,7 +143,7 @@ class ImiCommand extends Command
     {
         if ($input instanceof ImiArgvInput)
         {
-            $input->setDynamicOptions($this->commandActionAnnotation->dynamicOptions);
+            $input->setDynamicOptions($this->dynamicOptions);
         }
 
         return parent::run($input, $output);
@@ -196,22 +206,18 @@ class ImiCommand extends Command
     private function getCallToolArgs(): array
     {
         $methodRef = new \ReflectionMethod($this->className, $this->methodName);
-        $data = ToolParser::getInstance()->getData();
-        $argumentAnnotations = $data['class'][$this->className]['Methods'][$this->methodName]['Arguments'] ?? [];
-        $args = [];
-        $optionAnnotations = $data['class'][$this->className]['Methods'][$this->methodName]['Options'] ?? [];
+        $arguments = CliManager::getArguments($this->commandName, $this->actionName);
+        $options = CliManager::getOptions($this->commandName, $this->actionName);
         $args = [];
         foreach ($methodRef->getParameters() as $param)
         {
-            if (isset($argumentAnnotations[$param->name]))
+            if (isset($arguments[$param->name]))
             {
-                $annotation = $argumentAnnotations[$param->name];
-                $value = $this->parseArgValue($this->input->getArgument($param->name), $annotation);
+                $value = $this->parseArgValue($this->input->getArgument($param->name), $arguments[$param->name]);
             }
-            elseif (isset($optionAnnotations[$param->name]))
+            elseif (isset($options[$param->name]))
             {
-                $annotation = $optionAnnotations[$param->name];
-                $value = $this->parseArgValue($this->input->getOption($param->name), $annotation);
+                $value = $this->parseArgValue($this->input->getOption($param->name), $options[$param->name]);
             }
             else
             {
@@ -226,14 +232,14 @@ class ImiCommand extends Command
     /**
      * 处理参数值
      *
-     * @param mixed                                                   $value
-     * @param \Imi\Cli\Annotation\Argument|\Imi\Cli\Annotation\Option $annotation
+     * @param mixed $value
+     * @param array $option
      *
      * @return mixed
      */
-    private function parseArgValue($value, $annotation)
+    private function parseArgValue($value, $option)
     {
-        switch ($annotation->type)
+        switch ($option['type'])
         {
             case ArgType::STRING:
                 break;

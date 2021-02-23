@@ -6,6 +6,8 @@ return [
     // 项目根命名空间
     'namespace'    => 'Imi\Fpm\Test\Web',
 
+    'debug' => false,
+
     // 配置文件
     'configs'    => [
         'beans'        => __DIR__ . '/beans.php',

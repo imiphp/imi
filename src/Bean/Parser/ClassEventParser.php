@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Parser;
 
+use Imi\Event\ClassEventManager;
+
 class ClassEventParser extends BaseParser
 {
     /**
@@ -20,11 +22,7 @@ class ClassEventParser extends BaseParser
     {
         if ($annotation instanceof \Imi\Bean\Annotation\ClassEventListener)
         {
-            $data = &$this->data;
-            $data[$annotation->className][$annotation->eventName][] = [
-                'className' => $className,
-                'priority'  => $annotation->priority,
-            ];
+            ClassEventManager::add($annotation->className, $annotation->eventName, $className, $annotation->priority);
         }
     }
 }

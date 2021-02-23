@@ -6,6 +6,7 @@ namespace Imi\Swoole\Process\Parser;
 
 use Imi\Bean\Parser\BaseParser;
 use Imi\Swoole\Process\Annotation\ProcessPool;
+use Imi\Swoole\Process\ProcessPoolManager;
 
 class ProcessPoolParser extends BaseParser
 {
@@ -23,27 +24,7 @@ class ProcessPoolParser extends BaseParser
     {
         if ($annotation instanceof ProcessPool)
         {
-            $data = &$this->data;
-            if (isset($data[$annotation->name]) && $data[$annotation->name]['className'] != $className)
-            {
-                throw new \RuntimeException(sprintf('Process pool %s is exists', $annotation->name));
-            }
-            $data[$annotation->name] = [
-                'className'     => $className,
-                'ProcessPool'   => $annotation,
-            ];
+            ProcessPoolManager::add($annotation->name, $className, $annotation->toArray());
         }
-    }
-
-    /**
-     * 获取processPool信息.
-     *
-     * @param string $name processPool名称
-     *
-     * @return array|null
-     */
-    public function getProcessPool(string $name): ?array
-    {
-        return $this->data[$name] ?? null;
     }
 }

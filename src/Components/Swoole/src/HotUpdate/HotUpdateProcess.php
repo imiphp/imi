@@ -229,7 +229,7 @@ class HotUpdateProcess extends BaseProcess
             'changedFilesFile'  => $this->changedFilesFile,
             'confirm'           => true,
             'no-app-cache'      => true,
-            'imi-runtime'       => Imi::getRuntimePath('imi-runtime-bak.cache'),
+            'imi-runtime'       => Imi::getRuntimePath('imi-runtime-bak'),
         ]);
         static $descriptorspec = [
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Enum;
 
-use Imi\Enum\Annotation\EnumItem;
-use Imi\Enum\Annotation\Parser\EnumParser;
-
 abstract class BaseEnum
 {
     /**
@@ -18,7 +15,7 @@ abstract class BaseEnum
      */
     public static function getName($value): ?string
     {
-        $map = EnumParser::getInstance()->getMap(static::class);
+        $map = EnumManager::getKVMap(static::class);
         $key = array_search($value, $map);
 
         return $key ?? null;
@@ -45,10 +42,10 @@ abstract class BaseEnum
      */
     public static function getText($value): ?string
     {
-        $enumItem = EnumParser::getInstance()->getEnumItem(static::class, $value);
+        $enumItem = EnumManager::getEnumItem(static::class, $value);
         if ($enumItem)
         {
-            return $enumItem->text;
+            return $enumItem['text'];
         }
         else
         {
@@ -57,15 +54,15 @@ abstract class BaseEnum
     }
 
     /**
-     * 获取注解.
+     * 获取配置.
      *
      * @param mixed $value
      *
-     * @return \Imi\Enum\Annotation\EnumItem|null
+     * @return array|null
      */
-    public static function getData($value): ?EnumItem
+    public static function getData($value): ?array
     {
-        return EnumParser::getInstance()->getEnumItem(static::class, $value);
+        return EnumManager::getEnumItem(static::class, $value);
     }
 
     /**
@@ -75,7 +72,7 @@ abstract class BaseEnum
      */
     public static function getNames(): array
     {
-        return EnumParser::getInstance()->getNames(static::class);
+        return EnumManager::getNames(static::class);
     }
 
     /**
@@ -85,7 +82,7 @@ abstract class BaseEnum
      */
     public static function getValues(): array
     {
-        return EnumParser::getInstance()->getValues(static::class);
+        return EnumManager::getValues(static::class);
     }
 
     /**
@@ -95,6 +92,6 @@ abstract class BaseEnum
      */
     public static function getMap(): array
     {
-        return EnumParser::getInstance()->getMap(static::class);
+        return EnumManager::getKVMap(static::class);
     }
 }

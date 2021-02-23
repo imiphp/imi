@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Fpm;
 
-use Imi\Aop\AopAnnotationLoader;
 use Imi\App;
 use Imi\Bean\BeanContexts;
 use Imi\Bean\Scanner;
@@ -44,7 +43,28 @@ class FpmApp extends BaseApp
         {
             File::createDir($dir);
         }
-        $this->aopForceFromAnnotation = App::isDebug();
+        if (!App::isDebug())
+        {
+            foreach ([
+                '@app.imi.runtime.annotation_manager_annotations',
+                '@app.imi.runtime.annotation_manager_annotation_relation',
+            ] as $name)
+            {
+                if (null === Config::get($name))
+                {
+                    Config::set($name, false);
+                }
+            }
+        }
+    }
+
+    /**
+     * 初始化.
+     *
+     * @return void
+     */
+    public function init(): void
+    {
     }
 
     /**
@@ -55,10 +75,10 @@ class FpmApp extends BaseApp
     public function loadRuntime(): int
     {
         // 尝试加载项目运行时
-        $fileName = Imi::getRuntimePath('runtime.cache');
+        $fileName = Imi::getRuntimePath('runtime');
         if (!Imi::loadRuntimeInfo($fileName))
         {
-            $fileName = Imi::getRuntimePath('imi-runtime.cache');
+            $fileName = Imi::getRuntimePath('imi-runtime');
             $isBuildRuntime = !Imi::loadRuntimeInfo($fileName);
             if ($isBuildRuntime)
             {
@@ -76,17 +96,6 @@ class FpmApp extends BaseApp
         }
 
         return LoadRuntimeResult::ALL;
-    }
-
-    /**
-     * 初始化.
-     *
-     * @return void
-     */
-    public function init(): void
-    {
-        parent::init();
-        AopAnnotationLoader::saveConfig(App::isDebug());
     }
 
     /**

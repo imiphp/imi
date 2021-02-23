@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Parser;
 
+use Imi\Bean\PartialManager;
+
 class PartialParser extends BaseParser
 {
     /**
@@ -23,6 +25,6 @@ class PartialParser extends BaseParser
         {
             return;
         }
-        $this->data[$annotation->class][] = $className;
+        PartialManager::add($className, $annotation->class);
     }
 }

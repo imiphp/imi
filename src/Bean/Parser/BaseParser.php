@@ -31,40 +31,6 @@ abstract class BaseParser implements IParser
     const TARGET_CONST = 'const';
 
     /**
-     * 数据.
-     *
-     * @var array
-     */
-    protected array $data = [];
-
-    private function __construct(array $data = [])
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * 获取数据.
-     *
-     * @return array
-     */
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    /**
-     * 设置数据.
-     *
-     * @param array $data
-     *
-     * @return void
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-    }
-
-    /**
      * 是否子类作为单独实例.
      *
      * @return bool

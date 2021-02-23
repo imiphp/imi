@@ -12,7 +12,6 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Event\Event;
-use Imi\Swoole\Process\Parser\ProcessParser;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Process\ProcessPoolManager;
 use RuntimeException;
@@ -85,7 +84,7 @@ class Process extends BaseCommand
             // 加载服务器注解
             Scanner::scanVendor();
             Scanner::scanApp();
-            $processOption = ProcessParser::getInstance()->getProcess($name);
+            $processOption = ProcessManager::get($name);
             if (null === $processOption)
             {
                 throw new RuntimeException(sprintf('Not found process %s', $name));

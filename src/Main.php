@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Imi;
 
+use Imi\Event\Event;
 use Imi\Main\BaseMain;
-use Imi\Util\File;
+use Imi\Util\ImiPriority;
 
 /**
  * 主类.
@@ -14,6 +15,19 @@ class Main extends BaseMain
 {
     public function __init()
     {
-    }
+        Event::on('IMI.LOAD_RUNTIME', \Imi\Bean\Listener\LoadRuntimeListener::class, ImiPriority::IMI_MAX);
+        Event::on('IMI.BUILD_RUNTIME', \Imi\Bean\Listener\BuildRuntimeListener::class, ImiPriority::IMI_MAX);
 
+        Event::on('IMI.LOAD_RUNTIME', \Imi\Aop\Listener\LoadRuntimeListener::class, 19940300);
+        Event::on('IMI.BUILD_RUNTIME', \Imi\Aop\Listener\BuildRuntimeListener::class, 19940300);
+
+        Event::on('IMI.LOAD_RUNTIME', \Imi\Cli\Listener\LoadRuntimeListener::class, 19940200);
+        Event::on('IMI.BUILD_RUNTIME', \Imi\Cli\Listener\BuildRuntimeListener::class, 19940200);
+
+        Event::on('IMI.LOAD_RUNTIME', \Imi\Event\Listener\LoadRuntimeListener::class, 19940100);
+        Event::on('IMI.BUILD_RUNTIME', \Imi\Event\Listener\BuildRuntimeListener::class, 19940100);
+
+        Event::on('IMI.LOAD_RUNTIME', \Imi\Enum\Listener\LoadRuntimeListener::class, 19940000);
+        Event::on('IMI.BUILD_RUNTIME', \Imi\Enum\Listener\BuildRuntimeListener::class, 19940000);
+    }
 }

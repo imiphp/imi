@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Cli;
 
-use Imi\Aop\AopAnnotationLoader;
 use Imi\App;
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Scanner;
-use Imi\Cli\Annotation\Command;
-use Imi\Cli\Annotation\CommandAction;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Log\LogAppContexts;
@@ -152,7 +148,7 @@ class CliApp extends BaseApp
         else
         {
             // 尝试加载默认 runtime
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime.cache'));
+            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'));
         }
         if (!$result)
         {
@@ -160,7 +156,7 @@ class CliApp extends BaseApp
             Scanner::scanImi();
             if ($isServerStart)
             {
-                Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak.cache'));
+                Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak'));
                 $this->isAppRuntime = true;
             }
 
@@ -177,25 +173,17 @@ class CliApp extends BaseApp
      */
     public function init(): void
     {
-        parent::init();
-        AopAnnotationLoader::saveConfig();
         $this->addCommands();
     }
 
     private function addCommands(): void
     {
-        foreach (AnnotationManager::getAnnotationPoints(Command::class, 'class') as $point)
+        foreach (CliManager::getCommands() as $command)
         {
-            /** @var Command $commandAnnotation */
-            $commandAnnotation = $point->getAnnotation();
-            $className = $point->getClass();
-            foreach (AnnotationManager::getMethodsAnnotations($className, CommandAction::class) as $methodName => $commandActionAnnotations)
+            $command = new ImiCommand($command['commandName'], $command['actionName'], $command['className'], $command['methodName'], $command['dynamicOptions']);
+            if (!$this->cli->has($command->getName()))
             {
-                $command = new ImiCommand($commandAnnotation, $commandActionAnnotations[0], $className, $methodName);
-                if (!$this->cli->has($command->getName()))
-                {
-                    $this->cli->add($command);
-                }
+                $this->cli->add($command);
             }
         }
     }

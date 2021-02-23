@@ -6,9 +6,8 @@ namespace Imi\Util;
 
 use Imi\App;
 use Imi\Bean\Annotation;
-use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\BeanManager;
 use Imi\Bean\BeanProxy;
-use Imi\Bean\Parser\BeanParser;
 use Imi\Bean\ReflectionContainer;
 use Imi\Config;
 use Imi\Event\Event;
@@ -384,7 +383,8 @@ class Imi
         {
             if (!class_exists($className))
             {
-                $className = BeanParser::getInstance()->getData()[$className]['className'];
+                $data = BeanManager::get($className);
+                $className = $data['className'] ?? null;
             }
             $ref = ReflectionContainer::getClassReflection($className);
             $value = $ref->getDefaultProperties()[$propertyName] ?? null;
@@ -478,29 +478,42 @@ class Imi
     /**
      * 构建运行时缓存.
      *
-     * @param string|null $runtimeFile 如果为空则默认为runtime.cache
+     * @param string|null $fileName 如果为空则默认为runtime.cache
      *
      * @return void
      */
-    public static function buildRuntime(?string $runtimeFile = null)
+    public static function buildRuntime(?string $fileName = null)
     {
-        $runtimeInfo = App::getRuntimeInfo();
-        $parser = Annotation::getInstance()->getParser();
-        $runtimeInfo->annotationParserData = $parser->getStoreData();
-        $runtimeInfo->annotationParserParsers = $parser->getParsers();
-        $runtimeInfo->annotationManagerAnnotations = AnnotationManager::getAnnotations();
-        $runtimeInfo->annotationManagerAnnotationRelation = AnnotationManager::getAnnotationRelation();
-        $runtimeInfo->parsersData = [];
-        foreach (array_unique($runtimeInfo->annotationParserParsers) as $parserClass)
+        if (null === $fileName)
         {
-            $parser = $parserClass::getInstance();
-            $runtimeInfo->parsersData[$parserClass] = $parser->getData();
+            $fileName = self::getRuntimePath('runtime.cache');
         }
-        if (null === $runtimeFile)
+        if (!is_dir($fileName))
         {
-            $runtimeFile = self::getRuntimePath('runtime.cache');
+            mkdir($fileName, 0777, true);
         }
-        file_put_contents($runtimeFile, serialize($runtimeInfo));
+        Event::trigger('IMI.BUILD_RUNTIME', [
+            'fileName' => $fileName,
+        ]);
+    }
+
+    /**
+     * 从文件加载运行时数据
+     * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
+     *
+     * @param string $fileName
+     *
+     * @return bool
+     */
+    public static function loadRuntimeInfo(string $fileName): bool
+    {
+        $success = true;
+        Event::trigger('IMI.LOAD_RUNTIME', [
+            'fileName' => $fileName,
+            'success'  => &$success,
+        ]);
+
+        return $success;
     }
 
     /**
@@ -774,38 +787,5 @@ class Imi
         }
 
         return false;
-    }
-
-    /**
-     * 从文件加载运行时数据
-     * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
-     *
-     * @param string $fileName
-     *
-     * @return bool
-     */
-    public static function loadRuntimeInfo(string $fileName): bool
-    {
-        if (!is_file($fileName))
-        {
-            return false;
-        }
-        /** @var \Imi\RuntimeInfo $runtimeInfo */
-        $runtimeInfo = unserialize(file_get_contents($fileName));
-
-        $parser = Annotation::getInstance()->getParser();
-        $parser->loadStoreData($runtimeInfo->annotationParserData);
-        $parser->setParsers($runtimeInfo->annotationParserParsers);
-
-        AnnotationManager::setAnnotations($runtimeInfo->annotationManagerAnnotations);
-        AnnotationManager::setAnnotationRelation($runtimeInfo->annotationManagerAnnotationRelation);
-        foreach ($runtimeInfo->parsersData as $parserClass => $data)
-        {
-            $parser = $parserClass::getInstance();
-            $parser->setData($data);
-        }
-        Event::trigger('IMI.LOAD_RUNTIME_INFO');
-
-        return true;
     }
 }

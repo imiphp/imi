@@ -114,7 +114,7 @@ class File
      *
      * @return string
      */
-    public static function path(string ...$args)
+    public static function path(string ...$args): string
     {
         static $dsds = \DIRECTORY_SEPARATOR . \DIRECTORY_SEPARATOR;
         $result = implode(\DIRECTORY_SEPARATOR, $args);

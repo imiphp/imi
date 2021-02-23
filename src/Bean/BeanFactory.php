@@ -6,7 +6,6 @@ namespace Imi\Bean;
 
 use Imi\Aop\AopManager;
 use Imi\App;
-use Imi\Bean\Parser\PartialParser;
 use Imi\Util\Imi;
 
 class BeanFactory
@@ -165,22 +164,7 @@ TPL;
             $aopConstruct = '';
         }
         // partial 处理
-        $classes = class_parents($class);
-        if (isset($classes[1]))
-        {
-            $classes = array_reverse($classes);
-        }
-        $classes[] = $class;
-
-        $partialData = PartialParser::getInstance()->getData();
-        $traits = [];
-        foreach ($classes as $currentClass)
-        {
-            if (isset($partialData[$currentClass]))
-            {
-                $traits[] = $partialData[$currentClass];
-            }
-        }
+        $traits = PartialManager::getClassPartials($class);
         if ($traits)
         {
             $traits = array_unique(array_merge(...$traits));
@@ -210,7 +194,6 @@ class {$newClassName} extends {$class} implements \Imi\Bean\IBean
     }
 {$methodsTpl}
 }
-\Imi\Bean\BeanProxy::init({$class}::class);
 TPL;
 
         return $tpl;

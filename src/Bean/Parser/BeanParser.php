@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Parser;
 
+use Imi\Bean\BeanManager;
+
 class BeanParser extends BaseParser
 {
     /**
@@ -21,11 +23,7 @@ class BeanParser extends BaseParser
         if ($annotation instanceof \Imi\Bean\Annotation\Bean)
         {
             $beanName = $annotation->name ?? $className;
-            $this->data[$className] = $this->data[$beanName] = [
-                'beanName'      => $beanName,
-                'className'     => $className,
-                'instanceType'  => $annotation->instanceType,
-            ];
+            BeanManager::add($className, $beanName, $annotation->instanceType);
         }
     }
 }

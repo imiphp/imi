@@ -62,14 +62,14 @@ class Event
     /**
      * 触发事件.
      *
-     * @param string $name       事件名称
-     * @param array  $data       数据
-     * @param mixed  $target     目标对象
-     * @param string $paramClass 参数类
+     * @param string      $name       事件名称
+     * @param array       $data       数据
+     * @param object|null $target     目标对象
+     * @param string      $paramClass 参数类
      *
      * @return void
      */
-    public static function trigger(string $name, array $data = [], $target = null, string $paramClass = EventParam::class)
+    public static function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class)
     {
         static::getInstance()->__trigger($name, $data, $target, $paramClass);
     }

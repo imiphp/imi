@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Event;
 
 use Imi\Bean\BeanFactory;
-use Imi\Bean\Parser\ClassEventParser;
 
 trait TEvent
 {
@@ -138,40 +137,34 @@ trait TEvent
     /**
      * 触发事件.
      *
-     * @param string $name       事件名称
-     * @param array  $data       数据
-     * @param mixed  $target     目标对象
-     * @param string $paramClass 参数类
+     * @param string      $name       事件名称
+     * @param array       $data       数据
+     * @param object|null $target     目标对象
+     * @param string      $paramClass 参数类
      *
      * @return void
      */
-    public function trigger(string $name, array $data = [], $target = null, string $paramClass = EventParam::class)
+    public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class)
     {
         $eventQueue = &$this->eventQueue;
         // 获取回调列表
         if (!isset($eventQueue[$name]))
         {
-            $classEventdata = ClassEventParser::getInstance()->getData();
-            if (!$classEventdata && empty($this->events[$name]))
+            $options = ClassEventManager::getByObjectEvent($this, $name);
+            if (!$options && empty($this->events[$name]))
             {
                 return;
             }
             $eventsMap = &$this->events[$name];
             $queue = $this->rebuildEventQueue($name);
-            foreach ($classEventdata as $className => $option)
+            foreach ($options as $option)
             {
-                if (isset($option[$name]) && $this instanceof $className)
-                {
-                    foreach ($option[$name] as $callback)
-                    {
-                        // 数据映射
-                        $eventsMap[] = $item = new EventItem(function ($param) use ($callback) {
-                            $obj = BeanFactory::newInstance($callback['className']);
-                            $obj->handle($param);
-                        }, $callback['priority']);
-                        $queue->insert($item, $callback['priority']);
-                    }
-                }
+                // 数据映射
+                $eventsMap[] = $item = new EventItem(function ($param) use ($option) {
+                    $obj = BeanFactory::newInstance($option['className']);
+                    $obj->handle($param);
+                }, $option['priority']);
+                $queue->insert($item, $option['priority']);
             }
         }
         elseif (empty($this->events[$name]))

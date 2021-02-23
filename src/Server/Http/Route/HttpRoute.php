@@ -609,4 +609,35 @@ class HttpRoute
         }
         Log::warning($logString);
     }
+
+    /**
+     * 加载缓存.
+     *
+     * @return boolean
+     */
+    public function loadCache(): bool
+    {
+        $fileName = Imi::getRuntimePath('httpRoute.cache');
+        if (!is_file($fileName))
+        {
+            return false;
+        }
+        $data = unserialize(file_get_contents($fileName));
+        $this->rules = $rules = $data['rules'] ?? [];
+
+        return (bool) $rules;
+    }
+
+    /**
+     * 保存缓存.
+     *
+     * @return void
+     */
+    public function saveCache()
+    {
+        $fileName = Imi::getRuntimePath('httpRoute.cache');
+        file_put_contents($fileName, serialize([
+            'rules' => $this->rules,
+        ]));
+    }
 }

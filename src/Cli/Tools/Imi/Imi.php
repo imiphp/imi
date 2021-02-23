@@ -32,7 +32,7 @@ class Imi extends BaseCommand
     {
         if (null === $file)
         {
-            $file = \Imi\Util\Imi::getRuntimePath('imi-runtime.cache');
+            $file = \Imi\Util\Imi::getRuntimePath('imi-runtime');
         }
         ImiUtil::buildRuntime($file);
         $this->output->writeln('<info>Build imi runtime complete</info>');

@@ -18,19 +18,4 @@ interface IParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName);
 
-    /**
-     * 获取数据.
-     *
-     * @return array
-     */
-    public function getData(): array;
-
-    /**
-     * 设置数据.
-     *
-     * @param array $data
-     *
-     * @return void
-     */
-    public function setData(array $data);
 }

@@ -6,6 +6,7 @@ namespace Imi\Swoole\Task\Parser;
 
 use Imi\Bean\Parser\BaseParser;
 use Imi\Swoole\Task\Annotation\Task;
+use Imi\Swoole\Task\TaskManager;
 
 class TaskParser extends BaseParser
 {
@@ -23,27 +24,7 @@ class TaskParser extends BaseParser
     {
         if ($annotation instanceof Task)
         {
-            $data = &$this->data;
-            if (isset($data[$annotation->name]) && $data[$annotation->name]['className'] != $className)
-            {
-                throw new \RuntimeException(sprintf('Task %s is exists', $annotation->name));
-            }
-            $data[$annotation->name] = [
-                'className' => $className,
-                'Task'      => $annotation,
-            ];
+            TaskManager::add($annotation->name, $className, $annotation->toArray());
         }
-    }
-
-    /**
-     * 获取task信息.
-     *
-     * @param string $name task名称
-     *
-     * @return array|null
-     */
-    public function getTask(string $name): ?array
-    {
-        return $this->data[$name] ?? null;
     }
 }

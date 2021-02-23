@@ -9,6 +9,7 @@ use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
+use Imi\Cli\CliManager;
 use Imi\Event\Event;
 
 class ToolParser extends BaseParser
@@ -28,35 +29,62 @@ class ToolParser extends BaseParser
         $data = &$this->data;
         if ($annotation instanceof Command)
         {
-            $data['class'][$className]['Tool'] = $annotation;
+            $data[$className]['Command'] = $annotation;
             Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className);
         }
         elseif ($annotation instanceof CommandAction)
         {
-            if (isset($data['class'][$className]['Methods'][$targetName]['Operation']) && $data['class'][$className]['Methods'][$targetName]['Operation'] != $annotation)
+            $func = function () use (&$data, $annotation, $className, $targetName) {
+                /** @var Command $commandAnnotation */
+                $commandAnnotation = $data[$className]['Command'];
+                CliManager::addCommand($commandAnnotation->name, $annotation->name, $className, $targetName);
+                $data[$className]['CommandAction'][$targetName] = $annotation;
+                Event::trigger('TOOL_PARSER.PARSE_TOOL.' . $className . '::' . $targetName);
+            };
+            if (isset($data[$className]['Command']))
             {
-                throw new \RuntimeException(sprintf('Tool %s/%s is already exists!', isset($data['class'][$className]['Tool']) ? $data['class'][$className]['Tool']->name : $className, $annotation->name));
-            }
-            $data['class'][$className]['Methods'][$targetName]['Operation'] = $annotation;
-            if (isset($data['class'][$className]['Tool']))
-            {
-                $data['tool'][$data['class'][$className]['Tool']->name][$annotation->name] = [$className, $targetName];
+                $func();
             }
             else
             {
-                $operation = $annotation;
-                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, function () use ($className, $operation, $targetName, &$data) {
-                    $data['tool'][$data['class'][$className]['Tool']->name][$operation->name] = [$className, $targetName];
-                });
+                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className, $func);
             }
         }
         elseif ($annotation instanceof Argument)
         {
-            $data['class'][$className]['Methods'][$targetName]['Arguments'][$annotation->name] = $annotation;
+            $func = function () use (&$data, $annotation, $className, $targetName) {
+                /** @var Command $commandAnnotation */
+                $commandAnnotation = $data[$className]['Command'];
+                /** @var CommandAction $commandActionAnnotation */
+                $commandActionAnnotation = $data[$className]['CommandAction'][$targetName];
+                CliManager::addArgument($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->type, $annotation->default, $annotation->required, $annotation->comments);
+            };
+            if (isset($data[$className]['Command']) || isset($data[$className]['CommandAction'][$targetName]))
+            {
+                $func();
+            }
+            else
+            {
+                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className . '::' . $targetName, $func);
+            }
         }
         elseif ($annotation instanceof Option)
         {
-            $data['class'][$className]['Methods'][$targetName]['Options'][$annotation->name] = $annotation;
+            $func = function () use (&$data, $annotation, $className, $targetName) {
+                /** @var Command $commandAnnotation */
+                $commandAnnotation = $data[$className]['Command'];
+                /** @var CommandAction $commandActionAnnotation */
+                $commandActionAnnotation = $data[$className]['CommandAction'][$targetName];
+                CliManager::addOption($commandAnnotation->name, $commandActionAnnotation->name, $annotation->name, $annotation->shortcut, $annotation->type, $annotation->default, $annotation->required, $annotation->comments);
+            };
+            if (isset($data[$className]['Command']) || isset($data[$className]['CommandAction'][$targetName]))
+            {
+                $func();
+            }
+            else
+            {
+                Event::one('TOOL_PARSER.PARSE_TOOL.' . $className . '::' . $targetName, $func);
+            }
         }
     }
 }

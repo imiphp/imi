@@ -18,27 +18,12 @@ use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\Model\AopItem;
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Bean\Parser\BeanParser;
 use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 
 class BeanProxy
 {
-    /**
-     * 存储每个类对应的切面关系.
-     *
-     * @var \SplPriorityQueue[]
-     */
-    private static array $aspects = [];
-
-    /**
-     * 切面缓存.
-     *
-     * @var array
-     */
-    private static array $aspectCache = [];
-
     /**
      * 类注入缓存.
      *
@@ -151,17 +136,6 @@ class BeanProxy
     }
 
     /**
-     * 初始化.
-     *
-     * @param string $className
-     *
-     * @return void
-     */
-    public static function init(string $className)
-    {
-    }
-
-    /**
      * 注入属性.
      *
      * @param object $object
@@ -221,10 +195,10 @@ class BeanProxy
     public static function getConfigInjects(string $className): array
     {
         // 配置文件注入
-        $beanData = BeanParser::getInstance()->getData();
-        if (isset($beanData[$className]))
+        $beanData = BeanManager::get($className);
+        if ($beanData)
         {
-            $beanName = $beanData[$className]['beanName'];
+            $beanName = $beanData['beanName'];
         }
         else
         {

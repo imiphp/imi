@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\RequestContextProxy\Cli;
 
 use Imi\Bean\Annotation;
-use Imi\Bean\Parser\BeanParser;
+use Imi\Bean\BeanManager;
 use Imi\Main\Helper;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\Tool\Annotation\Arg;
@@ -42,10 +42,10 @@ class RequestContextProxyGenerate
         }
         else
         {
-            $data = BeanParser::getInstance()->getData();
-            if (isset($data[$class]))
+            $data = BeanManager::get($class);
+            if ($data)
             {
-                $fromClass = $data[$class]['className'];
+                $fromClass = $data['className'];
             }
             else
             {
