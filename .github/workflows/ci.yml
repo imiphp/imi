@@ -21,7 +21,6 @@ jobs:
       - name: install db
         run: |
           brew install mysql redis
-          mysqld --initialize-insecure
           brew services start mysql
           brew services start redis
       - name: install php
