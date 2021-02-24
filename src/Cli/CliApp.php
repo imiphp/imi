@@ -122,6 +122,7 @@ class CliApp extends BaseApp
      */
     public function loadRuntime(): int
     {
+        $this->initRuntime();
         $input = new ArgvInput();
         $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
         if ($isServerStart)

@@ -75,7 +75,6 @@ abstract class BaseApp implements IApp
         }
 
         App::setDebug(Config::get('@app.debug', true));
-        $this->initRuntime();
     }
 
     /**
