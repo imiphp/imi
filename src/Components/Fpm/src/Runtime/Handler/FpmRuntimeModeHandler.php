@@ -24,8 +24,6 @@ class FpmRuntimeModeHandler implements IRuntimeModeHandler
         if (!App::isDebug())
         {
             foreach ([
-                '@app.imi.runtime.annotation_parser_data',
-                '@app.imi.runtime.annotation_parser_parsers',
                 '@app.imi.runtime.annotation_manager_annotations',
                 '@app.imi.runtime.annotation_manager_annotation_relation',
             ] as $name)

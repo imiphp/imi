@@ -44,7 +44,7 @@ class AnnotationLoader
                 {
                     continue;
                 }
-                $data = json_decode(file_get_contents($configFileName), true);
+                $data = include $configFileName;
                 if (isset($data['beanScan']))
                 {
                     $beanScan[] = $data['beanScan'];
