@@ -10,6 +10,7 @@ return [
         'Imi\Workerman\Test\AppServer\WebSocketServer\Controller',
         'Imi\Workerman\Test\AppServer\WebSocketServer\Error',
         'Imi\Workerman\Test\AppServer\WebSocketServer\Middleware',
+        'Imi\Workerman\Test\AppServer\WebSocketServer\Listener',
     ],
     'beans'    => [
         'WebSocketDispatcher'    => [
