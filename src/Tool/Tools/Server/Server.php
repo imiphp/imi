@@ -66,8 +66,7 @@ class Server
      */
     public function stop()
     {
-        $result = Imi::stopServer();
-        echo $result['cmd'], \PHP_EOL;
+        Imi::stopServer();
     }
 
     /**
