@@ -7,6 +7,8 @@ namespace Imi\Core\App\Contract;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Config;
+use Imi\Core\Runtime\Handler\DefaultRuntimeModeHandler;
+use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Imi;
@@ -73,6 +75,7 @@ abstract class BaseApp implements IApp
         }
 
         App::setDebug(Config::get('@app.debug', true));
+        $this->initRuntime();
     }
 
     /**
@@ -88,5 +91,15 @@ abstract class BaseApp implements IApp
         }
         Helper::getMain($this->namespace, 'app');
         Event::trigger('IMI.INIT_MAIN');
+    }
+
+    /**
+     * 初始化运行时.
+     *
+     * @return void
+     */
+    protected function initRuntime()
+    {
+        Runtime::setRuntimeModeHandler(DefaultRuntimeModeHandler::class)->init();
     }
 }

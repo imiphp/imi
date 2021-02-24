@@ -10,8 +10,10 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Core\Runtime\Runtime;
 use Imi\Log\Log;
 use Imi\Pool\Annotation\PoolClean;
+use Imi\Util\File;
 use Imi\Util\Imi as ImiUtil;
 use Imi\Util\Text;
 
@@ -68,11 +70,16 @@ class Imi extends BaseCommand
      *
      * @Option(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * @Option(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
+     * @Option(name="runtimeMode", type=ArgType::STRING, default=null, comments="指定运行时模式")
      *
      * @return void
      */
-    public function buildRuntime(?string $changedFilesFile, bool $confirm): void
+    public function buildRuntime(?string $changedFilesFile, bool $confirm, ?string $runtimeMode): void
     {
+        if (null !== $runtimeMode)
+        {
+            Runtime::setRuntimeModeHandler(Text::toPascalName($runtimeMode) . 'RuntimeModeHandler')->init();
+        }
         if ($confirm)
         {
             $input = fread(\STDIN, 1);
@@ -106,9 +113,8 @@ class Imi extends BaseCommand
     public function clearRuntime(): void
     {
         $file = \Imi\Util\Imi::getRuntimePath('runtime');
-        if (is_file($file))
+        if (File::deleteDir($file))
         {
-            unlink($file);
             $this->output->writeln('<info>Clear app runtime complete</info>');
         }
         else

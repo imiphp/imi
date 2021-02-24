@@ -48,27 +48,27 @@ class LoadRuntimeListener implements IEventListener
             return;
         }
         $parser = Annotation::getInstance()->getParser();
-        if ($config['annotation_parser_data'] ?? true)
+        if ($config['annotation_parser_data'] ?? true && isset($data['annotationParserData']))
         {
             $parser->loadStoreData($data['annotationParserData']);
         }
-        if ($config['annotation_parser_parsers'] ?? true)
+        if ($config['annotation_parser_parsers'] ?? true && isset($data['annotationParserParsers']))
         {
             $parser->setParsers($data['annotationParserParsers']);
         }
-        if ($config['annotation_manager_annotations'] ?? true)
+        if ($config['annotation_manager_annotations'] ?? true && isset($data['annotationManagerAnnotations']))
         {
             AnnotationManager::setAnnotations($data['annotationManagerAnnotations']);
         }
-        if ($config['annotation_manager_annotation_relation'] ?? true)
+        if ($config['annotation_manager_annotation_relation'] ?? true && isset($data['annotationManagerAnnotationRelation']))
         {
             AnnotationManager::setAnnotationRelation($data['annotationManagerAnnotationRelation']);
         }
-        if ($config['partial'] ?? true)
+        if ($config['partial'] ?? true && isset($data['partial']))
         {
             PartialManager::setMap($data['partial']);
         }
-        if ($config['bean'] ?? true)
+        if ($config['bean'] ?? true && isset($data['bean']))
         {
             BeanManager::setMap($data['bean']);
         }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Bean;
 
+use Imi\Bean\Annotation\Bean;
+
 /**
  * Bean 管理器.
  */
@@ -34,7 +36,7 @@ class BeanManager
      *
      * @return void
      */
-    public static function add(string $className, string $beanName, string $instanceType)
+    public static function add(string $className, string $beanName, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON)
     {
         self::$map[$className]['class'] = self::$map[$beanName]['class'] = [
             'beanName'     => $beanName,
