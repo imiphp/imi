@@ -185,6 +185,7 @@ trait TEvent
         $oneTimeCallbacks = [];
         try
         {
+            /** @var EventItem $option */
             foreach ($callbacks as $option)
             {
                 // 仅触发一次

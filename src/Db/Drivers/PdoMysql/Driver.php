@@ -102,6 +102,10 @@ class Driver extends Base implements IDb
         {
             $options[\PDO::ATTR_EMULATE_PREPARES] = false;
         }
+        if (!isset($options[\PDO::ATTR_ERRMODE]))
+        {
+            $options[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
+        }
         $this->option = $option;
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction();

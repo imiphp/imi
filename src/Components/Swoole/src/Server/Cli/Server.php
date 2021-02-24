@@ -96,8 +96,7 @@ class Server extends BaseCommand
      */
     public function stop(): void
     {
-        $result = Imi::stopServer();
-        $this->output->writeln($result['cmd']);
+        Imi::stopServer();
     }
 
     /**

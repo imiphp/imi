@@ -35,6 +35,7 @@ class LoadRuntimeListener implements IEventListener
         if (!$fileName || !is_file($fileName))
         {
             $eventData['success'] = false;
+            $e->stopPropagation();
 
             return;
         }
@@ -42,6 +43,7 @@ class LoadRuntimeListener implements IEventListener
         if (!$data)
         {
             $eventData['success'] = false;
+            $e->stopPropagation();
 
             return;
         }

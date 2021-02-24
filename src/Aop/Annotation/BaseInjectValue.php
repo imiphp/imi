@@ -10,7 +10,7 @@ use Imi\Bean\Annotation\Parser;
 /**
  * 注入值注解基类.
  *
- * @Parser("\Imi\Bean\Parser\NullParser")
+ * @Parser("\Imi\Bean\Parser\BeanParser")
  */
 abstract class BaseInjectValue extends Base
 {

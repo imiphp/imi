@@ -19,6 +19,7 @@ class FpmHttpRouteInit
         if (!$route->loadCache())
         {
             (new HttpRouteInit())->handle(new EventParam(''));
+            $route->saveCache();
         }
     }
 }

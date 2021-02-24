@@ -6,16 +6,16 @@ namespace Imi\Server\Annotation;
 
 use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\App;
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 use Imi\RequestContext;
 
 /**
  * 服务器容器对象注入
  * 使用：RequestContext::getServerBean().
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 class ServerInject extends BaseInjectValue
 {

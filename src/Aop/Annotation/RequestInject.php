@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Imi\Aop\Annotation;
 
 use Imi\App;
-use Imi\Bean\Annotation\Parser;
 use Imi\RequestContext;
 use Imi\Swoole\Util\Coroutine;
+use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 
 /**
  * 属性注入
  * 使用：RequestContext::getBean().
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 class RequestInject extends BaseInjectValue
 {

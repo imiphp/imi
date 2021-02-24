@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Imi\Db\Annotation;
 
 use Imi\Aop\Annotation\RequestInject;
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Db\Db;
 use Imi\Db\Query\QueryType;
 
 /**
  * 连接池对象注入.
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 class DbInject extends RequestInject
 {

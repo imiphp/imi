@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation;
 
+use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Model\AnnotationRelation;
 use Imi\Bean\Annotation\Model\ClassAnnotation;
 use Imi\Bean\Annotation\Model\ClassAnnotationRelation;
@@ -288,9 +289,15 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getClassAnnotations(string $className, ?string $annotationClassName = null): array
+    public static function getClassAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];
@@ -325,9 +332,15 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public static function getMethodAnnotations(string $className, string $methodName, ?string $annotationClassName = null): array
+    public static function getMethodAnnotations(string $className, string $methodName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];
@@ -362,9 +375,15 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null): array
+    public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];
@@ -399,9 +418,15 @@ class AnnotationManager
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
-    public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null): array
+    public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];
@@ -434,9 +459,15 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null): array
+    public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];
@@ -474,9 +505,15 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null): array
+    public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];
@@ -514,9 +551,15 @@ class AnnotationManager
      *
      * @return array
      */
-    public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null): array
+    public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
+        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        {
+            $parser = Annotation::getInstance()->getParser();
+            $parser->parse($className);
+            $parser->execParse($className);
+        }
         if (!isset($staticAnnotations[$className]))
         {
             return [];

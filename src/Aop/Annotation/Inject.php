@@ -6,14 +6,15 @@ namespace Imi\Aop\Annotation;
 
 use Imi\App;
 use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 
 /**
  * 对象注入
  * 使用：App::getBean().
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 class Inject extends BaseInjectValue
 {

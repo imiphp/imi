@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Parser;
 
+use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\Bean\BeanManager;
 
 class BeanParser extends BaseParser
@@ -24,6 +25,10 @@ class BeanParser extends BaseParser
         {
             $beanName = $annotation->name ?? $className;
             BeanManager::add($className, $beanName, $annotation->instanceType);
+        }
+        elseif ($annotation instanceof BaseInjectValue)
+        {
+            BeanManager::addPropertyInject($className, $targetName, \get_class($annotation), $annotation->toArray());
         }
     }
 }

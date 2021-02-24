@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Server\Route;
 
-use Imi\Server\Contract\IServer;
+use Imi\Server\ServerManager;
 
 class RouteCallable
 {
     /**
-     * 服务器对象
+     * 服务器名.
      *
-     * @var IServer
+     * @var string
      */
-    public IServer $server;
+    public string $serverName = '';
 
     /**
      * 类名.
@@ -29,9 +29,9 @@ class RouteCallable
      */
     public string $methodName = '';
 
-    public function __construct(IServer $server, string $className, string $methodName)
+    public function __construct(string $serverName, string $className, string $methodName)
     {
-        $this->server = $server;
+        $this->serverName = $serverName;
         $this->className = $className;
         $this->methodName = $methodName;
     }
@@ -60,6 +60,6 @@ class RouteCallable
             }
         }
 
-        return [$this->server->getBean($className), $methodName];
+        return [ServerManager::getServer($this->serverName)->getBean($className), $methodName];
     }
 }

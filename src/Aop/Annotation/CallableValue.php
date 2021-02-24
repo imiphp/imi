@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Imi\Aop\Annotation;
 
 use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 
 /**
  * 回调注解，返回该回调的返回值
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class CallableValue extends BaseInjectValue
 {

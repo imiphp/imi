@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Aop\Annotation;
 
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 
 /**
  * 从常量中读取值
  *
  * 支持在注解中为属性动态赋值
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class ConstValue extends BaseInjectValue
 {

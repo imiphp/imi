@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Imi\Redis\Annotation;
 
 use Imi\Aop\Annotation\RequestInject;
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Redis\RedisManager;
 
 /**
  * 连接池对象注入.
  *
+ * {@inheritdoc}
+ *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 class RedisInject extends RequestInject
 {

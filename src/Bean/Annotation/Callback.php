@@ -9,9 +9,9 @@ use Imi\Aop\Annotation\BaseInjectValue;
 /**
  * 回调注解.
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("\Imi\Bean\Parser\NullParser")
  */
 class Callback extends BaseInjectValue
 {

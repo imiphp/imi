@@ -107,7 +107,7 @@ class HttpRouteInit implements IEventListener
                         {
                             $routeItem->url = $prefix . $routeItem->url;
                         }
-                        $routeCallable = new RouteCallable($server, $className, $methodName);
+                        $routeCallable = new RouteCallable($server->getName(), $className, $methodName);
                         $options = [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
@@ -159,7 +159,7 @@ class HttpRouteInit implements IEventListener
                     }
                     else
                     {
-                        $callable = new RouteCallable($server, $routeOption['controller'], $routeOption['method']);
+                        $callable = new RouteCallable($server->getName(), $routeOption['controller'], $routeOption['method']);
                     }
                     $route->addRuleAnnotation($routeAnnotation, $callable, [
                         'middlewares' => $routeOption['middlewares'] ?? [],

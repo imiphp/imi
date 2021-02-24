@@ -93,7 +93,7 @@ class WSRouteInit implements IEventListener
                         {
                             $routeItem->route = $classAnnotation->route;
                         }
-                        $route->addRuleAnnotation($routeItem, new RouteCallable($server, $className, $methodName), [
+                        $route->addRuleAnnotation($routeItem, new RouteCallable($server->getName(), $className, $methodName), [
                             'middlewares' => $middlewares,
                             'singleton'   => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
                         ]);
@@ -136,7 +136,7 @@ class WSRouteInit implements IEventListener
                     }
                     else
                     {
-                        $callable = new RouteCallable($server, $routeOption['controller'], $routeOption['method']);
+                        $callable = new RouteCallable($server->getName(), $routeOption['controller'], $routeOption['method']);
                     }
                     $route->addRuleAnnotation($routeAnnotation, $callable, [
                         'middlewares' => $routeOption['middlewares'],

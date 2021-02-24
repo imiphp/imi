@@ -10,27 +10,18 @@ use Imi\Aop\Annotation\After;
 use Imi\Aop\Annotation\AfterReturning;
 use Imi\Aop\Annotation\AfterThrowing;
 use Imi\Aop\Annotation\Around;
-use Imi\Aop\Annotation\BaseInjectValue;
 use Imi\Aop\Annotation\Before;
 use Imi\Aop\Annotation\Inject;
 use Imi\Aop\AopManager;
 use Imi\Aop\AroundJoinPoint;
 use Imi\Aop\JoinPoint;
 use Imi\Aop\Model\AopItem;
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Config;
 use Imi\Util\Imi;
 use Imi\Util\Text;
 
 class BeanProxy
 {
-    /**
-     * 类注入缓存.
-     *
-     * @var array
-     */
-    private static array $classInjectsCache = [];
-
     /**
      * 魔术方法.
      *
@@ -156,9 +147,11 @@ class BeanProxy
         // @inject()和@requestInject()注入
         if ($injects)
         {
-            foreach ($injects as $propName => $annotations)
+            foreach ($injects as $propName => $annotationOption)
             {
-                $annotation = reset($annotations);
+                $class = $annotationOption['injectType'];
+                /** @var \Imi\Aop\Annotation\BaseInjectValue $annotation */
+                $annotation = new $class($annotationOption['injectOptions']);
                 if ($reInit && $annotation instanceof Inject)
                 {
                     continue;
@@ -228,15 +221,8 @@ class BeanProxy
      */
     public static function getInjects(string $className): array
     {
-        if (isset(self::$classInjectsCache[$className]))
-        {
-            $injects = self::$classInjectsCache[$className];
-        }
-        else
-        {
-            $injects = self::$classInjectsCache[$className] = AnnotationManager::getPropertiesAnnotations($className, BaseInjectValue::class);
-        }
         $configs = static::getConfigInjects($className);
+        $injects = BeanManager::getPropertyInjects($className);
         if ($configs && $injects)
         {
             foreach ($configs as $key => $value)
@@ -343,9 +329,11 @@ class BeanProxy
         }
         else
         {
-            $annotation = $annotations[0] ?? null;
-            if ($annotation)
+            if (isset($annotations[$propertyName]))
             {
+                $class = $annotations[$propertyName]['injectType'];
+                $annotation = new $class($annotations[$propertyName]['injectOptions']);
+
                 return $annotation->getRealValue();
             }
             else

@@ -159,6 +159,7 @@ function startServer()
             `{$cmd}`;
 
             register_shutdown_function(function () use ($name, $options) {
+                \Swoole\Runtime::enableCoroutine(false);
                 // stop server
                 $cmd = $options['stop'];
                 echo "Stoping {$name}...", \PHP_EOL;

@@ -462,7 +462,7 @@ class AnnotationParser
         {
             return;
         }
-        $annotations = AnnotationManager::getClassAnnotations($className);
+        $annotations = AnnotationManager::getClassAnnotations($className, null, false);
         if (!isset($annotations[0]))
         {
             return;
@@ -542,7 +542,7 @@ class AnnotationParser
      */
     public function doParser(string $className)
     {
-        $classAnnotations = AnnotationManager::getClassAnnotations($className);
+        $classAnnotations = AnnotationManager::getClassAnnotations($className, null, false);
         // 类
         foreach ($classAnnotations as $annotation)
         {
@@ -562,7 +562,7 @@ class AnnotationParser
             }
         }
         // 属性
-        $propertyAnnotations = AnnotationManager::getPropertiesAnnotations($className);
+        $propertyAnnotations = AnnotationManager::getPropertiesAnnotations($className, null, false);
         foreach ($propertyAnnotations as $propName => $annotations)
         {
             foreach ($annotations as $annotation)
@@ -584,7 +584,7 @@ class AnnotationParser
             }
         }
         // 方法
-        $methodAnnotations = AnnotationManager::getMethodsAnnotations($className);
+        $methodAnnotations = AnnotationManager::getMethodsAnnotations($className, null, false);
         foreach ($methodAnnotations as $methodName => $annotations)
         {
             foreach ($annotations as $annotation)
@@ -606,7 +606,7 @@ class AnnotationParser
             }
         }
         // 常量
-        $constantAnnotations = AnnotationManager::getConstantsAnnotations($className);
+        $constantAnnotations = AnnotationManager::getConstantsAnnotations($className, null, false);
         foreach ($constantAnnotations as $constName => $annotations)
         {
             foreach ($annotations as $annotation)

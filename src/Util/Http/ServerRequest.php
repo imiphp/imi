@@ -435,7 +435,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
             }
             $contentType = strtolower($this->getHeaderLine(RequestHeader::CONTENT_TYPE));
             // post
-            if ('POST' === $this->method && \in_array($contentType, [
+            if ('POST' === $this->getMethod() && \in_array($contentType, [
                 MediaType::APPLICATION_FORM_URLENCODED,
                 MediaType::MULTIPART_FORM_DATA,
             ]))

@@ -82,7 +82,7 @@ class Imi extends BaseCommand
             }
         }
 
-        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime.cache')))
+        if (!Text::isEmpty($changedFilesFile) && \Imi\Util\Imi::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime')))
         {
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
@@ -105,7 +105,7 @@ class Imi extends BaseCommand
      */
     public function clearRuntime(): void
     {
-        $file = \Imi\Util\Imi::getRuntimePath('runtime.cache');
+        $file = \Imi\Util\Imi::getRuntimePath('runtime');
         if (is_file($file))
         {
             unlink($file);

@@ -36,7 +36,7 @@ class BeanManager
      */
     public static function add(string $className, string $beanName, string $instanceType)
     {
-        self::$map[$className] = self::$map[$beanName] = [
+        self::$map[$className]['class'] = self::$map[$beanName]['class'] = [
             'beanName'     => $beanName,
             'className'    => $className,
             'instanceType' => $instanceType,
@@ -52,6 +52,28 @@ class BeanManager
      */
     public static function get(string $name): ?array
     {
-        return self::$map[$name] ?? null;
+        return self::$map[$name]['class'] ?? null;
+    }
+
+    public static function addPropertyInject(string $name, string $propertyName, string $injectType, array $injectOptions)
+    {
+        $options = [
+            'injectType'    => $injectType,
+            'injectOptions' => $injectOptions,
+        ];
+        $beanOption = self::$map[$name]['class'] ?? null;
+        if ($beanOption)
+        {
+            self::$map[$beanOption['beanName']]['property'][$propertyName] = self::$map[$beanOption['className']]['property'][$propertyName] = $options;
+        }
+        else
+        {
+            self::$map[$name]['property'][$propertyName] = $options;
+        }
+    }
+
+    public static function getPropertyInjects(string $name): array
+    {
+        return self::$map[$name]['property'] ?? [];
     }
 }

@@ -486,7 +486,7 @@ class Imi
     {
         if (null === $fileName)
         {
-            $fileName = self::getRuntimePath('runtime.cache');
+            $fileName = self::getRuntimePath('runtime');
         }
         if (!is_dir($fileName))
         {

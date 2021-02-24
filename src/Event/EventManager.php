@@ -23,6 +23,13 @@ class EventManager
     public static function setMap(array $map)
     {
         self::$map = $map;
+        foreach ($map as $eventName => $events)
+        {
+            foreach ($events as $event)
+            {
+                Event::on($eventName, $event['className'], $event['priority']);
+            }
+        }
     }
 
     /**

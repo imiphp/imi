@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Imi\Config\Annotation;
 
-use Imi\Aop\Annotation\BaseInjectValue;
-use Imi\Bean\Annotation\Parser;
 use Imi\Config;
+use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
+use Imi\Aop\Annotation\BaseInjectValue;
 
 /**
  * 从配置中读取值
  *
  * 支持在注解中为属性动态赋值
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Bean\Parser\NullParser")
  */
 class ConfigValue extends BaseInjectValue
 {
