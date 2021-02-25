@@ -8,7 +8,6 @@ use Imi\Config;
 use Imi\Enum\EnumManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\File;
 
 class BuildRuntimeListener implements IEventListener
 {
@@ -25,11 +24,9 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        ['fileName' => $fileName] = $e->getData();
-        $fileName = File::path($fileName, 'enum.cache');
+        $eventData = $e->getData();
         $data = [];
         $data['enum'] = EnumManager::getMap();
-
-        file_put_contents($fileName, serialize($data));
+        $eventData['data']['enum'] = $data;
     }
 }

@@ -8,7 +8,6 @@ use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Task\TaskManager;
-use Imi\Util\File;
 
 class BuildRuntimeListener implements IEventListener
 {
@@ -25,11 +24,9 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        ['fileName' => $fileName] = $e->getData();
-        $fileName = File::path($fileName, 'swooleTask.cache');
+        $eventData = $e->getData();
         $data = [];
         $data['task'] = TaskManager::getMap();
-
-        file_put_contents($fileName, serialize($data));
+        $eventData['data']['task'] = $data;
     }
 }

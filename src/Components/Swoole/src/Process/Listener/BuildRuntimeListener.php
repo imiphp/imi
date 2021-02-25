@@ -9,7 +9,6 @@ use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Process\ProcessPoolManager;
-use Imi\Util\File;
 
 class BuildRuntimeListener implements IEventListener
 {
@@ -26,12 +25,10 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        ['fileName' => $fileName] = $e->getData();
-        $fileName = File::path($fileName, 'swooleProcess.cache');
+        $eventData = $e->getData();
         $data = [];
         $data['process'] = ProcessManager::getMap();
         $data['processPool'] = ProcessPoolManager::getMap();
-
-        file_put_contents($fileName, serialize($data));
+        $eventData['data']['process'] = $data;
     }
 }

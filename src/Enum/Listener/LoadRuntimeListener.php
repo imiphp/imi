@@ -8,7 +8,6 @@ use Imi\Config;
 use Imi\Enum\EnumManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\File;
 
 class LoadRuntimeListener implements IEventListener
 {
@@ -26,24 +25,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
-        ['fileName' => $fileName] = $eventData;
-        $fileName = File::path($fileName, 'enum.cache');
-        if (!$fileName || !is_file($fileName))
-        {
-            $eventData['success'] = false;
-            $e->stopPropagation();
-
-            return;
-        }
-        $data = unserialize(file_get_contents($fileName));
-        if (!$data)
-        {
-            $eventData['success'] = false;
-            $e->stopPropagation();
-
-            return;
-        }
+        $data = $e->getData()['data']['enum'] ?? [];
         EnumManager::setMap($data['enum']);
     }
 }

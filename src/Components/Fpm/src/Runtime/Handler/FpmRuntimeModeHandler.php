@@ -36,5 +36,6 @@ class FpmRuntimeModeHandler implements IRuntimeModeHandler
             }
         }
         Event::on('IMI.BUILD_RUNTIME', \Imi\Fpm\Server\Http\Listener\BuildRuntimeListener::class);
+        Event::on('IMI.LOAD_RUNTIME', \Imi\Fpm\Server\Http\Listener\LoadRuntimeListener::class);
     }
 }

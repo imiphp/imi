@@ -25,8 +25,8 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        ['fileName' => $fileName] = $e->getData();
-        $fileName = File::path($fileName, 'aop.cache');
+        ['cacheName' => $cacheName] = $e->getData();
+        $fileName = File::path($cacheName, 'aop.cache');
         AopAnnotationLoader::saveMap($fileName);
     }
 }

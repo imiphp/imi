@@ -9,7 +9,6 @@ use Imi\Event\ClassEventManager;
 use Imi\Event\EventManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\File;
 
 class BuildRuntimeListener implements IEventListener
 {
@@ -26,12 +25,10 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        ['fileName' => $fileName] = $e->getData();
-        $fileName = File::path($fileName, 'event.cache');
+        $eventData = $e->getData();
         $data = [];
         $data['event'] = EventManager::getMap();
         $data['classEvent'] = ClassEventManager::getMap();
-
-        file_put_contents($fileName, serialize($data));
+        $eventData['data']['event'] = $data;
     }
 }

@@ -9,7 +9,6 @@ use Imi\Event\ClassEventManager;
 use Imi\Event\EventManager;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\File;
 
 class LoadRuntimeListener implements IEventListener
 {
@@ -27,24 +26,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $eventData = $e->getData();
-        ['fileName' => $fileName] = $eventData;
-        $fileName = File::path($fileName, 'event.cache');
-        if (!$fileName || !is_file($fileName))
-        {
-            $eventData['success'] = false;
-            $e->stopPropagation();
-
-            return;
-        }
-        $data = unserialize(file_get_contents($fileName));
-        if (!$data)
-        {
-            $eventData['success'] = false;
-            $e->stopPropagation();
-
-            return;
-        }
+        $data = $e->getData()['data']['event'] ?? [];
         EventManager::setMap($data['event']);
         ClassEventManager::setMap($data['classEvent']);
     }

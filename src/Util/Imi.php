@@ -478,39 +478,53 @@ class Imi
     /**
      * 构建运行时缓存.
      *
-     * @param string|null $fileName 如果为空则默认为runtime.cache
+     * @param string|null $cacheName 如果为空则默认为runtime
      *
      * @return void
      */
-    public static function buildRuntime(?string $fileName = null)
+    public static function buildRuntime(?string $cacheName = null)
     {
-        if (null === $fileName)
+        if (null === $cacheName)
         {
-            $fileName = self::getRuntimePath('runtime');
+            $cacheName = self::getRuntimePath('runtime');
         }
-        if (!is_dir($fileName))
+        if (!is_dir($cacheName))
         {
-            mkdir($fileName, 0777, true);
+            mkdir($cacheName, 0775, true);
         }
+        $data = [];
         Event::trigger('IMI.BUILD_RUNTIME', [
-            'fileName' => $fileName,
+            'cacheName' => $cacheName,
+            'data'      => &$data,
         ]);
+        file_put_contents(File::path($cacheName, 'runtime.cache'), serialize($data));
     }
 
     /**
      * 从文件加载运行时数据
      * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
      *
-     * @param string $fileName
+     * @param string $cacheName
      *
      * @return bool
      */
-    public static function loadRuntimeInfo(string $fileName): bool
+    public static function loadRuntimeInfo(string $cacheName): bool
     {
+        $fileName = File::path($cacheName, 'runtime.cache');
+        if (!is_file($fileName))
+        {
+            return false;
+        }
+        $data = unserialize(file_get_contents($fileName));
+        if (!$data)
+        {
+            return false;
+        }
         $success = true;
         Event::trigger('IMI.LOAD_RUNTIME', [
-            'fileName' => $fileName,
-            'success'  => &$success,
+            'cacheName' => $cacheName,
+            'data'      => $data,
+            'success'   => &$success,
         ]);
 
         return $success;

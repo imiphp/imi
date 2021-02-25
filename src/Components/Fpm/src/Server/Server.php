@@ -6,11 +6,13 @@ namespace Imi\Fpm\Server;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Event\EventParam;
 use Imi\Fpm\Http\Message\FpmRequest;
 use Imi\Fpm\Http\Message\FpmResponse;
-use Imi\Fpm\Server\Http\FpmHttpRouteInit;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
+use Imi\Server\Http\Listener\HttpRouteInit;
+use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Protocol;
 
 /**
@@ -69,7 +71,13 @@ class Server extends BaseServer
     public function start()
     {
         // 初始化路由
-        (new FpmHttpRouteInit())->init();
+        /** @var HttpRoute $route */
+        $route = $this->getBean('HttpRoute');
+        if ($route->isEmpty())
+        {
+            (new HttpRouteInit())->handle(new EventParam(''));
+        }
+
         $request = new FpmRequest();
         $response = new FpmResponse();
         RequestContext::muiltiSet([

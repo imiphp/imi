@@ -11,7 +11,6 @@ use Imi\Bean\PartialManager;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\File;
 
 class BuildRuntimeListener implements IEventListener
 {
@@ -28,8 +27,7 @@ class BuildRuntimeListener implements IEventListener
         {
             return;
         }
-        ['fileName' => $fileName] = $e->getData();
-        $fileName = File::path($fileName, 'bean.cache');
+        $eventData = $e->getData();
         $data = [];
         $parser = Annotation::getInstance()->getParser();
         if (Config::get('@app.imi.runtime.annotation_parser_data', true))
@@ -56,7 +54,6 @@ class BuildRuntimeListener implements IEventListener
         {
             $data['bean'] = BeanManager::getMap();
         }
-
-        file_put_contents($fileName, serialize($data));
+        $eventData['data']['bean'] = $data;
     }
 }

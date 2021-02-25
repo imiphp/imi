@@ -45,6 +45,7 @@ class FpmApp extends BaseApp
         {
             File::createDir($dir);
         }
+        Config::addConfig('@server.main', Config::get('@app'));
     }
 
     /**
@@ -105,11 +106,15 @@ class FpmApp extends BaseApp
      */
     public function run(): void
     {
-        Config::addConfig('@server.main', Config::get('@app'));
-        ServerManager::createServer('main', [
-            'type'      => Type::HTTP,
-            'namespace' => $this->namespace,
-        ])->start();
+        $server = ServerManager::getServer('main');
+        if (null === $server)
+        {
+            $server = ServerManager::createServer('main', [
+                'type'      => Type::HTTP,
+                'namespace' => $this->namespace,
+            ]);
+        }
+        $server->start();
     }
 
     /**
