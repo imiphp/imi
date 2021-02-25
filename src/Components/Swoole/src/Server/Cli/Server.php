@@ -27,7 +27,7 @@ class Server extends BaseCommand
     /**
      * 开启服务
      *
-     * @CommandAction(name="start", co=false)
+     * @CommandAction(name="start")
      * @Option(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
      * @Option(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * @Option(name="daemon", shortcut="d", type=ArgType::STRING, required=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件")

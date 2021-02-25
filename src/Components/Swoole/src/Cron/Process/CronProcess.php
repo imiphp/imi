@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cron\Process;
+namespace Imi\Swoole\Cron\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\Cron\CronManager;

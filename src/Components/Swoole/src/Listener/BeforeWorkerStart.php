@@ -9,6 +9,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Util\Imi;
+use Imi\Util\Imi as ImiUtil;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 
@@ -28,6 +29,8 @@ class BeforeWorkerStart implements IWorkerStartEventListener
     {
         // 随机数播种
         mt_srand();
+
+        ImiUtil::loadRuntimeInfo(ImiUtil::getRuntimePath('runtime'));
 
         if ($e->server->getSwooleServer()->taskworker)
         {

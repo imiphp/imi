@@ -6,9 +6,12 @@ namespace Imi\Swoole;
 
 use Imi\App;
 use Imi\Bean\Annotation;
+use Imi\Bean\BeanManager;
+use Imi\Bean\Scanner;
 use Imi\Cache\CacheManager;
 use Imi\Cli\CliApp;
 use Imi\Config;
+use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Lock\Lock;
 use Imi\Main\Helper;
@@ -21,6 +24,7 @@ use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SwooleApp extends CliApp
@@ -96,6 +100,70 @@ class SwooleApp extends CliApp
     }
 
     /**
+     * 加载运行时.
+     *
+     * @return int
+     */
+    public function loadRuntime(): int
+    {
+        $this->initRuntime();
+        $input = new ArgvInput();
+        $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
+        if ($isServerStart)
+        {
+            $result = false;
+        }
+        else
+        {
+            // 尝试加载项目运行时
+            $appRuntimeFile = $input->getParameterOption('--app-runtime');
+            if (false !== $appRuntimeFile && Imi::loadRuntimeInfo($appRuntimeFile))
+            {
+                return LoadRuntimeResult::ALL;
+            }
+        }
+        // 尝试加载 imi 框架运行时
+        if ($file = $input->getParameterOption('--imi-runtime'))
+        {
+            // 尝试加载指定 runtime
+            $result = Imi::loadRuntimeInfo($file);
+        }
+        else
+        {
+            // 尝试加载默认 runtime
+            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'));
+        }
+        if ($result)
+        {
+            return LoadRuntimeResult::IMI_LOADED;
+        }
+        else
+        {
+            // 不使用缓存时去扫描
+            Scanner::scanImi();
+            if ($isServerStart)
+            {
+                $imiRuntime = Imi::getRuntimePath('imi-runtime-bak');
+                Imi::buildRuntime($imiRuntime);
+                // 执行命令行生成缓存
+                $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
+                    'imi-runtime' => $imiRuntime,
+                ]);
+                do
+                {
+                    passthru(\Imi\cmd($cmd), $code);
+                    $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+                    sleep(1);
+                } while (0 !== $code);
+
+                return LoadRuntimeResult::ALL;
+            }
+
+            return LoadRuntimeResult::IMI_LOADED;
+        }
+    }
+
+    /**
      * 加载入口.
      *
      * @return void
@@ -128,7 +196,10 @@ class SwooleApp extends CliApp
             AtomicManager::setNames(Config::get($alias . '.atomics', []));
         }
         AtomicManager::init();
-        Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
+        if (BeanManager::get('SwooleWorkerHandler'))
+        {
+            Worker::setWorkerHandler(App::getBean('SwooleWorkerHandler'));
+        }
         $initCallback = function () {
             PoolManager::init();
             CacheManager::init();

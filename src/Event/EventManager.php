@@ -25,9 +25,9 @@ class EventManager
         self::$map = $map;
         foreach ($map as $eventName => $events)
         {
-            foreach ($events as $event)
+            foreach ($events as $listenerClass => $event)
             {
-                Event::on($eventName, $event['className'], $event['priority']);
+                Event::on($eventName, $listenerClass, $event['priority']);
             }
         }
     }
@@ -43,8 +43,7 @@ class EventManager
      */
     public static function add(string $eventName, string $listenerClass, int $priority)
     {
-        self::$map[$eventName][] = [
-            'className' => $listenerClass,
+        self::$map[$eventName][$listenerClass] = [
             'priority'  => $priority,
         ];
     }

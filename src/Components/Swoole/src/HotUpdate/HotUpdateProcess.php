@@ -143,7 +143,7 @@ class HotUpdateProcess extends BaseProcess
             // 检测间隔延时
             if ($this->timespan > 0)
             {
-                $time = $this->timespan - (microtime(true) - $time);
+                $time = (int) ($this->timespan - (microtime(true) - $time));
                 if ($time <= 0)
                 {
                     $time = 10000;
@@ -228,8 +228,7 @@ class HotUpdateProcess extends BaseProcess
         $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
             'changedFilesFile'  => $this->changedFilesFile,
             'confirm'           => true,
-            'no-app-cache'      => true,
-            'imi-runtime'       => Imi::getRuntimePath('imi-runtime-bak'),
+            'app-runtime'       => Imi::getRuntimePath('runtime'),
         ]);
         static $descriptorspec = [
             ['pipe', 'r'],  // 标准输入，子进程从此管道中读取数据

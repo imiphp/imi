@@ -37,8 +37,7 @@ class ClassEventManager
      */
     public static function add(string $className, string $eventName, string $listenerClass, int $priority)
     {
-        self::$map[$className][$eventName][] = [
-            'className' => $listenerClass,
+        self::$map[$className][$eventName][$listenerClass] = [
             'priority'  => $priority,
         ];
     }
@@ -58,7 +57,9 @@ class ClassEventManager
         {
             if (isset($option[$eventName]) && $object instanceof $className)
             {
-                $options[] = $option[$eventName];
+                $item = $option[$eventName];
+                $item['className'] = $className;
+                $options[] = $item;
             }
         }
 

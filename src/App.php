@@ -47,13 +47,6 @@ class App
     private static bool $isDebug = false;
 
     /**
-     * 运行时数据.
-     *
-     * @var RuntimeInfo
-     */
-    private static ?RuntimeInfo $runtimeInfo = null;
-
-    /**
      * 是否协程服务器模式.
      *
      * @var bool
@@ -243,21 +236,6 @@ class App
     public static function isInited(): bool
     {
         return static::$isInited;
-    }
-
-    /**
-     * 获取运行时数据.
-     *
-     * @return RuntimeInfo
-     */
-    public static function getRuntimeInfo(): RuntimeInfo
-    {
-        if (null === static::$runtimeInfo)
-        {
-            return static::$runtimeInfo = new RuntimeInfo();
-        }
-
-        return static::$runtimeInfo;
     }
 
     /**

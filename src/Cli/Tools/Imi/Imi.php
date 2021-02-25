@@ -49,10 +49,9 @@ class Imi extends BaseCommand
      */
     public function clearImiRuntime(): void
     {
-        $file = ImiUtil::getRuntimePath('imi-runtime.cache');
-        if (is_file($file))
+        $file = ImiUtil::getRuntimePath('imi-runtime');
+        if (File::deleteDir($file))
         {
-            unlink($file);
             $this->output->writeln('<info>Clear imi runtime complete</info>');
         }
         else
@@ -66,7 +65,7 @@ class Imi extends BaseCommand
      *
      * @PoolClean
      *
-     * @CommandAction(name="buildRuntime", co=false)
+     * @CommandAction(name="buildRuntime")
      *
      * @Option(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * @Option(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
@@ -94,7 +93,7 @@ class Imi extends BaseCommand
             $files = explode("\n", file_get_contents($changedFilesFile));
             ImiUtil::incrUpdateRuntime($files);
         }
-        else
+        elseif ($confirm)
         {
             Scanner::scanVendor();
             Scanner::scanApp();

@@ -106,11 +106,11 @@ class CliApp extends BaseApp
         );
         $definition->addOption(
             new InputOption(
-                'no-app-cache',
+                'app-runtime',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Disable app runtime cache',
-                false,
+                'Set app runtime file',
+                null,
             )
         );
     }
@@ -124,21 +124,11 @@ class CliApp extends BaseApp
     {
         $this->initRuntime();
         $input = new ArgvInput();
-        $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
-        if ($isServerStart)
+        // 尝试加载项目运行时
+        $appRuntimeFile = $input->getParameterOption('--app-runtime');
+        if (false !== $appRuntimeFile && Imi::loadRuntimeInfo($appRuntimeFile))
         {
-            $result = false;
-        }
-        else
-        {
-            // 尝试加载项目运行时
-            $appRuntimeFile = $input->getParameterOption('--app-runtime');
-            if (false !== $appRuntimeFile && Imi::loadRuntimeInfo($appRuntimeFile))
-            {
-                $this->isAppRuntime = true;
-
-                return LoadRuntimeResult::ALL;
-            }
+            return LoadRuntimeResult::ALL;
         }
         // 尝试加载 imi 框架运行时
         if ($file = $input->getParameterOption('--imi-runtime'))
@@ -155,11 +145,6 @@ class CliApp extends BaseApp
         {
             // 不使用缓存时去扫描
             Scanner::scanImi();
-            if ($isServerStart)
-            {
-                Imi::buildRuntime(Imi::getRuntimePath('imi-runtime-bak'));
-                $this->isAppRuntime = true;
-            }
 
             return LoadRuntimeResult::IMI_LOADED;
         }

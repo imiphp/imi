@@ -542,12 +542,6 @@ class Imi
         $parser = Annotation::getInstance()->getParser();
         $parser->parseIncr($files);
 
-        foreach (App::getRuntimeInfo()->parsersData as $parserClass => $data)
-        {
-            $parserObject = $parserClass::getInstance();
-            $parserObject->setData([]);
-        }
-
         foreach ($parser->getClasses() as $className)
         {
             $parser->execParse($className);

@@ -11,6 +11,8 @@ class CliManager
 {
     private static array $map = [];
 
+    private static array $commandActionMap = [];
+
     private function __construct()
     {
     }
@@ -23,6 +25,10 @@ class CliManager
     public static function setMap(array $map)
     {
         self::$map = $map;
+        foreach ($map['commands'] ?? [] as $item)
+        {
+            self::$commandActionMap[$item['commandName']][$item['actionName']] = true;
+        }
     }
 
     /**
@@ -38,6 +44,10 @@ class CliManager
      */
     public static function addCommand(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false)
     {
+        if (isset(self::$commandActionMap[$commandName][$actionName]))
+        {
+            return;
+        }
         self::$map['commands'][] = [
             'commandName'    => $commandName,
             'actionName'     => $actionName,
@@ -45,6 +55,7 @@ class CliManager
             'methodName'     => $methodName,
             'dynamicOptions' => $dynamicOptions,
         ];
+        self::$commandActionMap[$commandName][$actionName] = true;
     }
 
     /**
