@@ -53,7 +53,6 @@ class AnnotationParser
         AnnotationRegistry::registerLoader(function (string $class): bool {
             return class_exists($class) || interface_exists($class, false);
         });
-        $this->reader = new AnnotationReader();
     }
 
     public function parse(string $className)
@@ -98,7 +97,7 @@ class AnnotationParser
      */
     public function parseClass(\ReflectionClass $ref)
     {
-        $annotations = $this->reader->getClassAnnotations($ref);
+        $annotations = $this->getReader()->getClassAnnotations($ref);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -197,7 +196,7 @@ class AnnotationParser
     {
         $className = $ref->getName();
         $methodName = $method->getName();
-        $annotations = $this->reader->getMethodAnnotations($method);
+        $annotations = $this->getReader()->getMethodAnnotations($method);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -288,7 +287,7 @@ class AnnotationParser
      */
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop)
     {
-        $annotations = $this->reader->getPropertyAnnotations($prop);
+        $annotations = $this->getReader()->getPropertyAnnotations($prop);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -381,7 +380,7 @@ class AnnotationParser
      */
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const)
     {
-        $annotations = $this->reader->getConstantAnnotations($const);
+        $annotations = $this->getReader()->getConstantAnnotations($const);
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -742,5 +741,20 @@ class AnnotationParser
     {
         $this->files = $data[0];
         $this->classes = $data[1];
+    }
+
+    /**
+     * Get 注解读取器.
+     *
+     * @return \Yurun\Doctrine\Common\Annotations\AnnotationReader
+     */
+    private function getReader(): AnnotationReader
+    {
+        if (!isset($this->reader))
+        {
+            $this->reader = new AnnotationReader();
+        }
+
+        return $this->reader;
     }
 }

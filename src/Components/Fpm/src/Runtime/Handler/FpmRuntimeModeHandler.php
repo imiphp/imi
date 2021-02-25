@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Config;
 use Imi\Core\Runtime\Contract\IRuntimeModeHandler;
+use Imi\Event\Event;
 
 /**
  * @Bean("FpmRuntimeModeHandler")
@@ -34,5 +35,6 @@ class FpmRuntimeModeHandler implements IRuntimeModeHandler
                 }
             }
         }
+        Event::on('IMI.BUILD_RUNTIME', \Imi\Fpm\Server\Http\Listener\BuildRuntimeListener::class);
     }
 }
