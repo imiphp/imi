@@ -66,12 +66,26 @@ abstract class Base extends LazyArrayObject
         return $value;
     }
 
-    public function __wakeup()
+    public function __serialize(): array
+    {
+        return [
+            $this->defaultFieldName,
+            $this->__alias,
+            $this->toArray(),
+        ];
+    }
+
+    public function __unserialize(array $data): void
     {
         $refClass = ReflectionContainer::getClassReflection(static::class);
         foreach ($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
         {
             unset($this->{$property->name});
+        }
+        [$this->defaultFieldName, $this->__alias, $dataMap] = $data;
+        foreach ($dataMap as $k => $v)
+        {
+            $this[$k] = $v;
         }
     }
 
