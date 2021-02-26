@@ -41,11 +41,13 @@ class WorkermanApp extends CliApp
     /**
      * 加载配置.
      *
+     * @param bool $initDotEnv
+     *
      * @return void
      */
-    public function loadConfig(): void
+    public function loadConfig(bool $initDotEnv = true): void
     {
-        parent::loadConfig();
+        parent::loadConfig(false);
         foreach (Config::get('@app.workermanServer', []) as $name => $config)
         {
             // 加载服务器配置文件
@@ -63,6 +65,10 @@ class WorkermanApp extends CliApp
         if (null === Config::get('@app.imi.Timer'))
         {
             Config::set('@app.imi.Timer', WorkermanTimer::class);
+        }
+        if ($initDotEnv)
+        {
+            $this->loadDotEnv();
         }
     }
 

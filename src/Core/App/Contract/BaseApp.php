@@ -7,6 +7,7 @@ namespace Imi\Core\App\Contract;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Config;
+use Imi\Config\Dotenv\DotEnv;
 use Imi\Core\Runtime\Handler\DefaultRuntimeModeHandler;
 use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
@@ -37,9 +38,11 @@ abstract class BaseApp implements IApp
     /**
      * 加载配置.
      *
+     * @param bool $initDotEnv
+     *
      * @return void
      */
-    public function loadConfig(): void
+    public function loadConfig(bool $initDotEnv = true): void
     {
         // 加载框架配置
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
@@ -48,7 +51,7 @@ abstract class BaseApp implements IApp
         if ($appPath)
         {
             // 加载项目目录下的 env
-            \Dotenv\Dotenv::createImmutable([$appPath])->safeLoad();
+            DotEnv::load([$appPath]);
             $fileName = $appPath . '/config/config.php';
             if (is_file($fileName))
             {
@@ -60,7 +63,7 @@ abstract class BaseApp implements IApp
             $paths = Imi::getNamespacePaths($this->namespace);
 
             // 加载项目目录下的 env
-            \Dotenv\Dotenv::createImmutable($paths)->safeLoad();
+            DotEnv::load($paths);
 
             // 加载项目配置文件
             foreach ($paths as $path)
@@ -75,6 +78,10 @@ abstract class BaseApp implements IApp
         }
 
         App::setDebug(Config::get('@app.debug', true));
+        if ($initDotEnv)
+        {
+            $this->loadDotEnv();
+        }
     }
 
     /**
@@ -90,6 +97,15 @@ abstract class BaseApp implements IApp
         }
         Helper::getMain($this->namespace, 'app');
         Event::trigger('IMI.INIT_MAIN');
+    }
+
+    protected function loadDotEnv(): void
+    {
+        // 加载 .env 配置
+        foreach ($_ENV as $name => $value)
+        {
+            Config::set($name, $value);
+        }
     }
 
     /**

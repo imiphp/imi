@@ -35,17 +35,23 @@ class FpmApp extends BaseApp
     /**
      * 加载配置.
      *
+     * @param bool $initDotEnv
+     *
      * @return void
      */
-    public function loadConfig(): void
+    public function loadConfig(bool $initDotEnv = true): void
     {
-        parent::loadConfig();
+        parent::loadConfig(false);
         $dir = Imi::getRuntimePath('classes');
         if (!is_dir($dir))
         {
             File::createDir($dir);
         }
         Config::addConfig('@server.main', Config::get('@app'));
+        if($initDotEnv)
+        {
+            $this->loadDotEnv();
+        }
     }
 
     /**

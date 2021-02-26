@@ -91,7 +91,6 @@ return [
         ],
     ],
     'imi-framework'   => 'very six',
-    'yurun'           => getenv('APP_YURUN') ?: '',
 
     // 连接池配置
     'pools'    => [
