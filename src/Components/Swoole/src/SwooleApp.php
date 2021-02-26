@@ -73,11 +73,12 @@ class SwooleApp extends CliApp
         {
             throw $e;
         }
-        catch (\Throwable $th)
+        catch (\Exception $th)
         {
             /** @var \Imi\Log\ErrorLog $errorLog */
             $errorLog = App::getBean('ErrorLog');
             $errorLog->onException($th);
+            exit(255);
         }
     }
 

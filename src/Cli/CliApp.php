@@ -195,11 +195,12 @@ class CliApp extends BaseApp
         {
             $this->cli->run(new ImiArgvInput());
         }
-        catch (\Throwable $th)
+        catch (\Exception $th)
         {
             /** @var \Imi\Log\ErrorLog $errorLog */
             $errorLog = App::getBean('ErrorLog');
             $errorLog->onException($th);
+            exit(255);
         }
     }
 
