@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cron\Task;
+namespace Imi\Swoole\Cron\Task;
 
 use Imi\App;
 use Imi\Cron\Util\CronUtil;

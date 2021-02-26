@@ -22,13 +22,15 @@ class Console extends Base
     /**
      * 真正的保存操作实现.
      *
+     * @param array $records
+     *
      * @return void
      */
-    protected function __save()
+    protected function __save(array $records)
     {
         $output = new ConsoleOutput();
         $length = $this->length;
-        foreach ($this->records as $record)
+        foreach ($records as $record)
         {
             $content = $this->getLogString($record);
             if ($length > 0)

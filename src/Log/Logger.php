@@ -6,7 +6,6 @@ namespace Imi\Log;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
 use Imi\Util\Traits\TBeanRealClass;
 use Psr\Log\AbstractLogger;

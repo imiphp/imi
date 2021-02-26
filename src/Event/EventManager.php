@@ -22,6 +22,13 @@ class EventManager
 
     public static function setMap(array $map)
     {
+        foreach (self::$map as $eventName => $events)
+        {
+            foreach ($events as $listenerClass => $event)
+            {
+                Event::off($eventName, $listenerClass);
+            }
+        }
         self::$map = $map;
         foreach ($map as $eventName => $events)
         {

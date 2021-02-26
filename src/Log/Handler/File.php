@@ -59,12 +59,14 @@ class File extends Base
     /**
      * 真正的保存操作实现.
      *
+     * @param array $records
+     *
      * @return void
      */
-    protected function __save()
+    protected function __save(array $records)
     {
         $this->parseDate();
-        foreach ($this->records as $record)
+        foreach ($records as $record)
         {
             file_put_contents($this->getFileName(), $this->getLogString($record) . \PHP_EOL, \FILE_APPEND | \LOCK_NB);
         }

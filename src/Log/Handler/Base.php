@@ -160,16 +160,19 @@ abstract class Base
      */
     public function save()
     {
-        $this->__save();
+        $records = $this->records;
         $this->records = [];
+        $this->__save($records);
     }
 
     /**
      * 真正的保存操作实现.
      *
+     * @param array $records
+     *
      * @return void
      */
-    abstract protected function __save();
+    abstract protected function __save(array $records);
 
     /**
      * 获取日期时间.
