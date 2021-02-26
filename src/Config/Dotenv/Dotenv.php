@@ -2,38 +2,57 @@
 
 namespace Imi\Config\Dotenv;
 
-use Dotenv\Dotenv as DotenvDotenv;
-use Imi\Util\File;
+use Dotenv\Loader\Loader;
+use Dotenv\Repository\RepositoryInterface;
+use Dotenv\Store\StoreBuilder;
 
-class Dotenv extends DotenvDotenv
+class Dotenv
 {
-    /**
-     * 路径数组.
-     *
-     * @var string[]
-     */
-    private $paths;
-
-    public function __construct($paths)
+    private function __construct()
     {
-        parent::__construct('');
-        $this->paths = $paths;
     }
 
-    public function init()
+    public static function load(array $paths)
     {
-        foreach ($_ENV as $name => $value)
+        $repository = \Dotenv\Repository\RepositoryBuilder::createWithNoAdapters()
+            ->addAdapter(\Dotenv\Repository\Adapter\EnvConstAdapter::class)
+            ->addWriter(\Dotenv\Repository\Adapter\PutenvAdapter::class)
+            ->immutable()
+            ->make();
+        $dotenv = self::create($repository, $paths);
+        $dotenv->safeLoad();
+    }
+
+    /**
+     * Create a new dotenv instance.
+     *
+     * @param \Dotenv\Repository\RepositoryInterface $repository
+     * @param string|string[]                        $paths
+     * @param string|string[]|null                   $names
+     * @param bool                                   $shortCircuit
+     * @param string|null                            $fileEncoding
+     *
+     * @return \Dotenv\Dotenv
+     */
+    public static function create(RepositoryInterface $repository, $paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null): \Dotenv\Dotenv
+    {
+        $builder = null === $names ? StoreBuilder::createWithDefaultName() : StoreBuilder::createWithNoNames();
+
+        foreach ((array) $paths as $path)
         {
-            $this->loader->clearEnvironmentVariable($name);
+            $builder = $builder->addPath($path);
         }
-        foreach ($this->paths as $path)
+
+        foreach ((array) $names as $name)
         {
-            $filePath = File::path($path, '.env');
-            if (is_file($filePath))
-            {
-                $obj = new DotenvDotenv($path);
-                $obj->overload();
-            }
+            $builder = $builder->addName($name);
         }
+
+        if ($shortCircuit)
+        {
+            $builder = $builder->shortCircuit();
+        }
+
+        return new \Dotenv\Dotenv($builder->fileEncoding($fileEncoding)->make(), new Parser(), new Loader(), $repository);
     }
 }

@@ -159,8 +159,7 @@ abstract class App
         static::$runtimeInfo = new RuntimeInfo();
         static::$container = new Container();
         // .env
-        $dotenv = new Dotenv(Imi::getNamespacePaths(static::$namespace));
-        $dotenv->init();
+        Dotenv::load(Imi::getNamespacePaths(static::$namespace));
         // 初始化Main类
         static::initMains();
         // 运行时目录写权限检测
