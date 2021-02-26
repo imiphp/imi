@@ -35,7 +35,7 @@ class PartialManager
      */
     public static function add(string $partialClass, string $targetClass)
     {
-        if (!\in_array($partialClass, self::$map[$targetClass]))
+        if (!isset(self::$map[$targetClass]) || !\in_array($partialClass, self::$map[$targetClass]))
         {
             self::$map[$targetClass][] = $partialClass;
         }

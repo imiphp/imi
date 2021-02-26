@@ -157,11 +157,11 @@ trait TEvent
             }
             $eventsMap = &$this->events[$name];
             $queue = $this->rebuildEventQueue($name);
-            foreach ($options as $option)
+            foreach ($options as $className => $option)
             {
                 // 数据映射
-                $eventsMap[] = $item = new EventItem(function ($param) use ($option) {
-                    $obj = BeanFactory::newInstance($option['className']);
+                $eventsMap[] = $item = new EventItem(function ($param) use ($className) {
+                    $obj = BeanFactory::newInstance($className);
                     $obj->handle($param);
                 }, $option['priority']);
                 $queue->insert($item, $option['priority']);

@@ -57,9 +57,7 @@ class ClassEventManager
         {
             if (isset($option[$eventName]) && $object instanceof $className)
             {
-                $item = $option[$eventName];
-                $item['className'] = $className;
-                $options[] = $item;
+                $options[] = $option[$eventName];
             }
         }
 
