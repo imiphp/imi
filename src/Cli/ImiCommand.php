@@ -179,21 +179,11 @@ class ImiCommand extends Command
      */
     protected function executeCommand(): int
     {
-        try
-        {
-            Event::trigger('IMI.COMMAND.BEFORE');
-            $instance = new $this->className($this, $this->input, $this->output);
-            $args = $this->getCallToolArgs();
-            $instance->{$this->methodName}(...$args);
-            Event::trigger('IMI.COMMAND.AFTER');
-        }
-        catch (\Throwable $th)
-        {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($th);
-            throw $th;
-        }
+        Event::trigger('IMI.COMMAND.BEFORE');
+        $instance = new $this->className($this, $this->input, $this->output);
+        $args = $this->getCallToolArgs();
+        $instance->{$this->methodName}(...$args);
+        Event::trigger('IMI.COMMAND.AFTER');
 
         return Command::SUCCESS;
     }

@@ -10,6 +10,7 @@ use Imi\Bean\BeanManager;
 use Imi\Bean\Scanner;
 use Imi\Cache\CacheManager;
 use Imi\Cli\CliApp;
+use Imi\Cli\ImiArgvInput;
 use Imi\Config;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
@@ -55,6 +56,29 @@ class SwooleApp extends CliApp
     public function getType(): string
     {
         return 'swoole';
+    }
+
+    /**
+     * 运行应用.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        try
+        {
+            $this->cli->run(new ImiArgvInput());
+        }
+        catch (\Swoole\ExitException $e)
+        {
+            throw $e;
+        }
+        catch (\Throwable $th)
+        {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($th);
+        }
     }
 
     /**

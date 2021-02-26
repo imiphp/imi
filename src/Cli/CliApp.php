@@ -191,7 +191,16 @@ class CliApp extends BaseApp
      */
     public function run(): void
     {
-        $this->cli->run(new ImiArgvInput());
+        try
+        {
+            $this->cli->run(new ImiArgvInput());
+        }
+        catch (\Throwable $th)
+        {
+            /** @var \Imi\Log\ErrorLog $errorLog */
+            $errorLog = App::getBean('ErrorLog');
+            $errorLog->onException($th);
+        }
     }
 
     /**
