@@ -7,7 +7,7 @@ namespace Imi\Core\App\Contract;
 use Imi\App;
 use Imi\AppContexts;
 use Imi\Config;
-use Imi\Config\Dotenv\DotEnv;
+use Imi\Config\DotEnv\DotEnv;
 use Imi\Core\Runtime\Handler\DefaultRuntimeModeHandler;
 use Imi\Core\Runtime\Runtime;
 use Imi\Event\Event;
