@@ -13,7 +13,6 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Process\ProcessAppContexts;
-use Swoole\Process;
 
 /**
  * 框架里杂七杂八的各种工具方法.
@@ -545,52 +544,6 @@ class Imi
         foreach ($parser->getClasses() as $className)
         {
             $parser->execParse($className);
-        }
-    }
-
-    /**
-     * 停止服务器.
-     *
-     * @return void
-     */
-    public static function stopServer()
-    {
-        $fileName = self::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
-        if (!is_file($fileName))
-        {
-            throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
-        }
-        $pid = json_decode(file_get_contents($fileName), true);
-        if ($pid > 0)
-        {
-            Process::kill($pid['masterPID']);
-        }
-        else
-        {
-            throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
-        }
-    }
-
-    /**
-     * 重新加载服务器.
-     *
-     * @return void
-     */
-    public static function reloadServer()
-    {
-        $fileName = self::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
-        if (!is_file($fileName))
-        {
-            throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
-        }
-        $pid = json_decode(file_get_contents($fileName), true);
-        if ($pid > 0)
-        {
-            Process::kill($pid['masterPID'], \SIGUSR1);
-        }
-        else
-        {
-            throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
         }
     }
 

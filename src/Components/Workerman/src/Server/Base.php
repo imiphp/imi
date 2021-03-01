@@ -9,6 +9,7 @@ use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\Group\TServerGroup;
+use Imi\Util\Imi;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Worker;
@@ -165,6 +166,11 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         };
 
         $this->worker->onWorkerStart = function (Worker $worker) {
+            // 随机数播种
+            mt_srand();
+
+            Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+
             RequestContext::muiltiSet([
                 'server' => $this,
                 'worker' => $worker,

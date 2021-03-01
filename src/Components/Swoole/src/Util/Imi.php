@@ -6,6 +6,7 @@ namespace Imi\Swoole\Util;
 
 use Imi\App;
 use Imi\Config;
+use Imi\Util\Imi as UtilImi;
 use Imi\Worker;
 
 class Imi
@@ -93,5 +94,51 @@ class Imi
         }
 
         return $result;
+    }
+
+    /**
+     * 停止服务器.
+     *
+     * @return void
+     */
+    public static function stopServer()
+    {
+        $fileName = UtilImi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
+        if (!is_file($fileName))
+        {
+            throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
+        }
+        $pid = json_decode(file_get_contents($fileName), true);
+        if ($pid > 0)
+        {
+            \Swoole\Process::kill($pid['masterPID']);
+        }
+        else
+        {
+            throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
+        }
+    }
+
+    /**
+     * 重新加载服务器.
+     *
+     * @return void
+     */
+    public static function reloadServer()
+    {
+        $fileName = UtilImi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
+        if (!is_file($fileName))
+        {
+            throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
+        }
+        $pid = json_decode(file_get_contents($fileName), true);
+        if ($pid > 0)
+        {
+            \Swoole\Process::kill($pid['masterPID'], \SIGUSR1);
+        }
+        else
+        {
+            throw new \RuntimeException(sprintf('Pid does not exists in file %s', $fileName));
+        }
     }
 }

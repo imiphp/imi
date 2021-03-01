@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Process;
+namespace Imi\Process;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\ArrayUtil;

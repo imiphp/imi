@@ -73,7 +73,7 @@ class Imi extends BaseCommand
      *
      * @return void
      */
-    public function buildRuntime(?string $changedFilesFile, bool $confirm, ?string $runtimeMode): void
+    public function buildRuntime(?string $changedFilesFile, bool $confirm, ?string $runtimeMode = null): void
     {
         if (null !== $runtimeMode)
         {

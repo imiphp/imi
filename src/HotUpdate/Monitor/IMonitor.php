@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\HotUpdate\Monitor;
+namespace Imi\HotUpdate\Monitor;
 
 interface IMonitor
 {

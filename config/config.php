@@ -24,6 +24,7 @@ return [
         'Imi\Facade',
         'Imi\Cron',
         'Imi\RequestContextProxy',
+        'Imi\Process',
     ],
     'ignoreNamespace'   => [
         'Imi\functions',

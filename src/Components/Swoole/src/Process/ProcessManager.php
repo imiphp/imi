@@ -104,7 +104,7 @@ class ProcessManager
         $processOption = self::get($name);
         if (null === $processOption)
         {
-            return null;
+            throw new \RuntimeException(sprintf('Process %s not found'));
         }
         if ($processOption['options']['unique'] && static::isRunning($name))
         {

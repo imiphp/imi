@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Process;
+namespace Imi\Workerman\Process;
 
-use Imi\Swoole\Process\Contract\IPoolProcess;
+use Imi\Workerman\Process\Contract\IProcess;
 
-abstract class BasePoolProcess implements IPoolProcess
+abstract class BaseProcess implements IProcess
 {
     /**
      * 数据.

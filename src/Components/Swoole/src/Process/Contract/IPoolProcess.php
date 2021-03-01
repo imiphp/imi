@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Process;
+namespace Imi\Swoole\Process\Contract;
 
 /**
  * 进程池进程实现接口.

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Imi\App;
+use Imi\Event\Event;
 use Imi\Util\File;
 use Symfony\Component\Console\Input\ArgvInput;
 
@@ -32,6 +33,10 @@ return function () {
             require $fileName;
         })();
     }
+
+    // 事件监听
+    Event::on('IMI.LOAD_RUNTIME', \Imi\Workerman\Process\Listener\LoadRuntimeListener::class, 19940000);
+    Event::on('IMI.BUILD_RUNTIME', \Imi\Workerman\Process\Listener\BuildRuntimeListener::class, 19940000);
 
     App::run((function () use ($path): string {
         $input = new ArgvInput();

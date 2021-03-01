@@ -17,6 +17,7 @@ use Imi\Event\Event;
 use Imi\Pool\PoolManager;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Swoole\Util\Imi as SwooleImiUtil;
 use Imi\Util\Imi;
 
 /**
@@ -96,7 +97,7 @@ class Server extends BaseCommand
      */
     public function stop(): void
     {
-        Imi::stopServer();
+        SwooleImiUtil::stopServer();
     }
 
     /**
@@ -120,7 +121,7 @@ class Server extends BaseCommand
             $useTime = microtime(true) - $time;
             $this->output->writeln("<info>Runtime build complete! {$useTime}s</info>");
         }
-        $result = Imi::reloadServer();
+        $result = SwooleImiUtil::reloadServer();
         $this->output->writeln($result['cmd']);
     }
 

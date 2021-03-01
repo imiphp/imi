@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\HotUpdate;
+namespace Imi\Workerman\HotUpdate;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
@@ -10,16 +10,15 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
 use Imi\Log\Log;
-use Imi\Pool\Annotation\PoolClean;
-use Imi\Swoole\Process\Annotation\Process;
-use Imi\Swoole\Process\BaseProcess;
-use Imi\Swoole\Util\Imi as SwooleImiUtil;
+use Imi\Timer\Timer;
 use Imi\Util\Imi;
-use Swoole\Timer;
+use Imi\Workerman\Process\Annotation\Process;
+use Imi\Workerman\Process\BaseProcess;
+use Workerman\Worker;
 
 /**
  * @Bean("hotUpdate")
- * @Process(name="hotUpdate", unique=true)
+ * @Process(name="hotUpdate")
  */
 class HotUpdateProcess extends BaseProcess
 {
@@ -114,14 +113,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private int $buildRuntimeTimerId = 0;
 
-    /**
-     * @PoolClean
-     *
-     * @param \Swoole\Process $process
-     *
-     * @return void
-     */
-    public function run(\Swoole\Process $process)
+    public function run(Worker $worker)
     {
         if (!$this->status)
         {
@@ -195,7 +187,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private function stopBuildRuntimeTimer()
     {
-        Timer::clear($this->buildRuntimeTimerId);
+        Timer::del($this->buildRuntimeTimerId);
     }
 
     /**
@@ -302,7 +294,7 @@ class HotUpdateProcess extends BaseProcess
             Log::info('Build time use: ' . (microtime(true) - $this->beginTime) . ' sec');
             // 执行重新加载
             Log::info('Reloading server...');
-            SwooleImiUtil::reloadServer();
+            posix_kill(posix_getppid(), \SIGUSR1);
         }
         catch (\Throwable $th)
         {

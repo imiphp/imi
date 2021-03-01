@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Process;
 
+use Imi\Swoole\Process\Contract\IProcess;
+
 abstract class BaseProcess implements IProcess
 {
     /**

@@ -11,7 +11,7 @@ use Imi\Cron\Annotation\Cron;
 use Imi\Cron\Consts\CronTaskType;
 use Imi\Cron\Contract\ICronTask;
 use Imi\Swoole\Process\Annotation\Process;
-use Imi\Swoole\Process\IProcess;
+use Imi\Swoole\Process\Contract\IProcess;
 use Imi\Swoole\Process\ProcessManager;
 use Imi\Swoole\Task\Annotation\Task;
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
