@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class AutoDelete extends Base
 {
     /**
@@ -29,4 +30,9 @@ class AutoDelete extends Base
      * @var bool
      */
     public bool $status = true;
+
+    public function __construct(?array $__data = null, bool $status = true)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

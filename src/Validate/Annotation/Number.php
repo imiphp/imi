@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Number extends Condition
 {
     /**
@@ -55,4 +56,14 @@ class Number extends Condition
         '{max}',
         '{accuracy}',
     ];
+
+    public function __construct(?array $__data = null, ?int $accuracy = null, array $args = [
+        '{:value}',
+        '{min}',
+        '{max}',
+        '{accuracy}',
+    ])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

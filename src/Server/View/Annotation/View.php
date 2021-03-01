@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Server\View\Parser\ViewParser")
  */
+#[\Attribute]
 class View extends Base
 {
     /**
@@ -52,4 +53,9 @@ class View extends Base
      * @var array|null
      */
     public ?array $data = [];
+
+    public function __construct(?array $__data = null, ?string $baseDir = null, ?string $template = null, string $renderType = 'json', ?array $data = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

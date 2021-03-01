@@ -16,6 +16,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class ExtractData extends \Imi\Server\Http\Annotation\ExtractData
 {
 }

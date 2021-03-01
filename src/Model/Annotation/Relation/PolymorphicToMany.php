@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class PolymorphicToMany extends RelationBase
 {
     /**
@@ -67,4 +68,9 @@ class PolymorphicToMany extends RelationBase
      * @var string
      */
     public string $middle = '';
+
+    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', string $middle = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

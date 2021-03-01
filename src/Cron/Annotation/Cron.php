@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Cron extends Base
 {
     /**
@@ -178,4 +179,9 @@ class Cron extends Base
      * @var float
      */
     public float $maxExecutionTime = 60;
+
+    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, bool $force = false, string $year = '*', string $month = '*', string $day = '*', string $week = '*', string $hour = '*', string $minute = '*', string $second = '*', ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, float $maxExecutionTime = 60)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

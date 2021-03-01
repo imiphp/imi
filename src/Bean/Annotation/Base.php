@@ -27,24 +27,42 @@ abstract class Base extends LazyArrayObject
      */
     protected $__alias;
 
-    public function __construct(array $data = [])
+    public function __construct(?array $data = null, ...$args)
     {
         parent::__construct([]);
 
-        if (null !== $this->defaultFieldName && \array_key_exists('value', $data) && 1 === \count($data))
+        $refClass = ReflectionContainer::getClassReflection(static::class);
+
+        if (null === $data)
         {
-            // 只传一个参数处理
-            $this->{$this->defaultFieldName} = $data['value'];
+            if ($args)
+            {
+                $argsCount = \count($args);
+                $params = $refClass->getConstructor()->getParameters();
+                $count = \count($params);
+                $forCount = min($count, $argsCount);
+                for ($i = 0; $i < $forCount; ++$i)
+                {
+                    $param = $params[$i + 1];
+                    $this->{$param->getName()} = $args[$i];
+                }
+            }
         }
         else
         {
-            foreach ($data as $k => $v)
+            if (null !== $this->defaultFieldName && \array_key_exists('value', $data) && 1 === \count($data))
             {
-                $this->$k = $v;
+                // 只传一个参数处理
+                $this->{$this->defaultFieldName} = $data['value'];
+            }
+            else
+            {
+                foreach ($data as $k => $v)
+                {
+                    $this->$k = $v;
+                }
             }
         }
-
-        $refClass = ReflectionContainer::getClassReflection(static::class);
 
         foreach ($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
         {

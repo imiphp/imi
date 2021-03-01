@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Command extends Base
 {
     /**
@@ -29,4 +30,9 @@ class Command extends Base
      * @var string
      */
     public ?string $name = null;
+
+    public function __construct(?array $__data = null, ?string $name = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

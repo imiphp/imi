@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class InEnum extends Condition
 {
     /**
@@ -39,4 +40,12 @@ class InEnum extends Condition
         '{:value}',
         '{enum}',
     ];
+
+    public function __construct(?array $__data = null, string $enum = '', array $args = [
+        '{:value}',
+        '{enum}',
+    ])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

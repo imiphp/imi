@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class OneToMany extends RelationBase
 {
     /**
@@ -39,4 +40,9 @@ class OneToMany extends RelationBase
      * @var string|null
      */
     public ?string $order = null;
+
+    public function __construct(?array $__data = null, string $model = '', ?string $order = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

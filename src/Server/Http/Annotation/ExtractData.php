@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class ExtractData extends Base
 {
     /**
@@ -42,4 +43,9 @@ class ExtractData extends Base
      * @var mixed
      */
     public $default = null;
+
+    public function __construct(?array $__data = null, string $name = '', string $to = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

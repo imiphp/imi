@@ -17,6 +17,7 @@ use Imi\Redis\RedisManager;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class RedisInject extends RequestInject
 {
     /**

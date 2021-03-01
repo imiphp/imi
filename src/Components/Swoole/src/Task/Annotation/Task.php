@@ -15,6 +15,7 @@ use Imi\Swoole\Task\TaskParam;
  * @Target("CLASS")
  * @Parser("Imi\Swoole\Task\Parser\TaskParser")
  */
+#[\Attribute]
 class Task extends Base
 {
     /**
@@ -37,4 +38,9 @@ class Task extends Base
      * @var string
      */
     public string $paramClass = TaskParam::class;
+
+    public function __construct(?array $__data = null, string $name = '', string $paramClass = TaskParam::class)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

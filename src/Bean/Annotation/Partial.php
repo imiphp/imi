@@ -11,6 +11,7 @@ namespace Imi\Bean\Annotation;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\PartialParser")
  */
+#[\Attribute]
 class Partial extends Base
 {
     /**
@@ -26,4 +27,9 @@ class Partial extends Base
      * @var string|null
      */
     protected ?string $defaultFieldName = 'class';
+
+    public function __construct(?array $__data = null, string $class = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class PolymorphicManyToMany extends ManyToMany
 {
     /**
@@ -28,4 +29,9 @@ class PolymorphicManyToMany extends ManyToMany
      * @var mixed
      */
     public $typeValue;
+
+    public function __construct(?array $__data = null, string $type = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

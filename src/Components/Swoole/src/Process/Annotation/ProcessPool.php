@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Swoole\Process\Parser\ProcessPoolParser")
  */
+#[\Attribute]
 class ProcessPool extends Base
 {
     /**
@@ -50,4 +51,9 @@ class ProcessPool extends Base
      * @var string|null
      */
     public ?string $msgQueueKey = null;
+
+    public function __construct(?array $__data = null, string $name = '', int $workerNum = 1, int $ipcType = 0, ?string $msgQueueKey = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

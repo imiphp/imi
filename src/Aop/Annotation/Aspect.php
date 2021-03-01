@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Aspect extends Base
 {
     /**
@@ -22,4 +23,9 @@ class Aspect extends Base
      * @var int
      */
     public int $priority = 0;
+
+    public function __construct(?array $__data = null, int $priority = 0)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

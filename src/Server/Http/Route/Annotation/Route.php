@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  */
+#[\Attribute]
 class Route extends Base
 {
     /**
@@ -148,5 +149,10 @@ class Route extends Base
     public function __toString()
     {
         return http_build_query($this->toArray());
+    }
+
+    public function __construct(?array $__data = null, ?string $url = null, ?bool $ignoreCase = null, ?bool $autoEndSlash = null)
+    {
+        parent::__construct(...\func_get_args());
     }
 }

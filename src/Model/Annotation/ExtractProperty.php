@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class ExtractProperty extends Base
 {
     /**
@@ -36,4 +37,9 @@ class ExtractProperty extends Base
      * @var string
      */
     public string $alias = '';
+
+    public function __construct(?array $__data = null, string $fieldName = '', string $alias = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

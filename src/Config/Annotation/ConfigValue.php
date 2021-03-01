@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Config\Annotation;
 
-use Imi\Config;
-use Imi\Bean\Annotation\Parser;
-use Imi\Bean\Annotation\Inherit;
 use Imi\Aop\Annotation\BaseInjectValue;
+use Imi\Bean\Annotation\Inherit;
+use Imi\Config;
 
 /**
  * 从配置中读取值
@@ -18,6 +17,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class ConfigValue extends BaseInjectValue
 {
     /**
@@ -40,6 +40,11 @@ class ConfigValue extends BaseInjectValue
      * @var mixed
      */
     public $default = null;
+
+    public function __construct(?array $__data = null, string $name = '', $default = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

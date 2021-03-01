@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Aop\Annotation;
 
 use Imi\App;
-use Imi\Bean\Annotation\Parser;
 use Imi\Bean\Annotation\Inherit;
 
 /**
@@ -16,6 +15,7 @@ use Imi\Bean\Annotation\Inherit;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class Inject extends BaseInjectValue
 {
     /**
@@ -38,6 +38,11 @@ class Inject extends BaseInjectValue
      * @var array
      */
     public array $args = [];
+
+    public function __construct(?array $__data = null, string $name = '', array $args = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

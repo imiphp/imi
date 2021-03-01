@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
  */
+#[\Attribute]
 class WSRoute extends Base
 {
     /**
@@ -42,5 +43,10 @@ class WSRoute extends Base
     public function __toString()
     {
         return http_build_query($this->toArray());
+    }
+
+    public function __construct(?array $__data = null, array $condition = [], ?string $route = null)
+    {
+        parent::__construct(...\func_get_args());
     }
 }

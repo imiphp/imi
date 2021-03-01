@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class DDL extends Base
 {
     /**
@@ -31,4 +32,9 @@ class DDL extends Base
      * @var string
      */
     public string $sql = '';
+
+    public function __construct(?array $__data = null, string $sql = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

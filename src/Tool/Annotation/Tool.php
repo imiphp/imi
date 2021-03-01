@@ -14,6 +14,7 @@ use Imi\Cli\Annotation\Command;
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Tool extends Command
 {
     /**

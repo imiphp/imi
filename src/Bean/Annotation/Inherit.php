@@ -11,6 +11,7 @@ namespace Imi\Bean\Annotation;
  * @Target({"CLASS", "METHOD", "PROPERTY", "CONST"})
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Inherit extends Base
 {
     /**
@@ -26,4 +27,9 @@ class Inherit extends Base
      * @var string|string[]
      */
     public $annotation;
+
+    public function __construct(?array $__data = null, $annotation = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
  */
+#[\Attribute]
 class WSAction extends Base
 {
 }

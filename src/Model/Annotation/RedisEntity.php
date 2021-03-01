@@ -15,6 +15,7 @@ use Imi\Model\Enum\RedisStorageMode;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class RedisEntity extends Base
 {
     /**
@@ -69,4 +70,9 @@ class RedisEntity extends Base
      * @var string
      */
     public string $storage = RedisStorageMode::STRING;
+
+    public function __construct(?array $__data = null, ?string $poolName = null, ?int $db = null, string $key = '{key}', string $member = '{member}', ?int $ttl = null, string $storage = RedisStorageMode::STRING)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

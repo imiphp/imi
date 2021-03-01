@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Required extends Condition
 {
     /**
@@ -32,4 +33,12 @@ class Required extends Condition
         '{:data}',
         '{name}',
     ];
+
+    public function __construct(?array $__data = null, array $args = [
+        '{:data}',
+        '{name}',
+    ])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

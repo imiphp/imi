@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
  */
+#[\Attribute]
 class TcpMiddleware extends Base
 {
     /**
@@ -29,4 +30,9 @@ class TcpMiddleware extends Base
      * @var string|string[]
      */
     public $middlewares;
+
+    public function __construct(?array $__data = null, $middlewares = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

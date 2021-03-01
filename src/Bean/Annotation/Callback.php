@@ -13,6 +13,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class Callback extends BaseInjectValue
 {
     /**
@@ -28,6 +29,11 @@ class Callback extends BaseInjectValue
      * @var string
      */
     public string $method = '';
+
+    public function __construct(?array $__data = null, $class = null, string $method = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

@@ -14,6 +14,7 @@ use Imi\Cli\Annotation\Option;
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Arg extends Option
 {
     /**

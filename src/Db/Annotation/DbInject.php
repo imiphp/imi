@@ -16,6 +16,7 @@ use Imi\Db\Query\QueryType;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class DbInject extends RequestInject
 {
     /**
@@ -24,6 +25,11 @@ class DbInject extends RequestInject
      * @var int
      */
     public int $queryType = QueryType::WRITE;
+
+    public function __construct(?array $__data = null, int $queryType = QueryType::WRITE)
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

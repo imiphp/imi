@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"METHOD"})
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class PoolClean extends Base
 {
     /**
@@ -31,4 +32,9 @@ class PoolClean extends Base
      * @var array
      */
     public array $list = [];
+
+    public function __construct(?array $__data = null, string $mode = 'allow', array $list = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

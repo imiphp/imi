@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class AutoSelect extends Base
 {
     /**
@@ -37,4 +38,9 @@ class AutoSelect extends Base
      * @var bool
      */
     public bool $alwaysShow = true;
+
+    public function __construct(?array $__data = null, bool $status = true, bool $alwaysShow = true)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

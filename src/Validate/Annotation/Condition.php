@@ -17,6 +17,7 @@ use Imi\Config;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Condition extends Base
 {
     /**

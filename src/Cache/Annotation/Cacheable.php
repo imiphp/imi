@@ -18,6 +18,7 @@ use Imi\Lock\Annotation\Lockable;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Cacheable extends Base
 {
     /**
@@ -70,4 +71,9 @@ class Cacheable extends Base
      * @var string
      */
     public string $hashMethod = 'md5';
+
+    public function __construct(?array $__data = null, ?string $name = null, string $key = '', ?int $ttl = null, ?Lockable $lockable = null, bool $preventBreakdown = false, string $hashMethod = 'md5')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
  */
+#[\Attribute]
 class WSController extends Base
 {
     /**
@@ -33,4 +34,9 @@ class WSController extends Base
      * @var string|null
      */
     public ?string $route = null;
+
+    public function __construct(?array $__data = null, ?bool $singleton = null, ?string $route = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

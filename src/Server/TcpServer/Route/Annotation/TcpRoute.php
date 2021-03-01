@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
  */
+#[\Attribute]
 class TcpRoute extends Base
 {
     /**
@@ -33,5 +34,10 @@ class TcpRoute extends Base
     public function __toString()
     {
         return http_build_query($this->toArray());
+    }
+
+    public function __construct(?array $__data = null, array $condition = [])
+    {
+        parent::__construct(...\func_get_args());
     }
 }

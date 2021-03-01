@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CONST")
  * @Parser("Imi\Enum\Annotation\Parser\EnumParser")
  */
+#[\Attribute]
 class EnumItem extends Base
 {
     /**
@@ -30,4 +31,9 @@ class EnumItem extends Base
      * @var string|null
      */
     protected ?string $defaultFieldName = 'text';
+
+    public function __construct(?array $__data = null, string $text = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

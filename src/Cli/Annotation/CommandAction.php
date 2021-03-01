@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class CommandAction extends Base
 {
     /**
@@ -36,4 +37,9 @@ class CommandAction extends Base
      * @var bool
      */
     public bool $dynamicOptions = false;
+
+    public function __construct(?array $__data = null, ?string $name = null, bool $dynamicOptions = false)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

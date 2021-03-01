@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Column extends Base
 {
     /**
@@ -111,4 +112,9 @@ class Column extends Base
      * @var string|null
      */
     public ?string $listSeparator = null;
+
+    public function __construct(?array $__data = null, ?string $name = null, ?string $type = null, int $length = -1, bool $nullable = true, int $accuracy = 0, bool $isPrimaryKey = false, int $primaryKeyIndex = -1, bool $isAutoIncrement = false, bool $virtual = false, bool $updateTime = false, ?string $listSeparator = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

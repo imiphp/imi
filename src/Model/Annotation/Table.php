@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Table extends Base
 {
     /**
@@ -43,4 +44,9 @@ class Table extends Base
      * @var string|array|null
      */
     public $id = null;
+
+    public function __construct(?array $__data = null, ?string $name = null, ?string $dbPoolName = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

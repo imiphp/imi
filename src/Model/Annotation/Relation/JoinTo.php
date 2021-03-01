@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class JoinTo extends Base
 {
     /**
@@ -29,4 +30,9 @@ class JoinTo extends Base
      * @var string|null
      */
     public ?string $field = null;
+
+    public function __construct(?array $__data = null, ?string $field = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

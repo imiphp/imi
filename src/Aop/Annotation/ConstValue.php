@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Inherit;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class ConstValue extends BaseInjectValue
 {
     /**
@@ -37,6 +38,11 @@ class ConstValue extends BaseInjectValue
      * @var mixed
      */
     public $default = null;
+
+    public function __construct(?array $__data = null, string $name = '', $default = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

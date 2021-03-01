@@ -98,6 +98,17 @@ class AnnotationParser
     public function parseClass(\ReflectionClass $ref)
     {
         $annotations = $this->getReader()->getClassAnnotations($ref);
+        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPClassAnnotations($ref))
+        {
+            if ($annotations)
+            {
+                $annotations = array_merge($annotations, $phpAnnotations);
+            }
+            else
+            {
+                $annotations = $phpAnnotations;
+            }
+        }
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -197,6 +208,17 @@ class AnnotationParser
         $className = $ref->getName();
         $methodName = $method->getName();
         $annotations = $this->getReader()->getMethodAnnotations($method);
+        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPMethodAnnotations($method))
+        {
+            if ($annotations)
+            {
+                $annotations = array_merge($annotations, $phpAnnotations);
+            }
+            else
+            {
+                $annotations = $phpAnnotations;
+            }
+        }
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -288,6 +310,17 @@ class AnnotationParser
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop)
     {
         $annotations = $this->getReader()->getPropertyAnnotations($prop);
+        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
+        {
+            if ($annotations)
+            {
+                $annotations = array_merge($annotations, $phpAnnotations);
+            }
+            else
+            {
+                $annotations = $phpAnnotations;
+            }
+        }
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -381,6 +414,17 @@ class AnnotationParser
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const)
     {
         $annotations = $this->getReader()->getConstantAnnotations($const);
+        if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPConstantAnnotations($const))
+        {
+            if ($annotations)
+            {
+                $annotations = array_merge($annotations, $phpAnnotations);
+            }
+            else
+            {
+                $annotations = $phpAnnotations;
+            }
+        }
         foreach ($annotations as $i => $annotation)
         {
             if (!$annotation instanceof \Imi\Bean\Annotation\Base)
@@ -756,5 +800,81 @@ class AnnotationParser
         }
 
         return $this->reader;
+    }
+
+    /**
+     * 获取类的 PHP 原生注解.
+     *
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return \Imi\Bean\Annotation\Base[]
+     */
+    public function getPHPClassAnnotations(\ReflectionClass $reflectionClass): array
+    {
+        $annotations = [];
+        foreach ($reflectionClass->getAttributes() as $attribute)
+        {
+            $class = $attribute->getName();
+            $annotations[] = new $class(...$attribute->getArguments());
+        }
+
+        return $annotations;
+    }
+
+    /**
+     * 获取方法的 PHP 原生注解.
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *
+     * @return \Imi\Bean\Annotation\Base[]
+     */
+    public function getPHPMethodAnnotations(\ReflectionMethod $reflectionMethod): array
+    {
+        $annotations = [];
+        foreach ($reflectionMethod->getAttributes() as $attribute)
+        {
+            $class = $attribute->getName();
+            $annotations[] = new $class(...$attribute->getArguments());
+        }
+
+        return $annotations;
+    }
+
+    /**
+     * 获取属性的 PHP 原生注解.
+     *
+     * @param \ReflectionProperty $reflectionProperty
+     *
+     * @return \Imi\Bean\Annotation\Base[]
+     */
+    public function getPHPPropertyAnnotations(\ReflectionProperty $reflectionProperty): array
+    {
+        $annotations = [];
+        foreach ($reflectionProperty->getAttributes() as $attribute)
+        {
+            $class = $attribute->getName();
+            $annotations[] = new $class(...$attribute->getArguments());
+        }
+
+        return $annotations;
+    }
+
+    /**
+     * 获取类常量的 PHP 原生注解.
+     *
+     * @param \ReflectionClassConstant $reflectionConstant
+     *
+     * @return \Imi\Bean\Annotation\Base[]
+     */
+    public function getPHPConstantAnnotations(\ReflectionClassConstant $reflectionConstant): array
+    {
+        $annotations = [];
+        foreach ($reflectionConstant->getAttributes() as $attribute)
+        {
+            $class = $attribute->getName();
+            $annotations[] = new $class(...$attribute->getArguments());
+        }
+
+        return $annotations;
     }
 }

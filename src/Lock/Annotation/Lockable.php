@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"METHOD", "ANNOTATION"})
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Lockable extends Base
 {
     /**
@@ -63,4 +64,9 @@ class Lockable extends Base
      * @var callable
      */
     public $afterLock;
+
+    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, int $waitTimeout = 3000, int $lockExpire = 3000, array $options = [], $afterLock = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

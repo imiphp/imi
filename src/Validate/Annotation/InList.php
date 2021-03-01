@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class InList extends Condition
 {
     /**
@@ -39,4 +40,12 @@ class InList extends Condition
         '{:value}',
         '{list}',
     ];
+
+    public function __construct(?array $__data = null, array $list = [], array $args = [
+        '{:value}',
+        '{list}',
+    ])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

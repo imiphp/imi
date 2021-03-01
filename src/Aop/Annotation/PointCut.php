@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class PointCut extends Base
 {
     /**
@@ -37,4 +38,9 @@ class PointCut extends Base
      * @var array
      */
     public array $deny = [];
+
+    public function __construct(?array $__data = null, int $type = PointCutType::METHOD, array $allow = [], array $deny = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

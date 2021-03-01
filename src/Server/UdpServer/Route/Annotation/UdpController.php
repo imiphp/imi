@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Server\UdpServer\Parser\UdpControllerParser")
  */
+#[\Attribute]
 class UdpController extends Base
 {
     /**
@@ -31,4 +32,9 @@ class UdpController extends Base
      * @var bool|null
      */
     public ?bool $singleton = null;
+
+    public function __construct(?array $__data = null, ?bool $singleton = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

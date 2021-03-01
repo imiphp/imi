@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  */
+#[\Attribute]
 class Action extends Base
 {
 }

@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  */
+#[\Attribute]
 class WSConfig extends Base
 {
     /**
@@ -30,4 +31,9 @@ class WSConfig extends Base
      * @var bool
      */
     public bool $wsOnly = true;
+
+    public function __construct(?array $__data = null, ?string $parserClass = null, bool $wsOnly = true)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

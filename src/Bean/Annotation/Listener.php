@@ -11,6 +11,7 @@ namespace Imi\Bean\Annotation;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\ListenerParser")
  */
+#[\Attribute]
 class Listener extends Base
 {
     /**
@@ -33,4 +34,9 @@ class Listener extends Base
      * @var int
      */
     public int $priority = 0;
+
+    public function __construct(?array $__data = null, string $eventName = '', int $priority = 0)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

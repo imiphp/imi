@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Facade extends Base
 {
     /**
@@ -43,4 +44,9 @@ class Facade extends Base
      * @var array
      */
     public array $args = [];
+
+    public function __construct(?array $__data = null, string $class = '', bool $request = false, array $args = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

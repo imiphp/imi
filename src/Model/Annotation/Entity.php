@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Entity extends Base
 {
     /**
@@ -29,4 +30,9 @@ class Entity extends Base
      * @var bool
      */
     public bool $camel = true;
+
+    public function __construct(?array $__data = null, bool $camel = true)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

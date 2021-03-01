@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Arg extends Option
 {
     /**

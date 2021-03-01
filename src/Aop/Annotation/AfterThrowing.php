@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class AfterThrowing extends Base
 {
     /**
@@ -29,4 +30,9 @@ class AfterThrowing extends Base
      * @var array
      */
     public array $deny = [];
+
+    public function __construct(?array $__data = null, array $allow = [], array $deny = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

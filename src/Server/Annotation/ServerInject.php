@@ -17,6 +17,7 @@ use Imi\RequestContext;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class ServerInject extends BaseInjectValue
 {
     /**
@@ -37,6 +38,11 @@ class ServerInject extends BaseInjectValue
      * @var array
      */
     public array $args = [];
+
+    public function __construct(?array $__data = null, string $name = '', array $args = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

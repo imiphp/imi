@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class TreeModel extends Base
 {
     /**
@@ -37,4 +38,9 @@ class TreeModel extends Base
      * @var string
      */
     public string $childrenField = 'children';
+
+    public function __construct(?array $__data = null, ?string $idField = null, string $parentField = 'parent_id', string $childrenField = 'children')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

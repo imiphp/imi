@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Compare extends Condition
 {
     /**
@@ -49,4 +50,13 @@ class Compare extends Condition
         '{operation}',
         '{value}',
     ];
+
+    public function __construct(?array $__data = null, string $operation = '==', array $args = [
+        '{:value}',
+        '{operation}',
+        '{value}',
+    ])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

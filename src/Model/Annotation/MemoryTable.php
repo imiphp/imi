@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class MemoryTable extends Base
 {
     /**
@@ -44,4 +45,9 @@ class MemoryTable extends Base
      * @var float
      */
     public float $conflictProportion = 0.2;
+
+    public function __construct(?array $__data = null, string $name = '', int $size = 1024, float $conflictProportion = 0.2)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

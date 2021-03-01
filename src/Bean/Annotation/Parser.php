@@ -10,6 +10,7 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  * @Target("CLASS")
  */
+#[\Attribute]
 class Parser extends Base
 {
     /**
@@ -25,4 +26,9 @@ class Parser extends Base
      * @var string
      */
     public string $className = '';
+
+    public function __construct(?array $__data = null, string $className = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

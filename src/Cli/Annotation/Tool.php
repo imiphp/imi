@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Tool extends Command
 {
     /**

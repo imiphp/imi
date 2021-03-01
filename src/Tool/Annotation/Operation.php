@@ -14,6 +14,7 @@ use Imi\Cli\Annotation\CommandAction;
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Operation extends CommandAction
 {
     /**

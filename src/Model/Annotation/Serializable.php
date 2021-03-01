@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Serializable extends Base
 {
     /**
@@ -29,4 +30,9 @@ class Serializable extends Base
      * @var bool
      */
     public bool $allow = true;
+
+    public function __construct(?array $__data = null, bool $allow = true)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

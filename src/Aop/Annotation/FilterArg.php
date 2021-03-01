@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class FilterArg extends Base
 {
     /**
@@ -29,4 +30,9 @@ class FilterArg extends Base
      * @var callable|null
      */
     public $filter = null;
+
+    public function __construct(?array $__data = null, ?string $name = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

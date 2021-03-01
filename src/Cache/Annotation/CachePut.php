@@ -17,6 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class CachePut extends Base
 {
     /**
@@ -59,4 +60,9 @@ class CachePut extends Base
      * @var string
      */
     public string $hashMethod = 'md5';
+
+    public function __construct(?array $__data = null, ?string $name = null, string $key = '', ?string $value = null, ?int $ttl = null, string $hashMethod = 'md5')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
  */
+#[\Attribute]
 class Controller extends Base
 {
     /**
@@ -38,4 +39,9 @@ class Controller extends Base
      * @var bool|null
      */
     public ?bool $singleton = null;
+
+    public function __construct(?array $__data = null, ?string $prefix = null, ?bool $singleton = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

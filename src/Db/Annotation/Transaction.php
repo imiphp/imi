@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Transaction extends Base
 {
     /**
@@ -53,4 +54,9 @@ class Transaction extends Base
      * @var int
      */
     public int $rollbackLevels = 1;
+
+    public function __construct(?array $__data = null, ?string $dbPoolName = null, string $type = TransactionType::AUTO, bool $autoCommit = true, string $rollbackType = RollbackType::ALL, int $rollbackLevels = 1)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

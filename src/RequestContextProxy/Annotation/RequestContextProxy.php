@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class RequestContextProxy extends Base
 {
     /**
@@ -36,4 +37,9 @@ class RequestContextProxy extends Base
      * @var string
      */
     public string $name = '';
+
+    public function __construct(?array $__data = null, ?string $class = null, string $name = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

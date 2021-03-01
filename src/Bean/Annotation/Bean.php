@@ -11,6 +11,7 @@ namespace Imi\Bean\Annotation;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\BeanParser")
  */
+#[\Attribute]
 class Bean extends Base
 {
     /**
@@ -40,16 +41,12 @@ class Bean extends Base
     /**
      * 实例化类型，默认为单例模式.
      *
-     * @var string|null
+     * @var string
      */
-    public ?string $instanceType = null;
+    public string $instanceType = self::INSTANCE_TYPE_SINGLETON;
 
-    public function __construct(array $data = [])
+    public function __construct(?array $__data = null, ?string $name = null, string $instanceType = self::INSTANCE_TYPE_SINGLETON)
     {
-        parent::__construct($data);
-        if (null === $this->instanceType)
-        {
-            $this->instanceType = static::INSTANCE_TYPE_SINGLETON;
-        }
+        parent::__construct(...\func_get_args());
     }
 }

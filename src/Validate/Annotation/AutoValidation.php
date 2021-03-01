@@ -18,6 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class AutoValidation extends Base
 {
 }

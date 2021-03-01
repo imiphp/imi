@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Imi\Aop\Annotation;
 
 use Imi\App;
+use Imi\Bean\Annotation\Inherit;
 use Imi\RequestContext;
 use Imi\Swoole\Util\Coroutine;
-use Imi\Bean\Annotation\Parser;
-use Imi\Bean\Annotation\Inherit;
 
 /**
  * 属性注入
@@ -18,6 +17,7 @@ use Imi\Bean\Annotation\Inherit;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
+#[\Attribute]
 class RequestInject extends BaseInjectValue
 {
     /**
@@ -40,6 +40,11 @@ class RequestInject extends BaseInjectValue
      * @var array
      */
     public array $args = [];
+
+    public function __construct(?array $__data = null, string $name = '', array $args = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

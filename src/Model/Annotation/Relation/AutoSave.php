@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class AutoSave extends Base
 {
     /**
@@ -36,4 +37,9 @@ class AutoSave extends Base
      * @var bool
      */
     public bool $orphanRemoval = false;
+
+    public function __construct(?array $__data = null, bool $status = true, bool $orphanRemoval = false)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"ANNOTATION"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class ValidateValue extends Base
 {
     /**
@@ -33,4 +34,9 @@ class ValidateValue extends Base
      * @var string
      */
     public string $value = '';
+
+    public function __construct(?array $__data = null, string $value = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

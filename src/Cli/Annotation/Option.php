@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
+#[\Attribute]
 class Option extends Base
 {
     /**
@@ -64,4 +65,9 @@ class Option extends Base
      * @var string
      */
     public string $comments = '';
+
+    public function __construct(?array $__data = null, string $name = '', ?string $shortcut = null, ?string $type = null, bool $required = false, string $comments = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

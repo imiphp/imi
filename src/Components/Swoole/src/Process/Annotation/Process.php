@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Swoole\Process\Parser\ProcessParser")
  */
+#[\Attribute]
 class Process extends Base
 {
     /**
@@ -57,4 +58,9 @@ class Process extends Base
      * @var bool
      */
     public bool $co = true;
+
+    public function __construct(?array $__data = null, string $name = '', bool $redirectStdinStdout = false, int $pipeType = 2, bool $unique = false, bool $co = true)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

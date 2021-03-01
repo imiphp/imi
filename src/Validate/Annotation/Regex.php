@@ -14,6 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Regex extends Condition
 {
     /**
@@ -39,4 +40,12 @@ class Regex extends Condition
         '{:value}',
         '{pattern}',
     ];
+
+    public function __construct(?array $__data = null, string $pattern = '', array $args = [
+        '{:value}',
+        '{pattern}',
+    ])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

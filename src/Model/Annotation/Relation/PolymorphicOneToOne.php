@@ -13,6 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class PolymorphicOneToOne extends RelationBase
 {
     /**
@@ -44,4 +45,9 @@ class PolymorphicOneToOne extends RelationBase
      * @var mixed
      */
     public $typeValue;
+
+    public function __construct(?array $__data = null, string $model = '', string $type = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS"})
  * @Parser("\Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Scene extends Base
 {
     /**
@@ -30,4 +31,9 @@ class Scene extends Base
      * @var array
      */
     public array $fields = [];
+
+    public function __construct(?array $__data = null, string $name = '', array $fields = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

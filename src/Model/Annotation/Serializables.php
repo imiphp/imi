@@ -15,6 +15,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Serializables extends Base
 {
     /**
@@ -32,4 +33,9 @@ class Serializables extends Base
      * @var string[]
      */
     public array $fields = [];
+
+    public function __construct(?array $__data = null, string $mode = '', array $fields = [])
+    {
+        parent::__construct(...\func_get_args());
+    }
 }
