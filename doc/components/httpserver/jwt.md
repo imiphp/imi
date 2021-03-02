@@ -48,7 +48,7 @@ Github: <https://github.com/imiphp/imi-jwt>
                 // 'dataName'  =>  'data',      // 自定义数据字段名，放你需要往token里丢的数据
                 // 'audience'  =>  null,        // 接收，非必须
                 // 'subject'   =>  null,        // 主题，非必须
-                // 'expires'   =>  null,        // 超时秒数，非必须
+                'expires'   =>  86400,        // 超时秒数
                 // 'issuer'    =>  null,        // 发行人，非必须
                 // 'notBefore' =>  null,        // 实际日期必须大于等于本值
                 // 'issuedAt'  =>  true,        // JWT 发出时间。设为 true 则为当前时间；设为 false 不设置；其它值则直接写入
