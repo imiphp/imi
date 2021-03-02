@@ -68,6 +68,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected string $__realClass = '';
 
+    /**
+     * 记录是否存在.
+     *
+     * @var bool
+     */
+    protected bool $__recordExists = false;
+
     public function __construct(array $data = [])
     {
         $this->__meta = $meta = static::__getMeta();
@@ -130,6 +137,21 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public static function newInstance(...$args): self
     {
         return BeanFactory::newInstance(static::class, ...$args);
+    }
+
+    /**
+     * 从记录创建模型对象
+     *
+     * @param array $data
+     *
+     * @return static
+     */
+    public static function createFromRecord(array $data): self
+    {
+        $model = static::newInstance($data);
+        $model->__recordExists = true;
+
+        return $model;
     }
 
     // 实现接口的方法们：

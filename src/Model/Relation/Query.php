@@ -672,7 +672,7 @@ class Query
             {
                 $tmpRow[$fieldName] = $row[$alias];
             }
-            $manyList->append($modelClass::newInstance($tmpRow));
+            $manyList->append($modelClass::createFromRecord($tmpRow));
         }
     }
 }

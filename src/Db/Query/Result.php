@@ -142,7 +142,7 @@ class Result implements IResult
         {
             if (is_subclass_of($className, Model::class))
             {
-                $object = App::getBean($className, $record);
+                $object = $className::createFromRecord($record);
             }
             else
             {
@@ -194,7 +194,7 @@ class Result implements IResult
             {
                 if ($isModelClass)
                 {
-                    $object = App::getBean($className, $item);
+                    $object = $className::createFromRecord($item);
                 }
                 else
                 {

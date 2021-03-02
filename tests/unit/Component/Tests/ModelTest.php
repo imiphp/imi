@@ -125,7 +125,7 @@ class ModelTest extends BaseTest
         $member->password = '4';
         $result = $member->save();
         $this->assertTrue($result->isSuccess());
-        $this->assertEquals(2, $result->getAffectedRows());
+        $this->assertEquals(1, $result->getAffectedRows());
 
         $member = Member::find($id);
         $this->assertEquals([
