@@ -222,6 +222,7 @@ abstract class Model extends BaseModel
             // 子模型插入
             ModelRelationManager::insertModel($this);
         }
+        $this->__recordExists = true;
 
         return $result;
     }
@@ -318,7 +319,7 @@ abstract class Model extends BaseModel
 
             foreach ($list as $row)
             {
-                $model = static::newInstance($row);
+                $model = static::createFromRecord($row);
                 $model->set($data);
                 $model->update();
             }
@@ -357,7 +358,6 @@ abstract class Model extends BaseModel
     {
         $query = static::query($this);
         $data = static::parseSaveData(iterator_to_array($this), 'save', $this);
-        $meta = $this->__meta;
 
         // 保存前
         $this->trigger(ModelEvents::BEFORE_SAVE, [
@@ -366,24 +366,13 @@ abstract class Model extends BaseModel
             'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
 
-        $keys = [];
-        foreach ($data as $k => $v)
+        if ($this->__recordExists)
         {
-            $keys[] = $k;
+            $result = $this->update($data);
         }
-        $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
-            // 主键条件加入
-            foreach ($meta->getId() as $idName)
-            {
-                if (isset($this->$idName))
-                {
-                    $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
-                }
-            }
-        })->replace($data);
-        if ($result->isSuccess() && ($autoIncrementField = $meta->getAutoIncrementField()))
+        else
         {
-            $this[$autoIncrementField] = $result->getLastInsertId();
+            $result = $this->insert($data);
         }
 
         // 保存后
@@ -448,6 +437,8 @@ abstract class Model extends BaseModel
             // 子模型删除
             ModelRelationManager::deleteModel($this);
         }
+
+        $this->__recordExists = false;
 
         return $result;
     }

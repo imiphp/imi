@@ -68,7 +68,7 @@ abstract class RedisModel extends BaseModel
         {
             return null;
         }
-        $record = static::newInstance($data);
+        $record = static::createFromRecord($data);
         $record->key = $key;
         if (isset($member))
         {
@@ -101,7 +101,7 @@ abstract class RedisModel extends BaseModel
                 {
                     if (null !== $data)
                     {
-                        $record = static::newInstance($data);
+                        $record = static::createFromRecord($data);
                         $record->key = $keys[$i];
                         $list[] = $record;
                     }
@@ -123,7 +123,7 @@ abstract class RedisModel extends BaseModel
                     {
                         if (null !== $data)
                         {
-                            $record = static::newInstance($data);
+                            $record = static::createFromRecord($data);
                             $record->key = $key;
                             if (isset($members[$i]))
                             {
@@ -140,7 +140,7 @@ abstract class RedisModel extends BaseModel
                 foreach ($keys as $key)
                 {
                     $data = $redis->hGetAll($key);
-                    $record = static::newInstance($data);
+                    $record = static::createFromRecord($data);
                     $record->key = $key;
                     $list[] = $record;
                 }
