@@ -69,7 +69,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @var string
      */
-    protected $changedFilesFile;
+    protected string $changedFilesFile;
 
     /**
      * buildRuntime resource.
