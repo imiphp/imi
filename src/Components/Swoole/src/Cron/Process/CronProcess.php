@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Imi\Swoole\Cron\Process;
 
 use Imi\Aop\Annotation\Inject;
+use Imi\Cron\Contract\ICronManager;
+use Imi\Cron\Contract\IScheduler;
 use Imi\Cron\CronManager;
 use Imi\Cron\Message\AddCron;
 use Imi\Cron\Message\Clear;
 use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
-use Imi\Cron\Scheduler;
 use Imi\Log\ErrorLog;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
@@ -25,9 +26,9 @@ class CronProcess extends BaseProcess
     /**
      * @Inject("CronScheduler")
      *
-     * @var \Imi\Cron\Scheduler
+     * @var \Imi\Cron\Contract\IScheduler
      */
-    protected Scheduler $scheduler;
+    protected IScheduler $scheduler;
 
     /**
      * @Inject("ErrorLog")
@@ -39,9 +40,9 @@ class CronProcess extends BaseProcess
     /**
      * @Inject("CronManager")
      *
-     * @var \Imi\Cron\CronManager
+     * @var \Imi\Cron\Contract\ICronManager
      */
-    protected CronManager $cronManager;
+    protected ICronManager $cronManager;
 
     /**
      * socket 资源.

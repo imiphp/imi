@@ -14,6 +14,7 @@ return [
     // 扫描目录
     'beanScan'    => [
         'Imi\Workerman\Test\AppServer\Listener',
+        'Imi\Workerman\Test\AppServer\Cron',
     ],
 
     // 组件命名空间

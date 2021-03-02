@@ -8,27 +8,24 @@ use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Cron\Consts\CronTaskType;
+use Imi\Cron\Contract\ICronManager;
+use Imi\Cron\Contract\IScheduler;
 use Imi\Cron\Message\Result;
 use Imi\Log\Log;
-use Imi\Server\ServerManager;
-use Imi\Swoole\Server\Contract\ISwooleServer;
-use Yurun\Swoole\CoPool\CoPool;
-use Yurun\Swoole\CoPool\Interfaces\ICoTask;
-use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 
 /**
  * @Bean("CronScheduler")
  *
  * 定时任务调度器
  */
-class Scheduler
+class Scheduler implements IScheduler
 {
     /**
      * @Inject("CronManager")
      *
-     * @var \Imi\Cron\CronManager
+     * @var \Imi\Cron\Contract\ICronManager
      */
-    protected CronManager $cronManager;
+    protected ICronManager $cronManager;
 
     /**
      * @Inject("CronCalculator")
@@ -43,27 +40,6 @@ class Scheduler
      * @var \Imi\Cron\CronLock
      */
     protected CronLock $cronLock;
-
-    /**
-     * 协程工作池的协程数量.
-     *
-     * @var int
-     */
-    protected int $poolCoCount = 16;
-
-    /**
-     * 协程工作池的队列长度.
-     *
-     * @var int
-     */
-    protected int $poolQueueLength = 1024;
-
-    /**
-     * 协程工作池.
-     *
-     * @var \Yurun\Swoole\CoPool\CoPool
-     */
-    private CoPool $coPool;
 
     /**
      * 下次执行时间集合.
@@ -85,75 +61,6 @@ class Scheduler
      * @var array
      */
     private array $firstRunMap = [];
-
-    public function __construct()
-    {
-        $this->coPool = $coPool = new CoPool($this->poolCoCount, $this->poolQueueLength,
-            // 定义任务匿名类，当然你也可以定义成普通类，传入完整类名
-            new class() implements ICoTask {
-                /**
-                 * 执行任务
-                 *
-                 * @param ITaskParam $param
-                 *
-                 * @return mixed
-                 */
-                public function run(ITaskParam $param)
-                {
-                    /** @var \Imi\Cron\CronTask $task */
-                    $task = $param->getData();
-                    /** @var \Imi\Cron\CronManager $cronManager */
-                    $cronManager = App::getBean('CronManager');
-                    switch ($type = $task->getType())
-                    {
-                        case CronTaskType::RANDOM_WORKER:
-                            /** @var ISwooleServer $server */
-                            $server = ServerManager::getServer('main', ISwooleServer::class);
-                            $swooleServer = $server->getSwooleServer();
-                            $taskClass = $task->getTask();
-                            $swooleServer->sendMessage(json_encode([
-                                'action'    => 'cronTask',
-                                'id'        => $task->getId(),
-                                'data'      => $task->getData(),
-                                'task'      => \is_callable($taskClass) ? null : $taskClass,
-                                'type'      => $type,
-                            ]), mt_rand(0, $swooleServer->setting['worker_num'] - 1));
-                            break;
-                        case CronTaskType::ALL_WORKER:
-                            /** @var ISwooleServer $server */
-                            $server = ServerManager::getServer('main', ISwooleServer::class);
-                            $swooleServer = $server->getSwooleServer();
-                            $taskClass = $task->getTask();
-                            $message = json_encode([
-                                'action'    => 'cronTask',
-                                'id'        => $task->getId(),
-                                'data'      => $task->getData(),
-                                'task'      => \is_callable($taskClass) ? null : $taskClass,
-                                'type'      => $type,
-                            ]);
-                            for ($i = 0; $i < $swooleServer->setting['worker_num']; ++$i)
-                            {
-                                $swooleServer->sendMessage($message, $i);
-                            }
-                            break;
-                        case CronTaskType::TASK:
-                            $cronManager->getTaskCallable($task->getId(), $task->getTask(), $type)($task->getId(), $task->getData());
-                            break;
-                        case CronTaskType::PROCESS:
-                            $cronManager->getTaskCallable($task->getTask(), $task->getTask(), $type)($task->getId(), $task->getData());
-                            break;
-                        case CronTaskType::CRON_PROCESS:
-                            /** @var \Imi\Cron\CronWorker $cronWorker */
-                            $cronWorker = App::getBean('CronWorker');
-                            $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
-                            break;
-                    }
-                }
-            }
-        );
-        // 运行协程池
-        $coPool->run();
-    }
 
     /**
      * 关闭.
@@ -228,7 +135,15 @@ class Scheduler
         }
         $task->updateLastRunTime(time());
         $this->runningTasks[$task->getId()] = $task;
-        $this->coPool->addTaskAsync($task);
+        // 执行
+        switch ($type = $task->getType())
+        {
+            case CronTaskType::CRON_PROCESS:
+            /** @var \Imi\Cron\CronWorker $cronWorker */
+            $cronWorker = App::getBean('CronWorker');
+            $cronWorker->exec($task->getId(), $task->getData(), $task->getTask(), $type);
+            break;
+        }
     }
 
     /**

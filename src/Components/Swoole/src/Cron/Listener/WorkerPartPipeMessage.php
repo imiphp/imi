@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cron\Listener;
+namespace Imi\Swoole\Cron\Listener;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;

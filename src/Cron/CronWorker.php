@@ -6,6 +6,7 @@ namespace Imi\Cron;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\Bean;
+use Imi\Cron\Contract\ICronManager;
 use Imi\Cron\Util\CronUtil;
 
 /**
@@ -18,9 +19,9 @@ class CronWorker
     /**
      * @Inject("CronManager")
      *
-     * @var \Imi\Cron\CronManager
+     * @var \Imi\Cron\Contract\ICronManager
      */
-    protected CronManager $cronManager;
+    protected ICronManager $cronManager;
 
     /**
      * 执行任务

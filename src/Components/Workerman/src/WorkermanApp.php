@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman;
 
+use Imi\App;
 use Imi\Bean\Annotation;
 use Imi\Bean\Scanner;
 use Imi\Cli\CliApp;
@@ -12,6 +13,9 @@ use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Imi;
+use Imi\Util\Process\ProcessAppContexts;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArgvInput;
 
 class WorkermanApp extends CliApp
@@ -26,6 +30,9 @@ class WorkermanApp extends CliApp
     public function __construct(string $namespace)
     {
         parent::__construct($namespace);
+        $this->cliEventDispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $e) {
+            $this->onCommand($e);
+        }, \PHP_INT_MAX - 1000);
         Event::one('IMI.SCAN_APP', function () {
             $this->onScanApp();
         });
@@ -151,6 +158,11 @@ class WorkermanApp extends CliApp
         {
             Helper::getMain($config['namespace'], 'server.' . $name);
         }
+    }
+
+    private function onCommand(ConsoleCommandEvent $e): void
+    {
+        App::set(ProcessAppContexts::MASTER_PID, getmypid(), true);
     }
 
     private function onScanApp(): void

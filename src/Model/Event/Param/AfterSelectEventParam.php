@@ -15,7 +15,7 @@ class AfterSelectEventParam extends EventParam
      */
     public $result;
 
-    public function __construct($eventName, $data = [], $target = null)
+    public function __construct(string $eventName, array $data = [], $target = null)
     {
         $this->eventName = $eventName;
         $this->target = $target;

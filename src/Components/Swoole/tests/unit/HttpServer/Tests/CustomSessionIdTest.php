@@ -13,10 +13,11 @@ use Yurun\Util\HttpRequest;
 class CustomSessionIdTest extends BaseTest
 {
     /**
-     * @param string $name
-     * @param string $dataName
+     * @param string|null $name
+     * @param array       $data
+     * @param string      $dataName
      */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
         $this->host = imiGetEnv('HTTP_SESSION_TEST_SERVER_HOST', 'http://127.0.0.1:13005/');

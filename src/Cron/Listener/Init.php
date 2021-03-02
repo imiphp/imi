@@ -10,12 +10,9 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Cron\Annotation\Cron;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Server\ServerManager;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
  * @Listener(eventName="IMI.SERVERS.CREATE.AFTER",priority=Imi\Util\ImiPriority::IMI_MIN)
- * @Listener(eventName="IMI.CO_SERVER.START",priority=Imi\Util\ImiPriority::IMI_MIN)
  */
 class Init implements IEventListener
 {
@@ -28,15 +25,13 @@ class Init implements IEventListener
      */
     public function handle(EventParam $e)
     {
-        $servers = ServerManager::getServers();
-        $server = reset($servers);
-        if (!$server instanceof ISwooleServer)
+        if ('cli' !== \PHP_SAPI)
         {
             return;
         }
-        /** @var \Imi\Cron\CronManager $cronManager */
+        /** @var \Imi\Cron\Contract\ICronManager $cronManager */
         $cronManager = App::getBean('CronManager');
-        /** @var \Imi\Swoole\Process\AutoRunProcessManager $autoRunProcessManager */
+        /** @var \Imi\Process\AutoRunProcessManager $autoRunProcessManager */
         $autoRunProcessManager = App::getBean('AutoRunProcessManager');
         // 未启用定时任务进程不初始化
         if (!$autoRunProcessManager->exists('CronProcess'))

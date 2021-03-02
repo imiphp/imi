@@ -15,7 +15,7 @@ class Server implements \ArrayAccess, \JsonSerializable
      */
     private array $defaultServer = [];
 
-    public function __construct($defaultServer)
+    public function __construct(array $defaultServer)
     {
         $this->defaultServer = $defaultServer;
     }

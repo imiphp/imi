@@ -6,6 +6,7 @@ namespace Imi\Workerman\Process;
 
 use Imi\App;
 use Imi\Event\Event;
+use Imi\RequestContext;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Workerman\Process\Contract\IProcess;
@@ -94,10 +95,16 @@ class ProcessManager
         }
         $processName = $alias ?? $name;
         self::$processes[$processName] = $worker = new Worker();
+        $worker->name = $name;
         $worker->reloadable = false;
-        $worker->onWorkerStart = function () use ($args, $processName, $worker, $options) {
+        $worker->onWorkerStart = function (Worker $worker) use ($args, $processName, $options) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $processName, true);
+
+            RequestContext::muiltiSet([
+                'worker' => $worker,
+            ]);
+
             // 随机数播种
             mt_srand();
             // 进程开始事件

@@ -2,17 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Imi\Cron;
+namespace Imi\Swoole\Cron;
 
 use Imi\App;
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Cron\Annotation\Cron;
-use Imi\Cron\Consts\CronTaskType;
 use Imi\Cron\Contract\ICronManager;
 use Imi\Cron\Contract\ICronTask;
+use Imi\Cron\CronTask;
+use Imi\Swoole\Cron\Consts\CronTaskType;
+use Imi\Swoole\Process\Annotation\Process;
+use Imi\Swoole\Process\Contract\IProcess;
+use Imi\Swoole\Process\ProcessManager;
+use Imi\Swoole\Task\Annotation\Task;
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskManager;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Symfony\Component\Console\Input\ArgvInput;
+use function Yurun\Swoole\Coroutine\goWait;
 
 /**
  * 定时任务管理器.
@@ -189,6 +198,15 @@ class CronManager implements ICronManager
      */
     public function getCronTypeByClass(string $class): ?string
     {
+        if (is_subclass_of($class, IProcess::class))
+        {
+            return CronTaskType::PROCESS;
+        }
+        elseif (is_subclass_of($class, ITaskHandler::class))
+        {
+            return CronTaskType::TASK;
+        }
+
         return null;
     }
 
@@ -208,13 +226,72 @@ class CronManager implements ICronManager
         {
             switch ($cronType)
             {
-                case CronTaskType::CRON_PROCESS:
-                    return function (string $id, $data) use ($class) {
+                case CronTaskType::ALL_WORKER:
+                case CronTaskType::RANDOM_WORKER:
+                    $task = function (string $id, $data) use ($class) {
                         /** @var \Imi\Cron\Contract\ICronTask $handler */
                         $handler = App::getBean($class);
                         $handler->run($id, $data);
                     };
+                    break;
+                case CronTaskType::TASK:
+                    $task = function (string $id, $data) use ($class) {
+                        TaskManager::nPost('imiCronTask', [
+                            'id'    => $id,
+                            'data'  => $data,
+                            'class' => $class,
+                        ]);
+                    };
+                    break;
+                case CronTaskType::PROCESS:
+                    $task = function (string $id, $data) use ($class) {
+                        ProcessManager::run('CronWorkerProcess', [
+                            'id'         => $id,
+                            'data'       => json_encode($data),
+                            'class'      => $class,
+                            'cron-sock'  => $this->getSocketFile(),
+                        ]);
+                    };
+                    break;
+                case CronTaskType::CRON_PROCESS:
+                    return function (string $id, $data) use ($class) {
+                        goWait(function () use ($class, $id, $data) {
+                            /** @var \Imi\Cron\Contract\ICronTask $handler */
+                            $handler = App::getBean($class);
+                            $handler->run($id, $data);
+                        });
+                    };
             }
+        }
+        elseif (is_subclass_of($class, IProcess::class))
+        {
+            $cronType = CronTaskType::PROCESS;
+            /** @var Process $process */
+            $process = AnnotationManager::getClassAnnotations($class, Process::class)[0] ?? null;
+            if (!$process)
+            {
+                throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Process Annotation', $cronId, $class));
+            }
+            $task = function (string $id, $data) use ($process) {
+                ProcessManager::run($process->name, [
+                    'id'         => $id,
+                    'data'       => json_encode($data),
+                    'cron-sock'  => $this->getSocketFile(),
+                ]);
+            };
+        }
+        elseif (is_subclass_of($class, ITaskHandler::class))
+        {
+            $cronType = CronTaskType::TASK;
+            /** @var Task $taskAnnotation */
+            $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class)[0] ?? null;
+            if (!$taskAnnotation)
+            {
+                throw new \RuntimeException(sprintf('Cron %s, class %s must have a @Task Annotation', $cronId, $class));
+            }
+            $task = function (string $id, $data) use ($taskAnnotation) {
+                TaskManager::nPost($taskAnnotation->name, $data);
+            };
         }
         else
         {
