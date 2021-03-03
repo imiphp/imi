@@ -90,3 +90,6 @@ jobs:
           ./.github/prepare-test.sh swoole
       - name: test
         run: docker exec swoole php tests/run
+      - name: print logs
+        if: failure()
+        run: docker exec swoole php .github/print-logs.php
