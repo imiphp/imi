@@ -27,23 +27,21 @@ class WSTest extends BaseTest
             ])));
             $recv = $client->recv();
             $recvData = json_decode($recv, true);
-            if (!isset($recvData['token']))
+            if (!isset($recvData['fd']))
             {
-                $this->assertTrue(false, 'Not found token');
+                $this->assertTrue(false, 'Not found fd');
             }
-            $token = $recvData['token'];
             $fd = $recvData['fd'];
             $this->assertEquals([
                 'success'        => true,
                 'middlewareData' => 'imi',
                 'requestUri'     => $this->host,
                 'uri'            => $this->host,
-                'token'          => $token,
                 'fd'             => $fd,
                 'getFdByFlag'    => $fd,
-                'getFlagByFd'    => $token,
-                'getFdsByFlags'  => [$token => $fd],
-                'getFlagsByFds'  => [$fd => $token],
+                'getFlagByFd'    => 'test',
+                'getFdsByFlags'  => ['test' => $fd],
+                'getFlagsByFds'  => [$fd => 'test'],
             ], $recvData);
             $time = time();
             $this->assertTrue($client->send(json_encode([
@@ -67,7 +65,7 @@ class WSTest extends BaseTest
             {
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'reconnect',
-                    'token'     => $token,
+                    'token'     => 'test',
                 ])));
                 $recv = $client->recv();
                 $recvData = json_decode($recv, true);

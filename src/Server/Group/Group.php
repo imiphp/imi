@@ -195,10 +195,11 @@ class Group
      */
     public function __call($name, $arguments)
     {
-        $server = $this->server->getSwooleServer();
-        if (!method_exists($server, $name))
+        $server = $this->server;
+        $swooleServer = $server->getSwooleServer();
+        if (!method_exists($swooleServer, $name))
         {
-            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($server), $name));
+            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($swooleServer), $name));
         }
         // 要检查的方法名
         static $checkMethods = [
@@ -217,12 +218,16 @@ class Group
         ];
         $methodIsCheck = \in_array($name, $checkMethods);
         $result = [];
-        $fdMap = $this->server->getBean('FdMap');
+        $fdMap = $server->getBean('FdMap');
         foreach ($this->handler->getFds($this->groupName) as $fd)
         {
+            if ('push' === $name && !$swooleServer->isEstablished($fd))
+            {
+                continue;
+            }
             // 执行结果
-            $result[$fd] = $itemResult = $server->$name($fd, ...$arguments);
-            if ($methodIsCheck && false === $itemResult && \in_array($server->getLastError(), $clientCloseErrors))
+            $result[$fd] = $itemResult = $swooleServer->$name($fd, ...$arguments);
+            if ($methodIsCheck && false === $itemResult && \in_array($swooleServer->getLastError(), $clientCloseErrors))
             {
                 // 客户端关闭的错误，直接把该客户端T出全部组
                 $fdMap->leaveAll($fd);

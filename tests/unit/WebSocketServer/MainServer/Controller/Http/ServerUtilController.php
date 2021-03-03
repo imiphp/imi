@@ -55,7 +55,7 @@ class ServerUtilController extends HttpController
      *
      * @return void
      */
-    public function send($fds)
+    public function send($fds, $flag)
     {
         $data = [
             'data'  => 'test',
@@ -65,9 +65,11 @@ class ServerUtilController extends HttpController
         $result['send1'] = Server::send($data);
         $result['send2'] = Server::send($data, $fds[0]);
         $result['send3'] = Server::send($data, $fds);
+        $result['sendByFlag'] = Server::sendByFlag($data, $flag);
         $result['sendRaw1'] = Server::sendRaw($dataStr);
         $result['sendRaw2'] = Server::sendRaw($dataStr, $fds[0]);
         $result['sendRaw3'] = Server::sendRaw($dataStr, $fds);
+        $result['sendRawByFlag'] = Server::sendRawByFlag($dataStr, $flag);
 
         $result['sendToAll'] = Server::sendToAll($data);
         $result['sendRawToAll'] = Server::sendRawToAll($dataStr);
@@ -92,5 +94,21 @@ class ServerUtilController extends HttpController
         $result['sendRawToGroup'] = Server::sendRawToGroup('g1', $dataStr);
 
         return $result;
+    }
+
+    /**
+     * @Action
+     *
+     * @param int    $fd
+     * @param string $flag
+     *
+     * @return void
+     */
+    public function close(int $fd, string $flag)
+    {
+        return [
+            'fd'   => Server::close($fd),
+            'flag' => Server::closeByFlag($flag),
+        ];
     }
 }
