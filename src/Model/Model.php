@@ -356,6 +356,7 @@ abstract class Model extends BaseModel
      */
     public function save(): IResult
     {
+        $meta = $this->__meta;
         $query = static::query($this);
         $data = static::parseSaveData(iterator_to_array($this), 'save', $this);
 
@@ -366,13 +367,48 @@ abstract class Model extends BaseModel
             'query' => $query,
         ], $this, \Imi\Model\Event\Param\BeforeSaveEventParam::class);
 
-        if ($this->__recordExists)
+        $recordExists = $this->__recordExists;
+
+        // 当有自增字段时，根据自增字段值处理
+        if (null === $recordExists)
+        {
+            $autoIncrementField = $meta->getAutoIncrementField();
+            if (null !== $autoIncrementField)
+            {
+                $recordExists = ($data[$autoIncrementField] ?? 0) > 0;
+            }
+        }
+
+        if (true === $recordExists)
         {
             $result = $this->update($data);
         }
-        else
+        elseif (false === $recordExists)
         {
             $result = $this->insert($data);
+        }
+        else
+        {
+            $keys = [];
+            foreach ($data as $k => $_)
+            {
+                $keys[] = $k;
+            }
+            $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
+                // 主键条件加入
+                foreach ($meta->getId() as $idName)
+                {
+                    if (isset($this->$idName))
+                    {
+                        $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
+                    }
+                }
+            })->replace($data);
+            if ($result->isSuccess() && $autoIncrementField)
+            {
+                $this[$autoIncrementField] = $result->getLastInsertId();
+            }
+            $this->__recordExists = true;
         }
 
         // 保存后

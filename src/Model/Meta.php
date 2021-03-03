@@ -107,7 +107,7 @@ class Meta
     /**
      * 自增字段名.
      *
-     * @var string
+     * @var string|null
      */
     private $autoIncrementField;
 
@@ -294,7 +294,7 @@ class Meta
     /**
      * Get 自增字段名.
      *
-     * @return string
+     * @return string|null
      */
     public function getAutoIncrementField()
     {
