@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server;
 
+use Imi\App;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\ConnectContext\ConnectionBinder;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
@@ -132,6 +134,51 @@ class Server
     }
 
     /**
+     * 发送数据给指定标记的客户端，支持一个或多个（数组）.
+     *
+     * 数据将会通过处理器编码
+     *
+     * @param mixed                $data
+     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
+     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     *
+     * @return int
+     */
+    public static function sendByFlag($data, $flag = null, $serverName = null): int
+    {
+        /** @var ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+
+        if (null === $flag)
+        {
+            $fd = RequestContext::get('fd');
+            if (!$fd)
+            {
+                return 0;
+            }
+            $fds = [$fd];
+        }
+        else
+        {
+            $fds = [];
+            foreach ((array) $flag as $tmpFlag)
+            {
+                $fd = $connectionBinder->getFdByFlag($tmpFlag);
+                if ($fd)
+                {
+                    $fds[] = $fd;
+                }
+            }
+            if (!$fds)
+            {
+                return 0;
+            }
+        }
+
+        return static::send($data, $fds, $serverName);
+    }
+
+    /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
      * @param string         $data
@@ -163,6 +210,10 @@ class Server
         $success = 0;
         foreach ((array) $fd as $tmpFd)
         {
+            if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
+            {
+                continue;
+            }
             if ($swooleServer->$method($tmpFd, $data))
             {
                 ++$success;
@@ -170,6 +221,49 @@ class Server
         }
 
         return $success;
+    }
+
+    /**
+     * 发送数据给指定标记的客户端，支持一个或多个（数组）.
+     *
+     * @param string               $data
+     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
+     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     *
+     * @return int
+     */
+    public static function sendRawByFlag(string $data, $flag = null, $serverName = null): int
+    {
+        /** @var ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+
+        if (null === $flag)
+        {
+            $fd = RequestContext::get('fd');
+            if (!$fd)
+            {
+                return 0;
+            }
+            $fds = [$fd];
+        }
+        else
+        {
+            $fds = [];
+            foreach ((array) $flag as $tmpFlag)
+            {
+                $fd = $connectionBinder->getFdByFlag($tmpFlag);
+                if ($fd)
+                {
+                    $fds[] = $fd;
+                }
+            }
+            if (!$fds)
+            {
+                return 0;
+            }
+        }
+
+        return static::sendRaw($data, $fds, $serverName);
     }
 
     /**
@@ -246,6 +340,10 @@ class Server
             }
             foreach ($server->getSwoolePort()->connections as $fd)
             {
+                if ('push' === $method && !$swooleServer->isEstablished($fd))
+                {
+                    continue;
+                }
                 if ($swooleServer->$method($fd, $data))
                 {
                     ++$success;
@@ -316,6 +414,71 @@ class Server
         }
 
         return $success;
+    }
+
+    /**
+     * 关闭一个或多个连接.
+     *
+     * @param int|int[]   $fd
+     * @param string|null $serverName
+     *
+     * @return int
+     */
+    public static function close($fd, ?string $serverName = null): int
+    {
+        $swooleServer = static::getServer($serverName)->getSwooleServer();
+        $count = 0;
+        foreach ((array) $fd as $currentFd)
+        {
+            if ($swooleServer->close($currentFd))
+            {
+                ++$count;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * 关闭一个或多个指定标记的连接.
+     *
+     * @param string|string[] $flag
+     * @param string|null     $serverName
+     *
+     * @return int
+     */
+    public static function closeByFlag($flag, ?string $serverName = null): int
+    {
+        /** @var ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+
+        if (null === $flag)
+        {
+            $fd = RequestContext::get('fd');
+            if (!$fd)
+            {
+                return 0;
+            }
+            $fds = [$fd];
+        }
+        else
+        {
+            $fds = [];
+            foreach ((array) $flag as $tmpFlag)
+            {
+                $fd = $connectionBinder->getFdByFlag($tmpFlag);
+                if ($fd)
+                {
+                    $fds[] = $fd;
+                }
+            }
+            if (!$fds)
+            {
+                return 0;
+            }
+        }
+
+        return static::close($fds, $serverName);
     }
 
     /**

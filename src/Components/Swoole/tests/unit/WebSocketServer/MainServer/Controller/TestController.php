@@ -31,19 +31,17 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getFd());
-        $token = md5(uniqid('', true));
-        ConnectContext::bind($token);
+        ConnectContext::bind($data->username);
 
         return [
             'success'             => true,
             'middlewareData'      => RequestContext::get('middlewareData'),
             'requestUri'          => ConnectContext::get('requestUri'),
             'uri'                 => (string) ConnectContext::get('uri'),
-            'token'               => $token,
             'fd'                  => $this->frame->getFd(),
-            'getFdByFlag'         => ConnectContext::getFdByFlag($token),
+            'getFdByFlag'         => ConnectContext::getFdByFlag($data->username),
             'getFlagByFd'         => ConnectContext::getFlagByFd($this->frame->getFd()),
-            'getFdsByFlags'       => ConnectContext::getFdsByFlags([$token]),
+            'getFdsByFlags'       => ConnectContext::getFdsByFlags([$data->username]),
             'getFlagsByFds'       => ConnectContext::getFlagsByFds([$this->frame->getFd()]),
         ];
     }

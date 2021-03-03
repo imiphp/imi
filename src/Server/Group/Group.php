@@ -199,6 +199,11 @@ class Group
     public function __call(string $name, array $arguments)
     {
         $server = $this->server;
+        $swooleServer = $server->getSwooleServer();
+        if (!method_exists($swooleServer, $name))
+        {
+            throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($swooleServer), $name));
+        }
         // 要检查的方法名
         static $checkMethods = [
             'close',
@@ -220,9 +225,13 @@ class Group
         $fdMap = RequestContext::getServerBean('FdMap');
         foreach ($this->handler->getFds($this->groupName) as $fd)
         {
+            if ('push' === $name && !$swooleServer->isEstablished($fd))
+            {
+                continue;
+            }
             // 执行结果
-            $result[$fd] = $itemResult = $server->callServerMethod($name, $fd, ...$arguments);
-            if ($methodIsCheck && false === $itemResult && \in_array($server->callServerMethod('getLastError'), $clientCloseErrors))
+            $result[$fd] = $itemResult = $swooleServer->callServerMethod($name, $fd, ...$arguments);
+            if ($methodIsCheck && false === $itemResult && \in_array($swooleServer->callServerMethod('getLastError'), $clientCloseErrors))
             {
                 // 客户端关闭的错误，直接把该客户端T出全部组
                 $fdMap->leaveAll($fd);

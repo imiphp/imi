@@ -6,6 +6,15 @@
 
 ## 方法
 
+### getServer
+
+获取服务器
+
+```php
+$server = Server::getServer(); // 获取当前服务器
+$server = Server::getServer('serverName'); // 获取指定名称的服务器
+```
+
 ### sendMessage
 
 发送消息给 Worker 进程，使用框架内置格式
@@ -74,6 +83,37 @@ Server::send([
 ], 1, 'myServer');
 ```
 
+### sendByFlag
+
+发送数据给指定标记的客户端，支持一个或多个（数组）
+
+> 数据将会通过处理器编码
+
+```php
+// 需要有绑定过的连接，才可以使用此方法
+\Imi\ConnectContext::bind('user1');
+
+// 发送给当前连接
+Server::sendByFlag([
+    // 数据
+]);
+
+// 发送给指定连接
+Server::sendByFlag([
+    // 数据
+], 'user1');
+
+// 发送给指定多个连接
+Server::sendByFlag([
+    // 数据
+], ['user1', 'user2', 'user3']);
+
+// 指定服务名，支持监听多个子服务器的情况
+Server::sendByFlag([
+    // 数据
+], 'user1', 'myServer');
+```
+
 ### sendRaw
 
 发送数据给指定客户端，支持一个或多个（数组）
@@ -90,6 +130,27 @@ Server::sendRaw('数据', [1, 2, 3]);
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRaw('数据', 1, 'myServer');
+```
+
+### sendRawByFlag
+
+发送数据给指定标记的客户端，支持一个或多个（数组）
+
+```php
+// 需要有绑定过的连接，才可以使用此方法
+\Imi\ConnectContext::bind('user1');
+
+// 发送给当前连接
+Server::sendRawByFlag('数据');
+
+// 发送给指定连接
+Server::sendRawByFlag('数据', 'user1');
+
+// 发送给指定多个连接
+Server::sendRawByFlag('数据', ['user1', 'user2', 'user3']);
+
+// 指定服务名，支持监听多个子服务器的情况
+Server::sendRawByFlag('数据', 'user1', 'myServer');
 ```
 
 ### sendToAll
@@ -172,4 +233,25 @@ Server::sendRawToGroup(['myGroupName1', 'myGroupName2'], '数据');
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRawToGroup('myGroupName', '数据', 'myServer');
+```
+
+### close
+
+关闭一个或多个连接
+
+```php
+Server::close(1); // 关闭 fd 1
+Server::close([1, 2, 3]); // 关闭 fd 1、2、3
+```
+
+### closeByFlag
+
+关闭一个或多个指定标记的连接
+
+```php
+// 需要有绑定过的连接，才可以使用此方法
+\Imi\ConnectContext::bind('user1');
+
+Server::closeByFlag('user1'); // 关闭 user1
+Server::closeByFlag(['user1', 'user2']); // 关闭 user1、user2
 ```
