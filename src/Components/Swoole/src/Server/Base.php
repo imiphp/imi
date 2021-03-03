@@ -184,6 +184,11 @@ abstract class Base extends BaseServer implements ISwooleServer
             throw new MethodNotFoundException(sprintf('%s->%s() method is not exists', \get_class($server), $methodName));
         }
 
+        if ('push' === $methodName && !$server->isEstablished($args[0] ?? null))
+        {
+            return false;
+        }
+
         return $server->$methodName(...$args);
     }
 
