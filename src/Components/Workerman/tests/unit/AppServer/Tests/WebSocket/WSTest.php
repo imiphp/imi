@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Test\AppServer\Tests\WebSocket;
 
 use Wrench\Client;
-use Yurun\Util\HttpRequest;
 
 /**
  * @testdox WebSocket
@@ -18,11 +17,6 @@ class WSTest extends BaseTest
     public function test()
     {
         $this->go(function () {
-            // $http = new HttpRequest();
-            // $http->retry = 3;
-            // $http->timeout = 3000;
-            // $http->connectTimeout = 3000;
-            // $client = $http->websocket($this->host);
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
@@ -62,11 +56,6 @@ class WSTest extends BaseTest
             $client->disconnect();
 
             // 重连逻辑
-            // $http = new HttpRequest();
-            // $http->retry = 3;
-            // $http->timeout = 3000;
-            // $http->connectTimeout = 3000;
-            // $client = $http->websocket($this->host);
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
 
@@ -109,11 +98,6 @@ class WSTest extends BaseTest
     public function testNotFound()
     {
         $this->go(function () {
-            // $http = new HttpRequest();
-            // $http->retry = 3;
-            // $http->timeout = 3000;
-            // $http->connectTimeout = 3000;
-            // $client = $http->websocket($this->host);
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
@@ -129,11 +113,6 @@ class WSTest extends BaseTest
     public function testMatchHttpRoute()
     {
         $this->go(function () {
-            // $http = new HttpRequest();
-            // $http->retry = 3;
-            // $http->timeout = 3000;
-            // $http->connectTimeout = 3000;
-            // $client = $http->websocket($this->host);
             $client = new Client($this->host, $this->host);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
@@ -145,7 +124,6 @@ class WSTest extends BaseTest
             $this->assertEquals(json_encode('gg'), $recv);
             $client->disconnect();
 
-            // $client = $http->websocket($this->host . 'test');
             $client = new Client($this->host . 'test', $this->host);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([

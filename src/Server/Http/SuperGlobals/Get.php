@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\Http\SuperGlobals;
+namespace Imi\Server\Http\SuperGlobals;
 
 use Imi\RequestContext;
 
-class Post implements \ArrayAccess, \JsonSerializable
+class Get implements \ArrayAccess, \JsonSerializable
 {
     public function offsetSet($offset, $value)
     {
-        trigger_error('imi does not support to assign values to $_POST', \E_USER_WARNING);
+        trigger_error('imi does not support to assign values to $_GET', \E_USER_WARNING);
     }
 
     public function offsetExists($offset)
@@ -18,12 +18,12 @@ class Post implements \ArrayAccess, \JsonSerializable
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return null !== $request->post($offset);
+        return null !== $request->get($offset);
     }
 
     public function offsetUnset($offset)
     {
-        trigger_error('imi does not support to unset values from $_POST', \E_USER_WARNING);
+        trigger_error('imi does not support to unset values from $_GET', \E_USER_WARNING);
     }
 
     public function offsetGet($offset)
@@ -31,7 +31,7 @@ class Post implements \ArrayAccess, \JsonSerializable
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return $request->post($offset);
+        return $request->get($offset);
     }
 
     public function __debugInfo()
@@ -44,6 +44,6 @@ class Post implements \ArrayAccess, \JsonSerializable
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
 
-        return $request->post();
+        return $request->get();
     }
 }

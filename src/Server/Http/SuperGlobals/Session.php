@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\Http\SuperGlobals;
+namespace Imi\Server\Http\SuperGlobals;
 
 use Imi\Server\Session\Session as ImiSession;
 

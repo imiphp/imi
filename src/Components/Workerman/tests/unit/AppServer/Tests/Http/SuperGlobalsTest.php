@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Test\HttpServer\Tests;
+namespace Imi\Workerman\Test\AppServer\Tests\Http;
 
 use Imi\Util\Http\Consts\MediaType;
 use Yurun\Util\HttpRequest;
@@ -57,8 +57,6 @@ class SuperGlobalsTest extends BaseTest
                 'username'  => 'admin',
             ],
         ], $data['session'] ?? null);
-
-        $this->assertEquals('/superGlobalsInfo', $data['server']['REQUEST_URI'] ?? null);
 
         $content = file_get_contents(__FILE__);
         $file = $data['files']['file'] ?? null;

@@ -23,6 +23,7 @@ return [
             $rootPath . '.git',
             $rootPath . 'bin',
             $rootPath . 'logs',
+            $rootPath . '.session',
         ], // 要排除的路径数组，支持通配符*
     ],
     'Logger'    => [

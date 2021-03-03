@@ -28,7 +28,7 @@ return [
             'middlewares'    => [
                 'OptionsMiddleware',
                 \Imi\Workerman\Test\AppServer\ApiServer\Middleware\RequestLogMiddleware::class,
-                // \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
+                \Imi\Server\Session\Middleware\HttpSessionMiddleware::class,
                 \Imi\Workerman\Test\AppServer\ApiServer\Middleware\PoweredBy::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
