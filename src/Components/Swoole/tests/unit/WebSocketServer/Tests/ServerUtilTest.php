@@ -122,7 +122,7 @@ class ServerUtilTest extends BaseTest
                             $recvData = json_decode($recv, true);
                             $this->assertTrue($recvData['success'] ?? null, 'Not found success');
                             $channel->push('test');
-                            for ($i = 0; $i < 2; ++$i)
+                            for ($i = 0; $i < 4; ++$i)
                             {
                                 $this->assertEquals($dataStr, $client->recv(10));
                             }
