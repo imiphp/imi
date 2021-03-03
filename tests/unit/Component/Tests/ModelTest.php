@@ -134,6 +134,11 @@ class ModelTest extends BaseTest
             'password'  => '4',
             'notInJson' => null,
         ], $member->convertToArray(false));
+
+        $member->password = '5';
+        $result = $member->save();
+        $this->assertTrue($result->isSuccess());
+        $this->assertEquals(1, $result->getAffectedRows());
     }
 
     public function testDelete()

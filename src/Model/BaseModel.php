@@ -71,9 +71,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 记录是否存在.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected bool $__recordExists = false;
+    protected ?bool $__recordExists = null;
 
     public function __construct(array $data = [])
     {
