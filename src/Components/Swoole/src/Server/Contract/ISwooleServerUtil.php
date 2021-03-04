@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server;
+namespace Imi\Swoole\Server\Contract;
 
-/**
- * 服务器工具类.
- */
-class Server extends \Imi\Server\Server
+use Imi\Server\Contract\IServerUtil;
+
+interface ISwooleServerUtil extends IServerUtil
 {
     /**
      * 发送消息给 Worker 进程，使用框架内置格式.
@@ -20,10 +19,7 @@ class Server extends \Imi\Server\Server
      *
      * @return int
      */
-    public static function sendMessage(string $action, array $data = [], $workerId = null): int
-    {
-        return static::getInstance()->sendMessage($action, $data, $workerId);
-    }
+    public function sendMessage(string $action, array $data = [], $workerId = null): int;
 
     /**
      * 发送消息给 Worker 进程.
@@ -35,8 +31,5 @@ class Server extends \Imi\Server\Server
      *
      * @return int
      */
-    public static function sendMessageRaw(string $message, $workerId = null): int
-    {
-        return static::getInstance()->sendMessageRaw($message, $workerId);
-    }
+    public function sendMessageRaw(string $message, $workerId = null): int;
 }
