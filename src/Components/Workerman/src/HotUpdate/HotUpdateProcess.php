@@ -10,7 +10,6 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
 use Imi\Log\Log;
-use Imi\Timer\Timer;
 use Imi\Util\Imi;
 use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
@@ -106,13 +105,6 @@ class HotUpdateProcess extends BaseProcess
      */
     private bool $building = false;
 
-    /**
-     * 构建运行时计时器ID.
-     *
-     * @var int
-     */
-    private int $buildRuntimeTimerId = 0;
-
     public function run(Worker $worker)
     {
         if (!$this->status)
@@ -130,7 +122,6 @@ class HotUpdateProcess extends BaseProcess
         $monitor = App::getBean($this->monitorClass, array_merge($this->defaultPath, $this->includePaths), $this->excludePaths);
         $time = 0;
         $this->initBuildRuntime();
-        $this->startBuildRuntimeTimer();
         while (true)
         {
             // 检测间隔延时
@@ -161,33 +152,12 @@ class HotUpdateProcess extends BaseProcess
                 Log::info('Building runtime...');
                 if ($this->building)
                 {
-                    $this->stopBuildRuntimeTimer();
                     $this->initBuildRuntime();
-                    $this->startBuildRuntimeTimer();
                 }
                 $this->beginBuildRuntime($changedFiles);
             }
+            $this->buildRuntimeTimer();
         }
-    }
-
-    /**
-     * 开始构建运行时计时器.
-     *
-     * @return void
-     */
-    private function startBuildRuntimeTimer()
-    {
-        $this->buildRuntimeTimerId = Timer::tick(1000, [$this, 'buildRuntimeTimer']);
-    }
-
-    /**
-     * 停止构建运行时计时器.
-     *
-     * @return void
-     */
-    private function stopBuildRuntimeTimer()
-    {
-        Timer::del($this->buildRuntimeTimerId);
     }
 
     /**

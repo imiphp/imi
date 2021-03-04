@@ -56,7 +56,8 @@
     "extra": {
         "ide-helper": {
             "list": [
-                "redis"
+                "redis",
+                "inotify"
             ]
         }
     }

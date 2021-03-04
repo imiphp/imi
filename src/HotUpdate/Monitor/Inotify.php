@@ -49,7 +49,7 @@ class Inotify extends BaseMonitor
             throw new \RuntimeException('the extension inotify is not installed');
         }
         $this->handler = $handler = inotify_init();
-        stream_set_blocking($handler, 0);
+        stream_set_blocking($handler, false);
 
         $excludePaths = &$this->excludePaths;
         $excludeRule = &$this->excludeRule;
