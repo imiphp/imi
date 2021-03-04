@@ -26,7 +26,7 @@ class Inotify extends BaseMonitor
      *
      * @var int
      */
-    protected $mask = IN_MODIFY | IN_MOVE | IN_CREATE | IN_DELETE;
+    protected $mask = \IN_MODIFY | \IN_MOVE | \IN_CREATE | \IN_DELETE;
 
     /**
      * 更改的文件们.
@@ -47,7 +47,7 @@ class Inotify extends BaseMonitor
             throw new \RuntimeException('the extension inotify is not installed');
         }
         $this->handler = $handler = inotify_init();
-        stream_set_blocking($handler, 0);
+        stream_set_blocking($handler, false);
 
         $excludePaths = &$this->excludePaths;
         $excludeRule = &$this->excludeRule;
@@ -129,7 +129,7 @@ class Inotify extends BaseMonitor
                 {
                     $changedFiles[] = $filePath;
                 }
-                if ((Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
+                if ((Bit::has($item['mask'], \IN_CREATE) || Bit::has($item['mask'], \IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
                 {
                     $paths[$filePath] = inotify_add_watch($handler, $filePath, $mask);
                 }
