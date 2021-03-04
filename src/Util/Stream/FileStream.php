@@ -125,7 +125,7 @@ class FileStream implements StreamInterface
         $stat = fstat($this->stream);
         if (false === $stat)
         {
-            throw new \RuntimeException('get stream size error');
+            throw new \RuntimeException('Get stream size error');
         }
 
         return $stat['size'];
@@ -143,7 +143,7 @@ class FileStream implements StreamInterface
         $result = ftell($this->stream);
         if (false === $result)
         {
-            throw new \RuntimeException('stream tell error');
+            throw new \RuntimeException('Stream tell error');
         }
 
         return $result;
@@ -187,7 +187,7 @@ class FileStream implements StreamInterface
     {
         if (-1 === fseek($this->stream, $offset, $whence))
         {
-            throw new \RuntimeException('seek stream error');
+            throw new \RuntimeException('Seek stream error');
         }
     }
 
@@ -206,7 +206,7 @@ class FileStream implements StreamInterface
     {
         if (!rewind($this->stream))
         {
-            throw new \RuntimeException('rewind stream failed');
+            throw new \RuntimeException('Rewind stream failed');
         }
     }
 
@@ -242,7 +242,7 @@ class FileStream implements StreamInterface
         $result = fwrite($this->stream, $string);
         if (false === $result)
         {
-            throw new \RuntimeException('write stream failed');
+            throw new \RuntimeException('Write stream failed');
         }
 
         return $result;
@@ -281,7 +281,7 @@ class FileStream implements StreamInterface
         $result = fread($this->stream, $length);
         if (false === $result)
         {
-            throw new \RuntimeException('read stream error');
+            throw new \RuntimeException('Read stream error');
         }
 
         return $result;
@@ -300,7 +300,7 @@ class FileStream implements StreamInterface
         $result = stream_get_contents($this->stream);
         if (false === $result)
         {
-            throw new \RuntimeException('stream getContents error');
+            throw new \RuntimeException('Stream getContents error');
         }
 
         return $result;
@@ -325,7 +325,7 @@ class FileStream implements StreamInterface
         $result = stream_get_meta_data($this->stream);
         if (!$result)
         {
-            throw new \RuntimeException('stream getMetadata error');
+            throw new \RuntimeException('Stream getMetadata error');
         }
         if (null === $key)
         {

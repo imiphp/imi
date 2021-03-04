@@ -400,7 +400,7 @@ abstract class AbstractMessage implements IMessage
         }
         elseif (!\is_array($value))
         {
-            throw new \InvalidArgumentException('invalid header names or values');
+            throw new \InvalidArgumentException('Invalid header names or values');
         }
 
         $headers = &$this->headers;
@@ -574,7 +574,7 @@ abstract class AbstractMessage implements IMessage
             }
             else
             {
-                throw new \InvalidArgumentException('invalid header names or values');
+                throw new \InvalidArgumentException('Invalid header names or values');
             }
         }
 

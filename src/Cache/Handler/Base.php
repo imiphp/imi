@@ -99,7 +99,7 @@ abstract class Base implements CacheInterface
     {
         if (!\is_array($values) && !$values instanceof \Traversable)
         {
-            throw new InvalidArgumentException('invalid keys');
+            throw new InvalidArgumentException('Invalid keys');
         }
     }
 }

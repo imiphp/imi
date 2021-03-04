@@ -163,7 +163,7 @@ class MemoryTableManager
     {
         if (static::$inited)
         {
-            throw new \RuntimeException('addName failed, MemoryTableManager was inited');
+            throw new \RuntimeException('AddName failed, MemoryTableManager was inited');
         }
         static::$tables[$name] = $option;
     }
@@ -179,7 +179,7 @@ class MemoryTableManager
     {
         if (static::$inited)
         {
-            throw new \RuntimeException('addName failed, MemoryTableManager was inited');
+            throw new \RuntimeException('AddName failed, MemoryTableManager was inited');
         }
         foreach ($names as $key => $value)
         {

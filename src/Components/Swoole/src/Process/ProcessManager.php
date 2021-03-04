@@ -155,7 +155,7 @@ class ProcessManager
                 {
                     if ($processOption['options']['unique'] && !static::lockProcess($name))
                     {
-                        throw new \RuntimeException('lock process lock file error');
+                        throw new \RuntimeException('Lock process lock file error');
                     }
                     \Imi\Swoole\Util\Process::clearNotInheritableSignalListener();
                     // 加载服务器注解
