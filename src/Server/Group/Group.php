@@ -149,6 +149,28 @@ class Group
     }
 
     /**
+     * 连接是否存在于组里.
+     *
+     * @param int $fd
+     *
+     * @return bool
+     */
+    public function isInGroup(int $fd): bool
+    {
+        return $this->handler->isInGroup($this->groupName, $fd);
+    }
+
+    /**
+     * 获取所有fd.
+     *
+     * @return int[]
+     */
+    public function getFds(): array
+    {
+        return $this->handler->getFds($this->groupName);
+    }
+
+    /**
      * 获取组中的连接总数.
      *
      * @return int

@@ -55,19 +55,19 @@ $this->server->leaveGroup('分组名称', $this->frame->getFd());
 ### 连接是否存在于组里
 
 ```php
-$this->server->getGroup()->isInGroup('分组名称', $this->frame->getFd());
+$this->server->getGroup('分组名称')->isInGroup($this->frame->getFd());
 ```
 
 ### 获取所有连接
 
 ```php
-$this->server->getGroup()->getFds('分组名称');
+$this->server->getGroup('分组名称')->getFds();
 ```
 
 ### 获取在组中的连接总数
 
 ```php
-$this->server->getGroup()->count('分组名称');
+$this->server->getGroup('分组名称')->count();
 ```
 
 ## 获取分组对象
