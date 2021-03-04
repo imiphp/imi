@@ -99,7 +99,7 @@ class AnnotationLoader
             // 未能成功加载抛出异常
             if (!isset($namespaceSplit[0]))
             {
-                throw new \RuntimeException('can not load annotations: ' . $namespace);
+                throw new \RuntimeException('Can not load annotations: ' . $namespace);
             }
         }
         else

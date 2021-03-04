@@ -130,11 +130,11 @@ class UploadedFile implements UploadedFileInterface
     {
         if (!\is_string($targetPath))
         {
-            throw new \InvalidArgumentException('targetPath specified is invalid');
+            throw new \InvalidArgumentException('$targetPath specified is invalid');
         }
         if ($this->isMoved)
         {
-            throw new \RuntimeException('file can not be moved');
+            throw new \RuntimeException('$file can not be moved');
         }
         if (is_uploaded_file($this->tmpFileName))
         {

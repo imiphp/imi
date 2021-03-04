@@ -267,7 +267,7 @@ abstract class AbstractMessage implements MessageInterface
         }
         elseif (!\is_array($value))
         {
-            throw new \InvalidArgumentException('invalid header names or values');
+            throw new \InvalidArgumentException('Invalid header names or values');
         }
 
         $headers = &$self->headers;
@@ -381,7 +381,7 @@ abstract class AbstractMessage implements MessageInterface
             }
             else
             {
-                throw new \InvalidArgumentException('invalid header names or values');
+                throw new \InvalidArgumentException('Invalid header names or values');
             }
         }
 

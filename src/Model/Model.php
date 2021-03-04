@@ -272,7 +272,7 @@ abstract class Model extends BaseModel
         }
         if (!isset($conditionId[0]))
         {
-            throw new \RuntimeException('use Model->update(), primary key can not be null');
+            throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
         $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
             // 主键条件加入
@@ -448,7 +448,7 @@ abstract class Model extends BaseModel
         }
         if (empty($bindValues))
         {
-            throw new \RuntimeException('use Model->delete(), primary key can not be null');
+            throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
         $result = $query->alias($this->__realClass . ':delete', function (IQuery $query) use ($id) {
             // 主键条件加入

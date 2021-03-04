@@ -140,7 +140,7 @@ class MemoryStream implements StreamInterface
             case \SEEK_SET:
                 if ($offset < 0)
                 {
-                    throw new \RuntimeException('offset failure');
+                    throw new \RuntimeException('Offset failure');
                 }
                 $this->position = $offset;
                 break;

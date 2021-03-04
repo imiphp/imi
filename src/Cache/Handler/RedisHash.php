@@ -318,7 +318,7 @@ SCRIPT;
     {
         if (!\is_string($key))
         {
-            throw new InvalidArgumentException('invalid key: ' . $key);
+            throw new InvalidArgumentException('Invalid key: ' . $key);
         }
         $list = explode($this->separator, $key);
 

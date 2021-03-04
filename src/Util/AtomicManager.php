@@ -50,7 +50,7 @@ abstract class AtomicManager
     {
         if (static::$isInited)
         {
-            throw new \RuntimeException('addName failed, AtomicManager was inited');
+            throw new \RuntimeException('AddName failed, AtomicManager was inited');
         }
         static::$atomics[$name] = $initValue;
     }
@@ -66,7 +66,7 @@ abstract class AtomicManager
     {
         if (static::$isInited)
         {
-            throw new \RuntimeException('addName failed, AtomicManager was inited');
+            throw new \RuntimeException('AddName failed, AtomicManager was inited');
         }
         foreach ($names as $key => $value)
         {
@@ -102,7 +102,7 @@ abstract class AtomicManager
     {
         if (!static::$isInited)
         {
-            throw new \RuntimeException('getInstance failed, AtomicManager is not initialized');
+            throw new \RuntimeException('GetInstance failed, AtomicManager is not initialized');
         }
         if (!isset(static::$atomics[$name]))
         {

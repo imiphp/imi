@@ -237,7 +237,7 @@ abstract class App
         $mainServer = Config::get('@app.mainServer');
         if (null === $mainServer)
         {
-            throw new \RuntimeException('config.mainServer not found');
+            throw new \RuntimeException('@app.mainServer not found');
         }
         // 主服务器
         ServerManage::createServer('main', $mainServer);

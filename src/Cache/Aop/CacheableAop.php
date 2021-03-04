@@ -55,7 +55,7 @@ class CacheableAop
             $name = Config::get('@currentServer.cache.default');
             if (null === $name)
             {
-                throw new \RuntimeException('config "cache.default" not found');
+                throw new \RuntimeException('Config "@currentServer.cache.default" not found');
             }
         }
 

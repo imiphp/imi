@@ -44,7 +44,7 @@ class Inotify extends BaseMonitor
     {
         if (!\extension_loaded('inotify'))
         {
-            throw new \RuntimeException('the extension inotify is not installed');
+            throw new \RuntimeException('The extension inotify is not installed');
         }
         $this->handler = $handler = inotify_init();
         stream_set_blocking($handler, false);

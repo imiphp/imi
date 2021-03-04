@@ -85,7 +85,7 @@ abstract class MemoryTableManager
     {
         if (static::$isInited)
         {
-            throw new \RuntimeException('addName failed, MemoryTableManager was inited');
+            throw new \RuntimeException('AddName failed, MemoryTableManager was inited');
         }
         static::$tables[$name] = $option;
     }
@@ -101,7 +101,7 @@ abstract class MemoryTableManager
     {
         if (static::$isInited)
         {
-            throw new \RuntimeException('addName failed, MemoryTableManager was inited');
+            throw new \RuntimeException('AddName failed, MemoryTableManager was inited');
         }
         foreach ($names as $key => $value)
         {
@@ -137,7 +137,7 @@ abstract class MemoryTableManager
     {
         if (!static::$isInited)
         {
-            throw new \RuntimeException('getInstance failed, MemoryTableManager is not initialized');
+            throw new \RuntimeException('GetInstance failed, MemoryTableManager is not initialized');
         }
         if (!isset(static::$tables[$name]['instance']))
         {

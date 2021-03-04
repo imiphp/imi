@@ -59,11 +59,11 @@ class Container implements ContainerInterface
 
         if (!\is_string($id))
         {
-            throw new ContainerException('id is not a string value');
+            throw new ContainerException('$id is not a string value');
         }
         if ('' === $id)
         {
-            throw new ContainerException('id can not be a empty string value');
+            throw new ContainerException('$id can not be a empty string value');
         }
 
         unset($params[0]);

@@ -394,7 +394,7 @@ class Uri implements UriInterface
     {
         if (!\is_string($scheme))
         {
-            throw new \InvalidArgumentException('invalid or unsupported schemes');
+            throw new \InvalidArgumentException('Invalid or unsupported schemes');
         }
         $self = clone $this;
         $self->scheme = $scheme;
