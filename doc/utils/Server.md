@@ -231,6 +231,11 @@ Server::sendToGroup(['myGroupName1', 'myGroupName2'], [
 Server::sendToGroup('myGroupName', [
     // 数据
 ], 'myServer');
+
+// BASE模式下，只发送给当前 worker 中的所有连接（默认发给所有进程的连接）
+Server::sendToGroup('myGroupName', [
+    // 数据
+], 'myServer', false);
 ```
 
 ### sendRawToGroup
@@ -249,6 +254,9 @@ Server::sendRawToGroup(['myGroupName1', 'myGroupName2'], '数据');
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRawToGroup('myGroupName', '数据', 'myServer');
+
+// BASE模式下，只发送给当前 worker 中的所有连接（默认发给所有进程的连接）
+Server::sendRawToGroup('myGroupName', '数据', 'myServer', false);
 ```
 
 ### close
