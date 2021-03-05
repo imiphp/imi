@@ -109,12 +109,13 @@ abstract class Server
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd         为 null 时，则发送给当前连接
-     * @param string|null    $serverName 服务器名，默认为当前服务器或主服务器
+     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function send($data, $fd = null, $serverName = null): int
+    public static function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
@@ -124,7 +125,7 @@ abstract class Server
             $serverName = $server->getName();
         }
 
-        return static::sendRaw($dataParser->encode($data, $serverName), $fd, $serverName);
+        return static::sendRaw($dataParser->encode($data, $serverName), $fd, $serverName, $toAllWorkers);
     }
 
     /**
@@ -133,12 +134,13 @@ abstract class Server
      * 数据将会通过处理器编码
      *
      * @param mixed                $data
-     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
-     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
+     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendByFlag($data, $flag = null, $serverName = null): int
+    public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -169,30 +171,23 @@ abstract class Server
             }
         }
 
-        return static::send($data, $fds, $serverName);
+        return static::send($data, $fds, $serverName, $toAllWorkers);
     }
 
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
      * @param string         $data
-     * @param int|int[]|null $fd         为 null 时，则发送给当前连接
-     * @param string|null    $serverName 服务器名，默认为当前服务器或主服务器
+     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendRaw(string $data, $fd = null, $serverName = null): int
+    public static function sendRaw(string $data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
         $swooleServer = $server->getSwooleServer();
-        if ($server instanceof \Imi\Server\WebSocket\Server)
-        {
-            $method = 'push';
-        }
-        else
-        {
-            $method = 'send';
-        }
         if (null === $fd)
         {
             $fd = RequestContext::get('fd');
@@ -201,16 +196,55 @@ abstract class Server
                 return 0;
             }
         }
+        $fds = (array) $fd;
         $success = 0;
-        foreach ((array) $fd as $tmpFd)
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
         {
-            if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
+            $id = uniqid('', true);
+            try
             {
-                continue;
+                $channel = ChannelContainer::getChannel($id);
+                static::sendMessage('sendToFdsRequest', [
+                    'messageId'  => $id,
+                    'fds'        => $fds,
+                    'data'       => $data,
+                    'serverName' => $server->getName(),
+                ]);
+                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                {
+                    $result = $channel->pop(30);
+                    if (false === $result)
+                    {
+                        break;
+                    }
+                    $success += ($result['result'] ?? 0);
+                }
             }
-            if ($swooleServer->$method($tmpFd, $data))
+            finally
             {
-                ++$success;
+                ChannelContainer::removeChannel($id);
+            }
+        }
+        else
+        {
+            if ($server instanceof \Imi\Server\WebSocket\Server)
+            {
+                $method = 'push';
+            }
+            else
+            {
+                $method = 'send';
+            }
+            foreach ($fds as $tmpFd)
+            {
+                if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
+                {
+                    continue;
+                }
+                if ($swooleServer->$method($tmpFd, $data))
+                {
+                    ++$success;
+                }
             }
         }
 
@@ -221,12 +255,13 @@ abstract class Server
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
      *
      * @param string               $data
-     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
-     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
+     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendRawByFlag(string $data, $flag = null, $serverName = null): int
+    public static function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -257,7 +292,7 @@ abstract class Server
             }
         }
 
-        return static::sendRaw($data, $fds, $serverName);
+        return static::sendRaw($data, $fds, $serverName, $toAllWorkers);
     }
 
     /**

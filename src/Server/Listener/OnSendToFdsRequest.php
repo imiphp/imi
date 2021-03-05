@@ -1,6 +1,6 @@
 <?php
 
-namespace Imi\Server\ConnectContext\Listener;
+namespace Imi\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
@@ -8,11 +8,11 @@ use Imi\Event\IEventListener;
 use Imi\Server\Server;
 
 /**
- * 发送给所有 Worker 进程的连接-请求
+ * 发送给指定连接-请求
  *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawToAllRequest")
+ * @Listener(eventName="IMI.PIPE_MESSAGE.sendToFdsRequest")
  */
-class OnSendRawToAllRequest implements IEventListener
+class OnSendToFdsRequest implements IEventListener
 {
     /**
      * 事件处理方法.
@@ -26,8 +26,8 @@ class OnSendRawToAllRequest implements IEventListener
         $data = $e->getData();
         $workerId = $data['workerID'];
         $data = $data['data'];
-        $result = Server::sendRawToAll($data['data'], $data['serverName'], false);
-        Server::sendMessage('sendRawToAllResponse', [
+        $result = Server::sendRaw($data['data'], $data['fds'], $data['serverName'], false);
+        Server::sendMessage('sendToFdsResponse', [
             'messageId' => $data['messageId'],
             'result'    => $result,
         ], $workerId);

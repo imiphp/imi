@@ -1,6 +1,6 @@
 <?php
 
-namespace Imi\Server\ConnectContext\Listener;
+namespace Imi\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
@@ -8,11 +8,11 @@ use Imi\Event\IEventListener;
 use Imi\Util\Co\ChannelContainer;
 
 /**
- * 发送给所有 Worker 进程的连接-响应.
+ * 发送给指定连接-响应.
  *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawToAllResponse")
+ * @Listener(eventName="IMI.PIPE_MESSAGE.sendToFdsResponse")
  */
-class OnSendRawToAllResponse implements IEventListener
+class OnSendToFdsResponse implements IEventListener
 {
     /**
      * 事件处理方法.

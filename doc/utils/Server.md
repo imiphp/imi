@@ -81,6 +81,11 @@ Server::send([
 Server::send([
     // 数据
 ], 1, 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::send([
+    // 数据
+], 1, 'myServer', false);
 ```
 
 ### sendByFlag
@@ -112,6 +117,11 @@ Server::sendByFlag([
 Server::sendByFlag([
     // 数据
 ], 'user1', 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::sendByFlag([
+    // 数据
+], 'user1', 'myServer', false);
 ```
 
 ### sendRaw
@@ -130,6 +140,9 @@ Server::sendRaw('数据', [1, 2, 3]);
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRaw('数据', 1, 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::sendRaw('数据', 1, 'myServer', false);
 ```
 
 ### sendRawByFlag
@@ -151,6 +164,9 @@ Server::sendRawByFlag('数据', ['user1', 'user2', 'user3']);
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRawByFlag('数据', 'user1', 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::sendRawByFlag('数据', 'user1', 'myServer', false);
 ```
 
 ### sendToAll
