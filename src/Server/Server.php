@@ -394,11 +394,12 @@ abstract class Server
      *
      * @param string|string[] $groupName
      * @param mixed           $data
-     * @param string|null     $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendToGroup($groupName, $data, $serverName = null): int
+    public static function sendToGroup($groupName, $data, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
@@ -408,7 +409,7 @@ abstract class Server
             $serverName = $server->getName();
         }
 
-        return static::sendRawToGroup($groupName, $dataParser->encode($data, $serverName), $serverName);
+        return static::sendRawToGroup($groupName, $dataParser->encode($data, $serverName), $serverName, $toAllWorkers);
     }
 
     /**
@@ -418,33 +419,66 @@ abstract class Server
      *
      * @param string|string[] $groupName
      * @param string          $data
-     * @param string|null     $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendRawToGroup($groupName, string $data, $serverName = null): int
+    public static function sendRawToGroup($groupName, string $data, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
-        if ($server instanceof \Imi\Server\WebSocket\Server)
+        $swooleServer = $server->getSwooleServer();
+        $groups = (array) $groupName;
+        $success = 0;
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
         {
-            $method = 'push';
+            $id = uniqid('', true);
+            try
+            {
+                $channel = ChannelContainer::getChannel($id);
+                static::sendMessage('sendToGroupsRequest', [
+                    'messageId'     => $id,
+                    'groups'        => $groups,
+                    'data'          => $data,
+                    'serverName'    => $server->getName(),
+                ]);
+                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                {
+                    $result = $channel->pop(30);
+                    if (false === $result)
+                    {
+                        break;
+                    }
+                    $success += ($result['result'] ?? 0);
+                }
+            }
+            finally
+            {
+                ChannelContainer::removeChannel($id);
+            }
         }
         else
         {
-            $method = 'send';
-        }
-        $success = 0;
-        foreach ((array) $groupName as $tmpGroupName)
-        {
-            $group = $server->getGroup($tmpGroupName);
-            if ($group)
+            if ($server instanceof \Imi\Server\WebSocket\Server)
             {
-                $result = $group->$method($data);
-                foreach ($result as $item)
+                $method = 'push';
+            }
+            else
+            {
+                $method = 'send';
+            }
+            foreach ($groups as $tmpGroupName)
+            {
+                $group = $server->getGroup($tmpGroupName);
+                if ($group)
                 {
-                    if ($item)
+                    $result = $group->$method($data);
+                    foreach ($result as $item)
                     {
-                        ++$success;
+                        if ($item)
+                        {
+                            ++$success;
+                        }
                     }
                 }
             }
