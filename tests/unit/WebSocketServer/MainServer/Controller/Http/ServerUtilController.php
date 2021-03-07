@@ -6,6 +6,7 @@ use Imi\Controller\HttpController;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Server;
+use Imi\ServerManage;
 
 /**
  * 服务器工具类.
@@ -88,7 +89,9 @@ class ServerUtilController extends HttpController
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
-        $result = [];
+        $result = [
+            'groupFdCount' => ServerManage::getServer('main')->getGroup('g1')->count(),
+        ];
 
         $result['sendToGroup'] = Server::sendToGroup('g1', $data);
         $result['sendRawToGroup'] = Server::sendRawToGroup('g1', $dataStr);

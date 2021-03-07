@@ -34,6 +34,7 @@ class WSTest extends BaseTest
             $fd = $recvData['fd'];
             $this->assertEquals([
                 'success'        => true,
+                'username'       => 'test',
                 'middlewareData' => 'imi',
                 'requestUri'     => $this->host,
                 'uri'            => $this->host,

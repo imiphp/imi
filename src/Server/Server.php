@@ -198,7 +198,15 @@ abstract class Server
         }
         $fds = (array) $fd;
         $success = 0;
-        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        if ($server instanceof \Imi\Server\WebSocket\Server)
+        {
+            $method = 'push';
+        }
+        else
+        {
+            $method = 'send';
+        }
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
             $id = uniqid('', true);
             try
@@ -227,14 +235,6 @@ abstract class Server
         }
         else
         {
-            if ($server instanceof \Imi\Server\WebSocket\Server)
-            {
-                $method = 'push';
-            }
-            else
-            {
-                $method = 'send';
-            }
             foreach ($fds as $tmpFd)
             {
                 if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
@@ -335,7 +335,15 @@ abstract class Server
         $server = static::getServer($serverName);
         $swooleServer = $server->getSwooleServer();
         $success = 0;
-        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        if ($server instanceof \Imi\Server\WebSocket\Server)
+        {
+            $method = 'push';
+        }
+        else
+        {
+            $method = 'send';
+        }
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
             $id = uniqid('', true);
             try
@@ -363,14 +371,6 @@ abstract class Server
         }
         else
         {
-            if ($server instanceof \Imi\Server\WebSocket\Server)
-            {
-                $method = 'push';
-            }
-            else
-            {
-                $method = 'send';
-            }
             foreach ($server->getSwoolePort()->connections as $fd)
             {
                 if ('push' === $method && !$swooleServer->isEstablished($fd))
@@ -430,7 +430,15 @@ abstract class Server
         $swooleServer = $server->getSwooleServer();
         $groups = (array) $groupName;
         $success = 0;
-        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        if ($server instanceof \Imi\Server\WebSocket\Server)
+        {
+            $method = 'push';
+        }
+        else
+        {
+            $method = 'send';
+        }
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
             $id = uniqid('', true);
             try
@@ -459,21 +467,13 @@ abstract class Server
         }
         else
         {
-            if ($server instanceof \Imi\Server\WebSocket\Server)
-            {
-                $method = 'push';
-            }
-            else
-            {
-                $method = 'send';
-            }
             foreach ($groups as $tmpGroupName)
             {
                 $group = $server->getGroup($tmpGroupName);
                 if ($group)
                 {
                     $result = $group->$method($data);
-                    foreach ($result as $item)
+                    foreach ($result as $tmpFd => $item)
                     {
                         if ($item)
                         {
@@ -492,18 +492,50 @@ abstract class Server
      *
      * @param int|int[]   $fd
      * @param string|null $serverName
+     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function close($fd, ?string $serverName = null): int
+    public static function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        $swooleServer = static::getServer($serverName)->getSwooleServer();
+        $server = static::getServer($serverName);
+        $swooleServer = $server->getSwooleServer();
         $count = 0;
-        foreach ((array) $fd as $currentFd)
+        $fds = (array) $fd;
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && version_compare(\SWOOLE_VERSION, '4.6', '<'))
         {
-            if ($swooleServer->close($currentFd))
+            $id = uniqid('', true);
+            try
             {
-                ++$count;
+                $channel = ChannelContainer::getChannel($id);
+                static::sendMessage('closeConnectionRequest', [
+                    'messageId'     => $id,
+                    'fds'           => $fds,
+                    'serverName'    => $server->getName(),
+                ]);
+                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                {
+                    $result = $channel->pop(30);
+                    if (false === $result)
+                    {
+                        break;
+                    }
+                    $count += ($result['result'] ?? 0);
+                }
+            }
+            finally
+            {
+                ChannelContainer::removeChannel($id);
+            }
+        }
+        else
+        {
+            foreach ($fds as $currentFd)
+            {
+                if ($swooleServer->close($currentFd))
+                {
+                    ++$count;
+                }
             }
         }
 
@@ -515,10 +547,11 @@ abstract class Server
      *
      * @param string|string[] $flag
      * @param string|null     $serverName
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function closeByFlag($flag, ?string $serverName = null): int
+    public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -549,7 +582,7 @@ abstract class Server
             }
         }
 
-        return static::close($fds, $serverName);
+        return static::close($fds, $serverName, $toAllWorkers);
     }
 
     /**

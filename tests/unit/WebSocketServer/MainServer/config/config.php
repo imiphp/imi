@@ -46,6 +46,6 @@ return [
         ],
     ],
     'controller'    => [
-        'singleton' => true,
+        'singleton' => false,
     ],
 ];

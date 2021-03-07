@@ -75,7 +75,7 @@ class ServerUtilTest extends BaseTest
                         $client->close();
                     };
                     $waitChannel = new Channel(16);
-                    go(function () use ($func, $waitChannel) {
+                    go(function () use ($func, $channel,$waitChannel) {
                         try
                         {
                             $func(6);
@@ -83,10 +83,11 @@ class ServerUtilTest extends BaseTest
                         }
                         catch (\Throwable $th)
                         {
+                            $channel->push($th);
                             $waitChannel->push($th);
                         }
                     });
-                    go(function () use ($func, $waitChannel) {
+                    go(function () use ($func, $channel,$waitChannel) {
                         try
                         {
                             $func(4);
@@ -94,6 +95,7 @@ class ServerUtilTest extends BaseTest
                         }
                         catch (\Throwable $th)
                         {
+                            $channel->push($th);
                             $waitChannel->push($th);
                         }
                     });
@@ -126,10 +128,12 @@ class ServerUtilTest extends BaseTest
                         }
                         catch (\Throwable $th)
                         {
+                            $channel->push($th);
                             $waitChannel->push($th);
                         }
                     });
                     $fds = [];
+                    $th = null;
                     for ($i = 0; $i < 3; ++$i)
                     {
                         $result = $channel->pop(10);
@@ -138,6 +142,14 @@ class ServerUtilTest extends BaseTest
                         {
                             $fds[] = $result;
                         }
+                        elseif ($result instanceof \Throwable)
+                        {
+                            $th = $result;
+                        }
+                    }
+                    if (isset($th))
+                    {
+                        throw $th;
                     }
                     $this->assertCount(2, $fds);
                     $http = new HttpRequest();
@@ -161,11 +173,8 @@ class ServerUtilTest extends BaseTest
                     for ($i = 0; $i < 3; ++$i)
                     {
                         $result = $waitChannel->pop();
-                        if (false === $result)
-                        {
-                            break;
-                        }
-                        elseif ($result instanceof \Throwable)
+                        $this->assertNotFalse($result);
+                        if ($result instanceof \Throwable)
                         {
                             $th = $result;
                         }
@@ -221,55 +230,47 @@ class ServerUtilTest extends BaseTest
                         }
                         $client->close();
                     };
-                    go(function () use ($func, $waitChannel) {
-                        try
-                        {
-                            $func(2);
-                            $waitChannel->push(1);
-                        }
-                        catch (\Throwable $th)
-                        {
-                            $waitChannel->push($th);
-                        }
-                    });
-                    go(function () use ($func, $waitChannel) {
-                        try
-                        {
-                            $func(2);
-                            $waitChannel->push(1);
-                        }
-                        catch (\Throwable $th)
-                        {
-                            $waitChannel->push($th);
-                        }
-                    });
+                    for ($i = 0; $i < 2; ++$i)
+                    {
+                        go(function () use ($func, $waitChannel) {
+                            try
+                            {
+                                $func(2);
+                                $waitChannel->push(1);
+                            }
+                            catch (\Throwable $th)
+                            {
+                                $waitChannel->push($th);
+                            }
+                        });
+                    }
+                    $th = null;
                     for ($i = 0; $i < 2; ++$i)
                     {
                         $result = $waitChannel->pop();
-                        if (false === $result)
+                        $this->assertNotFalse($result);
+                        if ($result instanceof \Throwable)
                         {
-                            break;
+                            $th = $result;
                         }
-                        elseif ($result instanceof \Throwable)
-                        {
-                            throw $result;
-                        }
+                    }
+                    if (isset($th))
+                    {
+                        throw $th;
                     }
                     $http = new HttpRequest();
                     $response = $http->get($this->host . 'serverUtil/sendToGroup');
                     $this->assertEquals([
-                        'sendToGroup'       => 2,
-                        'sendRawToGroup'    => 2,
+                        'groupFdCount'   => 2,
+                        'sendToGroup'    => 2,
+                        'sendRawToGroup' => 2,
                     ], $response->json(true));
                     $th = null;
                     for ($i = 0; $i < 2; ++$i)
                     {
                         $result = $waitChannel->pop();
-                        if (false === $result)
-                        {
-                            break;
-                        }
-                        elseif ($result instanceof \Throwable)
+                        $this->assertNotFalse($result);
+                        if ($result instanceof \Throwable)
                         {
                             $th = $result;
                         }
