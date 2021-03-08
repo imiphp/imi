@@ -17,8 +17,6 @@ class WSTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
@@ -56,8 +54,6 @@ class WSTest extends BaseTest
             // 重连逻辑
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
 
@@ -97,8 +93,6 @@ class WSTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
@@ -115,8 +109,6 @@ class WSTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([

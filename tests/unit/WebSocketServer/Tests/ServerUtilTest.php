@@ -54,8 +54,6 @@ class ServerUtilTest extends BaseTest
                         ]);
                         $http = new HttpRequest();
                         $http->retry = 3;
-                        $http->timeout = 3000;
-                        $http->connectTimeout = 3000;
                         $client = $http->websocket($this->host);
                         $this->assertTrue($client->isConnected());
                         $this->assertTrue($client->send(json_encode([
@@ -108,8 +106,6 @@ class ServerUtilTest extends BaseTest
                             ]);
                             $http = new HttpRequest();
                             $http->retry = 3;
-                            $http->timeout = 3000;
-                            $http->connectTimeout = 3000;
                             $client = $http->websocket($this->host);
                             $this->assertTrue($client->isConnected());
                             $this->assertTrue($client->send(json_encode([
@@ -214,8 +210,6 @@ class ServerUtilTest extends BaseTest
                         ]);
                         $http = new HttpRequest();
                         $http->retry = 3;
-                        $http->timeout = 3000;
-                        $http->connectTimeout = 3000;
                         $client = $http->websocket($this->host);
                         $this->assertTrue($client->isConnected());
                         $this->assertTrue($client->send(json_encode([
@@ -300,8 +294,6 @@ class ServerUtilTest extends BaseTest
     {
         $http1 = new HttpRequest();
         $http1->retry = 3;
-        $http1->timeout = 3000;
-        $http1->connectTimeout = 3000;
         $client1 = $http1->websocket($this->host);
         $this->assertTrue($client1->isConnected());
         $this->assertTrue($client1->send(json_encode([
@@ -313,8 +305,6 @@ class ServerUtilTest extends BaseTest
 
         $http2 = new HttpRequest();
         $http2->retry = 3;
-        $http2->timeout = 3000;
-        $http2->connectTimeout = 3000;
         $client2 = $http2->websocket($this->host);
         $this->assertTrue($client2->isConnected());
         $this->assertTrue($client2->send(json_encode([
