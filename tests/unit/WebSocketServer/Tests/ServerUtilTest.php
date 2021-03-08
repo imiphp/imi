@@ -157,18 +157,6 @@ class ServerUtilTest extends BaseTest
                         'fds'  => $fds,
                         'flag' => 'testSend',
                     ], 'json');
-                    $this->assertEquals([
-                        'send1'         => 0,
-                        'send2'         => 1,
-                        'send3'         => 2,
-                        'sendByFlag'    => 1,
-                        'sendRaw1'      => 0,
-                        'sendRaw2'      => 1,
-                        'sendRaw3'      => 2,
-                        'sendRawByFlag' => 1,
-                        'sendToAll'     => 3,
-                        'sendRawToAll'  => 3,
-                    ], $response->json(true));
                     $th = null;
                     for ($i = 0; $i < 3; ++$i)
                     {
@@ -183,6 +171,18 @@ class ServerUtilTest extends BaseTest
                     {
                         throw $th;
                     }
+                    $this->assertEquals([
+                        'send1'         => 0,
+                        'send2'         => 1,
+                        'send3'         => 2,
+                        'sendByFlag'    => 1,
+                        'sendRaw1'      => 0,
+                        'sendRaw2'      => 1,
+                        'sendRaw3'      => 2,
+                        'sendRawByFlag' => 1,
+                        'sendToAll'     => 3,
+                        'sendRawToAll'  => 3,
+                    ], $response->json(true));
                     break;
                 }
                 catch (\Throwable $th)
@@ -260,11 +260,6 @@ class ServerUtilTest extends BaseTest
                     }
                     $http = new HttpRequest();
                     $response = $http->get($this->host . 'serverUtil/sendToGroup');
-                    $this->assertEquals([
-                        'groupFdCount'   => 2,
-                        'sendToGroup'    => 2,
-                        'sendRawToGroup' => 2,
-                    ], $response->json(true));
                     $th = null;
                     for ($i = 0; $i < 2; ++$i)
                     {
@@ -279,6 +274,11 @@ class ServerUtilTest extends BaseTest
                     {
                         throw $th;
                     }
+                    $this->assertEquals([
+                        'groupFdCount'   => 2,
+                        'sendToGroup'    => 2,
+                        'sendRawToGroup' => 2,
+                    ], $response->json(true));
                     break;
                 }
                 catch (\Throwable $th)
