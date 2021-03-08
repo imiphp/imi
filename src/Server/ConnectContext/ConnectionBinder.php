@@ -46,10 +46,21 @@ class ConnectionBinder
                 $it = null;
                 do
                 {
-                    $arrKeys = $redis->scan($it, $key . ':*');
-                    if ($arrKeys)
+                    $keys = [];
+                    $count = 0;
+                    foreach ($redis->scanEach($key . ':*') as $key)
                     {
-                        $redis->del(...$arrKeys);
+                        $keys[] = $key;
+                        if (++$count >= 1000)
+                        {
+                            $redis->del($keys);
+                            $keys = [];
+                            $count = 0;
+                        }
+                    }
+                    if ($keys)
+                    {
+                        $redis->del($keys);
                     }
                 } while ($it > 0);
             });
