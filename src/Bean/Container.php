@@ -46,7 +46,7 @@ class Container implements ContainerInterface
      *
      * @return mixed Entry.
      */
-    public function get(string $id)
+    public function get($id)
     {
         // 实现传递实例化参数
         $params = \func_get_args();
@@ -57,6 +57,10 @@ class Container implements ContainerInterface
             return $singletonObjects[$id];
         }
 
+        if (!\is_string($id))
+        {
+            throw new ContainerException('$id is not a string value');
+        }
         if ('' === $id)
         {
             throw new ContainerException('$id can not be a empty string value');
@@ -108,7 +112,7 @@ class Container implements ContainerInterface
      *
      * @return bool
      */
-    public function has(string $id)
+    public function has($id)
     {
         return '' !== $id && isset($this->singletonObjects[$id]);
     }
