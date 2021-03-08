@@ -68,7 +68,7 @@ class ServerUtilTest extends BaseTest
                         $channel->push($recvData['fd']);
                         for ($i = 0; $i < $recvCount; ++$i)
                         {
-                            $recvResult = $client->recv(10);
+                            $recvResult = $client->recv();
                             $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                         }
                         $client->close();
@@ -118,7 +118,7 @@ class ServerUtilTest extends BaseTest
                             $channel->push('test');
                             for ($i = 0; $i < 4; ++$i)
                             {
-                                $recvResult = $client->recv(10);
+                                $recvResult = $client->recv();
                                 $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                             }
                             $client->close();
@@ -134,7 +134,7 @@ class ServerUtilTest extends BaseTest
                     $th = null;
                     for ($i = 0; $i < 3; ++$i)
                     {
-                        $result = $channel->pop(10);
+                        $result = $channel->pop(30);
                         $this->assertNotFalse($result);
                         if (\is_int($result))
                         {
@@ -222,7 +222,7 @@ class ServerUtilTest extends BaseTest
                         $waitChannel->push(1);
                         for ($i = 0; $i < $recvCount; ++$i)
                         {
-                            $recvResult = $client->recv(10);
+                            $recvResult = $client->recv();
                             $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                         }
                         $client->close();
