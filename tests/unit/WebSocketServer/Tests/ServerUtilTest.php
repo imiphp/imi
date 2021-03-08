@@ -65,12 +65,13 @@ class ServerUtilTest extends BaseTest
                         $recvData = json_decode($recv, true);
                         if (!isset($recvData['fd']))
                         {
-                            $this->assertTrue(false, 'Not found fd');
+                            $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
                         }
                         $channel->push($recvData['fd']);
                         for ($i = 0; $i < $recvCount; ++$i)
                         {
-                            $this->assertEquals($dataStr, $client->recv(10));
+                            $recvResult = $client->recv(10);
+                            $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                         }
                         $client->close();
                     };
@@ -117,11 +118,12 @@ class ServerUtilTest extends BaseTest
                             ])));
                             $recv = $client->recv();
                             $recvData = json_decode($recv, true);
-                            $this->assertTrue($recvData['success'] ?? null, 'Not found success');
+                            $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
                             $channel->push('test');
                             for ($i = 0; $i < 4; ++$i)
                             {
-                                $this->assertEquals($dataStr, $client->recv(10));
+                                $recvResult = $client->recv(10);
+                                $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                             }
                             $client->close();
                             $waitChannel->push(1);
@@ -222,11 +224,12 @@ class ServerUtilTest extends BaseTest
                         ])));
                         $recv = $client->recv();
                         $recvData = json_decode($recv, true);
-                        $this->assertTrue($recvData['success'] ?? null, 'Not found success');
+                        $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
                         $waitChannel->push(1);
                         for ($i = 0; $i < $recvCount; ++$i)
                         {
-                            $this->assertEquals($dataStr, $client->recv(10));
+                            $recvResult = $client->recv(10);
+                            $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
                         }
                         $client->close();
                     };

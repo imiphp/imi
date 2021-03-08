@@ -29,7 +29,7 @@ class WSTest extends BaseTest
             $recvData = json_decode($recv, true);
             if (!isset($recvData['fd']))
             {
-                $this->assertTrue(false, 'Not found fd');
+                $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
             }
             $fd = $recvData['fd'];
             $this->assertEquals([
@@ -50,7 +50,7 @@ class WSTest extends BaseTest
                 'message'   => $time,
             ])));
             $recv = $client->recv();
-            $this->assertEquals('test:' . $time, $recv);
+            $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
 
             // 重连逻辑
@@ -79,7 +79,7 @@ class WSTest extends BaseTest
             $this->assertEquals([
                 'success'   => true,
                 'username'  => 'test',
-            ], $recvData);
+            ], $recvData, $client->getErrorCode() . '-' . $client->getErrorMessage());
 
             $time = time();
             $this->assertTrue($client->send(json_encode([
@@ -87,7 +87,7 @@ class WSTest extends BaseTest
                 'message'   => $time,
             ])));
             $recv = $client->recv();
-            $this->assertEquals('test:' . $time, $recv);
+            $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
     }
@@ -105,7 +105,7 @@ class WSTest extends BaseTest
                 'action'    => 'gg',
             ])));
             $recv = $client->recv();
-            $this->assertEquals(json_encode('gg'), $recv);
+            $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
     }
@@ -124,7 +124,7 @@ class WSTest extends BaseTest
                 'username'  => 'test',
             ])));
             $recv = $client->recv();
-            $this->assertEquals(json_encode('gg'), $recv);
+            $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
 
             $client = $http->websocket($this->host . 'test');
@@ -139,7 +139,7 @@ class WSTest extends BaseTest
                     'action'    => 'test',
                     'username'  => 'test',
                 ],
-            ]), $recv);
+            ]), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
     }
