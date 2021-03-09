@@ -7,9 +7,11 @@ namespace Imi\Swoole\Server;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
+use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Worker;
 
@@ -28,37 +30,10 @@ class ServerUtil implements ISwooleServerUtil
      */
     public function sendMessage(string $action, array $data = [], $workerId = null): int
     {
-        if (null === $workerId)
-        {
-            $workerId = range(0, Worker::getWorkerNum() - 1);
-        }
         $data['action'] = $action;
         $message = json_encode($data);
-        /** @var ISwooleServer $server */
-        $server = ServerManager::getServer('main', ISwooleServer::class);
-        $swooleServer = $server->getSwooleServer();
-        $success = 0;
-        $currentWorkerId = Worker::getWorkerId();
-        foreach ((array) $workerId as $tmpWorkerId)
-        {
-            if ($tmpWorkerId === $currentWorkerId)
-            {
-                go(function () use ($server, $currentWorkerId, $message) {
-                    Event::trigger('IMI.MAIN_SERVER.PIPE_MESSAGE', [
-                        'server'    => $server,
-                        'workerId'  => $currentWorkerId,
-                        'message'   => $message,
-                    ], $server, PipeMessageEventParam::class);
-                });
-                ++$success;
-            }
-            elseif ($swooleServer->sendMessage($message, $tmpWorkerId))
-            {
-                ++$success;
-            }
-        }
 
-        return $success;
+        return $this->sendMessageRaw($message, $workerId);
     }
 
     /**
@@ -110,18 +85,23 @@ class ServerUtil implements ISwooleServerUtil
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd         为 null 时，则发送给当前连接
-     * @param string|null    $serverName 服务器名，默认为当前服务器或主服务器
+     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function send($data, $fd = null, $serverName = null): int
+    public function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
+        if (null === $serverName)
+        {
+            $serverName = $server->getName();
+        }
 
-        return $this->sendRaw($dataParser->encode($data, $serverName), $fd, $server->getName());
+        return $this->sendRaw($dataParser->encode($data, $serverName), $fd, $serverName, $toAllWorkers);
     }
 
     /**
@@ -130,12 +110,13 @@ class ServerUtil implements ISwooleServerUtil
      * 数据将会通过处理器编码
      *
      * @param mixed                $data
-     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
-     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
+     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function sendByFlag($data, $flag = null, $serverName = null): int
+    public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -166,30 +147,23 @@ class ServerUtil implements ISwooleServerUtil
             }
         }
 
-        return $this->send($data, $fds, $serverName);
+        return $this->send($data, $fds, $serverName, $toAllWorkers);
     }
 
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
      * @param string         $data
-     * @param int|int[]|null $fd         为 null 时，则发送给当前连接
-     * @param string|null    $serverName 服务器名，默认为当前服务器或主服务器
+     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function sendRaw(string $data, $fd = null, ?string $serverName = null): int
+    public function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         $swooleServer = $server->getSwooleServer();
-        if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
-        {
-            $method = 'push';
-        }
-        else
-        {
-            $method = 'send';
-        }
         if (null === $fd)
         {
             $fd = RequestContext::get('fd');
@@ -198,16 +172,55 @@ class ServerUtil implements ISwooleServerUtil
                 return 0;
             }
         }
+        $fds = (array) $fd;
         $success = 0;
-        foreach ((array) $fd as $tmpFd)
+        if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
-            if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
+            $method = 'push';
+        }
+        else
+        {
+            $method = 'send';
+        }
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
+        {
+            $id = uniqid('', true);
+            try
             {
-                continue;
+                $channel = ChannelContainer::getChannel($id);
+                $this->sendMessage('sendToFdsRequest', [
+                    'messageId'  => $id,
+                    'fds'        => $fds,
+                    'data'       => $data,
+                    'serverName' => $server->getName(),
+                ]);
+                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                {
+                    $result = $channel->pop(30);
+                    if (false === $result)
+                    {
+                        break;
+                    }
+                    $success += ($result['result'] ?? 0);
+                }
             }
-            if ($swooleServer->$method($tmpFd, $data))
+            finally
             {
-                ++$success;
+                ChannelContainer::removeChannel($id);
+            }
+        }
+        else
+        {
+            foreach ($fds as $tmpFd)
+            {
+                if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
+                {
+                    continue;
+                }
+                if ($swooleServer->$method($tmpFd, $data))
+                {
+                    ++$success;
+                }
             }
         }
 
@@ -218,12 +231,13 @@ class ServerUtil implements ISwooleServerUtil
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
      *
      * @param string               $data
-     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
-     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
+     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function sendRawByFlag(string $data, $flag = null, $serverName = null): int
+    public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -254,7 +268,7 @@ class ServerUtil implements ISwooleServerUtil
             }
         }
 
-        return $this->sendRaw($data, $fds, $serverName);
+        return $this->sendRaw($data, $fds, $serverName, $toAllWorkers);
     }
 
     /**
@@ -293,7 +307,15 @@ class ServerUtil implements ISwooleServerUtil
         $server = $this->getServer($serverName);
         $swooleServer = $server->getSwooleServer();
         $success = 0;
-        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers)
+        if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
+        {
+            $method = 'push';
+        }
+        else
+        {
+            $method = 'send';
+        }
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
             $id = uniqid('', true);
             try
@@ -321,14 +343,6 @@ class ServerUtil implements ISwooleServerUtil
         }
         else
         {
-            if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
-            {
-                $method = 'push';
-            }
-            else
-            {
-                $method = 'send';
-            }
             foreach ($server->getSwoolePort()->connections as $fd)
             {
                 if ('push' === $method && !$swooleServer->isEstablished($fd))
@@ -352,17 +366,18 @@ class ServerUtil implements ISwooleServerUtil
      *
      * @param string|string[] $groupName
      * @param mixed           $data
-     * @param string|null     $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function sendToGroup($groupName, $data, ?string $serverName = null): int
+    public function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
 
-        return $this->sendRawToGroup($groupName, $dataParser->encode($data, $serverName), $server->getName());
+        return $this->sendRawToGroup($groupName, $dataParser->encode($data, $serverName), $server->getName(), $toAllWorkers);
     }
 
     /**
@@ -372,13 +387,17 @@ class ServerUtil implements ISwooleServerUtil
      *
      * @param string|string[] $groupName
      * @param string          $data
-     * @param string|null     $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function sendRawToGroup($groupName, string $data, ?string $serverName = null): int
+    public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
+        $swooleServer = $server->getSwooleServer();
+        $groups = (array) $groupName;
+        $success = 0;
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
             $method = 'push';
@@ -387,18 +406,47 @@ class ServerUtil implements ISwooleServerUtil
         {
             $method = 'send';
         }
-        $success = 0;
-        foreach ((array) $groupName as $tmpGroupName)
+        if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && 'push' === $method)
         {
-            $group = $server->getGroup($tmpGroupName);
-            if ($group)
+            $id = uniqid('', true);
+            try
             {
-                $result = $group->$method($data);
-                foreach ($result as $item)
+                $channel = ChannelContainer::getChannel($id);
+                $this->sendMessage('sendToGroupsRequest', [
+                    'messageId'     => $id,
+                    'groups'        => $groups,
+                    'data'          => $data,
+                    'serverName'    => $server->getName(),
+                ]);
+                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
                 {
-                    if ($item)
+                    $result = $channel->pop(30);
+                    if (false === $result)
                     {
-                        ++$success;
+                        break;
+                    }
+                    $success += ($result['result'] ?? 0);
+                }
+            }
+            finally
+            {
+                ChannelContainer::removeChannel($id);
+            }
+        }
+        else
+        {
+            foreach ($groups as $tmpGroupName)
+            {
+                $group = $server->getGroup($tmpGroupName);
+                if ($group)
+                {
+                    $result = $group->$method($data);
+                    foreach ($result as $item)
+                    {
+                        if ($item)
+                        {
+                            ++$success;
+                        }
                     }
                 }
             }
@@ -412,12 +460,14 @@ class ServerUtil implements ISwooleServerUtil
      *
      * @param int|int[]   $fd
      * @param string|null $serverName
+     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function close($fd, ?string $serverName = null): int
+    public function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        $swooleServer = $this->getServer($serverName)->getSwooleServer();
+        $server = $this->getServer($serverName);
+        $swooleServer = $server->getSwooleServer();
         $count = 0;
         foreach ((array) $fd as $currentFd)
         {
@@ -435,10 +485,11 @@ class ServerUtil implements ISwooleServerUtil
      *
      * @param string|string[] $flag
      * @param string|null     $serverName
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public function closeByFlag($flag, ?string $serverName = null): int
+    public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -469,7 +520,7 @@ class ServerUtil implements ISwooleServerUtil
             }
         }
 
-        return $this->close($fds, $serverName);
+        return $this->close($fds, $serverName, $toAllWorkers);
     }
 
     /**

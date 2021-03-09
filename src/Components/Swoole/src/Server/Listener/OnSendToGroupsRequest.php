@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Imi\Swoole\Server\ConnectContext\Listener;
+namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
@@ -10,11 +8,11 @@ use Imi\Event\IEventListener;
 use Imi\Swoole\Server\Server;
 
 /**
- * 发送给所有 Worker 进程的连接-请求
+ * 发送给指定连接-请求
  *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendRawToAllRequest")
+ * @Listener(eventName="IMI.PIPE_MESSAGE.sendToGroupsRequest")
  */
-class OnSendRawToAllRequest implements IEventListener
+class OnSendToGroupsRequest implements IEventListener
 {
     /**
      * 事件处理方法.
@@ -28,8 +26,8 @@ class OnSendRawToAllRequest implements IEventListener
         $data = $e->getData();
         $workerId = $data['workerId'];
         $data = $data['data'];
-        $result = Server::sendRawToAll($data['data'], $data['serverName'], false);
-        Server::sendMessage('sendRawToAllResponse', [
+        $result = Server::sendRawToGroup($data['groups'], $data['data'], $data['serverName'], false);
+        Server::sendMessage('sendToGroupsResponse', [
             'messageId' => $data['messageId'],
             'result'    => $result,
         ], $workerId);

@@ -27,6 +27,7 @@ return [
         'type'         => Imi\Swoole\Server\Type::WEBSOCKET,
         'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
         'port'         => 13002,
+        'mode'         => \SWOOLE_BASE,
         'configs'      => [
             'worker_num'    => 2,
         ],

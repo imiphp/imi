@@ -35,6 +35,7 @@ class TestController extends WebSocketController
 
         return [
             'success'             => true,
+            'username'            => $data->username,
             'middlewareData'      => RequestContext::get('middlewareData'),
             'requestUri'          => ConnectContext::get('requestUri'),
             'uri'                 => (string) ConnectContext::get('uri'),

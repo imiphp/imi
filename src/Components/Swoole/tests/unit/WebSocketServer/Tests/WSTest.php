@@ -19,8 +19,7 @@ class WSTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
+            $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
@@ -32,11 +31,12 @@ class WSTest extends BaseTest
             $recvData = json_decode($recv, true);
             if (!isset($recvData['fd']))
             {
-                $this->assertTrue(false, 'Not found fd');
+                $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
             }
             $fd = $recvData['fd'];
             $this->assertEquals([
                 'success'        => true,
+                'username'       => 'test',
                 'middlewareData' => 'imi',
                 'requestUri'     => $this->host,
                 'uri'            => $this->host,
@@ -52,14 +52,13 @@ class WSTest extends BaseTest
                 'message'   => $time,
             ])));
             $recv = $client->recv();
-            $this->assertEquals('test:' . $time, $recv);
+            $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
 
             // 重连逻辑
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
+            $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
 
@@ -84,7 +83,7 @@ class WSTest extends BaseTest
             $this->assertEquals([
                 'success'   => true,
                 'username'  => 'test',
-            ], $recvData);
+            ], $recvData, $client->getErrorCode() . '-' . $client->getErrorMessage());
 
             $time = time();
             $this->assertTrue($client->send(json_encode([
@@ -92,7 +91,7 @@ class WSTest extends BaseTest
                 'message'   => $time,
             ])));
             $recv = $client->recv();
-            $this->assertEquals('test:' . $time, $recv);
+            $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
     }
@@ -102,15 +101,14 @@ class WSTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
+            $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
                 'action'    => 'gg',
             ])));
             $recv = $client->recv();
-            $this->assertEquals(json_encode('gg'), $recv);
+            $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
     }
@@ -120,8 +118,7 @@ class WSTest extends BaseTest
         $this->go(function () {
             $http = new HttpRequest();
             $http->retry = 3;
-            $http->timeout = 3000;
-            $http->connectTimeout = 3000;
+            $http->timeout = 10000;
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
             $this->assertTrue($client->send(json_encode([
@@ -129,7 +126,7 @@ class WSTest extends BaseTest
                 'username'  => 'test',
             ])));
             $recv = $client->recv();
-            $this->assertEquals(json_encode('gg'), $recv);
+            $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
 
             $client = $http->websocket($this->host . 'test');
@@ -144,7 +141,7 @@ class WSTest extends BaseTest
                     'action'    => 'test',
                     'username'  => 'test',
                 ],
-            ]), $recv);
+            ]), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
     }
@@ -153,6 +150,7 @@ class WSTest extends BaseTest
     {
         $this->go(function () {
             $http = new HttpRequest();
+            $http->timeout = 10000;
             $response = $http->get($this->host . 'http');
             $this->assertEquals('http', $response->body());
         });

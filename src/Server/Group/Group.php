@@ -239,7 +239,7 @@ class Group
         $methodIsCheck = \in_array($name, $checkMethods);
         $result = [];
         /** @var FdMap $fdMap */
-        $fdMap = RequestContext::getServerBean('FdMap');
+        $fdMap = $server->getBean('FdMap');
         foreach ($this->handler->getFds($this->groupName) as $fd)
         {
             // 执行结果

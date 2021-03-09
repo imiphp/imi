@@ -52,14 +52,15 @@ class Server
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd         为 null 时，则发送给当前连接
-     * @param string|null    $serverName 服务器名，默认为当前服务器或主服务器
+     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function send($data, $fd = null, $serverName = null): int
+    public static function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->send($data, $fd, $serverName);
+        return static::getInstance()->send($data, $fd, $serverName, $toAllWorkers);
     }
 
     /**
@@ -68,42 +69,45 @@ class Server
      * 数据将会通过处理器编码
      *
      * @param mixed                $data
-     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
-     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
+     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendByFlag($data, $flag = null, $serverName = null): int
+    public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendByFlag($data, $flag, $serverName);
+        return static::getInstance()->sendByFlag($data, $flag, $serverName, $toAllWorkers);
     }
 
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
      * @param string         $data
-     * @param int|int[]|null $fd         为 null 时，则发送给当前连接
-     * @param string|null    $serverName 服务器名，默认为当前服务器或主服务器
+     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendRaw(string $data, $fd = null, ?string $serverName = null): int
+    public static function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRaw($data, $fd, $serverName);
+        return static::getInstance()->sendRaw($data, $fd, $serverName, $toAllWorkers);
     }
 
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
      *
      * @param string               $data
-     * @param string|string[]|null $flag       为 null 时，则发送给当前连接
-     * @param string|null          $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|string[]|null $flag         为 null 时，则发送给当前连接
+     * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendRawByFlag(string $data, $flag = null, $serverName = null): int
+    public static function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRawByFlag($data, $flag, $serverName);
+        return static::getInstance()->sendRawByFlag($data, $flag, $serverName, $toAllWorkers);
     }
 
     /**
@@ -145,13 +149,14 @@ class Server
      *
      * @param string|string[] $groupName
      * @param mixed           $data
-     * @param string|null     $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendToGroup($groupName, $data, ?string $serverName = null): int
+    public static function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendToGroup($groupName, $data, $serverName);
+        return static::getInstance()->sendToGroup($groupName, $data, $serverName, $toAllWorkers);
     }
 
     /**
@@ -161,13 +166,14 @@ class Server
      *
      * @param string|string[] $groupName
      * @param string          $data
-     * @param string|null     $serverName 服务器名，默认为当前服务器或主服务器
+     * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function sendRawToGroup($groupName, string $data, ?string $serverName = null): int
+    public static function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRawToGroup($groupName, $data, $serverName);
+        return static::getInstance()->sendRawToGroup($groupName, $data, $serverName, $toAllWorkers);
     }
 
     /**
@@ -175,12 +181,13 @@ class Server
      *
      * @param int|int[]   $fd
      * @param string|null $serverName
+     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function close($fd, ?string $serverName = null): int
+    public static function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->close($fd, $serverName);
+        return static::getInstance()->close($fd, $serverName, $toAllWorkers);
     }
 
     /**
@@ -188,12 +195,13 @@ class Server
      *
      * @param string|string[] $flag
      * @param string|null     $serverName
+     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function closeByFlag($flag, ?string $serverName = null): int
+    public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->closeByFlag($flag, $serverName);
+        return static::getInstance()->closeByFlag($flag, $serverName, $toAllWorkers);
     }
 
     /**

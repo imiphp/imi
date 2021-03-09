@@ -273,14 +273,44 @@ class ModelTest extends BaseTest
 
     public function testUpdateTimeSave()
     {
-        $record = UpdateTime::newInstance();
-        $this->assertUpdateTime($record, 'save');
+        for ($_ = 0; $_ < 3; ++$_)
+        {
+            try
+            {
+                $th = null;
+                $record = UpdateTime::newInstance();
+                $this->assertUpdateTime($record, 'save');
+            }
+            catch (\Throwable $th)
+            {
+                sleep(1);
+            }
+        }
+        if (isset($th))
+        {
+            throw $th;
+        }
     }
 
     public function testUpdateTimeUpdate()
     {
-        $record = UpdateTime::find(1);
-        $this->assertUpdateTime($record, 'update');
+        for ($_ = 0; $_ < 3; ++$_)
+        {
+            try
+            {
+                $th = null;
+                $record = UpdateTime::find(1);
+                $this->assertUpdateTime($record, 'update');
+            }
+            catch (\Throwable $th)
+            {
+                sleep(1);
+            }
+        }
+        if (isset($th))
+        {
+            throw $th;
+        }
     }
 
     public function testModelReferenceGetter()

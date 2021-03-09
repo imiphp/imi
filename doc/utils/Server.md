@@ -81,6 +81,11 @@ Server::send([
 Server::send([
     // 数据
 ], 1, 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::send([
+    // 数据
+], 1, 'myServer', false);
 ```
 
 ### sendByFlag
@@ -112,6 +117,11 @@ Server::sendByFlag([
 Server::sendByFlag([
     // 数据
 ], 'user1', 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::sendByFlag([
+    // 数据
+], 'user1', 'myServer', false);
 ```
 
 ### sendRaw
@@ -130,6 +140,9 @@ Server::sendRaw('数据', [1, 2, 3]);
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRaw('数据', 1, 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::sendRaw('数据', 1, 'myServer', false);
 ```
 
 ### sendRawByFlag
@@ -151,6 +164,9 @@ Server::sendRawByFlag('数据', ['user1', 'user2', 'user3']);
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRawByFlag('数据', 'user1', 'myServer');
+
+// SWOOLE_BASE 模式下只发送给当前 worker 进程中的连接
+Server::sendRawByFlag('数据', 'user1', 'myServer', false);
 ```
 
 ### sendToAll
@@ -215,6 +231,11 @@ Server::sendToGroup(['myGroupName1', 'myGroupName2'], [
 Server::sendToGroup('myGroupName', [
     // 数据
 ], 'myServer');
+
+// BASE模式下，只发送给当前 worker 中的所有连接（默认发给所有进程的连接）
+Server::sendToGroup('myGroupName', [
+    // 数据
+], 'myServer', false);
 ```
 
 ### sendRawToGroup
@@ -233,6 +254,9 @@ Server::sendRawToGroup(['myGroupName1', 'myGroupName2'], '数据');
 
 // 指定服务名，支持监听多个子服务器的情况
 Server::sendRawToGroup('myGroupName', '数据', 'myServer');
+
+// BASE模式下，只发送给当前 worker 中的所有连接（默认发给所有进程的连接）
+Server::sendRawToGroup('myGroupName', '数据', 'myServer', false);
 ```
 
 ### close
@@ -242,6 +266,10 @@ Server::sendRawToGroup('myGroupName', '数据', 'myServer');
 ```php
 Server::close(1); // 关闭 fd 1
 Server::close([1, 2, 3]); // 关闭 fd 1、2、3
+Server::close(1, 'myServer'); // 指定服务器名
+
+// BASE模式下，只关闭当前 worker 中的连接（默认关闭所有进程的指定连接）
+Server::close(1, 'myServer', false);
 ```
 
 ### closeByFlag
@@ -254,4 +282,8 @@ Server::close([1, 2, 3]); // 关闭 fd 1、2、3
 
 Server::closeByFlag('user1'); // 关闭 user1
 Server::closeByFlag(['user1', 'user2']); // 关闭 user1、user2
+Server::closeByFlag('user1', 'myServer'); // 指定服务器名
+
+// BASE模式下，只关闭当前 worker 中的连接（默认关闭所有进程的指定连接）
+Server::closeByFlag('user1', 'myServer', false);
 ```

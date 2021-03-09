@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\WebSocketServer\MainServer\Controller\Http;
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Server;
 
 /**
@@ -90,7 +91,9 @@ class ServerUtilController extends HttpController
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
-        $result = [];
+        $result = [
+            'groupFdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
+        ];
 
         $result['sendToGroup'] = Server::sendToGroup('g1', $data);
         $result['sendRawToGroup'] = Server::sendRawToGroup('g1', $dataStr);
