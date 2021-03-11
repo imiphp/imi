@@ -49,18 +49,30 @@ class CronCalculator
         }
     }
 
+    /**
+     * @param int   $lastTime
+     * @param array $years
+     * @param array $months
+     * @param array $weeks
+     * @param array $days
+     * @param array $hours
+     * @param array $minutes
+     * @param array $seconds
+     *
+     * @return int|null
+     */
     private function generateTime($lastTime, $years, $months, $weeks, $days, $hours, $minutes, $seconds)
     {
         if ($lastTime < 0)
         {
             $lastTime = time();
         }
-        $nowYear = date('Y', $lastTime);
-        $nowMonth = date('m', $lastTime);
-        $nowDay = date('d', $lastTime);
-        $nowHour = date('H', $lastTime);
-        $nowMinute = date('i', $lastTime);
-        $nowSecond = date('s', $lastTime);
+        $nowYear = (int) date('Y', $lastTime);
+        $nowMonth = (int) date('m', $lastTime);
+        $nowDay = (int) date('d', $lastTime);
+        $nowHour = (int) date('H', $lastTime);
+        $nowMinute = (int) date('i', $lastTime);
+        $nowSecond = (int) date('s', $lastTime);
         foreach ($years as $year)
         {
             if ($year < $nowYear)
@@ -90,6 +102,9 @@ class CronCalculator
                             $timestamp = strtotime($year . '-01-01') + 86400 * ((int) $day - 1);
                         }
                         [$y, $m, $d] = explode('-', date('Y-m-d', $timestamp));
+                        $y = (int) $y;
+                        $m = (int) $m;
+                        $d = (int) $d;
                         if (($y == $nowYear && (($m == $nowMonth && $d < $nowDay) || ($m < $nowMonth))) || !\in_array(date('N', $timestamp), $weeks))
                         {
                             continue;
@@ -115,8 +130,26 @@ class CronCalculator
                 }
             }
         }
+
+        return null;
     }
 
+    /**
+     * @param int        $year
+     * @param int        $month
+     * @param int        $day
+     * @param array|null $hours
+     * @param array|null $minutes
+     * @param array|null $seconds
+     * @param int        $nowYear
+     * @param int        $nowMonth
+     * @param int        $nowDay
+     * @param int        $nowHour
+     * @param int        $nowMinute
+     * @param int        $nowSecond
+     *
+     * @return int|null
+     */
     private function parseHis($year, $month, $day, $hours, $minutes, $seconds, $nowYear, $nowMonth, $nowDay, $nowHour, $nowMinute, $nowSecond)
     {
         foreach ($hours ?: [] as $hour)
@@ -142,8 +175,20 @@ class CronCalculator
                 }
             }
         }
+
+        return null;
     }
 
+    /**
+     * @param string $rule
+     * @param string $name
+     * @param int    $min
+     * @param int    $max
+     * @param string $dateFormat
+     * @param int    $lastTime
+     *
+     * @return array
+     */
     public function getAll($rule, $name, $min, $max, $dateFormat, $lastTime)
     {
         // 所有
@@ -216,11 +261,11 @@ class CronCalculator
      * @param string $year
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllYear($year, $lastTime)
     {
-        $min = date('Y', $lastTime);
+        $min = (int) date('Y', $lastTime);
         $max = 2100; // 我觉得 2100 年不可能还在用这个代码了吧……
 
         return $this->getAll($year, 'year', $min, $max, 'Y', $lastTime);
@@ -232,7 +277,7 @@ class CronCalculator
      * @param string $month
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllMonth($month, $lastTime)
     {
@@ -245,7 +290,7 @@ class CronCalculator
      * @param string $day
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllDay($day, $lastTime)
     {
@@ -283,7 +328,7 @@ class CronCalculator
      * @param string $week
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllWeek($week, $lastTime)
     {
@@ -296,7 +341,7 @@ class CronCalculator
      * @param string $hour
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllHour($hour, $lastTime)
     {
@@ -309,7 +354,7 @@ class CronCalculator
      * @param string $minute
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllMinute($minute, $lastTime)
     {
@@ -322,7 +367,7 @@ class CronCalculator
      * @param string $second
      * @param int    $lastTime
      *
-     * @return void
+     * @return array
      */
     public function getAllSecond($second, $lastTime)
     {
@@ -335,7 +380,7 @@ class CronCalculator
      * @param \Imi\Cron\CronRule $cronRule
      * @param int                $lastTime
      *
-     * @return void
+     * @return int|bool
      */
     private function parseN($cronRule, $lastTime)
     {
@@ -345,23 +390,23 @@ class CronCalculator
         }
         if ('n' === substr($cronRule->getSecond(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getSecond(), 0, -1);
+            return $lastTime + (int) substr($cronRule->getSecond(), 0, -1);
         }
         if ('n' === substr($cronRule->getMinute(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getMinute(), 0, -1) * 60;
+            return $lastTime + (int) substr($cronRule->getMinute(), 0, -1) * 60;
         }
         if ('n' === substr($cronRule->getHour(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getHour(), 0, -1) * 3600;
+            return $lastTime + (int) substr($cronRule->getHour(), 0, -1) * 3600;
         }
         if ('n' === substr($cronRule->getDay(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getDay(), 0, -1) * 86400;
+            return $lastTime + (int) substr($cronRule->getDay(), 0, -1) * 86400;
         }
         if ('n' === substr($cronRule->getWeek(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getWeek(), 0, -1) * 604800;
+            return $lastTime + (int) substr($cronRule->getWeek(), 0, -1) * 604800;
         }
         if ('n' === substr($cronRule->getMonth(), -1, 1))
         {

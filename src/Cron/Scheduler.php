@@ -161,7 +161,7 @@ class Scheduler
     /**
      * 遍历可运行的任务列表.
      *
-     * @return \Imi\Cron\CronTask[]
+     * @return \Generator
      */
     public function schedule()
     {

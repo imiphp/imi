@@ -237,6 +237,7 @@ abstract class Server
         {
             foreach ($fds as $tmpFd)
             {
+                // @phpstan-ignore-next-line
                 if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
                 {
                     continue;
@@ -373,6 +374,7 @@ abstract class Server
         {
             foreach ($server->getSwoolePort()->connections as $fd)
             {
+                // @phpstan-ignore-next-line
                 if ('push' === $method && !$swooleServer->isEstablished($fd))
                 {
                     continue;
@@ -473,7 +475,7 @@ abstract class Server
                 if ($group)
                 {
                     $result = $group->$method($data);
-                    foreach ($result as $tmpFd => $item)
+                    foreach ($result as $item)
                     {
                         if ($item)
                         {
@@ -490,18 +492,31 @@ abstract class Server
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]   $fd
-     * @param string|null $serverName
-     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param int|int[]|null $fd
+     * @param string|null    $serverName
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function close($fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = static::getServer($serverName);
         $swooleServer = $server->getSwooleServer();
         $count = 0;
-        $fds = (array) $fd;
+        if (null === $fd)
+        {
+            $fd = RequestContext::get('fd');
+            if (!$fd)
+            {
+                return 0;
+            }
+            $fds = [$fd];
+        }
+        else
+        {
+            $fds = (array) $fd;
+        }
+        // @phpstan-ignore-next-line
         if (\SWOOLE_BASE === $swooleServer->mode && $toAllWorkers && version_compare(\SWOOLE_VERSION, '4.6', '<'))
         {
             $id = uniqid('', true);
@@ -545,13 +560,13 @@ abstract class Server
     /**
      * 关闭一个或多个指定标记的连接.
      *
-     * @param string|string[] $flag
-     * @param string|null     $serverName
-     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param string|string[]|null $flag
+     * @param string|null          $serverName
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
-    public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function closeByFlag($flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');

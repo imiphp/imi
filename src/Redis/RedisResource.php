@@ -21,6 +21,11 @@ class RedisResource extends BasePoolResource
      */
     private $config;
 
+    /**
+     * @param \Imi\Pool\Interfaces\IPool $pool
+     * @param RedisHandler               $redis
+     * @param array                      $config
+     */
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, RedisHandler $redis, $config)
     {
         parent::__construct($pool);

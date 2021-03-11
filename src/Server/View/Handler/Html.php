@@ -46,11 +46,21 @@ class Html implements IHandler
      */
     protected $templateEngineInstance;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $this->templateEngineInstance = RequestContext::getServerBean($this->templateEngine);
     }
 
+    /**
+     * @param array                             $data
+     * @param array                             $options
+     * @param \Imi\Server\Http\Message\Response $response
+     *
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function handle($data, array $options, Response $response): Response
     {
         $fileName = $this->getTemplateFilePath($options);

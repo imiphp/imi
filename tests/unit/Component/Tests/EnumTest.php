@@ -15,6 +15,7 @@ class EnumTest extends BaseTest
     {
         $data = TestEnum::getData(TestEnum::A);
         Assert::assertEquals('甲', $data->text);
+        // @phpstan-ignore-next-line
         Assert::assertEquals('a1', $data->other);
 
         Assert::assertEquals('B', TestEnum::getName(TestEnum::B));

@@ -15,6 +15,12 @@ use Imi\Util\Stream\MemoryStream;
  */
 class ExecuteTimeoutHandler implements IExecuteTimeoutHandler
 {
+    /**
+     * @param \Imi\Server\Http\Message\Request  $request
+     * @param \Imi\Server\Http\Message\Response $response
+     *
+     * @return mixed
+     */
     public function handle(Request $request, Response $response)
     {
         $response->withStatus(StatusCode::INTERNAL_SERVER_ERROR)->withBody(new MemoryStream('<h1>Request execute timeout</h1>'))->send();

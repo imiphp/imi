@@ -60,7 +60,7 @@ abstract class BeanFactory
      * @param string $class
      * @param mixed  ...$args
      *
-     * @return void
+     * @return object
      */
     public static function newInstanceNoInit($class, ...$args)
     {
@@ -84,9 +84,8 @@ abstract class BeanFactory
     /**
      * 初始化Bean对象
      *
-     * @param object           $object
-     * @param array            $args
-     * @param \ReflectionClass $ref
+     * @param object $object
+     * @param array  $args
      *
      * @return void
      */
@@ -105,6 +104,8 @@ abstract class BeanFactory
 
     /**
      * 获取新的类名.
+     *
+     * @param string $className
      *
      * @return string
      */
@@ -263,9 +264,9 @@ TPL;
     /**
      * 获取方法参数模版们.
      *
-     * @param \ReflectionClass $ref
+     * @param \ReflectionMethod $method
      *
-     * @return string
+     * @return array
      */
     private static function getMethodParamTpls(\ReflectionMethod $method)
     {
@@ -305,7 +306,7 @@ TPL;
             }
         }
         // 调用如果参数为空处理
-        if ('' === $call)
+        if ([] === $call)
         {
             $call = '...func_get_args()';
         }
@@ -341,6 +342,7 @@ TPL;
         $paramType = $param->getType();
         if ($paramType)
         {
+            // @phpstan-ignore-next-line
             $paramType = $paramType->getName();
         }
         if (null !== $paramType && $param->allowsNull())
@@ -396,6 +398,7 @@ TPL;
         }
         $returnType = $method->getReturnType();
 
+        // @phpstan-ignore-next-line
         return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
     }
 
@@ -412,12 +415,15 @@ TPL;
         {
             if ($object instanceof IBean)
             {
-                return get_parent_class($object);
+                $parentClass = get_parent_class($object);
+                // @phpstan-ignore-next-line
+                if (false !== $parentClass)
+                {
+                    return $parentClass;
+                }
             }
-            else
-            {
-                return \get_class($object);
-            }
+
+            return \get_class($object);
         }
         else
         {
@@ -428,8 +434,8 @@ TPL;
     /**
      * 是否有Aop注入当前方法.
      *
-     * @param \ReflectionClass  $class
-     * @param \ReflectionMethod $method
+     * @param \ReflectionClass $class
+     * @param string           $method
      *
      * @return bool
      */
@@ -479,6 +485,7 @@ TPL;
         }
         else
         {
+            // @phpstan-ignore-next-line
             $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
             foreach ($aspects as $item)
             {

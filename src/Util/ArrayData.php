@@ -9,9 +9,14 @@ class ArrayData implements \ArrayAccess, \Countable
 {
     /**
      * 数据.
+     *
+     * @var array
      */
     protected $__data = [];
 
+    /**
+     * @param array $data
+     */
     public function __construct($data)
     {
         $this->__data = $data;
@@ -20,8 +25,10 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 设置数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string|array $name
+     * @param mixed        $value
+     *
+     * @return bool
      */
     public function set($name, $value = null)
     {
@@ -42,8 +49,8 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 设置数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string|array $name
+     * @param mixed        $value
      *
      * @return bool
      */
@@ -75,8 +82,8 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * 获取数据.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param string|array|null $name
+     * @param mixed             $default
      *
      * @return mixed
      */
@@ -140,6 +147,8 @@ class ArrayData implements \ArrayAccess, \Countable
      * 删除数据.
      *
      * @param string $name
+     *
+     * @return bool
      */
     public function remove($name)
     {
@@ -174,6 +183,8 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 清空数据.
+     *
+     * @return void
      */
     public function clear()
     {
@@ -212,26 +223,51 @@ class ArrayData implements \ArrayAccess, \Countable
         return isset($this->__data[$name]);
     }
 
+    /**
+     * @param mixed $key
+     *
+     * @return mixed
+     */
     public function &__get($key)
     {
         return $this->get($key);
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function __set($key, $value)
     {
         $this->set($key, $value);
     }
 
+    /**
+     * @param mixed $key
+     *
+     * @return bool
+     */
     public function __isset($key)
     {
         return null !== $this->get($key, null);
     }
 
+    /**
+     * @param mixed $key
+     */
     public function __unset($key)
     {
         $this->remove($key);
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function offsetSet($offset, $value)
     {
         if (null === $offset)
@@ -244,21 +280,39 @@ class ArrayData implements \ArrayAccess, \Countable
         }
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return null !== $this->get($offset, null);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
     public function offsetUnset($offset)
     {
         $this->remove($offset);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         return $this->get($offset);
     }
 
+    /**
+     * @return array
+     */
     public function &getRawData()
     {
         return $this->__data;

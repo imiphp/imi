@@ -23,5 +23,7 @@ abstract class Composer
                 return $class::getLoader();
             }
         }
+
+        return null;
     }
 }

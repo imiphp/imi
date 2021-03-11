@@ -58,6 +58,10 @@ class Redis extends BaseLock
      */
     private $guid;
 
+    /**
+     * @param string $id
+     * @param array  $options
+     */
     public function __construct($id, $options = [])
     {
         parent::__construct($id, $options);

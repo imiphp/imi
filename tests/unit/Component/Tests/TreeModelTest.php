@@ -11,6 +11,9 @@ use Imi\Test\Component\Model\TreeWithChildren;
  */
 class TreeModelTest extends BaseTest
 {
+    /**
+     * @var array
+     */
     private $data = [
         ['id' => '1', 'parentId' => '0', 'name' => 'a'],
         ['id' => '2', 'parentId' => '0', 'name' => 'b'],

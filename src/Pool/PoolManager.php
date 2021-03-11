@@ -42,7 +42,7 @@ abstract class PoolManager
     /**
      * 获取所有对象名称.
      *
-     * @return void
+     * @return array
      */
     public static function getNames()
     {
@@ -65,6 +65,10 @@ abstract class PoolManager
 
     /**
      * 连接池是否存在.
+     *
+     * @param string $name
+     *
+     * @return bool
      */
     public static function exists(string $name)
     {
@@ -100,10 +104,7 @@ abstract class PoolManager
     {
         $resource = static::getInstance($name)->getResource();
 
-        if ($resource)
-        {
-            static::pushResourceToRequestContext($resource);
-        }
+        static::pushResourceToRequestContext($resource);
 
         static::$lastGetResourceTime[$name] = microtime(true);
 
@@ -160,7 +161,6 @@ abstract class PoolManager
     /**
      * 释放资源占用.
      *
-     * @param string        $name
      * @param IPoolResource $resource
      *
      * @return void

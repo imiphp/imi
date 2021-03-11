@@ -285,8 +285,6 @@ class SessionManager
     /**
      * 清空所有Session.
      *
-     * @param string $name
-     *
      * @return void
      */
     public function clear()

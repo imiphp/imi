@@ -10,6 +10,8 @@ interface IMemoryTableOption
     /**
      * 获取配置.
      *
+     * @param mixed $option
+     *
      * @return array
      */
     public function getOption($option = null): array;

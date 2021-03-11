@@ -29,12 +29,12 @@ abstract class Db
     /**
      * 获取数据库连接实例，每个RequestContext中共用一个.
      *
-     * @param string $poolName  连接池名称
-     * @param int    $queryType 查询类型
+     * @param string|null $poolName  连接池名称
+     * @param int         $queryType 查询类型
      *
      * @return \Imi\Db\Interfaces\IDb|null
      */
-    public static function getInstance($poolName = null, $queryType = QueryType::WRITE): IDb
+    public static function getInstance($poolName = null, $queryType = QueryType::WRITE): ?IDb
     {
         return PoolManager::getRequestContextResource(static::parsePoolName($poolName, $queryType))->getInstance();
     }

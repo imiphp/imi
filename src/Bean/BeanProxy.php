@@ -55,6 +55,9 @@ class BeanProxy
      */
     private $className;
 
+    /**
+     * @param object $object
+     */
     public function __construct($object)
     {
         $this->isWorker = null !== Worker::getWorkerID();
@@ -64,9 +67,10 @@ class BeanProxy
     /**
      * 魔术方法.
      *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
+     * @param object   $object
+     * @param string   $method
+     * @param callable $callback
+     * @param array    $args
      *
      * @return mixed
      */
@@ -95,6 +99,8 @@ class BeanProxy
     /**
      * 初始化.
      *
+     * @param object $object
+     *
      * @return void
      */
     private function init($object)
@@ -110,7 +116,9 @@ class BeanProxy
             foreach ($aspects as $item)
             {
                 $itemClass = $item->getClass();
-                $itemPriority = $item->getAnnotation()->priority;
+                /** @var Aspect $aspectAnnotation */
+                $aspectAnnotation = $item->getAnnotation();
+                $itemPriority = $aspectAnnotation->priority;
                 // 判断是否属于当前类方法的切面
                 $pointCutsSet = AnnotationManager::getMethodsAnnotations($itemClass, PointCut::class);
                 foreach ($pointCutsSet as $methodName => $pointCuts)
@@ -209,6 +217,8 @@ class BeanProxy
     /**
      * 注入属性.
      *
+     * @param object $object
+     *
      * @return void
      */
     public function injectProps($object)
@@ -234,10 +244,6 @@ class BeanProxy
         foreach ($configs as $name => $value)
         {
             $propRef = $refClass->getProperty($name);
-            if (null === $propRef)
-            {
-                continue;
-            }
             $propRef->setAccessible(true);
             $propRef->setValue($object, $value);
         }
@@ -276,7 +282,7 @@ class BeanProxy
      *
      * @param string $className
      *
-     * @return [$annotations, $configs]
+     * @return array
      */
     public static function getInjects($className)
     {
@@ -299,9 +305,10 @@ class BeanProxy
     /**
      * 正常请求
      *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
+     * @param object   $object
+     * @param string   $method
+     * @param array    $args
+     * @param callable $callback
      *
      * @return mixed
      */
@@ -376,10 +383,11 @@ class BeanProxy
     /**
      * 处理环绕.
      *
-     * @param object $object
-     * @param string $method
-     * @param array  $args
-     * @param mixed  $returnValue
+     * @param object   $object
+     * @param string   $method
+     * @param array    $args
+     * @param mixed    $returnValue
+     * @param callable $callback
      *
      * @return bool
      */
@@ -477,6 +485,7 @@ class BeanProxy
             }
         });
         // 不取消依旧抛出
+        // @phpstan-ignore-next-line
         if (!$isCancelThrow)
         {
             throw $throwable;

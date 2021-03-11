@@ -39,7 +39,7 @@ interface ISessionHandler
      *
      * @param string $sessionID
      * @param string $sessionData
-     * @param string $maxLifeTime
+     * @param int    $maxLifeTime
      *
      * @return void
      */

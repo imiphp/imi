@@ -17,6 +17,9 @@ abstract class Base implements CacheInterface
      */
     protected $formatHandlerClass;
 
+    /**
+     * @param array $option
+     */
     public function __construct($option = [])
     {
         foreach ($option as $k => $v)

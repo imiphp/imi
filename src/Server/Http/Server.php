@@ -49,6 +49,7 @@ class Server extends Base
         $config = $this->getServerInitConfig();
         if ($config['coServer'])
         {
+            // @phpstan-ignore-next-line
             $this->swooleServer = new \Co\Http\Server($config['host'], $config['port'], $config['ssl'], $config['reuse_port']);
         }
         else
@@ -112,6 +113,7 @@ class Server extends Base
         }
         if ($event = ($this->config['events']['request'] ?? true))
         {
+            // @phpstan-ignore-next-line
             $this->swooleServer->handle('/', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
                 try
                 {
@@ -175,6 +177,7 @@ class Server extends Base
 
         if ($event = ($events['close'] ?? false) || $this->http2)
         {
+            // @phpstan-ignore-next-line
             $this->swoolePort->on('close', \is_callable($event) ? $event : function ($server, $fd, $reactorID) {
                 try
                 {
@@ -205,7 +208,7 @@ class Server extends Base
     /**
      * 是否为 http2 服务
      *
-     * @var bool
+     * @return bool
      */
     public function isHttp2()
     {

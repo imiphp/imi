@@ -34,7 +34,9 @@ abstract class Update
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
         if ($autoUpdate)
@@ -129,7 +131,9 @@ abstract class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -223,7 +227,9 @@ abstract class Update
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -269,7 +275,7 @@ abstract class Update
             if ($deleteIDs)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $modelLeftValue) {
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIDs, $modelLeftValue) {
                     $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
                 });
             }
@@ -312,7 +318,9 @@ abstract class Update
         {
             foreach ($relations as $name => $annotations)
             {
+                /** @var AutoUpdate|null $autoUpdate */
                 $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $name, AutoUpdate::class)[0] ?? null;
+                /** @var AutoSave|null $autoSave */
                 $autoSave = AnnotationManager::getPropertyAnnotations($className, $name, AutoSave::class)[0] ?? null;
 
                 if ($autoUpdate)
@@ -330,7 +338,9 @@ abstract class Update
         }
         else
         {
+            /** @var AutoUpdate|null $autoUpdate */
             $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+            /** @var AutoSave|null $autoSave */
             $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
             if ($autoUpdate)
@@ -406,7 +416,9 @@ abstract class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -501,7 +513,9 @@ abstract class Update
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -548,7 +562,7 @@ abstract class Update
             if ($deleteIDs)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIDs, $annotation, $modelLeftValue) {
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIDs, $annotation, $modelLeftValue) {
                     $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIDs);
                 });
             }

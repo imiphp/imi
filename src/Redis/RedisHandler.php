@@ -247,11 +247,20 @@ class RedisHandler
      */
     private $redis;
 
+    /**
+     * @param \Redis $redis
+     */
     public function __construct($redis)
     {
         $this->redis = $redis;
     }
 
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         return $this->redis->$name(...$arguments);
@@ -282,6 +291,7 @@ class RedisHandler
     {
         $sha1 = sha1($script);
         $this->clearLastError();
+        // @phpstan-ignore-next-line
         $result = $this->evalSha($sha1, $args, $num_keys);
         if ('NOSCRIPT No matching script. Please use EVAL.' === $this->getLastError())
         {

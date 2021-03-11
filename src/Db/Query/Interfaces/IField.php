@@ -7,18 +7,18 @@ interface IField extends ITable
     /**
      * 获取字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getField(): string;
+    public function getField(): ?string;
 
     /**
      * 设置字段名.
      *
-     * @param string $field
+     * @param string|null $field
      *
      * @return void
      */
-    public function setField(string $field = null);
+    public function setField(?string $field = null);
 
     /**
      * 设置值，可以根据传入的值自动处理

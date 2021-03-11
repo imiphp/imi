@@ -23,14 +23,17 @@ class CronWorker
     /**
      * 执行任务
      *
-     * @param string $id
-     * @param mixed  $data
+     * @param string      $id
+     * @param mixed       $data
+     * @param string|null $task
+     * @param string|null $type
      *
      * @return mixed
      */
     public function exec($id, $data, $task, $type)
     {
         $message = '';
+        $success = false;
         try
         {
             if (null === $task)
@@ -48,7 +51,6 @@ class CronWorker
                 try
                 {
                     $taskCallable($id, $data);
-                    $success = true;
                 }
                 catch (\Throwable $th)
                 {
@@ -63,7 +65,6 @@ class CronWorker
         }
         catch (\Throwable $th)
         {
-            $success = false;
             $message = $th->getMessage();
             throw $th;
         }

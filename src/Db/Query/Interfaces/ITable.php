@@ -7,18 +7,18 @@ interface ITable extends IDatabase
     /**
      * 获取表名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getTable(): string;
+    public function getTable(): ?string;
 
     /**
      * 设置表名.
      *
-     * @param string $table
+     * @param string|null $table
      *
      * @return void
      */
-    public function setTable(string $table = null);
+    public function setTable(?string $table = null);
 
     /**
      * 设置值，可以根据传入的值自动处理

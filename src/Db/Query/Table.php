@@ -14,25 +14,25 @@ class Table implements ITable
     /**
      * 数据库名.
      *
-     * @var string
+     * @var string|null
      */
     protected $database;
 
     /**
      * 表名.
      *
-     * @var string
+     * @var string|null
      */
     protected $table;
 
     /**
      * 别名.
      *
-     * @var string
+     * @var string|null
      */
     protected $alias;
 
-    public function __construct(string $database = null, string $table = null, string $alias = null)
+    public function __construct(?string $database = null, ?string $table = null, ?string $alias = null)
     {
         $this->database = $database;
         $this->table = $table;
@@ -42,9 +42,9 @@ class Table implements ITable
     /**
      * 获取数据库名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDatabase(): string
+    public function getDatabase(): ?string
     {
         return $this->database;
     }
@@ -52,9 +52,9 @@ class Table implements ITable
     /**
      * 获取表名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getTable(): string
+    public function getTable(): ?string
     {
         return $this->table;
     }
@@ -62,9 +62,9 @@ class Table implements ITable
     /**
      * 获取别名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAlias(): string
+    public function getAlias(): ?string
     {
         return $this->alias;
     }
@@ -112,13 +112,13 @@ class Table implements ITable
      * name alias——table alias
      * name as alias—— table as alias.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return void
      */
     public function setValue($value)
     {
-        $matches = $this->parseKeywordText($value);
+        $matches = $this->parseKeywordText($value ?? '');
         if (isset($matches['keywords']))
         {
             $keywords = $matches['keywords'];

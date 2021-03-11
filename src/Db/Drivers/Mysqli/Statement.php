@@ -59,6 +59,13 @@ class Statement extends BaseStatement implements IStatement
      */
     protected $sqlParamsMap;
 
+    /**
+     * @param \Imi\Db\Interfaces\IDb $db
+     * @param \mysqli_stmt|null      $statement
+     * @param \mysqli_result|null    $result
+     * @param string                 $originSql
+     * @param array|null             $sqlParamsMap
+     */
     public function __construct(IDb $db, $statement, $result, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
@@ -163,7 +170,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -306,12 +313,12 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
         return $this->result->fetch_object();
     }
@@ -388,33 +395,48 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取原对象实例.
      *
-     * @return object
+     * @return \mysqli_stmt|null
      */
     public function getInstance()
     {
         return $this->statement;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         throw new DbException('Not support current()');
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         throw new DbException('Not support key()');
     }
 
+    /**
+     * @return mixed
+     */
     public function next()
     {
         throw new DbException('Not support next()');
     }
 
+    /**
+     * @return mixed
+     */
     public function rewind()
     {
         throw new DbException('Not support rewind()');
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         throw new DbException('Not support valid()');
@@ -425,7 +447,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @param array $values
      *
-     * @return array
+     * @return string
      */
     protected function getBindTypes(array $values): string
     {

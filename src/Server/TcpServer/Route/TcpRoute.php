@@ -26,7 +26,7 @@ class TcpRoute implements IRoute
      *
      * @param mixed $data
      *
-     * @return array
+     * @return RouteResult|null
      */
     public function parse($data)
     {
@@ -44,9 +44,9 @@ class TcpRoute implements IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param Imi\Server\Route\Annotation\TcpServer\TcpRoute $annotation
-     * @param mixed                                          $callable
-     * @param array                                          $options
+     * @param TcpRouteAnnotation $annotation
+     * @param mixed              $callable
+     * @param array              $options
      *
      * @return void
      */
@@ -77,7 +77,7 @@ class TcpRoute implements IRoute
     /**
      * 路由规则是否存在.
      *
-     * @param Imi\Server\Route\Annotation\TcpServer\TcpRoute $rule
+     * @param TcpRouteAnnotation $rule
      *
      * @return bool
      */
@@ -99,8 +99,8 @@ class TcpRoute implements IRoute
     /**
      * 检查条件是否匹配.
      *
-     * @param array|object      $data
-     * @param WSRouteAnnotation $annotation
+     * @param array|object       $data
+     * @param TcpRouteAnnotation $annotation
      *
      * @return bool
      */
@@ -149,6 +149,11 @@ class TcpRoute implements IRoute
         }
     }
 
+    /**
+     * @param RouteItem $routeItem
+     *
+     * @return void
+     */
     private function logDuplicated(RouteItem $routeItem)
     {
         $callable = $routeItem->callable;

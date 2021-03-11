@@ -43,6 +43,9 @@ class TestInjectValueLogic
      */
     protected $callableResult;
 
+    /**
+     * @return void
+     */
     public function test()
     {
         Assert::assertEquals(Config::get('@app.imi'), $this->imi);

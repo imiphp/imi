@@ -41,6 +41,7 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $context = RequestContext::getContext();
         // 路由解析
+        // @phpstan-ignore-next-line
         $result = $this->route->parse($request);
         if (null === $result || !\is_callable($result->callable))
         {

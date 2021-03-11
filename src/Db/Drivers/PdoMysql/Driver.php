@@ -19,7 +19,7 @@ class Driver extends Base implements IDb
     /**
      * 连接对象
      *
-     * @var \PDO
+     * @var \PDO|null
      */
     protected $instance;
 
@@ -40,7 +40,7 @@ class Driver extends Base implements IDb
     /**
      * Statement.
      *
-     * @var Statement
+     * @var \PDOStatement|bool|null
      */
     protected $lastStmt;
 
@@ -268,24 +268,24 @@ class Driver extends Base implements IDb
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
         if ($this->lastStmt)
         {
-            return $this->lastStmt->errorInfo();
+            $errorInfo = $this->lastStmt->errorInfo();
         }
         else
         {
             $errorInfo = $this->instance->errorInfo();
-            if (null === $errorInfo[1] && null === $errorInfo[2])
-            {
-                return '';
-            }
-
-            return $errorInfo[1] . ':' . $errorInfo[2];
         }
+        if (null === $errorInfo[1] && null === $errorInfo[2])
+        {
+            return '';
+        }
+
+        return $errorInfo[1] . ':' . $errorInfo[2];
     }
 
     /**
@@ -417,13 +417,14 @@ class Driver extends Base implements IDb
         else
         {
             $this->lastSql = $sql;
-            $this->lastStmt = $lastStmt = $this->instance->prepare($sql, $driverOptions);
+            $lastStmt = $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
+            // @phpstan-ignore-next-line
             if (false === $lastStmt)
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
             $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt);
-            if ($this->isCacheStatement && null === $stmtCache)
+            if ($this->isCacheStatement && !isset($stmtCache))
             {
                 StatementManager::setNX($stmt, true);
             }

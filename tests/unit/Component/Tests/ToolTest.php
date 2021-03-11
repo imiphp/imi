@@ -12,6 +12,7 @@ class ToolTest extends BaseTest
 {
     public function testCoExit()
     {
+        // @phpstan-ignore-next-line
         if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
         {
             $cmd = cmd('"' . \dirname(Imi::getNamespacePath('Imi')) . '/bin/imi" TestTool/test -appNamespace "Imi\Test\Component"');

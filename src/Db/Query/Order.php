@@ -14,7 +14,7 @@ class Order implements IOrder
     /**
      * 字段名.
      *
-     * @var string
+     * @var string|null
      */
     protected $fieldName;
 
@@ -25,7 +25,7 @@ class Order implements IOrder
      */
     protected $direction;
 
-    public function __construct(string $fieldName = null, string $direction = 'asc')
+    public function __construct(?string $fieldName = null, string $direction = 'asc')
     {
         $this->fieldName = $fieldName;
         $this->direction = $direction;
@@ -34,7 +34,7 @@ class Order implements IOrder
     /**
      * 获取字段名.
      *
-     * @return string
+     * @return string|null
      */
     public function getFieldName()
     {
@@ -54,11 +54,11 @@ class Order implements IOrder
     /**
      * 设置字段名.
      *
-     * @param string $fieldName
+     * @param string|null $fieldName
      *
      * @return void
      */
-    public function setFieldName(string $fieldName)
+    public function setFieldName(?string $fieldName)
     {
         $this->fieldName = $fieldName;
     }

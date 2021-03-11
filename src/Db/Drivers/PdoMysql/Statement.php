@@ -43,6 +43,10 @@ class Statement extends BaseStatement implements IStatement
      */
     protected $lastInsertId;
 
+    /**
+     * @param \Imi\Db\Interfaces\IDb $db
+     * @param \PDOStatement          $statement
+     */
     public function __construct(IDb $db, $statement)
     {
         $this->db = $db;
@@ -139,7 +143,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -250,12 +254,12 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
         return $this->statement->fetchObject($className, $ctorArgs);
     }
@@ -304,7 +308,7 @@ class Statement extends BaseStatement implements IStatement
      */
     public function lastInsertId(string $name = null)
     {
-        return $this->lastInsertId;
+        return (string) $this->lastInsertId;
     }
 
     /**
@@ -327,26 +331,45 @@ class Statement extends BaseStatement implements IStatement
         return $this->statement;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
+        // @phpstan-ignore-next-line
         return current($this->statement);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
+        // @phpstan-ignore-next-line
         return key($this->statement);
     }
 
+    /**
+     * @return mixed
+     */
     public function next()
     {
+        // @phpstan-ignore-next-line
         return next($this->statement);
     }
 
+    /**
+     * @return mixed
+     */
     public function rewind()
     {
+        // @phpstan-ignore-next-line
         return reset($this->statement);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return false !== $this->current();

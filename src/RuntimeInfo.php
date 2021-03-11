@@ -38,9 +38,9 @@ class RuntimeInfo
     /**
      * AnnotationManager->$annotationRelation.
      *
-     * @var array
+     * @var \Imi\Bean\Annotation\Model\AnnotationRelation
      */
-    public $annotationManagerAnnotationRelation = [];
+    public $annotationManagerAnnotationRelation;
 
     /**
      * 处理器们的数据.

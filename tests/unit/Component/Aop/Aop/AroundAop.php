@@ -23,7 +23,9 @@ class AroundAop
      *     }
      * )
      *
-     * @return void
+     * @param AroundJoinPoint $joinPoint
+     *
+     * @return mixed
      */
     public function injectAroundAop(AroundJoinPoint $joinPoint)
     {

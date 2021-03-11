@@ -31,6 +31,13 @@ class TableGenerate
      * @Arg(name="exclude", type=ArgType::ARRAY, default={}, comments="要排除的表名，以半角逗号分隔")
      * @Arg(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的表，请慎重！true-全覆盖;false-不覆盖;默认缺省状态为false")
      *
+     * @param string|null $namespace
+     * @param string|null $database
+     * @param string|null $poolName
+     * @param array       $include
+     * @param array       $exclude
+     * @param string|bool $override
+     *
      * @return void
      */
     public function generate($namespace, $database, $poolName, $include, $exclude, $override)
@@ -55,7 +62,7 @@ class TableGenerate
             {
                 continue;
             }
-            /** @var \Imi\Model\Annotation\Table $tableAnnotation */
+            /** @var \Imi\Model\Annotation\Table|null $tableAnnotation */
             $tableAnnotation = AnnotationManager::getClassAnnotations($class, Table::class)[0] ?? null;
             if (!$tableAnnotation)
             {

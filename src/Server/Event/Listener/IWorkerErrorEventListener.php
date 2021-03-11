@@ -12,7 +12,7 @@ interface IWorkerErrorEventListener
     /**
      * 事件处理方法.
      *
-     * @param WorkerStopEventParam $e
+     * @param WorkerErrorEventParam $e
      *
      * @return void
      */

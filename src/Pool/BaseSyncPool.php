@@ -53,14 +53,14 @@ abstract class BaseSyncPool extends BasePool
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $poolItem = $this->queue->pop();
-        if (!$poolItem)
-        {
-            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
-        }
         $resource = $poolItem->getResource();
-        if (!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+        if (($config->isCheckStateWhenGetResource() && !$resource->checkState()))
         {
-            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
+            $resource->close();
+            if (!$resource->open())
+            {
+                throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
+            }
         }
         $poolItem->lock();
 
@@ -88,14 +88,14 @@ abstract class BaseSyncPool extends BasePool
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $poolItem = $this->queue->pop();
-        if (!$poolItem)
-        {
-            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
-        }
         $resource = $poolItem->getResource();
-        if (!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+        if ($this->config->isCheckStateWhenGetResource() && !$resource->checkState())
         {
-            throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
+            $resource->close();
+            if (!$resource->open())
+            {
+                throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
+            }
         }
         $poolItem->lock();
 

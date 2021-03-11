@@ -34,6 +34,11 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      */
     private $list = [];
 
+    /**
+     * @param array         $list
+     * @param string[]|null $fields
+     * @param string        $mode
+     */
     public function __construct($list = [], $fields = null, $mode = 'allow')
     {
         $this->mode = $mode;
@@ -41,11 +46,21 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         $this->list = $this->parseList($list);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return isset($this->list[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         $list = &$this->list;
@@ -61,12 +76,14 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         return $value;
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function offsetSet($offset, $value)
     {
-        if (!$value instanceof $this->itemType)
-        {
-            throw new \InvalidArgumentException('ArrayList item must be an instance of ' . $this->itemType);
-        }
         if (null === $offset)
         {
             $this->list[] = $value;
@@ -77,6 +94,11 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         }
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
     public function offsetUnset($offset)
     {
         $list = $this->list;
@@ -86,26 +108,41 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         return current($this->list);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return key($this->list);
     }
 
+    /**
+     * @return void
+     */
     public function next()
     {
         next($this->list);
     }
 
+    /**
+     * @return void
+     */
     public function rewind()
     {
         reset($this->list);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return null !== key($this->list);
@@ -183,7 +220,7 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      *
      * @param array $list
      *
-     * @return void
+     * @return array
      */
     private function parseList($list)
     {

@@ -27,7 +27,7 @@ abstract class Random
      * @param float $max
      * @param int   $precision 最大小数位数
      *
-     * @return float
+     * @return float|string
      */
     public static function number($min = \PHP_INT_MIN, $max = \PHP_INT_MAX, $precision = 2)
     {

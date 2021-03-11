@@ -34,7 +34,7 @@ class EnumParser extends BaseParser
      * @param string $className
      * @param mixed  $value
      *
-     * @return \Imi\Enum\Annotation\EnumItem
+     * @return \Imi\Enum\Annotation\EnumItem|null
      */
     public function getEnumItem($className, $value)
     {

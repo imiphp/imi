@@ -26,7 +26,7 @@ class ActionWrapMiddleware implements IMiddleware
      * @param IReceiveData    $data
      * @param IReceiveHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {

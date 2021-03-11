@@ -7,5 +7,8 @@ namespace Imi\Test\Component\Tests;
  */
 class LockRedisTest extends BaseLockTest
 {
+    /**
+     * @var string
+     */
     protected $lockId = 'redis';
 }

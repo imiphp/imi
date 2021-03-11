@@ -23,6 +23,9 @@ class DbQueryLog
      */
     protected $enable = false;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         if ($this->enable)
@@ -59,6 +62,11 @@ class DbQueryLog
         }
     }
 
+    /**
+     * @param \Imi\Aop\AroundJoinPoint $joinPoint
+     *
+     * @return mixed
+     */
     public function aopExecute(AroundJoinPoint $joinPoint)
     {
         $beginTime = microtime(true);
@@ -80,6 +88,11 @@ class DbQueryLog
         return $result;
     }
 
+    /**
+     * @param \Imi\Aop\AroundJoinPoint $joinPoint
+     *
+     * @return mixed
+     */
     public function aopPrepare(AroundJoinPoint $joinPoint)
     {
         $result = $joinPoint->proceed();
@@ -92,6 +105,11 @@ class DbQueryLog
         return $result;
     }
 
+    /**
+     * @param \Imi\Aop\AroundJoinPoint $joinPoint
+     *
+     * @return mixed
+     */
     public function aopStatementExecute(AroundJoinPoint $joinPoint)
     {
         /** @var \Imi\Db\Interfaces\IStatement $statement */

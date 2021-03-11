@@ -414,7 +414,7 @@ abstract class Imi
      *
      * @param string ...$path
      *
-     * @return void
+     * @return string
      */
     public static function getRuntimePath(...$path)
     {
@@ -542,7 +542,7 @@ abstract class Imi
          *
          * @param \Imi\Model\Annotation\Column $column
          *
-         * @return [$type, $size]
+         * @return array [$type, $size]
          */
         $parseColumnTypeAndSize = function ($column) {
             $type = $column->type;
@@ -564,6 +564,8 @@ abstract class Imi
                     $type = \Swoole\Table::TYPE_FLOAT;
                     $size = 8;
                     break;
+                default:
+                    $size = 0;
             }
 
             return [$type, $size];
@@ -598,6 +600,7 @@ abstract class Imi
         foreach ($annotationsSet as &$item)
         {
             $item = clone $item;
+            // @phpstan-ignore-next-line
             $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
         }
         $runtimeInfo->memoryTable = $annotationsSet;
@@ -632,6 +635,7 @@ abstract class Imi
 
         foreach (App::getRuntimeInfo()->parsersData as $parserClass => $data)
         {
+            // @phpstan-ignore-next-line
             $parserObject = $parserClass::getInstance();
             $parserObject->setData([]);
         }
@@ -769,6 +773,7 @@ abstract class Imi
         {
             return '';
         }
+        $name = '';
         foreach ($matches['name'] as $name)
         {
             if ('' !== $name)
@@ -779,6 +784,7 @@ abstract class Imi
         $result = trim($name, '"');
         if (isset($matches['version']))
         {
+            $version = '';
             foreach ($matches['version'] as $version)
             {
                 if ('' !== $version)

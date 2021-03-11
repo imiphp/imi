@@ -49,6 +49,9 @@ class CronManager
      */
     private $realTasks = [];
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         if (null === $this->socketFile)
@@ -261,7 +264,7 @@ class CronManager
         elseif (is_subclass_of($class, IProcess::class))
         {
             $cronType = CronTaskType::PROCESS;
-            /** @var Process $process */
+            /** @var Process|null $process */
             $process = AnnotationManager::getClassAnnotations($class, Process::class)[0] ?? null;
             if (!$process)
             {
@@ -278,7 +281,7 @@ class CronManager
         elseif (is_subclass_of($class, ITaskHandler::class))
         {
             $cronType = CronTaskType::TASK;
-            /** @var Task $taskAnnotation */
+            /** @var Task|null $taskAnnotation */
             $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class)[0] ?? null;
             if (!$taskAnnotation)
             {

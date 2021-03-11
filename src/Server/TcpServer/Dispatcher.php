@@ -15,17 +15,22 @@ class Dispatcher
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Imi\Server\TcpServer\Middleware\IMiddleware[]
      */
     protected $middlewares = [];
 
     /**
      * 最终使用的中间件列表.
      *
-     * @var array
+     * @var \Imi\Server\TcpServer\Middleware\IMiddleware[]|null
      */
     private $finalMiddlewares;
 
+    /**
+     * @param \Imi\Server\TcpServer\Message\IReceiveData $data
+     *
+     * @return void
+     */
     public function dispatch(IReceiveData $data)
     {
         $requestHandler = new ReceiveHandler($this->getMiddlewares());

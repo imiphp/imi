@@ -38,7 +38,7 @@ class ProcessParser extends BaseParser
      *
      * @param string $name process名称
      *
-     * @return array
+     * @return array|null
      */
     public function getProcess($name)
     {

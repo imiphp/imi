@@ -33,14 +33,14 @@ class CacheEvictAop
      *
      * @param AroundJoinPoint $joinPoint
      *
-     * @return void
+     * @return mixed
      */
     public function parseCacheEvict(AroundJoinPoint $joinPoint)
     {
         $class = get_parent_class($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
 
-        // CacheEvict 注解列表
+        /** @var CacheEvict[] $cacheEvicts */
         $cacheEvicts = AnnotationManager::getMethodAnnotations($class, $method, CacheEvict::class);
 
         // 方法参数
@@ -65,6 +65,13 @@ class CacheEvictAop
         return $result;
     }
 
+    /**
+     * @param CacheEvict      $cacheEvict
+     * @param AroundJoinPoint $joinPoint
+     * @param array           $args
+     *
+     * @return void
+     */
     private function deleteCache($cacheEvict, $joinPoint, $args)
     {
         // 缓存名

@@ -12,7 +12,7 @@ class Request extends AbstractMessage implements RequestInterface
     /**
      * 请求地址
      *
-     * @var \Imi\Util\Uri
+     * @var UriInterface
      */
     protected $uri;
 
@@ -33,11 +33,11 @@ class Request extends AbstractMessage implements RequestInterface
     /**
      * 构造方法.
      *
-     * @param string|\Imi\Util\Uri $url
-     * @param array                $headers
-     * @param string               $body
-     * @param string               $method
-     * @param string               $version
+     * @param string|\Imi\Util\Uri|null $uri
+     * @param array                     $headers
+     * @param string                    $body
+     * @param string                    $method
+     * @param string                    $version
      */
     public function __construct($uri = null, array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1')
     {

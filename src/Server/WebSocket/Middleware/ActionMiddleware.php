@@ -19,13 +19,13 @@ class ActionMiddleware implements IMiddleware
      * @param IFrame          $frame
      * @param IMessageHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {
         $requestContext = RequestContext::getContext();
         // 获取路由结果
-        /** @var \Imi\Server\WebSocket\Route\RouteResult $result */
+        /** @var \Imi\Server\WebSocket\Route\RouteResult|null $result */
         $result = $requestContext['routeResult'] ?? null;
         if (null === $result)
         {

@@ -36,6 +36,7 @@ class TransactionAop
     {
         $target = $joinPoint->getTarget();
         $method = $joinPoint->getMethod();
+        /** @var Transaction|null $transaction */
         $transaction = AnnotationManager::getMethodAnnotations(get_parent_class($target), $method, Transaction::class)[0] ?? null;
         if (null === $transaction)
         {

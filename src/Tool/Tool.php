@@ -20,15 +20,26 @@ use Swoole\ExitException;
 
 abstract class Tool
 {
+    /**
+     * @var string|null
+     */
     private static $toolName;
+
+    /**
+     * @var string|null
+     */
     private static $toolOperation;
 
+    /**
+     * @return void
+     */
     public static function initTool()
     {
         $skip = false;
         Event::trigger('IMI.INIT_TOOL', [
             'skip'  => &$skip,
         ]);
+        // @phpstan-ignore-next-line
         if (!$skip)
         {
             if (!isset($_SERVER['argv'][1]))
@@ -65,6 +76,9 @@ abstract class Tool
         }
     }
 
+    /**
+     * @return void
+     */
     public static function run()
     {
         // 获取回调
@@ -119,6 +133,7 @@ abstract class Tool
             {
                 throw new \RuntimeException(sprintf('Tool %s/%s does not exists!', static::$toolName, static::$toolOperation));
             }
+            /** @var Operation $operationAnnotation */
             $operationAnnotation = AnnotationManager::getMethodAnnotations($result['class'], $result['method'], Operation::class)[0];
             $exitCode = 0;
             // 执行工具操作

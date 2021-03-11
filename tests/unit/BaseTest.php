@@ -11,6 +11,12 @@ if (class_exists(TestCase::class))
     {
         const PERFORMANCE_COUNT = 1000;
 
+        /**
+         * @param callable      $callable
+         * @param callable|null $finally
+         *
+         * @return void
+         */
         protected function go($callable, $finally = null)
         {
             $throwable = null;
@@ -32,12 +38,18 @@ if (class_exists(TestCase::class))
             {
                 $finally();
             }
-            if ($throwable)
+            if (null !== $throwable)
             {
                 throw $throwable;
             }
         }
 
+        /**
+         * @param string $phpFile
+         * @param string $args
+         *
+         * @return string
+         */
         protected function php($phpFile, $args = '')
         {
             $cmd = cmd('"' . \PHP_BINARY . "\" \"{$phpFile}\" {$args}");
@@ -45,6 +57,9 @@ if (class_exists(TestCase::class))
             return `{$cmd}`;
         }
 
+        /**
+         * @return void
+         */
         public function startTest()
         {
             static $run = false;
@@ -55,6 +70,9 @@ if (class_exists(TestCase::class))
             }
         }
 
+        /**
+         * @return void
+         */
         public function __startTest()
         {
         }

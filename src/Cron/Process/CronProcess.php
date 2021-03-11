@@ -61,6 +61,9 @@ class CronProcess extends BaseProcess
         $this->startSocketServer();
     }
 
+    /**
+     * @return void
+     */
     protected function startSocketServer()
     {
         imigo(function () {
@@ -72,7 +75,7 @@ class CronProcess extends BaseProcess
             $this->socket = $socket = stream_socket_server('unix://' . $socketFile, $errno, $errstr);
             if (false === $socket)
             {
-                throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %', $errno, $errstr, $socketFile));
+                throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %s', $errno, $errstr, $socketFile));
             }
             $this->running = true;
             $running = &$this->running;
@@ -80,7 +83,7 @@ class CronProcess extends BaseProcess
             while ($running)
             {
                 $arrRead = [$socket];
-                $write = $except = null;
+                $write = $except = [];
                 if (stream_select($arrRead, $write, $except, 3) > 0)
                 {
                     $conn = stream_socket_accept($socket, 1);
@@ -94,6 +97,7 @@ class CronProcess extends BaseProcess
                     });
                 }
             }
+            // @phpstan-ignore-next-line
             fclose($socket);
         });
     }
@@ -173,7 +177,7 @@ class CronProcess extends BaseProcess
                 $sleep = 1 - (microtime(true) - $time);
                 if ($sleep > 0)
                 {
-                    usleep($sleep * 1000000);
+                    usleep((int) ($sleep * 1000000));
                 }
             } while ($running);
         });

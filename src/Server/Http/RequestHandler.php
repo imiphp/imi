@@ -12,7 +12,7 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Psr\Http\Server\MiddlewareInterface[]
      */
     protected $middlewares = [];
 

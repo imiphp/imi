@@ -25,6 +25,11 @@ class UrlCheckResult
      */
     public $resultIgnoreCase;
 
+    /**
+     * @param bool  $result
+     * @param array $params
+     * @param bool  $resultIgnoreCase
+     */
     public function __construct($result, $params = [], $resultIgnoreCase = false)
     {
         $this->result = $result;

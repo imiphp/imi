@@ -26,16 +26,17 @@ class MainServer implements ITaskEventListener
         {
             $workerId = $e->workerID;
             $swooleServer = $e->server->getSwooleServer();
+            // @phpstan-ignore-next-line
             $result = $taskInfo->getTaskHandler()->handle($taskInfo->getParam(), $swooleServer, $e->taskID, $workerId);
             if ($workerId >= 0 && $workerId < $swooleServer->setting['worker_num'])
             {
-                if ($e->task)
+                if (null === $e->task)
                 {
-                    $e->task->finish($result);
+                    $swooleServer->finish($result);
                 }
                 else
                 {
-                    $swooleServer->finish($result);
+                    $e->task->finish($result);
                 }
             }
         }

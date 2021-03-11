@@ -36,6 +36,7 @@ abstract class Query
 
         if (!$forceInit)
         {
+            /** @var AutoSelect|null $autoSelect */
             $autoSelect = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSelect::class)[0] ?? null;
             if ($autoSelect && !$autoSelect->status)
             {
@@ -46,6 +47,7 @@ abstract class Query
         if (\is_array($annotation))
         {
             $firstAnnotation = reset($annotation);
+            // @phpstan-ignore-next-line
             if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
             {
                 static::initByPolymorphicToOne($model, $propertyName, $annotation);
@@ -624,9 +626,9 @@ abstract class Query
     /**
      * 合并多对多查询字段.
      *
-     * @param string $middleModel
-     * @param string $rightModel
+     * @param string $middleTable
      * @param array  $middleFields
+     * @param string $rightTable
      * @param array  $rightFields
      *
      * @return array

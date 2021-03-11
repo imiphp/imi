@@ -14,7 +14,7 @@ abstract class Text
      * @param string $compare
      * @param bool   $caseSensitive
      *
-     * @return string
+     * @return bool
      */
     public static function startwith($string, $compare, $caseSensitive = true)
     {
@@ -35,7 +35,7 @@ abstract class Text
      * @param string $compare
      * @param bool   $caseSensitive
      *
-     * @return string
+     * @return bool
      */
     public static function endwith($string, $compare, $caseSensitive = true)
     {
@@ -45,7 +45,7 @@ abstract class Text
         }
         else
         {
-            return substr_compare($compare, strrchr($string, $compare), 0, null, true);
+            return 0 === substr_compare($compare, strrchr($string, $compare), 0, 0, true);
         }
     }
 
@@ -66,7 +66,7 @@ abstract class Text
     /**
      * 字符串是否为空字符串或者为null.
      *
-     * @param string $string
+     * @param string|null $string
      *
      * @return bool
      */

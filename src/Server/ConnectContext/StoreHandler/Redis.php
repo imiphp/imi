@@ -59,14 +59,14 @@ class Redis implements IHandler
     /**
      * 数据写入前编码回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataEncode = null;
 
     /**
      * 数据读出后处理回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataDecode = null;
 
@@ -80,7 +80,7 @@ class Redis implements IHandler
     /**
      * 心跳Timer的ID.
      *
-     * @var int
+     * @var int|null
      */
     private $timerID;
 
@@ -91,6 +91,9 @@ class Redis implements IHandler
      */
     private $masterPID;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         if (null === $this->key)
@@ -157,8 +160,8 @@ class Redis implements IHandler
     /**
      * 初始化redis数据.
      *
-     * @param mixed $redis
-     * @param int   $storeMasterPID
+     * @param RedisHandler $redis
+     * @param int          $storeMasterPID
      *
      * @return void
      */
@@ -178,7 +181,7 @@ class Redis implements IHandler
     /**
      * 开始ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return void
      */
@@ -210,7 +213,7 @@ class Redis implements IHandler
     /**
      * 获取redis中存储ping的key.
      *
-     * @return void
+     * @return string
      */
     private function getPingKey()
     {
@@ -220,7 +223,7 @@ class Redis implements IHandler
     /**
      * ping操作.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
@@ -249,7 +252,7 @@ class Redis implements IHandler
     /**
      * 是否有ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
@@ -312,7 +315,7 @@ class Redis implements IHandler
             {
                 $data = ($this->dataEncode)($data);
             }
-            $redis->hset($this->getStoreKey(), $key, $data);
+            $redis->hSet($this->getStoreKey(), $key, $data);
         });
     }
 
@@ -340,7 +343,7 @@ class Redis implements IHandler
      */
     public function delayDestroy(string $key, int $ttl)
     {
-        $this->useRedis(function (RedisHandler $redis) use ($key, $ttl) {
+        $this->useRedis(function (RedisHandler $redis) use ($ttl) {
             $redis->expire($this->getStoreKey(), $ttl);
         });
     }
@@ -350,12 +353,12 @@ class Redis implements IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
     public function exists(string $key)
     {
-        return $this->useRedis(function ($redis) use ($key) {
-            return $redis->hexists($this->getStoreKey(), $key);
+        return $this->useRedis(function (RedisHandler $redis) use ($key) {
+            return $redis->hExists($this->getStoreKey(), $key);
         });
     }
 

@@ -31,6 +31,7 @@ abstract class Delete
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        /** @var AutoDelete|null $autoDelete */
         $autoDelete = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoDelete::class)[0] ?? null;
 
         if (!$autoDelete || !$autoDelete->status)

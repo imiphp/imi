@@ -10,7 +10,7 @@ abstract class Args
     /**
      * 参数存储.
      *
-     * @var string
+     * @var array
      */
     private static $cliArgs;
 
@@ -105,12 +105,12 @@ abstract class Args
     /**
      * 写入参数值
      *
-     * @param string      $name
+     * @param string|int  $name
      * @param string|null $value
      *
      * @return void
      */
-    public static function set(string $name, ?string $value)
+    public static function set($name, ?string $value)
     {
         if (\is_int($name))
         {

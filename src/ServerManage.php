@@ -48,7 +48,7 @@ abstract class ServerManage
      *
      * @param string $name
      * @param array  $config
-     * @param bool   $subServer 是否为子服务器
+     * @param bool   $isSubServer 是否为子服务器
      *
      * @return \Imi\Server\Base
      */

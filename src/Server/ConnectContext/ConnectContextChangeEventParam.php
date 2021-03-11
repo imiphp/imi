@@ -21,6 +21,10 @@ class ConnectContextChangeEventParam
      */
     private $serverName;
 
+    /**
+     * @param int    $fd
+     * @param string $serverName
+     */
     public function __construct($fd, $serverName)
     {
         $this->fd = $fd;

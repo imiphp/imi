@@ -7,34 +7,34 @@ interface IDatabase extends IBase
     /**
      * 获取数据库名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDatabase(): string;
+    public function getDatabase(): ?string;
 
     /**
      * 设置数据库名.
      *
-     * @param string $database
+     * @param string|null $database
      *
      * @return void
      */
-    public function setDatabase(string $database = null);
+    public function setDatabase(?string $database = null);
 
     /**
      * 获取别名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAlias(): string;
+    public function getAlias(): ?string;
 
     /**
      * 设置别名.
      *
-     * @param string $alias
+     * @param string|null $alias
      *
      * @return void
      */
-    public function setAlias(string $alias = null);
+    public function setAlias(?string $alias = null);
 
     /**
      * 设置值，可以根据传入的值自动处理

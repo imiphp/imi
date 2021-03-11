@@ -43,7 +43,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     /**
      * 包含 GET/POST/Cookie 数据.
      *
-     * @var array
+     * @var array|null
      */
     protected $request = null;
 
@@ -68,6 +68,18 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      */
     protected $attributes = [];
 
+    /**
+     * @param string|\Imi\Util\Uri|null $uri
+     * @param array                     $headers
+     * @param string                    $body
+     * @param string                    $method
+     * @param string                    $version
+     * @param array                     $server
+     * @param array                     $cookies
+     * @param array                     $get
+     * @param array                     $post
+     * @param array                     $files
+     */
     public function __construct($uri = null, array $headers = [], $body = '', string $method = RequestMethod::GET, string $version = '1.1', array $server = [], array $cookies = [], array $get = [], array $post = [], array $files = [])
     {
         $this->server = $server;
@@ -231,7 +243,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array An array tree of UploadedFileInterface instances.
+     * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
      *
      * @return static
      *
@@ -443,8 +455,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     /**
      * 设置上传的文件.
      *
-     * @param self  $object
-     * @param array $files
+     * @param static $object
+     * @param array  $files
      *
      * @return static
      */
@@ -605,7 +617,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return static
      */

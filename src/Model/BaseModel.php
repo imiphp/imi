@@ -73,6 +73,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected $__recordExists = null;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = [])
     {
         $this->__meta = $meta = static::__getMeta();
@@ -84,6 +87,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
     public function __init($data = [])
     {
         // 初始化前
@@ -154,6 +162,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     // 实现接口的方法们：
 
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
@@ -161,6 +174,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return method_exists($this, $methodName) && null !== $this->$methodName();
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
@@ -190,6 +208,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $result;
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function offsetSet($offset, $value)
     {
         $meta = $this->__meta;
@@ -234,6 +258,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
     public function offsetUnset($offset)
     {
         $index = array_search($offset, $this->__fieldNames);
@@ -243,21 +272,42 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
+    /**
+     * @param mixed $name
+     *
+     * @return mixed
+     */
     public function &__get($name)
     {
         return $this[$name];
     }
 
+    /**
+     * @param mixed $name
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function __set($name, $value)
     {
         $this[$name] = $value;
     }
 
+    /**
+     * @param mixed $name
+     *
+     * @return bool
+     */
     public function __isset($name)
     {
         return isset($this[$name]);
     }
 
+    /**
+     * @param mixed $name
+     *
+     * @return void
+     */
     public function __unset($name)
     {
         unset($this[$name]);
@@ -280,6 +330,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 if (\array_key_exists($name, $result) && null === $result[$name])
                 {
+                    /** @var AutoSelect|null $autoSelect */
                     $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
                     if ($autoSelect && !$autoSelect->alwaysShow)
                     {
@@ -354,7 +405,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             $data = iterator_to_array($this);
         }
 
-        return json_decode(json_encode($data), true);
+        $content = json_encode($data);
+        if (false === $content)
+        {
+            return [];
+        }
+
+        return json_decode($content, true);
     }
 
     /**
@@ -376,6 +433,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $list;
     }
 
+    /**
+     * @return mixed
+     */
     public function &current()
     {
         $value = $this[$this->__getFieldName(current($this->__fieldNames))];
@@ -383,26 +443,41 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $value;
     }
 
+    /**
+     * @return string|bool
+     */
     public function key()
     {
         return $this->__getFieldName(current($this->__fieldNames));
     }
 
+    /**
+     * @return void
+     */
     public function next()
     {
         next($this->__fieldNames);
     }
 
+    /**
+     * @return void
+     */
     public function rewind()
     {
         reset($this->__fieldNames);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return false !== $this->__getFieldName(current($this->__fieldNames));
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -444,9 +519,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 获取字段名.
      *
-     * @param string $fieldName
+     * @param string|false $fieldName
      *
-     * @return void
+     * @return string|bool
      */
     protected function __getFieldName($fieldName)
     {

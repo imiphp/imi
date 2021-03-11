@@ -26,6 +26,10 @@ class Server
      * @Arg(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * @Arg(name="d", type=ArgType::STRING, required=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件")
      *
+     * @param string|null $name
+     * @param int|null    $workerNum
+     * @param bool|string $d
+     *
      * @return void
      */
     public function start($name, $workerNum, $d)
@@ -77,6 +81,8 @@ class Server
      * @Operation("reload")
      * @Arg(name="runtime", type=ArgType::BOOL, required=false, default=false, comments="是否更新运行时缓存")
      *
+     * @param bool $runtime
+     *
      * @return void
      */
     public function reload($runtime)
@@ -86,11 +92,10 @@ class Server
             $imi = new ToolImi();
             echo 'Building runtime...', \PHP_EOL;
             $time = microtime(true);
-            $imi->buildRuntime('', null, false);
+            $imi->buildRuntime('', null, false, false);
             $useTime = microtime(true) - $time;
             echo 'Runtime build complete! ', $useTime, 's', \PHP_EOL;
         }
-        $result = Imi::reloadServer();
-        echo $result['cmd'], \PHP_EOL;
+        Imi::reloadServer();
     }
 }

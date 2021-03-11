@@ -29,6 +29,10 @@ class RequestContextProxyGenerate
      * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
      *
+     * @param string $target
+     * @param string $class
+     * @param string $name
+     *
      * @return void
      */
     public function generate($target, $class, $name)
@@ -81,10 +85,12 @@ class RequestContextProxyGenerate
                 $returnType = $method->getReturnType();
                 if ($returnType->allowsNull())
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName() . '|null';
                 }
                 else
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName();
                 }
             }
@@ -100,6 +106,7 @@ class RequestContextProxyGenerate
                 $paramType = $param->getType();
                 if ($paramType)
                 {
+                    // @phpstan-ignore-next-line
                     $paramType = $paramType->getName();
                 }
                 if (null !== $paramType && $param->allowsNull())
@@ -134,6 +141,7 @@ class RequestContextProxyGenerate
                 $methods[] = '@method static ' . $item;
             }
         }
+        // @phpstan-ignore-next-line
         $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName) {
             ob_start();
             include __DIR__ . '/template.tpl';

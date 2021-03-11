@@ -17,7 +17,7 @@ abstract class Worker
     /**
      * 是否初始化完毕.
      *
-     * @return bool
+     * @var bool
      */
     private static $isInited = false;
 
@@ -61,6 +61,7 @@ abstract class Worker
                     static::$workerID = $workerID;
                 }
             }
+            // @phpstan-ignore-next-line
             elseif ($main instanceof \Imi\Server\CoServer)
             {
                 static::$workerID = $main->getWorkerId();

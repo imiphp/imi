@@ -17,7 +17,7 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/")
      *
-     * @return void
+     * @return \Imi\Server\Http\Message\Response
      */
     public function index()
     {

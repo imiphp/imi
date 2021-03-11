@@ -85,7 +85,7 @@ abstract class DateTime
      * @param string|null $format
      * @param int|null    $timestamp
      *
-     * @return void
+     * @return string|int
      */
     public static function getNextWeek($weekNo = null, $format = null, $timestamp = null)
     {
@@ -114,7 +114,7 @@ abstract class DateTime
      * @param string|null $format
      * @param int|null    $timestamp
      *
-     * @return void
+     * @return string|int
      */
     public static function getLastWeek($weekNo = null, $format = null, $timestamp = null)
     {
@@ -141,7 +141,7 @@ abstract class DateTime
      *
      * @param int|null $timestamp
      *
-     * @return void
+     * @return int
      */
     public static function getWeekOfMonth($timestamp = null)
     {

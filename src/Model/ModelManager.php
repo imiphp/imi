@@ -134,7 +134,7 @@ abstract class ModelManager
      *
      * @param string|object $object
      *
-     * @return string
+     * @return string|null
      */
     public static function getTable($object)
     {
@@ -146,6 +146,7 @@ abstract class ModelManager
         }
         else
         {
+            /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
             return $staticTable[$objectClass] = $tableAnnotation ? $tableAnnotation->name : null;
@@ -157,7 +158,7 @@ abstract class ModelManager
      *
      * @param string|object $object
      *
-     * @return string
+     * @return string|null
      */
     public static function getDbPoolName($object)
     {
@@ -169,6 +170,7 @@ abstract class ModelManager
         }
         else
         {
+            /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
             return $staticDbPoolName[$objectClass] = $tableAnnotation ? $tableAnnotation->dbPoolName : null;
@@ -193,6 +195,7 @@ abstract class ModelManager
         }
         else
         {
+            /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
             return $staticId[$objectClass] = $tableAnnotation ? $tableAnnotation->id : null;
@@ -257,7 +260,7 @@ abstract class ModelManager
     /**
      * 模型是否为驼峰命名.
      *
-     * @param  string|object
+     * @param string|object $object
      *
      * @return bool
      */
@@ -271,7 +274,10 @@ abstract class ModelManager
         }
         else
         {
-            return $staticIsCamelCache[$class] = static::getAnnotation($object, Entity::class)->camel ?? true;
+            /** @var Entity|null $entity */
+            $entity = static::getAnnotation($object, Entity::class);
+
+            return $staticIsCamelCache[$class] = $entity->camel ?? true;
         }
     }
 
@@ -292,7 +298,9 @@ abstract class ModelManager
         }
         else
         {
-            $key = static::getAnnotation($object, RedisEntity::class)->key;
+            /** @var RedisEntity $redisEntity */
+            $redisEntity = static::getAnnotation($object, RedisEntity::class);
+            $key = $redisEntity->key;
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
             return $staticKeyRules[$class] = new KeyRule($key, $matches[1]);
@@ -316,7 +324,9 @@ abstract class ModelManager
         }
         else
         {
-            $key = static::getAnnotation($object, RedisEntity::class)->member;
+            /** @var RedisEntity $redisEntity */
+            $redisEntity = static::getAnnotation($object, RedisEntity::class);
+            $key = $redisEntity->member;
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
             return $staticMemberRules[$class] = new KeyRule($key, $matches[1]);
@@ -332,6 +342,7 @@ abstract class ModelManager
      */
     public static function getRedisEntity($object)
     {
+        // @phpstan-ignore-next-line
         return static::getAnnotation($object, RedisEntity::class);
     }
 
@@ -340,10 +351,11 @@ abstract class ModelManager
      *
      * @param string|object $object
      *
-     * @return \Imi\Model\Annotation\Serializables
+     * @return \Imi\Model\Annotation\Serializables|null
      */
     public static function getSerializables($object)
     {
+        // @phpstan-ignore-next-line
         return static::getAnnotation($object, Serializables::class);
     }
 
@@ -352,7 +364,7 @@ abstract class ModelManager
      *
      * @param string|object $object
      *
-     * @return \Imi\Model\Annotation\ExtractProperty[]
+     * @return \Imi\Model\Annotation\ExtractProperty[][]
      */
     public static function getExtractPropertys($object)
     {

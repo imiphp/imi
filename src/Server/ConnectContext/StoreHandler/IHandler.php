@@ -50,7 +50,7 @@ interface IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
     public function exists(string $key);
 

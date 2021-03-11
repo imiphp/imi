@@ -66,6 +66,9 @@ abstract class StatusCode
     const NOT_EXTENDED = 510;
     const NETWORK_AUTHENTICATION_REQUIRED = 511;
 
+    /**
+     * @var array
+     */
     protected static $reasonPhrases = [
         self::CONTINUE                        => 'Continue',
         self::SWITCHING_PROTOCOLS             => 'Switching Protocols',

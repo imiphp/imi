@@ -25,6 +25,9 @@ abstract class AnnotationManager
      */
     private static $annotationRelation;
 
+    /**
+     * @return void
+     */
     public static function init()
     {
         static::$annotations = [];
@@ -554,30 +557,18 @@ abstract class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
-            foreach ($classAnnotation->getClassAnnotations() as $annotation)
-            {
-                static::$annotationRelation->removeClassRelation(\get_class($annotation), $className);
-            }
+            static::$annotationRelation->removeClassRelation($className);
             foreach ($classAnnotation->getMethodAnnotations() as $methodName => $annotations)
             {
-                foreach ($annotations as $annotation)
-                {
-                    static::$annotationRelation->removeMethodRelation(\get_class($annotation), $className, $methodName);
-                }
+                static::$annotationRelation->removeMethodRelation($className, $methodName);
             }
             foreach ($classAnnotation->getPropertyAnnotations() as $propertyName => $annotations)
             {
-                foreach ($annotations as $annotation)
-                {
-                    static::$annotationRelation->removePropertyAnnotationRelation(\get_class($annotation), $className, $propertyName);
-                }
+                static::$annotationRelation->removePropertyRelation($className, $propertyName);
             }
             foreach ($classAnnotation->getConstantAnnotations() as $constName => $annotations)
             {
-                foreach ($annotations as $annotation)
-                {
-                    static::$annotationRelation->removeConstantAnnotationRelation(\get_class($annotation), $className, $constName);
-                }
+                static::$annotationRelation->removeConstantRelation($className, $constName);
             }
             unset($staticAnnotations[$className]);
         }

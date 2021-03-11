@@ -16,7 +16,7 @@ class TestController extends HttpController
      * @Action
      * @Route("/testOutside")
      *
-     * @return void
+     * @return array
      */
     public function testOutside()
     {

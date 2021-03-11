@@ -28,7 +28,8 @@ return PhpCsFixer\Config::create()
         'braces'                     => [
             'position_after_control_structures' => 'next',
         ],
-        'no_superfluous_phpdoc_tags' => false,
+        'no_superfluous_phpdoc_tags'   => false,
+        'backtick_to_shell_exec'       => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

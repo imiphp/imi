@@ -18,6 +18,9 @@ class TestInjectValue
      */
     protected $testLogic;
 
+    /**
+     * @return void
+     */
     public function test()
     {
         Assert::assertNotNull($this->testLogic);

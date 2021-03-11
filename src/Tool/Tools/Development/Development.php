@@ -23,6 +23,9 @@ class Development
      * @Arg(name="name", type=ArgType::ARRAY, required=true, comments="要生成的扩展名称，支持多个，用半角逗号隔开")
      * @Arg(name="path", type=ArgType::STRING, default=null, comments="保存路径")
      *
+     * @param array       $name
+     * @param string|null $path
+     *
      * @return void
      */
     public function ext($name, $path)

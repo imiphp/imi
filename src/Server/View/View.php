@@ -45,6 +45,9 @@ class View
      */
     protected $handlers;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $handlers = &$this->handlers;
@@ -57,6 +60,14 @@ class View
         }
     }
 
+    /**
+     * @param string                            $renderType
+     * @param array                             $data
+     * @param array                             $options
+     * @param \Imi\Server\Http\Message\Response $response
+     *
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function render($renderType, $data, $options, Response $response = null): Response
     {
         $handlers = &$this->handlers;

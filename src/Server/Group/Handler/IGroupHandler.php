@@ -14,12 +14,12 @@ interface IGroupHandler
     public function hasGroup(string $groupName);
 
     /**
-     * 创建组，返回组对象
+     * 创建组.
      *
      * @param string $groupName
      * @param int    $maxClients
      *
-     * @return \Imi\Server\Group\Group
+     * @return void
      */
     public function createGroup(string $groupName, int $maxClients = -1);
 

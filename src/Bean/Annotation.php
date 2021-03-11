@@ -129,6 +129,10 @@ class Annotation
             $refClass = new ReflectionClass($annotation);
             $defaultProperties = $refClass->getDefaultProperties();
         }
+        else
+        {
+            $defaultProperties = null;
+        }
         foreach ($annotation as $k => $v)
         {
             if ($skipDefaultValue && $v === $defaultProperties[$k] ?? null)

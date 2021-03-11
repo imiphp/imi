@@ -10,6 +10,9 @@ use Imi\Util\File;
  */
 class Main extends BaseMain
 {
+    /**
+     * @return void
+     */
     public function __init()
     {
     }

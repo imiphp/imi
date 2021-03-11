@@ -14,6 +14,13 @@ use Imi\Util\Http\Consts\ResponseHeader;
  */
 class Xml implements IHandler
 {
+    /**
+     * @param array                             $data
+     * @param array                             $options
+     * @param \Imi\Server\Http\Message\Response $response
+     *
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function handle($data, array $options, Response $response): Response
     {
         $response = $response->withHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);

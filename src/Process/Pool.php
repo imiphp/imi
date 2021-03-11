@@ -52,6 +52,9 @@ class Pool
      */
     private $masterPID;
 
+    /**
+     * @param int $workerNum
+     */
     public function __construct($workerNum)
     {
         $this->workerNum = $workerNum;

@@ -34,6 +34,10 @@ class FileEnumItem
      */
     private $continue = true;
 
+    /**
+     * @param string $path
+     * @param string $fileName
+     */
     public function __construct($path, $fileName)
     {
         $this->path = $path;

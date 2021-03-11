@@ -326,7 +326,7 @@ abstract class ConnectContext
     /**
      * 使用标记获取连接编号.
      *
-     * @param string[] $flag
+     * @param string[] $flags
      *
      * @return int[]
      */

@@ -71,6 +71,9 @@ class Group
         $this->maxClients = $maxClients;
     }
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         if ($this->status)
@@ -184,7 +187,7 @@ class Group
      */
     public function clear()
     {
-        return $this->handler->clear();
+        $this->handler->clear();
     }
 
     /**
@@ -243,6 +246,7 @@ class Group
         $fdMap = $server->getBean('FdMap');
         foreach ($this->handler->getFds($this->groupName) as $fd)
         {
+            // @phpstan-ignore-next-line
             if ('push' === $name && !$swooleServer->isEstablished($fd))
             {
                 continue;

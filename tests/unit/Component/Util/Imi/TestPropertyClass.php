@@ -9,7 +9,13 @@ use Imi\Bean\Annotation\Bean;
  */
 class TestPropertyClass
 {
+    /**
+     * @var int
+     */
     protected $a = 1;
 
+    /**
+     * @var int
+     */
     protected $b = 1;
 }

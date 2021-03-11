@@ -16,7 +16,7 @@ interface IUdpRouteNotFoundHandler
      * @param \Imi\Server\UdpServer\Message\IPacketData $data
      * @param \Imi\Server\UdpServer\IPacketHandler      $handler
      *
-     * @return void
+     * @return mixed
      */
     public function handle(IPacketData $data, IPacketHandler $handler);
 }

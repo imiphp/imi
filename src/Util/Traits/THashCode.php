@@ -7,7 +7,7 @@ trait THashCode
     /**
      * hashCode.
      *
-     * @var string
+     * @var string|null
      */
     protected $hashCode;
 

@@ -37,6 +37,9 @@ abstract class AbstractMessage implements MessageInterface
      */
     protected $body;
 
+    /**
+     * @param string|StreamInterface $body
+     */
     public function __construct($body)
     {
         if (\is_string($body))
@@ -348,7 +351,8 @@ abstract class AbstractMessage implements MessageInterface
     /**
      * 在当前实例下设置头.
      *
-     * @param array $headers
+     * @param array       $headers
+     * @param static|null $object
      *
      * @return static
      */

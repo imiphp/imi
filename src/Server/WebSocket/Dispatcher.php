@@ -15,23 +15,29 @@ class Dispatcher
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Imi\Server\WebSocket\Middleware\IMiddleware[]
      */
     protected $middlewares = [];
 
     /**
      * 最终使用的中间件列表.
      *
-     * @var array
+     * @var \Imi\Server\WebSocket\Middleware\IMiddleware[]|null
      */
     private $finalMiddlewares;
 
+    /**
+     * @param \Imi\Server\WebSocket\Message\IFrame $frame
+     *
+     * @return void
+     */
     public function dispatch(IFrame $frame)
     {
         $requestHandler = new MessageHandler($this->getMiddlewares());
         $responseData = $requestHandler->handle($frame);
         if (null !== $responseData)
         {
+            // @phpstan-ignore-next-line
             RequestContext::getServer()->getSwooleServer()->push($frame->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
         }
     }

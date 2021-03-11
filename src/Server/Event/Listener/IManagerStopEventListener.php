@@ -12,7 +12,7 @@ interface IManagerStopEventListener
     /**
      * 事件处理方法.
      *
-     * @param StopEventParam $e
+     * @param ManagerStopEventParam $e
      *
      * @return void
      */

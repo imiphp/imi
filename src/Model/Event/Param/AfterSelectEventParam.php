@@ -13,11 +13,16 @@ class AfterSelectEventParam extends EventParam
      */
     public $result;
 
+    /**
+     * @param string      $eventName
+     * @param array       $data
+     * @param object|null $target
+     */
     public function __construct($eventName, $data = [], $target = null)
     {
-        $this->eventName = $eventName;
-        $this->target = $target;
-        $this->data = $data;
+        $this->__eventName = $eventName;
+        $this->__target = $target;
+        $this->__data = $data;
         foreach ($data as $key => $value)
         {
             $this->$key = &$value;

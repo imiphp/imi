@@ -28,6 +28,10 @@ class PacketData implements IPacketData
      */
     protected $clientInfo;
 
+    /**
+     * @param string $data
+     * @param array  $clientInfo
+     */
     public function __construct($data, $clientInfo)
     {
         $this->data = $data;

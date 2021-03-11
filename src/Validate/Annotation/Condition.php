@@ -91,6 +91,9 @@ class Condition extends Base
      */
     public $exCode = null;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = [])
     {
         parent::__construct($data);

@@ -19,9 +19,9 @@ class Event
     /**
      * 事件监听.
      *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
-     * @param int    $priority 优先级，越大越先执行
+     * @param string|string[] $name     事件名称
+     * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param int             $priority 优先级，越大越先执行
      *
      * @return void
      */
@@ -33,9 +33,9 @@ class Event
     /**
      * 监听事件，仅触发一次
      *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
-     * @param int    $priority 优先级，越大越先执行
+     * @param string|string[] $name     事件名称
+     * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param int             $priority 优先级，越大越先执行
      *
      * @return void
      */
@@ -47,8 +47,8 @@ class Event
     /**
      * 取消事件监听.
      *
-     * @param string $name     事件名称
-     * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
+     * @param string|string[] $name     事件名称
+     * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      *
      * @return void
      */

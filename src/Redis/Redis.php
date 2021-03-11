@@ -243,11 +243,18 @@ use Imi\Pool\PoolManager;
  * @method static mixed evalEx(string $script, $args = null, $num_keys = null)
  * @method static array hMGetAll(array $keys)
  * @method static mixed scanEach(?string $pattern = null, ?int $count = null)
+ * @method static mixed hscanEach(string $key, ?string $pattern = null, ?int $count = null)
  * @method static mixed sscanEach(string $key, ?string $pattern = null, ?int $count = null)
  * @method static mixed zscanEach(string $key, ?string $pattern = null, ?int $count = null)
  */
 abstract class Redis
 {
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic($name, $arguments)
     {
         if (Config::get('@currentServer.redis.quickFromRequestContext', true))

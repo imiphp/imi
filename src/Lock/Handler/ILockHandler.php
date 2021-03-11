@@ -4,6 +4,10 @@ namespace Imi\Lock\Handler;
 
 interface ILockHandler
 {
+    /**
+     * @param string $id
+     * @param array  $options
+     */
     public function __construct($id, $options = []);
 
     /**

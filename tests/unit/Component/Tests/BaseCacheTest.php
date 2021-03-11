@@ -8,8 +8,14 @@ use PHPUnit\Framework\Assert;
 
 abstract class BaseCacheTest extends BaseTest
 {
+    /**
+     * @var string|null
+     */
     protected $cacheName = null;
 
+    /**
+     * @var bool
+     */
     protected $supportTTL = true;
 
     public function testSetAndGet()

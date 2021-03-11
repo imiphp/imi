@@ -77,11 +77,23 @@ abstract class BaseRequestContextProxy
         self::$cache = [];
     }
 
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         return static::__getProxyInstance()->$name(...$arguments);
     }
 
+    /**
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic($method, $arguments)
     {
         return static::__getProxyInstance()->$method(...$arguments);

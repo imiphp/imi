@@ -65,4 +65,13 @@ class PolymorphicToMany extends RelationBase
      * @var string
      */
     public $middle;
+
+    /**
+     * 排序规则字符串.
+     *
+     * 例：age desc, id desc
+     *
+     * @var string
+     */
+    public $order;
 }

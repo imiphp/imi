@@ -51,6 +51,12 @@ class Result implements IMessage
      */
     public $message;
 
+    /**
+     * @param string $action
+     * @param string $id
+     * @param bool   $success
+     * @param string $message
+     */
     public function __construct($action, $id, $success, $message)
     {
         $this->action = $action;
@@ -62,7 +68,7 @@ class Result implements IMessage
         {
             case ProcessType::WORKER:
             case ProcessType::TASK_WORKER:
-                $this->processId = Worker::getWorkerID();
+                $this->processId = (string) Worker::getWorkerID();
                 break;
             case ProcessType::PROCESS:
                 $this->processId = App::get(ProcessAppContexts::PROCESS_NAME) . '#' . Worker::getWorkerID();

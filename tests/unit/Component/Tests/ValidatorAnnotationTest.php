@@ -20,6 +20,9 @@ class ValidatorAnnotationTest extends BaseTest
      */
     private $tester;
 
+    /**
+     * @var array
+     */
     private $data;
 
     public function testValidatorAnnotation()

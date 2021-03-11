@@ -39,6 +39,9 @@ class ClassAnnotation
      */
     private $constantAnnotations = [];
 
+    /**
+     * @param string $className
+     */
     public function __construct($className)
     {
         $this->className = $className;
@@ -73,7 +76,7 @@ class ClassAnnotation
      *
      * @param string|null $methodName
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
     public function getMethodAnnotations($methodName = null)
     {
@@ -107,7 +110,7 @@ class ClassAnnotation
      *
      * @param string|null $propertyName
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
     public function getPropertyAnnotations($propertyName = null)
     {
@@ -141,7 +144,7 @@ class ClassAnnotation
      *
      * @param string|null $constantName
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
     public function getConstantAnnotations($constantName = null)
     {

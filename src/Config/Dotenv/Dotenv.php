@@ -12,6 +12,11 @@ class Dotenv
     {
     }
 
+    /**
+     * @param array $paths
+     *
+     * @return void
+     */
     public static function load(array $paths)
     {
         $repository = \Dotenv\Repository\RepositoryBuilder::createWithNoAdapters()

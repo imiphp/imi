@@ -24,7 +24,7 @@ class CronWorkerProcess extends BaseProcess
             $id = Args::get('id');
             $data = json_decode(Args::get('data'), true);
             $class = Args::get('class');
-            /** @var \Imi\Cron\ICronTask $handler */
+            /** @var \Imi\Cron\Contract\ICronTask $handler */
             $handler = App::getBean($class);
             $handler->run($id, $data);
             $success = true;
@@ -38,7 +38,10 @@ class CronWorkerProcess extends BaseProcess
         }
         finally
         {
-            CronUtil::reportCronResult($id, $success, $message);
+            if (isset($id))
+            {
+                CronUtil::reportCronResult($id, $success, $message);
+            }
             $process->exit($exitCode);
         }
     }

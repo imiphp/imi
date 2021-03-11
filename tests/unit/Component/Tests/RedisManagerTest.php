@@ -35,7 +35,7 @@ class RedisManagerTest extends BaseTest
         }
         finally
         {
-            if ($instance)
+            if (null !== $instance)
             {
                 RedisManager::release($instance);
                 Assert::assertEquals(1, $pool->getCount());

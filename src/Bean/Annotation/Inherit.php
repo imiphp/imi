@@ -21,7 +21,7 @@ class Inherit extends Base
     /**
      * 允许的注解类，为 null 则不限制，支持字符串或数组.
      *
-     * @var string|string[]
+     * @var string|string[]|null
      */
     public $annotation;
 }

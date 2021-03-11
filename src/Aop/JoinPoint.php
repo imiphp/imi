@@ -9,36 +9,43 @@ class JoinPoint
      *
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * 请求方法名.
      *
      * @var string
      */
-    private $method;
+    protected $method;
 
     /**
      * 请求参数.
      *
      * @var array
      */
-    private $args;
+    protected $args;
 
     /**
      * 连接点所在的目标对象
      *
-     * @var mixed
+     * @var object
      */
-    private $target;
+    protected $target;
 
     /**
      * 代理对象本身.
      *
      * @var \Imi\Bean\BeanProxy
      */
-    private $_this;
+    protected $_this;
 
+    /**
+     * @param string              $type
+     * @param string              $method
+     * @param array               $args
+     * @param object              $target
+     * @param \Imi\Bean\BeanProxy $_this
+     */
     public function __construct($type, $method, &$args, $target, $_this)
     {
         $this->type = $type;
@@ -103,7 +110,7 @@ class JoinPoint
      *
      * @param array $args 请求参数
      *
-     * @return voie
+     * @return void
      */
     public function setArgs(array $args)
     {

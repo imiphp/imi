@@ -273,16 +273,7 @@ register_shutdown_function(function () {
 });
 
 echo 'Before start server memory:', \PHP_EOL, `free -m`, \PHP_EOL;
-if (defined('SWOOLE_HOOK_NATIVE_CURL'))
-{
-    // 暂时移除 PHP 8 中有 bug 的 hook native curl
-    $flags = \SWOOLE_HOOK_ALL ^ \SWOOLE_HOOK_NATIVE_CURL;
-}
-else
-{
-    $flags = \SWOOLE_HOOK_ALL;
-}
-Runtime::enableCoroutine($flags);
+\Swoole\Runtime::enableCoroutine();
 go('startServer');
 Event::wait();
 Runtime::enableCoroutine(false);

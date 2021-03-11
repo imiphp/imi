@@ -51,6 +51,13 @@ class SessionCookie
      */
     public $enable = true;
 
+    /**
+     * @param int    $lifetime
+     * @param string $path
+     * @param string $domain
+     * @param bool   $secure
+     * @param bool   $httponly
+     */
     public function __construct($lifetime = 0, $path = '/', $domain = '', bool $secure = false, bool $httponly = false)
     {
         $this->lifetime = $lifetime;

@@ -35,6 +35,11 @@ class ReceiveData implements IReceiveData
      */
     protected $formatData;
 
+    /**
+     * @param int    $fd
+     * @param int    $reactorID
+     * @param string $data
+     */
     public function __construct(int $fd, int $reactorID, $data)
     {
         $this->fd = $fd;

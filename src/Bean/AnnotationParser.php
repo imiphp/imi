@@ -54,6 +54,11 @@ class AnnotationParser
         $this->reader = new AnnotationReader();
     }
 
+    /**
+     * @param string $className
+     *
+     * @return void
+     */
     public function parse($className)
     {
         $ref = ReflectionContainer::getClassReflection($className);
@@ -74,6 +79,11 @@ class AnnotationParser
         $this->parseAnnotationParsers($ref);
     }
 
+    /**
+     * @param string $className
+     *
+     * @return void
+     */
     public function execParse($className)
     {
         // 执行处理器
@@ -301,6 +311,7 @@ class AnnotationParser
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
+            /** @var Inherit $annotation */
             foreach ($annotations as $annotation)
             {
                 if ($annotation instanceof Inherit)
@@ -369,7 +380,7 @@ class AnnotationParser
      * 处理常量注解.
      *
      * @param \ReflectionClass         $ref
-     * @param \ReflectionClassConstant $prop
+     * @param \ReflectionClassConstant $const
      *
      * @return void
      */
@@ -410,12 +421,15 @@ class AnnotationParser
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
                 }
+                // @phpstan-ignore-next-line
                 if (\is_string($annotation->annotation))
                 {
+                    // @phpstan-ignore-next-line
                     $inheritAnnotationClasses = [$annotation->annotation];
                 }
                 else
                 {
+                    // @phpstan-ignore-next-line
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
                 $inheritAnnotations = [];
@@ -715,7 +729,7 @@ class AnnotationParser
     /**
      * 获取存储数据.
      *
-     * @return void
+     * @return array
      */
     public function getStoreData()
     {

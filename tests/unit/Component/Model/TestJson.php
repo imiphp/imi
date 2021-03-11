@@ -11,7 +11,7 @@ use Imi\Test\Component\Model\Base\TestJsonBase;
  *
  * @Inherit
  *
- * @property array $jsonData json数据
+ * @property \Imi\Util\LazyArrayObject|array $jsonData json数据
  */
 class TestJson extends TestJsonBase
 {

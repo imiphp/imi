@@ -24,6 +24,8 @@ class Imi
      * @Operation("buildImiRuntime")
      * @Arg(name="file", type=ArgType::STRING, default=null, comments="可以指定生成到目标文件")
      *
+     * @param string|null $file
+     *
      * @return void
      */
     public function buildImiRuntime($file)
@@ -69,6 +71,11 @@ class Imi
      * @Arg(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
      * @Arg(name="sock", type=ArgType::STRING, default=false, comments="如果传了 sock 则走 Unix Socket 通讯")
      *
+     * @param string      $format
+     * @param string|null $changedFilesFile
+     * @param bool        $confirm
+     * @param string|bool $sock
+     *
      * @return void
      */
     public function buildRuntime($format, $changedFilesFile, $confirm, $sock)
@@ -78,6 +85,7 @@ class Imi
         ob_start();
         register_shutdown_function(function () use ($format, &$socket, &$success) {
             $result = ob_get_clean();
+            // @phpstan-ignore-next-line
             if ($success)
             {
                 $result = 'Build app runtime complete' . \PHP_EOL;
@@ -93,6 +101,7 @@ class Imi
                     echo $result;
                 }
             }
+            // @phpstan-ignore-next-line
             if ($socket)
             {
                 $data = [
@@ -111,7 +120,7 @@ class Imi
             $socket = stream_socket_client('unix://' . $sock, $errno, $errstr, 10);
             if (false === $socket)
             {
-                return false;
+                return;
             }
             stream_set_timeout($socket, 60);
             do

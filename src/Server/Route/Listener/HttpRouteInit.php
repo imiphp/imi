@@ -69,6 +69,7 @@ class HttpRouteInit implements IEventListener
                 $classMiddlewares = [];
                 foreach (AnnotationManager::getClassAnnotations($className, Middleware::class) ?? [] as $middleware)
                 {
+                    /** @var Middleware $middleware */
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, Action::class) as $methodName => $actionAnnotations)
@@ -90,6 +91,7 @@ class HttpRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, Middleware::class) ?? [] as $middleware)
                     {
+                        /** @var Middleware $middleware */
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
                     // 最终中间件

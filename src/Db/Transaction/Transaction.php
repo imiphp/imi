@@ -37,9 +37,10 @@ class Transaction
         $offEvents = [];
         $levels = $this->transactionLevels;
         $this->transactionLevels = 0;
+        $i = $levels;
         try
         {
-            for ($i = $levels; $i >= 0; --$i)
+            for (; $i >= 0; --$i)
             {
                 $this->trigger('transaction.' . $i . '.commit', [
                     'db'    => $this,
@@ -85,9 +86,10 @@ class Transaction
         {
             $final = $transactionLevels - $levels;
         }
+        $i = $transactionLevels;
         try
         {
-            for ($i = $transactionLevels; $i >= $final; --$i)
+            for (; $i >= $final; --$i)
             {
                 $this->trigger('transaction.' . $i . '.rollback', [
                     'db'    => $this,

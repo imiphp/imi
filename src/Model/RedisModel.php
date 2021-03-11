@@ -27,10 +27,15 @@ abstract class RedisModel extends BaseModel
     /**
      * set时，设置的数据过期时间.
      *
-     * @var int
+     * @var int|null
      */
     protected $__ttl;
 
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
     public function __init($data = [])
     {
         parent::__init($data);
@@ -42,7 +47,7 @@ abstract class RedisModel extends BaseModel
      *
      * @param string|array $condition
      *
-     * @return static
+     * @return static|null
      */
     public static function find($condition)
     {
@@ -81,6 +86,8 @@ abstract class RedisModel extends BaseModel
     /**
      * 查询多条记录.
      *
+     * @param mixed $conditions
+     *
      * @return static[]
      */
     public static function select(...$conditions)
@@ -95,7 +102,7 @@ abstract class RedisModel extends BaseModel
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
-                $datas = static::__getRedis()->mGet($keys);
+                $datas = static::__getRedis()->mget($keys);
                 $list = [];
                 foreach ($datas as $i => $data)
                 {
@@ -137,6 +144,7 @@ abstract class RedisModel extends BaseModel
                 return $list;
             case RedisStorageMode::HASH_OBJECT:
                 $redis = static::__getRedis();
+                $list = [];
                 foreach ($keys as $key)
                 {
                     $data = $redis->hGetAll($key);
@@ -172,7 +180,7 @@ abstract class RedisModel extends BaseModel
                 {
                     return $redis->set($this->__getKey(), $this->toArray(), $this->__ttl);
                 }
-                break;
+                // no break
             case RedisStorageMode::HASH:
                 return false !== $redis->hSet($this->__getKey(), $this->__getMember(), $this->toArray());
             case RedisStorageMode::HASH_OBJECT:
@@ -180,7 +188,7 @@ abstract class RedisModel extends BaseModel
                 $result = $redis->hMset($key, $this->toArray());
                 if ($result && null !== $this->__ttl)
                 {
-                    $result = $result && $redis->expire($key, $this->__ttl);
+                    $result = $redis->expire($key, $this->__ttl);
                 }
 
                 return $result;
@@ -214,7 +222,7 @@ abstract class RedisModel extends BaseModel
     /**
      * 批量删除.
      *
-     * @param string ...$conditions
+     * @param mixed ...$conditions
      *
      * @return int
      */

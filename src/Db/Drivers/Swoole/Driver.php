@@ -21,7 +21,7 @@ class Driver extends Base implements IDb
     /**
      * 连接对象
      *
-     * @var \Swoole\Coroutine\MySQL
+     * @var \Swoole\Coroutine\MySQL|null
      */
     protected $instance;
 
@@ -42,7 +42,7 @@ class Driver extends Base implements IDb
     /**
      * Statement.
      *
-     * @var \Swoole\Coroutine\MySQL\Statement
+     * @var \Swoole\Coroutine\MySQL\Statement|null
      */
     protected $lastStmt;
 
@@ -141,16 +141,20 @@ class Driver extends Base implements IDb
         {
             $this->lastStmt = null;
         }
-        $this->instance->close();
-        $this->instance = null;
+        $instance = &$this->instance;
+        if (null !== $instance)
+        {
+            $instance->close();
+            $instance = null;
+        }
     }
 
     /**
      * 获取原对象实例.
      *
-     * @return \Swoole\Coroutine\MySQL
+     * @return \Swoole\Coroutine\MySQL|null
      */
-    public function getInstance(): \Swoole\Coroutine\MySQL
+    public function getInstance(): ?\Swoole\Coroutine\MySQL
     {
         return $this->instance;
     }
@@ -162,7 +166,8 @@ class Driver extends Base implements IDb
      */
     public function beginTransaction(): bool
     {
-        if (!$this->inTransaction() && !$this->instance->begin())
+        $instance = $this->instance;
+        if ($instance && !$this->inTransaction() && !$instance->begin())
         {
             return false;
         }
@@ -179,7 +184,13 @@ class Driver extends Base implements IDb
      */
     public function commit(): bool
     {
-        return $this->instance->commit() && $this->transaction->commit();
+        $instance = $this->instance;
+        if (null === $instance)
+        {
+            return false;
+        }
+
+        return $instance->commit() && $this->transaction->commit();
     }
 
     /**
@@ -192,9 +203,14 @@ class Driver extends Base implements IDb
      */
     public function rollBack($levels = null): bool
     {
+        $instance = $this->instance;
+        if (null === $instance)
+        {
+            return false;
+        }
         if (null === $levels)
         {
-            $result = $this->instance->rollback();
+            $result = $instance->rollback();
         }
         else
         {
@@ -242,14 +258,20 @@ class Driver extends Base implements IDb
         }
         else
         {
-            return $this->instance->errno;
+            $instance = $this->instance;
+            if (null === $instance)
+            {
+                return -1;
+            }
+
+            return $instance->errno;
         }
     }
 
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -259,7 +281,13 @@ class Driver extends Base implements IDb
         }
         else
         {
-            return $this->instance->error;
+            $instance = $this->instance;
+            if (null === $instance)
+            {
+                return '';
+            }
+
+            return $instance->error;
         }
     }
 
@@ -285,6 +313,10 @@ class Driver extends Base implements IDb
         $this->lastStmt = null;
         $this->lastSql = $sql;
         $instance = $this->instance;
+        if (null === $instance)
+        {
+            return -1;
+        }
         $instance->query($sql);
 
         return $instance->affected_rows;
@@ -343,7 +375,13 @@ class Driver extends Base implements IDb
      */
     public function lastInsertId(string $name = null)
     {
-        return $this->instance->insert_id;
+        $instance = $this->instance;
+        if (null === $instance)
+        {
+            return '';
+        }
+
+        return $instance->insert_id;
     }
 
     /**
@@ -353,7 +391,14 @@ class Driver extends Base implements IDb
      */
     public function rowCount(): int
     {
-        return null === $this->lastStmt ? $this->instance->affected_rows : $this->lastStmt->affected_rows;
+        $instance = $this->instance;
+        $lastStmt = $this->lastStmt;
+        if (null === $instance && null === $lastStmt)
+        {
+            return -1;
+        }
+
+        return null === $lastStmt ? $instance->affected_rows : $lastStmt->affected_rows;
     }
 
     /**
@@ -382,7 +427,7 @@ class Driver extends Base implements IDb
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
             $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
-            if ($this->isCacheStatement && null === $stmtCache)
+            if ($this->isCacheStatement && !isset($stmtCache))
             {
                 StatementManager::setNX($stmt, true);
             }

@@ -107,7 +107,7 @@ class Route extends Base
     /**
      * JSON、XML参数条件支持以 . 作为分隔符，支持多级参数获取.
      *
-     * @var boolean
+     * @var bool
      */
     public $paramsBodyMultiLevel = true;
 

@@ -23,7 +23,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="login"})
      *
-     * @return void
+     * @param \stdClass $data
+     *
+     * @return array
      */
     public function login($data)
     {
@@ -51,7 +53,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="reconnect"})
      *
-     * @return void
+     * @param \stdClass $data
+     *
+     * @return array
      */
     public function reconnect($data)
     {
@@ -69,7 +73,7 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="send"})
      *
-     * @param
+     * @param \stdClass $data
      *
      * @return void
      */
@@ -85,9 +89,7 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="info"})
      *
-     * @param
-     *
-     * @return void
+     * @return array
      */
     public function info()
     {
@@ -103,9 +105,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"a.b.c"="test1"})
      *
-     * @param
+     * @param \stdClass $data
      *
-     * @return void
+     * @return array
      */
     public function test1($data)
     {
@@ -118,9 +120,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"a"="1", "b"=2})
      *
-     * @param
+     * @param \stdClass $data
      *
-     * @return void
+     * @return array
      */
     public function test2($data)
     {
@@ -133,7 +135,7 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"duplicated"=1})
      *
-     * @param
+     * @param \stdClass $data
      *
      * @return void
      */
@@ -147,7 +149,7 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"duplicated"=1})
      *
-     * @param
+     * @param \stdClass $data
      *
      * @return void
      */

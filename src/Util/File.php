@@ -52,7 +52,7 @@ abstract class File
      *
      * @param string $dirPath
      *
-     * @return \RegexIterator|ArrayIterator
+     * @return \RegexIterator|\ArrayIterator
      */
     public static function enumPHPFile($dirPath)
     {
@@ -72,7 +72,7 @@ abstract class File
      *
      * @param string $dirPath
      *
-     * @return \Imi\Util\File\FileEnumItem[]
+     * @return \Generator
      */
     public static function enumFile(string $dirPath)
     {
@@ -151,7 +151,7 @@ abstract class File
      * @param string $dir  目录路径
      * @param int    $mode 目录的权限
      *
-     * @return false|true
+     * @return bool
      */
     public static function createDir($dir, $mode = 0775)
     {
@@ -176,11 +176,11 @@ abstract class File
     /**
      * 创建一个文件.
      *
-     * @param string $dir     文件路径
+     * @param string $file    文件路径
      * @param string $content
      * @param int    $mode    文件的权限
      *
-     * @return false|true
+     * @return bool
      */
     public static function createFile($file, $content = '', $mode = 0775)
     {

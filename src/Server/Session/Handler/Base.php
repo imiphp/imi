@@ -22,6 +22,9 @@ abstract class Base implements ISessionHandler
      */
     private $formatHandler;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $this->formatHandler = RequestContext::getServerBean($this->formatHandlerClass);

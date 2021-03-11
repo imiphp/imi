@@ -24,6 +24,7 @@ abstract class ClassObject
         }
         $index = strpos($object, 'class@anonymous');
 
+        // @phpstan-ignore-next-line
         return false !== $index && $index >= 0;
     }
 
@@ -85,9 +86,11 @@ abstract class ClassObject
         {
             $paramName = $param->name;
             $resultItem = [$result[$paramName]];
+            // @phpstan-ignore-next-line
             if (isset($args[$i + 1]))
             {
                 $count = \count($args);
+                // @phpstan-ignore-next-line
                 for (++$i; $i < $count; ++$i)
                 {
                     $resultItem[] = $args[$i];
@@ -125,9 +128,9 @@ abstract class ClassObject
      * 判断某类是否在指定命名空间下.
      *
      * @param string $namespace
-     * @param string $subClass
+     * @param string $class
      *
-     * @return void
+     * @return bool
      */
     public static function inNamespace($namespace, $class)
     {

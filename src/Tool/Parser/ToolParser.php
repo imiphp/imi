@@ -60,7 +60,7 @@ class ToolParser extends BaseParser
      * @param string $tool
      * @param string $operation
      *
-     * @return array
+     * @return callable|null
      */
     public function getCallable($tool, $operation)
     {

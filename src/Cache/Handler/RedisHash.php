@@ -308,9 +308,8 @@ SCRIPT;
     /**
      * 处理key.
      *
-     * @param string $key
-     * @param string $member
-     * @param bool   $allowNoMember 是否允许没有 $member，默认false
+     * @param string      $key
+     * @param string|null $member
      *
      * @return void
      */

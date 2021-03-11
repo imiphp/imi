@@ -31,6 +31,7 @@ class BeforeRequest implements IRequestEventListener
                 'request'   => $request,
                 'response'  => $response,
             ]);
+            /** @var \Imi\Server\Http\Server $server */
             if ($server->isHttp2())
             {
                 RequestContext::set('fd', $request->getSwooleRequest()->fd);
@@ -42,7 +43,7 @@ class BeforeRequest implements IRequestEventListener
         }
         catch (\Throwable $th)
         {
-            if (!$server)
+            if (!isset($server))
             {
                 throw $th;
             }

@@ -7,5 +7,8 @@ namespace Imi\Test\Component\Tests;
  */
 class CacheRedisTest extends BaseCacheTest
 {
+    /**
+     * @var string
+     */
     protected $cacheName = 'redis';
 }

@@ -29,6 +29,10 @@ class FacadeGenerate
      * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的类")
      * @Arg(name="request", type=ArgType::BOOL, default=false, comments="是否请求上下文门面")
      *
+     * @param string $facadeClass
+     * @param string $class
+     * @param bool   $request
+     *
      * @return void
      */
     public function generate($facadeClass, $class, $request)
@@ -81,10 +85,12 @@ class FacadeGenerate
                 $returnType = $method->getReturnType();
                 if ($returnType->allowsNull())
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName() . '|null';
                 }
                 else
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName();
                 }
             }
@@ -100,6 +106,7 @@ class FacadeGenerate
                 $paramType = $param->getType();
                 if ($paramType)
                 {
+                    // @phpstan-ignore-next-line
                     $paramType = $paramType->getName();
                 }
                 if (null !== $paramType && $param->allowsNull())
@@ -129,6 +136,7 @@ class FacadeGenerate
             $params = implode(', ', $params);
             $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
+        // @phpstan-ignore-next-line
         $content = (function () use ($namespace, $facadeAnnotation, $methods, $shortClassName) {
             ob_start();
             include __DIR__ . '/template.tpl';

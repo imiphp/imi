@@ -17,6 +17,9 @@ use PHPUnit\Framework\Warning;
 
 class ImiListener implements TestListener
 {
+    /**
+     * @var bool
+     */
     private $isLoadedImi = false;
 
     /**
@@ -29,12 +32,24 @@ class ImiListener implements TestListener
      */
     private $namePrettifier;
 
+    /**
+     * @var bool
+     */
     private $success;
 
+    /**
+     * @var string
+     */
     private $errorMessage;
 
+    /**
+     * @var int|null
+     */
     private $messageColor;
 
+    /**
+     * @var bool
+     */
     private $isOb = false;
 
     const COLOR_RED = 1;
@@ -172,6 +187,7 @@ class ImiListener implements TestListener
             $methodRef->invoke($test);
         }
         $this->stopOb(1);
+        // @phpstan-ignore-next-line
         echo \PHP_EOL, 'TEST ', $this->namePrettifier->prettifyTestClass($this->suite->getName()), ' ', $this->namePrettifier->prettifyTestCase($test);
         $this->success = true;
         if ($test instanceof BaseTest)
@@ -199,6 +215,12 @@ class ImiListener implements TestListener
         $this->startOb();
     }
 
+    /**
+     * @param string   $message
+     * @param int|null $color
+     *
+     * @return void
+     */
     private function write($message, $color = null)
     {
         switch ($color)
@@ -217,6 +239,9 @@ class ImiListener implements TestListener
         }
     }
 
+    /**
+     * @return void
+     */
     private function startOb()
     {
         if (!$this->isOb)
@@ -226,6 +251,11 @@ class ImiListener implements TestListener
         }
     }
 
+    /**
+     * @param int|null $skipLength
+     *
+     * @return void
+     */
     private function stopOb($skipLength = null)
     {
         if ($this->isOb)

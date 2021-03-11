@@ -82,6 +82,12 @@ abstract class BaseFacade
         self::$cache = [];
     }
 
+    /**
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic($method, $arguments)
     {
         return static::__getFacadeInstance()->$method(...$arguments);

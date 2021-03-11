@@ -60,7 +60,8 @@ abstract class Config
     /**
      * 加载配置列表.
      *
-     * @param array $configList
+     * @param string $name
+     * @param array  $configList
      *
      * @return void
      */
@@ -78,7 +79,7 @@ abstract class Config
      * @param string $name
      * @param array  $config
      *
-     * @return bool
+     * @return void
      */
     public static function setConfig($name, array $config)
     {

@@ -12,7 +12,7 @@ interface IManagerStartEventListener
     /**
      * 事件处理方法.
      *
-     * @param StartEventParam $e
+     * @param ManagerStartEventParam $e
      *
      * @return void
      */

@@ -26,7 +26,7 @@ class ActionWrapMiddleware implements IMiddleware
      * @param IFrame          $frame
      * @param IMessageHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {

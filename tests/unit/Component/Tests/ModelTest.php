@@ -254,6 +254,12 @@ class ModelTest extends BaseTest
         $this->assertEquals(0, $count3);
     }
 
+    /**
+     * @param \Imi\Test\Component\Model\UpdateTime $record
+     * @param string                               $methodName
+     *
+     * @return void
+     */
     private function assertUpdateTime(UpdateTime $record, $methodName)
     {
         $time = time();

@@ -52,7 +52,7 @@ abstract class ProcessManager
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if (null === $processOption)
         {
-            return null;
+            throw new \RuntimeException(sprintf('Process %s not found', $name));
         }
         if ($processOption['Process']->unique && static::isRunning($name))
         {

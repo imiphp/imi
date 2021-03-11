@@ -4,7 +4,6 @@ namespace Imi\Server\Session\Middleware;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,16 +18,19 @@ class HttpSessionMiddleware implements MiddlewareInterface
     /**
      * SessionID处理器.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $sessionIdHandler = null;
 
     /**
-     * Process an incoming server request and return a response, optionally delegating
-     * response creation to a handler.
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Server\RequestHandlerInterface $handler
+     *
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        /** @var \Imi\Server\Http\Message\Request $request */
         /** @var \Imi\Server\Session\SessionManager $sessionManager */
         $sessionManager = RequestContext::getBean('SessionManager');
 
@@ -51,6 +53,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
             if ($sessionManager->getConfig()->cookie->enable && $sessionManager->isNewSession() && $sessionManager->isChanged())
             {
                 // 发送cookie
+                // @phpstan-ignore-next-line
                 $response = $this->sendCookie($sessionManager, $response);
             }
         }

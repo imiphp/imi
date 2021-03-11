@@ -61,7 +61,7 @@ abstract class App
     /**
      * 运行时数据.
      *
-     * @var RuntimeInfo
+     * @var RuntimeInfo|null
      */
     private static $runtimeInfo;
 
@@ -82,7 +82,7 @@ abstract class App
     /**
      * 只读上下文键名列表.
      *
-     * @var string[]
+     * @var array
      */
     private static $contextReadonly = [];
 
@@ -301,6 +301,7 @@ abstract class App
      * 获取Bean对象
      *
      * @param string $name
+     * @param mixed  $params
      *
      * @return mixed
      */

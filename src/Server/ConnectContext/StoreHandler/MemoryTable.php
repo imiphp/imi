@@ -17,14 +17,14 @@ class MemoryTable implements IHandler
     /**
      * 数据写入前编码回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataEncode = 'serialize';
 
     /**
      * 数据读出后处理回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataDecode = 'unserialize';
 
@@ -118,7 +118,7 @@ class MemoryTable implements IHandler
      *
      * @param string $key
      *
-     * @return void
+     * @return bool
      */
     public function exists(string $key)
     {

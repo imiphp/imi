@@ -18,6 +18,14 @@ class AfterThrowingJoinPoint extends JoinPoint
      */
     private $isCancelThrow = false;
 
+    /**
+     * @param string              $type
+     * @param string              $method
+     * @param array               $args
+     * @param object              $target
+     * @param \Imi\Bean\BeanProxy $_this
+     * @param \Throwable          $throwable
+     */
     public function __construct($type, $method, $args, $target, $_this, \Throwable $throwable)
     {
         parent::__construct($type, $method, $args, $target, $_this);
@@ -39,7 +47,7 @@ class AfterThrowingJoinPoint extends JoinPoint
      *
      * @param bool $isCancelThrow 是否取消，默认为true
      *
-     * @return bool
+     * @return void
      */
     public function cancelThrow($isCancelThrow = true)
     {

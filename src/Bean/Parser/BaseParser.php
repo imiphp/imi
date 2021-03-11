@@ -35,6 +35,9 @@ abstract class BaseParser implements IParser
      */
     protected $data = [];
 
+    /**
+     * @param array $data
+     */
     private function __construct($data = [])
     {
         $this->data = $data;

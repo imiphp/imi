@@ -7,5 +7,10 @@ namespace Imi\Process;
  */
 interface IProcess
 {
+    /**
+     * @param \Swoole\Process $process
+     *
+     * @return void
+     */
     public function run(\Swoole\Process $process);
 }

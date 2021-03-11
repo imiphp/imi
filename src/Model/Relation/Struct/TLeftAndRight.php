@@ -34,24 +34,28 @@ trait TLeftAndRight
     /**
      * 初始化左右关联.
      *
-     * @param \Imi\Model\Model                        $model
-     * @param string                                  $propertyName
-     * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
+     * @param string                                      $className
+     * @param string                                      $propertyName
+     * @param \Imi\Model\Annotation\Relation\RelationBase $annotation
      *
      * @return void
      */
     public function initLeftAndRight($className, $propertyName, $annotation)
     {
+        // @phpstan-ignore-next-line
         if (class_exists($annotation->model))
         {
             $this->rightModel = $annotation->model;
         }
         else
         {
+            // @phpstan-ignore-next-line
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
+        /** @var JoinFrom|null $joinFrom */
         $joinFrom = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFrom::class)[0] ?? null;
+        /** @var JoinTo|null $joinTo */
         $joinTo = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinTo::class)[0] ?? null;
 
         if ($joinFrom)
@@ -75,6 +79,8 @@ trait TLeftAndRight
 
     /**
      * Get the value of leftField.
+     *
+     * @return string
      */
     public function getLeftField()
     {
@@ -83,6 +89,8 @@ trait TLeftAndRight
 
     /**
      * Get the value of rightField.
+     *
+     * @return string
      */
     public function getRightField()
     {

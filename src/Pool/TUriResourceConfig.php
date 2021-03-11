@@ -6,6 +6,9 @@ use Imi\Util\Uri;
 
 trait TUriResourceConfig
 {
+    /**
+     * @return void
+     */
     protected function initUriResourceConfig()
     {
         foreach ($this->resourceConfig as &$config)

@@ -20,7 +20,7 @@ class TestController extends \Imi\Controller\UdpController
      * @UdpAction
      * @UdpRoute({"action"="hello"})
      *
-     * @return void
+     * @return array
      */
     public function hello()
     {
@@ -38,11 +38,9 @@ class TestController extends \Imi\Controller\UdpController
      * @UdpAction
      * @UdpRoute({"duplicated"="1"})
      *
-     * @param
-     *
      * @return void
      */
-    public function duplicated1($data)
+    public function duplicated1()
     {
     }
 
@@ -52,11 +50,9 @@ class TestController extends \Imi\Controller\UdpController
      * @UdpAction
      * @UdpRoute({"duplicated"="1"})
      *
-     * @param
-     *
      * @return void
      */
-    public function duplicated2($data)
+    public function duplicated2()
     {
     }
 }

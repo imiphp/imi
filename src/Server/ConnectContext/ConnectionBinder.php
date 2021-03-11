@@ -36,6 +36,9 @@ class ConnectionBinder
      */
     protected $key = 'imi:connectionBinder:map';
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         if (0 === Worker::getWorkerID())
@@ -143,7 +146,7 @@ class ConnectionBinder
     /**
      * 使用标记获取连接编号.
      *
-     * @param string[] $flag
+     * @param string[] $flags
      *
      * @return int[]
      */

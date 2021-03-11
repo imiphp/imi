@@ -4,7 +4,7 @@ namespace Imi\Cache;
 
 use Imi\App;
 use Imi\Bean\BeanFactory;
-use Imi\Cache\Handler\Base;
+use Psr\SimpleCache\CacheInterface;
 
 abstract class CacheManager
 {
@@ -32,7 +32,7 @@ abstract class CacheManager
     /**
      * 获取所有对象名称.
      *
-     * @return void
+     * @return array
      */
     public static function getNames()
     {
@@ -54,9 +54,9 @@ abstract class CacheManager
      *
      * @param string $name
      *
-     * @return \Psr\SimpleCache\CacheInterface
+     * @return CacheInterface
      */
-    public static function getInstance(string $name): Base
+    public static function getInstance(string $name): CacheInterface
     {
         if (!isset(static::$handlers[$name]))
         {

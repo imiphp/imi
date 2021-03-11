@@ -41,6 +41,10 @@ abstract class BaseLock implements ILockHandler
      */
     private $lockCoId = -1;
 
+    /**
+     * @param string $id
+     * @param array  $options
+     */
     public function __construct($id, $options = [])
     {
         $this->id = $id;

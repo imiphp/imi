@@ -39,6 +39,13 @@ class Json implements IHandler
      */
     protected $depth = 512;
 
+    /**
+     * @param array                             $data
+     * @param array                             $options
+     * @param \Imi\Server\Http\Message\Response $response
+     *
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function handle($data, array $options, Response $response): Response
     {
         return $response->withHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)

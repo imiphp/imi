@@ -20,7 +20,7 @@ class Driver extends Base implements IDb
     /**
      * 连接对象
      *
-     * @var \mysqli
+     * @var \mysqli|null
      */
     protected $instance;
 
@@ -41,14 +41,14 @@ class Driver extends Base implements IDb
     /**
      * Statement.
      *
-     * @var \mysqli_stmt
+     * @var \mysqli_stmt|null
      */
     protected $lastStmt;
 
     /**
      * result.
      *
-     * @var \mysqli_result
+     * @var \mysqli_result|bool|null
      */
     protected $lastResult;
 
@@ -248,7 +248,7 @@ class Driver extends Base implements IDb
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -402,7 +402,7 @@ class Driver extends Base implements IDb
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
             $stmt = BeanFactory::newInstance(Statement::class, $this, $lastStmt, null, $sql, $sqlParamsMap);
-            if ($this->isCacheStatement && null === $stmtCache)
+            if ($this->isCacheStatement && !isset($stmtCache))
             {
                 StatementManager::setNX($stmt, true);
             }

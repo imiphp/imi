@@ -80,6 +80,7 @@ class WSRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, WSMiddleware::class) ?? [] as $middleware)
                     {
+                        /** @var WSMiddleware $middleware */
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
                     // 最终中间件

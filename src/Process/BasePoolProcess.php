@@ -11,6 +11,9 @@ abstract class BasePoolProcess implements IPoolProcess
      */
     protected $data;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = [])
     {
         $this->data = $data;

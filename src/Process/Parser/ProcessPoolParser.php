@@ -38,7 +38,7 @@ class ProcessPoolParser extends BaseParser
      *
      * @param string $name processPool名称
      *
-     * @return array
+     * @return array|null
      */
     public function getProcessPool($name)
     {

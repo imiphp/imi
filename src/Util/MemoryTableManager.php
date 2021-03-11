@@ -20,7 +20,7 @@ abstract class MemoryTableManager
     /**
      * \Swoole\Table 数组.
      *
-     * @var \Swoole\Table[]
+     * @var array
      */
     private static $tables = [];
 
@@ -119,7 +119,7 @@ abstract class MemoryTableManager
     /**
      * 获取所有内存表对象名称.
      *
-     * @return void
+     * @return array
      */
     public static function getNames()
     {
@@ -164,11 +164,11 @@ abstract class MemoryTableManager
     /**
      * 获取一行数据.
      *
-     * @param string $name  表名
-     * @param string $key
-     * @param mixed  $field
+     * @param string      $name  表名
+     * @param string      $key
+     * @param string|null $field
      *
-     * @return array
+     * @return array|false
      */
     public static function get(string $name, string $key, string $field = null)
     {

@@ -17,7 +17,7 @@ abstract class AtomicManager
     /**
      * \Swoole\Atomic 数组.
      *
-     * @var \Swoole\Atomic[]
+     * @var array
      */
     private static $atomics = [];
 
@@ -84,7 +84,7 @@ abstract class AtomicManager
     /**
      * 获取所有原子计数对象名称.
      *
-     * @return void
+     * @return array
      */
     public static function getNames()
     {

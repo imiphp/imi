@@ -227,6 +227,8 @@ trait TEvent
     /**
      * 重建事件队列.
      *
+     * @param string $name
+     *
      * @return void
      */
     private function rebuildEventQueue($name)

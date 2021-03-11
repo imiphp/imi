@@ -18,6 +18,10 @@ class KeyRule
      */
     public $paramNames;
 
+    /**
+     * @param string   $rule
+     * @param string[] $paramNames
+     */
     public function __construct($rule, $paramNames)
     {
         $this->rule = $rule;

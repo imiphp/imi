@@ -7,5 +7,8 @@ namespace Imi\Main;
  */
 interface IMain
 {
+    /**
+     * @return void
+     */
     public function __init();
 }

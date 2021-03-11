@@ -79,7 +79,7 @@ class Meta
     /**
      * 序列化注解.
      *
-     * @var \Imi\Model\Annotation\Serializables
+     * @var \Imi\Model\Annotation\Serializables|null
      */
     private $serializables;
 
@@ -93,7 +93,7 @@ class Meta
     /**
      * 提取属性注解.
      *
-     * @var \Imi\Model\Annotation\ExtractProperty[]
+     * @var \Imi\Model\Annotation\ExtractProperty[][]
      */
     private $extractPropertys;
 
@@ -118,12 +118,15 @@ class Meta
      */
     private $propertyJsonNotNullMap;
 
+    /**
+     * @param string $modelClass
+     */
     public function __construct($modelClass)
     {
         $this->className = $modelClass;
-        /** @var \Imi\Model\Annotation\Table $table */
+        /** @var \Imi\Model\Annotation\Table|null $table */
         $table = AnnotationManager::getClassAnnotations($modelClass, Table::class)[0] ?? null;
-        /** @var \Imi\Model\Annotation\Entity $entity */
+        /** @var \Imi\Model\Annotation\Entity|null $entity */
         $entity = AnnotationManager::getClassAnnotations($modelClass, Entity::class)[0] ?? null;
         if ($table)
         {
@@ -254,7 +257,7 @@ class Meta
     /**
      * Get 序列化注解.
      *
-     * @return \Imi\Model\Annotation\Serializables
+     * @return \Imi\Model\Annotation\Serializables|null
      */
     public function getSerializables()
     {
@@ -264,7 +267,7 @@ class Meta
     /**
      * Get 提取属性注解.
      *
-     * @return \Imi\Model\Annotation\ExtractProperty[]
+     * @return \Imi\Model\Annotation\ExtractProperty[][]
      */
     public function getExtractPropertys()
     {

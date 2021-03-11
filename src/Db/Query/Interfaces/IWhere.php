@@ -7,16 +7,16 @@ interface IWhere extends IBaseWhere
     /**
      * 字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getFieldName(): string;
+    public function getFieldName(): ?string;
 
     /**
      * 比较符.
      *
-     * @return string
+     * @return string|null
      */
-    public function getOperation(): string;
+    public function getOperation(): ?string;
 
     /**
      * 值

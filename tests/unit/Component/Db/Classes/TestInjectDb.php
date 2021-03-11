@@ -19,6 +19,9 @@ class TestInjectDb
      */
     protected $db;
 
+    /**
+     * @return void
+     */
     public function test()
     {
         Assert::assertInstanceOf(IDb::class, $this->db);

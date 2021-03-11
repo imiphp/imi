@@ -33,6 +33,7 @@ class InjectArgAop
     {
         $class = get_parent_class($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
+        /** @var InjectArg[] $injectArgs */
         $injectArgs = AnnotationManager::getMethodAnnotations($class, $method, InjectArg::class);
         $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 

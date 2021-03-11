@@ -56,6 +56,7 @@ class TextTest extends BaseTest
     {
         $this->assertTrue(Text::isEmpty(''));
         $this->assertTrue(Text::isEmpty(null));
+        // @phpstan-ignore-next-line
         $this->assertFalse(Text::isEmpty(0));
         $this->assertFalse(Text::isEmpty('1'));
     }

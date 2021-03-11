@@ -18,7 +18,7 @@ class PaginateResult implements IPaginateResult
     /**
      * 数组数据.
      *
-     * @var array
+     * @var array|null
      */
     protected $arrayData;
 
@@ -57,6 +57,14 @@ class PaginateResult implements IPaginateResult
      */
     protected $options;
 
+    /**
+     * @param \Imi\Db\Query\Interfaces\IResult $result
+     * @param int                              $page
+     * @param int                              $limit
+     * @param int                              $total
+     * @param int                              $pageCount
+     * @param array                            $options
+     */
     public function __construct(IResult $result, $page, $limit, $total, $pageCount, $options)
     {
         $this->result = $result;
@@ -124,6 +132,8 @@ class PaginateResult implements IPaginateResult
     /**
      * 获取一列.
      *
+     * @param string|int $column
+     *
      * @return array
      */
     public function getColumn($column = 0)
@@ -174,7 +184,7 @@ class PaginateResult implements IPaginateResult
     /**
      * 获取数组数据.
      *
-     * @return void
+     * @return array
      */
     public function getList()
     {

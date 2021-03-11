@@ -151,7 +151,7 @@ class Uri implements UriInterface
      *
      * @param \Psr\Http\Message\UriInterface $uri
      *
-     * @return void
+     * @return int
      */
     public static function getServerPort(UriInterface $uri)
     {

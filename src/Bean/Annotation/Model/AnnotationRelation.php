@@ -2,8 +2,6 @@
 
 namespace Imi\Bean\Annotation\Model;
 
-use Imi\Log\Log;
-
 class AnnotationRelation
 {
     /**
@@ -37,14 +35,14 @@ class AnnotationRelation
     /**
      * 所有关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\IAnnotationRelation[]
+     * @var \Imi\Bean\Annotation\Model\IAnnotationRelation|array
      */
     private $allRelations = [];
 
     /**
      * Get 类关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\ClassAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\ClassAnnotationRelation[][]
      */
     public function getClassRelations()
     {
@@ -68,7 +66,7 @@ class AnnotationRelation
     /**
      * Get 方法关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\MethodAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\MethodAnnotationRelation[][]
      */
     public function getMethodRelations()
     {
@@ -92,7 +90,7 @@ class AnnotationRelation
     /**
      * Get 属性关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[][]
      */
     public function getpropertyRelations()
     {
@@ -116,7 +114,7 @@ class AnnotationRelation
     /**
      * Get 常量关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[][]
      */
     public function getConstantRelations()
     {

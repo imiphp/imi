@@ -29,6 +29,7 @@ class ErrorLog
     {
         error_reporting($this->level);
         register_shutdown_function([$this, 'onShutdown']);
+        // @phpstan-ignore-next-line
         set_error_handler([$this, 'onError']);
     }
 
@@ -71,6 +72,7 @@ class ErrorLog
             case \E_STRICT:
             case \E_DEPRECATED:
             case \E_USER_DEPRECATED:
+            default:
                 $method = 'info';
                 break;
         }

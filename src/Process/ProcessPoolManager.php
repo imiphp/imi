@@ -7,6 +7,7 @@ use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
 use Imi\Process\Parser\ProcessPoolParser;
 use Imi\Util\Imi;
+use RuntimeException;
 
 /**
  * 进程池管理类.
@@ -18,20 +19,20 @@ abstract class ProcessPoolManager
      * 本方法无法在控制器中使用
      * 返回\Swoole\Process\Pool对象实例.
      *
-     * @param string $name
-     * @param int    $workerNum   指定工作进程的数量
-     * @param array  $args
-     * @param int    $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
-     * @param string $msgQueueKey
+     * @param string   $name
+     * @param int      $workerNum   指定工作进程的数量
+     * @param array    $args
+     * @param int|null $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
+     * @param string   $msgQueueKey
      *
      * @return \Swoole\Process\Pool
      */
-    public static function create($name, $workerNum = null, $args = [], $ipcType = 0, $msgQueueKey = null): \Swoole\Process\Pool
+    public static function create($name, $workerNum = null, $args = [], $ipcType = null, $msgQueueKey = null): \Swoole\Process\Pool
     {
         $processPoolOption = ProcessPoolParser::getInstance()->getProcessPool($name);
         if (null === $processPoolOption)
         {
-            return null;
+            throw new RuntimeException(sprintf('Not found process pool %s', $name));
         }
         if (null === $workerNum)
         {

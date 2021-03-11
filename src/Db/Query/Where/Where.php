@@ -16,14 +16,14 @@ class Where extends BaseWhere implements IWhere
     /**
      * 字段名.
      *
-     * @var string
+     * @var string|null
      */
     protected $fieldName;
 
     /**
      * 比较符.
      *
-     * @var string
+     * @var string|null
      */
     protected $operation;
 
@@ -41,7 +41,13 @@ class Where extends BaseWhere implements IWhere
      */
     protected $binds = [];
 
-    public function __construct(string $fieldName = null, string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
+    /**
+     * @param string|null $fieldName
+     * @param string|null $operation
+     * @param mixed       $value
+     * @param string      $logicalOperator
+     */
+    public function __construct(?string $fieldName = null, ?string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->fieldName = $fieldName;
         $this->operation = $operation;
@@ -52,9 +58,9 @@ class Where extends BaseWhere implements IWhere
     /**
      * 字段名.
      *
-     * @return string
+     * @return string|null
      */
-    public function getFieldName(): string
+    public function getFieldName(): ?string
     {
         return $this->fieldName;
     }
@@ -62,9 +68,9 @@ class Where extends BaseWhere implements IWhere
     /**
      * 比较符.
      *
-     * @return string
+     * @return string|null
      */
-    public function getOperation(): string
+    public function getOperation(): ?string
     {
         return $this->operation;
     }

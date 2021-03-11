@@ -30,7 +30,7 @@ class Atomic extends BaseLock
     /**
      * 超时 timerid.
      *
-     * @var int
+     * @var int|null
      */
     private $timeoutTimerId = null;
 

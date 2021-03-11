@@ -35,6 +35,10 @@ class Pagination
      */
     private $limitEndOffset;
 
+    /**
+     * @param int $page
+     * @param int $count
+     */
     public function __construct($page, $count)
     {
         $this->page = $page;

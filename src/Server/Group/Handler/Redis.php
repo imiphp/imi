@@ -56,7 +56,7 @@ class Redis implements IGroupHandler
     /**
      * 心跳Timer的ID.
      *
-     * @var int
+     * @var int|null
      */
     private $timerID;
 
@@ -74,6 +74,9 @@ class Redis implements IGroupHandler
      */
     private $masterPID;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         if (null === $this->key)
@@ -136,8 +139,8 @@ class Redis implements IGroupHandler
     /**
      * 初始化redis数据.
      *
-     * @param mixed $redis
-     * @param int   $storeMasterPID
+     * @param RedisHandler $redis
+     * @param int          $storeMasterPID
      *
      * @return void
      */
@@ -182,7 +185,7 @@ class Redis implements IGroupHandler
     /**
      * 开始ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return void
      */
@@ -214,7 +217,7 @@ class Redis implements IGroupHandler
     /**
      * 获取redis中存储ping的key.
      *
-     * @return void
+     * @return string
      */
     private function getPingKey()
     {
@@ -224,7 +227,7 @@ class Redis implements IGroupHandler
     /**
      * ping操作.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
@@ -253,7 +256,7 @@ class Redis implements IGroupHandler
     /**
      * 是否有ping.
      *
-     * @param mixed $redis
+     * @param RedisHandler $redis
      *
      * @return bool
      */
@@ -328,7 +331,7 @@ class Redis implements IGroupHandler
      * @param string $groupName
      * @param int    $fd
      *
-     * @return void
+     * @return bool
      */
     public function joinGroup(string $groupName, int $fd): bool
     {
@@ -345,7 +348,7 @@ class Redis implements IGroupHandler
      * @param string $groupName
      * @param int    $fd
      *
-     * @return void
+     * @return bool
      */
     public function leaveGroup(string $groupName, int $fd): bool
     {
@@ -430,7 +433,7 @@ class Redis implements IGroupHandler
      */
     public function clear()
     {
-        return $this->useRedis(function (RedisHandler $redis) {
+        $this->useRedis(function (RedisHandler $redis) {
             $keys = [];
             $count = 0;
             foreach ($redis->scanEach($this->getGroupNameKey('*')) as $key)

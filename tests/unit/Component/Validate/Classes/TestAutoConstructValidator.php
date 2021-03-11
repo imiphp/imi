@@ -42,7 +42,7 @@ class TestAutoConstructValidator extends LazyArrayObject
      *
      * @param int $value
      *
-     * @return void
+     * @return int
      */
     public function test(int $value)
     {

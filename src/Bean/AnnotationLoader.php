@@ -11,6 +11,9 @@ use Imi\Util\Imi;
  */
 class AnnotationLoader
 {
+    /**
+     * @var array
+     */
     private $loaded = [];
 
     /**

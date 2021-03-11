@@ -13,7 +13,10 @@ class UdpControllerParser extends BaseParser
 {
     use TServerAnnotationParser;
 
-    protected $controllerAnnotationClass = UdpController::class;
+    public function __construct()
+    {
+        $this->controllerAnnotationClass = UdpController::class;
+    }
 
     /**
      * 处理方法.

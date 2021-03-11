@@ -20,6 +20,8 @@ class File extends Base
 
     /**
      * 执行初始化操作.
+     *
+     * @return void
      */
     public function __init()
     {
@@ -89,7 +91,7 @@ class File extends Base
      *
      * @param string $sessionID
      * @param string $sessionData
-     * @param string $maxLifeTime
+     * @param int    $maxLifeTime
      *
      * @return void
      */

@@ -76,7 +76,7 @@ class File extends Base
     private function parseDate()
     {
         $todayDateTime = strtotime(date('Y-m-d H:00:00'));
-        if ($todayDateTime !== $this->currentFileDateTime)
+        if (false !== $todayDateTime && $todayDateTime !== $this->currentFileDateTime)
         {
             $this->getNewDateFileName($todayDateTime);
         }
@@ -84,6 +84,8 @@ class File extends Base
 
     /**
      * 获取新日期的初始文件名.
+     *
+     * @param int $timestamp
      *
      * @return string
      */

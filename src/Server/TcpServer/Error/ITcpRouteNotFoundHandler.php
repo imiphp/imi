@@ -16,7 +16,7 @@ interface ITcpRouteNotFoundHandler
      * @param \Imi\Server\TcpServer\Message\IReceiveData $data
      * @param \Imi\Server\TcpServer\IReceiveHandler      $handler
      *
-     * @return void
+     * @return mixed
      */
     public function handle(IReceiveData $data, IReceiveHandler $handler);
 }

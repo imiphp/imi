@@ -25,6 +25,11 @@ class RouteCallable
      */
     public $methodName;
 
+    /**
+     * @param \Imi\Server\Base $server
+     * @param string           $className
+     * @param string           $methodName
+     */
     public function __construct($server, $className, $methodName)
     {
         $this->server = $server;

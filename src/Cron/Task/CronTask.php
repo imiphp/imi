@@ -27,13 +27,17 @@ class CronTask implements ITaskHandler
     {
         $success = false;
         $message = '';
+        $paramData = $param->getData();
+        $id = $paramData['id'] ?? null;
+        $data = $paramData['data'] ?? null;
+        $class = $paramData['class'] ?? null;
         try
         {
-            $paramData = $param->getData();
-            $id = $paramData['id'] ?? null;
-            $data = $paramData['data'] ?? null;
-            $class = $paramData['class'] ?? null;
-            /** @var \Imi\Cron\ICronTask $handler */
+            if (null === $class)
+            {
+                throw new \RuntimeException('ParamData class not found');
+            }
+            /** @var \Imi\Cron\Contract\ICronTask $handler */
             $handler = App::getBean($class);
             $handler->run($id, $data);
             $success = true;

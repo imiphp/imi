@@ -9,6 +9,9 @@ use Swoole\Coroutine;
 
 abstract class BaseLockTest extends BaseTest
 {
+    /**
+     * @var string|null
+     */
     protected $lockId;
 
     protected function check()

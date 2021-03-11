@@ -7,7 +7,7 @@ class ExtensionReflection
     /**
      * ReflectionExtension.
      *
-     * @var ReflectionExtension
+     * @var \ReflectionExtension
      */
     private $ref;
 
@@ -18,6 +18,9 @@ class ExtensionReflection
      */
     private $savePath;
 
+    /**
+     * @param string $name
+     */
     public function __construct($name)
     {
         $this->ref = new \ReflectionExtension($name);
@@ -78,11 +81,13 @@ CODE;
                 // 方法参数定义
                 $args[] = $this->getMethodParamDefine($param);
                 $type = $param->getType();
+                // @phpstan-ignore-next-line
                 $comments[] = '@var ' . ($type ? $type->getName() : 'mixed') . ' $' . $param->name;
             }
             $return = $function->getReturnType();
             if (null !== $return)
             {
+                // @phpstan-ignore-next-line
                 $comments[] = '@return ' . $return->getName();
             }
             $args = implode(', ', $args);
@@ -147,6 +152,7 @@ CODE;
         $paramType = $param->getType();
         if ($paramType)
         {
+            // @phpstan-ignore-next-line
             $paramType = $paramType->getName();
         }
         if (null !== $paramType && $param->allowsNull())
@@ -203,7 +209,7 @@ CODE;
      *
      * @param \ReflectionClass $class
      *
-     * @return void
+     * @return string
      */
     private function getClassMethods($class)
     {
@@ -218,11 +224,13 @@ CODE;
                 // 方法参数定义
                 $args[] = $this->getMethodParamDefine($param);
                 $type = $param->getType();
+                // @phpstan-ignore-next-line
                 $comments[] = '@var ' . ($type ? $type->getName() : 'mixed') . ' $' . $param->name;
             }
             $return = $method->getReturnType();
             if (null !== $return)
             {
+                // @phpstan-ignore-next-line
                 $comments[] = '@return ' . $return->getName();
             }
             $args = implode(', ', $args);
@@ -263,7 +271,7 @@ CODE;
      *
      * @param \ReflectionClass $class
      *
-     * @return void
+     * @return string
      */
     public function getClassProperties($class)
     {

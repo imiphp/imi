@@ -42,8 +42,12 @@ class CacheableAop
         $method = $joinPoint->getMethod();
         $joinPointArgs = $joinPoint->getArgs();
 
-        // Cacheable 注解
+        /** @var Cacheable|null $cacheable */
         $cacheable = AnnotationManager::getMethodAnnotations($class, $method, Cacheable::class)[0] ?? null;
+        if (!$cacheable)
+        {
+            return $joinPoint->proceed();
+        }
 
         // 方法参数
         $args = ClassObject::convertArgsToKV($class, $method, $joinPointArgs);

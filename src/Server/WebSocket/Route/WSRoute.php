@@ -36,7 +36,7 @@ class WSRoute implements IRoute
      *
      * @param mixed $data
      *
-     * @return \Imi\Server\WebSocket\Route\RouteResult
+     * @return RouteResult|null
      */
     public function parse($data)
     {
@@ -61,9 +61,9 @@ class WSRoute implements IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param Imi\Server\Route\Annotation\WebSocket\WSRoute $annotation
-     * @param mixed                                         $callable
-     * @param array                                         $options
+     * @param WSRouteAnnotation $annotation
+     * @param mixed             $callable
+     * @param array             $options
      *
      * @return void
      */
@@ -94,7 +94,7 @@ class WSRoute implements IRoute
     /**
      * 路由规则是否存在.
      *
-     * @param Imi\Server\Route\Annotation\WebSocket\WSRoute $rule
+     * @param WSRouteAnnotation $rule
      *
      * @return bool
      */
@@ -167,6 +167,11 @@ class WSRoute implements IRoute
         }
     }
 
+    /**
+     * @param RouteItem $routeItem
+     *
+     * @return void
+     */
     private function logDuplicated(RouteItem $routeItem)
     {
         $callable = $routeItem->callable;

@@ -46,6 +46,7 @@ class Init implements IEventListener
         $cronManager = $this->cronManager;
         foreach (AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
+            // @phpstan-ignore-next-line
             $cronManager->addCronByAnnotation($point->getAnnotation(), $point->getClass());
         }
     }

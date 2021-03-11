@@ -16,7 +16,7 @@ jobs:
       MYSQL_SERVER_PASSWORD: ""
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: install db
         run: |
@@ -38,25 +38,30 @@ jobs:
       - name: test
         run: |
           composer test
-  # ci-php8-jit:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       swoole: [4.6.0-php8.0, 4.5.10-php8.0]
-  #       mysql: [8.0]
-  #   env:
-  #     SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-  #     MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: prepare
-  #       run: |
-  #         ./.github/prepare-test.sh swoole-php8
-  #     - name: test
-  #       run: docker exec swoole-php8 php tests/run
+
+  ci-php8-jit:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [4.6-php8.0, 4.5-php8.0]
+        mysql: [8.0]
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare
+        run: |
+          ./.github/prepare-test.sh swoole-php8
+      - name: test
+        run: docker exec swoole-php8 php tests/run
+      - name: print logs
+        if: failure()
+        run: docker exec swoole-php8 php .github/print-logs.php
+
   ci-php:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -84,7 +89,7 @@ jobs:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: prepare
         run: |
           ./.github/prepare-test.sh swoole

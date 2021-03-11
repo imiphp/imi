@@ -24,7 +24,7 @@ class File extends Base
     /**
      * 缓存文件名的处理回调，用于需要自定义的情况.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $saveFileNameCallback;
 

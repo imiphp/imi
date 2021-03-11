@@ -70,6 +70,7 @@ class TcpRouteInit implements IEventListener
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
                 {
+                    /** @var TcpRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, TcpRoute::class);
                     if (!isset($routes[0]))
                     {
@@ -79,6 +80,7 @@ class TcpRouteInit implements IEventListener
                     $methodMiddlewares = [];
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
                     {
+                        /** @var TcpMiddleware $middleware */
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                     }
                     // 最终中间件

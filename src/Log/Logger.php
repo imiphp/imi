@@ -76,6 +76,9 @@ class Logger extends AbstractLogger
      */
     protected $records = [];
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $handlers = &$this->handlers;
@@ -125,6 +128,8 @@ class Logger extends AbstractLogger
     /**
      * 获取代码调用跟踪.
      *
+     * @param array $backtrace
+     *
      * @return array
      */
     protected function getTrace($backtrace)
@@ -150,6 +155,8 @@ class Logger extends AbstractLogger
 
     /**
      * 获取错误文件位置.
+     *
+     * @param array $backtrace
      *
      * @return array
      */

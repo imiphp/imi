@@ -17,7 +17,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function setAndGet()
     {
@@ -38,7 +38,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function del()
     {
@@ -60,7 +60,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function exist()
     {
@@ -81,7 +81,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function incr()
     {
@@ -103,7 +103,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function decr()
     {
@@ -125,7 +125,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function count()
     {
@@ -139,7 +139,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function lockCallableSetAndGet()
     {
@@ -164,7 +164,7 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function lockSetAndGet()
     {

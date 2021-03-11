@@ -31,24 +31,27 @@ class PoolItem
     /**
      * 创建时间的时间戳.
      *
-     * @var int
+     * @var float
      */
     protected $createTime = 0;
 
     /**
      * 最后一次使用的时间戳.
      *
-     * @var int
+     * @var float
      */
     protected $lastUseTime = 0;
 
     /**
      * 最后一次被释放的时间戳.
      *
-     * @var int
+     * @var float
      */
     protected $lastReleaseTime = 0;
 
+    /**
+     * @param \Imi\Pool\Interfaces\IPoolResource $resource
+     */
     public function __construct(\Imi\Pool\Interfaces\IPoolResource $resource)
     {
         $this->resource = $resource;
@@ -120,7 +123,7 @@ class PoolItem
     /**
      * Get 创建时间的时间戳.
      *
-     * @return int
+     * @return float
      */
     public function getCreateTime()
     {
@@ -130,7 +133,7 @@ class PoolItem
     /**
      * Get 最后一次使用的时间戳.
      *
-     * @return int
+     * @return float
      */
     public function getLastUseTime()
     {
@@ -140,7 +143,7 @@ class PoolItem
     /**
      * Get 最后一次被释放的时间戳.
      *
-     * @return int
+     * @return float
      */
     public function getLastReleaseTime()
     {

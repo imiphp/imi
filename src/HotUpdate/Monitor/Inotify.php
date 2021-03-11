@@ -36,6 +36,13 @@ class Inotify extends BaseMonitor
     private $changedFiles = [];
 
     /**
+     * 排除规则.
+     *
+     * @var string
+     */
+    private $excludeRule;
+
+    /**
      * 初始化.
      *
      * @return void
@@ -111,6 +118,7 @@ class Inotify extends BaseMonitor
         $mask = &$this->mask;
         do
         {
+            /** @var array|false $readResult */
             $readResult = inotify_read($handler);
             if (false === $readResult)
             {
@@ -123,7 +131,7 @@ class Inotify extends BaseMonitor
                 {
                     continue;
                 }
-                $filePath = File::path($key, $item['name']);
+                $filePath = File::path((string) $key, $item['name']);
                 $filePathIsDir = is_dir($filePath);
                 if (!$filePathIsDir)
                 {

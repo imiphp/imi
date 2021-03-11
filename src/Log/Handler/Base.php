@@ -48,6 +48,13 @@ abstract class Base
     protected $traceLimit = -1;
 
     /**
+     * 日期时间格式.
+     *
+     * @var string
+     */
+    protected $dateTimeFormat = 'Y-m-d H:i:s';
+
+    /**
      * date()函数支持的格式.
      */
     const DATE_FORMATS = [
@@ -97,6 +104,9 @@ abstract class Base
      */
     private $dateFormatsCacheStr;
 
+    /**
+     * @param array $option
+     */
     public function __construct($option = [])
     {
         foreach ($option as $k => $v)
@@ -172,7 +182,7 @@ abstract class Base
     /**
      * 获取日期时间.
      *
-     * @param string $time 不传则使用当前时间
+     * @param int|null $time 不传则使用当前时间
      *
      * @return string
      */
@@ -261,6 +271,8 @@ abstract class Base
     /**
      * 获取调用跟踪的调用.
      *
+     * @param array $trace
+     *
      * @return string
      */
     public function getTraceCall($trace)
@@ -282,6 +294,8 @@ abstract class Base
 
     /**
      * 获取调用跟踪的方法参数.
+     *
+     * @param array $trace
      *
      * @return string
      */
@@ -309,7 +323,7 @@ abstract class Base
      * @param string $string
      * @param int    $timestamp
      *
-     * @return void
+     * @return string
      */
     protected function replaceDateTime($string, $timestamp)
     {

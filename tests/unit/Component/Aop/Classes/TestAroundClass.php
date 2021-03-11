@@ -9,6 +9,11 @@ use Imi\Bean\Annotation\Bean;
  */
 class TestAroundClass
 {
+    /**
+     * @param int $id
+     *
+     * @return int
+     */
     public function test(int $id)
     {
         return $id;

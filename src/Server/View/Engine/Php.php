@@ -9,6 +9,13 @@ use Imi\Server\Http\Message\Response;
  */
 class Php implements IEngine
 {
+    /**
+     * @param \Imi\Server\Http\Message\Response $response
+     * @param string                            $fileName
+     * @param array                             $data
+     *
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function render(Response $response, $fileName, $data = []): Response
     {
         if (!is_file($fileName))

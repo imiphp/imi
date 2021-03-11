@@ -44,7 +44,7 @@ class TaskEventParam extends EventParam
     /**
      * task 对象，只有 task_enable_coroutine 为 true 时可用.
      *
-     * @var \Swoole\Server\Task
+     * @var \Swoole\Server\Task|null
      */
     public $task;
 }

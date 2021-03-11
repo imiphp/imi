@@ -13,14 +13,14 @@ class Dispatcher
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Psr\Http\Server\MiddlewareInterface[]
      */
     protected $middlewares = [];
 
     /**
      * 最终使用的中间件列表.
      *
-     * @var array
+     * @var \Psr\Http\Server\MiddlewareInterface[]|null
      */
     private $finalMiddlewares;
 
@@ -34,6 +34,7 @@ class Dispatcher
     public function dispatch($request): Response
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
+        /** @var \Imi\Server\Http\Message\Response $response */
         $response = $requestHandler->handle($request);
         if (!$response->isEnded())
         {

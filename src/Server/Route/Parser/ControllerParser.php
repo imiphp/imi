@@ -13,7 +13,10 @@ class ControllerParser extends BaseParser
 {
     use TServerAnnotationParser;
 
-    protected $controllerAnnotationClass = Controller::class;
+    public function __construct()
+    {
+        $this->controllerAnnotationClass = Controller::class;
+    }
 
     /**
      * 处理方法.

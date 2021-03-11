@@ -17,7 +17,7 @@ class WorkerStart implements IEventListener
     /**
      * 事件处理方法.
      *
-     * @param InitEventParam $e
+     * @param EventParam $e
      *
      * @return void
      */

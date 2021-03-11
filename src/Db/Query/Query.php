@@ -47,28 +47,28 @@ class Query implements IQuery
     /**
      * 数据库操作对象
      *
-     * @var IDb
+     * @var IDb|null
      */
     protected $db;
 
     /**
      * 连接池名称.
      *
-     * @var string
+     * @var string|null
      */
     protected $poolName;
 
     /**
      * 查询结果类的类名，为null则为数组.
      *
-     * @var string
+     * @var string|null
      */
     protected $modelClass;
 
     /**
      * 查询类型.
      *
-     * @var int
+     * @var int|null
      */
     protected $queryType;
 
@@ -96,7 +96,7 @@ class Query implements IQuery
     /**
      * 查询器别名集合.
      *
-     * @var \Imi\Db\Query\Interfaces\IQuery[]
+     * @var static[]
      */
     protected static $aliasMap = [];
 
@@ -114,7 +114,13 @@ class Query implements IQuery
      */
     protected static $aliasSqls = [];
 
-    public function __construct(IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
+    /**
+     * @param \Imi\Db\Interfaces\IDb|null $db
+     * @param string|null                 $modelClass
+     * @param string|null                 $poolName
+     * @param int|null                    $queryType
+     */
+    public function __construct(?IDb $db = null, $modelClass = null, $poolName = null, $queryType = null)
     {
         $this->db = $db;
         $this->isInitDb = null !== $db;
@@ -124,6 +130,9 @@ class Query implements IQuery
         $this->isInitQueryType = null !== $queryType;
     }
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $this->dbParamInc = 0;
@@ -154,7 +163,7 @@ class Query implements IQuery
     /**
      * 设置操作记录.
      *
-     * @param QueryOption $options
+     * @param QueryOption $option
      *
      * @return static
      */
@@ -169,9 +178,9 @@ class Query implements IQuery
     /**
      * 获取数据库操作对象
      *
-     * @return IDb
+     * @return IDb|null
      */
-    public function getDb(): IDb
+    public function getDb(): ?IDb
     {
         return $this->db;
     }
@@ -854,7 +863,7 @@ class Query implements IQuery
     /**
      * 设置查询几条记录.
      *
-     * @param int $offset
+     * @param int $limit
      *
      * @return static
      */
@@ -1041,7 +1050,8 @@ class Query implements IQuery
     /**
      * 分页查询.
      *
-     * @param bool  $status  设置为true时，查询结果会返回为分页格式
+     * @param int   $page
+     * @param int   $count
      * @param array $options
      *
      * @return \Imi\Db\Query\Interfaces\IPaginateResult
@@ -1066,7 +1076,7 @@ class Query implements IQuery
     /**
      * 插入记录.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -1120,7 +1130,7 @@ class Query implements IQuery
     /**
      * 更新记录.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -1150,7 +1160,7 @@ class Query implements IQuery
     /**
      * 替换数据（Replace）.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */

@@ -32,7 +32,9 @@ abstract class Insert
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        /** @var AutoInsert|null $autoInsert */
         $autoInsert = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoInsert::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
         if ($autoInsert)
@@ -135,10 +137,12 @@ abstract class Insert
             'struct'       => $struct,
         ]);
 
+        /** @var \Imi\Model\Model $row */
         foreach ($model->$propertyName as $index => $row)
         {
             if (!$row instanceof $rightModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }
@@ -179,10 +183,12 @@ abstract class Insert
             'struct'       => $struct,
         ]);
 
+        /** @var \Imi\Model\Model $row */
         foreach ($model->$propertyName as $index => $row)
         {
             if (!$row instanceof $middleModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }
@@ -260,10 +266,12 @@ abstract class Insert
             'struct'       => $struct,
         ]);
 
+        /** @var \Imi\Model\Model $row */
         foreach ($model->$propertyName as $index => $row)
         {
             if (!$row instanceof $rightModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }
@@ -305,10 +313,12 @@ abstract class Insert
             'struct'       => $struct,
         ]);
 
+        /** @var \Imi\Model\Model $row */
         foreach ($model->$propertyName as $index => $row)
         {
             if (!$row instanceof $middleModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }

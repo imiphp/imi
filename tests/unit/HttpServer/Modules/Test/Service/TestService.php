@@ -12,7 +12,7 @@ class TestService
     /**
      * 测试方法.
      *
-     * @param string $time
+     * @param int $time
      *
      * @return string
      */

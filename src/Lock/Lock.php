@@ -59,7 +59,7 @@ abstract class Lock
     /**
      * 获取默认锁ID.
      *
-     * @return void
+     * @return string
      */
     public static function getDefaultId()
     {
@@ -115,7 +115,7 @@ abstract class Lock
      */
     public static function unlock($id = null)
     {
-        return static::getInstance($id)->unlock($id);
+        return static::getInstance($id)->unlock();
     }
 
     /**

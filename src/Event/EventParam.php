@@ -14,7 +14,7 @@ class EventParam
     /**
      * 触发该事件的对象
      *
-     * @var object
+     * @var object|null
      */
     protected $__target;
 
@@ -32,6 +32,11 @@ class EventParam
      */
     protected $__stopPropagation = false;
 
+    /**
+     * @param string      $eventName
+     * @param array       $data
+     * @param object|null $target
+     */
     public function __construct($eventName, $data = [], $target = null)
     {
         $this->__eventName = $eventName;
@@ -77,6 +82,8 @@ class EventParam
      * 阻止事件继续传播.
      *
      * @param bool $isStop 是否阻止事件继续传播
+     *
+     * @return void
      */
     public function stopPropagation($isStop = true)
     {

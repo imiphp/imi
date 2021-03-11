@@ -79,10 +79,9 @@ abstract class Base
     /**
      * 构造方法.
      *
-     * @param string         $name
-     * @param array          $config
-     * @param \Swoole\Server $serverInstance
-     * @param bool           $subServer      是否为子服务器
+     * @param string $name
+     * @param array  $config
+     * @param bool   $isSubServer 是否为子服务器
      */
     public function __construct($name, $config, $isSubServer = false)
     {
@@ -378,6 +377,7 @@ abstract class Base
      * 获取Bean对象
      *
      * @param string $name
+     * @param mixed  $params
      *
      * @return mixed
      */

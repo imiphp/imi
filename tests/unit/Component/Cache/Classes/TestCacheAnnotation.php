@@ -20,7 +20,7 @@ class TestCacheAnnotation
      *
      * @param int $id
      *
-     * @return void
+     * @return array
      */
     public function testCacheable(int $id)
     {
@@ -38,7 +38,7 @@ class TestCacheAnnotation
      *
      * @param int $id
      *
-     * @return void
+     * @return array
      */
     public function testCacheableTTL(int $id)
     {
@@ -61,7 +61,7 @@ class TestCacheAnnotation
      *
      * @param int $id
      *
-     * @return void
+     * @return array
      */
     public function testCacheableLock(int $id)
     {
@@ -76,6 +76,8 @@ class TestCacheAnnotation
     /**
      * @CacheEvict(key="test:{id}")
      *
+     * @param string $id
+     *
      * @return bool
      */
     public function testCacheEvict($id)
@@ -86,7 +88,9 @@ class TestCacheAnnotation
     /**
      * @CachePut(key="test:{id}")
      *
-     * @return void
+     * @param string $id
+     *
+     * @return string
      */
     public function testCachePut($id)
     {

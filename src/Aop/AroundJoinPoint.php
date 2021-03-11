@@ -9,8 +9,16 @@ class AroundJoinPoint extends JoinPoint
      *
      * @var callable
      */
-    private $nextProceed;
+    protected $nextProceed;
 
+    /**
+     * @param string              $type
+     * @param string              $method
+     * @param array               $args
+     * @param object              $target
+     * @param \Imi\Bean\BeanProxy $_this
+     * @param callable            $nextProceed
+     */
     public function __construct($type, $method, &$args, $target, $_this, $nextProceed)
     {
         parent::__construct($type, $method, $args, $target, $_this);
@@ -19,6 +27,8 @@ class AroundJoinPoint extends JoinPoint
 
     /**
      * 调用下一个方法.
+     *
+     * @param array|null $args
      *
      * @return mixed
      */

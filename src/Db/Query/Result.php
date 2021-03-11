@@ -30,7 +30,7 @@ class Result implements IResult
     /**
      * 查询结果类的类名，为null则为数组.
      *
-     * @var string
+     * @var string|null
      */
     private $modelClass;
 
@@ -42,10 +42,8 @@ class Result implements IResult
     private $statementRecords = [];
 
     /**
-     * Undocumented function.
-     *
-     * @param \Imi\Db\Interfaces\IStatement $statement
-     * @param string|null                   $modelClass
+     * @param \Imi\Db\Interfaces\IStatement|bool $statement
+     * @param string|null                        $modelClass
      */
     public function __construct($statement, $modelClass = null)
     {
@@ -113,7 +111,7 @@ class Result implements IResult
     /**
      * 返回一行数据，数组或对象，失败返回null.
      *
-     * @param string $className 实体类名，为null则返回数组
+     * @param string|null $className 实体类名，为null则返回数组
      *
      * @return mixed|null
      */
@@ -151,6 +149,7 @@ class Result implements IResult
                     $object->$k = $v;
                 }
             }
+            /** @var IEvent $object */
             if (is_subclass_of($object, IEvent::class))
             {
                 $object->trigger(ModelEvents::AFTER_QUERY, [
@@ -214,6 +213,8 @@ class Result implements IResult
 
     /**
      * 获取一列数据.
+     *
+     * @param string|int $column
      *
      * @return array
      */

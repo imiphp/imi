@@ -11,6 +11,9 @@ use PHPUnit\Framework\Assert;
  */
 class CacheFile2Test extends BaseCacheTest
 {
+    /**
+     * @var string
+     */
     protected $cacheName = 'file2';
 
     public function testSetAndGet()

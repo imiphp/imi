@@ -26,6 +26,13 @@ class ControllerGenerate
      * @Arg(name="rest", type=ArgType::BOOLEAN, default=false, comments="是否生成 RESTful 风格，默认 false")
      * @Arg(name="override", type=ArgType::BOOLEAN, default=false, comments="是否覆盖已存在的文件，请慎重！(true/false)")
      *
+     * @param string      $name
+     * @param string      $namespace
+     * @param string|null $prefix
+     * @param string      $render
+     * @param bool        $rest
+     * @param bool        $override
+     *
      * @return void
      */
     public function generate($name, $namespace, $prefix, $render, $rest, $override)
@@ -55,7 +62,8 @@ class ControllerGenerate
     /**
      * 渲染模版.
      *
-     * @param string $data
+     * @param array  $data
+     * @param string $template
      *
      * @return string
      */

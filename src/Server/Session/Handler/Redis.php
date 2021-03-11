@@ -25,6 +25,9 @@ class Redis extends Base
      */
     protected $keyPrefix;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         parent::__init();
@@ -79,7 +82,7 @@ class Redis extends Base
      *
      * @param string $sessionID
      * @param string $sessionData
-     * @param string $maxLifeTime
+     * @param int    $maxLifeTime
      *
      * @return void
      */

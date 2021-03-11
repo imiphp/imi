@@ -88,6 +88,9 @@ class PoolConfig implements IPoolConfig
      */
     protected $checkStateWhenGetResource = true;
 
+    /**
+     * @param array $option
+     */
     public function __construct($option = [])
     {
         foreach ($option as $k => $v)

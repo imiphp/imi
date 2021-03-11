@@ -81,6 +81,10 @@ class CoServer
      */
     private $processes = [];
 
+    /**
+     * @param string $name
+     * @param int    $workerNum
+     */
     public function __construct($name, $workerNum)
     {
         $this->name = $name;
@@ -98,6 +102,9 @@ class CoServer
         $this->checkReusePort();
     }
 
+    /**
+     * @return void
+     */
     public function run()
     {
         if ($this->running)
@@ -199,6 +206,7 @@ class CoServer
      */
     private function checkReusePort()
     {
+        // @phpstan-ignore-next-line
         if ($this->config['reuse_port'] ?? false && $this->workerNum > 1 && !Imi::checkReusePort())
         {
             if ($this->workerNum > 1)
@@ -232,7 +240,7 @@ class CoServer
     /**
      * 获取配置.
      *
-     * @return void
+     * @return array
      */
     public function getConfig()
     {
@@ -242,7 +250,7 @@ class CoServer
     /**
      * 获取服务器名.
      *
-     * @return void
+     * @return string
      */
     public function getName()
     {
@@ -252,7 +260,7 @@ class CoServer
     /**
      * 获取工作进程数.
      *
-     * @return void
+     * @return int
      */
     public function getWorkerNum()
     {
@@ -262,7 +270,7 @@ class CoServer
     /**
      * 获取进程 PID.
      *
-     * @return void
+     * @return int
      */
     public function getPID()
     {
@@ -272,7 +280,7 @@ class CoServer
     /**
      * 获取工作进程 ID.
      *
-     * @return void
+     * @return int
      */
     public function getWorkerId()
     {

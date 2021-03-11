@@ -36,7 +36,7 @@ class ModelTest extends BaseTest
         for ($i = 1; $i <= static::PERFORMANCE_COUNT; ++$i)
         {
             $record = Performance::find($i);
-            $record->value = static::PERFORMANCE_COUNT - $i;
+            $record->value = (string) (static::PERFORMANCE_COUNT - $i);
             $record->update();
         }
     }
@@ -55,7 +55,7 @@ class ModelTest extends BaseTest
         $this->assertTrue(true);
         for ($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
         {
-            Performance::query()->limit(mt_rand(0, 99) * 100, 100);
+            Performance::query()->page(mt_rand(0, 99) * 100, 100);
         }
     }
 

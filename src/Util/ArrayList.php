@@ -23,6 +23,10 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      */
     private $list = [];
 
+    /**
+     * @param string $itemType
+     * @param array  $list
+     */
     public function __construct($itemType, $list = [])
     {
         $this->itemType = $itemType;
@@ -32,11 +36,21 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return isset($this->list[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         $list = &$this->list;
@@ -52,6 +66,12 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         return $value;
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function offsetSet($offset, $value)
     {
         if (!$value instanceof $this->itemType)
@@ -68,6 +88,11 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
     public function offsetUnset($offset)
     {
         $list = &$this->list;
@@ -77,26 +102,41 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         return current($this->list);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return key($this->list);
     }
 
+    /**
+     * @return void
+     */
     public function next()
     {
         next($this->list);
     }
 
+    /**
+     * @return void
+     */
     public function rewind()
     {
         reset($this->list);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return null !== key($this->list);

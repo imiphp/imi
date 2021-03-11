@@ -18,7 +18,7 @@ class AppInit implements IAppInitEventListener
     /**
      * 事件处理方法.
      *
-     * @param EventParam $e
+     * @param AppInitEventParam $e
      *
      * @return void
      */

@@ -18,7 +18,7 @@ class TaskController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function test()
     {

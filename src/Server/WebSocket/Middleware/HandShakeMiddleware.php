@@ -38,6 +38,7 @@ class HandShakeMiddleware implements MiddlewareInterface
         if (StatusCode::OK === $response->getStatusCode() && 'Upgrade' !== $response->getHeaderLine('Connection'))
         {
             // 未做处理则做默认握手处理
+            // @phpstan-ignore-next-line
             $response = $this->defaultHandShake($request, $response);
         }
         if (StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
@@ -69,14 +70,14 @@ class HandShakeMiddleware implements MiddlewareInterface
      * @param \Imi\Server\Http\Message\Request  $request
      * @param \Imi\Server\Http\Message\Response $response
      *
-     * @return void
+     * @return \Imi\Server\Http\Message\Response|null
      */
     private function defaultHandShake($request, $response)
     {
         $secWebSocketKey = $request->getHeaderLine('sec-websocket-key');
         if (0 === preg_match('#^[+/0-9A-Za-z]{21}[AQgw]==$#', $secWebSocketKey) || 16 !== \strlen(base64_decode($secWebSocketKey)))
         {
-            return;
+            return null;
         }
 
         $key = base64_encode(sha1($secWebSocketKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));

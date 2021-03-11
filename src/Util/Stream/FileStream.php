@@ -17,7 +17,7 @@ class FileStream implements StreamInterface
     /**
      * 流对象
      *
-     * @var resource
+     * @var resource|null
      */
     protected $stream;
 
@@ -28,6 +28,10 @@ class FileStream implements StreamInterface
      */
     protected $mode;
 
+    /**
+     * @param string|Uri $uri
+     * @param string     $mode
+     */
     public function __construct($uri, $mode = StreamMode::READ_WRITE)
     {
         if (\is_string($uri))
@@ -179,6 +183,8 @@ class FileStream implements StreamInterface
      *                    offset bytes SEEK_CUR: Set position to current location plus offset
      *                    SEEK_END: Set position to end-of-stream plus offset.
      *
+     * @return void
+     *
      * @throws \RuntimeException on failure.
      */
     public function seek($offset, $whence = \SEEK_SET)
@@ -197,6 +203,8 @@ class FileStream implements StreamInterface
      *
      * @see seek()
      * @see http://www.php.net/manual/en/function.fseek.php
+     *
+     * @return void
      *
      * @throws \RuntimeException on failure.
      */
@@ -321,6 +329,7 @@ class FileStream implements StreamInterface
     public function getMetadata($key = null)
     {
         $result = stream_get_meta_data($this->stream);
+        // @phpstan-ignore-next-line
         if (!$result)
         {
             throw new \RuntimeException('Stream getMetadata error');

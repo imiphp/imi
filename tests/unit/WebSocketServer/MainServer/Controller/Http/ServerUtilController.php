@@ -18,14 +18,22 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function getServer()
     {
         $result = [];
         $server = Server::getServer();
+        if (null === $server)
+        {
+            throw new \RuntimeException('Not found server');
+        }
         $result['null'] = $server->getName();
         $server = Server::getServer('main');
+        if (null === $server)
+        {
+            throw new \RuntimeException('Not found server main');
+        }
         $result['main'] = $server->getName();
         $server = Server::getServer('not found');
         $result['notFound'] = null === $server;
@@ -36,7 +44,7 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function sendMessage()
     {
@@ -54,9 +62,9 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function send($fds, $flag)
+    public function send(array $fds, string $flag)
     {
         $data = [
             'data'  => 'test',
@@ -81,7 +89,7 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function sendToGroup()
     {
@@ -105,7 +113,7 @@ class ServerUtilController extends HttpController
      * @param int    $fd
      * @param string $flag
      *
-     * @return void
+     * @return array
      */
     public function close(int $fd, string $flag)
     {

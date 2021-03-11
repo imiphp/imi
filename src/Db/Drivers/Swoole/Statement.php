@@ -61,6 +61,12 @@ class Statement extends BaseStatement implements IStatement
      */
     protected $sqlParamsMap;
 
+    /**
+     * @param \Imi\Db\Interfaces\IDb                  $db
+     * @param \Swoole\Coroutine\MySQL\Statement|array $statement
+     * @param string                                  $originSql
+     * @param array|null                              $sqlParamsMap
+     */
     public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
@@ -70,7 +76,7 @@ class Statement extends BaseStatement implements IStatement
             $this->result = $statement;
         }
         $this->lastSql = $originSql;
-        $this->sqlParamsMap = $sqlParamsMap;
+        $this->sqlParamsMap = $sqlParamsMap ?? [];
     }
 
     /**
@@ -168,7 +174,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -197,7 +203,9 @@ class Statement extends BaseStatement implements IStatement
         $statement = $this->statement;
         if (\is_array($statement))
         {
-            $result = $this->db->getInstance()->query($this->lastSql);
+            /** @var \Swoole\Coroutine\MySQL $client */
+            $client = $this->db->getInstance();
+            $result = $client->query($this->lastSql);
             if (false === $result)
             {
                 throw new DbException('SQL query error: [' . $this->errorCode() . '] ' . $this->errorInfo() . ' sql: ' . $this->getSql());
@@ -314,12 +322,12 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
         $row = current($this->result);
         if (false === $row)
@@ -400,33 +408,48 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取原对象实例.
      *
-     * @return object
+     * @return \Swoole\Coroutine\MySQL\Statement|array
      */
     public function getInstance()
     {
         return $this->statement;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         return current($this->result);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return key($this->result);
     }
 
+    /**
+     * @return mixed
+     */
     public function next()
     {
         return next($this->result);
     }
 
+    /**
+     * @return mixed
+     */
     public function rewind()
     {
         return reset($this->result);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return false !== $this->current();

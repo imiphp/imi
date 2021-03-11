@@ -75,6 +75,7 @@ abstract class BaseAsyncPool extends BasePool
             $poolItem = $selectResult;
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
+        // @phpstan-ignore-next-line
         if (!$poolItem)
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
@@ -83,9 +84,13 @@ abstract class BaseAsyncPool extends BasePool
         try
         {
             $resource = $poolItem->getResource();
-            if (!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+            if (($config->isCheckStateWhenGetResource() && !$resource->checkState()))
             {
-                throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
+                $resource->close();
+                if (!$resource->open())
+                {
+                    throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
+                }
             }
         }
         catch (\Throwable $th)
@@ -132,6 +137,7 @@ abstract class BaseAsyncPool extends BasePool
             $poolItem = $result;
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
+        // @phpstan-ignore-next-line
         if (!$poolItem)
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
@@ -140,9 +146,13 @@ abstract class BaseAsyncPool extends BasePool
         try
         {
             $resource = $poolItem->getResource();
-            if (!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+            if ($this->config->isCheckStateWhenGetResource() && !$resource->checkState())
             {
-                throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
+                $resource->close();
+                if (!$resource->open())
+                {
+                    throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
+                }
             }
         }
         catch (\Throwable $th)
@@ -173,7 +183,6 @@ abstract class BaseAsyncPool extends BasePool
         {
             $queue->push($item);
         }
-        $this->free = $queue->length();
     }
 
     /**

@@ -88,6 +88,6 @@ class AopTest extends BaseTest
             $throwable = $th;
         }
         $this->assertNotNull($throwable);
-        $this->assertEquals('test', $th->getMessage());
+        $this->assertEquals('test', $throwable->getMessage());
     }
 }

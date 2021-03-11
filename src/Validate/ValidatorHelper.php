@@ -23,10 +23,10 @@ class ValidatorHelper
     /**
      * 小数验证
      *
-     * @param float      $value
-     * @param float|null $min
-     * @param float|null $max
-     * @param int        $accuracy
+     * @param string|float      $value
+     * @param string|float|null $min
+     * @param string|float|null $max
+     * @param int               $accuracy
      *
      * @return bool
      */
@@ -54,9 +54,9 @@ class ValidatorHelper
     /**
      * 整数验证
      *
-     * @param int      $value
-     * @param int|null $min
-     * @param int|null $max
+     * @param string|int      $value
+     * @param string|int|null $min
+     * @param string|int|null $max
      *
      * @return bool
      */
@@ -79,10 +79,10 @@ class ValidatorHelper
     /**
      * 数值验证，允许整数和小数.
      *
-     * @param float      $value
-     * @param float|null $min
-     * @param float|null $max
-     * @param int|null   $accuracy
+     * @param string|float      $value
+     * @param string|float|null $min
+     * @param string|float|null $max
+     * @param int|null          $accuracy
      *
      * @return bool
      */
@@ -219,7 +219,7 @@ class ValidatorHelper
      *
      * @param string $str
      *
-     * @return string
+     * @return bool
      */
     public static function phone($str)
     {
@@ -330,9 +330,9 @@ class ValidatorHelper
     /**
      * 在两个数之间，不包含这2个数字.
      *
-     * @param float $value
-     * @param float $max
-     * @param float $min
+     * @param mixed $value
+     * @param mixed $max
+     * @param mixed $min
      *
      * @return bool
      */
@@ -344,9 +344,9 @@ class ValidatorHelper
     /**
      * 在两个数之间，包含这2个数字.
      *
-     * @param float $value
-     * @param float $max
-     * @param float $min
+     * @param mixed $value
+     * @param mixed $max
+     * @param mixed $min
      *
      * @return bool
      */
@@ -358,8 +358,8 @@ class ValidatorHelper
     /**
      * 小于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
@@ -371,8 +371,8 @@ class ValidatorHelper
     /**
      * 小于等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
@@ -384,8 +384,8 @@ class ValidatorHelper
     /**
      * 大于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
@@ -397,8 +397,8 @@ class ValidatorHelper
     /**
      * 大于等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
@@ -410,8 +410,8 @@ class ValidatorHelper
     /**
      * 等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
@@ -423,8 +423,8 @@ class ValidatorHelper
     /**
      * 不等于.
      *
-     * @param float $value
-     * @param float $num
+     * @param mixed $value
+     * @param mixed $num
      *
      * @return bool
      */
@@ -436,9 +436,9 @@ class ValidatorHelper
     /**
      * 比较.
      *
-     * @param string $valueLeft
-     * @param string $operation
-     * @param string $valueRight
+     * @param mixed $valueLeft
+     * @param mixed $operation
+     * @param mixed $valueRight
      *
      * @return bool
      */
@@ -470,8 +470,8 @@ class ValidatorHelper
     /**
      * 值在范围内.
      *
-     * @param float $value
-     * @param mixed $list  array | string(1,2,3)
+     * @param mixed        $value
+     * @param string|array $list  array | string(1,2,3)
      *
      * @return bool
      */
@@ -488,8 +488,8 @@ class ValidatorHelper
     /**
      * 值不在范围内.
      *
-     * @param float $value
-     * @param mixed $list  array | string(1,2,3)
+     * @param mixed        $value
+     * @param string|array $list  array | string(1,2,3)
      *
      * @return bool
      */
@@ -506,7 +506,7 @@ class ValidatorHelper
     /**
      * 值在枚举值范围内.
      *
-     * @param float  $value
+     * @param mixed  $value
      * @param string $enumClass
      *
      * @return bool
@@ -519,7 +519,7 @@ class ValidatorHelper
     /**
      * 值不在枚举值范围内.
      *
-     * @param float  $value
+     * @param mixed  $value
      * @param string $enumClass
      *
      * @return bool
@@ -558,7 +558,7 @@ class ValidatorHelper
             $len = \strlen($id_card);
             for ($i = 0; $i < $len; ++$i)
             {
-                $checksum += substr($id_card, $i, 1) * $factor[$i];
+                $checksum += (int) (substr($id_card, $i, 1)) * $factor[$i];
             }
             $mod = $checksum % 11;
             $verify_number = $verify_number_list[$mod];

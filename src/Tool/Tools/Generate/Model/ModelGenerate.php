@@ -36,6 +36,18 @@ class ModelGenerate
      * @Arg(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Arg(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      *
+     * @param string      $namespace
+     * @param string|null $database
+     * @param string|null $poolName
+     * @param array       $prefix
+     * @param array       $include
+     * @param array       $exclude
+     * @param string|bool $override
+     * @param string|bool $config
+     * @param string|null $basePath
+     * @param bool        $entity
+     * @param bool        $sqlSingleLine
+     *
      * @return void
      */
     public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity, $sqlSingleLine)
@@ -160,6 +172,7 @@ class ModelGenerate
                     $withRecords = false;
                 }
             }
+            // @phpstan-ignore-next-line
             if (false === $override && is_file($fileName))
             {
                 // 不覆盖
@@ -167,6 +180,7 @@ class ModelGenerate
                 continue;
             }
             $ddl = $this->getDDL($query, $table);
+            // @phpstan-ignore-next-line
             if ($withRecords)
             {
                 $dataList = $query->from($table)->select()->getArray();
@@ -177,6 +191,7 @@ class ModelGenerate
                 $ddl = str_replace(\PHP_EOL, ' ', $ddl);
             }
             $data = [
+                // @phpstan-ignore-next-line
                 'namespace'     => $modelNamespace,
                 'className'     => $className,
                 'table'         => [
@@ -200,10 +215,12 @@ class ModelGenerate
                 file_put_contents($baseFileName, $baseContent);
             }
 
+            // @phpstan-ignore-next-line
             if (!is_file($fileName) || true === $override || 'model' === $override)
             {
                 echo 'Generating ', $table, ' Class...', \PHP_EOL;
                 $content = $this->renderTemplate('template', $data);
+                // @phpstan-ignore-next-line
                 file_put_contents($fileName, $content);
             }
         }

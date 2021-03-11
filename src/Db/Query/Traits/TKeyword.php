@@ -61,9 +61,9 @@ trait TKeyword
      *
      * @param array       $keywords
      * @param string|null $alias
-     * @param array|null jsonKeywords
+     * @param array|null  $jsonKeywords
      *
-     * @return void
+     * @return string
      */
     public function parseKeywordToText($keywords, $alias = null, $jsonKeywords = null)
     {

@@ -59,6 +59,8 @@ abstract class BaseBuilder implements IBuilder
     public function build(...$args)
     {
         $this->params = [];
+
+        return '';
     }
 
     /**
@@ -161,8 +163,8 @@ abstract class BaseBuilder implements IBuilder
     /**
      * limit.
      *
-     * @param int $offset
-     * @param int $limit
+     * @param int|null $offset
+     * @param int|null $limit
      *
      * @return string
      */

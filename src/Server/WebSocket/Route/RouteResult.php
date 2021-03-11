@@ -27,6 +27,10 @@ class RouteResult
      */
     public $callable;
 
+    /**
+     * @param RouteItem $routeItem
+     * @param array     $params
+     */
     public function __construct(RouteItem $routeItem, $params = [])
     {
         $this->routeItem = $routeItem;

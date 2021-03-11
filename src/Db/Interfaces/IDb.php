@@ -68,7 +68,7 @@ interface IDb extends IHashCode
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string;
 

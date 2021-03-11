@@ -2,6 +2,8 @@
 
 namespace Imi\Util;
 
+use stdClass;
+
 /**
  * 对象及数组帮助类
  * 智能识别数组和对象，支持对a.b.c这样的name属性进行操作.

@@ -188,7 +188,7 @@ class CronTask
     /**
      * Get 在当前服务实例中唯一，只能同时执行一个.
      *
-     * @return bool
+     * @return string
      */
     public function getUnique()
     {
@@ -220,7 +220,7 @@ class CronTask
      *
      * 返回秒级时间戳
      *
-     * @return void
+     * @return int
      */
     public function getLastRunTime()
     {

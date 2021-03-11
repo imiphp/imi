@@ -15,10 +15,11 @@ trait TTreeModel
     /**
      * 获取 TreeModel 注解.
      *
-     * @return \Imi\Model\Tree\Annotation\TreeModel
+     * @return \Imi\Model\Tree\Annotation\TreeModel|null
      */
     private static function __getTreeModel()
     {
+        // @phpstan-ignore-next-line
         return ModelManager::getAnnotation(static::__getRealClassName(), TreeModel::class);
     }
 
@@ -67,7 +68,6 @@ trait TTreeModel
      * @param int|null $parentId
      * @param bool     $includeParentId 包含父级ID
      * @param int      $limitLevel      限制层级
-     * @param int      $level           当前层数，内部参数不要手动传
      *
      * @return int[]
      */
@@ -179,6 +179,7 @@ trait TTreeModel
         do
         {
             $treeItem = static::find($treeItem[$parentField]);
+            // @phpstan-ignore-next-line
             if (!$treeItem)
             {
                 break;
@@ -186,6 +187,7 @@ trait TTreeModel
             $parents[] = $treeItem;
         } while (true);
 
+        // @phpstan-ignore-next-line
         return $parents;
     }
 }

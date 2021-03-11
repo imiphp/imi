@@ -14,17 +14,22 @@ use Imi\Util\Args;
  */
 class TaskProcess implements IProcess
 {
+    /**
+     * @param \Swoole\Process $process
+     *
+     * @return void
+     */
     public function run(\Swoole\Process $process)
     {
         $success = false;
         $message = '';
+        $id = Args::get('id');
+        if (null === $id)
+        {
+            return;
+        }
         try
         {
-            $id = Args::get('id');
-            if (null === $id)
-            {
-                return;
-            }
             $data = json_decode(Args::get('data'), true);
             $success = true;
         }

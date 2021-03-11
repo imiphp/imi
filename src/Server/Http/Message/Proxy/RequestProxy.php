@@ -436,7 +436,7 @@ class RequestProxy implements IServerRequest
      *
      * @param string $version HTTP protocol version
      *
-     * @return static
+     * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withProtocolVersion($version)
     {
@@ -545,7 +545,7 @@ class RequestProxy implements IServerRequest
      * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      *
-     * @return static
+     * @return \Imi\Util\Http\Contract\IServerRequest
      *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
@@ -568,7 +568,7 @@ class RequestProxy implements IServerRequest
      * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      *
-     * @return static
+     * @return \Imi\Util\Http\Contract\IServerRequest
      *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
@@ -588,7 +588,7 @@ class RequestProxy implements IServerRequest
      *
      * @param string $name Case-insensitive header field name to remove.
      *
-     * @return static
+     * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function withoutHeader($name)
     {
@@ -616,7 +616,7 @@ class RequestProxy implements IServerRequest
      *
      * @param StreamInterface $body Body.
      *
-     * @return static
+     * @return \Imi\Util\Http\Contract\IServerRequest
      *
      * @throws \InvalidArgumentException When the body is not valid.
      */

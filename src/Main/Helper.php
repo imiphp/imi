@@ -7,17 +7,23 @@ namespace Imi\Main;
  */
 abstract class Helper
 {
+    /**
+     * @var \Imi\Main\BaseMain[]
+     */
     private static $mains = [];
 
+    /**
+     * @var string[]
+     */
     private static $nameMap = [];
 
     /**
      * 获取主类实例对象
      *
-     * @param string $namespace
-     * @param string $componentName
+     * @param string|null $namespace
+     * @param string|null $componentName
      *
-     * @return \Imi\Main\BaseMain
+     * @return \Imi\Main\BaseMain|null
      */
     public static function getMain($namespace, $componentName = null)
     {
@@ -89,6 +95,12 @@ abstract class Helper
         return $mains;
     }
 
+    /**
+     * @param string $namespace
+     * @param string $componentName
+     *
+     * @return \Imi\Main\BaseMain|null
+     */
     private static function newInstance($namespace, $componentName)
     {
         $className = $namespace . '\\Main';

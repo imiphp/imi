@@ -245,6 +245,7 @@ abstract class RequestContext
      * 在当前服务器上下文中获取Bean对象
      *
      * @param string $name
+     * @param mixed  $params
      *
      * @return mixed
      */
@@ -257,6 +258,7 @@ abstract class RequestContext
      * 在当前请求上下文中获取Bean对象
      *
      * @param string $name
+     * @param mixed  $params
      *
      * @return mixed
      */

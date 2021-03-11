@@ -24,6 +24,8 @@ class Inject extends BaseInjectValue
 
     /**
      * Bean名称或类名.
+     *
+     * @var string
      */
     public $name;
 

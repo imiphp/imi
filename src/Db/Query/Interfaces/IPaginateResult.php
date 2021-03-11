@@ -7,7 +7,7 @@ interface IPaginateResult extends IResult, \JsonSerializable
     /**
      * 获取数组数据.
      *
-     * @return void
+     * @return array
      */
     public function getList();
 

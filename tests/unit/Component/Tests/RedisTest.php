@@ -85,7 +85,7 @@ SCRIPT
             $map[$member] = 0;
             $values[$member] = -1;
             $exceptedValues[$member] = $i;
-            Redis::hset($key, $member, $i);
+            Redis::hSet($key, $member, $i);
         }
         foreach (Redis::hscanEach($key, 'value:*', 10) as $k => $value)
         {

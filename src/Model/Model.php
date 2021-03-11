@@ -20,6 +20,11 @@ use Imi\Util\Text;
  */
 abstract class Model extends BaseModel
 {
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
     public function __init($data = [])
     {
         if ($this->__meta->hasRelation())
@@ -68,7 +73,7 @@ abstract class Model extends BaseModel
      *
      * @param callable|mixed ...$ids
      *
-     * @return static
+     * @return static|null
      */
     public static function find(...$ids)
     {
@@ -148,7 +153,7 @@ abstract class Model extends BaseModel
     /**
      * 查询多条记录.
      *
-     * @param array|callable $where
+     * @param array|callable|null $where
      *
      * @return static[]
      */
@@ -175,7 +180,7 @@ abstract class Model extends BaseModel
     /**
      * 插入记录.
      *
-     * @param mixed $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -185,7 +190,7 @@ abstract class Model extends BaseModel
         {
             $data = static::parseSaveData(iterator_to_array($this), 'insert', $this);
         }
-        elseif (!$data instanceof \ArrayAccess)
+        elseif (\is_array($data))
         {
             $data = new LazyArrayObject($data);
         }
@@ -230,7 +235,7 @@ abstract class Model extends BaseModel
     /**
      * 更新记录.
      *
-     * @param mixed $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -305,9 +310,9 @@ abstract class Model extends BaseModel
      * @param mixed          $data
      * @param array|callable $where
      *
-     * @return IResult
+     * @return IResult|null
      */
-    public static function updateBatch($data, $where = null): IResult
+    public static function updateBatch($data, $where = null): ?IResult
     {
         $class = static::__getRealClassName();
         if (Update::hasUpdateRelation($class))
@@ -323,6 +328,8 @@ abstract class Model extends BaseModel
                 $model->set($data);
                 $model->update();
             }
+
+            return null;
         }
         else
         {
@@ -377,6 +384,10 @@ abstract class Model extends BaseModel
             {
                 $recordExists = ($data[$autoIncrementField] ?? 0) > 0;
             }
+        }
+        else
+        {
+            $autoIncrementField = null;
         }
 
         if (true === $recordExists)
@@ -628,8 +639,8 @@ abstract class Model extends BaseModel
     /**
      * 处理where条件.
      *
-     * @param IQuery $query
-     * @param array  $where
+     * @param IQuery              $query
+     * @param array|callable|null $where
      *
      * @return IQuery
      */
@@ -670,7 +681,7 @@ abstract class Model extends BaseModel
      * @param string        $type
      * @param object|string $object
      *
-     * @return array
+     * @return LazyArrayObject
      */
     private static function parseSaveData($data, $type, $object = null)
     {

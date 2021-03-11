@@ -30,7 +30,7 @@ abstract class CoroutineChannelManager
     /**
      * 设置对象名称.
      *
-     * @param string[] $names
+     * @param array $names
      *
      * @return void
      */
@@ -45,7 +45,7 @@ abstract class CoroutineChannelManager
     /**
      * 获取所有对象名称.
      *
-     * @return void
+     * @return array
      */
     public static function getNames()
     {
@@ -122,7 +122,7 @@ abstract class CoroutineChannelManager
      *
      * @param string $name
      *
-     * @return \Swoole\Atomic
+     * @return \Swoole\Coroutine\Channel
      */
     public static function getInstance(string $name): \Swoole\Coroutine\Channel
     {

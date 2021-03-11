@@ -80,6 +80,10 @@ class Validator implements IValidator
      */
     private static $annotationRules;
 
+    /**
+     * @param array                                     $data
+     * @param \Imi\Validate\Annotation\Condition[]|null $rules
+     */
     public function __construct(&$data = [], $rules = null)
     {
         $this->data = &$data;

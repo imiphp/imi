@@ -16,16 +16,16 @@ class ActionMiddleware implements IMiddleware
     /**
      * 处理方法.
      *
-     * @param IReceiveData    $data
-     * @param IReceiveHandler $handle
+     * @param IPacketData    $data
+     * @param IPacketHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {
         $requestContext = RequestContext::getContext();
         // 获取路由结果
-        /** @var \Imi\Server\UdpServer\Route\RouteResult $result */
+        /** @var \Imi\Server\UdpServer\Route\RouteResult|null $result */
         $result = $requestContext['routeResult'] ?? null;
         if (null === $result)
         {

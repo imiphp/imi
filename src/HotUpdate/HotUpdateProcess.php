@@ -22,7 +22,7 @@ class HotUpdateProcess extends BaseProcess
     /**
      * 监视器类.
      *
-     * @var \Imi\HotUpdate\Monitor\BaseMonitor
+     * @var string
      */
     protected $monitorClass = \Imi\HotUpdate\Monitor\FileMTime::class;
 
@@ -71,14 +71,14 @@ class HotUpdateProcess extends BaseProcess
     /**
      * buildRuntime resource.
      *
-     * @var \resource
+     * @var resource|false|null
      */
     private $buildRuntimeHandler = null;
 
     /**
      * buildRuntime pipes.
      *
-     * @var array
+     * @var array|null
      */
     private $buildRuntimePipes = null;
 
@@ -155,7 +155,7 @@ class HotUpdateProcess extends BaseProcess
             {
                 $time = 10000;
             }
-            usleep($time);
+            usleep((int) $time);
             $time = microtime(true);
             // 检查文件是否有修改
             if ($monitor->isChanged())
@@ -256,15 +256,23 @@ class HotUpdateProcess extends BaseProcess
             'changedFilesFile'  => $this->changedFilesFile,
             'result'            => &$result,
         ]);
+        // @phpstan-ignore-next-line
         if ($result)
         {
-            return $result;
+            return;
         }
         $this->building = true;
         try
         {
-            $status = proc_get_status($this->buildRuntimeHandler);
-            if (!($status['running'] ?? false))
+            if ($this->buildRuntimeHandler)
+            {
+                $status = proc_get_status($this->buildRuntimeHandler);
+                if (!$status || !($status['running'] ?? false))
+                {
+                    $this->initBuildRuntime();
+                }
+            }
+            else
             {
                 $this->initBuildRuntime();
             }
@@ -323,7 +331,7 @@ class HotUpdateProcess extends BaseProcess
             $buildRuntimeHandler = $this->buildRuntimeHandler;
             $buildRuntimePipes = $this->buildRuntimePipes;
             $status = proc_get_status($buildRuntimeHandler);
-            if ($status['running'] ?? false)
+            if (!$status || $status['running'] ?? false)
             {
                 $writeContent = "n\n";
                 fwrite($buildRuntimePipes[0], $writeContent);
@@ -354,7 +362,7 @@ class HotUpdateProcess extends BaseProcess
             return;
         }
         $status = proc_get_status($this->buildRuntimeHandler);
-        if (!($status['running'] ?? false))
+        if (!$status || !($status['running'] ?? false))
         {
             $this->initBuildRuntime();
         }

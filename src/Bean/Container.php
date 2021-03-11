@@ -30,6 +30,9 @@ class Container implements ContainerInterface
      */
     private $binds;
 
+    /**
+     * @param array $binds
+     */
     public function __construct($binds = [])
     {
         $this->binds = $binds;

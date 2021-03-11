@@ -31,6 +31,10 @@ class Request extends ServerRequest implements IServerRequest
      */
     protected static $instanceMap = [];
 
+    /**
+     * @param \Imi\Server\Http\Server|\Imi\Server\WebSocket\Server $server
+     * @param \Swoole\Http\Request                                 $request
+     */
     public function __construct(\Imi\Server\Base $server, \Swoole\Http\Request $request)
     {
         $this->swooleRequest = $request;
@@ -46,8 +50,8 @@ class Request extends ServerRequest implements IServerRequest
     /**
      * 获取实例对象
      *
-     * @param \Imi\Server\Base     $server
-     * @param \Swoole\Http\Request $request
+     * @param \Imi\Server\Http\Server|\Imi\Server\WebSocket\Server $server
+     * @param \Swoole\Http\Request                                 $request
      *
      * @return static
      */

@@ -48,6 +48,8 @@ interface IResult
     /**
      * 获取一列.
      *
+     * @param string|int $column
+     *
      * @return array
      */
     public function getColumn($column = 0);

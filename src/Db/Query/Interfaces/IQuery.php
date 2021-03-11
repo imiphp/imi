@@ -21,7 +21,7 @@ interface IQuery
     /**
      * 设置操作记录.
      *
-     * @param QueryOption $options
+     * @param QueryOption $option
      *
      * @return static
      */
@@ -30,9 +30,9 @@ interface IQuery
     /**
      * 获取数据库操作对象
      *
-     * @return IDb
+     * @return IDb|null
      */
-    public function getDb(): IDb;
+    public function getDb(): ?IDb;
 
     /**
      * 设置表名.
@@ -449,7 +449,7 @@ interface IQuery
     /**
      * 设置查询几条记录.
      *
-     * @param int $offset
+     * @param int $limit
      *
      * @return static
      */
@@ -552,7 +552,8 @@ interface IQuery
     /**
      * 分页查询.
      *
-     * @param bool  $status  设置为true时，查询结果会返回为分页格式
+     * @param int   $page
+     * @param int   $count
      * @param array $options
      *
      * @return \Imi\Db\Query\Interfaces\IPaginateResult
@@ -562,7 +563,7 @@ interface IQuery
     /**
      * 插入数据.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -581,7 +582,7 @@ interface IQuery
     /**
      * 更新数据.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -590,7 +591,7 @@ interface IQuery
     /**
      * 替换数据（Replace）.
      *
-     * @param array $data
+     * @param array|object|null $data
      *
      * @return IResult
      */
@@ -670,7 +671,7 @@ interface IQuery
     /**
      * 设置update/insert/replace数据.
      *
-     * @param array|\Imi\Db\Query\Raw[]|\Imi\Db\Query\Interfaces\IQuery $data
+     * @param array|\Imi\Db\Query\Interfaces\IQuery $data
      *
      * @return static
      */

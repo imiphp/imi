@@ -44,7 +44,7 @@ class IndexController extends HttpController
      * @Action
      * @Route("/http")
      *
-     * @return void
+     * @return \Imi\Server\Http\Message\Response
      */
     public function http()
     {

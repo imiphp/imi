@@ -9,6 +9,9 @@ use Imi\Db\Query\Query;
  */
 class ModelQuery extends Query
 {
+    /**
+     * @return void
+     */
     public function __init()
     {
         parent::__init();

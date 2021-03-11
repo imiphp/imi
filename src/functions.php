@@ -8,7 +8,7 @@ use Imi\RequestContext;
  * @param callable $callable
  * @param mixed    $args
  *
- * @return void
+ * @return int
  */
 function imigo(callable $callable, ...$args)
 {
@@ -52,9 +52,11 @@ function imiCallable(callable $callable, bool $withGo = false)
 /**
  * getenv() 函数的封装，支持默认值
  *
- * @param string $varname
- * @param mixed  $default
- * @param bool   $localOnly
+ * @param string|null $varname
+ * @param mixed       $default
+ * @param bool        $localOnly
+ *
+ * @return mixed
  */
 function imiGetEnv($varname = null, $default = null, $localOnly = false)
 {
@@ -77,5 +79,6 @@ function imiGetEnv($varname = null, $default = null, $localOnly = false)
  */
 function cmd(string $cmd): string
 {
+    // @phpstan-ignore-next-line
     return (\SWOOLE_VERSION_ID >= 40503 ? 'exec ' : '') . $cmd;
 }

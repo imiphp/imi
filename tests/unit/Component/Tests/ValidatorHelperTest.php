@@ -36,7 +36,7 @@ class ValidatorHelperTest extends BaseTest
 
     public function testInt()
     {
-        Assert::assertFalse(ValidatorHelper::int(1.1));
+        Assert::assertFalse(ValidatorHelper::int('1.1'));
         Assert::assertTrue(ValidatorHelper::int(1));
 
         Assert::assertFalse(ValidatorHelper::int(5, 6));

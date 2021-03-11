@@ -33,6 +33,11 @@ class EventItem
      */
     public $oneTime;
 
+    /**
+     * @param callable $callback
+     * @param int      $priority
+     * @param bool     $oneTime
+     */
     public function __construct($callback, int $priority = 0, bool $oneTime = false)
     {
         $this->callback = $callback;

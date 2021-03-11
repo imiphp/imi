@@ -30,6 +30,8 @@ class ExtractDataAop
      * )
      * @Around
      *
+     * @param AroundJoinPoint $joinPoint
+     *
      * @return mixed
      */
     public function parseExtractData(AroundJoinPoint $joinPoint)
@@ -38,6 +40,7 @@ class ExtractDataAop
         $className = BeanFactory::getObjectClass($controller);
         $methodName = $joinPoint->getMethod();
 
+        /** @var ExtractData[] $annotations */
         $annotations = AnnotationManager::getMethodAnnotations($className, $methodName, ExtractData::class);
         if (isset($annotations[0]))
         {

@@ -26,7 +26,7 @@ class ActionWrapMiddleware implements IMiddleware
      * @param IPacketData    $data
      * @param IPacketHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {

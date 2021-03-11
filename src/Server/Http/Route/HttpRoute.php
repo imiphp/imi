@@ -213,7 +213,7 @@ class HttpRoute
      * 检查验证url是否匹配.
      *
      * @param string $urlRule
-     * @param array  $params  url路由中的自定义参数
+     * @param string $pathInfo
      *
      * @return \Imi\Server\Http\Route\UrlCheckResult
      */
@@ -370,8 +370,9 @@ class HttpRoute
     /**
      * 检查验证域名是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $domain
+     * @param Request    $request
+     * @param mixed      $domain
+     * @param array|null $params
      *
      * @return bool
      */
@@ -587,6 +588,11 @@ class HttpRoute
         }
     }
 
+    /**
+     * @param RouteItem $routeItem
+     *
+     * @return void
+     */
     private function logDuplicated(RouteItem $routeItem)
     {
         $callable = $routeItem->callable;

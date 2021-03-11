@@ -6,6 +6,7 @@ use Imi\Aop\Annotation\Inject;
 use Imi\Controller\SingletonHttpController;
 use Imi\Process\ProcessManager;
 use Imi\RequestContext;
+use Imi\Server\Http\Message\Response;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Route\Annotation\Middleware;
@@ -31,7 +32,7 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/")
      *
-     * @return void
+     * @return Response
      */
     public function index()
     {
@@ -42,7 +43,9 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/route/{id}")
      *
-     * @return void
+     * @param string $id
+     *
+     * @return array
      */
     public function route($id)
     {
@@ -56,7 +59,9 @@ class IndexController extends SingletonHttpController
      * @Route(autoEndSlash=true)
      * @View(renderType="html", template="html")
      *
-     * @return void
+     * @param int $time
+     *
+     * @return array
      */
     public function html($time)
     {
@@ -69,7 +74,9 @@ class IndexController extends SingletonHttpController
      * @Action
      * @View(renderType="html", baseDir="index/")
      *
-     * @return void
+     * @param int $time
+     *
+     * @return array
      */
     public function html2($time)
     {
@@ -81,7 +88,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return \Imi\Server\View\Annotation\View
      */
     public function renderHtml1()
     {
@@ -93,7 +100,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return \Imi\Server\View\Annotation\View
      */
     public function renderHtml2()
     {
@@ -105,7 +112,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @param int $time
+     *
+     * @return array
      */
     public function json($time)
     {
@@ -118,7 +127,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function info()
     {
@@ -139,7 +148,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function superGlobalsInfo()
     {
@@ -157,7 +166,11 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @param string $get
+     * @param string $post
+     * @param int    $default
+     *
+     * @return array
      */
     public function info2($get, $post, $default = 19260817)
     {
@@ -173,7 +186,12 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @param string $get
+     * @param string $post
+     * @param string $parsedBody
+     * @param int    $default
+     *
+     * @return array
      */
     public function info3($get, $post, $parsedBody, $default = 19260817)
     {
@@ -191,7 +209,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return Response
      */
     public function cookie()
     {
@@ -208,7 +226,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return Response
      */
     public function headers()
     {
@@ -229,7 +247,7 @@ class IndexController extends SingletonHttpController
      * })
      * @Middleware("@test")
      *
-     * @return void
+     * @return array
      */
     public function middleware()
     {
@@ -239,7 +257,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return Response
      */
     public function redirect()
     {
@@ -249,7 +267,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return Response
      */
     public function download()
     {
@@ -259,7 +277,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function upload()
     {
@@ -284,7 +302,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function executeTimeout()
     {
@@ -299,7 +317,10 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
      *
-     * @return void
+     * @param string $id
+     * @param string $page
+     *
+     * @return array
      */
     public function regularExpression1($id, $page)
     {
@@ -313,7 +334,10 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/a/{name:[a-zA-Z]+}/{page}")
      *
-     * @return void
+     * @param string $name
+     * @param string $page
+     *
+     * @return array
      */
     public function regularExpression2($name, $page)
     {
@@ -326,7 +350,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function singletonRequest()
     {
@@ -344,7 +368,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return Response
      */
     public function singletonResponse1()
     {
@@ -366,7 +390,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
     public function process()
     {
@@ -380,6 +404,10 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      * @Route(url="/type/{id}/{name}/{page}")
+     *
+     * @param string $id
+     * @param string $name
+     * @param string $page
      *
      * @return array
      */

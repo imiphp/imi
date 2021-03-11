@@ -17,6 +17,6 @@ class Test implements IMiddleware
     {
         RequestContext::set('middlewareData', 'imi');
 
-        return $handler->handle($data, $handler);
+        return $handler->handle($data);
     }
 }

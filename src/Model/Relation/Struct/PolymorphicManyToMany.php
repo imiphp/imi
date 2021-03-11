@@ -54,9 +54,9 @@ class PolymorphicManyToMany
     /**
      * 初始化多对多结构.
      *
-     * @param \Imi\Model\Model                          $model
-     * @param string                                    $propertyName
-     * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
+     * @param string                                                                                                                                          $className
+     * @param string                                                                                                                                          $propertyName
+     * @param \Imi\Model\Annotation\Relation\ManyToMany|\Imi\Model\Annotation\Relation\PolymorphicManyToMany|\Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
      *
      * @return void
      */

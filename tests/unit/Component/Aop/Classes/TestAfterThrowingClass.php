@@ -9,11 +9,17 @@ use Imi\Bean\Annotation\Bean;
  */
 class TestAfterThrowingClass
 {
+    /**
+     * @return void
+     */
     public function testCancelThrow()
     {
         throw new \RuntimeException('test');
     }
 
+    /**
+     * @return void
+     */
     public function testNotCancelThrow()
     {
         throw new \RuntimeException('test');
