@@ -1350,7 +1350,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace数据.
      *
-     * @param array|\Imi\Db\Query\Raw[]|\Imi\Db\Query\Interfaces\IQuery $data
+     * @param array|\Imi\Db\Query\Interfaces\IQuery $data
      *
      * @return static
      */
