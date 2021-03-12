@@ -103,9 +103,20 @@ class HttpRouteInit implements IEventListener
                             $routeItem->url = $methodName;
                         }
                         $prefix = $classAnnotation->prefix;
-                        if ((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]) && '' != $prefix)
+                        if ('' != $prefix)
                         {
-                            $routeItem->url = $prefix . $routeItem->url;
+                            if ((!isset($routeItem->url[0]) || '/' !== $routeItem->url[0]))
+                            {
+                                if (isset($routeItem->url[1]) && './' === substr($routeItem->url, 0, 2))
+                                {
+                                    $prefixHasSlash = '/' === substr($prefix, -1, 1);
+                                    $routeItem->url = $prefix . substr($routeItem->url, $prefixHasSlash ? 2 : 1);
+                                }
+                                else
+                                {
+                                    $routeItem->url = $prefix . $routeItem->url;
+                                }
+                            }
                         }
                         $routeCallable = new RouteCallable($server->getName(), $className, $methodName);
                         $options = [

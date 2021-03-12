@@ -32,7 +32,7 @@ class <?= $name; ?> extends HttpController
      * find
      * 
      * @Action
-     * @Route(url="{id}", method={"GET"})
+     * @Route(url="./{id}", method={"GET"})
      * 
      * @param int $id
      * @return void
@@ -64,7 +64,7 @@ class <?= $name; ?> extends HttpController
      * update
      * 
      * @Action
-     * @Route(url="{id}", method={"PUT"})
+     * @Route(url="./{id}", method={"PUT"})
      * 
      * @param int $id
      * @return void
@@ -82,7 +82,7 @@ class <?= $name; ?> extends HttpController
      * delete
      * 
      * @Action
-     * @Route(url="{id}", method={"DELETE"})
+     * @Route(url="./{id}", method={"DELETE"})
      * 
      * @param int $id
      * @return void
