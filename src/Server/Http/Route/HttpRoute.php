@@ -76,7 +76,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function addRule(string $url, $callable, \Imi\Server\Route\Annotation\Route $annotation = null)
+    public function addRule(string $url, $callable, RouteAnnotation $annotation = null)
     {
         if (null === $annotation)
         {
@@ -96,7 +96,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function addRuleAnnotation(\Imi\Server\Route\Annotation\Route $annotation, $callable, $options = [])
+    public function addRuleAnnotation(RouteAnnotation $annotation, $callable, $options = [])
     {
         $routeItem = new RouteItem($annotation, $callable, ViewParser::getInstance()->getByCallable($callable), $options);
         if (isset($options['middlewares']))

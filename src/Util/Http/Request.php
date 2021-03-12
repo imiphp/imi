@@ -106,7 +106,7 @@ class Request extends AbstractMessage implements RequestInterface
     /**
      * Retrieves the HTTP method of the request.
      *
-     * @return string Returns the request method.
+     * @return string returns the request method
      */
     public function getMethod()
     {
@@ -124,11 +124,11 @@ class Request extends AbstractMessage implements RequestInterface
      * immutability of the message, and MUST return an instance that has the
      * changed request method.
      *
-     * @param string $method Case-sensitive method.
+     * @param string $method case-sensitive method
      *
      * @return static
      *
-     * @throws \InvalidArgumentException for invalid HTTP methods.
+     * @throws \InvalidArgumentException for invalid HTTP methods
      */
     public function withMethod($method)
     {
@@ -145,8 +145,8 @@ class Request extends AbstractMessage implements RequestInterface
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @return UriInterface Returns a UriInterface instance
-     *                      representing the URI of the request.
+     * @return UriInterface returns a UriInterface instance
+     *                      representing the URI of the request
      */
     public function getUri()
     {
@@ -180,8 +180,8 @@ class Request extends AbstractMessage implements RequestInterface
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @param UriInterface $uri          New request URI to use.
-     * @param bool         $preserveHost Preserve the original state of the Host header.
+     * @param UriInterface $uri          new request URI to use
+     * @param bool         $preserveHost preserve the original state of the Host header
      *
      * @return static
      */

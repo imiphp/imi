@@ -8,8 +8,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Database implements IDatabase
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 数据库名.

@@ -44,7 +44,7 @@ abstract class Tool
         {
             if (!isset($_SERVER['argv'][1]))
             {
-                throw new \RuntimeException(sprintf('Tool args error!'));
+                throw new \RuntimeException('Tool args error!');
             }
             $argv1 = $_SERVER['argv'][1];
             if (false === strpos($argv1, '/'))
@@ -66,7 +66,7 @@ abstract class Tool
                 }
                 else
                 {
-                    throw new \RuntimeException(sprintf('Tool name and operation not found!'));
+                    throw new \RuntimeException('Tool name and operation not found!');
                 }
             }
             // 工具名/操作名

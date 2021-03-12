@@ -19,8 +19,8 @@ use Imi\Util\ClassObject;
  */
 class CacheableAop
 {
-    use TLockableParser;
     use TCacheAopHelper;
+    use TLockableParser;
 
     /**
      * 处理 Cacheable 注解.

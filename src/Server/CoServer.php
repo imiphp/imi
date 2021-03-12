@@ -224,7 +224,7 @@ class CoServer
      *
      * @return void
      */
-    private function parseServer(\Imi\Server\Base $server, $workerId)
+    private function parseServer(Base $server, $workerId)
     {
         $swooleServer = $server->getSwooleServer();
         $swooleServer->worker_id = $workerId;

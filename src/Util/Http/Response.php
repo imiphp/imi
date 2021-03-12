@@ -41,7 +41,7 @@ class Response extends AbstractMessage implements ResponseInterface
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
      *
-     * @return int Status code.
+     * @return int status code
      */
     public function getStatusCode()
     {
@@ -62,14 +62,14 @@ class Response extends AbstractMessage implements ResponseInterface
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @param int    $code         The 3-digit integer result code to set.
-     * @param string $reasonPhrase The reason phrase to use with the
+     * @param int    $code         the 3-digit integer result code to set
+     * @param string $reasonPhrase the reason phrase to use with the
      *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification.
+     *                             use the defaults as suggested in the HTTP specification
      *
      * @return static
      *
-     * @throws \InvalidArgumentException For invalid status code arguments.
+     * @throws \InvalidArgumentException for invalid status code arguments
      */
     public function withStatus($code, $reasonPhrase = '')
     {
@@ -99,7 +99,7 @@ class Response extends AbstractMessage implements ResponseInterface
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @return string Reason phrase; must return an empty string if none present.
+     * @return string reason phrase; must return an empty string if none present
      */
     public function getReasonPhrase()
     {

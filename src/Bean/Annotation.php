@@ -120,7 +120,7 @@ class Annotation
      *
      * @return string
      */
-    public static function toComments(\Imi\Bean\Annotation\Base $annotation, $skipDefaultValue = true): string
+    public static function toComments(Annotation\Base $annotation, $skipDefaultValue = true): string
     {
         $result = '@' . Imi::getClassShortName(\get_class($annotation));
         $properties = [];

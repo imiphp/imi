@@ -528,7 +528,7 @@ abstract class App
     public static function outImi()
     {
         echo <<<STR
- _               _ 
+ _               _
 (_)  _ __ ___   (_)
 | | | '_ ` _ \  | |
 | | | | | | | | | |

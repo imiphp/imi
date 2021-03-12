@@ -18,9 +18,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Prepare
-        run: |
-          ./.github/prepare-test.sh swoole
-          docker exec swoole composer require phpstan/phpstan --dev
+        run: ./.github/prepare-test.sh swoole-only 1
 
       - name: Test
-        run: docker exec swoole ./vendor/bin/phpstan analyse --memory-limit 1G
+        run: docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G

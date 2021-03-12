@@ -1,0 +1,32 @@
+parameters:
+    level: 6
+
+    paths:
+        - src
+        - tests
+        - config
+
+    excludes_analyse:
+        - tests/vendor
+
+    bootstrapFiles:
+        - vendor/autoload.php
+        - tests/vendor/autoload.php
+
+    treatPhpDocTypesAsCertain: false
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+
+    ignoreErrors:
+        - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
+        - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
+        - '#Unsafe usage of new static\(\).+#'
+        - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
+        - '#Access to static property \S+ on trait.+#'
+        - '#Access to an undefined property Swoole\\Http\\Response::\$isEnded.#'
+        - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
+        - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
+        -
+            message: '#Method \S+ has no return typehint specified.#'
+            paths:
+                - tests/unit/**Test.php

@@ -21,8 +21,8 @@ use Imi\Util\Traits\TBeanRealClass;
  */
 abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent
 {
-    use TEvent;
     use TBeanRealClass;
+    use TEvent;
 
     /**
      * 数据库原始字段名称.

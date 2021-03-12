@@ -52,7 +52,7 @@ abstract class ServerManage
      *
      * @return \Imi\Server\Base
      */
-    public static function createServer($name, $config, $isSubServer = false): \Imi\Server\Base
+    public static function createServer($name, $config, $isSubServer = false): Server\Base
     {
         // 创建服务器对象前置操作
         Event::trigger('IMI.SERVER.CREATE.BEFORE', [

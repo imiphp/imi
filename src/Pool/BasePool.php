@@ -73,7 +73,7 @@ abstract class BasePool implements IPool
      * @param \Imi\Pool\Interfaces\IPoolConfig|null $config
      * @param array|null                            $resourceConfig
      */
-    public function __construct(string $name, ?\Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    public function __construct(string $name, ?Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         $this->name = $name;
         if (null !== $config)
@@ -116,7 +116,7 @@ abstract class BasePool implements IPool
      *
      * @return \Imi\Pool\Interfaces\IPoolConfig
      */
-    public function getConfig(): \Imi\Pool\Interfaces\IPoolConfig
+    public function getConfig(): Interfaces\IPoolConfig
     {
         return $this->config;
     }
@@ -265,7 +265,7 @@ abstract class BasePool implements IPool
      *
      * @return \Imi\Pool\Interfaces\IPoolResource
      */
-    abstract protected function createResource(): \Imi\Pool\Interfaces\IPoolResource;
+    abstract protected function createResource(): IPoolResource;
 
     /**
      * 把资源加入队列.

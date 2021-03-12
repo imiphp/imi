@@ -196,7 +196,7 @@ class Uri implements UriInterface
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
      *
-     * @return string The URI scheme.
+     * @return string the URI scheme
      */
     public function getScheme()
     {
@@ -220,7 +220,7 @@ class Uri implements UriInterface
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
      *
-     * @return string The URI authority, in "[user-info@]host[:port]" format.
+     * @return string the URI authority, in "[user-info@]host[:port]" format
      */
     public function getAuthority()
     {
@@ -250,7 +250,7 @@ class Uri implements UriInterface
      * The trailing "@" character is not part of the user information and MUST
      * NOT be added.
      *
-     * @return string The URI user information, in "username[:password]" format.
+     * @return string the URI user information, in "username[:password]" format
      */
     public function getUserInfo()
     {
@@ -267,7 +267,7 @@ class Uri implements UriInterface
      *
      * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
      *
-     * @return string The URI host.
+     * @return string the URI host
      */
     public function getHost()
     {
@@ -287,7 +287,7 @@ class Uri implements UriInterface
      * If no port is present, but a scheme is present, this method MAY return
      * the standard port for that scheme, but SHOULD return null.
      *
-     * @return int|null The URI port.
+     * @return int|null the URI port
      */
     public function getPort()
     {
@@ -318,7 +318,7 @@ class Uri implements UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.3
      *
-     * @return string The URI path.
+     * @return string the URI path
      */
     public function getPath()
     {
@@ -344,7 +344,7 @@ class Uri implements UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
      *
-     * @return string The URI query string.
+     * @return string the URI query string
      */
     public function getQuery()
     {
@@ -366,7 +366,7 @@ class Uri implements UriInterface
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.5
      *
-     * @return string The URI fragment.
+     * @return string the URI fragment
      */
     public function getFragment()
     {
@@ -384,11 +384,11 @@ class Uri implements UriInterface
      *
      * An empty scheme is equivalent to removing the scheme.
      *
-     * @param string $scheme The scheme to use with the new instance.
+     * @param string $scheme the scheme to use with the new instance
      *
-     * @return static A new instance with the specified scheme.
+     * @return static a new instance with the specified scheme
      *
-     * @throws \InvalidArgumentException for invalid or unsupported schemes.
+     * @throws \InvalidArgumentException for invalid or unsupported schemes
      */
     public function withScheme($scheme)
     {
@@ -412,10 +412,10 @@ class Uri implements UriInterface
      * user; an empty string for the user is equivalent to removing user
      * information.
      *
-     * @param string      $user     The user name to use for authority.
-     * @param string|null $password The password associated with $user.
+     * @param string      $user     the user name to use for authority
+     * @param string|null $password the password associated with $user
      *
-     * @return static A new instance with the specified user information.
+     * @return static a new instance with the specified user information
      */
     public function withUserInfo($user, $password = null)
     {
@@ -437,11 +437,11 @@ class Uri implements UriInterface
      *
      * An empty host value is equivalent to removing the host.
      *
-     * @param string $host The hostname to use with the new instance.
+     * @param string $host the hostname to use with the new instance
      *
-     * @return static A new instance with the specified host.
+     * @return static a new instance with the specified host
      *
-     * @throws \InvalidArgumentException for invalid hostnames.
+     * @throws \InvalidArgumentException for invalid hostnames
      */
     public function withHost($host)
     {
@@ -463,12 +463,12 @@ class Uri implements UriInterface
      * A null value provided for the port is equivalent to removing the port
      * information.
      *
-     * @param int|null $port The port to use with the new instance; a null value
-     *                       removes the port information.
+     * @param int|null $port the port to use with the new instance; a null value
+     *                       removes the port information
      *
-     * @return static A new instance with the specified port.
+     * @return static a new instance with the specified port
      *
-     * @throws \InvalidArgumentException for invalid ports.
+     * @throws \InvalidArgumentException for invalid ports
      */
     public function withPort($port)
     {
@@ -496,11 +496,11 @@ class Uri implements UriInterface
      * Users can provide both encoded and decoded path characters.
      * Implementations ensure the correct encoding as outlined in getPath().
      *
-     * @param string $path The path to use with the new instance.
+     * @param string $path the path to use with the new instance
      *
-     * @return static A new instance with the specified path.
+     * @return static a new instance with the specified path
      *
-     * @throws \InvalidArgumentException for invalid paths.
+     * @throws \InvalidArgumentException for invalid paths
      */
     public function withPath($path)
     {
@@ -521,11 +521,11 @@ class Uri implements UriInterface
      *
      * An empty query string value is equivalent to removing the query string.
      *
-     * @param string $query The query string to use with the new instance.
+     * @param string $query the query string to use with the new instance
      *
-     * @return static A new instance with the specified query string.
+     * @return static a new instance with the specified query string
      *
-     * @throws \InvalidArgumentException for invalid query strings.
+     * @throws \InvalidArgumentException for invalid query strings
      */
     public function withQuery($query)
     {
@@ -546,9 +546,9 @@ class Uri implements UriInterface
      *
      * An empty fragment value is equivalent to removing the fragment.
      *
-     * @param string $fragment The fragment to use with the new instance.
+     * @param string $fragment the fragment to use with the new instance
      *
-     * @return static A new instance with the specified fragment.
+     * @return static a new instance with the specified fragment
      */
     public function withFragment($fragment)
     {

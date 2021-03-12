@@ -8,8 +8,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Field implements IField
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 数据库名.

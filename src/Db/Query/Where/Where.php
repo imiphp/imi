@@ -10,8 +10,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Where extends BaseWhere implements IWhere
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 字段名.

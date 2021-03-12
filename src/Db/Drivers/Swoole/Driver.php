@@ -154,7 +154,7 @@ class Driver extends Base implements IDb
      *
      * @return \Swoole\Coroutine\MySQL|null
      */
-    public function getInstance(): ?\Swoole\Coroutine\MySQL
+    public function getInstance(): ?MySQL
     {
         return $this->instance;
     }

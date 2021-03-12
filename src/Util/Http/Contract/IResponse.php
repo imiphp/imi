@@ -14,7 +14,7 @@ interface IResponse extends ResponseInterface
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
      *
-     * @return int Status code.
+     * @return int status code
      */
     public function getStatusCode();
 
@@ -32,14 +32,14 @@ interface IResponse extends ResponseInterface
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @param int    $code         The 3-digit integer result code to set.
-     * @param string $reasonPhrase The reason phrase to use with the
+     * @param int    $code         the 3-digit integer result code to set
+     * @param string $reasonPhrase the reason phrase to use with the
      *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification.
+     *                             use the defaults as suggested in the HTTP specification
      *
      * @return static
      *
-     * @throws \InvalidArgumentException For invalid status code arguments.
+     * @throws \InvalidArgumentException for invalid status code arguments
      */
     public function withStatus($code, $reasonPhrase = '');
 
@@ -55,7 +55,7 @@ interface IResponse extends ResponseInterface
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @return string Reason phrase; must return an empty string if none present.
+     * @return string reason phrase; must return an empty string if none present
      */
     public function getReasonPhrase();
 
@@ -64,7 +64,7 @@ interface IResponse extends ResponseInterface
      *
      * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
      *
-     * @return string HTTP protocol version.
+     * @return string HTTP protocol version
      */
     public function getProtocolVersion();
 
@@ -114,7 +114,7 @@ interface IResponse extends ResponseInterface
     /**
      * Checks if a header exists by the given case-insensitive name.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return bool Returns true if any header names match the given header
      *              name using a case-insensitive string comparison. Returns false if
@@ -131,7 +131,7 @@ interface IResponse extends ResponseInterface
      * If the header does not appear in the message, this method MUST return an
      * empty array.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return string[] An array of string values as provided for the given
      *                  header. If the header does not appear in the message, this method MUST
@@ -153,7 +153,7 @@ interface IResponse extends ResponseInterface
      * If the header does not appear in the message, this method MUST return
      * an empty string.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return string A string of values as provided for the given header
      *                concatenated together using a comma. If the header does not appear in
@@ -171,12 +171,12 @@ interface IResponse extends ResponseInterface
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string          $name  Case-insensitive header field name.
-     * @param string|string[] $value Header value(s).
+     * @param string          $name  case-insensitive header field name
+     * @param string|string[] $value header value(s)
      *
      * @return static
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws \InvalidArgumentException for invalid header names or values
      */
     public function withHeader($name, $value);
 
@@ -191,12 +191,12 @@ interface IResponse extends ResponseInterface
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string          $name  Case-insensitive header field name to add.
-     * @param string|string[] $value Header value(s).
+     * @param string          $name  case-insensitive header field name to add
+     * @param string|string[] $value header value(s)
      *
      * @return static
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws \InvalidArgumentException for invalid header names or values
      */
     public function withAddedHeader($name, $value);
 
@@ -209,7 +209,7 @@ interface IResponse extends ResponseInterface
      * immutability of the message, and MUST return an instance that removes
      * the named header.
      *
-     * @param string $name Case-insensitive header field name to remove.
+     * @param string $name case-insensitive header field name to remove
      *
      * @return static
      */
@@ -218,7 +218,7 @@ interface IResponse extends ResponseInterface
     /**
      * Gets the body of the message.
      *
-     * @return StreamInterface Returns the body as a stream.
+     * @return StreamInterface returns the body as a stream
      */
     public function getBody();
 
@@ -231,11 +231,11 @@ interface IResponse extends ResponseInterface
      * immutability of the message, and MUST return a new instance that has the
      * new body stream.
      *
-     * @param StreamInterface $body Body.
+     * @param StreamInterface $body body
      *
      * @return static
      *
-     * @throws \InvalidArgumentException When the body is not valid.
+     * @throws \InvalidArgumentException when the body is not valid
      */
     public function withBody(StreamInterface $body);
 

@@ -47,7 +47,7 @@ class Container implements ContainerInterface
      * @throws NotFoundExceptionInterface  没有找到对象
      * @throws ContainerExceptionInterface 检索时出错
      *
-     * @return mixed Entry.
+     * @return mixed entry
      */
     public function get($id)
     {

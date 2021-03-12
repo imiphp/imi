@@ -195,7 +195,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function checkCompareValue()
+    public function testCheckCompareValue()
     {
         $this->assertTrue(Imi::checkCompareValue('123', '123'));
         $this->assertFalse(Imi::checkCompareValue('123', '1234'));
@@ -208,7 +208,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function checkParseDotRule()
+    public function testCheckParseDotRule()
     {
         $this->assertEquals([
             'a',

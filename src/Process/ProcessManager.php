@@ -47,7 +47,7 @@ abstract class ProcessManager
      *
      * @return \Swoole\Process
      */
-    public static function create($name, $args = [], $redirectStdinStdout = null, $pipeType = null, ?string $alias = null): \Swoole\Process
+    public static function create($name, $args = [], $redirectStdinStdout = null, $pipeType = null, ?string $alias = null): Process
     {
         $processOption = ProcessParser::getInstance()->getProcess($name);
         if (null === $processOption)
@@ -83,7 +83,7 @@ abstract class ProcessManager
      */
     public static function getProcessCallable($args, $name, $processOption, ?string $alias = null)
     {
-        return function (\Swoole\Process $swooleProcess) use ($args, $name, $processOption, $alias) {
+        return function (Process $swooleProcess) use ($args, $name, $processOption, $alias) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称

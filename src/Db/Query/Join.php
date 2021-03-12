@@ -9,8 +9,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Join implements IJoin
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 表名.

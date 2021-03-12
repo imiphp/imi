@@ -8,8 +8,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Order implements IOrder
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 字段名.

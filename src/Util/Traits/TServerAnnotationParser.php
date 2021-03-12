@@ -21,7 +21,7 @@ trait TServerAnnotationParser
     /**
      * @var string
      */
-    protected string $controllerAnnotationClass;
+    protected $controllerAnnotationClass;
 
     /**
      * 根据服务器获取对应的控制器数据.

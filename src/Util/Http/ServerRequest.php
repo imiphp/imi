@@ -146,7 +146,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * immutability of the message, and MUST return an instance that has the
      * updated cookie values.
      *
-     * @param array $cookies Array of key/value pairs representing cookies.
+     * @param array $cookies array of key/value pairs representing cookies
      *
      * @return static
      */
@@ -206,8 +206,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * immutability of the message, and MUST return an instance that has the
      * updated query string arguments.
      *
-     * @param array $query Array of query string arguments, typically from
-     *                     $_GET.
+     * @param array $query array of query string arguments, typically from
+     *                     $_GET
      *
      * @return static
      */
@@ -228,8 +228,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * These values MAY be prepared from $_FILES or the message body during
      * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return \Psr\Http\Message\UploadedFileInterface[] An array tree of UploadedFileInterface instances; an empty
-     *                                                   array MUST be returned if no data is present.
+     * @return \Psr\Http\Message\UploadedFileInterface[] an array tree of UploadedFileInterface instances; an empty
+     *                                                   array MUST be returned if no data is present
      */
     public function getUploadedFiles()
     {
@@ -243,11 +243,11 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
+     * @param array $uploadedFiles an array tree of UploadedFileInterface instances
      *
      * @return static
      *
-     * @throws \InvalidArgumentException if an invalid structure is provided.
+     * @throws \InvalidArgumentException if an invalid structure is provided
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
@@ -344,7 +344,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * @return static
      *
      * @throws \InvalidArgumentException if an unsupported argument type is
-     *                                   provided.
+     *                                   provided
      */
     public function withParsedBody($data)
     {
@@ -363,7 +363,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      * deserializing non-form-encoded message bodies; etc. Attributes
      * will be application and request specific, and CAN be mutable.
      *
-     * @return array Attributes derived from the request.
+     * @return array attributes derived from the request
      */
     public function getAttributes()
     {
@@ -382,8 +382,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      *
      * @see getAttributes()
      *
-     * @param string $name    The attribute name.
-     * @param mixed  $default Default value to return if the attribute does not exist.
+     * @param string $name    the attribute name
+     * @param mixed  $default default value to return if the attribute does not exist
      *
      * @return mixed
      */
@@ -412,8 +412,8 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      *
      * @see getAttributes()
      *
-     * @param string $name  The attribute name.
-     * @param mixed  $value The value of the attribute.
+     * @param string $name  the attribute name
+     * @param mixed  $value the value of the attribute
      *
      * @return static
      */
@@ -437,7 +437,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
      *
      * @see getAttributes()
      *
-     * @param string $name The attribute name.
+     * @param string $name the attribute name
      *
      * @return static
      */

@@ -52,7 +52,7 @@ class PoolItem
     /**
      * @param \Imi\Pool\Interfaces\IPoolResource $resource
      */
-    public function __construct(\Imi\Pool\Interfaces\IPoolResource $resource)
+    public function __construct(Interfaces\IPoolResource $resource)
     {
         $this->resource = $resource;
         $this->createTime = microtime(true);

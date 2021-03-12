@@ -87,6 +87,7 @@ class Scheduler
     {
         $this->coPool = $coPool = new CoPool($this->poolCoCount, $this->poolQueueLength,
             // 定义任务匿名类，当然你也可以定义成普通类，传入完整类名
+            // @phpstan-ignore-next-line
             new class() implements ICoTask {
                 /**
                  * 执行任务
