@@ -15,8 +15,7 @@ use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 
 /**
- * @Controller(prefix="/Rest/")
- * @View(renderType="json")
+ * @Controller(prefix="/rest")
  */
 class Rest extends HttpController
 {
@@ -36,7 +35,7 @@ class Rest extends HttpController
 	 * find
 	 * 
 	 * @Action
-	 * @Route(url="{id}", method={"GET"})
+	 * @Route(url="./{id}", method={"GET"})
 	 * 
 	 * @param int $id
 	 * @return void
@@ -68,7 +67,7 @@ class Rest extends HttpController
 	 * update
 	 * 
 	 * @Action
-	 * @Route(url="{id}", method={"PUT"})
+	 * @Route(url="./{id}", method={"PUT"})
 	 * 
 	 * @param int $id
 	 * @return void
@@ -86,7 +85,7 @@ class Rest extends HttpController
 	 * delete
 	 * 
 	 * @Action
-	 * @Route(url="{id}", method={"DELETE"})
+	 * @Route(url="./{id}", method={"DELETE"})
 	 * 
 	 * @param int $id
 	 * @return void

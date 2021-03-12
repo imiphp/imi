@@ -1,6 +1,6 @@
-<?='<?php'?>
+<?='<?php'; ?>
 
-namespace <?= $namespace ?>;
+namespace <?= $namespace; ?>;
 
 use Imi\Controller\HttpController;
 use Imi\Server\View\Annotation\View;
@@ -9,10 +9,10 @@ use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 
 /**
- * @Controller("<?= $prefix ?>")
- * @View(renderType="<?= $render ?>")
+ * @Controller("<?= $prefix; ?>")
+ * @View(renderType="<?= $render; ?>")
  */
-class <?= $name ?> extends HttpController
+class <?= $name; ?> extends HttpController
 {
     /**
      * query
@@ -30,7 +30,7 @@ class <?= $name ?> extends HttpController
      * find
      * 
      * @Action
-     * @Route(url="{id}", method={"GET"})
+     * @Route(url="./{id}", method={"GET"})
      * 
      * @param int $id
      * @return void
@@ -62,7 +62,7 @@ class <?= $name ?> extends HttpController
      * update
      * 
      * @Action
-     * @Route(url="{id}", method={"PUT"})
+     * @Route(url="./{id}", method={"PUT"})
      * 
      * @param int $id
      * @return void
@@ -80,7 +80,7 @@ class <?= $name ?> extends HttpController
      * delete
      * 
      * @Action
-     * @Route(url="{id}", method={"DELETE"})
+     * @Route(url="./{id}", method={"DELETE"})
      * 
      * @param int $id
      * @return void
