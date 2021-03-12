@@ -90,7 +90,7 @@ class Redis implements IHandler
      */
     private int $masterPID = 0;
 
-    public function __init()
+    public function __init(): void
     {
         if ('' === $this->key)
         {
@@ -260,7 +260,7 @@ class Redis implements IHandler
             {
                 $data = ($this->dataEncode)($data);
             }
-            $redis->hset($this->getStoreKey(), $key, $data);
+            $redis->hSet($this->getStoreKey(), $key, $data);
         });
     }
 

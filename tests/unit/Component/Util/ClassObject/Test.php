@@ -6,7 +6,14 @@ namespace Imi\Test\Component\Util\ClassObject;
 
 class Test
 {
-    public function imi($a, $b, $c = 'imi.com')
+    /**
+     * @param mixed  $a
+     * @param mixed  $b
+     * @param string $c
+     *
+     * @return void
+     */
+    public function imi($a, $b, $c = 'imi.com'): void
     {
     }
 }

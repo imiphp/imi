@@ -13,7 +13,7 @@ use Imi\Util\ImiPriority;
  */
 class Main extends BaseMain
 {
-    public function __init()
+    public function __init(): void
     {
         Event::on('IMI.LOAD_RUNTIME', \Imi\Bean\Listener\LoadRuntimeListener::class, ImiPriority::IMI_MAX);
         Event::on('IMI.BUILD_RUNTIME', \Imi\Bean\Listener\BuildRuntimeListener::class, ImiPriority::IMI_MAX);

@@ -23,7 +23,7 @@ class DbQueryLog
      */
     protected bool $enable = false;
 
-    public function __init()
+    public function __init(): void
     {
         if ($this->enable)
         {

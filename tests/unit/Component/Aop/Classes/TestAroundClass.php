@@ -11,7 +11,7 @@ use Imi\Bean\Annotation\Bean;
  */
 class TestAroundClass
 {
-    public function test(int $id)
+    public function test(int $id): int
     {
         return $id;
     }

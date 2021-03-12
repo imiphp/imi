@@ -47,7 +47,7 @@ class View
      */
     protected array $handlers = [];
 
-    public function __init()
+    public function __init(): void
     {
         $handlers = &$this->handlers;
         foreach ([$this->coreHandlers, $this->exHandlers] as $list)

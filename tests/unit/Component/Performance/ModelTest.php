@@ -65,7 +65,7 @@ class ModelTest extends BaseTest
         $time = microtime(true);
         for ($i = 0; $i < static::PERFORMANCE_COUNT; ++$i)
         {
-            Performance::query()->limit(mt_rand(0, 99) * 100, 100);
+            Performance::query()->page(mt_rand(0, 99) * 100, 100);
         }
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }

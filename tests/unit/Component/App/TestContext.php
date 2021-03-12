@@ -8,7 +8,7 @@ use Imi\App;
 
 class TestContext
 {
-    public static function set()
+    public static function set(): void
     {
         App::set('test', 'imi');
     }

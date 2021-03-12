@@ -17,11 +17,11 @@ class TestInjectRedis
     /**
      * @RedisInject
      *
-     * @var \RedisHandler
+     * @var RedisHandler
      */
     protected $redis;
 
-    public function test()
+    public function test(): void
     {
         Assert::assertInstanceOf(RedisHandler::class, $this->redis);
         $time = time();

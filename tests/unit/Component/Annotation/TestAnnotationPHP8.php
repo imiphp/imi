@@ -22,7 +22,7 @@ class TestAnnotationPHP8
     protected $errorLog;
 
     #[Route(url: '/testAnnotation')]
-    public function test()
+    public function test(): void
     {
     }
 }

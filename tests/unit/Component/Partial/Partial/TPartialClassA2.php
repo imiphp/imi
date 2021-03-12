@@ -11,6 +11,9 @@ namespace Imi\Test\Component\Partial\Partial
      */
     trait TPartialClassA2
     {
+        /**
+         * @var int
+         */
         private $test3Value = 3;
 
         public function test3()
@@ -22,12 +25,19 @@ namespace Imi\Test\Component\Partial\Partial
 
 namespace Imi\Test\Component\Partial\Classes
 {
+    // @phpstan-ignore-next-line
     if (false)
     {
         class PartialClassA
         {
+            /**
+             * @var int
+             */
             private $test3Value;
 
+            /**
+             * @return void
+             */
             public function test3()
             {
             }

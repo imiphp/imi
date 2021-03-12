@@ -6,10 +6,9 @@ namespace Imi\Pool;
 
 use Imi\App;
 use Imi\Config;
-use Imi\RequestContext;
-use Imi\Bean\BeanFactory;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
+use Imi\RequestContext;
 
 class PoolManager
 {
@@ -38,7 +37,7 @@ class PoolManager
     {
     }
 
-    public static function init()
+    public static function init(): void
     {
         foreach (Config::getAliases() as $alias)
         {
@@ -96,9 +95,9 @@ class PoolManager
      *
      * @param string $name
      *
-     * @return void
+     * @return bool
      */
-    public static function exists(string $name)
+    public static function exists(string $name): bool
     {
         if (!self::$inited)
         {
@@ -148,10 +147,7 @@ class PoolManager
     {
         $resource = static::getInstance($name)->getResource();
 
-        if ($resource)
-        {
-            static::pushResourceToRequestContext($resource);
-        }
+        static::pushResourceToRequestContext($resource);
 
         static::$lastGetResourceTime[$name] = microtime(true);
 

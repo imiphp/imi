@@ -2,28 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Imi
-{
-    /**
-     * 处理命令行，执行后不会有 sh 进程.
-     *
-     * @param string $cmd
-     *
-     * @return string
-     */
-    function cmd(string $cmd): string
-    {
-        if ('Darwin' === \PHP_OS || 'Linux' === \PHP_OS)
-        {
-            return 'exec ' . $cmd;
-        }
-        else
-        {
-            return $cmd;
-        }
-    }
-}
-
 namespace
 {
     use Imi\RequestContext;
@@ -34,9 +12,9 @@ namespace
      * @param callable $callable
      * @param mixed    $args
      *
-     * @return void
+     * @return int
      */
-    function imigo(callable $callable, ...$args)
+    function imigo(callable $callable, ...$args): int
     {
         $newCallable = imiCallable($callable);
 
@@ -93,5 +71,27 @@ namespace
         }
 
         return $result;
+    }
+}
+
+namespace Imi
+{
+    /**
+     * 处理命令行，执行后不会有 sh 进程.
+     *
+     * @param string $cmd
+     *
+     * @return string
+     */
+    function cmd(string $cmd): string
+    {
+        if ('Darwin' === \PHP_OS || 'Linux' === \PHP_OS)
+        {
+            return 'exec ' . $cmd;
+        }
+        else
+        {
+            return $cmd;
+        }
     }
 }

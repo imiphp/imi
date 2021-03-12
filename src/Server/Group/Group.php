@@ -74,7 +74,7 @@ class Group
         $this->maxClients = $maxClients;
     }
 
-    public function __init()
+    public function __init(): void
     {
         if ($this->status)
         {

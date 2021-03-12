@@ -22,7 +22,7 @@ class ValidatorAnnotationTest extends BaseTest
      */
     private $tester;
 
-    private $data;
+    private array $data;
 
     public function testValidatorAnnotation()
     {

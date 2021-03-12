@@ -11,7 +11,7 @@ use Imi\Test\Component\Tests\BaseLockTest;
  */
 class LockAtomicTest extends BaseLockTest
 {
-    protected $lockId = 'atomic';
+    protected string $lockId = 'atomic';
 
     protected function check()
     {

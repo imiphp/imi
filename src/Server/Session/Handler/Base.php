@@ -38,7 +38,7 @@ abstract class Base implements ISessionHandler
      */
     private int $atomic = 0;
 
-    public function __init()
+    public function __init(): void
     {
         $this->pid = getmypid();
         $this->formatHandler = RequestContext::getServerBean($this->formatHandlerClass);

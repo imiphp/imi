@@ -71,7 +71,7 @@ abstract class BasePool implements IPool
         }
     }
 
-    public function __init()
+    public function __init(): void
     {
         if (\is_array($this->config))
         {

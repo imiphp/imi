@@ -11,7 +11,7 @@ use Imi\Bean\Annotation\Bean;
  */
 class TestPropertyClass
 {
-    protected $a = 1;
+    protected int $a = 1;
 
-    protected $b = 1;
+    protected int $b = 1;
 }

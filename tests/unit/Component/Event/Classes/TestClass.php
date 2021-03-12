@@ -10,6 +10,9 @@ class TestClass
 {
     use TEvent;
 
+    /**
+     * @return mixed
+     */
     public function test1()
     {
         $return = null;
@@ -21,6 +24,9 @@ class TestClass
         return $return;
     }
 
+    /**
+     * @return mixed
+     */
     public function test2()
     {
         $return = null;
@@ -32,6 +38,9 @@ class TestClass
         return $return;
     }
 
+    /**
+     * @return mixed
+     */
     public function test3()
     {
         $return = null;

@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
 
 abstract class BaseLockTest extends BaseTest
 {
-    protected $lockId;
+    protected string $lockId;
 
     protected function check()
     {

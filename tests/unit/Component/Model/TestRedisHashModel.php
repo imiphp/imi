@@ -14,6 +14,10 @@ use Imi\Model\RedisModel;
  *
  * @Entity
  * @RedisEntity(key="imi:redisModel:test1", member="{name}", storage="hash")
+ *
+ * @property int    $id
+ * @property string $name
+ * @property int    $age
  */
 class TestRedisHashModel extends RedisModel
 {

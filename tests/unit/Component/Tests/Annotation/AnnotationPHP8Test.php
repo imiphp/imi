@@ -9,9 +9,9 @@ namespace Imi\Test\Component\Tests\Annotation;
  */
 class AnnotationPHP8Test extends AnnotationTest
 {
-    protected $className = \Imi\Test\Component\Annotation\TestAnnotationPHP8::class;
+    protected string $className = \Imi\Test\Component\Annotation\TestAnnotationPHP8::class;
 
-    protected $beanName = 'TestAnnotationPHP8';
+    protected string $beanName = 'TestAnnotationPHP8';
 
     protected function setUp(): void
     {

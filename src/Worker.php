@@ -14,7 +14,7 @@ class Worker
     {
     }
 
-    public static function setWorkerHandler(IWorker $workerHandler)
+    public static function setWorkerHandler(IWorker $workerHandler): void
     {
         static::$workerHandler = $workerHandler;
     }

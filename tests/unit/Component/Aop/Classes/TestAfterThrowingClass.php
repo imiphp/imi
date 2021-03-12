@@ -11,12 +11,12 @@ use Imi\Bean\Annotation\Bean;
  */
 class TestAfterThrowingClass
 {
-    public function testCancelThrow()
+    public function testCancelThrow(): void
     {
         throw new \RuntimeException('test');
     }
 
-    public function testNotCancelThrow()
+    public function testNotCancelThrow(): void
     {
         throw new \RuntimeException('test');
     }

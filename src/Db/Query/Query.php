@@ -125,7 +125,7 @@ class Query implements IQuery
         $this->isInitQueryType = null !== $queryType;
     }
 
-    public function __init()
+    public function __init(): void
     {
         $this->dbParamInc = 0;
         $this->option = new QueryOption();
@@ -1342,7 +1342,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace数据.
      *
-     * @param array|\Imi\Db\Query\Raw[]|\Imi\Db\Query\Interfaces\IQuery $data
+     * @param array|\Imi\Db\Query\Interfaces\IQuery $data
      *
      * @return static
      */

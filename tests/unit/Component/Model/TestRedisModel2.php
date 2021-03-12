@@ -14,6 +14,10 @@ use Imi\Model\RedisModel;
  *
  * @Entity
  * @RedisEntity(key="ttl-{id}-{name}", ttl=2)
+ *
+ * @property int    $id
+ * @property string $name
+ * @property int    $age
  */
 class TestRedisModel2 extends RedisModel
 {

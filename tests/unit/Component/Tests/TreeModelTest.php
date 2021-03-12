@@ -13,7 +13,7 @@ use Imi\Test\Component\Model\TreeWithChildren;
  */
 class TreeModelTest extends BaseTest
 {
-    private $data = [
+    private array $data = [
         ['id' => '1', 'parentId' => '0', 'name' => 'a'],
         ['id' => '2', 'parentId' => '0', 'name' => 'b'],
         ['id' => '3', 'parentId' => '0', 'name' => 'c'],

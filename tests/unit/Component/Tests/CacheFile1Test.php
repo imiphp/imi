@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
  */
 class CacheFile1Test extends BaseCacheTest
 {
-    protected $cacheName = 'file1';
+    protected string $cacheName = 'file1';
 
     public function testSetAndGet()
     {

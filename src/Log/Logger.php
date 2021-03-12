@@ -50,7 +50,7 @@ class Logger extends AbstractLogger
         $this->coreHandlers = App::get(LogAppContexts::CORE_HANDLERS, []);
     }
 
-    public function __init()
+    public function __init(): void
     {
         $handlers = &$this->handlers;
         foreach (array_merge($this->coreHandlers, $this->exHandlers) as $handlerOption)

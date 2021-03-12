@@ -9,7 +9,7 @@ namespace Imi\Test\Component\Tests;
  */
 class CacheRedisHashTest extends BaseCacheTest
 {
-    protected $cacheName = 'redisHash';
+    protected string $cacheName = 'redisHash';
 
-    protected $supportTTL = false;
+    protected bool $supportTTL = false;
 }

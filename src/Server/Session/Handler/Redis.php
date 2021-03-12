@@ -27,7 +27,7 @@ class Redis extends Base
      */
     protected string $keyPrefix = '';
 
-    public function __init()
+    public function __init(): void
     {
         parent::__init();
         if ('' === $this->keyPrefix)

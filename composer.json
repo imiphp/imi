@@ -18,7 +18,9 @@
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
         "yurunsoft/yurun-http": "^4.0.0",
-        "phpunit/phpunit": ">=8"
+        "phpunit/phpunit": ">=8",
+        "friendsofphp/php-cs-fixer": "^2.18",
+        "phpstan/phpstan": "^0.12.81"
     },
     "autoload": {
         "psr-4": {

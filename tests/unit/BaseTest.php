@@ -12,7 +12,7 @@ if (class_exists(TestCase::class))
     {
         const PERFORMANCE_COUNT = 1000;
 
-        protected function go($callable, $finally = null)
+        protected function go(callable $callable, ?callable $finally = null): void
         {
             try
             {
@@ -31,7 +31,7 @@ if (class_exists(TestCase::class))
             }
         }
 
-        protected function php($phpFile, $args = '')
+        protected function php(string $phpFile, string $args = ''): string
         {
             $cmd = \Imi\cmd('"' . \PHP_BINARY . "\" \"{$phpFile}\" {$args}");
 

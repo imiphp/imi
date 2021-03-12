@@ -73,7 +73,7 @@ class Redis implements IGroupHandler
      */
     private int $masterPID = 0;
 
-    public function __init()
+    public function __init(): void
     {
         if ('' === $this->key)
         {

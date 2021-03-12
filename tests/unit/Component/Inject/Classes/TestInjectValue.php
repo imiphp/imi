@@ -20,7 +20,7 @@ class TestInjectValue
      */
     protected $testLogic;
 
-    public function test()
+    public function test(): void
     {
         Assert::assertNotNull($this->testLogic);
         $this->testLogic->test();

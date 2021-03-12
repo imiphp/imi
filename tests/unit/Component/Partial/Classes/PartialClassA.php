@@ -11,6 +11,9 @@ use Imi\Bean\Annotation\Bean;
  */
 class PartialClassA
 {
+    /**
+     * @return int
+     */
     public function test1()
     {
         return 1;

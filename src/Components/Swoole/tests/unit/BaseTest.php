@@ -10,7 +10,7 @@ abstract class BaseTest extends \Imi\Test\BaseTest
 {
     const PERFORMANCE_COUNT = 1000;
 
-    protected function go($callable, $finally = null)
+    protected function go(callable $callable, ?callable $finally = null): void
     {
         $throwable = null;
         goWait(function () use ($callable, &$throwable) {

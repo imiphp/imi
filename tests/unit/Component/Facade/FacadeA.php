@@ -10,7 +10,7 @@ use Imi\Facade\BaseFacade;
 /**
  * @Facade("FacadeA")
  *
- * @method mixed add($a, $b)
+ * @method static mixed add($a, $b)
  */
 class FacadeA extends BaseFacade
 {

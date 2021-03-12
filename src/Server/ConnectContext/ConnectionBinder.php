@@ -38,7 +38,7 @@ class ConnectionBinder
      */
     protected string $key = 'imi:connectionBinder:map';
 
-    public function __init()
+    public function __init(): void
     {
         if (0 === Worker::getWorkerId())
         {

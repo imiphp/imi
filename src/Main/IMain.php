@@ -9,5 +9,5 @@ namespace Imi\Main;
  */
 interface IMain
 {
-    public function __init();
+    public function __init(): void;
 }

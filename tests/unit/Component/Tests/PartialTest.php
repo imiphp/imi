@@ -26,8 +26,10 @@ class PartialTest extends BaseTest
         $this->assertTrue(method_exists($test, 'test1'));
         $this->assertEquals(1, $test->test1());
         $this->assertTrue(method_exists($test, 'test2'));
+        // @phpstan-ignore-next-line
         $this->assertEquals(2, $test->test2());
         $this->assertTrue(method_exists($test, 'test3'));
+        // @phpstan-ignore-next-line
         $this->assertEquals(3, $test->test3());
 
         $ref = new ReflectionClass($test);
@@ -35,6 +37,7 @@ class PartialTest extends BaseTest
         $test2Value = $ref->getProperty('test2Value');
         $this->assertTrue($test2Value->isPublic());
 
+        // @phpstan-ignore-next-line
         $this->assertEquals(2, $test->test2Value);
         $this->assertTrue($ref->hasProperty('test3Value'));
         $test2Value = $ref->getProperty('test3Value');

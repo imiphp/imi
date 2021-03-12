@@ -49,7 +49,7 @@ class Html implements IHandler
      */
     protected IEngine $templateEngineInstance;
 
-    public function __init()
+    public function __init(): void
     {
         $this->templateEngineInstance = RequestContext::getServerBean($this->templateEngine);
     }

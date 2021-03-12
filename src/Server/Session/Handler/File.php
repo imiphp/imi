@@ -22,7 +22,7 @@ class File extends Base
     /**
      * 执行初始化操作.
      */
-    public function __init()
+    public function __init(): void
     {
         parent::__init();
         FileUtil::createDir($this->savePath);

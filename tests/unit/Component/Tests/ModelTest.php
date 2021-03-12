@@ -256,7 +256,7 @@ class ModelTest extends BaseTest
         $this->assertEquals(0, $count3);
     }
 
-    private function assertUpdateTime(UpdateTime $record, $methodName)
+    private function assertUpdateTime(UpdateTime $record, string $methodName): void
     {
         $time = time();
         $bigintTime = (int) (microtime(true) * 1000);

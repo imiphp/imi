@@ -44,7 +44,7 @@ class CronManager implements ICronManager
      */
     private array $realTasks = [];
 
-    public function __init()
+    public function __init(): void
     {
         if (null === $this->socketFile)
         {

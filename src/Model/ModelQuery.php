@@ -11,7 +11,7 @@ use Imi\Db\Query\Query;
  */
 class ModelQuery extends Query
 {
-    public function __init()
+    public function __init(): void
     {
         parent::__init();
         if ($this->modelClass && $tableName = $this->modelClass::__getMeta()->getTableName())

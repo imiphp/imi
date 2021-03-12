@@ -10,9 +10,9 @@ use PHPUnit\Framework\Assert;
 
 abstract class BaseCacheTest extends BaseTest
 {
-    protected $cacheName = null;
+    protected string $cacheName;
 
-    protected $supportTTL = true;
+    protected bool $supportTTL = true;
 
     public function testSetAndGet()
     {

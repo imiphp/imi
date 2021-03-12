@@ -12,9 +12,9 @@ use Imi\Test\BaseTest;
  */
 class AnnotationTest extends BaseTest
 {
-    protected $className = \Imi\Test\Component\Annotation\TestAnnotation::class;
+    protected string $className = \Imi\Test\Component\Annotation\TestAnnotation::class;
 
-    protected $beanName = 'TestAnnotation';
+    protected string $beanName = 'TestAnnotation';
 
     public function testClassAnnotation()
     {
