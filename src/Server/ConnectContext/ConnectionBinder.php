@@ -45,15 +45,22 @@ class ConnectionBinder
             $this->useRedis(function (RedisHandler $redis) {
                 $key = $this->key;
                 $redis->del($key);
-                $it = null;
-                do
+                $keys = [];
+                $count = 0;
+                foreach ($redis->scanEach($key . ':*') as $key)
                 {
-                    $arrKeys = $redis->scan($it, $key . ':*');
-                    if ($arrKeys)
+                    $keys[] = $key;
+                    if (++$count >= 1000)
                     {
-                        $redis->del(...$arrKeys);
+                        $redis->del($keys);
+                        $keys = [];
+                        $count = 0;
                     }
-                } while ($it > 0);
+                }
+                if ($keys)
+                {
+                    $redis->del($keys);
+                }
             });
         }
     }
