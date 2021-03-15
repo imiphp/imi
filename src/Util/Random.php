@@ -31,7 +31,7 @@ abstract class Random
      *
      * @return string
      */
-    public static function number(int $min = \PHP_INT_MIN, int $max = \PHP_INT_MAX, int $precision = 2): string
+    public static function number(float $min = \PHP_INT_MIN, float $max = \PHP_INT_MAX, int $precision = 2): string
     {
         $value = round($min + mt_rand() / mt_getrandmax() * ($max - $min), $precision);
 

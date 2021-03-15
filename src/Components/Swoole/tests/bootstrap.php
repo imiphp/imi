@@ -13,7 +13,8 @@ require dirname(__DIR__) . '/vendor/autoload.php';
  */
 function startServer()
 {
-    function checkHttpServerStatus()
+    // @phpstan-ignore-next-line
+    function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
@@ -30,7 +31,8 @@ function startServer()
         return $serverStarted;
     }
 
-    function checkRedisSessionServerStatus()
+    // @phpstan-ignore-next-line
+    function checkRedisSessionServerStatus(): bool
     {
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
@@ -47,7 +49,8 @@ function startServer()
         return $serverStarted;
     }
 
-    function checkWebSocketServerStatus()
+    // @phpstan-ignore-next-line
+    function checkWebSocketServerStatus(): bool
     {
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
@@ -65,7 +68,8 @@ function startServer()
         return $serverStarted;
     }
 
-    function checkTCPServerStatus()
+    // @phpstan-ignore-next-line
+    function checkTCPServerStatus(): bool
     {
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
@@ -89,7 +93,8 @@ function startServer()
         return $serverStarted;
     }
 
-    function checkUDPServerStatus()
+    // @phpstan-ignore-next-line
+    function checkUDPServerStatus(): bool
     {
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
@@ -156,17 +161,18 @@ function startServer()
             // start server
             $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
             echo "Starting {$name}...", \PHP_EOL;
-            `{$cmd}`;
+            shell_exec("{$cmd}");
 
             register_shutdown_function(function () use ($name, $options) {
                 \Swoole\Runtime::enableCoroutine(false);
                 // stop server
                 $cmd = $options['stop'];
                 echo "Stoping {$name}...", \PHP_EOL;
-                `{$cmd}`;
+                shell_exec("{$cmd}");
                 echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
             });
 
+            // @phpstan-ignore-next-line
             if (($options['checkStatus'])())
             {
                 echo "{$name} started!", \PHP_EOL;

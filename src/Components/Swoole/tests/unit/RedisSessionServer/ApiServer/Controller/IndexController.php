@@ -19,7 +19,7 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/")
      *
-     * @return void
+     * @return mixed
      */
     public function index()
     {

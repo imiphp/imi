@@ -11,12 +11,9 @@ namespace Imi\Test\Component\Partial\Partial
      */
     trait TPartialClassA1
     {
-        /**
-         * @var int
-         */
-        public $test2Value = 2;
+        public int $test2Value = 2;
 
-        public function test2()
+        public function test2(): int
         {
             return $this->test2Value;
         }
@@ -30,16 +27,11 @@ namespace Imi\Test\Component\Partial\Classes
     {
         class PartialClassA
         {
-            /**
-             * @var int
-             */
-            public $test2Value;
+            public int $test2Value;
 
-            /**
-             * @return void
-             */
-            public function test2()
+            public function test2(): int
             {
+                return 0;
             }
         }
     }

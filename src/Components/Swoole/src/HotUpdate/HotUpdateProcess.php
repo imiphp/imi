@@ -75,7 +75,7 @@ class HotUpdateProcess extends BaseProcess
     /**
      * buildRuntime resource.
      *
-     * @var \resource|null
+     * @var resource|null
      */
     private $buildRuntimeHandler = null;
 
@@ -121,7 +121,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         if (!$this->status)
         {
@@ -183,7 +183,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function startBuildRuntimeTimer()
+    private function startBuildRuntimeTimer(): void
     {
         $this->buildRuntimeTimerId = Timer::tick(1000, [$this, 'buildRuntimeTimer']);
     }
@@ -193,7 +193,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function stopBuildRuntimeTimer()
+    private function stopBuildRuntimeTimer(): void
     {
         Timer::clear($this->buildRuntimeTimerId);
     }
@@ -203,7 +203,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function clearCache()
+    private function clearCache(): void
     {
         static $functions = [
             'apc_clear_cache',
@@ -223,7 +223,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function initBuildRuntime()
+    private function initBuildRuntime(): void
     {
         $this->closeBuildRuntime();
         $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
@@ -249,7 +249,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function beginBuildRuntime(array $changedFiles)
+    private function beginBuildRuntime(array $changedFiles): void
     {
         $this->beginTime = microtime(true);
         $result = null;
@@ -258,9 +258,10 @@ class HotUpdateProcess extends BaseProcess
             'changedFilesFile'  => $this->changedFilesFile,
             'result'            => &$result,
         ]);
+        // @phpstan-ignore-next-line
         if ($result)
         {
-            return $result;
+            return;
         }
         $this->building = true;
         try
@@ -319,7 +320,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function closeBuildRuntime()
+    private function closeBuildRuntime(): void
     {
         $closePipes = function (?array $buildRuntimePipes) {
             if (null !== $buildRuntimePipes)
@@ -357,7 +358,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    public function buildRuntimeTimer()
+    public function buildRuntimeTimer(): void
     {
         if (!$this->buildRuntimeHandler)
         {

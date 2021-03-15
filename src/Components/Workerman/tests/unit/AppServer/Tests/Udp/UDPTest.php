@@ -12,7 +12,7 @@ class UDPTest extends BaseTest
     /**
      * @testdox test
      */
-    public function test()
+    public function test(): void
     {
         $this->go(function () {
             $fp = stream_socket_client($this->host);
@@ -32,14 +32,12 @@ class UDPTest extends BaseTest
         });
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $this->go(function () {
             $fp = stream_socket_client($this->host);
             $this->assertIsResource($fp);
             stream_set_timeout($fp, 3);
-            $time = time();
-            $format = 'Y-m-d H:i:s';
             $this->assertNotFalse(fwrite($fp, json_encode([
                 'action'    => 'gg',
             ])));

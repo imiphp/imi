@@ -25,7 +25,7 @@ class HandShake extends HttpController
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
         // 手动握手处理
 

@@ -22,9 +22,9 @@ class ValidatorAnnotationTest extends BaseTest
      */
     private $tester;
 
-    private array $data;
+    private array $data = [];
 
-    public function testValidatorAnnotation()
+    public function testValidatorAnnotation(): void
     {
         $this->tester = new TestValidator($this->data);
         $this->success();
@@ -42,7 +42,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->optional();
     }
 
-    public function testAutoConstructValidator()
+    public function testAutoConstructValidator(): void
     {
         $this->initData();
         $test = BeanFactory::newInstance(TestAutoConstructValidator::class, $this->data);
@@ -69,7 +69,7 @@ class ValidatorAnnotationTest extends BaseTest
         }
     }
 
-    public function testMethodAutoValidate()
+    public function testMethodAutoValidate(): void
     {
         $this->initData();
         $test = BeanFactory::newInstance(TestAutoConstructValidator::class, $this->data);
@@ -84,7 +84,7 @@ class ValidatorAnnotationTest extends BaseTest
         }
     }
 
-    private function initData()
+    private function initData(): void
     {
         $this->data = [
             'compare'       => -1,
@@ -102,21 +102,21 @@ class ValidatorAnnotationTest extends BaseTest
         ];
     }
 
-    private function success()
+    private function success(): void
     {
         $this->initData();
         $result = $this->tester->validate();
         $this->assertTrue($result, $this->tester->getMessage() ?: '');
     }
 
-    private function compareFail()
+    private function compareFail(): void
     {
         $this->initData();
         $this->data['compare'] = 1;
         $this->assertFalse($this->tester->validate());
     }
 
-    private function decimalFail()
+    private function decimalFail(): void
     {
         $this->initData();
         $this->data['decimal'] = 1.222;
@@ -129,14 +129,14 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertFalse($this->tester->validate());
     }
 
-    private function enumFail()
+    private function enumFail(): void
     {
         $this->initData();
         $this->data['enum'] = 100;
         $this->assertFalse($this->tester->validate());
     }
 
-    private function inFail()
+    private function inFail(): void
     {
         $this->initData();
         $this->data['in'] = 100;
@@ -144,7 +144,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertEquals('100 不在列表内', $this->tester->getMessage());
     }
 
-    private function intFail()
+    private function intFail(): void
     {
         $this->initData();
         $this->data['int'] = -1;
@@ -156,7 +156,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertEquals('a 不符合大于等于0且小于等于100', $this->tester->getMessage());
     }
 
-    private function requiredFail()
+    private function requiredFail(): void
     {
         $this->initData();
         unset($this->data['required']);
@@ -164,7 +164,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertEquals('required为必须参数', $this->tester->getMessage());
     }
 
-    private function numberFail()
+    private function numberFail(): void
     {
         $this->initData();
         $this->data['number'] = 1.234;
@@ -176,7 +176,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertEquals('数值必须大于等于0.01，小于等于999.99，小数点最多保留2位小数，当前值为0', $this->tester->getMessage());
     }
 
-    private function textFail()
+    private function textFail(): void
     {
         $this->initData();
         $this->data['text'] = '';
@@ -188,7 +188,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertEquals('text参数长度必须>=6 && <=12', $this->tester->getMessage());
     }
 
-    private function textCharFail()
+    private function textCharFail(): void
     {
         $this->initData();
 
@@ -204,21 +204,21 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertEquals('chars参数长度必须>=6 && <=12', $this->tester->getMessage());
     }
 
-    private function validateValueFail()
+    private function validateValueFail(): void
     {
         $this->initData();
         $this->data['validateValue'] = '1';
         $this->assertFalse($this->tester->validate());
     }
 
-    private function regexFail()
+    private function regexFail(): void
     {
         $this->initData();
         $this->data['regex'] = 'a1';
         $this->assertFalse($this->tester->validate());
     }
 
-    private function optional()
+    private function optional(): void
     {
         $this->initData();
         $this->data['optional'] = -1;
@@ -228,7 +228,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertTrue($this->tester->validate());
     }
 
-    public function testScene()
+    public function testScene(): void
     {
         $data = [
             'decimal' => 1.1,
@@ -284,7 +284,7 @@ class ValidatorAnnotationTest extends BaseTest
         $this->assertFalse($validator->validate());
     }
 
-    public function testSceneWithAnnotation()
+    public function testSceneWithAnnotation(): void
     {
         $data = [
             'decimal' => 1.1,

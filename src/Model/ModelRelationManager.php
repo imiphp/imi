@@ -34,7 +34,7 @@ class ModelRelationManager
      *
      * @return void
      */
-    public static function initModel($model)
+    public static function initModel($model): void
     {
         foreach (AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
@@ -67,7 +67,7 @@ class ModelRelationManager
      *
      * @return void
      */
-    public static function queryModelRelations($model, string ...$names)
+    public static function queryModelRelations($model, string ...$names): void
     {
         $relations = AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class);
         foreach ($names as $name)
@@ -86,7 +86,7 @@ class ModelRelationManager
      *
      * @return void
      */
-    public static function insertModel($model)
+    public static function insertModel($model): void
     {
         foreach (AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
@@ -106,7 +106,7 @@ class ModelRelationManager
      *
      * @return void
      */
-    public static function updateModel($model)
+    public static function updateModel($model): void
     {
         foreach (AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
@@ -126,7 +126,7 @@ class ModelRelationManager
      *
      * @return void
      */
-    public static function deleteModel($model)
+    public static function deleteModel($model): void
     {
         foreach (AnnotationManager::getPropertiesAnnotations(BeanFactory::getObjectClass($model), RelationBase::class) as $propertyName => $annotations)
         {
@@ -161,6 +161,7 @@ class ModelRelationManager
             foreach ($relations as $annotations)
             {
                 $annotation = $annotations[0];
+                // @phpstan-ignore-next-line
                 if (($annotation instanceof ManyToMany || $annotation instanceof PolymorphicManyToMany) && $annotation->rightMany)
                 {
                     $result[] = $annotation->rightMany;

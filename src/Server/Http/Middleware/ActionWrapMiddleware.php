@@ -35,7 +35,7 @@ class ActionWrapMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 获取路由结果
-        /** @var \Imi\Server\Http\Route\RouteResult $result */
+        /** @var \Imi\Server\Http\Route\RouteResult|null $result */
         $result = RequestContext::get('routeResult');
         if (null === $result)
         {

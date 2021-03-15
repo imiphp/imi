@@ -23,7 +23,7 @@ class Imi
      *
      * @return void
      */
-    public static function setProcessName(string $type, array $data = [])
+    public static function setProcessName(string $type, array $data = []): void
     {
         if ('Darwin' === \PHP_OS)
         {
@@ -34,8 +34,7 @@ class Imi
     }
 
     /**
-     * 获取 imi 进程名
-     * 返回false则失败.
+     * 获取 imi 进程名.
      *
      * @param string $type
      * @param array  $data
@@ -54,7 +53,7 @@ class Imi
         ];
         if (!isset($defaults[$type]))
         {
-            return false;
+            return '';
         }
         $rule = Config::get('@app.process.' . $type, $defaults[$type]);
         $data['namespace'] = App::getNamespace();
@@ -73,13 +72,13 @@ class Imi
             case 'process':
                 if (!isset($data['processName']))
                 {
-                    return false;
+                    return '';
                 }
                 break;
             case 'processPool':
                 if (!isset($data['processPoolName'], $data['workerId']))
                 {
-                    return false;
+                    return '';
                 }
                 break;
         }
@@ -101,7 +100,7 @@ class Imi
      *
      * @return void
      */
-    public static function stopServer()
+    public static function stopServer(): void
     {
         $fileName = UtilImi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
         if (!is_file($fileName))
@@ -124,7 +123,7 @@ class Imi
      *
      * @return void
      */
-    public static function reloadServer()
+    public static function reloadServer(): void
     {
         $fileName = UtilImi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
         if (!is_file($fileName))

@@ -8,6 +8,7 @@ use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
+use mysqli_result;
 use mysqli_stmt;
 
 /**
@@ -62,7 +63,7 @@ class Statement extends BaseStatement implements IStatement
      */
     protected ?array $sqlParamsMap = null;
 
-    public function __construct(IDb $db, ?mysqli_stmt $statement, $result, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IDb $db, ?mysqli_stmt $statement, ?mysqli_result $result, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -166,7 +167,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -309,12 +310,12 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
         return $this->result->fetch_object();
     }
@@ -369,13 +370,13 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return string
      */
-    public function lastInsertId(string $name = null)
+    public function lastInsertId(?string $name = null): string
     {
-        return $this->statement->insert_id ?? $this->db->lastInsertId();
+        return (string) ($this->statement->insert_id ?? $this->db->lastInsertId());
     }
 
     /**
@@ -398,26 +399,41 @@ class Statement extends BaseStatement implements IStatement
         return $this->statement;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         throw new DbException('Not support current()');
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         throw new DbException('Not support key()');
     }
 
-    public function next()
+    /**
+     * @return void
+     */
+    public function next(): void
     {
         throw new DbException('Not support next()');
     }
 
-    public function rewind()
+    /**
+     * @return void
+     */
+    public function rewind(): void
     {
         throw new DbException('Not support rewind()');
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         throw new DbException('Not support valid()');

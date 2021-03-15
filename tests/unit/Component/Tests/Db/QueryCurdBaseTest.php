@@ -28,7 +28,7 @@ abstract class QueryCurdBaseTest extends BaseTest
      */
     protected $expectedTestWhereExSql;
 
-    public function testSelectGet()
+    public function testSelectGet(): void
     {
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->where('id', '=', 1)->select()->get();
@@ -40,7 +40,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
-    public function testSelectGetArray()
+    public function testSelectGetArray(): void
     {
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->whereIn('id', [1, 2])->select();
@@ -62,21 +62,21 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
-    public function testSelectGetColumn()
+    public function testSelectGetColumn(): void
     {
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->whereIn('id', [1, 2])->select()->getColumn();
         Assert::assertEquals(['1', '2'], $record);
     }
 
-    public function testSelectGetScalar()
+    public function testSelectGetScalar(): void
     {
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->where('id', '=', 2)->field('id')->select()->getScalar();
         Assert::assertEquals(2, $record);
     }
 
-    public function testPaginate()
+    public function testPaginate(): void
     {
         $expectedData = [
             'list'  => [
@@ -105,7 +105,7 @@ abstract class QueryCurdBaseTest extends BaseTest
      *
      * @return void
      */
-    public function testBug58()
+    public function testBug58(): void
     {
         $expectedData = [
             'list'  => [
@@ -129,7 +129,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertEquals($expectedData, $result->toArray());
     }
 
-    public function testPaginateNoTotal()
+    public function testPaginateNoTotal(): void
     {
         $expectedData = [
             'list'  => [
@@ -172,7 +172,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         $this->assertNull($result->getPageCount());
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $data = [
             'title'     => 'title-insert',
@@ -208,7 +208,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $data = [
             'title'     => 'title-insert',
@@ -246,7 +246,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $data = [
             'title'     => 'title-insert',
@@ -264,7 +264,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         Assert::assertNull($record);
     }
 
-    public function testWhereEx()
+    public function testWhereEx(): void
     {
         $query = Db::query($this->poolName);
         $result = $query->from('tb_article')->whereEx([
@@ -287,7 +287,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         Assert::assertEquals('select * from `tb_article`', Db::query($this->poolName)->from('tb_article')->whereEx([])->select()->getSql());
     }
 
-    public function testLock()
+    public function testLock(): void
     {
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();

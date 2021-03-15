@@ -86,10 +86,12 @@ class FacadeGenerate extends BaseCommand
                 $returnType = $method->getReturnType();
                 if ($returnType->allowsNull())
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName() . '|null';
                 }
                 else
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName();
                 }
             }
@@ -105,6 +107,7 @@ class FacadeGenerate extends BaseCommand
                 $paramType = $param->getType();
                 if ($paramType)
                 {
+                    // @phpstan-ignore-next-line
                     $paramType = $paramType->getName();
                 }
                 if (null !== $paramType && $param->allowsNull())
@@ -134,6 +137,7 @@ class FacadeGenerate extends BaseCommand
             $params = implode(', ', $params);
             $methods[] = '@method static ' . $returnType . ' ' . $methodName . '(' . $params . ')';
         }
+        // @phpstan-ignore-next-line
         $content = (function () use ($namespace, $facadeAnnotation, $methods, $shortClassName): string {
             ob_start();
             include __DIR__ . '/template.tpl';

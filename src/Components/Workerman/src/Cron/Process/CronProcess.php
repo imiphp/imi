@@ -68,12 +68,12 @@ class CronProcess extends BaseProcess
      */
     private Worker $unixWorker;
 
-    public function run(Worker $worker)
+    public function run(Worker $worker): void
     {
         $this->startSocketServer();
     }
 
-    protected function startSocketServer()
+    protected function startSocketServer(): void
     {
         $socketFile = $this->cronManager->getSocketFile();
         if (is_file($socketFile))
@@ -87,7 +87,13 @@ class CronProcess extends BaseProcess
         $this->startSchedule();
     }
 
-    public function onUnixMessage(ConnectionInterface $connection, $data)
+    /**
+     * @param \Workerman\Connection\ConnectionInterface $connection
+     * @param mixed                                     $data
+     *
+     * @return void
+     */
+    public function onUnixMessage(ConnectionInterface $connection, $data): void
     {
         $result = unserialize($data);
         if ($result instanceof Result)
@@ -114,7 +120,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    protected function startSchedule()
+    protected function startSchedule(): void
     {
         Timer::tick(1000, function () {
             $scheduler = $this->scheduler;
@@ -130,7 +136,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    protected function stop()
+    protected function stop(): void
     {
         $this->running = false;
         $this->scheduler->close();

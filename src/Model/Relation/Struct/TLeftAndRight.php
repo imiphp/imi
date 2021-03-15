@@ -43,18 +43,23 @@ trait TLeftAndRight
      *
      * @return void
      */
-    public function initLeftAndRight(string $className, string $propertyName, RelationBase $annotation)
+    public function initLeftAndRight(string $className, string $propertyName, RelationBase $annotation): void
     {
+        // @phpstan-ignore-next-line
         if (class_exists($annotation->model))
         {
+            // @phpstan-ignore-next-line
             $this->rightModel = $annotation->model;
         }
         else
         {
+            // @phpstan-ignore-next-line
             $this->rightModel = Imi::getClassNamespace($className) . '\\' . $annotation->model;
         }
 
+        /** @var JoinFrom|null $joinFrom */
         $joinFrom = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinFrom::class)[0] ?? null;
+        /** @var JoinTo|null $joinTo */
         $joinTo = AnnotationManager::getPropertyAnnotations($className, $propertyName, JoinTo::class)[0] ?? null;
 
         if ($joinFrom)

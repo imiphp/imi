@@ -20,9 +20,9 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function getServer()
+    public function getServer(): array
     {
         $result = [];
         $server = Server::getServer();
@@ -38,9 +38,9 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function sendMessage()
+    public function sendMessage(): array
     {
         $result = [];
         $result['sendMessageAll'] = Server::sendMessage('test');
@@ -56,9 +56,9 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function send($fds, $flag)
+    public function send(array $fds, string $flag): array
     {
         $data = [
             'data'  => 'test',
@@ -83,15 +83,16 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function sendToGroup()
+    public function sendToGroup(): array
     {
         $data = [
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
         $result = [
+            // @phpstan-ignore-next-line
             'groupFdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
         ];
 
@@ -107,9 +108,9 @@ class ServerUtilController extends HttpController
      * @param int    $fd
      * @param string $flag
      *
-     * @return void
+     * @return array
      */
-    public function close(int $fd, string $flag)
+    public function close(int $fd, string $flag): array
     {
         return [
             'fd'   => Server::close($fd),

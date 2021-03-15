@@ -141,7 +141,7 @@ class Lock
      */
     public static function unlock(?string $id = null): bool
     {
-        return static::getInstance($id)->unlock($id);
+        return static::getInstance($id)->unlock();
     }
 
     /**

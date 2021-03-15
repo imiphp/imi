@@ -19,8 +19,13 @@ class Worker
         static::$workerHandler = $workerHandler;
     }
 
-    public static function getWorkerHandler(): ?IWorker
+    public static function getWorkerHandler(): IWorker
     {
+        if (!static::$workerHandler)
+        {
+            throw new \RuntimeException('WorkerHandler is null');
+        }
+
         return static::$workerHandler;
     }
 
@@ -50,7 +55,7 @@ class Worker
      *
      * @return void
      */
-    public static function inited()
+    public static function inited(): void
     {
         if (static::$workerHandler)
         {

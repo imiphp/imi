@@ -73,7 +73,7 @@ class HotUpdateProcess extends BaseProcess
     /**
      * buildRuntime resource.
      *
-     * @var \resource|null
+     * @var resource|bool|null
      */
     private $buildRuntimeHandler = null;
 
@@ -105,7 +105,7 @@ class HotUpdateProcess extends BaseProcess
      */
     private bool $building = false;
 
-    public function run(Worker $worker)
+    public function run(Worker $worker): void
     {
         if (!$this->status)
         {
@@ -165,7 +165,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function clearCache()
+    private function clearCache(): void
     {
         static $functions = [
             'apc_clear_cache',
@@ -185,7 +185,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function initBuildRuntime()
+    private function initBuildRuntime(): void
     {
         $this->closeBuildRuntime();
         $cmd = Imi::getImiCmd('imi/buildRuntime', [], [
@@ -211,7 +211,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function beginBuildRuntime(array $changedFiles)
+    private function beginBuildRuntime(array $changedFiles): void
     {
         $this->beginTime = microtime(true);
         $result = null;
@@ -220,9 +220,10 @@ class HotUpdateProcess extends BaseProcess
             'changedFilesFile'  => $this->changedFilesFile,
             'result'            => &$result,
         ]);
+        // @phpstan-ignore-next-line
         if ($result)
         {
-            return $result;
+            return;
         }
         $this->building = true;
         try
@@ -281,7 +282,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    private function closeBuildRuntime()
+    private function closeBuildRuntime(): void
     {
         $closePipes = function (?array $buildRuntimePipes) {
             if (null !== $buildRuntimePipes)
@@ -319,7 +320,7 @@ class HotUpdateProcess extends BaseProcess
      *
      * @return void
      */
-    public function buildRuntimeTimer()
+    public function buildRuntimeTimer(): void
     {
         if (!$this->buildRuntimeHandler)
         {

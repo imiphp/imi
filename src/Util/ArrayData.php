@@ -65,10 +65,7 @@ class ArrayData implements \ArrayAccess, \Countable
         $data = &$this->__data;
         foreach ($name as $val)
         {
-            if (!isset($data[$val]))
-            {
-                $data[$val] = [];
-            }
+            $data[$val] ??= [];
             $data = &$data[$val];
         }
         $data[$last] = $value;
@@ -180,8 +177,10 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 清空数据.
+     *
+     * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->__data = [];
     }
@@ -218,27 +217,52 @@ class ArrayData implements \ArrayAccess, \Countable
         return isset($this->__data[$name]);
     }
 
+    /**
+     * @param mixed $key
+     *
+     * @return mixed
+     */
     public function &__get($key)
     {
         return $this->get($key);
     }
 
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function __set($key, $value)
     {
         $this->set($key, $value);
     }
 
-    public function __isset($key)
+    /**
+     * @param mixed $key
+     *
+     * @return bool
+     */
+    public function __isset($key): bool
     {
         return null !== $this->get($key, null);
     }
 
+    /**
+     * @param mixed $key
+     */
     public function __unset($key)
     {
         $this->remove($key);
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value): void
     {
         if (null === $offset)
         {
@@ -250,22 +274,37 @@ class ArrayData implements \ArrayAccess, \Countable
         }
     }
 
-    public function offsetExists($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
     {
         return null !== $this->get($offset, null);
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         return $this->get($offset);
     }
 
-    public function &getRawData()
+    public function &getRawData(): array
     {
         return $this->__data;
     }

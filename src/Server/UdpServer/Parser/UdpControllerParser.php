@@ -15,7 +15,10 @@ class UdpControllerParser extends BaseParser
 {
     use TServerAnnotationParser;
 
-    protected string $controllerAnnotationClass = UdpController::class;
+    public function __construct()
+    {
+        $this->controllerAnnotationClass = UdpController::class;
+    }
 
     /**
      * 处理方法.
@@ -27,7 +30,7 @@ class UdpControllerParser extends BaseParser
      *
      * @return void
      */
-    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
+    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
     }
 }

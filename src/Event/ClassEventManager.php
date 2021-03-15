@@ -20,7 +20,7 @@ class ClassEventManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -35,7 +35,7 @@ class ClassEventManager
      *
      * @return void
      */
-    public static function add(string $className, string $eventName, string $listenerClass, int $priority)
+    public static function add(string $className, string $eventName, string $listenerClass, int $priority): void
     {
         self::$map[$className][$eventName][$listenerClass] = [
             'priority'  => $priority,

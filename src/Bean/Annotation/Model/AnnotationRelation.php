@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Bean\Annotation\Model;
 
-use Imi\Log\Log;
-
 class AnnotationRelation
 {
     /**
@@ -39,14 +37,14 @@ class AnnotationRelation
     /**
      * 所有关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\IAnnotationRelation[]
+     * @var array
      */
     private array $allRelations = [];
 
     /**
      * Get 类关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\ClassAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\ClassAnnotationRelation[][]
      */
     public function getClassRelations(): array
     {
@@ -60,7 +58,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function addClassRelation(ClassAnnotationRelation $relation)
+    public function addClassRelation(ClassAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
@@ -78,7 +76,7 @@ class AnnotationRelation
     /**
      * Get 方法关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\MethodAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\MethodAnnotationRelation[][]
      */
     public function getMethodRelations(): array
     {
@@ -92,7 +90,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function addMethodRelation(MethodAnnotationRelation $relation)
+    public function addMethodRelation(MethodAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
@@ -110,7 +108,7 @@ class AnnotationRelation
     /**
      * Get 属性关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\PropertyAnnotationRelation[][]
      */
     public function getpropertyRelations(): array
     {
@@ -124,7 +122,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function addPropertyRelation(PropertyAnnotationRelation $relation)
+    public function addPropertyRelation(PropertyAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
@@ -142,7 +140,7 @@ class AnnotationRelation
     /**
      * Get 常量关联列表.
      *
-     * @return \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[]
+     * @return \Imi\Bean\Annotation\Model\ConstantAnnotationRelation[][]
      */
     public function getConstantRelations(): array
     {
@@ -156,7 +154,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function addConstantRelation(ConstantAnnotationRelation $relation)
+    public function addConstantRelation(ConstantAnnotationRelation $relation): void
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
@@ -185,15 +183,12 @@ class AnnotationRelation
         if (null === $where)
         {
             $allRelations = &$this->allRelations;
-            if (!isset($allRelations[$className]))
-            {
-                $allRelations[$className] = array_merge(
-                    $this->classRelations[$className] ?? [],
-                    $this->methodRelations[$className] ?? [],
-                    $this->propertyRelations[$className] ?? [],
-                    $this->constantRelations[$className] ?? []
-                );
-            }
+            $allRelations[$className] ??= array_merge(
+                $this->classRelations[$className] ?? [],
+                $this->methodRelations[$className] ?? [],
+                $this->propertyRelations[$className] ?? [],
+                $this->constantRelations[$className] ?? []
+            );
 
             return $allRelations[$className];
         }
@@ -209,7 +204,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeClassAnnotationRelation(string $annotationClassName, string $className)
+    public function removeClassAnnotationRelation(string $annotationClassName, string $className): void
     {
         $classRelations = &$this->classRelations;
         if (isset($classRelations[$annotationClassName]))
@@ -236,7 +231,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeMethodAnnotationRelation(string $annotationClassName, string $className, string $methodName)
+    public function removeMethodAnnotationRelation(string $annotationClassName, string $className, string $methodName): void
     {
         $methodRelations = &$this->methodRelations;
         if (isset($methodRelations[$annotationClassName]))
@@ -263,7 +258,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removePropertyAnnotationRelation(string $annotationClassName, string $className, string $propertyName)
+    public function removePropertyAnnotationRelation(string $annotationClassName, string $className, string $propertyName): void
     {
         $propertyRelations = &$this->propertyRelations;
         if (isset($propertyRelations[$annotationClassName]))
@@ -290,7 +285,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeConstantAnnotationRelation(string $annotationClassName, string $className, string $constantName)
+    public function removeConstantAnnotationRelation(string $annotationClassName, string $className, string $constantName): void
     {
         $constantRelations = &$this->constantRelations;
         if (isset($constantRelations[$annotationClassName]))
@@ -315,7 +310,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeClassRelation(string $className)
+    public function removeClassRelation(string $className): void
     {
         $classRelations = &$this->classRelations;
         foreach ($classRelations as $annotationClass => &$list)
@@ -345,7 +340,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeMethodRelation(string $className, string $methodName)
+    public function removeMethodRelation(string $className, string $methodName): void
     {
         $methodRelations = &$this->methodRelations;
         foreach ($methodRelations as $annotationClass => &$list)
@@ -375,7 +370,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removePropertyRelation(string $className, string $propertyName)
+    public function removePropertyRelation(string $className, string $propertyName): void
     {
         $propertyRelations = &$this->propertyRelations;
         foreach ($propertyRelations as $annotationClass => &$list)
@@ -405,7 +400,7 @@ class AnnotationRelation
      *
      * @return void
      */
-    public function removeConstantRelation(string $className, string $constantName)
+    public function removeConstantRelation(string $className, string $constantName): void
     {
         $constantRelations = &$this->constantRelations;
         foreach ($constantRelations as $annotationClass => &$list)

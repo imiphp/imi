@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Task;
 
 use Imi\Swoole\Task\Interfaces\ITaskHandler;
-use Imi\Swoole\Task\Interfaces\ITaskParam;
 
 class TaskInfo
 {
@@ -19,11 +18,11 @@ class TaskInfo
     /**
      * 任务参数.
      *
-     * @var \Imi\Swoole\Task\Interfaces\ITaskParam
+     * @var TaskParam
      */
-    private ITaskParam $param;
+    private TaskParam $param;
 
-    public function __construct(ITaskHandler $taskHandler, ITaskParam $param)
+    public function __construct(ITaskHandler $taskHandler, TaskParam $param)
     {
         $this->taskHandler = $taskHandler;
         $this->param = $param;
@@ -42,9 +41,9 @@ class TaskInfo
     /**
      * Get the value of param.
      *
-     * @return \Imi\Swoole\Task\Interfaces\ITaskParam
+     * @return TaskParam
      */
-    public function getParam(): ITaskParam
+    public function getParam(): TaskParam
     {
         return $this->param;
     }

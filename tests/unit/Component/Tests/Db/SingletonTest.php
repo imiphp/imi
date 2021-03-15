@@ -11,7 +11,7 @@ class SingletonTest extends BaseTest
 {
     const CONNECTION_NAME = 'tradition';
 
-    public function testGetInstance()
+    public function testGetInstance(): void
     {
         $a = Db::getInstance(self::CONNECTION_NAME);
         $b = Db::getInstance(self::CONNECTION_NAME);
@@ -19,7 +19,7 @@ class SingletonTest extends BaseTest
         $this->assertEquals([1], $a->query('select 1')->fetch(\PDO::FETCH_NUM));
     }
 
-    public function testGetNewInstance()
+    public function testGetNewInstance(): void
     {
         $a = Db::getInstance(self::CONNECTION_NAME);
         $b = Db::getNewInstance(self::CONNECTION_NAME);

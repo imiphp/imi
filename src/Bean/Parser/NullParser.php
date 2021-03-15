@@ -19,7 +19,7 @@ class NullParser extends BaseParser
      *
      * @return void
      */
-    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
+    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
     }
 }

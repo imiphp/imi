@@ -95,6 +95,7 @@ class Scheduler implements IScheduler
     {
         $this->coPool = $coPool = new CoPool($this->poolCoCount, $this->poolQueueLength,
             // 定义任务匿名类，当然你也可以定义成普通类，传入完整类名
+            // @phpstan-ignore-next-line
             new class() implements ICoTask {
                 /**
                  * 执行任务
@@ -165,7 +166,7 @@ class Scheduler implements IScheduler
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->coPool->stop();
     }
@@ -173,7 +174,7 @@ class Scheduler implements IScheduler
     /**
      * 遍历可运行的任务列表.
      *
-     * @return \Imi\Cron\CronTask[]
+     * @return \Generator
      */
     public function schedule(): \Generator
     {
@@ -196,10 +197,7 @@ class Scheduler implements IScheduler
                     unset($runningTasks[$id]);
                 }
             }
-            if (!isset($nextTickTimeMap[$id]))
-            {
-                $nextTickTimeMap[$id] = $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
-            }
+            $nextTickTimeMap[$id] ??= $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
             if ($firstRun || $now >= $nextTickTimeMap[$id])
             {
@@ -223,7 +221,7 @@ class Scheduler implements IScheduler
      *
      * @return void
      */
-    public function runTask(CronTask $task)
+    public function runTask(CronTask $task): void
     {
         if (!$this->cronLock->lock($task))
         {
@@ -243,7 +241,7 @@ class Scheduler implements IScheduler
      *
      * @return void
      */
-    public function completeTask(Result $result)
+    public function completeTask(Result $result): void
     {
         $runningTasks = &$this->runningTasks;
         $resultId = $result->id;

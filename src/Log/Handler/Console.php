@@ -26,7 +26,7 @@ class Console extends Base
      *
      * @return void
      */
-    protected function __save(array $records)
+    protected function __save(array $records): void
     {
         $output = new ConsoleOutput();
         $length = $this->length;

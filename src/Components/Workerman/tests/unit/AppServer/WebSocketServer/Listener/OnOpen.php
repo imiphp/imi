@@ -21,7 +21,7 @@ class OnOpen implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         ConnectContext::set('requestUri', (string) ConnectContext::get('uri'));
     }

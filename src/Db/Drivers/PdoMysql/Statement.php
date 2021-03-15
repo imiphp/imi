@@ -142,7 +142,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -253,12 +253,12 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
         return $this->statement->fetchObject($className, $ctorArgs);
     }
@@ -301,13 +301,13 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return string
      */
-    public function lastInsertId(string $name = null)
+    public function lastInsertId(?string $name = null): string
     {
-        return $this->lastInsertId;
+        return (string) $this->lastInsertId;
     }
 
     /**
@@ -330,26 +330,45 @@ class Statement extends BaseStatement implements IStatement
         return $this->statement;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
+        // @phpstan-ignore-next-line
         return current($this->statement);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
+        // @phpstan-ignore-next-line
         return key($this->statement);
     }
 
-    public function next()
+    /**
+     * @return void
+     */
+    public function next(): void
     {
-        return next($this->statement);
+        // @phpstan-ignore-next-line
+        next($this->statement);
     }
 
-    public function rewind()
+    /**
+     * @return void
+     */
+    public function rewind(): void
     {
-        return reset($this->statement);
+        // @phpstan-ignore-next-line
+        reset($this->statement);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return false !== $this->current();
@@ -385,7 +404,7 @@ class Statement extends BaseStatement implements IStatement
      *
      * @return void
      */
-    private function updateLastInsertId()
+    private function updateLastInsertId(): void
     {
         $queryString = $this->statement->queryString;
         if (Text::startwith($queryString, 'insert ', false) || Text::startwith($queryString, 'replace ', false))

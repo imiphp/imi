@@ -58,7 +58,7 @@ class CronProcess extends BaseProcess
      */
     protected bool $running = false;
 
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         \Imi\Swoole\Util\Process::signal(\SIGTERM, function (int $signo) {
             $this->stop();
@@ -66,7 +66,7 @@ class CronProcess extends BaseProcess
         $this->startSocketServer();
     }
 
-    protected function startSocketServer()
+    protected function startSocketServer(): void
     {
         imigo(function () {
             $socketFile = $this->cronManager->getSocketFile();
@@ -77,7 +77,7 @@ class CronProcess extends BaseProcess
             $this->socket = $socket = stream_socket_server('unix://' . $socketFile, $errno, $errstr);
             if (false === $socket)
             {
-                throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %', $errno, $errstr, $socketFile));
+                throw new \RuntimeException(sprintf('Create unix socket server failed, errno: %s, errstr: %s, file: %s', $errno, $errstr, $socketFile));
             }
             $this->running = true;
             $running = &$this->running;
@@ -99,6 +99,7 @@ class CronProcess extends BaseProcess
                     });
                 }
             }
+            // @phpstan-ignore-next-line
             fclose($socket);
         });
     }
@@ -110,7 +111,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    protected function parseConn($conn)
+    protected function parseConn($conn): void
     {
         $running = &$this->running;
         $scheduler = $this->scheduler;
@@ -161,7 +162,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    protected function startSchedule()
+    protected function startSchedule(): void
     {
         imigo(function () {
             $scheduler = $this->scheduler;
@@ -189,7 +190,7 @@ class CronProcess extends BaseProcess
      *
      * @return void
      */
-    protected function stop()
+    protected function stop(): void
     {
         $this->running = false;
         $this->scheduler->close();

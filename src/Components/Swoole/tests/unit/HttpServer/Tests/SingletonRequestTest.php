@@ -16,7 +16,7 @@ class SingletonRequestTest extends BaseTest
      *
      * @return void
      */
-    public function testGetParams()
+    public function testGetParams(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -30,7 +30,7 @@ class SingletonRequestTest extends BaseTest
      *
      * @return void
      */
-    public function testPostParams()
+    public function testPostParams(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -46,7 +46,7 @@ class SingletonRequestTest extends BaseTest
      *
      * @return void
      */
-    public function testCookieParams()
+    public function testCookieParams(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -66,7 +66,7 @@ class SingletonRequestTest extends BaseTest
      *
      * @return void
      */
-    public function testRequestParams()
+    public function testRequestParams(): void
     {
         $http = new HttpRequest();
         $time1 = (string) microtime(true);
@@ -86,7 +86,7 @@ class SingletonRequestTest extends BaseTest
      *
      * @return void
      */
-    public function testRequestHeaders()
+    public function testRequestHeaders(): void
     {
         $http = new HttpRequest();
         $time = (string) time();

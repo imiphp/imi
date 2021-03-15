@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Group\Exception;
+namespace Imi\Server\Group\Exception;
 
 class MethodNotFoundException extends \Exception
 {

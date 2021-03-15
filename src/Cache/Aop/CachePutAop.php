@@ -43,6 +43,7 @@ class CachePutAop
         $class = get_parent_class($joinPoint->getTarget());
 
         // CachePut 注解列表
+        /** @var CachePut[] $cachePuts */
         $cachePuts = AnnotationManager::getMethodAnnotations($class, $method, CachePut::class);
 
         // 方法参数

@@ -25,7 +25,7 @@ class OnServerCreateAfter implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $servers = ServerManager::getServers();
         $server = reset($servers);

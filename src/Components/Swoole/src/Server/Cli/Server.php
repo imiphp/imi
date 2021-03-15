@@ -33,6 +33,8 @@ class Server extends BaseCommand
      * @Option(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * @Option(name="daemon", shortcut="d", type=ArgType::STRING, required=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件")
      *
+     * @param string|bool $d
+     *
      * @return void
      */
     public function start(?string $name, ?int $workerNum, $d): void
@@ -121,8 +123,7 @@ class Server extends BaseCommand
             $useTime = microtime(true) - $time;
             $this->output->writeln("<info>Runtime build complete! {$useTime}s</info>");
         }
-        $result = SwooleImiUtil::reloadServer();
-        $this->output->writeln($result['cmd']);
+        SwooleImiUtil::reloadServer();
     }
 
     /**
@@ -133,7 +134,7 @@ class Server extends BaseCommand
     public function outImi(): void
     {
         $this->output->write('<comment>' . <<<STR
- _               _ 
+ _               _
 (_)  _ __ ___   (_)
 | | | '_ ` _ \  | |
 | | | | | | | | | |

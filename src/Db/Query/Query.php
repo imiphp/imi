@@ -97,7 +97,7 @@ class Query implements IQuery
     /**
      * 查询器别名集合.
      *
-     * @var \Imi\Db\Query\Interfaces\IQuery[]
+     * @var static[]
      */
     protected static array $aliasMap = [];
 
@@ -155,7 +155,7 @@ class Query implements IQuery
     /**
      * 设置操作记录.
      *
-     * @param QueryOption $options
+     * @param QueryOption $option
      *
      * @return static
      */
@@ -260,7 +260,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function field(string ...$fields): self
+    public function field(...$fields): self
     {
         $option = $this->option;
         if (!isset($fields[1]) && \is_array($fields[0]))
@@ -855,7 +855,7 @@ class Query implements IQuery
     /**
      * 设置查询几条记录.
      *
-     * @param int|null $offset
+     * @param int|null $limit
      *
      * @return static
      */
@@ -1307,12 +1307,9 @@ class Query implements IQuery
                 return new Result(false);
             }
             $stmt = $db->prepare($sql);
-            if ($stmt)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-                $stmt->execute($binds);
-            }
+            $binds = $this->binds;
+            $this->binds = [];
+            $stmt->execute($binds);
 
             return new Result($stmt, $this->modelClass);
         }

@@ -61,11 +61,11 @@ class Lockable extends Base
      * 一般用于防止缓存击穿，获得锁后再做一次检测
      * 如果为{"$this", "methodName"}格式，$this将会被替换为当前类，方法必须为 public 或 protected.
      *
-     * @var callable
+     * @var callable|null
      */
-    public $afterLock;
+    public $afterLock = null;
 
-    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, int $waitTimeout = 3000, int $lockExpire = 3000, array $options = [], $afterLock = null)
+    public function __construct(?array $__data = null, ?string $id = null, ?string $type = null, int $waitTimeout = 3000, int $lockExpire = 3000, array $options = [], ?callable $afterLock = null)
     {
         parent::__construct(...\func_get_args());
     }

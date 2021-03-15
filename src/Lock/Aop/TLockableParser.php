@@ -42,14 +42,8 @@ trait TLockableParser
 
         // options
         $options = $lockable->options;
-        if (!isset($options['waitTimeout']))
-        {
-            $options['waitTimeout'] = $lockable->waitTimeout;
-        }
-        if (!isset($options['lockExpire']))
-        {
-            $options['lockExpire'] = $lockable->lockExpire;
-        }
+        $options['waitTimeout'] ??= $lockable->waitTimeout;
+        $options['lockExpire'] ??= $lockable->lockExpire;
 
         // Lock 对象
         $locker = App::getBean($type, $this->getLockerId($class, $method, $args, $lockable), $options);

@@ -69,7 +69,16 @@ class PolymorphicToMany extends RelationBase
      */
     public string $middle = '';
 
-    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', string $middle = '')
+    /**
+     * 排序规则字符串.
+     *
+     * 例：age desc, id desc
+     *
+     * @var string|null
+     */
+    public ?string $order = null;
+
+    public function __construct(?array $__data = null, string $model = '', string $modelField = '', string $field = '', string $type = '', string $middle = '', ?string $order = null)
     {
         parent::__construct(...\func_get_args());
     }

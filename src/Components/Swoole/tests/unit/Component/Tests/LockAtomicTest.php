@@ -13,7 +13,7 @@ class LockAtomicTest extends BaseLockTest
 {
     protected string $lockId = 'atomic';
 
-    protected function check()
+    protected function check(): void
     {
     }
 }

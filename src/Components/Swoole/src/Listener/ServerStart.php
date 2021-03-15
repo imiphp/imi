@@ -26,7 +26,7 @@ class ServerStart implements IManagerStartEventListener
      *
      * @return void
      */
-    public function handle(ManagerStartEventParam $e)
+    public function handle(ManagerStartEventParam $e): void
     {
         Imi::setProcessName('master');
         Log::info('Server start');

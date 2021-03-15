@@ -14,7 +14,7 @@ class WSTest extends BaseTest
     /**
      * @testdox test
      */
-    public function test()
+    public function test(): void
     {
         $this->go(function () {
             $client = new Client($this->host, $this->host);
@@ -95,7 +95,7 @@ class WSTest extends BaseTest
         });
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $this->go(function () {
             $client = new Client($this->host, $this->host);
@@ -110,7 +110,7 @@ class WSTest extends BaseTest
         });
     }
 
-    public function testMatchHttpRoute()
+    public function testMatchHttpRoute(): void
     {
         $this->go(function () {
             $client = new Client($this->host, $this->host);

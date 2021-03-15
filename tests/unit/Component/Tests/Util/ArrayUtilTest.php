@@ -15,7 +15,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox remove
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $list = [];
         for ($i = 0; $i < 10; ++$i)
@@ -38,7 +38,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox removeKeepKey
      */
-    public function testRemoveKeepKey()
+    public function testRemoveKeepKey(): void
     {
         $list = [];
         for ($i = 0; $i < 10; ++$i)
@@ -57,7 +57,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox recursiveMerge
      */
-    public function testRecursiveMerge()
+    public function testRecursiveMerge(): void
     {
         $arr1 = [
             'a' => [
@@ -118,7 +118,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox columnToKey
      */
-    public function testColumnToKey()
+    public function testColumnToKey(): void
     {
         $list = [
             ['id' => 11, 'title' => 'aaa'],
@@ -142,7 +142,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox isAssoc
      */
-    public function testIsAssoc()
+    public function testIsAssoc(): void
     {
         $assocArr = [
             0   => 'a',
@@ -160,7 +160,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox random
      */
-    public function testRandom()
+    public function testRandom(): void
     {
         $arr = [
             'a' => 1,
@@ -179,7 +179,7 @@ class ArrayUtilTest extends BaseTest
     /**
      * @testdox toTreeAssoc
      */
-    public function testToTreeAssoc()
+    public function testToTreeAssoc(): void
     {
         $list = [
             ['id' => '1', 'parentId' => '0', 'name' => 'a'],

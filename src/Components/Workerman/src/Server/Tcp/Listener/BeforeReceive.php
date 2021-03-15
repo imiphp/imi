@@ -24,7 +24,7 @@ class BeforeReceive implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         ['fd' => $fd, 'data' => $data] = $e->getData();
         // 上下文创建

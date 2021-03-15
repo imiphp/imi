@@ -29,7 +29,7 @@ class Dispatcher
      */
     private array $finalMiddlewares = [];
 
-    public function dispatch(IPacketData $data)
+    public function dispatch(IPacketData $data): void
     {
         $requestHandler = new PacketHandler($this->getMiddlewares());
         $responseData = $requestHandler->handle($data);

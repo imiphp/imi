@@ -37,12 +37,13 @@ class Query
      *
      * @return void
      */
-    public static function init(Model $model, string $propertyName, $annotation, bool $forceInit = false)
+    public static function init(Model $model, string $propertyName, $annotation, bool $forceInit = false): void
     {
         $className = BeanFactory::getObjectClass($model);
 
         if (!$forceInit)
         {
+            /** @var AutoSelect|null $autoSelect */
             $autoSelect = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSelect::class)[0] ?? null;
             if ($autoSelect && !$autoSelect->status)
             {
@@ -53,6 +54,7 @@ class Query
         if (\is_array($annotation))
         {
             $firstAnnotation = reset($annotation);
+            // @phpstan-ignore-next-line
             if ($firstAnnotation instanceof \Imi\Model\Annotation\Relation\PolymorphicToOne)
             {
                 static::initByPolymorphicToOne($model, $propertyName, $annotation);
@@ -78,6 +80,7 @@ class Query
         {
             static::initByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
+        // @phpstan-ignore-next-line
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
             static::initByPolymorphicManyToMany($model, $propertyName, $annotation);
@@ -97,7 +100,7 @@ class Query
      *
      * @return void
      */
-    public static function initByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation)
+    public static function initByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -154,7 +157,7 @@ class Query
      *
      * @return void
      */
-    public static function initByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation)
+    public static function initByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -210,7 +213,7 @@ class Query
      *
      * @return void
      */
-    public static function initByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
+    public static function initByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -273,7 +276,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation)
+    public static function initByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -330,7 +333,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
+    public static function initByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -386,7 +389,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotation)
+    public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
         $eventName = 'IMI.MODEL.RELATION.QUERY.' . $className . '.' . $propertyName;
@@ -443,7 +446,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicToMany $annotation)
+    public static function initByPolymorphicToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -503,7 +506,7 @@ class Query
      *
      * @return void
      */
-    public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation)
+    public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -562,7 +565,7 @@ class Query
      *
      * @return void
      */
-    public static function initRelations(Model $model, string $propertyName)
+    public static function initRelations(Model $model, string $propertyName): void
     {
         $className = BeanFactory::getObjectClass($model);
         $annotation = AnnotationManager::getPropertyAnnotations($className, $propertyName, RelationBase::class)[0] ?? null;
@@ -588,6 +591,7 @@ class Query
             {
                 $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->model, $className));
             }
+            // @phpstan-ignore-next-line
             elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
             {
                 $model->$propertyName = new ArrayList(ClassObject::parseSameLevelClassName($annotation->middle, $className));
@@ -609,7 +613,7 @@ class Query
      *
      * @return void
      */
-    private static function parseManyToManyQueryFields(string $middleModel, string $rightModel, ?array &$middleFields, ?array &$rightFields)
+    private static function parseManyToManyQueryFields(string $middleModel, string $rightModel, ?array &$middleFields, ?array &$rightFields): void
     {
         $middleFields = [];
         $rightFields = [];
@@ -663,7 +667,7 @@ class Query
      *
      * @return void
      */
-    private static function appendMany(ArrayList $manyList, array $dataList, array $fields, string $modelClass)
+    private static function appendMany(ArrayList $manyList, array $dataList, array $fields, string $modelClass): void
     {
         foreach ($dataList as $row)
         {

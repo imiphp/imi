@@ -35,7 +35,7 @@ class ProcessManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -44,14 +44,14 @@ class ProcessManager
      * 增加映射关系.
      *
      * @param string $name
-     * @param string $class
+     * @param string $className
      * @param array  $options
      *
      * @return void
      */
-    public static function add(string $name, string $className, array $options)
+    public static function add(string $name, string $className, array $options): void
     {
-        if (isset($data[$name]))
+        if (isset(self::$map[$name]))
         {
             throw new \RuntimeException(sprintf('Process %s is exists', $name));
         }

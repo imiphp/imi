@@ -11,8 +11,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Join implements IJoin
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 表名.
@@ -148,9 +148,10 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setTable(?string $table = null)
+    public function setTable(?string $table = null): void
     {
-        $this->table = $table;
+        $this->table = $thisTable = new Table();
+        $thisTable->setValue($table);
     }
 
     /**
@@ -160,7 +161,7 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setLeft(?string $left)
+    public function setLeft(?string $left): void
     {
         $this->left = $left;
     }
@@ -172,7 +173,7 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setOperation(?string $operation)
+    public function setOperation(?string $operation): void
     {
         $this->operation = $operation;
     }
@@ -184,7 +185,7 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setRight(?string $right)
+    public function setRight(?string $right): void
     {
         $this->right = $right;
     }
@@ -196,7 +197,7 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setTableAlias(?string $tableAlias)
+    public function setTableAlias(?string $tableAlias): void
     {
         $this->table->setAlias($tableAlias);
     }
@@ -208,7 +209,7 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setWhere(?IBaseWhere $where)
+    public function setWhere(?IBaseWhere $where): void
     {
         $this->where = $where;
     }
@@ -220,7 +221,7 @@ class Join implements IJoin
      *
      * @return void
      */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }

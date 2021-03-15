@@ -21,7 +21,7 @@ trait TCacheAopHelper
      */
     protected function getKey(JoinPoint $joinPoint, array $args, $cacheable): string
     {
-        if (null === $cacheable->key)
+        if ('' === $cacheable->key)
         {
             return md5(
                 get_parent_class($joinPoint->getTarget())

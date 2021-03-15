@@ -60,7 +60,7 @@ class Server extends Base
      *
      * @return void
      */
-    protected function createServer()
+    protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
         if ($config['coServer'])
@@ -80,7 +80,7 @@ class Server extends Base
      *
      * @return void
      */
-    protected function createSubServer()
+    protected function createSubServer(): void
     {
         $config = $this->getServerInitConfig();
         /** @var ISwooleServer $server */
@@ -88,10 +88,7 @@ class Server extends Base
         $this->swooleServer = $server->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $thisConfig = &$this->config;
-        if (!isset($thisConfig['configs']['open_http_protocol']))
-        {
-            $thisConfig['configs']['open_http_protocol'] = true;
-        }
+        $thisConfig['configs']['open_http_protocol'] ??= true;
         $this->https = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
         $this->http2 = $thisConfig['configs']['open_http2_protocol'] ?? false;
     }
@@ -119,7 +116,7 @@ class Server extends Base
      *
      * @return void
      */
-    protected function bindEvents()
+    protected function bindEvents(): void
     {
         $config = $this->getServerInitConfig();
         if (!$config['coServer'])
@@ -161,7 +158,7 @@ class Server extends Base
      *
      * @return void
      */
-    protected function __bindEvents()
+    protected function __bindEvents(): void
     {
         $config = $this->getServerInitConfig();
 
@@ -215,6 +212,7 @@ class Server extends Base
 
         if ($event = ($events['close'] ?? false) || $this->http2)
         {
+            // @phpstan-ignore-next-line
             $this->swoolePort->on('close', \is_callable($event) ? $event : function (HttpServer $server, int $fd, int $reactorId) {
                 try
                 {
@@ -245,7 +243,7 @@ class Server extends Base
     /**
      * 是否为 http2 服务
      *
-     * @var bool
+     * @return bool
      */
     public function isHttp2(): bool
     {

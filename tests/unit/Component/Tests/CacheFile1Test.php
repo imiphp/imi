@@ -15,7 +15,7 @@ class CacheFile1Test extends BaseCacheTest
 {
     protected string $cacheName = 'file1';
 
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         parent::testSetAndGet();
         $path = File::path(Imi::getNamespacePath('Imi\Test\Component\.runtime\cache'), md5('imi'));

@@ -12,7 +12,7 @@ use Yurun\Util\HttpRequest;
  */
 class MemoryTableTest extends BaseTest
 {
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/setAndGet');
@@ -25,7 +25,7 @@ class MemoryTableTest extends BaseTest
         ], $data['getRow'] ?? null);
     }
 
-    public function testDel()
+    public function testDel(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/del');
@@ -39,7 +39,7 @@ class MemoryTableTest extends BaseTest
         Assert::assertFalse($data['getRow2']);
     }
 
-    public function testExist()
+    public function testExist(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/exist');
@@ -49,7 +49,7 @@ class MemoryTableTest extends BaseTest
         Assert::assertTrue($data['existResult2'] ?? null);
     }
 
-    public function testIncr()
+    public function testIncr(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/incr');
@@ -59,7 +59,7 @@ class MemoryTableTest extends BaseTest
         Assert::assertEquals(1, $data['getQuantity'] ?? null);
     }
 
-    public function testDecr()
+    public function testDecr(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/decr');
@@ -69,7 +69,7 @@ class MemoryTableTest extends BaseTest
         Assert::assertEquals(-1, $data['getQuantity'] ?? null);
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/count');
@@ -77,7 +77,7 @@ class MemoryTableTest extends BaseTest
         Assert::assertEquals(4, $data['count'] ?? null);
     }
 
-    public function testLockCallbleSetAndGet()
+    public function testLockCallbleSetAndGet(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/lockCallableSetAndGet');
@@ -90,7 +90,7 @@ class MemoryTableTest extends BaseTest
         ], $data['getRow'] ?? null);
     }
 
-    public function testLockSetAndGet()
+    public function testLockSetAndGet(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'memoryTable/lockSetAndGet');

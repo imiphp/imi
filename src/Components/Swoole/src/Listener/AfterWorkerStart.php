@@ -23,11 +23,11 @@ class AfterWorkerStart implements IWorkerStartEventListener
     /**
      * 事件处理方法.
      *
-     * @param EventParam $e
+     * @param WorkerStartEventParam $e
      *
      * @return void
      */
-    public function handle(WorkerStartEventParam $e)
+    public function handle(WorkerStartEventParam $e): void
     {
         // 项目初始化事件
         if (!$e->server->getSwooleServer()->taskworker)

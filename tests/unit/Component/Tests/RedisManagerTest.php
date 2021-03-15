@@ -17,12 +17,12 @@ class RedisManagerTest extends BaseTest
 {
     const CONNECTION_NAME = 'tradition';
 
-    public function testDefaultPoolName()
+    public function testDefaultPoolName(): void
     {
         Assert::assertEquals('redis_test', RedisManager::getDefaultPoolName());
     }
 
-    public function testGetInstance()
+    public function testGetInstance(): void
     {
         $a = RedisManager::getInstance(self::CONNECTION_NAME);
         $b = RedisManager::getInstance(self::CONNECTION_NAME);
@@ -31,7 +31,7 @@ class RedisManagerTest extends BaseTest
         $this->assertEquals('imi', $a->get('test'));
     }
 
-    public function testGetNewInstance()
+    public function testGetNewInstance(): void
     {
         $a = RedisManager::getInstance(self::CONNECTION_NAME);
         $b = RedisManager::getNewInstance(self::CONNECTION_NAME);
@@ -40,7 +40,7 @@ class RedisManagerTest extends BaseTest
         $this->assertEquals('imi', $b->get('test'));
     }
 
-    public function testNewInstance()
+    public function testNewInstance(): void
     {
         $pool = PoolManager::getInstance('redis_manager_test');
         $instance = null;
@@ -66,7 +66,7 @@ class RedisManagerTest extends BaseTest
         }
     }
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $pool = PoolManager::getInstance('redis_manager_test');
         $this->go(function () use ($pool) {
@@ -90,7 +90,7 @@ class RedisManagerTest extends BaseTest
      *
      * @return void
      */
-    private function assertRedisHandler($redisHandler)
+    private function assertRedisHandler($redisHandler): void
     {
         Assert::assertInstanceOf(RedisHandler::class, $redisHandler);
         $time = time();

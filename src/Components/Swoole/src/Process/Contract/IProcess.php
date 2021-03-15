@@ -9,5 +9,5 @@ namespace Imi\Swoole\Process\Contract;
  */
 interface IProcess
 {
-    public function run(\Swoole\Process $process);
+    public function run(\Swoole\Process $process): void;
 }

@@ -14,6 +14,9 @@ use Imi\Test\BaseTest;
  */
 class CronCalculatorTest extends BaseTest
 {
+    /**
+     * @return mixed
+     */
     public function testInit()
     {
         $cronCalculator = App::getBean('CronCalculator');
@@ -29,7 +32,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testYear(CronCalculator $cronCalculator)
+    public function testYear(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -56,7 +59,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testMonth(CronCalculator $cronCalculator)
+    public function testMonth(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -89,7 +92,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testWeek(CronCalculator $cronCalculator)
+    public function testWeek(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -119,7 +122,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testDay(CronCalculator $cronCalculator)
+    public function testDay(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -178,7 +181,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testHour(CronCalculator $cronCalculator)
+    public function testHour(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -212,7 +215,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testMinute(CronCalculator $cronCalculator)
+    public function testMinute(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -246,7 +249,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testSecond(CronCalculator $cronCalculator)
+    public function testSecond(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         $this->assertEquals(strtotime('2018-06-21 12:34:57'), $cronCalculator->getNextTickTime($beginTime, [
@@ -280,7 +283,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testAll(CronCalculator $cronCalculator)
+    public function testAll(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
         // 每天 0 点执行一次
@@ -325,7 +328,7 @@ class CronCalculatorTest extends BaseTest
      *
      * @return void
      */
-    public function testBug51(CronCalculator $cronCalculator)
+    public function testBug51(CronCalculator $cronCalculator): void
     {
         $beginTime = strtotime('2018-06-21 12:34:56');
 

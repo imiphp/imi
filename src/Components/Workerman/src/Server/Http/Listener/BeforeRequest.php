@@ -36,15 +36,12 @@ class BeforeRequest implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         ['request' => $request,'response' => $response] = $e->getData();
         $server = $this->server;
         // 中间件
-        if (!isset($this->dispatcher))
-        {
-            $this->dispatcher = $server->getBean('HttpDispatcher');
-        }
-        $this->dispatcher->dispatch($request, $response);
+        $this->dispatcher ??= $server->getBean('HttpDispatcher');
+        $this->dispatcher->dispatch($request);
     }
 }

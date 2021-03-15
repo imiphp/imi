@@ -14,7 +14,7 @@ class RestTest extends BaseTest
     /**
      * @return void
      */
-    public function testQuery()
+    public function testQuery(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'rest');
@@ -27,7 +27,7 @@ class RestTest extends BaseTest
     /**
      * @return void
      */
-    public function testFind()
+    public function testFind(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'rest/1');
@@ -40,7 +40,7 @@ class RestTest extends BaseTest
     /**
      * @return void
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $http = new HttpRequest();
         $response = $http->post($this->host . 'rest', [
@@ -57,7 +57,7 @@ class RestTest extends BaseTest
     /**
      * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $http = new HttpRequest();
         $response = $http->put($this->host . 'rest/123', [
@@ -75,7 +75,7 @@ class RestTest extends BaseTest
     /**
      * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $http = new HttpRequest();
         $response = $http->delete($this->host . 'rest/123', [

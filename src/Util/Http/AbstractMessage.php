@@ -64,7 +64,7 @@ abstract class AbstractMessage implements IMessage
      *
      * @return void
      */
-    protected function initProtocolVersion()
+    protected function initProtocolVersion(): void
     {
     }
 
@@ -132,7 +132,7 @@ abstract class AbstractMessage implements IMessage
      *
      * @return void
      */
-    protected function initHeaders()
+    protected function initHeaders(): void
     {
     }
 
@@ -475,7 +475,7 @@ abstract class AbstractMessage implements IMessage
      *
      * @return void
      */
-    protected function initBody()
+    protected function initBody(): void
     {
     }
 
@@ -541,7 +541,8 @@ abstract class AbstractMessage implements IMessage
     /**
      * 在当前实例下设置头.
      *
-     * @param array $headers
+     * @param array       $headers
+     * @param static|null $object
      *
      * @return static
      */

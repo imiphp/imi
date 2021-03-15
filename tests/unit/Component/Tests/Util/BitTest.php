@@ -17,7 +17,7 @@ class BitTest extends BaseTest
      *
      * @return void
      */
-    public function testHas()
+    public function testHas(): void
     {
         $value = 1 + 4 + 256;
         $this->assertTrue(Bit::has($value, 1));

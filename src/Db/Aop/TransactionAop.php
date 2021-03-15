@@ -39,6 +39,7 @@ class TransactionAop
     {
         $target = $joinPoint->getTarget();
         $method = $joinPoint->getMethod();
+        /** @var Transaction|null $transaction */
         $transaction = AnnotationManager::getMethodAnnotations(get_parent_class($target), $method, Transaction::class)[0] ?? null;
         if (null === $transaction)
         {
@@ -47,10 +48,6 @@ class TransactionAop
         else
         {
             $db = $this->getDb($transaction, $target);
-            if (!$db)
-            {
-                throw new \RuntimeException('@Transaction failed, get db failed');
-            }
             try
             {
                 $isBeginTransaction = !$db->inTransaction();
@@ -110,19 +107,17 @@ class TransactionAop
      * @param \Imi\Db\Annotation\Transaction $transaction
      * @param object                         $object
      *
-     * @return \Imi\Db\Interfaces\IDb|null
+     * @return \Imi\Db\Interfaces\IDb
      */
-    private function getDb(Transaction $transaction, object $object): ?IDb
+    private function getDb(Transaction $transaction, object $object): IDb
     {
         if ($object instanceof \Imi\Model\Model)
         {
-            $db = Db::getInstance($object->__getMeta()->getDbPoolName());
+            return Db::getInstance($object->__getMeta()->getDbPoolName());
         }
         else
         {
-            $db = Db::getInstance($transaction->dbPoolName);
+            return Db::getInstance($transaction->dbPoolName);
         }
-
-        return $db;
     }
 }

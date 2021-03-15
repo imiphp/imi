@@ -77,7 +77,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function addCronByAnnotation(Cron $cron, string $pointClass)
+    public function addCronByAnnotation(Cron $cron, string $pointClass): void
     {
         $this->addCron($cron->id, $cron->type, $pointClass, [[
             'year'      => $cron->year,
@@ -106,7 +106,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
+    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void
     {
         if (isset($this->tasks[$id]))
         {
@@ -130,7 +130,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function removeCron(string $id)
+    public function removeCron(string $id): void
     {
         if (isset($this->tasks[$id]))
         {
@@ -143,7 +143,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->tasks = $this->realTasks = [];
     }

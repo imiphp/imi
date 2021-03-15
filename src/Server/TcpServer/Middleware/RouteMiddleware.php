@@ -35,9 +35,9 @@ class RouteMiddleware implements IMiddleware
      * 处理方法.
      *
      * @param IReceiveData    $data
-     * @param IReceiveHandler $handle
+     * @param IReceiveHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {

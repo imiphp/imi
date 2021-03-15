@@ -99,7 +99,7 @@ class Server extends BaseCommand
      *
      * @return void
      */
-    public function stop()
+    public function stop(): void
     {
         // workerman argv
         global $argv;
@@ -120,7 +120,7 @@ class Server extends BaseCommand
     public function outImi(): void
     {
         $this->output->write('<comment>' . <<<STR
- _               _ 
+ _               _
 (_)  _ __ ___   (_)
 | | | '_ ` _ \  | |
 | | | | | | | | | |

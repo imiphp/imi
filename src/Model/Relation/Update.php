@@ -34,14 +34,16 @@ class Update
      *
      * @return void
      */
-    public static function parse(Model $model, string $propertyName, RelationBase $annotation)
+    public static function parse(Model $model, string $propertyName, RelationBase $annotation): void
     {
         if (!$model->$propertyName)
         {
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
         if ($autoUpdate)
@@ -76,6 +78,7 @@ class Update
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
+        // @phpstan-ignore-next-line
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
             static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
@@ -91,7 +94,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation)
+    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -127,7 +130,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation)
+    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -136,7 +139,9 @@ class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -220,7 +225,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
+    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -230,7 +235,9 @@ class Update
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -276,7 +283,7 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIds, $modelLeftValue) {
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $modelLeftValue) {
                     $query->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }
@@ -301,12 +308,12 @@ class Update
     /**
      * 模型类（可指定字段）是否包含更新关联关系.
      *
-     * @param string $className
+     * @param string      $className
      * @param string|null $propertyName
      *
      * @return bool
      */
-    public static function hasUpdateRelation(string $className, ?string $propertyName = null):bool
+    public static function hasUpdateRelation(string $className, ?string $propertyName = null): bool
     {
         $relations = AnnotationManager::getPropertiesAnnotations($className, RelationBase::class);
 
@@ -319,7 +326,9 @@ class Update
         {
             foreach ($relations as $name => $annotations)
             {
+                /** @var AutoUpdate|null $autoUpdate */
                 $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $name, AutoUpdate::class)[0] ?? null;
+                /** @var AutoSave|null $autoSave */
                 $autoSave = AnnotationManager::getPropertyAnnotations($className, $name, AutoSave::class)[0] ?? null;
 
                 if ($autoUpdate)
@@ -337,7 +346,9 @@ class Update
         }
         else
         {
+            /** @var AutoUpdate|null $autoUpdate */
             $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+            /** @var AutoSave|null $autoSave */
             $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
             if ($autoUpdate)
@@ -367,7 +378,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation)
+    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -404,7 +415,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
+    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -413,7 +424,9 @@ class Update
         $rightField = $struct->getRightField();
         $rightModel = $struct->getRightModel();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -498,7 +511,7 @@ class Update
      *
      * @return void
      */
-    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation)
+    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -508,7 +521,9 @@ class Update
         $middleRightField = $struct->getMiddleRightField();
         $leftField = $struct->getLeftField();
 
+        /** @var AutoUpdate|null $autoUpdate */
         $autoUpdate = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoUpdate::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
         // 是否删除无关数据
         if ($autoUpdate)
@@ -555,7 +570,7 @@ class Update
             if ($deleteIds)
             {
                 // 批量删除
-                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $leftField, $model, $deleteIds, $annotation, $modelLeftValue) {
+                $middleModel::deleteBatch(function (IQuery $query) use ($middleLeftField, $middleRightField, $deleteIds, $annotation, $modelLeftValue) {
                     $query->where($annotation->type, '=', $annotation->typeValue)->where($middleLeftField, '=', $modelLeftValue)->whereIn($middleRightField, $deleteIds);
                 });
             }

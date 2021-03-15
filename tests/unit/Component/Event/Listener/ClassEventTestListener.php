@@ -22,7 +22,7 @@ class ClassEventTestListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         Assert::assertEquals('test1', $e->getEventName());
         Assert::assertEquals(TestClass::class, \get_class($e->getTarget()));

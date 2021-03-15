@@ -28,7 +28,7 @@ abstract class BaseSyncPool extends BasePool
      *
      * @return void
      */
-    protected function initQueue()
+    protected function initQueue(): void
     {
         $this->queue = new \SplQueue();
     }
@@ -55,14 +55,14 @@ abstract class BaseSyncPool extends BasePool
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $poolItem = $this->queue->pop();
-        if (!$poolItem)
-        {
-            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
-        }
         $resource = $poolItem->getResource();
-        if (!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+        if ($config->isCheckStateWhenGetResource() && !$resource->checkState())
         {
-            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
+            $resource->close();
+            if (!$resource->open())
+            {
+                throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
+            }
         }
         $poolItem->lock();
 
@@ -90,14 +90,14 @@ abstract class BaseSyncPool extends BasePool
         }
         /** @var \Imi\Pool\PoolItem $poolItem */
         $poolItem = $this->queue->pop();
-        if (!$poolItem)
-        {
-            throw new \RuntimeException(sprintf('SyncPool [%s] getResource failed', $this->getName()));
-        }
         $resource = $poolItem->getResource();
-        if (!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+        if ($this->config->isCheckStateWhenGetResource() && !$resource->checkState())
         {
-            throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
+            $resource->close();
+            if (!$resource->open())
+            {
+                throw new \RuntimeException(sprintf('SyncPool [%s] tryGetResource failed', $this->getName()));
+            }
         }
         $poolItem->lock();
 
@@ -109,7 +109,7 @@ abstract class BaseSyncPool extends BasePool
      *
      * @return void
      */
-    protected function buildQueue()
+    protected function buildQueue(): void
     {
         // 清空队列
         $this->initQueue();
@@ -128,7 +128,7 @@ abstract class BaseSyncPool extends BasePool
      *
      * @return void
      */
-    protected function push(IPoolResource $resource)
+    protected function push(IPoolResource $resource): void
     {
         $poolItem = $this->pool[$resource->hashCode()] ?? null;
         if ($poolItem)

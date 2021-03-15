@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
  */
 class ConfigTest extends BaseTest
 {
-    public function testGet()
+    public function testGet(): void
     {
         Assert::assertEquals('very six', Config::get('@app.imi-framework'));
         Assert::assertEquals('666', Config::get('@app.yurun')); // .env
@@ -21,19 +21,19 @@ class ConfigTest extends BaseTest
         Assert::assertEquals('default', Config::get('@app.none', 'default'));
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $time = time();
         Config::set('@app.test.time', $time);
         Assert::assertEquals($time, Config::get('@app.test.time'));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         Assert::assertTrue(Config::has('@app.imi-framework'));
     }
 
-    public function testAddConfig()
+    public function testAddConfig(): void
     {
         Config::addConfig('test', [
             'a' => [
@@ -51,7 +51,7 @@ class ConfigTest extends BaseTest
         Assert::assertNull(Config::get('test'));
     }
 
-    public function testSetConfig()
+    public function testSetConfig(): void
     {
         Config::setConfig('test', [
             'a' => [

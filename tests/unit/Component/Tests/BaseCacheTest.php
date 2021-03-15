@@ -14,7 +14,7 @@ abstract class BaseCacheTest extends BaseTest
 
     protected bool $supportTTL = true;
 
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb'));
         Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
@@ -25,7 +25,7 @@ abstract class BaseCacheTest extends BaseTest
      *
      * @return void
      */
-    public function testSetTTL()
+    public function testSetTTL(): void
     {
         if (!$this->supportTTL)
         {
@@ -37,7 +37,7 @@ abstract class BaseCacheTest extends BaseTest
         Assert::assertEquals('none', CacheManager::get($this->cacheName, 'imi', 'none'));
     }
 
-    public function testSetMultiple()
+    public function testSetMultiple(): void
     {
         $values = [
             'k1'    => 'v1',
@@ -53,7 +53,7 @@ abstract class BaseCacheTest extends BaseTest
      *
      * @return void
      */
-    public function testSetMultipleTTL()
+    public function testSetMultipleTTL(): void
     {
         if (!$this->supportTTL)
         {
@@ -89,7 +89,7 @@ abstract class BaseCacheTest extends BaseTest
         }
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb'));
         Assert::assertEquals('nb', CacheManager::get($this->cacheName, 'imi'));
@@ -97,7 +97,7 @@ abstract class BaseCacheTest extends BaseTest
         Assert::assertNull(CacheManager::get($this->cacheName, 'imi'));
     }
 
-    public function testDeleteMultiple()
+    public function testDeleteMultiple(): void
     {
         $values = [
             'k1'    => 'v1',
@@ -114,7 +114,7 @@ abstract class BaseCacheTest extends BaseTest
         ], CacheManager::getMultiple($this->cacheName, array_keys($values)));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         Assert::assertTrue(CacheManager::set($this->cacheName, 'imi', 'nb'));
         Assert::assertTrue(CacheManager::has($this->cacheName, 'imi'));
@@ -122,7 +122,7 @@ abstract class BaseCacheTest extends BaseTest
         Assert::assertFalse(CacheManager::has($this->cacheName, 'imi'));
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $values = [
             'k1'    => 'v1',

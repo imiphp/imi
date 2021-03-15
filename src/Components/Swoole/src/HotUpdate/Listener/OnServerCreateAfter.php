@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Imi\Swoole\HotUpdate\Listener;
 
 use Imi\App;
+use Imi\Bean\Annotation\Listener;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Server\ServerManager;
-use Imi\Bean\Annotation\Listener;
 use Imi\Swoole\Server\Contract\ISwooleServer;
 
 /**
@@ -25,7 +25,7 @@ class OnServerCreateAfter implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $servers = ServerManager::getServers();
         $server = reset($servers);

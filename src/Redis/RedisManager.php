@@ -90,7 +90,7 @@ class RedisManager
      *
      * @return void
      */
-    public static function release(RedisHandler $redis)
+    public static function release(RedisHandler $redis): void
     {
         $resource = RequestContext::get('poolResources')[spl_object_hash($redis)] ?? null;
         if (null !== $resource)
@@ -134,7 +134,7 @@ class RedisManager
      *
      * @return void
      */
-    public static function initRedisConnection(RedisHandler $redis, array $config)
+    public static function initRedisConnection(RedisHandler $redis, array $config): void
     {
         $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
         if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))

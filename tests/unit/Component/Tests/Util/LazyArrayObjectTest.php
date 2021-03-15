@@ -12,7 +12,7 @@ use Imi\Util\LazyArrayObject;
  */
 class LazyArrayObjectTest extends BaseTest
 {
-    public function testLazyArrayObject()
+    public function testLazyArrayObject(): void
     {
         $data2 = new \stdClass();
         $data2->id = 2;

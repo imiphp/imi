@@ -6,7 +6,6 @@ namespace Imi\Pool;
 
 use Imi\App;
 use Imi\Pool\Interfaces\IPool;
-use Imi\Pool\Interfaces\IPoolConfig;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Util\ArrayUtil;
 
@@ -29,9 +28,9 @@ abstract class BasePool implements IPool
     /**
      * 配置.
      *
-     * @var \Imi\Pool\Interfaces\IPoolConfig
+     * @var \Imi\Pool\Interfaces\IPoolConfig|array
      */
-    protected IPoolConfig $config;
+    protected $config;
 
     /**
      * 资源配置.
@@ -54,7 +53,12 @@ abstract class BasePool implements IPool
      */
     protected int $addingResources = 0;
 
-    public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    /**
+     * @param string                           $name
+     * @param \Imi\Pool\Interfaces\IPoolConfig $config
+     * @param mixed                            $resourceConfig
+     */
+    public function __construct(string $name, Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         $this->name = $name;
         if (null !== $config)
@@ -94,7 +98,7 @@ abstract class BasePool implements IPool
      *
      * @return \Imi\Pool\Interfaces\IPoolConfig
      */
-    public function getConfig(): \Imi\Pool\Interfaces\IPoolConfig
+    public function getConfig(): Interfaces\IPoolConfig
     {
         return $this->config;
     }
@@ -104,7 +108,7 @@ abstract class BasePool implements IPool
      *
      * @return void
      */
-    public function open()
+    public function open(): void
     {
         // 初始化队列
         $this->initQueue();
@@ -117,7 +121,7 @@ abstract class BasePool implements IPool
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         foreach ($this->pool as $item)
         {
@@ -134,7 +138,7 @@ abstract class BasePool implements IPool
      *
      * @return void
      */
-    public function release(IPoolResource $resource)
+    public function release(IPoolResource $resource): void
     {
         $hash = $resource->hashCode();
         $pool = &$this->pool;
@@ -151,7 +155,7 @@ abstract class BasePool implements IPool
      *
      * @return void
      */
-    public function gc()
+    public function gc(): void
     {
         $hasGC = false;
         $config = $this->config;
@@ -181,7 +185,7 @@ abstract class BasePool implements IPool
      *
      * @return void
      */
-    public function fillMinResources()
+    public function fillMinResources(): void
     {
         while ($this->config->getMinResources() - $this->getCount() > 0)
         {
@@ -235,7 +239,7 @@ abstract class BasePool implements IPool
      *
      * @return \Imi\Pool\Interfaces\IPoolResource
      */
-    abstract protected function createResource(): \Imi\Pool\Interfaces\IPoolResource;
+    abstract protected function createResource(): IPoolResource;
 
     /**
      * 把资源加入队列.

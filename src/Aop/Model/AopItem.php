@@ -10,6 +10,9 @@ class AopItem
 
     private string $methodRule = '';
 
+    /**
+     * @var callable
+     */
     private $callback;
 
     private int $priority = 0;

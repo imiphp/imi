@@ -20,7 +20,7 @@ class WorkerExit implements IWorkerExitEventListener
      *
      * @return void
      */
-    public function handle(WorkerExitEventParam $e)
+    public function handle(WorkerExitEventParam $e): void
     {
         Timer::clearAll();
     }

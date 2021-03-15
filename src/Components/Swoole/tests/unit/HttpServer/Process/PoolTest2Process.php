@@ -21,7 +21,7 @@ class PoolTest2Process extends BaseProcess
      *
      * @return void
      */
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $result = [];
         foreach (PoolManager::getNames() as $poolName)

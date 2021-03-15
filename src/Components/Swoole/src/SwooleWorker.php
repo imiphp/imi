@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Swoole;
 
+use Imi\Swoole\Contract\ISwooleWorker;
 use Imi\Worker;
 
+/**
+ * @method static void setWorkerHandler(ISwooleWorker $workerHandler)
+ * @method static ISwooleWorker|null getWorkerHandler()
+ */
 class SwooleWorker extends Worker
 {
     /**
@@ -15,7 +20,7 @@ class SwooleWorker extends Worker
      */
     public static function isTask(): bool
     {
-        return static::$workerHandler ? static::$workerHandler->isTask() : false;
+        return static::getWorkerHandler()->isTask();
     }
 
     /**
@@ -25,7 +30,7 @@ class SwooleWorker extends Worker
      */
     public static function getTaskWorkerNum(): int
     {
-        return static::$workerHandler ? static::$workerHandler->getTaskWorkerNum() : 0;
+        return static::getWorkerHandler()->getTaskWorkerNum();
     }
 
     /**
@@ -35,7 +40,7 @@ class SwooleWorker extends Worker
      */
     public static function isWorkerStartAppComplete(): bool
     {
-        return static::$workerHandler ? static::$workerHandler->isWorkerStartAppComplete() : false;
+        return static::getWorkerHandler()->isWorkerStartAppComplete();
     }
 
     /**
@@ -45,6 +50,6 @@ class SwooleWorker extends Worker
      */
     public static function getManagerPid(): int
     {
-        return static::$workerHandler ? static::$workerHandler->getManagerPid() : false;
+        return static::getWorkerHandler()->getManagerPid();
     }
 }

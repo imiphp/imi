@@ -42,7 +42,7 @@ class Server extends Base implements IUdpServer
      *
      * @return void
      */
-    protected function createServer()
+    protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
         $this->swooleServer = new \Swoole\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
@@ -53,7 +53,7 @@ class Server extends Base implements IUdpServer
      *
      * @return void
      */
-    protected function createSubServer()
+    protected function createSubServer(): void
     {
         $config = $this->getServerInitConfig();
         /** @var ISwooleServer $server */
@@ -63,10 +63,7 @@ class Server extends Base implements IUdpServer
         $configs = &$this->config['configs'];
         foreach (static::SWOOLE_PROTOCOLS as $protocol)
         {
-            if (!isset($configs[$protocol]))
-            {
-                $configs[$protocol] = false;
-            }
+            $configs[$protocol] ??= false;
         }
     }
 
@@ -90,7 +87,7 @@ class Server extends Base implements IUdpServer
      *
      * @return void
      */
-    protected function __bindEvents()
+    protected function __bindEvents(): void
     {
         if ($event = ($this->config['events']['packet'] ?? true))
         {

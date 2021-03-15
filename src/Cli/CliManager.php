@@ -22,7 +22,7 @@ class CliManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
         foreach ($map['commands'] ?? [] as $item)
@@ -42,7 +42,7 @@ class CliManager
      *
      * @return void
      */
-    public static function addCommand(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false)
+    public static function addCommand(?string $commandName, string $actionName, string $className, string $methodName, bool $dynamicOptions = false): void
     {
         if (isset(self::$commandActionMap[$commandName][$actionName]))
         {
@@ -71,7 +71,7 @@ class CliManager
      *
      * @return void
      */
-    public static function addArgument(?string $commandName, string $actionName, string $argumentName, ?string $type = null, $default = null, bool $required = false, string $comments = '')
+    public static function addArgument(?string $commandName, string $actionName, string $argumentName, ?string $type = null, $default = null, bool $required = false, string $comments = ''): void
     {
         self::$map['arguments'][$commandName][$actionName][$argumentName] = [
             'argumentName' => $argumentName,
@@ -96,7 +96,7 @@ class CliManager
      *
      * @return void
      */
-    public static function addOption(?string $commandName, string $actionName, string $optionName, ?string $shortcut = null, ?string $type = null, $default = null, bool $required = false, string $comments = '')
+    public static function addOption(?string $commandName, string $actionName, string $optionName, ?string $shortcut = null, ?string $type = null, $default = null, bool $required = false, string $comments = ''): void
     {
         self::$map['options'][$commandName][$actionName][$optionName] = [
             'optionName' => $optionName,

@@ -9,6 +9,13 @@ use Imi\Cron\Message\IMessage;
 class Client
 {
     /**
+     * 配置项.
+     *
+     * @var array
+     */
+    private array $options = [];
+
+    /**
      * socket 文件路径.
      *
      * 不支持 samba 文件共享
@@ -20,7 +27,7 @@ class Client
     /**
      * socket 资源.
      *
-     * @var resource
+     * @var resource|null
      */
     private $socket = null;
 
@@ -75,7 +82,7 @@ class Client
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         if ($this->connected)
         {

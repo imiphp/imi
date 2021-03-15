@@ -30,6 +30,7 @@ class ClassObject
         }
         $index = strpos($object, 'class@anonymous');
 
+        // @phpstan-ignore-next-line
         return false !== $index && $index >= 0;
     }
 
@@ -91,9 +92,11 @@ class ClassObject
         {
             $paramName = $param->name;
             $resultItem = [$result[$paramName]];
+            // @phpstan-ignore-next-line
             if (isset($args[$i + 1]))
             {
                 $count = \count($args);
+                // @phpstan-ignore-next-line
                 for (++$i; $i < $count; ++$i)
                 {
                     $resultItem[] = $args[$i];
@@ -131,13 +134,13 @@ class ClassObject
      * 判断某类是否在指定命名空间下.
      *
      * @param string $namespace
-     * @param string $subClass
+     * @param string $class
      *
      * @return bool
      */
     public static function inNamespace(string $namespace, string $class): bool
     {
-        if ('' !== $namespace && '\\' !== substr($namespace, -1, 1))
+        if ('' !== $namespace && '\\' !== $namespace[-1])
         {
             $namespace .= '\\';
         }

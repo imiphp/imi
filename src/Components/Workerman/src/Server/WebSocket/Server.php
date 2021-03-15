@@ -59,11 +59,12 @@ class Server extends Base implements IWebSocketServer
      *
      * @return void
      */
-    protected function bindEvents()
+    protected function bindEvents(): void
     {
         parent::bindEvents();
 
-        $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader) {
+        // @phpstan-ignore-next-line
+        $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
             $fd = $connection->id;
             $request = new WorkermanRequest($this->worker, $connection, new Request($httpHeader), 'ws');
 
@@ -120,7 +121,7 @@ class Server extends Base implements IWebSocketServer
      */
     public function push(int $fd, string $data, int $opcode = 1): bool
     {
-        /** @var TcpConnection $connection */
+        /** @var TcpConnection|null $connection */
         $connection = $this->worker->connections[$fd] ?? null;
         if (!$connection)
         {

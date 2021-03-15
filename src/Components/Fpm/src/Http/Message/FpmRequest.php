@@ -15,7 +15,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initProtocolVersion()
+    protected function initProtocolVersion(): void
     {
         $this->protocolVersion = substr($_SERVER['SERVER_PROTOCOL'], 5);
     }
@@ -25,7 +25,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initHeaders()
+    protected function initHeaders(): void
     {
         $headers = [];
         foreach ($_SERVER as $name => $value)
@@ -43,7 +43,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initBody()
+    protected function initBody(): void
     {
         $this->body = new MemoryStream(file_get_contents('php://input'));
     }
@@ -53,7 +53,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initUri()
+    protected function initUri(): void
     {
         if ('on' === ($_SERVER['HTTPS'] ?? null))
         {
@@ -81,7 +81,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initMethod()
+    protected function initMethod(): void
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
     }
@@ -91,7 +91,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initServer()
+    protected function initServer(): void
     {
         $this->server = $_SERVER;
     }
@@ -101,7 +101,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initRequestParams()
+    protected function initRequestParams(): void
     {
         $this->get = $_GET;
         if ($_POST)
@@ -121,7 +121,7 @@ class FpmRequest extends Request
      *
      * @return void
      */
-    protected function initUploadedFiles()
+    protected function initUploadedFiles(): void
     {
         $this->setUploadedFiles($_FILES);
     }

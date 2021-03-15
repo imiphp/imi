@@ -59,6 +59,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
             if ($sessionManager->getConfig()->cookie->enable && $sessionManager->isNewSession() && $sessionManager->isChanged())
             {
                 // 发送cookie
+                // @phpstan-ignore-next-line
                 $response = $this->sendCookie($sessionManager, $response);
             }
         }
@@ -81,7 +82,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
      *
      * @return void
      */
-    private function start(SessionManager $sessionManager, ?string $sessionId)
+    private function start(SessionManager $sessionManager, ?string $sessionId): void
     {
         $sessionManager->start($sessionId);
     }

@@ -59,13 +59,15 @@ class Server extends Base
      *
      * @return void
      */
-    protected function bindEvents()
+    protected function bindEvents(): void
     {
         parent::bindEvents();
         Event::on('IMI.WORKERMAN.SERVER.MESSAGE', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         $this->worker->onMessage = function (ConnectionInterface $connection, $data) {
             $worker = $this->worker;
+            // @phpstan-ignore-next-line
             $request = new WorkermanRequest($worker, $connection, $data);
+            // @phpstan-ignore-next-line
             $response = new WorkermanResponse($worker, $connection, new Response());
             RequestContext::muiltiSet([
                 'server'   => $this,

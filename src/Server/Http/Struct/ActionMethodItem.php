@@ -27,12 +27,18 @@ class ActionMethodItem
      */
     protected ?string $type = null;
 
+    /**
+     * @param string               $name
+     * @param mixed                $default
+     * @param \ReflectionType|null $type
+     */
     public function __construct(string $name, $default, ?\ReflectionType $type)
     {
         $this->name = $name;
         $this->default = $default;
         if ($type)
         {
+            // @phpstan-ignore-next-line
             $this->type = $type->getName();
         }
     }

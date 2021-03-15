@@ -38,7 +38,7 @@ trait TEvent
      *
      * @return void
      */
-    public function on($name, $callback, int $priority = 0)
+    public function on($name, $callback, int $priority = 0): void
     {
         foreach ((array) $name as $eventName)
         {
@@ -72,7 +72,7 @@ trait TEvent
      *
      * @return void
      */
-    public function one($name, $callback, int $priority = 0)
+    public function one($name, $callback, int $priority = 0): void
     {
         foreach ((array) $name as $eventName)
         {
@@ -105,7 +105,7 @@ trait TEvent
      *
      * @return void
      */
-    public function off($name, $callback = null)
+    public function off($name, $callback = null): void
     {
         $events = &$this->events;
         $eventChangeRecords = &$this->eventChangeRecords;
@@ -144,7 +144,7 @@ trait TEvent
      *
      * @return void
      */
-    public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class)
+    public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
         $eventQueue = &$this->eventQueue;
         // 获取回调列表

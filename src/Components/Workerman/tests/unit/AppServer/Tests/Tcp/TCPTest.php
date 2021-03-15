@@ -12,7 +12,7 @@ class TCPTest extends BaseTest
     /**
      * @testdox test
      */
-    public function test()
+    public function test(): void
     {
         $this->go(function () {
             $fp = stream_socket_client($this->host);
@@ -39,7 +39,7 @@ class TCPTest extends BaseTest
         });
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $this->go(function () {
             $fp = stream_socket_client($this->host);

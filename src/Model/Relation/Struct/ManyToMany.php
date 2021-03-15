@@ -59,8 +59,6 @@ class ManyToMany
      * @param string                                    $className
      * @param string                                    $propertyName
      * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
-     *
-     * @return void
      */
     public function __construct(string $className, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
     {

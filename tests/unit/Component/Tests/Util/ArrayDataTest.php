@@ -12,7 +12,7 @@ use Imi\Util\ArrayData;
  */
 class ArrayDataTest extends BaseTest
 {
-    public function testArrayData()
+    public function testArrayData(): void
     {
         $data2 = new \stdClass();
         $data2->id = 2;

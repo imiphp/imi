@@ -21,11 +21,11 @@ class WorkerStart implements IWorkerStartEventListener
     /**
      * 事件处理方法.
      *
-     * @param EventParam $e
+     * @param WorkerStartEventParam $e
      *
      * @return void
      */
-    public function handle(WorkerStartEventParam $e)
+    public function handle(WorkerStartEventParam $e): void
     {
         if (0 === Worker::getWorkerId())
         {

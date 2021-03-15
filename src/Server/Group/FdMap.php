@@ -40,7 +40,7 @@ class FdMap
      *
      * @return void
      */
-    public function joinGroup(int $fd, Group $group)
+    public function joinGroup(int $fd, Group $group): void
     {
         $map = &$this->map;
         $index = array_search($group, $map[$fd] ?? []);
@@ -58,7 +58,7 @@ class FdMap
      *
      * @return void
      */
-    public function leaveGroup(int $fd, Group $group)
+    public function leaveGroup(int $fd, Group $group): void
     {
         $map = &$this->map;
         $index = array_search($group, $map[$fd] ?? []);
@@ -75,7 +75,7 @@ class FdMap
      *
      * @return void
      */
-    public function leaveAll(int $fd)
+    public function leaveAll(int $fd): void
     {
         $map = $this->map[$fd] ?? [];
         foreach ($map as $group)

@@ -46,13 +46,13 @@ class TcpRoute implements IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param Imi\Server\TcpServer\Route\AnnotationServer\TcpRoute $annotation
-     * @param mixed                                                $callable
-     * @param array                                                $options
+     * @param TcpRouteAnnotation $annotation
+     * @param mixed              $callable
+     * @param array              $options
      *
      * @return void
      */
-    public function addRuleAnnotation(TcpRouteAnnotation $annotation, $callable, array $options = [])
+    public function addRuleAnnotation(TcpRouteAnnotation $annotation, $callable, array $options = []): void
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))
@@ -71,7 +71,7 @@ class TcpRoute implements IRoute
      *
      * @return void
      */
-    public function clearRules()
+    public function clearRules(): void
     {
         $this->rules = [];
     }
@@ -79,7 +79,7 @@ class TcpRoute implements IRoute
     /**
      * 路由规则是否存在.
      *
-     * @param Imi\Server\TcpServer\Route\AnnotationServer\TcpRoute $rule
+     * @param TcpRouteAnnotation $rule
      *
      * @return bool
      */
@@ -101,8 +101,8 @@ class TcpRoute implements IRoute
     /**
      * 检查条件是否匹配.
      *
-     * @param array|object      $data
-     * @param WSRouteAnnotation $annotation
+     * @param array|object       $data
+     * @param TcpRouteAnnotation $annotation
      *
      * @return bool
      */
@@ -128,7 +128,7 @@ class TcpRoute implements IRoute
      *
      * @return void
      */
-    public function checkDuplicateRoutes()
+    public function checkDuplicateRoutes(): void
     {
         $first = true;
         $map = [];
@@ -151,7 +151,7 @@ class TcpRoute implements IRoute
         }
     }
 
-    private function logDuplicated(RouteItem $routeItem)
+    private function logDuplicated(RouteItem $routeItem): void
     {
         $callable = $routeItem->callable;
         $route = 'condition=' . json_encode($routeItem->annotation->condition, \JSON_UNESCAPED_UNICODE);

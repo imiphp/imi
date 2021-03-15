@@ -34,7 +34,7 @@ class UdpRouteInit implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $this->parseAnnotations($e);
         $this->parseConfigs();
@@ -45,7 +45,7 @@ class UdpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseAnnotations(EventParam $e)
+    private function parseAnnotations(EventParam $e): void
     {
         $controllerParser = UdpControllerParser::getInstance();
         $context = RequestContext::getContext();
@@ -64,12 +64,14 @@ class UdpRouteInit implements IEventListener
                 $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
+                /** @var UdpMiddleware $middleware */
                 foreach (AnnotationManager::getClassAnnotations($className, UdpMiddleware::class) ?? [] as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, UdpAction::class) as $methodName => $methodItem)
                 {
+                    /** @var UdpRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, UdpRoute::class);
                     if (!isset($routes[0]))
                     {
@@ -77,6 +79,7 @@ class UdpRouteInit implements IEventListener
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
+                    /** @var UdpMiddleware $middleware */
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, UdpMiddleware::class) ?? [] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
@@ -106,7 +109,7 @@ class UdpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseConfigs()
+    private function parseConfigs(): void
     {
         $context = RequestContext::getContext();
         foreach (ServerManager::getServers() as $server)

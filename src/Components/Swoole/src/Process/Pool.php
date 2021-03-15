@@ -64,7 +64,7 @@ class Pool
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
         $this->masterPID = getmypid();
         $this->working = true;
@@ -133,7 +133,7 @@ class Pool
      *
      * @return void
      */
-    public function shutdown()
+    public function shutdown(): void
     {
         Process::kill($this->masterPID, \SIGTERM);
     }
@@ -143,7 +143,7 @@ class Pool
      *
      * @return void
      */
-    public function restartAllWorker()
+    public function restartAllWorker(): void
     {
         foreach ($this->workers as $worker)
         {
@@ -158,7 +158,7 @@ class Pool
      *
      * @return void
      */
-    public function restartWorker(int ...$workerIds)
+    public function restartWorker(int ...$workerIds): void
     {
         $workers = &$this->workers;
         foreach ($workerIds as $workerId)
@@ -182,7 +182,7 @@ class Pool
      *
      * @return void
      */
-    private function startWorker(int $workerId)
+    private function startWorker(int $workerId): void
     {
         $workers = &$this->workers;
         if (isset($workers[$workerId]))

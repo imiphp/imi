@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use Imi\App;
-use Imi\Model\Model;
-use Imi\Event\IEvent;
 use Imi\Bean\BeanFactory;
-use Imi\Model\Event\ModelEvents;
 use Imi\Db\Interfaces\IStatement;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Statement\StatementManager;
+use Imi\Event\IEvent;
+use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\AfterQueryEventParam;
+use Imi\Model\Model;
 
 class Result implements IResult
 {
@@ -93,7 +92,7 @@ class Result implements IResult
             throw new \RuntimeException('Result is not success!');
         }
 
-        return $this->statement->lastInsertId();
+        return (int) $this->statement->lastInsertId();
     }
 
     /**

@@ -63,7 +63,7 @@ trait TKeyword
      *
      * @param array       $keywords
      * @param string|null $alias
-     * @param array|null jsonKeywords
+     * @param array|null  $jsonKeywords
      *
      * @return string
      */

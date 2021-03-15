@@ -8,6 +8,7 @@ use Imi\App;
 use Imi\Bean\Scanner;
 use Imi\Event\Event;
 use Imi\Swoole\Util\Imi;
+use RuntimeException;
 
 /**
  * 进程池管理类.
@@ -25,7 +26,7 @@ class ProcessPoolManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -34,14 +35,14 @@ class ProcessPoolManager
      * 增加映射关系.
      *
      * @param string $name
-     * @param string $class
+     * @param string $className
      * @param array  $options
      *
      * @return void
      */
-    public static function add(string $name, string $className, array $options)
+    public static function add(string $name, string $className, array $options): void
     {
-        if (isset($data[$name]))
+        if (isset(self::$map[$name]))
         {
             throw new \RuntimeException(sprintf('Process pool %s is exists', $name));
         }
@@ -71,17 +72,17 @@ class ProcessPoolManager
      * @param string      $name
      * @param int|null    $workerNum   指定工作进程的数量
      * @param array       $args
-     * @param int         $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
+     * @param int|null    $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
      * @param string|null $msgQueueKey
      *
      * @return \Swoole\Process\Pool
      */
-    public static function create(string $name, ?int $workerNum = null, array $args = [], int $ipcType = 0, ?string $msgQueueKey = null): \Swoole\Process\Pool
+    public static function create(string $name, ?int $workerNum = null, array $args = [], ?int $ipcType = 0, ?string $msgQueueKey = null): \Swoole\Process\Pool
     {
         $processPoolOption = self::get($name);
         if (null === $processPoolOption)
         {
-            return null;
+            throw new RuntimeException(sprintf('Not found process pool %s', $name));
         }
         if (null === $workerNum)
         {

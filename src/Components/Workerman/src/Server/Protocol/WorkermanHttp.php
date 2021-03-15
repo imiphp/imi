@@ -92,7 +92,7 @@ class WorkermanHttp
      *
      * @param bool $value
      */
-    public static function enableCache(bool $value)
+    public static function enableCache(bool $value): void
     {
         static::$_enableCache = $value;
     }
@@ -189,6 +189,7 @@ class WorkermanHttp
         {
             $request = $requests[$recv_buffer];
             $request->connection = $connection;
+            // @phpstan-ignore-next-line
             $connection->__request = $request;
             $request->properties = [];
 
@@ -196,6 +197,7 @@ class WorkermanHttp
         }
         $request = new static::$_requestClass($recv_buffer);
         $request->connection = $connection;
+        // @phpstan-ignore-next-line
         $connection->__request = $request;
         if (true === $cacheable)
         {
@@ -212,8 +214,8 @@ class WorkermanHttp
     /**
      * Http encode.
      *
-     * @param string|Response $response
-     * @param TcpConnection   $connection
+     * @param string|Response|null $response
+     * @param TcpConnection        $connection
      *
      * @return string
      */
@@ -282,7 +284,7 @@ class WorkermanHttp
             $handler = fopen($file, 'r');
             if (false === $handler)
             {
-                $connection->close(new Response(403, null, '403 Forbidden'));
+                $connection->close(new Response(403, [], '403 Forbidden'));
 
                 return '';
             }
@@ -305,8 +307,9 @@ class WorkermanHttp
      *
      * @return void
      */
-    protected static function sendStream(TcpConnection $connection, $handler, int $offset = 0, int $length = 0)
+    protected static function sendStream(TcpConnection $connection, $handler, int $offset = 0, int $length = 0): void
     {
+        // @phpstan-ignore-next-line
         $connection->bufferFull = false;
         if (0 !== $offset)
         {
@@ -327,6 +330,7 @@ class WorkermanHttp
                     if ($remain_size <= 0)
                     {
                         fclose($handler);
+                        // @phpstan-ignore-next-line
                         $connection->onBufferDrain = null;
 
                         return;
@@ -339,6 +343,7 @@ class WorkermanHttp
                 if ('' === $buffer || false === $buffer)
                 {
                     fclose($handler);
+                    // @phpstan-ignore-next-line
                     $connection->onBufferDrain = null;
 
                     return;
@@ -363,7 +368,7 @@ class WorkermanHttp
      *
      * @return bool|string
      */
-    public static function uploadTmpDir($dir = null)
+    public static function uploadTmpDir(?string $dir = null)
     {
         if (null !== $dir)
         {

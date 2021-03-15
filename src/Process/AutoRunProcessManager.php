@@ -32,7 +32,7 @@ class AutoRunProcessManager
      *
      * @return void
      */
-    public function add(string $name, string $process, array $args = [])
+    public function add(string $name, string $process, array $args = []): void
     {
         $this->processes[$name] = [
             'process'   => $process,
@@ -47,7 +47,7 @@ class AutoRunProcessManager
      *
      * @return void
      */
-    public function remove(string $name)
+    public function remove(string $name): void
     {
         $processes = &$this->processes;
         if (isset($processes[$name]))

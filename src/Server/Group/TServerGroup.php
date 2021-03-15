@@ -84,7 +84,7 @@ trait TServerGroup
      *
      * @return void
      */
-    public function joinGroup(string $groupName, int $fd)
+    public function joinGroup(string $groupName, int $fd): void
     {
         $this->createGroup($groupName)->join($fd);
     }
@@ -97,7 +97,7 @@ trait TServerGroup
      *
      * @return void
      */
-    public function leaveGroup(string $groupName, int $fd)
+    public function leaveGroup(string $groupName, int $fd): void
     {
         $this->createGroup($groupName)->leave($fd);
     }

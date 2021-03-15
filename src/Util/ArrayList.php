@@ -34,11 +34,21 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
-    public function offsetExists($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
     {
         return isset($this->list[$offset]);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         $list = &$this->list;
@@ -54,7 +64,13 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         return $value;
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value): void
     {
         if (!$value instanceof $this->itemType)
         {
@@ -70,7 +86,12 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset): void
     {
         $list = &$this->list;
         if (isset($list[$offset]))
@@ -79,26 +100,41 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         return current($this->list);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return key($this->list);
     }
 
-    public function next()
+    /**
+     * @return void
+     */
+    public function next(): void
     {
         next($this->list);
     }
 
-    public function rewind()
+    /**
+     * @return void
+     */
+    public function rewind(): void
     {
         reset($this->list);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return null !== key($this->list);
@@ -131,7 +167,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      *
      * @return void
      */
-    public function remove(...$value)
+    public function remove(...$value): void
     {
         $this->list = ArrayUtil::remove($this->list, ...$value);
     }
@@ -141,7 +177,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->list = [];
     }
@@ -153,7 +189,7 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      *
      * @return void
      */
-    public function append(...$value)
+    public function append(...$value): void
     {
         foreach ($value as $row)
         {

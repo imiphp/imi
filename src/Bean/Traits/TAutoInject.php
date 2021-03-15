@@ -22,7 +22,7 @@ trait TAutoInject
      *
      * @return void
      */
-    protected function __autoInject()
+    protected function __autoInject(): void
     {
         BeanProxy::injectProps($this, BeanFactory::getObjectClass($this));
     }

@@ -29,13 +29,13 @@ class CronTask implements ITaskHandler
     {
         $success = false;
         $message = '';
+        $paramData = $param->getData();
+        $id = $paramData['id'] ?? null;
+        $data = $paramData['data'] ?? null;
+        $class = $paramData['class'] ?? null;
         try
         {
-            $paramData = $param->getData();
-            $id = $paramData['id'] ?? null;
-            $data = $paramData['data'] ?? null;
-            $class = $paramData['class'] ?? null;
-            /** @var \Imi\Cron\ICronTask $handler */
+            /** @var \Imi\Cron\Contract\ICronTask $handler */
             $handler = App::getBean($class);
             $handler->run($id, $data);
             $success = true;
@@ -60,7 +60,7 @@ class CronTask implements ITaskHandler
      *
      * @return void
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data)
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
     {
     }
 }

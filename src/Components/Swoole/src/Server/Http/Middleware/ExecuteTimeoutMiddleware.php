@@ -53,6 +53,7 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
             RequestContext::muiltiSet((array) $context);
             /** @var \Imi\Server\Http\Error\IExecuteTimeoutHandler $handler */
             $handler = $server->getBean($this->handler);
+            // @phpstan-ignore-next-line
             $handler->handle($request, $response);
         });
         Coroutine::defer(function () use ($timerId) {

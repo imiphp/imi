@@ -25,7 +25,7 @@ class BeforeReceive implements IReceiveEventListener
      *
      * @return void
      */
-    public function handle(ReceiveEventParam $e)
+    public function handle(ReceiveEventParam $e): void
     {
         $fd = $e->fd;
         if (!SwooleWorker::isWorkerStartAppComplete())

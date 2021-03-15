@@ -12,7 +12,7 @@ use Imi\RequestContext;
  */
 trait TConnectContextRelease
 {
-    public function release(int $fd)
+    public function release(int $fd): void
     {
         $groups = ConnectContext::get('__groups', [], $fd);
 

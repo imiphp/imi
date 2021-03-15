@@ -27,7 +27,7 @@ class Http2Test extends BaseTest
      *
      * @return void
      */
-    public function testUri()
+    public function testUri(): void
     {
         $this->go(function () {
             $http = new HttpRequest();

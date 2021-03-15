@@ -19,7 +19,7 @@ class BuildRuntimeListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         if (!Config::get('@app.imi.runtime.swoole.process', true))
         {

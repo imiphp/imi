@@ -153,6 +153,7 @@ class ModelManager
         }
         else
         {
+            /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
             return $staticTable[$objectClass] = $tableAnnotation ? $tableAnnotation->name : null;
@@ -176,6 +177,7 @@ class ModelManager
         }
         else
         {
+            /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
             return $staticDbPoolName[$objectClass] = $tableAnnotation ? $tableAnnotation->dbPoolName : null;
@@ -200,6 +202,7 @@ class ModelManager
         }
         else
         {
+            /** @var Table|null $tableAnnotation */
             $tableAnnotation = static::getAnnotation($object, Table::class);
 
             return $staticId[$objectClass] = $tableAnnotation ? $tableAnnotation->id : null;
@@ -264,7 +267,7 @@ class ModelManager
     /**
      * 模型是否为驼峰命名.
      *
-     * @param  string|object
+     * @param string|object $object
      *
      * @return bool
      */
@@ -278,7 +281,10 @@ class ModelManager
         }
         else
         {
-            return $staticIsCamelCache[$class] = static::getAnnotation($object, Entity::class)->camel ?? true;
+            /** @var Entity|null $entity */
+            $entity = static::getAnnotation($object, Entity::class);
+
+            return $staticIsCamelCache[$class] = $entity ? $entity->camel : true;
         }
     }
 
@@ -299,7 +305,9 @@ class ModelManager
         }
         else
         {
-            $key = static::getAnnotation($object, RedisEntity::class)->key;
+            /** @var RedisEntity|null $redisEntity */
+            $redisEntity = static::getAnnotation($object, RedisEntity::class);
+            $key = $redisEntity ? $redisEntity->key : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
             return $staticKeyRules[$class] = new KeyRule($key, $matches[1]);
@@ -323,7 +331,9 @@ class ModelManager
         }
         else
         {
-            $key = static::getAnnotation($object, RedisEntity::class)->member;
+            /** @var RedisEntity|null $redisEntity */
+            $redisEntity = static::getAnnotation($object, RedisEntity::class);
+            $key = $redisEntity ? $redisEntity->member : '';
             preg_match_all('/{([^}]+)}/', $key, $matches);
 
             return $staticMemberRules[$class] = new KeyRule($key, $matches[1]);
@@ -339,6 +349,7 @@ class ModelManager
      */
     public static function getRedisEntity($object): ?RedisEntity
     {
+        // @phpstan-ignore-next-line
         return static::getAnnotation($object, RedisEntity::class);
     }
 
@@ -351,6 +362,7 @@ class ModelManager
      */
     public static function getSerializables($object): ?Serializables
     {
+        // @phpstan-ignore-next-line
         return static::getAnnotation($object, Serializables::class);
     }
 

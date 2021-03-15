@@ -95,7 +95,7 @@ class BeanFactory
      *
      * @return void
      */
-    public static function initInstance(object $object, array $args = [])
+    public static function initInstance(object $object, array $args = []): void
     {
         $ref = ReflectionContainer::getClassReflection(\get_class($object));
         BeanProxy::injectProps($object, self::getObjectClass($object));
@@ -219,6 +219,8 @@ TPL;
             $paramsTpls = static::getMethodParamTpls($method);
             $methodReturnType = static::getMethodReturnType($method);
             $returnsReference = $method->returnsReference() ? '&' : '';
+            // @phpstan-ignore-next-line
+            $returnContent = $method->hasReturnType() && 'void' === $method->getReturnType()->getName() ? '' : 'return $__result__;';
             $tpl .= <<<TPL
     public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
     {
@@ -236,7 +238,7 @@ TPL;
             \$__args__
         );
         {$paramsTpls['set_args_back']}
-        return \$__result__;
+        {$returnContent}
     }
 
 TPL;
@@ -248,7 +250,7 @@ TPL;
     /**
      * 获取方法参数模版们.
      *
-     * @param \ReflectionClass $ref
+     * @param \ReflectionMethod $method
      *
      * @return array
      */
@@ -290,7 +292,7 @@ TPL;
             }
         }
         // 调用如果参数为空处理
-        if ('' === $call)
+        if ([] === $call)
         {
             $call = '...func_get_args()';
         }
@@ -326,6 +328,7 @@ TPL;
         $paramType = $param->getType();
         if ($paramType)
         {
+            // @phpstan-ignore-next-line
             $paramType = $paramType->getName();
         }
         if (null !== $paramType && $param->allowsNull())
@@ -381,6 +384,7 @@ TPL;
         }
         $returnType = $method->getReturnType();
 
+        // @phpstan-ignore-next-line
         return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
     }
 
@@ -397,12 +401,15 @@ TPL;
         {
             if ($object instanceof IBean)
             {
-                return get_parent_class($object);
+                $parentClass = get_parent_class($object);
+                // @phpstan-ignore-next-line
+                if (false !== $parentClass)
+                {
+                    return $parentClass;
+                }
             }
-            else
-            {
-                return \get_class($object);
-            }
+
+            return \get_class($object);
         }
         else
         {
@@ -425,7 +432,7 @@ TPL;
         return AopManager::getBeforeItems($className, $method) || AopManager::getAfterItems($className, $method) || AopManager::getAroundItems($className, $method) || AopManager::getAfterReturningItems($className, $method) || AopManager::getAfterThrowingItems($className, $method);
     }
 
-    public static function parseEvalName(string $class, ?string &$fileName, ?string &$className)
+    public static function parseEvalName(string $class, ?string &$fileName, ?string &$className): void
     {
         $className = str_replace('\\', '__', $class) . '__Bean__';
         $fileName = Imi::getRuntimePath('classes/' . sha1($class) . '.php');

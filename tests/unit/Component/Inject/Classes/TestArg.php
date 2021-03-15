@@ -23,7 +23,7 @@ class TestArg
      *
      * @return void
      */
-    public function test($id, $phpVersion = null)
+    public function test($id, $phpVersion = null): void
     {
         Assert::assertTrue(\is_int($id));
         Assert::assertEquals(\PHP_VERSION, $phpVersion);

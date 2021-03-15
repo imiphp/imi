@@ -14,7 +14,7 @@ class PartialClassA
     /**
      * @return int
      */
-    public function test1()
+    public function test1(): int
     {
         return 1;
     }

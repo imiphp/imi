@@ -25,7 +25,7 @@ class BeforePacket implements IPacketEventListener
      *
      * @return void
      */
-    public function handle(PacketEventParam $e)
+    public function handle(PacketEventParam $e): void
     {
         if (!SwooleWorker::isWorkerStartAppComplete())
         {

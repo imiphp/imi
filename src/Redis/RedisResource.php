@@ -47,7 +47,7 @@ class RedisResource extends BasePoolResource
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->redis->close();
     }
@@ -67,7 +67,7 @@ class RedisResource extends BasePoolResource
      *
      * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $config = $this->config;
         $redis = $this->redis;

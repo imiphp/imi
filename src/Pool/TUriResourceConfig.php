@@ -8,7 +8,7 @@ use Imi\Util\Uri;
 
 trait TUriResourceConfig
 {
-    protected function initUriResourceConfig()
+    protected function initUriResourceConfig(): void
     {
         foreach ($this->resourceConfig as &$config)
         {
@@ -22,14 +22,8 @@ trait TUriResourceConfig
             {
                 $uriObj = new Uri($uri);
                 parse_str($uriObj->getQuery(), $config);
-                if (!isset($config['host']))
-                {
-                    $config['host'] = $uriObj->getHost();
-                }
-                if (!isset($config['port']))
-                {
-                    $config['port'] = $uriObj->getPort();
-                }
+                $config['host'] ??= $uriObj->getHost();
+                $config['port'] ??= $uriObj->getPort();
             }
         }
     }

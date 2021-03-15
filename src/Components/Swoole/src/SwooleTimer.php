@@ -42,7 +42,7 @@ class SwooleTimer implements ITimer
      *
      * @return void
      */
-    public function del(int $id)
+    public function del(int $id): void
     {
         Timer::clear($id);
     }
@@ -52,7 +52,7 @@ class SwooleTimer implements ITimer
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         Timer::clearAll();
     }

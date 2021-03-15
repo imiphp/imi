@@ -25,9 +25,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="login"})
      *
-     * @return void
+     * @return array
      */
-    public function login($data)
+    public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->frame->getFd());
@@ -54,9 +54,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="reconnect"})
      *
-     * @return void
+     * @return array
      */
-    public function reconnect($data)
+    public function reconnect(\stdClass $data): array
     {
         ConnectContext::restore($data->token);
 
@@ -72,11 +72,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="send"})
      *
-     * @param
-     *
      * @return void
      */
-    public function send($data)
+    public function send(\stdClass $data): void
     {
         /** @var \Imi\Workerman\Server\WebSocket\Server $server */
         $server = $this->server;
@@ -95,11 +93,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="info"})
      *
-     * @param
-     *
-     * @return void
+     * @return array
      */
-    public function info()
+    public function info(): array
     {
         return [
             'fd'       => RequestContext::get('fd'),
@@ -113,11 +109,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"a.b.c"="test1"})
      *
-     * @param
-     *
-     * @return void
+     * @return array
      */
-    public function test1($data)
+    public function test1(\stdClass $data): array
     {
         return ['data' => $data];
     }
@@ -128,11 +122,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"a"="1", "b"=2})
      *
-     * @param
-     *
-     * @return void
+     * @return array
      */
-    public function test2($data)
+    public function test2(\stdClass $data): array
     {
         return ['data' => $data];
     }
@@ -143,11 +135,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"duplicated"=1})
      *
-     * @param
-     *
      * @return void
      */
-    public function duplicated1($data)
+    public function duplicated1(): void
     {
     }
 
@@ -157,11 +147,9 @@ class TestController extends WebSocketController
      * @WSAction
      * @WSRoute({"duplicated"=1})
      *
-     * @param
-     *
      * @return void
      */
-    public function duplicated2($data)
+    public function duplicated2(): void
     {
     }
 }

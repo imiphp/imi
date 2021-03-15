@@ -14,7 +14,7 @@ class DotEnv
     {
     }
 
-    public static function load(array $paths)
+    public static function load(array $paths): void
     {
         $repository = \Dotenv\Repository\RepositoryBuilder::createWithNoAdapters()
             ->addAdapter(\Dotenv\Repository\Adapter\EnvConstAdapter::class)

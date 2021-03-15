@@ -17,7 +17,7 @@ class ResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testMiddleware()
+    public function testMiddleware(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'middleware');
@@ -35,7 +35,7 @@ class ResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testOptionsMiddleware()
+    public function testOptionsMiddleware(): void
     {
         $http = new HttpRequest();
         $response = $http->send($this->host, '', 'OPTIONS');
@@ -52,7 +52,7 @@ class ResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testCookie()
+    public function testCookie(): void
     {
         $http = new HttpRequest();
         $http->get($this->host . 'cookie');
@@ -89,7 +89,7 @@ class ResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testHeaders()
+    public function testHeaders(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'headers');
@@ -103,7 +103,7 @@ class ResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $http = new HttpRequest();
         $http->followLocation = false;
@@ -117,7 +117,7 @@ class ResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testDownload()
+    public function testDownload(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'download');

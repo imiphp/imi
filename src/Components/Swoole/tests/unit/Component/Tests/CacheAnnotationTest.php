@@ -18,7 +18,7 @@ class CacheAnnotationTest extends BaseTest
      *
      * @return void
      */
-    public function testCacheableTTL()
+    public function testCacheableTTL(): void
     {
         for ($_ = 0; $_ < 3; ++$_)
         {
@@ -58,7 +58,7 @@ class CacheAnnotationTest extends BaseTest
         }
     }
 
-    public function testCacheableLock()
+    public function testCacheableLock(): void
     {
         for ($_ = 0; $_ < 3; ++$_)
         {
@@ -149,7 +149,7 @@ class CacheAnnotationTest extends BaseTest
         }
     }
 
-    public function testCacheEvict()
+    public function testCacheEvict(): void
     {
         $test = App::getBean('TestCacheAnnotation');
         $id = 2;
@@ -164,7 +164,7 @@ class CacheAnnotationTest extends BaseTest
         Assert::assertNotEquals($result2, $result);
     }
 
-    public function testCachePut()
+    public function testCachePut(): void
     {
         $test = App::getBean('TestCacheAnnotation');
         $id = 3;

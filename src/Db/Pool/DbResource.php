@@ -42,7 +42,7 @@ class DbResource extends BasePoolResource
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->db->close();
     }
@@ -62,7 +62,7 @@ class DbResource extends BasePoolResource
      *
      * @return void
      */
-    public function reset()
+    public function reset(): void
     {
         $db = $this->db;
         // 如果在事务中，则回滚

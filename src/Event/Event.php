@@ -27,7 +27,7 @@ class Event
      *
      * @return void
      */
-    public static function on($name, $callback, int $priority = 0)
+    public static function on($name, $callback, int $priority = 0): void
     {
         static::getInstance()->__on($name, $callback, $priority);
     }
@@ -41,7 +41,7 @@ class Event
      *
      * @return void
      */
-    public static function one($name, $callback, int $priority = 0)
+    public static function one($name, $callback, int $priority = 0): void
     {
         static::getInstance()->__one($name, $callback, $priority);
     }
@@ -54,7 +54,7 @@ class Event
      *
      * @return void
      */
-    public static function off($name, $callback = null)
+    public static function off($name, $callback = null): void
     {
         static::getInstance()->__off($name, $callback);
     }
@@ -69,7 +69,7 @@ class Event
      *
      * @return void
      */
-    public static function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class)
+    public static function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
         static::getInstance()->__trigger($name, $data, $target, $paramClass);
     }

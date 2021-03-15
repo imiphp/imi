@@ -13,14 +13,14 @@ use PHPUnit\Framework\Assert;
  */
 class AtomicTest extends BaseTest
 {
-    public function testGetAndSet()
+    public function testGetAndSet(): void
     {
         Assert::assertEquals(0, AtomicManager::get('test'));
         AtomicManager::set('test', 100);
         Assert::assertEquals(100, AtomicManager::get('test'));
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         AtomicManager::set('test', 0);
         Assert::assertEquals(1, AtomicManager::add('test'));
@@ -29,7 +29,7 @@ class AtomicTest extends BaseTest
         Assert::assertEquals(3, AtomicManager::get('test'));
     }
 
-    public function testSub()
+    public function testSub(): void
     {
         AtomicManager::set('test', 100);
         Assert::assertEquals(99, AtomicManager::sub('test'));
@@ -38,7 +38,7 @@ class AtomicTest extends BaseTest
         Assert::assertEquals(97, AtomicManager::get('test'));
     }
 
-    public function testCmpset()
+    public function testCmpset(): void
     {
         AtomicManager::set('test', 1);
         Assert::assertFalse(AtomicManager::cmpset('test', 0, 2));

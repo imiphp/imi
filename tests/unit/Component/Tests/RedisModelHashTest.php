@@ -12,7 +12,7 @@ use Imi\Test\Component\Model\TestRedisHashModel;
  */
 class RedisModelHashTest extends BaseTest
 {
-    public function testSave()
+    public function testSave(): void
     {
         $record = TestRedisHashModel::newInstance([
             'id'    => 1,
@@ -22,7 +22,7 @@ class RedisModelHashTest extends BaseTest
         $this->assertTrue($record->save());
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $expected = [
             'id'    => 1,
@@ -37,7 +37,7 @@ class RedisModelHashTest extends BaseTest
         $this->assertEquals($expected, $record->toArray());
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $expected = [
             [
@@ -67,7 +67,7 @@ class RedisModelHashTest extends BaseTest
         $this->assertEquals($expected, json_decode(json_encode($list), true));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $record = TestRedisHashModel::find([
             'id'    => 1,
@@ -77,7 +77,7 @@ class RedisModelHashTest extends BaseTest
         $this->assertTrue($record->delete());
     }
 
-    public function testDeleteBatch()
+    public function testDeleteBatch(): void
     {
         $record = TestRedisHashModel::newInstance([
             'id'    => 1,

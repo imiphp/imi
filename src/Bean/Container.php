@@ -118,7 +118,7 @@ class Container implements ContainerInterface
      *
      * @return void
      */
-    public function bind(string $name, string $class)
+    public function bind(string $name, string $class): void
     {
         $this->binds[$name] = $class;
     }

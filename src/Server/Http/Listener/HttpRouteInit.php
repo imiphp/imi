@@ -36,7 +36,7 @@ class HttpRouteInit implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $this->parseAnnotations();
         $this->parseConfigs();
@@ -47,7 +47,7 @@ class HttpRouteInit implements IEventListener
      *
      * @return void
      */
-    protected function parseAnnotations()
+    protected function parseAnnotations(): void
     {
         $controllerParser = ControllerParser::getInstance();
         $context = RequestContext::getContext();
@@ -88,6 +88,7 @@ class HttpRouteInit implements IEventListener
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
+                    /** @var Middleware $middleware */
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, Middleware::class) ?? [] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
@@ -109,7 +110,7 @@ class HttpRouteInit implements IEventListener
                             {
                                 if (isset($routeItem->url[1]) && './' === substr($routeItem->url, 0, 2))
                                 {
-                                    $prefixHasSlash = '/' === substr($prefix, -1, 1);
+                                    $prefixHasSlash = '/' === $prefix[-1];
                                     $routeItem->url = $prefix . substr($routeItem->url, $prefixHasSlash ? 2 : 1);
                                 }
                                 else
@@ -147,7 +148,7 @@ class HttpRouteInit implements IEventListener
      *
      * @return void
      */
-    protected function parseConfigs()
+    protected function parseConfigs(): void
     {
         $context = RequestContext::getContext();
         foreach (ServerManager::getServers() as $server)

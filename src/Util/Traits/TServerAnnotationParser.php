@@ -20,6 +20,8 @@ trait TServerAnnotationParser
      */
     private array $cache = [];
 
+    protected string $controllerAnnotationClass;
+
     /**
      * 根据服务器获取对应的控制器数据.
      *
@@ -37,7 +39,7 @@ trait TServerAnnotationParser
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
         foreach ($namespaces as &$namespace)
         {
-            if ('\\' !== substr($namespace, -1, 1))
+            if ('\\' !== $namespace[-1])
             {
                 $namespace .= '\\';
             }

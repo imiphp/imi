@@ -32,13 +32,14 @@ class Delete
      *
      * @return void
      */
-    public static function parse(Model $model, string $propertyName, RelationBase $annotation)
+    public static function parse(Model $model, string $propertyName, RelationBase $annotation): void
     {
         if (!$model->$propertyName)
         {
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        /** @var AutoDelete|null $autoDelete */
         $autoDelete = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoDelete::class)[0] ?? null;
 
         if (!$autoDelete || !$autoDelete->status)
@@ -65,6 +66,7 @@ class Delete
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
+        // @phpstan-ignore-next-line
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
             static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
@@ -80,7 +82,7 @@ class Delete
      *
      * @return void
      */
-    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation)
+    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -115,7 +117,7 @@ class Delete
      *
      * @return void
      */
-    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation)
+    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -151,7 +153,7 @@ class Delete
      *
      * @return void
      */
-    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
+    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -187,7 +189,7 @@ class Delete
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation)
+    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -224,7 +226,7 @@ class Delete
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
+    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -261,7 +263,7 @@ class Delete
      *
      * @return void
      */
-    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation)
+    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 

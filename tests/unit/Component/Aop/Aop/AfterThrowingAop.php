@@ -26,7 +26,7 @@ class AfterThrowingAop
      *
      * @return void
      */
-    public function injectAfterThrowingAopCancelThrow(AfterThrowingJoinPoint $joinPoint)
+    public function injectAfterThrowingAopCancelThrow(AfterThrowingJoinPoint $joinPoint): void
     {
         Assert::assertEquals([], $joinPoint->getArgs());
         Assert::assertEquals('testCancelThrow', $joinPoint->getMethod());
@@ -49,7 +49,7 @@ class AfterThrowingAop
      *
      * @return void
      */
-    public function injectAfterThrowingAopNotCancelThrow(AfterThrowingJoinPoint $joinPoint)
+    public function injectAfterThrowingAopNotCancelThrow(AfterThrowingJoinPoint $joinPoint): void
     {
         Assert::assertEquals([], $joinPoint->getArgs());
         Assert::assertEquals('testNotCancelThrow', $joinPoint->getMethod());

@@ -16,6 +16,8 @@ class AfterReturningJoinPoint extends JoinPoint
     /**
      * 设置返回值
      *
+     * @param mixed $value
+     *
      * @return mixed
      */
     public function setReturnValue($value)

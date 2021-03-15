@@ -7,6 +7,7 @@ namespace Imi\Swoole\Server;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\ConnectContext\ConnectionBinder;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
@@ -213,6 +214,7 @@ class ServerUtil implements ISwooleServerUtil
         {
             foreach ($fds as $tmpFd)
             {
+                /** @var \Swoole\WebSocket\Server $swooleServer */
                 if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
                 {
                     continue;
@@ -345,6 +347,7 @@ class ServerUtil implements ISwooleServerUtil
         {
             foreach ($server->getSwoolePort()->connections as $fd)
             {
+                /** @var \Swoole\WebSocket\Server $swooleServer */
                 if ('push' === $method && !$swooleServer->isEstablished($fd))
                 {
                     continue;
@@ -483,9 +486,9 @@ class ServerUtil implements ISwooleServerUtil
     /**
      * 关闭一个或多个指定标记的连接.
      *
-     * @param string|string[] $flag
-     * @param string|null     $serverName
-     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param string|string[]|null $flag
+     * @param string|null          $serverName
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      *
      * @return int
      */
@@ -534,6 +537,7 @@ class ServerUtil implements ISwooleServerUtil
     {
         if (null === $serverName)
         {
+            /** @var ISwooleServer|null $server */
             $server = RequestContext::getServer();
             if ($server)
             {
@@ -542,6 +546,7 @@ class ServerUtil implements ISwooleServerUtil
             $serverName = 'main';
         }
 
+        // @phpstan-ignore-next-line
         return ServerManager::getServer($serverName, ISwooleServer::class);
     }
 }

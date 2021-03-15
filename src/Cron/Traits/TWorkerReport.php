@@ -20,7 +20,7 @@ trait TWorkerReport
      *
      * @return void
      */
-    protected function reportCronResult(string $id, bool $success, string $message)
+    protected function reportCronResult(string $id, bool $success, string $message): void
     {
         CronUtil::reportCronResult($id, $success, $message);
     }

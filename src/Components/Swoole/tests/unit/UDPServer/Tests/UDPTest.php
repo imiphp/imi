@@ -14,7 +14,7 @@ class UDPTest extends BaseTest
     /**
      * @testdox test
      */
-    public function test()
+    public function test(): void
     {
         $this->go(function () {
             $uri = new Uri($this->host);
@@ -31,7 +31,7 @@ class UDPTest extends BaseTest
         });
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $this->go(function () {
             $uri = new Uri($this->host);

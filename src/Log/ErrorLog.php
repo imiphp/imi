@@ -27,10 +27,11 @@ class ErrorLog
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         error_reporting($this->level);
         register_shutdown_function([$this, 'onShutdown']);
+        // @phpstan-ignore-next-line
         set_error_handler([$this, 'onError']);
     }
 
@@ -44,7 +45,7 @@ class ErrorLog
      *
      * @return void
      */
-    public function onError(int $errno, string $errstr, string $errfile, int $errline)
+    public function onError(int $errno, string $errstr, string $errfile, int $errline): void
     {
         if (error_reporting() & $errno)
         {
@@ -73,6 +74,7 @@ class ErrorLog
             case \E_STRICT:
             case \E_DEPRECATED:
             case \E_USER_DEPRECATED:
+            default:
                 $method = 'info';
                 break;
         }
@@ -88,7 +90,7 @@ class ErrorLog
      *
      * @return void
      */
-    public function onShutdown()
+    public function onShutdown(): void
     {
         try
         {
@@ -124,7 +126,7 @@ class ErrorLog
      *
      * @return void
      */
-    public function onException(\Throwable $th)
+    public function onException(\Throwable $th): void
     {
         // 支持记录无限级上级日志
         $throwables = [$th];

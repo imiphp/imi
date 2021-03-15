@@ -13,7 +13,7 @@ use Imi\Util\ArrayList;
  */
 class ArrayListTest extends BaseTest
 {
-    public function testArrayListConstruct()
+    public function testArrayListConstruct(): void
     {
         try
         {
@@ -28,7 +28,7 @@ class ArrayListTest extends BaseTest
         }
     }
 
-    public function testArrayList()
+    public function testArrayList(): void
     {
         $list = [];
         for ($i = 1; $i <= 3; ++$i)

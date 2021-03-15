@@ -71,7 +71,7 @@ class Logger extends AbstractLogger
      *
      * @return void
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         $context = $this->parseContext($context);
         $trace = $context['trace'];
@@ -88,7 +88,7 @@ class Logger extends AbstractLogger
      *
      * @return void
      */
-    public function save()
+    public function save(): void
     {
         foreach ($this->handlers as $handler)
         {
@@ -159,10 +159,7 @@ class Logger extends AbstractLogger
     private function parseContext(array $context): array
     {
         $debugBackTrace = debug_backtrace();
-        if (!isset($context['trace']))
-        {
-            $context['trace'] = $this->getTrace($debugBackTrace);
-        }
+        $context['trace'] ??= $this->getTrace($debugBackTrace);
         if (!isset($context['errorFile']))
         {
             list($file, $line) = $this->getErrorFile($debugBackTrace);
@@ -180,7 +177,7 @@ class Logger extends AbstractLogger
      *
      * @return void
      */
-    public function addExHandler(array $exHandler)
+    public function addExHandler(array $exHandler): void
     {
         if (\in_array($exHandler, $this->exHandlers))
         {

@@ -24,10 +24,14 @@ class Inherit extends Base
     /**
      * 允许的注解类，为 null 则不限制，支持字符串或数组.
      *
-     * @var string|string[]
+     * @var string|string[]|null
      */
-    public $annotation;
+    public $annotation = null;
 
+    /**
+     * @param array|null           $__data
+     * @param string|string[]|null $annotation
+     */
     public function __construct(?array $__data = null, $annotation = null)
     {
         parent::__construct(...\func_get_args());

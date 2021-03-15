@@ -12,7 +12,7 @@ use Imi\Util\Random;
  */
 class RandomTest extends BaseTest
 {
-    public function testInt()
+    public function testInt(): void
     {
         $val = Random::int();
         $this->assertTrue($val >= \PHP_INT_MIN && $val <= \PHP_INT_MAX);
@@ -21,7 +21,7 @@ class RandomTest extends BaseTest
         $this->assertTrue($val >= 1 && $val <= 3);
     }
 
-    public function testNumber()
+    public function testNumber(): void
     {
         $val = Random::number();
         $this->assertTrue($val >= \PHP_INT_MIN && $val <= \PHP_INT_MAX);
@@ -34,7 +34,7 @@ class RandomTest extends BaseTest
         $this->assertLessThanOrEqual(1, \strlen($afterDot));
     }
 
-    public function testText()
+    public function testText(): void
     {
         $val = Random::text('a', 5, 5);
         $this->assertEquals('aaaaa', $val);
@@ -46,7 +46,7 @@ class RandomTest extends BaseTest
         $this->assertTrue(preg_match('/^[abc]{10, 20}$/', $val) >= 0);
     }
 
-    public function testLetter()
+    public function testLetter(): void
     {
         $val = Random::letter(10, 20);
         $this->assertTrue(preg_match('/^[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]{10, 20}$/', $val) >= 0);
@@ -54,7 +54,7 @@ class RandomTest extends BaseTest
         $this->assertEquals(5, \strlen(Random::letter(5)));
     }
 
-    public function testDigital()
+    public function testDigital(): void
     {
         $val = Random::digital(10, 20);
         $this->assertTrue(preg_match('/^[0123456789]{10, 20}$/', $val) >= 0);
@@ -62,7 +62,7 @@ class RandomTest extends BaseTest
         $this->assertEquals(5, \strlen(Random::digital(5)));
     }
 
-    public function testLetterAndNumber()
+    public function testLetterAndNumber(): void
     {
         $val = Random::letterAndNumber(10, 20);
         $this->assertTrue(preg_match('/^[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]{10, 20}$/', $val) >= 0);

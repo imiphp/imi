@@ -14,9 +14,9 @@ class Request extends AbstractMessage implements IRequest
     /**
      * 请求地址
      *
-     * @var \Imi\Util\Uri
+     * @var UriInterface
      */
-    protected Uri $uri;
+    protected UriInterface $uri;
 
     /**
      * 请求方法.
@@ -114,7 +114,7 @@ class Request extends AbstractMessage implements IRequest
      *
      * @return void
      */
-    protected function initMethod()
+    protected function initMethod(): void
     {
     }
 
@@ -186,7 +186,7 @@ class Request extends AbstractMessage implements IRequest
      *
      * @return void
      */
-    protected function initUri()
+    protected function initUri(): void
     {
     }
 

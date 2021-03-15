@@ -10,8 +10,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Table implements ITable
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 数据库名.
@@ -78,7 +78,7 @@ class Table implements ITable
      *
      * @return void
      */
-    public function setDatabase(?string $database = null)
+    public function setDatabase(?string $database = null): void
     {
         $this->database = $database;
     }
@@ -90,7 +90,7 @@ class Table implements ITable
      *
      * @return void
      */
-    public function setTable(?string $table = null)
+    public function setTable(?string $table = null): void
     {
         $this->table = $table;
     }
@@ -102,7 +102,7 @@ class Table implements ITable
      *
      * @return void
      */
-    public function setAlias(?string $alias = null)
+    public function setAlias(?string $alias = null): void
     {
         $this->alias = $alias;
     }
@@ -118,7 +118,7 @@ class Table implements ITable
      *
      * @return void
      */
-    public function setValue(string $value)
+    public function setValue(string $value): void
     {
         $matches = $this->parseKeywordText($value);
         if (isset($matches['keywords']))

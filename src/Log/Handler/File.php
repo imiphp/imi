@@ -63,7 +63,7 @@ class File extends Base
      *
      * @return void
      */
-    protected function __save(array $records)
+    protected function __save(array $records): void
     {
         $this->parseDate();
         foreach ($records as $record)
@@ -77,7 +77,7 @@ class File extends Base
      *
      * @return void
      */
-    private function parseDate()
+    private function parseDate(): void
     {
         $todayDateTime = strtotime(date('Y-m-d H:00:00'));
         if ($todayDateTime !== $this->currentFileDateTime)

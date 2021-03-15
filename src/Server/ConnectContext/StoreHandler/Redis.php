@@ -124,7 +124,7 @@ class Redis implements IHandler
      *
      * @return void
      */
-    private function initRedis(RedisHandler $redis, ?int $storeMasterPID = null)
+    private function initRedis(RedisHandler $redis, ?int $storeMasterPID = null): void
     {
         if (null !== $storeMasterPID)
         {
@@ -144,7 +144,7 @@ class Redis implements IHandler
      *
      * @return void
      */
-    private function startPing(RedisHandler $redis)
+    private function startPing(RedisHandler $redis): void
     {
         if ($this->ping($redis))
         {
@@ -162,7 +162,7 @@ class Redis implements IHandler
      *
      * @return void
      */
-    public function pingTimer()
+    public function pingTimer(): void
     {
         $this->useRedis(function (RedisHandler $redis) {
             $this->ping($redis);
@@ -226,7 +226,7 @@ class Redis implements IHandler
     public function read(string $key): array
     {
         return $this->useRedis(function (RedisHandler $redis) use ($key) {
-            $result = $redis->hget($this->getStoreKey(), $key);
+            $result = $redis->hGet($this->getStoreKey(), $key);
             if ($result)
             {
                 if ($this->dataDecode)
@@ -253,7 +253,7 @@ class Redis implements IHandler
      *
      * @return void
      */
-    public function save(string $key, array $data)
+    public function save(string $key, array $data): void
     {
         $this->useRedis(function (RedisHandler $redis) use ($key, $data) {
             if ($this->dataEncode)
@@ -271,10 +271,10 @@ class Redis implements IHandler
      *
      * @return void
      */
-    public function destroy(string $key)
+    public function destroy(string $key): void
     {
         $this->useRedis(function (RedisHandler $redis) use ($key) {
-            $redis->hdel($this->getStoreKey(), $key);
+            $redis->hDel($this->getStoreKey(), $key);
         });
     }
 
@@ -286,9 +286,9 @@ class Redis implements IHandler
      *
      * @return void
      */
-    public function delayDestroy(string $key, int $ttl)
+    public function delayDestroy(string $key, int $ttl): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($key, $ttl) {
+        $this->useRedis(function (RedisHandler $redis) use ($ttl) {
             $redis->expire($this->getStoreKey(), $ttl);
         });
     }
@@ -303,7 +303,7 @@ class Redis implements IHandler
     public function exists(string $key): bool
     {
         return $this->useRedis(function (RedisHandler $redis) use ($key) {
-            return $redis->hexists($this->getStoreKey(), $key);
+            return $redis->hExists($this->getStoreKey(), $key);
         });
     }
 

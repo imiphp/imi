@@ -21,8 +21,8 @@ use Imi\Util\ClassObject;
  */
 class CacheableAop
 {
-    use TLockableParser;
     use TCacheAopHelper;
+    use TLockableParser;
 
     /**
      * 处理 Cacheable 注解.
@@ -45,6 +45,7 @@ class CacheableAop
         $joinPointArgs = $joinPoint->getArgs();
 
         // Cacheable 注解
+        /** @var Cacheable|null $cacheable */
         $cacheable = AnnotationManager::getMethodAnnotations($class, $method, Cacheable::class)[0] ?? null;
 
         // 方法参数

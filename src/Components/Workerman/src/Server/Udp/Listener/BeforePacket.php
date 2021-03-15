@@ -24,7 +24,7 @@ class BeforePacket implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         /** @var IPacketData $packetData */
         ['packetData' => $packetData] = $e->getData();

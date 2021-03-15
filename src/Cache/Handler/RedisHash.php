@@ -315,7 +315,7 @@ SCRIPT;
      *
      * @return void
      */
-    protected function parseKey(?string &$key, ?string &$member)
+    protected function parseKey(?string &$key, ?string &$member): void
     {
         if (!\is_string($key))
         {

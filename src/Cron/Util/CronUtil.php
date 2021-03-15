@@ -28,7 +28,7 @@ class CronUtil
      *
      * @return void
      */
-    public static function reportCronResult(string $id, bool $success, string $message)
+    public static function reportCronResult(string $id, bool $success, string $message): void
     {
         $client = new Client([
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
@@ -53,7 +53,7 @@ class CronUtil
      *
      * @return void
      */
-    public static function addCron(Cron $cron, $task)
+    public static function addCron(Cron $cron, $task): void
     {
         $client = new Client([
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
@@ -79,7 +79,7 @@ class CronUtil
      *
      * @return void
      */
-    public static function removeCron(string $id)
+    public static function removeCron(string $id): void
     {
         $client = new Client([
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),
@@ -102,7 +102,7 @@ class CronUtil
      *
      * @return void
      */
-    public static function clear()
+    public static function clear(): void
     {
         $client = new Client([
             'socketFile'    => App::getBean('CronManager')->getSocketFile(),

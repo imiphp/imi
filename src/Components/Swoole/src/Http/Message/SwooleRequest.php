@@ -25,7 +25,11 @@ class SwooleRequest extends Request
      */
     protected Base $serverInstance;
 
-    public function __construct(\Imi\Swoole\Server\Base $server, \Swoole\Http\Request $request)
+    /**
+     * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
+     * @param \Swoole\Http\Request                                               $request
+     */
+    public function __construct(Base $server, \Swoole\Http\Request $request)
     {
         $this->swooleRequest = $request;
         $this->serverInstance = $server;
@@ -36,7 +40,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initProtocolVersion()
+    protected function initProtocolVersion(): void
     {
         [, $this->protocolVersion] = explode('/', $this->swooleRequest->server['server_protocol'], 2);
     }
@@ -46,7 +50,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initHeaders()
+    protected function initHeaders(): void
     {
         $this->mergeHeaders($this->swooleRequest->header);
     }
@@ -56,7 +60,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initBody()
+    protected function initBody(): void
     {
         $this->body = new MemoryStream($this->swooleRequest->rawContent() ?: '');
     }
@@ -66,7 +70,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initUri()
+    protected function initUri(): void
     {
         $serverInstance = $this->serverInstance;
         if ($serverInstance instanceof \Imi\Swoole\Server\Http\Server)
@@ -92,7 +96,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initMethod()
+    protected function initMethod(): void
     {
         $this->method = $this->swooleRequest->server['request_method'];
     }
@@ -102,7 +106,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initServer()
+    protected function initServer(): void
     {
         $this->server = $this->swooleRequest->server;
     }
@@ -112,7 +116,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initRequestParams()
+    protected function initRequestParams(): void
     {
         $request = $this->swooleRequest;
         $this->get = $request->get ?? [];
@@ -126,7 +130,7 @@ class SwooleRequest extends Request
      *
      * @return void
      */
-    protected function initUploadedFiles()
+    protected function initUploadedFiles(): void
     {
         $this->setUploadedFiles($this->swooleRequest->files ?? []);
     }
@@ -146,7 +150,7 @@ class SwooleRequest extends Request
      *
      * @return \Imi\Swoole\Server\Base
      */
-    public function getServerInstance(): \Imi\Swoole\Server\Base
+    public function getServerInstance(): Base
     {
         return $this->serverInstance;
     }

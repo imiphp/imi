@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Db\Pool;
 
 use Imi\App;
-use Imi\Bean\BeanFactory;
 use Imi\Db\Pool\DbResource;
 use Imi\Pool\TUriResourceConfig;
 use Imi\Swoole\Pool\BaseAsyncPool;

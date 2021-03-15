@@ -15,7 +15,10 @@ class WSControllerParser extends BaseParser
 {
     use TServerAnnotationParser;
 
-    protected string $controllerAnnotationClass = WSController::class;
+    public function __construct()
+    {
+        $this->controllerAnnotationClass = WSController::class;
+    }
 
     /**
      * 处理方法.
@@ -27,7 +30,7 @@ class WSControllerParser extends BaseParser
      *
      * @return void
      */
-    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
+    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
     }
 }

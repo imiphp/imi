@@ -16,7 +16,7 @@ class AnnotationTest extends BaseTest
 
     protected string $beanName = 'TestAnnotation';
 
-    public function testClassAnnotation()
+    public function testClassAnnotation(): void
     {
         $annotations = AnnotationManager::getClassAnnotations($this->className);
         /** @var \Imi\Bean\Annotation\Bean $bean */
@@ -25,7 +25,7 @@ class AnnotationTest extends BaseTest
         $this->assertEquals($this->beanName, $bean->name);
     }
 
-    public function testMethodAnnotation()
+    public function testMethodAnnotation(): void
     {
         $annotations = AnnotationManager::getMethodAnnotations($this->className, 'test');
         /** @var \Imi\Server\Http\Route\Annotation\Route $route */
@@ -34,7 +34,7 @@ class AnnotationTest extends BaseTest
         $this->assertEquals('/testAnnotation', $route->url);
     }
 
-    public function testPropertyAnnotation()
+    public function testPropertyAnnotation(): void
     {
         $annotations = AnnotationManager::getPropertyAnnotations($this->className, 'errorLog');
         /** @var \Imi\Aop\Annotation\Inject $inject */
@@ -43,7 +43,7 @@ class AnnotationTest extends BaseTest
         $this->assertEquals('ErrorLog', $inject->name);
     }
 
-    public function testConstantAnnotation()
+    public function testConstantAnnotation(): void
     {
         $annotations = AnnotationManager::getConstantAnnotations($this->className, 'CONST_VALUE');
         /** @var \Imi\Enum\Annotation\EnumItem $enumItem */

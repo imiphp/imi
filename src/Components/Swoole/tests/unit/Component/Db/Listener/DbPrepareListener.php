@@ -21,7 +21,7 @@ class DbPrepareListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         if (false !== App::get('DB_LOG'))
         {

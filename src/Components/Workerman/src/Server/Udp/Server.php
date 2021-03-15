@@ -43,7 +43,7 @@ class Server extends Base implements IUdpServer
      *
      * @return void
      */
-    protected function bindEvents()
+    protected function bindEvents(): void
     {
         parent::bindEvents();
 

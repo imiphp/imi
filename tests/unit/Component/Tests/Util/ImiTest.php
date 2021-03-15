@@ -18,7 +18,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testParseRule()
+    public function testParseRule(): void
     {
         $this->assertEquals('a\\\\b\:\:c\/d.*e', Imi::parseRule('a\b::c/d*e'));
     }
@@ -28,7 +28,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testCheckRuleMatch()
+    public function testCheckRuleMatch(): void
     {
         $rule = 'a\b::c/d*e';
         $this->assertTrue(Imi::checkRuleMatch($rule, 'a\b::c/d123e'));
@@ -41,7 +41,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testCheckClassMethodRule()
+    public function testCheckClassMethodRule(): void
     {
         $rule = 'a\b::d*e';
         $this->assertTrue(Imi::checkClassMethodRule($rule, 'a\b', 'd123e'));
@@ -54,7 +54,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testCheckClassRule()
+    public function testCheckClassRule(): void
     {
         $rule = 'a\b::d*e';
         $this->assertTrue(Imi::checkClassRule($rule, 'a\b'));
@@ -66,7 +66,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testCheckCompareRules()
+    public function testCheckCompareRules(): void
     {
         $rules = [
             'a' => '1',
@@ -148,7 +148,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testCheckCompareRule()
+    public function testCheckCompareRule(): void
     {
         $this->assertTrue(Imi::checkCompareRule('a=1', function (string $name) {
             static $data = [
@@ -171,7 +171,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testCheckCompareValues()
+    public function testCheckCompareValues(): void
     {
         $rules = [
             '!1',
@@ -197,7 +197,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function checkCompareValue()
+    public function testCheckCompareValue(): void
     {
         $this->assertTrue(Imi::checkCompareValue('123', '123'));
         $this->assertFalse(Imi::checkCompareValue('123', '1234'));
@@ -210,7 +210,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function checkParseDotRule()
+    public function testCheckParseDotRule(): void
     {
         $this->assertEquals([
             'a',
@@ -224,7 +224,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testGetClassNamespace()
+    public function testGetClassNamespace(): void
     {
         $this->assertEquals('', Imi::getClassNamespace('Redis'));
         $this->assertEquals('', Imi::getClassNamespace('\Redis'));
@@ -236,7 +236,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testGetClassShortName()
+    public function testGetClassShortName(): void
     {
         $this->assertEquals('Redis', Imi::getClassShortName('Redis'));
         $this->assertEquals('Redis', Imi::getClassShortName('\Redis'));
@@ -248,7 +248,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testGetNamespacePath()
+    public function testGetNamespacePath(): void
     {
         $this->assertEquals(__DIR__, Imi::getNamespacePath('Imi\Test\Component\Tests\Util'));
     }
@@ -258,7 +258,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testGetNamespacePaths()
+    public function testGetNamespacePaths(): void
     {
         $this->assertEquals([
             __DIR__,
@@ -271,7 +271,7 @@ class ImiTest extends BaseTest
      *
      * @return void
      */
-    public function testGetClassPropertyValue()
+    public function testGetClassPropertyValue(): void
     {
         $this->assertEquals(1, Imi::getClassPropertyValue('TestPropertyClass', 'a'));
         $this->assertEquals('bbb', Imi::getClassPropertyValue('TestPropertyClass', 'b'));

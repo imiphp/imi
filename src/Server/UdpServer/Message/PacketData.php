@@ -78,7 +78,7 @@ class PacketData implements IPacketData
     /**
      * 获取客户端端口.
      *
-     * @return integer
+     * @return int
      */
     public function getRemotePort(): int
     {

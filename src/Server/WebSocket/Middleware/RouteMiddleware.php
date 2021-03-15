@@ -27,7 +27,7 @@ class RouteMiddleware implements IMiddleware
     /**
      * @ServerInject("WSRouteNotFoundHandler")
      *
-     * @var \Imi\Server\Http\Error\IWSRouteNotFoundHandler
+     * @var IWSRouteNotFoundHandler
      */
     protected IWSRouteNotFoundHandler $notFoundHandler;
 
@@ -37,7 +37,7 @@ class RouteMiddleware implements IMiddleware
      * @param IFrame          $frame
      * @param IMessageHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IFrame $frame, IMessageHandler $handler)
     {

@@ -61,11 +61,11 @@ class ActionMiddleware implements MiddlewareInterface
         // 获取路由结果
         $context = RequestContext::getContext();
         $context['response'] = $response;
-        /** @var \Imi\Server\Http\Route\RouteResult $result */
         if (null === ($result = $context['routeResult']))
         {
             throw new \RuntimeException('RequestContent not found routeResult');
         }
+        /** @var \Imi\Server\Http\Route\RouteResult $result */
         $callable = &$result->callable;
         $routeItem = $result->routeItem;
         if ($isSingleton = $routeItem->singleton)
@@ -89,6 +89,7 @@ class ActionMiddleware implements MiddlewareInterface
             }
         }
         // 执行动作
+        // @phpstan-ignore-next-line
         $actionResult = ($callable)(...$this->prepareActionParams($request, $result));
         // 视图
         $finalResponse = null;

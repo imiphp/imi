@@ -65,13 +65,13 @@ class WSRoute implements IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param Imi\Server\WebSocket\Route\Annotation\WSRoute $annotation
-     * @param mixed                                         $callable
-     * @param array                                         $options
+     * @param WSRouteAnnotation $annotation
+     * @param mixed             $callable
+     * @param array             $options
      *
      * @return void
      */
-    public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, array $options = [])
+    public function addRuleAnnotation(WSRouteAnnotation $annotation, $callable, array $options = []): void
     {
         $routeItem = new RouteItem($annotation, $callable, $options);
         if (isset($options['middlewares']))
@@ -90,7 +90,7 @@ class WSRoute implements IRoute
      *
      * @return void
      */
-    public function clearRules()
+    public function clearRules(): void
     {
         $this->rules = [];
     }
@@ -98,7 +98,7 @@ class WSRoute implements IRoute
     /**
      * 路由规则是否存在.
      *
-     * @param Imi\Server\WebSocket\Route\Annotation\WSRoute $rule
+     * @param WSRouteAnnotation $rule
      *
      * @return bool
      */
@@ -148,7 +148,7 @@ class WSRoute implements IRoute
      *
      * @return void
      */
-    public function checkDuplicateRoutes()
+    public function checkDuplicateRoutes(): void
     {
         $first = true;
         $map = [];
@@ -171,7 +171,7 @@ class WSRoute implements IRoute
         }
     }
 
-    private function logDuplicated(RouteItem $routeItem)
+    private function logDuplicated(RouteItem $routeItem): void
     {
         $callable = $routeItem->callable;
         $annotation = $routeItem->annotation;

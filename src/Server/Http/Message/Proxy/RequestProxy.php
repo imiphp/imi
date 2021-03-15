@@ -646,7 +646,7 @@ class RequestProxy implements IHttpRequest
      *
      * @param string $version HTTP protocol version
      *
-     * @return IResponse
+     * @return IServerRequest
      */
     public function withProtocolVersion($version)
     {
@@ -755,7 +755,7 @@ class RequestProxy implements IHttpRequest
      * @param string          $name  Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      *
-     * @return IResponse
+     * @return IServerRequest
      *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
@@ -778,7 +778,7 @@ class RequestProxy implements IHttpRequest
      * @param string          $name  Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      *
-     * @return IResponse
+     * @return IServerRequest
      *
      * @throws \InvalidArgumentException for invalid header names or values.
      */
@@ -798,7 +798,7 @@ class RequestProxy implements IHttpRequest
      *
      * @param string $name Case-insensitive header field name to remove.
      *
-     * @return IResponse
+     * @return IServerRequest
      */
     public function withoutHeader($name)
     {
@@ -826,7 +826,7 @@ class RequestProxy implements IHttpRequest
      *
      * @param StreamInterface $body Body.
      *
-     * @return IResponse
+     * @return IServerRequest
      *
      * @throws \InvalidArgumentException When the body is not valid.
      */
@@ -966,7 +966,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return IServerRequest
      */
@@ -978,7 +978,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return IServerRequest
      */
@@ -1004,7 +1004,7 @@ class RequestProxy implements IHttpRequest
      *
      * @return void
      */
-    public function setRequestInstance(Request $request)
+    public function setRequestInstance(Request $request): void
     {
         RequestContext::set('request', $request);
     }

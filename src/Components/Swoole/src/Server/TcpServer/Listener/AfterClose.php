@@ -25,7 +25,7 @@ class AfterClose implements ICloseEventListener
      *
      * @return void
      */
-    public function handle(CloseEventParam $e)
+    public function handle(CloseEventParam $e): void
     {
         $this->release($e->fd);
     }

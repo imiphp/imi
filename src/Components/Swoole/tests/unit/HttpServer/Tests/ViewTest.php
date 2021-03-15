@@ -12,7 +12,7 @@ use Yurun\Util\HttpRequest;
  */
 class ViewTest extends BaseTest
 {
-    public function testHtml()
+    public function testHtml(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -20,7 +20,7 @@ class ViewTest extends BaseTest
         Assert::assertEquals('<p>' . date('Y-m-d H:i:s', $time) . '</p>', $response->body());
     }
 
-    public function testHtml2()
+    public function testHtml2(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -28,7 +28,7 @@ class ViewTest extends BaseTest
         Assert::assertEquals('<p>tpl2:' . date('Y-m-d H:i:s', $time) . '</p>', $response->body());
     }
 
-    public function testRenderHtml1()
+    public function testRenderHtml1(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -36,7 +36,7 @@ class ViewTest extends BaseTest
         Assert::assertEquals('hello yurun', $response->body());
     }
 
-    public function testRrenderHtml2()
+    public function testRrenderHtml2(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -44,7 +44,7 @@ class ViewTest extends BaseTest
         Assert::assertEquals('imi niubi', $response->body());
     }
 
-    public function testJson()
+    public function testJson(): void
     {
         $http = new HttpRequest();
         $time = time();

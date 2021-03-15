@@ -67,15 +67,14 @@ class Scheduler implements IScheduler
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
-        $this->coPool->stop();
     }
 
     /**
      * 遍历可运行的任务列表.
      *
-     * @return \Imi\Cron\CronTask[]
+     * @return \Generator
      */
     public function schedule(): \Generator
     {
@@ -98,10 +97,7 @@ class Scheduler implements IScheduler
                     unset($runningTasks[$id]);
                 }
             }
-            if (!isset($nextTickTimeMap[$id]))
-            {
-                $nextTickTimeMap[$id] = $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
-            }
+            $nextTickTimeMap[$id] ??= $cronCalculator->getNextTickTime($task->getLastRunTime(), $task->getCronRules());
             $firstRun = !isset($firstRunMap[$id]) && $task->getForce();
             if ($firstRun || $now >= $nextTickTimeMap[$id])
             {
@@ -125,7 +121,7 @@ class Scheduler implements IScheduler
      *
      * @return void
      */
-    public function runTask(CronTask $task)
+    public function runTask(CronTask $task): void
     {
         if (!$this->cronLock->lock($task))
         {
@@ -153,7 +149,7 @@ class Scheduler implements IScheduler
      *
      * @return void
      */
-    public function completeTask(Result $result)
+    public function completeTask(Result $result): void
     {
         $runningTasks = &$this->runningTasks;
         $resultId = $result->id;

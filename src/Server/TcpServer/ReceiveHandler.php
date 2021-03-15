@@ -12,7 +12,7 @@ class ReceiveHandler implements IReceiveHandler
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Imi\Server\TcpServer\Middleware\IMiddleware[]
      */
     protected array $middlewares = [];
 

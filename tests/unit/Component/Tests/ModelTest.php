@@ -16,7 +16,7 @@ use Imi\Test\Component\Model\UpdateTime;
  */
 class ModelTest extends BaseTest
 {
-    public function testToArray()
+    public function testToArray(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -27,7 +27,7 @@ class ModelTest extends BaseTest
         ], $member->toArray());
     }
 
-    public function testConvertToArray()
+    public function testConvertToArray(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -50,7 +50,7 @@ class ModelTest extends BaseTest
         ], $member->convertToArray(false));
     }
 
-    public function testConvertListToArray()
+    public function testConvertListToArray(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -73,7 +73,7 @@ class ModelTest extends BaseTest
         ]], Member::convertListToArray([$member], false));
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -86,7 +86,7 @@ class ModelTest extends BaseTest
         $this->assertEquals($id, $member->id);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -110,7 +110,7 @@ class ModelTest extends BaseTest
         ], $member->convertToArray(false));
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -141,7 +141,7 @@ class ModelTest extends BaseTest
         $this->assertEquals(1, $result->getAffectedRows());
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $member = Member::newInstance();
         $member->username = '1';
@@ -155,7 +155,7 @@ class ModelTest extends BaseTest
         $this->assertEquals(1, $result->getAffectedRows());
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $member = Member::find(1);
         $this->assertEquals([
@@ -176,7 +176,7 @@ class ModelTest extends BaseTest
         ], $member->convertToArray(false));
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $list = Member::select([
             'id'    => 1,
@@ -203,7 +203,7 @@ class ModelTest extends BaseTest
         ], Member::convertListToArray($list, false));
     }
 
-    public function testDbQuery()
+    public function testDbQuery(): void
     {
         $list = Member::dbQuery()->field('id', 'username')->where('id', '=', 1)->select()->getArray();
         $this->assertEquals([
@@ -214,7 +214,7 @@ class ModelTest extends BaseTest
         ], $list);
     }
 
-    public function testBatchUpdate()
+    public function testBatchUpdate(): void
     {
         $count1 = Member::count();
         $this->assertGreaterThan(0, $count1);
@@ -229,7 +229,7 @@ class ModelTest extends BaseTest
         $this->assertEquals(['123'], $list);
     }
 
-    public function testBatchDelete()
+    public function testBatchDelete(): void
     {
         $count1 = Member::count();
         $this->assertGreaterThan(0, $count1);
@@ -271,7 +271,7 @@ class ModelTest extends BaseTest
         $this->assertLessThanOrEqual(1, $record->year - strtotime(date('Y', $time)), sprintf('year fail: %s', $record->year));
     }
 
-    public function testUpdateTimeSave()
+    public function testUpdateTimeSave(): void
     {
         for ($_ = 0; $_ < 3; ++$_)
         {
@@ -292,7 +292,7 @@ class ModelTest extends BaseTest
         }
     }
 
-    public function testUpdateTimeUpdate()
+    public function testUpdateTimeUpdate(): void
     {
         for ($_ = 0; $_ < 3; ++$_)
         {
@@ -313,7 +313,7 @@ class ModelTest extends BaseTest
         }
     }
 
-    public function testModelReferenceGetter()
+    public function testModelReferenceGetter(): void
     {
         $model = ReferenceGetterTestModel::newInstance();
         $this->assertEquals([], $model->list);
@@ -323,7 +323,7 @@ class ModelTest extends BaseTest
         $this->assertEquals([1, 2], $model['list']);
     }
 
-    public function testJson()
+    public function testJson(): void
     {
         $record = TestJson::newInstance();
         $record->jsonData = ['a' => 1, 'b' => 2, 'c' => 3];
@@ -334,7 +334,7 @@ class ModelTest extends BaseTest
         $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
     }
 
-    public function testList()
+    public function testList(): void
     {
         $record = TestList::newInstance();
         $record->list = [1, 2, 3];

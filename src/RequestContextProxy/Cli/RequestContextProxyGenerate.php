@@ -33,7 +33,7 @@ class RequestContextProxyGenerate
      *
      * @return void
      */
-    public function generate(string $target, string $class, string $name)
+    public function generate(string $target, string $class, string $name): void
     {
         Annotation::getInstance()->init(Helper::getAppMains());
         if (class_exists($class))
@@ -83,10 +83,12 @@ class RequestContextProxyGenerate
                 $returnType = $method->getReturnType();
                 if ($returnType->allowsNull())
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName() . '|null';
                 }
                 else
                 {
+                    // @phpstan-ignore-next-line
                     $returnType = $returnType->getName();
                 }
             }
@@ -102,6 +104,7 @@ class RequestContextProxyGenerate
                 $paramType = $param->getType();
                 if ($paramType)
                 {
+                    // @phpstan-ignore-next-line
                     $paramType = $paramType->getName();
                 }
                 if (null !== $paramType && $param->allowsNull())
@@ -136,6 +139,7 @@ class RequestContextProxyGenerate
                 $methods[] = '@method static ' . $item;
             }
         }
+        // @phpstan-ignore-next-line
         $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName): string {
             ob_start();
             include __DIR__ . '/template.tpl';

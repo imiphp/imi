@@ -68,7 +68,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
     }
 
@@ -77,7 +77,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      *
      * @return void
      */
-    public function shutdown()
+    public function shutdown(): void
     {
         Worker::stopAll();
     }
@@ -87,7 +87,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      *
      * @return void
      */
-    public function reload()
+    public function reload(): void
     {
         Worker::reloadAllWorkers();
     }
@@ -97,7 +97,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
      *
      * @return void
      */
-    protected function bindEvents()
+    protected function bindEvents(): void
     {
         $this->worker->onBufferDrain = function (ConnectionInterface $connection) {
             RequestContext::muiltiSet([
@@ -122,6 +122,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->worker->onClose = function (ConnectionInterface $connection) {
             RequestContext::muiltiSet([
                 'server' => $this,
+                // @phpstan-ignore-next-line
                 'fd'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
@@ -133,6 +134,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->worker->onConnect = function (ConnectionInterface $connection) {
             RequestContext::muiltiSet([
                 'server' => $this,
+                // @phpstan-ignore-next-line
                 'fd'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
@@ -144,6 +146,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
             RequestContext::muiltiSet([
                 'server' => $this,
+                // @phpstan-ignore-next-line
                 'fd'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [

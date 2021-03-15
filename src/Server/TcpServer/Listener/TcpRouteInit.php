@@ -34,7 +34,7 @@ class TcpRouteInit implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $this->parseAnnotations($e);
         $this->parseConfigs();
@@ -45,7 +45,7 @@ class TcpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseAnnotations(EventParam $e)
+    private function parseAnnotations(EventParam $e): void
     {
         $controllerParser = TcpControllerParser::getInstance();
         $context = RequestContext::getContext();
@@ -60,12 +60,14 @@ class TcpRouteInit implements IEventListener
                 /** @var \Imi\Server\TcpServer\Route\Annotation\TcpController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
                 $classMiddlewares = [];
+                /** @var TcpMiddleware $middleware */
                 foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
                 }
                 foreach (AnnotationManager::getMethodsAnnotations($className, TcpAction::class) as $methodName => $actionAnnotations)
                 {
+                    /** @var TcpRoute[] $routes */
                     $routes = AnnotationManager::getMethodAnnotations($className, $methodName, TcpRoute::class);
                     if (!isset($routes[0]))
                     {
@@ -73,6 +75,7 @@ class TcpRouteInit implements IEventListener
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
+                    /** @var TcpMiddleware $middleware */
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, TcpMiddleware::class) ?? [] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
@@ -102,7 +105,7 @@ class TcpRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseConfigs()
+    private function parseConfigs(): void
     {
         $context = RequestContext::getContext();
         foreach (ServerManager::getServers(ITcpServer::class) as $server)

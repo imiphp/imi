@@ -23,8 +23,6 @@ class FpmApp extends BaseApp
      * 构造方法.
      *
      * @param string $namespace
-     *
-     * @return void
      */
     public function __construct(string $namespace)
     {
@@ -48,7 +46,7 @@ class FpmApp extends BaseApp
             File::createDir($dir);
         }
         Config::addConfig('@server.main', Config::get('@app'));
-        if($initDotEnv)
+        if ($initDotEnv)
         {
             $this->loadDotEnv();
         }
@@ -59,7 +57,7 @@ class FpmApp extends BaseApp
      *
      * @return void
      */
-    protected function initRuntime()
+    protected function initRuntime(): void
     {
         Runtime::setRuntimeModeHandler(FpmRuntimeModeHandler::class)->init();
     }

@@ -82,7 +82,7 @@ class WorkermanWorkerHandler implements IWorkermanWorker
      *
      * @return void
      */
-    public function inited()
+    public function inited(): void
     {
         $this->isInited = true;
     }

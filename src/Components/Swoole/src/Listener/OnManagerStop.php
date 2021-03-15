@@ -21,7 +21,7 @@ class OnManagerStop implements IManagerStopEventListener
      *
      * @return void
      */
-    public function handle(ManagerStopEventParam $e)
+    public function handle(ManagerStopEventParam $e): void
     {
         App::getBean('Logger')->save();
     }

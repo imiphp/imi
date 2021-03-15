@@ -23,7 +23,9 @@ class Process extends \Swoole\Process
     }
 
     /**
-     * @var mixed
+     * @param int|null $exitCode
+     *
+     * @return mixed
      */
     public function exit($exitCode = null)
     {

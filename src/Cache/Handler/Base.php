@@ -80,7 +80,7 @@ abstract class Base implements CacheInterface
      *
      * @return void
      */
-    protected function checkKey(string $key)
+    protected function checkKey(string $key): void
     {
         if (!\is_string($key))
         {
@@ -95,7 +95,7 @@ abstract class Base implements CacheInterface
      *
      * @return void
      */
-    protected function checkArrayOrTraversable($values)
+    protected function checkArrayOrTraversable($values): void
     {
         if (!\is_array($values) && !$values instanceof \Traversable)
         {

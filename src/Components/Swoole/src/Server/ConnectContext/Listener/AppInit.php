@@ -21,11 +21,11 @@ class AppInit implements IAppInitEventListener
     /**
      * 事件处理方法.
      *
-     * @param EventParam $e
+     * @param AppInitEventParam $e
      *
      * @return void
      */
-    public function handle(AppInitEventParam $e)
+    public function handle(AppInitEventParam $e): void
     {
         foreach (ServerManager::getServers(ISwooleServer::class) as $server)
         {

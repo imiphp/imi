@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Util\Http\Contract;
 
-use Imi\Util\Http\Consts\StatusCode;
 use Psr\Http\Message\ResponseInterface;
 
 interface IResponse extends ResponseInterface, IMessage
@@ -126,5 +125,4 @@ interface IResponse extends ResponseInterface, IMessage
      * @return static
      */
     public function setTrailer(string $name, string $value): self;
-
 }

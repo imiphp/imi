@@ -24,7 +24,7 @@ class BeforeClose implements ICloseEventListener
      *
      * @return void
      */
-    public function handle(CloseEventParam $e)
+    public function handle(CloseEventParam $e): void
     {
         if (!SwooleWorker::isWorkerStartAppComplete())
         {

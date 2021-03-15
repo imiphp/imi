@@ -51,7 +51,7 @@ class DefaultTimer implements ITimer
      *
      * @return void
      */
-    public function del(int $id)
+    public function del(int $id): void
     {
     }
 
@@ -60,7 +60,7 @@ class DefaultTimer implements ITimer
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
     }
 }

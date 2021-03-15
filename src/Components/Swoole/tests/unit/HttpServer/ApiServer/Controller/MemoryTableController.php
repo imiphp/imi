@@ -19,9 +19,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function setAndGet()
+    public function setAndGet(): array
     {
         $key = '1';
         $row = [
@@ -40,9 +40,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function del()
+    public function del(): array
     {
         $key = '2';
         $row = [
@@ -62,9 +62,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function exist()
+    public function exist(): array
     {
         $key = '2';
         $row = [
@@ -83,9 +83,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function incr()
+    public function incr(): array
     {
         $key = '3';
         $row = [
@@ -105,9 +105,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function decr()
+    public function decr(): array
     {
         $key = '4';
         $row = [
@@ -127,9 +127,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function count()
+    public function count(): array
     {
         return [
             'count'    => MemoryTableManager::count('t1'),
@@ -141,9 +141,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function lockCallableSetAndGet()
+    public function lockCallableSetAndGet(): ?array
     {
         $result = null;
         MemoryTableManager::lock('t1', function () use (&$result) {
@@ -166,9 +166,9 @@ class MemoryTableController extends HttpController
      *
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function lockSetAndGet()
+    public function lockSetAndGet(): array
     {
         MemoryTableManager::lock('t1');
         $result = null;

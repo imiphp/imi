@@ -42,7 +42,7 @@ class WorkermanTimer implements ITimer
      *
      * @return void
      */
-    public function del(int $id)
+    public function del(int $id): void
     {
         Timer::del($id);
     }
@@ -52,7 +52,7 @@ class WorkermanTimer implements ITimer
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         Timer::delAll();
     }

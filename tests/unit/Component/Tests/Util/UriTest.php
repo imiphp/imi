@@ -17,7 +17,7 @@ class UriTest extends BaseTest
      *
      * @return void
      */
-    public function testUri()
+    public function testUri(): void
     {
         $url = 'https://admin:123456@www.baidu.com/a/b/c.jpg?id=1&name=imi#gg';
         $uri = new Uri($url);

@@ -17,7 +17,7 @@ class AopTest extends BaseTest
      *
      * @return void
      */
-    public function testBefore()
+    public function testBefore(): void
     {
         $test = App::getBean('TestBeforeClass');
         $result = $test->test(1);
@@ -29,7 +29,7 @@ class AopTest extends BaseTest
      *
      * @return void
      */
-    public function testAfter()
+    public function testAfter(): void
     {
         $test = App::getBean('TestAfterClass');
         $result = $test->test(1);
@@ -41,7 +41,7 @@ class AopTest extends BaseTest
      *
      * @return void
      */
-    public function testAround()
+    public function testAround(): void
     {
         $test = App::getBean('TestAroundClass');
         $result = $test->test(1);
@@ -53,7 +53,7 @@ class AopTest extends BaseTest
      *
      * @return void
      */
-    public function testAfterReturning()
+    public function testAfterReturning(): void
     {
         $test = App::getBean('TestAfterReturningClass');
         $result = $test->test(1);
@@ -65,7 +65,7 @@ class AopTest extends BaseTest
      *
      * @return void
      */
-    public function testAfterThrowing()
+    public function testAfterThrowing(): void
     {
         $test = App::getBean('TestAfterThrowingClass');
 

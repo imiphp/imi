@@ -22,7 +22,7 @@ class ImiInit implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         // Aop 配置注入
         foreach (Helper::getMains() as $main)
@@ -38,7 +38,7 @@ class ImiInit implements IEventListener
      *
      * @return void
      */
-    private function parseConfigs(array $configs)
+    private function parseConfigs(array $configs): void
     {
         foreach ($configs as $className => $classConfig)
         {

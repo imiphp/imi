@@ -17,7 +17,7 @@ class DigitalTest extends BaseTest
      *
      * @return void
      */
-    public function testScientificToNum()
+    public function testScientificToNum(): void
     {
         $this->assertEquals(0.000021, Digital::scientificToNum('2.1E-5', 6));
     }

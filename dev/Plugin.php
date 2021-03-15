@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Plugin
 {
-    public static function dev()
+    public static function dev(): void
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
         $cmd = '"' . \PHP_BINARY . '" "' . realpath($_SERVER['SCRIPT_FILENAME']) . '" update';

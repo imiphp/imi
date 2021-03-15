@@ -1,14 +1,16 @@
 parameters:
     level: 6
 
+    phpVersion: 80000
+
     paths:
         - src
         - tests
         - config
         - dev
 
-    excludes_analyse:
-        - src/Components/*/vendor
+    excludePaths:
+        - src/Components/*/vendor/*
 
     bootstrapFiles:
         - vendor/autoload.php
@@ -25,7 +27,4 @@ parameters:
         - '#Access to static property \S+ on trait.+#'
         - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
         - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
-        -
-            message: '#Method \S+ has no return typehint specified.#'
-            paths:
-                - tests/unit/**Test.php
+        - '#Constant IMI_PATH not found.#'

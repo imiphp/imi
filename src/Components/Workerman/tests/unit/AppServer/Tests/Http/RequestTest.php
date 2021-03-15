@@ -18,7 +18,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testRoute()
+    public function testRoute(): void
     {
         $http = new HttpRequest();
         $id = '19260817';
@@ -32,7 +32,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testAutoEndSlash()
+    public function testAutoEndSlash(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -45,7 +45,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testGetParams()
+    public function testGetParams(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -59,7 +59,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testPostParams()
+    public function testPostParams(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -75,7 +75,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testCookieParams()
+    public function testCookieParams(): void
     {
         $http = new HttpRequest();
         $time = time();
@@ -95,7 +95,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testRequestParams()
+    public function testRequestParams(): void
     {
         $http = new HttpRequest();
         $time1 = (string) microtime(true);
@@ -115,7 +115,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testRequestHeaders()
+    public function testRequestHeaders(): void
     {
         $http = new HttpRequest();
         $time = (string) time();
@@ -135,7 +135,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testUploadSingle()
+    public function testUploadSingle(): void
     {
         $http = new HttpRequest();
         $file = new UploadedFile(basename(__FILE__), MediaType::TEXT_HTML, __FILE__);
@@ -159,7 +159,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testUploadMulti()
+    public function testUploadMulti(): void
     {
         $http = new HttpRequest();
         $file2Path = __DIR__ . '/1.txt';
@@ -194,7 +194,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testActionProperty()
+    public function testActionProperty(): void
     {
         $http = new HttpRequest();
         $response = $http->post($this->host . 'info2?get=1', 'post=2');
@@ -225,7 +225,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testUri()
+    public function testUri(): void
     {
         $http = new HttpRequest();
         $uri = $this->host . 'info?get=1';
@@ -239,7 +239,7 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testRouteNotFound()
+    public function testRouteNotFound(): void
     {
         $http = new HttpRequest();
         $uri = $this->host . 'testRouteNotFound';
@@ -252,13 +252,13 @@ class RequestTest extends BaseTest
      *
      * @return void
      */
-    public function testregularExpressionRoute()
+    public function testregularExpressionRoute(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'a/123/1');
         $this->assertEquals(json_encode([
-            'id'    => '123',
-            'page'  => '1',
+            'id'    => 123,
+            'page'  => 1,
         ]), $response->body());
 
         $response = $http->get($this->host . 'a/1234/1');
@@ -267,18 +267,18 @@ class RequestTest extends BaseTest
         $response = $http->get($this->host . 'a/abc/2');
         $this->assertEquals(json_encode([
             'name'  => 'abc',
-            'page'  => '2',
+            'page'  => 2,
         ]), $response->body());
     }
 
-    public function testMoreUrlParams()
+    public function testMoreUrlParams(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'type/1/test/666');
         $this->assertEquals(json_encode([
-            'id'    => '1',
+            'id'    => 1,
             'name'  => 'test',
-            'page'  => '666',
+            'page'  => 666,
         ]), $response->body());
     }
 }

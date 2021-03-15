@@ -78,7 +78,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function addRule(string $url, $callable, \Imi\Server\Http\Route\Annotation\Route $annotation = null)
+    public function addRule(string $url, $callable, RouteAnnotation $annotation = null): void
     {
         if (null === $annotation)
         {
@@ -98,7 +98,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function addRuleAnnotation(\Imi\Server\Http\Route\Annotation\Route $annotation, $callable, array $options = [])
+    public function addRuleAnnotation(RouteAnnotation $annotation, $callable, array $options = []): void
     {
         $routeItem = new RouteItem($annotation, $callable, ViewParser::getInstance()->getByCallable($callable), $options);
         if (isset($options['middlewares']))
@@ -121,7 +121,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function clearRules()
+    public function clearRules(): void
     {
         $this->rules = [];
     }
@@ -155,7 +155,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function setRules(array $rules)
+    public function setRules(array $rules): void
     {
         $this->rules = $rules;
     }
@@ -163,7 +163,7 @@ class HttpRoute
     /**
      * 路由规则是否为空.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -586,7 +586,7 @@ class HttpRoute
      *
      * @return void
      */
-    public function checkDuplicateRoutes()
+    public function checkDuplicateRoutes(): void
     {
         foreach ($this->rules as $rules)
         {
@@ -612,7 +612,7 @@ class HttpRoute
         }
     }
 
-    private function logDuplicated(RouteItem $routeItem)
+    private function logDuplicated(RouteItem $routeItem): void
     {
         $callable = $routeItem->callable;
         if ($callable instanceof RouteCallable)

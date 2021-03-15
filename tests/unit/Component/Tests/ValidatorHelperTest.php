@@ -14,13 +14,13 @@ use PHPUnit\Framework\Assert;
  */
 class ValidatorHelperTest extends BaseTest
 {
-    public function testRegex()
+    public function testRegex(): void
     {
         Assert::assertTrue(ValidatorHelper::regex('aBcD', '/^[a-z]+$/i'));
         Assert::assertFalse(ValidatorHelper::regex('aBcD', '/^[a-z]+$/'));
     }
 
-    public function testDecimal()
+    public function testDecimal(): void
     {
         Assert::assertFalse(ValidatorHelper::decimal(1));
         Assert::assertTrue(ValidatorHelper::decimal(1.1));
@@ -36,7 +36,7 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::decimal(1.25, null, null, 3));
     }
 
-    public function testInt()
+    public function testInt(): void
     {
         Assert::assertFalse(ValidatorHelper::int(1.1));
         Assert::assertTrue(ValidatorHelper::int(1));
@@ -48,7 +48,7 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::int(5, 1, 5));
     }
 
-    public function testNumber()
+    public function testNumber(): void
     {
         Assert::assertTrue(ValidatorHelper::number(1));
         Assert::assertTrue(ValidatorHelper::number(1.1));
@@ -64,7 +64,7 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::number(1.25, null, null, 3));
     }
 
-    public function testLength()
+    public function testLength(): void
     {
         Assert::assertTrue(ValidatorHelper::length('imi', 1));
         Assert::assertFalse(ValidatorHelper::length('imi', 1, 2));
@@ -73,7 +73,7 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertFalse(ValidatorHelper::length('爱米哎', 1, 3));
     }
 
-    public function testCharLength()
+    public function testCharLength(): void
     {
         Assert::assertTrue(ValidatorHelper::lengthChar('imi', 1));
         Assert::assertFalse(ValidatorHelper::lengthChar('imi', 1, 2));
@@ -82,38 +82,38 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::lengthChar('爱米哎', 1, 3));
     }
 
-    public function testEmptyStr()
+    public function testEmptyStr(): void
     {
         Assert::assertTrue(ValidatorHelper::emptyStr(''));
         Assert::assertFalse(ValidatorHelper::emptyStr('imi'));
     }
 
-    public function testNotEmptyStr()
+    public function testNotEmptyStr(): void
     {
         Assert::assertFalse(ValidatorHelper::notEmptyStr(''));
         Assert::assertTrue(ValidatorHelper::notEmptyStr('imi'));
     }
 
-    public function testEmail()
+    public function testEmail(): void
     {
         Assert::assertTrue(ValidatorHelper::email('10001@qq.com'));
         Assert::assertTrue(ValidatorHelper::email('a-b@c-d.com.cn'));
         Assert::assertFalse(ValidatorHelper::email('imiphp.com'));
     }
 
-    public function testCnMobile()
+    public function testCnMobile(): void
     {
         Assert::assertTrue(ValidatorHelper::cnMobile('13813814438'));
         Assert::assertFalse(ValidatorHelper::cnMobile('43813814438'));
     }
 
-    public function testMobile()
+    public function testMobile(): void
     {
         Assert::assertTrue(ValidatorHelper::mobile('13813814438'));
         Assert::assertFalse(ValidatorHelper::mobile('43813814438'));
     }
 
-    public function testTel()
+    public function testTel(): void
     {
         Assert::assertFalse(ValidatorHelper::tel('13813814438'));
         Assert::assertTrue(ValidatorHelper::tel('400-812-3123'));
@@ -121,7 +121,7 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::tel('0510-85111111-123'));
     }
 
-    public function testPhone()
+    public function testPhone(): void
     {
         Assert::assertTrue(ValidatorHelper::phone('13813814438'));
         Assert::assertTrue(ValidatorHelper::phone('400-812-3123'));
@@ -129,14 +129,14 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertTrue(ValidatorHelper::phone('0510-85111111-123'));
     }
 
-    public function testPostcode()
+    public function testPostcode(): void
     {
         Assert::assertFalse(ValidatorHelper::postcode('21400'));
         Assert::assertTrue(ValidatorHelper::postcode('214000'));
         Assert::assertFalse(ValidatorHelper::postcode('2140000'));
     }
 
-    public function testUrl()
+    public function testUrl(): void
     {
         Assert::assertTrue(ValidatorHelper::url('https://www.imiphp.com'));
         Assert::assertTrue(ValidatorHelper::url('http://www.baidu.com/s?wd=imiphp'));
@@ -149,7 +149,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testQQ()
+    public function testQQ(): void
     {
         Assert::assertTrue(ValidatorHelper::qq('10001'));
         Assert::assertTrue(ValidatorHelper::qq('369124067'));
@@ -163,7 +163,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testIPv4()
+    public function testIPv4(): void
     {
         Assert::assertTrue(ValidatorHelper::ipv4('0.0.0.0'));
         Assert::assertTrue(ValidatorHelper::ipv4('255.255.255.255'));
@@ -187,7 +187,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testIPv6()
+    public function testIPv6(): void
     {
         Assert::assertTrue(ValidatorHelper::ipv6('::'));
         Assert::assertTrue(ValidatorHelper::ipv6('::1'));
@@ -202,7 +202,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testIP()
+    public function testIP(): void
     {
         Assert::assertTrue(ValidatorHelper::ip('0.0.0.0'));
         Assert::assertTrue(ValidatorHelper::ip('255.255.255.255'));
@@ -228,14 +228,14 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertFalse(ValidatorHelper::ip('0000:0000:0000:0000:0000:fffff:c0a8:0a02'));
     }
 
-    public function testBetween()
+    public function testBetween(): void
     {
         Assert::assertTrue(ValidatorHelper::between(2, 1, 3));
         Assert::assertFalse(ValidatorHelper::between(1, 1, 3));
         Assert::assertFalse(ValidatorHelper::between(3, 1, 3));
     }
 
-    public function testBetweenEqual()
+    public function testBetweenEqual(): void
     {
         Assert::assertTrue(ValidatorHelper::betweenEqual(2, 1, 3));
         Assert::assertTrue(ValidatorHelper::betweenEqual(1, 1, 3));
@@ -249,7 +249,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testLT()
+    public function testLT(): void
     {
         Assert::assertTrue(ValidatorHelper::lt(1, 2));
         Assert::assertFalse(ValidatorHelper::lt(2, 2));
@@ -261,7 +261,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testLTEqual()
+    public function testLTEqual(): void
     {
         Assert::assertTrue(ValidatorHelper::ltEqual(1, 2));
         Assert::assertTrue(ValidatorHelper::ltEqual(2, 2));
@@ -273,7 +273,7 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testGT()
+    public function testGT(): void
     {
         Assert::assertTrue(ValidatorHelper::gt(2, 1));
         Assert::assertFalse(ValidatorHelper::gt(1, 1));
@@ -285,14 +285,14 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testGTEqual()
+    public function testGTEqual(): void
     {
         Assert::assertTrue(ValidatorHelper::gtEqual(2, 1));
         Assert::assertTrue(ValidatorHelper::gtEqual(1, 1));
         Assert::assertFalse(ValidatorHelper::gtEqual(0, 1));
     }
 
-    public function testEqual()
+    public function testEqual(): void
     {
         Assert::assertTrue(ValidatorHelper::equal(1, 1));
         Assert::assertTrue(ValidatorHelper::equal('1', 1));
@@ -304,14 +304,14 @@ class ValidatorHelperTest extends BaseTest
      *
      * @return void
      */
-    public function testUnEqual()
+    public function testUnEqual(): void
     {
         Assert::assertFalse(ValidatorHelper::unequal(1, 1));
         Assert::assertFalse(ValidatorHelper::unequal('1', 1));
         Assert::assertTrue(ValidatorHelper::unequal(1, 2));
     }
 
-    public function testCompare()
+    public function testCompare(): void
     {
         Assert::assertTrue(ValidatorHelper::compare('1', '==', 1));
         Assert::assertFalse(ValidatorHelper::compare(1, '==', 2));
@@ -340,33 +340,33 @@ class ValidatorHelperTest extends BaseTest
         Assert::assertFalse(ValidatorHelper::compare(1, '>=', 2));
     }
 
-    public function testIn()
+    public function testIn(): void
     {
         $list = [1, 2, 3];
         Assert::assertTrue(ValidatorHelper::in(1, $list));
         Assert::assertFalse(ValidatorHelper::in(4, $list));
     }
 
-    public function testNotIn()
+    public function testNotIn(): void
     {
         $list = [1, 2, 3];
         Assert::assertTrue(ValidatorHelper::notIn(4, $list));
         Assert::assertFalse(ValidatorHelper::notIn(1, $list));
     }
 
-    public function testInEnum()
+    public function testInEnum(): void
     {
         Assert::assertTrue(ValidatorHelper::inEnum(TestEnum::A, TestEnum::class));
         Assert::assertFalse(ValidatorHelper::inEnum(4, TestEnum::class));
     }
 
-    public function testNotInEnum()
+    public function testNotInEnum(): void
     {
         Assert::assertTrue(ValidatorHelper::notInEnum(4, TestEnum::class));
         Assert::assertFalse(ValidatorHelper::notInEnum(TestEnum::A, TestEnum::class));
     }
 
-    public function testCnIdcard()
+    public function testCnIdcard(): void
     {
         Assert::assertTrue(ValidatorHelper::cnIdcard('632123820927051'));
         Assert::assertTrue(ValidatorHelper::cnIdcard('632123198209270518'));

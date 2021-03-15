@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi\Cache;
 
 use Imi\App;
-use Imi\Cache\Handler\Base;
 use Imi\Config;
+use Psr\SimpleCache\CacheInterface;
 
 class CacheManager
 {
@@ -28,7 +28,7 @@ class CacheManager
     {
     }
 
-    public static function init()
+    public static function init(): void
     {
         foreach (Config::getAliases() as $alias)
         {
@@ -53,7 +53,7 @@ class CacheManager
      *
      * @return void
      */
-    public static function addName(string $name, string $handlerClass, array $option = [])
+    public static function addName(string $name, string $handlerClass, array $option = []): void
     {
         static::$handlers[$name] = App::getBean($handlerClass, $option);
     }
@@ -73,7 +73,7 @@ class CacheManager
      *
      * @return void
      */
-    public static function clearPools()
+    public static function clearPools(): void
     {
         static::$handlers = [];
     }
@@ -85,7 +85,7 @@ class CacheManager
      *
      * @return \Psr\SimpleCache\CacheInterface
      */
-    public static function getInstance(string $name): Base
+    public static function getInstance(string $name): CacheInterface
     {
         $handlers = &static::$handlers;
         if (!isset($handlers[$name]))

@@ -17,7 +17,7 @@ class ClassObjectTest extends BaseTest
      *
      * @return void
      */
-    public function testIsAnymous()
+    public function testIsAnymous(): void
     {
         $obj = new class() {
         };
@@ -32,7 +32,7 @@ class ClassObjectTest extends BaseTest
      *
      * @return void
      */
-    public function testParseSameLevelClassName()
+    public function testParseSameLevelClassName(): void
     {
         $className = __CLASS__;
         $this->assertEquals($className, ClassObject::parseSameLevelClassName($className, 'Test1\A'));
@@ -45,7 +45,7 @@ class ClassObjectTest extends BaseTest
      *
      * @return void
      */
-    public function testConvertArgsToKV()
+    public function testConvertArgsToKV(): void
     {
         $class = \Imi\Test\Component\Util\ClassObject\Test::class;
         $method = 'imi';
@@ -68,7 +68,7 @@ class ClassObjectTest extends BaseTest
      *
      * @return void
      */
-    public function testGetSubClasses()
+    public function testGetSubClasses(): void
     {
         $this->assertEquals([\Imi\Test\Component\Model\Article::class], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\ArticleBase::class));
         $this->assertEquals([], ClassObject::getSubClasses(\Imi\Test\Component\Model\Base\ArticleBase::class, [
@@ -81,7 +81,7 @@ class ClassObjectTest extends BaseTest
      *
      * @return void
      */
-    public function testInNamespace()
+    public function testInNamespace(): void
     {
         $this->assertTrue(ClassObject::inNamespace('Imi\Test\Component\Tests\Util', __CLASS__));
         $this->assertTrue(ClassObject::inNamespace('', \Redis::class));

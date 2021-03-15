@@ -27,12 +27,12 @@ class Process extends BaseCommand
      * @CommandAction(name="start", dynamicOptions=true)
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
-     * @Option(name="redirectStdinStdout", type=ArgType::STRING, default=null, comments="重定向子进程的标准输入和输出。启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。")
-     * @Option(name="pipeType", type=ArgType::STRING, default=null, comments="管道类型，启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0")
+     * @Option(name="redirectStdinStdout", type=ArgType::BOOL, default=null, comments="重定向子进程的标准输入和输出。启用此选项后，在子进程内输出内容将不是打印屏幕，而是写入到主进程管道。读取键盘输入将变为从管道中读取数据。默认为阻塞读取。")
+     * @Option(name="pipeType", type=ArgType::INT, default=null, comments="管道类型，启用$redirectStdinStdout后，此选项将忽略用户参数，强制为1。如果子进程内没有进程间通信，可以设置为 0")
      *
      * @return void
      */
-    public function start(string $name, ?string $redirectStdinStdout, ?string $pipeType): void
+    public function start(string $name, ?bool $redirectStdinStdout, ?int $pipeType): void
     {
         Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $redirectStdinStdout, $pipeType) {
             // 加载服务器注解

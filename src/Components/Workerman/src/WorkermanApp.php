@@ -24,8 +24,6 @@ class WorkermanApp extends CliApp
      * 构造方法.
      *
      * @param string $namespace
-     *
-     * @return void
      */
     public function __construct(string $namespace)
     {

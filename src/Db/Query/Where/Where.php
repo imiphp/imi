@@ -12,8 +12,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Where extends BaseWhere implements IWhere
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 字段名.
@@ -43,6 +43,12 @@ class Where extends BaseWhere implements IWhere
      */
     protected array $binds = [];
 
+    /**
+     * @param string|null $fieldName
+     * @param string|null $operation
+     * @param mixed       $value
+     * @param string      $logicalOperator
+     */
     public function __construct(?string $fieldName = null, ?string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
     {
         $this->fieldName = $fieldName;
@@ -98,7 +104,7 @@ class Where extends BaseWhere implements IWhere
      *
      * @return void
      */
-    public function setFieldName(?string $fieldName)
+    public function setFieldName(?string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
@@ -110,7 +116,7 @@ class Where extends BaseWhere implements IWhere
      *
      * @return void
      */
-    public function setOperation(?string $operation)
+    public function setOperation(?string $operation): void
     {
         $this->operation = $operation;
     }
@@ -122,7 +128,7 @@ class Where extends BaseWhere implements IWhere
      *
      * @return void
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         $this->value = $value;
     }
@@ -134,7 +140,7 @@ class Where extends BaseWhere implements IWhere
      *
      * @return void
      */
-    public function setLogicalOperator(string $logicalOperator)
+    public function setLogicalOperator(string $logicalOperator): void
     {
         $this->logicalOperator = $logicalOperator;
     }

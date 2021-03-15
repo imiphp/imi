@@ -1,0 +1,24 @@
+name: Coding Standards
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [4.6-php7.4]
+
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare
+        run: ./.github/prepare-test.sh swoole-only 1
+
+      - name: Test
+        run: docker exec swoole-only ./vendor/bin/php-cs-fixer fix --dry-run

@@ -14,7 +14,7 @@ use PHPUnit\Framework\Assert;
  */
 class EventTest extends BaseTest
 {
-    public function testNormal()
+    public function testNormal(): void
     {
         Event::on('IMITEST.EVENT.A', function (EventParam $e) {
             Assert::assertEquals('IMITEST.EVENT.A', $e->getEventName());
@@ -32,7 +32,7 @@ class EventTest extends BaseTest
         Assert::assertEquals(19260817, $return);
     }
 
-    public function testOne()
+    public function testOne(): void
     {
         Event::one('IMITEST.EVENT.B', function (EventParam $e) {
             Assert::assertEquals('IMITEST.EVENT.B', $e->getEventName());
@@ -57,7 +57,7 @@ class EventTest extends BaseTest
         Assert::assertNull($return);
     }
 
-    public function testOff()
+    public function testOff(): void
     {
         $callable1 = function (EventParam $e) {
             Assert::assertTrue(false);
@@ -80,7 +80,7 @@ class EventTest extends BaseTest
         Assert::assertNull($return);
     }
 
-    public function testListener()
+    public function testListener(): void
     {
         $return = null;
         Event::trigger('IMITEST.EVENT.D', [
@@ -90,14 +90,14 @@ class EventTest extends BaseTest
         Assert::assertEquals(19260817, $return);
     }
 
-    public function testClassListener1()
+    public function testClassListener1(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
         $result = $testClass->test1();
         Assert::assertEquals(19260817, $result);
     }
 
-    public function testClassListener2()
+    public function testClassListener2(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
         $testClass->on('test2', function (EventParam $e) use ($testClass) {
@@ -111,7 +111,7 @@ class EventTest extends BaseTest
         Assert::assertEquals(19260817, $result);
     }
 
-    public function testClassListenerOff()
+    public function testClassListenerOff(): void
     {
         $testClass = new \Imi\Test\Component\Event\Classes\TestClass();
         $callable = function (EventParam $e) {

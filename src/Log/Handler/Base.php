@@ -50,6 +50,13 @@ abstract class Base
     protected int $traceLimit = -1;
 
     /**
+     * 日期时间格式.
+     *
+     * @var string
+     */
+    protected string $dateTimeFormat = 'Y-m-d H:i:s';
+
+    /**
      * date()函数支持的格式.
      */
     const DATE_FORMATS = [
@@ -115,7 +122,7 @@ abstract class Base
      *
      * @return void
      */
-    public function log(\Imi\Log\Record $record)
+    public function log(\Imi\Log\Record $record): void
     {
         $records = &$this->records;
         if (\in_array($record->getLevel(), $this->levels))
@@ -132,7 +139,7 @@ abstract class Base
      *
      * @return void
      */
-    public function logBatch(array $logs)
+    public function logBatch(array $logs): void
     {
         foreach ($logs as $log)
         {
@@ -145,7 +152,7 @@ abstract class Base
      *
      * @return void
      */
-    public function trySave()
+    public function trySave(): void
     {
         if (isset($this->records[$this->logCacheNumber - 1]))
         {
@@ -158,7 +165,7 @@ abstract class Base
      *
      * @return void
      */
-    public function save()
+    public function save(): void
     {
         $records = $this->records;
         $this->records = [];

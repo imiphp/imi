@@ -27,8 +27,6 @@ abstract class BaseApp implements IApp
      * 构造方法.
      *
      * @param string $namespace
-     *
-     * @return void
      */
     public function __construct(string $namespace)
     {
@@ -113,7 +111,7 @@ abstract class BaseApp implements IApp
      *
      * @return void
      */
-    protected function initRuntime()
+    protected function initRuntime(): void
     {
         Runtime::setRuntimeModeHandler(DefaultRuntimeModeHandler::class)->init();
     }

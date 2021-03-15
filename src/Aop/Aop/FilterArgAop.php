@@ -35,6 +35,7 @@ class FilterArgAop
     {
         $class = get_parent_class($joinPoint->getTarget());
         $method = $joinPoint->getMethod();
+        /** @var FilterArg[] $filterArgs */
         $filterArgs = AnnotationManager::getMethodAnnotations($class, $method, FilterArg::class);
         $args = ClassObject::convertArgsToKV($class, $method, $joinPoint->getArgs());
 

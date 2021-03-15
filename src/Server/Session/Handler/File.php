@@ -35,7 +35,7 @@ class File extends Base
      *
      * @return void
      */
-    public function destroy(string $sessionId)
+    public function destroy(string $sessionId): void
     {
         $fileName = $this->getFileName($sessionId);
         if (is_file($fileName))
@@ -51,7 +51,7 @@ class File extends Base
      *
      * @return void
      */
-    public function gc(int $maxLifeTime)
+    public function gc(int $maxLifeTime): void
     {
         $files = new \FilesystemIterator($this->savePath);
         $maxTime = time() - $maxLifeTime;
@@ -94,7 +94,7 @@ class File extends Base
      *
      * @return void
      */
-    public function write(string $sessionId, string $sessionData, int $maxLifeTime)
+    public function write(string $sessionId, string $sessionData, int $maxLifeTime): void
     {
         file_put_contents($this->getFileName($sessionId), $sessionData, \LOCK_EX);
     }

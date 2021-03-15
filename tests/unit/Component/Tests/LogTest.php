@@ -13,7 +13,7 @@ use Imi\Test\BaseTest;
  */
 class LogTest extends BaseTest
 {
-    public function testLog()
+    public function testLog(): void
     {
         Log::alert('alert');
         Log::critical('critical');

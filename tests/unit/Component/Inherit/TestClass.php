@@ -42,11 +42,11 @@ class TestClass extends ParentClass
      *
      * @return void
      */
-    public function test()
+    public function test(): void
     {
     }
 
-    public function test2()
+    public function test2(): void
     {
     }
 
@@ -55,7 +55,7 @@ class TestClass extends ParentClass
      *
      * @return void
      */
-    public function test3()
+    public function test3(): void
     {
     }
 }

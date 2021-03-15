@@ -17,10 +17,11 @@ trait TTreeModel
     /**
      * 获取 TreeModel 注解.
      *
-     * @return \Imi\Model\Tree\Annotation\TreeModel
+     * @return \Imi\Model\Tree\Annotation\TreeModel|null
      */
-    private static function __getTreeModel(): TreeModel
+    private static function __getTreeModel(): ?TreeModel
     {
+        // @phpstan-ignore-next-line
         return ModelManager::getAnnotation(static::__getRealClassName(), TreeModel::class);
     }
 

@@ -71,7 +71,7 @@ class Config
      *
      * @return void
      */
-    public static function load(string $name, array $configList)
+    public static function load(string $name, array $configList): void
     {
         foreach ($configList as $alias => $fileName)
         {
@@ -87,7 +87,7 @@ class Config
      *
      * @return void
      */
-    public static function setConfig(string $name, array $config)
+    public static function setConfig(string $name, array $config): void
     {
         static::$configs[$name] = new ArrayData($config);
     }
@@ -255,7 +255,7 @@ class Config
      *
      * @return void
      */
-    public static function clear()
+    public static function clear(): void
     {
         static::$configs = [];
     }

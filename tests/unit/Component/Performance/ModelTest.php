@@ -15,14 +15,14 @@ use Imi\Test\Component\Model\Performance;
  */
 class ModelTest extends BaseTest
 {
-    public function testTruncate()
+    public function testTruncate(): void
     {
         App::set('DB_LOG', false);
         $this->assertTrue(true);
         Db::getInstance()->exec('truncate tb_performance');
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -35,7 +35,7 @@ class ModelTest extends BaseTest
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -48,7 +48,7 @@ class ModelTest extends BaseTest
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -59,7 +59,7 @@ class ModelTest extends BaseTest
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -70,7 +70,7 @@ class ModelTest extends BaseTest
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testToArray()
+    public function testToArray(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -82,7 +82,7 @@ class ModelTest extends BaseTest
         Log::info('Model::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testConvertToArray()
+    public function testConvertToArray(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);

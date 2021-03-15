@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Util;
 
+use stdClass;
+
 /**
  * 对象及数组帮助类
  * 智能识别数组和对象，支持对a.b.c这样的name属性进行操作.
@@ -77,7 +79,7 @@ class ObjectArrayHelper
      *
      * @return void
      */
-    public static function set(&$object, string $name, $value)
+    public static function set(&$object, string $name, $value): void
     {
         $names = explode('.', $name);
         $lastName = array_pop($names);
@@ -86,18 +88,12 @@ class ObjectArrayHelper
         {
             if (\is_array($data))
             {
-                if (!isset($data[$nameItem]))
-                {
-                    $data[$nameItem] = [];
-                }
+                $data[$nameItem] ??= [];
                 $data = &$data[$nameItem];
             }
             elseif (\is_object($data))
             {
-                if (!isset($data->$nameItem))
-                {
-                    $data->$nameItem = new stdClass();
-                }
+                $data->$nameItem ??= new stdClass();
                 $data = &$data->$nameItem;
             }
         }
@@ -119,7 +115,7 @@ class ObjectArrayHelper
      *
      * @return void
      */
-    public static function remove(&$object, string $name)
+    public static function remove(&$object, string $name): void
     {
         $names = explode('.', $name);
         $lastName = array_pop($names);
@@ -128,18 +124,12 @@ class ObjectArrayHelper
         {
             if (\is_array($data))
             {
-                if (!isset($data[$nameItem]))
-                {
-                    $data[$nameItem] = [];
-                }
+                $data[$nameItem] ??= [];
                 $data = &$data[$nameItem];
             }
             elseif (\is_object($data))
             {
-                if (!isset($data->$nameItem))
-                {
-                    $data->$nameItem = new stdClass();
-                }
+                $data->$nameItem ??= new stdClass();
                 $data = &$data->$nameItem;
             }
         }
@@ -204,7 +194,7 @@ class ObjectArrayHelper
      *
      * @return void
      */
-    public static function filter(&$object, array $fields, string $mode = 'allow')
+    public static function filter(&$object, array $fields, string $mode = 'allow'): void
     {
         if ('allow' === $mode)
         {

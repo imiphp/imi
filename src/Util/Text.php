@@ -51,7 +51,7 @@ class Text
         }
         else
         {
-            return substr_compare($compare, strrchr($string, $compare), 0, null, true);
+            return 0 === substr_compare($compare, strrchr($string, $compare), 0, 0, true);
         }
     }
 

@@ -49,7 +49,7 @@ class Local implements IHandler
      *
      * @return void
      */
-    public function save(string $key, array $data)
+    public function save(string $key, array $data): void
     {
         $this->storeMap[$key] = $data;
     }
@@ -61,7 +61,7 @@ class Local implements IHandler
      *
      * @return void
      */
-    public function destroy(string $key)
+    public function destroy(string $key): void
     {
         $storeMap = &$this->storeMap;
         if (isset($storeMap[$key]))
@@ -78,7 +78,7 @@ class Local implements IHandler
      *
      * @return void
      */
-    public function delayDestroy(string $key, int $ttl)
+    public function delayDestroy(string $key, int $ttl): void
     {
         Timer::after($ttl * 1000, function () use ($key) {
             $this->destroy($key);

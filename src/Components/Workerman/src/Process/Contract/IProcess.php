@@ -11,5 +11,5 @@ use Workerman\Worker;
  */
 interface IProcess
 {
-    public function run(Worker $worker);
+    public function run(Worker $worker): void;
 }

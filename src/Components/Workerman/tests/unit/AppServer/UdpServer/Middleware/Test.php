@@ -15,10 +15,16 @@ use Imi\Server\UdpServer\Middleware\IMiddleware;
  */
 class Test implements IMiddleware
 {
+    /**
+     * @param \Imi\Server\UdpServer\Message\IPacketData $data
+     * @param \Imi\Server\UdpServer\IPacketHandler      $handler
+     *
+     * @return mixed
+     */
     public function process(IPacketData $data, IPacketHandler $handler)
     {
         RequestContext::set('middlewareData', 'imi');
 
-        return $handler->handle($data, $handler);
+        return $handler->handle($data);
     }
 }

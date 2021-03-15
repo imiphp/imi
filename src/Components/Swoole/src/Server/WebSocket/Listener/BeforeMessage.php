@@ -25,7 +25,7 @@ class BeforeMessage implements IMessageEventListener
      *
      * @return void
      */
-    public function handle(MessageEventParam $e)
+    public function handle(MessageEventParam $e): void
     {
         $frame = $e->frame;
         if (!SwooleWorker::isWorkerStartAppComplete())

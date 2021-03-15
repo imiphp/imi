@@ -51,7 +51,7 @@ class StoreHandler implements IHandler
      *
      * @return void
      */
-    public function save(string $key, array $data)
+    public function save(string $key, array $data): void
     {
         $this->getHandler()->save($key, $data);
     }
@@ -63,7 +63,7 @@ class StoreHandler implements IHandler
      *
      * @return void
      */
-    public function destroy(string $key)
+    public function destroy(string $key): void
     {
         $this->getHandler()->destroy($key);
     }
@@ -76,7 +76,7 @@ class StoreHandler implements IHandler
      *
      * @return void
      */
-    public function delayDestroy(string $key, int $ttl)
+    public function delayDestroy(string $key, int $ttl): void
     {
         $this->getHandler()->delayDestroy($key, $ttl);
     }

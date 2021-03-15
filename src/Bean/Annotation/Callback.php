@@ -30,6 +30,11 @@ class Callback extends BaseInjectValue
      */
     public string $method = '';
 
+    /**
+     * @param array|null    $__data
+     * @param string|object $class
+     * @param string        $method
+     */
     public function __construct(?array $__data = null, $class = null, string $method = '')
     {
         parent::__construct(...\func_get_args());

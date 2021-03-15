@@ -53,7 +53,7 @@ class PoolItem
      */
     protected float $lastReleaseTime = 0;
 
-    public function __construct(\Imi\Pool\Interfaces\IPoolResource $resource)
+    public function __construct(IPoolResource $resource)
     {
         $this->resource = $resource;
         $this->createTime = microtime(true);
@@ -115,7 +115,7 @@ class PoolItem
      *
      * @return void
      */
-    public function release()
+    public function release(): void
     {
         $this->isFree = true;
         $this->lastReleaseTime = microtime(true);

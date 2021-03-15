@@ -64,7 +64,7 @@ class FpmResponse extends Response
      *
      * @return static
      */
-    private function sendHeaders()
+    private function sendHeaders(): self
     {
         // status
         $data = $this->getStatusCode() . ' ' . $this->getReasonPhrase();
@@ -85,6 +85,8 @@ class FpmResponse extends Response
                 setcookie($cookie['key'], $cookie['value'], $cookie['expire'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']);
             }
         }
+
+        return $this;
     }
 
     /**

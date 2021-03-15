@@ -27,7 +27,7 @@ class FileMTime extends BaseMonitor
      *
      * @return void
      */
-    protected function init()
+    protected function init(): void
     {
         $excludePaths = &$this->excludePaths;
         $includePaths = &$this->includePaths;
@@ -70,7 +70,7 @@ class FileMTime extends BaseMonitor
      *
      * @return void
      */
-    protected function parseInitFile(string $fileName)
+    protected function parseInitFile(string $fileName): void
     {
         if (is_file($fileName))
         {

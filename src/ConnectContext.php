@@ -18,7 +18,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function create(array $data = [])
+    public static function create(array $data = []): void
     {
         $requestContextData = RequestContext::getContext();
         if (!static::get() && $fd = ($requestContextData['fd'] ?? null))
@@ -48,7 +48,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function load(int $fromFd, ?int $toFd = null)
+    public static function load(int $fromFd, ?int $toFd = null): void
     {
         if (!$toFd)
         {
@@ -74,7 +74,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function destroy(?int $fd = null)
+    public static function destroy(?int $fd = null): void
     {
         if (!$fd)
         {
@@ -156,7 +156,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function set(?string $name, $value, ?int $fd = null)
+    public static function set(?string $name, $value, ?int $fd = null): void
     {
         if (!$fd)
         {
@@ -187,7 +187,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function muiltiSet(array $data, ?int $fd = null)
+    public static function muiltiSet(array $data, ?int $fd = null): void
     {
         if (!$fd)
         {
@@ -221,7 +221,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function use(callable $callable, ?int $fd = null)
+    public static function use(callable $callable, ?int $fd = null): void
     {
         if (!$fd)
         {
@@ -263,7 +263,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function bind(string $flag, ?int $fd = null)
+    public static function bind(string $flag, ?int $fd = null): void
     {
         if (!$fd)
         {
@@ -310,7 +310,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function unbind(string $flag, ?int $keepTime = null)
+    public static function unbind(string $flag, ?int $keepTime = null): void
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
@@ -335,7 +335,7 @@ class ConnectContext
     /**
      * 使用标记获取连接编号.
      *
-     * @param string[] $flag
+     * @param string[] $flags
      *
      * @return int[]
      */
@@ -400,7 +400,7 @@ class ConnectContext
      *
      * @return void
      */
-    public static function restore(string $flag, ?int $toFd = null)
+    public static function restore(string $flag, ?int $toFd = null): void
     {
         $fromFd = static::getOldFdByFlag($flag);
         if (!$fromFd)

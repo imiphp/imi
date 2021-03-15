@@ -19,15 +19,15 @@ class ActionMiddleware implements IMiddleware
      * 处理方法.
      *
      * @param IReceiveData    $data
-     * @param IReceiveHandler $handle
+     * @param IReceiveHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)
     {
         $requestContext = RequestContext::getContext();
         // 获取路由结果
-        /** @var \Imi\Server\TcpServer\Route\RouteResult $result */
+        /** @var \Imi\Server\TcpServer\Route\RouteResult|null $result */
         $result = $requestContext['routeResult'] ?? null;
         if (null === $result)
         {

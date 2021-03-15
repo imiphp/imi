@@ -43,6 +43,11 @@ class RouteItem
      */
     public bool $singleton = false;
 
+    /**
+     * @param \Imi\Server\TcpServer\Route\Annotation\TcpRoute $annotation
+     * @param callable|\Imi\Server\Route\RouteCallable        $callable
+     * @param array                                           $options
+     */
     public function __construct(TcpRoute $annotation, $callable, array $options = [])
     {
         $this->annotation = $annotation;

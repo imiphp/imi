@@ -26,10 +26,11 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @param string $key
      *
-     * @return static
+     * @return static|null
      */
-    public static function find(string $key): self
+    public static function find(string $key): ?self
     {
+        /** @var MemoryTable|null $memoryTableAnnotation */
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
         {
@@ -53,10 +54,11 @@ abstract class MemoryTableModel extends BaseModel
      */
     public static function select(): array
     {
+        /** @var MemoryTable|null $memoryTableAnnotation */
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
         {
-            return null;
+            return [];
         }
         $instance = MemoryTableManager::getInstance($memoryTableAnnotation->name);
 
@@ -68,12 +70,13 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return void
      */
-    public function save()
+    public function save(): void
     {
+        /** @var MemoryTable|null $memoryTableAnnotation */
         $memoryTableAnnotation = ModelManager::getAnnotation($this, MemoryTable::class);
         if (null === $memoryTableAnnotation)
         {
-            return null;
+            return;
         }
         $data = [];
         foreach ($this->__fieldNames as $fieldName)
@@ -88,12 +91,13 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return void
      */
-    public function delete()
+    public function delete(): void
     {
+        /** @var MemoryTable|null $memoryTableAnnotation */
         $memoryTableAnnotation = ModelManager::getAnnotation($this, MemoryTable::class);
         if (null === $memoryTableAnnotation)
         {
-            return null;
+            return;
         }
         MemoryTableManager::del($memoryTableAnnotation->name, $this->__key);
     }
@@ -105,13 +109,15 @@ abstract class MemoryTableModel extends BaseModel
      *
      * @return void
      */
-    public static function deleteBatch(string ...$keys)
+    public static function deleteBatch(string ...$keys): void
     {
+        /** @var MemoryTable|null $memoryTableAnnotation */
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
         {
-            return null;
+            return;
         }
+        // @phpstan-ignore-next-line
         if (isset($keys[0]) && \is_array($keys[0]))
         {
             $keys = $keys[0];
@@ -129,10 +135,11 @@ abstract class MemoryTableModel extends BaseModel
      */
     public static function count(): int
     {
+        /** @var MemoryTable|null $memoryTableAnnotation */
         $memoryTableAnnotation = ModelManager::getAnnotation(static::class, MemoryTable::class);
         if (null === $memoryTableAnnotation)
         {
-            return null;
+            return 0;
         }
 
         return MemoryTableManager::count($memoryTableAnnotation->name);

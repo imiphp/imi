@@ -23,7 +23,7 @@ class OnSendRawToAllResponse implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData()['data'];
         if (ChannelContainer::hasChannel($data['messageId']))

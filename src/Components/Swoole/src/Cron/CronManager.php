@@ -86,7 +86,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function addCronByAnnotation(Cron $cron, string $pointClass)
+    public function addCronByAnnotation(Cron $cron, string $pointClass): void
     {
         $this->addCron($cron->id, $cron->type, $pointClass, [[
             'year'      => $cron->year,
@@ -115,7 +115,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
+    public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void
     {
         if (isset($this->tasks[$id]))
         {
@@ -139,7 +139,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function removeCron(string $id)
+    public function removeCron(string $id): void
     {
         if (isset($this->tasks[$id]))
         {
@@ -152,7 +152,7 @@ class CronManager implements ICronManager
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->tasks = $this->realTasks = [];
     }
@@ -266,7 +266,7 @@ class CronManager implements ICronManager
         elseif (is_subclass_of($class, IProcess::class))
         {
             $cronType = CronTaskType::PROCESS;
-            /** @var Process $process */
+            /** @var Process|null $process */
             $process = AnnotationManager::getClassAnnotations($class, Process::class)[0] ?? null;
             if (!$process)
             {
@@ -283,7 +283,7 @@ class CronManager implements ICronManager
         elseif (is_subclass_of($class, ITaskHandler::class))
         {
             $cronType = CronTaskType::TASK;
-            /** @var Task $taskAnnotation */
+            /** @var Task|null $taskAnnotation */
             $taskAnnotation = AnnotationManager::getClassAnnotations($class, Task::class)[0] ?? null;
             if (!$taskAnnotation)
             {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Db;
 
 use Imi\App;
-use Imi\Bean\BeanFactory;
 use Imi\Config;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Interfaces\IQuery;
@@ -95,7 +94,7 @@ class Db
      *
      * @return void
      */
-    public static function release(IDb $db)
+    public static function release(IDb $db): void
     {
         $resource = RequestContext::get('poolResources')[spl_object_hash($db)] ?? null;
         if (null !== $resource)

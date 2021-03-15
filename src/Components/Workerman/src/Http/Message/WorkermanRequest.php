@@ -27,11 +27,16 @@ class WorkermanRequest extends Request
     protected Worker $worker;
 
     /**
-     * 协议
-     * 
+     * 协议.
+     *
      * @var string
      */
     protected string $scheme;
+
+    /**
+     * @var TcpConnection
+     */
+    protected TcpConnection $connection;
 
     public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request, string $scheme = 'http')
     {
@@ -46,7 +51,7 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initProtocolVersion()
+    protected function initProtocolVersion(): void
     {
         $this->protocolVersion = $this->workermanRequest->protocolVersion();
     }
@@ -56,8 +61,9 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initHeaders()
+    protected function initHeaders(): void
     {
+        // @phpstan-ignore-next-line
         $this->mergeHeaders($this->workermanRequest->header());
     }
 
@@ -66,7 +72,7 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initBody()
+    protected function initBody(): void
     {
         $this->body = new MemoryStream($this->workermanRequest->rawBody());
     }
@@ -76,12 +82,12 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initUri()
+    protected function initUri(): void
     {
         $worker = $this->worker;
         $isSSL = 'ssl' === $worker->transport;
         $scheme = $this->scheme;
-        if($isSSL)
+        if ($isSSL)
         {
             $scheme .= 's';
         }
@@ -97,7 +103,7 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initMethod()
+    protected function initMethod(): void
     {
         $this->method = $this->workermanRequest->method();
     }
@@ -107,7 +113,7 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initServer()
+    protected function initServer(): void
     {
         $this->server = [];
     }
@@ -117,7 +123,7 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initRequestParams()
+    protected function initRequestParams(): void
     {
         $request = $this->workermanRequest;
         $this->get = $request->get();
@@ -131,7 +137,7 @@ class WorkermanRequest extends Request
      *
      * @return void
      */
-    protected function initUploadedFiles()
+    protected function initUploadedFiles(): void
     {
         $this->setUploadedFiles($this->workermanRequest->file());
     }

@@ -38,8 +38,6 @@ class CliApp extends BaseApp
      * 构造方法.
      *
      * @param string $namespace
-     *
-     * @return void
      */
     public function __construct(string $namespace)
     {
@@ -149,6 +147,7 @@ class CliApp extends BaseApp
             return LoadRuntimeResult::IMI_LOADED;
         }
 
+        // @phpstan-ignore-next-line
         return $result ? LoadRuntimeResult::ALL : 0;
     }
 

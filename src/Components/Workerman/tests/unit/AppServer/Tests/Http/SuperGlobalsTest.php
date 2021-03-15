@@ -18,7 +18,7 @@ class SuperGlobalsTest extends BaseTest
      *
      * @return void
      */
-    public function testSuperGlobals()
+    public function testSuperGlobals(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'session/login');

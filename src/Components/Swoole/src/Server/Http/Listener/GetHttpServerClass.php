@@ -20,7 +20,7 @@ class GetHttpServerClass implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData();
         $data['class'] = \Imi\Swoole\Server\Http\Server::class;

@@ -23,8 +23,8 @@ use Imi\Util\Traits\TBeanRealClass;
  */
 abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializable, IEvent
 {
-    use TEvent;
     use TBeanRealClass;
+    use TEvent;
 
     /**
      * 数据库原始字段名称.
@@ -86,7 +86,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    public function __init(array $data = [])
+    public function __init(array $data = []): void
     {
         // 初始化前
         $this->trigger(ModelEvents::BEFORE_INIT, [
@@ -134,8 +134,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return static
      */
-    public static function newInstance(...$args): self
+    public static function newInstance(...$args): object
     {
+        // @phpstan-ignore-next-line
         return BeanFactory::newInstance(static::class, ...$args);
     }
 
@@ -156,13 +157,23 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     // 实现接口的方法们：
 
-    public function offsetExists($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
 
         return method_exists($this, $methodName) && null !== $this->$methodName();
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         $methodName = 'get' . ucfirst($this->__getCamelName($offset));
@@ -192,7 +203,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $result;
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value): void
     {
         $meta = $this->__meta;
         $fields = $meta->getFields();
@@ -236,7 +253,12 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset): void
     {
         $index = array_search($offset, $this->__fieldNames);
         if (false !== $index)
@@ -245,21 +267,42 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function &__get(string $name)
     {
         return $this[$name];
     }
 
+    /**
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return void
+     */
     public function __set(string $name, $value)
     {
         $this[$name] = $value;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
     public function __isset(string $name)
     {
         return isset($this[$name]);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return void
+     */
     public function __unset(string $name)
     {
         unset($this[$name]);
@@ -282,6 +325,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             {
                 if (\array_key_exists($name, $result) && null === $result[$name])
                 {
+                    /** @var AutoSelect|null $autoSelect */
                     $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
                     if ($autoSelect && !$autoSelect->alwaysShow)
                     {
@@ -378,6 +422,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $list;
     }
 
+    /**
+     * @return mixed
+     */
     public function &current()
     {
         $value = $this[$this->__getFieldName(current($this->__fieldNames))];
@@ -385,21 +432,33 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $value;
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return $this->__getFieldName(current($this->__fieldNames));
     }
 
-    public function next()
+    /**
+     * @return void
+     */
+    public function next(): void
     {
         next($this->__fieldNames);
     }
 
-    public function rewind()
+    /**
+     * @return void
+     */
+    public function rewind(): void
     {
         reset($this->__fieldNames);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return false !== $this->__getFieldName(current($this->__fieldNames));
@@ -417,7 +476,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return void
      */
-    public function set(array $data)
+    public function set(array $data): void
     {
         foreach ($data as $k => $v)
         {
@@ -434,13 +493,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected function __getCamelName(string $name): string
     {
-        $__camelCache = &self::$__camelCache;
-        if (!isset($__camelCache[$name]))
-        {
-            return $__camelCache[$name] = Text::toCamelName($name);
-        }
-
-        return $__camelCache[$name];
+        return self::$__camelCache[$name] ??= Text::toCamelName($name);
     }
 
     /**
@@ -474,11 +527,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      *
      * @return void
      */
-    protected function __parseExtractProperty(string $propertyName, array $annotations)
+    protected function __parseExtractProperty(string $propertyName, array $annotations): void
     {
         foreach ($annotations as $annotation)
         {
-            if (null === $annotation->alias)
+            if ('' === $annotation->alias)
             {
                 $list = explode('.', $annotation->fieldName);
                 $setPropertyName = end($list);

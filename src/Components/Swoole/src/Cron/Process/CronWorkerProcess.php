@@ -17,17 +17,17 @@ use Symfony\Component\Console\Input\ArgvInput;
  */
 class CronWorkerProcess extends BaseProcess
 {
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $success = false;
         $message = '';
+        $input = new ArgvInput();
+        $id = $input->getParameterOption('--id');
         try
         {
-            $input = new ArgvInput();
-            $id = $input->getParameterOption('--id');
             $data = json_decode($input->getParameterOption('--data'), true);
             $class = $input->getParameterOption('--class');
-            /** @var \Imi\Cron\ICronTask $handler */
+            /** @var \Imi\Cron\Contract\ICronTask $handler */
             $handler = App::getBean($class);
             $handler->run($id, $data);
             $success = true;

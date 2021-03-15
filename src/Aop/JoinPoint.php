@@ -11,28 +11,28 @@ class JoinPoint
      *
      * @var string
      */
-    private string $type = '';
+    protected string $type = '';
 
     /**
      * 请求方法名.
      *
      * @var string
      */
-    private string $method = '';
+    protected string $method = '';
 
     /**
      * 请求参数.
      *
      * @var array
      */
-    private array $args = [];
+    protected array $args = [];
 
     /**
      * 连接点所在的目标对象
      *
      * @var object
      */
-    private object $target;
+    protected object $target;
 
     public function __construct(string $type, string $method, array &$args, object $target)
     {
@@ -89,7 +89,7 @@ class JoinPoint
      *
      * @return void
      */
-    public function setArgs(array $args)
+    public function setArgs(array $args): void
     {
         $this->args = $args;
     }

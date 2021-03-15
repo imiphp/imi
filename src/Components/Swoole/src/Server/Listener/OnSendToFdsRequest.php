@@ -21,7 +21,7 @@ class OnSendToFdsRequest implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData();
         $workerId = $data['workerId'];

@@ -17,7 +17,7 @@ class DefaultRuntimeModeHandler implements IRuntimeModeHandler
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
     }
 }

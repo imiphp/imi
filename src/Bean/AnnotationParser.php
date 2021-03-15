@@ -55,7 +55,7 @@ class AnnotationParser
         });
     }
 
-    public function parse(string $className)
+    public function parse(string $className): void
     {
         if (!class_exists($className) && !interface_exists($className, false) && !trait_exists($className, false))
         {
@@ -79,7 +79,7 @@ class AnnotationParser
         $this->parseAnnotationParsers($ref);
     }
 
-    public function execParse(string $className)
+    public function execParse(string $className): void
     {
         // 执行处理器
         $this->doParser($className);
@@ -95,7 +95,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseClass(\ReflectionClass $ref)
+    public function parseClass(\ReflectionClass $ref): void
     {
         $annotations = $this->getReader()->getClassAnnotations($ref);
         if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPClassAnnotations($ref))
@@ -142,6 +142,7 @@ class AnnotationParser
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
                 }
+                /** @var Inherit $annotation */
                 if (\is_string($annotation->annotation))
                 {
                     $inheritAnnotationClasses = [$annotation->annotation];
@@ -187,7 +188,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseMethods(\ReflectionClass $ref)
+    public function parseMethods(\ReflectionClass $ref): void
     {
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
         {
@@ -203,7 +204,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseMethod(\ReflectionClass $ref, \ReflectionMethod $method)
+    public function parseMethod(\ReflectionClass $ref, \ReflectionMethod $method): void
     {
         $className = $ref->getName();
         $methodName = $method->getName();
@@ -291,7 +292,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseProps(\ReflectionClass $ref)
+    public function parseProps(\ReflectionClass $ref): void
     {
         foreach ($ref->getProperties() as $prop)
         {
@@ -307,7 +308,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop)
+    public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop): void
     {
         $annotations = $this->getReader()->getPropertyAnnotations($prop);
         if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPPropertyAnnotations($prop))
@@ -395,7 +396,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseConsts(\ReflectionClass $ref)
+    public function parseConsts(\ReflectionClass $ref): void
     {
         foreach ($ref->getReflectionConstants() as $const)
         {
@@ -407,11 +408,11 @@ class AnnotationParser
      * 处理常量注解.
      *
      * @param \ReflectionClass         $ref
-     * @param \ReflectionClassConstant $prop
+     * @param \ReflectionClassConstant $const
      *
      * @return void
      */
-    public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const)
+    public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const): void
     {
         $annotations = $this->getReader()->getConstantAnnotations($const);
         if (version_compare(\PHP_VERSION, '8.0', '>=') && $phpAnnotations = $this->getPHPConstantAnnotations($const))
@@ -443,6 +444,7 @@ class AnnotationParser
 
             // @Inherit 注解继承父级的注解
             $hasInherit = false;
+            $annotation = null;
             foreach ($annotations as $annotation)
             {
                 if ($annotation instanceof Inherit)
@@ -459,6 +461,7 @@ class AnnotationParser
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
                 }
+                /** @var Inherit $annotation */
                 if (\is_string($annotation->annotation))
                 {
                     $inheritAnnotationClasses = [$annotation->annotation];
@@ -497,7 +500,7 @@ class AnnotationParser
      *
      * @return void
      */
-    private function parseAnnotationParsers(\ReflectionClass $ref)
+    private function parseAnnotationParsers(\ReflectionClass $ref): void
     {
         $className = $ref->getName();
         $parsers = &$this->parsers;
@@ -549,7 +552,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function setParsers(array $parsers)
+    public function setParsers(array $parsers): void
     {
         $this->parsers = $parsers;
     }
@@ -583,7 +586,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function doParser(string $className)
+    public function doParser(string $className): void
     {
         $classAnnotations = AnnotationManager::getClassAnnotations($className, null, false);
         // 类
@@ -699,7 +702,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function parseIncr(array $files)
+    public function parseIncr(array $files): void
     {
         $thisFiles = &$this->files;
         $thisClasses = &$this->classes;
@@ -781,7 +784,7 @@ class AnnotationParser
      *
      * @return void
      */
-    public function loadStoreData(array $data)
+    public function loadStoreData(array $data): void
     {
         $this->files = $data[0];
         $this->classes = $data[1];
@@ -794,12 +797,7 @@ class AnnotationParser
      */
     private function getReader(): AnnotationReader
     {
-        if (!isset($this->reader))
-        {
-            $this->reader = new AnnotationReader();
-        }
-
-        return $this->reader;
+        return $this->reader ??= new AnnotationReader();
     }
 
     /**

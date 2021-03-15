@@ -12,7 +12,7 @@ use Imi\Util\FilterableList;
  */
 class FilterableListTest extends BaseTest
 {
-    public function testFilterableList()
+    public function testFilterableList(): void
     {
         $originData = [
             ['id' => 1, 'name' => 'a'],

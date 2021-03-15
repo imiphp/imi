@@ -95,7 +95,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      *
      * @return void
      */
-    protected function initServer()
+    protected function initServer(): void
     {
     }
 
@@ -143,7 +143,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      *
      * @return void
      */
-    protected function initRequestParams()
+    protected function initRequestParams(): void
     {
     }
 
@@ -339,7 +339,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      *
      * @return void
      */
-    protected function initUploadedFiles()
+    protected function initUploadedFiles(): void
     {
     }
 
@@ -373,7 +373,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array an array tree of UploadedFileInterface instances
+     * @param array $uploadedFiles an array tree of UploadedFileInterface instances
      *
      * @return static
      *
@@ -918,7 +918,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return static
      */
@@ -938,7 +938,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return static
      */

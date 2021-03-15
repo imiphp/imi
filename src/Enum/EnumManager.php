@@ -20,7 +20,7 @@ class EnumManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -34,7 +34,7 @@ class EnumManager
      *
      * @return void
      */
-    public static function add(string $className, string $constName, array $options)
+    public static function add(string $className, string $constName, array $options): void
     {
         $value = \constant($className . '::' . $constName);
         self::$map['map'][$className][$constName] = $value;

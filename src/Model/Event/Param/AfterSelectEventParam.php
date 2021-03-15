@@ -14,15 +14,4 @@ class AfterSelectEventParam extends EventParam
      * @var \Imi\Model\BaseModel[]
      */
     public $result;
-
-    public function __construct(string $eventName, array $data = [], $target = null)
-    {
-        $this->eventName = $eventName;
-        $this->target = $target;
-        $this->data = $data;
-        foreach ($data as $key => $value)
-        {
-            $this->$key = &$value;
-        }
-    }
 }

@@ -29,5 +29,5 @@ interface ITaskHandler
      *
      * @return void
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data);
+    public function finish(\Swoole\Server $server, int $taskId, $data): void;
 }

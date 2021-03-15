@@ -56,7 +56,7 @@ abstract class BaseRequestContextProxy
      *
      * @return void
      */
-    public static function __bindProxy(string $proxyClass, string $name, ?string $bindClass = null)
+    public static function __bindProxy(string $proxyClass, string $name, ?string $bindClass = null): void
     {
         $cache = &self::$cache;
         if (isset($cache[$proxyClass]))
@@ -74,16 +74,28 @@ abstract class BaseRequestContextProxy
      *
      * @return void
      */
-    public static function __clearCache()
+    public static function __clearCache(): void
     {
         self::$cache = [];
     }
 
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __call(string $name, array $arguments)
     {
         return static::__getProxyInstance()->$name(...$arguments);
     }
 
+    /**
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic(string $method, array $arguments)
     {
         return static::__getProxyInstance()->$method(...$arguments);

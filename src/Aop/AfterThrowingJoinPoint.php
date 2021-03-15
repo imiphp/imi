@@ -43,7 +43,7 @@ class AfterThrowingJoinPoint extends JoinPoint
      *
      * @return void
      */
-    public function cancelThrow(bool $isCancelThrow = true)
+    public function cancelThrow(bool $isCancelThrow = true): void
     {
         $this->isCancelThrow = $isCancelThrow;
     }

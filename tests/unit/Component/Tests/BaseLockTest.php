@@ -13,11 +13,11 @@ abstract class BaseLockTest extends BaseTest
 {
     protected string $lockId;
 
-    protected function check()
+    protected function check(): void
     {
     }
 
-    public function testLockAndUnlock()
+    public function testLockAndUnlock(): void
     {
         $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -37,7 +37,7 @@ abstract class BaseLockTest extends BaseTest
         }
     }
 
-    public function testTryLock()
+    public function testTryLock(): void
     {
         $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -57,7 +57,7 @@ abstract class BaseLockTest extends BaseTest
         }
     }
 
-    public function testLockCallable()
+    public function testLockCallable(): void
     {
         $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -69,7 +69,7 @@ abstract class BaseLockTest extends BaseTest
         Assert::assertFalse(Lock::isLocked($this->lockId));
     }
 
-    public function testTryLockCallable()
+    public function testTryLockCallable(): void
     {
         $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));
@@ -83,7 +83,7 @@ abstract class BaseLockTest extends BaseTest
         Assert::assertEquals('', Lock::getInstance($this->lockId)->getLockFlag());
     }
 
-    public function testCancelLockCallabale()
+    public function testCancelLockCallabale(): void
     {
         $this->check();
         Assert::assertFalse(Lock::isLocked($this->lockId));

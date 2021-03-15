@@ -18,7 +18,7 @@ class PartialTest extends BaseTest
      *
      * @return void
      */
-    public function testPartial()
+    public function testPartial(): void
     {
         /** @var \Imi\Test\Component\Partial\Classes\PartialClassA $test */
         $test = App::getBean('PartialClassA');

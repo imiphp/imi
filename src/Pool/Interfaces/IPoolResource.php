@@ -16,7 +16,7 @@ interface IPoolResource extends IHashCode
      *
      * @return bool
      */
-    public function open():bool;
+    public function open(): bool;
 
     /**
      * 关闭.

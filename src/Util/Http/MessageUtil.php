@@ -12,7 +12,7 @@ class MessageUtil
      *
      * @param array $headers
      *
-     * @return void
+     * @return array
      */
     public static function headersToStringList(array $headers): array
     {

@@ -22,7 +22,7 @@ use Imi\Util\Text;
  */
 abstract class Model extends BaseModel
 {
-    public function __init(array $data = [])
+    public function __init(array $data = []): void
     {
         if ($this->__meta->hasRelation())
         {
@@ -307,9 +307,9 @@ abstract class Model extends BaseModel
      * @param mixed          $data
      * @param array|callable $where
      *
-     * @return IResult
+     * @return IResult|null
      */
-    public static function updateBatch($data, $where = null): IResult
+    public static function updateBatch($data, $where = null): ?IResult
     {
         $class = static::__getRealClassName();
         if (Update::hasUpdateRelation($class))
@@ -325,6 +325,8 @@ abstract class Model extends BaseModel
                 $model->set($data);
                 $model->update();
             }
+
+            return null;
         }
         else
         {
@@ -379,6 +381,10 @@ abstract class Model extends BaseModel
             {
                 $recordExists = ($data[$autoIncrementField] ?? 0) > 0;
             }
+        }
+        else
+        {
+            $autoIncrementField = null;
         }
 
         if (true === $recordExists)
@@ -488,7 +494,7 @@ abstract class Model extends BaseModel
      *
      * @return void
      */
-    public function queryRelations(string ...$names)
+    public function queryRelations(string ...$names): void
     {
         ModelRelationManager::queryModelRelations($this, ...$names);
 
@@ -510,7 +516,7 @@ abstract class Model extends BaseModel
      *
      * @return void
      */
-    public function initRelations(string ...$names)
+    public function initRelations(string ...$names): void
     {
         foreach ($names as $name)
         {
@@ -601,7 +607,7 @@ abstract class Model extends BaseModel
      *
      * @return int|float
      */
-    public static function min(string $field): float
+    public static function min(string $field)
     {
         return static::aggregate('min', $field);
     }

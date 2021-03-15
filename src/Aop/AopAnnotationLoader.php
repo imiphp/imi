@@ -27,19 +27,19 @@ class AopAnnotationLoader
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
 
-    public static function saveMap(string $fileName)
+    public static function saveMap(string $fileName): void
     {
         file_put_contents($fileName, '<?php return ' . var_export(self::$map, true) . ';');
     }
 
-    public static function load(?string $fileName = null, bool $force = true)
+    public static function load(?string $fileName = null, bool $force = true): void
     {
-        if(!$force && self::$map)
+        if (!$force && self::$map)
         {
             return;
         }
@@ -99,15 +99,15 @@ class AopAnnotationLoader
                         'callback' => [$className, $methodName],
                         'priority' => $aspectAnnotation->priority,
                     ];
-                    /** @var Before $beforeAnnotation */
+                    /** @var Before|null $beforeAnnotation */
                     $beforeAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, Before::class)[0] ?? null;
-                    /** @var After $beforeAnnotation */
+                    /** @var After|null $beforeAnnotation */
                     $afterAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, After::class)[0] ?? null;
-                    /** @var Around $beforeAnnotation */
+                    /** @var Around|null $beforeAnnotation */
                     $aroundAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, Around::class)[0] ?? null;
-                    /** @var AfterReturning $beforeAnnotation */
+                    /** @var AfterReturning|null $beforeAnnotation */
                     $afterReturningAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, AfterReturning::class)[0] ?? null;
-                    /** @var AfterThrowing $beforeAnnotation */
+                    /** @var AfterThrowing|null $beforeAnnotation */
                     $afterThrowingAnnotation = AnnotationManager::getMethodAnnotations($className, $methodName, AfterThrowing::class)[0] ?? null;
                     /** @var PointCut[] $pointCuts */
                     foreach ($pointCuts as $pointCut)

@@ -26,7 +26,7 @@ class AfterReturningAop
      *
      * @return void
      */
-    public function injectAfterReturningAop(AfterReturningJoinPoint $joinPoint)
+    public function injectAfterReturningAop(AfterReturningJoinPoint $joinPoint): void
     {
         Assert::assertEquals([1], $joinPoint->getArgs());
         Assert::assertEquals('test', $joinPoint->getMethod());

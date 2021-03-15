@@ -37,7 +37,7 @@ trait TRaw
      *
      * @return void
      */
-    public function useRaw(bool $isRaw = true)
+    public function useRaw(bool $isRaw = true): void
     {
         $this->isRaw = $isRaw;
     }
@@ -49,7 +49,7 @@ trait TRaw
      *
      * @return void
      */
-    public function setRawSQL(string $rawSQL)
+    public function setRawSQL(string $rawSQL): void
     {
         $this->rawSQL = $rawSQL;
     }

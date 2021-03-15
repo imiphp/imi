@@ -63,7 +63,7 @@ class App
     /**
      * 只读上下文键名列表.
      *
-     * @var string[]
+     * @var array
      */
     private static array $contextReadonly = [];
 
@@ -134,7 +134,7 @@ class App
      *
      * @return void
      */
-    public static function initFramework(string $namespace)
+    public static function initFramework(string $namespace): void
     {
         \define('IMI_PATH', __DIR__);
         // 项目命名空间
@@ -155,7 +155,7 @@ class App
      *
      * @return \Imi\Swoole\Server\CoServer
      */
-    public static function createCoServer(string $name, int $workerNum): \Imi\Swoole\Server\CoServer
+    public static function createCoServer(string $name, int $workerNum): Swoole\Server\CoServer
     {
         static::$isCoServer = true;
         $server = ServerManager::createCoServer($name, $workerNum);
@@ -223,7 +223,7 @@ class App
      *
      * @return void
      */
-    public static function setDebug(bool $isDebug)
+    public static function setDebug(bool $isDebug): void
     {
         static::$isDebug = $isDebug;
     }
@@ -260,7 +260,7 @@ class App
      *
      * @return void
      */
-    public static function set(string $name, $value, bool $readonly = false)
+    public static function set(string $name, $value, bool $readonly = false): void
     {
         if (isset(static::$contextReadonly[$name]))
         {
@@ -314,7 +314,7 @@ class App
             }
         }
         // git
-        if (false !== strpos(`git --version` ?? '', 'git version') && preg_match('/\*([^\r\n]+)/', `git branch` ?? '', $matches) > 0)
+        if (false !== strpos(shell_exec('git --version') ?? '', 'git version') && preg_match('/\*([^\r\n]+)/', shell_exec('git branch') ?? '', $matches) > 0)
         {
             return static::$imiVersion = trim($matches[1]);
         }
@@ -325,7 +325,7 @@ class App
     /**
      * Get app 实例对象
      *
-     * @return \Imi\Core\Contract\IApp
+     * @return IApp
      */
     public static function getApp(): IApp
     {

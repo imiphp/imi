@@ -26,7 +26,7 @@ class BeforeAop
      *
      * @return void
      */
-    public function injectBefore(JoinPoint $joinPoint)
+    public function injectBefore(JoinPoint $joinPoint): void
     {
         Assert::assertEquals([1], $joinPoint->getArgs());
         Assert::assertEquals('test', $joinPoint->getMethod());

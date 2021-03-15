@@ -17,7 +17,7 @@ use PHPUnit\Framework\Assert;
  */
 class InjectTest extends BaseTest
 {
-    public function testInject()
+    public function testInject(): void
     {
         $testTAutoInject = new TestTAutoInject();
         $value = $testTAutoInject->getTestInjectValue();
@@ -25,7 +25,7 @@ class InjectTest extends BaseTest
         $value->test();
     }
 
-    public function testArg()
+    public function testArg(): void
     {
         $test = App::getBean('TestArg');
         $test->test('123');

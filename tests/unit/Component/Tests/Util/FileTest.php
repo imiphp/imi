@@ -18,7 +18,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testEnum()
+    public function testEnum(): void
     {
         $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
@@ -45,7 +45,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testEnumAll()
+    public function testEnumAll(): void
     {
         $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
@@ -75,7 +75,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testEnumPHPFile()
+    public function testEnumPHPFile(): void
     {
         $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
@@ -96,7 +96,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testEnumFile()
+    public function testEnumFile(): void
     {
         $path = \dirname(__DIR__, 2) . '/Util/File';
         $expectedFiles = [
@@ -126,7 +126,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testPath()
+    public function testPath(): void
     {
         $path = 'http://www.baidu.com/a/b.jpg';
         $this->assertEquals($path, File::path('http://www.baidu.com', 'a', 'b.jpg'));
@@ -148,7 +148,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testReadAll()
+    public function testReadAll(): void
     {
         $fp = fopen(\dirname(__DIR__, 2) . '/Util/File/1.txt', 'r');
         $this->assertIsResource($fp);
@@ -162,7 +162,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testCreateDir()
+    public function testCreateDir(): void
     {
         $path = Imi::getRuntimePath('test/a/b');
         $this->assertDirectoryDoesNotExist($path);
@@ -175,7 +175,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testCrateFile()
+    public function testCrateFile(): void
     {
         $path = Imi::getRuntimePath('test/test.txt');
         $this->assertFalse(is_file($path));
@@ -193,7 +193,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testIsEmptyDir()
+    public function testIsEmptyDir(): void
     {
         $path = Imi::getRuntimePath('test/a/b');
         $this->assertTrue(File::isEmptyDir($path));
@@ -207,7 +207,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testDeleteDir()
+    public function testDeleteDir(): void
     {
         $path = Imi::getRuntimePath('test/test');
         $this->assertDirectoryExists($path);
@@ -220,7 +220,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testPutContents()
+    public function testPutContents(): void
     {
         $path = Imi::getRuntimePath('test/test');
         $this->assertDirectoryDoesNotExist($path);
@@ -236,7 +236,7 @@ class FileTest extends BaseTest
      *
      * @return void
      */
-    public function testAbsolute()
+    public function testAbsolute(): void
     {
         $this->assertEquals('/a/b/c/1.jpg', File::absolute('/a/b/d/e/../../c/./1.jpg'));
     }

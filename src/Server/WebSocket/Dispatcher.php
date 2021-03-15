@@ -29,7 +29,7 @@ class Dispatcher
      */
     private array $finalMiddlewares = [];
 
-    public function dispatch(IFrame $frame)
+    public function dispatch(IFrame $frame): void
     {
         $requestHandler = new MessageHandler($this->getMiddlewares());
         $responseData = $requestHandler->handle($frame);

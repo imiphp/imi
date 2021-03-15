@@ -37,6 +37,7 @@ class Dispatcher
     public function dispatch(Request $request): Response
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
+        /** @var Response $response */
         $response = $requestHandler->handle($request);
         if (!$response->isEnded())
         {

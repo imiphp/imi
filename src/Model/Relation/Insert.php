@@ -33,14 +33,16 @@ class Insert
      *
      * @return void
      */
-    public static function parse(Model $model, string $propertyName, RelationBase $annotation)
+    public static function parse(Model $model, string $propertyName, RelationBase $annotation): void
     {
         if (!$model->$propertyName)
         {
             return;
         }
         $className = BeanFactory::getObjectClass($model);
+        /** @var AutoInsert|null $autoInsert */
         $autoInsert = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoInsert::class)[0] ?? null;
+        /** @var AutoSave|null $autoSave */
         $autoSave = AnnotationManager::getPropertyAnnotations($className, $propertyName, AutoSave::class)[0] ?? null;
 
         if ($autoInsert)
@@ -75,6 +77,7 @@ class Insert
         {
             static::parseByPolymorphicOneToMany($model, $propertyName, $annotation);
         }
+        // @phpstan-ignore-next-line
         elseif ($annotation instanceof \Imi\Model\Annotation\Relation\PolymorphicManyToMany)
         {
             static::parseByPolymorphicManyToMany($model, $propertyName, $annotation);
@@ -90,7 +93,7 @@ class Insert
      *
      * @return void
      */
-    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation)
+    public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -126,7 +129,7 @@ class Insert
      *
      * @return void
      */
-    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation)
+    public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -147,6 +150,7 @@ class Insert
         {
             if (!$row instanceof $rightModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }
@@ -170,7 +174,7 @@ class Insert
      *
      * @return void
      */
-    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation)
+    public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -191,6 +195,7 @@ class Insert
         {
             if (!$row instanceof $middleModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }
@@ -214,7 +219,7 @@ class Insert
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation)
+    public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -251,7 +256,7 @@ class Insert
      *
      * @return void
      */
-    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation)
+    public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -272,6 +277,7 @@ class Insert
         {
             if (!$row instanceof $rightModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $rightModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }
@@ -296,7 +302,7 @@ class Insert
      *
      * @return void
      */
-    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation)
+    public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation): void
     {
         $className = BeanFactory::getObjectClass($model);
 
@@ -317,6 +323,7 @@ class Insert
         {
             if (!$row instanceof $middleModel)
             {
+                /** @var \Imi\Model\Model $row */
                 $row = $middleModel::newInstance($row);
                 $model->$propertyName[$index] = $row;
             }

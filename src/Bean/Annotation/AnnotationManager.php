@@ -602,58 +602,18 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
-            foreach ($classAnnotation->getClassAnnotations() as $annotation)
-            {
-                static::$annotationRelation->removeClassRelation(\get_class($annotation), $className);
-                if (null !== ($aliases = $annotation->getAlias()))
-                {
-                    foreach ((array) $aliases as $alias)
-                    {
-                        static::$annotationRelation->removeClassRelation($alias, $className);
-                    }
-                }
-            }
+            static::$annotationRelation->removeClassRelation($className);
             foreach ($classAnnotation->getMethodAnnotations() as $methodName => $annotations)
             {
-                foreach ($annotations as $annotation)
-                {
-                    static::$annotationRelation->removeMethodRelation(\get_class($annotation), $className, $methodName);
-                    if (null !== ($aliases = $annotation->getAlias()))
-                    {
-                        foreach ((array) $aliases as $alias)
-                        {
-                            static::$annotationRelation->removeMethodRelation($alias, $className, $methodName);
-                        }
-                    }
-                }
+                static::$annotationRelation->removeMethodRelation($className, $methodName);
             }
             foreach ($classAnnotation->getPropertyAnnotations() as $propertyName => $annotations)
             {
-                foreach ($annotations as $annotation)
-                {
-                    static::$annotationRelation->removePropertyAnnotationRelation(\get_class($annotation), $className, $propertyName);
-                    if (null !== ($aliases = $annotation->getAlias()))
-                    {
-                        foreach ((array) $aliases as $alias)
-                        {
-                            static::$annotationRelation->removePropertyRelation($alias, $className, $propertyName);
-                        }
-                    }
-                }
+                static::$annotationRelation->removePropertyRelation($className, $propertyName);
             }
             foreach ($classAnnotation->getConstantAnnotations() as $constName => $annotations)
             {
-                foreach ($annotations as $annotation)
-                {
-                    static::$annotationRelation->removeConstantAnnotationRelation(\get_class($annotation), $className, $constName);
-                    if (null !== ($aliases = $annotation->getAlias()))
-                    {
-                        foreach ((array) $aliases as $alias)
-                        {
-                            static::$annotationRelation->removeConstantRelation($alias, $className, $constName);
-                        }
-                    }
-                }
+                static::$annotationRelation->removeConstantRelation($className, $constName);
             }
             unset($staticAnnotations[$className]);
         }

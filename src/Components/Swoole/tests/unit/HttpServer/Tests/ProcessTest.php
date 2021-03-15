@@ -16,11 +16,11 @@ class ProcessTest extends BaseTest
      *
      * @return void
      */
-    public function testPoolCleanAllow()
+    public function testPoolCleanAllow(): void
     {
         $file = \dirname(__DIR__) . '/bin/imi';
         $cmd = \Imi\cmd('"' . $file . '" process/start PoolTest1');
-        $result = `{$cmd}`;
+        $result = shell_exec("{$cmd}");
         $list = explode(\PHP_EOL, $result);
         end($list);
         prev($list);
@@ -35,11 +35,11 @@ class ProcessTest extends BaseTest
      *
      * @return void
      */
-    public function testPoolCleanDeny()
+    public function testPoolCleanDeny(): void
     {
         $file = \dirname(__DIR__) . '/bin/imi';
         $cmd = \Imi\cmd('"' . $file . '" process/run PoolTest2');
-        $result = `{$cmd}`;
+        $result = shell_exec("{$cmd}");
         $list = explode(\PHP_EOL, $result);
         end($list);
         $this->assertEquals(json_encode([
@@ -53,7 +53,7 @@ class ProcessTest extends BaseTest
      *
      * @return void
      */
-    public function testGetProcessWithManager()
+    public function testGetProcessWithManager(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'process');

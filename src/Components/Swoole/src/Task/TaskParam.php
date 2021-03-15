@@ -13,6 +13,9 @@ class TaskParam implements ITaskParam
      */
     protected $data = [];
 
+    /**
+     * @param mixed $data
+     */
     public function __construct($data = [])
     {
         $this->data = $data;

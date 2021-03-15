@@ -26,7 +26,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
         // 握手处理，什么都不做，框架会帮你做好
     }
@@ -38,7 +38,7 @@ class IndexController extends HttpController
      *
      * @return void
      */
-    public function test2()
+    public function test2(): void
     {
     }
 
@@ -46,7 +46,7 @@ class IndexController extends HttpController
      * @Action
      * @Route("/http")
      *
-     * @return void
+     * @return mixed
      */
     public function http()
     {

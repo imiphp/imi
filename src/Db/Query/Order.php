@@ -10,8 +10,8 @@ use Imi\Db\Query\Traits\TRaw;
 
 class Order implements IOrder
 {
-    use TRaw;
     use TKeyword;
+    use TRaw;
 
     /**
      * 字段名.
@@ -60,7 +60,7 @@ class Order implements IOrder
      *
      * @return void
      */
-    public function setFieldName(string $fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
@@ -72,7 +72,7 @@ class Order implements IOrder
      *
      * @return void
      */
-    public function setDirection(string $direction)
+    public function setDirection(string $direction): void
     {
         $this->direction = $direction;
     }

@@ -20,18 +20,29 @@ class Server implements \ArrayAccess, \JsonSerializable
         $this->defaultServer = $defaultServer;
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value): void
     {
         $this->defaultServer[$offset] = $value;
     }
 
-    public function offsetExists($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool
     {
         if (isset($this->defaultServer[$offset]))
         {
             return true;
         }
-        /** @var \Imi\Server\Http\Message\Request $request */
+        /** @var \Imi\Server\Http\Message\Request|null $request */
         $request = RequestContext::get('request');
         if ($request)
         {
@@ -49,14 +60,24 @@ class Server implements \ArrayAccess, \JsonSerializable
         return false;
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param mixed $offset
+     *
+     * @return void
+     */
+    public function offsetUnset($offset): void
     {
         trigger_error('imi does not support to unset values from $_SERVER', \E_USER_WARNING);
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function offsetGet($offset)
     {
-        /** @var \Imi\Server\Http\Message\Request $request */
+        /** @var \Imi\Server\Http\Message\Request|null $request */
         $request = RequestContext::get('request');
         if ($request)
         {
@@ -77,14 +98,14 @@ class Server implements \ArrayAccess, \JsonSerializable
         }
     }
 
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return $this->jsonSerialize();
     }
 
     public function jsonSerialize()
     {
-        /** @var \Imi\Server\Http\Message\Request $request */
+        /** @var \Imi\Server\Http\Message\Request|null $request */
         $request = RequestContext::get('request');
         if ($request)
         {

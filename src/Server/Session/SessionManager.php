@@ -89,7 +89,7 @@ class SessionManager
      *
      * @return void
      */
-    public function start(?string $sessionId = null)
+    public function start(?string $sessionId = null): void
     {
         if ($this->isStart)
         {
@@ -115,7 +115,7 @@ class SessionManager
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->data = [];
         $this->isStart = false;
@@ -126,7 +126,7 @@ class SessionManager
      *
      * @return void
      */
-    public function destroy()
+    public function destroy(): void
     {
         $this->handler->destroy($this->id);
         $this->isStart = false;
@@ -137,7 +137,7 @@ class SessionManager
      *
      * @return void
      */
-    public function save()
+    public function save(): void
     {
         $handler = $this->handler;
         $handler->write($this->id, $handler->encode($this->data), $this->config->maxLifeTime);
@@ -148,7 +148,7 @@ class SessionManager
      *
      * @return void
      */
-    public function commit()
+    public function commit(): void
     {
         if ($this->isChanged)
         {
@@ -202,7 +202,7 @@ class SessionManager
      *
      * @return void
      */
-    public function tryGC()
+    public function tryGC(): void
     {
         if (Random::number(0, 1) <= $this->config->gcProbability)
         {
@@ -215,7 +215,7 @@ class SessionManager
      *
      * @return void
      */
-    public function gc()
+    public function gc(): void
     {
         $this->handler->gc($this->config->maxLifeTime);
     }
@@ -247,7 +247,7 @@ class SessionManager
      *
      * @return void
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::set($this->data, $name, $value);
@@ -261,7 +261,7 @@ class SessionManager
      *
      * @return void
      */
-    public function delete(string $name)
+    public function delete(string $name): void
     {
         $name = $this->parseName($name);
         ObjectArrayHelper::remove($this->data, $name);
@@ -289,11 +289,9 @@ class SessionManager
     /**
      * 清空所有Session.
      *
-     * @param string $name
-     *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->data = [];
         $this->isChanged = true;

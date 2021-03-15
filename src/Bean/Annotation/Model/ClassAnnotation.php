@@ -75,7 +75,7 @@ class ClassAnnotation
      *
      * @param string|null $methodName
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
     public function getMethodAnnotations($methodName = null): array
     {
@@ -109,7 +109,7 @@ class ClassAnnotation
      *
      * @param string|null $propertyName
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
     public function getPropertyAnnotations(?string $propertyName = null): array
     {
@@ -143,7 +143,7 @@ class ClassAnnotation
      *
      * @param string|null $constantName
      *
-     * @return \Imi\Bean\Annotation\Base[]
+     * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
     public function getConstantAnnotations(?string $constantName = null): array
     {
@@ -177,7 +177,7 @@ class ClassAnnotation
      *
      * @return void
      */
-    public function clearClassAnnotations()
+    public function clearClassAnnotations(): void
     {
         $this->classAnnotations = [];
     }
@@ -189,7 +189,7 @@ class ClassAnnotation
      *
      * @return void
      */
-    public function clearMethodAnnotations(?string $methodName = null)
+    public function clearMethodAnnotations(?string $methodName = null): void
     {
         if (null === $methodName)
         {
@@ -208,7 +208,7 @@ class ClassAnnotation
      *
      * @return void
      */
-    public function clearPropertyAnnotations(?string $propertyName = null)
+    public function clearPropertyAnnotations(?string $propertyName = null): void
     {
         if (null === $propertyName)
         {
@@ -227,7 +227,7 @@ class ClassAnnotation
      *
      * @return void
      */
-    public function clearConstantAnnotations(?string $constantName = null)
+    public function clearConstantAnnotations(?string $constantName = null): void
     {
         if (null === $constantName)
         {

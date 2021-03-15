@@ -29,7 +29,7 @@ class StatementManager
      *
      * @return void
      */
-    public static function set(IStatement $statement, bool $using)
+    public static function set(IStatement $statement, bool $using): void
     {
         static::$statements[$statement->getDb()->hashCode()][$statement->getSql()] = [
             'statement'     => $statement,
@@ -109,7 +109,7 @@ class StatementManager
      *
      * @return void
      */
-    public static function unUsing(IStatement $statement)
+    public static function unUsing(IStatement $statement): void
     {
         $db = $statement->getDb();
         $sql = $statement->getSql();
@@ -142,7 +142,7 @@ class StatementManager
      *
      * @return void
      */
-    public static function unUsingAll(IDb $db)
+    public static function unUsingAll(IDb $db): void
     {
         $context = RequestContext::getContext();
         $statementCaches = $context['statementCaches'] ?? [];
@@ -181,7 +181,7 @@ class StatementManager
      *
      * @return void
      */
-    public static function remove(IStatement $statement)
+    public static function remove(IStatement $statement): void
     {
         $db = $statement->getDb();
         $sql = $statement->getSql();
@@ -201,7 +201,7 @@ class StatementManager
      *
      * @return void
      */
-    public static function clear(IDb $db)
+    public static function clear(IDb $db): void
     {
         $requestContext = RequestContext::getContext();
         $statementCaches = $requestContext['statementCaches'] ?? [];
@@ -236,7 +236,7 @@ class StatementManager
      *
      * @return void
      */
-    public static function clearAll()
+    public static function clearAll(): void
     {
         static::$statements = [];
         RequestContext::set('statementCaches', []);

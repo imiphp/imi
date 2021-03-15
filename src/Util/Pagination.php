@@ -101,7 +101,7 @@ class Pagination
      *
      * @return void
      */
-    private function calc()
+    private function calc(): void
     {
         $count = $this->count;
         $this->limitOffset = max((int) (($this->page - 1) * $count), 0);

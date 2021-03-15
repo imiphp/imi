@@ -17,7 +17,7 @@ class DateTimeTest extends BaseTest
      *
      * @return void
      */
-    public function testGetSecondsByInterval()
+    public function testGetSecondsByInterval(): void
     {
         $di = new \DateInterval('PT1S');
         $sec = DateTime::getSecondsByInterval($di);

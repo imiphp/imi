@@ -38,7 +38,7 @@ class WorkerPartPipeMessage implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         if (ProcessType::WORKER !== App::get(ProcessAppContexts::PROCESS_TYPE))
         {

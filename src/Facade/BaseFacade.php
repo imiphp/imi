@@ -65,7 +65,7 @@ abstract class BaseFacade
      *
      * @return void
      */
-    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, ...$args)
+    public static function __bindFacade(string $facadeClass, ?string $bindClass = null, ...$args): void
     {
         $cache = &self::$cache;
         if (isset($cache[$facadeClass]))
@@ -83,11 +83,17 @@ abstract class BaseFacade
      *
      * @return void
      */
-    public static function __clearCache()
+    public static function __clearCache(): void
     {
         self::$cache = [];
     }
 
+    /**
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public static function __callStatic(string $method, array $arguments)
     {
         return static::__getFacadeInstance()->$method(...$arguments);

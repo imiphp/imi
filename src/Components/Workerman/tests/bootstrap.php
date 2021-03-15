@@ -8,9 +8,10 @@ require dirname(__DIR__) . '/vendor/autoload.php';
  *
  * @return void
  */
-function startServer()
+function startServer(): void
 {
-    function checkHttpServerStatus()
+    // @phpstan-ignore-next-line
+    function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
         for ($i = 0; $i < 60; ++$i)
@@ -40,16 +41,17 @@ function startServer()
         // start server
         $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
         echo "Starting {$name}...", \PHP_EOL;
-        `{$cmd}`;
+        shell_exec("{$cmd}");
 
         register_shutdown_function(function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
             echo "Stoping {$name}...", \PHP_EOL;
-            `{$cmd}`;
+            shell_exec("{$cmd}");
             echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
         });
 
+        // @phpstan-ignore-next-line
         if (($options['checkStatus'])())
         {
             echo "{$name} started!", \PHP_EOL;

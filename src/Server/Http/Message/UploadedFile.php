@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Message;
 
 use Imi\Util\Stream\FileStream;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 class UploadedFile implements UploadedFileInterface
@@ -86,12 +87,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getStream()
     {
-        if (!isset($this->stream))
-        {
-            $this->stream = new FileStream($this->tmpFileName);
-        }
-
-        return $this->stream;
+        return $this->stream ??= new FileStream($this->tmpFileName);
     }
 
     /**
@@ -123,6 +119,8 @@ class UploadedFile implements UploadedFileInterface
      * @see http://php.net/move_uploaded_file
      *
      * @param string $targetPath path to which to move the uploaded file
+     *
+     * @return void
      *
      * @throws \InvalidArgumentException if the $path specified is invalid
      * @throws \RuntimeException         on any error during the move operation, or on

@@ -25,7 +25,7 @@ class BeforeConnect implements IConnectEventListener
      *
      * @return void
      */
-    public function handle(ConnectEventParam $e)
+    public function handle(ConnectEventParam $e): void
     {
         if (!SwooleWorker::isWorkerStartAppComplete())
         {

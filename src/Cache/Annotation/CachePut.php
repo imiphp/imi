@@ -32,7 +32,7 @@ class CachePut extends Base
      * 键名
      * 支持{id}、{data.name}形式，代入参数
      * 支持{:args}代入所有方法参数的 hash 值
-     * 如果为null，则使用全部参数，序列化后hash.
+     * 如果为空，则使用全部参数，序列化后hash.
      *
      * @var string
      */

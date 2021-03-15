@@ -59,6 +59,14 @@ class View
         }
     }
 
+    /**
+     * @param string                                 $renderType
+     * @param array|object                           $data
+     * @param array                                  $options
+     * @param \Imi\Server\Http\Message\Response|null $response
+     *
+     * @return \Imi\Server\Http\Message\Response
+     */
     public function render(string $renderType, $data, array $options, ?Response $response = null): Response
     {
         $handlers = &$this->handlers;

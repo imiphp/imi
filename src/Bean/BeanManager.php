@@ -22,7 +22,7 @@ class BeanManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -36,7 +36,7 @@ class BeanManager
      *
      * @return void
      */
-    public static function add(string $className, string $beanName, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON)
+    public static function add(string $className, string $beanName, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON): void
     {
         self::$map[$className]['class'] = self::$map[$beanName]['class'] = [
             'beanName'     => $beanName,
@@ -57,7 +57,7 @@ class BeanManager
         return self::$map[$name]['class'] ?? null;
     }
 
-    public static function addPropertyInject(string $name, string $propertyName, string $injectType, array $injectOptions)
+    public static function addPropertyInject(string $name, string $propertyName, string $injectType, array $injectOptions): void
     {
         $options = [
             'injectType'    => $injectType,

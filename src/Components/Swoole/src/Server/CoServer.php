@@ -101,7 +101,7 @@ class CoServer
         $this->checkReusePort();
     }
 
-    public function run()
+    public function run(): void
     {
         if ($this->running)
         {
@@ -138,11 +138,13 @@ class CoServer
                 {
                     // 处理请求的 worker 进程
                     $server = ServerManager::createServer($this->name, $this->config);
+                    // @phpstan-ignore-next-line
                     $this->parseServer($server, $this->workerId);
                     Event::trigger('IMI.MAIN_SERVER.WORKER.START', [
                         'server'    => $server,
                         'workerId'  => $this->workerId,
                     ], $this, WorkerStartEventParam::class);
+                    // @phpstan-ignore-next-line
                     $server->getSwooleServer()->start();
                 }
                 else
@@ -176,7 +178,7 @@ class CoServer
      *
      * @return void
      */
-    private function loadConfig()
+    private function loadConfig(): void
     {
         if ('main' === $this->name)
         {
@@ -198,8 +200,9 @@ class CoServer
      *
      * @return void
      */
-    private function checkReusePort()
+    private function checkReusePort(): void
     {
+        // @phpstan-ignore-next-line
         if ($this->config['reuse_port'] ?? false && $this->workerNum > 1 && !Imi::checkReusePort())
         {
             if ($this->workerNum > 1)
@@ -217,7 +220,7 @@ class CoServer
      *
      * @return void
      */
-    private function parseServer(\Imi\Swoole\Server\Base $server, int $workerId)
+    private function parseServer(Base $server, int $workerId): void
     {
         $swooleServer = $server->getSwooleServer();
         $swooleServer->worker_id = $workerId;
@@ -287,7 +290,7 @@ class CoServer
      *
      * @return void
      */
-    public function addProcess(callable $callable)
+    public function addProcess(callable $callable): void
     {
         ++$this->processNum;
         $this->processes[] = $callable;

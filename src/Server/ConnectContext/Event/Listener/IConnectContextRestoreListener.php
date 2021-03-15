@@ -18,5 +18,5 @@ interface IConnectContextRestoreListener
      *
      * @return void
      */
-    public function handle(ConnectContextRestoreParam $e);
+    public function handle(ConnectContextRestoreParam $e): void;
 }

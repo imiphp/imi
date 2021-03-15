@@ -45,10 +45,12 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $context = RequestContext::getContext();
         // 路由解析
+        // @phpstan-ignore-next-line
         $result = $this->route->parse($request);
         if (null === $result || !\is_callable($result->callable))
         {
             // 未匹配到路由
+            // @phpstan-ignore-next-line
             $response = $this->notFoundHandler->handle($handler, $request, $context['response']);
         }
         else

@@ -70,7 +70,7 @@ class Timer
      *
      * @return void
      */
-    public static function del(int $id)
+    public static function del(int $id): void
     {
         static::getInstance()->del($id);
     }
@@ -80,7 +80,7 @@ class Timer
      *
      * @return void
      */
-    public static function clear()
+    public static function clear(): void
     {
         static::getInstance()->clear();
     }

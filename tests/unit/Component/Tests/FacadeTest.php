@@ -13,12 +13,12 @@ use Imi\Test\Component\Facade\FacadeA2;
  */
 class FacadeTest extends BaseTest
 {
-    public function testFacade()
+    public function testFacade(): void
     {
         $this->assertEquals(3, FacadeA::add(1, 2));
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         try
         {

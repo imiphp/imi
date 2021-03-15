@@ -35,7 +35,7 @@ class ImiArgvInput extends Input
         parent::__construct($definition);
     }
 
-    protected function setTokens(array $tokens)
+    protected function setTokens(array $tokens): void
     {
         $this->tokens = $tokens;
     }
@@ -43,7 +43,7 @@ class ImiArgvInput extends Input
     /**
      * {@inheritdoc}
      */
-    protected function parse()
+    protected function parse(): void
     {
         $parseOptions = true;
         $this->parsed = $this->tokens;
@@ -75,7 +75,7 @@ class ImiArgvInput extends Input
     /**
      * Parses a short option.
      */
-    private function parseShortOption(string $token)
+    private function parseShortOption(string $token): void
     {
         $name = substr($token, 1);
 
@@ -102,7 +102,7 @@ class ImiArgvInput extends Input
      *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function parseShortOptionSet(string $name)
+    private function parseShortOptionSet(string $name): void
     {
         $len = \strlen($name);
         for ($i = 0; $i < $len; ++$i)
@@ -137,7 +137,7 @@ class ImiArgvInput extends Input
     /**
      * Parses a long option.
      */
-    private function parseLongOption(string $token)
+    private function parseLongOption(string $token): void
     {
         $name = substr($token, 2);
 
@@ -160,7 +160,7 @@ class ImiArgvInput extends Input
      *
      * @throws RuntimeException When too many arguments are given
      */
-    private function parseArgument(string $token)
+    private function parseArgument(string $token): void
     {
         $c = \count($this->arguments);
 
@@ -194,9 +194,11 @@ class ImiArgvInput extends Input
     /**
      * Adds a short option value.
      *
+     * @param mixed $value
+     *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function addShortOption(string $shortcut, $value)
+    private function addShortOption(string $shortcut, $value): void
     {
         if (!$this->definition->hasShortcut($shortcut))
         {
@@ -216,9 +218,11 @@ class ImiArgvInput extends Input
     /**
      * Adds a long option value.
      *
+     * @param mixed $value
+     *
      * @throws RuntimeException When option given doesn't exist
      */
-    private function addLongOption(string $name, $value)
+    private function addLongOption(string $name, $value): void
     {
         if (!$this->definition->hasOption($name))
         {
@@ -410,8 +414,10 @@ class ImiArgvInput extends Input
 
     /**
      * Get the value of dynamicOptions.
+     *
+     * @return bool
      */
-    public function getDynamicOptions()
+    public function getDynamicOptions(): bool
     {
         return $this->dynamicOptions;
     }
@@ -421,7 +427,7 @@ class ImiArgvInput extends Input
      *
      * @return self
      */
-    public function setDynamicOptions($dynamicOptions)
+    public function setDynamicOptions(bool $dynamicOptions): self
     {
         $this->dynamicOptions = $dynamicOptions;
 

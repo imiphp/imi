@@ -14,7 +14,7 @@ class WSTest extends BaseTest
     /**
      * @testdox test
      */
-    public function test()
+    public function test(): void
     {
         $this->go(function () {
             $http = new HttpRequest();
@@ -96,7 +96,7 @@ class WSTest extends BaseTest
         });
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $this->go(function () {
             $http = new HttpRequest();
@@ -113,7 +113,7 @@ class WSTest extends BaseTest
         });
     }
 
-    public function testMatchHttpRoute()
+    public function testMatchHttpRoute(): void
     {
         $this->go(function () {
             $http = new HttpRequest();
@@ -146,7 +146,7 @@ class WSTest extends BaseTest
         });
     }
 
-    public function testHttp()
+    public function testHttp(): void
     {
         $this->go(function () {
             $http = new HttpRequest();

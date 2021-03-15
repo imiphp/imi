@@ -12,7 +12,7 @@ use Imi\Util\ObjectArrayHelper;
  */
 class ObjectArrayHelperTest extends BaseTest
 {
-    private function getTestData()
+    private function getTestData(): array
     {
         $data2 = new \stdClass();
         $data2->id = 2;
@@ -31,7 +31,7 @@ class ObjectArrayHelperTest extends BaseTest
         return $data;
     }
 
-    public function testGetAndSet()
+    public function testGetAndSet(): void
     {
         $data = $this->getTestData();
         $this->assertEquals($data['data1']['name'], ObjectArrayHelper::get($data, 'data1.name'));
@@ -45,7 +45,7 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertEquals($data['description'], ObjectArrayHelper::get($data, 'description'));
     }
 
-    public function testExists()
+    public function testExists(): void
     {
         $data = $this->getTestData();
         $this->assertTrue(ObjectArrayHelper::exists($data, 'name'));
@@ -56,7 +56,7 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertFalse(ObjectArrayHelper::exists($data, 'data2.name1'));
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $data = $this->getTestData();
         $this->assertTrue(ObjectArrayHelper::exists($data, 'name'));
@@ -71,7 +71,7 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertFalse(ObjectArrayHelper::exists($data, 'data2.name'));
     }
 
-    public function testColumn()
+    public function testColumn(): void
     {
         $list = [
             ['id' => 1, 'name' => 'a'],
@@ -93,7 +93,7 @@ class ObjectArrayHelperTest extends BaseTest
         $this->assertEquals(['a', 'b', 'c'], ObjectArrayHelper::column($list, 'name'));
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         // array
         $data = [

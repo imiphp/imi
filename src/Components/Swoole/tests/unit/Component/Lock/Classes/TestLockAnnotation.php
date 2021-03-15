@@ -15,12 +15,12 @@ class TestLockAnnotation
     /**
      * @Lockable(id="锁ID", afterLock={"$this", "check"})
      */
-    public function index()
+    public function index(): int
     {
         return 1;
     }
 
-    protected function check()
+    protected function check(): int
     {
         return 2;
     }
@@ -28,19 +28,19 @@ class TestLockAnnotation
     /**
      * @Lockable(id="锁ID", afterLock={"$this", "check2"})
      */
-    public function index2()
+    public function index2(): int
     {
         return 3;
     }
 
-    protected function check2()
+    protected function check2(): void
     {
     }
 
     /**
      * @Lockable(id="锁ID")
      */
-    public function test()
+    public function test(): int
     {
         usleep(100000);
 

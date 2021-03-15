@@ -37,7 +37,7 @@ class LockAop
         $target = $joinPoint->getTarget();
         $method = $joinPoint->getMethod();
         $class = get_parent_class($target);
-        // Lockable 注解
+        /** @var Lockable|null $lockable */
         $lockable = AnnotationManager::getMethodAnnotations($class, $method, Lockable::class)[0] ?? null;
 
         return $this->parseLockable($target, $method, $joinPoint->getArgs(), $lockable, function () use ($joinPoint) {

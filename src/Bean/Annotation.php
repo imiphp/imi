@@ -99,7 +99,7 @@ class Annotation
      *
      * @return void
      */
-    private function loadModuleAnnotations(string $namespace)
+    private function loadModuleAnnotations(string $namespace): void
     {
         $ignoredNamespaces = [];
         foreach (Config::getAliases() as $alias)
@@ -141,7 +141,7 @@ class Annotation
      *
      * @return string
      */
-    public static function toComments(\Imi\Bean\Annotation\Base $annotation, bool $skipDefaultValue = true): string
+    public static function toComments(Annotation\Base $annotation, bool $skipDefaultValue = true): string
     {
         $result = '@' . Imi::getClassShortName(\get_class($annotation));
         $properties = [];
@@ -149,6 +149,10 @@ class Annotation
         {
             $refClass = new ReflectionClass($annotation);
             $defaultProperties = $refClass->getDefaultProperties();
+        }
+        else
+        {
+            $defaultProperties = null;
         }
         foreach ($annotation as $k => $v)
         {

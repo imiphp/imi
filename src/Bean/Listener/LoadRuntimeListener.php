@@ -21,7 +21,7 @@ class LoadRuntimeListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $config = Config::get('@app.imi.runtime', []);
         if (!($config['bean'] ?? true))
@@ -50,6 +50,7 @@ class LoadRuntimeListener implements IEventListener
         {
             PartialManager::setMap($data['partial']);
         }
+        // @phpstan-ignore-next-line
         if (($config['bean'] ?? true) && isset($data['bean']))
         {
             BeanManager::setMap($data['bean']);

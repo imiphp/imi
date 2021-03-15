@@ -68,7 +68,7 @@ class Server extends Base implements IWebSocketServer
      *
      * @return void
      */
-    protected function createServer()
+    protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
         $this->swooleServer = new \Swoole\WebSocket\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
@@ -81,7 +81,7 @@ class Server extends Base implements IWebSocketServer
      *
      * @return void
      */
-    protected function createSubServer()
+    protected function createSubServer(): void
     {
         $config = $this->getServerInitConfig();
         /** @var ISwooleServer $server */
@@ -89,10 +89,7 @@ class Server extends Base implements IWebSocketServer
         $this->swooleServer = $server->getSwooleServer();
         $this->swoolePort = $this->swooleServer->addListener($config['host'], $config['port'], $config['sockType']);
         $thisConfig = &$this->config;
-        if (!isset($thisConfig['configs']['open_websocket_protocol']))
-        {
-            $thisConfig['configs']['open_websocket_protocol'] = true;
-        }
+        $thisConfig['configs']['open_websocket_protocol'] ??= true;
         $this->wss = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
     }
 
@@ -116,7 +113,7 @@ class Server extends Base implements IWebSocketServer
      *
      * @return void
      */
-    protected function __bindEvents()
+    protected function __bindEvents(): void
     {
         Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e) {
             // 内置事件监听
@@ -269,6 +266,7 @@ class Server extends Base implements IWebSocketServer
      */
     public function push(int $fd, string $data, int $opcode = 1): bool
     {
+        // @phpstan-ignore-next-line
         return $this->getSwooleServer()->push($fd, $data, $opcode);
     }
 }

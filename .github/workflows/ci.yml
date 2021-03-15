@@ -46,7 +46,7 @@ jobs:
   #       run: php .github/print-logs.php
 
   ci-php:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       fail-fast: false
@@ -60,7 +60,7 @@ jobs:
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: prepare
         run: |

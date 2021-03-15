@@ -22,7 +22,7 @@ class EventDListener implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         Assert::assertEquals('IMITEST.EVENT.D', $e->getEventName());
         Assert::assertEquals(EventTest::class, \get_class($e->getTarget()));

@@ -21,7 +21,7 @@ class MainServer implements ITaskEventListener
      *
      * @return void
      */
-    public function handle(TaskEventParam $e)
+    public function handle(TaskEventParam $e): void
     {
         $taskInfo = $e->data;
         if ($taskInfo instanceof TaskInfo)

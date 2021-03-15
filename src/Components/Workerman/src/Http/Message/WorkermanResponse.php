@@ -43,9 +43,9 @@ class WorkermanResponse extends Response
     /**
      * 发送头部信息，没有特别需求，无需手动调用.
      *
-     * @return static
+     * @return void
      */
-    private function sendHeaders()
+    private function sendHeaders(): void
     {
         $response = $this->workermanResponse;
         // cookie
@@ -69,6 +69,7 @@ class WorkermanResponse extends Response
         // status
         if (StatusCode::OK !== $this->statusCode)
         {
+            // @phpstan-ignore-next-line
             $response->withStatus($this->statusCode, $this->reasonPhrase);
         }
     }

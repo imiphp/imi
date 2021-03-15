@@ -26,6 +26,9 @@ class BeforeRequest implements IRequestEventListener
      */
     protected Base $server;
 
+    /**
+     * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
+     */
     public function __construct(Base $server)
     {
         $this->server = $server;
@@ -38,7 +41,7 @@ class BeforeRequest implements IRequestEventListener
      *
      * @return void
      */
-    public function handle(RequestEventParam $e)
+    public function handle(RequestEventParam $e): void
     {
         $request = $e->request;
         $response = $e->response;
@@ -50,10 +53,7 @@ class BeforeRequest implements IRequestEventListener
             ConnectContext::create();
         }
         // 中间件
-        if (!isset($this->dispatcher))
-        {
-            $this->dispatcher = $server->getBean('HttpDispatcher');
-        }
+        $this->dispatcher ??= $server->getBean('HttpDispatcher');
         $this->dispatcher->dispatch($request, $response);
     }
 }

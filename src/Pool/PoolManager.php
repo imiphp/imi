@@ -60,7 +60,7 @@ class PoolManager
      *
      * @return void
      */
-    public static function addName(string $name, string $poolClassName, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    public static function addName(string $name, string $poolClassName, Interfaces\IPoolConfig $config = null, $resourceConfig = null): void
     {
         static::$pools[$name] = $pool = App::getBean($poolClassName, $name, $config, $resourceConfig);
         $pool->open();
@@ -81,7 +81,7 @@ class PoolManager
      *
      * @return void
      */
-    public static function clearPools()
+    public static function clearPools(): void
     {
         foreach (static::$pools as $pool)
         {
@@ -208,7 +208,7 @@ class PoolManager
      *
      * @return void
      */
-    public static function releaseResource(IPoolResource $resource)
+    public static function releaseResource(IPoolResource $resource): void
     {
         $resource->getPool()->release($resource);
         static::removeResourceFromRequestContext($resource);
@@ -245,7 +245,7 @@ class PoolManager
      *
      * @return void
      */
-    public static function destroyCurrentContext()
+    public static function destroyCurrentContext(): void
     {
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
@@ -277,7 +277,7 @@ class PoolManager
      *
      * @return void
      */
-    private static function pushResourceToRequestContext(IPoolResource $resource)
+    private static function pushResourceToRequestContext(IPoolResource $resource): void
     {
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
@@ -293,7 +293,7 @@ class PoolManager
      *
      * @return void
      */
-    private static function removeResourceFromRequestContext(IPoolResource $resource)
+    private static function removeResourceFromRequestContext(IPoolResource $resource): void
     {
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
@@ -320,7 +320,7 @@ class PoolManager
      *
      * @return void
      */
-    public static function cleanAllow(array $allowList)
+    public static function cleanAllow(array $allowList): void
     {
         foreach (self::getNames() as $poolName)
         {
@@ -338,7 +338,7 @@ class PoolManager
      *
      * @return void
      */
-    public static function cleanDeny(array $denyList)
+    public static function cleanDeny(array $denyList): void
     {
         foreach (self::getNames() as $poolName)
         {

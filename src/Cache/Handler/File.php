@@ -24,7 +24,7 @@ class File extends Base
     /**
      * 缓存文件名的处理回调，用于需要自定义的情况.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $saveFileNameCallback;
 
@@ -410,7 +410,7 @@ class File extends Base
      *
      * @return void
      */
-    protected function writeExData(string $fileName, ?int $ttl)
+    protected function writeExData(string $fileName, ?int $ttl): void
     {
         file_put_contents($this->getExDataFileName($fileName), serialize([
             'ttl' => $ttl,

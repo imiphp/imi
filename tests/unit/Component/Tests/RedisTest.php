@@ -17,23 +17,23 @@ use PHPUnit\Framework\Assert;
  */
 class RedisTest extends BaseTest
 {
-    public function testInject()
+    public function testInject(): void
     {
         $test = App::getBean('TestInjectRedis');
         $test->test();
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         Assert::assertTrue(Redis::set('imi:test:a', 'imi niubi!'));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         Assert::assertEquals('imi niubi!', Redis::get('imi:test:a'));
     }
 
-    public function testEvalEx()
+    public function testEvalEx(): void
     {
         $value = PoolManager::use('redis_test', function (IPoolResource $resource, RedisHandler $redis) {
             return $redis->evalEx(<<<SCRIPT
@@ -47,7 +47,7 @@ SCRIPT
         Assert::assertEquals('imi very 6', $value);
     }
 
-    public function testEvalEx2()
+    public function testEvalEx2(): void
     {
         $value = Redis::evalEx(<<<SCRIPT
 local key = KEYS[1]
@@ -59,7 +59,7 @@ SCRIPT
         Assert::assertEquals('imi very 6', $value);
     }
 
-    public function testScanEach()
+    public function testScanEach(): void
     {
         $excepted = $map = [];
         for ($i = 0; $i < 100; ++$i)
@@ -76,7 +76,7 @@ SCRIPT
         $this->assertEquals($excepted, $map);
     }
 
-    public function testHscanEach()
+    public function testHscanEach(): void
     {
         $excepted = $map = $values = $exceptedValues = [];
         $key = 'imi:hscanEach';
@@ -99,7 +99,7 @@ SCRIPT
         $this->assertEquals($exceptedValues, $values);
     }
 
-    public function testSscanEach()
+    public function testSscanEach(): void
     {
         $excepted = $map = [];
         $key = 'imi:sscanEach';
@@ -118,7 +118,7 @@ SCRIPT
         $this->assertEquals($excepted, $map);
     }
 
-    public function testZscanEach()
+    public function testZscanEach(): void
     {
         $excepted = $map = [];
         $key = 'imi:zscanEach';

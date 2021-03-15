@@ -12,7 +12,7 @@ use Yurun\Util\HttpRequest;
  */
 class SessionTest extends BaseTest
 {
-    public function testSetGetDelete()
+    public function testSetGetDelete(): void
     {
         $http = new HttpRequest();
         $http->get($this->host . 'session/login');
@@ -30,7 +30,7 @@ class SessionTest extends BaseTest
         Assert::assertArrayNotHasKey('username', $data);
     }
 
-    public function testOnce()
+    public function testOnce(): void
     {
         $http = new HttpRequest();
 

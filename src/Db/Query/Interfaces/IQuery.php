@@ -23,7 +23,7 @@ interface IQuery
     /**
      * 设置操作记录.
      *
-     * @param QueryOption $options
+     * @param QueryOption $option
      *
      * @return static
      */
@@ -451,7 +451,7 @@ interface IQuery
     /**
      * 设置查询几条记录.
      *
-     * @param int|null $offset
+     * @param int|null $limit
      *
      * @return static
      */

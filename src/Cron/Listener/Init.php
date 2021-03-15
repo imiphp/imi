@@ -23,7 +23,7 @@ class Init implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         if ('cli' !== \PHP_SAPI)
         {
@@ -40,6 +40,7 @@ class Init implements IEventListener
         }
         foreach (AnnotationManager::getAnnotationPoints(Cron::class, 'class') as $point)
         {
+            // @phpstan-ignore-next-line
             $cronManager->addCronByAnnotation($point->getAnnotation(), $point->getClass());
         }
     }

@@ -16,18 +16,18 @@ use Symfony\Component\Console\Input\ArgvInput;
  */
 class TaskProcess implements IProcess
 {
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $success = false;
         $message = '';
+        $input = new ArgvInput();
+        $id = $input->getParameterOption('--id');
+        if (false === $id)
+        {
+            return;
+        }
         try
         {
-            $input = new ArgvInput();
-            $id = $input->getParameterOption('--id');
-            if (false === $id)
-            {
-                return;
-            }
             $data = json_decode($input->getParameterOption('--data'), true);
             $success = true;
         }

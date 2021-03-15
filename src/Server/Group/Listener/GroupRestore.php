@@ -19,11 +19,11 @@ class GroupRestore implements IConnectContextRestoreListener
     /**
      * 事件处理方法.
      *
-     * @param EventParam $e
+     * @param ConnectContextRestoreParam $e
      *
      * @return void
      */
-    public function handle(ConnectContextRestoreParam $e)
+    public function handle(ConnectContextRestoreParam $e): void
     {
         $fromFd = $e->fromFd;
         $toFd = $e->toFd;

@@ -297,35 +297,35 @@ class ValidatorHelper
      */
     public static function ipv6(string $str): bool
     {
-        return preg_match('/\A 
-(?: 
-(?: 
-(?:[a-f0-9]{1,4}:){6} 
-| 
-::(?:[a-f0-9]{1,4}:){5} 
-| 
-(?:[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){4} 
-| 
-(?:(?:[a-f0-9]{1,4}:){0,1}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){3} 
-| 
-(?:(?:[a-f0-9]{1,4}:){0,2}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){2} 
-| 
-(?:(?:[a-f0-9]{1,4}:){0,3}[a-f0-9]{1,4})?::[a-f0-9]{1,4}: 
-| 
-(?:(?:[a-f0-9]{1,4}:){0,4}[a-f0-9]{1,4})?:: 
-) 
-(?: 
-[a-f0-9]{1,4}:[a-f0-9]{1,4} 
-| 
-(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3} 
-(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]) 
-) 
-| 
-(?: 
-(?:(?:[a-f0-9]{1,4}:){0,5}[a-f0-9]{1,4})?::[a-f0-9]{1,4} 
-| 
-(?:(?:[a-f0-9]{1,4}:){0,6}[a-f0-9]{1,4})?:: 
-) 
+        return preg_match('/\A
+(?:
+(?:
+(?:[a-f0-9]{1,4}:){6}
+|
+::(?:[a-f0-9]{1,4}:){5}
+|
+(?:[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){4}
+|
+(?:(?:[a-f0-9]{1,4}:){0,1}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){3}
+|
+(?:(?:[a-f0-9]{1,4}:){0,2}[a-f0-9]{1,4})?::(?:[a-f0-9]{1,4}:){2}
+|
+(?:(?:[a-f0-9]{1,4}:){0,3}[a-f0-9]{1,4})?::[a-f0-9]{1,4}:
+|
+(?:(?:[a-f0-9]{1,4}:){0,4}[a-f0-9]{1,4})?::
+)
+(?:
+[a-f0-9]{1,4}:[a-f0-9]{1,4}
+|
+(?:(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}
+(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])
+)
+|
+(?:
+(?:(?:[a-f0-9]{1,4}:){0,5}[a-f0-9]{1,4})?::[a-f0-9]{1,4}
+|
+(?:(?:[a-f0-9]{1,4}:){0,6}[a-f0-9]{1,4})?::
+)
 )\Z/ix', $str) > 0;
     }
 
@@ -473,7 +473,7 @@ class ValidatorHelper
      * 值在范围内.
      *
      * @param mixed $value
-     * @param mixed $list
+     * @param array $list
      *
      * @return bool
      */
@@ -560,7 +560,7 @@ class ValidatorHelper
             $len = \strlen($id_card);
             for ($i = 0; $i < $len; ++$i)
             {
-                $checksum += substr($id_card, $i, 1) * $factor[$i];
+                $checksum += (int) $id_card[$i] * $factor[$i];
             }
             $mod = $checksum % 11;
             $verify_number = $verify_number_list[$mod];
@@ -582,7 +582,7 @@ class ValidatorHelper
             $id_card1 = $id_card;
             $id_card = substr($id_card, 0, 17);
 
-            return $idcard_verify_number() === strtoupper(substr($id_card1, 17, 1));
+            return $idcard_verify_number() === strtoupper($id_card1[17]);
         };
         /**
          * 将15位身份证升级到18位.
@@ -594,7 +594,7 @@ class ValidatorHelper
         $idcard_15to18 = function () use (&$id_card, $idcard_verify_number): string {
             if (15 !== \strlen($id_card))
             {
-                return false;
+                return '';
             }
             else
             {

@@ -111,7 +111,7 @@ class SwooleWorkerHandler implements ISwooleWorker
      *
      * @return void
      */
-    public function inited()
+    public function inited(): void
     {
         $this->isInited = true;
         $mainServer = ServerManager::getServer('main', ISwooleServer::class);

@@ -20,7 +20,7 @@ class CronAllWorker implements ICronTask
      *
      * @return void
      */
-    public function run(string $id, $data)
+    public function run(string $id, $data): void
     {
         var_dump('all');
     }

@@ -537,7 +537,7 @@ class ResponseProxy implements IHttpResponse
     /**
      * 发送所有响应数据.
      *
-     * @return static
+     * @return IHttpResponse
      */
     public function send(): IHttpResponse
     {
@@ -585,7 +585,7 @@ class ResponseProxy implements IHttpResponse
      *
      * @return void
      */
-    public function setResponseInstance(IHttpResponse $response)
+    public function setResponseInstance(IHttpResponse $response): void
     {
         RequestContext::set('response', $response);
     }

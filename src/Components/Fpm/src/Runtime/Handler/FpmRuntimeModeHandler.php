@@ -20,7 +20,7 @@ class FpmRuntimeModeHandler implements IRuntimeModeHandler
      *
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         if (!App::isDebug())
         {

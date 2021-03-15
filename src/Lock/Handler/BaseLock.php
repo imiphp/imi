@@ -175,7 +175,7 @@ abstract class BaseLock implements ILockHandler
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         if ($this->isLocked)
         {
@@ -189,7 +189,7 @@ abstract class BaseLock implements ILockHandler
      *
      * @return void
      */
-    protected function __close()
+    protected function __close(): void
     {
     }
 

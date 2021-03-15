@@ -20,7 +20,7 @@ class PartialManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -33,7 +33,7 @@ class PartialManager
      *
      * @return void
      */
-    public static function add(string $partialClass, string $targetClass)
+    public static function add(string $partialClass, string $targetClass): void
     {
         if (!isset(self::$map[$targetClass]) || !\in_array($partialClass, self::$map[$targetClass]))
         {

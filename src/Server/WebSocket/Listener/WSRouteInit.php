@@ -34,7 +34,7 @@ class WSRouteInit implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $this->parseAnnotations($e);
         $this->parseConfigs();
@@ -45,7 +45,7 @@ class WSRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseAnnotations(EventParam $e)
+    private function parseAnnotations(EventParam $e): void
     {
         $controllerParser = WSControllerParser::getInstance();
         $context = RequestContext::getContext();
@@ -64,6 +64,7 @@ class WSRouteInit implements IEventListener
                 $classAnnotation = $classItem->getAnnotation();
                 // 类中间件
                 $classMiddlewares = [];
+                /** @var WSMiddleware $middleware */
                 foreach (AnnotationManager::getClassAnnotations($className, WSMiddleware::class) ?? [] as $middleware)
                 {
                     $classMiddlewares = array_merge($classMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
@@ -78,6 +79,7 @@ class WSRouteInit implements IEventListener
                     }
                     // 方法中间件
                     $methodMiddlewares = [];
+                    /** @var WSMiddleware $middleware */
                     foreach (AnnotationManager::getMethodAnnotations($className, $methodName, WSMiddleware::class) ?? [] as $middleware)
                     {
                         $methodMiddlewares = array_merge($methodMiddlewares, $this->getMiddlewares($middleware->middlewares, $name));
@@ -113,7 +115,7 @@ class WSRouteInit implements IEventListener
      *
      * @return void
      */
-    private function parseConfigs()
+    private function parseConfigs(): void
     {
         $context = RequestContext::getContext();
         foreach (ServerManager::getServers() as $server)

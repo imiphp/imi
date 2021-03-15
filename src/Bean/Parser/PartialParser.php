@@ -18,7 +18,7 @@ class PartialParser extends BaseParser
      *
      * @return void
      */
-    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
+    public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName): void
     {
         // Partial 仅支持定义为 trait
         if (!trait_exists($className, true))

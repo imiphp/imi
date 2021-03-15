@@ -19,6 +19,11 @@ class SyncRedisPool extends BaseSyncPool
      */
     protected string $handlerClass = \Redis::class;
 
+    /**
+     * @param string                           $name
+     * @param \Imi\Pool\Interfaces\IPoolConfig $config
+     * @param mixed                            $resourceConfig
+     */
     public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         parent::__construct($name, $config, $resourceConfig);

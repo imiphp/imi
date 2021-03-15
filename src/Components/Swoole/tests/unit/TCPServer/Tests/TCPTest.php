@@ -14,7 +14,7 @@ class TCPTest extends BaseTest
     /**
      * @testdox test
      */
-    public function test()
+    public function test(): void
     {
         $this->go(function () {
             $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);
@@ -48,7 +48,7 @@ class TCPTest extends BaseTest
         });
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $this->go(function () {
             $client = new \Swoole\Coroutine\Client(\SWOOLE_SOCK_TCP);

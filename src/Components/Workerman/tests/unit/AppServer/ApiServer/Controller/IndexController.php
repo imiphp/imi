@@ -24,7 +24,7 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/")
      *
-     * @return void
+     * @return mixed
      */
     public function index()
     {
@@ -38,9 +38,9 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/route/{id}")
      *
-     * @return void
+     * @return array
      */
-    public function route($id)
+    public function route(string $id): array
     {
         return [
             'id'    => $id,
@@ -52,9 +52,9 @@ class IndexController extends SingletonHttpController
      * @Route(autoEndSlash=true)
      * @View(renderType="html", template="html")
      *
-     * @return void
+     * @return array
      */
-    public function html(int $time)
+    public function html(int $time): array
     {
         return [
             'time'  => date('Y-m-d H:i:s', $time),
@@ -65,9 +65,9 @@ class IndexController extends SingletonHttpController
      * @Action
      * @View(renderType="html", baseDir="index/")
      *
-     * @return void
+     * @return array
      */
-    public function html2(int $time)
+    public function html2(int $time): array
     {
         return [
             'time'  => date('Y-m-d H:i:s', $time),
@@ -77,7 +77,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function renderHtml1()
     {
@@ -89,7 +89,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function renderHtml2()
     {
@@ -101,9 +101,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function info()
+    public function info(): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -122,9 +122,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function superGlobalsInfo()
+    public function superGlobalsInfo(): array
     {
         return [
             'get'       => $_GET,
@@ -140,9 +140,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function info2($get, $post, $default = 19260817)
+    public function info2(string $get, string $post, int $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -156,9 +156,13 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @param mixed $get
+     * @param mixed $post
+     * @param mixed $parsedBody
+     *
+     * @return array
      */
-    public function info3($get, $post, $parsedBody, $default = 19260817)
+    public function info3($get, $post, $parsedBody, int $default = 19260817): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -174,7 +178,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function cookie()
     {
@@ -191,7 +195,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function headers()
     {
@@ -212,9 +216,9 @@ class IndexController extends SingletonHttpController
      * })
      * @Middleware("@test")
      *
-     * @return void
+     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return [];
     }
@@ -222,7 +226,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function redirect()
     {
@@ -232,7 +236,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function download()
     {
@@ -242,9 +246,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function upload()
+    public function upload(): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
@@ -267,9 +271,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function executeTimeout()
+    public function executeTimeout(): array
     {
         sleep(5);
 
@@ -282,9 +286,9 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
      *
-     * @return void
+     * @return array
      */
-    public function regularExpression1($id, $page)
+    public function regularExpression1(int $id, int $page): array
     {
         return [
             'id'    => $id,
@@ -296,9 +300,9 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route("/a/{name:[a-zA-Z]+}/{page}")
      *
-     * @return void
+     * @return array
      */
-    public function regularExpression2($name, $page)
+    public function regularExpression2(string $name, int $page): array
     {
         return [
             'name'  => $name,
@@ -309,9 +313,9 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function singletonRequest()
+    public function singletonRequest(): array
     {
         return [
             'get'       => $this->request->get(),
@@ -327,7 +331,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return void
+     * @return mixed
      */
     public function singletonResponse1()
     {
@@ -344,7 +348,7 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
-    public function singletonResponse2()
+    public function singletonResponse2(): void
     {
         $this->response->setResponseInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
@@ -355,7 +359,7 @@ class IndexController extends SingletonHttpController
      *
      * @return array
      */
-    public function type($id, $name, $page)
+    public function type(int $id, string $name, int $page): array
     {
         return compact('id', 'name', 'page');
     }
@@ -368,7 +372,7 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
-    public function duplicated1()
+    public function duplicated1(): void
     {
     }
 
@@ -380,7 +384,7 @@ class IndexController extends SingletonHttpController
      *
      * @return void
      */
-    public function duplicated2()
+    public function duplicated2(): void
     {
     }
 }

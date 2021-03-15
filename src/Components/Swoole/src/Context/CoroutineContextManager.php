@@ -10,7 +10,6 @@ use Imi\Core\Context\Exception\ContextExistsException;
 use Imi\Core\Context\Exception\ContextNotFoundException;
 use Imi\Event\Event;
 use Imi\Swoole\Util\Coroutine;
-use Swoole\Coroutine\Context;
 
 /**
  * Swoole 协程上下文管理器.
@@ -20,7 +19,7 @@ class CoroutineContextManager implements IContextManager
     /**
      * 上下文对象集合.
      *
-     * @var Context[]
+     * @var ArrayObject[]
      */
     private array $contexts = [];
 
@@ -160,7 +159,7 @@ class CoroutineContextManager implements IContextManager
      *
      * @return void
      */
-    public function __destroy()
+    public function __destroy(): void
     {
         Event::trigger('IMI.REQUEST_CONTENT.DESTROY');
         $context = Coroutine::getContext();

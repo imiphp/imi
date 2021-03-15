@@ -27,6 +27,10 @@ abstract class Base extends LazyArrayObject
      */
     protected $__alias;
 
+    /**
+     * @param array|null $data
+     * @param mixed      ...$args
+     */
     public function __construct(?array $data = null, ...$args)
     {
         parent::__construct([]);
@@ -73,6 +77,11 @@ abstract class Base extends LazyArrayObject
         }
     }
 
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
     public function &offsetGet($offset)
     {
         $value = parent::offsetGet($offset);

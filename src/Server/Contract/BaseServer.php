@@ -83,6 +83,7 @@ abstract class BaseServer implements IServer
      * 获取Bean对象
      *
      * @param string $name
+     * @param mixed  $params
      *
      * @return object
      */

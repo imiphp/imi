@@ -224,7 +224,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return static
      */
@@ -233,7 +233,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $get
+     * @param array $request
      *
      * @return static
      */

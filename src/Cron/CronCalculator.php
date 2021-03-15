@@ -168,7 +168,7 @@ class CronCalculator
         if (strpos($rule, '-') > 0)
         {
             [$begin, $end] = explode('-', substr($rule, 1), 2);
-            $begin = substr($rule, 0, 1) . $begin;
+            $begin = $rule[0] . $begin;
             if ('day' !== $name)
             {
                 // 负数支持
@@ -185,7 +185,7 @@ class CronCalculator
             return range(max($min, $begin), min($end, $max));
         }
         // 步长
-        if ('n' === substr($rule, -1, 1))
+        if ('n' === $rule[-1])
         {
             $step = (int) substr($rule, 0, -1);
             if ($lastTime < $min)
@@ -358,23 +358,23 @@ class CronCalculator
         }
         if ('n' === substr($cronRule->getSecond(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getSecond(), 0, -1);
+            return $lastTime + (int) substr($cronRule->getSecond(), 0, -1);
         }
         if ('n' === substr($cronRule->getMinute(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getMinute(), 0, -1) * 60;
+            return $lastTime + (int) substr($cronRule->getMinute(), 0, -1) * 60;
         }
         if ('n' === substr($cronRule->getHour(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getHour(), 0, -1) * 3600;
+            return $lastTime + (int) substr($cronRule->getHour(), 0, -1) * 3600;
         }
         if ('n' === substr($cronRule->getDay(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getDay(), 0, -1) * 86400;
+            return $lastTime + (int) substr($cronRule->getDay(), 0, -1) * 86400;
         }
         if ('n' === substr($cronRule->getWeek(), -1, 1))
         {
-            return $lastTime + substr($cronRule->getWeek(), 0, -1) * 604800;
+            return $lastTime + (int) substr($cronRule->getWeek(), 0, -1) * 604800;
         }
         if ('n' === substr($cronRule->getMonth(), -1, 1))
         {

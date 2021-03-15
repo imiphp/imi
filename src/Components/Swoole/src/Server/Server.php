@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server;
 
+use Imi\Swoole\Server\Contract\ISwooleServerUtil;
+
 /**
  * 服务器工具类.
+ *
+ * @method static ISwooleServerUtil getInstance()
  */
 class Server extends \Imi\Server\Server
 {

@@ -242,7 +242,7 @@ class Imi
      */
     public static function getNamespacePath(string $namespace): ?string
     {
-        if ('\\' !== substr($namespace, -1, 1))
+        if ('\\' !== $namespace[-1])
         {
             $namespace .= '\\';
         }
@@ -277,7 +277,7 @@ class Imi
             foreach (Helper::getMains() as $main)
             {
                 $mainNamespace = $main->getNamespace();
-                if ('\\' !== substr($mainNamespace, -1, 1))
+                if ('\\' !== $mainNamespace[-1])
                 {
                     $mainNamespace .= '\\';
                 }
@@ -313,7 +313,7 @@ class Imi
     public static function getNamespacePaths(string $namespace): array
     {
         $resultPaths = [];
-        if ('\\' !== substr($namespace, -1, 1))
+        if ('\\' !== $namespace[-1])
         {
             $namespace .= '\\';
         }
@@ -343,7 +343,7 @@ class Imi
             foreach (Helper::getMains() as $main)
             {
                 $mainNamespace = $main->getNamespace();
-                if ('\\' !== substr($mainNamespace, -1, 1))
+                if ('\\' !== $mainNamespace[-1])
                 {
                     $mainNamespace .= '\\';
                 }
@@ -404,10 +404,7 @@ class Imi
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
         $cmd = '"' . \PHP_BINARY . '" "' . App::get(ProcessAppContexts::SCRIPT_NAME) . '" ' . $commandName;
-        if (!isset($options['app-namespace']))
-        {
-            $options['app-namespace'] = App::getNamespace();
-        }
+        $options['app-namespace'] ??= App::getNamespace();
         if ($arguments)
         {
             foreach ($arguments as $v)
@@ -481,7 +478,7 @@ class Imi
      *
      * @return void
      */
-    public static function buildRuntime(?string $cacheName = null)
+    public static function buildRuntime(?string $cacheName = null): void
     {
         if (null === $cacheName)
         {
@@ -536,7 +533,7 @@ class Imi
      *
      * @return void
      */
-    public static function incrUpdateRuntime(array $files)
+    public static function incrUpdateRuntime(array $files): void
     {
         $parser = Annotation::getInstance()->getParser();
         $parser->parseIncr($files);
@@ -644,7 +641,7 @@ class Imi
      */
     public static function getLinuxVersion(): string
     {
-        if (preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', `cat /etc/*-release`, $matches) <= 0)
+        if (preg_match_all('/^((NAME="?(?<name>.+)"?)|VERSION="?(?<version>.+)"?)/im', shell_exec('cat /etc/*-release'), $matches) <= 0)
         {
             return '';
         }
@@ -652,6 +649,7 @@ class Imi
         {
             return '';
         }
+        $name = '';
         foreach ($matches['name'] as $name)
         {
             if ('' !== $name)
@@ -662,6 +660,7 @@ class Imi
         $result = trim($name, '"');
         if (isset($matches['version']))
         {
+            $version = '';
             foreach ($matches['version'] as $version)
             {
                 if ('' !== $version)

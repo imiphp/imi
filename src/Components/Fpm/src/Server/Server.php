@@ -68,7 +68,7 @@ class Server extends BaseServer
      *
      * @return void
      */
-    public function start()
+    public function start(): void
     {
         // 初始化路由
         /** @var HttpRoute $route */
@@ -87,7 +87,7 @@ class Server extends BaseServer
         ]);
         /** @var \Imi\Server\Http\Dispatcher $dispatcher */
         $dispatcher = App::getBean('HttpDispatcher');
-        $dispatcher->dispatch($request, $response);
+        $dispatcher->dispatch($request);
     }
 
     /**
@@ -95,7 +95,7 @@ class Server extends BaseServer
      *
      * @return void
      */
-    public function shutdown()
+    public function shutdown(): void
     {
         exit;
     }
@@ -105,7 +105,7 @@ class Server extends BaseServer
      *
      * @return void
      */
-    public function reload()
+    public function reload(): void
     {
     }
 }

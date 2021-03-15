@@ -73,7 +73,7 @@ class ConnectionBinder
      *
      * @return void
      */
-    public function bind(string $flag, int $fd)
+    public function bind(string $flag, int $fd): void
     {
         ConnectContext::set('__flag', $flag, $fd);
         $this->useRedis(function (RedisHandler $redis) use ($flag, $fd) {
@@ -110,7 +110,7 @@ class ConnectionBinder
      *
      * @return void
      */
-    public function unbind(string $flag, int $keepTime = null)
+    public function unbind(string $flag, int $keepTime = null): void
     {
         $this->useRedis(function (RedisHandler $redis) use ($flag, $keepTime) {
             $key = $this->key;
@@ -153,7 +153,7 @@ class ConnectionBinder
     /**
      * 使用标记获取连接编号.
      *
-     * @param string[] $flag
+     * @param string[] $flags
      *
      * @return int[]
      */

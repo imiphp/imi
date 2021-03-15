@@ -17,7 +17,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testStartwith()
+    public function testStartwith(): void
     {
         $this->assertTrue(Text::startwith('imi is very niu bi', 'imi'));
         $this->assertFalse(Text::startwith('imi is very niu bi', 'niu bi'));
@@ -30,7 +30,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testEndwith()
+    public function testEndwith(): void
     {
         $this->assertTrue(Text::endwith('imi is very niu bi', 'niu bi'));
         $this->assertFalse(Text::endwith('imi is very niu bi', 'imi'));
@@ -43,7 +43,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testInsert()
+    public function testInsert(): void
     {
         $string = 'imi is niu bi';
         $this->assertEquals('imi is very niu bi', Text::insert($string, 7, 'very '));
@@ -54,7 +54,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testIsEmpty()
+    public function testIsEmpty(): void
     {
         $this->assertTrue(Text::isEmpty(''));
         $this->assertTrue(Text::isEmpty(null));
@@ -67,7 +67,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testToCamelName()
+    public function testToCamelName(): void
     {
         $this->assertEquals('tbAdminMember', Text::toCamelName('tb_admin_member'));
     }
@@ -77,7 +77,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testToPascalName()
+    public function testToPascalName(): void
     {
         $this->assertEquals('TbAdminMember', Text::toPascalName('tb_admin_member'));
     }
@@ -87,7 +87,7 @@ class TextTest extends BaseTest
      *
      * @return void
      */
-    public function testToUnderScoreCase()
+    public function testToUnderScoreCase(): void
     {
         $this->assertEquals('tb_admin_member', Text::toUnderScoreCase('tbAdminMember'));
         $this->assertEquals('tb_admin_member', Text::toUnderScoreCase('TbAdminMember'));

@@ -61,7 +61,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      *
      * @return void
      */
-    public function setCallback(callable $callback)
+    public function setCallback(callable $callback): void
     {
         $this->callback = $callback;
     }
@@ -73,7 +73,7 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
      *
      * @return void
      */
-    public function setLogicalOperator(string $logicalOperator)
+    public function setLogicalOperator(string $logicalOperator): void
     {
         $this->logicalOperator = $logicalOperator;
     }

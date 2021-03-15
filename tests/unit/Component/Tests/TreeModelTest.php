@@ -30,7 +30,7 @@ class TreeModelTest extends BaseTest
      *
      * @return void
      */
-    public function testGetChildIds()
+    public function testGetChildIds(): void
     {
         $tree = Tree::find(1);
         $this->assertEquals(['4', '5'], $tree->getChildIds());
@@ -42,7 +42,7 @@ class TreeModelTest extends BaseTest
      *
      * @return void
      */
-    public function testGetChildrenIds()
+    public function testGetChildrenIds(): void
     {
         $tree = Tree::find(1);
         $this->assertEquals(['1', '4', '5', '6', '7'], $tree->getChildrenIds(null, true));
@@ -55,7 +55,7 @@ class TreeModelTest extends BaseTest
      *
      * @return void
      */
-    public function testGetChildrenList()
+    public function testGetChildrenList(): void
     {
         $tree = Tree::find(1);
         $this->assertEquals([
@@ -75,7 +75,7 @@ class TreeModelTest extends BaseTest
      *
      * @return void
      */
-    public function testGetParent()
+    public function testGetParent(): void
     {
         $tree = Tree::find(1);
         $this->assertEquals($this->data[0], $tree->toArray());
@@ -91,7 +91,7 @@ class TreeModelTest extends BaseTest
      *
      * @return void
      */
-    public function testGetParents()
+    public function testGetParents(): void
     {
         $tree = Tree::find(6);
         $this->assertEquals([
@@ -105,7 +105,7 @@ class TreeModelTest extends BaseTest
      *
      * @return void
      */
-    public function testGetAssocList()
+    public function testGetAssocList(): void
     {
         $list = TreeWithChildren::getAssocList();
         $this->assertEquals([

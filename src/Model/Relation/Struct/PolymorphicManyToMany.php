@@ -59,8 +59,6 @@ class PolymorphicManyToMany
      * @param string                                                                                                $className
      * @param string                                                                                                $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany|\Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
-     *
-     * @return void
      */
     public function __construct(string $className, string $propertyName, $annotation)
     {

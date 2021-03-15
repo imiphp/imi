@@ -109,7 +109,7 @@ class Validator implements IValidator
      *
      * @return void
      */
-    public function setData(&$data)
+    public function setData(&$data): void
     {
         $this->data = &$data;
     }
@@ -131,7 +131,7 @@ class Validator implements IValidator
      *
      * @return void
      */
-    public function setRules(array $rules)
+    public function setRules(array $rules): void
     {
         $this->rules = $rules;
     }
@@ -312,7 +312,7 @@ class Validator implements IValidator
                 return (string) ObjectArrayHelper::get($annotation, $name);
             }
 
-            return null;
+            return '';
         }, $message);
 
         return $message;

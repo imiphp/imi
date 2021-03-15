@@ -63,6 +63,12 @@ class Statement extends BaseStatement implements IStatement
      */
     protected ?array $sqlParamsMap = null;
 
+    /**
+     * @param \Imi\Db\Interfaces\IDb                  $db
+     * @param \Swoole\Coroutine\MySQL\Statement|array $statement
+     * @param string                                  $originSql
+     * @param array|null                              $sqlParamsMap
+     */
     public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
@@ -170,7 +176,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -316,12 +322,12 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null)
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
     {
         $row = current($this->result);
         if (false === $row)
@@ -380,13 +386,13 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return string
      */
-    public function lastInsertId(string $name = null)
+    public function lastInsertId(?string $name = null): string
     {
-        return \is_array($this->statement) ? $this->db->lastInsertId() : $this->statement->insert_id;
+        return \is_array($this->statement) ? $this->db->lastInsertId() : (string) $this->statement->insert_id;
     }
 
     /**
@@ -409,26 +415,41 @@ class Statement extends BaseStatement implements IStatement
         return $this->statement;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         return current($this->result);
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return key($this->result);
     }
 
-    public function next()
+    /**
+     * @return void
+     */
+    public function next(): void
     {
-        return next($this->result);
+        next($this->result);
     }
 
-    public function rewind()
+    /**
+     * @return void
+     */
+    public function rewind(): void
     {
-        return reset($this->result);
+        reset($this->result);
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return false !== $this->current();

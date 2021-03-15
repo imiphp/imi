@@ -48,7 +48,7 @@ class TaskEventParam extends EventParam
     /**
      * task 对象
      *
-     * @var \Swoole\Server\Task
+     * @var \Swoole\Server\Task|null
      */
-    public Task $task;
+    public ?Task $task = null;
 }

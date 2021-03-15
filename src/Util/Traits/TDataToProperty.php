@@ -9,6 +9,9 @@ namespace Imi\Util\Traits;
  */
 trait TDataToProperty
 {
+    /**
+     * @param array $data
+     */
     public function __construct($data)
     {
         foreach ($data as $k => $v)

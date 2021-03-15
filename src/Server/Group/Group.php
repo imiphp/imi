@@ -100,7 +100,7 @@ class Group
      *
      * @return void
      */
-    public function join(int $fd)
+    public function join(int $fd): void
     {
         $groupName = $this->groupName;
         if ($this->handler->joinGroup($groupName, $fd))
@@ -126,7 +126,7 @@ class Group
      *
      * @return void
      */
-    public function leave(int $fd)
+    public function leave(int $fd): void
     {
         $groupName = $this->groupName;
         if ($this->handler->leaveGroup($groupName, $fd))
@@ -185,7 +185,7 @@ class Group
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->handler->clear();
     }

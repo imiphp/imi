@@ -101,7 +101,7 @@ class ImiCommand extends Command
         parent::__construct($finalCommandName);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         foreach (AnnotationManager::getMethodAnnotations($this->className, $this->methodName, Argument::class) as $argumentAnnotation)
         {

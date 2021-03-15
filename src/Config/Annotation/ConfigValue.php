@@ -41,6 +41,11 @@ class ConfigValue extends BaseInjectValue
      */
     public $default = null;
 
+    /**
+     * @param array|null $__data
+     * @param string     $name
+     * @param mixed      $default
+     */
     public function __construct(?array $__data = null, string $name = '', $default = null)
     {
         parent::__construct(...\func_get_args());

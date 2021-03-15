@@ -18,9 +18,9 @@ class IndexController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function info()
+    public function info(): array
     {
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');

@@ -13,14 +13,14 @@ abstract class BaseDbTest extends BaseTest
 {
     abstract public function getPoolName(): string;
 
-    public function testTruncate()
+    public function testTruncate(): void
     {
         App::set('DB_LOG', false);
         $this->assertTrue(true);
         Db::getInstance($this->getPoolName())->exec('truncate tb_performance');
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -32,7 +32,7 @@ abstract class BaseDbTest extends BaseTest
         Log::info($this->getPoolName() . '::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -44,7 +44,7 @@ abstract class BaseDbTest extends BaseTest
         Log::info($this->getPoolName() . '::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);
@@ -56,7 +56,7 @@ abstract class BaseDbTest extends BaseTest
         Log::info($this->getPoolName() . '::' . __FUNCTION__ . '(): ' . (microtime(true) - $time) . 's');
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $this->assertTrue(true);
         $time = microtime(true);

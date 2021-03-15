@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
  */
 class EnumTest extends BaseTest
 {
-    public function test()
+    public function test(): void
     {
         $data = TestEnum::getData(TestEnum::A);
         Assert::assertEquals('甲', $data['text'] ?? null);

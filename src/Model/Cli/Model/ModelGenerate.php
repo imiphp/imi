@@ -38,10 +38,14 @@ class ModelGenerate extends BaseCommand
      * @Option(name="config", type=ArgType::STRING, default=true, comments="配置文件。true-项目配置；false-忽略配置；php配置文件名-使用该配置文件。默认为true")
      * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
+     * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
+     *
+     * @param string|bool $override
+     * @param string|bool $config
      *
      * @return void
      */
-    public function generate(string $namespace, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity): void
+    public function generate(string $namespace, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine): void
     {
         $override = (string) $override;
         switch ($override)
@@ -97,10 +101,10 @@ class ModelGenerate extends BaseCommand
         }
         if (null === $modelPath)
         {
-            $this->output->writeln('<error>Namespace</error> <comments>' . $namespace . '</comments> <error>cannot found</error>');
+            $this->output->writeln('<error>Namespace</error> <comment>' . $namespace . '</comment> <error>cannot found</error>');
             exit;
         }
-        $this->output->writeln('<info>modelPath:</info> <comments>' . $modelPath . '</comments>');
+        $this->output->writeln('<info>modelPath:</info> <comment>' . $modelPath . '</comment>');
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
@@ -120,7 +124,7 @@ class ModelGenerate extends BaseCommand
                 $path = Imi::getNamespacePath($modelNamespace);
                 if (null === $path)
                 {
-                    $this->output->writeln('<error>Namespace</error> <comments>' . $modelNamespace . '</comments> <error>cannot found</error>');
+                    $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
                     exit;
                 }
                 File::createDir($path);
@@ -132,6 +136,9 @@ class ModelGenerate extends BaseCommand
             else
             {
                 $hasResult = false;
+                $withRecords = false;
+                $fileName = '';
+                $modelNamespace = '';
                 foreach ($configData['namespace'] ?? [] as $namespaceName => $namespaceItem)
                 {
                     if (\in_array($table, $namespaceItem['tables'] ?? []))
@@ -140,7 +147,7 @@ class ModelGenerate extends BaseCommand
                         $path = Imi::getNamespacePath($modelNamespace);
                         if (null === $path)
                         {
-                            $this->output->writeln('<error>Namespace</error> <comments>' . $modelNamespace . '</comments> <error>cannot found</error>');
+                            $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
                             exit;
                         }
                         File::createDir($path);
@@ -157,7 +164,6 @@ class ModelGenerate extends BaseCommand
                     $modelNamespace = $namespace;
                     $fileName = File::path($modelPath, $className . '.php');
                     $basePath = $baseModelPath;
-                    $withRecords = false;
                 }
             }
             if (false === $override && is_file($fileName))
@@ -171,6 +177,10 @@ class ModelGenerate extends BaseCommand
             {
                 $dataList = $query->from($table)->select()->getArray();
                 $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
+            }
+            if ($sqlSingleLine)
+            {
+                $ddl = str_replace(\PHP_EOL, ' ', $ddl);
             }
             $data = [
                 'namespace'     => $modelNamespace,

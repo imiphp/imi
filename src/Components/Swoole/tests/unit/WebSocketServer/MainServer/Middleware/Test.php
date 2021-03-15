@@ -15,6 +15,12 @@ use Imi\Server\WebSocket\Middleware\IMiddleware;
  */
 class Test implements IMiddleware
 {
+    /**
+     * @param \Imi\Server\WebSocket\Message\IFrame  $frame
+     * @param \Imi\Server\WebSocket\IMessageHandler $handler
+     *
+     * @return mixed
+     */
     public function process(IFrame $frame, IMessageHandler $handler)
     {
         RequestContext::set('middlewareData', 'imi');

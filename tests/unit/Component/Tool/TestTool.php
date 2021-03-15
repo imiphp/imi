@@ -22,7 +22,7 @@ class TestTool
      *
      * @return void
      */
-    public function test(int $code)
+    public function test(int $code): void
     {
         var_dump($code);
         exit($code);

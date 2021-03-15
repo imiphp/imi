@@ -15,7 +15,7 @@ use Imi\Test\Component\RequestContextProxy\RequestContextProxyA2;
  */
 class RequestContextProxyTest extends BaseTest
 {
-    public function testRequestContextProxy()
+    public function testRequestContextProxy(): void
     {
         $a = new A();
         RequestContext::set('testRequestContextProxyA', $a);
@@ -23,7 +23,7 @@ class RequestContextProxyTest extends BaseTest
         $this->assertEquals(5, (new RequestContextProxyA())->add(2, 3));
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         try
         {

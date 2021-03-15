@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
  */
 class LockAnnotationTest extends BaseTest
 {
-    public function test()
+    public function test(): void
     {
         $test = App::getBean('TestLockAnnotation');
         $time = microtime(true);
@@ -68,7 +68,7 @@ class LockAnnotationTest extends BaseTest
         Assert::assertGreaterThan(0.3, $useTime);
     }
 
-    public function testAfterLock()
+    public function testAfterLock(): void
     {
         $test = App::getBean('TestLockAnnotation');
         Assert::assertEquals(2, $test->index());

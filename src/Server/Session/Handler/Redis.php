@@ -43,7 +43,7 @@ class Redis extends Base
      *
      * @return void
      */
-    public function destroy(string $sessionId)
+    public function destroy(string $sessionId): void
     {
         ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionId) {
             $redis->del($this->getKey($sessionId));
@@ -57,7 +57,7 @@ class Redis extends Base
      *
      * @return void
      */
-    public function gc(int $maxLifeTime)
+    public function gc(int $maxLifeTime): void
     {
         // 用redis数据自动过期，这里什么都不需要做
     }
@@ -85,7 +85,7 @@ class Redis extends Base
      *
      * @return void
      */
-    public function write(string $sessionId, string $sessionData, int $maxLifeTime)
+    public function write(string $sessionId, string $sessionData, int $maxLifeTime): void
     {
         ImiRedis::use(function (\Imi\Redis\RedisHandler $redis) use ($sessionId, $sessionData, $maxLifeTime) {
             $redis->set($this->getKey($sessionId), $sessionData, $maxLifeTime);

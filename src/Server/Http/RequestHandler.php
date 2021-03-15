@@ -38,9 +38,9 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * Handle the request and return a response.
      *
-     * @param \Imi\Server\Http\Message\Request $request
+     * @param ServerRequestInterface $request
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

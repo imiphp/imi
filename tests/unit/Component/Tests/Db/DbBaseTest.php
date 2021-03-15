@@ -22,13 +22,13 @@ abstract class DbBaseTest extends BaseTest
      */
     protected $poolName;
 
-    public function testInject()
+    public function testInject(): void
     {
         $test = App::getBean('TestInjectDb');
         $test->test();
     }
 
-    public function testExec()
+    public function testExec(): void
     {
         $db = Db::getInstance($this->poolName);
         $db->exec('TRUNCATE tb_article');
@@ -39,7 +39,7 @@ abstract class DbBaseTest extends BaseTest
         Assert::assertEquals($sql, $db->lastSql());
     }
 
-    public function testBatchExec()
+    public function testBatchExec(): void
     {
         $db = Db::getInstance($this->poolName);
         $result = $db->batchExec('select 1 as a;update tb_article set id = 1 where id = 1;select 2 as b;');
@@ -50,7 +50,7 @@ abstract class DbBaseTest extends BaseTest
         ], $result);
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $db = Db::getInstance($this->poolName);
         $stmt = $db->query('select * from tb_article where id = 1');
@@ -65,7 +65,7 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testPreparePositional()
+    public function testPreparePositional(): void
     {
         $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = ?');
@@ -81,7 +81,7 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testPrepareNamed()
+    public function testPrepareNamed(): void
     {
         $db = Db::getInstance($this->poolName);
         $stmt = $db->prepare('select * from tb_article where id = :id');
@@ -97,7 +97,7 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testTransactionCommit()
+    public function testTransactionCommit(): void
     {
         $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
@@ -122,7 +122,7 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testTransactionRollback()
+    public function testTransactionRollback(): void
     {
         $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
@@ -140,7 +140,7 @@ abstract class DbBaseTest extends BaseTest
         Assert::assertEquals([], $stmt->fetchAll());
     }
 
-    public function testTransUseCommit()
+    public function testTransUseCommit(): void
     {
         $id = null;
         Db::transUse(function (IDb $db) use (&$id) {
@@ -164,7 +164,7 @@ abstract class DbBaseTest extends BaseTest
         ], $stmt->fetchAll());
     }
 
-    public function testTransUseRollback()
+    public function testTransUseRollback(): void
     {
         $id = null;
         try
@@ -189,7 +189,7 @@ abstract class DbBaseTest extends BaseTest
         Assert::assertEquals([], $stmt->fetchAll());
     }
 
-    public function testTransactionRollbackRollbackEvent()
+    public function testTransactionRollbackRollbackEvent(): void
     {
         $db = Db::getInstance($this->poolName);
         $db->beginTransaction();
@@ -210,7 +210,7 @@ abstract class DbBaseTest extends BaseTest
         $this->assertTrue($r1);
     }
 
-    public function testTransactionRollbackCommitEvent()
+    public function testTransactionRollbackCommitEvent(): void
     {
         $db = Db::getInstance($this->poolName);
         $db->beginTransaction();

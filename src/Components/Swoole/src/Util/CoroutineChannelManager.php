@@ -29,7 +29,7 @@ class CoroutineChannelManager
     {
     }
 
-    public static function init()
+    public static function init(): void
     {
         foreach (Config::getAliases() as $alias)
         {
@@ -50,7 +50,7 @@ class CoroutineChannelManager
      *
      * @return void
      */
-    public static function addName(string $name, int $size = 0)
+    public static function addName(string $name, int $size = 0): void
     {
         static::$channels[$name] = new \Swoole\Coroutine\Channel($size);
     }
@@ -58,11 +58,11 @@ class CoroutineChannelManager
     /**
      * 设置对象名称.
      *
-     * @param string[] $names
+     * @param array $names
      *
      * @return void
      */
-    public static function setNames(array $names)
+    public static function setNames(array $names): void
     {
         foreach ($names as $key => $args)
         {
@@ -140,7 +140,7 @@ class CoroutineChannelManager
      *
      * @return void
      */
-    public static function close(string $name)
+    public static function close(string $name): void
     {
         static::getInstance($name)->close();
     }

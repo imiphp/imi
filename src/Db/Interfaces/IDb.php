@@ -71,7 +71,7 @@ interface IDb extends IHashCode
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string;
 
@@ -131,9 +131,9 @@ interface IDb extends IHashCode
      *
      * @param string|null $name
      *
-     * @return string|int
+     * @return string
      */
-    public function lastInsertId(?string $name = null);
+    public function lastInsertId(?string $name = null): string;
 
     /**
      * 返回受上一个 SQL 语句影响的行数.

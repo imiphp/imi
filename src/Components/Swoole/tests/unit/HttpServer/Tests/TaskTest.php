@@ -12,7 +12,7 @@ use Yurun\Util\HttpRequest;
  */
 class TaskTest extends BaseTest
 {
-    public function testTask()
+    public function testTask(): void
     {
         $http = new HttpRequest();
 

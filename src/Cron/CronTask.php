@@ -246,7 +246,7 @@ class CronTask
      *
      * @return void
      */
-    public function updateLastRunTime(int $time)
+    public function updateLastRunTime(int $time): void
     {
         $this->lastRunTime = $time;
     }

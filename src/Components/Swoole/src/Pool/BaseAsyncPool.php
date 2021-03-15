@@ -43,7 +43,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->stopAutoGC();
         $this->stopHeartbeat();
@@ -56,7 +56,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function open()
+    public function open(): void
     {
         parent::open();
         // 定时资源回收
@@ -72,7 +72,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    protected function initQueue()
+    protected function initQueue(): void
     {
         $this->queue = new Channel($this->config->getMaxResources());
     }
@@ -111,7 +111,7 @@ abstract class BaseAsyncPool extends BasePool
         {
             $poolItem = $selectResult;
         }
-        /** @var \Imi\Pool\PoolItem $poolItem */
+        /** @var \Imi\Pool\PoolItem|false $poolItem */
         if (!$poolItem)
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
@@ -120,9 +120,13 @@ abstract class BaseAsyncPool extends BasePool
         try
         {
             $resource = $poolItem->getResource();
-            if (!$resource || ($config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+            if ($config->isCheckStateWhenGetResource() && !$resource->checkState())
             {
-                throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
+                $resource->close();
+                if (!$resource->open())
+                {
+                    throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
+                }
             }
         }
         catch (\Throwable $th)
@@ -168,7 +172,7 @@ abstract class BaseAsyncPool extends BasePool
         {
             $poolItem = $result;
         }
-        /** @var \Imi\Pool\PoolItem $poolItem */
+        /** @var \Imi\Pool\PoolItem|false $poolItem */
         if (!$poolItem)
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
@@ -177,9 +181,13 @@ abstract class BaseAsyncPool extends BasePool
         try
         {
             $resource = $poolItem->getResource();
-            if (!$resource || ($this->config->isCheckStateWhenGetResource() && !$resource->checkState() && !$resource->close() && !$resource->open()))
+            if (($this->config->isCheckStateWhenGetResource() && !$resource->checkState()))
             {
-                throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
+                $resource->close();
+                if (!$resource->open())
+                {
+                    throw new \RuntimeException(sprintf('AsyncPool [%s] tryGetResource failed', $this->getName()));
+                }
             }
         }
         catch (\Throwable $th)
@@ -196,7 +204,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    protected function buildQueue()
+    protected function buildQueue(): void
     {
         // 清空队列
         $count = $this->getFree();
@@ -210,7 +218,6 @@ abstract class BaseAsyncPool extends BasePool
         {
             $queue->push($item);
         }
-        $this->free = $queue->length();
     }
 
     /**
@@ -220,7 +227,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    protected function push(IPoolResource $resource)
+    protected function push(IPoolResource $resource): void
     {
         $poolItem = $this->pool[$resource->hashCode()] ?? null;
         if ($poolItem)
@@ -253,7 +260,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function startAutoGC()
+    public function startAutoGC(): void
     {
         if (null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0)
         {
@@ -273,7 +280,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function stopAutoGC()
+    public function stopAutoGC(): void
     {
         if (null !== $this->gcTimerId)
         {
@@ -286,7 +293,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function heartbeat()
+    public function heartbeat(): void
     {
         $hasGC = false;
         $pool = &$this->pool;
@@ -326,7 +333,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function startHeartbeat()
+    public function startHeartbeat(): void
     {
         if ((null !== Worker::getWorkerId() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
         {
@@ -342,7 +349,7 @@ abstract class BaseAsyncPool extends BasePool
      *
      * @return void
      */
-    public function stopHeartbeat()
+    public function stopHeartbeat(): void
     {
         if (null !== $this->heartbeatTimerId)
         {

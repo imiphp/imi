@@ -17,5 +17,4 @@ interface IParser
      * @return void
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName);
-
 }

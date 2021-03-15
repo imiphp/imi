@@ -23,7 +23,7 @@ class AtomicManager
     /**
      * \Swoole\Atomic 数组.
      *
-     * @var \Swoole\Atomic[]
+     * @var array
      */
     private static array $atomics = [];
 
@@ -32,7 +32,7 @@ class AtomicManager
      *
      * @return void
      */
-    public static function init()
+    public static function init(): void
     {
         if (static::$isInited)
         {
@@ -52,7 +52,7 @@ class AtomicManager
      *
      * @return void
      */
-    public static function addName(string $name, int $initValue = 0)
+    public static function addName(string $name, int $initValue = 0): void
     {
         if (static::$isInited)
         {
@@ -68,7 +68,7 @@ class AtomicManager
      *
      * @return void
      */
-    public static function setNames(array $names)
+    public static function setNames(array $names): void
     {
         if (static::$isInited)
         {
@@ -164,7 +164,7 @@ class AtomicManager
      *
      * @return void
      */
-    public static function set(string $name, int $value)
+    public static function set(string $name, int $value): void
     {
         static::getInstance($name)->set($value);
     }

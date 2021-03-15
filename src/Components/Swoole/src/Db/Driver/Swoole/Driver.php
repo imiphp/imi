@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Imi\Swoole\Db\Driver\Swoole;
 
 use Imi\App;
+use Imi\Bean\Annotation\Bean;
 use Imi\Config;
 use Imi\Db\Drivers\Base;
-use Imi\Db\Util\SqlUtil;
-use Imi\Bean\BeanFactory;
-use Imi\Db\Interfaces\IDb;
-use Swoole\Coroutine\MySQL;
-use Imi\Bean\Annotation\Bean;
 use Imi\Db\Exception\DbException;
+use Imi\Db\Interfaces\IDb;
 use Imi\Db\Interfaces\IStatement;
-use Imi\Db\Transaction\Transaction;
 use Imi\Db\Statement\StatementManager;
+use Imi\Db\Transaction\Transaction;
+use Imi\Db\Util\SqlUtil;
+use Swoole\Coroutine\MySQL;
 
 /**
  * Swoole Coroutine MySQL 驱动.
@@ -135,7 +134,7 @@ class Driver extends Base implements IDb
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         StatementManager::clear($this);
         if (null !== $this->lastStmt)
@@ -154,7 +153,7 @@ class Driver extends Base implements IDb
      *
      * @return \Swoole\Coroutine\MySQL
      */
-    public function getInstance(): \Swoole\Coroutine\MySQL
+    public function getInstance(): MySQL
     {
         return $this->instance;
     }
@@ -253,7 +252,7 @@ class Driver extends Base implements IDb
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
@@ -343,11 +342,11 @@ class Driver extends Base implements IDb
      *
      * @param string|null $name
      *
-     * @return string|int
+     * @return string
      */
-    public function lastInsertId(?string $name = null)
+    public function lastInsertId(?string $name = null): string
     {
-        return $this->instance->insert_id;
+        return (string) $this->instance->insert_id;
     }
 
     /**
@@ -384,7 +383,7 @@ class Driver extends Base implements IDb
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
             $stmt = App::getBean(Statement::class, $this, $lastStmt, $sql, $sqlParamsMap);
-            if ($this->isCacheStatement && null === $stmtCache)
+            if ($this->isCacheStatement && !isset($stmtCache))
             {
                 StatementManager::setNX($stmt, true);
             }

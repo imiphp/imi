@@ -34,7 +34,7 @@ trait TSingleton
      *
      * @return static
      */
-    public static function getInstance(...$args)
+    public static function getInstance(...$args): object
     {
         if (static::isChildClassSingleton())
         {
@@ -56,6 +56,7 @@ trait TSingleton
                 static::$instance = new static(...$args);
             }
 
+            // @phpstan-ignore-next-line
             return static::$instance;
         }
     }

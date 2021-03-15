@@ -119,6 +119,7 @@ class BeanProxy
                 }
             });
             // 不取消依旧抛出
+            // @phpstan-ignore-next-line
             if (!$isCancelThrow)
             {
                 throw $throwable;
@@ -135,7 +136,7 @@ class BeanProxy
      *
      * @return void
      */
-    public static function injectProps(object $object, string $className, bool $reInit = false)
+    public static function injectProps(object $object, string $className, bool $reInit = false): void
     {
         [$injects, $configs] = static::getInjects($className);
         if (!$injects && !$configs)
@@ -168,10 +169,6 @@ class BeanProxy
             foreach ($configs as $name => $value)
             {
                 $propRef = $refClass->getProperty($name);
-                if (null === $propRef)
-                {
-                    continue;
-                }
                 $propRef->setAccessible(true);
                 $propRef->setValue($object, $value);
             }
@@ -282,7 +279,7 @@ class BeanProxy
      *
      * @return void
      */
-    private static function doAspect(string $className, string $method, string $pointType, callable $callback)
+    private static function doAspect(string $className, string $method, string $pointType, callable $callback): void
     {
         switch ($pointType)
         {

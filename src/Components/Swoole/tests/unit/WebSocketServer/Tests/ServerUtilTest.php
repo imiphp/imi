@@ -12,7 +12,7 @@ use Yurun\Util\HttpRequest;
  */
 class ServerUtilTest extends BaseTest
 {
-    public function testGetServer()
+    public function testGetServer(): void
     {
         $this->go(function () {
             $http = new HttpRequest();
@@ -25,7 +25,7 @@ class ServerUtilTest extends BaseTest
         });
     }
 
-    public function testSendMessage()
+    public function testSendMessage(): void
     {
         $this->go(function () {
             $http = new HttpRequest();
@@ -41,7 +41,7 @@ class ServerUtilTest extends BaseTest
         });
     }
 
-    public function testSend()
+    public function testSend(): void
     {
         $this->go(function () {
             $th = null;
@@ -185,7 +185,7 @@ class ServerUtilTest extends BaseTest
         });
     }
 
-    public function testSendToGroup()
+    public function testSendToGroup(): void
     {
         $this->go(function () {
             $th = null;
@@ -266,7 +266,7 @@ class ServerUtilTest extends BaseTest
         });
     }
 
-    public function testClose()
+    public function testClose(): void
     {
         $http1 = new HttpRequest();
         $http1->retry = 3;

@@ -12,7 +12,7 @@ class PacketHandler implements IPacketHandler
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Imi\Server\UdpServer\Middleware\IMiddleware[]
      */
     protected array $middlewares = [];
 

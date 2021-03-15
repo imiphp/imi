@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Util;
 
 use Imi\Util\File\FileEnumItem;
-use RecursiveIteratorIterator;
 
 /**
  * 文件相关工具类.
@@ -21,13 +20,13 @@ class File
      *
      * @param string $dirPath
      *
-     * @return \RecursiveIteratorIterator
+     * @return \RecursiveIteratorIterator|array
      */
-    public static function enum(string $dirPath): RecursiveIteratorIterator
+    public static function enum(string $dirPath)
     {
         if (!is_dir($dirPath))
         {
-            return new \ArrayIterator();
+            return [];
         }
         $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
         $files = new \RecursiveIteratorIterator($iterator);
@@ -79,7 +78,7 @@ class File
      *
      * @param string $dirPath
      *
-     * @return \Imi\Util\File\FileEnumItem[]
+     * @return \Generator
      */
     public static function enumFile(string $dirPath)
     {
@@ -184,7 +183,7 @@ class File
     /**
      * 创建一个文件.
      *
-     * @param string $dir     文件路径
+     * @param string $file    文件路径
      * @param string $content
      * @param int    $mode    文件的权限
      *

@@ -87,7 +87,7 @@ class Atomic extends BaseLock
      *
      * @return void
      */
-    private function startTimeoutTimer()
+    private function startTimeoutTimer(): void
     {
         if ($this->timeoutTimerId)
         {
@@ -103,7 +103,7 @@ class Atomic extends BaseLock
      *
      * @return void
      */
-    private function stopTimeoutTimer()
+    private function stopTimeoutTimer(): void
     {
         Timer::clear($this->timeoutTimerId);
         $this->timeoutTimerId = null;

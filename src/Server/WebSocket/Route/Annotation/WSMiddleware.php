@@ -31,6 +31,10 @@ class WSMiddleware extends Base
      */
     public $middlewares;
 
+    /**
+     * @param array|null      $__data
+     * @param string|string[] $middlewares
+     */
     public function __construct(?array $__data = null, $middlewares = null)
     {
         parent::__construct(...\func_get_args());

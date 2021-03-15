@@ -38,11 +38,18 @@ class Inotify extends BaseMonitor
     private array $changedFiles = [];
 
     /**
+     * 排除规则.
+     *
+     * @var string
+     */
+    private string $excludeRule = '';
+
+    /**
      * 初始化.
      *
      * @return void
      */
-    protected function init()
+    protected function init(): void
     {
         if (!\extension_loaded('inotify'))
         {
@@ -70,10 +77,7 @@ class Inotify extends BaseMonitor
                 foreach ($iterator as $fileName => $fileInfo)
                 {
                     $filePath = \dirname($fileName);
-                    if (!isset($paths[$filePath]))
-                    {
-                        $paths[$filePath] = inotify_add_watch($handler, $filePath, $mask);
-                    }
+                    $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
                 }
             }
             else
@@ -90,10 +94,7 @@ class Inotify extends BaseMonitor
                         }
                     }
                     $filePath = $file->getPath();
-                    if (!isset($paths[$filePath]))
-                    {
-                        $paths[$filePath] = inotify_add_watch($handler, $filePath, $mask);
-                    }
+                    $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
                 }
             }
         }
@@ -113,6 +114,7 @@ class Inotify extends BaseMonitor
         $mask = &$this->mask;
         do
         {
+            /** @var array|false $readResult */
             $readResult = inotify_read($handler);
             if (false === $readResult)
             {

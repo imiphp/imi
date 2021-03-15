@@ -21,7 +21,7 @@ class TestTask implements ITaskHandler
      * @param int            $taskId
      * @param int            $WorkerId
      *
-     * @return void
+     * @return mixed
      */
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
     {
@@ -39,7 +39,7 @@ class TestTask implements ITaskHandler
      *
      * @return void
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data)
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
     {
     }
 }

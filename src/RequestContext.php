@@ -109,7 +109,7 @@ class RequestContext
      *
      * @return void
      */
-    public static function set(string $name, $value)
+    public static function set(string $name, $value): void
     {
         $context = static::getInstance()->get(static::getCurrentFlag(), true);
         $context[$name] = $value;
@@ -122,7 +122,7 @@ class RequestContext
      *
      * @return void
      */
-    public static function muiltiSet(array $data)
+    public static function muiltiSet(array $data): void
     {
         $context = static::getInstance()->get(static::getCurrentFlag(), true);
         foreach ($data as $k => $v)

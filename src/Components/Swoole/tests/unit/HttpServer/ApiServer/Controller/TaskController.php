@@ -20,9 +20,9 @@ class TaskController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function test()
+    public function test(): array
     {
         $data = [
             'time'  => strtotime('2019-06-21'),

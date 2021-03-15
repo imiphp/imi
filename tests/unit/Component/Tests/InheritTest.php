@@ -21,7 +21,7 @@ use Imi\Test\Component\Inherit\TestClass;
  */
 class InheritTest extends BaseTest
 {
-    public function testClass()
+    public function testClass(): void
     {
         $annotations = AnnotationManager::getClassAnnotations(TestClass::class);
         $this->assertCount(3, $annotations);
@@ -30,7 +30,7 @@ class InheritTest extends BaseTest
         $this->assertInstanceOf(Bean::class, $annotations[2]);
     }
 
-    public function testMethod()
+    public function testMethod(): void
     {
         $annotations = AnnotationManager::getMethodAnnotations(TestClass::class, 'test');
         $this->assertCount(2, $annotations);
@@ -47,7 +47,7 @@ class InheritTest extends BaseTest
         $this->assertInstanceOf(Transaction::class, $annotations[2]);
     }
 
-    public function testProperty()
+    public function testProperty(): void
     {
         $annotations = AnnotationManager::getPropertyAnnotations(TestClass::class, 'id');
         $this->assertCount(2, $annotations);
@@ -61,7 +61,7 @@ class InheritTest extends BaseTest
         $this->assertInstanceOf(Callback::class, $annotations[2]);
     }
 
-    public function testConst()
+    public function testConst(): void
     {
         $annotations = AnnotationManager::getConstantAnnotations(TestClass::class, 'CCC');
         $this->assertCount(1, $annotations);

@@ -25,7 +25,7 @@ class SuperGlobals
      */
     protected bool $enable = false;
 
-    public function bind()
+    public function bind(): void
     {
         if ($this->enable)
         {

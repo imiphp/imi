@@ -61,9 +61,9 @@ class MemoryStream implements StreamInterface
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
-        $this->content = null;
+        $this->content = '';
         $this->size = -1;
     }
 
@@ -133,6 +133,8 @@ class MemoryStream implements StreamInterface
      *                    offset bytes SEEK_CUR: Set position to current location plus offset
      *                    SEEK_END: Set position to end-of-stream plus offset.
      *
+     * @return void
+     *
      * @throws \RuntimeException on failure.
      */
     public function seek($offset, $whence = \SEEK_SET)
@@ -164,9 +166,15 @@ class MemoryStream implements StreamInterface
      * @see seek()
      * @see http://www.php.net/manual/en/function.fseek.php
      *
+     * @return void
+     *
      * @throws \RuntimeException on failure.
      */
-    public function rewind()
+
+    /**
+     * @return void
+     */
+    public function rewind(): void
     {
         $this->position = 0;
     }

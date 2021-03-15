@@ -23,7 +23,7 @@ class CustomSessionIdTest extends BaseTest
         $this->host = imiGetEnv('HTTP_SESSION_TEST_SERVER_HOST', 'http://127.0.0.1:13005/');
     }
 
-    public function testSetGetDelete()
+    public function testSetGetDelete(): void
     {
         $this->go(function () {
             $http = new HttpRequest();
@@ -49,7 +49,7 @@ class CustomSessionIdTest extends BaseTest
         });
     }
 
-    public function testOnce()
+    public function testOnce(): void
     {
         $this->go(function () {
             $http = new HttpRequest();

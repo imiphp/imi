@@ -12,7 +12,7 @@ class MessageHandler implements IMessageHandler
     /**
      * 中间件数组.
      *
-     * @var string[]
+     * @var string[]|\Psr\Http\Server\MiddlewareInterface[]
      */
     protected array $middlewares = [];
 

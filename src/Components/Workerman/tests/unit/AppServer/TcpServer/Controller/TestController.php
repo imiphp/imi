@@ -24,9 +24,9 @@ class TestController extends \Imi\Controller\TcpController
      * @TcpAction
      * @TcpRoute({"action"="login"})
      *
-     * @return void
+     * @return array
      */
-    public function login($data)
+    public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->data->getFd());
@@ -40,11 +40,9 @@ class TestController extends \Imi\Controller\TcpController
      * @TcpAction
      * @TcpRoute({"action"="send"})
      *
-     * @param
-     *
      * @return void
      */
-    public function send($data)
+    public function send(\stdClass $data): void
     {
         /** @var Server $server */
         $server = $this->server;
@@ -66,11 +64,9 @@ class TestController extends \Imi\Controller\TcpController
      * @TcpAction
      * @TcpRoute({"duplicated"="1"})
      *
-     * @param
-     *
      * @return void
      */
-    public function duplicated1($data)
+    public function duplicated1(): void
     {
     }
 
@@ -80,11 +76,9 @@ class TestController extends \Imi\Controller\TcpController
      * @TcpAction
      * @TcpRoute({"duplicated"="1"})
      *
-     * @param
-     *
      * @return void
      */
-    public function duplicated2($data)
+    public function duplicated2(): void
     {
     }
 }

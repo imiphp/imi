@@ -12,7 +12,7 @@ use Imi\Util\Pagination;
  */
 class PaginationTest extends BaseTest
 {
-    public function testPagination()
+    public function testPagination(): void
     {
         $pagination = new Pagination(1, 11);
         $this->assertEquals(1, $pagination->getPage());

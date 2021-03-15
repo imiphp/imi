@@ -48,7 +48,7 @@ class ProcessManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -57,14 +57,14 @@ class ProcessManager
      * 增加映射关系.
      *
      * @param string $name
-     * @param string $class
+     * @param string $className
      * @param array  $options
      *
      * @return void
      */
-    public static function add(string $name, string $className, array $options)
+    public static function add(string $name, string $className, array $options): void
     {
-        if (isset($data[$name]))
+        if (isset(self::$map[$name]))
         {
             throw new \RuntimeException(sprintf('Process %s is exists', $name));
         }
@@ -99,12 +99,12 @@ class ProcessManager
      *
      * @return \Swoole\Process
      */
-    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): \Swoole\Process
+    public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): Process
     {
         $processOption = self::get($name);
         if (null === $processOption)
         {
-            throw new \RuntimeException(sprintf('Process %s not found'));
+            throw new \RuntimeException(sprintf('Process %s not found', $name));
         }
         if ($processOption['options']['unique'] && static::isRunning($name))
         {
@@ -135,7 +135,7 @@ class ProcessManager
      */
     public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null): callable
     {
-        return function (\Swoole\Process $swooleProcess) use ($args, $name, $processOption, $alias) {
+        return function (Process $swooleProcess) use ($args, $name, $processOption, $alias) {
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::PROCESS, true);
             App::set(ProcessAppContexts::PROCESS_NAME, $name, true);
             // 设置进程名称
@@ -297,7 +297,7 @@ class ProcessManager
      *
      * @return void
      */
-    public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null)
+    public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): void
     {
         go(function () use ($name, $args, $redirectStdinStdout, $pipeType) {
             static::run($name, $args, $redirectStdinStdout, $pipeType);
@@ -331,8 +331,10 @@ class ProcessManager
         else
         {
             $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
-            $server = ServerManager::getServer('main', ISwooleServer::class)->getSwooleServer();
-            $server->addProcess($process);
+            /** @var ISwooleServer $server */
+            $server = ServerManager::getServer('main', ISwooleServer::class);
+            $swooleServer = $server->getSwooleServer();
+            $swooleServer->addProcess($process);
             static::$managerProcesses[$name][$alias] = $process;
 
             return $process;

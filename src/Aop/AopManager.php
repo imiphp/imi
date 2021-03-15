@@ -26,7 +26,7 @@ class AopManager
     {
     }
 
-    public static function clear()
+    public static function clear(): void
     {
         self::$cache = self::$parsedCache = [];
     }

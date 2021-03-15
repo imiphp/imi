@@ -20,11 +20,11 @@ class Test2Controller extends WebSocketController
      * @WSAction
      * @WSRoute({"action"="test"})
      *
-     * @param
+     * @param mixed $data
      *
-     * @return void
+     * @return array
      */
-    public function test($data)
+    public function test($data): array
     {
         return ['data' => $data];
     }

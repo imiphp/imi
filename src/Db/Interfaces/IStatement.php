@@ -74,7 +74,7 @@ interface IStatement extends \Iterator
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string;
 
@@ -128,12 +128,12 @@ interface IStatement extends \Iterator
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string $class_name
-     * @param array  $ctor_args
+     * @param string     $className
+     * @param array|null $ctorArgs
      *
      * @return mixed
      */
-    public function fetchObject(string $className = 'stdClass', array $ctorArgs = null);
+    public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null);
 
     /**
      * 检索一个语句属性.
@@ -164,11 +164,11 @@ interface IStatement extends \Iterator
     /**
      * 返回最后插入行的ID或序列值
      *
-     * @param string $name
+     * @param string|null $name
      *
      * @return string
      */
-    public function lastInsertId(string $name = null);
+    public function lastInsertId(?string $name = null): string;
 
     /**
      * 返回受上一个 SQL 语句影响的行数.

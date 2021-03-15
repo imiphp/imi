@@ -43,6 +43,11 @@ class RouteItem
      */
     public bool $singleton = false;
 
+    /**
+     * @param \Imi\Server\WebSocket\Route\Annotation\WSRoute $annotation
+     * @param callable|\Imi\Server\Route\RouteCallable       $callable
+     * @param array                                          $options
+     */
     public function __construct(WSRoute $annotation, $callable, array $options = [])
     {
         $this->annotation = $annotation;

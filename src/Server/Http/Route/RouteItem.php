@@ -59,6 +59,12 @@ class RouteItem
      */
     public View $view;
 
+    /**
+     * @param \Imi\Server\Http\Route\Annotation\Route  $annotation
+     * @param callable|\Imi\Server\Route\RouteCallable $callable
+     * @param \Imi\Server\View\Annotation\View         $view
+     * @param array                                    $options
+     */
     public function __construct(Route $annotation, $callable, View $view, array $options = [])
     {
         $this->annotation = $annotation;

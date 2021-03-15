@@ -54,7 +54,7 @@ class Process
      *
      * @return void
      */
-    public static function clearNotInheritableSignalListener()
+    public static function clearNotInheritableSignalListener(): void
     {
         $instance = self::getInstance();
         foreach ($instance->events as &$events)

@@ -13,14 +13,14 @@ use Test\TestContext;
  */
 class AppContextTest extends BaseTest
 {
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         App::set('a', '111');
         $this->assertEquals('111', App::get('a'));
         $this->assertEquals('222', App::get('b', '222'));
     }
 
-    public function testReadonly()
+    public function testReadonly(): void
     {
         App::set('test', 'abc', true);
         $this->assertEquals('abc', App::get('test'));

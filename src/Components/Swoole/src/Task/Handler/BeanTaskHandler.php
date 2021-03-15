@@ -49,7 +49,7 @@ class BeanTaskHandler implements ITaskHandler
      *
      * @return void
      */
-    public function finish(\Swoole\Server $server, int $taskId, $data)
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
     {
         /** @var ITaskHandler $taskHandler */
         $taskHandler = App::getBean($this->taskHandlerClass);

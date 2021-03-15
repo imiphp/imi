@@ -66,5 +66,4 @@ class ReceiveData implements IReceiveData
     {
         return $this->formatData;
     }
-
 }

@@ -26,7 +26,7 @@ class OnManagerStart implements IManagerStartEventListener
      *
      * @return void
      */
-    public function handle(ManagerStartEventParam $e)
+    public function handle(ManagerStartEventParam $e): void
     {
         App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::MANAGER, true);
         SwooleImi::setProcessName('manager');

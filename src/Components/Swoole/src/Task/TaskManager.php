@@ -21,7 +21,7 @@ class TaskManager
         return self::$map;
     }
 
-    public static function setMap(array $map)
+    public static function setMap(array $map): void
     {
         self::$map = $map;
     }
@@ -29,15 +29,15 @@ class TaskManager
     /**
      * 增加映射关系.
      *
-     * @param string $taskName
+     * @param string $name
      * @param string $className
      * @param array  $options
      *
      * @return void
      */
-    public static function add(string $name, string $className, array $options)
+    public static function add(string $name, string $className, array $options): void
     {
-        if (isset($data[$name]))
+        if (isset(self::$map[$name]))
         {
             throw new \RuntimeException(sprintf('Task %s is exists', $name));
         }

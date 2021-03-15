@@ -13,7 +13,7 @@ use Imi\Test\Component\Model\TestRedisModel2;
  */
 class RedisModelTest extends BaseTest
 {
-    public function testSave()
+    public function testSave(): void
     {
         $record = TestRedisModel::newInstance([
             'id'    => 1,
@@ -23,7 +23,7 @@ class RedisModelTest extends BaseTest
         $this->assertTrue($record->save());
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $expected = [
             'id'    => 1,
@@ -41,7 +41,7 @@ class RedisModelTest extends BaseTest
         $this->assertEquals($expected, $record->toArray());
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $expected = [
             [
@@ -73,14 +73,14 @@ class RedisModelTest extends BaseTest
         $this->assertEquals($expected, json_decode(json_encode($list), true));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $record = TestRedisModel::find('1-a');
         $this->assertNotNull($record);
         $this->assertTrue($record->delete());
     }
 
-    public function testDeleteBatch()
+    public function testDeleteBatch(): void
     {
         $record = TestRedisModel::newInstance([
             'id'    => 1,
@@ -105,7 +105,7 @@ class RedisModelTest extends BaseTest
      *
      * @return void
      */
-    public function testTTL()
+    public function testTTL(): void
     {
         $expected = [
             'id'    => 1,

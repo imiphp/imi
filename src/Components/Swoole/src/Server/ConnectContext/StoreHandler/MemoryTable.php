@@ -20,14 +20,14 @@ class MemoryTable implements IHandler
     /**
      * 数据写入前编码回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataEncode = 'serialize';
 
     /**
      * 数据读出后处理回调.
      *
-     * @var callable
+     * @var callable|null
      */
     protected $dataDecode = 'unserialize';
 
@@ -80,7 +80,7 @@ class MemoryTable implements IHandler
      *
      * @return void
      */
-    public function save(string $key, array $data)
+    public function save(string $key, array $data): void
     {
         if ($this->dataEncode)
         {
@@ -96,7 +96,7 @@ class MemoryTable implements IHandler
      *
      * @return void
      */
-    public function destroy(string $key)
+    public function destroy(string $key): void
     {
         MemoryTableManager::del($this->tableName, $key);
     }
@@ -109,7 +109,7 @@ class MemoryTable implements IHandler
      *
      * @return void
      */
-    public function delayDestroy(string $key, int $ttl)
+    public function delayDestroy(string $key, int $ttl): void
     {
         Timer::after($ttl * 1000, function () use ($key) {
             $this->destroy($key);

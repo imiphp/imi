@@ -42,7 +42,7 @@ class Server extends Base implements ITcpServer
      *
      * @return void
      */
-    protected function bindEvents()
+    protected function bindEvents(): void
     {
         parent::bindEvents();
 
@@ -81,7 +81,7 @@ class Server extends Base implements ITcpServer
      */
     public function send(int $fd, string $data): bool
     {
-        /** @var TcpConnection $connection */
+        /** @var TcpConnection|null $connection */
         $connection = $this->worker->connections[$fd] ?? null;
         if (!$connection)
         {

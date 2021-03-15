@@ -35,7 +35,7 @@ if (class_exists(TestCase::class))
         {
             $cmd = \Imi\cmd('"' . \PHP_BINARY . "\" \"{$phpFile}\" {$args}");
 
-            return `{$cmd}`;
+            return shell_exec("{$cmd}");
         }
     }
 }

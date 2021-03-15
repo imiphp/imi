@@ -22,7 +22,7 @@ class OnCoServerStart implements IEventListener
      *
      * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $object = $e->getTarget();
         // 进程PID记录

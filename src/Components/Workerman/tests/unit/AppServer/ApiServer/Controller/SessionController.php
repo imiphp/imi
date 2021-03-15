@@ -17,9 +17,9 @@ class SessionController extends HttpController
     /**
      * @Action
      *
-     * @return void
+     * @return array
      */
-    public function status()
+    public function status(): array
     {
         $username = Session::get('auth.username');
         if ($username)
@@ -44,7 +44,7 @@ class SessionController extends HttpController
      *
      * @return void
      */
-    public function login()
+    public function login(): void
     {
         Session::set('auth.username', 'admin');
     }
@@ -54,7 +54,7 @@ class SessionController extends HttpController
      *
      * @return void
      */
-    public function logout()
+    public function logout(): void
     {
         Session::delete('auth');
     }
@@ -64,7 +64,7 @@ class SessionController extends HttpController
      *
      * @return void
      */
-    public function sendSms()
+    public function sendSms(): void
     {
         Session::set('vcode', '1234');
     }
@@ -74,9 +74,9 @@ class SessionController extends HttpController
      *
      * @param string $vcode
      *
-     * @return void
+     * @return array
      */
-    public function verifySms($vcode = '')
+    public function verifySms($vcode = ''): array
     {
         $storeVcode = Session::once('vcode');
 

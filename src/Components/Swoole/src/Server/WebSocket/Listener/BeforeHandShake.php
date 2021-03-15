@@ -9,8 +9,8 @@ use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IHandShakeEventListener;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
-use Imi\Util\Http\Consts\StatusCode;
 use Imi\Swoole\SwooleWorker;
+use Imi\Util\Http\Consts\StatusCode;
 
 /**
  * HandShake事件前置处理.
@@ -26,7 +26,7 @@ class BeforeHandShake implements IHandShakeEventListener
      *
      * @return void
      */
-    public function handle(HandShakeEventParam $e)
+    public function handle(HandShakeEventParam $e): void
     {
         $request = $e->request;
         $response = $e->response;
@@ -50,6 +50,7 @@ class BeforeHandShake implements IHandShakeEventListener
         // 中间件
         /** @var \Imi\Server\Http\Dispatcher $dispatcher */
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $dispatcher->dispatch($request, $response);
+        // @phpstan-ignore-next-line
+        $dispatcher->dispatch($request);
     }
 }

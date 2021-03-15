@@ -124,9 +124,9 @@ class Meta
     public function __construct(string $modelClass)
     {
         $this->className = $modelClass;
-        /** @var \Imi\Model\Annotation\Table $table */
+        /** @var \Imi\Model\Annotation\Table|null $table */
         $table = AnnotationManager::getClassAnnotations($modelClass, Table::class)[0] ?? null;
-        /** @var \Imi\Model\Annotation\Entity $entity */
+        /** @var \Imi\Model\Annotation\Entity|null $entity */
         $entity = AnnotationManager::getClassAnnotations($modelClass, Entity::class)[0] ?? null;
         if ($table)
         {

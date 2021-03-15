@@ -27,7 +27,7 @@ class HttpsTest extends BaseTest
      *
      * @return void
      */
-    public function testUri()
+    public function testUri(): void
     {
         $http = new HttpRequest();
         $uri = $this->host . 'info?get=1';

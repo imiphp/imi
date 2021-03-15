@@ -47,7 +47,7 @@ class Driver extends Base implements IDb
     /**
      * Statement.
      *
-     * @var Statement|null|false
+     * @var \PDOStatement|bool|null
      */
     protected $lastStmt = null;
 
@@ -81,31 +81,13 @@ class Driver extends Base implements IDb
      */
     public function __construct(array $option = [])
     {
-        if (!isset($option['username']))
-        {
-            $option['username'] = 'root';
-        }
-        if (!isset($option['password']))
-        {
-            $option['password'] = '';
-        }
-        if (!isset($option['options']))
-        {
-            $option['options'] = [];
-        }
+        $option['username'] ??= 'root';
+        $option['password'] ??= '';
+        $option['options'] ??= [];
         $options = &$option['options'];
-        if (!isset($options[\PDO::ATTR_STRINGIFY_FETCHES]))
-        {
-            $options[\PDO::ATTR_STRINGIFY_FETCHES] = false;
-        }
-        if (!isset($options[\PDO::ATTR_EMULATE_PREPARES]))
-        {
-            $options[\PDO::ATTR_EMULATE_PREPARES] = false;
-        }
-        if (!isset($options[\PDO::ATTR_ERRMODE]))
-        {
-            $options[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
-        }
+        $options[\PDO::ATTR_STRINGIFY_FETCHES] ??= false;
+        $options[\PDO::ATTR_EMULATE_PREPARES] ??= false;
+        $options[\PDO::ATTR_ERRMODE] ??= \PDO::ERRMODE_EXCEPTION;
         $this->option = $option;
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction();
@@ -169,7 +151,7 @@ class Driver extends Base implements IDb
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         StatementManager::clear($this);
         if (null !== $this->lastStmt)
@@ -184,7 +166,7 @@ class Driver extends Base implements IDb
      *
      * @return \PDO
      */
-    public function getInstance(): \PDO
+    public function getInstance(): PDO
     {
         return $this->instance;
     }
@@ -283,24 +265,24 @@ class Driver extends Base implements IDb
     /**
      * 返回错误信息.
      *
-     * @return array
+     * @return string
      */
     public function errorInfo(): string
     {
         if ($this->lastStmt)
         {
-            return $this->lastStmt->errorInfo();
+            $errorInfo = $this->lastStmt->errorInfo();
         }
         else
         {
             $errorInfo = $this->instance->errorInfo();
-            if (null === $errorInfo[1] && null === $errorInfo[2])
-            {
-                return '';
-            }
-
-            return $errorInfo[1] . ':' . $errorInfo[2];
         }
+        if (null === $errorInfo[1] && null === $errorInfo[2])
+        {
+            return '';
+        }
+
+        return $errorInfo[1] . ':' . $errorInfo[2];
     }
 
     /**
@@ -382,9 +364,9 @@ class Driver extends Base implements IDb
      *
      * @param string|null $name
      *
-     * @return string|int
+     * @return string
      */
-    public function lastInsertId(?string $name = null)
+    public function lastInsertId(?string $name = null): string
     {
         return $this->instance->lastInsertId($name);
     }
@@ -416,13 +398,14 @@ class Driver extends Base implements IDb
         else
         {
             $this->lastSql = $sql;
-            $this->lastStmt = $lastStmt = $this->instance->prepare($sql, $driverOptions);
+            $lastStmt = $this->lastStmt = $this->instance->prepare($sql, $driverOptions);
+            // @phpstan-ignore-next-line
             if (false === $lastStmt)
             {
                 throw new DbException('SQL prepare error [' . $this->errorCode() . '] ' . $this->errorInfo() . \PHP_EOL . 'sql: ' . $sql . \PHP_EOL);
             }
             $stmt = App::getBean(Statement::class, $this, $lastStmt);
-            if ($this->isCacheStatement && null === $stmtCache)
+            if ($this->isCacheStatement && !isset($stmtCache))
             {
                 StatementManager::setNX($stmt, true);
             }

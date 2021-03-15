@@ -34,10 +34,10 @@ class RouteMiddleware implements IMiddleware
     /**
      * 处理方法.
      *
-     * @param IReceiveData    $data
-     * @param IReceiveHandler $handle
+     * @param IPacketData    $data
+     * @param IPacketHandler $handler
      *
-     * @return void
+     * @return mixed
      */
     public function process(IPacketData $data, IPacketHandler $handler)
     {

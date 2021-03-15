@@ -18,7 +18,7 @@ class MemoryTableManager
     /**
      * \Swoole\Table 数组.
      *
-     * @var \Swoole\Table[]
+     * @var array
      */
     private static array $tables = [];
 
@@ -121,6 +121,8 @@ class MemoryTableManager
                 $type = \Swoole\Table::TYPE_FLOAT;
                 $size = 8;
                 break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Invalid swoole table field type %s', $type));
         }
 
         return [$type, $size];
@@ -159,7 +161,7 @@ class MemoryTableManager
      *
      * @return void
      */
-    public static function addName(string $name, array $option)
+    public static function addName(string $name, array $option): void
     {
         if (static::$inited)
         {
@@ -175,7 +177,7 @@ class MemoryTableManager
      *
      * @return void
      */
-    public static function setNames(array $names)
+    public static function setNames(array $names): void
     {
         if (static::$inited)
         {
@@ -242,13 +244,13 @@ class MemoryTableManager
     /**
      * 获取一行数据.
      *
-     * @param string $name  表名
-     * @param string $key
-     * @param mixed  $field
+     * @param string      $name  表名
+     * @param string      $key
+     * @param string|null $field
      *
-     * @return array
+     * @return mixed
      */
-    public static function get(string $name, string $key, string $field = null)
+    public static function get(string $name, string $key, ?string $field = null)
     {
         if (null === $field)
         {

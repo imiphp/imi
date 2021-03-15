@@ -16,7 +16,7 @@ class SingletonResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testResponse1()
+    public function testResponse1(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'singletonResponse1');
@@ -28,7 +28,7 @@ class SingletonResponseTest extends BaseTest
      *
      * @return void
      */
-    public function testResponse2()
+    public function testResponse2(): void
     {
         $http = new HttpRequest();
         $response = $http->get($this->host . 'singletonResponse2');
