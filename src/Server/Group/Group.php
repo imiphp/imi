@@ -5,7 +5,6 @@ namespace Imi\Server\Group;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Event\Event;
-use Imi\RequestContext;
 use Imi\Server\Group\Exception\MethodNotFoundException;
 use Imi\Util\ArrayUtil;
 
@@ -112,7 +111,7 @@ class Group
                 return $contextData;
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
-                'server'    => RequestContext::getServer(),
+                'server'    => $this->server,
                 'groupName' => $groupName,
                 'fd'        => $fd,
             ]);
@@ -141,7 +140,7 @@ class Group
                 }
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
-                'server'    => RequestContext::getServer(),
+                'server'    => $this->server,
                 'groupName' => $groupName,
                 'fd'        => $fd,
             ]);
