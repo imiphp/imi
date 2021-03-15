@@ -1,12 +1,14 @@
 parameters:
     level: 6
 
+    phpVersion: 80000
+
     paths:
         - src
         - tests
         - config
 
-    excludes_analyse:
+    excludePaths:
         - tests/vendor
 
     bootstrapFiles:

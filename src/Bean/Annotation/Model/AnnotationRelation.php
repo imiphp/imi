@@ -35,7 +35,7 @@ class AnnotationRelation
     /**
      * 所有关联列表.
      *
-     * @var \Imi\Bean\Annotation\Model\IAnnotationRelation|array
+     * @var array
      */
     private $allRelations = [];
 

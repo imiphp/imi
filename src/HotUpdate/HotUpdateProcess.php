@@ -267,6 +267,7 @@ class HotUpdateProcess extends BaseProcess
             if ($this->buildRuntimeHandler)
             {
                 $status = proc_get_status($this->buildRuntimeHandler);
+                // @phpstan-ignore-next-line
                 if (!$status || !($status['running'] ?? false))
                 {
                     $this->initBuildRuntime();
@@ -331,6 +332,7 @@ class HotUpdateProcess extends BaseProcess
             $buildRuntimeHandler = $this->buildRuntimeHandler;
             $buildRuntimePipes = $this->buildRuntimePipes;
             $status = proc_get_status($buildRuntimeHandler);
+            // @phpstan-ignore-next-line
             if (!$status || $status['running'] ?? false)
             {
                 $writeContent = "n\n";
@@ -362,6 +364,7 @@ class HotUpdateProcess extends BaseProcess
             return;
         }
         $status = proc_get_status($this->buildRuntimeHandler);
+        // @phpstan-ignore-next-line
         if (!$status || !($status['running'] ?? false))
         {
             $this->initBuildRuntime();
