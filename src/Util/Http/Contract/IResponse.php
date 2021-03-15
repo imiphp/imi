@@ -18,14 +18,14 @@ interface IResponse extends ResponseInterface, IMessage
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @param int    $code         The 3-digit integer result code to set.
-     * @param string $reasonPhrase The reason phrase to use with the
+     * @param int    $code         the 3-digit integer result code to set
+     * @param string $reasonPhrase the reason phrase to use with the
      *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification.
+     *                             use the defaults as suggested in the HTTP specification
      *
      * @return static
      *
-     * @throws \InvalidArgumentException For invalid status code arguments.
+     * @throws \InvalidArgumentException for invalid status code arguments
      */
     public function setStatus(int $code, string $reasonPhrase = ''): self;
 

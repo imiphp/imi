@@ -7,7 +7,6 @@ namespace Imi\Server\Group;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Event\Event;
-use Imi\RequestContext;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Group\Handler\IGroupHandler;
 use Imi\Util\ArrayUtil;
@@ -78,7 +77,7 @@ class Group
     {
         if ($this->status)
         {
-            $this->handler = $handler = RequestContext::getServerBean($this->groupHandler);
+            $this->handler = $handler = $this->server->getBean($this->groupHandler);
             $handler->createGroup($this->groupName, $this->maxClients);
         }
     }
@@ -105,14 +104,14 @@ class Group
         $groupName = $this->groupName;
         if ($this->handler->joinGroup($groupName, $fd))
         {
-            RequestContext::getServerBean('FdMap')->joinGroup($fd, $this);
+            $this->server->getBean('FdMap')->joinGroup($fd, $this);
             ConnectContext::use(function (array $contextData) use ($groupName): array {
                 $contextData['__groups'][] = $groupName;
 
                 return $contextData;
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
-                'server'    => RequestContext::getServer(),
+                'server'    => $this->server,
                 'groupName' => $groupName,
                 'fd'        => $fd,
             ]);
@@ -131,7 +130,7 @@ class Group
         $groupName = $this->groupName;
         if ($this->handler->leaveGroup($groupName, $fd))
         {
-            RequestContext::getServerBean('FdMap')->leaveGroup($fd, $this);
+            $this->server->getBean('FdMap')->leaveGroup($fd, $this);
             ConnectContext::use(function (array $contextData) use ($groupName) {
                 if (isset($contextData['__groups']))
                 {
@@ -141,7 +140,7 @@ class Group
                 }
             }, $fd);
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
-                'server'    => RequestContext::getServer(),
+                'server'    => $this->server,
                 'groupName' => $groupName,
                 'fd'        => $fd,
             ]);

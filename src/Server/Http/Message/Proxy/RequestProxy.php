@@ -93,7 +93,7 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that has the
      * updated cookie values.
      *
-     * @param array $cookies Array of key/value pairs representing cookies.
+     * @param array $cookies array of key/value pairs representing cookies
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
@@ -161,8 +161,8 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that has the
      * updated query string arguments.
      *
-     * @param array $query Array of query string arguments, typically from
-     *                     $_GET.
+     * @param array $query array of query string arguments, typically from
+     *                     $_GET
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
@@ -180,8 +180,8 @@ class RequestProxy implements IHttpRequest
      * These values MAY be prepared from $_FILES or the message body during
      * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return array An array tree of UploadedFileInterface instances; an empty
-     *               array MUST be returned if no data is present.
+     * @return array an array tree of UploadedFileInterface instances; an empty
+     *               array MUST be returned if no data is present
      */
     public function getUploadedFiles()
     {
@@ -195,11 +195,11 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
+     * @param array $uploadedFiles an array tree of UploadedFileInterface instances
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      *
-     * @throws \InvalidArgumentException if an invalid structure is provided.
+     * @throws \InvalidArgumentException if an invalid structure is provided
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
@@ -268,7 +268,7 @@ class RequestProxy implements IHttpRequest
      * @return \Imi\Util\Http\Contract\IServerRequest
      *
      * @throws \InvalidArgumentException if an unsupported argument type is
-     *                                   provided.
+     *                                   provided
      */
     public function withParsedBody($data)
     {
@@ -315,7 +315,7 @@ class RequestProxy implements IHttpRequest
      * deserializing non-form-encoded message bodies; etc. Attributes
      * will be application and request specific, and CAN be mutable.
      *
-     * @return array Attributes derived from the request.
+     * @return array attributes derived from the request
      */
     public function getAttributes()
     {
@@ -334,8 +334,8 @@ class RequestProxy implements IHttpRequest
      *
      * @see getAttributes()
      *
-     * @param string $name    The attribute name.
-     * @param mixed  $default Default value to return if the attribute does not exist.
+     * @param string $name    the attribute name
+     * @param mixed  $default default value to return if the attribute does not exist
      *
      * @return mixed
      */
@@ -356,8 +356,8 @@ class RequestProxy implements IHttpRequest
      *
      * @see getAttributes()
      *
-     * @param string $name  The attribute name.
-     * @param mixed  $value The value of the attribute.
+     * @param string $name  the attribute name
+     * @param mixed  $value the value of the attribute
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
@@ -396,7 +396,7 @@ class RequestProxy implements IHttpRequest
      *
      * @see getAttributes()
      *
-     * @param string $name The attribute name.
+     * @param string $name the attribute name
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
@@ -490,7 +490,7 @@ class RequestProxy implements IHttpRequest
     /**
      * Retrieves the HTTP method of the request.
      *
-     * @return string Returns the request method.
+     * @return string returns the request method
      */
     public function getMethod()
     {
@@ -508,11 +508,11 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that has the
      * changed request method.
      *
-     * @param string $method Case-sensitive method.
+     * @param string $method case-sensitive method
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      *
-     * @throws \InvalidArgumentException for invalid HTTP methods.
+     * @throws \InvalidArgumentException for invalid HTTP methods
      */
     public function withMethod($method)
     {
@@ -544,8 +544,8 @@ class RequestProxy implements IHttpRequest
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @return UriInterface Returns a UriInterface instance
-     *                      representing the URI of the request.
+     * @return UriInterface returns a UriInterface instance
+     *                      representing the URI of the request
      */
     public function getUri()
     {
@@ -579,8 +579,8 @@ class RequestProxy implements IHttpRequest
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @param UriInterface $uri          New request URI to use.
-     * @param bool         $preserveHost Preserve the original state of the Host header.
+     * @param UriInterface $uri          new request URI to use
+     * @param bool         $preserveHost preserve the original state of the Host header
      *
      * @return \Imi\Util\Http\Contract\IServerRequest
      */
@@ -627,7 +627,7 @@ class RequestProxy implements IHttpRequest
      *
      * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
      *
-     * @return string HTTP protocol version.
+     * @return string HTTP protocol version
      */
     public function getProtocolVersion()
     {
@@ -686,7 +686,7 @@ class RequestProxy implements IHttpRequest
     /**
      * Checks if a header exists by the given case-insensitive name.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return bool Returns true if any header names match the given header
      *              name using a case-insensitive string comparison. Returns false if
@@ -706,7 +706,7 @@ class RequestProxy implements IHttpRequest
      * If the header does not appear in the message, this method MUST return an
      * empty array.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return string[] An array of string values as provided for the given
      *                  header. If the header does not appear in the message, this method MUST
@@ -731,7 +731,7 @@ class RequestProxy implements IHttpRequest
      * If the header does not appear in the message, this method MUST return
      * an empty string.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name case-insensitive header field name
      *
      * @return string A string of values as provided for the given header
      *                concatenated together using a comma. If the header does not appear in
@@ -752,12 +752,12 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string          $name  Case-insensitive header field name.
-     * @param string|string[] $value Header value(s).
+     * @param string          $name  case-insensitive header field name
+     * @param string|string[] $value header value(s)
      *
      * @return IServerRequest
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws \InvalidArgumentException for invalid header names or values
      */
     public function withHeader($name, $value)
     {
@@ -775,12 +775,12 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string          $name  Case-insensitive header field name to add.
-     * @param string|string[] $value Header value(s).
+     * @param string          $name  case-insensitive header field name to add
+     * @param string|string[] $value header value(s)
      *
      * @return IServerRequest
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws \InvalidArgumentException for invalid header names or values
      */
     public function withAddedHeader($name, $value)
     {
@@ -796,7 +796,7 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return an instance that removes
      * the named header.
      *
-     * @param string $name Case-insensitive header field name to remove.
+     * @param string $name case-insensitive header field name to remove
      *
      * @return IServerRequest
      */
@@ -808,7 +808,7 @@ class RequestProxy implements IHttpRequest
     /**
      * Gets the body of the message.
      *
-     * @return StreamInterface Returns the body as a stream.
+     * @return StreamInterface returns the body as a stream
      */
     public function getBody()
     {
@@ -824,11 +824,11 @@ class RequestProxy implements IHttpRequest
      * immutability of the message, and MUST return a new instance that has the
      * new body stream.
      *
-     * @param StreamInterface $body Body.
+     * @param StreamInterface $body body
      *
      * @return IServerRequest
      *
-     * @throws \InvalidArgumentException When the body is not valid.
+     * @throws \InvalidArgumentException when the body is not valid
      */
     public function withBody(StreamInterface $body)
     {
