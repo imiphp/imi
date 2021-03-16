@@ -23,8 +23,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 是否初始化完毕.
-     *
-     * @return bool
      */
     private bool $isInited = false;
 

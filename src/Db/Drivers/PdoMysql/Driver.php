@@ -305,10 +305,8 @@ class Driver extends Base implements IDb
      *
      * @param mixed $attribute
      * @param mixed $value
-     *
-     * @return bool
      */
-    public function setAttribute($attribute, $value)
+    public function setAttribute($attribute, $value): bool
     {
         return $this->instance->setAttribute($attribute, $value);
     }

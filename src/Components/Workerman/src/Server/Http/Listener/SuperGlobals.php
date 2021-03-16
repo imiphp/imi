@@ -14,7 +14,7 @@ use Imi\Event\IEventListener;
  */
 class SuperGlobals implements IEventListener
 {
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         /** @var \Imi\Server\Http\SuperGlobals\Listener\SuperGlobals $superGlobals */
         $superGlobals = App::getBean('SuperGlobals');

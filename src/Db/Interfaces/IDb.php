@@ -86,10 +86,8 @@ interface IDb extends IHashCode
      *
      * @param mixed $attribute
      * @param mixed $value
-     *
-     * @return bool
      */
-    public function setAttribute($attribute, $value);
+    public function setAttribute($attribute, $value): bool;
 
     /**
      * 检查是否在一个事务内.

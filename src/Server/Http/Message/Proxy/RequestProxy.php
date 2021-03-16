@@ -7,7 +7,6 @@ namespace Imi\Server\Http\Message\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
-use Imi\Server\Http\Message\Request;
 use Imi\Util\Http\Contract\IServerRequest;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
@@ -44,7 +43,7 @@ class RequestProxy implements IHttpRequest
      *
      * @param array $cookies array of key/value pairs representing cookies
      */
-    public function setCookieParams(array $cookies): IServerRequest
+    public function setCookieParams(array $cookies): IHttpRequest
     {
         return $this->getRequestInstance()->setCookieParams($cookies);
     }
@@ -116,7 +115,7 @@ class RequestProxy implements IHttpRequest
      * @param array $query array of query string arguments, typically from
      *                     $_GET
      */
-    public function setQueryParams(array $query): IServerRequest
+    public function setQueryParams(array $query): IHttpRequest
     {
         return $this->getRequestInstance()->setQueryParams($query);
     }
@@ -208,7 +207,7 @@ class RequestProxy implements IHttpRequest
      *
      * @throws \InvalidArgumentException if an invalid structure is provided
      */
-    public function setUploadedFiles(array $uploadedFiles): IServerRequest
+    public function setUploadedFiles(array $uploadedFiles): IHttpRequest
     {
         return $this->getRequestInstance()->setUploadedFiles($uploadedFiles);
     }
@@ -292,7 +291,7 @@ class RequestProxy implements IHttpRequest
      * @throws \InvalidArgumentException if an unsupported argument type is
      *                                   provided
      */
-    public function setParsedBody($data): IServerRequest
+    public function setParsedBody($data): IHttpRequest
     {
         return $this->getRequestInstance()->setParsedBody($data);
     }
@@ -368,7 +367,7 @@ class RequestProxy implements IHttpRequest
      * @param string $name  the attribute name
      * @param mixed  $value the value of the attribute
      */
-    public function setAttribute(string $name, $value): IServerRequest
+    public function setAttribute(string $name, $value): IHttpRequest
     {
         return $this->getRequestInstance()->setAttribute($name, $value);
     }
@@ -404,7 +403,7 @@ class RequestProxy implements IHttpRequest
      *
      * @param string $name the attribute name
      */
-    public function removeAttribute(string $name): IServerRequest
+    public function removeAttribute(string $name): IHttpRequest
     {
         return $this->getRequestInstance()->removeAttribute($name);
     }
@@ -467,7 +466,7 @@ class RequestProxy implements IHttpRequest
      *
      * @param mixed $requestTarget
      */
-    public function setRequestTarget($requestTarget): IServerRequest
+    public function setRequestTarget($requestTarget): IHttpRequest
     {
         return $this->getRequestInstance()->setRequestTarget($requestTarget);
     }
@@ -515,7 +514,7 @@ class RequestProxy implements IHttpRequest
      *
      * @throws \InvalidArgumentException for invalid HTTP methods
      */
-    public function setMethod(string $method): IServerRequest
+    public function setMethod(string $method): IHttpRequest
     {
         return $this->getRequestInstance()->setMethod($method);
     }
@@ -598,7 +597,7 @@ class RequestProxy implements IHttpRequest
      * @param UriInterface $uri          new request URI to use
      * @param bool         $preserveHost preserve the original state of the Host header
      */
-    public function setUri(UriInterface $uri, bool $preserveHost = false): IServerRequest
+    public function setUri(UriInterface $uri, bool $preserveHost = false): IHttpRequest
     {
         return $this->getRequestInstance()->setUri($uri, $preserveHost);
     }
@@ -885,7 +884,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 GET 数据.
      */
-    public function withGet(array $get): IServerRequest
+    public function withGet(array $get): IHttpRequest
     {
         return $this->getRequestInstance()->withGet($get);
     }
@@ -893,7 +892,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 GET 数据.
      */
-    public function setGet(array $get): IServerRequest
+    public function setGet(array $get): IHttpRequest
     {
         return $this->getRequestInstance()->setGet($get);
     }
@@ -901,7 +900,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 POST 数据.
      */
-    public function withPost(array $post): IServerRequest
+    public function withPost(array $post): IHttpRequest
     {
         return $this->getRequestInstance()->withPost($post);
     }
@@ -909,7 +908,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 POST 数据.
      */
-    public function setPost(array $post): IServerRequest
+    public function setPost(array $post): IHttpRequest
     {
         return $this->getRequestInstance()->setPost($post);
     }
@@ -917,7 +916,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 Request 数据.
      */
-    public function withRequest(array $request): IServerRequest
+    public function withRequest(array $request): IHttpRequest
     {
         return $this->getRequestInstance()->withRequest($request);
     }
@@ -925,7 +924,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置 Request 数据.
      */
-    public function setRequest(array $request): IServerRequest
+    public function setRequest(array $request): IHttpRequest
     {
         return $this->getRequestInstance()->setRequest($request);
     }
@@ -933,7 +932,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 获取当前上下文中的对象实例.
      */
-    public function getRequestInstance(): Request
+    public function getRequestInstance(): IHttpRequest
     {
         return RequestContext::get('request');
     }
@@ -941,7 +940,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 设置当前上下文中的对象实例.
      */
-    public function setRequestInstance(Request $request): void
+    public function setRequestInstance(IHttpRequest $request): void
     {
         RequestContext::set('request', $request);
     }
