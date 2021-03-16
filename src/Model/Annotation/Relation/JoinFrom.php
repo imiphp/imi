@@ -19,15 +19,11 @@ class JoinFrom extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'field';
 
     /**
      * 字段名.
-     *
-     * @var string|null
      */
     public ?string $field = null;
 

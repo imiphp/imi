@@ -29,24 +29,16 @@ class Json implements IHandler
      * JSON_PRESERVE_ZERO_FRACTION
      * JSON_UNESCAPED_UNICODE
      * JSON_PARTIAL_OUTPUT_ON_ERROR。
-     *
-     * @var int
      */
     protected int $options = 0;
 
     /**
      * 设置最大深度。 必须大于0。
-     *
-     * @var int
      */
     protected int $depth = 512;
 
     /**
-     * @param array|object                      $data
-     * @param array                             $options
-     * @param \Imi\Server\Http\Message\Response $response
-     *
-     * @return \Imi\Server\Http\Message\Response
+     * @param array|object $data
      */
     public function handle($data, array $options, Response $response): Response
     {

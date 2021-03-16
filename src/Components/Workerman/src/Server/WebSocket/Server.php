@@ -24,9 +24,6 @@ class Server extends Base implements IWebSocketServer
 {
     /**
      * 构造方法.
-     *
-     * @param string $name
-     * @param array  $config
      */
     public function __construct(string $name, array $config)
     {
@@ -36,8 +33,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -46,8 +41,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -56,8 +49,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function bindEvents(): void
     {
@@ -102,8 +93,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 获取实例化 Worker 用的协议.
-     *
-     * @return string
      */
     protected function getWorkerScheme(): string
     {
@@ -112,12 +101,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 向客户端推送消息.
-     *
-     * @param int    $fd
-     * @param string $data
-     * @param int    $opcode
-     *
-     * @return bool
      */
     public function push(int $fd, string $data, int $opcode = 1): bool
     {

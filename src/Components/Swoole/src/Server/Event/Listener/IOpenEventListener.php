@@ -13,10 +13,6 @@ interface IOpenEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param OpenEventParam $e
-     *
-     * @return void
      */
-    public function handle(OpenEventParam $e);
+    public function handle(OpenEventParam $e): void;
 }

@@ -19,15 +19,11 @@ class Decimal extends Condition
 {
     /**
      * 最小值，为null不限制.
-     *
-     * @var float|null
      */
     public ?float $min = null;
 
     /**
      * 最大值，为null不限制.
-     *
-     * @var float|null
      */
     public ?float $max = null;
 
@@ -47,8 +43,6 @@ class Decimal extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

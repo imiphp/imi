@@ -16,11 +16,6 @@ class TestTask implements ITaskHandler
     /**
      * 任务处理方法.
      *
-     * @param TaskParam      $param
-     * @param \Swoole\Server $server
-     * @param int            $taskId
-     * @param int            $WorkerId
-     *
      * @return mixed
      */
     public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
@@ -34,10 +29,7 @@ class TestTask implements ITaskHandler
      * 任务结束时触发.
      *
      * @param \swoole_server $server
-     * @param int            $taskId
      * @param mixed          $data
-     *
-     * @return void
      */
     public function finish(\Swoole\Server $server, int $taskId, $data): void
     {

@@ -17,11 +17,6 @@ class Imi
 
     /**
      * 设置当前进程名.
-     *
-     * @param string $type
-     * @param array  $data
-     *
-     * @return void
      */
     public static function setProcessName(string $type, array $data = []): void
     {
@@ -35,11 +30,6 @@ class Imi
 
     /**
      * 获取 imi 进程名.
-     *
-     * @param string $type
-     * @param array  $data
-     *
-     * @return string
      */
     public static function getProcessName(string $type, array $data = []): string
     {
@@ -97,8 +87,6 @@ class Imi
 
     /**
      * 停止服务器.
-     *
-     * @return void
      */
     public static function stopServer(): void
     {
@@ -120,8 +108,6 @@ class Imi
 
     /**
      * 重新加载服务器.
-     *
-     * @return void
      */
     public static function reloadServer(): void
     {

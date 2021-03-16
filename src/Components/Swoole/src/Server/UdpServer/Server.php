@@ -22,15 +22,11 @@ class Server extends Base implements IUdpServer
 {
     /**
      * 是否支持 SSL.
-     *
-     * @var bool
      */
     private bool $ssl = false;
 
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -39,8 +35,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 创建 swoole 服务器对象
-     *
-     * @return void
      */
     protected function createServer(): void
     {
@@ -50,8 +44,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 从主服务器监听端口，作为子服务器.
-     *
-     * @return void
      */
     protected function createSubServer(): void
     {
@@ -69,8 +61,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 获取服务器初始化需要的配置.
-     *
-     * @return array
      */
     protected function getServerInitConfig(): array
     {
@@ -84,8 +74,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function __bindEvents(): void
     {
@@ -110,8 +98,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 是否为 https 服务
-     *
-     * @return bool
      */
     public function isSSL(): bool
     {
@@ -120,8 +106,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -130,12 +114,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 向客户端发送消息.
-     *
-     * @param string $ip
-     * @param int    $port
-     * @param string $data
-     *
-     * @return bool
      */
     public function sendTo(string $ip, int $port, string $data): bool
     {

@@ -16,9 +16,6 @@ interface IHttpResponse extends IResponse
      * 设置服务器端重定向
      * 默认状态码为302.
      *
-     * @param string $url
-     * @param int    $status
-     *
      * @return static
      */
     public function redirect(string $url, int $status = StatusCode::FOUND): self;
@@ -43,8 +40,6 @@ interface IHttpResponse extends IResponse
 
     /**
      * 是否已结束请求
-     *
-     * @return bool
      */
     public function isEnded(): bool;
 }

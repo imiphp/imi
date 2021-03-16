@@ -16,7 +16,6 @@ class CronCalculator
     /**
      * 获取下一次执行时间.
      *
-     * @param int                  $lastTime
      * @param \Imi\Cron\CronRule[] $cronRules
      *
      * @return int
@@ -225,11 +224,6 @@ class CronCalculator
 
     /**
      * 获取所有月份可能性.
-     *
-     * @param string $year
-     * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllYear(string $year, int $lastTime): array
     {
@@ -241,11 +235,6 @@ class CronCalculator
 
     /**
      * 获取所有月份可能性.
-     *
-     * @param string $month
-     * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllMonth(string $month, int $lastTime): array
     {
@@ -254,11 +243,6 @@ class CronCalculator
 
     /**
      * 获取所有日期可能性.
-     *
-     * @param string $day
-     * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllDay(string $day, int $lastTime): array
     {
@@ -292,11 +276,6 @@ class CronCalculator
 
     /**
      * 获取所有周的可能性.
-     *
-     * @param string $week
-     * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllWeek(string $week, int $lastTime): array
     {
@@ -305,11 +284,6 @@ class CronCalculator
 
     /**
      * 获取所有小时可能性.
-     *
-     * @param string $hour
-     * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllHour(string $hour, int $lastTime): array
     {
@@ -318,11 +292,6 @@ class CronCalculator
 
     /**
      * 获取所有分钟可能性.
-     *
-     * @param string $minute
-     * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllMinute(string $minute, int $lastTime): array
     {
@@ -334,8 +303,6 @@ class CronCalculator
      *
      * @param string $second
      * @param int    $lastTime
-     *
-     * @return array
      */
     public function getAllSecond($second, $lastTime): array
     {
@@ -346,7 +313,6 @@ class CronCalculator
      * 处理 2n、3n……格式.
      *
      * @param \Imi\Cron\CronRule $cronRule
-     * @param int                $lastTime
      *
      * @return int|false
      */

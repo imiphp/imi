@@ -13,10 +13,6 @@ interface IWorkerErrorEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param WorkerErrorEventParam $e
-     *
-     * @return void
      */
-    public function handle(WorkerErrorEventParam $e);
+    public function handle(WorkerErrorEventParam $e): void;
 }

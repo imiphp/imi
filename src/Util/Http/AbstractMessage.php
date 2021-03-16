@@ -11,58 +11,42 @@ abstract class AbstractMessage implements IMessage
 {
     /**
      * Http协议版本.
-     *
-     * @var string
      */
     protected string $protocolVersion = '1.1';
 
     /**
      * 头.
-     *
-     * @var array
      */
     protected array $headers = [];
 
     /**
      * 头名称数组
      * 小写的头 => 第一次使用的头名称.
-     *
-     * @var array
      */
     protected array $headerNames = [];
 
     /**
      * 消息主体.
-     *
-     * @var \Psr\Http\Message\StreamInterface
      */
     protected StreamInterface $body;
 
     /**
      * 协议版本是否初始化.
-     *
-     * @var bool
      */
     protected bool $protocolVersionInited = false;
 
     /**
      * headers 是否初始化.
-     *
-     * @var bool
      */
     protected bool $headersInited = false;
 
     /**
      * body 是否初始化.
-     *
-     * @var bool
      */
     protected bool $bodyInited = false;
 
     /**
      * 初始化协议版本.
-     *
-     * @return void
      */
     protected function initProtocolVersion(): void
     {
@@ -129,8 +113,6 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * 初始化 headers.
-     *
-     * @return void
      */
     protected function initHeaders(): void
     {
@@ -472,8 +454,6 @@ abstract class AbstractMessage implements IMessage
 
     /**
      * 初始化 body.
-     *
-     * @return void
      */
     protected function initBody(): void
     {
@@ -541,7 +521,6 @@ abstract class AbstractMessage implements IMessage
     /**
      * 在当前实例下设置头.
      *
-     * @param array       $headers
      * @param static|null $object
      *
      * @return static

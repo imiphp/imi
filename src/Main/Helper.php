@@ -20,9 +20,6 @@ class Helper
     /**
      * 获取主类实例对象
      *
-     * @param string|null $namespace
-     * @param string|null $componentName
-     *
      * @return \Imi\Main\BaseMain|null
      */
     public static function getMain(?string $namespace, ?string $componentName = null): ?BaseMain

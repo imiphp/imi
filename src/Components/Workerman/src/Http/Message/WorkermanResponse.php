@@ -13,22 +13,16 @@ class WorkermanResponse extends Response
 {
     /**
      * Workerman 的 http 响应对象
-     *
-     * @var \Workerman\Protocols\Http\Response
      */
     protected \Workerman\Protocols\Http\Response $workermanResponse;
 
     /**
      * Workerman 的 Worker 对象
-     *
-     * @var \Workerman\Worker
      */
     protected Worker $worker;
 
     /**
      * Workerman 连接对象
-     *
-     * @var TcpConnection
      */
     protected TcpConnection $connection;
 
@@ -42,8 +36,6 @@ class WorkermanResponse extends Response
 
     /**
      * 发送头部信息，没有特别需求，无需手动调用.
-     *
-     * @return void
      */
     private function sendHeaders(): void
     {
@@ -112,8 +104,6 @@ class WorkermanResponse extends Response
 
     /**
      * Get workerman 的 http 响应对象
-     *
-     * @return \Workerman\Protocols\Http\Response
      */
     public function getWorkermanResponse(): \Workerman\Protocols\Http\Response
     {
@@ -122,8 +112,6 @@ class WorkermanResponse extends Response
 
     /**
      * Get workerman 的 Worker 对象
-     *
-     * @return \Workerman\Worker
      */
     public function getWorker(): Worker
     {
@@ -132,8 +120,6 @@ class WorkermanResponse extends Response
 
     /**
      * Get workerman 连接对象
-     *
-     * @return TcpConnection
      */
     public function getConnection(): TcpConnection
     {

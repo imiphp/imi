@@ -20,16 +20,11 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * Workerman Worker 对象
-     *
-     * @var Worker
      */
     protected Worker $worker;
 
     /**
      * 构造方法.
-     *
-     * @param string $name
-     * @param array  $config
      */
     public function __construct(string $name, array $config)
     {
@@ -45,8 +40,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 是否支持 SSL.
-     *
-     * @return bool
      */
     public function isSSL(): bool
     {
@@ -55,8 +48,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 获取 Workerman Worker 对象
-     *
-     * @return \Workerman\Worker
      */
     public function getWorker(): Worker
     {
@@ -65,8 +56,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 开启服务
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -74,8 +63,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 终止服务
-     *
-     * @return void
      */
     public function shutdown(): void
     {
@@ -84,8 +71,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 重载服务
-     *
-     * @return void
      */
     public function reload(): void
     {
@@ -94,8 +79,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function bindEvents(): void
     {
@@ -199,8 +182,6 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
     /**
      * 获取实例化 Worker 用的协议.
-     *
-     * @return string
      */
     abstract protected function getWorkerScheme(): string;
 }

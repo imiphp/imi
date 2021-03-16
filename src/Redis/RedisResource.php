@@ -18,8 +18,6 @@ class RedisResource extends BasePoolResource
 
     /**
      * 连接配置.
-     *
-     * @var array
      */
     private array $config = [];
 
@@ -32,8 +30,6 @@ class RedisResource extends BasePoolResource
 
     /**
      * 打开
-     *
-     * @return bool
      */
     public function open(): bool
     {
@@ -44,8 +40,6 @@ class RedisResource extends BasePoolResource
 
     /**
      * 关闭.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -64,8 +58,6 @@ class RedisResource extends BasePoolResource
 
     /**
      * 重置资源，当资源被使用后重置一些默认的设置.
-     *
-     * @return void
      */
     public function reset(): void
     {
@@ -84,8 +76,6 @@ class RedisResource extends BasePoolResource
 
     /**
      * 检查资源是否可用.
-     *
-     * @return bool
      */
     public function checkState(): bool
     {

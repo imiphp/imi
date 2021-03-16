@@ -15,15 +15,11 @@ class LockConfigOption
 
     /**
      * 类名或 bean 名称.
-     *
-     * @var string
      */
     public string $class = '';
 
     /**
      * 配置项.
-     *
-     * @var array
      */
     public array $options = [];
 }

@@ -18,19 +18,11 @@ class AutoRunProcessManager
 {
     /**
      * 进程列表.
-     *
-     * @var array
      */
     protected array $processes = [];
 
     /**
      * 添加进程.
-     *
-     * @param string $name
-     * @param string $process
-     * @param array  $args
-     *
-     * @return void
      */
     public function add(string $name, string $process, array $args = []): void
     {
@@ -42,10 +34,6 @@ class AutoRunProcessManager
 
     /**
      * 移除进程.
-     *
-     * @param string $name
-     *
-     * @return void
      */
     public function remove(string $name): void
     {
@@ -62,10 +50,6 @@ class AutoRunProcessManager
 
     /**
      * 进程是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function exists(string $name): bool
     {
@@ -76,8 +60,6 @@ class AutoRunProcessManager
 
     /**
      * Get 进程列表.
-     *
-     * @return array
      */
     public function getProcesses(): array
     {

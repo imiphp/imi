@@ -19,8 +19,6 @@ class Aspect extends Base
 {
     /**
      * 优先级，越大越先执行.
-     *
-     * @var int
      */
     public int $priority = 0;
 

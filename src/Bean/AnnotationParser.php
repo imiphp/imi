@@ -28,22 +28,16 @@ class AnnotationParser
 
     /**
      * 处理器类名映射.
-     *
-     * @var array
      */
     private array $parsers = [];
 
     /**
      * 文件映射.
-     *
-     * @var array
      */
     private array $files = [];
 
     /**
      * 注解读取器.
-     *
-     * @var \Yurun\Doctrine\Common\Annotations\AnnotationReader
      */
     private AnnotationReader $reader;
 
@@ -90,10 +84,6 @@ class AnnotationParser
 
     /**
      * 处理类注解.
-     *
-     * @param \ReflectionClass $ref
-     *
-     * @return void
      */
     public function parseClass(\ReflectionClass $ref): void
     {
@@ -183,10 +173,6 @@ class AnnotationParser
 
     /**
      * 处理类中方法的注解.
-     *
-     * @param \ReflectionClass $ref
-     *
-     * @return void
      */
     public function parseMethods(\ReflectionClass $ref): void
     {
@@ -198,11 +184,6 @@ class AnnotationParser
 
     /**
      * 处理方法注解.
-     *
-     * @param \ReflectionClass  $ref
-     * @param \ReflectionMethod $method
-     *
-     * @return void
      */
     public function parseMethod(\ReflectionClass $ref, \ReflectionMethod $method): void
     {
@@ -287,10 +268,6 @@ class AnnotationParser
 
     /**
      * 处理类中属性的注解.
-     *
-     * @param \ReflectionClass $ref
-     *
-     * @return void
      */
     public function parseProps(\ReflectionClass $ref): void
     {
@@ -302,11 +279,6 @@ class AnnotationParser
 
     /**
      * 处理属性注解.
-     *
-     * @param \ReflectionClass    $ref
-     * @param \ReflectionProperty $prop
-     *
-     * @return void
      */
     public function parseProp(\ReflectionClass $ref, \ReflectionProperty $prop): void
     {
@@ -391,10 +363,6 @@ class AnnotationParser
 
     /**
      * 处理类中常量的注解.
-     *
-     * @param \ReflectionClass $ref
-     *
-     * @return void
      */
     public function parseConsts(\ReflectionClass $ref): void
     {
@@ -406,11 +374,6 @@ class AnnotationParser
 
     /**
      * 处理常量注解.
-     *
-     * @param \ReflectionClass         $ref
-     * @param \ReflectionClassConstant $const
-     *
-     * @return void
      */
     public function parseConst(\ReflectionClass $ref, \ReflectionClassConstant $const): void
     {
@@ -497,8 +460,6 @@ class AnnotationParser
 
     /**
      * 处理注解的处理器.
-     *
-     * @return void
      */
     private function parseAnnotationParsers(\ReflectionClass $ref): void
     {
@@ -535,10 +496,6 @@ class AnnotationParser
 
     /**
      * 注解处理器是否存在.
-     *
-     * @param string $className
-     *
-     * @return bool
      */
     public function hasParser(string $className): bool
     {
@@ -547,10 +504,6 @@ class AnnotationParser
 
     /**
      * 设置处理器数据.
-     *
-     * @param array $parsers
-     *
-     * @return void
      */
     public function setParsers(array $parsers): void
     {
@@ -559,10 +512,6 @@ class AnnotationParser
 
     /**
      * 获取注解处理器.
-     *
-     * @param string $className
-     *
-     * @return \Imi\Bean\Parser\BaseParser
      */
     public function getParser(string $className): BaseParser
     {
@@ -571,8 +520,6 @@ class AnnotationParser
 
     /**
      * 获取所有处理器数据.
-     *
-     * @return array
      */
     public function getParsers(): array
     {
@@ -581,10 +528,6 @@ class AnnotationParser
 
     /**
      * 执行注解处理器.
-     *
-     * @param string $className
-     *
-     * @return void
      */
     public function doParser(string $className): void
     {
@@ -699,8 +642,6 @@ class AnnotationParser
      * 处理增量更新.
      *
      * @param string[] $files
-     *
-     * @return void
      */
     public function parseIncr(array $files): void
     {
@@ -754,10 +695,6 @@ class AnnotationParser
 
     /**
      * 是否处理过该类.
-     *
-     * @param string $className
-     *
-     * @return bool
      */
     public function isParsed(string $className): bool
     {
@@ -766,8 +703,6 @@ class AnnotationParser
 
     /**
      * 获取存储数据.
-     *
-     * @return array
      */
     public function getStoreData(): array
     {
@@ -779,10 +714,6 @@ class AnnotationParser
 
     /**
      * 加载存储数据.
-     *
-     * @param array $data
-     *
-     * @return void
      */
     public function loadStoreData(array $data): void
     {
@@ -792,8 +723,6 @@ class AnnotationParser
 
     /**
      * Get 注解读取器.
-     *
-     * @return \Yurun\Doctrine\Common\Annotations\AnnotationReader
      */
     private function getReader(): AnnotationReader
     {
@@ -802,8 +731,6 @@ class AnnotationParser
 
     /**
      * 获取类的 PHP 原生注解.
-     *
-     * @param \ReflectionClass $reflectionClass
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
@@ -822,8 +749,6 @@ class AnnotationParser
     /**
      * 获取方法的 PHP 原生注解.
      *
-     * @param \ReflectionMethod $reflectionMethod
-     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public function getPHPMethodAnnotations(\ReflectionMethod $reflectionMethod): array
@@ -841,8 +766,6 @@ class AnnotationParser
     /**
      * 获取属性的 PHP 原生注解.
      *
-     * @param \ReflectionProperty $reflectionProperty
-     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public function getPHPPropertyAnnotations(\ReflectionProperty $reflectionProperty): array
@@ -859,8 +782,6 @@ class AnnotationParser
 
     /**
      * 获取类常量的 PHP 原生注解.
-     *
-     * @param \ReflectionClassConstant $reflectionConstant
      *
      * @return \Imi\Bean\Annotation\Base[]
      */

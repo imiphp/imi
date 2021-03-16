@@ -14,7 +14,7 @@ use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
  */
 class SuperGlobals implements IWorkerStartEventListener
 {
-    public function handle(WorkerStartEventParam $e)
+    public function handle(WorkerStartEventParam $e): void
     {
         /** @var \Imi\Server\Http\SuperGlobals\Listener\SuperGlobals $superGlobals */
         $superGlobals = App::getBean('SuperGlobals');

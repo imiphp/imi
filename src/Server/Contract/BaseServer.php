@@ -17,30 +17,21 @@ abstract class BaseServer implements IServer
 
     /**
      * 服务器名称.
-     *
-     * @var string
      */
     protected string $name = '';
 
     /**
      * 服务器配置.
-     *
-     * @var array
      */
     protected array $config = [];
 
     /**
      * 容器.
-     *
-     * @var \Imi\Bean\Container
      */
     protected Container $container;
 
     /**
      * 构造方法.
-     *
-     * @param string $name
-     * @param array  $config
      */
     public function __construct(string $name, array $config)
     {
@@ -51,8 +42,6 @@ abstract class BaseServer implements IServer
 
     /**
      * 获取服务器名称.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -61,8 +50,6 @@ abstract class BaseServer implements IServer
 
     /**
      * 获取配置信息.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
@@ -71,8 +58,6 @@ abstract class BaseServer implements IServer
 
     /**
      * 获取容器对象
-     *
-     * @return \Imi\Bean\Container
      */
     public function getContainer(): Container
     {
@@ -82,10 +67,7 @@ abstract class BaseServer implements IServer
     /**
      * 获取Bean对象
      *
-     * @param string $name
-     * @param mixed  $params
-     *
-     * @return object
+     * @param mixed $params
      */
     public function getBean(string $name, ...$params): object
     {
@@ -95,8 +77,7 @@ abstract class BaseServer implements IServer
     /**
      * 调用服务器方法.
      *
-     * @param string $methodName
-     * @param mixed  ...$args
+     * @param mixed ...$args
      *
      * @return mixed
      */

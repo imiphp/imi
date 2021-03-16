@@ -17,15 +17,11 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 字段名.
-     *
-     * @var string|null
      */
     protected ?string $fieldName = null;
 
     /**
      * 比较符.
-     *
-     * @var string|null
      */
     protected ?string $operation = null;
 
@@ -38,16 +34,11 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 绑定的数据们.
-     *
-     * @var array
      */
     protected array $binds = [];
 
     /**
-     * @param string|null $fieldName
-     * @param string|null $operation
-     * @param mixed       $value
-     * @param string      $logicalOperator
+     * @param mixed $value
      */
     public function __construct(?string $fieldName = null, ?string $operation = null, $value = null, string $logicalOperator = LogicalOperator::AND)
     {
@@ -59,8 +50,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 字段名.
-     *
-     * @return string|null
      */
     public function getFieldName(): ?string
     {
@@ -69,8 +58,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 比较符.
-     *
-     * @return string|null
      */
     public function getOperation(): ?string
     {
@@ -89,8 +76,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 逻辑运算符.
-     *
-     * @return string
      */
     public function getLogicalOperator(): string
     {
@@ -99,10 +84,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 字段名.
-     *
-     * @param string|null $fieldName
-     *
-     * @return void
      */
     public function setFieldName(?string $fieldName): void
     {
@@ -111,10 +92,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 比较符.
-     *
-     * @param string|null $operation
-     *
-     * @return void
      */
     public function setOperation(?string $operation): void
     {
@@ -125,8 +102,6 @@ class Where extends BaseWhere implements IWhere
      * 值
      *
      * @param mixed $value
-     *
-     * @return void
      */
     public function setValue($value): void
     {
@@ -135,10 +110,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 逻辑运算符.
-     *
-     * @param string $logicalOperator
-     *
-     * @return void
      */
     public function setLogicalOperator(string $logicalOperator): void
     {
@@ -147,10 +118,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 获取无逻辑的字符串.
-     *
-     * @param IQuery $query
-     *
-     * @return string
      */
     public function toStringWithoutLogic(IQuery $query): string
     {
@@ -197,8 +164,6 @@ class Where extends BaseWhere implements IWhere
 
     /**
      * 获取绑定的数据们.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

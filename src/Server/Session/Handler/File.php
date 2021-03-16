@@ -14,8 +14,6 @@ class File extends Base
 {
     /**
      * Session文件存储路径.
-     *
-     * @var string
      */
     protected string $savePath = '';
 
@@ -30,10 +28,6 @@ class File extends Base
 
     /**
      * 销毁session数据.
-     *
-     * @param string $sessionId
-     *
-     * @return void
      */
     public function destroy(string $sessionId): void
     {
@@ -48,8 +42,6 @@ class File extends Base
      * 垃圾回收.
      *
      * @param int $maxLifeTime 最大存活时间，单位：秒
-     *
-     * @return void
      */
     public function gc(int $maxLifeTime): void
     {
@@ -67,10 +59,6 @@ class File extends Base
 
     /**
      * 读取session.
-     *
-     * @param string $sessionId
-     *
-     * @return string
      */
     public function read(string $sessionId): string
     {
@@ -87,12 +75,6 @@ class File extends Base
 
     /**
      * 写入session.
-     *
-     * @param string $sessionId
-     * @param string $sessionData
-     * @param int    $maxLifeTime
-     *
-     * @return void
      */
     public function write(string $sessionId, string $sessionData, int $maxLifeTime): void
     {
@@ -101,10 +83,6 @@ class File extends Base
 
     /**
      * 获取文件存储的完整文件名.
-     *
-     * @param string $sessionId
-     *
-     * @return string
      */
     public function getFileName(string $sessionId): string
     {

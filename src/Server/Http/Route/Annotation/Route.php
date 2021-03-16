@@ -19,15 +19,11 @@ class Route extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'url';
 
     /**
      * 请求地址规则.
-     *
-     * @var string|null
      */
     public ?string $url = null;
 
@@ -36,15 +32,11 @@ class Route extends Base
      * null-取HttpRoute中默认值
      * true-忽略大小写
      * false-严格判断.
-     *
-     * @var bool|null
      */
     public ?bool $ignoreCase = null;
 
     /**
      * 智能尾部斜杠，无论是否存在都匹配.
-     *
-     * @var bool|null
      */
     public ?bool $autoEndSlash = null;
 

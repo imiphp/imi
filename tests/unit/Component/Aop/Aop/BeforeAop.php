@@ -23,8 +23,6 @@ class BeforeAop
      *         "Imi\Test\Component\Aop\Classes\TestBeforeClass::test"
      *     }
      * )
-     *
-     * @return void
      */
     public function injectBefore(JoinPoint $joinPoint): void
     {

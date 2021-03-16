@@ -32,8 +32,6 @@ class TestAutoConstructValidator extends LazyArrayObject
 {
     /**
      * @Integer(min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
-     *
-     * @var int
      */
     public int $int = 0;
 
@@ -41,10 +39,6 @@ class TestAutoConstructValidator extends LazyArrayObject
      * @AutoValidation
      *
      * @Integer(name="value", min=0, max=100, message="{:value} 不符合大于等于{min}且小于等于{max}")
-     *
-     * @param int $value
-     *
-     * @return int
      */
     public function test(int $value): int
     {

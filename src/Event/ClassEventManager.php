@@ -27,13 +27,6 @@ class ClassEventManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $className
-     * @param string $eventName
-     * @param string $listenerClass
-     * @param int    $priority
-     *
-     * @return void
      */
     public static function add(string $className, string $eventName, string $listenerClass, int $priority): void
     {
@@ -44,11 +37,6 @@ class ClassEventManager
 
     /**
      * 获取对象事件定义.
-     *
-     * @param object $object
-     * @param string $eventName
-     *
-     * @return array
      */
     public static function getByObjectEvent(object $object, string $eventName): array
     {

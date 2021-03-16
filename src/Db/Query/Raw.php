@@ -23,8 +23,6 @@ class Raw implements IBase
 
     /**
      * 获取绑定的数据们.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

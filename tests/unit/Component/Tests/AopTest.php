@@ -14,8 +14,6 @@ class AopTest extends BaseTest
 {
     /**
      * Aop Before.
-     *
-     * @return void
      */
     public function testBefore(): void
     {
@@ -26,8 +24,6 @@ class AopTest extends BaseTest
 
     /**
      * Aop After.
-     *
-     * @return void
      */
     public function testAfter(): void
     {
@@ -38,8 +34,6 @@ class AopTest extends BaseTest
 
     /**
      * Aop Around.
-     *
-     * @return void
      */
     public function testAround(): void
     {
@@ -50,8 +44,6 @@ class AopTest extends BaseTest
 
     /**
      * Aop AfterReturning.
-     *
-     * @return void
      */
     public function testAfterReturning(): void
     {
@@ -62,8 +54,6 @@ class AopTest extends BaseTest
 
     /**
      * Aop AfterReturning.
-     *
-     * @return void
      */
     public function testAfterThrowing(): void
     {

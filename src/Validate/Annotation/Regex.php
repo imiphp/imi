@@ -19,8 +19,6 @@ class Regex extends Condition
 {
     /**
      * 正则表达式文本.
-     *
-     * @var string
      */
     public string $pattern = '';
 
@@ -33,8 +31,6 @@ class Regex extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

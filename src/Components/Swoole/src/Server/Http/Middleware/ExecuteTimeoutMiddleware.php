@@ -24,25 +24,16 @@ class ExecuteTimeoutMiddleware implements MiddlewareInterface
      * 最大执行时间，单位：毫秒.
      *
      * 默认为 30 秒
-     *
-     * @var int
      */
     protected int $maxExecuteTime = 30000;
 
     /**
      * 超时处理器.
-     *
-     * @var string
      */
     protected string $handler = \Imi\Server\Http\Error\ExecuteTimeoutHandler::class;
 
     /**
      * 处理方法.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

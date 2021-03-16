@@ -11,15 +11,11 @@ class WorkerExitEventParam extends EventParam
 {
     /**
      * 服务器对象
-     *
-     * @var \Imi\Swoole\Server\Base
      */
     public Base $server;
 
     /**
      * Worker进程ID.
-     *
-     * @var int
      */
     public int $workerId = 0;
 }

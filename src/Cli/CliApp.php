@@ -19,25 +19,14 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class CliApp extends BaseApp
 {
-    /**
-     * @var Application
-     */
     protected Application $cli;
 
-    /**
-     * @var EventDispatcher
-     */
     protected EventDispatcher $cliEventDispatcher;
 
-    /**
-     * @var ArgvInput
-     */
     protected ArgvInput $input;
 
     /**
      * 构造方法.
-     *
-     * @param string $namespace
      */
     public function __construct(string $namespace)
     {
@@ -115,8 +104,6 @@ class CliApp extends BaseApp
 
     /**
      * 加载运行时.
-     *
-     * @return int
      */
     public function loadRuntime(): int
     {
@@ -153,8 +140,6 @@ class CliApp extends BaseApp
 
     /**
      * 初始化.
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -175,8 +160,6 @@ class CliApp extends BaseApp
 
     /**
      * 获取应用类型.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -185,8 +168,6 @@ class CliApp extends BaseApp
 
     /**
      * 运行应用.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -205,8 +186,6 @@ class CliApp extends BaseApp
 
     /**
      * Get the value of cli.
-     *
-     * @return Application
      */
     public function getCli(): Application
     {

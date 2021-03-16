@@ -28,22 +28,16 @@ class CronProcess extends BaseProcess
 {
     /**
      * @Inject("CronScheduler")
-     *
-     * @var \Imi\Cron\Contract\IScheduler
      */
     protected IScheduler $scheduler;
 
     /**
      * @Inject("ErrorLog")
-     *
-     * @var \Imi\Log\ErrorLog
      */
     protected ErrorLog $errorLog;
 
     /**
      * @Inject("CronManager")
-     *
-     * @var \Imi\Cron\Contract\ICronManager
      */
     protected ICronManager $cronManager;
 
@@ -56,15 +50,11 @@ class CronProcess extends BaseProcess
 
     /**
      * 是否正在运行.
-     *
-     * @var bool
      */
     protected bool $running = false;
 
     /**
      * Unix 服务器.
-     *
-     * @var Worker
      */
     private Worker $unixWorker;
 
@@ -88,10 +78,7 @@ class CronProcess extends BaseProcess
     }
 
     /**
-     * @param \Workerman\Connection\ConnectionInterface $connection
-     * @param mixed                                     $data
-     *
-     * @return void
+     * @param mixed $data
      */
     public function onUnixMessage(ConnectionInterface $connection, $data): void
     {
@@ -117,8 +104,6 @@ class CronProcess extends BaseProcess
 
     /**
      * 开始定时任务调度.
-     *
-     * @return void
      */
     protected function startSchedule(): void
     {
@@ -133,8 +118,6 @@ class CronProcess extends BaseProcess
 
     /**
      * 停止.
-     *
-     * @return void
      */
     protected function stop(): void
     {

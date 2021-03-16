@@ -17,24 +17,16 @@ class Local implements IHandler
 {
     /**
      * 存储集合.
-     *
-     * @var array
      */
     private array $storeMap = [];
 
     /**
      * 锁 ID.
-     *
-     * @var string|null
      */
     protected ?string $lockId = null;
 
     /**
      * 读取数据.
-     *
-     * @param string $key
-     *
-     * @return array
      */
     public function read(string $key): array
     {
@@ -43,11 +35,6 @@ class Local implements IHandler
 
     /**
      * 保存数据.
-     *
-     * @param string $key
-     * @param array  $data
-     *
-     * @return void
      */
     public function save(string $key, array $data): void
     {
@@ -56,10 +43,6 @@ class Local implements IHandler
 
     /**
      * 销毁数据.
-     *
-     * @param string $key
-     *
-     * @return void
      */
     public function destroy(string $key): void
     {
@@ -72,11 +55,6 @@ class Local implements IHandler
 
     /**
      * 延迟销毁数据.
-     *
-     * @param string $key
-     * @param int    $ttl
-     *
-     * @return void
      */
     public function delayDestroy(string $key, int $ttl): void
     {
@@ -87,10 +65,6 @@ class Local implements IHandler
 
     /**
      * 数据是否存在.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function exists(string $key): bool
     {
@@ -99,11 +73,6 @@ class Local implements IHandler
 
     /**
      * 加锁
-     *
-     * @param string        $key
-     * @param callable|null $callable
-     *
-     * @return bool
      */
     public function lock(string $key, ?callable $callable = null): bool
     {
@@ -121,8 +90,6 @@ class Local implements IHandler
 
     /**
      * 解锁
-     *
-     * @return bool
      */
     public function unlock(): bool
     {

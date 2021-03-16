@@ -28,22 +28,16 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 数据库原始字段名称.
-     *
-     * @var array
      */
     protected array $__fieldNames = [];
 
     /**
      * 驼峰缓存.
-     *
-     * @var array
      */
     protected static array $__camelCache = [];
 
     /**
      * 方法引用.
-     *
-     * @var array
      */
     protected static array $__methodReference = [];
 
@@ -63,15 +57,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 真实类名.
-     *
-     * @var string
      */
     protected string $__realClass = '';
 
     /**
      * 记录是否存在.
-     *
-     * @var bool|null
      */
     protected ?bool $__recordExists = null;
 
@@ -143,8 +133,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 从记录创建模型对象
      *
-     * @param array $data
-     *
      * @return static
      */
     public static function createFromRecord(array $data): self
@@ -159,8 +147,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -206,8 +192,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * @param mixed $offset
      * @param mixed $value
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -255,8 +239,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * @param mixed $offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -268,8 +250,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      */
     public function &__get(string $name)
@@ -278,19 +258,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     }
 
     /**
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return void
+     * @param mixed $value
      */
-    public function __set(string $name, $value)
+    public function __set(string $name, $value): void
     {
         $this[$name] = $value;
     }
 
     /**
-     * @param string $name
-     *
      * @return bool
      */
     public function __isset(string $name)
@@ -298,20 +273,13 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return isset($this[$name]);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return void
-     */
-    public function __unset(string $name)
+    public function __unset(string $name): void
     {
         unset($this[$name]);
     }
 
     /**
      * 将当前对象作为数组返回.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -386,8 +354,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      * 包括属性的值也会被转为数组
      *
      * @param bool $filter 过滤隐藏属性
-     *
-     * @return array
      */
     public function convertToArray(bool $filter = true): array
     {
@@ -406,10 +372,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 转换模型数组为模型.
      *
-     * @param array $list
-     * @param bool  $filter 过滤隐藏属性
-     *
-     * @return array
+     * @param bool $filter 过滤隐藏属性
      */
     public static function convertListToArray(array $list, bool $filter = true): array
     {
@@ -440,17 +403,11 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         return $this->__getFieldName(current($this->__fieldNames));
     }
 
-    /**
-     * @return void
-     */
     public function next(): void
     {
         next($this->__fieldNames);
     }
 
-    /**
-     * @return void
-     */
     public function rewind(): void
     {
         reset($this->__fieldNames);
@@ -471,10 +428,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 从一个数组赋值到当前模型.
-     *
-     * @param array $data
-     *
-     * @return void
      */
     public function set(array $data): void
     {
@@ -486,10 +439,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 获取驼峰命名.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected function __getCamelName(string $name): string
     {
@@ -522,10 +471,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     /**
      * 处理导出属性.
      *
-     * @param string                                  $propertyName
      * @param \Imi\Model\Annotation\ExtractProperty[] $annotations
-     *
-     * @return void
      */
     protected function __parseExtractProperty(string $propertyName, array $annotations): void
     {

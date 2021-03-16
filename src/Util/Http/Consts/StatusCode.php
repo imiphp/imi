@@ -138,10 +138,6 @@ class StatusCode
 
     /**
      * 根据状态码获取原因短语.
-     *
-     * @param int $value
-     *
-     * @return string
      */
     public static function getReasonPhrase(int $value): string
     {

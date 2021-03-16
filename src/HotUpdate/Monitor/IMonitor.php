@@ -16,15 +16,11 @@ interface IMonitor
 
     /**
      * 检测文件是否有更改.
-     *
-     * @return bool
      */
     public function isChanged(): bool;
 
     /**
      * 获取变更的文件们.
-     *
-     * @return array
      */
     public function getChangedFiles(): array;
 }

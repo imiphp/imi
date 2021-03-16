@@ -27,10 +27,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testYear(CronCalculator $cronCalculator): void
     {
@@ -54,10 +50,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testMonth(CronCalculator $cronCalculator): void
     {
@@ -87,10 +79,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testWeek(CronCalculator $cronCalculator): void
     {
@@ -117,10 +105,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testDay(CronCalculator $cronCalculator): void
     {
@@ -176,10 +160,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testHour(CronCalculator $cronCalculator): void
     {
@@ -210,10 +190,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testMinute(CronCalculator $cronCalculator): void
     {
@@ -244,10 +220,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testSecond(CronCalculator $cronCalculator): void
     {
@@ -278,10 +250,6 @@ class CronCalculatorTest extends BaseTest
 
     /**
      * @depends testInit
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testAll(CronCalculator $cronCalculator): void
     {
@@ -323,10 +291,6 @@ class CronCalculatorTest extends BaseTest
      * @depends testInit
      *
      * @see https://github.com/Yurunsoft/imi/issues/51
-     *
-     * @param \Imi\Cron\CronCalculator $cronCalculator
-     *
-     * @return void
      */
     public function testBug51(CronCalculator $cronCalculator): void
     {

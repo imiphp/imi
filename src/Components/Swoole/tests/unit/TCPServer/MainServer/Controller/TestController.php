@@ -22,8 +22,6 @@ class TestController extends \Imi\Controller\TcpController
      *
      * @TcpAction
      * @TcpRoute({"action"="login"})
-     *
-     * @return array
      */
     public function login(\stdClass $data): array
     {
@@ -38,8 +36,6 @@ class TestController extends \Imi\Controller\TcpController
      *
      * @TcpAction
      * @TcpRoute({"action"="send"})
-     *
-     * @return void
      */
     public function send(\stdClass $data): void
     {
@@ -55,8 +51,6 @@ class TestController extends \Imi\Controller\TcpController
      *
      * @TcpAction
      * @TcpRoute({"duplicated"="1"})
-     *
-     * @return void
      */
     public function duplicated1(): void
     {
@@ -67,8 +61,6 @@ class TestController extends \Imi\Controller\TcpController
      *
      * @TcpAction
      * @TcpRoute({"duplicated"="1"})
-     *
-     * @return void
      */
     public function duplicated2(): void
     {

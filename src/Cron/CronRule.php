@@ -22,8 +22,6 @@ class CronRule
      * `2019-2022` - 指定年份区间
      * `2019,2021,2022` - 指定多个年份
      * `2n` - 每 2 年，其它以此类推
-     *
-     * @var string
      */
     private string $year = '*';
 
@@ -36,8 +34,6 @@ class CronRule
      * `1-6` (1-6 月), `-3--1` (10-12 月) - 指定月份区间，支持负数为倒数的月
      * `1,3,5,-1` (1、3、5、12 月) - 指定多个月份，支持负数为倒数的月
      * `2n` - 每 2 个月，其它以此类推
-     *
-     * @var string
      */
     private string $month = '*';
 
@@ -53,8 +49,6 @@ class CronRule
      * `year 1` (一年中的第 1 日), `year -1` (每年最后一天) - 指定一年中的日期，支持负数为倒数的日期
      * `year 1-6` (一年中的第 1-6 日), `year -3--1` (每年倒数 3 天) - 指定一年中的日期区间，支持负数为倒数的日期
      * `year 1,3,5,-1` (每年 1、3、5、最后一天) - 指定一年中的多个日期，支持负数为倒数的日期
-     *
-     * @var string
      */
     private string $day = '*';
 
@@ -66,8 +60,6 @@ class CronRule
      * `1` (周一), `-1` (周日) - 指定周几（1-7），支持负数为倒数的周
      * `1-6` (周一到周六), `-3--1` (周五到周日) - 指定周几，支持负数为倒数的周
      * `1,3,5,-1` (周一、三、五、日) - 指定多个日期，支持负数为倒数的周
-     *
-     * @var string
      */
     private string $week = '*';
 
@@ -80,8 +72,6 @@ class CronRule
      * `1-6` (1-6 店), `-3--1` (21-23 点) - 指定小时区间，支持负数为倒数的小时
      * `1,3,5,-1` (1、3、5、23 点) - 指定多个小时，支持负数为倒数的小时
      * `2n` - 每 2 小时，其它以此类推
-     *
-     * @var string
      */
     private string $hour = '*';
 
@@ -94,8 +84,6 @@ class CronRule
      * `1-6` (1-6 分), `-3--1` (57-59 分) - 指定分钟区间，支持负数为倒数的分钟
      * `1,3,5,-1` (1、3、5、59 分) - 指定多个分钟，支持负数为倒数的分钟
      * `2n` - 每 2 分钟，其它以此类推
-     *
-     * @var string
      */
     private string $minute = '*';
 
@@ -108,15 +96,11 @@ class CronRule
      * `1-6` (1-6 秒), `-3--1` (57-59 秒) - 指定秒区间，支持负数为倒数的秒
      * `1,3,5,-1` (1、3、5、59 秒) - 指定多个秒，支持负数为倒数的秒
      * `2n` - 每 2 秒，其它以此类推
-     *
-     * @var string
      */
     private string $second = '*';
 
     /**
      * 年.
-     *
-     * @return string
      */
     public function getYear(): string
     {
@@ -125,8 +109,6 @@ class CronRule
 
     /**
      * 月.
-     *
-     * @return string
      */
     public function getMonth(): string
     {
@@ -135,8 +117,6 @@ class CronRule
 
     /**
      * 日.
-     *
-     * @return string
      */
     public function getDay(): string
     {
@@ -145,8 +125,6 @@ class CronRule
 
     /**
      * 周.
-     *
-     * @return string
      */
     public function getWeek(): string
     {
@@ -155,8 +133,6 @@ class CronRule
 
     /**
      * 小时.
-     *
-     * @return string
      */
     public function getHour(): string
     {
@@ -165,8 +141,6 @@ class CronRule
 
     /**
      * 分钟
-     *
-     * @return string
      */
     public function getMinute(): string
     {
@@ -175,8 +149,6 @@ class CronRule
 
     /**
      * 秒.
-     *
-     * @return string
      */
     public function getSecond(): string
     {

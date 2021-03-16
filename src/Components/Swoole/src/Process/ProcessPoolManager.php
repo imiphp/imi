@@ -33,12 +33,6 @@ class ProcessPoolManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $name
-     * @param string $className
-     * @param array  $options
-     *
-     * @return void
      */
     public static function add(string $name, string $className, array $options): void
     {
@@ -54,10 +48,6 @@ class ProcessPoolManager
 
     /**
      * 获取配置.
-     *
-     * @param string $name
-     *
-     * @return array|null
      */
     public static function get(string $name): ?array
     {
@@ -69,13 +59,8 @@ class ProcessPoolManager
      * 本方法无法在控制器中使用
      * 返回\Swoole\Process\Pool对象实例.
      *
-     * @param string      $name
-     * @param int|null    $workerNum   指定工作进程的数量
-     * @param array       $args
-     * @param int|null    $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
-     * @param string|null $msgQueueKey
-     *
-     * @return \Swoole\Process\Pool
+     * @param int|null $workerNum 指定工作进程的数量
+     * @param int|null $ipcType   进程间通信的模式，默认为0表示不使用任何进程间通信特性
      */
     public static function create(string $name, ?int $workerNum = null, array $args = [], ?int $ipcType = 0, ?string $msgQueueKey = null): \Swoole\Process\Pool
     {

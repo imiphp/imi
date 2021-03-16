@@ -15,19 +15,13 @@ class Process
 
     /**
      * 已监听的事件集合.
-     *
-     * @var array
      */
     private array $events = [];
 
     /**
      * 设置异步信号监听.
      *
-     * @param int      $signalNo
-     * @param callable $callback
-     * @param bool     $inheritable 是否可被子进程继承
-     *
-     * @return bool
+     * @param bool $inheritable 是否可被子进程继承
      */
     public static function signal(int $signalNo, callable $callback, bool $inheritable = false): bool
     {
@@ -51,8 +45,6 @@ class Process
 
     /**
      * 清理不可继承的监听.
-     *
-     * @return void
      */
     public static function clearNotInheritableSignalListener(): void
     {

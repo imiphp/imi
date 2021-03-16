@@ -18,9 +18,6 @@ class ActionMiddleware implements IMiddleware
     /**
      * 处理方法.
      *
-     * @param IFrame          $frame
-     * @param IMessageHandler $handler
-     *
      * @return mixed
      */
     public function process(IFrame $frame, IMessageHandler $handler)

@@ -23,8 +23,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 绑定的数据们.
-     *
-     * @var array
      */
     protected array $binds = [];
 
@@ -36,8 +34,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 回调.
-     *
-     * @return callable
      */
     public function getCallback(): callable
     {
@@ -46,8 +42,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 逻辑运算符.
-     *
-     * @return string
      */
     public function getLogicalOperator(): string
     {
@@ -56,10 +50,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 回调.
-     *
-     * @param callable $callback
-     *
-     * @return void
      */
     public function setCallback(callable $callback): void
     {
@@ -68,10 +58,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 逻辑运算符.
-     *
-     * @param string $logicalOperator
-     *
-     * @return void
      */
     public function setLogicalOperator(string $logicalOperator): void
     {
@@ -80,10 +66,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 获取无逻辑的字符串.
-     *
-     * @param IQuery $query
-     *
-     * @return string
      */
     public function toStringWithoutLogic(IQuery $query): string
     {
@@ -130,8 +112,6 @@ class WhereBrackets extends BaseWhere implements IWhereBrackets
 
     /**
      * 获取绑定的数据们.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

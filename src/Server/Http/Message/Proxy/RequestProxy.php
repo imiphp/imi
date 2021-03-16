@@ -43,8 +43,6 @@ class RequestProxy implements IHttpRequest
      * instance, nor related values in the server params.
      *
      * @param array $cookies array of key/value pairs representing cookies
-     *
-     * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function setCookieParams(array $cookies): IServerRequest
     {
@@ -69,8 +67,7 @@ class RequestProxy implements IHttpRequest
     /**
      * 获取cookie值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -118,8 +115,6 @@ class RequestProxy implements IHttpRequest
      *
      * @param array $query array of query string arguments, typically from
      *                     $_GET
-     *
-     * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function setQueryParams(array $query): IServerRequest
     {
@@ -211,8 +206,6 @@ class RequestProxy implements IHttpRequest
      *
      * @param array $uploadedFiles an array tree of UploadedFileInterface instances
      *
-     * @return \Imi\Util\Http\Contract\IServerRequest
-     *
      * @throws \InvalidArgumentException if an invalid structure is provided
      */
     public function setUploadedFiles(array $uploadedFiles): IServerRequest
@@ -296,8 +289,6 @@ class RequestProxy implements IHttpRequest
      * @param array|object|null $data The deserialized body data. This will
      *                                typically be in an array or object.
      *
-     * @return \Imi\Util\Http\Contract\IServerRequest
-     *
      * @throws \InvalidArgumentException if an unsupported argument type is
      *                                   provided
      */
@@ -376,8 +367,6 @@ class RequestProxy implements IHttpRequest
      *
      * @param string $name  the attribute name
      * @param mixed  $value the value of the attribute
-     *
-     * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function setAttribute(string $name, $value): IServerRequest
     {
@@ -414,8 +403,6 @@ class RequestProxy implements IHttpRequest
      * @see getAttributes()
      *
      * @param string $name the attribute name
-     *
-     * @return \Imi\Util\Http\Contract\IServerRequest
      */
     public function removeAttribute(string $name): IServerRequest
     {
@@ -479,8 +466,6 @@ class RequestProxy implements IHttpRequest
      *     request-target forms allowed in request messages)
      *
      * @param mixed $requestTarget
-     *
-     * @return IServerRequest
      */
     public function setRequestTarget($requestTarget): IServerRequest
     {
@@ -527,8 +512,6 @@ class RequestProxy implements IHttpRequest
      * modify the given string.
      *
      * @param string $method case-sensitive method
-     *
-     * @return IServerRequest
      *
      * @throws \InvalidArgumentException for invalid HTTP methods
      */
@@ -614,8 +597,6 @@ class RequestProxy implements IHttpRequest
      *
      * @param UriInterface $uri          new request URI to use
      * @param bool         $preserveHost preserve the original state of the Host header
-     *
-     * @return IServerRequest
      */
     public function setUri(UriInterface $uri, bool $preserveHost = false): IServerRequest
     {
@@ -839,8 +820,7 @@ class RequestProxy implements IHttpRequest
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -853,8 +833,7 @@ class RequestProxy implements IHttpRequest
      * 获取 POST 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -865,10 +844,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 判断是否存在 GET 参数.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasGet(string $name): bool
     {
@@ -877,10 +852,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 判断是否存在 POST 参数.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasPost(string $name): bool
     {
@@ -905,10 +876,6 @@ class RequestProxy implements IHttpRequest
     /**
      * 判断是否存在 REQUEST 参数
      * REQUEST 中包括：GET/POST/COOKIE.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasRequest(string $name): bool
     {
@@ -917,10 +884,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置 GET 数据.
-     *
-     * @param array $get
-     *
-     * @return IServerRequest
      */
     public function withGet(array $get): IServerRequest
     {
@@ -929,10 +892,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置 GET 数据.
-     *
-     * @param array $get
-     *
-     * @return IServerRequest
      */
     public function setGet(array $get): IServerRequest
     {
@@ -941,10 +900,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置 POST 数据.
-     *
-     * @param array $post
-     *
-     * @return IServerRequest
      */
     public function withPost(array $post): IServerRequest
     {
@@ -953,10 +908,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置 POST 数据.
-     *
-     * @param array $post
-     *
-     * @return IServerRequest
      */
     public function setPost(array $post): IServerRequest
     {
@@ -965,10 +916,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置 Request 数据.
-     *
-     * @param array $request
-     *
-     * @return IServerRequest
      */
     public function withRequest(array $request): IServerRequest
     {
@@ -977,10 +924,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置 Request 数据.
-     *
-     * @param array $request
-     *
-     * @return IServerRequest
      */
     public function setRequest(array $request): IServerRequest
     {
@@ -989,8 +932,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 获取当前上下文中的对象实例.
-     *
-     * @return \Imi\Server\Http\Message\Request
      */
     public function getRequestInstance(): Request
     {
@@ -999,10 +940,6 @@ class RequestProxy implements IHttpRequest
 
     /**
      * 设置当前上下文中的对象实例.
-     *
-     * @param \Imi\Server\Http\Message\Request $request
-     *
-     * @return void
      */
     public function setRequestInstance(Request $request): void
     {

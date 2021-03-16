@@ -13,10 +13,6 @@ interface IBeforeSelectEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeSelectEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeSelectEventParam $e);
+    public function handle(BeforeSelectEventParam $e): void;
 }

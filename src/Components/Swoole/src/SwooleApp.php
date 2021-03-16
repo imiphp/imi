@@ -33,8 +33,6 @@ class SwooleApp extends CliApp
 {
     /**
      * 构造方法.
-     *
-     * @param string $namespace
      */
     public function __construct(string $namespace)
     {
@@ -49,8 +47,6 @@ class SwooleApp extends CliApp
 
     /**
      * 获取应用类型.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -59,8 +55,6 @@ class SwooleApp extends CliApp
 
     /**
      * 运行应用.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -83,10 +77,6 @@ class SwooleApp extends CliApp
 
     /**
      * 加载配置.
-     *
-     * @param bool $initDotEnv
-     *
-     * @return void
      */
     public function loadConfig(bool $initDotEnv = true): void
     {
@@ -135,8 +125,6 @@ class SwooleApp extends CliApp
 
     /**
      * 加载运行时.
-     *
-     * @return int
      */
     public function loadRuntime(): int
     {
@@ -199,8 +187,6 @@ class SwooleApp extends CliApp
 
     /**
      * 加载入口.
-     *
-     * @return void
      */
     public function loadMain(): void
     {
@@ -218,8 +204,6 @@ class SwooleApp extends CliApp
 
     /**
      * 初始化.
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -267,8 +251,6 @@ class SwooleApp extends CliApp
 
     /**
      * 检查环境.
-     *
-     * @return void
      */
     private function checkEnvironment(OutputInterface $output): void
     {

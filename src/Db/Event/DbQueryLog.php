@@ -18,8 +18,6 @@ class DbQueryLog
 {
     /**
      * 是否已启用.
-     *
-     * @var bool
      */
     protected bool $enable = false;
 
@@ -60,8 +58,6 @@ class DbQueryLog
     }
 
     /**
-     * @param \Imi\Aop\AroundJoinPoint $joinPoint
-     *
      * @return mixed
      */
     public function aopExecute(AroundJoinPoint $joinPoint)
@@ -86,8 +82,6 @@ class DbQueryLog
     }
 
     /**
-     * @param \Imi\Aop\AroundJoinPoint $joinPoint
-     *
      * @return mixed
      */
     public function aopPrepare(AroundJoinPoint $joinPoint)
@@ -103,8 +97,6 @@ class DbQueryLog
     }
 
     /**
-     * @param \Imi\Aop\AroundJoinPoint $joinPoint
-     *
      * @return mixed
      */
     public function aopStatementExecute(AroundJoinPoint $joinPoint)
@@ -134,8 +126,6 @@ class DbQueryLog
 
     /**
      * 是否已启用.
-     *
-     * @return bool
      */
     public function isEnabled(): bool
     {

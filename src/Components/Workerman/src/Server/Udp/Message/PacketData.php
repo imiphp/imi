@@ -10,8 +10,6 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
 {
     /**
      * 连接对象.
-     *
-     * @var \Workerman\Connection\UdpConnection
      */
     protected UdpConnection $connection;
 
@@ -23,8 +21,6 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
 
     /**
      * 获取连接对象
-     *
-     * @return \Workerman\Connection\UdpConnection
      */
     public function getConnection(): UdpConnection
     {

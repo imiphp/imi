@@ -19,8 +19,6 @@ class CacheManager
 
     /**
      * 是否初始化.
-     *
-     * @var bool
      */
     protected static bool $inited = false;
 
@@ -46,12 +44,6 @@ class CacheManager
 
     /**
      * 增加对象名称.
-     *
-     * @param string $name
-     * @param string $handlerClass
-     * @param array  $option
-     *
-     * @return void
      */
     public static function addName(string $name, string $handlerClass, array $option = []): void
     {
@@ -70,8 +62,6 @@ class CacheManager
 
     /**
      * 清空池子.
-     *
-     * @return void
      */
     public static function clearPools(): void
     {
@@ -80,10 +70,6 @@ class CacheManager
 
     /**
      * 获取实例.
-     *
-     * @param string $name
-     *
-     * @return \Psr\SimpleCache\CacheInterface
      */
     public static function getInstance(string $name): CacheInterface
     {

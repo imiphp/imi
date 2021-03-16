@@ -16,15 +16,11 @@ class Partial extends Base
 {
     /**
      * 注入类名.
-     *
-     * @var string
      */
     public string $class = '';
 
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'class';
 

@@ -22,8 +22,6 @@ class ServerInject extends BaseInjectValue
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
@@ -34,8 +32,6 @@ class ServerInject extends BaseInjectValue
 
     /**
      * Bean实例化参数.
-     *
-     * @var array
      */
     public array $args = [];
 

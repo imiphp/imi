@@ -14,13 +14,10 @@ class SyncRedisPool extends BaseSyncPool
 
     /**
      * 数据库操作类.
-     *
-     * @var string
      */
     protected string $handlerClass = \Redis::class;
 
     /**
-     * @param string                           $name
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
      * @param mixed                            $resourceConfig
      */

@@ -8,8 +8,6 @@ class ActionMethodItem
 {
     /**
      * 参数名.
-     *
-     * @var string
      */
     protected string $name = '';
 
@@ -22,15 +20,11 @@ class ActionMethodItem
 
     /**
      * 类型.
-     *
-     * @var string|null
      */
     protected ?string $type = null;
 
     /**
-     * @param string               $name
-     * @param mixed                $default
-     * @param \ReflectionType|null $type
+     * @param mixed $default
      */
     public function __construct(string $name, $default, ?\ReflectionType $type)
     {
@@ -45,8 +39,6 @@ class ActionMethodItem
 
     /**
      * Get 参数名.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -65,8 +57,6 @@ class ActionMethodItem
 
     /**
      * Get 类型.
-     *
-     * @return string|null
      */
     public function getType(): ?string
     {

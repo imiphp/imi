@@ -22,10 +22,6 @@ class AfterWorkerStart implements IWorkerStartEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param WorkerStartEventParam $e
-     *
-     * @return void
      */
     public function handle(WorkerStartEventParam $e): void
     {
@@ -49,10 +45,6 @@ class AfterWorkerStart implements IWorkerStartEventListener
 
     /**
      * 检测是否当前服务已初始化.
-     *
-     * @param string $initFlagFile
-     *
-     * @return bool
      */
     private function checkInitFlagFile(string $initFlagFile): bool
     {

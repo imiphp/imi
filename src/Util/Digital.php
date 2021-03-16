@@ -18,8 +18,6 @@ class Digital
      *
      * @param string $num       科学计数法字符串  如 2.1E-5
      * @param int    $precision 小数点保留位数 默认5位
-     *
-     * @return string
      */
     public static function scientificToNum(string $num, int $precision = 5): string
     {

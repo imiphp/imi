@@ -13,10 +13,6 @@ interface IBeforeInsertEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeInsertEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeInsertEventParam $e);
+    public function handle(BeforeInsertEventParam $e): void;
 }

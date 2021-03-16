@@ -18,9 +18,6 @@ use mysqli_stmt;
  */
 class Statement extends BaseStatement implements IStatement
 {
-    /**
-     * @var \mysqli_stmt|null
-     */
     protected ?mysqli_stmt $statement;
 
     /**
@@ -30,36 +27,26 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
     /**
      * 数据库操作对象
-     *
-     * @var IDb
      */
     protected IDb $db;
 
     /**
      * 最后执行过的SQL语句.
-     *
-     * @var string
      */
     protected string $lastSql = '';
 
     /**
      * 绑定数据.
-     *
-     * @var array
      */
     protected array $bindValues = [];
 
     /**
      * SQL 参数映射.
-     *
-     * @var array|null
      */
     protected ?array $sqlParamsMap = null;
 
@@ -74,8 +61,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 获取数据库操作对象
-     *
-     * @return IDb
      */
     public function getDb(): IDb
     {
@@ -85,13 +70,9 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一列到一个 PHP 变量.
      *
-     * @param mixed    $column
-     * @param mixed    $param
-     * @param int|null $type
-     * @param int|null $maxLen
-     * @param mixed    $driverData
-     *
-     * @return bool
+     * @param mixed $column
+     * @param mixed $param
+     * @param mixed $driverData
      */
     public function bindColumn($column, &$param, ?int $type = null, ?int $maxLen = null, $driverData = null): bool
     {
@@ -103,13 +84,9 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 绑定一个参数到指定的变量名.
      *
-     * @param mixed    $parameter
-     * @param mixed    $variable
-     * @param int      $dataType
-     * @param int|null $length
-     * @param mixed    $driverOptions
-     *
-     * @return bool
+     * @param mixed $parameter
+     * @param mixed $variable
+     * @param mixed $driverOptions
      */
     public function bindParam($parameter, &$variable, int $dataType = \PDO::PARAM_STR, ?int $length = null, $driverOptions = null): bool
     {
@@ -123,9 +100,6 @@ class Statement extends BaseStatement implements IStatement
      *
      * @param mixed $parameter
      * @param mixed $value
-     * @param int   $dataType
-     *
-     * @return bool
      */
     public function bindValue($parameter, $value, int $dataType = \PDO::PARAM_STR): bool
     {
@@ -136,8 +110,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 关闭游标，使语句能再次被执行。
-     *
-     * @return bool
      */
     public function closeCursor(): bool
     {
@@ -146,8 +118,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 返回结果集中的列数.
-     *
-     * @return int
      */
     public function columnCount(): int
     {
@@ -166,8 +136,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 返回错误信息.
-     *
-     * @return string
      */
     public function errorInfo(): string
     {
@@ -176,8 +144,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 获取SQL语句.
-     *
-     * @return string
      */
     public function getSql(): string
     {
@@ -188,8 +154,6 @@ class Statement extends BaseStatement implements IStatement
      * 执行一条预处理语句.
      *
      * @param array $inputParameters
-     *
-     * @return bool
      */
     public function execute(array $inputParameters = null): bool
     {
@@ -237,10 +201,6 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 从结果集中获取下一行.
      *
-     * @param int $fetchStyle
-     * @param int $cursorOrientation
-     * @param int $cursorOffset
-     *
      * @return mixed
      */
     public function fetch(int $fetchStyle = \PDO::FETCH_ASSOC, int $cursorOrientation = \PDO::FETCH_ORI_NEXT, int $cursorOffset = 0)
@@ -264,10 +224,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 返回一个包含结果集中所有行的数组.
      *
-     * @param int   $fetchStyle
      * @param mixed $fetchArgument
-     *
-     * @return array
      */
     public function fetchAll(int $fetchStyle = \PDO::FETCH_ASSOC, $fetchArgument = null, array $ctorArgs = []): array
     {
@@ -310,9 +267,6 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取下一行并作为一个对象返回。
      *
-     * @param string     $className
-     * @param array|null $ctorArgs
-     *
      * @return mixed
      */
     public function fetchObject(string $className = 'stdClass', ?array $ctorArgs = null)
@@ -337,8 +291,6 @@ class Statement extends BaseStatement implements IStatement
      *
      * @param mixed $attribute
      * @param mixed $value
-     *
-     * @return bool
      */
     public function setAttribute($attribute, $value): bool
     {
@@ -347,8 +299,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 在一个多行集语句句柄中推进到下一个行集.
-     *
-     * @return bool
      */
     public function nextRowset(): bool
     {
@@ -369,10 +319,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 返回最后插入行的ID或序列值
-     *
-     * @param string|null $name
-     *
-     * @return string
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -381,8 +327,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 返回受上一个 SQL 语句影响的行数.
-     *
-     * @return int
      */
     public function rowCount(): int
     {
@@ -415,17 +359,11 @@ class Statement extends BaseStatement implements IStatement
         throw new DbException('Not support key()');
     }
 
-    /**
-     * @return void
-     */
     public function next(): void
     {
         throw new DbException('Not support next()');
     }
 
-    /**
-     * @return void
-     */
     public function rewind(): void
     {
         throw new DbException('Not support rewind()');
@@ -441,10 +379,6 @@ class Statement extends BaseStatement implements IStatement
 
     /**
      * 根据值获取mysqli数据类型.
-     *
-     * @param array $values
-     *
-     * @return string
      */
     protected function getBindTypes(array $values): string
     {

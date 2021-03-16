@@ -18,8 +18,6 @@ class MemoryTableController extends HttpController
      * 设置行的数据.
      *
      * @Action
-     *
-     * @return array
      */
     public function setAndGet(): array
     {
@@ -39,8 +37,6 @@ class MemoryTableController extends HttpController
      * 删除行的数据.
      *
      * @Action
-     *
-     * @return array
      */
     public function del(): array
     {
@@ -61,8 +57,6 @@ class MemoryTableController extends HttpController
      * 行数据是否存在.
      *
      * @Action
-     *
-     * @return array
      */
     public function exist(): array
     {
@@ -82,8 +76,6 @@ class MemoryTableController extends HttpController
      * 原子自增.
      *
      * @Action
-     *
-     * @return array
      */
     public function incr(): array
     {
@@ -104,8 +96,6 @@ class MemoryTableController extends HttpController
      * 原子自减.
      *
      * @Action
-     *
-     * @return array
      */
     public function decr(): array
     {
@@ -126,8 +116,6 @@ class MemoryTableController extends HttpController
      * 获取表行数.
      *
      * @Action
-     *
-     * @return array
      */
     public function count(): array
     {
@@ -165,8 +153,6 @@ class MemoryTableController extends HttpController
      * 设置行的数据.
      *
      * @Action
-     *
-     * @return array
      */
     public function lockSetAndGet(): array
     {

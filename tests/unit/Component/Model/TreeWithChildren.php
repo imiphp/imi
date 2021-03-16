@@ -41,8 +41,6 @@ class TreeWithChildren extends Tree
      * Set 子节点集合.
      *
      * @param static[] $children
-     *
-     * @return self
      */
     public function setChildren(array $children): self
     {

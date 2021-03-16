@@ -13,10 +13,6 @@ interface IBeforeUpdateEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeUpdateEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeUpdateEventParam $e);
+    public function handle(BeforeUpdateEventParam $e): void;
 }

@@ -26,8 +26,6 @@ class Required extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:data}',

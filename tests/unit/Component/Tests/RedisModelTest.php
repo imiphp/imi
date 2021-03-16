@@ -102,8 +102,6 @@ class RedisModelTest extends BaseTest
 
     /**
      * @testdox ttl
-     *
-     * @return void
      */
     public function testTTL(): void
     {

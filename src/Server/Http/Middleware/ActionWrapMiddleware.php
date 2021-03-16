@@ -19,18 +19,11 @@ class ActionWrapMiddleware implements MiddlewareInterface
 {
     /**
      * 动作中间件.
-     *
-     * @var string
      */
     protected string $actionMiddleware = ActionMiddleware::class;
 
     /**
      * 处理方法.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

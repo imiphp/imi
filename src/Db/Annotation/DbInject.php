@@ -21,8 +21,6 @@ class DbInject extends RequestInject
 {
     /**
      * 查询类型.
-     *
-     * @var int
      */
     public int $queryType = QueryType::WRITE;
 

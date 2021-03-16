@@ -42,12 +42,6 @@ class ProcessManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $name
-     * @param string $className
-     * @param array  $options
-     *
-     * @return void
      */
     public static function add(string $name, string $className, array $options): void
     {
@@ -63,10 +57,6 @@ class ProcessManager
 
     /**
      * 获取配置.
-     *
-     * @param string $name
-     *
-     * @return array|null
      */
     public static function get(string $name): ?array
     {
@@ -75,12 +65,6 @@ class ProcessManager
 
     /**
      * 实例化新的进程.
-     *
-     * @param string      $name
-     * @param array       $args
-     * @param string|null $alias
-     *
-     * @return \Workerman\Worker
      */
     public static function newProcess(string $name, array $args = [], ?string $alias = null): Worker
     {
@@ -138,10 +122,6 @@ class ProcessManager
 
     /**
      * 获取进程.
-     *
-     * @param string $name
-     *
-     * @return \Workerman\Worker
      */
     public static function getProcess(string $name): Worker
     {

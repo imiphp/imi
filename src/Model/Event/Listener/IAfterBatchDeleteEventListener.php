@@ -13,10 +13,6 @@ interface IAfterBatchDeleteEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterBatchDeleteEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterBatchDeleteEventParam $e);
+    public function handle(AfterBatchDeleteEventParam $e): void;
 }

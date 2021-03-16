@@ -16,10 +16,6 @@ class OnPipeMessage implements IPipeMessageEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param PipeMessageEventParam $e
-     *
-     * @return void
      */
     public function handle(PipeMessageEventParam $e): void
     {

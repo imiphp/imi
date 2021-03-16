@@ -12,8 +12,6 @@ class RouteItem
 {
     /**
      * 注解.
-     *
-     * @var \Imi\Server\Http\Route\Annotation\Route
      */
     public Route $annotation;
 
@@ -26,8 +24,6 @@ class RouteItem
 
     /**
      * 中间件列表.
-     *
-     * @var array
      */
     public array $middlewares = [];
 
@@ -40,30 +36,21 @@ class RouteItem
 
     /**
      * 其它配置项.
-     *
-     * @var array
      */
     public array $options = [];
 
     /**
      * 是否为单例控制器.
-     *
-     * @var bool
      */
     public bool $singleton = false;
 
     /**
      * 视图注解.
-     *
-     * @var \Imi\Server\View\Annotation\View
      */
     public View $view;
 
     /**
-     * @param \Imi\Server\Http\Route\Annotation\Route  $annotation
      * @param callable|\Imi\Server\Route\RouteCallable $callable
-     * @param \Imi\Server\View\Annotation\View         $view
-     * @param array                                    $options
      */
     public function __construct(Route $annotation, $callable, View $view, array $options = [])
     {

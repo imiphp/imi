@@ -22,11 +22,6 @@ class Config
 
     /**
      * 增加配置.
-     *
-     * @param string $name
-     * @param array  $config
-     *
-     * @return bool
      */
     public static function addConfig(string $name, array $config): bool
     {
@@ -65,11 +60,6 @@ class Config
 
     /**
      * 加载配置列表.
-     *
-     * @param string $name
-     * @param array  $configList
-     *
-     * @return void
      */
     public static function load(string $name, array $configList): void
     {
@@ -81,11 +71,6 @@ class Config
 
     /**
      * 设置配置.
-     *
-     * @param string $name
-     * @param array  $config
-     *
-     * @return void
      */
     public static function setConfig(string $name, array $config): void
     {
@@ -94,10 +79,6 @@ class Config
 
     /**
      * 移除配置项.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function removeConfig(string $name): bool
     {
@@ -117,10 +98,7 @@ class Config
     /**
      * 设置配置值
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return bool
+     * @param mixed $value
      */
     public static function set(string $name, $value): bool
     {
@@ -147,8 +125,7 @@ class Config
     /**
      * 获取配置值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -213,10 +190,6 @@ class Config
 
     /**
      * 配置值是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function has(string $name): bool
     {
@@ -242,8 +215,6 @@ class Config
 
     /**
      * 获取所有别名.
-     *
-     * @return array
      */
     public static function getAliases(): array
     {
@@ -252,8 +223,6 @@ class Config
 
     /**
      * 清空所有配置项.
-     *
-     * @return void
      */
     public static function clear(): void
     {

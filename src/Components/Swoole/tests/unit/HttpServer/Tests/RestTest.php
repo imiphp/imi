@@ -11,9 +11,6 @@ use Yurun\Util\HttpRequest;
  */
 class RestTest extends BaseTest
 {
-    /**
-     * @return void
-     */
     public function testQuery(): void
     {
         $http = new HttpRequest();
@@ -24,9 +21,6 @@ class RestTest extends BaseTest
         ], $data);
     }
 
-    /**
-     * @return void
-     */
     public function testFind(): void
     {
         $http = new HttpRequest();
@@ -37,9 +31,6 @@ class RestTest extends BaseTest
         ], $data);
     }
 
-    /**
-     * @return void
-     */
     public function testCreate(): void
     {
         $http = new HttpRequest();
@@ -54,9 +45,6 @@ class RestTest extends BaseTest
         ], $data);
     }
 
-    /**
-     * @return void
-     */
     public function testUpdate(): void
     {
         $http = new HttpRequest();
@@ -72,9 +60,6 @@ class RestTest extends BaseTest
         ], $data);
     }
 
-    /**
-     * @return void
-     */
     public function testDelete(): void
     {
         $http = new HttpRequest();

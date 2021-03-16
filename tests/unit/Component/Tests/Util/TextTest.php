@@ -14,8 +14,6 @@ class TextTest extends BaseTest
 {
     /**
      * @testdox startwith
-     *
-     * @return void
      */
     public function testStartwith(): void
     {
@@ -27,8 +25,6 @@ class TextTest extends BaseTest
 
     /**
      * @testdox endwith
-     *
-     * @return void
      */
     public function testEndwith(): void
     {
@@ -40,8 +36,6 @@ class TextTest extends BaseTest
 
     /**
      * @testdox insert
-     *
-     * @return void
      */
     public function testInsert(): void
     {
@@ -51,8 +45,6 @@ class TextTest extends BaseTest
 
     /**
      * @testdox isEmpty
-     *
-     * @return void
      */
     public function testIsEmpty(): void
     {
@@ -64,8 +56,6 @@ class TextTest extends BaseTest
 
     /**
      * @testdox toCamelName
-     *
-     * @return void
      */
     public function testToCamelName(): void
     {
@@ -74,8 +64,6 @@ class TextTest extends BaseTest
 
     /**
      * @testdox toPascalName
-     *
-     * @return void
      */
     public function testToPascalName(): void
     {
@@ -84,8 +72,6 @@ class TextTest extends BaseTest
 
     /**
      * @testdox toUnderScoreCase
-     *
-     * @return void
      */
     public function testToUnderScoreCase(): void
     {

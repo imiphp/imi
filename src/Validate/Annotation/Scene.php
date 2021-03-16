@@ -20,15 +20,11 @@ class Scene extends Base
 {
     /**
      * 场景名称.
-     *
-     * @var string
      */
     public string $name = '';
 
     /**
      * 需要验证的字段名列表.
-     *
-     * @var array
      */
     public array $fields = [];
 

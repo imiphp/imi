@@ -11,36 +11,26 @@ interface IPool
 {
     /**
      * 获取池子名称.
-     *
-     * @return string
      */
     public function getName(): string;
 
     /**
      * 获取池子配置.
-     *
-     * @return IPoolConfig
      */
     public function getConfig(): IPoolConfig;
 
     /**
      * 打开池子.
-     *
-     * @return void
      */
-    public function open();
+    public function open(): void;
 
     /**
      * 关闭池子，释放所有资源.
-     *
-     * @return void
      */
-    public function close();
+    public function close(): void;
 
     /**
      * 获取资源.
-     *
-     * @return IPoolResource
      */
     public function getResource(): IPoolResource;
 
@@ -53,45 +43,31 @@ interface IPool
 
     /**
      * 释放资源占用.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
-    public function release(IPoolResource $resource);
+    public function release(IPoolResource $resource): void;
 
     /**
      * 资源回收.
-     *
-     * @return void
      */
-    public function gc();
+    public function gc(): void;
 
     /**
      * 填充最少资源数量.
-     *
-     * @return void
      */
-    public function fillMinResources();
+    public function fillMinResources(): void;
 
     /**
      * 获取当前池子中资源总数.
-     *
-     * @return int
      */
     public function getCount(): int;
 
     /**
      * 获取当前池子中空闲资源总数.
-     *
-     * @return int
      */
     public function getFree(): int;
 
     /**
      * 获取当前池子中正在使用的资源总数.
-     *
-     * @return int
      */
     public function getUsed(): int;
 

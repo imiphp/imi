@@ -36,8 +36,6 @@ class TableGenerate extends BaseCommand
      * @Option(name="override", type=ArgType::STRING, default=false, comments="是否覆盖已存在的表，请慎重！true-全覆盖;false-不覆盖;默认缺省状态为false")
      *
      * @param string|bool $override
-     *
-     * @return void
      */
     public function generate(?string $namespace, ?string $database, ?string $poolName, array $include, array $exclude, $override): void
     {
@@ -110,11 +108,6 @@ class TableGenerate extends BaseCommand
 
     /**
      * 检查命名空间.
-     *
-     * @param array  $namespace
-     * @param string $class
-     *
-     * @return bool
      */
     public function checkNamespace(array $namespace, string $class): bool
     {
@@ -131,12 +124,6 @@ class TableGenerate extends BaseCommand
 
     /**
      * 检查表是否允许创建.
-     *
-     * @param string $table
-     * @param array  $include
-     * @param array  $exclude
-     *
-     * @return bool
      */
     private function checkTable(string $table, array $include, array $exclude): bool
     {

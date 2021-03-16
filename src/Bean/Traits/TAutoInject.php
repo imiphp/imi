@@ -19,8 +19,6 @@ trait TAutoInject
 
     /**
      * 自动注入属性.
-     *
-     * @return void
      */
     protected function __autoInject(): void
     {

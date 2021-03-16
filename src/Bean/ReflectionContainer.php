@@ -15,22 +15,16 @@ class ReflectionContainer
 {
     /**
      * 类反射集合.
-     *
-     * @var array
      */
     private static array $classReflectionMap = [];
 
     /**
      * 方法反射集合.
-     *
-     * @var array
      */
     private static array $methodReflectionMap = [];
 
     /**
      * 属性反射集合.
-     *
-     * @var array
      */
     private static array $propertyReflectionMap = [];
 
@@ -40,10 +34,6 @@ class ReflectionContainer
 
     /**
      * 获取类反射.
-     *
-     * @param string $className
-     *
-     * @return \ReflectionClass
      */
     public static function getClassReflection(string $className): ReflectionClass
     {
@@ -60,11 +50,6 @@ class ReflectionContainer
 
     /**
      * 获取方法反射.
-     *
-     * @param string $className
-     * @param string $methodName
-     *
-     * @return \ReflectionMethod
      */
     public static function getMethodReflection(string $className, string $methodName): ReflectionMethod
     {
@@ -81,11 +66,6 @@ class ReflectionContainer
 
     /**
      * 获取属性反射.
-     *
-     * @param string $className
-     * @param string $propertyName
-     *
-     * @return \ReflectionProperty
      */
     public static function getPropertyReflection(string $className, string $propertyName): ReflectionProperty
     {

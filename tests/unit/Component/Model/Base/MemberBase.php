@@ -27,15 +27,11 @@ abstract class MemberBase extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     *
-     * @var int|null
      */
     protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -61,15 +57,11 @@ abstract class MemberBase extends Model
      * username.
      *
      * @Column(name="username", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $username = null;
 
     /**
      * 获取 username - 用户名.
-     *
-     * @return string|null
      */
     public function getUsername(): ?string
     {
@@ -95,15 +87,11 @@ abstract class MemberBase extends Model
      * password.
      *
      * @Column(name="password", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $password = null;
 
     /**
      * 获取 password - 密码
-     *
-     * @return string|null
      */
     public function getPassword(): ?string
     {

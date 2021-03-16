@@ -11,22 +11,16 @@ class MemoryStream implements StreamInterface
 {
     /**
      * 内容.
-     *
-     * @var string
      */
     protected string $content = '';
 
     /**
      * 大小.
-     *
-     * @var int
      */
     protected int $size = 0;
 
     /**
      * 当前位置.
-     *
-     * @var int
      */
     protected int $position = 0;
 
@@ -58,8 +52,6 @@ class MemoryStream implements StreamInterface
 
     /**
      * Closes the stream and any underlying resources.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -166,13 +158,7 @@ class MemoryStream implements StreamInterface
      * @see seek()
      * @see http://www.php.net/manual/en/function.fseek.php
      *
-     * @return void
-     *
      * @throws \RuntimeException on failure
-     */
-
-    /**
-     * @return void
      */
     public function rewind(): void
     {

@@ -13,10 +13,6 @@ interface IAfterSaveEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterSaveEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterSaveEventParam $e);
+    public function handle(AfterSaveEventParam $e): void;
 }

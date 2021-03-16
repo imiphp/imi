@@ -13,10 +13,6 @@ interface IBeforeSaveEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeSaveEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeSaveEventParam $e);
+    public function handle(BeforeSaveEventParam $e): void;
 }

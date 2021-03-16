@@ -22,9 +22,6 @@ class Server extends BaseServer
 {
     /**
      * 构造方法.
-     *
-     * @param string $name
-     * @param array  $config
      */
     public function __construct(string $name, array $config)
     {
@@ -35,8 +32,6 @@ class Server extends BaseServer
 
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -45,8 +40,6 @@ class Server extends BaseServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -55,8 +48,6 @@ class Server extends BaseServer
 
     /**
      * 是否支持 SSL.
-     *
-     * @return bool
      */
     public function isSSL(): bool
     {
@@ -65,8 +56,6 @@ class Server extends BaseServer
 
     /**
      * 开启服务
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -92,8 +81,6 @@ class Server extends BaseServer
 
     /**
      * 终止服务
-     *
-     * @return void
      */
     public function shutdown(): void
     {
@@ -102,8 +89,6 @@ class Server extends BaseServer
 
     /**
      * 重载服务
-     *
-     * @return void
      */
     public function reload(): void
     {

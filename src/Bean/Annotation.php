@@ -19,15 +19,11 @@ class Annotation
 
     /**
      * 加载器.
-     *
-     * @var AnnotationLoader
      */
     private AnnotationLoader $loader;
 
     /**
      * 处理器.
-     *
-     * @var AnnotationParser
      */
     private AnnotationParser $parser;
 
@@ -41,8 +37,6 @@ class Annotation
      * 初始化.
      *
      * @param \Imi\Main\BaseMain[]|null $mains
-     *
-     * @return void
      */
     public function init(?array $mains = null): void
     {
@@ -61,8 +55,6 @@ class Annotation
      * 初始化.
      *
      * @param string|string[] $namespaces
-     *
-     * @return void
      */
     public function initByNamespace($namespaces): void
     {
@@ -74,8 +66,6 @@ class Annotation
 
     /**
      * 获取加载器.
-     *
-     * @return AnnotationLoader
      */
     public function getLoader(): AnnotationLoader
     {
@@ -84,8 +74,6 @@ class Annotation
 
     /**
      * 获取处理器.
-     *
-     * @return AnnotationParser
      */
     public function getParser(): AnnotationParser
     {
@@ -94,10 +82,6 @@ class Annotation
 
     /**
      * 加载模块注解.
-     *
-     * @param string $namespace
-     *
-     * @return void
      */
     private function loadModuleAnnotations(string $namespace): void
     {
@@ -138,8 +122,6 @@ class Annotation
      *
      * @param \Imi\Bean\Annotation\Base $annotation
      * @param bool                      $skipDefaultValue 过滤默认值不显示
-     *
-     * @return string
      */
     public static function toComments(Annotation\Base $annotation, bool $skipDefaultValue = true): string
     {

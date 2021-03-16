@@ -12,29 +12,21 @@ abstract class Base implements ISessionHandler
 {
     /**
      * 数据格式化处理类.
-     *
-     * @var string
      */
     protected string $formatHandlerClass = PhpSerialize::class;
 
     /**
      * 数据格式化处理器对象
-     *
-     * @var \Imi\Util\Format\IFormat
      */
     private IFormat $formatHandler;
 
     /**
      * 进程ID.
-     *
-     * @var int
      */
     private int $pid;
 
     /**
      * 自增值
-     *
-     * @var int
      */
     private int $atomic = 0;
 
@@ -46,8 +38,6 @@ abstract class Base implements ISessionHandler
 
     /**
      * 生成SessionId.
-     *
-     * @return string
      */
     public function createSessionId(): string
     {
@@ -56,10 +46,6 @@ abstract class Base implements ISessionHandler
 
     /**
      * 编码为存储格式.
-     *
-     * @param array $data
-     *
-     * @return string
      */
     public function encode(array $data): string
     {
@@ -68,10 +54,6 @@ abstract class Base implements ISessionHandler
 
     /**
      * 解码为php数组.
-     *
-     * @param string $data
-     *
-     * @return array
      */
     public function decode(string $data): array
     {

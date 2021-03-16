@@ -13,10 +13,6 @@ interface IStartEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param StartEventParam $e
-     *
-     * @return void
      */
-    public function handle(StartEventParam $e);
+    public function handle(StartEventParam $e): void;
 }

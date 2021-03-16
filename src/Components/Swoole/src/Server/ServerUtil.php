@@ -23,11 +23,7 @@ class ServerUtil implements ISwooleServerUtil
      *
      * 返回成功发送消息数量
      *
-     * @param string         $action
-     * @param array          $data
      * @param int|int[]|null $workerId
-     *
-     * @return int
      */
     public function sendMessage(string $action, array $data = [], $workerId = null): int
     {
@@ -42,10 +38,7 @@ class ServerUtil implements ISwooleServerUtil
      *
      * 返回成功发送消息数量
      *
-     * @param string         $message
      * @param int|int[]|null $workerId
-     *
-     * @return int
      */
     public function sendMessageRaw(string $message, $workerId = null): int
     {
@@ -89,8 +82,6 @@ class ServerUtil implements ISwooleServerUtil
      * @param int|int[]|null $fd           为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -114,8 +105,6 @@ class ServerUtil implements ISwooleServerUtil
      * @param string|string[]|null $flag         为 null 时，则发送给当前连接
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -154,12 +143,9 @@ class ServerUtil implements ISwooleServerUtil
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param string         $data
      * @param int|int[]|null $fd           为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -232,12 +218,9 @@ class ServerUtil implements ISwooleServerUtil
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
      *
-     * @param string               $data
      * @param string|string[]|null $flag         为 null 时，则发送给当前连接
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -281,8 +264,6 @@ class ServerUtil implements ISwooleServerUtil
      * @param mixed       $data
      * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -298,11 +279,8 @@ class ServerUtil implements ISwooleServerUtil
      *
      * 数据原样发送
      *
-     * @param string      $data
      * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendRawToAll(string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -371,8 +349,6 @@ class ServerUtil implements ISwooleServerUtil
      * @param mixed           $data
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -389,11 +365,8 @@ class ServerUtil implements ISwooleServerUtil
      * 数据原样发送
      *
      * @param string|string[] $groupName
-     * @param string          $data
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -461,11 +434,8 @@ class ServerUtil implements ISwooleServerUtil
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]   $fd
-     * @param string|null $serverName
-     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
+     * @param int|int[] $fd
+     * @param bool      $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -487,10 +457,7 @@ class ServerUtil implements ISwooleServerUtil
      * 关闭一个或多个指定标记的连接.
      *
      * @param string|string[]|null $flag
-     * @param string|null          $serverName
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -528,10 +495,6 @@ class ServerUtil implements ISwooleServerUtil
 
     /**
      * 获取服务器.
-     *
-     * @param string|null $serverName
-     *
-     * @return \Imi\Swoole\Server\Contract\ISwooleServer|null
      */
     public function getServer(?string $serverName = null): ?ISwooleServer
     {

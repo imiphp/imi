@@ -10,8 +10,6 @@ class Server implements \ArrayAccess, \JsonSerializable
 {
     /**
      * 默认的 $_SERVER 变量.
-     *
-     * @var array
      */
     private array $defaultServer = [];
 
@@ -23,8 +21,6 @@ class Server implements \ArrayAccess, \JsonSerializable
     /**
      * @param mixed $offset
      * @param mixed $value
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -33,8 +29,6 @@ class Server implements \ArrayAccess, \JsonSerializable
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -62,8 +56,6 @@ class Server implements \ArrayAccess, \JsonSerializable
 
     /**
      * @param mixed $offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {

@@ -8,8 +8,6 @@ trait THashCode
 {
     /**
      * hashCode.
-     *
-     * @var string|null
      */
     protected ?string $hashCode = null;
 

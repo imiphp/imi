@@ -39,8 +39,6 @@ final class EntryParser
      * That is, turn a raw environment variable entry into a name and possibly
      * a value. We wrap the answer in a result type.
      *
-     * @param string $entry
-     *
      * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Entry,string>
      */
     public static function parse(string $entry)
@@ -61,8 +59,6 @@ final class EntryParser
 
     /**
      * Split the compound string into parts.
-     *
-     * @param string $line
      *
      * @return \GrahamCampbell\ResultType\Result<array{string,string|null},string>
      */
@@ -87,8 +83,6 @@ final class EntryParser
      *
      * That is, strip the optional quotes and leading "export" from the
      * variable name. We wrap the answer in a result type.
-     *
-     * @param string $name
      *
      * @return \GrahamCampbell\ResultType\Result<string,string>
      */
@@ -115,8 +109,6 @@ final class EntryParser
     /**
      * Is the given variable name quoted?
      *
-     * @param string $name
-     *
      * @return bool
      */
     private static function isQuotedName(string $name)
@@ -135,8 +127,6 @@ final class EntryParser
     /**
      * Is the given variable name valid?
      *
-     * @param string $name
-     *
      * @return bool
      */
     private static function isValidName(string $name)
@@ -151,8 +141,6 @@ final class EntryParser
      * special characters, and locating nested variables, but not resolving
      * them. Formally, we run a finite state automaton with an output tape: a
      * transducer. We wrap the answer in a result type.
-     *
-     * @param string $value
      *
      * @return \GrahamCampbell\ResultType\Result<\Dotenv\Parser\Value,string>
      */
@@ -183,9 +171,6 @@ final class EntryParser
 
     /**
      * Process the given token.
-     *
-     * @param int    $state
-     * @param string $token
      *
      * @return \GrahamCampbell\ResultType\Result<array{string,bool,int},string>
      */
@@ -328,9 +313,6 @@ final class EntryParser
 
     /**
      * Generate a friendly error message.
-     *
-     * @param string $cause
-     * @param string $subject
      *
      * @return string
      */

@@ -19,8 +19,6 @@ class ClassObject
      * 是否是匿名类对象
      *
      * @param object|string $object
-     *
-     * @return bool
      */
     public static function isAnymous($object): bool
     {
@@ -38,11 +36,6 @@ class ClassObject
      * 处理可能是同级的类名
      * 如果 $className 是一个类名，则原样返回
      * 否则返回 $sameLevelClass 同级下的类名.
-     *
-     * @param string $className
-     * @param string $sameLevelClass
-     *
-     * @return string
      */
     public static function parseSameLevelClassName(string $className, string $sameLevelClass): string
     {
@@ -59,12 +52,7 @@ class ClassObject
     /**
      * 将方法的参数处理成 kv 数组.
      *
-     * @param string $class
-     * @param string $method
-     * @param array  $args
-     * @param bool   $keepNotExistArgs 保留不存在的参数，如果保留则值则取默认值，没有默认值则为null
-     *
-     * @return array
+     * @param bool $keepNotExistArgs 保留不存在的参数，如果保留则值则取默认值，没有默认值则为null
      */
     public static function convertArgsToKV(string $class, string $method, array $args, bool $keepNotExistArgs = true): array
     {
@@ -111,7 +99,6 @@ class ClassObject
     /**
      * 获取一个类的所有子类.
      *
-     * @param string   $class
      * @param string[] $classList
      *
      * @return string[]
@@ -132,11 +119,6 @@ class ClassObject
 
     /**
      * 判断某类是否在指定命名空间下.
-     *
-     * @param string $namespace
-     * @param string $class
-     *
-     * @return bool
      */
     public static function inNamespace(string $namespace, string $class): bool
     {

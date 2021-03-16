@@ -29,8 +29,6 @@ class ControllerGenerate extends BaseCommand
      * @Option(name="render", type=ArgType::STRING, default="json", comments="渲染方式，默认为json，可选：html/json/xml")
      * @Option(name="rest", type=ArgType::BOOLEAN, default=false, comments="是否生成 RESTful 风格，默认 false")
      * @Option(name="override", type=ArgType::BOOLEAN, default=false, comments="是否覆盖已存在的文件，请慎重！(true/false)")
-     *
-     * @return void
      */
     public function generate(string $name, string $namespace, ?string $prefix, ?string $render, bool $rest, bool $override): void
     {
@@ -58,11 +56,6 @@ class ControllerGenerate extends BaseCommand
 
     /**
      * 渲染模版.
-     *
-     * @param array  $data
-     * @param string $template
-     *
-     * @return string
      */
     private function renderTemplate(array $data, string $template = 'template'): string
     {

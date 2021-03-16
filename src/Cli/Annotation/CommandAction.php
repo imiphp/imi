@@ -19,22 +19,16 @@ class CommandAction extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * 操作名称.
-     *
-     * @var string|null
      */
     public ?string $name = null;
 
     /**
      * 是否启用动态参数支持
-     *
-     * @var bool
      */
     public bool $dynamicOptions = false;
 

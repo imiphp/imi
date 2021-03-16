@@ -13,11 +13,6 @@ abstract class BaseTest extends \Imi\Workerman\Test\BaseTest
      */
     protected $host;
 
-    /**
-     * @param string|null $name
-     * @param array       $data
-     * @param string      $dataName
-     */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);

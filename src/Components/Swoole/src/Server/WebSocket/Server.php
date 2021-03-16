@@ -34,29 +34,21 @@ class Server extends Base implements IWebSocketServer
 {
     /**
      * 是否为 wss 服务
-     *
-     * @var bool
      */
     private bool $wss = false;
 
     /**
      * 是否为 https 服务
-     *
-     * @var bool
      */
     private bool $https = false;
 
     /**
      * 是否为 http2 服务
-     *
-     * @var bool
      */
     private bool $http2 = false;
 
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -65,8 +57,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 创建 swoole 服务器对象
-     *
-     * @return void
      */
     protected function createServer(): void
     {
@@ -78,8 +68,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 从主服务器监听端口，作为子服务器.
-     *
-     * @return void
      */
     protected function createSubServer(): void
     {
@@ -95,8 +83,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 获取服务器初始化需要的配置.
-     *
-     * @return array
      */
     protected function getServerInitConfig(): array
     {
@@ -110,8 +96,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function __bindEvents(): void
     {
@@ -217,8 +201,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 是否为 wss 服务
-     *
-     * @return bool
      */
     public function isSSL(): bool
     {
@@ -227,8 +209,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 是否为 https 服务
-     *
-     * @return bool
      */
     public function isHttps(): bool
     {
@@ -237,8 +217,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 是否为 http2 服务
-     *
-     * @return bool
      */
     public function isHttp2(): bool
     {
@@ -247,8 +225,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -257,12 +233,6 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 向客户端推送消息.
-     *
-     * @param int    $fd
-     * @param string $data
-     * @param int    $opcode
-     *
-     * @return bool
      */
     public function push(int $fd, string $data, int $opcode = 1): bool
     {

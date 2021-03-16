@@ -23,8 +23,6 @@ class AfterThrowingAop
      *         "Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::testCancelThrow"
      *     }
      * )
-     *
-     * @return void
      */
     public function injectAfterThrowingAopCancelThrow(AfterThrowingJoinPoint $joinPoint): void
     {
@@ -46,8 +44,6 @@ class AfterThrowingAop
      *         "Imi\Test\Component\Aop\Classes\TestAfterThrowingClass::testNotCancelThrow"
      *     }
      * )
-     *
-     * @return void
      */
     public function injectAfterThrowingAopNotCancelThrow(AfterThrowingJoinPoint $joinPoint): void
     {

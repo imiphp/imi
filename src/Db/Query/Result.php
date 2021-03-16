@@ -17,35 +17,26 @@ class Result implements IResult
 {
     /**
      * Statement.
-     *
-     * @var IStatement
      */
     private IStatement $statement;
 
     /**
      * 是否执行成功
-     *
-     * @var bool
      */
     private bool $isSuccess = false;
 
     /**
      * 查询结果类的类名，为null则为数组.
-     *
-     * @var string|null
      */
     private ?string $modelClass = null;
 
     /**
      * 记录列表.
-     *
-     * @var array
      */
     private array $statementRecords = [];
 
     /**
      * @param \Imi\Db\Interfaces\IStatement|bool $statement
-     * @param string|null                        $modelClass
      */
     public function __construct($statement, ?string $modelClass = null)
     {
@@ -72,8 +63,6 @@ class Result implements IResult
 
     /**
      * SQL是否执行成功
-     *
-     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -97,8 +86,6 @@ class Result implements IResult
 
     /**
      * 获取影响行数.
-     *
-     * @return int
      */
     public function getAffectedRows(): int
     {
@@ -166,8 +153,6 @@ class Result implements IResult
      * 返回数组.
      *
      * @param string|null $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return array
      */
     public function getArray(?string $className = null): array
     {
@@ -216,8 +201,6 @@ class Result implements IResult
      * 获取一列数据.
      *
      * @param string|int $column
-     *
-     * @return array
      */
     public function getColumn($column = 0): array
     {
@@ -276,8 +259,6 @@ class Result implements IResult
 
     /**
      * 获取记录行数.
-     *
-     * @return int
      */
     public function getRowCount(): int
     {
@@ -291,8 +272,6 @@ class Result implements IResult
 
     /**
      * 获取执行的SQL语句.
-     *
-     * @return string
      */
     public function getSql(): string
     {
@@ -301,8 +280,6 @@ class Result implements IResult
 
     /**
      * 获取结果集对象
-     *
-     * @return \Imi\Db\Interfaces\IStatement
      */
     public function getStatement(): IStatement
     {

@@ -23,8 +23,6 @@ class IndexController extends HttpController
      * @Action
      * @Route("/")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
-     *
-     * @return void
      */
     public function index(): void
     {
@@ -35,8 +33,6 @@ class IndexController extends HttpController
      * @Action
      * @Route("/test2")
      * @WSConfig(parserClass=\Imi\Server\DataParser\JsonObjectParser::class)
-     *
-     * @return void
      */
     public function test2(): void
     {

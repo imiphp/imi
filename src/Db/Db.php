@@ -25,8 +25,6 @@ class Db
      *
      * @param string|null $poolName  连接池名称
      * @param int         $queryType 查询类型
-     *
-     * @return \Imi\Db\Interfaces\IDb
      */
     public static function getNewInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
@@ -56,8 +54,6 @@ class Db
      *
      * @param string|null $poolName  连接池名称
      * @param int         $queryType 查询类型
-     *
-     * @return \Imi\Db\Interfaces\IDb
      */
     public static function getInstance(?string $poolName = null, int $queryType = QueryType::WRITE): IDb
     {
@@ -89,10 +85,6 @@ class Db
 
     /**
      * 释放数据库连接实例.
-     *
-     * @param \Imi\Db\Interfaces\IDb $db
-     *
-     * @return void
      */
     public static function release(IDb $db): void
     {
@@ -105,12 +97,6 @@ class Db
 
     /**
      * 返回一个查询器.
-     *
-     * @param string|null $poolName
-     * @param string|null $modelClass
-     * @param int|null    $queryType
-     *
-     * @return IQuery
      */
     public static function query(?string $poolName = null, ?string $modelClass = null, ?int $queryType = null): IQuery
     {
@@ -119,11 +105,6 @@ class Db
 
     /**
      * 处理连接池名称.
-     *
-     * @param string|null $poolName
-     * @param int         $queryType
-     *
-     * @return string
      */
     private static function parsePoolName(?string $poolName = null, int $queryType = QueryType::WRITE): string
     {
@@ -155,8 +136,6 @@ class Db
      * 获取默认池子名称.
      *
      * @param int $queryType 查询类型
-     *
-     * @return string
      */
     public static function getDefaultPoolName(int $queryType = QueryType::WRITE): string
     {
@@ -173,10 +152,6 @@ class Db
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
-     *
-     * @param callable    $callable
-     * @param string|null $poolName
-     * @param int         $queryType
      *
      * @return mixed
      */
@@ -201,10 +176,6 @@ class Db
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
      *
-     * @param callable    $callable
-     * @param string|null $poolName
-     * @param int         $queryType
-     *
      * @return mixed
      */
     public static function transUse(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
@@ -227,10 +198,6 @@ class Db
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
      *
-     * @param callable    $callable
-     * @param string|null $poolName
-     * @param int         $queryType
-     *
      * @return mixed
      */
     public static function transContext(callable $callable, ?string $poolName = null, int $queryType = QueryType::WRITE)
@@ -242,9 +209,6 @@ class Db
 
     /**
      * 事务处理，自动开启/提交/回滚事务
-     *
-     * @param IDb      $db
-     * @param callable $callable
      *
      * @return mixed
      */

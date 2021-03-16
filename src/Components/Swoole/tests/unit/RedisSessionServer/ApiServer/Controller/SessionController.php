@@ -16,8 +16,6 @@ class SessionController extends HttpController
 {
     /**
      * @Action
-     *
-     * @return array
      */
     public function status(): array
     {
@@ -41,8 +39,6 @@ class SessionController extends HttpController
 
     /**
      * @Action
-     *
-     * @return void
      */
     public function login(): void
     {
@@ -51,8 +47,6 @@ class SessionController extends HttpController
 
     /**
      * @Action
-     *
-     * @return void
      */
     public function logout(): void
     {
@@ -61,8 +55,6 @@ class SessionController extends HttpController
 
     /**
      * @Action
-     *
-     * @return void
      */
     public function sendSms(): void
     {
@@ -71,10 +63,6 @@ class SessionController extends HttpController
 
     /**
      * @Action
-     *
-     * @param string $vcode
-     *
-     * @return array
      */
     public function verifySms(string $vcode = ''): array
     {

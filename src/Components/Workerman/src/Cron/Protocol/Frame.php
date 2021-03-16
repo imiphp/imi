@@ -14,8 +14,7 @@ class Frame
     /**
      * Check the integrity of the package.
      *
-     * @param string        $buffer
-     * @param TcpConnection $connection
+     * @param string $buffer
      *
      * @return int
      */

@@ -20,8 +20,6 @@ class ServerManager
 
     /**
      * 协程服务器.
-     *
-     * @var \Imi\Swoole\Server\CoServer
      */
     private static CoServer $coServer;
 
@@ -31,8 +29,6 @@ class ServerManager
 
     /**
      * 获取服务器数组.
-     *
-     * @param string|null $class
      *
      * @return \Imi\Server\Contract\IServer[]
      */
@@ -59,11 +55,6 @@ class ServerManager
 
     /**
      * 获取服务器对象
-     *
-     * @param string      $name
-     * @param string|null $class
-     *
-     * @return \Imi\Server\Contract\IServer|null
      */
     public static function getServer(string $name, ?string $class = null): ?IServer
     {
@@ -79,11 +70,7 @@ class ServerManager
     /**
      * 创建服务器对象
      *
-     * @param string $name
-     * @param array  $config
-     * @param mixed  $args
-     *
-     * @return \Imi\Server\Contract\IServer
+     * @param mixed $args
      */
     public static function createServer(string $name, array $config, ...$args): IServer
     {
@@ -107,11 +94,6 @@ class ServerManager
 
     /**
      * 创建协程服务器.
-     *
-     * @param string $name
-     * @param int    $workerNum
-     *
-     * @return \Imi\Swoole\Server\CoServer
      */
     public static function createCoServer(string $name, int $workerNum): CoServer
     {
@@ -120,8 +102,6 @@ class ServerManager
 
     /**
      * 获取协程服务器.
-     *
-     * @return \Imi\Swoole\Server\CoServer
      */
     public static function getCoServer(): CoServer
     {

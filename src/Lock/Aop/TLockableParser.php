@@ -97,13 +97,6 @@ trait TLockableParser
 
     /**
      * 获取ID.
-     *
-     * @param string                        $class
-     * @param string                        $method
-     * @param array                         $args
-     * @param \Imi\Lock\Annotation\Lockable $lockable
-     *
-     * @return string
      */
     private function getLockerId(string $class, string $method, array $args, Lockable $lockable): string
     {

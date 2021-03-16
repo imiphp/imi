@@ -17,15 +17,11 @@ class ErrorLog
 
     /**
      * 错误级别.
-     *
-     * @var int
      */
     protected int $level = 0;
 
     /**
      * 注册错误监听.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -37,13 +33,6 @@ class ErrorLog
 
     /**
      * 错误.
-     *
-     * @param int    $errno
-     * @param string $errstr
-     * @param string $errfile
-     * @param int    $errline
-     *
-     * @return void
      */
     public function onError(int $errno, string $errstr, string $errfile, int $errline): void
     {
@@ -87,8 +76,6 @@ class ErrorLog
 
     /**
      * 致命错误.
-     *
-     * @return void
      */
     public function onShutdown(): void
     {
@@ -121,10 +108,6 @@ class ErrorLog
 
     /**
      * 致命错误.
-     *
-     * @param \Throwable $th
-     *
-     * @return void
      */
     public function onException(\Throwable $th): void
     {
@@ -153,8 +136,6 @@ class ErrorLog
 
     /**
      * 获取代码调用跟踪.
-     *
-     * @return array
      */
     protected function getTrace(): array
     {

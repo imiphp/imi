@@ -28,15 +28,11 @@ abstract class ArticleBase extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     *
-     * @var int|null
      */
     protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -61,15 +57,11 @@ abstract class ArticleBase extends Model
      * title.
      *
      * @Column(name="title", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $title = null;
 
     /**
      * 获取 title.
-     *
-     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -94,15 +86,11 @@ abstract class ArticleBase extends Model
      * content.
      *
      * @Column(name="content", type="mediumtext", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $content = null;
 
     /**
      * 获取 content.
-     *
-     * @return string|null
      */
     public function getContent(): ?string
     {
@@ -127,15 +115,11 @@ abstract class ArticleBase extends Model
      * time.
      *
      * @Column(name="time", type="timestamp", length=0, accuracy=0, nullable=false, default="CURRENT_TIMESTAMP", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $time = null;
 
     /**
      * 获取 time.
-     *
-     * @return string|null
      */
     public function getTime(): ?string
     {

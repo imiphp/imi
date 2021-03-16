@@ -21,8 +21,6 @@ class FpmApp extends BaseApp
 {
     /**
      * 构造方法.
-     *
-     * @param string $namespace
      */
     public function __construct(string $namespace)
     {
@@ -32,10 +30,6 @@ class FpmApp extends BaseApp
 
     /**
      * 加载配置.
-     *
-     * @param bool $initDotEnv
-     *
-     * @return void
      */
     public function loadConfig(bool $initDotEnv = true): void
     {
@@ -54,8 +48,6 @@ class FpmApp extends BaseApp
 
     /**
      * 初始化运行时.
-     *
-     * @return void
      */
     protected function initRuntime(): void
     {
@@ -64,8 +56,6 @@ class FpmApp extends BaseApp
 
     /**
      * 初始化.
-     *
-     * @return void
      */
     public function init(): void
     {
@@ -73,8 +63,6 @@ class FpmApp extends BaseApp
 
     /**
      * 加载运行时.
-     *
-     * @return int
      */
     public function loadRuntime(): int
     {
@@ -105,8 +93,6 @@ class FpmApp extends BaseApp
 
     /**
      * 运行应用.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -123,8 +109,6 @@ class FpmApp extends BaseApp
 
     /**
      * 获取应用类型.
-     *
-     * @return string
      */
     public function getType(): string
     {

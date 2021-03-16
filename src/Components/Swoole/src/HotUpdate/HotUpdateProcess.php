@@ -25,50 +25,36 @@ class HotUpdateProcess extends BaseProcess
 {
     /**
      * 监视器类.
-     *
-     * @var string
      */
     protected string $monitorClass = \Imi\HotUpdate\Monitor\FileMTime::class;
 
     /**
      * 每次检测时间间隔，单位：秒（有可能真实时间会大于设定的时间）.
-     *
-     * @var int
      */
     protected int $timespan = 1;
 
     /**
      * 包含的路径.
-     *
-     * @var array
      */
     protected array $includePaths = [];
 
     /**
      * 排除的路径.
-     *
-     * @var array
      */
     protected array $excludePaths = [];
 
     /**
      * 默认监视路径.
-     *
-     * @var array|null
      */
     protected ?array $defaultPath = null;
 
     /**
      * 是否开启热更新，默认开启.
-     *
-     * @var bool
      */
     protected bool $status = true;
 
     /**
      * 热更新检测，更改的文件列表，储存在的文件名.
-     *
-     * @var string
      */
     protected string $changedFilesFile;
 
@@ -81,45 +67,31 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * buildRuntime pipes.
-     *
-     * @var array|null
      */
     private ?array $buildRuntimePipes = null;
 
     /**
      * @Inject("ErrorLog")
-     *
-     * @var \Imi\Log\ErrorLog
      */
     protected ErrorLog $errorLog;
 
     /**
      * 开始时间.
-     *
-     * @var float
      */
     private float $beginTime;
 
     /**
      * 是否正在构建中.
-     *
-     * @var bool
      */
     private bool $building = false;
 
     /**
      * 构建运行时计时器ID.
-     *
-     * @var int
      */
     private int $buildRuntimeTimerId = 0;
 
     /**
      * @PoolClean
-     *
-     * @param \Swoole\Process $process
-     *
-     * @return void
      */
     public function run(\Swoole\Process $process): void
     {
@@ -180,8 +152,6 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * 开始构建运行时计时器.
-     *
-     * @return void
      */
     private function startBuildRuntimeTimer(): void
     {
@@ -190,8 +160,6 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * 停止构建运行时计时器.
-     *
-     * @return void
      */
     private function stopBuildRuntimeTimer(): void
     {
@@ -200,8 +168,6 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * 清除各种缓存.
-     *
-     * @return void
      */
     private function clearCache(): void
     {
@@ -220,8 +186,6 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * 初始化 runtime.
-     *
-     * @return void
      */
     private function initBuildRuntime(): void
     {
@@ -246,8 +210,6 @@ class HotUpdateProcess extends BaseProcess
      * 开始构建 runtime.
      *
      * @param string[] $changedFiles
-     *
-     * @return void
      */
     private function beginBuildRuntime(array $changedFiles): void
     {
@@ -317,8 +279,6 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * 关闭 runtime 进程.
-     *
-     * @return void
      */
     private function closeBuildRuntime(): void
     {
@@ -355,8 +315,6 @@ class HotUpdateProcess extends BaseProcess
 
     /**
      * 定时器，用于监听构建进程.
-     *
-     * @return void
      */
     public function buildRuntimeTimer(): void
     {

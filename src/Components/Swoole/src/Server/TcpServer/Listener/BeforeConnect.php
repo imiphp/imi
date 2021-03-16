@@ -20,10 +20,6 @@ class BeforeConnect implements IConnectEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param ConnectEventParam $e
-     *
-     * @return void
      */
     public function handle(ConnectEventParam $e): void
     {

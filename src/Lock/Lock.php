@@ -45,11 +45,6 @@ class Lock
 
     /**
      * 获取锁对象
-     *
-     * @param string|null $lockConfigId
-     * @param string|null $lockId
-     *
-     * @return \Imi\Lock\Handler\ILockHandler
      */
     public static function getInstance(?string $lockConfigId = null, ?string $lockId = null): ILockHandler
     {
@@ -84,8 +79,6 @@ class Lock
 
     /**
      * 获取默认锁ID.
-     *
-     * @return string
      */
     public static function getDefaultId(): string
     {
@@ -94,11 +87,6 @@ class Lock
 
     /**
      * 增加配置.
-     *
-     * @param string $id
-     * @param array  $option
-     *
-     * @return void
      */
     public static function add(string $id, array $option): void
     {
@@ -108,11 +96,8 @@ class Lock
     /**
      * 加锁，会挂起协程.
      *
-     * @param string|null   $id
      * @param callable|null $taskCallable      加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
      * @param callable|null $afterLockCallable 当获得锁后执行的回调，只有当 $taskCallable 不为 null 时有效。该回调返回 true 则不执行 $taskCallable
-     *
-     * @return bool
      */
     public static function lock(?string $id = null, ?callable $taskCallable = null, ?callable $afterLockCallable = null): bool
     {
@@ -122,10 +107,7 @@ class Lock
     /**
      * 尝试获取锁
      *
-     * @param string|null   $id
      * @param callable|null $taskCallable 加锁后执行的任务，可为空；如果不为空，则执行完后自动解锁
-     *
-     * @return bool
      */
     public static function tryLock(?string $id = null, ?callable $taskCallable = null): bool
     {
@@ -134,10 +116,6 @@ class Lock
 
     /**
      * 解锁
-     *
-     * @param string|null $id
-     *
-     * @return bool
      */
     public static function unlock(?string $id = null): bool
     {
@@ -146,10 +124,6 @@ class Lock
 
     /**
      * 获取当前是否已获得锁状态
-     *
-     * @param string|null $id
-     *
-     * @return bool
      */
     public static function isLocked(?string $id = null): bool
     {

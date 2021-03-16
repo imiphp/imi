@@ -13,10 +13,6 @@ interface IAfterDeleteEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterDeleteEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterDeleteEventParam $e);
+    public function handle(AfterDeleteEventParam $e): void;
 }

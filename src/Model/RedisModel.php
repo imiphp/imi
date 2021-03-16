@@ -15,22 +15,16 @@ abstract class RedisModel extends BaseModel
 {
     /**
      * 默认的key.
-     *
-     * @var string
      */
     protected string $key = '';
 
     /**
      * 默认的member.
-     *
-     * @var string
      */
     protected string $__member = '';
 
     /**
      * set时，设置的数据过期时间.
-     *
-     * @var int|null
      */
     protected ?int $__ttl = null;
 
@@ -159,8 +153,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 保存记录.
-     *
-     * @return bool
      */
     public function save(): bool
     {
@@ -197,8 +189,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 删除记录.
-     *
-     * @return bool
      */
     public function delete(): bool
     {
@@ -221,8 +211,6 @@ abstract class RedisModel extends BaseModel
      * 批量删除.
      *
      * @param mixed ...$conditions
-     *
-     * @return int
      */
     public static function deleteBatch(...$conditions): int
     {
@@ -263,8 +251,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 获取键.
-     *
-     * @return string
      */
     public function __getKey(): string
     {
@@ -286,8 +272,6 @@ abstract class RedisModel extends BaseModel
      * 生成key.
      *
      * @param string|array $condition
-     *
-     * @return string
      */
     public static function generateKey($condition): string
     {
@@ -316,8 +300,6 @@ abstract class RedisModel extends BaseModel
      * 生成member.
      *
      * @param string|array $condition
-     *
-     * @return string
      */
     public static function generateMember($condition): string
     {
@@ -344,8 +326,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * 获取键.
-     *
-     * @return string
      */
     public function __getMember(): string
     {
@@ -367,8 +347,6 @@ abstract class RedisModel extends BaseModel
      * 获取Redis操作对象
      *
      * @param static|null $redisModel
-     *
-     * @return \Imi\Redis\RedisHandler
      */
     public static function __getRedis(?self $redisModel = null): RedisHandler
     {
@@ -384,8 +362,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * Get the value of key.
-     *
-     * @return string
      */
     public function getKey(): string
     {
@@ -394,10 +370,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * Set the value of key.
-     *
-     * @param string $key
-     *
-     * @return self
      */
     public function setKey(string $key): self
     {
@@ -408,8 +380,6 @@ abstract class RedisModel extends BaseModel
 
     /**
      * Get 默认的member.
-     *
-     * @return string
      */
     public function getMember(): string
     {
@@ -420,8 +390,6 @@ abstract class RedisModel extends BaseModel
      * Set 默认的member.
      *
      * @param string $member 默认的member
-     *
-     * @return self
      */
     public function setMember(string $member): self
     {

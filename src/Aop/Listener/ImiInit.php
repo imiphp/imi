@@ -17,10 +17,6 @@ class ImiInit implements IEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
     public function handle(EventParam $e): void
     {
@@ -33,10 +29,6 @@ class ImiInit implements IEventListener
 
     /**
      * 处理配置.
-     *
-     * @param array $configs
-     *
-     * @return void
      */
     private function parseConfigs(array $configs): void
     {

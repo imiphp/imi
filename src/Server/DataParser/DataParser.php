@@ -18,8 +18,7 @@ class DataParser
     /**
      * 编码为存储格式.
      *
-     * @param mixed       $data
-     * @param string|null $serverName
+     * @param mixed $data
      *
      * @return mixed
      */
@@ -38,8 +37,7 @@ class DataParser
     /**
      * 解码为php变量.
      *
-     * @param mixed       $data
-     * @param string|null $serverName
+     * @param mixed $data
      *
      * @return mixed
      */
@@ -57,10 +55,6 @@ class DataParser
 
     /**
      * 获取处理器类.
-     *
-     * @param string|null $serverName
-     *
-     * @return string
      */
     public function getParserClass(?string $serverName = null): string
     {

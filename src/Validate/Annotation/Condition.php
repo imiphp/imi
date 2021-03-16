@@ -23,15 +23,11 @@ class Condition extends Base
     /**
      * 参数名称
      * 属性注解可省略.
-     *
-     * @var string|null
      */
     public ?string $name = null;
 
     /**
      * 非必验证，只有当值存在才验证
-     *
-     * @var bool
      */
     public bool $optional = false;
 
@@ -44,8 +40,6 @@ class Condition extends Base
 
     /**
      * 对结果取反.
-     *
-     * @var bool
      */
     public bool $inverseResult = false;
 
@@ -55,8 +49,6 @@ class Condition extends Base
      * 支持代入{:value}原始值
      * 支持代入{:data.xxx}所有数据中的某项
      * 支持以{name}这样的形式，代入注解参数值
-     *
-     * @var string
      */
     public string $message = '{name} validate failed';
 
@@ -75,22 +67,16 @@ class Condition extends Base
      * 支持代入{:data.xxx}所有数据中的某项
      * 支持以{name}这样的形式，代入注解参数值
      * 如果没有{}，则原样传值
-     *
-     * @var array
      */
     public array $args = ['{:value}'];
 
     /**
      * 异常类.
-     *
-     * @var string|null
      */
     public ?string $exception = null;
 
     /**
      * 异常编码
-     *
-     * @var int|null
      */
     public ?int $exCode = null;
 

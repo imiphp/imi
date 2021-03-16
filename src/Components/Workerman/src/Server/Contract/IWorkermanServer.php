@@ -11,8 +11,6 @@ interface IWorkermanServer extends IServer
 {
     /**
      * 获取 Workerman Worker 对象
-     *
-     * @return \Workerman\Worker
      */
     public function getWorker(): Worker;
 }

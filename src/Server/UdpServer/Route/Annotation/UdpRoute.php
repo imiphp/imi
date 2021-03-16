@@ -19,15 +19,11 @@ class UdpRoute extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'condition';
 
     /**
      * 条件.
-     *
-     * @var array
      */
     public array $condition = [];
 

@@ -19,29 +19,21 @@ abstract class BaseAsyncPool extends BasePool
 {
     /**
      * 队列.
-     *
-     * @var \Swoole\Coroutine\Channel
      */
     protected Channel $queue;
 
     /**
      * 垃圾回收定时器ID.
-     *
-     * @var int|null
      */
     protected ?int $gcTimerId = null;
 
     /**
      * 心跳定时器ID.
-     *
-     * @var int|null
      */
     protected ?int $heartbeatTimerId = null;
 
     /**
      * 关闭池子，释放所有资源.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -53,8 +45,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 打开池子.
-     *
-     * @return void
      */
     public function open(): void
     {
@@ -69,8 +59,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 初始化队列.
-     *
-     * @return void
      */
     protected function initQueue(): void
     {
@@ -79,8 +67,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 获取资源.
-     *
-     * @return IPoolResource
      */
     public function getResource(): IPoolResource
     {
@@ -201,8 +187,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 建立队列.
-     *
-     * @return void
      */
     protected function buildQueue(): void
     {
@@ -222,10 +206,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 把资源加入队列.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
     protected function push(IPoolResource $resource): void
     {
@@ -247,8 +227,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 获取当前池子中空闲资源总数.
-     *
-     * @return int
      */
     public function getFree(): int
     {
@@ -257,8 +235,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 开始自动垃圾回收.
-     *
-     * @return void
      */
     public function startAutoGC(): void
     {
@@ -277,8 +253,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 停止自动垃圾回收.
-     *
-     * @return void
      */
     public function stopAutoGC(): void
     {
@@ -290,8 +264,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 心跳.
-     *
-     * @return void
      */
     public function heartbeat(): void
     {
@@ -330,8 +302,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 开始心跳维持资源.
-     *
-     * @return void
      */
     public function startHeartbeat(): void
     {
@@ -346,8 +316,6 @@ abstract class BaseAsyncPool extends BasePool
 
     /**
      * 停止心跳维持资源.
-     *
-     * @return void
      */
     public function stopHeartbeat(): void
     {

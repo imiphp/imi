@@ -12,8 +12,6 @@ class FpmRequest extends Request
 {
     /**
      * 初始化协议版本.
-     *
-     * @return void
      */
     protected function initProtocolVersion(): void
     {
@@ -22,8 +20,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化 headers.
-     *
-     * @return void
      */
     protected function initHeaders(): void
     {
@@ -40,8 +36,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化 body.
-     *
-     * @return void
      */
     protected function initBody(): void
     {
@@ -50,8 +44,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化 uri.
-     *
-     * @return void
      */
     protected function initUri(): void
     {
@@ -78,8 +70,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化 method.
-     *
-     * @return void
      */
     protected function initMethod(): void
     {
@@ -88,8 +78,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化 server.
-     *
-     * @return void
      */
     protected function initServer(): void
     {
@@ -98,8 +86,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化请求参数.
-     *
-     * @return void
      */
     protected function initRequestParams(): void
     {
@@ -118,8 +104,6 @@ class FpmRequest extends Request
 
     /**
      * 初始化上传文件.
-     *
-     * @return void
      */
     protected function initUploadedFiles(): void
     {

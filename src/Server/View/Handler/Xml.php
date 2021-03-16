@@ -17,11 +17,7 @@ use Imi\Util\Http\Consts\ResponseHeader;
 class Xml implements IHandler
 {
     /**
-     * @param \DOMDocument|\SimpleXMLElement    $data
-     * @param array                             $options
-     * @param \Imi\Server\Http\Message\Response $response
-     *
-     * @return \Imi\Server\Http\Message\Response
+     * @param \DOMDocument|\SimpleXMLElement $data
      */
     public function handle($data, array $options, Response $response): Response
     {

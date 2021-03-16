@@ -10,58 +10,42 @@ class Uri implements UriInterface
 {
     /**
      * 协议，如：http.
-     *
-     * @var string
      */
     protected string $scheme = '';
 
     /**
      * 主机名.
-     *
-     * @var string
      */
     protected string $host = '';
 
     /**
      * 端口号.
-     *
-     * @var int|null
      */
     protected ?int $port = null;
 
     /**
      * 用户信息
      * 格式：用户名:密码
-     *
-     * @var string
      */
     protected string $userInfo = '';
 
     /**
      * 路径.
-     *
-     * @var string
      */
     protected string $path = '';
 
     /**
      * 查询参数，在?后的.
-     *
-     * @var string
      */
     protected string $query = '';
 
     /**
      * 锚点，在#后的.
-     *
-     * @var string
      */
     protected string $fragment = '';
 
     /**
      * 协议标准端口.
-     *
-     * @var array
      */
     protected static array $schemePorts = [
         'http'  => 80,
@@ -93,13 +77,7 @@ class Uri implements UriInterface
     /**
      * 生成Uri文本.
      *
-     * @param string $host
-     * @param string $path
-     * @param string $query
-     * @param int    $port
-     * @param string $scheme
-     * @param string $fragment
-     * @param string $userInfo
+     * @param int $port
      *
      * @return string
      */
@@ -133,14 +111,6 @@ class Uri implements UriInterface
     /**
      * 生成Uri对象
      *
-     * @param string   $host
-     * @param string   $path
-     * @param string   $query
-     * @param int|null $port
-     * @param string   $scheme
-     * @param string   $fragment
-     * @param string   $userInfo
-     *
      * @return static
      */
     public static function makeUri(string $host, string $path, string $query = '', ?int $port = 80, string $scheme = 'http', string $fragment = '', string $userInfo = '')
@@ -150,10 +120,6 @@ class Uri implements UriInterface
 
     /**
      * 获取连接到服务器的端口.
-     *
-     * @param \Psr\Http\Message\UriInterface $uri
-     *
-     * @return int|null
      */
     public static function getServerPort(UriInterface $uri): ?int
     {
@@ -169,10 +135,6 @@ class Uri implements UriInterface
     /**
      * 获取域名
      * 格式：host[:port].
-     *
-     * @param \Psr\Http\Message\UriInterface $uri
-     *
-     * @return string
      */
     public static function getDomain(UriInterface $uri): string
     {
@@ -581,8 +543,6 @@ class Uri implements UriInterface
      * - If a fragment is present, it MUST be prefixed by "#".
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
-     *
-     * @return string
      */
     public function __toString(): string
     {

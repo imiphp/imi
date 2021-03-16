@@ -11,8 +11,6 @@ class Timer
 {
     /**
      * 定时器.
-     *
-     * @var ITimer
      */
     private static ITimer $timer;
 
@@ -22,8 +20,6 @@ class Timer
 
     /**
      * 获取定时器实例.
-     *
-     * @return \Imi\Timer\Contract\ITimer
      */
     public static function getInstance(): ITimer
     {
@@ -39,11 +35,6 @@ class Timer
 
     /**
      * 创建一个定时器，无限执行.
-     *
-     * @param int      $ms
-     * @param callable $callback
-     *
-     * @return int
      */
     public static function tick(int $ms, callable $callback): int
     {
@@ -52,11 +43,6 @@ class Timer
 
     /**
      * 创建一个延迟执行定时器，只执行一次
-     *
-     * @param int      $ms
-     * @param callable $callback
-     *
-     * @return int
      */
     public static function after(int $ms, callable $callback): int
     {
@@ -65,10 +51,6 @@ class Timer
 
     /**
      * 删除定时器.
-     *
-     * @param int $id
-     *
-     * @return void
      */
     public static function del(int $id): void
     {
@@ -77,8 +59,6 @@ class Timer
 
     /**
      * 清空所有定时器.
-     *
-     * @return void
      */
     public static function clear(): void
     {

@@ -15,15 +15,11 @@ class Order implements IOrder
 
     /**
      * 字段名.
-     *
-     * @var string
      */
     protected string $fieldName = '';
 
     /**
      * 排序方向：asc/desc.
-     *
-     * @var string
      */
     protected string $direction = '';
 
@@ -35,8 +31,6 @@ class Order implements IOrder
 
     /**
      * 获取字段名.
-     *
-     * @return string
      */
     public function getFieldName(): string
     {
@@ -45,8 +39,6 @@ class Order implements IOrder
 
     /**
      * 获取排序方向：asc/desc.
-     *
-     * @return string
      */
     public function getDirection(): string
     {
@@ -55,10 +47,6 @@ class Order implements IOrder
 
     /**
      * 设置字段名.
-     *
-     * @param string $fieldName
-     *
-     * @return void
      */
     public function setFieldName(string $fieldName): void
     {
@@ -67,10 +55,6 @@ class Order implements IOrder
 
     /**
      * 设置排序方向：asc/desc.
-     *
-     * @param string $direction
-     *
-     * @return void
      */
     public function setDirection(string $direction): void
     {
@@ -89,8 +73,6 @@ class Order implements IOrder
 
     /**
      * 获取绑定的数据们.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

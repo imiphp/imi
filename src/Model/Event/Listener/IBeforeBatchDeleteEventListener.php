@@ -13,10 +13,6 @@ interface IBeforeBatchDeleteEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeBatchDeleteEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeBatchDeleteEventParam $e);
+    public function handle(BeforeBatchDeleteEventParam $e): void;
 }

@@ -19,29 +19,21 @@ class Facade extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'class';
 
     /**
      * 类名，支持 Bean 名.
-     *
-     * @var string
      */
     public string $class = '';
 
     /**
      * 为 true 时，使用当前请求上下文的 Bean 对象
-     *
-     * @var bool
      */
     public bool $request = false;
 
     /**
      * 实例化参数.
-     *
-     * @var array
      */
     public array $args = [];
 

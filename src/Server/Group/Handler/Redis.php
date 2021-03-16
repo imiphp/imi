@@ -19,57 +19,41 @@ class Redis implements IGroupHandler
 {
     /**
      * Redis 连接池名称.
-     *
-     * @var string|null
      */
     protected ?string $redisPool = null;
 
     /**
      * redis中第几个库.
-     *
-     * @var int
      */
     protected int $redisDb = 0;
 
     /**
      * 心跳时间，单位：秒.
-     *
-     * @var int
      */
     protected int $heartbeatTimespan = 5;
 
     /**
      * 心跳数据过期时间，单位：秒.
-     *
-     * @var int
      */
     protected int $heartbeatTtl = 8;
 
     /**
      * 该服务的分组键.
-     *
-     * @var string
      */
     protected string $key = '';
 
     /**
      * 心跳Timer的ID.
-     *
-     * @var int|null
      */
     private ?int $timerId = null;
 
     /**
      * 组配置.
-     *
-     * @var array
      */
     private array $groups = [];
 
     /**
      * 主进程 ID.
-     *
-     * @var int
      */
     private int $masterPID = 0;
 
@@ -96,11 +80,6 @@ class Redis implements IGroupHandler
 
     /**
      * 初始化redis数据.
-     *
-     * @param RedisHandler $redis
-     * @param int|null     $storeMasterPID
-     *
-     * @return void
      */
     private function initRedis(RedisHandler $redis, ?int $storeMasterPID = null): void
     {
@@ -132,8 +111,6 @@ class Redis implements IGroupHandler
 
     /**
      * 获取存放组名的set键.
-     *
-     * @return string
      */
     private function getGroupsKey(): string
     {
@@ -142,10 +119,6 @@ class Redis implements IGroupHandler
 
     /**
      * 开始ping.
-     *
-     * @param RedisHandler $redis
-     *
-     * @return void
      */
     private function startPing(RedisHandler $redis): void
     {
@@ -162,8 +135,6 @@ class Redis implements IGroupHandler
 
     /**
      * ping定时器执行操作.
-     *
-     * @return void
      */
     public function pingTimer(): void
     {
@@ -174,8 +145,6 @@ class Redis implements IGroupHandler
 
     /**
      * 获取redis中存储ping的key.
-     *
-     * @return string
      */
     private function getPingKey(): string
     {
@@ -184,10 +153,6 @@ class Redis implements IGroupHandler
 
     /**
      * ping操作.
-     *
-     * @param RedisHandler $redis
-     *
-     * @return bool
      */
     private function ping(RedisHandler $redis): bool
     {
@@ -221,10 +186,6 @@ class Redis implements IGroupHandler
 
     /**
      * 组是否存在.
-     *
-     * @param string $groupName
-     *
-     * @return bool
      */
     public function hasGroup(string $groupName): bool
     {
@@ -233,11 +194,6 @@ class Redis implements IGroupHandler
 
     /**
      * 创建组，返回组对象
-     *
-     * @param string $groupName
-     * @param int    $maxClients
-     *
-     * @return void
      */
     public function createGroup(string $groupName, int $maxClients = -1): void
     {
@@ -255,10 +211,6 @@ class Redis implements IGroupHandler
 
     /**
      * 关闭组.
-     *
-     * @param string $groupName
-     *
-     * @return void
      */
     public function closeGroup(string $groupName): void
     {
@@ -271,11 +223,6 @@ class Redis implements IGroupHandler
 
     /**
      * 加入组，组不存在则自动创建.
-     *
-     * @param string $groupName
-     * @param int    $fd
-     *
-     * @return bool
      */
     public function joinGroup(string $groupName, int $fd): bool
     {
@@ -288,11 +235,6 @@ class Redis implements IGroupHandler
 
     /**
      * 离开组，组不存在则自动创建.
-     *
-     * @param string $groupName
-     * @param int    $fd
-     *
-     * @return bool
      */
     public function leaveGroup(string $groupName, int $fd): bool
     {
@@ -305,11 +247,6 @@ class Redis implements IGroupHandler
 
     /**
      * 连接是否存在于组里.
-     *
-     * @param string $groupName
-     * @param int    $fd
-     *
-     * @return bool
      */
     public function isInGroup(string $groupName, int $fd): bool
     {
@@ -322,8 +259,6 @@ class Redis implements IGroupHandler
 
     /**
      * 获取所有fd.
-     *
-     * @param string $groupName
      *
      * @return int[]
      */
@@ -353,10 +288,6 @@ class Redis implements IGroupHandler
 
     /**
      * 获取组名处理后的键名.
-     *
-     * @param string $groupName
-     *
-     * @return string
      */
     public function getGroupNameKey(string $groupName): string
     {
@@ -365,8 +296,6 @@ class Redis implements IGroupHandler
 
     /**
      * 获取组中的连接总数.
-     *
-     * @return int
      */
     public function count(string $groupName): int
     {
@@ -379,8 +308,6 @@ class Redis implements IGroupHandler
 
     /**
      * 清空分组.
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -406,8 +333,6 @@ class Redis implements IGroupHandler
 
     /**
      * 使用redis.
-     *
-     * @param callable $callback
      *
      * @return mixed
      */

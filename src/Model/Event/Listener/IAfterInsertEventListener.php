@@ -13,10 +13,6 @@ interface IAfterInsertEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterInsertEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterInsertEventParam $e);
+    public function handle(AfterInsertEventParam $e): void;
 }

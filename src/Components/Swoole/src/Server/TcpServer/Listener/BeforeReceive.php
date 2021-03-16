@@ -20,10 +20,6 @@ class BeforeReceive implements IReceiveEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param ReceiveEventParam $e
-     *
-     * @return void
      */
     public function handle(ReceiveEventParam $e): void
     {

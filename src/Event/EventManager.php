@@ -41,12 +41,6 @@ class EventManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $eventName
-     * @param string $listenerClass
-     * @param int    $priority
-     *
-     * @return void
      */
     public static function add(string $eventName, string $listenerClass, int $priority): void
     {

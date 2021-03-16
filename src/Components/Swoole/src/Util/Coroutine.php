@@ -12,8 +12,6 @@ class Coroutine extends \Swoole\Coroutine
 
     /**
      * 判断当前是否在协程中运行.
-     *
-     * @return bool
      */
     public static function isIn(): bool
     {
@@ -23,8 +21,7 @@ class Coroutine extends \Swoole\Coroutine
     /**
      * 创建一个新的协程，并立即执行。
      *
-     * @param callable $callable
-     * @param mixed    ...$params
+     * @param mixed ...$params
      *
      * @return int|bool
      */

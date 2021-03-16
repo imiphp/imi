@@ -19,8 +19,6 @@ class TestTool
      *
      * @CommandAction("test")
      * @Option(name="code", type=ArgType::INT, default=0)
-     *
-     * @return void
      */
     public function test(int $code): void
     {

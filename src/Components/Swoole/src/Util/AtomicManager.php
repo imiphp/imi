@@ -15,22 +15,16 @@ class AtomicManager
 
     /**
      * 是否已初始化过.
-     *
-     * @var bool
      */
     private static bool $isInited = false;
 
     /**
      * \Swoole\Atomic 数组.
-     *
-     * @var array
      */
     private static array $atomics = [];
 
     /**
      * 初始化.
-     *
-     * @return void
      */
     public static function init(): void
     {
@@ -47,10 +41,6 @@ class AtomicManager
 
     /**
      * 增加原子计数对象名称.
-     *
-     * @param string $name
-     *
-     * @return void
      */
     public static function addName(string $name, int $initValue = 0): void
     {
@@ -65,8 +55,6 @@ class AtomicManager
      * 设置原子计数对象名称.
      *
      * @param string[] $names
-     *
-     * @return void
      */
     public static function setNames(array $names): void
     {
@@ -89,8 +77,6 @@ class AtomicManager
 
     /**
      * 获取所有原子计数对象名称.
-     *
-     * @return array
      */
     public static function getNames(): array
     {
@@ -99,10 +85,6 @@ class AtomicManager
 
     /**
      * 获取原子计数类实例.
-     *
-     * @param string $name
-     *
-     * @return \Swoole\Atomic
      */
     public static function getInstance(string $name): \Swoole\Atomic
     {
@@ -123,8 +105,6 @@ class AtomicManager
      *
      * @param string $name  原子计数对象名称
      * @param int    $value 要增加的数值，默认为1。与原值相加如果超过42亿，将会溢出，高位数值会被丢弃
-     *
-     * @return int
      */
     public static function add(string $name, int $value = 1): int
     {
@@ -136,8 +116,6 @@ class AtomicManager
      *
      * @param string $name  原子计数对象名称
      * @param int    $value 要减少的数值，默认为1。与原值相加如果低于0将会溢出，高位数值会被丢弃
-     *
-     * @return int
      */
     public static function sub(string $name, int $value = 1): int
     {
@@ -148,8 +126,6 @@ class AtomicManager
      * 获取当前计数的值
      *
      * @param string $name 原子计数对象名称
-     *
-     * @return int
      */
     public static function get(string $name): int
     {
@@ -159,10 +135,7 @@ class AtomicManager
     /**
      * 将当前值设置为指定的数字。
      *
-     * @param string $name  原子计数对象名称
-     * @param int    $value
-     *
-     * @return void
+     * @param string $name 原子计数对象名称
      */
     public static function set(string $name, int $value): void
     {
@@ -173,11 +146,7 @@ class AtomicManager
      * 如果当前数值等于$cmpValue返回true，并将当前数值设置为$setValue
      * 如果不等于返回false.
      *
-     * @param string $name     原子计数对象名称
-     * @param int    $cmpValue
-     * @param int    $setValue
-     *
-     * @return bool
+     * @param string $name 原子计数对象名称
      */
     public static function cmpset(string $name, int $cmpValue, int $setValue): bool
     {
@@ -193,8 +162,6 @@ class AtomicManager
      *
      * @param string $name    原子计数对象名称
      * @param float  $timeout 指定超时时间，默认为-1，表示永不超时，会持续等待直到有其他进程唤醒
-     *
-     * @return bool
      */
     public static function wait(string $name, float $timeout = -1): bool
     {
@@ -209,9 +176,6 @@ class AtomicManager
      * 被唤醒的进程返回后，会将原子计数设置为0，这时可以再次调用wakeup唤醒其他正在wait的进程.
      *
      * @param string $name 原子计数对象名称
-     * @param int    $n
-     *
-     * @return bool
      */
     public static function wakeup(string $name, int $n = 1): bool
     {

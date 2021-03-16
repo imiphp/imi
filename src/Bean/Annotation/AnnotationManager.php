@@ -23,8 +23,6 @@ class AnnotationManager
 
     /**
      * 注解类与类、方法、属性的关联关系.
-     *
-     * @var \Imi\Bean\Annotation\Model\AnnotationRelation
      */
     private static AnnotationRelation $annotationRelation;
 
@@ -39,10 +37,6 @@ class AnnotationManager
 
     /**
      * 设置注解列表.
-     *
-     * @param array $annotations
-     *
-     * @return void
      */
     public static function setAnnotations(array $annotations): void
     {
@@ -51,8 +45,6 @@ class AnnotationManager
 
     /**
      * 获取注解列表.
-     *
-     * @return array
      */
     public static function getAnnotations(): array
     {
@@ -61,10 +53,6 @@ class AnnotationManager
 
     /**
      * 设置关联关系数据.
-     *
-     * @param \Imi\Bean\Annotation\Model\AnnotationRelation $data
-     *
-     * @return void
      */
     public static function setAnnotationRelation(AnnotationRelation $data): void
     {
@@ -73,8 +61,6 @@ class AnnotationManager
 
     /**
      * 获取关联关系数据.
-     *
-     * @return \Imi\Bean\Annotation\Model\AnnotationRelation
      */
     public static function getAnnotationRelation(): AnnotationRelation
     {
@@ -84,10 +70,7 @@ class AnnotationManager
     /**
      * 增加类注解.
      *
-     * @param string                    $className
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function addClassAnnotations(string $className, Base ...$annotations): void
     {
@@ -110,10 +93,7 @@ class AnnotationManager
     /**
      * 设置类注解.
      *
-     * @param string                    $className
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function setClassAnnotations(string $className, Base ...$annotations): void
     {
@@ -129,11 +109,7 @@ class AnnotationManager
     /**
      * 增加方法注解.
      *
-     * @param string                    $className
-     * @param string                    $methodName
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function addMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
@@ -156,11 +132,7 @@ class AnnotationManager
     /**
      * 设置方法注解.
      *
-     * @param string                    $className
-     * @param string                    $methodName
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function setMethodAnnotations(string $className, string $methodName, Base ...$annotations): void
     {
@@ -176,11 +148,7 @@ class AnnotationManager
     /**
      * 增加属性注解.
      *
-     * @param string                    $className
-     * @param string                    $propertyName
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function addPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
@@ -203,11 +171,7 @@ class AnnotationManager
     /**
      * 设置属性注解.
      *
-     * @param string                    $className
-     * @param string                    $propertyName
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function setPropertyAnnotations(string $className, string $propertyName, Base ...$annotations): void
     {
@@ -223,11 +187,7 @@ class AnnotationManager
     /**
      * 增加常量注解.
      *
-     * @param string                    $className
-     * @param string                    $constantName
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function addConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
@@ -250,11 +210,7 @@ class AnnotationManager
     /**
      * 设置常量注解.
      *
-     * @param string                    $className
-     * @param string                    $constantName
      * @param \Imi\Bean\Annotation\Base ...$annotations
-     *
-     * @return void
      */
     public static function setConstantAnnotations(string $className, string $constantName, Base ...$annotations): void
     {
@@ -283,11 +239,6 @@ class AnnotationManager
     /**
      * 获取类注解
      * 可选，是否只获取指定类型注解.
-     *
-     * @param string      $className
-     * @param string|null $annotationClassName
-     *
-     * @return array
      */
     public static function getClassAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
@@ -325,10 +276,6 @@ class AnnotationManager
     /**
      * 获取指定方法注解
      * 可选，是否只获取指定类型注解.
-     *
-     * @param string      $className
-     * @param string      $methodName
-     * @param string|null $annotationClassName
      *
      * @return \Imi\Bean\Annotation\Base[]
      */
@@ -369,10 +316,6 @@ class AnnotationManager
      * 获取指定属性注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string      $className
-     * @param string      $propertyName
-     * @param string|null $annotationClassName
-     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
@@ -412,10 +355,6 @@ class AnnotationManager
      * 获取指定常量注解
      * 可选，是否只获取指定类型注解.
      *
-     * @param string      $className
-     * @param string      $constantName
-     * @param string|null $annotationClassName
-     *
      * @return \Imi\Bean\Annotation\Base[]
      */
     public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
@@ -454,10 +393,7 @@ class AnnotationManager
     /**
      * 获取一个类中所有包含指定注解的方法.
      *
-     * @param string $className
      * @param string $annotationClassName
-     *
-     * @return array
      */
     public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
@@ -500,10 +436,7 @@ class AnnotationManager
     /**
      * 获取一个类中所有包含指定注解的属性.
      *
-     * @param string $className
      * @param string $annotationClassName
-     *
-     * @return array
      */
     public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
@@ -546,10 +479,7 @@ class AnnotationManager
     /**
      * 获取一个类中所有包含指定注解的常量.
      *
-     * @param string $className
      * @param string $annotationClassName
-     *
-     * @return array
      */
     public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
@@ -591,10 +521,6 @@ class AnnotationManager
 
     /**
      * 清空类所有类、属性、方法、常量注解.
-     *
-     * @param string $className
-     *
-     * @return void
      */
     public static function clearClassAllAnnotations(string $className): void
     {

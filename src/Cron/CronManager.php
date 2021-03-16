@@ -23,8 +23,6 @@ class CronManager implements ICronManager
 {
     /**
      * 注入的任务列表.
-     *
-     * @var array
      */
     protected array $tasks = [];
 
@@ -32,8 +30,6 @@ class CronManager implements ICronManager
      * socket 文件路径.
      *
      * 不支持 samba 文件共享
-     *
-     * @var string|null
      */
     protected ?string $socketFile = null;
 
@@ -71,11 +67,6 @@ class CronManager implements ICronManager
 
     /**
      * 使用注解增加定时任务
-     *
-     * @param \Imi\Cron\Annotation\Cron $cron
-     * @param string                    $pointClass
-     *
-     * @return void
      */
     public function addCronByAnnotation(Cron $cron, string $pointClass): void
     {
@@ -93,18 +84,8 @@ class CronManager implements ICronManager
     /**
      * 增加定时任务
      *
-     * @param string          $id
-     * @param string|null     $type
      * @param callable|string $task
-     * @param array           $cronRules
      * @param mixed           $data
-     * @param float           $lockExpire
-     * @param string|null     $unique
-     * @param string|null     $redisPool
-     * @param float           $lockWaitTimeout
-     * @param bool            $force
-     *
-     * @return void
      */
     public function addCron(string $id, ?string $type, $task, array $cronRules, $data, float $lockExpire = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false): void
     {
@@ -125,10 +106,6 @@ class CronManager implements ICronManager
 
     /**
      * 移除定时任务
-     *
-     * @param string $id
-     *
-     * @return void
      */
     public function removeCron(string $id): void
     {
@@ -140,8 +117,6 @@ class CronManager implements ICronManager
 
     /**
      * 清空定时任务
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -172,8 +147,6 @@ class CronManager implements ICronManager
 
     /**
      * socket 文件路径.
-     *
-     * @return string
      */
     public function getSocketFile(): string
     {
@@ -182,10 +155,6 @@ class CronManager implements ICronManager
 
     /**
      * 使用类名获取定时任务类型.
-     *
-     * @param string $class
-     *
-     * @return string|null
      */
     public function getCronTypeByClass(string $class): ?string
     {
@@ -194,10 +163,6 @@ class CronManager implements ICronManager
 
     /**
      * 获取任务回调.
-     *
-     * @param string      $cronId
-     * @param string      $class
-     * @param string|null $cronType
      *
      * @return string|callable
      */

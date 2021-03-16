@@ -18,11 +18,7 @@ class Server extends \Imi\Server\Server
      *
      * 返回成功发送消息数量
      *
-     * @param string         $action
-     * @param array          $data
      * @param int|int[]|null $workerId
-     *
-     * @return int
      */
     public static function sendMessage(string $action, array $data = [], $workerId = null): int
     {
@@ -34,10 +30,7 @@ class Server extends \Imi\Server\Server
      *
      * 返回成功发送消息数量
      *
-     * @param string         $message
      * @param int|int[]|null $workerId
-     *
-     * @return int
      */
     public static function sendMessageRaw(string $message, $workerId = null): int
     {

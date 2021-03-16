@@ -47,8 +47,6 @@ class ParentClass
     /**
      * @FilterArg
      * @Transaction
-     *
-     * @return void
      */
     public function test(): void
     {
@@ -57,8 +55,6 @@ class ParentClass
     /**
      * @FilterArg
      * @Transaction
-     *
-     * @return void
      */
     public function test2(): void
     {
@@ -67,8 +63,6 @@ class ParentClass
     /**
      * @FilterArg
      * @Transaction
-     *
-     * @return void
      */
     public function test3(): void
     {

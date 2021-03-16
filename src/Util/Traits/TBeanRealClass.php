@@ -11,15 +11,11 @@ trait TBeanRealClass
 {
     /**
      * 真实类名集合.
-     *
-     * @var array
      */
     public static array $realClassNames = [];
 
     /**
      * 获取当前Bean类真实类名.
-     *
-     * @return string
      */
     protected static function __getRealClassName(): string
     {

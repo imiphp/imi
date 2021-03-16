@@ -18,8 +18,6 @@ class ModelRelationManager
 {
     /**
      * 模型关联字段名数组.
-     *
-     * @var array
      */
     private static array $relationFieldsNames = [];
 
@@ -31,8 +29,6 @@ class ModelRelationManager
      * 初始化模型.
      *
      * @param \Imi\Model\Model|string $model
-     *
-     * @return void
      */
     public static function initModel($model): void
     {
@@ -51,8 +47,6 @@ class ModelRelationManager
      * 模型是否有关联定义.
      *
      * @param \Imi\Model\Model|string $model
-     *
-     * @return bool
      */
     public static function hasRelation($model): bool
     {
@@ -64,8 +58,6 @@ class ModelRelationManager
      *
      * @param \Imi\Model\Model|string $model
      * @param string                  ...$names
-     *
-     * @return void
      */
     public static function queryModelRelations($model, string ...$names): void
     {
@@ -83,8 +75,6 @@ class ModelRelationManager
      * 插入模型.
      *
      * @param \Imi\Model\Model|string $model
-     *
-     * @return void
      */
     public static function insertModel($model): void
     {
@@ -103,8 +93,6 @@ class ModelRelationManager
      * 更新模型.
      *
      * @param \Imi\Model\Model|string $model
-     *
-     * @return void
      */
     public static function updateModel($model): void
     {
@@ -123,8 +111,6 @@ class ModelRelationManager
      * 删除模型.
      *
      * @param \Imi\Model\Model|string $model
-     *
-     * @return void
      */
     public static function deleteModel($model): void
     {

@@ -20,8 +20,6 @@ class SuperGlobals
 {
     /**
      * 是否启用 Hook 超全局变量.
-     *
-     * @var bool
      */
     protected bool $enable = false;
 

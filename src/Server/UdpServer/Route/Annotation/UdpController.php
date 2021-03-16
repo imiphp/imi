@@ -19,8 +19,6 @@ class UdpController extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'prefix';
 
@@ -28,8 +26,6 @@ class UdpController extends Base
      * 是否为单例控制器.
      *
      * 默认为 null 时取 '@server.服务器名.controller.singleton'
-     *
-     * @var bool|null
      */
     public ?bool $singleton = null;
 

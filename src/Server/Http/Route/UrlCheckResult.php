@@ -8,22 +8,16 @@ class UrlCheckResult
 {
     /**
      * 结果.
-     *
-     * @var bool
      */
     public bool $result = false;
 
     /**
      * 参数.
-     *
-     * @var array
      */
     public array $params = [];
 
     /**
      * 结果忽略大小写.
-     *
-     * @var bool
      */
     public bool $resultIgnoreCase = false;
 

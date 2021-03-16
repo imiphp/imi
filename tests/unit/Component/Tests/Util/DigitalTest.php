@@ -14,8 +14,6 @@ class DigitalTest extends BaseTest
 {
     /**
      * @testdox scientificToNum
-     *
-     * @return void
      */
     public function testScientificToNum(): void
     {

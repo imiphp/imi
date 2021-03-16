@@ -30,8 +30,6 @@ class RequestContextProxyGenerate
      * @Arg(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
      * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
-     *
-     * @return void
      */
     public function generate(string $target, string $class, string $name): void
     {

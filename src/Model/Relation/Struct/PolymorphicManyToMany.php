@@ -13,51 +13,37 @@ class PolymorphicManyToMany
 {
     /**
      * 左侧表字段.
-     *
-     * @var string
      */
     private string $leftField = '';
 
     /**
      * 右侧表字段.
-     *
-     * @var string
      */
     private string $rightField = '';
 
     /**
      * 右侧模型类.
-     *
-     * @var string
      */
     private string $rightModel = '';
 
     /**
      * 中间表与左表关联的字段.
-     *
-     * @var string
      */
     private string $middleLeftField = '';
 
     /**
      * 中间表与右表关联的字段.
-     *
-     * @var string
      */
     private string $middleRightField = '';
 
     /**
      * 中间表模型类.
-     *
-     * @var string
      */
     private string $middleModel = '';
 
     /**
      * 初始化多对多结构.
      *
-     * @param string                                                                                                $className
-     * @param string                                                                                                $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany|\Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
      */
     public function __construct(string $className, string $propertyName, $annotation)
@@ -101,8 +87,6 @@ class PolymorphicManyToMany
 
     /**
      * Get 左侧表字段.
-     *
-     * @return string
      */
     public function getLeftField(): string
     {
@@ -111,8 +95,6 @@ class PolymorphicManyToMany
 
     /**
      * Get 右侧表字段.
-     *
-     * @return string
      */
     public function getRightField(): string
     {
@@ -121,8 +103,6 @@ class PolymorphicManyToMany
 
     /**
      * Get 右侧模型类.
-     *
-     * @return string
      */
     public function getRightModel(): string
     {
@@ -131,8 +111,6 @@ class PolymorphicManyToMany
 
     /**
      * Get 中间表与左表关联的字段.
-     *
-     * @return string
      */
     public function getMiddleLeftField(): string
     {
@@ -141,8 +119,6 @@ class PolymorphicManyToMany
 
     /**
      * Get 中间表与右表关联的字段.
-     *
-     * @return string
      */
     public function getMiddleRightField(): string
     {
@@ -151,8 +127,6 @@ class PolymorphicManyToMany
 
     /**
      * Get 中间表模型类.
-     *
-     * @return string
      */
     public function getMiddleModel(): string
     {

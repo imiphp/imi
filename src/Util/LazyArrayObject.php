@@ -13,8 +13,6 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 {
     /**
      * 数据.
-     *
-     * @var array
      */
     private array $__data = [];
 
@@ -25,8 +23,6 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -56,8 +52,6 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
     /**
      * @param mixed $offset
      * @param mixed $value
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -66,8 +60,6 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     /**
      * @param mixed $offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -94,17 +86,11 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
         return key($this->__data);
     }
 
-    /**
-     * @return void
-     */
     public function next(): void
     {
         next($this->__data);
     }
 
-    /**
-     * @return void
-     */
     public function rewind(): void
     {
         reset($this->__data);
@@ -121,10 +107,8 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
     /**
      * @param mixed $name
      * @param mixed $value
-     *
-     * @return void
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         $this->__data[$name] = $value;
     }
@@ -163,8 +147,6 @@ class LazyArrayObject implements \Iterator, \ArrayAccess, IArrayable, \JsonSeria
 
     /**
      * 将当前对象作为数组返回.
-     *
-     * @return array
      */
     public function toArray(): array
     {

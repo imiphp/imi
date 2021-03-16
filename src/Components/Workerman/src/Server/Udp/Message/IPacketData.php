@@ -10,8 +10,6 @@ interface IPacketData extends \Imi\Server\UdpServer\Message\IPacketData
 {
     /**
      * 获取连接对象
-     *
-     * @return \Workerman\Connection\UdpConnection
      */
     public function getConnection(): UdpConnection;
 }

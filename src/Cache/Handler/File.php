@@ -16,8 +16,6 @@ class File extends Base
 {
     /**
      * 缓存文件保存路径.
-     *
-     * @var string
      */
     protected string $savePath = '';
 
@@ -335,10 +333,6 @@ class File extends Base
 
     /**
      * 获取缓存文件名完整路径.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     public function getFileName(string $key): string
     {
@@ -356,10 +350,6 @@ class File extends Base
 
     /**
      * 获取存储扩展数据的文件名.
-     *
-     * @param string $fileName
-     *
-     * @return string
      */
     public function getExDataFileName(string $fileName): string
     {
@@ -368,10 +358,6 @@ class File extends Base
 
     /**
      * 检查缓存文件是否过期
-     *
-     * @param string $fileName
-     *
-     * @return bool
      */
     protected function checkExpire(string $fileName): bool
     {
@@ -404,11 +390,6 @@ class File extends Base
 
     /**
      * 写入扩展数据.
-     *
-     * @param string   $fileName
-     * @param int|null $ttl
-     *
-     * @return void
      */
     protected function writeExData(string $fileName, ?int $ttl): void
     {

@@ -10,22 +10,16 @@ class FileMTime extends BaseMonitor
 {
     /**
      * 文件记录集合.
-     *
-     * @var array
      */
     private array $files = [];
 
     /**
      * 更改的文件们.
-     *
-     * @var array
      */
     private array $changedFiles = [];
 
     /**
      * 初始化.
-     *
-     * @return void
      */
     protected function init(): void
     {
@@ -65,10 +59,6 @@ class FileMTime extends BaseMonitor
 
     /**
      * 处理初始化文件.
-     *
-     * @param string $fileName
-     *
-     * @return void
      */
     protected function parseInitFile(string $fileName): void
     {
@@ -83,8 +73,6 @@ class FileMTime extends BaseMonitor
 
     /**
      * 检测文件是否有更改.
-     *
-     * @return bool
      */
     public function isChanged(): bool
     {
@@ -135,8 +123,6 @@ class FileMTime extends BaseMonitor
 
     /**
      * 获取变更的文件们.
-     *
-     * @return array
      */
     public function getChangedFiles(): array
     {
@@ -145,10 +131,6 @@ class FileMTime extends BaseMonitor
 
     /**
      * 处理检查文件是否更改，返回是否更改.
-     *
-     * @param string $fileName
-     *
-     * @return bool
      */
     protected function parseCheckFile(string $fileName): bool
     {

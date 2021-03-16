@@ -11,8 +11,6 @@ class CronTask
 {
     /**
      * 任务唯一ID.
-     *
-     * @var string
      */
     private string $id = '';
 
@@ -20,8 +18,6 @@ class CronTask
      * 任务类型.
      *
      * \Imi\Cron\Consts\CronTaskType 类常量
-     *
-     * @var string
      */
     private string $type = '';
 
@@ -51,59 +47,39 @@ class CronTask
      * 当前实例唯一: current
      * 所有实例唯一: all
      * 不唯一: null.
-     *
-     * @var string|null
      */
     private ?string $unique = null;
 
     /**
      * 用于锁的 `Redis` 连接池名.
-     *
-     * @var string|null
      */
     private ?string $redisPool = null;
 
     /**
      * 获取锁超时时间，单位：秒.
-     *
-     * @var float
      */
     private float $lockWaitTimeout;
 
     /**
      * 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
-     *
-     * @var float
      */
     private float $maxExecutionTime;
 
     /**
      * 获取上一次运行时间.
-     *
-     * @var int
      */
     private int $lastRunTime = -1;
 
     /**
      * 每次启动服务强制执行.
-     *
-     * @var bool
      */
     private bool $force = false;
 
     /**
      * 构造方法.
      *
-     * @param string          $id
-     * @param string          $type
      * @param callable|string $task
-     * @param array           $cronRules
      * @param mixed           $data
-     * @param float           $maxExecutionTime
-     * @param string|null     $unique
-     * @param string|null     $redisPool
-     * @param float           $lockWaitTimeout
-     * @param bool            $force
      */
     public function __construct(string $id, string $type, $task, array $cronRules, $data, float $maxExecutionTime = 3, ?string $unique = null, ?string $redisPool = null, float $lockWaitTimeout = 3, bool $force = false)
     {
@@ -122,8 +98,6 @@ class CronTask
     /**
      * 处理定时规则.
      *
-     * @param array $cronRules
-     *
      * @return \Imi\Cron\CronRule[]
      */
     private function parseCronRule(array $cronRules): array
@@ -139,8 +113,6 @@ class CronTask
 
     /**
      * Get 任务唯一ID.
-     *
-     * @return string
      */
     public function getId(): string
     {
@@ -149,8 +121,6 @@ class CronTask
 
     /**
      * Get \Imi\Cron\Consts\CronTaskType 类常量.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -189,8 +159,6 @@ class CronTask
 
     /**
      * Get 在当前服务实例中唯一，只能同时执行一个.
-     *
-     * @return string|null
      */
     public function getUnique(): ?string
     {
@@ -199,8 +167,6 @@ class CronTask
 
     /**
      * Get 用于锁的 `Redis` 连接池名.
-     *
-     * @return string
      */
     public function getRedisPool(): string
     {
@@ -209,8 +175,6 @@ class CronTask
 
     /**
      * Get 获取锁超时时间，单位：秒.
-     *
-     * @return float
      */
     public function getLockWaitTimeout(): float
     {
@@ -221,8 +185,6 @@ class CronTask
      * 获取上一次执行时间.
      *
      * 返回秒级时间戳
-     *
-     * @return int
      */
     public function getLastRunTime(): int
     {
@@ -231,8 +193,6 @@ class CronTask
 
     /**
      * Get 最大运行执行时间，单位：秒。该值与分布式锁超时时间共享.
-     *
-     * @return float
      */
     public function getMaxExecutionTime(): float
     {
@@ -241,10 +201,6 @@ class CronTask
 
     /**
      * 更新最后执行时间.
-     *
-     * @param int $time
-     *
-     * @return void
      */
     public function updateLastRunTime(int $time): void
     {
@@ -253,8 +209,6 @@ class CronTask
 
     /**
      * Get 每次启动服务强制执行.
-     *
-     * @return bool
      */
     public function getForce(): bool
     {

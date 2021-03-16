@@ -17,9 +17,6 @@ class Log
      *
      * @param mixed  $level
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function log($level, $message, array $context = []): void
     {
@@ -30,9 +27,6 @@ class Log
      * System is unusable.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function emergency($message, array $context = []): void
     {
@@ -46,9 +40,6 @@ class Log
      * trigger the SMS alerts and wake you up.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function alert($message, array $context = []): void
     {
@@ -61,9 +52,6 @@ class Log
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function critical($message, array $context = []): void
     {
@@ -75,9 +63,6 @@ class Log
      * be logged and monitored.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function error($message, array $context = []): void
     {
@@ -91,9 +76,6 @@ class Log
      * that are not necessarily wrong.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function warning($message, array $context = []): void
     {
@@ -104,9 +86,6 @@ class Log
      * Normal but significant events.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function notice($message, array $context = []): void
     {
@@ -119,9 +98,6 @@ class Log
      * Example: User logs in, SQL logs.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function info($message, array $context = []): void
     {
@@ -132,9 +108,6 @@ class Log
      * Detailed debug information.
      *
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public static function debug($message, array $context = []): void
     {
@@ -143,8 +116,6 @@ class Log
 
     /**
      * 获取代码调用跟踪.
-     *
-     * @return array
      */
     private static function getTrace(): array
     {
@@ -155,8 +126,6 @@ class Log
 
     /**
      * 获取错误文件位置.
-     *
-     * @return array
      */
     private static function getErrorFile(): array
     {
@@ -168,10 +137,6 @@ class Log
 
     /**
      * 处理context.
-     *
-     * @param array $context
-     *
-     * @return array
      */
     private static function parseContext(array $context): array
     {

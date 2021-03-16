@@ -19,8 +19,6 @@ class View extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'template';
 
@@ -28,29 +26,21 @@ class View extends Base
      * 模版基础路径
      * abc-配置中设定的路径/abc/
      * /abc/-绝对路径.
-     *
-     * @var string|null
      */
     public ?string $baseDir = null;
 
     /**
      * 模版路径.
-     *
-     * @var string|null
      */
     public ?string $template = null;
 
     /**
      * 渲染类型.
-     *
-     * @var string
      */
     public string $renderType = 'json';
 
     /**
      * 附加数据.
-     *
-     * @var array|null
      */
     public ?array $data = [];
 

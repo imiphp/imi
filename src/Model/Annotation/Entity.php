@@ -19,15 +19,11 @@ class Entity extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'camel';
 
     /**
      * 序列化时使用驼峰命名.
-     *
-     * @var bool
      */
     public bool $camel = true;
 

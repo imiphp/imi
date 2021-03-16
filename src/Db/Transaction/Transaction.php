@@ -12,15 +12,11 @@ class Transaction
 
     /**
      * 事务层级计数.
-     *
-     * @var int
      */
     private int $transactionLevels = 0;
 
     /**
      * 启动一个事务
-     *
-     * @return bool
      */
     public function beginTransaction(): bool
     {
@@ -31,8 +27,6 @@ class Transaction
 
     /**
      * 提交一个事务
-     *
-     * @return bool
      */
     public function commit(): bool
     {
@@ -71,10 +65,6 @@ class Transaction
     /**
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
-     *
-     * @param int|null $levels
-     *
-     * @return bool
      */
     public function rollBack(?int $levels = null): bool
     {
@@ -120,8 +110,6 @@ class Transaction
 
     /**
      * 获取事务层数.
-     *
-     * @return int
      */
     public function getTransactionLevels(): int
     {
@@ -130,10 +118,6 @@ class Transaction
 
     /**
      * 监听事务提交事件.
-     *
-     * @param callable $callable
-     *
-     * @return void
      */
     public function onTransactionCommit(callable $callable): void
     {
@@ -142,10 +126,6 @@ class Transaction
 
     /**
      * 监听事务回滚事件.
-     *
-     * @param callable $callable
-     *
-     * @return void
      */
     public function onTransactionRollback(callable $callable): void
     {

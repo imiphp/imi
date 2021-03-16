@@ -19,23 +19,17 @@ class AutoSelect extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'status';
 
     /**
      * 是否开启.
-     *
-     * @var bool
      */
     public bool $status = true;
 
     /**
      * 是否总是显示该属性
      * 如果为false，在为null时序列化为数组或json不显示该属性.
-     *
-     * @var bool
      */
     public bool $alwaysShow = true;
 

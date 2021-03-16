@@ -19,8 +19,6 @@ class Cron extends Base
 {
     /**
      * 任务唯一ID.
-     *
-     * @var string|null
      */
     public ?string $id = null;
 
@@ -28,8 +26,6 @@ class Cron extends Base
      * 任务类型.
      *
      * \Imi\Cron\Consts\CronTaskType 类常量
-     *
-     * @var string|null
      */
     public ?string $type = null;
 
@@ -42,8 +38,6 @@ class Cron extends Base
 
     /**
      * 每次启动服务强制执行.
-     *
-     * @var bool
      */
     public bool $force = false;
 
@@ -56,8 +50,6 @@ class Cron extends Base
      * `2019-2022` - 指定年份区间
      * `2019,2021,2022` - 指定多个年份
      * `2n` - 每 2 年，其它以此类推
-     *
-     * @var string
      */
     public string $year = '*';
 
@@ -70,8 +62,6 @@ class Cron extends Base
      * `1-6` (1-6 月), `-3--1` (10-12 月) - 指定月份区间，支持负数为倒数的月
      * `1,3,5,-1` (1、3、5、12 月) - 指定多个月份，支持负数为倒数的月
      * `2n` - 每 2 个月，其它以此类推
-     *
-     * @var string
      */
     public string $month = '*';
 
@@ -87,8 +77,6 @@ class Cron extends Base
      * `year 1` (一年中的第 1 日), `year -1` (每年最后一天) - 指定一年中的日期，支持负数为倒数的日期
      * `year 1-6` (一年中的第 1-6 日), `year -3--1` (每年倒数 3 天) - 指定一年中的日期区间，支持负数为倒数的日期
      * `year 1,3,5,-1` (每年 1、3、5、最后一天) - 指定一年中的多个日期，支持负数为倒数的日期
-     *
-     * @var string
      */
     public string $day = '*';
 
@@ -100,8 +88,6 @@ class Cron extends Base
      * `1` (周一), `-1` (周日) - 指定周几（1-7），支持负数为倒数的周
      * `1-6` (周一到周六), `-3--1` (周五到周日) - 指定周几，支持负数为倒数的周
      * `1,3,5,-1` (周一、三、五、日) - 指定多个日期，支持负数为倒数的周
-     *
-     * @var string
      */
     public string $week = '*';
 
@@ -114,8 +100,6 @@ class Cron extends Base
      * `1-6` (1-6 店), `-3--1` (21-23 点) - 指定小时区间，支持负数为倒数的小时
      * `1,3,5,-1` (1、3、5、23 点) - 指定多个小时，支持负数为倒数的小时
      * `2n` - 每 2 小时，其它以此类推
-     *
-     * @var string
      */
     public string $hour = '*';
 
@@ -128,8 +112,6 @@ class Cron extends Base
      * `1-6` (1-6 分), `-3--1` (57-59 分) - 指定分钟区间，支持负数为倒数的分钟
      * `1,3,5,-1` (1、3、5、59 分) - 指定多个分钟，支持负数为倒数的分钟
      * `2n` - 每 2 分钟，其它以此类推
-     *
-     * @var string
      */
     public string $minute = '*';
 
@@ -142,8 +124,6 @@ class Cron extends Base
      * `1-6` (1-6 秒), `-3--1` (57-59 秒) - 指定秒区间，支持负数为倒数的秒
      * `1,3,5,-1` (1、3、5、59 秒) - 指定多个秒，支持负数为倒数的秒
      * `2n` - 每 2 秒，其它以此类推
-     *
-     * @var string
      */
     public string $second = '*';
 
@@ -152,22 +132,16 @@ class Cron extends Base
      * 当前实例唯一: current
      * 所有实例唯一: all
      * 不唯一: null.
-     *
-     * @var string|null
      */
     public ?string $unique = null;
 
     /**
      * 用于锁的 `Redis` 连接池名.
-     *
-     * @var string|null
      */
     public ?string $redisPool = null;
 
     /**
      * 获取锁超时时间，单位：秒.
-     *
-     * @var float
      */
     public float $lockWaitTimeout = 3;
 
@@ -175,8 +149,6 @@ class Cron extends Base
      * 最大运行执行时间，单位：秒。
      *
      * 该值与分布式锁超时时间共享，默认为 60 秒
-     *
-     * @var float
      */
     public float $maxExecutionTime = 60;
 

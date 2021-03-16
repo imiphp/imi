@@ -20,10 +20,6 @@ class AppInit implements IAppInitEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AppInitEventParam $e
-     *
-     * @return void
      */
     public function handle(AppInitEventParam $e): void
     {

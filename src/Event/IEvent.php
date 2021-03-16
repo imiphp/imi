@@ -12,10 +12,8 @@ interface IEvent
      * @param string|string[] $name     事件名称
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
-     *
-     * @return void
      */
-    public function on($name, $callback, int $priority = 0);
+    public function on($name, $callback, int $priority = 0): void;
 
     /**
      * 监听事件，仅触发一次
@@ -23,20 +21,16 @@ interface IEvent
      * @param string|string[] $name     事件名称
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
-     *
-     * @return void
      */
-    public function one($name, $callback, int $priority = 0);
+    public function one($name, $callback, int $priority = 0): void;
 
     /**
      * 取消事件监听.
      *
      * @param string|string[] $name     事件名称
      * @param mixed|null      $callback 回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
-     *
-     * @return void
      */
-    public function off($name, $callback = null);
+    public function off($name, $callback = null): void;
 
     /**
      * 触发事件.
@@ -45,8 +39,6 @@ interface IEvent
      * @param array       $data       数据
      * @param object|null $target     目标对象
      * @param string      $paramClass 参数类
-     *
-     * @return void
      */
-    public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class);
+    public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void;
 }

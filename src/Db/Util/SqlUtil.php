@@ -19,10 +19,7 @@ class SqlUtil
     /**
      * 解析带冒号参数的 SQL，返回解析后的 SQL.
      *
-     * @param string $sql
-     * @param array  $map
-     *
-     * @return string
+     * @param array $map
      */
     public static function parseSqlWithColonParams(string $sql, ?array &$map): string
     {
@@ -37,10 +34,6 @@ class SqlUtil
 
     /**
      * 处理多行 SQL 为一个数组.
-     *
-     * @param string $sql
-     *
-     * @return array
      */
     public static function parseMultiSql(string $sql): array
     {
@@ -98,11 +91,6 @@ class SqlUtil
 
     /**
      * 生成插入语句.
-     *
-     * @param string $table
-     * @param array  $dataList
-     *
-     * @return string
      */
     public static function buildInsertSql(string $table, array $dataList): string
     {
@@ -129,10 +117,6 @@ class SqlUtil
      * 转义 MySQL 字符串.
      *
      * @source https://github.com/abreksa4/mysql-escape-string-polyfill
-     *
-     * @param string $value
-     *
-     * @return string
      */
     public static function mysqlEscapeString(string $value): string
     {

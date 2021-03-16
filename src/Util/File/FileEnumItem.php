@@ -10,29 +10,21 @@ class FileEnumItem
 {
     /**
      * 路径.
-     *
-     * @var string
      */
     private string $path = '';
 
     /**
      * 文件名.
-     *
-     * @var string
      */
     private string $fileName = '';
 
     /**
      * 完整路径.
-     *
-     * @var string
      */
     private string $fullPath = '';
 
     /**
      * 如果是目录，是否继续向下遍历.
-     *
-     * @var bool
      */
     private bool $continue = true;
 
@@ -45,8 +37,6 @@ class FileEnumItem
 
     /**
      * Get 路径.
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -55,8 +45,6 @@ class FileEnumItem
 
     /**
      * Get 文件名.
-     *
-     * @return string
      */
     public function getFileName(): string
     {
@@ -65,8 +53,6 @@ class FileEnumItem
 
     /**
      * 获取完整路径.
-     *
-     * @return string
      */
     public function getFullPath(): string
     {
@@ -80,8 +66,6 @@ class FileEnumItem
 
     /**
      * Get 如果是目录，是否继续向下遍历.
-     *
-     * @return bool
      */
     public function getContinue(): bool
     {
@@ -92,8 +76,6 @@ class FileEnumItem
      * Set 如果是目录，是否继续向下遍历.
      *
      * @param bool $continue 如果是目录，是否继续向下遍历
-     *
-     * @return self
      */
     public function setContinue(bool $continue): self
     {

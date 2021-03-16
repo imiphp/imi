@@ -24,8 +24,6 @@ trait TEvent
 
     /**
      * 事件更改记录.
-     *
-     * @var array
      */
     private array $eventChangeRecords = [];
 
@@ -35,8 +33,6 @@ trait TEvent
      * @param string|string[] $name     事件名称
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
-     *
-     * @return void
      */
     public function on($name, $callback, int $priority = 0): void
     {
@@ -69,8 +65,6 @@ trait TEvent
      * @param string|string[] $name     事件名称
      * @param mixed           $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int             $priority 优先级，越大越先执行
-     *
-     * @return void
      */
     public function one($name, $callback, int $priority = 0): void
     {
@@ -102,8 +96,6 @@ trait TEvent
      *
      * @param string|string[] $name     事件名称
      * @param mixed|null      $callback 回调，支持回调函数、基于IEventListener的类名。为 null 则不限制
-     *
-     * @return void
      */
     public function off($name, $callback = null): void
     {
@@ -141,8 +133,6 @@ trait TEvent
      * @param array       $data       数据
      * @param object|null $target     目标对象
      * @param string      $paramClass 参数类
-     *
-     * @return void
      */
     public function trigger(string $name, array $data = [], ?object $target = null, string $paramClass = EventParam::class): void
     {
@@ -226,8 +216,6 @@ trait TEvent
 
     /**
      * 重建事件队列.
-     *
-     * @return \SplPriorityQueue
      */
     private function rebuildEventQueue(string $name): \SplPriorityQueue
     {

@@ -15,8 +15,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      * 模式
      * allow-白名单
      * deny-黑名单.
-     *
-     * @var string
      */
     private string $mode = '';
 
@@ -31,8 +29,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * 数组列表.
-     *
-     * @var array
      */
     private array $list = [];
 
@@ -45,8 +41,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -76,8 +70,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
     /**
      * @param mixed $offset
      * @param mixed $value
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -93,8 +85,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * @param mixed $offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -121,17 +111,11 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
         return key($this->list);
     }
 
-    /**
-     * @return void
-     */
     public function next(): void
     {
         next($this->list);
     }
 
-    /**
-     * @return void
-     */
     public function rewind(): void
     {
         reset($this->list);
@@ -147,8 +131,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * 将当前对象作为数组返回.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -169,8 +151,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      * 从数组列表中移除.
      *
      * @param mixed ...$value
-     *
-     * @return void
      */
     public function remove(...$value): void
     {
@@ -179,8 +159,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * 清空.
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -191,8 +169,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
      * 加入数组列表.
      *
      * @param mixed ...$value
-     *
-     * @return void
      */
     public function append(...$value): void
     {
@@ -204,8 +180,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * 数组列表长度.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -214,10 +188,6 @@ class FilterableList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerial
 
     /**
      * 处理列表.
-     *
-     * @param array $list
-     *
-     * @return array
      */
     private function parseList(array $list): array
     {

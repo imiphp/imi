@@ -19,15 +19,11 @@ class JoinToMiddle extends Base
 {
     /**
      * 字段名.
-     *
-     * @var string|null
      */
     public ?string $field = null;
 
     /**
      * 中间表模型字段.
-     *
-     * @var string|null
      */
     public ?string $middleField = null;
 

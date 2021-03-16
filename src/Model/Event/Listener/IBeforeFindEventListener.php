@@ -13,10 +13,6 @@ interface IBeforeFindEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeFindEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeFindEventParam $e);
+    public function handle(BeforeFindEventParam $e): void;
 }

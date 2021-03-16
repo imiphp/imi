@@ -19,8 +19,6 @@ class InEnum extends Condition
 {
     /**
      * 注解类名.
-     *
-     * @var string
      */
     public string $enum = '';
 
@@ -33,8 +31,6 @@ class InEnum extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

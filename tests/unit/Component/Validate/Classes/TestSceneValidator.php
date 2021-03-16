@@ -16,8 +16,6 @@ class TestSceneValidator extends Validator
 {
     /**
      * 场景定义.
-     *
-     * @var array|null
      */
     protected ?array $scene = [
         'a' => ['decimal'],

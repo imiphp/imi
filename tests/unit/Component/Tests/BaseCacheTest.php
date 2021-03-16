@@ -22,8 +22,6 @@ abstract class BaseCacheTest extends BaseTest
 
     /**
      * @testdox Set TTL
-     *
-     * @return void
      */
     public function testSetTTL(): void
     {
@@ -50,8 +48,6 @@ abstract class BaseCacheTest extends BaseTest
 
     /**
      * @testdox Set multiple TTL
-     *
-     * @return void
      */
     public function testSetMultipleTTL(): void
     {

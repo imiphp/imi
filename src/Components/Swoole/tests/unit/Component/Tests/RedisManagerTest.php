@@ -68,8 +68,6 @@ class RedisManagerTest extends BaseTest
 
     /**
      * @param \Imi\Redis\RedisHandler $redisHandler
-     *
-     * @return void
      */
     private function assertRedisHandler($redisHandler): void
     {

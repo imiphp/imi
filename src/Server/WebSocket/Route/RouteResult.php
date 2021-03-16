@@ -17,8 +17,6 @@ class RouteResult
 
     /**
      * 参数.
-     *
-     * @var array
      */
     public array $params = [];
 

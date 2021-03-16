@@ -25,22 +25,16 @@ class CronProcess extends BaseProcess
 {
     /**
      * @Inject("CronScheduler")
-     *
-     * @var \Imi\Cron\Contract\IScheduler
      */
     protected IScheduler $scheduler;
 
     /**
      * @Inject("ErrorLog")
-     *
-     * @var \Imi\Log\ErrorLog
      */
     protected ErrorLog $errorLog;
 
     /**
      * @Inject("CronManager")
-     *
-     * @var \Imi\Cron\Contract\ICronManager
      */
     protected ICronManager $cronManager;
 
@@ -53,8 +47,6 @@ class CronProcess extends BaseProcess
 
     /**
      * 是否正在运行.
-     *
-     * @var bool
      */
     protected bool $running = false;
 
@@ -108,8 +100,6 @@ class CronProcess extends BaseProcess
      * 处理连接.
      *
      * @param resource $conn
-     *
-     * @return void
      */
     protected function parseConn($conn): void
     {
@@ -159,8 +149,6 @@ class CronProcess extends BaseProcess
 
     /**
      * 开始定时任务调度.
-     *
-     * @return void
      */
     protected function startSchedule(): void
     {
@@ -187,8 +175,6 @@ class CronProcess extends BaseProcess
 
     /**
      * 停止.
-     *
-     * @return void
      */
     protected function stop(): void
     {

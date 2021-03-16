@@ -16,8 +16,6 @@ class Inherit extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'annotation';
 
@@ -29,7 +27,6 @@ class Inherit extends Base
     public $annotation = null;
 
     /**
-     * @param array|null           $__data
      * @param string|string[]|null $annotation
      */
     public function __construct(?array $__data = null, $annotation = null)

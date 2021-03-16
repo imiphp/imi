@@ -21,25 +21,16 @@ class RouteMiddleware implements MiddlewareInterface
 {
     /**
      * @ServerInject("HttpRoute")
-     *
-     * @var \Imi\Server\Http\Route\HttpRoute
      */
     protected HttpRoute $route;
 
     /**
      * @ServerInject("HttpNotFoundHandler")
-     *
-     * @var \Imi\Server\Http\Error\IHttpNotFoundHandler
      */
     protected IHttpNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

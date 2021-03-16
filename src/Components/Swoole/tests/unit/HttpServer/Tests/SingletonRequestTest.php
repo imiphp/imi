@@ -13,8 +13,6 @@ class SingletonRequestTest extends BaseTest
 {
     /**
      * $_GET.
-     *
-     * @return void
      */
     public function testGetParams(): void
     {
@@ -27,8 +25,6 @@ class SingletonRequestTest extends BaseTest
 
     /**
      * $_POST.
-     *
-     * @return void
      */
     public function testPostParams(): void
     {
@@ -43,8 +39,6 @@ class SingletonRequestTest extends BaseTest
 
     /**
      * $_COOKIE.
-     *
-     * @return void
      */
     public function testCookieParams(): void
     {
@@ -63,8 +57,6 @@ class SingletonRequestTest extends BaseTest
 
     /**
      * $_REQUEST.
-     *
-     * @return void
      */
     public function testRequestParams(): void
     {
@@ -83,8 +75,6 @@ class SingletonRequestTest extends BaseTest
 
     /**
      * Request Header.
-     *
-     * @return void
      */
     public function testRequestHeaders(): void
     {

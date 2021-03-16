@@ -18,8 +18,6 @@ class File
     /**
      * 枚举文件.
      *
-     * @param string $dirPath
-     *
      * @return \RecursiveIteratorIterator|array
      */
     public static function enum(string $dirPath)
@@ -36,8 +34,6 @@ class File
 
     /**
      * 遍历文件和目录.
-     *
-     * @param string $dirPath
      *
      * @return \RecursiveIteratorIterator|\ArrayIterator
      */
@@ -56,8 +52,6 @@ class File
     /**
      * 枚举php文件.
      *
-     * @param string $dirPath
-     *
      * @return \RegexIterator|\ArrayIterator
      */
     public static function enumPHPFile(string $dirPath)
@@ -75,8 +69,6 @@ class File
 
     /**
      * 枚举文件，支持自定义中断进入下一级目录.
-     *
-     * @param string $dirPath
      *
      * @return \Generator
      */
@@ -110,8 +102,6 @@ class File
      * 组合路径，目录后的/不是必须.
      *
      * @param string ...$args
-     *
-     * @return string
      */
     public static function path(string ...$args): string
     {
@@ -138,8 +128,6 @@ class File
      * 根据文件打开句柄，读取文件所有内容.
      *
      * @param resource $fp
-     *
-     * @return string
      */
     public static function readAll($fp): string
     {
@@ -157,8 +145,6 @@ class File
      *
      * @param string $dir  目录路径
      * @param int    $mode 目录的权限
-     *
-     * @return bool
      */
     public static function createDir(string $dir, int $mode = 0775): bool
     {
@@ -183,11 +169,8 @@ class File
     /**
      * 创建一个文件.
      *
-     * @param string $file    文件路径
-     * @param string $content
-     * @param int    $mode    文件的权限
-     *
-     * @return bool
+     * @param string $file 文件路径
+     * @param int    $mode 文件的权限
      */
     public static function createFile(string $file, string $content = '', int $mode = 0775): bool
     {
@@ -218,10 +201,6 @@ class File
 
     /**
      * 判断是否为空目录.
-     *
-     * @param string $dir
-     *
-     * @return bool
      */
     public static function isEmptyDir(string $dir): bool
     {
@@ -253,10 +232,6 @@ class File
 
     /**
      * 递归删除目录及目录中所有文件.
-     *
-     * @param string $dir
-     *
-     * @return bool
      */
     public static function deleteDir(string $dir): bool
     {
@@ -285,9 +260,6 @@ class File
      * 写入内容到文件
      * 如果目录不存在自动创建多级目录.
      *
-     * @param string   $fileName
-     * @param string   $data
-     * @param int      $flags
      * @param resource $context
      *
      * @return int|false
@@ -305,10 +277,6 @@ class File
 
     /**
      * 获取绝对路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function absolute(string $path): string
     {

@@ -15,8 +15,6 @@ trait TServerAnnotationParser
 {
     /**
      * 根据服务器获取的控制器缓存.
-     *
-     * @var array
      */
     private array $cache = [];
 
@@ -24,10 +22,6 @@ trait TServerAnnotationParser
 
     /**
      * 根据服务器获取对应的控制器数据.
-     *
-     * @param string $serverName
-     *
-     * @return array
      */
     public function getByServer(string $serverName): array
     {

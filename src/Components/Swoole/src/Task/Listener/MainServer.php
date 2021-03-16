@@ -16,10 +16,6 @@ class MainServer implements ITaskEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param TaskEventParam $e
-     *
-     * @return void
      */
     public function handle(TaskEventParam $e): void
     {

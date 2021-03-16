@@ -20,22 +20,16 @@ class TreeModel extends Base
     /**
      * 主键字段名
      * 默认为null，则自动获取.
-     *
-     * @var string|null
      */
     public ?string $idField = null;
 
     /**
      * 父级ID字段名.
-     *
-     * @var string
      */
     public string $parentField = 'parent_id';
 
     /**
      * 子集字段名.
-     *
-     * @var string
      */
     public string $childrenField = 'children';
 

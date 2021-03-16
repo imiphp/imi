@@ -32,8 +32,6 @@ abstract class BaseParser implements IParser
 
     /**
      * 是否子类作为单独实例.
-     *
-     * @return bool
      */
     protected static function isChildClassSingleton(): bool
     {

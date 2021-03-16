@@ -27,8 +27,6 @@ class Imi extends BaseCommand
      *
      * @CommandAction("buildImiRuntime")
      * @Option(name="file", type=ArgType::STRING, default=null, comments="可以指定生成到目标文件")
-     *
-     * @return void
      */
     public function buildImiRuntime(?string $file): void
     {
@@ -44,8 +42,6 @@ class Imi extends BaseCommand
      * 清除框架预加载缓存.
      *
      * @CommandAction("clearImiRuntime")
-     *
-     * @return void
      */
     public function clearImiRuntime(): void
     {
@@ -70,8 +66,6 @@ class Imi extends BaseCommand
      * @Option(name="changedFilesFile", type=ArgType::STRING, default=null, comments="保存改变的文件列表的文件，一行一个")
      * @Option(name="confirm", type=ArgType::BOOL, default=false, comments="是否等待输入y后再构建")
      * @Option(name="runtimeMode", type=ArgType::STRING, default=null, comments="指定运行时模式")
-     *
-     * @return void
      */
     public function buildRuntime(?string $changedFilesFile, bool $confirm, ?string $runtimeMode = null): void
     {
@@ -106,8 +100,6 @@ class Imi extends BaseCommand
      * 清除项目预加载缓存.
      *
      * @CommandAction("clearRuntime")
-     *
-     * @return void
      */
     public function clearRuntime(): void
     {

@@ -19,15 +19,11 @@ class AfterThrowing extends Base
 {
     /**
      * 允许捕获的异常类列表.
-     *
-     * @var array
      */
     public array $allow = [];
 
     /**
      * 不允许捕获的异常类列表.
-     *
-     * @var array
      */
     public array $deny = [];
 

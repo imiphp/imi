@@ -47,8 +47,6 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      * @Route("/route/{id}")
-     *
-     * @return array
      */
     public function route(int $id): array
     {
@@ -61,8 +59,6 @@ class IndexController extends SingletonHttpController
      * @Action
      * @Route(autoEndSlash=true)
      * @View(renderType="html", template="html")
-     *
-     * @return array
      */
     public function html(int $time): array
     {
@@ -74,8 +70,6 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      * @View(renderType="html", baseDir="index/")
-     *
-     * @return array
      */
     public function html2(int $time): array
     {
@@ -110,8 +104,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function json(int $time): array
     {
@@ -123,8 +115,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function info(): array
     {
@@ -144,8 +134,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function superGlobalsInfo(): array
     {
@@ -166,8 +154,6 @@ class IndexController extends SingletonHttpController
      * @param string $get
      * @param string $post
      * @param mixed  $default
-     *
-     * @return array
      */
     public function info2($get, $post, $default = 19260817): array
     {
@@ -187,8 +173,6 @@ class IndexController extends SingletonHttpController
      * @param string $post
      * @param string $parsedBody
      * @param mixed  $default
-     *
-     * @return array
      */
     public function info3($get, $post, $parsedBody, $default = 19260817): array
     {
@@ -273,8 +257,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function upload(): array
     {
@@ -298,8 +280,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function executeTimeout(): array
     {
@@ -313,8 +293,6 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      * @Route("/a/{id:[0-9]{1,3}}/{page:\d+}")
-     *
-     * @return array
      */
     public function regularExpression1(int $id, int $page): array
     {
@@ -327,8 +305,6 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      * @Route("/a/{name:[a-zA-Z]+}/{page}")
-     *
-     * @return array
      */
     public function regularExpression2(string $name, int $page): array
     {
@@ -340,8 +316,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function singletonRequest(): array
     {
@@ -373,8 +347,6 @@ class IndexController extends SingletonHttpController
      * @Action
      *
      * @View(renderType="html")
-     *
-     * @return void
      */
     public function singletonResponse2(): void
     {
@@ -383,8 +355,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function process(): array
     {
@@ -398,8 +368,6 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      * @Route(url="/type/{id}/{name}/{page}")
-     *
-     * @return array
      */
     public function type(int $id, string $name, int $page): array
     {
@@ -411,8 +379,6 @@ class IndexController extends SingletonHttpController
      *
      * @Action
      * @Route("/duplicated")
-     *
-     * @return void
      */
     public function duplicated1(): void
     {
@@ -423,8 +389,6 @@ class IndexController extends SingletonHttpController
      *
      * @Action
      * @Route("/duplicated")
-     *
-     * @return void
      */
     public function duplicated2(): void
     {

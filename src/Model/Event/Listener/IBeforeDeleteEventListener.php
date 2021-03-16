@@ -13,10 +13,6 @@ interface IBeforeDeleteEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeDeleteEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeDeleteEventParam $e);
+    public function handle(BeforeDeleteEventParam $e): void;
 }

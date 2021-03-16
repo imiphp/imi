@@ -14,22 +14,16 @@ abstract class BaseMain implements IMain
 {
     /**
      * 当前模块根路径.
-     *
-     * @var string|null
      */
     protected ?string $path = null;
 
     /**
      * 当前模块命名空间.
-     *
-     * @var string|null
      */
     protected ?string $namespace = null;
 
     /**
      * 模块名称.
-     *
-     * @var string
      */
     protected string $moduleName = '';
 
@@ -41,8 +35,6 @@ abstract class BaseMain implements IMain
 
     /**
      * 获取当前模块根路径.
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -57,8 +49,6 @@ abstract class BaseMain implements IMain
 
     /**
      * 获取当前模块命名空间.
-     *
-     * @return string
      */
     public function getNamespace(): string
     {
@@ -72,8 +62,6 @@ abstract class BaseMain implements IMain
 
     /**
      * 获取要扫描的bean的命名空间.
-     *
-     * @return array
      */
     public function getBeanScan(): array
     {
@@ -82,8 +70,6 @@ abstract class BaseMain implements IMain
 
     /**
      * 获取配置.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
@@ -92,8 +78,6 @@ abstract class BaseMain implements IMain
 
     /**
      * 获取模块名称.
-     *
-     * @return string
      */
     public function getModuleName(): string
     {

@@ -146,8 +146,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox QQ
-     *
-     * @return void
      */
     public function testQQ(): void
     {
@@ -160,8 +158,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox ipv4
-     *
-     * @return void
      */
     public function testIPv4(): void
     {
@@ -184,8 +180,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox ipv6
-     *
-     * @return void
      */
     public function testIPv6(): void
     {
@@ -199,8 +193,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox ip
-     *
-     * @return void
      */
     public function testIP(): void
     {
@@ -246,8 +238,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox lt
-     *
-     * @return void
      */
     public function testLT(): void
     {
@@ -258,8 +248,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox ltEqual
-     *
-     * @return void
      */
     public function testLTEqual(): void
     {
@@ -270,8 +258,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox gt
-     *
-     * @return void
      */
     public function testGT(): void
     {
@@ -282,8 +268,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox gtEqual
-     *
-     * @return void
      */
     public function testGTEqual(): void
     {
@@ -301,8 +285,6 @@ class ValidatorHelperTest extends BaseTest
 
     /**
      * @testdox unequal
-     *
-     * @return void
      */
     public function testUnEqual(): void
     {

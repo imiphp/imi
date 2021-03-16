@@ -13,8 +13,6 @@ class SingletonResponseTest extends BaseTest
 {
     /**
      * Response1.
-     *
-     * @return void
      */
     public function testResponse1(): void
     {
@@ -25,8 +23,6 @@ class SingletonResponseTest extends BaseTest
 
     /**
      * Response2.
-     *
-     * @return void
      */
     public function testResponse2(): void
     {

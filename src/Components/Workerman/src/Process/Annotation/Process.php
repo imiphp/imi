@@ -19,15 +19,11 @@ class Process extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * 进程名称.
-     *
-     * @var string
      */
     public string $name = '';
 

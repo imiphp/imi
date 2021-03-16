@@ -13,10 +13,6 @@ interface IPacketEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param PacketEventParam $e
-     *
-     * @return void
      */
-    public function handle(PacketEventParam $e);
+    public function handle(PacketEventParam $e): void;
 }

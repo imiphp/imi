@@ -13,10 +13,6 @@ interface IFinishEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param FinishEventParam $e
-     *
-     * @return void
      */
-    public function handle(FinishEventParam $e);
+    public function handle(FinishEventParam $e): void;
 }

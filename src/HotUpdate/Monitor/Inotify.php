@@ -11,8 +11,6 @@ class Inotify extends BaseMonitor
 {
     /**
      * 目录们.
-     *
-     * @var array
      */
     private array $paths = [];
 
@@ -25,8 +23,6 @@ class Inotify extends BaseMonitor
 
     /**
      * inotify_add_watch() mask参数.
-     *
-     * @var int
      */
     protected int $mask = \IN_MODIFY | \IN_MOVE | \IN_CREATE | \IN_DELETE;
 
@@ -39,15 +35,11 @@ class Inotify extends BaseMonitor
 
     /**
      * 排除规则.
-     *
-     * @var string
      */
     private string $excludeRule = '';
 
     /**
      * 初始化.
-     *
-     * @return void
      */
     protected function init(): void
     {
@@ -102,8 +94,6 @@ class Inotify extends BaseMonitor
 
     /**
      * 检测文件是否有更改.
-     *
-     * @return bool
      */
     public function isChanged(): bool
     {
@@ -143,8 +133,6 @@ class Inotify extends BaseMonitor
 
     /**
      * 获取变更的文件们.
-     *
-     * @return array
      */
     public function getChangedFiles(): array
     {
@@ -153,10 +141,6 @@ class Inotify extends BaseMonitor
 
     /**
      * 判断路径是否被排除.
-     *
-     * @param string $filePath
-     *
-     * @return bool
      */
     protected function isExclude(string $filePath): bool
     {

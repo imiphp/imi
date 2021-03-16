@@ -19,8 +19,6 @@ class FdRelation extends MemoryTableModel
      * worker进程ID.
      *
      * @Column(name="workerId", type="int")
-     *
-     * @var int
      */
     protected int $workerId = 0;
 
@@ -28,15 +26,11 @@ class FdRelation extends MemoryTableModel
      * 服务器名.
      *
      * @Column(name="serverName", type="string", length=128)
-     *
-     * @var string
      */
     protected string $serverName = '';
 
     /**
      * Get worker进程ID.
-     *
-     * @return int
      */
     public function getWorkerId(): int
     {
@@ -47,8 +41,6 @@ class FdRelation extends MemoryTableModel
      * Set worker进程ID.
      *
      * @param int $workerId worker进程ID
-     *
-     * @return self
      */
     public function setWorkerId(int $workerId): self
     {
@@ -59,8 +51,6 @@ class FdRelation extends MemoryTableModel
 
     /**
      * Get 服务器名.
-     *
-     * @return string
      */
     public function getServerName(): string
     {
@@ -71,8 +61,6 @@ class FdRelation extends MemoryTableModel
      * Set 服务器名.
      *
      * @param string $serverName 服务器名
-     *
-     * @return self
      */
     public function setServerName(string $serverName): self
     {

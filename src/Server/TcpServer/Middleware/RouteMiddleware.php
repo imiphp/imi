@@ -19,23 +19,16 @@ class RouteMiddleware implements IMiddleware
 {
     /**
      * @ServerInject("TcpRoute")
-     *
-     * @var \Imi\Server\TcpServer\Route\TcpRoute
      */
     protected TcpRoute $route;
 
     /**
      * @ServerInject("TcpRouteNotFoundHandler")
-     *
-     * @var \Imi\Server\TcpServer\Error\ITcpRouteNotFoundHandler
      */
     protected ITcpRouteNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.
-     *
-     * @param IReceiveData    $data
-     * @param IReceiveHandler $handler
      *
      * @return mixed
      */

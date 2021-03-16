@@ -11,11 +11,6 @@ abstract class Random
 {
     /**
      * 随机整数.
-     *
-     * @param int $min
-     * @param int $max
-     *
-     * @return int
      */
     public static function int(int $min = \PHP_INT_MIN, int $max = \PHP_INT_MAX): int
     {
@@ -25,11 +20,7 @@ abstract class Random
     /**
      * 随机生成小数.
      *
-     * @param float $min
-     * @param float $max
-     * @param int   $precision 最大小数位数
-     *
-     * @return string
+     * @param int $precision 最大小数位数
      */
     public static function number(float $min = \PHP_INT_MIN, float $max = \PHP_INT_MAX, int $precision = 2): string
     {
@@ -40,12 +31,6 @@ abstract class Random
 
     /**
      * 随机生成文本.
-     *
-     * @param string   $chars
-     * @param int      $min
-     * @param int|null $max
-     *
-     * @return string
      */
     public static function text(string $chars, int $min, ?int $max = null): string
     {
@@ -62,11 +47,6 @@ abstract class Random
 
     /**
      * 随机生成字母.
-     *
-     * @param int      $min
-     * @param int|null $max
-     *
-     * @return string
      */
     public static function letter(int $min, ?int $max = null): string
     {
@@ -75,11 +55,6 @@ abstract class Random
 
     /**
      * 随机生成数字.
-     *
-     * @param int      $min
-     * @param int|null $max
-     *
-     * @return string
      */
     public static function digital(int $min, ?int $max = null): string
     {
@@ -88,11 +63,6 @@ abstract class Random
 
     /**
      * 随机生成字母和数字.
-     *
-     * @param int      $min
-     * @param int|null $max
-     *
-     * @return string
      */
     public static function letterAndNumber(int $min, ?int $max = null): string
     {

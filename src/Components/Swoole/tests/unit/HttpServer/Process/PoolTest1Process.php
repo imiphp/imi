@@ -16,10 +16,6 @@ class PoolTest1Process extends BaseProcess
 {
     /**
      * @PoolClean
-     *
-     * @param \Swoole\Process $process
-     *
-     * @return void
      */
     public function run(\Swoole\Process $process): void
     {

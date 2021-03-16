@@ -19,8 +19,6 @@ class UpdateTime extends UpdateTimeBase
      * date.
      *
      * @Column(name="date", type="date", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var string|null
      */
     protected ?string $date = null;
 
@@ -28,8 +26,6 @@ class UpdateTime extends UpdateTimeBase
      * time.
      *
      * @Column(name="time", type="time", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var string|null
      */
     protected ?string $time = null;
 
@@ -37,8 +33,6 @@ class UpdateTime extends UpdateTimeBase
      * datetime.
      *
      * @Column(name="datetime", type="datetime", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var string|null
      */
     protected ?string $datetime = null;
 
@@ -46,8 +40,6 @@ class UpdateTime extends UpdateTimeBase
      * timestamp.
      *
      * @Column(name="timestamp", type="timestamp", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var string|null
      */
     protected ?string $timestamp = null;
 
@@ -55,8 +47,6 @@ class UpdateTime extends UpdateTimeBase
      * int.
      *
      * @Column(name="int", type="int", length=11, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var int|null
      */
     protected ?int $int = null;
 
@@ -64,8 +54,6 @@ class UpdateTime extends UpdateTimeBase
      * bigint.
      *
      * @Column(name="bigint", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var int|null
      */
     protected ?int $bigint = null;
 
@@ -73,8 +61,6 @@ class UpdateTime extends UpdateTimeBase
      * year.
      *
      * @Column(name="year", type="year", length=4, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false, updateTime=true)
-     *
-     * @var int|null
      */
     protected ?int $year = null;
 }

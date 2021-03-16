@@ -15,29 +15,21 @@ class Field implements IField
 
     /**
      * 数据库名.
-     *
-     * @var string|null
      */
     protected ?string $database = null;
 
     /**
      * 表名.
-     *
-     * @var string|null
      */
     protected ?string $table = null;
 
     /**
      * 字段名.
-     *
-     * @var string|null
      */
     protected ?string $field = null;
 
     /**
      * 别名.
-     *
-     * @var string|null
      */
     protected ?string $alias = null;
 
@@ -51,8 +43,6 @@ class Field implements IField
 
     /**
      * 获取数据库名.
-     *
-     * @return string|null
      */
     public function getDatabase(): ?string
     {
@@ -61,8 +51,6 @@ class Field implements IField
 
     /**
      * 获取表名.
-     *
-     * @return string|null
      */
     public function getTable(): ?string
     {
@@ -71,8 +59,6 @@ class Field implements IField
 
     /**
      * 获取字段名.
-     *
-     * @return string|null
      */
     public function getField(): ?string
     {
@@ -81,8 +67,6 @@ class Field implements IField
 
     /**
      * 获取别名.
-     *
-     * @return string|null
      */
     public function getAlias(): ?string
     {
@@ -91,10 +75,6 @@ class Field implements IField
 
     /**
      * 设置数据库名.
-     *
-     * @param string|null $database
-     *
-     * @return void
      */
     public function setDatabase(?string $database = null): void
     {
@@ -103,10 +83,6 @@ class Field implements IField
 
     /**
      * 设置表名.
-     *
-     * @param string|null $table
-     *
-     * @return void
      */
     public function setTable(?string $table = null): void
     {
@@ -115,10 +91,6 @@ class Field implements IField
 
     /**
      * 设置字段名.
-     *
-     * @param string|null $field
-     *
-     * @return void
      */
     public function setField(?string $field = null): void
     {
@@ -127,10 +99,6 @@ class Field implements IField
 
     /**
      * 设置别名.
-     *
-     * @param string|null $alias
-     *
-     * @return void
      */
     public function setAlias(?string $alias = null): void
     {
@@ -144,10 +112,6 @@ class Field implements IField
      * parent.parent.name——database.table.field
      * name alias——field alias
      * name as alias—— field as alias.
-     *
-     * @param string $value
-     *
-     * @return void
      */
     public function setValue(string $value): void
     {
@@ -193,8 +157,6 @@ class Field implements IField
 
     /**
      * 获取绑定的数据们.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

@@ -16,9 +16,6 @@ use Imi\Swoole\Server\Event\Param\RequestEventParam;
  */
 class BeforeRequest implements IRequestEventListener
 {
-    /**
-     * @var \Imi\Server\Http\Dispatcher
-     */
     protected Dispatcher $dispatcher;
 
     /**
@@ -36,10 +33,6 @@ class BeforeRequest implements IRequestEventListener
 
     /**
      * 事件处理方法.
-     *
-     * @param RequestEventParam $e
-     *
-     * @return void
      */
     public function handle(RequestEventParam $e): void
     {

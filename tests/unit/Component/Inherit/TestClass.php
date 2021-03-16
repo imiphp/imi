@@ -39,8 +39,6 @@ class TestClass extends ParentClass
 
     /**
      * @Inherit({"Imi\Aop\Annotation\FilterArg"})
-     *
-     * @return void
      */
     public function test(): void
     {
@@ -52,8 +50,6 @@ class TestClass extends ParentClass
 
     /**
      * @Inherit
-     *
-     * @return void
      */
     public function test3(): void
     {

@@ -10,8 +10,6 @@ class Client
 {
     /**
      * 配置项.
-     *
-     * @var array
      */
     private array $options = [];
 
@@ -19,8 +17,6 @@ class Client
      * socket 文件路径.
      *
      * 不支持 samba 文件共享
-     *
-     * @var string
      */
     private string $socketFile = '';
 
@@ -33,15 +29,11 @@ class Client
 
     /**
      * 是否已连接.
-     *
-     * @var bool
      */
     private bool $connected = false;
 
     /**
      * 构造方法.
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {
@@ -55,8 +47,6 @@ class Client
 
     /**
      * 连接.
-     *
-     * @return bool
      */
     public function connect(): bool
     {
@@ -79,8 +69,6 @@ class Client
 
     /**
      * 关闭连接.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -93,8 +81,6 @@ class Client
 
     /**
      * 是否已连接.
-     *
-     * @return bool
      */
     public function isConnected(): bool
     {
@@ -103,10 +89,6 @@ class Client
 
     /**
      * 发送操作.
-     *
-     * @param IMessage $message
-     *
-     * @return bool
      */
     public function send(IMessage $message): bool
     {

@@ -15,22 +15,16 @@ class Redis extends Base
 {
     /**
      * Redis连接池名称.
-     *
-     * @var string|null
      */
     protected ?string $poolName = null;
 
     /**
      * 缓存键前缀
-     *
-     * @var string
      */
     protected string $prefix = '';
 
     /**
      * 将 key 中的 "." 替换为 ":".
-     *
-     * @var bool
      */
     protected bool $replaceDot = false;
 
@@ -260,10 +254,6 @@ class Redis extends Base
 
     /**
      * 处理键.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     public function parseKey(string $key): string
     {

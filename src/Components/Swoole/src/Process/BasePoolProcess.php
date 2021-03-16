@@ -10,8 +10,6 @@ abstract class BasePoolProcess implements IPoolProcess
 {
     /**
      * 数据.
-     *
-     * @var array
      */
     protected array $data = [];
 

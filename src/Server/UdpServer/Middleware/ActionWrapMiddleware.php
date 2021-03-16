@@ -17,16 +17,11 @@ class ActionWrapMiddleware implements IMiddleware
 {
     /**
      * 动作中间件.
-     *
-     * @var string
      */
     protected string $actionMiddleware = ActionMiddleware::class;
 
     /**
      * 处理方法.
-     *
-     * @param IPacketData    $data
-     * @param IPacketHandler $handler
      *
      * @return mixed
      */

@@ -11,8 +11,6 @@ interface IRuntimeModeHandler
 {
     /**
      * 初始化.
-     *
-     * @return void
      */
-    public function init();
+    public function init(): void;
 }

@@ -25,10 +25,6 @@ class Imi
 
     /**
      * 处理规则，暂只支持通配符*.
-     *
-     * @param string $rule
-     *
-     * @return string
      */
     public static function parseRule(string $rule): string
     {
@@ -40,11 +36,6 @@ class Imi
 
     /**
      * 检查规则是否匹配，支持通配符*.
-     *
-     * @param string $rule
-     * @param string $string
-     *
-     * @return bool
      */
     public static function checkRuleMatch(string $rule, string $string): bool
     {
@@ -55,12 +46,6 @@ class Imi
 
     /**
      * 检查类和方法是否匹配，支持通配符*.
-     *
-     * @param string $rule
-     * @param string $className
-     * @param string $methodName
-     *
-     * @return bool
      */
     public static function checkClassMethodRule(string $rule, string $className, string $methodName): bool
     {
@@ -71,11 +56,6 @@ class Imi
 
     /**
      * 检查类是否匹配，支持通配符*.
-     *
-     * @param string $rule
-     * @param string $className
-     *
-     * @return bool
      */
     public static function checkClassRule(string $rule, string $className): bool
     {
@@ -88,9 +68,6 @@ class Imi
      * 检查验证比较规则集.
      *
      * @param string|array $rules
-     * @param callable     $valueCallback
-     *
-     * @return bool
      */
     public static function checkCompareRules($rules, callable $valueCallback): bool
     {
@@ -118,11 +95,6 @@ class Imi
      * id!=1 id<>1
      * id
      * !id.
-     *
-     * @param string   $rule
-     * @param callable $valueCallback
-     *
-     * @return bool
      */
     public static function checkCompareRule(string $rule, callable $valueCallback): bool
     {
@@ -156,8 +128,6 @@ class Imi
      *
      * @param string|array $rules
      * @param mixed        $value
-     *
-     * @return bool
      */
     public static function checkCompareValues($rules, $value): bool
     {
@@ -177,8 +147,6 @@ class Imi
      *
      * @param string|array $rule
      * @param mixed        $value
-     *
-     * @return bool
      */
     public static function checkCompareValue($rule, $value): bool
     {
@@ -197,8 +165,6 @@ class Imi
     /**
      * 处理按.分隔的规则文本，支持\.转义不分隔.
      *
-     * @param string $rule
-     *
      * @return string[]
      */
     public static function parseDotRule(string $rule): array
@@ -211,10 +177,6 @@ class Imi
 
     /**
      * 获取类命名空间.
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public static function getClassNamespace(string $className): string
     {
@@ -223,10 +185,6 @@ class Imi
 
     /**
      * 获取类短名称.
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public static function getClassShortName(string $className): string
     {
@@ -235,10 +193,6 @@ class Imi
 
     /**
      * 根据命名空间获取真实路径，返回null则为获取失败.
-     *
-     * @param string $namespace
-     *
-     * @return string|null
      */
     public static function getNamespacePath(string $namespace): ?string
     {
@@ -306,8 +260,6 @@ class Imi
     /**
      * 根据命名空间获取真实路径，允许返回多个.
      *
-     * @param string $namespace
-     *
      * @return string[]
      */
     public static function getNamespacePaths(string $namespace): array
@@ -370,9 +322,6 @@ class Imi
      * 获取类属性的值，值为beans配置或默认配置，支持传入Bean名称
      * 构造方法赋值无法取出.
      *
-     * @param string $className
-     * @param string $propertyName
-     *
      * @return mixed
      */
     public static function getClassPropertyValue(string $className, string $propertyName)
@@ -394,12 +343,6 @@ class Imi
 
     /**
      * 获取imi命令行.
-     *
-     * @param string $commandName
-     * @param array  $arguments
-     * @param array  $options
-     *
-     * @return string
      */
     public static function getImiCmd(string $commandName, array $arguments = [], array $options = []): string
     {
@@ -438,8 +381,6 @@ class Imi
      * 获取运行时目录路径.
      *
      * @param string ...$path
-     *
-     * @return string
      */
     public static function getRuntimePath(string ...$path): string
     {
@@ -475,8 +416,6 @@ class Imi
      * 构建运行时缓存.
      *
      * @param string|null $cacheName 如果为空则默认为runtime
-     *
-     * @return void
      */
     public static function buildRuntime(?string $cacheName = null): void
     {
@@ -499,10 +438,6 @@ class Imi
     /**
      * 从文件加载运行时数据
      * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
-     *
-     * @param string $cacheName
-     *
-     * @return bool
      */
     public static function loadRuntimeInfo(string $cacheName): bool
     {
@@ -528,10 +463,6 @@ class Imi
 
     /**
      * 增量更新运行时缓存.
-     *
-     * @param array $files
-     *
-     * @return void
      */
     public static function incrUpdateRuntime(array $files): void
     {
@@ -546,8 +477,6 @@ class Imi
 
     /**
      * 检查系统是否支持端口重用.
-     *
-     * @return bool
      */
     public static function checkReusePort(): bool
     {
@@ -556,24 +485,16 @@ class Imi
 
     /**
      * eval 方法用的自增变量.
-     *
-     * @var int
      */
     private static int $evalAtomic = 0;
 
     /**
      * 临时目录地址
-     *
-     * @var string
      */
     private static string $tmpPath = '';
 
     /**
      * eval() 函数的安全替代方法.
-     *
-     * @param string      $code
-     * @param string|null $fileName
-     * @param bool        $deleteFile
      *
      * @return mixed
      */
@@ -626,8 +547,6 @@ class Imi
 
     /**
      * 检测是否为 WSL 环境.
-     *
-     * @return bool
      */
     public static function isWSL(): bool
     {
@@ -636,8 +555,6 @@ class Imi
 
     /**
      * 获取 Linux 版本号.
-     *
-     * @return string
      */
     public static function getLinuxVersion(): string
     {
@@ -679,8 +596,6 @@ class Imi
 
     /**
      * 获取苹果系统版本.
-     *
-     * @return string
      */
     public static function getDarwinVersion(): string
     {
@@ -718,8 +633,6 @@ class Imi
 
     /**
      * 获取 Cygwin 版本.
-     *
-     * @return string
      */
     public static function getCygwinVersion(): string
     {
@@ -735,8 +648,6 @@ class Imi
 
     /**
      * 判断是否为 Docker 环境.
-     *
-     * @return bool
      */
     public static function isDockerEnvironment(): bool
     {

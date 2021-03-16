@@ -14,8 +14,6 @@ class UriTest extends BaseTest
 {
     /**
      * @testdox startwith
-     *
-     * @return void
      */
     public function testUri(): void
     {

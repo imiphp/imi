@@ -19,8 +19,6 @@ class FilterArg extends Base
 {
     /**
      * 参数名.
-     *
-     * @var string|null
      */
     public ?string $name = null;
 

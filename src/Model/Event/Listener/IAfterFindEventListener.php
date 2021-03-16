@@ -13,10 +13,6 @@ interface IAfterFindEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterFindEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterFindEventParam $e);
+    public function handle(AfterFindEventParam $e): void;
 }

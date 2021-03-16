@@ -13,25 +13,17 @@ class JsonErrorHandler implements IErrorHandler
 {
     /**
      * debug 为 false时也显示错误信息.
-     *
-     * @var bool
      */
     protected bool $releaseShow = false;
 
     /**
      * 取消继续抛出异常.
-     *
-     * @var bool
      */
     protected bool $cancelThrow = false;
 
     /**
      * 捕获错误
      * 返回值为 true 则取消继续抛出异常.
-     *
-     * @param \Throwable $throwable
-     *
-     * @return bool
      */
     public function handle(\Throwable $throwable): bool
     {

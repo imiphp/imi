@@ -20,8 +20,6 @@ class TestArg
      *
      * @param int    $id
      * @param string $phpVersion
-     *
-     * @return void
      */
     public function test($id, $phpVersion = null): void
     {

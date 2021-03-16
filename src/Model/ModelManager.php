@@ -19,71 +19,51 @@ class ModelManager
 {
     /**
      * 模型类注解缓存.
-     *
-     * @var array
      */
     private static array $annotation = [];
 
     /**
      * 模型类属性注解缓存.
-     *
-     * @var array
      */
     private static array $propertyAnnotation = [];
 
     /**
      * 驼峰命名缓存.
-     *
-     * @var array
      */
     private static array $isCamelCache = [];
 
     /**
      * 键规则缓存.
-     *
-     * @var array
      */
     private static array $keyRules = [];
 
     /**
      * member规则缓存.
-     *
-     * @var array
      */
     private static array $memberRules = [];
 
     /**
      * 字段缓存.
-     *
-     * @var array
      */
     private static array $fields = [];
 
     /**
      * 表名缓存.
-     *
-     * @var array
      */
     private static array $table = [];
 
     /**
      * 数据库连接池名缓存.
-     *
-     * @var array
      */
     private static array $dbPoolName = [];
 
     /**
      * 主键缓存.
-     *
-     * @var array
      */
     private static array $id = [];
 
     /**
      * 模型类的提取属性注解缓存.
-     *
-     * @var array
      */
     private static array $extractPropertys = [];
 
@@ -95,9 +75,6 @@ class ModelManager
      * 获取当前模型类的类注解.
      *
      * @param string|object $object
-     * @param string        $annotationClass
-     *
-     * @return \Imi\Bean\Annotation\Base|null
      */
     public static function getAnnotation($object, string $annotationClass): ?Base
     {
@@ -117,10 +94,6 @@ class ModelManager
      * 获取当前模型类的属性注解.
      *
      * @param string|object $object
-     * @param string        $propertyName
-     * @param string        $annotationClass
-     *
-     * @return \Imi\Bean\Annotation\Base|null
      */
     public static function getPropertyAnnotation($object, string $propertyName, string $annotationClass): ?Base
     {
@@ -140,8 +113,6 @@ class ModelManager
      * 获取当前模型类的表名.
      *
      * @param string|object $object
-     *
-     * @return string
      */
     public static function getTable($object): string
     {
@@ -164,8 +135,6 @@ class ModelManager
      * 获取当前模型类数据库连接池名.
      *
      * @param string|object $object
-     *
-     * @return string
      */
     public static function getDbPoolName($object): string
     {
@@ -213,8 +182,6 @@ class ModelManager
      * 获取第一个主键.
      *
      * @param string|object $object
-     *
-     * @return string|null
      */
     public static function getFirstId($object): ?string
     {
@@ -268,8 +235,6 @@ class ModelManager
      * 模型是否为驼峰命名.
      *
      * @param string|object $object
-     *
-     * @return bool
      */
     public static function isCamel($object): bool
     {
@@ -292,8 +257,6 @@ class ModelManager
      * 获取键.
      *
      * @param string|object $object
-     *
-     * @return \Imi\Model\Key\KeyRule
      */
     public static function getKeyRule($object): KeyRule
     {
@@ -318,8 +281,6 @@ class ModelManager
      * 获取Member.
      *
      * @param string|object $object
-     *
-     * @return \Imi\Model\Key\KeyRule
      */
     public static function getMemberRule($object): KeyRule
     {
@@ -344,8 +305,6 @@ class ModelManager
      * 获取当前模型类的Redis注解.
      *
      * @param string|object $object
-     *
-     * @return \Imi\Model\Annotation\RedisEntity|null
      */
     public static function getRedisEntity($object): ?RedisEntity
     {
@@ -357,8 +316,6 @@ class ModelManager
      * 获取模型类的批量设置序列化注解.
      *
      * @param string|object $object
-     *
-     * @return \Imi\Model\Annotation\Serializables|null
      */
     public static function getSerializables($object): ?Serializables
     {

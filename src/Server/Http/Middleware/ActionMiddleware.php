@@ -27,8 +27,6 @@ class ActionMiddleware implements MiddlewareInterface
 {
     /**
      * @ServerInject("View")
-     *
-     * @var \Imi\Server\View\View
      */
     protected View $view;
 
@@ -48,11 +46,6 @@ class ActionMiddleware implements MiddlewareInterface
 
     /**
      * 处理方法.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -143,11 +136,6 @@ class ActionMiddleware implements MiddlewareInterface
 
     /**
      * 准备调用action的参数.
-     *
-     * @param Request                            $request
-     * @param \Imi\Server\Http\Route\RouteResult $routeResult
-     *
-     * @return array
      */
     private function prepareActionParams(Request $request, RouteResult $routeResult): array
     {

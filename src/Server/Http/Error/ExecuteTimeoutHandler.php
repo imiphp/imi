@@ -19,9 +19,6 @@ use Imi\Util\Stream\MemoryStream;
 class ExecuteTimeoutHandler implements IExecuteTimeoutHandler
 {
     /**
-     * @param \Imi\Server\Http\Message\Contract\IHttpRequest  $request
-     * @param \Imi\Server\Http\Message\Contract\IHttpResponse $response
-     *
      * @return mixed
      */
     public function handle(IHttpRequest $request, IHttpResponse $response)

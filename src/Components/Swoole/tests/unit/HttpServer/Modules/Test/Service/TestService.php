@@ -13,10 +13,6 @@ class TestService
 {
     /**
      * 测试方法.
-     *
-     * @param int $time
-     *
-     * @return string
      */
     public function test(int $time): string
     {

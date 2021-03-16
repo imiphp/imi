@@ -13,8 +13,6 @@ class SwooleRequest extends Request
 {
     /**
      * swoole的http请求对象
-     *
-     * @var \Swoole\Http\Request
      */
     protected \Swoole\Http\Request $swooleRequest;
 
@@ -27,7 +25,6 @@ class SwooleRequest extends Request
 
     /**
      * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
-     * @param \Swoole\Http\Request                                               $request
      */
     public function __construct(Base $server, \Swoole\Http\Request $request)
     {
@@ -37,8 +34,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化协议版本.
-     *
-     * @return void
      */
     protected function initProtocolVersion(): void
     {
@@ -47,8 +42,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化 headers.
-     *
-     * @return void
      */
     protected function initHeaders(): void
     {
@@ -57,8 +50,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化 body.
-     *
-     * @return void
      */
     protected function initBody(): void
     {
@@ -67,8 +58,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化 uri.
-     *
-     * @return void
      */
     protected function initUri(): void
     {
@@ -93,8 +82,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化 method.
-     *
-     * @return void
      */
     protected function initMethod(): void
     {
@@ -103,8 +90,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化 server.
-     *
-     * @return void
      */
     protected function initServer(): void
     {
@@ -113,8 +98,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化请求参数.
-     *
-     * @return void
      */
     protected function initRequestParams(): void
     {
@@ -127,8 +110,6 @@ class SwooleRequest extends Request
 
     /**
      * 初始化上传文件.
-     *
-     * @return void
      */
     protected function initUploadedFiles(): void
     {
@@ -137,8 +118,6 @@ class SwooleRequest extends Request
 
     /**
      * Get swoole的http请求对象
-     *
-     * @return \Swoole\Http\Request
      */
     public function getSwooleRequest(): \Swoole\Http\Request
     {
@@ -147,8 +126,6 @@ class SwooleRequest extends Request
 
     /**
      * 获取对应的服务器.
-     *
-     * @return \Imi\Swoole\Server\Base
      */
     public function getServerInstance(): Base
     {

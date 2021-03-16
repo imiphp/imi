@@ -32,8 +32,6 @@ class Server extends BaseCommand
      * @Option(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
      * @Option(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * @Option(name="daemon", shortcut="d", type=ArgType::BOOL, required=false, default=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式")
-     *
-     * @return void
      */
     public function start(?string $name, ?int $workerNum, bool $d = false): void
     {
@@ -96,8 +94,6 @@ class Server extends BaseCommand
      * 停止服务
      *
      * @CommandAction(name="stop")
-     *
-     * @return void
      */
     public function stop(): void
     {
@@ -114,8 +110,6 @@ class Server extends BaseCommand
 
     /**
      * 输出 imi 图标.
-     *
-     * @return void
      */
     public function outImi(): void
     {
@@ -133,8 +127,6 @@ STR
 
     /**
      * 输出启动信息.
-     *
-     * @return void
      */
     public function outStartupInfo(): void
     {

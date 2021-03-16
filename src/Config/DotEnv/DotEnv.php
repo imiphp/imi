@@ -28,13 +28,8 @@ class DotEnv
     /**
      * Create a new dotenv instance.
      *
-     * @param \Dotenv\Repository\RepositoryInterface $repository
-     * @param string|string[]                        $paths
-     * @param string|string[]|null                   $names
-     * @param bool                                   $shortCircuit
-     * @param string|null                            $fileEncoding
-     *
-     * @return \Dotenv\Dotenv
+     * @param string|string[]      $paths
+     * @param string|string[]|null $names
      */
     public static function create(RepositoryInterface $repository, $paths, $names = null, bool $shortCircuit = true, string $fileEncoding = null): \Dotenv\Dotenv
     {

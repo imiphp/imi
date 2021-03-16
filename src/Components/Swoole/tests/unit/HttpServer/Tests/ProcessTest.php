@@ -13,8 +13,6 @@ class ProcessTest extends BaseTest
 {
     /**
      * 测试 PoolClean 注解，mode=allow.
-     *
-     * @return void
      */
     public function testPoolCleanAllow(): void
     {
@@ -32,8 +30,6 @@ class ProcessTest extends BaseTest
 
     /**
      * 测试 PoolClean 注解，mode=deny.
-     *
-     * @return void
      */
     public function testPoolCleanDeny(): void
     {
@@ -50,8 +46,6 @@ class ProcessTest extends BaseTest
 
     /**
      * getProcessWithManager.
-     *
-     * @return void
      */
     public function testGetProcessWithManager(): void
     {

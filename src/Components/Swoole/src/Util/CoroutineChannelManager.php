@@ -20,8 +20,6 @@ class CoroutineChannelManager
 
     /**
      * 是否初始化.
-     *
-     * @var bool
      */
     protected static bool $inited = false;
 
@@ -45,10 +43,7 @@ class CoroutineChannelManager
     /**
      * 增加对象名称.
      *
-     * @param string $name
-     * @param int    $size 通道占用的内存的尺寸，单位为字节。最小值为64K，最大值没有限制
-     *
-     * @return void
+     * @param int $size 通道占用的内存的尺寸，单位为字节。最小值为64K，最大值没有限制
      */
     public static function addName(string $name, int $size = 0): void
     {
@@ -57,10 +52,6 @@ class CoroutineChannelManager
 
     /**
      * 设置对象名称.
-     *
-     * @param array $names
-     *
-     * @return void
      */
     public static function setNames(array $names): void
     {
@@ -72,8 +63,6 @@ class CoroutineChannelManager
 
     /**
      * 获取所有对象名称.
-     *
-     * @return array
      */
     public static function getNames(): array
     {
@@ -88,10 +77,7 @@ class CoroutineChannelManager
      * 写入成功返回true
      * 通道的空间不足时写入失败并返回false.
      *
-     * @param string $name
-     * @param mixed  $data
-     *
-     * @return bool
+     * @param mixed $data
      */
     public static function push(string $name, $data): bool
     {
@@ -103,9 +89,6 @@ class CoroutineChannelManager
      * pop方法无需传入任何参数
      * 当通道内有数据时自动将数据弹出并还原为PHP变量
      * 当通道内没有任何数据时pop会失败并返回false.
-     *
-     * @param string $name
-     * @param float  $timeout
      *
      * @return mixed
      */
@@ -121,10 +104,6 @@ class CoroutineChannelManager
      * producer_num 生产者数量，表示当前通道已满，有N个协程正在等待其他协程调用pop方法消费数据
      * queue_num 通道中的元素数量
      * queue_bytes 通道当前占用的内存字节数.
-     *
-     * @param string $name
-     *
-     * @return array
      */
     public static function stats(string $name): array
     {
@@ -135,10 +114,6 @@ class CoroutineChannelManager
      * 关闭通道。并唤醒所有等待读写的协程。
      * 唤醒所有生产者协程，push方法返回false
      * 唤醒所有消费者协程，pop方法返回false.
-     *
-     * @param string $name
-     *
-     * @return void
      */
     public static function close(string $name): void
     {
@@ -147,10 +122,6 @@ class CoroutineChannelManager
 
     /**
      * 获取实例.
-     *
-     * @param string $name
-     *
-     * @return \Swoole\Coroutine\Channel
      */
     public static function getInstance(string $name): \Swoole\Coroutine\Channel
     {

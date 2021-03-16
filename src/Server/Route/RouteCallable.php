@@ -10,22 +10,16 @@ class RouteCallable
 {
     /**
      * 服务器名.
-     *
-     * @var string
      */
     public string $serverName = '';
 
     /**
      * 类名.
-     *
-     * @var string
      */
     public string $className = '';
 
     /**
      * 方法名.
-     *
-     * @var string
      */
     public string $methodName = '';
 
@@ -38,10 +32,6 @@ class RouteCallable
 
     /**
      * 获取可以被调用的格式.
-     *
-     * @param array $params
-     *
-     * @return callable
      */
     public function getCallable(array $params = []): callable
     {

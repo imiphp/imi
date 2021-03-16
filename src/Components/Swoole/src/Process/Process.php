@@ -9,9 +9,6 @@ class Process extends \Swoole\Process
     /**
      * 发送消息.
      *
-     * @param string $action
-     * @param array  $data
-     *
      * @return mixed
      */
     public function sendMessage(string $action, array $data = [])

@@ -18,8 +18,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 {
     /**
      * 当前进程的WorkerId.
-     *
-     * @var int|null
      */
     private ?int $workerId = null;
 
@@ -32,30 +30,22 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕.
-     *
-     * @var bool
      */
     private bool $workerStartAppComplete = false;
 
     /**
      * Worker 进程数量.
-     *
-     * @var int|null
      */
     private ?int $workerNum = null;
 
     /**
      * task 进程数量.
-     *
-     * @var int|null
      */
     private ?int $taskWorkerNum = null;
 
     /**
      * 获取当前 worker 进程的 ID
      * 注意，不是进程ID.
-     *
-     * @return int|null
      */
     public function getWorkerId(): ?int
     {
@@ -81,8 +71,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 获取 Worker 进程数量.
-     *
-     * @return int
      */
     public function getWorkerNum(): int
     {
@@ -98,8 +86,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 是否初始化完毕.
-     *
-     * @return bool
      */
     public function isInited(): bool
     {
@@ -108,8 +94,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 初始化完毕.
-     *
-     * @return void
      */
     public function inited(): void
     {
@@ -129,8 +113,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 是否 IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕.
-     *
-     * @return bool
      */
     public function isWorkerStartAppComplete(): bool
     {
@@ -139,8 +121,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 获取 task 进程数量.
-     *
-     * @return int
      */
     public function getTaskWorkerNum(): int
     {
@@ -156,8 +136,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 是否为 task 进程.
-     *
-     * @return bool
      */
     public function isTask(): bool
     {
@@ -169,8 +147,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 获取服务器 master 进程 PID.
-     *
-     * @return int
      */
     public function getMasterPid(): int
     {
@@ -182,8 +158,6 @@ class SwooleWorkerHandler implements ISwooleWorker
 
     /**
      * 获取服务器 manager 进程 PID.
-     *
-     * @return int
      */
     public function getManagerPid(): int
     {

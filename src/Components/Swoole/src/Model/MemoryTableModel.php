@@ -16,15 +16,11 @@ abstract class MemoryTableModel extends BaseModel
 {
     /**
      * 记录的key值
-     *
-     * @var string
      */
     protected string $__key = '';
 
     /**
      * 查找一条记录.
-     *
-     * @param string $key
      *
      * @return static|null
      */
@@ -67,8 +63,6 @@ abstract class MemoryTableModel extends BaseModel
 
     /**
      * 保存记录.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -88,8 +82,6 @@ abstract class MemoryTableModel extends BaseModel
 
     /**
      * 删除记录.
-     *
-     * @return void
      */
     public function delete(): void
     {
@@ -106,8 +98,6 @@ abstract class MemoryTableModel extends BaseModel
      * 批量删除.
      *
      * @param string ...$keys
-     *
-     * @return void
      */
     public static function deleteBatch(string ...$keys): void
     {
@@ -130,8 +120,6 @@ abstract class MemoryTableModel extends BaseModel
 
     /**
      * 统计数量.
-     *
-     * @return int
      */
     public static function count(): int
     {
@@ -147,8 +135,6 @@ abstract class MemoryTableModel extends BaseModel
 
     /**
      * 获取键.
-     *
-     * @return string
      */
     public function __getKey(): string
     {
@@ -157,8 +143,6 @@ abstract class MemoryTableModel extends BaseModel
 
     /**
      * 设置键.
-     *
-     * @param string $key
      *
      * @return static
      */

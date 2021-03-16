@@ -10,8 +10,6 @@ interface ISwooleWebSocketFrame extends IFrame
 {
     /**
      * 获取 \Swoole\Websocket\Frame 对象
-     *
-     * @return \Swoole\Websocket\Frame
      */
     public function getSwooleWebSocketFrame(): \Swoole\Websocket\Frame;
 }

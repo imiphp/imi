@@ -14,14 +14,8 @@ use Imi\Workerman\Server\Http\Server;
  */
 class BeforeRequest implements IEventListener
 {
-    /**
-     * @var \Imi\Server\Http\Dispatcher
-     */
     protected Dispatcher $dispatcher;
 
-    /**
-     * @var Server
-     */
     protected Server $server;
 
     public function __construct(Server $server)
@@ -31,10 +25,6 @@ class BeforeRequest implements IEventListener
 
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
     public function handle(EventParam $e): void
     {

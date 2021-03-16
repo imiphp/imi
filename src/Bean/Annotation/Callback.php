@@ -25,15 +25,11 @@ class Callback extends BaseInjectValue
 
     /**
      * 方法名.
-     *
-     * @var string
      */
     public string $method = '';
 
     /**
-     * @param array|null    $__data
      * @param string|object $class
-     * @param string        $method
      */
     public function __construct(?array $__data = null, $class = null, string $method = '')
     {

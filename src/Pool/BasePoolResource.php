@@ -14,8 +14,6 @@ abstract class BasePoolResource implements IPoolResource
 
     /**
      * 池子实例.
-     *
-     * @var IPool
      */
     private IPool $pool;
 
@@ -26,8 +24,6 @@ abstract class BasePoolResource implements IPoolResource
 
     /**
      * 获取池子实例.
-     *
-     * @return IPool
      */
     public function getPool(): IPool
     {

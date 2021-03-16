@@ -17,11 +17,6 @@ class AnnotationLoader
 
     /**
      * 加载模块注解.
-     *
-     * @param string   $namespace
-     * @param callable $callback
-     *
-     * @return void
      */
     public function loadModuleAnnotations(string $namespace, callable $callback): void
     {

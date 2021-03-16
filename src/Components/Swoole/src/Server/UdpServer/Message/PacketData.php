@@ -8,8 +8,6 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
 {
     /**
      * 客户端信息.
-     *
-     * @var array
      */
     protected array $clientInfo = [];
 
@@ -21,8 +19,6 @@ class PacketData extends \Imi\Server\UdpServer\Message\PacketData implements IPa
 
     /**
      * 获取客户端信息.
-     *
-     * @return array
      */
     public function getClientInfo(): array
     {

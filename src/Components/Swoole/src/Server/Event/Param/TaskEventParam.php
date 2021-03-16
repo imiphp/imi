@@ -12,22 +12,16 @@ class TaskEventParam extends EventParam
 {
     /**
      * 服务器对象
-     *
-     * @var \Imi\Swoole\Server\Base
      */
     public Base $server;
 
     /**
      * 任务ID.
-     *
-     * @var int
      */
     public int $taskId = 0;
 
     /**
      * worker进程ID.
-     *
-     * @var int
      */
     public int $workerId = 0;
 
@@ -47,8 +41,6 @@ class TaskEventParam extends EventParam
 
     /**
      * task 对象
-     *
-     * @var \Swoole\Server\Task|null
      */
     public ?Task $task = null;
 }

@@ -39,8 +39,6 @@ abstract class Model extends BaseModel
      * @param string|object $object
      * @param string|null   $poolName  连接池名，为null则取默认
      * @param int|null      $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
-     *
-     * @return \Imi\Db\Query\Interfaces\IQuery
      */
     public static function query($object = null, ?string $poolName = null, ?int $queryType = null): IQuery
     {
@@ -55,8 +53,6 @@ abstract class Model extends BaseModel
      * @param string|object $object
      * @param string|null   $poolName  连接池名，为null则取默认
      * @param int|null      $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
-     *
-     * @return \Imi\Db\Query\Interfaces\IQuery
      */
     public static function dbQuery($object = null, ?string $poolName = null, ?int $queryType = null): IQuery
     {
@@ -178,8 +174,6 @@ abstract class Model extends BaseModel
      * 插入记录.
      *
      * @param mixed $data
-     *
-     * @return IResult
      */
     public function insert($data = null): IResult
     {
@@ -233,8 +227,6 @@ abstract class Model extends BaseModel
      * 更新记录.
      *
      * @param mixed $data
-     *
-     * @return IResult
      */
     public function update($data = null): IResult
     {
@@ -306,8 +298,6 @@ abstract class Model extends BaseModel
      *
      * @param mixed          $data
      * @param array|callable $where
-     *
-     * @return IResult|null
      */
     public static function updateBatch($data, $where = null): ?IResult
     {
@@ -355,8 +345,6 @@ abstract class Model extends BaseModel
 
     /**
      * 保存记录.
-     *
-     * @return IResult
      */
     public function save(): IResult
     {
@@ -431,8 +419,6 @@ abstract class Model extends BaseModel
 
     /**
      * 删除记录.
-     *
-     * @return IResult
      */
     public function delete(): IResult
     {
@@ -491,8 +477,6 @@ abstract class Model extends BaseModel
      * 查询指定关联.
      *
      * @param string ...$names
-     *
-     * @return void
      */
     public function queryRelations(string ...$names): void
     {
@@ -513,8 +497,6 @@ abstract class Model extends BaseModel
      * 初始化关联属性.
      *
      * @param string ...$names
-     *
-     * @return void
      */
     public function initRelations(string ...$names): void
     {
@@ -528,8 +510,6 @@ abstract class Model extends BaseModel
      * 批量删除.
      *
      * @param array|callable $where
-     *
-     * @return IResult
      */
     public static function deleteBatch($where = null): IResult
     {
@@ -554,10 +534,6 @@ abstract class Model extends BaseModel
 
     /**
      * 统计数量.
-     *
-     * @param string $field
-     *
-     * @return int
      */
     public static function count(string $field = '*'): int
     {
@@ -566,8 +542,6 @@ abstract class Model extends BaseModel
 
     /**
      * 求和.
-     *
-     * @param string $field
      *
      * @return int|float
      */
@@ -579,8 +553,6 @@ abstract class Model extends BaseModel
     /**
      * 平均值
      *
-     * @param string $field
-     *
      * @return int|float
      */
     public static function avg(string $field)
@@ -590,8 +562,6 @@ abstract class Model extends BaseModel
 
     /**
      * 最大值
-     *
-     * @param string $field
      *
      * @return int|float
      */
@@ -603,8 +573,6 @@ abstract class Model extends BaseModel
     /**
      * 最小值
      *
-     * @param string $field
-     *
      * @return int|float
      */
     public static function min(string $field)
@@ -614,10 +582,6 @@ abstract class Model extends BaseModel
 
     /**
      * 聚合函数.
-     *
-     * @param string        $functionName
-     * @param string        $fieldName
-     * @param callable|null $queryCallable
      *
      * @return mixed
      */
@@ -636,10 +600,7 @@ abstract class Model extends BaseModel
     /**
      * 处理where条件.
      *
-     * @param IQuery $query
-     * @param mixed  $where
-     *
-     * @return IQuery
+     * @param mixed $where
      */
     private static function parseWhere(IQuery $query, $where): IQuery
     {
@@ -675,10 +636,7 @@ abstract class Model extends BaseModel
      * 处理保存的数据.
      *
      * @param object|array  $data
-     * @param string        $type
      * @param object|string $object
-     *
-     * @return LazyArrayObject
      */
     private static function parseSaveData($data, string $type, $object = null): LazyArrayObject
     {

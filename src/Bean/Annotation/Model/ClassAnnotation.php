@@ -8,8 +8,6 @@ class ClassAnnotation
 {
     /**
      * 类名.
-     *
-     * @var string
      */
     private string $className = '';
 
@@ -60,8 +58,6 @@ class ClassAnnotation
      * Add 类注解列表.
      *
      * @param \Imi\Bean\Annotation\Base[] $classAnnotations 类注解列表
-     *
-     * @return self
      */
     public function addClassAnnotations(array $classAnnotations): self
     {
@@ -92,10 +88,7 @@ class ClassAnnotation
     /**
      * Add 方法注解列表.
      *
-     * @param string                      $methodName
      * @param \Imi\Bean\Annotation\Base[] $methodAnnotations 方法注解列表
-     *
-     * @return self
      */
     public function addMethodAnnotations(string $methodName, array $methodAnnotations): self
     {
@@ -106,8 +99,6 @@ class ClassAnnotation
 
     /**
      * Get 属性注解列表.
-     *
-     * @param string|null $propertyName
      *
      * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
@@ -126,10 +117,7 @@ class ClassAnnotation
     /**
      * Add 属性注解列表.
      *
-     * @param string                      $propertyName
      * @param \Imi\Bean\Annotation\Base[] $propertyAnnotations 属性注解列表
-     *
-     * @return self
      */
     public function addPropertyAnnotations(string $propertyName, array $propertyAnnotations): self
     {
@@ -140,8 +128,6 @@ class ClassAnnotation
 
     /**
      * Get 常量注解列表.
-     *
-     * @param string|null $constantName
      *
      * @return \Imi\Bean\Annotation\Base[]|\Imi\Bean\Annotation\Base[][]
      */
@@ -160,10 +146,7 @@ class ClassAnnotation
     /**
      * Add 常量注解列表.
      *
-     * @param string                      $constantName
      * @param \Imi\Bean\Annotation\Base[] $constantAnnotations 常量注解列表
-     *
-     * @return self
      */
     public function addConstantAnnotations(string $constantName, array $constantAnnotations): self
     {
@@ -174,8 +157,6 @@ class ClassAnnotation
 
     /**
      * 清空类注解.
-     *
-     * @return void
      */
     public function clearClassAnnotations(): void
     {
@@ -184,10 +165,6 @@ class ClassAnnotation
 
     /**
      * 清空方法注解.
-     *
-     * @param string|null $methodName
-     *
-     * @return void
      */
     public function clearMethodAnnotations(?string $methodName = null): void
     {
@@ -203,10 +180,6 @@ class ClassAnnotation
 
     /**
      * 清空属性注解.
-     *
-     * @param string|null $propertyName
-     *
-     * @return void
      */
     public function clearPropertyAnnotations(?string $propertyName = null): void
     {
@@ -222,10 +195,6 @@ class ClassAnnotation
 
     /**
      * 清空常量注解.
-     *
-     * @param string|null $constantName
-     *
-     * @return void
      */
     public function clearConstantAnnotations(?string $constantName = null): void
     {
@@ -241,8 +210,6 @@ class ClassAnnotation
 
     /**
      * Get 类名.
-     *
-     * @return string
      */
     public function getClassName(): string
     {

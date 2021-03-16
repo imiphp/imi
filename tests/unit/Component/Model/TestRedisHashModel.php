@@ -25,15 +25,11 @@ class TestRedisHashModel extends RedisModel
      * id.
      *
      * @Column(name="id")
-     *
-     * @var int
      */
     protected int $id;
 
     /**
      * 获取 id.
-     *
-     * @return int
      */
     public function getId(): int
     {
@@ -58,15 +54,11 @@ class TestRedisHashModel extends RedisModel
      * name.
      *
      * @Column(name="name")
-     *
-     * @var string
      */
     protected string $name;
 
     /**
      * 获取 name.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -91,15 +83,11 @@ class TestRedisHashModel extends RedisModel
      * age.
      *
      * @Column(name="age")
-     *
-     * @var int
      */
     protected int $age;
 
     /**
      * 获取 age.
-     *
-     * @return int
      */
     public function getAge(): int
     {

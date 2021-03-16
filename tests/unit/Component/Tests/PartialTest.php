@@ -15,8 +15,6 @@ class PartialTest extends BaseTest
 {
     /**
      * Partial.
-     *
-     * @return void
      */
     public function testPartial(): void
     {

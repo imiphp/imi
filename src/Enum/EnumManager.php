@@ -27,12 +27,6 @@ class EnumManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $className
-     * @param string $constName
-     * @param array  $options
-     *
-     * @return void
      */
     public static function add(string $className, string $constName, array $options): void
     {
@@ -44,10 +38,7 @@ class EnumManager
     /**
      * 获得枚举项.
      *
-     * @param string $className
-     * @param mixed  $value
-     *
-     * @return array|null
+     * @param mixed $value
      */
     public static function getEnumItem(string $className, $value): ?array
     {
@@ -56,8 +47,6 @@ class EnumManager
 
     /**
      * 获取常量名=>值集合.
-     *
-     * @param string $className
      *
      * @return string[]
      */
@@ -69,8 +58,6 @@ class EnumManager
     /**
      * 获取所有名称.
      *
-     * @param string $className
-     *
      * @return string[]
      */
     public static function getNames(string $className): array
@@ -80,10 +67,6 @@ class EnumManager
 
     /**
      * 获取所有值
-     *
-     * @param string $className
-     *
-     * @return array
      */
     public static function getValues(string $className): array
     {

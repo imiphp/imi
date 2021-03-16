@@ -8,36 +8,26 @@ class Record
 {
     /**
      * 日志等级.
-     *
-     * @var string
      */
     private string $level = '';
 
     /**
      * 消息.
-     *
-     * @var string
      */
     private string $message = '';
 
     /**
      * 上下文.
-     *
-     * @var array
      */
     private array $context = [];
 
     /**
      * 代码调用跟踪.
-     *
-     * @var array
      */
     private array $trace = [];
 
     /**
      * 日志时间戳.
-     *
-     * @var int
      */
     private int $logTime = 0;
 
@@ -52,8 +42,6 @@ class Record
 
     /**
      * Get 日志等级.
-     *
-     * @return string
      */
     public function getLevel(): string
     {
@@ -62,8 +50,6 @@ class Record
 
     /**
      * Get 消息.
-     *
-     * @return string
      */
     public function getMessage(): string
     {
@@ -72,8 +58,6 @@ class Record
 
     /**
      * Get 上下文.
-     *
-     * @return array
      */
     public function getContext(): array
     {
@@ -82,8 +66,6 @@ class Record
 
     /**
      * Get 代码调用跟踪.
-     *
-     * @return array
      */
     public function getTrace(): array
     {
@@ -92,8 +74,6 @@ class Record
 
     /**
      * Get 日志时间戳.
-     *
-     * @return int
      */
     public function getLogTime(): int
     {

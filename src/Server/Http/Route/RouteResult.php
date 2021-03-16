@@ -10,8 +10,6 @@ class RouteResult
 {
     /**
      * 路由ID.
-     *
-     * @var int
      */
     public int $id = 0;
 
@@ -24,8 +22,6 @@ class RouteResult
 
     /**
      * 参数.
-     *
-     * @var array
      */
     public array $params = [];
 

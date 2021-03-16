@@ -21,8 +21,6 @@ class Test2Controller extends WebSocketController
      * @WSRoute({"action"="test"})
      *
      * @param mixed $data
-     *
-     * @return array
      */
     public function test($data): array
     {

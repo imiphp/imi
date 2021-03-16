@@ -22,8 +22,6 @@ abstract class BaseRequestContextProxy
 
     /**
      * 获取实例.
-     *
-     * @return object
      */
     public static function __getProxyInstance(): object
     {
@@ -49,12 +47,6 @@ abstract class BaseRequestContextProxy
 
     /**
      * 绑定代理.
-     *
-     * @param string      $proxyClass
-     * @param string      $name
-     * @param string|null $bindClass
-     *
-     * @return void
      */
     public static function __bindProxy(string $proxyClass, string $name, ?string $bindClass = null): void
     {
@@ -71,8 +63,6 @@ abstract class BaseRequestContextProxy
 
     /**
      * 清除代理缓存.
-     *
-     * @return void
      */
     public static function __clearCache(): void
     {
@@ -80,9 +70,6 @@ abstract class BaseRequestContextProxy
     }
 
     /**
-     * @param string $name
-     * @param array  $arguments
-     *
      * @return mixed
      */
     public function __call(string $name, array $arguments)
@@ -91,9 +78,6 @@ abstract class BaseRequestContextProxy
     }
 
     /**
-     * @param string $method
-     * @param array  $arguments
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $arguments)

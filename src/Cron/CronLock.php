@@ -23,8 +23,6 @@ class CronLock
 
     /**
      * 无需锁的列表.
-     *
-     * @var array
      */
     private array $noLocks = [];
 
@@ -32,8 +30,6 @@ class CronLock
      * 加锁
      *
      * @param \Imi\Cron\CronTask $task
-     *
-     * @return bool
      */
     public function lock(CronTask $task): bool
     {
@@ -75,8 +71,6 @@ class CronLock
      * 解锁
      *
      * @param \Imi\Cron\CronTask $task
-     *
-     * @return bool
      */
     public function unlock(CronTask $task): bool
     {

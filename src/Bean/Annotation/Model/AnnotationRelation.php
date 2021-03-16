@@ -36,8 +36,6 @@ class AnnotationRelation
 
     /**
      * 所有关联列表.
-     *
-     * @var array
      */
     private array $allRelations = [];
 
@@ -55,8 +53,6 @@ class AnnotationRelation
      * 增加类关联.
      *
      * @param \Imi\Bean\Annotation\Model\ClassAnnotationRelation $relation
-     *
-     * @return void
      */
     public function addClassRelation(ClassAnnotationRelation $relation): void
     {
@@ -87,8 +83,6 @@ class AnnotationRelation
      * 增加方法关联.
      *
      * @param \Imi\Bean\Annotation\Model\MethodAnnotationRelation $relation
-     *
-     * @return void
      */
     public function addMethodRelation(MethodAnnotationRelation $relation): void
     {
@@ -119,8 +113,6 @@ class AnnotationRelation
      * 增加属性关联.
      *
      * @param \Imi\Bean\Annotation\Model\PropertyAnnotationRelation $relation
-     *
-     * @return void
      */
     public function addPropertyRelation(PropertyAnnotationRelation $relation): void
     {
@@ -151,8 +143,6 @@ class AnnotationRelation
      * 增加常量关联.
      *
      * @param \Imi\Bean\Annotation\Model\ConstantAnnotationRelation $relation
-     *
-     * @return void
      */
     public function addConstantRelation(ConstantAnnotationRelation $relation): void
     {
@@ -172,9 +162,6 @@ class AnnotationRelation
     /**
      * 获取所有注解列表
      * 如果 $where 为 null，则返回指定注解列表.
-     *
-     * @param string      $className
-     * @param string|null $where
      *
      * @return \Imi\Bean\Annotation\Model\IAnnotationRelation[]
      */
@@ -198,11 +185,6 @@ class AnnotationRelation
 
     /**
      * 移除类注解关联.
-     *
-     * @param string $annotationClassName
-     * @param string $className
-     *
-     * @return void
      */
     public function removeClassAnnotationRelation(string $annotationClassName, string $className): void
     {
@@ -224,12 +206,6 @@ class AnnotationRelation
 
     /**
      * 移除方法注解关联.
-     *
-     * @param string $annotationClassName
-     * @param string $className
-     * @param string $methodName
-     *
-     * @return void
      */
     public function removeMethodAnnotationRelation(string $annotationClassName, string $className, string $methodName): void
     {
@@ -251,12 +227,6 @@ class AnnotationRelation
 
     /**
      * 移除属性注解关联.
-     *
-     * @param string $annotationClassName
-     * @param string $className
-     * @param string $propertyName
-     *
-     * @return void
      */
     public function removePropertyAnnotationRelation(string $annotationClassName, string $className, string $propertyName): void
     {
@@ -278,12 +248,6 @@ class AnnotationRelation
 
     /**
      * 移除常量注解关联.
-     *
-     * @param string $annotationClassName
-     * @param string $className
-     * @param string $constantName
-     *
-     * @return void
      */
     public function removeConstantAnnotationRelation(string $annotationClassName, string $className, string $constantName): void
     {
@@ -305,10 +269,6 @@ class AnnotationRelation
 
     /**
      * 移除类所有注解关联.
-     *
-     * @param string $className
-     *
-     * @return void
      */
     public function removeClassRelation(string $className): void
     {
@@ -334,11 +294,6 @@ class AnnotationRelation
 
     /**
      * 移除方法所有注解关联.
-     *
-     * @param string $className
-     * @param string $methodName
-     *
-     * @return void
      */
     public function removeMethodRelation(string $className, string $methodName): void
     {
@@ -364,11 +319,6 @@ class AnnotationRelation
 
     /**
      * 移除属性所有注解关联.
-     *
-     * @param string $className
-     * @param string $propertyName
-     *
-     * @return void
      */
     public function removePropertyRelation(string $className, string $propertyName): void
     {
@@ -394,11 +344,6 @@ class AnnotationRelation
 
     /**
      * 移除常量所有注解关联.
-     *
-     * @param string $className
-     * @param string $constantName
-     *
-     * @return void
      */
     public function removeConstantRelation(string $className, string $constantName): void
     {

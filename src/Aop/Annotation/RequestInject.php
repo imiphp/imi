@@ -22,22 +22,16 @@ class RequestInject extends BaseInjectValue
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * Bean名称或类名.
-     *
-     * @var string|null
      */
     public ?string $name = null;
 
     /**
      * Bean实例化参数.
-     *
-     * @var array
      */
     public array $args = [];
 

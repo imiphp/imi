@@ -13,9 +13,6 @@ use Imi\Server\Http\Message\Contract\IHttpResponse;
 interface IExecuteTimeoutHandler
 {
     /**
-     * @param \Imi\Server\Http\Message\Contract\IHttpRequest  $request
-     * @param \Imi\Server\Http\Message\Contract\IHttpResponse $response
-     *
      * @return mixed
      */
     public function handle(IHttpRequest $request, IHttpResponse $response);

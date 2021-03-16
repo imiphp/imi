@@ -25,15 +25,11 @@ class ExtractData extends Base
      * $get.id
      * $post.content
      * $body.name
-     *
-     * @var string
      */
     public string $name = '';
 
     /**
      * 导出数据到的参数名.
-     *
-     * @var string
      */
     public string $to = '';
 

@@ -23,36 +23,26 @@ abstract class Base
     /**
      * 日志缓存数量
      * 当日志达到指定条数时，执行批量写入操作，减少对性能的影响.
-     *
-     * @var int
      */
     protected int $logCacheNumber = 1;
 
     /**
      * 日志格式.
-     *
-     * @var string
      */
     protected string $format = '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message} {errorFile}:{errorLine}';
 
     /**
      * 调用跟踪格式.
-     *
-     * @var string
      */
     protected string $traceFormat = '#{index}  {call} called at [{file}:{line}]';
 
     /**
      * 限制 trace 条目数量，默认为 -1 不限制.
-     *
-     * @var int
      */
     protected int $traceLimit = -1;
 
     /**
      * 日期时间格式.
-     *
-     * @var string
      */
     protected string $dateTimeFormat = 'Y-m-d H:i:s';
 
@@ -101,8 +91,6 @@ abstract class Base
 
     /**
      * date()函数支持的格式缓存文本.
-     *
-     * @var string
      */
     private string $dateFormatsCacheStr = '';
 
@@ -117,10 +105,6 @@ abstract class Base
 
     /**
      * 写日志.
-     *
-     * @param \Imi\Log\Record $record
-     *
-     * @return void
      */
     public function log(\Imi\Log\Record $record): void
     {
@@ -136,8 +120,6 @@ abstract class Base
      * 批量写日志.
      *
      * @param \Imi\Log\Record[] $logs
-     *
-     * @return void
      */
     public function logBatch(array $logs): void
     {
@@ -149,8 +131,6 @@ abstract class Base
 
     /**
      * 尝试保存日志，当满足保存条件时才保存.
-     *
-     * @return void
      */
     public function trySave(): void
     {
@@ -162,8 +142,6 @@ abstract class Base
 
     /**
      * 保存日志，直接写入.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -174,19 +152,13 @@ abstract class Base
 
     /**
      * 真正的保存操作实现.
-     *
-     * @param array $records
-     *
-     * @return void
      */
-    abstract protected function __save(array $records);
+    abstract protected function __save(array $records): void;
 
     /**
      * 获取日期时间.
      *
      * @param string|null $time 不传则使用当前时间
-     *
-     * @return string
      */
     public function getDateTime(?string $time = null): string
     {
@@ -200,10 +172,6 @@ abstract class Base
 
     /**
      * 获取日志字符串.
-     *
-     * @param \Imi\Log\Record $record
-     *
-     * @return string
      */
     public function getLogString(\Imi\Log\Record $record): string
     {
@@ -237,10 +205,6 @@ abstract class Base
 
     /**
      * 处理代码调用跟踪.
-     *
-     * @param \Imi\Log\Record $record
-     *
-     * @return string
      */
     public function parseTrace(\Imi\Log\Record $record): string
     {
@@ -272,10 +236,6 @@ abstract class Base
 
     /**
      * 获取调用跟踪的调用.
-     *
-     * @param array $trace
-     *
-     * @return string
      */
     public function getTraceCall(array $trace): string
     {
@@ -296,10 +256,6 @@ abstract class Base
 
     /**
      * 获取调用跟踪的方法参数.
-     *
-     * @param array $trace
-     *
-     * @return string
      */
     public function getTraceArgs(array $trace): string
     {
@@ -321,11 +277,6 @@ abstract class Base
 
     /**
      * 替换日期时间参数.
-     *
-     * @param string $string
-     * @param int    $timestamp
-     *
-     * @return string
      */
     protected function replaceDateTime(string $string, int $timestamp): string
     {

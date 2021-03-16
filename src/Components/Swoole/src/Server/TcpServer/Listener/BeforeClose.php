@@ -19,10 +19,6 @@ class BeforeClose implements ICloseEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param CloseEventParam $e
-     *
-     * @return void
      */
     public function handle(CloseEventParam $e): void
     {

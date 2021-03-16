@@ -14,33 +14,21 @@ interface IScheduler
 {
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close();
+    public function close(): void;
 
     /**
      * 遍历可运行的任务列表.
-     *
-     * @return \Generator
      */
     public function schedule(): \Generator;
 
     /**
      * 执行任务
-     *
-     * @param \Imi\Cron\CronTask $task
-     *
-     * @return void
      */
-    public function runTask(CronTask $task);
+    public function runTask(CronTask $task): void;
 
     /**
      * 完成任务
-     *
-     * @param \Imi\Cron\Message\Result $result
-     *
-     * @return void
      */
-    public function completeTask(Result $result);
+    public function completeTask(Result $result): void;
 }

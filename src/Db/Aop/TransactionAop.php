@@ -103,11 +103,6 @@ class TransactionAop
 
     /**
      * 获取数据库连接.
-     *
-     * @param \Imi\Db\Annotation\Transaction $transaction
-     * @param object                         $object
-     *
-     * @return \Imi\Db\Interfaces\IDb
      */
     private function getDb(Transaction $transaction, object $object): IDb
     {

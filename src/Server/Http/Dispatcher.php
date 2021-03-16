@@ -22,17 +22,11 @@ class Dispatcher
 
     /**
      * 最终使用的中间件列表.
-     *
-     * @var array
      */
     private array $finalMiddlewares = [];
 
     /**
      * 调度.
-     *
-     * @param \Imi\Server\Http\Message\Request $request
-     *
-     * @return \Imi\Server\Http\Message\Response
      */
     public function dispatch(Request $request): Response
     {
@@ -49,8 +43,6 @@ class Dispatcher
 
     /**
      * 获取中间件列表.
-     *
-     * @return array
      */
     protected function getMiddlewares(): array
     {

@@ -14,8 +14,6 @@ class BitTest extends BaseTest
 {
     /**
      * @testdox has
-     *
-     * @return void
      */
     public function testHas(): void
     {

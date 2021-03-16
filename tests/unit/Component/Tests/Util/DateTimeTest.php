@@ -14,8 +14,6 @@ class DateTimeTest extends BaseTest
 {
     /**
      * @testdox getSecondsByInterval
-     *
-     * @return void
      */
     public function testGetSecondsByInterval(): void
     {

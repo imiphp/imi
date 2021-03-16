@@ -25,22 +25,16 @@ class Driver extends Base implements IDb
 {
     /**
      * 连接对象
-     *
-     * @var \Swoole\Coroutine\MySQL|null
      */
     protected ?MySQL $instance = null;
 
     /**
      * 连接配置.
-     *
-     * @var array
      */
     protected array $option = [];
 
     /**
      * 最后执行过的SQL语句.
-     *
-     * @var string
      */
     protected string $lastSql = '';
 
@@ -53,15 +47,11 @@ class Driver extends Base implements IDb
 
     /**
      * 是否缓存 Statement.
-     *
-     * @var bool
      */
     protected bool $isCacheStatement = false;
 
     /**
      * 事务管理.
-     *
-     * @var \Imi\Db\Transaction\Transaction
      */
     protected Transaction $transaction;
 
@@ -79,8 +69,6 @@ class Driver extends Base implements IDb
      * 'fetch_mode' => false, // 开启fetch模式, 可与pdo一样使用fetch/fetchAll逐行或获取全部结果集(4.0版本以上)
      * 'options'    => [], // 其它选项
      * ].
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -91,8 +79,6 @@ class Driver extends Base implements IDb
 
     /**
      * 是否已连接.
-     *
-     * @return bool
      */
     public function isConnected(): bool
     {
@@ -103,8 +89,6 @@ class Driver extends Base implements IDb
 
     /**
      * 打开
-     *
-     * @return bool
      */
     public function open(): bool
     {
@@ -131,8 +115,6 @@ class Driver extends Base implements IDb
 
     /**
      * 关闭.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -150,8 +132,6 @@ class Driver extends Base implements IDb
 
     /**
      * 获取原对象实例.
-     *
-     * @return \Swoole\Coroutine\MySQL
      */
     public function getInstance(): MySQL
     {
@@ -160,8 +140,6 @@ class Driver extends Base implements IDb
 
     /**
      * 启动一个事务
-     *
-     * @return bool
      */
     public function beginTransaction(): bool
     {
@@ -177,8 +155,6 @@ class Driver extends Base implements IDb
 
     /**
      * 提交一个事务
-     *
-     * @return bool
      */
     public function commit(): bool
     {
@@ -188,10 +164,6 @@ class Driver extends Base implements IDb
     /**
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
-     *
-     * @param int|null $levels
-     *
-     * @return bool
      */
     public function rollBack(?int $levels = null): bool
     {
@@ -214,8 +186,6 @@ class Driver extends Base implements IDb
 
     /**
      * 获取事务层数.
-     *
-     * @return int
      */
     public function getTransactionLevels(): int
     {
@@ -224,8 +194,6 @@ class Driver extends Base implements IDb
 
     /**
      * 检查是否在一个事务内.
-     *
-     * @return bool
      */
     public function inTransaction(): bool
     {
@@ -251,8 +219,6 @@ class Driver extends Base implements IDb
 
     /**
      * 返回错误信息.
-     *
-     * @return string
      */
     public function errorInfo(): string
     {
@@ -268,8 +234,6 @@ class Driver extends Base implements IDb
 
     /**
      * 获取最后一条执行的SQL语句.
-     *
-     * @return string
      */
     public function lastSql(): string
     {
@@ -278,10 +242,6 @@ class Driver extends Base implements IDb
 
     /**
      * 执行一条 SQL 语句，并返回受影响的行数.
-     *
-     * @param string $sql
-     *
-     * @return int
      */
     public function exec(string $sql): int
     {
@@ -295,10 +255,6 @@ class Driver extends Base implements IDb
 
     /**
      * 批量执行 SQL，返回查询结果.
-     *
-     * @param string $sql
-     *
-     * @return array
      */
     public function batchExec(string $sql): array
     {
@@ -339,10 +295,6 @@ class Driver extends Base implements IDb
 
     /**
      * 返回最后插入行的ID或序列值
-     *
-     * @param string|null $name
-     *
-     * @return string
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -351,8 +303,6 @@ class Driver extends Base implements IDb
 
     /**
      * 返回受上一个 SQL 语句影响的行数.
-     *
-     * @return int
      */
     public function rowCount(): int
     {
@@ -361,11 +311,6 @@ class Driver extends Base implements IDb
 
     /**
      * 准备执行语句并返回一个语句对象
-     *
-     * @param string $sql
-     * @param array  $driverOptions
-     *
-     * @return IStatement
      */
     public function prepare(string $sql, array $driverOptions = []): IStatement
     {
@@ -394,10 +339,6 @@ class Driver extends Base implements IDb
 
     /**
      * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
-     *
-     * @param string $sql
-     *
-     * @return IStatement
      */
     public function query(string $sql): IStatement
     {
@@ -413,8 +354,6 @@ class Driver extends Base implements IDb
 
     /**
      * Get 事务管理.
-     *
-     * @return \Imi\Db\Transaction\Transaction
      */
     public function getTransaction(): Transaction
     {

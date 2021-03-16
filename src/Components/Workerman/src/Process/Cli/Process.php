@@ -23,8 +23,6 @@ class Process extends BaseCommand
      * @CommandAction(name="start", dynamicOptions=true)
      *
      * @Argument(name="name", type=ArgType::STRING, required=true, comments="进程名称，通过@Process注解定义")
-     *
-     * @return void
      */
     public function start(string $name): void
     {

@@ -19,22 +19,16 @@ class Table extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * 表名.
-     *
-     * @var string|null
      */
     public ?string $name = null;
 
     /**
      * 数据库连接池名称.
-     *
-     * @var string|null
      */
     public ?string $dbPoolName = null;
 

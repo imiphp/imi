@@ -34,8 +34,6 @@ class Server extends BaseCommand
      * @Option(name="daemon", shortcut="d", type=ArgType::STRING, required=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件")
      *
      * @param string|bool $d
-     *
-     * @return void
      */
     public function start(?string $name, ?int $workerNum, $d): void
     {
@@ -94,8 +92,6 @@ class Server extends BaseCommand
      * 停止服务
      *
      * @CommandAction("stop")
-     *
-     * @return void
      */
     public function stop(): void
     {
@@ -109,8 +105,6 @@ class Server extends BaseCommand
      *
      * @CommandAction("reload")
      * @Option(name="runtime", type=ArgType::BOOL, required=false, default=false, comments="是否更新运行时缓存")
-     *
-     * @return void
      */
     public function reload(bool $runtime): void
     {
@@ -128,8 +122,6 @@ class Server extends BaseCommand
 
     /**
      * 输出 imi 图标.
-     *
-     * @return void
      */
     public function outImi(): void
     {
@@ -147,8 +139,6 @@ STR
 
     /**
      * 输出启动信息.
-     *
-     * @return void
      */
     public function outStartupInfo(): void
     {

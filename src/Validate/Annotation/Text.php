@@ -21,22 +21,16 @@ class Text extends Condition
      * 是否为字符模式，默认为 false
      * 设为 true 则使用字符判断长度
      * 设为 false 则使用字节判断长度.
-     *
-     * @var bool
      */
     public bool $char = false;
 
     /**
      * 最短长度.
-     *
-     * @var int
      */
     public int $min = 0;
 
     /**
      * 最长长度，为null则不限制长度.
-     *
-     * @var int|null
      */
     public ?int $max = null;
 
@@ -49,8 +43,6 @@ class Text extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

@@ -20,15 +20,11 @@ class ConstValue extends BaseInjectValue
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * 常量名.
-     *
-     * @var string
      */
     public string $name = '';
 
@@ -40,9 +36,7 @@ class ConstValue extends BaseInjectValue
     public $default = null;
 
     /**
-     * @param array|null $__data
-     * @param string     $name
-     * @param mixed      $default
+     * @param mixed $default
      */
     public function __construct(?array $__data = null, string $name = '', $default = null)
     {

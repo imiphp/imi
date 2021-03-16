@@ -11,8 +11,6 @@ class FileStream implements StreamInterface
 {
     /**
      * 文件Uri.
-     *
-     * @var \Imi\Util\Uri
      */
     protected Uri $uri;
 
@@ -25,14 +23,11 @@ class FileStream implements StreamInterface
 
     /**
      * 流访问类型.
-     *
-     * @var string
      */
     protected string $mode = '';
 
     /**
      * @param string|Uri $uri
-     * @param string     $mode
      */
     public function __construct($uri, string $mode = StreamMode::READ_WRITE)
     {
@@ -95,8 +90,6 @@ class FileStream implements StreamInterface
 
     /**
      * Closes the stream and any underlying resources.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -206,13 +199,7 @@ class FileStream implements StreamInterface
      * @see seek()
      * @see http://www.php.net/manual/en/function.fseek.php
      *
-     * @return void
-     *
      * @throws \RuntimeException on failure
-     */
-
-    /**
-     * @return void
      */
     public function rewind(): void
     {

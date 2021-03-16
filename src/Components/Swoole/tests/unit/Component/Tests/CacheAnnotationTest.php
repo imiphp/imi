@@ -15,8 +15,6 @@ class CacheAnnotationTest extends BaseTest
 {
     /**
      * @testdox Cacheable TTL
-     *
-     * @return void
      */
     public function testCacheableTTL(): void
     {

@@ -14,8 +14,6 @@ abstract class BaseSyncPool extends BasePool
 {
     /**
      * 队列.
-     *
-     * @var \SplQueue
      */
     protected \SplQueue $queue;
 
@@ -25,8 +23,6 @@ abstract class BaseSyncPool extends BasePool
 
     /**
      * 初始化队列.
-     *
-     * @return void
      */
     protected function initQueue(): void
     {
@@ -35,8 +31,6 @@ abstract class BaseSyncPool extends BasePool
 
     /**
      * 获取资源.
-     *
-     * @return IPoolResource
      */
     public function getResource(): IPoolResource
     {
@@ -106,8 +100,6 @@ abstract class BaseSyncPool extends BasePool
 
     /**
      * 建立队列.
-     *
-     * @return void
      */
     protected function buildQueue(): void
     {
@@ -123,10 +115,6 @@ abstract class BaseSyncPool extends BasePool
 
     /**
      * 把资源加入队列.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
     protected function push(IPoolResource $resource): void
     {
@@ -139,8 +127,6 @@ abstract class BaseSyncPool extends BasePool
 
     /**
      * 获取当前池子中空闲资源总数.
-     *
-     * @return int
      */
     public function getFree(): int
     {

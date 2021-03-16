@@ -14,17 +14,11 @@ class Console extends Base
 {
     /**
      * 要限制输出的字符数量，为null则不限制.
-     *
-     * @var int|null
      */
     protected ?int $length = null;
 
     /**
      * 真正的保存操作实现.
-     *
-     * @param array $records
-     *
-     * @return void
      */
     protected function __save(array $records): void
     {

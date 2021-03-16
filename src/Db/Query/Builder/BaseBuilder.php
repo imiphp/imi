@@ -19,23 +19,18 @@ abstract class BaseBuilder implements IBuilder
 
     /**
      * IQuery 类.
-     *
-     * @var \Imi\Db\Query\Interfaces\IQuery
      */
     protected IQuery $query;
 
     /**
      * 绑定参数.
-     *
-     * @var array
      */
     protected array $params = [];
 
     /**
      * 生成SQL语句.
      *
-     * @param IQuery $query
-     * @param mixed  $args
+     * @param mixed $args
      *
      * @return string
      */
@@ -55,8 +50,6 @@ abstract class BaseBuilder implements IBuilder
      * 生成SQL语句.
      *
      * @param mixed $args
-     *
-     * @return string
      */
     public function build(...$args): string
     {
@@ -67,10 +60,6 @@ abstract class BaseBuilder implements IBuilder
 
     /**
      * distinct.
-     *
-     * @param bool $distinct
-     *
-     * @return string
      */
     protected function parseDistinct(bool $distinct): string
     {
@@ -79,10 +68,6 @@ abstract class BaseBuilder implements IBuilder
 
     /**
      * fields.
-     *
-     * @param array $fields
-     *
-     * @return string
      */
     protected function parseField(array $fields): string
     {
@@ -119,8 +104,6 @@ abstract class BaseBuilder implements IBuilder
      * join.
      *
      * @param \Imi\Db\Query\Interfaces\IJoin[] $join
-     *
-     * @return string
      */
     protected function parseJoin(array $join): string
     {
@@ -138,8 +121,6 @@ abstract class BaseBuilder implements IBuilder
      * where.
      *
      * @param \Imi\Db\Query\Interfaces\IBaseWhere[] $where
-     *
-     * @return string
      */
     protected function parseWhere(array $where): string
     {
@@ -165,9 +146,6 @@ abstract class BaseBuilder implements IBuilder
     /**
      * limit.
      *
-     * @param int|null $offset
-     * @param int|null $limit
-     *
      * @return string
      */
     protected function parseLimit(?int $offset, ?int $limit)
@@ -190,8 +168,6 @@ abstract class BaseBuilder implements IBuilder
      * order by.
      *
      * @param \Imi\Db\Query\Interfaces\IOrder[] $order
-     *
-     * @return string
      */
     protected function parseOrder(array $order): string
     {
@@ -216,8 +192,6 @@ abstract class BaseBuilder implements IBuilder
      * group by.
      *
      * @param \Imi\Db\Query\Interfaces\IGroup[] $group
-     *
-     * @return string
      */
     protected function parseGroup(array $group): string
     {
@@ -235,8 +209,6 @@ abstract class BaseBuilder implements IBuilder
      * having.
      *
      * @param \Imi\Db\Query\Interfaces\IHaving[] $having
-     *
-     * @return string
      */
     protected function parseHaving(array $having): string
     {

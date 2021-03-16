@@ -20,15 +20,11 @@ class EnumItem extends Base
 {
     /**
      * 文本描述.
-     *
-     * @var string
      */
     public string $text = '';
 
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'text';
 

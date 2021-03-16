@@ -19,23 +19,16 @@ class RouteMiddleware implements IMiddleware
 {
     /**
      * @ServerInject("UdpRoute")
-     *
-     * @var \Imi\Server\UdpServer\Route\UdpRoute
      */
     protected UdpRoute $route;
 
     /**
      * @ServerInject("UdpRouteNotFoundHandler")
-     *
-     * @var \Imi\Server\UdpServer\Error\IUdpRouteNotFoundHandler
      */
     protected IUdpRouteNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.
-     *
-     * @param IPacketData    $data
-     * @param IPacketHandler $handler
      *
      * @return mixed
      */

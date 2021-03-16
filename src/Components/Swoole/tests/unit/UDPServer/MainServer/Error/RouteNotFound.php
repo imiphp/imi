@@ -17,9 +17,6 @@ class RouteNotFound implements IUdpRouteNotFoundHandler
     /**
      * 处理方法.
      *
-     * @param \Imi\Server\UdpServer\Message\IPacketData $data
-     * @param \Imi\Server\UdpServer\IPacketHandler      $handler
-     *
      * @return mixed
      */
     public function handle(IPacketData $data, IPacketHandler $handler)

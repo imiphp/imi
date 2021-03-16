@@ -22,58 +22,42 @@ class CoServer
 {
     /**
      * 是否正在运行.
-     *
-     * @var bool
      */
     private bool $running = false;
 
     /**
      * 配置.
-     *
-     * @var array
      */
     private array $config = [];
 
     /**
      * 服务器名.
-     *
-     * @var string
      */
     private string $name = '';
 
     /**
      * 工作进程数量
      * 处理请求的进程.
-     *
-     * @var int
      */
     private int $workerNum = 0;
 
     /**
      * 实际的进程数量.
-     *
-     * @var int
      */
     private int $realWorkerNum = 0;
 
     /**
      * 用户自定义进程数量.
-     *
-     * @var int
      */
     private int $processNum = 0;
 
     /**
      * 父进程ID.
-     *
-     * @var int
      */
     private int $pid = 0;
 
     /**
      * 工作进程ID.
-     *
-     * @var int
      */
     private int $workerId = -1;
 
@@ -175,8 +159,6 @@ class CoServer
 
     /**
      * 加载配置.
-     *
-     * @return void
      */
     private function loadConfig(): void
     {
@@ -197,8 +179,6 @@ class CoServer
 
     /**
      * 检查端口重用.
-     *
-     * @return void
      */
     private function checkReusePort(): void
     {
@@ -216,9 +196,6 @@ class CoServer
      * 处理服务器对象
      *
      * @param \Imi\Swoole\Server\Base $server
-     * @param int                     $workerId
-     *
-     * @return void
      */
     private function parseServer(Base $server, int $workerId): void
     {
@@ -235,8 +212,6 @@ class CoServer
 
     /**
      * 获取配置.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
@@ -245,8 +220,6 @@ class CoServer
 
     /**
      * 获取服务器名.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -255,8 +228,6 @@ class CoServer
 
     /**
      * 获取工作进程数.
-     *
-     * @return int
      */
     public function getWorkerNum(): int
     {
@@ -265,8 +236,6 @@ class CoServer
 
     /**
      * 获取进程 PID.
-     *
-     * @return int
      */
     public function getPID(): int
     {
@@ -275,8 +244,6 @@ class CoServer
 
     /**
      * 获取工作进程 ID.
-     *
-     * @return int
      */
     public function getWorkerId(): int
     {
@@ -285,10 +252,6 @@ class CoServer
 
     /**
      * 增加一个用户进程.
-     *
-     * @param callable $callable
-     *
-     * @return void
      */
     public function addProcess(callable $callable): void
     {

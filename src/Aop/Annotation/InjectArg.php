@@ -19,8 +19,6 @@ class InjectArg extends Base
 {
     /**
      * 参数名.
-     *
-     * @var string
      */
     public string $name = '';
 

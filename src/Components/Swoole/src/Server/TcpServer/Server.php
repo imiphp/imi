@@ -24,15 +24,11 @@ class Server extends Base implements ITcpServer
 {
     /**
      * 是否支持 SSL.
-     *
-     * @var bool
      */
     private bool $ssl = false;
 
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -41,8 +37,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 创建 swoole 服务器对象
-     *
-     * @return void
      */
     protected function createServer(): void
     {
@@ -52,8 +46,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 从主服务器监听端口，作为子服务器.
-     *
-     * @return void
      */
     protected function createSubServer(): void
     {
@@ -71,8 +63,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 获取服务器初始化需要的配置.
-     *
-     * @return array
      */
     protected function getServerInitConfig(): array
     {
@@ -86,8 +76,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function __bindEvents(): void
     {
@@ -150,8 +138,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 是否为 https 服务
-     *
-     * @return bool
      */
     public function isSSL(): bool
     {
@@ -160,8 +146,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -170,11 +154,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 向客户端发送消息.
-     *
-     * @param int    $fd
-     * @param string $data
-     *
-     * @return bool
      */
     public function send(int $fd, string $data): bool
     {

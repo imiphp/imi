@@ -28,8 +28,6 @@ class Compare extends Condition
      * 比较符，使用顺序：name代表的值->比较符->被比较值
      *
      * 允许使用：==、!=、===、!==、<、<=、>、>=
-     *
-     * @var string
      */
     public string $operation = '==';
 
@@ -42,8 +40,6 @@ class Compare extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

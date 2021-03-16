@@ -14,8 +14,6 @@ class SessionConfig
 {
     /**
      * session名称.
-     *
-     * @var string
      */
     public string $name = '';
 
@@ -29,22 +27,16 @@ class SessionConfig
     /**
      * 每次请求完成后触发垃圾回收的概率，默认为1%
      * 可取值0~1.0，概率为0%~100%.
-     *
-     * @var float
      */
     public float $gcProbability;
 
     /**
      * 最大存活时间，默认30天，单位秒.
-     *
-     * @var int
      */
     public int $maxLifeTime = 0;
 
     /**
      * Session 前缀
-     *
-     * @var string|null
      */
     public ?string $prefix = null;
 

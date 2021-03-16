@@ -20,7 +20,6 @@ class ObjectArrayHelper
      * 获取值
      *
      * @param array|object $object
-     * @param string       $name
      * @param mixed        $default
      *
      * @return mixed
@@ -74,10 +73,7 @@ class ObjectArrayHelper
      * 设置值
      *
      * @param array|object $object
-     * @param string       $name
      * @param mixed        $value
-     *
-     * @return void
      */
     public static function set(&$object, string $name, $value): void
     {
@@ -111,9 +107,6 @@ class ObjectArrayHelper
      * 移除值
      *
      * @param array|object $object
-     * @param string       $name
-     *
-     * @return void
      */
     public static function remove(&$object, string $name): void
     {
@@ -147,9 +140,6 @@ class ObjectArrayHelper
      * 值是否存在.
      *
      * @param array|object $object
-     * @param string       $name
-     *
-     * @return bool
      */
     public static function exists($object, string $name): bool
     {
@@ -159,11 +149,6 @@ class ObjectArrayHelper
     /**
      * 将第二纬某字段值放入到一个数组中
      * 功能类似array_column，这个方法也支持对象
-     *
-     * @param array  $array
-     * @param string $columnName
-     *
-     * @return array
      */
     public static function column(array $array, string $columnName): array
     {
@@ -189,10 +174,6 @@ class ObjectArrayHelper
      * $mode只允许取值为：allow/deny
      *
      * @param array|object $object
-     * @param array        $fields
-     * @param string       $mode
-     *
-     * @return void
      */
     public static function filter(&$object, array $fields, string $mode = 'allow'): void
     {

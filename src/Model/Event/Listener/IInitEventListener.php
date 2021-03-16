@@ -13,10 +13,6 @@ interface IInitEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param InitEventParam $e
-     *
-     * @return void
      */
-    public function handle(InitEventParam $e);
+    public function handle(InitEventParam $e): void;
 }

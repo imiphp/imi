@@ -13,12 +13,6 @@ trait TWorkerReport
 {
     /**
      * 上报定时任务结果.
-     *
-     * @param string $id
-     * @param bool   $success
-     * @param string $message
-     *
-     * @return void
      */
     protected function reportCronResult(string $id, bool $success, string $message): void
     {

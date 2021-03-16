@@ -13,10 +13,6 @@ interface IAfterParseDataEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterParseDataEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterParseDataEventParam $e);
+    public function handle(AfterParseDataEventParam $e): void;
 }

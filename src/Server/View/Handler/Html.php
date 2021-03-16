@@ -19,15 +19,11 @@ class Html implements IHandler
 {
     /**
      * 模版文件根路径.
-     *
-     * @var string|null
      */
     protected ?string $templatePath = null;
 
     /**
      * 支持的模版文件扩展名，优先级按先后顺序.
-     *
-     * @var array
      */
     protected array $fileSuffixs = [
         'tpl',
@@ -37,15 +33,11 @@ class Html implements IHandler
 
     /**
      * 模版引擎处理类.
-     *
-     * @var string
      */
     protected string $templateEngine = \Imi\Server\View\Engine\Php::class;
 
     /**
      * 模版引擎处理对象
-     *
-     * @var \Imi\Server\View\Engine\IEngine
      */
     protected IEngine $templateEngineInstance;
 
@@ -68,8 +60,6 @@ class Html implements IHandler
 
     /**
      * 获取模版文件真实路径，失败返回false.
-     *
-     * @param array $options
      *
      * @return string|bool
      */

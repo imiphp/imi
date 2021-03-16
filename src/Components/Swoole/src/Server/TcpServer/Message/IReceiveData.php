@@ -8,8 +8,6 @@ interface IReceiveData extends \Imi\Server\TcpServer\Message\IReceiveData
 {
     /**
      * 获取Reactor线程ID.
-     *
-     * @return int
      */
     public function getReactorId(): int;
 }

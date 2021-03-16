@@ -20,10 +20,6 @@ class BeforeMessage implements IMessageEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param MessageEventParam $e
-     *
-     * @return void
      */
     public function handle(MessageEventParam $e): void
     {

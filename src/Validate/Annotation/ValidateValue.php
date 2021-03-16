@@ -20,8 +20,6 @@ class ValidateValue extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'value';
 
@@ -30,8 +28,6 @@ class ValidateValue extends Base
      *
      * 支持代入{:value}原始值
      * 支持代入{:data.xxx}所有数据中的某项
-     *
-     * @var string
      */
     public string $value = '';
 

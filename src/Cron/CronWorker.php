@@ -18,18 +18,14 @@ class CronWorker
 {
     /**
      * @Inject("CronManager")
-     *
-     * @var \Imi\Cron\Contract\ICronManager
      */
     protected ICronManager $cronManager;
 
     /**
      * 执行任务
      *
-     * @param string               $id
      * @param mixed                $data
      * @param string|callable|null $task
-     * @param string               $type
      *
      * @return mixed
      */

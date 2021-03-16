@@ -8,8 +8,6 @@ interface IField extends ITable
 {
     /**
      * 获取字段名.
-     *
-     * @return string|null
      */
     public function getField(): ?string;
 
@@ -17,10 +15,8 @@ interface IField extends ITable
      * 设置字段名.
      *
      * @param string $field
-     *
-     * @return void
      */
-    public function setField(string $field = null);
+    public function setField(string $field = null): void;
 
     /**
      * 设置值，可以根据传入的值自动处理
@@ -29,10 +25,6 @@ interface IField extends ITable
      * parent.parent.name——database.table.field
      * name alias——field alias
      * name as alias—— field as alias.
-     *
-     * @param string $value
-     *
-     * @return void
      */
-    public function setValue(string $value);
+    public function setValue(string $value): void;
 }

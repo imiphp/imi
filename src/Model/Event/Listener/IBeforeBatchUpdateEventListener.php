@@ -13,10 +13,6 @@ interface IBeforeBatchUpdateEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeBatchUpdateEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeBatchUpdateEventParam $e);
+    public function handle(BeforeBatchUpdateEventParam $e): void;
 }

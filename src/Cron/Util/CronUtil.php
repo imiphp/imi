@@ -21,12 +21,6 @@ class CronUtil
 
     /**
      * 上报定时任务结果.
-     *
-     * @param string $id
-     * @param bool   $success
-     * @param string $message
-     *
-     * @return void
      */
     public static function reportCronResult(string $id, bool $success, string $message): void
     {
@@ -48,10 +42,7 @@ class CronUtil
     /**
      * 增加 Cron 任务
      *
-     * @param \Imi\Cron\Annotation\Cron $cron
-     * @param callable|string           $task
-     *
-     * @return void
+     * @param callable|string $task
      */
     public static function addCron(Cron $cron, $task): void
     {
@@ -74,10 +65,6 @@ class CronUtil
 
     /**
      * 移除定时任务
-     *
-     * @param string $id
-     *
-     * @return void
      */
     public static function removeCron(string $id): void
     {
@@ -99,8 +86,6 @@ class CronUtil
 
     /**
      * 清空定时任务
-     *
-     * @return void
      */
     public static function clear(): void
     {

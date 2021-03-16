@@ -13,43 +13,31 @@ class Result implements IMessage
 {
     /**
      * 动作.
-     *
-     * @var string
      */
     public string $action = '';
 
     /**
      * 定时任务ID.
-     *
-     * @var string
      */
     public string $id = '';
 
     /**
      * 进程类型.
-     *
-     * @var string
      */
     public string $processType = '';
 
     /**
      * 进程标识符.
-     *
-     * @var string|null
      */
     public ?string $processId = null;
 
     /**
      * 是否成功
-     *
-     * @var bool
      */
     public bool $success = false;
 
     /**
      * 消息.
-     *
-     * @var string
      */
     public string $message = '';
 

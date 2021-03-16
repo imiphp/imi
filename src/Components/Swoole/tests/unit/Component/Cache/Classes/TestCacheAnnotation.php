@@ -20,8 +20,6 @@ class TestCacheAnnotation
      *   key="test:{id}",
      * )
      *
-     * @param int $id
-     *
      * @return array|int
      */
     public function testCacheable(int $id)
@@ -37,10 +35,6 @@ class TestCacheAnnotation
      *   key="test:{id}",
      *   ttl=1
      * )
-     *
-     * @param int $id
-     *
-     * @return array
      */
     public function testCacheableTTL(int $id): array
     {
@@ -60,10 +54,6 @@ class TestCacheAnnotation
      *   ),
      *   preventBreakdown=true,
      * )
-     *
-     * @param int $id
-     *
-     * @return array
      */
     public function testCacheableLock(int $id): array
     {
@@ -77,10 +67,6 @@ class TestCacheAnnotation
 
     /**
      * @CacheEvict(key="test:{id}")
-     *
-     * @param int $id
-     *
-     * @return bool
      */
     public function testCacheEvict(int $id): bool
     {
@@ -89,10 +75,6 @@ class TestCacheAnnotation
 
     /**
      * @CachePut(key="test:{id}")
-     *
-     * @param int $id
-     *
-     * @return int
      */
     public function testCachePut(int $id): int
     {

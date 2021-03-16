@@ -12,9 +12,6 @@ trait TMiddleware
      * 获取真实的中间件列表.
      *
      * @param string|string[] $middlewares
-     * @param string          $serverName
-     *
-     * @return array
      */
     protected function getMiddlewares($middlewares, string $serverName): array
     {

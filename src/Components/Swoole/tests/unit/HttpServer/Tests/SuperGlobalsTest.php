@@ -15,8 +15,6 @@ class SuperGlobalsTest extends BaseTest
 {
     /**
      * test.
-     *
-     * @return void
      */
     public function testSuperGlobals(): void
     {

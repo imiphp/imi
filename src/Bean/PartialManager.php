@@ -27,11 +27,6 @@ class PartialManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $partialClass
-     * @param string $targetClass
-     *
-     * @return void
      */
     public static function add(string $partialClass, string $targetClass): void
     {
@@ -43,10 +38,6 @@ class PartialManager
 
     /**
      * 获取目标类的 partial trait 列表.
-     *
-     * @param string $class
-     *
-     * @return array
      */
     public static function getClassPartials(string $class): array
     {

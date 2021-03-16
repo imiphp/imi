@@ -8,8 +8,6 @@ class EventItem
 {
     /**
      * 回调类.
-     *
-     * @var string|null
      */
     public ?string $callbackClass = null;
 
@@ -23,15 +21,11 @@ class EventItem
     /**
      * 优先级
      * 越大越先执行.
-     *
-     * @var int
      */
     public int $priority = 0;
 
     /**
      * 是否为一次性事件.
-     *
-     * @var bool
      */
     public bool $oneTime = false;
 

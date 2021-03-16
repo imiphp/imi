@@ -13,15 +13,11 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 {
     /**
      * 限定的数组列表成员类型.
-     *
-     * @var string
      */
     private string $itemType = '';
 
     /**
      * 数组列表.
-     *
-     * @var array
      */
     private array $list = [];
 
@@ -36,8 +32,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -67,8 +61,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
     /**
      * @param mixed $offset
      * @param mixed $value
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -88,8 +80,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * @param mixed $offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -116,17 +106,11 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
         return key($this->list);
     }
 
-    /**
-     * @return void
-     */
     public function next(): void
     {
         next($this->list);
     }
 
-    /**
-     * @return void
-     */
     public function rewind(): void
     {
         reset($this->list);
@@ -142,8 +126,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * 将当前对象作为数组返回.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -164,8 +146,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      * 从数组列表中移除.
      *
      * @param mixed ...$value
-     *
-     * @return void
      */
     public function remove(...$value): void
     {
@@ -174,8 +154,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * 清空.
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -186,8 +164,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
      * 加入数组列表.
      *
      * @param mixed ...$value
-     *
-     * @return void
      */
     public function append(...$value): void
     {
@@ -199,8 +175,6 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
 
     /**
      * 数组列表长度.
-     *
-     * @return int
      */
     public function count(): int
     {

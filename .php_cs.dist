@@ -28,7 +28,6 @@ return PhpCsFixer\Config::create()
         'braces'                     => [
             'position_after_control_structures' => 'next',
         ],
-        'no_superfluous_phpdoc_tags' => false,
         'single_line_comment_style'  => false,
     ])
     ->setRiskyAllowed(true)

@@ -8,8 +8,6 @@ class KeyRule
 {
     /**
      * 规则.
-     *
-     * @var string
      */
     public string $rule = '';
 

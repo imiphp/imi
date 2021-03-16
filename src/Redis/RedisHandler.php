@@ -244,8 +244,6 @@ class RedisHandler
 {
     /**
      * redis 对象
-     *
-     * @var \Redis
      */
     private \Redis $redis;
 
@@ -255,9 +253,6 @@ class RedisHandler
     }
 
     /**
-     * @param string $name
-     * @param array  $arguments
-     *
      * @return mixed
      */
     public function __call(string $name, array $arguments)
@@ -267,8 +262,6 @@ class RedisHandler
 
     /**
      * 获取 Redis 对象实例.
-     *
-     * @return \Redis
      */
     public function getInstance(): \Redis
     {
@@ -279,10 +272,6 @@ class RedisHandler
      * eval扩展方法，结合了 eval、evalSha.
      *
      * 优先使用 evalSha 尝试，失败则使用 eval 方法
-     *
-     * @param string     $script
-     * @param array|null $args
-     * @param int|null   $numKeys
      *
      * @return mixed
      */
@@ -303,10 +292,6 @@ class RedisHandler
     /**
      * scan.
      *
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
-     *
      * @return mixed
      */
     public function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -321,9 +306,6 @@ class RedisHandler
 
     /**
      * scan 方法的扩展简易遍历方法.
-     *
-     * @param string|null $pattern
-     * @param int|null    $count
      *
      * @return mixed
      */
@@ -345,11 +327,6 @@ class RedisHandler
     /**
      * hscan.
      *
-     * @param string      $key
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
-     *
      * @return mixed
      */
     public function hscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -364,10 +341,6 @@ class RedisHandler
 
     /**
      * hscan 方法的扩展简易遍历方法.
-     *
-     * @param string      $key
-     * @param string|null $pattern
-     * @param int|null    $count
      *
      * @return mixed
      */
@@ -389,11 +362,6 @@ class RedisHandler
     /**
      * sscan.
      *
-     * @param string      $key
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
-     *
      * @return mixed
      */
     public function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -408,10 +376,6 @@ class RedisHandler
 
     /**
      * sscan 方法的扩展简易遍历方法.
-     *
-     * @param string      $key
-     * @param string|null $pattern
-     * @param int|null    $count
      *
      * @return mixed
      */
@@ -433,11 +397,6 @@ class RedisHandler
     /**
      * zscan.
      *
-     * @param string      $key
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
-     *
      * @return mixed
      */
     public function zscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -452,10 +411,6 @@ class RedisHandler
 
     /**
      * zscan 方法的扩展简易遍历方法.
-     *
-     * @param string      $key
-     * @param string|null $pattern
-     * @param int|null    $count
      *
      * @return mixed
      */

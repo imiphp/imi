@@ -278,10 +278,6 @@ class Redis
      * 回调有 1 个参数：$instance(操作实例对象，\Imi\Redis\RedisHandler 类型)
      * 本方法返回值为回调的返回值
      *
-     * @param callable    $callable
-     * @param string|null $poolName
-     * @param bool        $forceUse
-     *
      * @return mixed
      */
     public static function use(callable $callable, ?string $poolName = null, bool $forceUse = false)
@@ -302,10 +298,6 @@ class Redis
     /**
      * scan.
      *
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
-     *
      * @return mixed
      */
     public static function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -324,11 +316,6 @@ class Redis
 
     /**
      * hscan.
-     *
-     * @param string      $key
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
      *
      * @return mixed
      */
@@ -349,11 +336,6 @@ class Redis
     /**
      * sscan.
      *
-     * @param string      $key
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
-     *
      * @return mixed
      */
     public static function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
@@ -372,11 +354,6 @@ class Redis
 
     /**
      * zscan.
-     *
-     * @param string      $key
-     * @param int|null    $iterator
-     * @param string|null $pattern
-     * @param int|null    $count
      *
      * @return mixed
      */

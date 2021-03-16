@@ -19,8 +19,6 @@ class DDL extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'sql';
 
@@ -28,8 +26,6 @@ class DDL extends Base
      * 表结构 SQL.
      *
      * CREATE TABLE 语句
-     *
-     * @var string
      */
     public string $sql = '';
 

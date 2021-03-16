@@ -32,8 +32,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
      *
-     * @param IHttpRequest            $request
-     * @param RequestHandlerInterface $handler
+     * @param IHttpRequest $request
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -76,11 +75,6 @@ class HttpSessionMiddleware implements MiddlewareInterface
 
     /**
      * 开启session.
-     *
-     * @param \Imi\Server\Session\SessionManager $sessionManager
-     * @param string|null                        $sessionId
-     *
-     * @return void
      */
     private function start(SessionManager $sessionManager, ?string $sessionId): void
     {
@@ -89,11 +83,6 @@ class HttpSessionMiddleware implements MiddlewareInterface
 
     /**
      * 发送cookie.
-     *
-     * @param \Imi\Server\Session\SessionManager $sessionManager
-     * @param Response                           $response
-     *
-     * @return IHttpResponse
      */
     private function sendCookie(SessionManager $sessionManager, Response $response): IHttpResponse
     {

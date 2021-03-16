@@ -19,15 +19,11 @@ class Serializable extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'allow';
 
     /**
      * 是否允许参与序列化.
-     *
-     * @var bool
      */
     public bool $allow = true;
 

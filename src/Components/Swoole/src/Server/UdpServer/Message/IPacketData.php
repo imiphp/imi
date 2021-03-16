@@ -8,8 +8,6 @@ interface IPacketData extends \Imi\Server\UdpServer\Message\IPacketData
 {
     /**
      * 获取客户端信息.
-     *
-     * @return array
      */
     public function getClientInfo(): array;
 }

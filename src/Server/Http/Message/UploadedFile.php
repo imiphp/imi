@@ -12,50 +12,36 @@ class UploadedFile implements UploadedFileInterface
 {
     /**
      * 文件在客户端时的文件名.
-     *
-     * @var string
      */
     protected string $fileName = '';
 
     /**
      * 文件mime类型.
-     *
-     * @var string
      */
     protected string $mediaType = '';
 
     /**
      * 临时文件名.
-     *
-     * @var string
      */
     protected string $tmpFileName = '';
 
     /**
      * 文件大小，单位：字节
-     *
-     * @var int
      */
     protected int $size = 0;
 
     /**
      * 错误码
-     *
-     * @var int
      */
     protected int $error = 0;
 
     /**
      * 文件流
-     *
-     * @var \Imi\Util\Stream\FileStream
      */
     protected FileStream $stream;
 
     /**
      * 文件是否被移动过.
-     *
-     * @var bool
      */
     protected bool $isMoved = false;
 
@@ -222,8 +208,6 @@ class UploadedFile implements UploadedFileInterface
 
     /**
      * Get 临时文件名.
-     *
-     * @return string
      */
     public function getTmpFileName(): string
     {

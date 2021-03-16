@@ -73,8 +73,6 @@ class ResponseProxy implements IHttpResponse
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification
      *
-     * @return IHttpResponse
-     *
      * @throws \InvalidArgumentException for invalid status code arguments
      */
     public function setStatus(int $code, string $reasonPhrase = ''): IHttpResponse
@@ -139,8 +137,6 @@ class ResponseProxy implements IHttpResponse
      * "1.1", "1.0").
      *
      * @param string $version HTTP protocol version
-     *
-     * @return IHttpResponse
      */
     public function setProtocolVersion(string $version): IHttpResponse
     {
@@ -267,8 +263,6 @@ class ResponseProxy implements IHttpResponse
      * @param string          $name  case-insensitive header field name
      * @param string|string[] $value header value(s)
      *
-     * @return IHttpResponse
-     *
      * @throws \InvalidArgumentException for invalid header names or values
      */
     public function setHeader(string $name, $value): IHttpResponse
@@ -309,8 +303,6 @@ class ResponseProxy implements IHttpResponse
      * @param string          $name  case-insensitive header field name to add
      * @param string|string[] $value header value(s)
      *
-     * @return IHttpResponse
-     *
      * @throws \InvalidArgumentException for invalid header names or values
      */
     public function addHeader(string $name, $value): IHttpResponse
@@ -342,8 +334,6 @@ class ResponseProxy implements IHttpResponse
      * Header resolution MUST be done without case-sensitivity.
      *
      * @param string $name case-insensitive header field name to remove
-     *
-     * @return IHttpResponse
      */
     public function removeHeader(string $name): IHttpResponse
     {
@@ -387,8 +377,6 @@ class ResponseProxy implements IHttpResponse
      *
      * @param StreamInterface $body body
      *
-     * @return IHttpResponse
-     *
      * @throws \InvalidArgumentException when the body is not valid
      */
     public function setBody(StreamInterface $body): IHttpResponse
@@ -398,16 +386,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
-     *
-     * @return IHttpResponse
      */
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IHttpResponse
     {
@@ -416,16 +394,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
-     *
-     * @return IHttpResponse
      */
     public function setCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): IHttpResponse
     {
@@ -439,8 +407,6 @@ class ResponseProxy implements IHttpResponse
      *
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
-     *
-     * @return array
      */
     public function getCookieParams(): array
     {
@@ -450,8 +416,7 @@ class ResponseProxy implements IHttpResponse
     /**
      * 获取cookie值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -462,8 +427,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 获取 Trailer 列表.
-     *
-     * @return array
      */
     public function getTrailers(): array
     {
@@ -472,10 +435,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * Trailer 是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasTrailer(string $name): bool
     {
@@ -484,10 +443,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 获取 Trailer 值
-     *
-     * @param string $name
-     *
-     * @return string|null
      */
     public function getTrailer(string $name): ?string
     {
@@ -496,11 +451,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @return IHttpResponse
      */
     public function withTrailer(string $name, string $value): IHttpResponse
     {
@@ -509,11 +459,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @return IHttpResponse
      */
     public function setTrailer(string $name, string $value): IHttpResponse
     {
@@ -523,11 +468,6 @@ class ResponseProxy implements IHttpResponse
     /**
      * 设置服务器端重定向
      * 默认状态码为302.
-     *
-     * @param string $url
-     * @param int    $status
-     *
-     * @return IHttpResponse
      */
     public function redirect(string $url, int $status = StatusCode::FOUND): IHttpResponse
     {
@@ -536,8 +476,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 发送所有响应数据.
-     *
-     * @return IHttpResponse
      */
     public function send(): IHttpResponse
     {
@@ -550,8 +488,6 @@ class ResponseProxy implements IHttpResponse
      * @param string $filename 要发送的文件名称，文件不存在或没有访问权限sendfile会失败
      * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
      * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
-     *
-     * @return IHttpResponse
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0): IHttpResponse
     {
@@ -560,8 +496,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 是否已结束请求
-     *
-     * @return bool
      */
     public function isEnded(): bool
     {
@@ -570,8 +504,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 获取当前上下文中的对象实例.
-     *
-     * @return IHttpResponse
      */
     public static function getResponseInstance(): IHttpResponse
     {
@@ -580,10 +512,6 @@ class ResponseProxy implements IHttpResponse
 
     /**
      * 设置当前上下文中的对象实例.
-     *
-     * @param IHttpResponse $response
-     *
-     * @return void
      */
     public function setResponseInstance(IHttpResponse $response): void
     {

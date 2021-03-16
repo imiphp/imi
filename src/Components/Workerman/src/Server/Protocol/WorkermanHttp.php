@@ -27,38 +27,26 @@ class WorkermanHttp
 {
     /**
      * Request class name.
-     *
-     * @var string
      */
     protected static string $_requestClass = 'Workerman\Protocols\Http\Request';
 
     /**
      * Session name.
-     *
-     * @var string
      */
     protected static string $_sessionName = 'PHPSID';
 
     /**
      * Upload tmp dir.
-     *
-     * @var string
      */
     protected static string $_uploadTmpDir = '';
 
     /**
      * Open cache.
-     *
-     * @var bool
      */
     protected static bool $_enableCache = true;
 
     /**
      * Get or set session name.
-     *
-     * @param string|null $name
-     *
-     * @return string
      */
     public static function sessionName(?string $name = null): string
     {
@@ -72,10 +60,6 @@ class WorkermanHttp
 
     /**
      * Get or set the request class name.
-     *
-     * @param string|null $class_name
-     *
-     * @return string
      */
     public static function requestClass(?string $class_name = null): string
     {
@@ -89,8 +73,6 @@ class WorkermanHttp
 
     /**
      * Enable or disable Cache.
-     *
-     * @param bool $value
      */
     public static function enableCache(bool $value): void
     {
@@ -99,11 +81,6 @@ class WorkermanHttp
 
     /**
      * Check the integrity of the package.
-     *
-     * @param string        $recv_buffer
-     * @param TcpConnection $connection
-     *
-     * @return int
      */
     public static function input(string $recv_buffer, TcpConnection $connection): int
     {
@@ -175,11 +152,6 @@ class WorkermanHttp
 
     /**
      * Http decode.
-     *
-     * @param string        $recv_buffer
-     * @param TcpConnection $connection
-     *
-     * @return \Workerman\Protocols\Http\Request
      */
     public static function decode(string $recv_buffer, TcpConnection $connection): Request
     {
@@ -215,9 +187,6 @@ class WorkermanHttp
      * Http encode.
      *
      * @param string|Response|null $response
-     * @param TcpConnection        $connection
-     *
-     * @return string
      */
     public static function encode($response, TcpConnection $connection): string
     {
@@ -300,12 +269,7 @@ class WorkermanHttp
     /**
      * Send remainder of a stream to client.
      *
-     * @param TcpConnection $connection
-     * @param resource      $handler
-     * @param int           $offset
-     * @param int           $length
-     *
-     * @return void
+     * @param resource $handler
      */
     protected static function sendStream(TcpConnection $connection, $handler, int $offset = 0, int $length = 0): void
     {

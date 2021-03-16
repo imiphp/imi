@@ -19,23 +19,16 @@ class RouteMiddleware implements IMiddleware
 {
     /**
      * @ServerInject("WSRoute")
-     *
-     * @var \Imi\Server\WebSocket\Route\WSRoute
      */
     protected WSRoute $route;
 
     /**
      * @ServerInject("WSRouteNotFoundHandler")
-     *
-     * @var IWSRouteNotFoundHandler
      */
     protected IWSRouteNotFoundHandler $notFoundHandler;
 
     /**
      * 处理方法.
-     *
-     * @param IFrame          $frame
-     * @param IMessageHandler $handler
      *
      * @return mixed
      */

@@ -19,8 +19,6 @@ class TaskController extends HttpController
 {
     /**
      * @Action
-     *
-     * @return array
      */
     public function test(): array
     {

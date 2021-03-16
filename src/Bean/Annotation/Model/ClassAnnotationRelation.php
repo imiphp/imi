@@ -10,15 +10,11 @@ class ClassAnnotationRelation implements IAnnotationRelation
 {
     /**
      * 类名.
-     *
-     * @var string
      */
     private string $class = '';
 
     /**
      * 注解.
-     *
-     * @var \Imi\Bean\Annotation\Base
      */
     private Base $annotation;
 
@@ -30,8 +26,6 @@ class ClassAnnotationRelation implements IAnnotationRelation
 
     /**
      * Get 类名.
-     *
-     * @return string
      */
     public function getClass(): string
     {
@@ -40,8 +34,6 @@ class ClassAnnotationRelation implements IAnnotationRelation
 
     /**
      * Get 注解.
-     *
-     * @return \Imi\Bean\Annotation\Base
      */
     public function getAnnotation(): Base
     {

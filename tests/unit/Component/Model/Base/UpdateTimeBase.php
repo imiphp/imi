@@ -32,15 +32,11 @@ abstract class UpdateTimeBase extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     *
-     * @var int|null
      */
     protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -65,15 +61,11 @@ abstract class UpdateTimeBase extends Model
      * date.
      *
      * @Column(name="date", type="date", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $date = null;
 
     /**
      * 获取 date.
-     *
-     * @return string|null
      */
     public function getDate(): ?string
     {
@@ -98,15 +90,11 @@ abstract class UpdateTimeBase extends Model
      * time.
      *
      * @Column(name="time", type="time", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $time = null;
 
     /**
      * 获取 time.
-     *
-     * @return string|null
      */
     public function getTime(): ?string
     {
@@ -131,15 +119,11 @@ abstract class UpdateTimeBase extends Model
      * datetime.
      *
      * @Column(name="datetime", type="datetime", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $datetime = null;
 
     /**
      * 获取 datetime.
-     *
-     * @return string|null
      */
     public function getDatetime(): ?string
     {
@@ -164,15 +148,11 @@ abstract class UpdateTimeBase extends Model
      * timestamp.
      *
      * @Column(name="timestamp", type="timestamp", length=0, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $timestamp = null;
 
     /**
      * 获取 timestamp.
-     *
-     * @return string|null
      */
     public function getTimestamp(): ?string
     {
@@ -197,15 +177,11 @@ abstract class UpdateTimeBase extends Model
      * int.
      *
      * @Column(name="int", type="int", length=11, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var int|null
      */
     protected ?int $int = null;
 
     /**
      * 获取 int.
-     *
-     * @return int|null
      */
     public function getInt(): ?int
     {
@@ -230,15 +206,11 @@ abstract class UpdateTimeBase extends Model
      * bigint.
      *
      * @Column(name="bigint", type="bigint", length=20, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var int|null
      */
     protected ?int $bigint = null;
 
     /**
      * 获取 bigint.
-     *
-     * @return int|null
      */
     public function getBigint(): ?int
     {
@@ -263,15 +235,11 @@ abstract class UpdateTimeBase extends Model
      * year.
      *
      * @Column(name="year", type="year", length=4, accuracy=0, nullable=true, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var int|null
      */
     protected ?int $year = null;
 
     /**
      * 获取 year.
-     *
-     * @return int|null
      */
     public function getYear(): ?int
     {

@@ -22,8 +22,6 @@ class Serializables extends Base
      * 模式
      * allow-白名单
      * deny-黑名单.
-     *
-     * @var string
      */
     public string $mode = '';
 

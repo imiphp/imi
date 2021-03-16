@@ -13,22 +13,16 @@ interface ISwooleServer extends IServer, IServerGroup
 {
     /**
      * 获取 swoole 服务器对象
-     *
-     * @return \Swoole\Server
      */
     public function getSwooleServer(): Server;
 
     /**
      * 获取 swoole 监听端口.
-     *
-     * @return \Swoole\Server\Port
      */
     public function getSwoolePort(): Port;
 
     /**
      * 是否为子服务器.
-     *
-     * @return bool
      */
     public function isSubServer(): bool;
 }

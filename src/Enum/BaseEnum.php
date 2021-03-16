@@ -10,8 +10,6 @@ abstract class BaseEnum
      * 根据值，获取常量名，失败返回null.
      *
      * @param mixed $value
-     *
-     * @return string|null
      */
     public static function getName($value): ?string
     {
@@ -24,8 +22,6 @@ abstract class BaseEnum
     /**
      * 获取值
      *
-     * @param string $name
-     *
      * @return mixed
      */
     public static function getValue(string $name)
@@ -37,8 +33,6 @@ abstract class BaseEnum
      * 获取文本.
      *
      * @param mixed $value
-     *
-     * @return string|null
      */
     public static function getText($value): ?string
     {
@@ -57,8 +51,6 @@ abstract class BaseEnum
      * 获取配置.
      *
      * @param mixed $value
-     *
-     * @return array|null
      */
     public static function getData($value): ?array
     {
@@ -77,8 +69,6 @@ abstract class BaseEnum
 
     /**
      * 获取所有值
-     *
-     * @return array
      */
     public static function getValues(): array
     {
@@ -87,8 +77,6 @@ abstract class BaseEnum
 
     /**
      * 获取键值对应数组.
-     *
-     * @return array
      */
     public static function getMap(): array
     {

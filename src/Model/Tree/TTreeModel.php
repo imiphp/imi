@@ -16,8 +16,6 @@ trait TTreeModel
 {
     /**
      * 获取 TreeModel 注解.
-     *
-     * @return \Imi\Model\Tree\Annotation\TreeModel|null
      */
     private static function __getTreeModel(): ?TreeModel
     {
@@ -27,8 +25,6 @@ trait TTreeModel
 
     /**
      * 获取主键字段名.
-     *
-     * @return string
      */
     private static function __getIdField(): string
     {
@@ -45,10 +41,6 @@ trait TTreeModel
 
     /**
      * 获取关联列表.
-     *
-     * @param \Imi\Db\Query\Interfaces\IQuery|null $query
-     *
-     * @return array
      */
     public static function getAssocList(?IQuery $query = null): array
     {
@@ -70,8 +62,6 @@ trait TTreeModel
      * @param mixed|array|null $parentId
      * @param bool             $includeParentId 包含父级ID
      * @param int              $limitLevel      限制层级
-     *
-     * @return array
      */
     public function getChildrenIds($parentId = null, bool $includeParentId = false, int $limitLevel = -1): array
     {
@@ -129,8 +119,6 @@ trait TTreeModel
      * 获取一级子节点的ID们.
      *
      * @param mixed|array|null $parentId
-     *
-     * @return array
      */
     public function getChildIds($parentId = null): array
     {
@@ -143,7 +131,6 @@ trait TTreeModel
      * 获取子成员对象列表，可以指定层级，默认无限级.
      *
      * @param mixed|array|null $parentId
-     * @param int              $limitLevel
      *
      * @return static[]
      */

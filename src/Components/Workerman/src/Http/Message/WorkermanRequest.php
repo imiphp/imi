@@ -14,28 +14,19 @@ class WorkermanRequest extends Request
 {
     /**
      * Workerman 的 http 请求对象
-     *
-     * @var \Workerman\Protocols\Http\Request
      */
     protected \Workerman\Protocols\Http\Request $workermanRequest;
 
     /**
      * Workerman 的 Worker 对象
-     *
-     * @var \Workerman\Worker
      */
     protected Worker $worker;
 
     /**
      * 协议.
-     *
-     * @var string
      */
     protected string $scheme;
 
-    /**
-     * @var TcpConnection
-     */
     protected TcpConnection $connection;
 
     public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Request $request, string $scheme = 'http')
@@ -48,8 +39,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化协议版本.
-     *
-     * @return void
      */
     protected function initProtocolVersion(): void
     {
@@ -58,8 +47,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化 headers.
-     *
-     * @return void
      */
     protected function initHeaders(): void
     {
@@ -69,8 +56,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化 body.
-     *
-     * @return void
      */
     protected function initBody(): void
     {
@@ -79,8 +64,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化 uri.
-     *
-     * @return void
      */
     protected function initUri(): void
     {
@@ -100,8 +83,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化 method.
-     *
-     * @return void
      */
     protected function initMethod(): void
     {
@@ -110,8 +91,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化 server.
-     *
-     * @return void
      */
     protected function initServer(): void
     {
@@ -120,8 +99,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化请求参数.
-     *
-     * @return void
      */
     protected function initRequestParams(): void
     {
@@ -134,8 +111,6 @@ class WorkermanRequest extends Request
 
     /**
      * 初始化上传文件.
-     *
-     * @return void
      */
     protected function initUploadedFiles(): void
     {
@@ -144,8 +119,6 @@ class WorkermanRequest extends Request
 
     /**
      * Get workerman 的 http 请求对象
-     *
-     * @return \Workerman\Protocols\Http\Request
      */
     public function getWorkermanRequest(): \Workerman\Protocols\Http\Request
     {
@@ -154,8 +127,6 @@ class WorkermanRequest extends Request
 
     /**
      * Get workerman 的 Worker 对象
-     *
-     * @return \Workerman\Worker
      */
     public function getWorker(): Worker
     {
@@ -164,8 +135,6 @@ class WorkermanRequest extends Request
 
     /**
      * Get workerman 连接对象
-     *
-     * @return TcpConnection
      */
     public function getConnection(): TcpConnection
     {

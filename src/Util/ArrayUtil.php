@@ -16,10 +16,7 @@ class ArrayUtil
     /**
      * 从数组中移除一个或多个元素，重新组织为连续的键.
      *
-     * @param array $array
      * @param mixed $value
-     *
-     * @return array
      */
     public static function remove(array $array, ...$value): array
     {
@@ -37,10 +34,7 @@ class ArrayUtil
     /**
      * 从数组中移除一个或多个元素，保持原有键.
      *
-     * @param array $array
      * @param mixed $value
-     *
-     * @return array
      */
     public static function removeKeepKey(array $array, ...$value): array
     {
@@ -59,8 +53,6 @@ class ArrayUtil
      * 多维数组递归合并.
      *
      * @param array ...$arrays
-     *
-     * @return array
      */
     public static function recursiveMerge(array ...$arrays): array
     {
@@ -101,8 +93,6 @@ class ArrayUtil
      * @param array      $array   原数组
      * @param string|int $column  列名
      * @param bool       $keepOld 是否保留列名，默认保留
-     *
-     * @return array
      */
     public static function columnToKey(array $array, $column, bool $keepOld = true): array
     {
@@ -122,10 +112,6 @@ class ArrayUtil
 
     /**
      * 判断数组是否为关联数组.
-     *
-     * @param array $array
-     *
-     * @return bool
      */
     public static function isAssoc(array $array): bool
     {
@@ -134,11 +120,6 @@ class ArrayUtil
 
     /**
      * 随机获得数组中的值，返回一个保持键值对应的数组.
-     *
-     * @param array $array
-     * @param int   $number
-     *
-     * @return array
      */
     public static function random(array $array, int $number = 1): array
     {
@@ -158,13 +139,6 @@ class ArrayUtil
 
     /**
      * 列表转树形关联结构.
-     *
-     * @param array  $list
-     * @param string $idField
-     * @param string $parentField
-     * @param string $childrenField
-     *
-     * @return array
      */
     public static function toTreeAssoc(array $list, string $idField = 'id', string $parentField = 'parent_id', string $childrenField = 'children'): array
     {

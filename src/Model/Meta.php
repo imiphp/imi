@@ -18,36 +18,26 @@ class Meta
 {
     /**
      * 类名.
-     *
-     * @var string
      */
     private string $className = '';
 
     /**
      * 表名.
-     *
-     * @var string|null
      */
     private ?string $tableName = null;
 
     /**
      * 数据库连接池名称.
-     *
-     * @var string|null
      */
     private ?string $dbPoolName = null;
 
     /**
      * 主键.
-     *
-     * @var array|null
      */
     private ?array $id = null;
 
     /**
      * 第一个主键.
-     *
-     * @var string|null
      */
     private ?string $firstId = null;
 
@@ -74,15 +64,11 @@ class Meta
 
     /**
      * 模型是否为驼峰命名.
-     *
-     * @var bool
      */
     private bool $camel = true;
 
     /**
      * 序列化注解.
-     *
-     * @var \Imi\Model\Annotation\Serializables|null
      */
     private ?Serializables $serializables;
 
@@ -102,15 +88,11 @@ class Meta
 
     /**
      * 是否有关联.
-     *
-     * @var bool
      */
     private bool $relation = false;
 
     /**
      * 自增字段名.
-     *
-     * @var string|null
      */
     private ?string $autoIncrementField = null;
 
@@ -166,8 +148,6 @@ class Meta
 
     /**
      * Get 表名.
-     *
-     * @return string|null
      */
     public function getTableName(): ?string
     {
@@ -176,8 +156,6 @@ class Meta
 
     /**
      * Get 数据库连接池名称.
-     *
-     * @return string|null
      */
     public function getDbPoolName(): ?string
     {
@@ -186,8 +164,6 @@ class Meta
 
     /**
      * Get 主键.
-     *
-     * @return array|null
      */
     public function getId(): ?array
     {
@@ -196,8 +172,6 @@ class Meta
 
     /**
      * Get 第一个主键.
-     *
-     * @return string|null
      */
     public function getFirstId(): ?string
     {
@@ -226,8 +200,6 @@ class Meta
 
     /**
      * Get 模型是否为驼峰命名.
-     *
-     * @return bool
      */
     public function isCamel(): bool
     {
@@ -246,8 +218,6 @@ class Meta
 
     /**
      * Get 是否有关联.
-     *
-     * @return bool
      */
     public function hasRelation(): bool
     {
@@ -256,8 +226,6 @@ class Meta
 
     /**
      * Get 序列化注解.
-     *
-     * @return \Imi\Model\Annotation\Serializables|null
      */
     public function getSerializables(): ?Serializables
     {
@@ -276,8 +244,6 @@ class Meta
 
     /**
      * Get 类名.
-     *
-     * @return string
      */
     public function getClassName(): string
     {
@@ -296,8 +262,6 @@ class Meta
 
     /**
      * Get 自增字段名.
-     *
-     * @return string|null
      */
     public function getAutoIncrementField(): ?string
     {

@@ -27,8 +27,6 @@ class TreeModelTest extends BaseTest
 
     /**
      * @testdox getChildIds
-     *
-     * @return void
      */
     public function testGetChildIds(): void
     {
@@ -39,8 +37,6 @@ class TreeModelTest extends BaseTest
 
     /**
      * @testdox getChildrenIds
-     *
-     * @return void
      */
     public function testGetChildrenIds(): void
     {
@@ -52,8 +48,6 @@ class TreeModelTest extends BaseTest
 
     /**
      * @testdox getChildrenList
-     *
-     * @return void
      */
     public function testGetChildrenList(): void
     {
@@ -72,8 +66,6 @@ class TreeModelTest extends BaseTest
 
     /**
      * @testdox getParent
-     *
-     * @return void
      */
     public function testGetParent(): void
     {
@@ -88,8 +80,6 @@ class TreeModelTest extends BaseTest
 
     /**
      * @testdox getParents
-     *
-     * @return void
      */
     public function testGetParents(): void
     {
@@ -102,8 +92,6 @@ class TreeModelTest extends BaseTest
 
     /**
      * @testdox getAssocList
-     *
-     * @return void
      */
     public function testGetAssocList(): void
     {

@@ -13,10 +13,6 @@ interface IWorkerStopEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param WorkerStopEventParam $e
-     *
-     * @return void
      */
-    public function handle(WorkerStopEventParam $e);
+    public function handle(WorkerStopEventParam $e): void;
 }

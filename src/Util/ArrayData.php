@@ -24,8 +24,6 @@ class ArrayData implements \ArrayAccess, \Countable
      *
      * @param string|array $name
      * @param mixed        $value
-     *
-     * @return bool
      */
     public function set($name, $value = null): bool
     {
@@ -48,8 +46,6 @@ class ArrayData implements \ArrayAccess, \Countable
      *
      * @param string|array $name
      * @param mixed        $value
-     *
-     * @return bool
      */
     public function setVal($name, $value = null): bool
     {
@@ -141,8 +137,6 @@ class ArrayData implements \ArrayAccess, \Countable
      * 删除数据.
      *
      * @param string|array $name
-     *
-     * @return bool
      */
     public function remove($name): bool
     {
@@ -177,8 +171,6 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 清空数据.
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -187,8 +179,6 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 获取数据的数量.
-     *
-     * @return int
      */
     public function length(): int
     {
@@ -197,8 +187,6 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 获取数据的数量.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -207,10 +195,6 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * 键名对应的值是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function exists(string $name): bool
     {
@@ -230,18 +214,14 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * @param mixed $key
      * @param mixed $value
-     *
-     * @return void
      */
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         $this->set($key, $value);
     }
 
     /**
      * @param mixed $key
-     *
-     * @return bool
      */
     public function __isset($key): bool
     {
@@ -259,8 +239,6 @@ class ArrayData implements \ArrayAccess, \Countable
     /**
      * @param mixed $offset
      * @param mixed $value
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -276,8 +254,6 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * @param mixed $offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -286,8 +262,6 @@ class ArrayData implements \ArrayAccess, \Countable
 
     /**
      * @param mixed $offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {

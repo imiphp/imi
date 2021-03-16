@@ -18,15 +18,11 @@ abstract class BaseApp implements IApp
 {
     /**
      * 命名空间.
-     *
-     * @var string
      */
     protected string $namespace = '';
 
     /**
      * 构造方法.
-     *
-     * @param string $namespace
      */
     public function __construct(string $namespace)
     {
@@ -35,10 +31,6 @@ abstract class BaseApp implements IApp
 
     /**
      * 加载配置.
-     *
-     * @param bool $initDotEnv
-     *
-     * @return void
      */
     public function loadConfig(bool $initDotEnv = true): void
     {
@@ -84,8 +76,6 @@ abstract class BaseApp implements IApp
 
     /**
      * 加载入口.
-     *
-     * @return void
      */
     public function loadMain(): void
     {
@@ -108,8 +98,6 @@ abstract class BaseApp implements IApp
 
     /**
      * 初始化运行时.
-     *
-     * @return void
      */
     protected function initRuntime(): void
     {

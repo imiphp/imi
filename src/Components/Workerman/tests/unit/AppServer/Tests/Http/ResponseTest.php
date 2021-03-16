@@ -14,8 +14,6 @@ class ResponseTest extends BaseTest
 {
     /**
      * Middleware.
-     *
-     * @return void
      */
     public function testMiddleware(): void
     {
@@ -32,8 +30,6 @@ class ResponseTest extends BaseTest
 
     /**
      * Options Middleware.
-     *
-     * @return void
      */
     public function testOptionsMiddleware(): void
     {
@@ -49,8 +45,6 @@ class ResponseTest extends BaseTest
 
     /**
      * Cookie.
-     *
-     * @return void
      */
     public function testCookie(): void
     {
@@ -86,8 +80,6 @@ class ResponseTest extends BaseTest
 
     /**
      * Headers.
-     *
-     * @return void
      */
     public function testHeaders(): void
     {
@@ -100,8 +92,6 @@ class ResponseTest extends BaseTest
 
     /**
      * Redirect.
-     *
-     * @return void
      */
     public function testRedirect(): void
     {
@@ -114,8 +104,6 @@ class ResponseTest extends BaseTest
 
     /**
      * Download.
-     *
-     * @return void
      */
     public function testDownload(): void
     {

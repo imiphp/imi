@@ -16,22 +16,16 @@ class Listener extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'eventName';
 
     /**
      * 事件名.
-     *
-     * @var string
      */
     public string $eventName = '';
 
     /**
      * 优先级，越大越先执行.
-     *
-     * @var int
      */
     public int $priority = 0;
 

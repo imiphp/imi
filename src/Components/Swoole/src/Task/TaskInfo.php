@@ -10,15 +10,11 @@ class TaskInfo
 {
     /**
      * 任务执行器.
-     *
-     * @var \Imi\Swoole\Task\Interfaces\ITaskHandler
      */
     private ITaskHandler $taskHandler;
 
     /**
      * 任务参数.
-     *
-     * @var TaskParam
      */
     private TaskParam $param;
 
@@ -30,8 +26,6 @@ class TaskInfo
 
     /**
      * Get the value of taskHandler.
-     *
-     * @return \Imi\Swoole\Task\Interfaces\ITaskHandler
      */
     public function getTaskHandler(): ITaskHandler
     {
@@ -40,8 +34,6 @@ class TaskInfo
 
     /**
      * Get the value of param.
-     *
-     * @return TaskParam
      */
     public function getParam(): TaskParam
     {

@@ -28,43 +28,31 @@ class Validator implements IValidator
 
     /**
      * 第一条失败信息.
-     *
-     * @var string|null
      */
     protected ?string $message = null;
 
     /**
      * 验证结果.
-     *
-     * @var array
      */
     protected array $results = [];
 
     /**
      * 第一条失败的规则.
-     *
-     * @var \Imi\Validate\Annotation\Condition|null
      */
     protected ?Condition $failRule = null;
 
     /**
      * 验证失败的规则列表.
-     *
-     * @var array
      */
     protected array $failRules = [];
 
     /**
      * 场景定义.
-     *
-     * @var array|null
      */
     protected ?array $scene = null;
 
     /**
      * 当前场景.
-     *
-     * @var string|null
      */
     protected ?string $currentScene = null;
 
@@ -77,8 +65,6 @@ class Validator implements IValidator
 
     /**
      * 注解校验规则集合.
-     *
-     * @var array
      */
     private static array $annotationRules = [];
 
@@ -106,8 +92,6 @@ class Validator implements IValidator
      * 设置验证器中的数据.
      *
      * @param array|object $data
-     *
-     * @return void
      */
     public function setData(&$data): void
     {
@@ -128,8 +112,6 @@ class Validator implements IValidator
      * 设置校验规则.
      *
      * @param \Imi\Validate\Annotation\Condition[] $rules
-     *
-     * @return void
      */
     public function setRules(array $rules): void
     {
@@ -179,8 +161,6 @@ class Validator implements IValidator
     /**
      * 验证，返回是否通过
      * 当遇到不通过时结束验证流程.
-     *
-     * @return bool
      */
     public function validate(): bool
     {
@@ -189,8 +169,6 @@ class Validator implements IValidator
 
     /**
      * 验证所有，返回是否通过.
-     *
-     * @return bool
      */
     public function validateAll(): bool
     {
@@ -199,8 +177,6 @@ class Validator implements IValidator
 
     /**
      * 获取第一条失败信息.
-     *
-     * @return string|null
      */
     public function getMessage(): ?string
     {
@@ -209,8 +185,6 @@ class Validator implements IValidator
 
     /**
      * 获取所有验证结果.
-     *
-     * @return array
      */
     public function getResults(): array
     {
@@ -222,8 +196,6 @@ class Validator implements IValidator
      *
      * @param array|object $data
      * @param bool         $break 遇到验证失败是否中断
-     *
-     * @return bool
      */
     protected function __validateAll(&$data, bool $break): bool
     {
@@ -277,10 +249,7 @@ class Validator implements IValidator
     /**
      * 组建消息.
      *
-     * @param array|object                       $data
-     * @param \Imi\Validate\Annotation\Condition $annotation
-     *
-     * @return string
+     * @param array|object $data
      */
     protected function buildMessage($data, Condition $annotation): string
     {
@@ -321,10 +290,7 @@ class Validator implements IValidator
     /**
      * 验证
      *
-     * @param array|object                       $data
-     * @param \Imi\Validate\Annotation\Condition $annotation
-     *
-     * @return bool
+     * @param array|object $data
      */
     protected function validateByAnnotation($data, Condition $annotation): bool
     {
@@ -368,10 +334,8 @@ class Validator implements IValidator
     /**
      * 获取参数值
      *
-     * @param array|object                       $data
-     * @param mixed                              $arg
-     * @param \Imi\Validate\Annotation\Condition $annotation
-     * @param bool                               $includeAnnotationProperty
+     * @param array|object $data
+     * @param mixed        $arg
      *
      * @return mixed
      */
@@ -417,8 +381,6 @@ class Validator implements IValidator
 
     /**
      * Get 第一条失败的规则.
-     *
-     * @return \Imi\Validate\Annotation\Condition
      */
     public function getFailRule(): Condition
     {
@@ -427,8 +389,6 @@ class Validator implements IValidator
 
     /**
      * Get 验证失败的规则列表.
-     *
-     * @return array
      */
     public function getFailRules(): array
     {
@@ -437,8 +397,6 @@ class Validator implements IValidator
 
     /**
      * Get 场景定义.
-     *
-     * @return array|null
      */
     public function getScene(): ?array
     {
@@ -449,8 +407,6 @@ class Validator implements IValidator
      * Set 场景定义.
      *
      * @param array|null $scene 场景定义
-     *
-     * @return self
      */
     public function setScene(?array $scene): self
     {
@@ -461,8 +417,6 @@ class Validator implements IValidator
 
     /**
      * Get 当前场景.
-     *
-     * @return string|null
      */
     public function getCurrentScene(): ?string
     {
@@ -473,8 +427,6 @@ class Validator implements IValidator
      * Set 当前场景.
      *
      * @param string|null $currentScene 当前场景
-     *
-     * @return self
      */
     public function setCurrentScene(?string $currentScene): self
     {
@@ -485,8 +437,6 @@ class Validator implements IValidator
 
     /**
      * 获取注解定义的场景.
-     *
-     * @return array
      */
     public function getAnnotationScene(): array
     {

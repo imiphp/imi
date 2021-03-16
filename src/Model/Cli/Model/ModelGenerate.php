@@ -42,8 +42,6 @@ class ModelGenerate extends BaseCommand
      *
      * @param string|bool $override
      * @param string|bool $config
-     *
-     * @return void
      */
     public function generate(string $namespace, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine): void
     {
@@ -218,12 +216,6 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 检查表是否生成.
-     *
-     * @param string $table
-     * @param array  $include
-     * @param array  $exclude
-     *
-     * @return bool
      */
     private function checkTable(string $table, array $include, array $exclude): bool
     {
@@ -237,11 +229,6 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 表名转短类名.
-     *
-     * @param string $table
-     * @param array  $prefixs
-     *
-     * @return string
      */
     private function getClassName(string $table, array $prefixs): string
     {
@@ -261,13 +248,7 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理字段信息.
      *
-     * @param array  $fields
-     * @param array  $data
-     * @param bool   $isView
-     * @param string $table
-     * @param array  $config
-     *
-     * @return void
+     * @param array $data
      */
     private function parseFields(array $fields, ?array &$data, bool $isView, string $table, array $config): void
     {
@@ -315,12 +296,9 @@ class ModelGenerate extends BaseCommand
     /**
      * 处理类似varchar(32)和decimal(10,2)格式的字段类型.
      *
-     * @param string $text
      * @param string $typeName
      * @param int    $length
      * @param int    $accuracy
-     *
-     * @return bool
      */
     public function parseFieldType(string $text, ?string &$typeName, ?int &$length, ?int &$accuracy): bool
     {
@@ -351,11 +329,6 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 渲染模版.
-     *
-     * @param string $template
-     * @param array  $data
-     *
-     * @return string
      */
     private function renderTemplate(string $template, array $data): string
     {
@@ -370,10 +343,6 @@ class ModelGenerate extends BaseCommand
      * 数据库字段类型转PHP的字段类型.
      *
      * 返回格式：[显示类型，定义类型]
-     *
-     * @param string $type
-     *
-     * @return array
      */
     private function dbFieldTypeToPhp(string $type): array
     {
@@ -397,11 +366,6 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 获取创建表的 DDL.
-     *
-     * @param \Imi\Db\Query\Interfaces\IQuery $query
-     * @param string                          $table
-     *
-     * @return string
      */
     public function getDDL(IQuery $query, string $table): string
     {

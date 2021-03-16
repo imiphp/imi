@@ -11,29 +11,21 @@ class Pagination
 {
     /**
      * 当前页码
-     *
-     * @var int
      */
     private int $page = 0;
 
     /**
      * 每页显示数量.
-     *
-     * @var int
      */
     private int $count = 0;
 
     /**
      * 偏移量.
-     *
-     * @var int
      */
     private int $limitOffset = 0;
 
     /**
      * 结束的偏移量（limitOffset + count - 1）.
-     *
-     * @var int
      */
     private int $limitEndOffset = 0;
 
@@ -46,8 +38,6 @@ class Pagination
 
     /**
      * Get 当前页码
-     *
-     * @return int
      */
     public function getPage(): int
     {
@@ -58,8 +48,6 @@ class Pagination
      * Set 当前页码
      *
      * @param int $page 当前页码
-     *
-     * @return self
      */
     public function setPage(int $page): self
     {
@@ -72,8 +60,6 @@ class Pagination
 
     /**
      * Get 每页显示数量.
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -84,8 +70,6 @@ class Pagination
      * Set 每页显示数量.
      *
      * @param int $count 每页显示数量
-     *
-     * @return self
      */
     public function setCount(int $count): self
     {
@@ -98,8 +82,6 @@ class Pagination
 
     /**
      * 计算.
-     *
-     * @return void
      */
     private function calc(): void
     {
@@ -110,8 +92,6 @@ class Pagination
 
     /**
      * Get 偏移量.
-     *
-     * @return int
      */
     public function getLimitOffset(): int
     {
@@ -120,8 +100,6 @@ class Pagination
 
     /**
      * Get 结束的偏移量（limitOffset + count - 1）.
-     *
-     * @return int
      */
     public function getLimitEndOffset(): int
     {
@@ -130,10 +108,6 @@ class Pagination
 
     /**
      * 根据记录数计算总页数.
-     *
-     * @param int $records
-     *
-     * @return int
      */
     public function calcPageCount(int $records): int
     {

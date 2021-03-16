@@ -31,29 +31,21 @@ class OptionsMiddleware implements MiddlewareInterface
 
     /**
      * 允许的请求头.
-     *
-     * @var string
      */
     protected string $allowHeaders = 'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie';
 
     /**
      * 允许的跨域请求头.
-     *
-     * @var string
      */
     protected string $exposeHeaders = 'Authorization, Content-Type, Accept, Origin, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, X-Requested-With, X-Id, X-Token, Cookie';
 
     /**
      * 允许的请求方法.
-     *
-     * @var string
      */
     protected string $allowMethods = 'GET, POST, PATCH, PUT, DELETE';
 
     /**
      * 是否允许跨域 Cookie.
-     *
-     * @var string
      */
     protected string $allowCredentials = 'true';
 
@@ -61,18 +53,13 @@ class OptionsMiddleware implements MiddlewareInterface
      * 当请求为 OPTIONS 时，是否中止后续中间件和路由逻辑.
      *
      * 一般建议设为 true
-     *
-     * @var bool
      */
     protected bool $optionsBreak = false;
 
     /**
      * 处理方法.
      *
-     * @param IHttpRequest            $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
+     * @param IHttpRequest $request
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

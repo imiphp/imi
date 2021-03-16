@@ -19,8 +19,6 @@ class WSMiddleware extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'middlewares';
 
@@ -32,7 +30,6 @@ class WSMiddleware extends Base
     public $middlewares;
 
     /**
-     * @param array|null      $__data
      * @param string|string[] $middlewares
      */
     public function __construct(?array $__data = null, $middlewares = null)

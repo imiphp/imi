@@ -8,19 +8,13 @@ interface ITable extends IDatabase
 {
     /**
      * 获取表名.
-     *
-     * @return string|null
      */
     public function getTable(): ?string;
 
     /**
      * 设置表名.
-     *
-     * @param string|null $table
-     *
-     * @return void
      */
-    public function setTable(?string $table = null);
+    public function setTable(?string $table = null): void;
 
     /**
      * 设置值，可以根据传入的值自动处理
@@ -28,10 +22,6 @@ interface ITable extends IDatabase
      * parent.name——database.table
      * name alias——table alias
      * name as alias—— table as alias.
-     *
-     * @param string $value
-     *
-     * @return void
      */
-    public function setValue(string $value);
+    public function setValue(string $value): void;
 }

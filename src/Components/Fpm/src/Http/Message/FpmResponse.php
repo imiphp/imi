@@ -12,21 +12,11 @@ class FpmResponse extends Response
 {
     /**
      * 被更改过的 Cookie 名称数组.
-     *
-     * @var array
      */
     protected array $changedCookieNames = [];
 
     /**
      * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
      *
      * @return static
      */
@@ -40,14 +30,6 @@ class FpmResponse extends Response
 
     /**
      * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
      *
      * @return static
      */

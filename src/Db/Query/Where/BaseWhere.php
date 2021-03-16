@@ -8,8 +8,6 @@ abstract class BaseWhere
 {
     /**
      * 逻辑运算符.
-     *
-     * @var string
      */
     protected string $logicalOperator = '';
 

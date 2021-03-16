@@ -8,15 +8,11 @@ abstract class BaseMonitor implements IMonitor
 {
     /**
      * 包含的路径.
-     *
-     * @var array
      */
     protected array $includePaths = [];
 
     /**
      * 排除的路径.
-     *
-     * @var array
      */
     protected array $excludePaths = [];
 
@@ -35,8 +31,6 @@ abstract class BaseMonitor implements IMonitor
 
     /**
      * 初始化.
-     *
-     * @return void
      */
-    abstract protected function init();
+    abstract protected function init(): void;
 }

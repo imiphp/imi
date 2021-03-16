@@ -15,9 +15,6 @@ interface IWSRouteNotFoundHandler
     /**
      * 处理方法.
      *
-     * @param IFrame          $frame
-     * @param IMessageHandler $handler
-     *
      * @return mixed
      */
     public function handle(IFrame $frame, IMessageHandler $handler);

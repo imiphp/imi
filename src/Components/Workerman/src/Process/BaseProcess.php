@@ -10,8 +10,6 @@ abstract class BaseProcess implements IProcess
 {
     /**
      * 数据.
-     *
-     * @var array
      */
     protected array $data = [];
 

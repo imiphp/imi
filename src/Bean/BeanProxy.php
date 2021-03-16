@@ -25,12 +25,6 @@ class BeanProxy
     /**
      * 魔术方法.
      *
-     * @param object   $object
-     * @param string   $className
-     * @param string   $method
-     * @param callable $callback
-     * @param array    $args
-     *
      * @return mixed
      */
     public static function call(object $object, string $className, string $method, callable $callback, array &$args)
@@ -129,12 +123,6 @@ class BeanProxy
 
     /**
      * 注入属性.
-     *
-     * @param object $object
-     * @param string $className
-     * @param bool   $reInit
-     *
-     * @return void
      */
     public static function injectProps(object $object, string $className, bool $reInit = false): void
     {
@@ -177,10 +165,6 @@ class BeanProxy
 
     /**
      * 获取注入属性的配置们.
-     *
-     * @param string $className
-     *
-     * @return array
      */
     public static function getConfigInjects(string $className): array
     {
@@ -211,10 +195,6 @@ class BeanProxy
      * 获取注入类属性的注解和配置.
      *
      * 返回：[$annotations, $configs]
-     *
-     * @param string $className
-     *
-     * @return array
      */
     public static function getInjects(string $className): array
     {
@@ -236,11 +216,6 @@ class BeanProxy
 
     /**
      * 正常请求
-     *
-     * @param object $object
-     * @param string $className
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -272,12 +247,9 @@ class BeanProxy
     /**
      * 执行切面操作.
      *
-     * @param string   $className
      * @param string   $method    方法名
      * @param string   $pointType 切入点类型
      * @param callable $callback  回调
-     *
-     * @return void
      */
     private static function doAspect(string $className, string $method, string $pointType, callable $callback): void
     {
@@ -311,9 +283,6 @@ class BeanProxy
 
     /**
      * 获取注入类属性的值
-     *
-     * @param string $className
-     * @param string $propertyName
      *
      * @return mixed
      */

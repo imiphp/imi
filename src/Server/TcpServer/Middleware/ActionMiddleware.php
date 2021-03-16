@@ -18,9 +18,6 @@ class ActionMiddleware implements IMiddleware
     /**
      * 处理方法.
      *
-     * @param IReceiveData    $data
-     * @param IReceiveHandler $handler
-     *
      * @return mixed
      */
     public function process(IReceiveData $data, IReceiveHandler $handler)

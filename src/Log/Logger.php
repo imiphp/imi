@@ -19,15 +19,11 @@ class Logger extends AbstractLogger
 
     /**
      * 核心处理器.
-     *
-     * @var array
      */
     protected array $coreHandlers = [];
 
     /**
      * 扩展处理器.
-     *
-     * @var array
      */
     protected array $exHandlers = [];
 
@@ -67,9 +63,6 @@ class Logger extends AbstractLogger
      *
      * @param mixed  $level
      * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
     public function log($level, $message, array $context = []): void
     {
@@ -85,8 +78,6 @@ class Logger extends AbstractLogger
 
     /**
      * 强制保存所有日志.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -98,10 +89,6 @@ class Logger extends AbstractLogger
 
     /**
      * 获取代码调用跟踪.
-     *
-     * @param array $backtrace
-     *
-     * @return array
      */
     protected function getTrace(array $backtrace): array
     {
@@ -126,10 +113,6 @@ class Logger extends AbstractLogger
 
     /**
      * 获取错误文件位置.
-     *
-     * @param array $backtrace
-     *
-     * @return array
      */
     public function getErrorFile(array $backtrace): array
     {
@@ -151,10 +134,6 @@ class Logger extends AbstractLogger
 
     /**
      * 处理context.
-     *
-     * @param array $context
-     *
-     * @return array
      */
     private function parseContext(array $context): array
     {
@@ -172,10 +151,6 @@ class Logger extends AbstractLogger
 
     /**
      * 增加扩展处理器.
-     *
-     * @param array $exHandler
-     *
-     * @return void
      */
     public function addExHandler(array $exHandler): void
     {

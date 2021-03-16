@@ -13,43 +13,31 @@ class PoolItem
 {
     /**
      * 资源对象
-     *
-     * @var \Imi\Pool\Interfaces\IPoolResource
      */
     protected IPoolResource $resource;
 
     /**
      * 被使用的次数.
-     *
-     * @var int
      */
     protected int $usageCount = 0;
 
     /**
      * 是否空闲状态
-     *
-     * @var bool
      */
     protected bool $isFree = true;
 
     /**
      * 创建时间的时间戳.
-     *
-     * @var float
      */
     protected float $createTime = 0;
 
     /**
      * 最后一次使用的时间戳.
-     *
-     * @var float
      */
     protected float $lastUseTime = 0;
 
     /**
      * 最后一次被释放的时间戳.
-     *
-     * @var float
      */
     protected float $lastReleaseTime = 0;
 
@@ -61,8 +49,6 @@ class PoolItem
 
     /**
      * Get 资源对象
-     *
-     * @return \Imi\Pool\Interfaces\IPoolResource
      */
     public function getResource(): IPoolResource
     {
@@ -71,8 +57,6 @@ class PoolItem
 
     /**
      * Get 被使用的次数.
-     *
-     * @return int
      */
     public function getUsageCount(): int
     {
@@ -81,8 +65,6 @@ class PoolItem
 
     /**
      * 是否空闲状态
-     *
-     * @return bool
      */
     public function isFree(): bool
     {
@@ -91,8 +73,6 @@ class PoolItem
 
     /**
      * 锁定.
-     *
-     * @return bool
      */
     public function lock(): bool
     {
@@ -112,8 +92,6 @@ class PoolItem
 
     /**
      * 释放.
-     *
-     * @return void
      */
     public function release(): void
     {
@@ -123,8 +101,6 @@ class PoolItem
 
     /**
      * Get 创建时间的时间戳.
-     *
-     * @return float
      */
     public function getCreateTime(): float
     {
@@ -133,8 +109,6 @@ class PoolItem
 
     /**
      * Get 最后一次使用的时间戳.
-     *
-     * @return float
      */
     public function getLastUseTime(): float
     {
@@ -143,8 +117,6 @@ class PoolItem
 
     /**
      * Get 最后一次被释放的时间戳.
-     *
-     * @return float
      */
     public function getLastReleaseTime(): float
     {

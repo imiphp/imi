@@ -8,29 +8,21 @@ class JoinPoint
 {
     /**
      * 切入点类型.
-     *
-     * @var string
      */
     protected string $type = '';
 
     /**
      * 请求方法名.
-     *
-     * @var string
      */
     protected string $method = '';
 
     /**
      * 请求参数.
-     *
-     * @var array
      */
     protected array $args = [];
 
     /**
      * 连接点所在的目标对象
-     *
-     * @var object
      */
     protected object $target;
 
@@ -44,8 +36,6 @@ class JoinPoint
 
     /**
      * 获取切入点类型.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -54,8 +44,6 @@ class JoinPoint
 
     /**
      * 获取请求方法名.
-     *
-     * @return string
      */
     public function getMethod(): string
     {
@@ -64,8 +52,6 @@ class JoinPoint
 
     /**
      * 获取请求参数.
-     *
-     * @return array
      */
     public function getArgs(): array
     {
@@ -74,8 +60,6 @@ class JoinPoint
 
     /**
      * 获取连接点所在的目标对象
-     *
-     * @return object
      */
     public function getTarget(): object
     {
@@ -86,8 +70,6 @@ class JoinPoint
      * 修改请求参数.
      *
      * @param array $args 请求参数
-     *
-     * @return void
      */
     public function setArgs(array $args): void
     {

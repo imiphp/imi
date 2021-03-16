@@ -13,11 +13,7 @@ trait TCacheAopHelper
     /**
      * 获取缓存key.
      *
-     * @param \Imi\Aop\JoinPoint                                                                              $joinPoint
-     * @param array                                                                                           $args
      * @param \Imi\Cache\Annotation\Cacheable|\Imi\Cache\Annotation\CacheEvict|\Imi\Cache\Annotation\CachePut $cacheable
-     *
-     * @return string
      */
     protected function getKey(JoinPoint $joinPoint, array $args, $cacheable): string
     {
@@ -59,8 +55,7 @@ trait TCacheAopHelper
     /**
      * 获取缓存值
      *
-     * @param \Imi\Cache\Annotation\CachePut $cachePut
-     * @param mixed                          $value
+     * @param mixed $value
      *
      * @return mixed
      */

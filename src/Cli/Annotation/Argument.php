@@ -19,15 +19,11 @@ class Argument extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * 参数名称.
-     *
-     * @var string
      */
     public string $name = '';
 
@@ -47,15 +43,11 @@ class Argument extends Base
 
     /**
      * 是否是必选参数.
-     *
-     * @var bool
      */
     public bool $required = false;
 
     /**
      * 注释.
-     *
-     * @var string
      */
     public string $comments = '';
 

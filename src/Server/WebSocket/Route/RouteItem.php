@@ -10,8 +10,6 @@ class RouteItem
 {
     /**
      * 注解.
-     *
-     * @var \Imi\Server\WebSocket\Route\Annotation\WSRoute
      */
     public WSRoute $annotation;
 
@@ -24,29 +22,21 @@ class RouteItem
 
     /**
      * 中间件列表.
-     *
-     * @var array
      */
     public array $middlewares = [];
 
     /**
      * 其它配置项.
-     *
-     * @var array
      */
     public array $options = [];
 
     /**
      * 是否为单例控制器.
-     *
-     * @var bool
      */
     public bool $singleton = false;
 
     /**
-     * @param \Imi\Server\WebSocket\Route\Annotation\WSRoute $annotation
-     * @param callable|\Imi\Server\Route\RouteCallable       $callable
-     * @param array                                          $options
+     * @param callable|\Imi\Server\Route\RouteCallable $callable
      */
     public function __construct(WSRoute $annotation, $callable, array $options = [])
     {

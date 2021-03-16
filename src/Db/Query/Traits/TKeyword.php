@@ -11,10 +11,6 @@ trait TKeyword
 {
     /**
      * 把输入的关键字文本转为数组.
-     *
-     * @param string $string
-     *
-     * @return array
      */
     public function parseKeywordText(string $string): array
     {
@@ -60,12 +56,6 @@ trait TKeyword
 
     /**
      * 从数组拼装为有分隔标识符的关键字.
-     *
-     * @param array       $keywords
-     * @param string|null $alias
-     * @param array|null  $jsonKeywords
-     *
-     * @return string
      */
     public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string
     {
@@ -96,10 +86,6 @@ trait TKeyword
 
     /**
      * 处理关键字输入，转为安全的分隔标识符的关键字.
-     *
-     * @param string $string
-     *
-     * @return string
      */
     public function parseKeyword(string $string): string
     {

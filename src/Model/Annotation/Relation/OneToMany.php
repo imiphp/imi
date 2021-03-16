@@ -18,8 +18,6 @@ class OneToMany extends RelationBase
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'model';
 
@@ -27,8 +25,6 @@ class OneToMany extends RelationBase
      * 关联的模型类
      * 可以是包含命名空间的完整类名
      * 可以同命名空间下的类名.
-     *
-     * @var string
      */
     public string $model = '';
 
@@ -36,8 +32,6 @@ class OneToMany extends RelationBase
      * 排序规则字符串.
      *
      * 例：age desc, id desc
-     *
-     * @var string|null
      */
     public ?string $order = null;
 

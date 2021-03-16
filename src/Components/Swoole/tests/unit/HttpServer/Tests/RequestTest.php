@@ -15,8 +15,6 @@ class RequestTest extends BaseTest
 {
     /**
      * route.
-     *
-     * @return void
      */
     public function testRoute(): void
     {
@@ -29,8 +27,6 @@ class RequestTest extends BaseTest
 
     /**
      * route autoEndSlash.
-     *
-     * @return void
      */
     public function testAutoEndSlash(): void
     {
@@ -42,8 +38,6 @@ class RequestTest extends BaseTest
 
     /**
      * $_GET.
-     *
-     * @return void
      */
     public function testGetParams(): void
     {
@@ -56,8 +50,6 @@ class RequestTest extends BaseTest
 
     /**
      * $_POST.
-     *
-     * @return void
      */
     public function testPostParams(): void
     {
@@ -72,8 +64,6 @@ class RequestTest extends BaseTest
 
     /**
      * $_COOKIE.
-     *
-     * @return void
      */
     public function testCookieParams(): void
     {
@@ -92,8 +82,6 @@ class RequestTest extends BaseTest
 
     /**
      * $_REQUEST.
-     *
-     * @return void
      */
     public function testRequestParams(): void
     {
@@ -112,8 +100,6 @@ class RequestTest extends BaseTest
 
     /**
      * Request Header.
-     *
-     * @return void
      */
     public function testRequestHeaders(): void
     {
@@ -132,8 +118,6 @@ class RequestTest extends BaseTest
 
     /**
      * Upload single file.
-     *
-     * @return void
      */
     public function testUploadSingle(): void
     {
@@ -156,8 +140,6 @@ class RequestTest extends BaseTest
 
     /**
      * Upload multi files.
-     *
-     * @return void
      */
     public function testUploadMulti(): void
     {
@@ -191,8 +173,6 @@ class RequestTest extends BaseTest
 
     /**
      * 控制器不在服务器目录下的测试.
-     *
-     * @return void
      */
     public function testOutsideController(): void
     {
@@ -204,8 +184,6 @@ class RequestTest extends BaseTest
 
     /**
      * 测试动作传入的参数值
-     *
-     * @return void
      */
     public function testActionProperty(): void
     {
@@ -235,8 +213,6 @@ class RequestTest extends BaseTest
 
     /**
      * 测试 Uri 地址
-     *
-     * @return void
      */
     public function testUri(): void
     {
@@ -249,8 +225,6 @@ class RequestTest extends BaseTest
 
     /**
      * 测试执行超时.
-     *
-     * @return void
      */
     public function testExecuteTimeout(): void
     {
@@ -264,8 +238,6 @@ class RequestTest extends BaseTest
 
     /**
      * 测试未找到匹配路由情况.
-     *
-     * @return void
      */
     public function testRouteNotFound(): void
     {
@@ -277,8 +249,6 @@ class RequestTest extends BaseTest
 
     /**
      * 测试正则路由.
-     *
-     * @return void
      */
     public function testregularExpressionRoute(): void
     {

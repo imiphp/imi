@@ -10,22 +10,16 @@ class QueryOption
 {
     /**
      * 表名.
-     *
-     * @var \Imi\Db\Query\Interfaces\ITable
      */
     public ITable $table;
 
     /**
      * distinct.
-     *
-     * @var bool
      */
     public bool $distinct = false;
 
     /**
      * 查询字段.
-     *
-     * @var array
      */
     public array $field = [];
 
@@ -73,15 +67,11 @@ class QueryOption
 
     /**
      * 记录从第几个开始取出.
-     *
-     * @var int|null
      */
     public ?int $offset = null;
 
     /**
      * 查询几条记录.
-     *
-     * @var int|null
      */
     public ?int $limit = null;
 

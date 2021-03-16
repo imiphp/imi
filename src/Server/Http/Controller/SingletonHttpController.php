@@ -17,8 +17,6 @@ abstract class SingletonHttpController extends HttpController
      * 请求
      *
      * @ServerInject("HttpRequestProxy")
-     *
-     * @var \Imi\Server\Http\Message\Contract\IHttpRequest
      */
     public IHttpRequest $request;
 

@@ -22,8 +22,6 @@ class AroundJoinPoint extends JoinPoint
     /**
      * 调用下一个方法.
      *
-     * @param array|null $args
-     *
      * @return mixed
      */
     public function proceed(?array $args = null)

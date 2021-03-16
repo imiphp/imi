@@ -18,29 +18,21 @@ class Atomic extends BaseLock
 {
     /**
      * 配置的 Atomic 名称.
-     *
-     * @var string
      */
     public string $atomicName = '';
 
     /**
      * 同时获得锁的数量.
-     *
-     * @var int
      */
     public int $quantity = 1;
 
     /**
      * 超时 timerid.
-     *
-     * @var int|null
      */
     private ?int $timeoutTimerId = null;
 
     /**
      * 加锁，会阻塞进程.
-     *
-     * @return bool
      */
     protected function __lock(): bool
     {
@@ -55,8 +47,6 @@ class Atomic extends BaseLock
 
     /**
      * 尝试获取锁
-     *
-     * @return bool
      */
     protected function __tryLock(): bool
     {
@@ -71,8 +61,6 @@ class Atomic extends BaseLock
 
     /**
      * 解锁
-     *
-     * @return bool
      */
     protected function __unlock(): bool
     {
@@ -84,8 +72,6 @@ class Atomic extends BaseLock
 
     /**
      * 开启超时计时器.
-     *
-     * @return void
      */
     private function startTimeoutTimer(): void
     {
@@ -100,8 +86,6 @@ class Atomic extends BaseLock
 
     /**
      * 停止超时计时器.
-     *
-     * @return void
      */
     private function stopTimeoutTimer(): void
     {

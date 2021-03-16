@@ -16,10 +16,6 @@ class PoolTest2Process extends BaseProcess
 {
     /**
      * @PoolClean(mode="deny", list={"maindb"})
-     *
-     * @param \Swoole\Process $process
-     *
-     * @return void
      */
     public function run(\Swoole\Process $process): void
     {

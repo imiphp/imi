@@ -13,8 +13,6 @@ abstract class BasePool implements IPool
 {
     /**
      * 池子名称.
-     *
-     * @var string
      */
     protected string $name = '';
 
@@ -41,20 +39,15 @@ abstract class BasePool implements IPool
 
     /**
      * 当前配置序号.
-     *
-     * @var int
      */
     protected int $configIndex = -1;
 
     /**
      * 正在添加中的资源数量.
-     *
-     * @var int
      */
     protected int $addingResources = 0;
 
     /**
-     * @param string                           $name
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
      * @param mixed                            $resourceConfig
      */
@@ -85,8 +78,6 @@ abstract class BasePool implements IPool
 
     /**
      * 获取池子名称.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -105,8 +96,6 @@ abstract class BasePool implements IPool
 
     /**
      * 打开池子.
-     *
-     * @return void
      */
     public function open(): void
     {
@@ -118,8 +107,6 @@ abstract class BasePool implements IPool
 
     /**
      * 关闭池子，释放所有资源.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -133,10 +120,6 @@ abstract class BasePool implements IPool
 
     /**
      * 释放资源占用.
-     *
-     * @param \Imi\Pool\Interfaces\IPoolResource $resource
-     *
-     * @return void
      */
     public function release(IPoolResource $resource): void
     {
@@ -152,8 +135,6 @@ abstract class BasePool implements IPool
 
     /**
      * 资源回收.
-     *
-     * @return void
      */
     public function gc(): void
     {
@@ -182,8 +163,6 @@ abstract class BasePool implements IPool
 
     /**
      * 填充最少资源数量.
-     *
-     * @return void
      */
     public function fillMinResources(): void
     {
@@ -195,8 +174,6 @@ abstract class BasePool implements IPool
 
     /**
      * 添加资源.
-     *
-     * @return IPoolResource
      */
     protected function addResource(): IPoolResource
     {
@@ -222,33 +199,23 @@ abstract class BasePool implements IPool
 
     /**
      * 初始化队列.
-     *
-     * @return void
      */
-    abstract protected function initQueue();
+    abstract protected function initQueue(): void;
 
     /**
      * 建立队列.
-     *
-     * @return void
      */
-    abstract protected function buildQueue();
+    abstract protected function buildQueue(): void;
 
     /**
      * 创建资源.
-     *
-     * @return \Imi\Pool\Interfaces\IPoolResource
      */
     abstract protected function createResource(): IPoolResource;
 
     /**
      * 把资源加入队列.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
-    abstract protected function push(IPoolResource $resource);
+    abstract protected function push(IPoolResource $resource): void;
 
     /**
      * 获得资源配置.
@@ -262,8 +229,6 @@ abstract class BasePool implements IPool
 
     /**
      * 获取当前池子中资源总数.
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -272,8 +237,6 @@ abstract class BasePool implements IPool
 
     /**
      * 获取当前池子中正在使用的资源总数.
-     *
-     * @return int
      */
     public function getUsed(): int
     {

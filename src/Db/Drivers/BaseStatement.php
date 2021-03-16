@@ -11,8 +11,6 @@ abstract class BaseStatement implements IStatement
 {
     /**
      * 关闭.
-     *
-     * @return void
      */
     public function close(): void
     {

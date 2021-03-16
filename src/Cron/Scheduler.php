@@ -22,8 +22,6 @@ class Scheduler implements IScheduler
 {
     /**
      * @Inject("CronManager")
-     *
-     * @var \Imi\Cron\Contract\ICronManager
      */
     protected ICronManager $cronManager;
 
@@ -43,8 +41,6 @@ class Scheduler implements IScheduler
 
     /**
      * 下次执行时间集合.
-     *
-     * @var array
      */
     private array $nextTickTimeMap = [];
 
@@ -57,15 +53,11 @@ class Scheduler implements IScheduler
 
     /**
      * 首次执行记录集合.
-     *
-     * @var array
      */
     private array $firstRunMap = [];
 
     /**
      * 关闭.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -73,8 +65,6 @@ class Scheduler implements IScheduler
 
     /**
      * 遍历可运行的任务列表.
-     *
-     * @return \Generator
      */
     public function schedule(): \Generator
     {
@@ -118,8 +108,6 @@ class Scheduler implements IScheduler
      * 执行任务
      *
      * @param \Imi\Cron\CronTask $task
-     *
-     * @return void
      */
     public function runTask(CronTask $task): void
     {
@@ -144,10 +132,6 @@ class Scheduler implements IScheduler
 
     /**
      * 完成任务
-     *
-     * @param \Imi\Cron\Message\Result $result
-     *
-     * @return void
      */
     public function completeTask(Result $result): void
     {

@@ -27,8 +27,6 @@ class UdpRoute implements IRoute
      * 路由解析处理.
      *
      * @param mixed $data
-     *
-     * @return RouteResult|null
      */
     public function parse($data): ?RouteResult
     {
@@ -46,11 +44,7 @@ class UdpRoute implements IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param UdpRouteAnnotation $annotation
-     * @param mixed              $callable
-     * @param array              $options
-     *
-     * @return void
+     * @param mixed $callable
      */
     public function addRuleAnnotation(UdpRouteAnnotation $annotation, $callable, array $options = []): void
     {
@@ -68,8 +62,6 @@ class UdpRoute implements IRoute
 
     /**
      * 清空路由规则.
-     *
-     * @return void
      */
     public function clearRules(): void
     {
@@ -78,10 +70,6 @@ class UdpRoute implements IRoute
 
     /**
      * 路由规则是否存在.
-     *
-     * @param UdpRouteAnnotation $rule
-     *
-     * @return bool
      */
     public function existsRule(UdpRouteAnnotation $rule): bool
     {
@@ -101,10 +89,7 @@ class UdpRoute implements IRoute
     /**
      * 检查条件是否匹配.
      *
-     * @param array|object       $data
-     * @param UdpRouteAnnotation $annotation
-     *
-     * @return bool
+     * @param array|object $data
      */
     private function checkCondition($data, UdpRouteAnnotation $annotation): bool
     {
@@ -125,8 +110,6 @@ class UdpRoute implements IRoute
 
     /**
      * 检查重复路由.
-     *
-     * @return void
      */
     public function checkDuplicateRoutes(): void
     {

@@ -42,10 +42,6 @@ class Composer
 
     /**
      * 获取路径对应的所有命名空间.
-     *
-     * @param string $path
-     *
-     * @return array
      */
     public static function getPathNamespaces(string $path): array
     {

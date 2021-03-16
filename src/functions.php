@@ -9,10 +9,7 @@ namespace
     /**
      * 启动一个协程，自动创建和销毁上下文.
      *
-     * @param callable $callable
-     * @param mixed    $args
-     *
-     * @return int
+     * @param mixed $args
      */
     function imigo(callable $callable, ...$args): int
     {
@@ -26,10 +23,7 @@ namespace
     /**
      * 为传入的回调自动创建和销毁上下文，并返回新的回调.
      *
-     * @param callable $callable
-     * @param bool     $withGo   是否内置启动一个协程，如果为true，则无法获取回调返回值
-     *
-     * @return callable
+     * @param bool $withGo 是否内置启动一个协程，如果为true，则无法获取回调返回值
      */
     function imiCallable(callable $callable, bool $withGo = false): callable
     {
@@ -58,7 +52,6 @@ namespace
      *
      * @param string $varname
      * @param mixed  $default
-     * @param bool   $localOnly
      *
      * @return mixed
      */
@@ -78,10 +71,6 @@ namespace Imi
 {
     /**
      * 处理命令行，执行后不会有 sh 进程.
-     *
-     * @param string $cmd
-     *
-     * @return string
      */
     function cmd(string $cmd): string
     {

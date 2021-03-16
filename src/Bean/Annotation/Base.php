@@ -15,8 +15,6 @@ abstract class Base extends LazyArrayObject
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = null;
 
@@ -28,8 +26,7 @@ abstract class Base extends LazyArrayObject
     protected $__alias;
 
     /**
-     * @param array|null $data
-     * @param mixed      ...$args
+     * @param mixed ...$args
      */
     public function __construct(?array $data = null, ...$args)
     {

@@ -15,33 +15,21 @@ trait TLeftAndRight
 {
     /**
      * 左侧表字段.
-     *
-     * @var string
      */
     protected string $leftField = '';
 
     /**
      * 右侧表字段.
-     *
-     * @var string
      */
     protected string $rightField = '';
 
     /**
      * 右侧模型类.
-     *
-     * @var string
      */
     protected string $rightModel = '';
 
     /**
      * 初始化左右关联.
-     *
-     * @param string       $className
-     * @param string       $propertyName
-     * @param RelationBase $annotation
-     *
-     * @return void
      */
     public function initLeftAndRight(string $className, string $propertyName, RelationBase $annotation): void
     {
@@ -83,8 +71,6 @@ trait TLeftAndRight
 
     /**
      * Get the value of leftField.
-     *
-     * @return string
      */
     public function getLeftField(): string
     {
@@ -93,8 +79,6 @@ trait TLeftAndRight
 
     /**
      * Get the value of rightField.
-     *
-     * @return string
      */
     public function getRightField(): string
     {
@@ -103,8 +87,6 @@ trait TLeftAndRight
 
     /**
      * Get 右侧模型类.
-     *
-     * @return string
      */
     public function getRightModel(): string
     {

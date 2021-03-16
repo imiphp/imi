@@ -15,22 +15,16 @@ class RedisHash extends Base
 {
     /**
      * Redis连接池名称.
-     *
-     * @var string|null
      */
     protected ?string $poolName = null;
 
     /**
      * 默认缺省的 hash key.
-     *
-     * @var string
      */
     protected string $defaultHashKey = 'imi:RedisHashCache';
 
     /**
      * 分隔符，分隔 hash key和 member.
-     *
-     * @var string
      */
     protected string $separator = '->';
 
@@ -309,11 +303,6 @@ SCRIPT;
 
     /**
      * 处理key.
-     *
-     * @param string|null $key
-     * @param string|null $member
-     *
-     * @return void
      */
     protected function parseKey(?string &$key, ?string &$member): void
     {

@@ -10,10 +10,8 @@ interface IValidator
      * 设置验证器中的数据.
      *
      * @param array|object $data
-     *
-     * @return void
      */
-    public function setData(&$data);
+    public function setData(&$data): void;
 
     /**
      * 获取验证器中的数据.
@@ -26,10 +24,8 @@ interface IValidator
      * 设置校验规则.
      *
      * @param \Imi\Validate\Annotation\Condition[] $rules
-     *
-     * @return void
      */
-    public function setRules(array $rules);
+    public function setRules(array $rules): void;
 
     /**
      * 获得所有校验规则.
@@ -40,8 +36,6 @@ interface IValidator
 
     /**
      * Get 场景定义.
-     *
-     * @return array|null
      */
     public function getScene(): ?array;
 
@@ -56,8 +50,6 @@ interface IValidator
 
     /**
      * Get 当前场景.
-     *
-     * @return string|null
      */
     public function getCurrentScene(): ?string;
 
@@ -80,29 +72,21 @@ interface IValidator
     /**
      * 验证，返回是否通过
      * 当遇到不通过时结束验证流程.
-     *
-     * @return bool
      */
     public function validate(): bool;
 
     /**
      * 验证所有，返回是否通过.
-     *
-     * @return bool
      */
     public function validateAll(): bool;
 
     /**
      * 获取第一条失败信息.
-     *
-     * @return string|null
      */
     public function getMessage(): ?string;
 
     /**
      * 获取所有验证结果.
-     *
-     * @return array
      */
     public function getResults(): array;
 }

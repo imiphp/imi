@@ -13,10 +13,6 @@ interface IAfterBatchUpdateEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterBatchUpdateEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterBatchUpdateEventParam $e);
+    public function handle(AfterBatchUpdateEventParam $e): void;
 }

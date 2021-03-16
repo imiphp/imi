@@ -20,10 +20,6 @@ class BeforeWorkerStart implements IWorkerStartEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param WorkerStartEventParam $e
-     *
-     * @return void
      */
     public function handle(WorkerStartEventParam $e): void
     {

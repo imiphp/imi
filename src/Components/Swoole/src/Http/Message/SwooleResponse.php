@@ -11,15 +11,11 @@ class SwooleResponse extends Response
 {
     /**
      * swoole响应对象
-     *
-     * @var \Swoole\Http\Response
      */
     protected \Swoole\Http\Response $swooleResponse;
 
     /**
      * 对应的服务器.
-     *
-     * @var \Imi\Swoole\Server\Base
      */
     protected \Imi\Swoole\Server\Base $serverInstance;
 
@@ -105,8 +101,6 @@ class SwooleResponse extends Response
 
     /**
      * 获取swoole响应对象
-     *
-     * @return \Swoole\Http\Response
      */
     public function getSwooleResponse(): \Swoole\Http\Response
     {
@@ -115,8 +109,6 @@ class SwooleResponse extends Response
 
     /**
      * 获取对应的服务器.
-     *
-     * @return \Imi\Swoole\Server\Base
      */
     public function getServerInstance(): \Imi\Swoole\Server\Base
     {

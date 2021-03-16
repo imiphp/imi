@@ -14,8 +14,6 @@ abstract class Base implements CacheInterface
     /**
      * 数据读写格式化处理器
      * 为null时不做任何处理.
-     *
-     * @var string|null
      */
     protected ?string $formatHandlerClass = null;
 
@@ -31,8 +29,6 @@ abstract class Base implements CacheInterface
      * 写入编码
      *
      * @param mixed $data
-     *
-     * @return string
      */
     protected function encode($data): string
     {
@@ -52,8 +48,6 @@ abstract class Base implements CacheInterface
 
     /**
      * 读出解码
-     *
-     * @param string $data
      *
      * @return mixed
      */
@@ -75,10 +69,6 @@ abstract class Base implements CacheInterface
 
     /**
      * 检查key格式.
-     *
-     * @param string $key
-     *
-     * @return void
      */
     protected function checkKey(string $key): void
     {
@@ -92,8 +82,6 @@ abstract class Base implements CacheInterface
      * 检查值是否是数组或Traversable.
      *
      * @param mixed $values
-     *
-     * @return void
      */
     protected function checkArrayOrTraversable($values): void
     {

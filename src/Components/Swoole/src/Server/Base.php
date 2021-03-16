@@ -55,17 +55,13 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 是否为子服务器.
-     *
-     * @var bool
      */
     protected bool $isSubServer = false;
 
     /**
      * 构造方法.
      *
-     * @param string $name
-     * @param array  $config
-     * @param bool   $isSubServer 是否为子服务器
+     * @param bool $isSubServer 是否为子服务器
      */
     public function __construct(string $name, array $config, bool $isSubServer = false)
     {
@@ -106,8 +102,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 获取 swoole 服务器对象
-     *
-     * @return \Swoole\Server
      */
     public function getSwooleServer(): Server
     {
@@ -116,8 +110,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 获取 swoole 监听端口.
-     *
-     * @return \Swoole\Server\Port
      */
     public function getSwoolePort(): Port
     {
@@ -126,8 +118,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 是否为子服务器.
-     *
-     * @return bool
      */
     public function isSubServer(): bool
     {
@@ -136,8 +126,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 开启服务
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -150,8 +138,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 终止服务
-     *
-     * @return void
      */
     public function shutdown(): void
     {
@@ -160,8 +146,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 重载服务
-     *
-     * @return void
      */
     public function reload(): void
     {
@@ -171,8 +155,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * 调用服务器方法.
      *
-     * @param string $methodName
-     * @param mixed  ...$args
+     * @param mixed ...$args
      *
      * @return mixed
      */
@@ -195,8 +178,6 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function bindEvents(): void
     {
@@ -373,24 +354,18 @@ abstract class Base extends BaseServer implements ISwooleServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
-    abstract protected function __bindEvents();
+    abstract protected function __bindEvents(): void;
 
     /**
      * 创建 swoole 服务器对象
-     *
-     * @return void
      */
-    abstract protected function createServer();
+    abstract protected function createServer(): void;
 
     /**
      * 从主服务器监听端口，作为子服务器.
-     *
-     * @return void
      */
-    abstract protected function createSubServer();
+    abstract protected function createSubServer(): void;
 
     /**
      * 获取服务器初始化需要的配置.

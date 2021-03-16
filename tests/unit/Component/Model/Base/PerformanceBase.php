@@ -26,15 +26,11 @@ abstract class PerformanceBase extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     *
-     * @var int|null
      */
     protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -59,15 +55,11 @@ abstract class PerformanceBase extends Model
      * value.
      *
      * @Column(name="value", type="varchar", length=255, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $value = null;
 
     /**
      * 获取 value.
-     *
-     * @return string|null
      */
     public function getValue(): ?string
     {

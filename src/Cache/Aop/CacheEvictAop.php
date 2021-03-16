@@ -33,8 +33,6 @@ class CacheEvictAop
      * )
      * @Around
      *
-     * @param AroundJoinPoint $joinPoint
-     *
      * @return mixed
      */
     public function parseCacheEvict(AroundJoinPoint $joinPoint)

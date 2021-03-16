@@ -16,10 +16,6 @@ class OnManagerStop implements IManagerStopEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param ManagerStopEventParam $e
-     *
-     * @return void
      */
     public function handle(ManagerStopEventParam $e): void
     {

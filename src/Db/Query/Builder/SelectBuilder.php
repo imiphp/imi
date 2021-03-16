@@ -34,8 +34,6 @@ class SelectBuilder extends BaseBuilder
      * lock.
      *
      * @param int|string|bool|null $lock
-     *
-     * @return string
      */
     public function parseLock($lock): string
     {

@@ -11,11 +11,6 @@ interface ITcpServer extends IServer, IServerGroup
 {
     /**
      * 向客户端发送消息.
-     *
-     * @param int    $fd
-     * @param string $data
-     *
-     * @return bool
      */
     public function send(int $fd, string $data): bool;
 }

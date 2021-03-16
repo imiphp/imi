@@ -24,8 +24,6 @@ class Dispatcher
 
     /**
      * 最终使用的中间件列表.
-     *
-     * @var array
      */
     private array $finalMiddlewares = [];
 
@@ -43,8 +41,6 @@ class Dispatcher
 
     /**
      * 获取中间件列表.
-     *
-     * @return array
      */
     protected function getMiddlewares(): array
     {

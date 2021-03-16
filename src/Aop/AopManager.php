@@ -87,9 +87,6 @@ class AopManager
     }
 
     /**
-     * @param string $class
-     * @param string $method
-     *
      * @return AopItem[]
      */
     public static function getBeforeItems(string $class, string $method): array
@@ -129,9 +126,6 @@ class AopManager
     }
 
     /**
-     * @param string $class
-     * @param string $method
-     *
      * @return AopItem[]
      */
     public static function getAfterItems(string $class, string $method): array
@@ -171,9 +165,6 @@ class AopManager
     }
 
     /**
-     * @param string $class
-     * @param string $method
-     *
      * @return AopItem[]
      */
     public static function getAroundItems(string $class, string $method): array
@@ -213,9 +204,6 @@ class AopManager
     }
 
     /**
-     * @param string $class
-     * @param string $method
-     *
      * @return AopItem[]
      */
     public static function getAfterReturningItems(string $class, string $method): array
@@ -255,9 +243,6 @@ class AopManager
     }
 
     /**
-     * @param string $class
-     * @param string $method
-     *
      * @return AopItem[]
      */
     public static function getAfterThrowingItems(string $class, string $method): array

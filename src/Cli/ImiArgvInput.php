@@ -15,8 +15,6 @@ class ImiArgvInput extends Input
 
     /**
      * 是否启用动态参数支持
-     *
-     * @var bool
      */
     private bool $dynamicOptions = false;
 
@@ -414,8 +412,6 @@ class ImiArgvInput extends Input
 
     /**
      * Get the value of dynamicOptions.
-     *
-     * @return bool
      */
     public function getDynamicOptions(): bool
     {
@@ -424,8 +420,6 @@ class ImiArgvInput extends Input
 
     /**
      * Set the value of dynamicOptions.
-     *
-     * @return self
      */
     public function setDynamicOptions(bool $dynamicOptions): self
     {

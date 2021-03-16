@@ -26,10 +26,6 @@ class Scanner
 
     /**
      * 扫描 imi 框架.
-     *
-     * @param bool $statistics
-     *
-     * @return void
      */
     public static function scanImi(bool $statistics = true): void
     {
@@ -46,10 +42,6 @@ class Scanner
 
     /**
      * 扫描 vendor 目录中的组件.
-     *
-     * @param bool $statistics
-     *
-     * @return void
      */
     public static function scanVendor(bool $statistics = true): void
     {
@@ -114,10 +106,6 @@ class Scanner
 
     /**
      * 扫描项目.
-     *
-     * @param bool $statistics
-     *
-     * @return void
      */
     public static function scanApp(bool $statistics = true): void
     {

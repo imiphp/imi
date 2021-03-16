@@ -8,8 +8,6 @@ class ReceiveData extends \Imi\Server\TcpServer\Message\ReceiveData
 {
     /**
      * Reactor线程ID.
-     *
-     * @var int
      */
     protected int $reactorId = 0;
 
@@ -21,8 +19,6 @@ class ReceiveData extends \Imi\Server\TcpServer\Message\ReceiveData
 
     /**
      * 获取Reactor线程ID.
-     *
-     * @return int
      */
     public function getReactorId(): int
     {

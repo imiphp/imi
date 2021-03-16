@@ -18,8 +18,6 @@ class PacketHandler implements IPacketHandler
 
     /**
      * 当前执行第几个.
-     *
-     * @var int
      */
     protected int $index = 0;
 
@@ -35,8 +33,6 @@ class PacketHandler implements IPacketHandler
 
     /**
      * 返回值为响应内容，为null则无任何响应.
-     *
-     * @param IPacketData $data
      *
      * @return mixed
      */
@@ -79,8 +75,6 @@ class PacketHandler implements IPacketHandler
 
     /**
      * 是否是最后一个.
-     *
-     * @return bool
      */
     public function isLast(): bool
     {

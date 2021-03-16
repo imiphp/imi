@@ -27,50 +27,36 @@ class SessionManager
 
     /**
      * 是否已经启动.
-     *
-     * @var bool
      */
     private bool $isStart = false;
 
     /**
      * Session处理对象
-     *
-     * @var \Imi\Server\Session\Handler\ISessionHandler
      */
     private ISessionHandler $handler;
 
     /**
      * session id.
-     *
-     * @var string
      */
     private string $id = '';
 
     /**
      * Session 数据.
-     *
-     * @var array
      */
     private array $data = [];
 
     /**
      * 是否对Session数据有修改.
-     *
-     * @var bool
      */
     private bool $isChanged = false;
 
     /**
      * 当前是否是新的会话.
-     *
-     * @var bool
      */
     private bool $isNewSession = false;
 
     /**
      * Session处理类.
-     *
-     * @var string
      */
     protected string $handlerClass = \Imi\Server\Session\Handler\File::class;
 
@@ -84,10 +70,6 @@ class SessionManager
 
     /**
      * 开启session.
-     *
-     * @param string|null $sessionId
-     *
-     * @return void
      */
     public function start(?string $sessionId = null): void
     {
@@ -112,8 +94,6 @@ class SessionManager
 
     /**
      * 关闭session.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -123,8 +103,6 @@ class SessionManager
 
     /**
      * 销毁session.
-     *
-     * @return void
      */
     public function destroy(): void
     {
@@ -134,8 +112,6 @@ class SessionManager
 
     /**
      * 保存session.
-     *
-     * @return void
      */
     public function save(): void
     {
@@ -145,8 +121,6 @@ class SessionManager
 
     /**
      * 保存并关闭session.
-     *
-     * @return void
      */
     public function commit(): void
     {
@@ -169,8 +143,6 @@ class SessionManager
 
     /**
      * 获取session name.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -179,8 +151,6 @@ class SessionManager
 
     /**
      * 获取session id.
-     *
-     * @return string
      */
     public function getId(): string
     {
@@ -189,8 +159,6 @@ class SessionManager
 
     /**
      * 获取Session处理器.
-     *
-     * @return ISessionHandler
      */
     public function getHandler(): ISessionHandler
     {
@@ -199,8 +167,6 @@ class SessionManager
 
     /**
      * 按概率进行尝试垃圾回收.
-     *
-     * @return void
      */
     public function tryGC(): void
     {
@@ -212,8 +178,6 @@ class SessionManager
 
     /**
      * 垃圾回收.
-     *
-     * @return void
      */
     public function gc(): void
     {
@@ -223,8 +187,7 @@ class SessionManager
     /**
      * 获取Session值
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -242,10 +205,7 @@ class SessionManager
     /**
      * 设置Session值
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return void
+     * @param mixed $value
      */
     public function set(string $name, $value): void
     {
@@ -256,10 +216,6 @@ class SessionManager
 
     /**
      * 删除Session值
-     *
-     * @param string $name
-     *
-     * @return void
      */
     public function delete(string $name): void
     {
@@ -271,8 +227,7 @@ class SessionManager
     /**
      * 获取一次值后将该值删除，可用于验证码等一次性功能.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -288,8 +243,6 @@ class SessionManager
 
     /**
      * 清空所有Session.
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -299,8 +252,6 @@ class SessionManager
 
     /**
      * 获取session配置.
-     *
-     * @return SessionConfig
      */
     public function getConfig(): SessionConfig
     {
@@ -309,10 +260,6 @@ class SessionManager
 
     /**
      * 处理name名称，@替换为前缀
-     *
-     * @param string $name
-     *
-     * @return string
      */
     public function parseName(string $name): string
     {
@@ -328,8 +275,6 @@ class SessionManager
 
     /**
      * 是否修改了Session数据.
-     *
-     * @return bool
      */
     public function isChanged(): bool
     {
@@ -338,8 +283,6 @@ class SessionManager
 
     /**
      * 当前是否是新的会话.
-     *
-     * @return bool
      */
     public function isNewSession(): bool
     {

@@ -11,8 +11,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 获取cookie值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -127,8 +126,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -138,8 +136,7 @@ interface IServerRequest extends ServerRequestInterface, IRequest
      * 获取 POST 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -147,19 +144,11 @@ interface IServerRequest extends ServerRequestInterface, IRequest
 
     /**
      * 判断是否存在 GET 参数.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasGet(string $name): bool;
 
     /**
      * 判断是否存在 POST 参数.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasPost(string $name): bool;
 
@@ -178,17 +167,11 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 判断是否存在 REQUEST 参数
      * REQUEST 中包括：GET/POST/COOKIE.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasRequest(string $name): bool;
 
     /**
      * 设置 GET 数据.
-     *
-     * @param array $get
      *
      * @return static
      */
@@ -197,16 +180,12 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 GET 数据.
      *
-     * @param array $get
-     *
      * @return static
      */
     public function setGet(array $get): self;
 
     /**
      * 设置 POST 数据.
-     *
-     * @param array $post
      *
      * @return static
      */
@@ -215,8 +194,6 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 POST 数据.
      *
-     * @param array $post
-     *
      * @return static
      */
     public function setPost(array $post): self;
@@ -224,16 +201,12 @@ interface IServerRequest extends ServerRequestInterface, IRequest
     /**
      * 设置 Request 数据.
      *
-     * @param array $request
-     *
      * @return static
      */
     public function withRequest(array $request): self;
 
     /**
      * 设置 Request 数据.
-     *
-     * @param array $request
      *
      * @return static
      */

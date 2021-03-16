@@ -27,8 +27,6 @@ class ProcessManager
 
     /**
      * 锁集合.
-     *
-     * @var array
      */
     private static array $lockMap = [];
 
@@ -55,12 +53,6 @@ class ProcessManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $name
-     * @param string $className
-     * @param array  $options
-     *
-     * @return void
      */
     public static function add(string $name, string $className, array $options): void
     {
@@ -76,10 +68,6 @@ class ProcessManager
 
     /**
      * 获取配置.
-     *
-     * @param string $name
-     *
-     * @return array|null
      */
     public static function get(string $name): ?array
     {
@@ -90,14 +78,6 @@ class ProcessManager
      * 创建进程
      * 本方法无法在控制器中使用
      * 返回\Swoole\Process对象实例.
-     *
-     * @param string      $name
-     * @param array       $args
-     * @param bool|null   $redirectStdinStdout
-     * @param int|null    $pipeType
-     * @param string|null $alias
-     *
-     * @return \Swoole\Process
      */
     public static function create(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): Process
     {
@@ -125,13 +105,6 @@ class ProcessManager
 
     /**
      * 获取进程回调.
-     *
-     * @param array       $args
-     * @param string      $name
-     * @param array       $processOption
-     * @param string|null $alias
-     *
-     * @return callable
      */
     public static function getProcessCallable(array $args, string $name, array $processOption, ?string $alias = null): callable
     {
@@ -210,10 +183,6 @@ class ProcessManager
 
     /**
      * 进程是否已在运行，只有unique为true时有效.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function isRunning(string $name): bool
     {
@@ -258,13 +227,6 @@ class ProcessManager
      *     'signal' => 0,
      *     'output' => '',
      * );.
-     *
-     * @param string    $name
-     * @param array     $args
-     * @param bool|null $redirectStdinStdout
-     * @param int|null  $pipeType
-     *
-     * @return array
      */
     public static function run(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): array
     {
@@ -289,13 +251,6 @@ class ProcessManager
      *     'signal' => 0,
      *     'output' => '',
      * );.
-     *
-     * @param string    $name
-     * @param array     $args
-     * @param bool|null $redirectStdinStdout
-     * @param int|null  $pipeType
-     *
-     * @return void
      */
     public static function coRun(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null): void
     {
@@ -306,14 +261,6 @@ class ProcessManager
 
     /**
      * 挂靠Manager进程运行进程.
-     *
-     * @param string      $name
-     * @param array       $args
-     * @param bool|null   $redirectStdinStdout
-     * @param int|null    $pipeType
-     * @param string|null $alias
-     *
-     * @return \Swoole\Process|null
      */
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
@@ -343,11 +290,6 @@ class ProcessManager
 
     /**
      * 获取挂载在管理进程下的进程.
-     *
-     * @param string      $name
-     * @param string|null $alias
-     *
-     * @return \Swoole\Process|null
      */
     public static function getProcessWithManager(string $name, ?string $alias = null): ?Process
     {
@@ -356,10 +298,6 @@ class ProcessManager
 
     /**
      * 锁定进程，实现unique.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     private static function lockProcess(string $name): bool
     {
@@ -385,10 +323,6 @@ class ProcessManager
 
     /**
      * 解锁进程，实现unique.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     private static function unlockProcess(string $name): bool
     {
@@ -412,10 +346,6 @@ class ProcessManager
 
     /**
      * 获取文件锁的文件名.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     private static function getLockFileName(string $name): string
     {

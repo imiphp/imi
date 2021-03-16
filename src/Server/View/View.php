@@ -17,8 +17,6 @@ class View
 {
     /**
      * 核心处理器.
-     *
-     * @var array
      */
     protected array $coreHandlers = [
         'html'  => \Imi\Server\View\Handler\Html::class,
@@ -28,15 +26,11 @@ class View
 
     /**
      * 扩展处理器.
-     *
-     * @var array
      */
     protected array $exHandlers = [];
 
     /**
      * 传入视图处理器的数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
@@ -60,12 +54,7 @@ class View
     }
 
     /**
-     * @param string                                 $renderType
-     * @param array|object                           $data
-     * @param array                                  $options
-     * @param \Imi\Server\Http\Message\Response|null $response
-     *
-     * @return \Imi\Server\Http\Message\Response
+     * @param array|object $data
      */
     public function render(string $renderType, $data, array $options, ?Response $response = null): Response
     {

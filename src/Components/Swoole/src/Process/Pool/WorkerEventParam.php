@@ -12,29 +12,21 @@ class WorkerEventParam extends EventParam
 {
     /**
      * 进程池对象
-     *
-     * @var \Imi\Swoole\Process\Pool
      */
     protected Pool $pool;
 
     /**
      * 工作进程.
-     *
-     * @var \Imi\Swoole\Process\Process
      */
     protected Process $worker;
 
     /**
      * 工作进程ID.
-     *
-     * @var int
      */
     protected int $workerId = 0;
 
     /**
      * Get 进程池对象
-     *
-     * @return \Imi\Swoole\Process\Pool
      */
     public function getPool(): Pool
     {
@@ -43,8 +35,6 @@ class WorkerEventParam extends EventParam
 
     /**
      * Get 工作进程.
-     *
-     * @return \Imi\Swoole\Process\Process
      */
     public function getWorker(): Process
     {
@@ -53,8 +43,6 @@ class WorkerEventParam extends EventParam
 
     /**
      * Get 工作进程ID.
-     *
-     * @return int
      */
     public function getWorkerId(): int
     {

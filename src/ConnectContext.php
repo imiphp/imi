@@ -15,8 +15,6 @@ class ConnectContext
 
     /**
      * 为当前连接创建上下文.
-     *
-     * @return void
      */
     public static function create(array $data = []): void
     {
@@ -42,11 +40,6 @@ class ConnectContext
 
     /**
      * 从某个连接上下文中，加载到当前上下文或指定上下文中.
-     *
-     * @param int      $fromFd
-     * @param int|null $toFd
-     *
-     * @return void
      */
     public static function load(int $fromFd, ?int $toFd = null): void
     {
@@ -69,10 +62,6 @@ class ConnectContext
 
     /**
      * 销毁当前连接的上下文.
-     *
-     * @param int|null $fd
-     *
-     * @return void
      */
     public static function destroy(?int $fd = null): void
     {
@@ -98,10 +87,6 @@ class ConnectContext
 
     /**
      * 判断当前连接上下文是否存在.
-     *
-     * @param int|null $fd
-     *
-     * @return bool
      */
     public static function exists(?int $fd = null): bool
     {
@@ -120,9 +105,7 @@ class ConnectContext
     /**
      * 获取上下文数据.
      *
-     * @param string|null $name
-     * @param mixed       $default
-     * @param int|null    $fd
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -150,11 +133,8 @@ class ConnectContext
     /**
      * 设置上下文数据.
      *
-     * @param string   $name
-     * @param mixed    $value
-     * @param int|null $fd
-     *
-     * @return void
+     * @param string $name
+     * @param mixed  $value
      */
     public static function set(?string $name, $value, ?int $fd = null): void
     {
@@ -181,11 +161,6 @@ class ConnectContext
 
     /**
      * 批量设置上下文数据.
-     *
-     * @param array    $data
-     * @param int|null $fd
-     *
-     * @return void
      */
     public static function muiltiSet(array $data, ?int $fd = null): void
     {
@@ -215,11 +190,6 @@ class ConnectContext
 
     /**
      * 使用回调并且自动加锁进行操作，回调用返回数据会保存进连接上下文.
-     *
-     * @param callable $callable
-     * @param int|null $fd
-     *
-     * @return void
      */
     public static function use(callable $callable, ?int $fd = null): void
     {
@@ -245,10 +215,6 @@ class ConnectContext
 
     /**
      * 获取当前上下文.
-     *
-     * @param int|null $fd
-     *
-     * @return array
      */
     public static function getContext(?int $fd = null): array
     {
@@ -257,11 +223,6 @@ class ConnectContext
 
     /**
      * 绑定一个标记到当前连接.
-     *
-     * @param string   $flag
-     * @param int|null $fd
-     *
-     * @return void
      */
     public static function bind(string $flag, ?int $fd = null): void
     {
@@ -281,10 +242,7 @@ class ConnectContext
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
      *
-     * @param string $flag
-     * @param int    $fd
-     *
-     * @return bool
+     * @param int $fd
      */
     public static function bindNx(string $flag, ?int $fd = null): bool
     {
@@ -305,10 +263,7 @@ class ConnectContext
     /**
      * 取消绑定.
      *
-     * @param string   $flag
      * @param int|null $keepTime 旧数据保持时间，null 则不保留
-     *
-     * @return void
      */
     public static function unbind(string $flag, ?int $keepTime = null): void
     {
@@ -319,10 +274,6 @@ class ConnectContext
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @param string $flag
-     *
-     * @return int|null
      */
     public static function getFdByFlag(string $flag): ?int
     {
@@ -349,10 +300,6 @@ class ConnectContext
 
     /**
      * 使用连接编号获取标记.
-     *
-     * @param int $fd
-     *
-     * @return string|null
      */
     public static function getFlagByFd(int $fd): ?string
     {
@@ -379,10 +326,6 @@ class ConnectContext
 
     /**
      * 使用标记获取旧的连接编号.
-     *
-     * @param string $flag
-     *
-     * @return int|null
      */
     public static function getOldFdByFlag(string $flag): ?int
     {
@@ -394,11 +337,6 @@ class ConnectContext
 
     /**
      * 恢复标记对应连接中的数据.
-     *
-     * @param string   $flag
-     * @param int|null $toFd
-     *
-     * @return void
      */
     public static function restore(string $flag, ?int $toFd = null): void
     {

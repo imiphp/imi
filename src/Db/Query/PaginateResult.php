@@ -12,50 +12,36 @@ class PaginateResult implements IPaginateResult
 {
     /**
      * 数据库查询结构.
-     *
-     * @var \Imi\Db\Query\Interfaces\IResult
      */
     protected IResult $result;
 
     /**
      * 数组数据.
-     *
-     * @var array|null
      */
     protected ?array $arrayData = null;
 
     /**
      * 页码
-     *
-     * @var int
      */
     protected int $page = 0;
 
     /**
      * 查询几条记录.
-     *
-     * @var int
      */
     protected int $limit = 0;
 
     /**
      * 记录总数.
-     *
-     * @var int|null
      */
     protected ?int $total = null;
 
     /**
      * 总页数.
-     *
-     * @var int|null
      */
     protected ?int $pageCount = null;
 
     /**
      * 自定义选项.
-     *
-     * @var array
      */
     protected array $options = [];
 
@@ -71,8 +57,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * SQL是否执行成功
-     *
-     * @return bool
      */
     public function isSuccess(): bool
     {
@@ -91,8 +75,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取影响行数.
-     *
-     * @return int
      */
     public function getAffectedRows(): int
     {
@@ -115,8 +97,6 @@ class PaginateResult implements IPaginateResult
      * 返回数组.
      *
      * @param string|null $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return array
      */
     public function getArray(?string $className = null): array
     {
@@ -125,8 +105,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取一列.
-     *
-     * @return array
      */
     public function getColumn($column = 0): array
     {
@@ -145,8 +123,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取记录行数.
-     *
-     * @return int
      */
     public function getRowCount(): int
     {
@@ -155,8 +131,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取执行的SQL语句.
-     *
-     * @return string
      */
     public function getSql(): string
     {
@@ -165,8 +139,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取结果集对象
-     *
-     * @return \Imi\Db\Interfaces\IStatement
      */
     public function getStatement(): IStatement
     {
@@ -175,8 +147,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取数组数据.
-     *
-     * @return array
      */
     public function getList(): array
     {
@@ -185,8 +155,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取记录总数.
-     *
-     * @return int|null
      */
     public function getTotal(): ?int
     {
@@ -195,8 +163,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取查询几条记录.
-     *
-     * @return int
      */
     public function getLimit(): int
     {
@@ -205,8 +171,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 获取总页数.
-     *
-     * @return int|null
      */
     public function getPageCount(): ?int
     {
@@ -215,8 +179,6 @@ class PaginateResult implements IPaginateResult
 
     /**
      * 将当前对象作为数组返回.
-     *
-     * @return array
      */
     public function toArray(): array
     {

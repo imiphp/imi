@@ -11,22 +11,16 @@ class PacketData implements IPacketData
 {
     /**
      * 客户端 IP.
-     *
-     * @var string
      */
     protected string $remoteIp = '';
 
     /**
      * 客户端端口.
-     *
-     * @var int
      */
     protected int $remotePort = 0;
 
     /**
      * 数据内容.
-     *
-     * @var string
      */
     protected string $data = '';
 
@@ -47,8 +41,6 @@ class PacketData implements IPacketData
 
     /**
      * 数据内容.
-     *
-     * @return string
      */
     public function getData(): string
     {
@@ -67,8 +59,6 @@ class PacketData implements IPacketData
 
     /**
      * 获取客户端 IP.
-     *
-     * @return string
      */
     public function getRemoteIp(): string
     {
@@ -77,8 +67,6 @@ class PacketData implements IPacketData
 
     /**
      * 获取客户端端口.
-     *
-     * @return int
      */
     public function getRemotePort(): int
     {
@@ -87,8 +75,6 @@ class PacketData implements IPacketData
 
     /**
      * 获取客户端地址
-     *
-     * @return string
      */
     public function getRemoteAddress(): string
     {

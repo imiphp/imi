@@ -15,10 +15,7 @@ class CronAllWorker implements ICronTask
     /**
      * 执行任务
      *
-     * @param string $id
-     * @param mixed  $data
-     *
-     * @return void
+     * @param mixed $data
      */
     public function run(string $id, $data): void
     {

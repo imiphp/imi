@@ -22,36 +22,26 @@ class Redis implements IHandler
 {
     /**
      * Redis 连接池名称.
-     *
-     * @var string|null
      */
     protected ?string $redisPool = null;
 
     /**
      * redis中第几个库.
-     *
-     * @var int
      */
     protected int $redisDb = 0;
 
     /**
      * 键.
-     *
-     * @var string
      */
     protected string $key = '';
 
     /**
      * 心跳时间，单位：秒.
-     *
-     * @var int
      */
     protected int $heartbeatTimespan = 5;
 
     /**
      * 心跳数据过期时间，单位：秒.
-     *
-     * @var int
      */
     protected int $heartbeatTtl = 8;
 
@@ -71,22 +61,16 @@ class Redis implements IHandler
 
     /**
      * 锁 ID.
-     *
-     * @var string|null
      */
     protected ?string $lockId = null;
 
     /**
      * 心跳Timer的ID.
-     *
-     * @var int|null
      */
     private ?int $timerId = null;
 
     /**
      * 主进程 ID.
-     *
-     * @var int
      */
     private int $masterPID = 0;
 
@@ -118,11 +102,6 @@ class Redis implements IHandler
 
     /**
      * 初始化redis数据.
-     *
-     * @param RedisHandler $redis
-     * @param int|null     $storeMasterPID
-     *
-     * @return void
      */
     private function initRedis(RedisHandler $redis, ?int $storeMasterPID = null): void
     {
@@ -139,10 +118,6 @@ class Redis implements IHandler
 
     /**
      * 开始ping.
-     *
-     * @param RedisHandler $redis
-     *
-     * @return void
      */
     private function startPing(RedisHandler $redis): void
     {
@@ -159,8 +134,6 @@ class Redis implements IHandler
 
     /**
      * ping定时器执行操作.
-     *
-     * @return void
      */
     public function pingTimer(): void
     {
@@ -171,8 +144,6 @@ class Redis implements IHandler
 
     /**
      * 获取redis中存储ping的key.
-     *
-     * @return string
      */
     private function getPingKey(): string
     {
@@ -181,10 +152,6 @@ class Redis implements IHandler
 
     /**
      * ping操作.
-     *
-     * @param RedisHandler $redis
-     *
-     * @return bool
      */
     private function ping(RedisHandler $redis): bool
     {
@@ -218,10 +185,6 @@ class Redis implements IHandler
 
     /**
      * 读取数据.
-     *
-     * @param string $key
-     *
-     * @return array
      */
     public function read(string $key): array
     {
@@ -247,11 +210,6 @@ class Redis implements IHandler
 
     /**
      * 保存数据.
-     *
-     * @param string $key
-     * @param array  $data
-     *
-     * @return void
      */
     public function save(string $key, array $data): void
     {
@@ -266,10 +224,6 @@ class Redis implements IHandler
 
     /**
      * 销毁数据.
-     *
-     * @param string $key
-     *
-     * @return void
      */
     public function destroy(string $key): void
     {
@@ -280,11 +234,6 @@ class Redis implements IHandler
 
     /**
      * 延迟销毁数据.
-     *
-     * @param string $key
-     * @param int    $ttl
-     *
-     * @return void
      */
     public function delayDestroy(string $key, int $ttl): void
     {
@@ -295,10 +244,6 @@ class Redis implements IHandler
 
     /**
      * 数据是否存在.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function exists(string $key): bool
     {
@@ -309,8 +254,6 @@ class Redis implements IHandler
 
     /**
      * 获取存储hash键名.
-     *
-     * @return string
      */
     private function getStoreKey(): string
     {
@@ -335,11 +278,6 @@ class Redis implements IHandler
 
     /**
      * 加锁
-     *
-     * @param string        $key
-     * @param callable|null $callable
-     *
-     * @return bool
      */
     public function lock(string $key, ?callable $callable = null): bool
     {
@@ -348,8 +286,6 @@ class Redis implements IHandler
 
     /**
      * 解锁
-     *
-     * @return bool
      */
     public function unlock(): bool
     {

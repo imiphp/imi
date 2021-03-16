@@ -19,53 +19,35 @@ class ImiCommand extends Command
 {
     /**
      * 命令名称.
-     *
-     * @var string|null
      */
     protected ?string $commandName = null;
 
     /**
      * 命令动作名称.
-     *
-     * @var string
      */
     protected string $actionName = '';
 
     /**
      * 类名.
-     *
-     * @var string
      */
     protected string $className = '';
 
     /**
      * 方法名.
-     *
-     * @var string
      */
     protected string $methodName = '';
 
     /**
      * 是否启用动态参数支持.
-     *
-     * @var bool
      */
     protected bool $dynamicOptions = false;
 
-    /**
-     * @var InputInterface
-     */
     protected InputInterface $input;
 
-    /**
-     * @var OutputInterface
-     */
     protected OutputInterface $output;
 
     /**
      * Get 类名.
-     *
-     * @return string
      */
     public function getClassName(): string
     {
@@ -74,8 +56,6 @@ class ImiCommand extends Command
 
     /**
      * Get 方法名.
-     *
-     * @return string
      */
     public function getMethodName(): string
     {
@@ -174,8 +154,6 @@ class ImiCommand extends Command
 
     /**
      * 执行命令行.
-     *
-     * @return int
      */
     protected function executeCommand(): int
     {
@@ -190,8 +168,6 @@ class ImiCommand extends Command
 
     /**
      * 获取执行参数.
-     *
-     * @return array
      */
     private function getCallToolArgs(): array
     {

@@ -16,52 +16,36 @@ class File extends Base
      * 要保存的文件名
      * 支持使用date()函数中所有的格式，如经典年月日：logs/{y}-{m}-{d}.log
      * 如果文件体积超出限制，会自动创建编号文件，如：第一个文件2018-01-01.log，第二个文件2018-01-01(1).log，第三个文件2018-01-01(2).log.
-     *
-     * @var string
      */
     protected string $fileName = '';
 
     /**
      * 单文件最大体积，单位字节，默认1G.
-     *
-     * @var int
      */
     protected int $maxSize = 1073741824;
 
     /**
      * 当前保存的日志文件代表日期时间戳，精确到：小时.
-     *
-     * @var int
      */
     private int $currentFileDateTime = 0;
 
     /**
      * 当前文件序号.
-     *
-     * @var int
      */
     private int $currentFileIndex = 0;
 
     /**
      * 当前日志文件扩展名.
-     *
-     * @var string
      */
     private string $currentFileExt = '';
 
     /**
      * 当前无序号的文件名.
-     *
-     * @var string
      */
     private string $currentNoIndexFileName = '';
 
     /**
      * 真正的保存操作实现.
-     *
-     * @param array $records
-     *
-     * @return void
      */
     protected function __save(array $records): void
     {
@@ -74,8 +58,6 @@ class File extends Base
 
     /**
      * 处理日期
-     *
-     * @return void
      */
     private function parseDate(): void
     {
@@ -88,10 +70,6 @@ class File extends Base
 
     /**
      * 获取新日期的初始文件名.
-     *
-     * @param int $timestamp
-     *
-     * @return string
      */
     private function getNewDateFileName(int $timestamp): string
     {
@@ -105,8 +83,6 @@ class File extends Base
 
     /**
      * 获取当前日期的文件名.
-     *
-     * @return string
      */
     private function getFileName(): string
     {

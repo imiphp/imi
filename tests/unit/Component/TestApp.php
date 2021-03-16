@@ -12,8 +12,6 @@ class TestApp extends CliApp
 {
     /**
      * 运行应用.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -24,8 +22,6 @@ class TestApp extends CliApp
 
     /**
      * 加载运行时.
-     *
-     * @return int
      */
     public function loadRuntime(): int
     {

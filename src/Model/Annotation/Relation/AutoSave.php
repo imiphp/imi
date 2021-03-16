@@ -19,22 +19,16 @@ class AutoSave extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'status';
 
     /**
      * 是否开启.
-     *
-     * @var bool
      */
     public bool $status = true;
 
     /**
      * save时，删除无关联数据.
-     *
-     * @var bool
      */
     public bool $orphanRemoval = false;
 

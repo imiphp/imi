@@ -12,11 +12,6 @@ use Yurun\Util\HttpRequest;
  */
 class CustomSessionIdTest extends BaseTest
 {
-    /**
-     * @param string|null $name
-     * @param array       $data
-     * @param string      $dataName
-     */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);

@@ -20,8 +20,6 @@ class Server extends Base implements IUdpServer
 {
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -30,8 +28,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -40,8 +36,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function bindEvents(): void
     {
@@ -63,8 +57,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 获取实例化 Worker 用的协议.
-     *
-     * @return string
      */
     protected function getWorkerScheme(): string
     {
@@ -73,12 +65,6 @@ class Server extends Base implements IUdpServer
 
     /**
      * 向客户端发送消息.
-     *
-     * @param string $ip
-     * @param int    $port
-     * @param string $data
-     *
-     * @return bool
      */
     public function sendTo(string $ip, int $port, string $data): bool
     {

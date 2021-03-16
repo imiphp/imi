@@ -15,8 +15,6 @@ class ImiTest extends BaseTest
 {
     /**
      * @testdox parseRule
-     *
-     * @return void
      */
     public function testParseRule(): void
     {
@@ -25,8 +23,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkRuleMatch
-     *
-     * @return void
      */
     public function testCheckRuleMatch(): void
     {
@@ -38,8 +34,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkClassMethodRule
-     *
-     * @return void
      */
     public function testCheckClassMethodRule(): void
     {
@@ -51,8 +45,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkClassRule
-     *
-     * @return void
      */
     public function testCheckClassRule(): void
     {
@@ -63,8 +55,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkCompareRules
-     *
-     * @return void
      */
     public function testCheckCompareRules(): void
     {
@@ -145,8 +135,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkCompareRule
-     *
-     * @return void
      */
     public function testCheckCompareRule(): void
     {
@@ -168,8 +156,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkCompareValues
-     *
-     * @return void
      */
     public function testCheckCompareValues(): void
     {
@@ -194,8 +180,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox checkCompareValue
-     *
-     * @return void
      */
     public function testCheckCompareValue(): void
     {
@@ -207,8 +191,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox parseDotRule
-     *
-     * @return void
      */
     public function testCheckParseDotRule(): void
     {
@@ -221,8 +203,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox getClassNamespace
-     *
-     * @return void
      */
     public function testGetClassNamespace(): void
     {
@@ -233,8 +213,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox getClassShortName
-     *
-     * @return void
      */
     public function testGetClassShortName(): void
     {
@@ -245,8 +223,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox getNamespacePath
-     *
-     * @return void
      */
     public function testGetNamespacePath(): void
     {
@@ -255,8 +231,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox getNamespacePaths
-     *
-     * @return void
      */
     public function testGetNamespacePaths(): void
     {
@@ -268,8 +242,6 @@ class ImiTest extends BaseTest
 
     /**
      * @testdox getClassPropertyValue
-     *
-     * @return void
      */
     public function testGetClassPropertyValue(): void
     {

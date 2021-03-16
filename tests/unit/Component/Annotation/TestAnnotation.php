@@ -28,8 +28,6 @@ class TestAnnotation
 
     /**
      * @Route("/testAnnotation")
-     *
-     * @return void
      */
     public function test(): void
     {

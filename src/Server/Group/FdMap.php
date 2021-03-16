@@ -15,15 +15,11 @@ class FdMap
 {
     /**
      * 关联关系.
-     *
-     * @var array
      */
     protected array $map = [];
 
     /**
      * 获取fd绑定的所有的组.
-     *
-     * @param int $fd
      *
      * @return \Imi\Server\Group\Group[]
      */
@@ -34,11 +30,6 @@ class FdMap
 
     /**
      * 增加fd关联关系.
-     *
-     * @param int   $fd
-     * @param Group $group
-     *
-     * @return void
      */
     public function joinGroup(int $fd, Group $group): void
     {
@@ -52,11 +43,6 @@ class FdMap
 
     /**
      * 移除fd关联关系.
-     *
-     * @param int   $fd
-     * @param Group $group
-     *
-     * @return void
      */
     public function leaveGroup(int $fd, Group $group): void
     {
@@ -70,10 +56,6 @@ class FdMap
 
     /**
      * 将fd从所有组中移除.
-     *
-     * @param int $fd
-     *
-     * @return void
      */
     public function leaveAll(int $fd): void
     {

@@ -13,10 +13,6 @@ interface IHandShakeEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param HandShakeEventParam $e
-     *
-     * @return void
      */
-    public function handle(HandShakeEventParam $e);
+    public function handle(HandShakeEventParam $e): void;
 }

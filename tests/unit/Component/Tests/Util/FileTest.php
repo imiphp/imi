@@ -15,8 +15,6 @@ class FileTest extends BaseTest
 {
     /**
      * @testdox enum
-     *
-     * @return void
      */
     public function testEnum(): void
     {
@@ -42,8 +40,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox enumAll
-     *
-     * @return void
      */
     public function testEnumAll(): void
     {
@@ -72,8 +68,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox enumPHPFile
-     *
-     * @return void
      */
     public function testEnumPHPFile(): void
     {
@@ -93,8 +87,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox enumFile
-     *
-     * @return void
      */
     public function testEnumFile(): void
     {
@@ -123,8 +115,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox path
-     *
-     * @return void
      */
     public function testPath(): void
     {
@@ -145,8 +135,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox readAll
-     *
-     * @return void
      */
     public function testReadAll(): void
     {
@@ -159,8 +147,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox createDir
-     *
-     * @return void
      */
     public function testCreateDir(): void
     {
@@ -172,8 +158,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox createFile
-     *
-     * @return void
      */
     public function testCrateFile(): void
     {
@@ -190,8 +174,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox isEmptyDir
-     *
-     * @return void
      */
     public function testIsEmptyDir(): void
     {
@@ -204,8 +186,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox deleteDir
-     *
-     * @return void
      */
     public function testDeleteDir(): void
     {
@@ -217,8 +197,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox putContents
-     *
-     * @return void
      */
     public function testPutContents(): void
     {
@@ -233,8 +211,6 @@ class FileTest extends BaseTest
 
     /**
      * @testdox absolute
-     *
-     * @return void
      */
     public function testAbsolute(): void
     {

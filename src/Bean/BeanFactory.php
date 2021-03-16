@@ -12,15 +12,11 @@ class BeanFactory
 {
     /**
      * 计数器.
-     *
-     * @var int
      */
     private static int $counter = 0;
 
     /**
      * 类名映射.
-     *
-     * @var array
      */
     private static array $classNameMap = [];
 
@@ -31,10 +27,7 @@ class BeanFactory
     /**
      * 实例化.
      *
-     * @param string $class
-     * @param mixed  ...$args
-     *
-     * @return object
+     * @param mixed ...$args
      */
     public static function newInstance(string $class, ...$args): object
     {
@@ -47,10 +40,7 @@ class BeanFactory
     /**
      * 实例化，但不初始化.
      *
-     * @param string $class
-     * @param mixed  ...$args
-     *
-     * @return object
+     * @param mixed ...$args
      */
     public static function newInstanceNoInit(string $class, ...$args): object
     {
@@ -89,11 +79,6 @@ class BeanFactory
 
     /**
      * 初始化Bean对象
-     *
-     * @param object $object
-     * @param array  $args
-     *
-     * @return void
      */
     public static function initInstance(object $object, array $args = []): void
     {
@@ -107,8 +92,6 @@ class BeanFactory
 
     /**
      * 获取新的类名.
-     *
-     * @return string
      */
     private static function getNewClassName(string $className): string
     {
@@ -117,11 +100,6 @@ class BeanFactory
 
     /**
      * 获取类模版.
-     *
-     * @param \ReflectionClass $ref
-     * @param string           $newClassName
-     *
-     * @return string
      */
     private static function getTpl(\ReflectionClass $ref, string $newClassName): string
     {
@@ -201,10 +179,6 @@ TPL;
 
     /**
      * 获取方法模版.
-     *
-     * @param \ReflectionClass $ref
-     *
-     * @return string
      */
     private static function getMethodsTpl(\ReflectionClass $ref): string
     {
@@ -249,10 +223,6 @@ TPL;
 
     /**
      * 获取方法参数模版们.
-     *
-     * @param \ReflectionMethod $method
-     *
-     * @return array
      */
     private static function getMethodParamTpls(\ReflectionMethod $method): array
     {
@@ -302,10 +272,6 @@ TPL;
 
     /**
      * 获取方法参数模版.
-     *
-     * @param \ReflectionParameter $param
-     *
-     * @return string
      */
     private static function getMethodParamArgsTpl(\ReflectionParameter $param): string
     {
@@ -316,10 +282,6 @@ TPL;
 
     /**
      * 获取方法参数定义模版.
-     *
-     * @param \ReflectionParameter $param
-     *
-     * @return string
      */
     private static function getMethodParamDefineTpl(\ReflectionParameter $param): string
     {
@@ -359,10 +321,6 @@ TPL;
 
     /**
      * 获取方法参数调用模版.
-     *
-     * @param \ReflectionParameter $param
-     *
-     * @return string
      */
     private static function getMethodParamCallTpl(\ReflectionParameter $param): string
     {
@@ -371,10 +329,6 @@ TPL;
 
     /**
      * 获取方法返回值模版.
-     *
-     * @param \ReflectionMethod $method
-     *
-     * @return string
      */
     private static function getMethodReturnType(\ReflectionMethod $method): string
     {
@@ -392,8 +346,6 @@ TPL;
      * 获取对象类名.
      *
      * @param string|object $object
-     *
-     * @return string
      */
     public static function getObjectClass($object): string
     {
@@ -419,11 +371,6 @@ TPL;
 
     /**
      * 是否有Aop注入当前方法.
-     *
-     * @param \ReflectionClass $class
-     * @param string           $method
-     *
-     * @return bool
      */
     private static function hasAop(\ReflectionClass $class, string $method): bool
     {

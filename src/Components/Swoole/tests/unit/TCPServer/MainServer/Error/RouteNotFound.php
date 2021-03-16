@@ -17,9 +17,6 @@ class RouteNotFound implements ITcpRouteNotFoundHandler
     /**
      * 处理方法.
      *
-     * @param \Imi\Server\TcpServer\Message\IReceiveData $data
-     * @param \Imi\Server\TcpServer\IReceiveHandler      $handler
-     *
      * @return mixed
      */
     public function handle(IReceiveData $data, IReceiveHandler $handler)

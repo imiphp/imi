@@ -11,11 +11,6 @@ use Yurun\Util\HttpRequest;
  */
 class Http2Test extends BaseTest
 {
-    /**
-     * @param string|null $name
-     * @param array       $data
-     * @param string      $dataName
-     */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -24,8 +19,6 @@ class Http2Test extends BaseTest
 
     /**
      * 测试 Uri 地址
-     *
-     * @return void
      */
     public function testUri(): void
     {

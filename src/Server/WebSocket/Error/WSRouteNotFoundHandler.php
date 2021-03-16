@@ -18,16 +18,11 @@ class WSRouteNotFoundHandler implements IWSRouteNotFoundHandler
 {
     /**
      * 处理器类名，如果为null则使用默认处理.
-     *
-     * @var string|null
      */
     protected ?string $handler = null;
 
     /**
      * 处理方法.
-     *
-     * @param IFrame          $frame
-     * @param IMessageHandler $handler
      *
      * @return mixed
      */

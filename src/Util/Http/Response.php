@@ -12,36 +12,26 @@ class Response extends AbstractMessage implements IResponse
 {
     /**
      * 状态码
-     *
-     * @var int
      */
     protected int $statusCode = 0;
 
     /**
      * 状态码原因短语.
-     *
-     * @var string
      */
     protected string $reasonPhrase = '';
 
     /**
      * Trailer 列表.
-     *
-     * @var array
      */
     protected array $trailers = [];
 
     /**
      * cookie数据.
-     *
-     * @var array
      */
     protected array $cookies = [];
 
     /**
      * 发送文件参数.
-     *
-     * @var array
      */
     protected array $sendFile = [];
 
@@ -160,14 +150,6 @@ class Response extends AbstractMessage implements IResponse
     /**
      * 设置cookie.
      *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
-     *
      * @return static
      */
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self
@@ -188,14 +170,6 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
      *
      * @return static
      */
@@ -221,8 +195,6 @@ class Response extends AbstractMessage implements IResponse
      *
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
-     *
-     * @return array
      */
     public function getCookieParams(): array
     {
@@ -232,8 +204,7 @@ class Response extends AbstractMessage implements IResponse
     /**
      * 获取cookie值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -244,8 +215,6 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * 获取 Trailer 列表.
-     *
-     * @return array
      */
     public function getTrailers(): array
     {
@@ -254,10 +223,6 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * Trailer 是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasTrailer(string $name): bool
     {
@@ -266,10 +231,6 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * 获取 Trailer 值
-     *
-     * @param string $name
-     *
-     * @return string|null
      */
     public function getTrailer(string $name): ?string
     {
@@ -278,9 +239,6 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
      *
      * @return static
      */
@@ -294,9 +252,6 @@ class Response extends AbstractMessage implements IResponse
 
     /**
      * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
      *
      * @return static
      */

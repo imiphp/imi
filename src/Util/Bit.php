@@ -15,11 +15,6 @@ class Bit
 
     /**
      * 判断是否包含值
-     *
-     * @param int $value
-     * @param int $subValue
-     *
-     * @return bool
      */
     public static function has(int $value, int $subValue): bool
     {

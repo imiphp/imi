@@ -5,10 +5,8 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * 开启服务器.
- *
- * @return void
  */
-function startServer()
+function startServer(): void
 {
     // @phpstan-ignore-next-line
     function checkHttpServerStatus(): bool

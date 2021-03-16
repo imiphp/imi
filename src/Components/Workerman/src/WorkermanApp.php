@@ -22,8 +22,6 @@ class WorkermanApp extends CliApp
 {
     /**
      * 构造方法.
-     *
-     * @param string $namespace
      */
     public function __construct(string $namespace)
     {
@@ -38,8 +36,6 @@ class WorkermanApp extends CliApp
 
     /**
      * 获取应用类型.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -48,10 +44,6 @@ class WorkermanApp extends CliApp
 
     /**
      * 加载配置.
-     *
-     * @param bool $initDotEnv
-     *
-     * @return void
      */
     public function loadConfig(bool $initDotEnv = true): void
     {
@@ -82,8 +74,6 @@ class WorkermanApp extends CliApp
 
     /**
      * 加载运行时.
-     *
-     * @return int
      */
     public function loadRuntime(): int
     {
@@ -146,8 +136,6 @@ class WorkermanApp extends CliApp
 
     /**
      * 加载入口.
-     *
-     * @return void
      */
     public function loadMain(): void
     {

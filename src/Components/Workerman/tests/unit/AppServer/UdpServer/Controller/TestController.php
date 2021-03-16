@@ -21,8 +21,6 @@ class TestController extends \Imi\Controller\UdpController
      *
      * @UdpAction
      * @UdpRoute({"action"="hello"})
-     *
-     * @return array
      */
     public function hello(): array
     {
@@ -39,8 +37,6 @@ class TestController extends \Imi\Controller\UdpController
      *
      * @UdpAction
      * @UdpRoute({"duplicated"="1"})
-     *
-     * @return void
      */
     public function duplicated1(): void
     {
@@ -51,8 +47,6 @@ class TestController extends \Imi\Controller\UdpController
      *
      * @UdpAction
      * @UdpRoute({"duplicated"="1"})
-     *
-     * @return void
      */
     public function duplicated2(): void
     {

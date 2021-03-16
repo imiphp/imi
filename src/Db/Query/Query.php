@@ -33,64 +33,46 @@ class Query implements IQuery
 {
     /**
      * 操作记录.
-     *
-     * @var QueryOption
      */
     protected QueryOption $option;
 
     /**
      * 数据绑定.
-     *
-     * @var array
      */
     protected array $binds = [];
 
     /**
      * 数据库操作对象
-     *
-     * @var IDb|null
      */
     protected ?IDb $db;
 
     /**
      * 连接池名称.
-     *
-     * @var string|null
      */
     protected ?string $poolName = null;
 
     /**
      * 查询结果类的类名，为null则为数组.
-     *
-     * @var string|null
      */
     protected ?string $modelClass = null;
 
     /**
      * 查询类型.
-     *
-     * @var int|null
      */
     protected ?int $queryType = null;
 
     /**
      * 是否初始化时候就设定了查询类型.
-     *
-     * @var bool
      */
     protected bool $isInitQueryType = false;
 
     /**
      * 是否初始化时候就设定了连接.
-     *
-     * @var bool
      */
     protected bool $isInitDb = false;
 
     /**
      * 数据库字段自增.
-     *
-     * @var int
      */
     protected int $dbParamInc = 0;
 
@@ -103,8 +85,6 @@ class Query implements IQuery
 
     /**
      * 当前别名.
-     *
-     * @var string|null
      */
     protected ?string $alias = null;
 
@@ -144,8 +124,6 @@ class Query implements IQuery
 
     /**
      * 获取所有操作的记录.
-     *
-     * @return QueryOption
      */
     public function getOption(): QueryOption
     {
@@ -154,8 +132,6 @@ class Query implements IQuery
 
     /**
      * 设置操作记录.
-     *
-     * @param QueryOption $option
      *
      * @return static
      */
@@ -169,8 +145,6 @@ class Query implements IQuery
 
     /**
      * 获取数据库操作对象
-     *
-     * @return IDb
      */
     public function getDb(): IDb
     {
@@ -200,8 +174,6 @@ class Query implements IQuery
     /**
      * 设置表名，使用SQL原生语句.
      *
-     * @param string $raw
-     *
      * @return static
      */
     public function tableRaw(string $raw): self
@@ -229,8 +201,6 @@ class Query implements IQuery
 
     /**
      * 设置表名，使用SQL原生语句.
-     *
-     * @param string $raw
      *
      * @return static
      */
@@ -278,8 +248,6 @@ class Query implements IQuery
     /**
      * 指定查询字段，使用SQL原生语句.
      *
-     * @param string $raw
-     *
      * @return static
      */
     public function fieldRaw(string $raw): self
@@ -295,10 +263,7 @@ class Query implements IQuery
     /**
      * 设置 where 条件，一般用于 =、>、<、like 等.
      *
-     * @param string $fieldName
-     * @param string $operation
-     * @param mixed  $value
-     * @param string $logicalOperator
+     * @param mixed $value
      *
      * @return static
      */
@@ -311,9 +276,6 @@ class Query implements IQuery
 
     /**
      * 设置 where 条件，用原生语句.
-     *
-     * @param string $raw
-     * @param string $logicalOperator
      *
      * @return static
      */
@@ -331,9 +293,6 @@ class Query implements IQuery
     /**
      * 设置 where 条件，传入回调，回调中的条件加括号.
      *
-     * @param callable $callback
-     * @param string   $logicalOperator
-     *
      * @return static
      */
     public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self
@@ -345,9 +304,6 @@ class Query implements IQuery
 
     /**
      * 设置 where 条件，使用 IBaseWhere 结构.
-     *
-     * @param IBaseWhere $where
-     * @param string     $logicalOperator
      *
      * @return static
      */
@@ -372,9 +328,6 @@ class Query implements IQuery
      * ]
      *
      * SQL: id = 1 or (id = 2) and title like '%test%' and age > 18 and age between 19 and 29
-     *
-     * @param array  $condition
-     * @param string $logicalOperator
      *
      * @return static
      */
@@ -454,10 +407,8 @@ class Query implements IQuery
     /**
      * where between $begin end $end.
      *
-     * @param string $fieldName
-     * @param mixed  $begin
-     * @param mixed  $end
-     * @param string $logicalOperator
+     * @param mixed $begin
+     * @param mixed $end
      *
      * @return static
      */
@@ -469,9 +420,8 @@ class Query implements IQuery
     /**
      * or where between $begin end $end.
      *
-     * @param string $fieldName
-     * @param mixed  $begin
-     * @param mixed  $end
+     * @param mixed $begin
+     * @param mixed $end
      *
      * @return static
      */
@@ -483,10 +433,8 @@ class Query implements IQuery
     /**
      * where not between $begin end $end.
      *
-     * @param string $fieldName
-     * @param mixed  $begin
-     * @param mixed  $end
-     * @param string $logicalOperator
+     * @param mixed $begin
+     * @param mixed $end
      *
      * @return static
      */
@@ -498,9 +446,8 @@ class Query implements IQuery
     /**
      * or where not between $begin end $end.
      *
-     * @param string $fieldName
-     * @param mixed  $begin
-     * @param mixed  $end
+     * @param mixed $begin
+     * @param mixed $end
      *
      * @return static
      */
@@ -512,9 +459,7 @@ class Query implements IQuery
     /**
      * 设置 where or 条件.
      *
-     * @param string $fieldName
-     * @param string $operation
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return static
      */
@@ -526,8 +471,6 @@ class Query implements IQuery
     /**
      * 设置 where or 条件，用原生语句.
      *
-     * @param string $where
-     *
      * @return static
      */
     public function orWhereRaw(string $where): self
@@ -537,8 +480,6 @@ class Query implements IQuery
 
     /**
      * 设置 where or 条件，传入回调，回调中的条件加括号.
-     *
-     * @param callable $callback
      *
      * @return static
      */
@@ -550,8 +491,6 @@ class Query implements IQuery
     /**
      * 设置 where or 条件，使用 IBaseWhere 结构.
      *
-     * @param IBaseWhere $where
-     *
      * @return static
      */
     public function orWhereStruct(IBaseWhere $where): self
@@ -561,8 +500,6 @@ class Query implements IQuery
 
     /**
      * 设置 where or 条件，支持语法参考 whereEx 方法.
-     *
-     * @param array $condition
      *
      * @return static
      */
@@ -574,10 +511,6 @@ class Query implements IQuery
     /**
      * where field in (list).
      *
-     * @param string $fieldName
-     * @param array  $list
-     * @param string $logicalOperator
-     *
      * @return static
      */
     public function whereIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self
@@ -587,9 +520,6 @@ class Query implements IQuery
 
     /**
      * or where field in (list).
-     *
-     * @param string $fieldName
-     * @param array  $list
      *
      * @return static
      */
@@ -601,10 +531,6 @@ class Query implements IQuery
     /**
      * where field not in (list).
      *
-     * @param string $fieldName
-     * @param array  $list
-     * @param string $logicalOperator
-     *
      * @return static
      */
     public function whereNotIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self
@@ -614,9 +540,6 @@ class Query implements IQuery
 
     /**
      * or where field not in (list).
-     *
-     * @param string $fieldName
-     * @param array  $list
      *
      * @return static
      */
@@ -628,9 +551,6 @@ class Query implements IQuery
     /**
      * where field is null.
      *
-     * @param string $fieldName
-     * @param string $logicalOperator
-     *
      * @return static
      */
     public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
@@ -640,8 +560,6 @@ class Query implements IQuery
 
     /**
      * or where field is null.
-     *
-     * @param string $fieldName
      *
      * @return static
      */
@@ -653,9 +571,6 @@ class Query implements IQuery
     /**
      * where field is not null.
      *
-     * @param string $fieldName
-     * @param string $logicalOperator
-     *
      * @return static
      */
     public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
@@ -665,8 +580,6 @@ class Query implements IQuery
 
     /**
      * or where field is not null.
-     *
-     * @param string $fieldName
      *
      * @return static
      */
@@ -697,8 +610,6 @@ class Query implements IQuery
 
     /**
      * join，使用SQL原生语句.
-     *
-     * @param string $raw
      *
      * @return static
      */
@@ -766,9 +677,6 @@ class Query implements IQuery
     /**
      * 排序.
      *
-     * @param string $field
-     * @param string $direction
-     *
      * @return static
      */
     public function order(string $field, string $direction = 'asc'): self
@@ -823,9 +731,6 @@ class Query implements IQuery
      * 设置分页
      * 传入当前页码和每页显示数量，自动计算offset和limit.
      *
-     * @param int|null $page
-     * @param int|null $count
-     *
      * @return static
      */
     public function page(?int $page, ?int $count): self
@@ -841,8 +746,6 @@ class Query implements IQuery
     /**
      * 设置记录从第几个开始取出.
      *
-     * @param int|null $offset
-     *
      * @return static
      */
     public function offset(?int $offset): self
@@ -854,8 +757,6 @@ class Query implements IQuery
 
     /**
      * 设置查询几条记录.
-     *
-     * @param int|null $limit
      *
      * @return static
      */
@@ -889,8 +790,6 @@ class Query implements IQuery
     /**
      * group by，使用SQL原生语句.
      *
-     * @param string $raw
-     *
      * @return static
      */
     public function groupRaw(string $raw): self
@@ -906,10 +805,7 @@ class Query implements IQuery
     /**
      * 设置 having 条件.
      *
-     * @param string $fieldName
-     * @param string $operation
-     * @param mixed  $value
-     * @param string $logicalOperator
+     * @param mixed $value
      *
      * @return static
      */
@@ -922,9 +818,6 @@ class Query implements IQuery
 
     /**
      * 设置 having 条件，用原生语句.
-     *
-     * @param string $raw
-     * @param string $logicalOperator
      *
      * @return static
      */
@@ -942,9 +835,6 @@ class Query implements IQuery
     /**
      * 设置 having 条件，传入回调，回调中的条件加括号.
      *
-     * @param callable $callback
-     * @param string   $logicalOperator
-     *
      * @return static
      */
     public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self
@@ -956,9 +846,6 @@ class Query implements IQuery
 
     /**
      * 设置 having 条件，使用 IHaving 结构.
-     *
-     * @param IHaving $having
-     * @param string  $logicalOperator
      *
      * @return static
      */
@@ -974,7 +861,6 @@ class Query implements IQuery
      *
      * @param string|int $name
      * @param mixed      $value
-     * @param int        $dataType
      *
      * @return static
      */
@@ -987,8 +873,6 @@ class Query implements IQuery
 
     /**
      * 批量绑定预处理参数.
-     *
-     * @param array $values
      *
      * @return static
      */
@@ -1005,8 +889,6 @@ class Query implements IQuery
 
     /**
      * 获取绑定预处理参数关系.
-     *
-     * @return array
      */
     public function getBinds(): array
     {
@@ -1015,8 +897,6 @@ class Query implements IQuery
 
     /**
      * 查询记录.
-     *
-     * @return IResult
      */
     public function select(): IResult
     {
@@ -1041,12 +921,6 @@ class Query implements IQuery
 
     /**
      * 分页查询.
-     *
-     * @param int   $page
-     * @param int   $count
-     * @param array $options
-     *
-     * @return \Imi\Db\Query\Interfaces\IPaginateResult
      */
     public function paginate(int $page, int $count, array $options = []): IPaginateResult
     {
@@ -1069,8 +943,6 @@ class Query implements IQuery
      * 插入记录.
      *
      * @param array|object|null $data
-     *
-     * @return IResult
      */
     public function insert($data = null): IResult
     {
@@ -1108,8 +980,6 @@ class Query implements IQuery
      * 以第 0 个成员作为字段标准.
      *
      * @param array|object|null $data
-     *
-     * @return IResult
      */
     public function batchInsert($data = null): IResult
     {
@@ -1123,8 +993,6 @@ class Query implements IQuery
      * 更新记录.
      *
      * @param array|object|null $data
-     *
-     * @return IResult
      */
     public function update($data = null): IResult
     {
@@ -1153,8 +1021,6 @@ class Query implements IQuery
      * 替换数据（Replace）.
      *
      * @param array|object|null $data
-     *
-     * @return IResult
      */
     public function replace($data = null): IResult
     {
@@ -1181,8 +1047,6 @@ class Query implements IQuery
 
     /**
      * 删除记录.
-     *
-     * @return IResult
      */
     public function delete(): IResult
     {
@@ -1204,10 +1068,6 @@ class Query implements IQuery
 
     /**
      * 统计数量.
-     *
-     * @param string $field
-     *
-     * @return int
      */
     public function count(string $field = '*'): int
     {
@@ -1216,8 +1076,6 @@ class Query implements IQuery
 
     /**
      * 求和.
-     *
-     * @param string $field
      *
      * @return int|float
      */
@@ -1229,8 +1087,6 @@ class Query implements IQuery
     /**
      * 平均值
      *
-     * @param string $field
-     *
      * @return int|float
      */
     public function avg(string $field)
@@ -1240,8 +1096,6 @@ class Query implements IQuery
 
     /**
      * 最大值
-     *
-     * @param string $field
      *
      * @return int|float
      */
@@ -1253,8 +1107,6 @@ class Query implements IQuery
     /**
      * 最小值
      *
-     * @param string $field
-     *
      * @return int|float
      */
     public function min(string $field)
@@ -1264,9 +1116,6 @@ class Query implements IQuery
 
     /**
      * 聚合函数.
-     *
-     * @param string $functionName
-     * @param string $fieldName
      *
      * @return mixed
      */
@@ -1284,10 +1133,6 @@ class Query implements IQuery
 
     /**
      * 执行SQL语句.
-     *
-     * @param string $sql
-     *
-     * @return IResult
      */
     public function execute(string $sql): IResult
     {
@@ -1321,8 +1166,6 @@ class Query implements IQuery
 
     /**
      * 获取自动起名的参数名称.
-     *
-     * @return string
      */
     public function getAutoParamName(): string
     {
@@ -1353,8 +1196,7 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace的字段.
      *
-     * @param string $fieldName
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return static
      */
@@ -1368,9 +1210,6 @@ class Query implements IQuery
     /**
      * 设置update/insert/replace的字段，值为表达式，原样代入.
      *
-     * @param string $fieldName
-     * @param string $exp
-     *
      * @return static
      */
     public function setFieldExp(string $fieldName, string $exp): self
@@ -1382,9 +1221,6 @@ class Query implements IQuery
 
     /**
      * 设置递增字段.
-     *
-     * @param string $fieldName
-     * @param float  $incValue
      *
      * @return static
      */
@@ -1398,9 +1234,6 @@ class Query implements IQuery
     /**
      * 设置递减字段.
      *
-     * @param string $fieldName
-     * @param float  $decValue
-     *
      * @return static
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
@@ -1412,8 +1245,6 @@ class Query implements IQuery
 
     /**
      * 当前主库连接是否在事务中.
-     *
-     * @return bool
      */
     private function isInTransaction(): bool
     {
@@ -1429,7 +1260,6 @@ class Query implements IQuery
     /**
      * 查询器别名.
      *
-     * @param string        $name
      * @param callable|null $callable
      *
      * @return static

@@ -11,15 +11,11 @@ trait TSingleton
 {
     /**
      * 实例对象
-     *
-     * @var object|null
      */
     protected static ?object $instance = null;
 
     /**
      * 实例对象数组.
-     *
-     * @var array
      */
     protected static array $instances = [];
 
@@ -63,8 +59,6 @@ trait TSingleton
 
     /**
      * 是否子类作为单独实例.
-     *
-     * @return bool
      */
     protected static function isChildClassSingleton(): bool
     {

@@ -8,15 +8,11 @@ class AfterThrowingJoinPoint extends JoinPoint
 {
     /**
      * 异常.
-     *
-     * @var \Throwable
      */
     private \Throwable $throwable;
 
     /**
      * 是否取消抛出异常.
-     *
-     * @var bool
      */
     private bool $isCancelThrow = false;
 
@@ -28,8 +24,6 @@ class AfterThrowingJoinPoint extends JoinPoint
 
     /**
      * 获取异常.
-     *
-     * @return \Throwable
      */
     public function getThrowable(): \Throwable
     {
@@ -40,8 +34,6 @@ class AfterThrowingJoinPoint extends JoinPoint
      * 取消抛出异常.
      *
      * @param bool $isCancelThrow 是否取消，默认为true
-     *
-     * @return void
      */
     public function cancelThrow(bool $isCancelThrow = true): void
     {
@@ -50,8 +42,6 @@ class AfterThrowingJoinPoint extends JoinPoint
 
     /**
      * 是否取消抛出异常.
-     *
-     * @return bool
      */
     public function isCancelThrow(): bool
     {

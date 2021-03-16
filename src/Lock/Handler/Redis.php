@@ -20,43 +20,31 @@ class Redis extends BaseLock
 {
     /**
      * Redis 连接池名称.
-     *
-     * @var string|null
      */
     public ?string $poolName = null;
 
     /**
      * Redis 几号库.
-     *
-     * @var int
      */
     public int $db = 0;
 
     /**
      * 获得锁每次尝试间隔，单位：毫秒.
-     *
-     * @var int
      */
     public int $waitSleepTime = 20;
 
     /**
      * Redis key.
-     *
-     * @var string
      */
     public string $key = '';
 
     /**
      * Redis key 前置.
-     *
-     * @var string
      */
     public string $keyPrefix = 'imi:lock:';
 
     /**
      * 当前锁对象GUID.
-     *
-     * @var string
      */
     private string $guid = '';
 
@@ -73,8 +61,6 @@ class Redis extends BaseLock
 
     /**
      * 加锁，会挂起协程.
-     *
-     * @return bool
      */
     protected function __lock(): bool
     {
@@ -102,8 +88,6 @@ class Redis extends BaseLock
 
     /**
      * 尝试获取锁
-     *
-     * @return bool
      */
     protected function __tryLock(): bool
     {
@@ -137,8 +121,6 @@ SCRIPT
 
     /**
      * 解锁
-     *
-     * @return bool
      */
     protected function __unlock(): bool
     {

@@ -27,8 +27,6 @@ class DbResource extends BasePoolResource
 
     /**
      * 打开
-     *
-     * @return bool
      */
     public function open(): bool
     {
@@ -39,8 +37,6 @@ class DbResource extends BasePoolResource
 
     /**
      * 关闭.
-     *
-     * @return void
      */
     public function close(): void
     {
@@ -59,8 +55,6 @@ class DbResource extends BasePoolResource
 
     /**
      * 重置资源，当资源被使用后重置一些默认的设置.
-     *
-     * @return void
      */
     public function reset(): void
     {
@@ -74,8 +68,6 @@ class DbResource extends BasePoolResource
 
     /**
      * 检查资源是否可用.
-     *
-     * @return bool
      */
     public function checkState(): bool
     {

@@ -17,10 +17,6 @@ class EventDListener implements IEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param \Imi\Event\EventParam $e
-     *
-     * @return void
      */
     public function handle(EventParam $e): void
     {

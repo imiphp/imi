@@ -19,8 +19,6 @@ class ServerUtilController extends HttpController
 {
     /**
      * @Action
-     *
-     * @return array
      */
     public function getServer(): array
     {
@@ -37,8 +35,6 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function sendMessage(): array
     {
@@ -55,8 +51,6 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function send(array $fds, string $flag): array
     {
@@ -82,8 +76,6 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
-     *
-     * @return array
      */
     public function sendToGroup(): array
     {
@@ -104,11 +96,6 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
-     *
-     * @param int    $fd
-     * @param string $flag
-     *
-     * @return array
      */
     public function close(int $fd, string $flag): array
     {

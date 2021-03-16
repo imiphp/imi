@@ -21,15 +21,11 @@ class PoolManager
 
     /**
      * 最后获取资源时间.
-     *
-     * @var array
      */
     protected static array $lastGetResourceTime = [];
 
     /**
      * 是否初始化.
-     *
-     * @var bool
      */
     protected static bool $inited = false;
 
@@ -53,12 +49,8 @@ class PoolManager
     /**
      * 增加对象名称.
      *
-     * @param string                           $name
-     * @param string                           $poolClassName
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
      * @param array|null                       $resourceConfig
-     *
-     * @return void
      */
     public static function addName(string $name, string $poolClassName, Interfaces\IPoolConfig $config = null, $resourceConfig = null): void
     {
@@ -78,8 +70,6 @@ class PoolManager
 
     /**
      * 清空池子.
-     *
-     * @return void
      */
     public static function clearPools(): void
     {
@@ -92,10 +82,6 @@ class PoolManager
 
     /**
      * 连接池是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function exists(string $name): bool
     {
@@ -109,10 +95,6 @@ class PoolManager
 
     /**
      * 获取实例.
-     *
-     * @param string $name
-     *
-     * @return \Imi\Pool\Interfaces\IPool
      */
     public static function getInstance(string $name): IPool
     {
@@ -138,10 +120,6 @@ class PoolManager
 
     /**
      * 获取池子中的资源.
-     *
-     * @param string $name
-     *
-     * @return IPoolResource
      */
     public static function getResource(string $name): IPoolResource
     {
@@ -156,10 +134,6 @@ class PoolManager
 
     /**
      * 获取请求上下文资源，一个请求上下文通过此方法，只能获取同一个资源.
-     *
-     * @param string $name
-     *
-     * @return IPoolResource
      */
     public static function getRequestContextResource(string $name): IPoolResource
     {
@@ -186,8 +160,6 @@ class PoolManager
     /**
      * 尝试获取资源，获取到则返回资源，没有获取到返回false.
      *
-     * @param string $name
-     *
      * @return IPoolResource|bool
      */
     public static function tryGetResource(string $name)
@@ -203,10 +175,6 @@ class PoolManager
 
     /**
      * 释放资源占用.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
     public static function releaseResource(IPoolResource $resource): void
     {
@@ -218,9 +186,6 @@ class PoolManager
      * 使用回调来使用池子中的资源，无需手动释放
      * 回调有两个参数：$resource(资源对象), $instance(操作实例对象，如数据库、Redis等)
      * 本方法返回值为回调的返回值
-     *
-     * @param string   $name
-     * @param callable $callback
      *
      * @return mixed
      */
@@ -242,8 +207,6 @@ class PoolManager
 
     /**
      * 释放当前上下文请求的未被释放的资源.
-     *
-     * @return void
      */
     public static function destroyCurrentContext(): void
     {
@@ -258,10 +221,6 @@ class PoolManager
 
     /**
      * 请求上下文中是否存在资源.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function hasRequestContextResource(string $name): bool
     {
@@ -272,10 +231,6 @@ class PoolManager
 
     /**
      * 把资源存放到当前上下文.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
     private static function pushResourceToRequestContext(IPoolResource $resource): void
     {
@@ -288,10 +243,6 @@ class PoolManager
 
     /**
      * 把资源从当前上下文删除.
-     *
-     * @param IPoolResource $resource
-     *
-     * @return void
      */
     private static function removeResourceFromRequestContext(IPoolResource $resource): void
     {
@@ -317,8 +268,6 @@ class PoolManager
      * 清理连接池，只允许留下指定连接池.
      *
      * @param string[] $allowList
-     *
-     * @return void
      */
     public static function cleanAllow(array $allowList): void
     {
@@ -335,8 +284,6 @@ class PoolManager
      * 清理连接池，只允许留下指定连接池.
      *
      * @param string[] $denyList
-     *
-     * @return void
      */
     public static function cleanDeny(array $denyList): void
     {

@@ -19,15 +19,11 @@ class Integer extends Condition
 {
     /**
      * 最小值，为null不限制.
-     *
-     * @var int|null
      */
     public ?int $min = null;
 
     /**
      * 最大值，为null不限制.
-     *
-     * @var int|null
      */
     public ?int $max = null;
 
@@ -40,8 +36,6 @@ class Integer extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

@@ -29,12 +29,6 @@ class BeanManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $className
-     * @param string $beanName
-     * @param string $instanceType
-     *
-     * @return void
      */
     public static function add(string $className, string $beanName, string $instanceType = Bean::INSTANCE_TYPE_SINGLETON): void
     {
@@ -47,10 +41,6 @@ class BeanManager
 
     /**
      * 获取.
-     *
-     * @param string $name
-     *
-     * @return array|null
      */
     public static function get(string $name): ?array
     {

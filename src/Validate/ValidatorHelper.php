@@ -12,10 +12,7 @@ class ValidatorHelper
     /**
      * 正则验证
      *
-     * @param mixed  $value
-     * @param string $rule
-     *
-     * @return bool
+     * @param mixed $value
      */
     public static function regex($value, string $rule): bool
     {
@@ -25,12 +22,7 @@ class ValidatorHelper
     /**
      * 小数验证
      *
-     * @param mixed      $value
-     * @param float|null $min
-     * @param float|null $max
-     * @param int|null   $accuracy
-     *
-     * @return bool
+     * @param mixed $value
      */
     public static function decimal($value, ?float $min = null, ?float $max = null, ?int $accuracy = null): bool
     {
@@ -56,11 +48,7 @@ class ValidatorHelper
     /**
      * 整数验证
      *
-     * @param mixed    $value
-     * @param int|null $min
-     * @param int|null $max
-     *
-     * @return bool
+     * @param mixed $value
      */
     public static function int($value, ?int $min = null, ?int $max = null): bool
     {
@@ -84,9 +72,6 @@ class ValidatorHelper
      * @param mixed          $value
      * @param float|int|null $min
      * @param float|int|null $max
-     * @param int|null       $accuracy
-     *
-     * @return bool
      */
     public static function number($value, $min = null, $max = null, ?int $accuracy = null): bool
     {
@@ -112,11 +97,7 @@ class ValidatorHelper
     /**
      * 判断文本长度，以字节为单位.
      *
-     * @param string $val
-     * @param int    $min
-     * @param int    $max
-     *
-     * @return bool
+     * @param int $max
      */
     public static function length(string $val, int $min, ?int $max = null): bool
     {
@@ -125,12 +106,6 @@ class ValidatorHelper
 
     /**
      * 判断文本长度，以字符为单位.
-     *
-     * @param string   $val
-     * @param int      $min
-     * @param int|null $max
-     *
-     * @return bool
      */
     public static function lengthChar(string $val, int $min, ?int $max = null): bool
     {
@@ -146,10 +121,6 @@ class ValidatorHelper
 
     /**
      * 判断空文本.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function emptyStr(string $str): bool
     {
@@ -158,10 +129,6 @@ class ValidatorHelper
 
     /**
      * 判断不为空文本.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function notEmptyStr(string $str): bool
     {
@@ -170,10 +137,6 @@ class ValidatorHelper
 
     /**
      * 检测邮箱格式.
-     *
-     * @param string $email
-     *
-     * @return bool
      */
     public static function email(string $email): bool
     {
@@ -182,10 +145,6 @@ class ValidatorHelper
 
     /**
      * 检测中国手机号码格式.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function cnMobile(string $str): bool
     {
@@ -194,10 +153,6 @@ class ValidatorHelper
 
     /**
      * 检测中国电话号码格式，支持400、800等.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function tel(string $str): bool
     {
@@ -206,10 +161,6 @@ class ValidatorHelper
 
     /**
      * 检测中国手机电话号码格式.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function mobile(string $str): bool
     {
@@ -218,10 +169,6 @@ class ValidatorHelper
 
     /**
      * 检测是否符合中国固话或手机格式，支持400、800等.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function phone(string $str): bool
     {
@@ -230,10 +177,6 @@ class ValidatorHelper
 
     /**
      * 检测中国邮政编码
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function postcode(string $str): bool
     {
@@ -242,10 +185,6 @@ class ValidatorHelper
 
     /**
      * 检测URL地址
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function url(string $str): bool
     {
@@ -254,10 +193,6 @@ class ValidatorHelper
 
     /**
      * 检测QQ号是否符合规则.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function qq(string $str): bool
     {
@@ -266,10 +201,6 @@ class ValidatorHelper
 
     /**
      * 判断IP地址是否符合IP的格式，ipv4或ipv6.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function ip(string $str): bool
     {
@@ -278,10 +209,6 @@ class ValidatorHelper
 
     /**
      * 判断IP地址是否是合法的ipv4格式.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function ipv4(string $str): bool
     {
@@ -290,10 +217,6 @@ class ValidatorHelper
 
     /**
      * 判断IP地址是否是合法的ipv6格式.
-     *
-     * @param string $str
-     *
-     * @return bool
      */
     public static function ipv6(string $str): bool
     {
@@ -335,8 +258,6 @@ class ValidatorHelper
      * @param float|int $value
      * @param float|int $max
      * @param float|int $min
-     *
-     * @return bool
      */
     public static function between($value, $min, $max): bool
     {
@@ -349,8 +270,6 @@ class ValidatorHelper
      * @param float|int $value
      * @param float|int $max
      * @param float|int $min
-     *
-     * @return bool
      */
     public static function betweenEqual($value, $min, $max): bool
     {
@@ -362,8 +281,6 @@ class ValidatorHelper
      *
      * @param float|int $value
      * @param float|int $num
-     *
-     * @return bool
      */
     public static function lt($value, $num): bool
     {
@@ -375,8 +292,6 @@ class ValidatorHelper
      *
      * @param float|int $value
      * @param float|int $num
-     *
-     * @return bool
      */
     public static function ltEqual($value, $num): bool
     {
@@ -388,8 +303,6 @@ class ValidatorHelper
      *
      * @param float|int $value
      * @param float|int $num
-     *
-     * @return bool
      */
     public static function gt($value, $num): bool
     {
@@ -401,8 +314,6 @@ class ValidatorHelper
      *
      * @param float|int $value
      * @param float|int $num
-     *
-     * @return bool
      */
     public static function gtEqual($value, $num): bool
     {
@@ -414,8 +325,6 @@ class ValidatorHelper
      *
      * @param mixed $value
      * @param mixed $num
-     *
-     * @return bool
      */
     public static function equal($value, $num): bool
     {
@@ -427,8 +336,6 @@ class ValidatorHelper
      *
      * @param mixed $value
      * @param mixed $num
-     *
-     * @return bool
      */
     public static function unequal($value, $num): bool
     {
@@ -438,11 +345,8 @@ class ValidatorHelper
     /**
      * 比较.
      *
-     * @param mixed  $valueLeft
-     * @param string $operation
-     * @param mixed  $valueRight
-     *
-     * @return bool
+     * @param mixed $valueLeft
+     * @param mixed $valueRight
      */
     public static function compare($valueLeft, string $operation, $valueRight): bool
     {
@@ -473,9 +377,6 @@ class ValidatorHelper
      * 值在范围内.
      *
      * @param mixed $value
-     * @param array $list
-     *
-     * @return bool
      */
     public static function in($value, array $list): bool
     {
@@ -491,9 +392,6 @@ class ValidatorHelper
      * 值不在范围内.
      *
      * @param mixed $value
-     * @param array $list
-     *
-     * @return bool
      */
     public static function notIn($value, array $list): bool
     {
@@ -508,10 +406,7 @@ class ValidatorHelper
     /**
      * 值在枚举值范围内.
      *
-     * @param mixed  $value
-     * @param string $enumClass
-     *
-     * @return bool
+     * @param mixed $value
      */
     public static function inEnum($value, string $enumClass): bool
     {
@@ -521,10 +416,7 @@ class ValidatorHelper
     /**
      * 值不在枚举值范围内.
      *
-     * @param mixed  $value
-     * @param string $enumClass
-     *
-     * @return bool
+     * @param mixed $value
      */
     public static function notInEnum($value, string $enumClass): bool
     {
@@ -533,10 +425,6 @@ class ValidatorHelper
 
     /**
      * 检测中国居民身份证，支持15位和18位.
-     *
-     * @param string $id_card
-     *
-     * @return bool
      */
     public static function cnIdcard(string $id_card): bool
     {
@@ -631,13 +519,6 @@ class ValidatorHelper
 
     /**
      * 文本验证
-     *
-     * @param string   $str
-     * @param int      $min
-     * @param int|null $max
-     * @param bool     $char
-     *
-     * @return bool
      */
     public static function text(string $str, int $min, ?int $max = null, bool $char = false): bool
     {

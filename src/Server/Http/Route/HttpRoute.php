@@ -29,8 +29,6 @@ class HttpRoute
 
     /**
      * url规则缓存.
-     *
-     * @var array
      */
     private array $rulesCache = [];
 
@@ -43,29 +41,21 @@ class HttpRoute
 
     /**
      * url匹配缓存数量.
-     *
-     * @var int
      */
     private int $urlCheckCacheCount = 0;
 
     /**
      * URL是否匹配的缓存数量.
-     *
-     * @var int
      */
     protected int $urlCacheNumber = 1024;
 
     /**
      * 忽略 URL 规则大小写.
-     *
-     * @var bool
      */
     protected bool $ignoreCase = false;
 
     /**
      * 智能尾部斜杠，无论是否存在都匹配.
-     *
-     * @var bool
      */
     protected bool $autoEndSlash = false;
 
@@ -75,8 +65,6 @@ class HttpRoute
      * @param string                                  $url        url规则
      * @param mixed                                   $callable   回调
      * @param \Imi\Server\Http\Route\Annotation\Route $annotation 路由定义注解，可选
-     *
-     * @return void
      */
     public function addRule(string $url, $callable, RouteAnnotation $annotation = null): void
     {
@@ -92,11 +80,7 @@ class HttpRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param \Imi\Server\Http\Route\Annotation\Route $annotation
-     * @param mixed                                   $callable
-     * @param array                                   $options
-     *
-     * @return void
+     * @param mixed $callable
      */
     public function addRuleAnnotation(RouteAnnotation $annotation, $callable, array $options = []): void
     {
@@ -118,8 +102,6 @@ class HttpRoute
 
     /**
      * 清空路由规则.
-     *
-     * @return void
      */
     public function clearRules(): void
     {
@@ -128,10 +110,6 @@ class HttpRoute
 
     /**
      * 路由规则是否存在.
-     *
-     * @param \Imi\Server\Http\Route\Annotation\Route $rule
-     *
-     * @return bool
      */
     public function existsRule(RouteAnnotation $rule): bool
     {
@@ -140,8 +118,6 @@ class HttpRoute
 
     /**
      * 获取路由规则.
-     *
-     * @return array
      */
     public function getRules(): array
     {
@@ -150,10 +126,6 @@ class HttpRoute
 
     /**
      * 设置路由规则.
-     *
-     * @param array $rules
-     *
-     * @return void
      */
     public function setRules(array $rules): void
     {
@@ -162,8 +134,6 @@ class HttpRoute
 
     /**
      * 路由规则是否为空.
-     *
-     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -172,8 +142,6 @@ class HttpRoute
 
     /**
      * 路由解析处理.
-     *
-     * @param Request $request
      *
      * @return \Imi\Server\Http\Route\RouteResult|null
      */
@@ -236,9 +204,6 @@ class HttpRoute
     /**
      * 检查验证url是否匹配.
      *
-     * @param string $urlRule
-     * @param string $pathInfo
-     *
      * @return \Imi\Server\Http\Route\UrlCheckResult
      */
     public function checkUrl(string $urlRule, string $pathInfo): UrlCheckResult
@@ -300,11 +265,8 @@ class HttpRoute
     /**
      * 处理规则为正则.
      *
-     * @param string     $rule
      * @param array|null $fields    规则中包含的自定义参数
      * @param bool|null  $isRegular 是否为正则
-     *
-     * @return string
      */
     private function parseRule(string $rule, ?array &$fields, ?bool &$isRegular): string
     {
@@ -370,10 +332,7 @@ class HttpRoute
     /**
      * 检查验证请求方法是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $method
-     *
-     * @return bool
+     * @param mixed $method
      */
     private function checkMethod(Request $request, $method): bool
     {
@@ -394,11 +353,7 @@ class HttpRoute
     /**
      * 检查验证域名是否匹配.
      *
-     * @param Request    $request
-     * @param mixed      $domain
-     * @param array|null $params
-     *
-     * @return bool
+     * @param mixed $domain
      */
     private function checkDomain(Request $request, $domain, ?array &$params): bool
     {
@@ -441,10 +396,7 @@ class HttpRoute
     /**
      * 检查验证GET参数是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $params
-     *
-     * @return bool
+     * @param mixed $params
      */
     private function checkParamsGet(Request $request, $params): bool
     {
@@ -461,10 +413,7 @@ class HttpRoute
     /**
      * 检查验证POST参数是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $params
-     *
-     * @return bool
+     * @param mixed $params
      */
     private function checkParamsPost(Request $request, $params): bool
     {
@@ -481,9 +430,7 @@ class HttpRoute
     /**
      * 检查验证 JSON、XML 参数是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $params
-     * @param bool    $paramsBodyMultiLevel
+     * @param mixed $params
      *
      * @return bool
      */
@@ -516,10 +463,7 @@ class HttpRoute
     /**
      * 检查验证请求头是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $header
-     *
-     * @return bool
+     * @param mixed $header
      */
     private function checkHeader(Request $request, $header): bool
     {
@@ -536,10 +480,7 @@ class HttpRoute
     /**
      * 检查验证请求媒体类型是否匹配.
      *
-     * @param Request $request
-     * @param mixed   $requestMime
-     *
-     * @return bool
+     * @param mixed $requestMime
      */
     private function checkRequestMime(Request $request, $requestMime): bool
     {
@@ -553,8 +494,6 @@ class HttpRoute
 
     /**
      * 获取当前缓存的url匹配数量.
-     *
-     * @return int
      */
     public function getUrlCacheNumber(): int
     {
@@ -563,8 +502,6 @@ class HttpRoute
 
     /**
      * Get 忽略 URL 规则大小写.
-     *
-     * @return bool
      */
     public function getIgnoreCase(): bool
     {
@@ -573,8 +510,6 @@ class HttpRoute
 
     /**
      * Get 智能尾部斜杠，无论是否存在都匹配.
-     *
-     * @return bool
      */
     public function getAutoEndSlash(): bool
     {
@@ -583,8 +518,6 @@ class HttpRoute
 
     /**
      * 检查重复路由.
-     *
-     * @return void
      */
     public function checkDuplicateRoutes(): void
     {

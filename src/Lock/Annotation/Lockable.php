@@ -22,37 +22,27 @@ class Lockable extends Base
      * 锁ID
      * 支持{id}、{data.name}形式，代入参数
      * 如果为null，则使用类名+方法名+全部参数，序列化后hash.
-     *
-     * @var string|null
      */
     public ?string $id = null;
 
     /**
      * 锁类型，如：RedisLock
      * 为null则使用默认锁类型（@currentServer.lock.defaultType）.
-     *
-     * @var string|null
      */
     public ?string $type = null;
 
     /**
      * 等待锁超时时间，单位：毫秒，0为不限制.
-     *
-     * @var int
      */
     public int $waitTimeout = 3000;
 
     /**
      * 锁超时时间，单位：毫秒.
-     *
-     * @var int
      */
     public int $lockExpire = 3000;
 
     /**
      * 锁初始化参数.
-     *
-     * @var array
      */
     public array $options = [];
 

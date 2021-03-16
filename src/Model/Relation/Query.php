@@ -30,12 +30,8 @@ class Query
     /**
      * 初始化.
      *
-     * @param \Imi\Model\Model                                      $model
-     * @param string                                                $propertyName
      * @param \Imi\Bean\Annotation\Base|\Imi\Bean\Annotation\Base[] $annotation
-     * @param bool                                                  $forceInit    是否强制更新
-     *
-     * @return void
+     * @param bool                                                  $forceInit  是否强制更新
      */
     public static function init(Model $model, string $propertyName, $annotation, bool $forceInit = false): void
     {
@@ -93,12 +89,6 @@ class Query
 
     /**
      * 初始化一对一关系.
-     *
-     * @param \Imi\Model\Model                        $model
-     * @param string                                  $propertyName
-     * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
-     *
-     * @return void
      */
     public static function initByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation): void
     {
@@ -150,12 +140,6 @@ class Query
 
     /**
      * 初始化一对多关系.
-     *
-     * @param \Imi\Model\Model                         $model
-     * @param string                                   $propertyName
-     * @param \Imi\Model\Annotation\Relation\OneToMany $annotation
-     *
-     * @return void
      */
     public static function initByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation): void
     {
@@ -206,12 +190,6 @@ class Query
 
     /**
      * 初始化多对多关系.
-     *
-     * @param \Imi\Model\Model                          $model
-     * @param string                                    $propertyName
-     * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
-     *
-     * @return void
      */
     public static function initByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation): void
     {
@@ -269,12 +247,6 @@ class Query
 
     /**
      * 初始化多态一对一关系.
-     *
-     * @param \Imi\Model\Model                                   $model
-     * @param string                                             $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
-     *
-     * @return void
      */
     public static function initByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation): void
     {
@@ -326,12 +298,6 @@ class Query
 
     /**
      * 初始化多态一对多关系.
-     *
-     * @param \Imi\Model\Model                                    $model
-     * @param string                                              $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
-     *
-     * @return void
      */
     public static function initByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation): void
     {
@@ -383,11 +349,7 @@ class Query
     /**
      * 初始化多态，对应的实体模型.
      *
-     * @param \Imi\Model\Model                                  $model
-     * @param string                                            $propertyName
      * @param \Imi\Model\Annotation\Relation\PolymorphicToOne[] $annotation
-     *
-     * @return void
      */
     public static function initByPolymorphicToOne(Model $model, string $propertyName, array $annotation): void
     {
@@ -439,12 +401,6 @@ class Query
 
     /**
      * 初始化多态，对应的实体模型列表.
-     *
-     * @param \Imi\Model\Model                                 $model
-     * @param string                                           $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicToMany $annotation
-     *
-     * @return void
      */
     public static function initByPolymorphicToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicToMany $annotation): void
     {
@@ -499,12 +455,6 @@ class Query
 
     /**
      * 初始化多态多对多关系.
-     *
-     * @param \Imi\Model\Model                                     $model
-     * @param string                                               $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
-     *
-     * @return void
      */
     public static function initByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation): void
     {
@@ -559,11 +509,6 @@ class Query
 
     /**
      * 初始化关联属性.
-     *
-     * @param \Imi\Model\Model $model
-     * @param string           $propertyName
-     *
-     * @return void
      */
     public static function initRelations(Model $model, string $propertyName): void
     {
@@ -605,13 +550,6 @@ class Query
 
     /**
      * 处理多对多查询用的字段，需要是"表名.字段名"，防止冲突
-     *
-     * @param string     $middleModel
-     * @param string     $rightModel
-     * @param array|null $middleFields
-     * @param array|null $rightFields
-     *
-     * @return void
      */
     private static function parseManyToManyQueryFields(string $middleModel, string $rightModel, ?array &$middleFields, ?array &$rightFields): void
     {
@@ -634,13 +572,6 @@ class Query
 
     /**
      * 合并多对多查询字段.
-     *
-     * @param string $middleTable
-     * @param array  $middleFields
-     * @param string $rightTable
-     * @param array  $rightFields
-     *
-     * @return array
      */
     private static function mergeManyToManyFields(string $middleTable, array $middleFields, string $rightTable, array $rightFields): array
     {
@@ -659,13 +590,6 @@ class Query
 
     /**
      * 追加到Many列表.
-     *
-     * @param \Imi\Util\ArrayList $manyList
-     * @param array               $dataList
-     * @param array               $fields
-     * @param string              $modelClass
-     *
-     * @return void
      */
     private static function appendMany(ArrayList $manyList, array $dataList, array $fields, string $modelClass): void
     {

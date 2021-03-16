@@ -26,43 +26,31 @@ class Group
 {
     /**
      * 服务器对象
-     *
-     * @var IServer
      */
     protected IServer $server;
 
     /**
      * 组中最大允许的客户端数量.
-     *
-     * @var int
      */
     protected int $maxClients = 0;
 
     /**
      * 组名.
-     *
-     * @var string
      */
     protected string $groupName = '';
 
     /**
      * 分组处理器.
-     *
-     * @var string
      */
     protected string $groupHandler = \Imi\Server\Group\Handler\Redis::class;
 
     /**
      * 处理器.
-     *
-     * @var \Imi\Server\Group\Handler\IGroupHandler
      */
     protected IGroupHandler $handler;
 
     /**
      * 是否启用逻辑分组.
-     *
-     * @var bool
      */
     protected bool $status = true;
 
@@ -84,8 +72,6 @@ class Group
 
     /**
      * 获得组处理器对象
-     *
-     * @return \Imi\Server\Group\Handler\IGroupHandler
      */
     public function getHandler(): IGroupHandler
     {
@@ -94,10 +80,6 @@ class Group
 
     /**
      * 加入组.
-     *
-     * @param int $fd
-     *
-     * @return void
      */
     public function join(int $fd): void
     {
@@ -120,10 +102,6 @@ class Group
 
     /**
      * 离开组.
-     *
-     * @param int $fd
-     *
-     * @return void
      */
     public function leave(int $fd): void
     {
@@ -149,10 +127,6 @@ class Group
 
     /**
      * 连接是否存在于组里.
-     *
-     * @param int $fd
-     *
-     * @return bool
      */
     public function isInGroup(int $fd): bool
     {
@@ -171,8 +145,6 @@ class Group
 
     /**
      * 获取组中的连接总数.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -181,8 +153,6 @@ class Group
 
     /**
      * 清空分组.
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -191,8 +161,6 @@ class Group
 
     /**
      * 获取服务器对象
-     *
-     * @return IServer
      */
     public function getServer(): IServer
     {
@@ -201,8 +169,6 @@ class Group
 
     /**
      * 获取组中最大允许的客户端数量.
-     *
-     * @return int
      */
     public function getMaxClients(): int
     {
@@ -211,9 +177,6 @@ class Group
 
     /**
      * 魔术方法，返回数组，fd=>执行结果.
-     *
-     * @param string $name
-     * @param array  $arguments
      *
      * @return array
      */

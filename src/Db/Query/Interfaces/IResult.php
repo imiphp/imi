@@ -10,8 +10,6 @@ interface IResult
 {
     /**
      * SQL是否执行成功
-     *
-     * @return bool
      */
     public function isSuccess(): bool;
 
@@ -24,8 +22,6 @@ interface IResult
 
     /**
      * 获取影响行数.
-     *
-     * @return int
      */
     public function getAffectedRows(): int;
 
@@ -42,8 +38,6 @@ interface IResult
      * 返回数组.
      *
      * @param string|null $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return array
      */
     public function getArray(?string $className = null): array;
 
@@ -51,8 +45,6 @@ interface IResult
      * 获取一列.
      *
      * @param string|int $column
-     *
-     * @return array
      */
     public function getColumn($column = 0): array;
 
@@ -65,22 +57,16 @@ interface IResult
 
     /**
      * 获取记录行数.
-     *
-     * @return int
      */
     public function getRowCount(): int;
 
     /**
      * 获取执行的SQL语句.
-     *
-     * @return string
      */
     public function getSql(): string;
 
     /**
      * 获取结果集对象
-     *
-     * @return \Imi\Db\Interfaces\IStatement
      */
     public function getStatement(): IStatement;
 }

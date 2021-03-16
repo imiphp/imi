@@ -27,12 +27,6 @@ class Update
 
     /**
      * 处理更新.
-     *
-     * @param \Imi\Model\Model $model
-     * @param string           $propertyName
-     * @param RelationBase     $annotation
-     *
-     * @return void
      */
     public static function parse(Model $model, string $propertyName, RelationBase $annotation): void
     {
@@ -87,12 +81,6 @@ class Update
 
     /**
      * 处理一对一更新.
-     *
-     * @param \Imi\Model\Model                        $model
-     * @param string                                  $propertyName
-     * @param \Imi\Model\Annotation\Relation\OneToOne $annotation
-     *
-     * @return void
      */
     public static function parseByOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToOne $annotation): void
     {
@@ -123,12 +111,6 @@ class Update
 
     /**
      * 处理一对多更新.
-     *
-     * @param \Imi\Model\Model                         $model
-     * @param string                                   $propertyName
-     * @param \Imi\Model\Annotation\Relation\OneToMany $annotation
-     *
-     * @return void
      */
     public static function parseByOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\OneToMany $annotation): void
     {
@@ -218,12 +200,6 @@ class Update
 
     /**
      * 处理多对多更新.
-     *
-     * @param \Imi\Model\Model                          $model
-     * @param string                                    $propertyName
-     * @param \Imi\Model\Annotation\Relation\ManyToMany $annotation
-     *
-     * @return void
      */
     public static function parseByManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\ManyToMany $annotation): void
     {
@@ -307,11 +283,6 @@ class Update
 
     /**
      * 模型类（可指定字段）是否包含更新关联关系.
-     *
-     * @param string      $className
-     * @param string|null $propertyName
-     *
-     * @return bool
      */
     public static function hasUpdateRelation(string $className, ?string $propertyName = null): bool
     {
@@ -371,12 +342,6 @@ class Update
 
     /**
      * 处理多态一对一更新.
-     *
-     * @param \Imi\Model\Model                                   $model
-     * @param string                                             $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation
-     *
-     * @return void
      */
     public static function parseByPolymorphicOneToOne(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToOne $annotation): void
     {
@@ -408,12 +373,6 @@ class Update
 
     /**
      * 处理多态一对多更新.
-     *
-     * @param \Imi\Model\Model                                    $model
-     * @param string                                              $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation
-     *
-     * @return void
      */
     public static function parseByPolymorphicOneToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicOneToMany $annotation): void
     {
@@ -504,12 +463,6 @@ class Update
 
     /**
      * 处理多态多对多更新.
-     *
-     * @param \Imi\Model\Model                                     $model
-     * @param string                                               $propertyName
-     * @param \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation
-     *
-     * @return void
      */
     public static function parseByPolymorphicManyToMany(Model $model, string $propertyName, \Imi\Model\Annotation\Relation\PolymorphicManyToMany $annotation): void
     {

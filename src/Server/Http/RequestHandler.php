@@ -20,8 +20,6 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * 当前执行第几个.
-     *
-     * @var int
      */
     protected int $index = 0;
 
@@ -37,10 +35,6 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * Handle the request and return a response.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -73,8 +67,6 @@ class RequestHandler implements RequestHandlerInterface
 
     /**
      * 是否是最后一个.
-     *
-     * @return bool
      */
     public function isLast(): bool
     {

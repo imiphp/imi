@@ -8,15 +8,11 @@ class MessageEventParam extends WorkerEventParam
 {
     /**
      * 数据.
-     *
-     * @var array
      */
     protected array $data = [];
 
     /**
      * Get 数据.
-     *
-     * @return array
      */
     public function getData(): array
     {

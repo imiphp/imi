@@ -19,8 +19,6 @@ class InList extends Condition
 {
     /**
      * 列表.
-     *
-     * @var array
      */
     public array $list = [];
 
@@ -33,8 +31,6 @@ class InList extends Condition
 
     /**
      * 参数名数组.
-     *
-     * @var array
      */
     public array $args = [
         '{:value}',

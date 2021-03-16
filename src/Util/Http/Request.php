@@ -13,29 +13,21 @@ class Request extends AbstractMessage implements IRequest
 {
     /**
      * 请求地址
-     *
-     * @var UriInterface
      */
     protected UriInterface $uri;
 
     /**
      * 请求方法.
-     *
-     * @var string
      */
     protected string $method = RequestMethod::GET;
 
     /**
      * uri 是否初始化.
-     *
-     * @var bool
      */
     protected bool $uriInited = false;
 
     /**
      * method 是否初始化.
-     *
-     * @var bool
      */
     protected bool $methodInited = false;
 
@@ -111,8 +103,6 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * 初始化 method.
-     *
-     * @return void
      */
     protected function initMethod(): void
     {
@@ -183,8 +173,6 @@ class Request extends AbstractMessage implements IRequest
 
     /**
      * 初始化 uri.
-     *
-     * @return void
      */
     protected function initUri(): void
     {

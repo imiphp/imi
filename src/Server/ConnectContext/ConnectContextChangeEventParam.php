@@ -11,15 +11,11 @@ class ConnectContextChangeEventParam
 {
     /**
      * 连接标识符.
-     *
-     * @var int
      */
     private int $fd = 0;
 
     /**
      * 服务器名.
-     *
-     * @var string
      */
     private string $serverName = '';
 
@@ -31,8 +27,6 @@ class ConnectContextChangeEventParam
 
     /**
      * Get 连接标识符.
-     *
-     * @return int
      */
     public function getFd(): int
     {
@@ -41,8 +35,6 @@ class ConnectContextChangeEventParam
 
     /**
      * Get 服务器名.
-     *
-     * @return string
      */
     public function getServerName(): string
     {

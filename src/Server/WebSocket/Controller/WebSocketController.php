@@ -14,15 +14,11 @@ abstract class WebSocketController
 {
     /**
      * 服务器.
-     *
-     * @var \Imi\Server\WebSocket\Contract\IWebSocketServer
      */
     public IWebSocketServer $server;
 
     /**
      * 桢.
-     *
-     * @var \Imi\Server\WebSocket\Message\IFrame
      */
     public IFrame $frame;
 }

@@ -32,28 +32,12 @@ interface IResponse extends ResponseInterface, IMessage
     /**
      * 设置cookie.
      *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
-     *
      * @return static
      */
     public function withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false): self;
 
     /**
      * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
      *
      * @return static
      */
@@ -66,16 +50,13 @@ interface IResponse extends ResponseInterface, IMessage
      *
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
-     *
-     * @return array
      */
     public function getCookieParams(): array;
 
     /**
      * 获取cookie值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -83,34 +64,21 @@ interface IResponse extends ResponseInterface, IMessage
 
     /**
      * 获取 Trailer 列表.
-     *
-     * @return array
      */
     public function getTrailers(): array;
 
     /**
      * Trailer 是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasTrailer(string $name): bool;
 
     /**
      * 获取 Trailer 值
-     *
-     * @param string $name
-     *
-     * @return string|null
      */
     public function getTrailer(string $name): ?string;
 
     /**
      * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
      *
      * @return static
      */
@@ -118,9 +86,6 @@ interface IResponse extends ResponseInterface, IMessage
 
     /**
      * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
      *
      * @return static
      */

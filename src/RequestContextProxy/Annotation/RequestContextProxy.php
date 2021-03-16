@@ -19,22 +19,16 @@ class RequestContextProxy extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string|null
      */
     protected ?string $defaultFieldName = 'name';
 
     /**
      * 代理类名.
-     *
-     * @var string|null
      */
     public ?string $class = null;
 
     /**
      * 请求上下文中的名称.
-     *
-     * @var string
      */
     public string $name = '';
 

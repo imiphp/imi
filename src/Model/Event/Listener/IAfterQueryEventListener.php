@@ -14,10 +14,6 @@ interface IAfterQueryEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterQueryEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterQueryEventParam $e);
+    public function handle(AfterQueryEventParam $e): void;
 }

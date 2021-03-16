@@ -11,53 +11,37 @@ interface IDb extends IHashCode
 {
     /**
      * 打开
-     *
-     * @return bool
      */
     public function open(): bool;
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close();
+    public function close(): void;
 
     /**
      * 是否已连接.
-     *
-     * @return bool
      */
     public function isConnected(): bool;
 
     /**
      * 启动一个事务
-     *
-     * @return bool
      */
     public function beginTransaction(): bool;
 
     /**
      * 提交一个事务
-     *
-     * @return bool
      */
     public function commit(): bool;
 
     /**
      * 回滚事务
      * 支持设置回滚事务层数，如果不设置则为全部回滚.
-     *
-     * @param int|null $levels
-     *
-     * @return bool
      */
     public function rollBack(?int $levels = null): bool;
 
     /**
      * 获取事务层数.
-     *
-     * @return int
      */
     public function getTransactionLevels(): int;
 
@@ -70,33 +54,21 @@ interface IDb extends IHashCode
 
     /**
      * 返回错误信息.
-     *
-     * @return string
      */
     public function errorInfo(): string;
 
     /**
      * 获取最后一条执行的SQL语句.
-     *
-     * @return string
      */
     public function lastSql(): string;
 
     /**
      * 执行一条 SQL 语句，并返回受影响的行数.
-     *
-     * @param string $sql
-     *
-     * @return int
      */
     public function exec(string $sql): int;
 
     /**
      * 批量执行 SQL，返回查询结果.
-     *
-     * @param string $sql
-     *
-     * @return array
      */
     public function batchExec(string $sql): array;
 
@@ -121,43 +93,26 @@ interface IDb extends IHashCode
 
     /**
      * 检查是否在一个事务内.
-     *
-     * @return bool
      */
     public function inTransaction(): bool;
 
     /**
      * 返回最后插入行的ID或序列值
-     *
-     * @param string|null $name
-     *
-     * @return string
      */
     public function lastInsertId(?string $name = null): string;
 
     /**
      * 返回受上一个 SQL 语句影响的行数.
-     *
-     * @return int
      */
     public function rowCount(): int;
 
     /**
      * 准备执行语句并返回一个语句对象
-     *
-     * @param string $sql
-     * @param array  $driverOptions
-     *
-     * @return IStatement
      */
     public function prepare(string $sql, array $driverOptions = []): IStatement;
 
     /**
      * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
-     *
-     * @param string $sql
-     *
-     * @return IStatement
      */
     public function query(string $sql): IStatement;
 
@@ -170,8 +125,6 @@ interface IDb extends IHashCode
 
     /**
      * Get 事务管理.
-     *
-     * @return \Imi\Db\Transaction\Transaction
      */
     public function getTransaction(): Transaction;
 }

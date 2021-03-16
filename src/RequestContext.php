@@ -14,8 +14,6 @@ class RequestContext
 {
     /**
      * 上下文管理器.
-     *
-     * @var IContextManager
      */
     private static IContextManager $contextManager;
 
@@ -25,8 +23,6 @@ class RequestContext
 
     /**
      * 获取上下文管理器实例.
-     *
-     * @return \Imi\Core\Context\Contract\IContextManager
      */
     public static function getInstance(): IContextManager
     {
@@ -42,8 +38,6 @@ class RequestContext
 
     /**
      * 获取当前上下文标识.
-     *
-     * @return string
      */
     public static function getCurrentFlag(): string
     {
@@ -52,10 +46,6 @@ class RequestContext
 
     /**
      * 为当前请求创建上下文，返回当前协程ID.
-     *
-     * @param array $data
-     *
-     * @return \ArrayObject
      */
     public static function create(array $data = []): ArrayObject
     {
@@ -64,10 +54,6 @@ class RequestContext
 
     /**
      * 销毁上下文.
-     *
-     * @param string $flag
-     *
-     * @return bool
      */
     public static function destroy(string $flag): bool
     {
@@ -76,10 +62,6 @@ class RequestContext
 
     /**
      * 上下文是否存在.
-     *
-     * @param string $flag
-     *
-     * @return bool
      */
     public static function exists(string $flag): bool
     {
@@ -89,8 +71,7 @@ class RequestContext
     /**
      * 获取上下文数据.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -104,10 +85,7 @@ class RequestContext
     /**
      * 设置上下文数据.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return void
+     * @param mixed $value
      */
     public static function set(string $name, $value): void
     {
@@ -117,10 +95,6 @@ class RequestContext
 
     /**
      * 批量设置上下文数据.
-     *
-     * @param array $data
-     *
-     * @return void
      */
     public static function muiltiSet(array $data): void
     {
@@ -134,8 +108,6 @@ class RequestContext
     /**
      * 使用回调来使用当前请求上下文数据.
      *
-     * @param callable $callback
-     *
      * @return mixed
      */
     public static function use(callable $callback)
@@ -148,8 +120,6 @@ class RequestContext
 
     /**
      * 获取当前上下文.
-     *
-     * @return ArrayObject
      */
     public static function getContext(): ArrayObject
     {
@@ -158,8 +128,6 @@ class RequestContext
 
     /**
      * 获取当前的服务器对象
-     *
-     * @return IServer|null
      */
     public static function getServer(): ?IServer
     {
@@ -169,10 +137,7 @@ class RequestContext
     /**
      * 在当前服务器上下文中获取Bean对象
      *
-     * @param string $name
-     * @param array  $params
-     *
-     * @return object
+     * @param array $params
      */
     public static function getServerBean(string $name, ...$params): object
     {
@@ -182,10 +147,7 @@ class RequestContext
     /**
      * 在当前请求上下文中获取Bean对象
      *
-     * @param string $name
-     * @param array  $params
-     *
-     * @return object
+     * @param array $params
      */
     public static function getBean(string $name, ...$params): object
     {

@@ -12,15 +12,11 @@ class Container implements ContainerInterface
 {
     /**
      * 单例对象们.
-     *
-     * @var array
      */
     private array $singletonObjects = [];
 
     /**
      * 绑定列表.
-     *
-     * @var array
      */
     private array $binds = [];
 
@@ -112,11 +108,6 @@ class Container implements ContainerInterface
 
     /**
      * 绑定名称和类名.
-     *
-     * @param string $name
-     * @param string $class
-     *
-     * @return void
      */
     public function bind(string $name, string $class): void
     {
@@ -125,8 +116,6 @@ class Container implements ContainerInterface
 
     /**
      * Get 绑定列表.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

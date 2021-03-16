@@ -16,8 +16,6 @@ class Server
 {
     /**
      * 服务器工具类对象.
-     *
-     * @var IServerUtil
      */
     private static IServerUtil $serverUtil;
 
@@ -27,8 +25,6 @@ class Server
 
     /**
      * 获取上下文管理器实例.
-     *
-     * @return IServerUtil
      */
     public static function getInstance(): IServerUtil
     {
@@ -55,8 +51,6 @@ class Server
      * @param int|int[]|null $fd           为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -72,8 +66,6 @@ class Server
      * @param string|string[]|null $flag         为 null 时，则发送给当前连接
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -83,12 +75,9 @@ class Server
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param string         $data
      * @param int|int[]|null $fd           为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -98,12 +87,9 @@ class Server
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
      *
-     * @param string               $data
      * @param string|string[]|null $flag         为 null 时，则发送给当前连接
      * @param string|null          $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -118,8 +104,6 @@ class Server
      * @param mixed       $data
      * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -131,11 +115,8 @@ class Server
      *
      * 数据原样发送
      *
-     * @param string      $data
      * @param string|null $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendRawToAll(string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -151,8 +132,6 @@ class Server
      * @param mixed           $data
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -165,11 +144,8 @@ class Server
      * 数据原样发送
      *
      * @param string|string[] $groupName
-     * @param string          $data
      * @param string|null     $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -179,11 +155,8 @@ class Server
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]   $fd
-     * @param string|null $serverName
-     * @param bool        $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
+     * @param int|int[] $fd
+     * @param bool      $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public static function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -194,10 +167,7 @@ class Server
      * 关闭一个或多个指定标记的连接.
      *
      * @param string|string[] $flag
-     * @param string|null     $serverName
      * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
-     *
-     * @return int
      */
     public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -206,10 +176,6 @@ class Server
 
     /**
      * 获取服务器.
-     *
-     * @param string|null $serverName
-     *
-     * @return \Imi\Server\Contract\IServer|null
      */
     public static function getServer(?string $serverName = null): ?IServer
     {

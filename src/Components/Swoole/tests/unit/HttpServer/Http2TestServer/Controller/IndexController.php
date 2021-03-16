@@ -18,8 +18,6 @@ class IndexController extends HttpController
 {
     /**
      * @Action
-     *
-     * @return array
      */
     public function info(): array
     {

@@ -23,8 +23,6 @@ class AfterAop
      *         "Imi\Test\Component\Aop\Classes\TestAfterClass::test"
      *     }
      * )
-     *
-     * @return void
      */
     public function injectAfterAop(JoinPoint $joinPoint): void
     {

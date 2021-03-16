@@ -20,50 +20,36 @@ class App
 {
     /**
      * 应用命名空间.
-     *
-     * @var string
      */
     private static string $namespace = '';
 
     /**
      * 容器.
-     *
-     * @var \Imi\Bean\Container
      */
     private static Container $container;
 
     /**
      * 框架是否已初始化.
-     *
-     * @var bool
      */
     private static bool $isInited = false;
 
     /**
      * 当前是否为调试模式.
-     *
-     * @var bool
      */
     private static bool $isDebug = false;
 
     /**
      * 是否协程服务器模式.
-     *
-     * @var bool
      */
     private static bool $isCoServer = false;
 
     /**
      * 上下文集合.
-     *
-     * @var array
      */
     private static array $context = [];
 
     /**
      * 只读上下文键名列表.
-     *
-     * @var array
      */
     private static array $contextReadonly = [];
 
@@ -76,8 +62,6 @@ class App
 
     /**
      * App 实例对象
-     *
-     * @var \Imi\Core\App\Contract\IApp
      */
     private static IApp $app;
 
@@ -89,9 +73,6 @@ class App
      * 框架服务运行入口.
      *
      * @param string $namespace 应用命名空间
-     * @param string $app
-     *
-     * @return void
      */
     public static function run(string $namespace, string $app): void
     {
@@ -129,10 +110,6 @@ class App
 
     /**
      * 框架初始化.
-     *
-     * @param string $namespace
-     *
-     * @return void
      */
     public static function initFramework(string $namespace): void
     {
@@ -150,9 +127,6 @@ class App
     /**
      * 创建协程服务器.
      *
-     * @param string $name
-     * @param int    $workerNum
-     *
      * @return \Imi\Swoole\Server\CoServer
      */
     public static function createCoServer(string $name, int $workerNum): Swoole\Server\CoServer
@@ -165,8 +139,6 @@ class App
 
     /**
      * 是否协程服务器模式.
-     *
-     * @return bool
      */
     public static function isCoServer(): bool
     {
@@ -175,8 +147,6 @@ class App
 
     /**
      * 获取应用命名空间.
-     *
-     * @return string
      */
     public static function getNamespace(): string
     {
@@ -185,8 +155,6 @@ class App
 
     /**
      * 获取容器对象
-     *
-     * @return \Imi\Bean\Container
      */
     public static function getContainer(): Container
     {
@@ -196,10 +164,7 @@ class App
     /**
      * 获取Bean对象
      *
-     * @param string $name
-     * @param array  $params
-     *
-     * @return object
+     * @param array $params
      */
     public static function getBean(string $name, ...$params): object
     {
@@ -208,8 +173,6 @@ class App
 
     /**
      * 当前是否为调试模式.
-     *
-     * @return bool
      */
     public static function isDebug(): bool
     {
@@ -218,10 +181,6 @@ class App
 
     /**
      * 开关调试模式.
-     *
-     * @param bool $isDebug
-     *
-     * @return void
      */
     public static function setDebug(bool $isDebug): void
     {
@@ -230,8 +189,6 @@ class App
 
     /**
      * 框架是否已初始化.
-     *
-     * @return bool
      */
     public static function isInited(): bool
     {
@@ -241,8 +198,7 @@ class App
     /**
      * 获取应用上下文数据.
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -254,11 +210,7 @@ class App
     /**
      * 设置应用上下文数据.
      *
-     * @param string $name
-     * @param mixed  $value
-     * @param bool   $readonly
-     *
-     * @return void
+     * @param mixed $value
      */
     public static function set(string $name, $value, bool $readonly = false): void
     {
@@ -283,8 +235,6 @@ class App
 
     /**
      * 获取 imi 版本.
-     *
-     * @return string
      */
     public static function getImiVersion(): string
     {
@@ -324,8 +274,6 @@ class App
 
     /**
      * Get app 实例对象
-     *
-     * @return IApp
      */
     public static function getApp(): IApp
     {

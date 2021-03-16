@@ -59,11 +59,7 @@ abstract class BaseFacade
     /**
      * 绑定门面.
      *
-     * @param string      $facadeClass
-     * @param string|null $bindClass
-     * @param mixed       ...$args
-     *
-     * @return void
+     * @param mixed ...$args
      */
     public static function __bindFacade(string $facadeClass, ?string $bindClass = null, ...$args): void
     {
@@ -80,8 +76,6 @@ abstract class BaseFacade
 
     /**
      * 清除门面缓存.
-     *
-     * @return void
      */
     public static function __clearCache(): void
     {
@@ -89,9 +83,6 @@ abstract class BaseFacade
     }
 
     /**
-     * @param string $method
-     * @param array  $arguments
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $arguments)

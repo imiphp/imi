@@ -28,12 +28,6 @@ class TaskManager
 
     /**
      * 增加映射关系.
-     *
-     * @param string $name
-     * @param string $className
-     * @param array  $options
-     *
-     * @return void
      */
     public static function add(string $name, string $className, array $options): void
     {
@@ -49,10 +43,6 @@ class TaskManager
 
     /**
      * 获取配置.
-     *
-     * @param string $name
-     *
-     * @return array|null
      */
     public static function get(string $name): ?array
     {
@@ -62,9 +52,6 @@ class TaskManager
     /**
      * 投递异步任务
      * 调用成功返回任务ID，失败返回false.
-     *
-     * @param TaskInfo $taskInfo
-     * @param int      $workerId
      *
      * @return int|bool
      */
@@ -80,9 +67,7 @@ class TaskManager
      * 使用任务名称投递异步任务
      * 调用成功返回任务ID，失败返回false.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param int    $workerId
+     * @param mixed $data
      *
      * @return int|bool
      */
@@ -94,10 +79,6 @@ class TaskManager
     /**
      * 投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
-     *
-     * @param TaskInfo $taskInfo
-     * @param float    $timeout
-     * @param int      $workerId
      *
      * @return string|bool
      */
@@ -116,10 +97,7 @@ class TaskManager
      * 使用任务名称投递任务，协程挂起等待，单位：秒
      * 返回值为任务直接结果.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param float  $timeout
-     * @param int    $workerId
+     * @param mixed $data
      *
      * @return string|bool
      */
@@ -137,9 +115,6 @@ class TaskManager
      * 返回值为任务直接结果
      *
      * @param TaskInfo[]|array $tasks
-     * @param float            $timeout
-     *
-     * @return array
      */
     public static function postCo(array $tasks, float $timeout): array
     {
@@ -165,10 +140,7 @@ class TaskManager
     /**
      * 获取 TaskInfo.
      *
-     * @param string $name
-     * @param mixed  $data
-     *
-     * @return TaskInfo
+     * @param mixed $data
      */
     public static function getTaskInfo(string $name, $data): TaskInfo
     {

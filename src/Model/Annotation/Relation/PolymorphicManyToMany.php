@@ -18,8 +18,6 @@ class PolymorphicManyToMany extends ManyToMany
 {
     /**
      * 右表多态类型字段名.
-     *
-     * @var string
      */
     public string $type = '';
 

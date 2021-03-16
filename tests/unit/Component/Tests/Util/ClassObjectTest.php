@@ -14,8 +14,6 @@ class ClassObjectTest extends BaseTest
 {
     /**
      * @testdox isAnymous
-     *
-     * @return void
      */
     public function testIsAnymous(): void
     {
@@ -29,8 +27,6 @@ class ClassObjectTest extends BaseTest
 
     /**
      * @testdox parseSameLevelClassName
-     *
-     * @return void
      */
     public function testParseSameLevelClassName(): void
     {
@@ -42,8 +38,6 @@ class ClassObjectTest extends BaseTest
 
     /**
      * @testdox convertArgsToKV
-     *
-     * @return void
      */
     public function testConvertArgsToKV(): void
     {
@@ -65,8 +59,6 @@ class ClassObjectTest extends BaseTest
 
     /**
      * @testdox getSubClasses
-     *
-     * @return void
      */
     public function testGetSubClasses(): void
     {
@@ -78,8 +70,6 @@ class ClassObjectTest extends BaseTest
 
     /**
      * @testdox inNamespace
-     *
-     * @return void
      */
     public function testInNamespace(): void
     {

@@ -15,10 +15,6 @@ class DateTime
 
     /**
      * 将一个 \DateInterval，与当前时间进行计算，获取秒数.
-     *
-     * @param \DateInterval $dateInterval
-     *
-     * @return int
      */
     public static function getSecondsByInterval(\DateInterval $dateInterval): int
     {
@@ -33,9 +29,6 @@ class DateTime
      *
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @param string|null $format
-     * @param int|null    $timestamp
      *
      * @return string|int
      */
@@ -60,9 +53,6 @@ class DateTime
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
      *
-     * @param string|null $format
-     * @param int|null    $timestamp
-     *
      * @return string|int
      */
     public static function getTomorrow(?string $format = null, ?int $timestamp = null)
@@ -86,10 +76,6 @@ class DateTime
      * 可传入 $weekNo 指定周几，周一到周日为1-7，不传则取时间戳对应周几
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @param int|null    $weekNo
-     * @param string|null $format
-     * @param int|null    $timestamp
      *
      * @return string|int
      */
@@ -116,10 +102,6 @@ class DateTime
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
      *
-     * @param int|null    $weekNo
-     * @param string|null $format
-     * @param int|null    $timestamp
-     *
      * @return string|int
      */
     public static function getLastWeek(?int $weekNo = null, ?string $format = null, ?int $timestamp = null)
@@ -144,10 +126,6 @@ class DateTime
      * 可传入 $weekNo 指定周几，周一到周日为1-7，不传则取时间戳对应周几
      * 可传入 $format 格式化，不传则返回时间戳
      * 可传入 $timestamp 指定时间戳，不传则取当前时间
-     *
-     * @param int|null $timestamp
-     *
-     * @return int
      */
     public static function getWeekOfMonth(?int $timestamp = null): int
     {
@@ -182,11 +160,6 @@ class DateTime
      * 获取该月份一共有多少周.
      *
      * 返回值可能是 4 或 5
-     *
-     * @param int $year
-     * @param int $month
-     *
-     * @return int
      */
     public static function getMonthWeekCount(int $year, int $month): int
     {

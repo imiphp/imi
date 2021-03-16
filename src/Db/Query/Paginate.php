@@ -8,15 +8,11 @@ class Paginate
 {
     /**
      * 页码
-     *
-     * @var int
      */
     public int $page = 0;
 
     /**
      * 每页记录数.
-     *
-     * @var int
      */
     public int $count = 0;
 

@@ -68,11 +68,6 @@ class HandShakeMiddleware implements MiddlewareInterface
 
     /**
      * 默认握手处理.
-     *
-     * @param IHttpRequest  $request
-     * @param IHttpResponse $response
-     *
-     * @return IHttpResponse|null
      */
     private function defaultHandShake(IHttpRequest $request, IHttpResponse $response): ?IHttpResponse
     {

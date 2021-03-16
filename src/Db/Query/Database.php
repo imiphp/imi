@@ -15,15 +15,11 @@ class Database implements IDatabase
 
     /**
      * 数据库名.
-     *
-     * @var string|null
      */
     protected ?string $database = null;
 
     /**
      * 别名.
-     *
-     * @var string|null
      */
     protected ?string $alias = null;
 
@@ -35,8 +31,6 @@ class Database implements IDatabase
 
     /**
      * 获取数据库名.
-     *
-     * @return string|null
      */
     public function getDatabase(): ?string
     {
@@ -45,8 +39,6 @@ class Database implements IDatabase
 
     /**
      * 获取别名.
-     *
-     * @return string|null
      */
     public function getAlias(): ?string
     {
@@ -55,10 +47,6 @@ class Database implements IDatabase
 
     /**
      * 设置数据库名.
-     *
-     * @param string|null $database
-     *
-     * @return void
      */
     public function setDatabase(?string $database = null): void
     {
@@ -67,10 +55,6 @@ class Database implements IDatabase
 
     /**
      * 设置别名.
-     *
-     * @param string|null $alias
-     *
-     * @return void
      */
     public function setAlias(?string $alias = null): void
     {
@@ -82,10 +66,6 @@ class Database implements IDatabase
      * name——database
      * name alias——database alias
      * name as alias——database as alias.
-     *
-     * @param string $value
-     *
-     * @return void
      */
     public function setValue(string $value): void
     {
@@ -115,8 +95,6 @@ class Database implements IDatabase
 
     /**
      * 获取绑定的数据们.
-     *
-     * @return array
      */
     public function getBinds(): array
     {

@@ -13,10 +13,6 @@ interface IBeforeParseDataEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param BeforeParseDataEventParam $e
-     *
-     * @return void
      */
-    public function handle(BeforeParseDataEventParam $e);
+    public function handle(BeforeParseDataEventParam $e): void;
 }

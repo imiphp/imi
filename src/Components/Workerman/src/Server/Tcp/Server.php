@@ -19,8 +19,6 @@ class Server extends Base implements ITcpServer
 {
     /**
      * 获取协议名称.
-     *
-     * @return string
      */
     public function getProtocol(): string
     {
@@ -29,8 +27,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 是否为长连接服务
-     *
-     * @return bool
      */
     public function isLongConnection(): bool
     {
@@ -39,8 +35,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 绑定服务器事件.
-     *
-     * @return void
      */
     protected function bindEvents(): void
     {
@@ -63,8 +57,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 获取实例化 Worker 用的协议.
-     *
-     * @return string
      */
     protected function getWorkerScheme(): string
     {
@@ -73,11 +65,6 @@ class Server extends Base implements ITcpServer
 
     /**
      * 向客户端发送消息.
-     *
-     * @param int    $fd
-     * @param string $data
-     *
-     * @return bool
      */
     public function send(int $fd, string $data): bool
     {

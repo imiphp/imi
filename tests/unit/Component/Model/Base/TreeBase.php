@@ -27,15 +27,11 @@ abstract class TreeBase extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     *
-     * @var int|null
      */
     protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int|null
      */
     public function getId(): ?int
     {
@@ -60,15 +56,11 @@ abstract class TreeBase extends Model
      * parent_id.
      *
      * @Column(name="parent_id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var int|null
      */
     protected ?int $parentId = null;
 
     /**
      * 获取 parentId.
-     *
-     * @return int|null
      */
     public function getParentId(): ?int
     {
@@ -93,15 +85,11 @@ abstract class TreeBase extends Model
      * name.
      *
      * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string|null
      */
     protected ?string $name = null;
 
     /**
      * 获取 name.
-     *
-     * @return string|null
      */
     public function getName(): ?string
     {

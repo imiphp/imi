@@ -13,10 +13,6 @@ interface IAfterUpdateEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param AfterUpdateEventParam $e
-     *
-     * @return void
      */
-    public function handle(AfterUpdateEventParam $e);
+    public function handle(AfterUpdateEventParam $e): void;
 }

@@ -15,36 +15,26 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 {
     /**
      * 服务器信息.
-     *
-     * @var array
      */
     protected array $server = [];
 
     /**
      * cookie数据.
-     *
-     * @var array
      */
     protected array $cookies = [];
 
     /**
      * get数据.
-     *
-     * @var array
      */
     protected array $get = [];
 
     /**
      * post数据.
-     *
-     * @var array
      */
     protected array $post = [];
 
     /**
      * 包含 GET/POST/Cookie 数据.
-     *
-     * @var array|null
      */
     protected ?array $request = null;
 
@@ -64,36 +54,26 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 属性数组.
-     *
-     * @var array
      */
     protected array $attributes = [];
 
     /**
      * server 是否初始化.
-     *
-     * @var bool
      */
     protected bool $serverInited = false;
 
     /**
      * 请求参数是否初始化.
-     *
-     * @var bool
      */
     protected bool $requestParamsInited = false;
 
     /**
      * 上传文件是否初始化.
-     *
-     * @var bool
      */
     protected bool $uploadedFilesInited = false;
 
     /**
      * 初始化 server.
-     *
-     * @return void
      */
     protected function initServer(): void
     {
@@ -105,8 +85,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      * Retrieves data related to the incoming request environment,
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
      * REQUIRED to originate from $_SERVER.
-     *
-     * @return array
      */
     public function getServerParams(): array
     {
@@ -140,8 +118,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 初始化请求参数.
-     *
-     * @return void
      */
     protected function initRequestParams(): void
     {
@@ -228,8 +204,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 获取cookie值
      *
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -336,8 +311,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 初始化上传文件.
-     *
-     * @return void
      */
     protected function initUploadedFiles(): void
     {
@@ -697,8 +670,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      * 获取 GET 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -723,8 +695,7 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
      * 获取 POST 参数
      * 当 $name 为 null 时，返回所有.
      *
-     * @param string|null $name
-     * @param mixed       $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -747,10 +718,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 判断是否存在 GET 参数.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasGet(string $name): bool
     {
@@ -765,10 +732,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 判断是否存在 POST 参数.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasPost(string $name): bool
     {
@@ -816,10 +779,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 判断是否存在 REQUEST 参数
      * REQUEST 中包括：GET/POST/COOKIE.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasRequest(string $name): bool
     {
@@ -840,8 +799,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 设置 GET 数据.
      *
-     * @param array $get
-     *
      * @return static
      */
     public function withGet(array $get): self
@@ -860,8 +817,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 设置 GET 数据.
      *
-     * @param array $get
-     *
      * @return static
      */
     public function setGet(array $get): self
@@ -878,8 +833,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 设置 POST 数据.
-     *
-     * @param array $post
      *
      * @return static
      */
@@ -899,8 +852,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
     /**
      * 设置 POST 数据.
      *
-     * @param array $post
-     *
      * @return static
      */
     public function setPost(array $post): self
@@ -917,8 +868,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 设置 Request 数据.
-     *
-     * @param array $request
      *
      * @return static
      */
@@ -937,8 +886,6 @@ class ServerRequest extends \Imi\Util\Http\Request implements IServerRequest
 
     /**
      * 设置 Request 数据.
-     *
-     * @param array $request
      *
      * @return static
      */

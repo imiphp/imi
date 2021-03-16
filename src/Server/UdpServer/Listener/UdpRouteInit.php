@@ -29,10 +29,6 @@ class UdpRouteInit implements IEventListener
 
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
     public function handle(EventParam $e): void
     {
@@ -42,8 +38,6 @@ class UdpRouteInit implements IEventListener
 
     /**
      * 处理注解路由.
-     *
-     * @return void
      */
     private function parseAnnotations(EventParam $e): void
     {
@@ -106,8 +100,6 @@ class UdpRouteInit implements IEventListener
 
     /**
      * 处理配置文件路由.
-     *
-     * @return void
      */
     private function parseConfigs(): void
     {

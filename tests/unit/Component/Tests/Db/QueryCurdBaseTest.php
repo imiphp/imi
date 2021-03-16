@@ -102,8 +102,6 @@ abstract class QueryCurdBaseTest extends BaseTest
 
     /**
      * @see https://github.com/Yurunsoft/imi/issues/58
-     *
-     * @return void
      */
     public function testBug58(): void
     {

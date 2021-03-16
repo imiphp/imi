@@ -9,15 +9,11 @@ class DbPrepareEventParam extends EventParam
 {
     /**
      * 数据库 Statement.
-     *
-     * @var \Imi\Db\Interfaces\IStatement
      */
     public IStatement $statement;
 
     /**
      * sql 语句.
-     *
-     * @var string
      */
     public string $sql = '';
 }

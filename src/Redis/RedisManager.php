@@ -87,8 +87,6 @@ class RedisManager
      * 释放 Redis 连接实例.
      *
      * @param \Imi\Redis\RedisHandler $redis
-     *
-     * @return void
      */
     public static function release(RedisHandler $redis): void
     {
@@ -101,10 +99,6 @@ class RedisManager
 
     /**
      * 处理连接池 名称.
-     *
-     * @param string|null $poolName
-     *
-     * @return string
      */
     public static function parsePoolName(?string $poolName = null): string
     {
@@ -118,8 +112,6 @@ class RedisManager
 
     /**
      * 获取默认池子名称.
-     *
-     * @return string
      */
     public static function getDefaultPoolName(): string
     {
@@ -128,11 +120,6 @@ class RedisManager
 
     /**
      * 初始化 Redis 连接.
-     *
-     * @param RedisHandler $redis
-     * @param array        $config
-     *
-     * @return void
      */
     public static function initRedisConnection(RedisHandler $redis, array $config): void
     {

@@ -18,9 +18,6 @@ class ActionMiddleware implements IMiddleware
     /**
      * 处理方法.
      *
-     * @param IPacketData    $data
-     * @param IPacketHandler $handler
-     *
      * @return mixed
      */
     public function process(IPacketData $data, IPacketHandler $handler)
