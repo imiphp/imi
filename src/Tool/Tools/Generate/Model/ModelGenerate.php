@@ -6,6 +6,7 @@ use Imi\Config;
 use Imi\Db\Db;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Util\SqlUtil;
+use Imi\Model\Model;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Operation;
 use Imi\Tool\Annotation\Tool;
@@ -25,6 +26,7 @@ class ModelGenerate
      * @Operation("model")
      *
      * @Arg(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
+     * @Arg(name="baseClass", type=ArgType::STRING, default="Imi\Model\Model", comments="生成的Model所继承的基类,默认\Imi\Model\Model,可选")
      * @Arg(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
      * @Arg(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
      * @Arg(name="prefix", type=ArgType::ARRAY, default={}, comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
@@ -37,6 +39,7 @@ class ModelGenerate
      * @Arg(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      *
      * @param string      $namespace
+     * @param string      $baseClass
      * @param string|null $database
      * @param string|null $poolName
      * @param array       $prefix
@@ -50,7 +53,7 @@ class ModelGenerate
      *
      * @return void
      */
-    public function generate($namespace, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity, $sqlSingleLine)
+    public function generate($namespace, $baseClass, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity, $sqlSingleLine)
     {
         $override = (string) $override;
         switch ($override)
@@ -110,7 +113,20 @@ class ModelGenerate
 
             return;
         }
+        if (empty($baseClass) || !class_exists($baseClass))
+        {
+            echo 'BaseClass ', $baseClass, ' cannot found', \PHP_EOL;
+
+            return;
+        }
+        if (!is_subclass_of($baseClass, Model::class))
+        {
+            echo 'BaseClass ', $baseClass, ' not extends ', Model::class, \PHP_EOL;
+
+            return;
+        }
         echo 'modelPath: ', $modelPath, \PHP_EOL;
+        echo 'baseClass: ', $baseClass, \PHP_EOL;
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
@@ -193,6 +209,7 @@ class ModelGenerate
             $data = [
                 // @phpstan-ignore-next-line
                 'namespace'     => $modelNamespace,
+                'baseClassName' => $baseClass,
                 'className'     => $className,
                 'table'         => [
                     'name'  => $table,
