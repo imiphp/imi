@@ -39,11 +39,12 @@ class ModelGenerate extends BaseCommand
      * @Option(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
+     * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      *
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine): void
     {
         $override = (string) $override;
         switch ($override)
@@ -103,6 +104,19 @@ class ModelGenerate extends BaseCommand
             exit;
         }
         $this->output->writeln('<info>modelPath:</info> <comment>' . $modelPath . '</comment>');
+        if (empty($baseClass) || !class_exists($baseClass))
+        {
+            echo 'BaseClass ', $baseClass, ' cannot found', \PHP_EOL;
+
+            return;
+        }
+        if (!is_subclass_of($baseClass, Model::class))
+        {
+            echo 'BaseClass ', $baseClass, ' not extends ', Model::class, \PHP_EOL;
+
+            return;
+        }
+        $this->output->writeln('<info>baseClass:</info> <comment>' . $baseClass . '</comment>');
         File::createDir($modelPath);
         $baseModelPath = $modelPath . '/Base';
         File::createDir($baseModelPath);
@@ -182,6 +196,7 @@ class ModelGenerate extends BaseCommand
             }
             $data = [
                 'namespace'     => $modelNamespace,
+                'baseClassName' => $baseClass,
                 'className'     => $className,
                 'table'         => [
                     'name'  => $table,

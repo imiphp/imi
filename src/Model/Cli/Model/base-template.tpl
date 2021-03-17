@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace <?= $namespace; ?>\Base;
 
-use Imi\Model\Model;
+use <?= $baseClassName; ?> as Model;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
