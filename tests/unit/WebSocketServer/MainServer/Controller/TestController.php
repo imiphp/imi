@@ -94,7 +94,7 @@ class TestController extends WebSocketController
     public function info()
     {
         return [
-            'fd'        => RequestContext::get('fd'),
+            'fd'        => ConnectContext::getFd(),
             'workerId'  => Worker::getWorkerID(),
         ];
     }

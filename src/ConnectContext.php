@@ -46,7 +46,7 @@ abstract class ConnectContext
     {
         if (!$toFd)
         {
-            $toFd = RequestContext::get('fd');
+            $toFd = self::getFd();
             if (null === $toFd)
             {
                 return;
@@ -72,7 +72,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return;
@@ -101,7 +101,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return false;
@@ -124,7 +124,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return $default;
@@ -154,7 +154,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return;
@@ -184,7 +184,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return;
@@ -217,7 +217,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return;
@@ -258,7 +258,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return;
@@ -281,7 +281,7 @@ abstract class ConnectContext
     {
         if (!$fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = self::getFd();
             if (null === $fd)
             {
                 return false;
@@ -400,7 +400,7 @@ abstract class ConnectContext
         }
         if (!$toFd)
         {
-            $toFd = RequestContext::get('fd');
+            $toFd = self::getFd();
             if (null === $toFd)
             {
                 return;
@@ -412,5 +412,15 @@ abstract class ConnectContext
             'fromFd'    => $fromFd,
             'toFd'      => $toFd,
         ], null, ConnectContextRestoreParam::class);
+    }
+
+    /**
+     * 获取当前连接号.
+     *
+     * @return integer|null
+     */
+    public static function getFd(): ?int
+    {
+        return RequestContext::get('fd');
     }
 }

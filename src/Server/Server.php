@@ -3,6 +3,7 @@
 namespace Imi\Server;
 
 use Imi\App;
+use Imi\ConnectContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\ConnectContext\ConnectionBinder;
@@ -147,7 +148,7 @@ abstract class Server
 
         if (null === $flag)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -190,7 +191,7 @@ abstract class Server
         $swooleServer = $server->getSwooleServer();
         if (null === $fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -269,7 +270,7 @@ abstract class Server
 
         if (null === $flag)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -505,7 +506,7 @@ abstract class Server
         $count = 0;
         if (null === $fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -573,7 +574,7 @@ abstract class Server
 
         if (null === $flag)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
