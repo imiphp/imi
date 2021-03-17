@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server;
 
 use Imi\App;
+use Imi\Worker;
 use Imi\Event\Event;
+use Imi\ConnectContext;
 use Imi\RequestContext;
-use Imi\Server\ConnectContext\ConnectionBinder;
-use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
+use Imi\Server\DataParser\DataParser;
+use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Server\ConnectContext\ConnectionBinder;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
-use Imi\Swoole\Util\Co\ChannelContainer;
-use Imi\Worker;
 
 class ServerUtil implements ISwooleServerUtil
 {
@@ -113,7 +114,7 @@ class ServerUtil implements ISwooleServerUtil
 
         if (null === $flag)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -153,7 +154,7 @@ class ServerUtil implements ISwooleServerUtil
         $swooleServer = $server->getSwooleServer();
         if (null === $fd)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -229,7 +230,7 @@ class ServerUtil implements ISwooleServerUtil
 
         if (null === $flag)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;
@@ -434,15 +435,28 @@ class ServerUtil implements ISwooleServerUtil
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[] $fd
-     * @param bool      $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param int|int[]|null $fd
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         $swooleServer = $server->getSwooleServer();
         $count = 0;
-        foreach ((array) $fd as $currentFd)
+        if (null === $fd)
+        {
+            $fd = ConnectContext::getFd();
+            if (!$fd)
+            {
+                return 0;
+            }
+            $fds = [$fd];
+        }
+        else
+        {
+            $fds = (array) $fd;
+        }
+        foreach ($fds as $currentFd)
         {
             if ($swooleServer->close($currentFd))
             {
@@ -466,7 +480,7 @@ class ServerUtil implements ISwooleServerUtil
 
         if (null === $flag)
         {
-            $fd = RequestContext::get('fd');
+            $fd = ConnectContext::getFd();
             if (!$fd)
             {
                 return 0;

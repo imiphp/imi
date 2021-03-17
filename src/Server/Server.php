@@ -155,8 +155,8 @@ class Server
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[] $fd
-     * @param bool      $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param int|int[]|null $fd
+     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public static function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -166,8 +166,8 @@ class Server
     /**
      * 关闭一个或多个指定标记的连接.
      *
-     * @param string|string[] $flag
-     * @param bool            $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param string|string[]|null $flag
+     * @param bool                 $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {

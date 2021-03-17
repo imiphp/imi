@@ -30,22 +30,6 @@ ConnectContext::use(function($data){
 
 ### ConnectContext 存储器
 
-MemoryTable:
-
-```php
-'beans' =>  [
-    'ConnectContextStore'   =>  [
-        'handlerClass'  =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
-    ],
-    'ConnectContextMemoryTable' =>  [
-        'tableName' =>  'connectContext', // tableName 你需要实现定义 MemoryTable，请查看相关章节
-        'dataEncode'=>  'serialize', // 数据写入前编码回调
-        'dataDecode'=>  'unserialize', // 数据读出后处理回调
-        'lockId'    =>  null, // 非必设，因为如果用 MemoryTable，默认是用 MemoryTable 的 Lock
-    ],
-],
-```
-
 Redis:
 
 ```php
@@ -62,6 +46,15 @@ Redis:
         'dataEncode'=>  'serialize', // 数据写入前编码回调
         'dataDecode'=>  'unserialize', // 数据读出后处理回调
         'lockId'    =>  null, // 必设，需要用锁来防止数据错乱问题
+    ],
+    // 连接绑定器
+    'ConnectionBinder'  =>  [
+        // Redis 连接池名称
+        'redisPool' =>  'redis',
+        // redis中第几个库
+        'redisDb'   =>  0,
+        // 键，多个服务共用 redis 请设为不同的，不然会冲突
+        'key'       =>  'imi:wsTest:connectionBinder:map',
     ],
 ],
 ```
@@ -80,5 +73,121 @@ Local:
     'ConnectContextLocal'    =>    [
         'lockId'    =>  null, // 必设，需要用锁来防止数据错乱问题
     ],
+    // 连接绑定器
+    'ConnectionBinder'  =>  [
+        // Redis 连接池名称
+        'redisPool' =>  'redis',
+        // redis中第几个库
+        'redisDb'   =>  0,
+        // 键，多个服务共用 redis 请设为不同的，不然会冲突
+        'key'       =>  'imi:wsTest:connectionBinder:map',
+    ],
 ],
+```
+
+MemoryTable:
+
+```php
+'beans' =>  [
+    'ConnectContextStore'   =>  [
+        'handlerClass'  =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
+    ],
+    'ConnectContextMemoryTable' =>  [
+        'tableName' =>  'connectContext', // tableName 你需要实现定义 MemoryTable，请查看相关章节
+        'dataEncode'=>  'serialize', // 数据写入前编码回调
+        'dataDecode'=>  'unserialize', // 数据读出后处理回调
+        'lockId'    =>  null, // 非必设，因为如果用 MemoryTable，默认是用 MemoryTable 的 Lock
+    ],
+    // 连接绑定器
+    'ConnectionBinder'  =>  [
+        // Redis 连接池名称
+        'redisPool' =>  'redis',
+        // redis中第几个库
+        'redisDb'   =>  0,
+        // 键，多个服务共用 redis 请设为不同的，不然会冲突
+        'key'       =>  'imi:wsTest:connectionBinder:map',
+    ],
+],
+```
+
+## 方法
+
+### 获取当前连接号
+
+```php
+use Imi\ConnectContext;
+
+$fd = ConnectContext::getFd();
+```
+
+### 绑定连接
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+ConnectContext::bind($memberId);
+```
+
+### 绑定连接，如果已绑定返回false
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+ConnectContext::bindNx($memberId);
+```
+
+### 恢复连接数据
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+ConnectContext::restore($memberId);
+```
+
+### 取消绑定
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+ConnectContext::unbind($memberId);
+```
+
+### 使用标记（UID）获取连接编号
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+$fd = ConnectContext::getFdByFlag($memberId);
+```
+
+### 【批量】使用标记（UID）获取连接编号
+
+```php
+use Imi\ConnectContext;
+$memberId = 1; // 用户标识符
+
+$fds = ConnectContext::getFdsByFlags([$memberId]); // [1]
+```
+
+### 使用连接编号获取标记（UID）
+
+```php
+use Imi\ConnectContext;
+$fd = 1; // 连接编号
+
+$memberIds = ConnectContext::getFlagByFd($fd);
+```
+
+### 【批量】使用连接编号获取标记（UID）
+
+```php
+use Imi\ConnectContext;
+$fd = 1; // 连接编号
+
+$memberIds = ConnectContext::getFlagsByFds([$fd]); // [1]
 ```
