@@ -82,11 +82,11 @@ abstract class ConnectContext
         $store = RequestContext::getServerBean('ConnectContextStore');
         if (($ttl = $store->getTtl()) > 0)
         {
-            $store->delayDestroy($fd, $ttl);
+            $store->delayDestroy((string) $fd, $ttl);
         }
         else
         {
-            $store->destroy($fd);
+            $store->destroy((string) $fd);
         }
     }
 
@@ -417,7 +417,7 @@ abstract class ConnectContext
     /**
      * 获取当前连接号.
      *
-     * @return integer|null
+     * @return int|null
      */
     public static function getFd(): ?int
     {
