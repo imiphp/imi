@@ -4,8 +4,6 @@ namespace Imi\Server\Http\Error;
 
 use Imi\App;
 use Imi\RequestContext;
-use Imi\Util\Http\Consts\MediaType;
-use Imi\Util\Http\Consts\ResponseHeader;
 
 class JsonErrorHandler implements IErrorHandler
 {
@@ -50,10 +48,9 @@ class JsonErrorHandler implements IErrorHandler
                 'message' => 'error',
             ];
         }
-        RequestContext::get('response')
-        ->withAddedHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
-        ->write(json_encode($data))
-        ->send();
+        /** @var \Imi\Server\View\Handler\Json $jsonView */
+        $jsonView = RequestContext::getServerBean('JsonView');
+        $jsonView->handle($data, [], RequestContext::get('response'))->send();
 
         return $this->cancelThrow;
     }
