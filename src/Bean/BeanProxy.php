@@ -485,7 +485,6 @@ class BeanProxy
             }
         });
         // 不取消依旧抛出
-        // @phpstan-ignore-next-line
         if (!$isCancelThrow)
         {
             throw $throwable;

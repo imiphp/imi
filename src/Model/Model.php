@@ -776,7 +776,7 @@ abstract class Model extends BaseModel
                     {
                         if (!isset($jsonEncode))
                         {
-                            $jsonEncode = $meta->getJsonEncode();
+                            $jsonEncode = $meta->getJsonEncode() ?? false;
                         }
                         if ($jsonEncode)
                         {

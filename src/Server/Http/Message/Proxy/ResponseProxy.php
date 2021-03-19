@@ -47,7 +47,7 @@ class ResponseProxy implements IResponse
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
      * @throws \InvalidArgumentException for invalid status code arguments
      */
@@ -99,7 +99,7 @@ class ResponseProxy implements IResponse
      *
      * @param string $version HTTP protocol version
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function withProtocolVersion($version)
     {
@@ -208,7 +208,7 @@ class ResponseProxy implements IResponse
      * @param string          $name  case-insensitive header field name
      * @param string|string[] $value header value(s)
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
@@ -231,7 +231,7 @@ class ResponseProxy implements IResponse
      * @param string          $name  case-insensitive header field name to add
      * @param string|string[] $value header value(s)
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
      * @throws \InvalidArgumentException for invalid header names or values
      */
@@ -251,7 +251,7 @@ class ResponseProxy implements IResponse
      *
      * @param string $name case-insensitive header field name to remove
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function withoutHeader($name)
     {
@@ -279,7 +279,7 @@ class ResponseProxy implements IResponse
      *
      * @param StreamInterface $body body
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      *
      * @throws \InvalidArgumentException when the body is not valid
      */
@@ -294,7 +294,7 @@ class ResponseProxy implements IResponse
      * @param \Imi\Server\Base      $server
      * @param \Swoole\Http\Response $response
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
@@ -312,7 +312,7 @@ class ResponseProxy implements IResponse
      * @param bool   $secure
      * @param bool   $httponly
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
     {
@@ -359,7 +359,7 @@ class ResponseProxy implements IResponse
      * @param string $name
      * @param string $value
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function withTrailer($name, $value)
     {
@@ -371,7 +371,7 @@ class ResponseProxy implements IResponse
      *
      * @param string $content
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function write(string $content)
     {
@@ -381,7 +381,7 @@ class ResponseProxy implements IResponse
     /**
      * 清空内容.
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function clear()
     {
@@ -395,7 +395,7 @@ class ResponseProxy implements IResponse
      * @param string $url
      * @param int    $status
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function redirect($url, $status = StatusCode::FOUND)
     {
@@ -405,7 +405,7 @@ class ResponseProxy implements IResponse
     /**
      * 发送头部信息，没有特别需求，无需手动调用.
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function sendHeaders()
     {
@@ -415,7 +415,7 @@ class ResponseProxy implements IResponse
     /**
      * 发送所有响应数据.
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function send()
     {
@@ -429,7 +429,7 @@ class ResponseProxy implements IResponse
      * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
      * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
     {
@@ -469,9 +469,9 @@ class ResponseProxy implements IResponse
     /**
      * 获取当前上下文中的对象实例.
      *
-     * @return \Imi\Server\Http\Message\Response
+     * @return IResponse
      */
-    public static function getResponseInstance(): Response
+    public static function getResponseInstance(): IResponse
     {
         return RequestContext::get('response');
     }
@@ -479,11 +479,11 @@ class ResponseProxy implements IResponse
     /**
      * 设置当前上下文中的对象实例.
      *
-     * @param \Imi\Server\Http\Message\Response $response
+     * @param IResponse $response
      *
      * @return void
      */
-    public function setResponseInstance(Response $response)
+    public function setResponseInstance(IResponse $response)
     {
         RequestContext::set('response', $response);
     }

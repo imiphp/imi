@@ -368,7 +368,7 @@ class IndexController extends SingletonHttpController
     /**
      * @Action
      *
-     * @return Response
+     * @return mixed
      */
     public function singletonResponse1()
     {
