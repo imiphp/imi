@@ -48,7 +48,7 @@ class AopParser extends BaseParser
                     $tag = $docblock->getTagsByName('var')[0] ?? null;
                     if ($tag)
                     {
-                        $annotation->name = ltrim($tag->__toString(), '\\');
+                        $annotation->name = trim($tag->__toString(), '\\ \t\n\r\0\x0B');
                     }
                     else
                     {
