@@ -4,6 +4,7 @@ namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Model\Annotation\Entity;
+use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
 use Imi\Model\Annotation\Serializable;
 use Imi\Model\Annotation\Table;
@@ -119,6 +120,13 @@ class Meta
     private $propertyJsonNotNullMap;
 
     /**
+     * JSON 序列化时的配置.
+     *
+     * @var JsonEncode|null
+     */
+    private $jsonEncode;
+
+    /**
      * @param string $modelClass
      */
     public function __construct($modelClass)
@@ -128,6 +136,7 @@ class Meta
         $table = AnnotationManager::getClassAnnotations($modelClass, Table::class)[0] ?? null;
         /** @var \Imi\Model\Annotation\Entity|null $entity */
         $entity = AnnotationManager::getClassAnnotations($modelClass, Entity::class)[0] ?? null;
+        $this->jsonEncode = AnnotationManager::getClassAnnotations($modelClass, JsonEncode::class)[0] ?? null;
         if ($table)
         {
             $this->tableName = $table->name;
@@ -312,5 +321,15 @@ class Meta
     public function getPropertyJsonNotNullMap()
     {
         return $this->propertyJsonNotNullMap;
+    }
+
+    /**
+     * Get JSON 序列化时的配置.
+     *
+     * @return \Imi\Model\Annotation\JsonEncode|null
+     */
+    public function getJsonEncode()
+    {
+        return $this->jsonEncode;
     }
 }
