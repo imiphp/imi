@@ -184,7 +184,7 @@ class CronCalculator
             return range(max($min, $begin), min($end, $max));
         }
         // 步长
-        if ('n' === $rule[-1])
+        if ('n' === ($rule[-1] ?? ''))
         {
             $step = (int) substr($rule, 0, -1);
             if ($lastTime < $min)

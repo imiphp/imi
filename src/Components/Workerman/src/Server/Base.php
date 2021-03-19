@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server;
 
+use Channel\Client;
+use Imi\Config;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Contract\BaseServer;
 use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\Group\TServerGroup;
+use Imi\Server\ServerManager;
 use Imi\Util\Imi;
+use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Worker;
@@ -24,18 +28,47 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     protected Worker $worker;
 
     /**
+     * Workerman Worker 类名.
+     */
+    protected string $workerClass = Worker::class;
+
+    /**
      * 构造方法.
      */
     public function __construct(string $name, array $config)
     {
         parent::__construct($name, $config);
-        $this->worker = $worker = new Worker($this->getWorkerScheme() . '://' . $config['host'] . ':' . $config['port']);
-        $worker->name = $name;
-        foreach ($config['configs'] as $k => $v)
+        $this->worker = $this->createServer();
+        $this->bindEvents();
+    }
+
+    protected function createServer(): Worker
+    {
+        $config = $this->config;
+        if (isset($config['worker']))
+        {
+            $class = $this->workerClass = $config['worker'];
+        }
+        else
+        {
+            $class = $this->workerClass;
+        }
+        if (isset($config['socketName']))
+        {
+            $socketName = $config['socketName'];
+        }
+        else
+        {
+            $socketName = $this->getWorkerScheme() . '://' . $config['host'] . ':' . $config['port'];
+        }
+        $worker = new $class($socketName);
+        $worker->name = $this->name;
+        foreach ($config['configs'] ?? [] as $k => $v)
         {
             $worker->$k = $v;
         }
-        $this->bindEvents();
+
+        return $worker;
     }
 
     /**
@@ -157,10 +190,45 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
 
             Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
 
+            // 创建共享 Worker 的服务
+            $config = $this->config;
+            if (!($config['shareWorker'] ?? false) && ($config['autorun'] ?? true))
+            {
+                foreach (Config::get('@app.workermanServer') as $name => $config)
+                {
+                    $shareWorker = $config['shareWorker'] ?? false;
+                    if (false !== $shareWorker && $this->getName() === $shareWorker)
+                    {
+                        /** @var IWorkermanServer $server */
+                        $server = ServerManager::createServer($name, $config);
+                        $worker = $server->getWorker();
+                        $worker->count = $this->worker->count;
+                        $worker->listen();
+                    }
+                }
+            }
+
             RequestContext::muiltiSet([
                 'server' => $this,
                 'worker' => $worker,
             ]);
+
+            // 多进程通讯组件连接
+            Client::connect(Config::get('@app.workerman.channel.host', '127.0.0.1'), Config::get('@app.workerman.channel.port', 2206));
+            // 监听进程通讯
+            $callback = function (array $data) {
+                $action = $data['action'] ?? null;
+                if (!$action)
+                {
+                    return;
+                }
+                Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
+                    'data'      => $data,
+                ]);
+            };
+            $workerId = ImiWorker::getWorkerId();
+            Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
+            Client::on('imi.process.message.' . $workerId, $callback);
 
             Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
                 'server' => $this,

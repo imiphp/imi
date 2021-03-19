@@ -26,6 +26,11 @@ class Type
      */
     const UDP = 'WorkermanUdpServer';
 
+    /**
+     * Channel 服务器.
+     */
+    const CHANNEL = 'WorkermanChannelServer';
+
     private function __construct()
     {
     }

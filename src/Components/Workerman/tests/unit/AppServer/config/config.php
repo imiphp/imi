@@ -33,29 +33,64 @@ return [
             ],
         ],
         'websocket' => [
-            'namespace' => 'Imi\Workerman\Test\AppServer\WebSocketServer',
-            'type'      => Imi\Workerman\Server\Type::WEBSOCKET,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      => 13002,
-            'configs'   => [
+            'namespace'   => 'Imi\Workerman\Test\AppServer\WebSocketServer',
+            'type'        => Imi\Workerman\Server\Type::WEBSOCKET,
+            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'        => 13002,
+            'shareWorker' => 'http',
+            'configs'     => [
             ],
         ],
         'tcp' => [
-            'namespace' => 'Imi\Workerman\Test\AppServer\TcpServer',
-            'type'      => Imi\Workerman\Server\Type::TCP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      => 13003,
-            'configs'   => [
+            'namespace'   => 'Imi\Workerman\Test\AppServer\TcpServer',
+            'type'        => Imi\Workerman\Server\Type::TCP,
+            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'        => 13003,
+            'shareWorker' => 'http',
+            'configs'     => [
                 'protocol' => \Workerman\Protocols\Text::class,
             ],
         ],
         'udp' => [
-            'namespace' => 'Imi\Workerman\Test\AppServer\UdpServer',
-            'type'      => Imi\Workerman\Server\Type::UDP,
-            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      => 13004,
-            'configs'   => [
+            'namespace'   => 'Imi\Workerman\Test\AppServer\UdpServer',
+            'type'        => Imi\Workerman\Server\Type::UDP,
+            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'        => 13004,
+            'shareWorker' => 'http',
+            'configs'     => [
             ],
+        ],
+        'channel' => [
+            'namespace'   => '',
+            'type'        => Imi\Workerman\Server\Type::CHANNEL,
+            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'        => 13005,
+            'configs'     => [
+            ],
+        ],
+        'httpWorker2' => [
+            'namespace' => 'Imi\Workerman\Test\AppServer\ApiServer',
+            'type'      => Imi\Workerman\Server\Type::HTTP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13006,
+            'configs'   => [
+                'count' => 2,
+            ],
+        ],
+        'websocketWorker2' => [
+            'namespace'   => 'Imi\Workerman\Test\AppServer\WebSocketServer',
+            'type'        => Imi\Workerman\Server\Type::WEBSOCKET,
+            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'        => 13007,
+            'shareWorker' => 'httpWorker2',
+        ],
+    ],
+
+    'workerman' => [
+        // 多进程通讯组件配置
+        'channel' => [
+            'host' => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port' => 13005,
         ],
     ],
 
@@ -100,5 +135,9 @@ return [
     // atmoic 配置
     'atomics'    => [
         'atomicLock'   => 1,
+    ],
+
+    'imi' => [
+        'ServerUtil' => \Imi\Workerman\Server\Util\LocalServerUtil::class,
     ],
 ];

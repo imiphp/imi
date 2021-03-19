@@ -104,7 +104,7 @@ class HttpRouteInit implements IEventListener
                             {
                                 if (isset($routeItem->url[1]) && './' === substr($routeItem->url, 0, 2))
                                 {
-                                    $prefixHasSlash = '/' === $prefix[-1];
+                                    $prefixHasSlash = '/' === ($prefix[-1] ?? '');
                                     $routeItem->url = $prefix . substr($routeItem->url, $prefixHasSlash ? 2 : 1);
                                 }
                                 else

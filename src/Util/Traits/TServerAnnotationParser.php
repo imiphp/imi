@@ -33,7 +33,7 @@ trait TServerAnnotationParser
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
         foreach ($namespaces as &$namespace)
         {
-            if ('\\' !== $namespace[-1])
+            if ('\\' !== ($namespace[-1] ?? ''))
             {
                 $namespace .= '\\';
             }

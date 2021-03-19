@@ -18,6 +18,7 @@ use Imi\Server\ServerManager;
 use Imi\Util\Imi;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
+use Imi\Workerman\Server\Server as WorkermanServerUtil;
 use Workerman\Worker;
 
 /**
@@ -61,13 +62,22 @@ class Server extends BaseCommand
             {
                 throw new \RuntimeException('You are using Windows system, please add option --name {serverName}');
             }
-            foreach ($serverConfigs as $name => $config)
+            foreach ($serverConfigs as $serverName => $config)
             {
-                /** @var IWorkermanServer $server */
-                $server = ServerManager::createServer($name, $config);
-                if ($workerNum > 0)
+                if (!($config['autorun'] ?? true))
                 {
-                    $server->getWorker()->count = $workerNum;
+                    continue;
+                }
+                $shareWorker = $config['shareWorker'] ?? false;
+                // 这边共享 Worker 的服务只创建一次
+                if (false === $shareWorker)
+                {
+                    /** @var IWorkermanServer $server */
+                    $server = ServerManager::createServer($serverName, $config);
+                    if ($workerNum > 0)
+                    {
+                        $server->getWorker()->count = $workerNum;
+                    }
                 }
             }
         }
@@ -87,6 +97,7 @@ class Server extends BaseCommand
         ImiWorker::setWorkerHandler(App::getBean('WorkermanWorkerHandler'));
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
+        WorkermanServerUtil::initWorkermanWorker($name);
         Worker::runAll();
     }
 
@@ -97,6 +108,7 @@ class Server extends BaseCommand
      */
     public function stop(): void
     {
+        WorkermanServerUtil::initWorkermanWorker();
         // workerman argv
         global $argv;
         $argv = [

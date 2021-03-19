@@ -14,6 +14,7 @@ use Imi\Event\Event;
 use Imi\Main\Helper;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
+use Imi\Workerman\Server\Util\LocalServerUtil;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -65,6 +66,10 @@ class WorkermanApp extends CliApp
         if (null === Config::get('@app.imi.Timer'))
         {
             Config::set('@app.imi.Timer', WorkermanTimer::class);
+        }
+        if (null === Config::get('@app.imi.ServerUtil'))
+        {
+            Config::set('@app.imi.ServerUtil', LocalServerUtil::class);
         }
         if ($initDotEnv)
         {

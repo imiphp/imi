@@ -7,6 +7,7 @@ namespace Imi\Workerman\Test\AppServer\WebSocketServer\Controller;
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
 use Imi\RequestContext;
+use Imi\Server\Server;
 use Imi\Server\WebSocket\Route\Annotation\WSAction;
 use Imi\Server\WebSocket\Route\Annotation\WSController;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute;
@@ -72,13 +73,8 @@ class TestController extends WebSocketController
     {
         /** @var \Imi\Workerman\Server\WebSocket\Server $server */
         $server = $this->server;
-        $group = $server->getGroup('g1');
-        $worker = $server->getWorker();
         $message = ConnectContext::get('username') . ':' . $data->message;
-        foreach ($group->getHandler()->getFds('g1') as $fd)
-        {
-            $worker->connections[$fd]->send($message);
-        }
+        Server::sendRawToGroup('g1', $message);
     }
 
     /**
@@ -90,7 +86,7 @@ class TestController extends WebSocketController
     public function info(): array
     {
         return [
-            'fd'       => RequestContext::get('fd'),
+            'fd'       => ConnectContext::getFd(),
             'workerId' => Worker::getWorkerId(),
         ];
     }

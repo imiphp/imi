@@ -17,8 +17,6 @@ class WorkermanWorkerHandler implements IWorkermanWorker
 {
     /**
      * 是否初始化完毕.
-     *
-     * @return bool
      */
     private bool $isInited = false;
 

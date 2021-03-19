@@ -196,7 +196,7 @@ class Imi
      */
     public static function getNamespacePath(string $namespace): ?string
     {
-        if ('\\' !== $namespace[-1])
+        if ('\\' !== ($namespace[-1] ?? ''))
         {
             $namespace .= '\\';
         }
@@ -231,7 +231,7 @@ class Imi
             foreach (Helper::getMains() as $main)
             {
                 $mainNamespace = $main->getNamespace();
-                if ('\\' !== $mainNamespace[-1])
+                if ('\\' !== ($mainNamespace[-1] ?? ''))
                 {
                     $mainNamespace .= '\\';
                 }
@@ -265,7 +265,7 @@ class Imi
     public static function getNamespacePaths(string $namespace): array
     {
         $resultPaths = [];
-        if ('\\' !== $namespace[-1])
+        if ('\\' !== ($namespace[-1] ?? ''))
         {
             $namespace .= '\\';
         }
@@ -295,7 +295,7 @@ class Imi
             foreach (Helper::getMains() as $main)
             {
                 $mainNamespace = $main->getNamespace();
-                if ('\\' !== $mainNamespace[-1])
+                if ('\\' !== ($mainNamespace[-1] ?? ''))
                 {
                     $mainNamespace .= '\\';
                 }

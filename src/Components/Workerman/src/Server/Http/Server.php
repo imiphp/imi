@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Http;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Util\ImiPriority;
@@ -53,7 +52,7 @@ class Server extends Base
     protected function bindEvents(): void
     {
         parent::bindEvents();
-        Event::on('IMI.WORKERMAN.SERVER.MESSAGE', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
+        $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         $this->worker->onMessage = function (ConnectionInterface $connection, $data) {
             $worker = $this->worker;
             // @phpstan-ignore-next-line
@@ -65,7 +64,7 @@ class Server extends Base
                 'request'  => $request,
                 'response' => $response,
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.MESSAGE', [
+            $this->trigger('request', [
                 'server'   => $this,
                 'request'  => $request,
                 'response' => $response,
