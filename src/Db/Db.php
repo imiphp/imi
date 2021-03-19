@@ -108,7 +108,7 @@ class Db
      */
     private static function parsePoolName(?string $poolName = null, int $queryType = QueryType::WRITE): string
     {
-        if (null === $poolName)
+        if (null === $poolName || '' === $poolName)
         {
             $poolName = static::getDefaultPoolName($queryType);
         }

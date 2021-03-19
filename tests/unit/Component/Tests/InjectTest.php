@@ -25,6 +25,14 @@ class InjectTest extends BaseTest
         $value->test();
     }
 
+    public function testInject2(): void
+    {
+        $testTAutoInject = new TestTAutoInject();
+        $value = $testTAutoInject->getTestInjectValue();
+        Assert::assertNotNull($value);
+        $value->test2();
+    }
+
     public function testArg(): void
     {
         $test = App::getBean('TestArg');
