@@ -27,7 +27,6 @@ abstract class BaseTest extends \Imi\Test\BaseTest
         {
             $finally();
         }
-        // @phpstan-ignore-next-line
         if ($throwable)
         {
             throw $throwable;
