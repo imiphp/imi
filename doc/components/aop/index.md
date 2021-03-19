@@ -356,6 +356,20 @@ class TestClass
 	 */
 	protected $model;
 	
+	/**
+	 * 某Model对象，通过注释类型注入
+	 * @Inject
+	 * 
+	 * @var XXX\Model\User
+	 */
+	protected $model2;
+	
+	/**
+	 * 某Model对象，通过 PHP 7.4 以上类型声明注入
+	 * @Inject
+	 */
+	protected XXX\Model\User $model3;
+
 	public function test()
 	{
 		var_dump($model->toArray());

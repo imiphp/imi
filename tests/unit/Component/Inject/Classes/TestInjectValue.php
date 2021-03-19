@@ -19,11 +19,27 @@ class TestInjectValue
     protected $testLogic;
 
     /**
+     * @Inject
+     *
+     * @var \Imi\Test\Component\Inject\Classes\TestInjectValueLogic
+     */
+    protected $testLogic2;
+
+    /**
      * @return void
      */
     public function test()
     {
         Assert::assertNotNull($this->testLogic);
         $this->testLogic->test();
+    }
+
+    /**
+     * @return void
+     */
+    public function test2()
+    {
+        Assert::assertNotNull($this->testLogic2);
+        $this->testLogic2->test();
     }
 }

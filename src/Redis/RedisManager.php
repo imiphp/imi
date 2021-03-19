@@ -57,7 +57,7 @@ abstract class RedisManager
      */
     public static function parsePoolName($poolName = null)
     {
-        if (null === $poolName)
+        if (null === $poolName || '' === $poolName)
         {
             $poolName = static::getDefaultPoolName();
         }

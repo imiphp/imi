@@ -79,7 +79,7 @@ abstract class Db
      */
     private static function parsePoolName($poolName = null, $queryType = QueryType::WRITE)
     {
-        if (null === $poolName)
+        if (null === $poolName || '' === $poolName)
         {
             $poolName = static::getDefaultPoolName($queryType);
         }

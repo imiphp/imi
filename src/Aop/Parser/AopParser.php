@@ -2,7 +2,11 @@
 
 namespace Imi\Aop\Parser;
 
+use Imi\Aop\Annotation\Inject;
+use Imi\Aop\Annotation\RequestInject;
 use Imi\Bean\Parser\BaseParser;
+use Imi\Bean\ReflectionContainer;
+use Imi\Server\Annotation\ServerInject;
 
 class AopParser extends BaseParser
 {
@@ -18,5 +22,40 @@ class AopParser extends BaseParser
      */
     public function parse(\Imi\Bean\Annotation\Base $annotation, string $className, string $target, string $targetName)
     {
+        $annotationClass = \get_class($annotation);
+        switch ($annotationClass)
+        {
+            case Inject::class:
+            case RequestInject::class:
+            case ServerInject::class:
+                /** @var Inject|RequestInject $annotation */
+                if ('' === $annotation->name && self::TARGET_PROPERTY === $target)
+                {
+                    $propRef = ReflectionContainer::getPropertyReflection($className, $targetName);
+                    if (method_exists($propRef, 'hasType') && $propRef->hasType())
+                    {
+                        $type = $propRef->getType();
+                        if ($type instanceof \ReflectionNamedType && !$type->isBuiltin())
+                        {
+                            $annotation->name = $type->getName();
+
+                            return;
+                        }
+                    }
+                    $comment = $propRef->getDocComment();
+                    $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+                    $docblock = $factory->create($comment);
+                    $tag = $docblock->getTagsByName('var')[0] ?? null;
+                    if ($tag)
+                    {
+                        $annotation->name = $tag->__toString();
+                    }
+                    else
+                    {
+                        throw new \RuntimeException(sprintf('@%s in %s::$%s must set name', $annotationClass, $className, $target));
+                    }
+                }
+                break;
+        }
     }
 }

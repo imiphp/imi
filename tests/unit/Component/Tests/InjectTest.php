@@ -39,6 +39,12 @@ class InjectTest extends BaseTest
         $this->testInjectValue->test();
     }
 
+    public function testInject2()
+    {
+        Assert::assertNotNull($this->testInjectValue);
+        $this->testInjectValue->test2();
+    }
+
     public function testArg()
     {
         $test = App::getBean('TestArg');
