@@ -3,9 +3,10 @@
 namespace Imi\Server\Http\Message;
 
 use Imi\Util\Http\Consts\StatusCode;
+use Imi\Util\Http\Contract\IResponse;
 use Imi\Util\Stream\MemoryStream;
 
-class Response extends \Imi\Util\Http\Response
+class Response extends \Imi\Util\Http\Response implements IResponse
 {
     /**
      * swoole响应对象
