@@ -148,7 +148,7 @@ class Annotation
             }
             else
             {
-                $value = json_encode($v);
+                $value = json_encode($v, \JSON_UNESCAPED_UNICODE);
                 if (\is_array($v))
                 {
                     $value = '{' . substr($value, 1, -1) . '}';

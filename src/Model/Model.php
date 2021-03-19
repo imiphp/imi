@@ -729,7 +729,18 @@ abstract class Model extends BaseModel
                 case 'json':
                     if (null !== $value)
                     {
-                        $value = json_encode($value);
+                        if (!isset($jsonEncode))
+                        {
+                            $jsonEncode = $meta->getJsonEncode() ?? false;
+                        }
+                        if ($jsonEncode)
+                        {
+                            $value = json_encode($value, $jsonEncode->flags, $jsonEncode->depth);
+                        }
+                        else
+                        {
+                            $value = json_encode($value);
+                        }
                     }
                     break;
                 case 'list':
