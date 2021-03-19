@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server;
 
 use Imi\App;
-use Imi\Worker;
-use Imi\Event\Event;
 use Imi\ConnectContext;
+use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\Server\ServerManager;
-use Imi\Server\DataParser\DataParser;
-use Imi\Swoole\Util\Co\ChannelContainer;
-use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Server\ConnectContext\ConnectionBinder;
+use Imi\Server\DataParser\DataParser;
+use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
+use Imi\Swoole\Util\Co\ChannelContainer;
+use Imi\Worker;
 
 class ServerUtil implements ISwooleServerUtil
 {

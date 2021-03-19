@@ -363,8 +363,6 @@ class ConnectContext
 
     /**
      * 获取当前连接号.
-     *
-     * @return integer|null
      */
     public static function getFd(): ?int
     {

@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Imi\Model\Cli\Model;
 
-use Imi\Db\Db;
-use Imi\Config;
-use Imi\Util\Imi;
-use Imi\Util\File;
-use Imi\Util\Text;
-use Imi\Cli\ArgType;
-use Imi\Model\Model;
-use Imi\Db\Util\SqlUtil;
-use Imi\Cli\Annotation\Option;
-use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\Argument;
-use Imi\Cli\Contract\BaseCommand;
-use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Cli\Annotation\Command;
 use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Annotation\Option;
+use Imi\Cli\ArgType;
+use Imi\Cli\Contract\BaseCommand;
+use Imi\Config;
+use Imi\Db\Db;
+use Imi\Db\Query\Interfaces\IQuery;
+use Imi\Db\Util\SqlUtil;
+use Imi\Model\Model;
+use Imi\Util\File;
+use Imi\Util\Imi;
+use Imi\Util\Text;
 
 /**
  * @Command("generate")
