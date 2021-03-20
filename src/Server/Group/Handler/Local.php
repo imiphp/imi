@@ -139,7 +139,7 @@ class Local implements IGroupHandler
      */
     public function getFds(string $groupName): array
     {
-        return \array_values($this->groups[$groupName]['fds'] ?? []);
+        return array_values($this->groups[$groupName]['fds'] ?? []);
     }
 
     /**
