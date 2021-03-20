@@ -81,7 +81,7 @@ class Local implements IGroupHandler
         {
             $this->createGroup($groupName);
         }
-        $groups[$groupName]['fds'][] = $fd;
+        $groups[$groupName]['fds'][$fd] = $fd;
 
         return true;
     }
@@ -99,10 +99,10 @@ class Local implements IGroupHandler
         $groups = &$this->groups;
         if (isset($groups[$groupName]))
         {
-            $index = array_search($fd, $groups[$groupName]['fds']);
-            if (false !== $index)
+            $fds = &$groups[$groupName]['fds'];
+            if (isset($fds[$fd]))
             {
-                unset($groups[$groupName]['fds'][$index]);
+                unset($fds[$fd]);
 
                 return true;
             }
@@ -124,7 +124,7 @@ class Local implements IGroupHandler
         $groups = &$this->groups;
         if (isset($groups[$groupName]))
         {
-            return false !== array_search($fd, $groups[$groupName]['fds']);
+            return isset($groups[$groupName]['fds'][$fd]);
         }
 
         return false;
@@ -139,7 +139,7 @@ class Local implements IGroupHandler
      */
     public function getFds(string $groupName): array
     {
-        return $this->groups[$groupName]['fds'] ?? [];
+        return \array_values($this->groups[$groupName]['fds'] ?? []);
     }
 
     /**
