@@ -4,6 +4,7 @@ namespace Imi\Tool\Tools\Generate\Table;
 
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Db\Db;
+use Imi\Event\Event;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Tool\Annotation\Arg;
@@ -43,6 +44,7 @@ class TableGenerate
     public function generate($namespace, $database, $poolName, $include, $exclude, $override)
     {
         \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
+        Event::trigger('IMI.GENERATE_MODEL.BEFORE');
         $override = (bool) json_decode((string) $override);
         $query = Db::query($poolName);
         // 数据库
@@ -106,6 +108,7 @@ class TableGenerate
             $tables[] = $table;
             echo 'Create ', $table, \PHP_EOL;
         }
+        Event::trigger('IMI.GENERATE_MODEL.AFTER');
     }
 
     /**
