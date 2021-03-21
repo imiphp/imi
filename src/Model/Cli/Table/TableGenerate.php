@@ -12,6 +12,7 @@ use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Db\Db;
+use Imi\Event\Event;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Util\ClassObject;
@@ -41,6 +42,7 @@ class TableGenerate extends BaseCommand
     {
         Scanner::scanVendor();
         Scanner::scanApp();
+        Event::trigger('IMI.GENERATE_MODEL.BEFORE');
         $override = (bool) json_decode((string) $override);
         $query = Db::query($poolName);
         // 数据库
@@ -104,6 +106,7 @@ class TableGenerate extends BaseCommand
             $tables[] = $table;
             $this->output->writeln('Create <info>' . $table . '</info>');
         }
+        Event::trigger('IMI.GENERATE_MODEL.AFTER');
     }
 
     /**

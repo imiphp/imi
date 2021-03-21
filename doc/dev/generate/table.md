@@ -19,3 +19,13 @@
 ```shell
 HttpDemo/bin/imi generate/table
 ```
+
+## 事件监听
+
+### IMI.GENERATE_MODEL.BEFORE
+
+生成表工具的前置操作
+
+### IMI.GENERATE_MODEL.AFTER
+
+生成表工具的后置操作
