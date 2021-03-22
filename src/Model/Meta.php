@@ -106,14 +106,9 @@ class Meta
 
     /**
      * JSON 序列化时的配置.
-     *
-     * @var JsonEncode|null
      */
     private ?JsonEncode $jsonEncode = null;
 
-    /**
-     * @param string $modelClass
-     */
     public function __construct(string $modelClass)
     {
         $this->className = $modelClass;
@@ -292,8 +287,6 @@ class Meta
 
     /**
      * Get JSON 序列化时的配置.
-     *
-     * @return \Imi\Model\Annotation\JsonEncode|null
      */
     public function getJsonEncode(): ?JsonEncode
     {

@@ -24,15 +24,11 @@ class JsonEncode extends Base
 
     /**
      * json_encode() 的 flags 参数.
-     *
-     * @var int
      */
     public int $flags = 0;
 
     /**
      * 递归层数.
-     *
-     * @var int
      */
     public int $depth = 512;
 

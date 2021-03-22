@@ -27,18 +27,12 @@ class TestInjectValue
      */
     protected $testLogic2;
 
-    /**
-     * @return void
-     */
     public function test(): void
     {
         Assert::assertNotNull($this->testLogic);
         $this->testLogic->test();
     }
 
-    /**
-     * @return void
-     */
     public function test2(): void
     {
         Assert::assertNotNull($this->testLogic2);
