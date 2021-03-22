@@ -168,6 +168,10 @@ class ImiListener implements TestListener
                             'tb_member',
                             'tb_update_time',
                             'tb_performance',
+                            'tb_test_soft_delete',
+                            'tb_update_time',
+                            'tb_test_json',
+                            'tb_test_list',
                         ];
                         foreach ($truncateList as $table)
                         {
