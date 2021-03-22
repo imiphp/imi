@@ -111,7 +111,7 @@ class ModelGenerate extends BaseCommand
 
             return;
         }
-        if (!is_subclass_of($baseClass, Model::class))
+        if (Model::class !== $baseClass && !is_subclass_of($baseClass, Model::class))
         {
             echo 'BaseClass ', $baseClass, ' not extends ', Model::class, \PHP_EOL;
 
