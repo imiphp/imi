@@ -105,6 +105,7 @@
     * [使用方法](components/orm/RDModel.md)
     * [模型事件](components/orm/RDModel/event.md)
     * [树形表模型](components/orm/TreeModel.md)
+    * [模型软删除](components/orm/softDelete.md)
   * [模型关联](components/orm/relation/index.md)
     * [使用说明](components/orm/relation/index.md)
     * [一对一关联](components/orm/relation/oneToOne.md)

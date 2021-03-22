@@ -9,6 +9,7 @@ use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestJson;
 use Imi\Test\Component\Model\TestList;
+use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
 
 /**
@@ -343,5 +344,37 @@ class ModelTest extends BaseTest
         $record2 = TestList::find($record->id);
         $this->assertNotNull($record2);
         $this->assertEquals($record->list, $record2->list);
+    }
+
+    public function testSoftDelete(): void
+    {
+        // 插入
+        $record = TestSoftDelete::newInstance();
+        $record->title = 'test';
+        $result = $record->insert();
+        $this->assertTrue($result->isSuccess());
+        // 可以查到
+        $this->assertNotNull(TestSoftDelete::find($record->id));
+
+        // 软删除
+        $result = $record->delete();
+        $this->assertTrue($result->isSuccess());
+        // 删除时间字段
+        $this->assertNotEmpty($record->deleteTime);
+        // 查不到
+        $this->assertNull(TestSoftDelete::find($record->id));
+        // 可以查到
+        $this->assertNotNull(TestSoftDelete::findDeleted($record->id));
+
+        // 恢复
+        $record->restore();
+        // 可以查到
+        $this->assertNotNull(TestSoftDelete::find($record->id));
+
+        // 物理删除
+        $record->hardDelete();
+        // 查不到
+        $this->assertNull(TestSoftDelete::find($record->id));
+        $this->assertNull(TestSoftDelete::findDeleted($record->id));
     }
 }
