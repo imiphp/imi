@@ -142,7 +142,7 @@ abstract class Log
      *
      * @return array
      */
-    private static function getTrace(?array &$topTraces): array
+    protected static function getTrace(?array &$topTraces): array
     {
         $limit = App::getBean('ErrorLog')->getBacktraceLimit();
         $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
@@ -159,7 +159,7 @@ abstract class Log
      *
      * @return array
      */
-    private static function getErrorFile(?array $topThreeTraces = null): array
+    protected static function getErrorFile(?array $topThreeTraces = null): array
     {
         $backtrace = $topThreeTraces ?? debug_backtrace(0, 3);
         $secondItem = $backtrace[2] ?? null;
@@ -174,7 +174,7 @@ abstract class Log
      *
      * @return array
      */
-    private static function parseContext($context)
+    protected static function parseContext($context)
     {
         $topThreeTraces = null;
         if (!isset($context['trace']))

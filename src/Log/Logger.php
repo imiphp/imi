@@ -186,7 +186,7 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    private function parseContext($context)
+    protected function parseContext($context)
     {
         $limit = App::getBean('ErrorLog')->getBacktraceLimit();
         if (!isset($context['trace']))
