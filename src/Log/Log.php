@@ -144,7 +144,8 @@ abstract class Log
      */
     private static function getTrace(?array &$topTraces): array
     {
-        $backtrace = debug_backtrace();
+        $limit = App::getBean('ErrorLog')->getBacktraceLimit();
+        $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
         $result = array_splice($backtrace, 3);
         $topTraces = $backtrace;
 

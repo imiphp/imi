@@ -2,6 +2,7 @@
 
 namespace Imi\Log;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
@@ -187,14 +188,15 @@ class Logger extends AbstractLogger
      */
     private function parseContext($context)
     {
+        $limit = App::getBean('ErrorLog')->getBacktraceLimit();
         if (!isset($context['trace']))
         {
-            $backtrace = debug_backtrace();
+            $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
             $context['trace'] = $this->getTrace($backtrace);
         }
         if (!isset($context['errorFile']))
         {
-            $backtrace = $backtrace ?? debug_backtrace();
+            $backtrace = $backtrace ?? debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
             list($file, $line) = $this->getErrorFile($backtrace);
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
