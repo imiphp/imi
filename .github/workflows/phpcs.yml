@@ -21,4 +21,4 @@ jobs:
         run: ./.github/prepare-test.sh swoole-only 1
 
       - name: Test
-        run: docker exec swoole-only ./vendor/bin/php-cs-fixer fix --dry-run
+        run: docker exec swoole-only ./vendor/bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff
