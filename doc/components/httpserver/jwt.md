@@ -174,3 +174,58 @@ JWT 验证注解
 | subject | 验证主题。为 `null` 则使用配置中的值验证；为 `false` 则不验证 |
 | tokenParam | Token 对象注入的参数名称 |
 | dataParam | 数据注入的参数名称 |
+
+### Rsa配置
+配置 `@app.beans`：
+- 打开Git Bash Here 用openssl生成私匙文件
+- openssl genrsa -out pri_key.pem 1024
+- 根据私匙文件生成公匙
+- openssl rsa -in pri_key.pem -pubout -out pub_key.pem
+- 复制文件内容到配置上
+
+```php
+[
+    'JWT'   =>  [
+        'list'  =>  [
+            // a 为名称，可以自定义，以下被注释的项为非必设，一般有默认值
+            'b' =>  [
+                'signer'    =>  'Rsa',      // 签名者，可选：Ecdsa/Hmac/Rsa
+                'algo'      =>  'Sha256',    // 算法，可选：Sha256/Sha384/Sha512
+                // 'dataName'  =>  'data',      // 自定义数据字段名，放你需要往token里丢的数据
+                // 'audience'  =>  null,        // 接收，非必须
+                // 'subject'   =>  null,        // 主题，非必须
+                'expires'   =>  86400,        // 超时秒数
+                // 'issuer'    =>  null,        // 发行人，非必须
+                // 'notBefore' =>  null,        // 实际日期必须大于等于本值
+                // 'issuedAt'  =>  true,        // JWT 发出时间。设为 true 则为当前时间；设为 false 不设置；其它值则直接写入
+                // 'id'        =>  null,        // Token id
+                // 'headers'   =>  [],          // 头
+                // 自定义获取 token 回调，返回值为 Token。默认从 Header Authorization 中获取。
+                // 'tokenHandler'  =>  null,
+                'privateKey'    =>  '-----BEGIN RSA PRIVATE KEY-----
+MIICXwIBAAKBgQDXj+GqRbpV2n2H1iOdnXwtvv6K+W7g9VqCQv7cf/DobqOH8cA7
+8jjsujk51ovklZl5q7NR/sr4se9ghYH3QecLKKeMZeSQh+4LJubdkAbv+0Wmig/Y
+iAGTtJrK55OfVoVAJeCrMLERWPHvpnLBF/VoCjy0PwuExVEpA6dwqiD0xQIDAQAB
+AoGBALeTLNdZMmrS+3ym/QXJjGtY8GViLu8dg8rTS0B1JLCNKG8pjlB+48OWhA2h
+jNlKHb3kX35AwpIw1m8Yw6nSUfM6uN0rL86IaHx6OzpB5ltWodXmHISATYcZ9Xn7
+5+dKRqpGPW5QR7N8lPrHGRN69o74bT4X7DVyZzsdfjgOna0xAkEA7GVmUjVFUg7B
+8KsypQKwDXF5kMNoC3CSjdQTBgSYXNjo1kQjBGoDgPlcEhbV0Ishw4z7sGdxnvkc
+id4KbnkwrwJBAOlwLsFDn7eXmVcmRb7s2enXkUdfp8gXzg57VFcxZ5UML1P6vilH
+F4LpJjqtluZGbvA7oD3dkaks7POkt0mgxssCQQDaB2fI+KL33O6Y530tXf48V+WU
+U/W5X1l8ABaPnVtdfx24yV02rASRRuvZL0CDOF+quXRFrhLIWeAtdCJQ4+u3AkEA
+gVHGdQZTas+vARqQtM5dgjALqXCScETPwDIObSdPbMCNT4au5gseOUWUChm0aOlH
++AnwIZWnZgMfWXI8n6tTtQJBAKGVtbVsmwZN+5UDLziwWR6VLcZCzymocbJZ/PGi
+e49lnvOMZXg+9uLaQBiKCUqftQXaaFKj06hox6+25Rw1T0g=
+-----END RSA PRIVATE KEY-----
+',// 私钥
+                'publicKey'     =>  '-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXj+GqRbpV2n2H1iOdnXwtvv6K
++W7g9VqCQv7cf/DobqOH8cA78jjsujk51ovklZl5q7NR/sr4se9ghYH3QecLKKeM
+ZeSQh+4LJubdkAbv+0Wmig/YiAGTtJrK55OfVoVAJeCrMLERWPHvpnLBF/VoCjy0
+PwuExVEpA6dwqiD0xQIDAQAB
+-----END PUBLIC KEY-----',// 公钥
+            ],
+        ],
+    ],
+]
+```
