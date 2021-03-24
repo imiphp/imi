@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       php-versions: 7.4
-      extensions: swoole
+      extensions: sockets, curl
       ext-key: cache-v1
     steps:
       - name: Checkout
@@ -38,6 +38,23 @@ jobs:
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Swoole
+        run: |
+          apt-fast install libcurl4-openssl-dev -y
+          sudo pecl update-channels
+          MAKEFLAGS="-j $(nproc)" sudo -E sudo pecl install -f \
+            -D ' \
+              enable-openssl="yes" enable-sockets="yes" enable-http2="yes" \
+              enable-swoole-json="yes" enable-swoole-curl="yes"  \
+            ' \
+            swoole
+
+      - name: Show Version
+        run: |
+          composer -V
+          php -m
+          php --ri swoole
+
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -53,9 +70,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer update --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+          composer update --prefer-dist --no-progress --no-suggest
           cd tests
-          composer update --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+          composer update --prefer-dist --no-progress --no-suggest
 
       - name: Cache Analyse
         uses: actions/cache@v2
