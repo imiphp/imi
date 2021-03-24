@@ -5,20 +5,64 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-20.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole: [4.6-php7.4]
-
     env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-
+      php-versions: 7.4
+      extensions: swoole
+      ext-key: cache-v1
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Prepare
-        run: ./.github/prepare-test.sh swoole-only 1
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.ext-key }}
 
-      - name: Test
-        run: docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-versions }}
+          extensions: ${{ env.extensions }}
+          tools: pecl, composer:v2
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-versions }}-
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: |
+          composer update --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+          cd tests
+          composer update --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+
+      - name: Cache Analyse
+        uses: actions/cache@v2
+        with:
+          path: /tmp/phpstan
+          key: phpstan-analyse
+          restore-keys: phpstan-analyse
+
+      - name: Analyse
+        run: ./vendor/bin/phpstan analyse --memory-limit 1G
