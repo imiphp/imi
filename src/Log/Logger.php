@@ -132,8 +132,9 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    protected function getTrace($backtrace)
+    protected function getTrace(array &$backtrace)
     {
+        $backtrace = debug_backtrace();
         $index = null;
         $realClassName = static::__getRealClassName();
         foreach ($backtrace as $i => $item)
@@ -160,8 +161,9 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    public function getErrorFile($backtrace)
+    public function getErrorFile(?array $backtrace)
     {
+        $backtrace = $backtrace ?? debug_backtrace();
         $index = null;
         $realClassName = static::__getRealClassName();
         foreach ($backtrace as $i => $item)
@@ -187,7 +189,7 @@ class Logger extends AbstractLogger
      */
     private function parseContext($context)
     {
-        $debugBackTrace = debug_backtrace();
+        $debugBackTrace = null;
         if (!isset($context['trace']))
         {
             $context['trace'] = $this->getTrace($debugBackTrace);
