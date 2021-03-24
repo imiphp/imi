@@ -90,7 +90,7 @@ class Logger extends AbstractLogger
     /**
      * 获取代码调用跟踪.
      */
-    protected function getTrace(array $backtrace): array
+    protected function getTrace(array &$backtrace): array
     {
         $index = null;
         $realClassName = static::__getRealClassName();
@@ -135,13 +135,18 @@ class Logger extends AbstractLogger
     /**
      * 处理context.
      */
-    private function parseContext(array $context): array
+    protected function parseContext(array $context): array
     {
-        $debugBackTrace = debug_backtrace();
-        $context['trace'] ??= $this->getTrace($debugBackTrace);
+        $limit = App::getBean('ErrorLog')->getBacktraceLimit();
+        if (!isset($context['trace']))
+        {
+            $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
+            $context['trace'] = $this->getTrace($backtrace);
+        }
         if (!isset($context['errorFile']))
         {
-            list($file, $line) = $this->getErrorFile($debugBackTrace);
+            $backtrace = $backtrace ?? debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
+            list($file, $line) = $this->getErrorFile($backtrace);
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
         }

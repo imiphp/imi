@@ -21,6 +21,13 @@ class ErrorLog
     protected int $level = 0;
 
     /**
+     * 回溯堆栈帧的数量限制.
+     *
+     * @var int
+     */
+    protected int $backtraceLimit = 0;
+
+    /**
      * 注册错误监听.
      */
     public function register(): void
@@ -139,7 +146,7 @@ class ErrorLog
      */
     protected function getTrace(): array
     {
-        $backtrace = debug_backtrace();
+        $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $this->getBacktraceLimit());
         $index = null;
         $realClassName = static::__getRealClassName();
         foreach ($backtrace as $i => $item)
@@ -156,5 +163,18 @@ class ErrorLog
         }
 
         return array_splice($backtrace, $index);
+    }
+
+    /**
+     * @return int
+     */
+    public function getBacktraceLimit(): int
+    {
+        if (0 === $this->backtraceLimit)
+        {
+            return 0;
+        }
+
+        return max($this->backtraceLimit, 6);
     }
 }
