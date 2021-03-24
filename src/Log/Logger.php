@@ -128,13 +128,12 @@ class Logger extends AbstractLogger
     /**
      * 获取代码调用跟踪.
      *
-     * @param array|null $backtrace
+     * @param array $backtrace
      *
      * @return array
      */
-    protected function getTrace(?array &$backtrace)
+    protected function getTrace(array &$backtrace)
     {
-        $backtrace = debug_backtrace();
         $index = null;
         $realClassName = static::__getRealClassName();
         foreach ($backtrace as $i => $item)
@@ -161,9 +160,8 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    public function getErrorFile(?array $backtrace)
+    public function getErrorFile(array $backtrace)
     {
-        $backtrace = $backtrace ?? debug_backtrace();
         $index = null;
         $realClassName = static::__getRealClassName();
         foreach ($backtrace as $i => $item)
@@ -189,14 +187,15 @@ class Logger extends AbstractLogger
      */
     private function parseContext($context)
     {
-        $debugBackTrace = null;
         if (!isset($context['trace']))
         {
-            $context['trace'] = $this->getTrace($debugBackTrace);
+            $backtrace = debug_backtrace();
+            $context['trace'] = $this->getTrace($backtrace);
         }
         if (!isset($context['errorFile']))
         {
-            list($file, $line) = $this->getErrorFile($debugBackTrace);
+            $backtrace = $backtrace ?? debug_backtrace();
+            list($file, $line) = $this->getErrorFile($backtrace);
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
         }
