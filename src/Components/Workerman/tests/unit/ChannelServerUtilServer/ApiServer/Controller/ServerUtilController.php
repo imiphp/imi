@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Test\AppServer\ApiServer\Controller;
+namespace Imi\Workerman\Test\ChannelServerUtilServer\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
@@ -35,20 +35,33 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      */
-    public function send(array $fds, string $flag): array
+    public function sendMessage(): array
+    {
+        $data = [
+            'action' => 'test',
+        ];
+        $result = [];
+        $result['sendMessageAll'] = Server::sendMessage('test');
+        $result['sendMessage1'] = Server::sendMessage('test', [], 0);
+        $result['sendMessage2'] = Server::sendMessage('test', [], [0, 1]);
+        $result['sendMessageRawAll'] = Server::sendMessageRaw($data);
+        $result['sendMessageRaw1'] = Server::sendMessageRaw($data, 0);
+        $result['sendMessageRaw2'] = Server::sendMessageRaw($data, [0, 1]);
+
+        return $result;
+    }
+
+    /**
+     * @Action
+     */
+    public function send(string $flag): array
     {
         $data = [
             'data'  => 'test',
         ];
         $dataStr = json_encode($data);
         $result = [];
-        $result['send1'] = Server::send($data);
-        $result['send2'] = Server::send($data, $fds[0], 'websocket');
-        $result['send3'] = Server::send($data, $fds, 'websocket');
         $result['sendByFlag'] = Server::sendByFlag($data, $flag, 'websocket');
-        $result['sendRaw1'] = Server::sendRaw($dataStr);
-        $result['sendRaw2'] = Server::sendRaw($dataStr, $fds[0], 'websocket');
-        $result['sendRaw3'] = Server::sendRaw($dataStr, $fds, 'websocket');
         $result['sendRawByFlag'] = Server::sendRawByFlag($dataStr, $flag, 'websocket');
 
         $result['sendToAll'] = Server::sendToAll($data, 'websocket');
@@ -80,7 +93,7 @@ class ServerUtilController extends HttpController
     public function close(string $flag): array
     {
         return [
-            'flag' => Server::closeByFlag($flag, 'websocket'),
+            'flag' => Server::closeByFlag($flag),
         ];
     }
 }

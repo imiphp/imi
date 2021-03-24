@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Listener;
 
+use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Workerman\Server\Contract\IWorkermanServer;
-use Imi\Workerman\Server\Server;
-use Workerman\Connection\TcpConnection;
+use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
  * 发送给所有连接-请求
@@ -25,16 +24,9 @@ class OnSendRawToAllRequest implements IEventListener
     {
         $data = $e->getData();
         ['data' => $data, 'serverName' => $serverName] = $data['data'];
-        /** @var IWorkermanServer|null $server */
-        $server = Server::getServer($serverName);
-        if (!$server)
-        {
-            return;
-        }
-        /** @var TcpConnection $connection */
-        foreach ($server->getWorker()->connections as $connection)
-        {
-            $connection->send($data);
-        }
+
+        /** @var LocalServerUtil $serverUtil */
+        $serverUtil = App::getBean(LocalServerUtil::class);
+        $serverUtil->sendRawToAll($data, $serverName, false);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Test\AppServer\ApiServer\Controller;
+namespace Imi\Workerman\Test\ChannelServerUtilServer\ApiServer\Controller;
 
 use Imi\Controller\SingletonHttpController;
 use Imi\RequestContext;

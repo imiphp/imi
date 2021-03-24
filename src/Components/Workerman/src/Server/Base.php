@@ -201,9 +201,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     {
                         /** @var IWorkermanServer $server */
                         $server = ServerManager::createServer($name, $config);
-                        $worker = $server->getWorker();
-                        $worker->count = $this->worker->count;
-                        $worker->listen();
+                        $subWorker = $server->getWorker();
+                        $subWorker->count = $worker->count;
+                        $subWorker->listen();
                     }
                 }
             }
@@ -214,21 +214,25 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             ]);
 
             // 多进程通讯组件连接
-            Client::connect(Config::get('@app.workerman.channel.host', '127.0.0.1'), Config::get('@app.workerman.channel.port', 2206));
-            // 监听进程通讯
-            $callback = function (array $data) {
-                $action = $data['action'] ?? null;
-                if (!$action)
-                {
-                    return;
-                }
-                Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                    'data'      => $data,
-                ]);
-            };
-            $workerId = ImiWorker::getWorkerId();
-            Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
-            Client::on('imi.process.message.' . $workerId, $callback);
+            $channel = Config::get('@app.workerman.channel');
+            if ($channel)
+            {
+                Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
+                // 监听进程通讯
+                $callback = function (array $data) {
+                    $action = $data['action'] ?? null;
+                    if (!$action)
+                    {
+                        return;
+                    }
+                    Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
+                        'data'      => $data,
+                    ]);
+                };
+                $workerId = ImiWorker::getWorkerId();
+                Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
+                Client::on('imi.process.message.' . $workerId, $callback);
+            }
 
             Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
                 'server' => $this,

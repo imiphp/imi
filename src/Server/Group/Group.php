@@ -42,7 +42,7 @@ class Group
     /**
      * 分组处理器.
      */
-    protected string $groupHandler = \Imi\Server\Group\Handler\Redis::class;
+    protected string $groupHandler = \Imi\Server\Group\Handler\Local::class;
 
     /**
      * 处理器.

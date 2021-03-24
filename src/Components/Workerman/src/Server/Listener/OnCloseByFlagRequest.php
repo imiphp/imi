@@ -8,8 +8,7 @@ use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Server\ConnectContext\ConnectionBinder;
-use Imi\Server\Server;
+use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
  * 发送给分组中的连接-请求
@@ -26,21 +25,8 @@ class OnCloseByFlagRequest implements IEventListener
         $data = $e->getData();
         ['flag' => $flag, 'serverName' => $serverName] = $data['data'];
 
-        /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-        $fds = [];
-        foreach ((array) $flag as $tmpFlag)
-        {
-            $fd = $connectionBinder->getFdByFlag($tmpFlag);
-            if ($fd)
-            {
-                $fds[] = $fd;
-            }
-        }
-        if (!$fds)
-        {
-            return;
-        }
-        Server::close($fds, $serverName, false);
+        /** @var LocalServerUtil $serverUtil */
+        $serverUtil = App::getBean(LocalServerUtil::class);
+        $serverUtil->closeByFlag($flag, $serverName, false);
     }
 }

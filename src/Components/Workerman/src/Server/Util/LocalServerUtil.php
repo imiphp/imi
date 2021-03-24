@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Util;
 
-use Channel\Client;
+use Imi\App;
 use Imi\ConnectContext;
-use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\ConnectContext\ConnectionBinder;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
-use Imi\Worker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Contract\IWorkermanServerUtil;
 use Workerman\Connection\TcpConnection;
@@ -26,9 +25,7 @@ class LocalServerUtil implements IWorkermanServerUtil
      */
     public function sendMessage(string $action, array $data = [], $workerId = null, ?string $serverName = null): int
     {
-        $data['action'] = $action;
-
-        return $this->sendMessageRaw($data, $workerId, $serverName);
+        throw new \RuntimeException('Unsupport operation');
     }
 
     /**
@@ -40,36 +37,7 @@ class LocalServerUtil implements IWorkermanServerUtil
      */
     public function sendMessageRaw(array $data, $workerId = null, ?string $serverName = null): int
     {
-        if (null === $workerId)
-        {
-            $workerId = range(0, Worker::getWorkerNum() - 1);
-        }
-        $eventName = 'imi.process.message.' . (null === $serverName ? ($serverName . '.') : '');
-        $success = 0;
-        $currentWorkerId = Worker::getWorkerId();
-        $currentServerName = RequestContext::getServer()->getName();
-        foreach ((array) $workerId as $tmpWorkerId)
-        {
-            if ($tmpWorkerId === $currentWorkerId && (null === $serverName || $currentServerName === $serverName))
-            {
-                $action = $data['action'] ?? null;
-                if (!$action)
-                {
-                    continue;
-                }
-                Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                    'data'      => $data,
-                ]);
-                ++$success;
-            }
-            else
-            {
-                Client::publish($eventName . $tmpWorkerId, $data);
-                ++$success;
-            }
-        }
-
-        return $success;
+        throw new \RuntimeException('Unsupport operation');
     }
 
     /**
@@ -121,7 +89,7 @@ class LocalServerUtil implements IWorkermanServerUtil
             }
             $fds = [$fd];
 
-            return $this->send($data, $fds, $serverName);
+            return $this->send($data, $fds, $serverName, false);
         }
         else
         {
@@ -196,16 +164,27 @@ class LocalServerUtil implements IWorkermanServerUtil
             }
             $fds = [$fd];
 
-            return $this->sendRaw($data, $fds, $serverName);
+            return $this->sendRaw($data, $fds, $serverName, false);
         }
         else
         {
-            return (int) ($this->sendMessage('sendRawByFlagRequest', [
-                'data'         => $data,
-                'flag'         => $flag,
-                'serverName'   => $serverName,
-                'toAllWorkers' => $toAllWorkers,
-            ], null, $serverName) > 0);
+            /** @var ConnectionBinder $connectionBinder */
+            $connectionBinder = App::getBean('ConnectionBinder');
+            $fds = [];
+            foreach ((array) $flag as $tmpFlag)
+            {
+                $fd = $connectionBinder->getFdByFlag($tmpFlag);
+                if ($fd)
+                {
+                    $fds[] = $fd;
+                }
+            }
+            if (!$fds)
+            {
+                return 0;
+            }
+
+            return $this->sendRaw($data, $fds, $serverName, false);
         }
     }
 
@@ -228,7 +207,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
 
-        return $this->sendRawToAll($dataParser->encode($data, $serverName), $server->getName(), $toAllWorkers);
+        return $this->sendRawToAll($dataParser->encode($data, $serverName), $server->getName(), false);
     }
 
     /**
@@ -251,11 +230,17 @@ class LocalServerUtil implements IWorkermanServerUtil
             $serverName = $server->getName();
         }
 
-        return (int) ($this->sendMessage('sendRawToAllRequest', [
-            'data'         => $data,
-            'serverName'   => $serverName,
-            'toAllWorkers' => $toAllWorkers,
-        ], null, $serverName) > 0);
+        $count = 0;
+        /** @var TcpConnection $connection */
+        foreach ($server->getWorker()->connections as $connection)
+        {
+            if ($connection->send($data))
+            {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 
     /**
@@ -302,12 +287,18 @@ class LocalServerUtil implements IWorkermanServerUtil
             $serverName = $server->getName();
         }
 
-        return (int) ($this->sendMessage('sendRawToGroupRequest', [
-            'groupName'    => $groupName,
-            'data'         => $data,
-            'serverName'   => $serverName,
-            'toAllWorkers' => $toAllWorkers,
-        ], null, $serverName) > 0);
+        $count = 0;
+        $groups = (array) $groupName;
+        foreach ($groups as $tmpGroupName)
+        {
+            $group = $server->getGroup($tmpGroupName);
+            if ($group)
+            {
+                $count += $this->sendRaw($data, $group->getFds(), $serverName, false);
+            }
+        }
+
+        return $count;
     }
 
     /**
@@ -349,7 +340,7 @@ class LocalServerUtil implements IWorkermanServerUtil
     {
         if (null === $flag)
         {
-            return $this->close(null, $serverName, $toAllWorkers);
+            return $this->close(null, $serverName, false);
         }
         if (null === $serverName)
         {
@@ -361,11 +352,23 @@ class LocalServerUtil implements IWorkermanServerUtil
             $serverName = $server->getName();
         }
 
-        return (int) ($this->sendMessage('closeByFlagRequest', [
-            'flag'         => $flag,
-            'serverName'   => $serverName,
-            'toAllWorkers' => $toAllWorkers,
-        ], null, $serverName) > 0);
+        /** @var ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+        $fds = [];
+        foreach ((array) $flag as $tmpFlag)
+        {
+            $fd = $connectionBinder->getFdByFlag($tmpFlag);
+            if ($fd)
+            {
+                $fds[] = $fd;
+            }
+        }
+        if (!$fds)
+        {
+            return 0;
+        }
+
+        return $this->close($fds, $serverName, false);
     }
 
     /**

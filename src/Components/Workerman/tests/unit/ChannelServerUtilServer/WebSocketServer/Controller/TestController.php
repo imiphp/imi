@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Test\AppServer\WebSocketServer\Controller;
+namespace Imi\Workerman\Test\ChannelServerUtilServer\WebSocketServer\Controller;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;

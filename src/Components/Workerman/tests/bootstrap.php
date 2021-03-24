@@ -26,11 +26,34 @@ function startServer(): void
         return $serverStarted;
     }
 
+    // @phpstan-ignore-next-line
+    function checkChannelServerUtilServerStatus(): bool
+    {
+        $serverStarted = false;
+        for ($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            if ('imi' === @file_get_contents(imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13006/'), false, $context))
+            {
+                $serverStarted = true;
+                break;
+            }
+        }
+
+        return $serverStarted;
+    }
+
     $servers = [
         'AppServer'    => [
             'start'         => __DIR__ . '/unit/AppServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/AppServer/bin/stop.sh',
             'checkStatus'   => 'checkHttpServerStatus',
+        ],
+        'ChannelServerUtilServer'    => [
+            'start'         => __DIR__ . '/unit/ChannelServerUtilServer/bin/start.sh',
+            'stop'          => __DIR__ . '/unit/ChannelServerUtilServer/bin/stop.sh',
+            'checkStatus'   => 'checkChannelServerUtilServerStatus',
         ],
     ];
 

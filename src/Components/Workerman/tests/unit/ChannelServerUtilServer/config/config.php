@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     // 项目根命名空间
-    'namespace'    => 'Imi\Workerman\Test\AppServer',
+    'namespace'    => 'Imi\Workerman\Test\ChannelServerUtilServer',
 
     // 配置文件
     'configs'    => [
@@ -13,8 +13,8 @@ return [
 
     // 扫描目录
     'beanScan'    => [
-        'Imi\Workerman\Test\AppServer\Listener',
-        'Imi\Workerman\Test\AppServer\Cron',
+        'Imi\Workerman\Test\ChannelServerUtilServer\Listener',
+        'Imi\Workerman\Test\ChannelServerUtilServer\Cron',
     ],
 
     // 组件命名空间
@@ -24,45 +24,38 @@ return [
 
     // Workerman 服务器配置
     'workermanServer' => [
+        'channel' => [
+            'namespace'   => '',
+            'type'        => Imi\Workerman\Server\Type::CHANNEL,
+            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'        => 13005,
+            'configs'     => [
+            ],
+        ],
         'http' => [
-            'namespace' => 'Imi\Workerman\Test\AppServer\ApiServer',
+            'namespace' => 'Imi\Workerman\Test\ChannelServerUtilServer\ApiServer',
             'type'      => Imi\Workerman\Server\Type::HTTP,
             'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'      => 13000,
+            'port'      => 13006,
             'configs'   => [
+                'count' => 2,
             ],
         ],
         'websocket' => [
-            'namespace'   => 'Imi\Workerman\Test\AppServer\WebSocketServer',
+            'namespace'   => 'Imi\Workerman\Test\ChannelServerUtilServer\WebSocketServer',
             'type'        => Imi\Workerman\Server\Type::WEBSOCKET,
             'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'        => 13002,
+            'port'        => 13007,
             'shareWorker' => 'http',
-            'configs'     => [
-            ],
-        ],
-        'tcp' => [
-            'namespace'   => 'Imi\Workerman\Test\AppServer\TcpServer',
-            'type'        => Imi\Workerman\Server\Type::TCP,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'        => 13003,
-            'shareWorker' => 'http',
-            'configs'     => [
-                'protocol' => \Workerman\Protocols\Text::class,
-            ],
-        ],
-        'udp' => [
-            'namespace'   => 'Imi\Workerman\Test\AppServer\UdpServer',
-            'type'        => Imi\Workerman\Server\Type::UDP,
-            'host'        => imiGetEnv('SERVER_HOST', '127.0.0.1'),
-            'port'        => 13004,
-            'shareWorker' => 'http',
-            'configs'     => [
-            ],
         ],
     ],
 
     'workerman' => [
+        // 多进程通讯组件配置
+        'channel' => [
+            'host' => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port' => 13005,
+        ],
     ],
 
     // 数据库配置
@@ -98,6 +91,6 @@ return [
     ],
 
     'imi' => [
-        'ServerUtil' => \Imi\Workerman\Server\Util\LocalServerUtil::class,
+        'ServerUtil' => \Imi\Workerman\Server\Util\ChannelServerUtil::class,
     ],
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Workerman\Test\AppServer\Tests\WebSocket;
+namespace Imi\Workerman\Test\ChannelServerUtilServer\Tests\WebSocket;
 
 use Wrench\Client;
 use Yurun\Util\HttpRequest;
@@ -10,7 +10,7 @@ use Yurun\Util\HttpRequest;
 /**
  * @testdox Imi\Workerman\Server\Server
  */
-class ServerUtilController extends BaseTest
+class ServerUtilTest extends BaseTest
 {
     public function testGetServer(): void
     {
@@ -21,6 +21,22 @@ class ServerUtilController extends BaseTest
                 'null'      => 'http',
                 'http'      => 'http',
                 'notFound'  => true,
+            ], $response->json(true));
+        });
+    }
+
+    public function testSendMessage(): void
+    {
+        $this->go(function () {
+            $http = new HttpRequest();
+            $response = $http->get($this->httpHost . 'serverUtil/sendMessage');
+            $this->assertEquals([
+                'sendMessageAll'    => 2,
+                'sendMessage1'      => 1,
+                'sendMessage2'      => 2,
+                'sendMessageRawAll' => 2,
+                'sendMessageRaw1'   => 1,
+                'sendMessageRaw2'   => 2,
             ], $response->json(true));
         });
     }
@@ -59,35 +75,21 @@ class ServerUtilController extends BaseTest
             $recvData3 = json_decode($recv, true);
             $this->assertTrue($recvData3['success'] ?? null);
 
-            $fds = [
-                $recvData1['fd'],
-                $recvData2['fd'],
-            ];
-
             $http = new HttpRequest();
             $response = $http->post($this->httpHost . 'serverUtil/send', [
-                'fds'  => $fds,
                 'flag' => 'testSend',
             ], 'json');
             $this->assertEquals([
-                'send1'         => 0,
-                'send2'         => 1,
-                'send3'         => 2,
                 'sendByFlag'    => 1,
-                'sendRaw1'      => 0,
-                'sendRaw2'      => 1,
-                'sendRaw3'      => 2,
                 'sendRawByFlag' => 1,
-                'sendToAll'     => 3,
-                'sendRawToAll'  => 3,
+                // Workerman LocalServerUtil 跨进程只支持返回 1/0
+                'sendToAll'     => 1,
+                'sendRawToAll'  => 1,
             ], $response->json(true));
 
-            for ($i = 0; $i < 6; ++$i)
+            for ($i = 0; $i < 2; ++$i)
             {
                 $this->assertNotFalse($client1->receive());
-            }
-            for ($i = 0; $i < 4; ++$i)
-            {
                 $this->assertNotFalse($client2->receive());
             }
             for ($i = 0; $i < 4; ++$i)
@@ -124,8 +126,8 @@ class ServerUtilController extends BaseTest
             $response = $http->get($this->httpHost . 'serverUtil/sendToGroup');
 
             $this->assertEquals([
-                'sendToGroup'    => 2,
-                'sendRawToGroup' => 2,
+                'sendToGroup'    => 1,
+                'sendRawToGroup' => 1,
             ], $response->json(true));
 
             for ($i = 0; $i < 2; ++$i)

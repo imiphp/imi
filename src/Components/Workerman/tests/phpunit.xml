@@ -22,5 +22,8 @@
         <testsuite name="UdpServer">
             <directory>unit/AppServer/Tests/Udp</directory>
         </testsuite>
+        <testsuite name="ChannelServerUtilServer">
+            <directory>unit/ChannelServerUtilServer/Tests</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Listener;
 
+use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Workerman\Server\Contract\IWorkermanServer;
-use Imi\Workerman\Server\Server;
+use Imi\Workerman\Server\Util\LocalServerUtil;
 
 /**
  * 发送给分组中的连接-请求
@@ -25,21 +25,8 @@ class OnSendRawToGroupRequest implements IEventListener
         $data = $e->getData();
         ['data' => $data, 'groupName' => $groupName, 'serverName' => $serverName] = $data['data'];
 
-        /** @var IWorkermanServer|null $server */
-        $server = Server::getServer($serverName);
-        if (!$server)
-        {
-            return;
-        }
-
-        $groups = (array) $groupName;
-        foreach ($groups as $tmpGroupName)
-        {
-            $group = $server->getGroup($tmpGroupName);
-            if ($group)
-            {
-                Server::sendRaw($data, $group->getFds(), $serverName, false);
-            }
-        }
+        /** @var LocalServerUtil $serverUtil */
+        $serverUtil = App::getBean(LocalServerUtil::class);
+        $serverUtil->sendRawToGroup($groupName, $data, $serverName, false);
     }
 }
