@@ -138,14 +138,16 @@ abstract class Log
     /**
      * 获取代码调用跟踪.
      *
-     * @param array $topTraces
+     * @param array|null $topTraces
+     *
      * @return array
      */
-    private static function getTrace(array &$topTraces): array
+    private static function getTrace(?array &$topTraces): array
     {
         $backtrace = debug_backtrace();
         $result = array_splice($backtrace, 3);
         $topTraces = $backtrace;
+
         return $result;
     }
 
@@ -153,6 +155,7 @@ abstract class Log
      * 获取错误文件位置.
      *
      * @param array|null $topThreeTraces
+     *
      * @return array
      */
     private static function getErrorFile(?array $topThreeTraces = null): array

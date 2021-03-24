@@ -128,11 +128,11 @@ class Logger extends AbstractLogger
     /**
      * 获取代码调用跟踪.
      *
-     * @param array $backtrace
+     * @param array|null $backtrace
      *
      * @return array
      */
-    protected function getTrace(array &$backtrace)
+    protected function getTrace(?array &$backtrace)
     {
         $backtrace = debug_backtrace();
         $index = null;
