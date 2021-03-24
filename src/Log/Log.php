@@ -138,23 +138,30 @@ abstract class Log
     /**
      * 获取代码调用跟踪.
      *
+     * @param array|null $topTraces
+     *
      * @return array
      */
-    private static function getTrace()
+    protected static function getTrace(?array &$topTraces): array
     {
-        $backtrace = debug_backtrace();
+        $limit = App::getBean('ErrorLog')->getBacktraceLimit();
+        $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
+        $result = array_splice($backtrace, 3);
+        $topTraces = $backtrace;
 
-        return array_splice($backtrace, 3);
+        return $result;
     }
 
     /**
      * 获取错误文件位置.
      *
+     * @param array|null $topThreeTraces
+     *
      * @return array
      */
-    private static function getErrorFile()
+    protected static function getErrorFile(?array $topThreeTraces = null): array
     {
-        $backtrace = debug_backtrace(0, 3);
+        $backtrace = $topThreeTraces ?? debug_backtrace(0, 3);
         $secondItem = $backtrace[2] ?? null;
 
         return [$secondItem['file'] ?? '', $secondItem['line'] ?? 0];
@@ -167,15 +174,16 @@ abstract class Log
      *
      * @return array
      */
-    private static function parseContext($context)
+    protected static function parseContext($context)
     {
+        $topThreeTraces = null;
         if (!isset($context['trace']))
         {
-            $context['trace'] = static::getTrace();
+            $context['trace'] = static::getTrace($topThreeTraces);
         }
         if (!isset($context['errorFile']))
         {
-            list($file, $line) = static::getErrorFile();
+            list($file, $line) = static::getErrorFile($topThreeTraces);
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
         }

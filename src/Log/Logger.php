@@ -2,6 +2,7 @@
 
 namespace Imi\Log;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
 use Imi\Event\Event;
@@ -132,7 +133,7 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    protected function getTrace($backtrace)
+    protected function getTrace(array &$backtrace)
     {
         $index = null;
         $realClassName = static::__getRealClassName();
@@ -160,7 +161,7 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    public function getErrorFile($backtrace)
+    public function getErrorFile(array $backtrace)
     {
         $index = null;
         $realClassName = static::__getRealClassName();
@@ -185,16 +186,18 @@ class Logger extends AbstractLogger
      *
      * @return array
      */
-    private function parseContext($context)
+    protected function parseContext($context)
     {
-        $debugBackTrace = debug_backtrace();
+        $limit = App::getBean('ErrorLog')->getBacktraceLimit();
         if (!isset($context['trace']))
         {
-            $context['trace'] = $this->getTrace($debugBackTrace);
+            $backtrace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
+            $context['trace'] = $this->getTrace($backtrace);
         }
         if (!isset($context['errorFile']))
         {
-            list($file, $line) = $this->getErrorFile($debugBackTrace);
+            $backtrace = $backtrace ?? debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
+            list($file, $line) = $this->getErrorFile($backtrace);
             $context['errorFile'] = $file;
             $context['errorLine'] = $line;
         }
