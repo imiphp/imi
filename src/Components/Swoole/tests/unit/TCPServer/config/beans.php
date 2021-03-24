@@ -56,4 +56,7 @@ return [
             ],
         ],
     ],
+    'ServerGroup' => [
+        'groupHandler' => 'GroupRedis',
+    ],
 ];

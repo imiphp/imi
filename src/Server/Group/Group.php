@@ -42,7 +42,7 @@ class Group
     /**
      * 分组处理器.
      */
-    protected string $groupHandler = \Imi\Server\Group\Handler\Local::class;
+    protected string $groupHandler = 'GroupLocal';
 
     /**
      * 处理器.
