@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server;
 
+use Imi\App;
 use Imi\Config;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Contract\IServerUtil;
@@ -36,7 +37,7 @@ class Server
                 throw new InvalidArgumentException('Config "@app.imi.ServerUtil" not found');
             }
 
-            return static::$serverUtil = new $contextClass();
+            return static::$serverUtil = App::getBean($contextClass);
         }
 
         return static::$serverUtil;

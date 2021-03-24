@@ -34,13 +34,13 @@ return [
 
     // 数据库配置
     'db'    => [
-        // 数默认连接池名
+        // 默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
     'redis' => [
-        // 数默认连接池名
+        // 默认连接池名
         'defaultPool'   => 'redis',
     ],
 

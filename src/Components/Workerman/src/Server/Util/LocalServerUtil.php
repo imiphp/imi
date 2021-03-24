@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\Util;
 
 use Imi\App;
+use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Server\ConnectContext\ConnectionBinder;
@@ -14,6 +15,9 @@ use Imi\Workerman\Server\Contract\IWorkermanServer;
 use Imi\Workerman\Server\Contract\IWorkermanServerUtil;
 use Workerman\Connection\TcpConnection;
 
+/**
+ * @Bean("LocalServerUtil")
+ */
 class LocalServerUtil implements IWorkermanServerUtil
 {
     /**

@@ -34,7 +34,7 @@ return [
     ],
     // db 配置
     'db' => [
-        // 数默认连接池名
+        // 默认连接池名
         'defaultPool' => 'maindb',
         'connections' => [
             'tradition' => [

@@ -60,13 +60,13 @@ return [
 
     // 数据库配置
     'db'    => [
-        // 数默认连接池名
+        // 默认连接池名
         'defaultPool'    => 'maindb',
     ],
 
     // redis 配置
     'redis' => [
-        // 数默认连接池名
+        // 默认连接池名
         'defaultPool'   => 'redis',
         'connections'   => [
             'redis' => [
@@ -91,6 +91,6 @@ return [
     ],
 
     'imi' => [
-        'ServerUtil' => \Imi\Workerman\Server\Util\ChannelServerUtil::class,
+        'ServerUtil' => 'ChannelServerUtil',
     ],
 ];
