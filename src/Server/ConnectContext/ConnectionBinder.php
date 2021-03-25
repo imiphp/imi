@@ -95,7 +95,7 @@ class ConnectionBinder
      *
      * @return void
      */
-    public function unbind(string $flag, int $keepTime = null)
+    public function unbind(string $flag, ?int $keepTime = null)
     {
         $this->handler->unbind($flag, $keepTime);
     }

@@ -31,6 +31,13 @@ return [
         'TcpRouteNotFoundHandler'   => [
             'handler'   => 'RouteNotFound',
         ],
+        // 连接绑定器
+        'ConnectionBinder'  => [
+            'handlerClass' => 'ConnectionBinderLocal',
+        ],
+        // 连接绑定器本地驱动
+        'ConnectionBinderLocal' => [
+        ],
     ],
     'controller'    => [
         'singleton' => false,

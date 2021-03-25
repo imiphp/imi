@@ -301,7 +301,7 @@ abstract class ConnectContext
      *
      * @return void
      */
-    public static function unbind(string $flag, int $keepTime = null)
+    public static function unbind(string $flag, ?int $keepTime = null)
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');

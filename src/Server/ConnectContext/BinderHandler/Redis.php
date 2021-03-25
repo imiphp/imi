@@ -137,7 +137,7 @@ class Redis implements IHandler
      *
      * @return void
      */
-    public function unbind(string $flag, int $keepTime = null)
+    public function unbind(string $flag, ?int $keepTime = null)
     {
         $this->useRedis(function (RedisHandler $redis) use ($flag, $keepTime) {
             $key = $this->key;
