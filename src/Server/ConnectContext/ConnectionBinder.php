@@ -2,11 +2,8 @@
 
 namespace Imi\Server\ConnectContext;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
-use Imi\Redis\Redis;
-use Imi\Redis\RedisHandler;
-use Imi\Worker;
 
 /**
  * 连接绑定器.
@@ -16,54 +13,52 @@ use Imi\Worker;
 class ConnectionBinder
 {
     /**
-     * Redis 连接池名称.
+     * 处理器类.
      *
      * @var string
      */
-    protected $redisPool;
+    protected $handlerClass = 'ConnectionBinderRedis';
 
     /**
-     * redis中第几个库.
+     * 处理器对象.
      *
-     * @var int
+     * @var \Imi\Server\ConnectContext\BinderHandler\IHandler
      */
-    protected $redisDb = 0;
+    private $handler;
 
     /**
-     * 键.
+     * Redis 连接池名称，仅兼容 ConnectionBinderRedis 时有效.
      *
-     * @var string
+     * @deprecated 2.0
+     *
+     * @var string|null
      */
-    protected $key = 'imi:connectionBinder:map';
+    protected $redisPool = null;
+
+    /**
+     * redis中第几个库，仅兼容 ConnectionBinderRedis 时有效.
+     *
+     * @deprecated 2.0
+     *
+     * @var int|null
+     */
+    protected $redisDb = null;
+
+    /**
+     * 键，仅兼容 ConnectionBinderRedis 时有效.
+     *
+     * @deprecated 2.0
+     *
+     * @var string|null
+     */
+    protected $key = null;
 
     /**
      * @return void
      */
     public function __init()
     {
-        if (0 === Worker::getWorkerID())
-        {
-            $this->useRedis(function (RedisHandler $redis) {
-                $key = $this->key;
-                $redis->del($key);
-                $keys = [];
-                $count = 0;
-                foreach ($redis->scanEach($key . ':*') as $key)
-                {
-                    $keys[] = $key;
-                    if (++$count >= 1000)
-                    {
-                        $redis->del($keys);
-                        $keys = [];
-                        $count = 0;
-                    }
-                }
-                if ($keys)
-                {
-                    $redis->del($keys);
-                }
-            });
-        }
+        $this->handler = App::getBean($this->handlerClass);
     }
 
     /**
@@ -76,10 +71,7 @@ class ConnectionBinder
      */
     public function bind(string $flag, int $fd)
     {
-        ConnectContext::set('__flag', $flag, $fd);
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $fd) {
-            $redis->hSet($this->key, $flag, $fd);
-        });
+        $this->handler->bind($flag, $fd);
     }
 
     /**
@@ -92,15 +84,7 @@ class ConnectionBinder
      */
     public function bindNx(string $flag, int $fd): bool
     {
-        $result = $this->useRedis(function (RedisHandler $redis) use ($flag, $fd) {
-            return $redis->hSetNx($this->key, $flag, $fd);
-        });
-        if ($result)
-        {
-            ConnectContext::set('__flag', $flag, $fd);
-        }
-
-        return $result;
+        return $this->handler->bindNx($flag, $fd);
     }
 
     /**
@@ -113,20 +97,7 @@ class ConnectionBinder
      */
     public function unbind(string $flag, int $keepTime = null)
     {
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $keepTime) {
-            $key = $this->key;
-            if ($fd = $redis->hGet($key, $flag))
-            {
-                ConnectContext::set('__flag', null, $fd);
-            }
-            $redis->multi();
-            $redis->hDel($key, $flag);
-            if ($fd && $keepTime > 0)
-            {
-                $redis->set($key . ':old:' . $flag, $fd, $keepTime);
-            }
-            $redis->exec();
-        });
+        $this->handler->unbind($flag, $keepTime);
     }
 
     /**
@@ -138,9 +109,7 @@ class ConnectionBinder
      */
     public function getFdByFlag(string $flag): ?int
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($flag) {
-            return $redis->hGet($this->key, $flag);
-        });
+        return $this->handler->getFdByFlag($flag);
     }
 
     /**
@@ -152,9 +121,7 @@ class ConnectionBinder
      */
     public function getFdsByFlags(array $flags): array
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($flags) {
-            return $redis->hMget($this->key, $flags);
-        });
+        return $this->handler->getFdsByFlags($flags);
     }
 
     /**
@@ -166,7 +133,7 @@ class ConnectionBinder
      */
     public function getFlagByFd(int $fd): ?string
     {
-        return ConnectContext::get('__flag', null, $fd);
+        return $this->handler->getFlagByFd($fd);
     }
 
     /**
@@ -178,13 +145,7 @@ class ConnectionBinder
      */
     public function getFlagsByFds(array $fds): array
     {
-        $flags = [];
-        foreach ($fds as $fd)
-        {
-            $flags[$fd] = ConnectContext::get('__flag', null, $fd);
-        }
-
-        return $flags;
+        return $this->handler->getFlagsByFds($fds);
     }
 
     /**
@@ -196,24 +157,6 @@ class ConnectionBinder
      */
     public function getOldFdByFlag(string $flag): ?int
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($flag) {
-            return $redis->get($this->key . ':old:' . $flag);
-        });
-    }
-
-    /**
-     * 使用redis.
-     *
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    private function useRedis($callback)
-    {
-        return Redis::use(function ($redis) use ($callback) {
-            $redis->select($this->redisDb);
-
-            return $callback($redis);
-        }, $this->redisPool, true);
+        return $this->handler->getOldFdByFlag($flag);
     }
 }

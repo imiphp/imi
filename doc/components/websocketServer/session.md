@@ -49,6 +49,11 @@ Redis:
     ],
     // 连接绑定器
     'ConnectionBinder'  =>  [
+        // 处理器类，默认 ConnectionBinderRedis
+        // 'handlerClass' => 'ConnectionBinderRedis',
+    ],
+    // Redis 连接绑定器配置
+    'ConnectionBinderRedis' => [
         // Redis 连接池名称
         'redisPool' =>  'redis',
         // redis中第几个库
@@ -75,6 +80,11 @@ Local:
     ],
     // 连接绑定器
     'ConnectionBinder'  =>  [
+        // 处理器类，默认 ConnectionBinderRedis
+        // 'handlerClass' => 'ConnectionBinderRedis',
+    ],
+    // Redis 连接绑定器配置
+    'ConnectionBinderRedis' => [
         // Redis 连接池名称
         'redisPool' =>  'redis',
         // redis中第几个库
@@ -100,6 +110,11 @@ MemoryTable:
     ],
     // 连接绑定器
     'ConnectionBinder'  =>  [
+        // 处理器类，默认 ConnectionBinderRedis
+        // 'handlerClass' => 'ConnectionBinderRedis',
+    ],
+    // Redis 连接绑定器配置
+    'ConnectionBinderRedis' => [
         // Redis 连接池名称
         'redisPool' =>  'redis',
         // redis中第几个库
