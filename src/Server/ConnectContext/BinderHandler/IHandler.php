@@ -35,7 +35,7 @@ interface IHandler
      *
      * @return void
      */
-    public function unbind(string $flag, int $keepTime = null);
+    public function unbind(string $flag, ?int $keepTime = null);
 
     /**
      * 使用标记获取连接编号.

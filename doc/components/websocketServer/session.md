@@ -47,20 +47,6 @@ Redis:
         'dataDecode'=>  'unserialize', // 数据读出后处理回调
         'lockId'    =>  null, // 必设，需要用锁来防止数据错乱问题
     ],
-    // 连接绑定器
-    'ConnectionBinder'  =>  [
-        // 处理器类，默认 ConnectionBinderRedis
-        // 'handlerClass' => 'ConnectionBinderRedis',
-    ],
-    // Redis 连接绑定器配置
-    'ConnectionBinderRedis' => [
-        // Redis 连接池名称
-        'redisPool' =>  'redis',
-        // redis中第几个库
-        'redisDb'   =>  0,
-        // 键，多个服务共用 redis 请设为不同的，不然会冲突
-        'key'       =>  'imi:wsTest:connectionBinder:map',
-    ],
 ],
 ```
 
@@ -78,20 +64,6 @@ Local:
     'ConnectContextLocal'    =>    [
         'lockId'    =>  null, // 必设，需要用锁来防止数据错乱问题
     ],
-    // 连接绑定器
-    'ConnectionBinder'  =>  [
-        // 处理器类，默认 ConnectionBinderRedis
-        // 'handlerClass' => 'ConnectionBinderRedis',
-    ],
-    // Redis 连接绑定器配置
-    'ConnectionBinderRedis' => [
-        // Redis 连接池名称
-        'redisPool' =>  'redis',
-        // redis中第几个库
-        'redisDb'   =>  0,
-        // 键，多个服务共用 redis 请设为不同的，不然会冲突
-        'key'       =>  'imi:wsTest:connectionBinder:map',
-    ],
 ],
 ```
 
@@ -108,9 +80,17 @@ MemoryTable:
         'dataDecode'=>  'unserialize', // 数据读出后处理回调
         'lockId'    =>  null, // 非必设，因为如果用 MemoryTable，默认是用 MemoryTable 的 Lock
     ],
+],
+```
+
+### 连接绑定器
+
+```php
+'beans' =>  [
     // 连接绑定器
     'ConnectionBinder'  =>  [
         // 处理器类，默认 ConnectionBinderRedis
+        // 支持：ConnectionBinderRedis、ConnectionBinderLocal
         // 'handlerClass' => 'ConnectionBinderRedis',
     ],
     // Redis 连接绑定器配置
@@ -121,6 +101,10 @@ MemoryTable:
         'redisDb'   =>  0,
         // 键，多个服务共用 redis 请设为不同的，不然会冲突
         'key'       =>  'imi:wsTest:connectionBinder:map',
+    ],
+    // 连接绑定器本地驱动
+    'ConnectionBinderLocal' => [
+        // 'gcInteval' => 60, // 清除旧的过期数据时间间隔，单位：秒
     ],
 ],
 ```

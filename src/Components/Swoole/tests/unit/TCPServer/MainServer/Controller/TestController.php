@@ -27,6 +27,7 @@ class TestController extends \Imi\Controller\TcpController
     {
         ConnectContext::set('username', $data->username);
         $this->server->joinGroup('g1', $this->data->getFd());
+        ConnectContext::bind($data->username);
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];
     }
