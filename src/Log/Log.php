@@ -143,7 +143,7 @@ class Log
      */
     protected static function parseContext(array $context): array
     {
-        $topThreeTraces = null;+
+        $topThreeTraces = null;
         $context['trace'] ??= static::getTrace($topThreeTraces);
         if (!isset($context['errorFile']))
         {
