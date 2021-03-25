@@ -58,7 +58,14 @@ class ConnectionBinder
      */
     public function __init()
     {
-        $this->handler = App::getBean($this->handlerClass);
+        if ('ConnectionBinderRedis' === $this->handlerClass || \Imi\Server\ConnectContext\BinderHandler\Redis::class === $this->handlerClass)
+        {
+            $this->handler = App::getBean($this->handlerClass, $this->redisPool, $this->redisDb, $this->key);
+        }
+        else
+        {
+            $this->handler = App::getBean($this->handlerClass);
+        }
     }
 
     /**
