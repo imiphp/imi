@@ -96,14 +96,17 @@ class RedisResource extends BasePoolResource
     {
         $config = $this->config;
         $redis = $this->redis;
-        if (!$redis->select($config['db'] ?? 0))
+        if ($redis->isConnected())
         {
-            throw new \RedisException('Redis select db failed');
-        }
-        $optScan = $config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
-        if (!$redis->setOption(\Redis::OPT_SCAN, $optScan))
-        {
-            throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', \Redis::OPT_SCAN, $optScan));
+            if (!$redis->select($config['db'] ?? 0))
+            {
+                throw new \RedisException('Redis select db failed');
+            }
+            $optScan = $config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
+            if (!$redis->setOption(\Redis::OPT_SCAN, $optScan))
+            {
+                throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', \Redis::OPT_SCAN, $optScan));
+            }
         }
     }
 

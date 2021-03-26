@@ -223,7 +223,7 @@ class Redis implements IHandler
     public function getOldFdByFlag(string $flag): ?int
     {
         return $this->useRedis(function (RedisHandler $redis) use ($flag) {
-            return $redis->get($this->key . ':old:' . $flag);
+            return $redis->get($this->key . ':old:' . $flag) ?: null;
         });
     }
 
