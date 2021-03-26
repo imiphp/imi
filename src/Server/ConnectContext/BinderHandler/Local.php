@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\ConnectContext\BinderHandler;
 
 use Imi\Bean\Annotation\Bean;
-use Swoole\Timer;
+use Imi\Timer\Timer;
 
 /**
  * 连接绑定器本地驱动.
@@ -14,52 +16,36 @@ class Local implements IHandler
 {
     /**
      * 清除旧的过期数据时间间隔，单位：秒.
-     *
-     * @var float
      */
-    protected $gcInteval = 60;
+    protected float $gcInteval = 60;
 
     /**
      * 标记数据.
-     *
-     * @var array
      */
-    private $flagsMap = [];
+    private array $flagsMap = [];
 
     /**
      * 连接号数据.
-     *
-     * @var array
      */
-    private $fdsMap = [];
+    private array $fdsMap = [];
 
     /**
      * 旧数据.
-     *
-     * @var array
      */
-    private $oldDataMap = [];
+    private array $oldDataMap = [];
 
-    /**
-     * @return void
-     */
-    public function __init()
+    public function __init(): void
     {
         if ($this->gcInteval > 0)
         {
-            Timer::tick($this->gcInteval * 1000, [$this, 'gc']);
+            Timer::tick((int) ($this->gcInteval * 1000), [$this, 'gc']);
         }
     }
 
     /**
      * 绑定一个标记到当前连接.
-     *
-     * @param string $flag
-     * @param int    $fd
-     *
-     * @return void
      */
-    public function bind(string $flag, int $fd)
+    public function bind(string $flag, int $fd): void
     {
         $this->flagsMap[$fd] = $flag;
         $this->fdsMap[$flag] = $fd;
@@ -67,11 +53,6 @@ class Local implements IHandler
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
-     *
-     * @param string $flag
-     * @param int    $fd
-     *
-     * @return bool
      */
     public function bindNx(string $flag, int $fd): bool
     {
@@ -87,12 +68,9 @@ class Local implements IHandler
     /**
      * 取消绑定.
      *
-     * @param string   $flag
      * @param int|null $keepTime 旧数据保持时间，null 则不保留
-     *
-     * @return void
      */
-    public function unbind(string $flag, ?int $keepTime = null)
+    public function unbind(string $flag, ?int $keepTime = null): void
     {
         $fd = $this->getFdByFlag($flag);
         if (null === $fd)
@@ -119,10 +97,6 @@ class Local implements IHandler
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @param string $flag
-     *
-     * @return int|null
      */
     public function getFdByFlag(string $flag): ?int
     {
@@ -153,10 +127,6 @@ class Local implements IHandler
 
     /**
      * 使用连接编号获取标记.
-     *
-     * @param int $fd
-     *
-     * @return string|null
      */
     public function getFlagByFd(int $fd): ?string
     {
@@ -187,10 +157,6 @@ class Local implements IHandler
 
     /**
      * 使用标记获取旧的连接编号.
-     *
-     * @param string $flag
-     *
-     * @return int|null
      */
     public function getOldFdByFlag(string $flag): ?int
     {
@@ -213,8 +179,6 @@ class Local implements IHandler
 
     /**
      * 清除旧的过期数据.
-     *
-     * @return void
      */
     public function gc(): void
     {

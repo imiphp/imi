@@ -18,6 +18,9 @@ return [
                 \Imi\Swoole\Test\WebSocketServer\MainServer\Middleware\Test::class,
             ],
         ],
+        'ServerGroup' => [
+            'groupHandler' => 'GroupLocal',
+        ],
         'GroupRedis'    => [
             'redisPool'    => 'redis',
             'redisDb'      => 2,
@@ -43,6 +46,9 @@ return [
             'handler'   => 'RouteNotFound',
         ],
         'ConnectionBinder'  => [
+            'handlerClass' => 'ConnectionBinderRedis',
+        ],
+        'ConnectionBinderRedis' => [
             'redisPool' => 'redis',
             'key'       => 'imi:wsTest:connectionBinder:map',
         ],

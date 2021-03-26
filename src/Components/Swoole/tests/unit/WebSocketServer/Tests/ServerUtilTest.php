@@ -189,80 +189,52 @@ class ServerUtilTest extends BaseTest
     {
         $this->go(function () {
             $th = null;
-            $waitChannel = new Channel(16);
-            $func = function ($recvCount) use ($waitChannel) {
-                $dataStr = json_encode([
-                    'data'  => 'test',
-                ]);
-                $http = new HttpRequest();
-                $http->retry = 3;
-                $http->timeout = 10000;
-                $client = $http->websocket($this->host);
-                $this->assertTrue($client->isConnected());
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'login',
-                    'username'  => uniqid('', true),
-                ])));
-                $recv = $client->recv();
-                $recvData = json_decode($recv, true);
-                $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
-                $waitChannel->push(1);
-                for ($i = 0; $i < $recvCount; ++$i)
-                {
-                    $recvResult = $client->recv();
-                    $this->assertEquals($dataStr, $recvResult, $client->getErrorCode() . '-' . $client->getErrorMessage());
-                }
-                $client->close();
-            };
-            for ($i = 0; $i < 2; ++$i)
-            {
-                go(function () use ($func, $waitChannel) {
-                    try
-                    {
-                        $func(2);
-                        $waitChannel->push(1);
-                    }
-                    catch (\Throwable $th)
-                    {
-                        $waitChannel->push($th);
-                    }
-                });
-            }
-            $th = null;
-            for ($i = 0; $i < 2; ++$i)
-            {
-                $result = $waitChannel->pop();
-                $this->assertNotFalse($result);
-                if ($result instanceof \Throwable)
-                {
-                    $th = $result;
-                }
-            }
-            if (isset($th))
-            {
-                throw $th;
-            }
+
+            $dataStr = json_encode([
+                'data'  => 'test',
+            ]);
+            $http1 = new HttpRequest();
+            $http1->retry = 3;
+            $http1->timeout = 10000;
+            $client1 = $http1->websocket($this->host);
+            $this->assertTrue($client1->isConnected());
+            $this->assertTrue($client1->send(json_encode([
+                'action'    => 'login',
+                'username'  => uniqid('', true),
+            ])));
+            $recv = $client1->recv();
+            $recvData = json_decode($recv, true);
+            $this->assertTrue($recvData['success'] ?? null, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+
+            $http2 = new HttpRequest();
+            $http2->retry = 3;
+            $http2->timeout = 10000;
+            $client2 = $http2->websocket($this->host);
+            $this->assertTrue($client2->isConnected());
+            $this->assertTrue($client2->send(json_encode([
+                'action'    => 'login',
+                'username'  => uniqid('', true),
+            ])));
+            $recv = $client2->recv();
+            $recvData = json_decode($recv, true);
+            $this->assertTrue($recvData['success'] ?? null, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
+
             $http = new HttpRequest();
             $response = $http->get($this->host . 'serverUtil/sendToGroup');
-            $th = null;
-            for ($i = 0; $i < 2; ++$i)
-            {
-                $result = $waitChannel->pop();
-                $this->assertNotFalse($result);
-                if ($result instanceof \Throwable)
-                {
-                    $th = $result;
-                }
-            }
-            if (isset($th))
-            {
-                throw $th;
-            }
             $this->assertEquals([
                 'groupFdCount'   => 2,
                 'sendToGroup'    => 2,
                 'sendRawToGroup' => 2,
             ], $response->json(true));
+
+            for ($i = 0; $i < 2; ++$i)
+            {
+                $recvResult = $client1->recv();
+                $this->assertEquals($dataStr, $recvResult, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+                $recvResult = $client2->recv();
+                $this->assertEquals($dataStr, $recvResult, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+            }
+            $client2->close();
         });
     }
 

@@ -7,6 +7,7 @@ namespace Imi\Swoole\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\Event;
+use Imi\Server\Server;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
 use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
@@ -41,6 +42,7 @@ class AfterWorkerStart implements IWorkerStartEventListener
         }
         // worker 初始化
         Worker::inited();
+        Server::getInstance();
     }
 
     /**

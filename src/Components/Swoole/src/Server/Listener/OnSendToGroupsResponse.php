@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;

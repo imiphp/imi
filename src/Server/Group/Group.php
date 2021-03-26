@@ -202,7 +202,8 @@ class Group
         $result = [];
         /** @var FdMap $fdMap */
         $fdMap = $server->getBean('FdMap');
-        foreach ($this->handler->getFds($this->groupName) as $fd)
+        $fds = $this->handler->getFds($this->groupName);
+        foreach ($fds as $fd)
         {
             // 执行结果
             $result[$fd] = $itemResult = $server->callServerMethod($name, $fd, ...$arguments);

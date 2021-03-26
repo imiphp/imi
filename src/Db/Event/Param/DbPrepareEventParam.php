@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Db\Event\Param;
 
 use Imi\Db\Interfaces\IStatement;

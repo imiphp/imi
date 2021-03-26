@@ -87,7 +87,9 @@ class Driver extends Base implements IDb
      */
     public function isConnected(): bool
     {
-        return $this->instance->ping();
+        $instance = $this->instance;
+
+        return $instance && $instance->ping();
     }
 
     /**

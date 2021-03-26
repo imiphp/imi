@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\ConnectContext\BinderHandler;
 
 use Imi\Bean\Annotation\Bean;
@@ -17,56 +19,24 @@ class Redis implements IHandler
 {
     /**
      * Redis 连接池名称.
-     *
-     * @var string|null
      */
-    protected $redisPool;
+    protected ?string $redisPool = null;
 
     /**
      * redis中第几个库.
-     *
-     * @var int
      */
-    protected $redisDb = 0;
+    protected int $redisDb = 0;
 
     /**
      * 键.
-     *
-     * @var string
      */
-    protected $key = 'imi:connectionBinder:map';
-
-    /**
-     * @deprecated 2.0
-     *
-     * @var array
-     */
-    private $data = [];
-
-    public function __construct(?string $redisPool = null, ?int $redisDb = null, ?string $key = null)
-    {
-        $this->data = compact('redisPool', 'redisDb', 'key');
-    }
+    protected string $key = 'imi:connectionBinder:map';
 
     /**
      * @return void
      */
     public function __init()
     {
-        // @deprecated 2.0
-        if (isset($this->data['redisPool']))
-        {
-            $this->redisPool = $this->data['redisPool'];
-        }
-        if (isset($this->data['redisDb']))
-        {
-            $this->redisDb = $this->data['redisDb'];
-        }
-        if (isset($this->data['key']))
-        {
-            $this->key = $this->data['key'];
-        }
-
         if (0 === Worker::getWorkerID())
         {
             $this->useRedis(function (RedisHandler $redis) {
@@ -94,13 +64,8 @@ class Redis implements IHandler
 
     /**
      * 绑定一个标记到当前连接.
-     *
-     * @param string $flag
-     * @param int    $fd
-     *
-     * @return void
      */
-    public function bind(string $flag, int $fd)
+    public function bind(string $flag, int $fd): void
     {
         ConnectContext::set('__flag', $flag, $fd);
         $this->useRedis(function (RedisHandler $redis) use ($flag, $fd) {
@@ -110,11 +75,6 @@ class Redis implements IHandler
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
-     *
-     * @param string $flag
-     * @param int    $fd
-     *
-     * @return bool
      */
     public function bindNx(string $flag, int $fd): bool
     {
@@ -132,12 +92,9 @@ class Redis implements IHandler
     /**
      * 取消绑定.
      *
-     * @param string   $flag
      * @param int|null $keepTime 旧数据保持时间，null 则不保留
-     *
-     * @return void
      */
-    public function unbind(string $flag, ?int $keepTime = null)
+    public function unbind(string $flag, ?int $keepTime = null): void
     {
         $this->useRedis(function (RedisHandler $redis) use ($flag, $keepTime) {
             $key = $this->key;
@@ -157,10 +114,6 @@ class Redis implements IHandler
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @param string $flag
-     *
-     * @return int|null
      */
     public function getFdByFlag(string $flag): ?int
     {
@@ -185,10 +138,6 @@ class Redis implements IHandler
 
     /**
      * 使用连接编号获取标记.
-     *
-     * @param int $fd
-     *
-     * @return string|null
      */
     public function getFlagByFd(int $fd): ?string
     {
@@ -215,15 +164,11 @@ class Redis implements IHandler
 
     /**
      * 使用标记获取旧的连接编号.
-     *
-     * @param string $flag
-     *
-     * @return int|null
      */
     public function getOldFdByFlag(string $flag): ?int
     {
         return $this->useRedis(function (RedisHandler $redis) use ($flag) {
-            return $redis->get($this->key . ':old:' . $flag);
+            return $redis->get($this->key . ':old:' . $flag) ?: null;
         });
     }
 

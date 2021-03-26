@@ -31,6 +31,9 @@ return [
             'handler'   => 'WSRouteNotFound',
         ],
         'ConnectionBinder'  => [
+            'handlerClass' => 'ConnectionBinderRedis',
+        ],
+        'ConnectionBinderRedis' => [
             'redisPool' => 'redis',
             'key'       => 'imi:wsTest:connectionBinder:map',
         ],

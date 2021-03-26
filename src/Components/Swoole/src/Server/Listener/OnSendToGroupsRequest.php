@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Swoole\Server\Listener;
 
 use Imi\Bean\Annotation\Listener;
@@ -19,13 +21,15 @@ class OnSendToGroupsRequest implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        $data = $e->getData();
-        $workerId = $data['workerId'];
-        $data = $data['data'];
+        $eData = $e->getData();
+        $data = $eData['data'];
         $result = Server::sendRawToGroup($data['groups'], $data['data'], $data['serverName'], false);
-        Server::sendMessage('sendToGroupsResponse', [
-            'messageId' => $data['messageId'],
-            'result'    => $result,
-        ], $workerId);
+        if ($data['needResponse'] ?? true)
+        {
+            Server::sendMessage('sendToGroupsResponse', [
+                'messageId' => $data['messageId'],
+                'result'    => $result,
+            ], $eData['workerId']);
+        }
     }
 }

@@ -124,6 +124,25 @@ function startServer(): void
         return $serverStarted;
     }
 
+    // @phpstan-ignore-next-line
+    function checkWebSocketServerWithRedisServerUtilStatus(): bool
+    {
+        $serverStarted = false;
+        for ($i = 0; $i < 60; ++$i)
+        {
+            sleep(1);
+            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            @file_get_contents('http://127.0.0.1:13008/', false, $context);
+            if (isset($http_response_header[0]) && 'HTTP/1.1 400 Bad Request' === $http_response_header[0])
+            {
+                $serverStarted = true;
+                break;
+            }
+        }
+
+        return $serverStarted;
+    }
+
     $servers = [
         'HttpServer'    => [
             'start'         => __DIR__ . '/unit/HttpServer/bin/start.sh',
@@ -149,6 +168,11 @@ function startServer(): void
             'start'         => __DIR__ . '/unit/UDPServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/UDPServer/bin/stop.sh',
             'checkStatus'   => 'checkUDPServerStatus',
+        ],
+        'WebSocketServerWithRedisServerUtil'    => [
+            'start'         => __DIR__ . '/unit/WebSocketServerWithRedisServerUtil/bin/start.sh',
+            'stop'          => __DIR__ . '/unit/WebSocketServerWithRedisServerUtil/bin/stop.sh',
+            'checkStatus'   => 'checkWebSocketServerWithRedisServerUtilStatus',
         ],
     ];
 

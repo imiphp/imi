@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Swoole\Test\Component\Db\Listener;
 
 use Imi\App;

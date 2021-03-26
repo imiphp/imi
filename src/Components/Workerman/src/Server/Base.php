@@ -238,6 +238,9 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'server' => $this,
                 'worker' => $worker,
             ], $this);
+
+            \Imi\Worker::inited();
+            Server::getInstance();
         };
 
         $this->worker->onWorkerStop = function (Worker $worker) {

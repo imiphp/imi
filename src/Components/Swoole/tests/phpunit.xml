@@ -22,6 +22,9 @@
         <testsuite name="WebSocketServer">
             <directory>unit/WebSocketServer/Tests</directory>
         </testsuite>
+        <testsuite name="WebSocketServerWithRedisServerUtil">
+            <directory>unit/WebSocketServerWithRedisServerUtil/Tests</directory>
+        </testsuite>
         <testsuite name="TCPServer">
             <directory>unit/TCPServer/Tests</directory>
         </testsuite>

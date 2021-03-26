@@ -21,13 +21,15 @@ class OnSendRawToAllRequest implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        $data = $e->getData();
-        $workerId = $data['workerId'];
-        $data = $data['data'];
+        $eData = $e->getData();
+        $data = $eData['data'];
         $result = Server::sendRawToAll($data['data'], $data['serverName'], false);
-        Server::sendMessage('sendRawToAllResponse', [
-            'messageId' => $data['messageId'],
-            'result'    => $result,
-        ], $workerId);
+        if ($data['needResponse'] ?? true)
+        {
+            Server::sendMessage('sendRawToAllResponse', [
+                'messageId' => $data['messageId'],
+                'result'    => $result,
+            ], $eData['workerId']);
+        }
     }
 }

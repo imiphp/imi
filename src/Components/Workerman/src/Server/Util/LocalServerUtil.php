@@ -84,24 +84,11 @@ class LocalServerUtil implements IWorkermanServerUtil
         {
             return 0;
         }
-        if (null === $flag)
-        {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
-            {
-                return 0;
-            }
-            $fds = [$fd];
 
-            return $this->send($data, $fds, $serverName, false);
-        }
-        else
-        {
-            /** @var \Imi\Server\DataParser\DataParser $dataParser */
-            $dataParser = $server->getBean(DataParser::class);
+        /** @var \Imi\Server\DataParser\DataParser $dataParser */
+        $dataParser = $server->getBean(DataParser::class);
 
-            return $this->sendRawByFlag($dataParser->encode($data, $serverName), $flag, $serverName, $toAllWorkers);
-        }
+        return $this->sendRawByFlag($dataParser->encode($data, $serverName), $flag, $serverName, $toAllWorkers);
     }
 
     /**

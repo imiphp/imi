@@ -108,7 +108,9 @@ class Driver extends Base implements IDb
     {
         try
         {
-            return false !== $this->instance->getAttribute(\PDO::ATTR_SERVER_INFO);
+            $instance = $this->instance;
+
+            return $instance && false !== $instance->getAttribute(\PDO::ATTR_SERVER_INFO);
         }
         catch (\Throwable $e)
         {

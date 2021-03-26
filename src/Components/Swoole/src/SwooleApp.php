@@ -18,7 +18,6 @@ use Imi\Lock\Lock;
 use Imi\Main\Helper;
 use Imi\Pool\PoolManager;
 use Imi\Swoole\Context\CoroutineContextManager;
-use Imi\Swoole\Server\ServerUtil;
 use Imi\Swoole\Util\AtomicManager;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
@@ -115,7 +114,7 @@ class SwooleApp extends CliApp
         }
         if (null === Config::get('@app.imi.ServerUtil'))
         {
-            Config::set('@app.imi.ServerUtil', ServerUtil::class);
+            Config::set('@app.imi.ServerUtil', 'LocalServerUtil');
         }
         if ($initDotEnv)
         {

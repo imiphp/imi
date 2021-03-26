@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server;
+namespace Imi\Swoole\Server\Util;
 
 use Imi\App;
+use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
@@ -17,8 +18,13 @@ use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
 use Imi\Worker;
 
-class ServerUtil implements ISwooleServerUtil
+/**
+ * @Bean("LocalServerUtil")
+ */
+class LocalServerUtil implements ISwooleServerUtil
 {
+    protected bool $needResponse = true;
+
     /**
      * 发送消息给 Worker 进程，使用框架内置格式.
      *
@@ -177,10 +183,11 @@ class ServerUtil implements ISwooleServerUtil
             {
                 $channel = ChannelContainer::getChannel($id);
                 $this->sendMessage('sendToFdsRequest', [
-                    'messageId'  => $id,
-                    'fds'        => $fds,
-                    'data'       => $data,
-                    'serverName' => $server->getName(),
+                    'messageId'    => $id,
+                    'fds'          => $fds,
+                    'data'         => $data,
+                    'serverName'   => $server->getName(),
+                    'needResponse' => $this->needResponse,
                 ]);
                 for ($i = Worker::getWorkerNum(); $i > 0; --$i)
                 {
@@ -306,6 +313,7 @@ class ServerUtil implements ISwooleServerUtil
                     'messageId'     => $id,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
+                    'needResponse'  => $this->needResponse,
                 ]);
                 for ($i = Worker::getWorkerNum(); $i > 0; --$i)
                 {
@@ -394,6 +402,7 @@ class ServerUtil implements ISwooleServerUtil
                     'groups'        => $groups,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
+                    'needResponse'  => $this->needResponse,
                 ]);
                 for ($i = Worker::getWorkerNum(); $i > 0; --$i)
                 {

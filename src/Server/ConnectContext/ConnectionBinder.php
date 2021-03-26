@@ -25,27 +25,6 @@ class ConnectionBinder
      */
     private IHandler $handler;
 
-    /**
-     * Redis 连接池名称，仅兼容 ConnectionBinderRedis 时有效.
-     *
-     * @deprecated 2.0
-     */
-    protected ?string $redisPool = null;
-
-    /**
-     * redis中第几个库，仅兼容 ConnectionBinderRedis 时有效.
-     *
-     * @deprecated 2.0
-     */
-    protected ?int $redisDb = null;
-
-    /**
-     * 键，仅兼容 ConnectionBinderRedis 时有效.
-     *
-     * @deprecated 2.0
-     */
-    protected ?string $key = null;
-
     public function __init(): void
     {
         $this->handler = App::getBean($this->handlerClass);

@@ -126,8 +126,11 @@ class Redis implements IHandler
             // 心跳定时器
             $this->timerId = Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
             Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
-                Timer::del($this->timerId);
-                $this->timerId = null;
+                if ($this->timerId)
+                {
+                    Timer::del($this->timerId);
+                    $this->timerId = null;
+                }
             }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }

@@ -30,8 +30,11 @@ return [
             'handler'   => 'WSRouteNotFound',
         ],
         'ConnectionBinder'  => [
+            'handlerClass' => 'ConnectionBinderRedis',
+        ],
+        'ConnectionBinderRedis' => [
             'redisPool' => 'redis',
-            'key'       => 'imi:wsTest:connectionBinder:map',
+            'key'       => 'imi:ChannelServerUtilServer:connectionBinder:map',
         ],
     ],
     // 锁配置
