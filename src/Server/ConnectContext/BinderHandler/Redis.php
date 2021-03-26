@@ -118,7 +118,7 @@ class Redis implements IHandler
     public function getFdByFlag(string $flag): ?int
     {
         return $this->useRedis(function (RedisHandler $redis) use ($flag) {
-            return $redis->hGet($this->key, $flag);
+            return $redis->hGet($this->key, $flag) ?: null;
         });
     }
 

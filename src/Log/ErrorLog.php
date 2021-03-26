@@ -22,8 +22,6 @@ class ErrorLog
 
     /**
      * 回溯堆栈帧的数量限制.
-     *
-     * @var int
      */
     protected int $backtraceLimit = 0;
 
@@ -165,9 +163,6 @@ class ErrorLog
         return array_splice($backtrace, $index);
     }
 
-    /**
-     * @return int
-     */
     public function getBacktraceLimit(): int
     {
         if (0 === $this->backtraceLimit)

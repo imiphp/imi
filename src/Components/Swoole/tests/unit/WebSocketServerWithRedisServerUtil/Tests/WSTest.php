@@ -54,45 +54,6 @@ class WSTest extends BaseTest
             $recv = $client->recv();
             $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
-
-            // 重连逻辑
-            $http = new HttpRequest();
-            $http->retry = 3;
-            $http->timeout = 10000;
-            $client = $http->websocket($this->host);
-            $this->assertTrue($client->isConnected());
-
-            // 重试3次
-            for ($i = 0; $i < 3; ++$i)
-            {
-                $this->assertTrue($client->send(json_encode([
-                    'action'    => 'reconnect',
-                    'token'     => 'test',
-                ])));
-                $recv = $client->recv();
-                if (false !== $recv)
-                {
-                    $recvData = json_decode($recv, true);
-                    if (null !== $recvData)
-                    {
-                        break;
-                    }
-                }
-                sleep(1);
-            }
-            $this->assertEquals([
-                'success'   => true,
-                'username'  => 'test',
-            ], $recvData, $client->getErrorCode() . '-' . $client->getErrorMessage());
-
-            $time = time();
-            $this->assertTrue($client->send(json_encode([
-                'action'    => 'send',
-                'message'   => $time,
-            ])));
-            $recv = $client->recv();
-            $this->assertEquals('test:' . $time, $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
-            $client->close();
         });
     }
 

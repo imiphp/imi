@@ -210,7 +210,7 @@ class RedisServerUtil extends LocalServerUtil
                         ], $this);
                     });
                 }
-                catch (\Exception $e)
+                catch (\Throwable $e)
                 {
                     $this->errorLog->onException($e);
                     sleep(3); // 等待 3 秒重试

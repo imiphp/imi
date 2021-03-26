@@ -19,7 +19,7 @@ return [
             ],
         ],
         'ServerGroup' => [
-            'groupHandler' => 'GroupLocal',
+            'groupHandler' => 'GroupRedis',
         ],
         'GroupRedis'    => [
             'redisPool'    => 'redis',

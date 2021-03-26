@@ -232,8 +232,9 @@ class ServerUtilTest extends BaseTest
                 $recvResult = $client1->recv();
                 $this->assertEquals($dataStr, $recvResult, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
                 $recvResult = $client2->recv();
-                $this->assertEquals($dataStr, $recvResult, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
+                $this->assertEquals($dataStr, $recvResult, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
             }
+            $client1->close();
             $client2->close();
         });
     }
