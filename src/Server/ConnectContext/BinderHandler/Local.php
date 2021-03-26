@@ -144,7 +144,7 @@ class Local implements IHandler
         {
             if (isset($fdsMap[$flag]))
             {
-                $fds[] = $fdsMap[$flag];
+                $fds[$flag] = $fdsMap[$flag];
             }
         }
 
@@ -178,7 +178,7 @@ class Local implements IHandler
         {
             if (isset($flagsMap[$fd]))
             {
-                $flags[] = $flagsMap[$fd];
+                $flags[$fd] = $flagsMap[$fd];
             }
         }
 
