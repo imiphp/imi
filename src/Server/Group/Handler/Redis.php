@@ -4,7 +4,6 @@ namespace Imi\Server\Group\Handler;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Event\Event;
 use Imi\Log\Log;
 use Imi\Redis\Redis as ImiRedis;
 use Imi\Redis\RedisHandler;
@@ -195,10 +194,6 @@ class Redis implements IGroupHandler
         {
             // 心跳定时器
             $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
-                \Swoole\Timer::clear($this->timerID);
-                $this->timerID = null;
-            }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
 

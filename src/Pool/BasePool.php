@@ -3,7 +3,6 @@
 namespace Imi\Pool;
 
 use Imi\Bean\BeanFactory;
-use Imi\Event\Event;
 use Imi\Pool\Interfaces\IPool;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Util\ArrayUtil;
@@ -289,9 +288,6 @@ abstract class BasePool implements IPool
             if (null !== $gcInterval)
             {
                 $this->gcTimerId = \Swoole\Timer::tick($gcInterval * 1000, [$this, 'gc']);
-                Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
-                    $this->stopAutoGC();
-                }, \Imi\Util\ImiPriority::IMI_MIN);
             }
         }
     }
@@ -420,9 +416,6 @@ abstract class BasePool implements IPool
         if ((null !== Worker::getWorkerID() || Coroutine::stats()['coroutine_num'] > 0) && null !== ($heartbeatInterval = $this->config->getHeartbeatInterval()))
         {
             $this->heartbeatTimerId = \Swoole\Timer::tick($heartbeatInterval * 1000, [$this, 'heartbeat']);
-            Event::on(['IMI.MAIN_SERVER.WORKER.EXIT', 'IMI.PROCESS.END'], function () {
-                $this->stopHeartbeat();
-            }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
 

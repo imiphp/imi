@@ -4,7 +4,6 @@ namespace Imi\Server\ConnectContext\StoreHandler;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Event\Event;
 use Imi\Lock\Lock;
 use Imi\Log\Log;
 use Imi\Redis\Redis as ImiRedis;
@@ -191,10 +190,6 @@ class Redis implements IHandler
         {
             // 心跳定时器
             $this->timerID = \Swoole\Timer::tick($this->heartbeatTimespan * 1000, [$this, 'pingTimer']);
-            Event::on('IMI.MAIN_SERVER.WORKER.EXIT', function () {
-                \Swoole\Timer::clear($this->timerID);
-                $this->timerID = null;
-            }, \Imi\Util\ImiPriority::IMI_MIN);
         }
     }
 

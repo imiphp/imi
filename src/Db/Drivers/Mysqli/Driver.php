@@ -108,7 +108,7 @@ class Driver extends Base implements IDb
     {
         $instance = $this->instance;
 
-        return $instance && $this->instance->ping();
+        return $instance && $instance->ping();
     }
 
     /**

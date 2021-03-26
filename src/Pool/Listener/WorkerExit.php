@@ -3,24 +3,29 @@
 namespace Imi\Pool\Listener;
 
 use Imi\Bean\Annotation\Listener;
+use Imi\Event\EventParam;
+use Imi\Event\IEventListener;
 use Imi\Pool\PoolManager;
-use Imi\Server\Event\Listener\IWorkerExitEventListener;
-use Imi\Server\Event\Param\WorkerExitEventParam;
 use Imi\Util\ImiPriority;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.EXIT", priority=ImiPriority::IMI_MIN)
+ * @Listener(eventName="IMI.PROCESS.END", priority=ImiPriority::IMI_MIN)
  */
-class WorkerExit implements IWorkerExitEventListener
+class WorkerExit implements IEventListener
 {
     /**
      * 事件处理方法.
      */
-    public function handle(WorkerExitEventParam $e): void
+    public function handle(EventParam $e): void
     {
-        foreach (PoolManager::getNames() as $name)
+        // @phpstan-ignore-next-line
+        if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
         {
-            PoolManager::getInstance($name)->close();
+            foreach (PoolManager::getNames() as $name)
+            {
+                PoolManager::getInstance($name)->close();
+            }
         }
     }
 }
