@@ -174,7 +174,7 @@ request 数据包含 get/post/cookie
 简单示例：
 
 ```php
-foreach ($files as $k => $file)
+foreach ($request->getUploadedFiles() as $k => $file)
 {
     if (0 === $file->getError())
     {
