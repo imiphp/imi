@@ -171,6 +171,22 @@ request 数据包含 get/post/cookie
 
 返回值为`Imi\Server\Http\Message\UploadedFile数组`
 
+简单示例：
+
+```php
+foreach ($files as $k => $file)
+{
+    if (0 === $file->getError())
+    {
+        $file->moveTo('上传文件保存路径');
+    }
+    else
+    {
+        throw new \RuntimeException(sprintf('上传文件失败，错误码：%s', $file->getError()));
+    }
+}
+```
+
 #### 获取 Server 信息
 
 ```php
