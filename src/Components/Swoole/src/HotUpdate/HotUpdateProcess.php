@@ -169,7 +169,7 @@ class HotUpdateProcess extends BaseProcess
     /**
      * 清除各种缓存.
      */
-    private function clearCache(): void
+    private function clearCache(array $changedFiles): void
     {
         static $functions = [
             'apc_clear_cache',
@@ -180,6 +180,13 @@ class HotUpdateProcess extends BaseProcess
             if (\function_exists($function))
             {
                 $function();
+            }
+        }
+        if (\function_exists('opcache_invalidate'))
+        {
+            foreach ($changedFiles as $file)
+            {
+                opcache_invalidate($file, true);
             }
         }
     }
@@ -261,7 +268,7 @@ class HotUpdateProcess extends BaseProcess
                 return;
             }
             // 清除各种缓存
-            $this->clearCache();
+            $this->clearCache($changedFiles);
             Log::info('Build time use: ' . (microtime(true) - $this->beginTime) . ' sec');
             // 执行重新加载
             Log::info('Reloading server...');
