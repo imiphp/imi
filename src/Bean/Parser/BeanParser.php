@@ -10,6 +10,8 @@ use Imi\Aop\Annotation\RequestInject;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionContainer;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Util\Imi;
+use Yurun\Doctrine\Common\Annotations\PhpParser;
 
 class BeanParser extends BaseParser
 {
@@ -55,7 +57,26 @@ class BeanParser extends BaseParser
                         $tag = $docblock->getTagsByName('var')[0] ?? null;
                         if ($tag)
                         {
-                            $annotation->name = trim($tag->__toString(), '\\ \t\n\r\0\x0B');
+                            $name = trim($tag->__toString(), '\\ \t\n\r\0\x0B');
+                            $phpParser = new PhpParser();
+                            $uses = $phpParser->parseClass(ReflectionContainer::getClassReflection($className));
+                            $lowerName = strtolower($name);
+                            if (isset($uses[$lowerName]))
+                            {
+                                $annotation->name = $uses[$lowerName];
+                            }
+                            else
+                            {
+                                $className = Imi::getClassNamespace($className) . '\\' . $name;
+                                if (class_exists($className))
+                                {
+                                    $annotation->name = $className;
+                                }
+                                else
+                                {
+                                    $annotation->name = $name;
+                                }
+                            }
                         }
                         else
                         {
