@@ -11,7 +11,7 @@ use Imi\Config\Annotation\ConfigValue;
 use PHPUnit\Framework\Assert;
 
 /**
- * @Bean("TestInjectValueLogic")
+ * @Bean("TestInjectValueLogicXXX")
  */
 class TestInjectValueLogic
 {

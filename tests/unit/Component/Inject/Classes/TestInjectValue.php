@@ -12,7 +12,7 @@ use PHPUnit\Framework\Assert;
 class TestInjectValue
 {
     /**
-     * @Inject("TestInjectValueLogic")
+     * @Inject("TestInjectValueLogicXXX")
      *
      * @var \Imi\Test\Component\Inject\Classes\TestInjectValueLogic
      */
@@ -21,7 +21,7 @@ class TestInjectValue
     /**
      * @Inject
      *
-     * @var \Imi\Test\Component\Inject\Classes\TestInjectValueLogic
+     * @var TestInjectValueLogic
      */
     protected $testLogic2;
 
