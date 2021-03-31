@@ -236,6 +236,8 @@ TPL;
             $paramsTpls = static::getMethodParamTpls($method);
             $methodReturnType = static::getMethodReturnType($method);
             $returnsReference = $method->returnsReference() ? '&' : '';
+            // @phpstan-ignore-next-line
+            $returnContent = $method->hasReturnType() && 'void' === $method->getReturnType()->getName() ? '' : 'return $__result__;';
             $tpl .= <<<TPL
     public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
     {
@@ -252,7 +254,7 @@ TPL;
             \$__args__
         );
         {$paramsTpls['set_args_back']}
-        return \$__result__;
+        {$returnContent}
     }
 
 TPL;
