@@ -67,10 +67,10 @@ class BeanParser extends BaseParser
                             }
                             else
                             {
-                                $className = Imi::getClassNamespace($className) . '\\' . $name;
-                                if (class_exists($className))
+                                $tmpClassName = Imi::getClassNamespace($className) . '\\' . $name;
+                                if (class_exists($tmpClassName))
                                 {
-                                    $annotation->name = $className;
+                                    $annotation->name = $tmpClassName;
                                 }
                                 else
                                 {

@@ -28,7 +28,7 @@ class RequestInject extends BaseInjectValue
     /**
      * Bean名称或类名.
      */
-    public ?string $name = null;
+    public string $name = '';
 
     /**
      * Bean实例化参数.
