@@ -11,6 +11,8 @@ interface IWebSocketServer extends IServer, IServerGroup
 {
     /**
      * 向客户端推送消息.
+     *
+     * @param int|string $clientId
      */
-    public function push(int $fd, string $data, int $opcode = 1): bool;
+    public function push($clientId, string $data, int $opcode = 1): bool;
 }

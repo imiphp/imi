@@ -52,7 +52,7 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      */
-    public function send(array $fds, string $flag): array
+    public function send(array $clientIds, string $flag): array
     {
         $data = [
             'data'  => 'test',
@@ -60,12 +60,13 @@ class ServerUtilController extends HttpController
         $dataStr = json_encode($data);
         $result = [];
         $result['send1'] = Server::send($data);
-        $result['send2'] = Server::send($data, $fds[0]);
-        $result['send3'] = Server::send($data, $fds);
+        var_dump('test');
+        $result['send2'] = Server::send($data, $clientIds[0]);
+        $result['send3'] = Server::send($data, $clientIds);
         $result['sendByFlag'] = Server::sendByFlag($data, $flag);
         $result['sendRaw1'] = Server::sendRaw($dataStr);
-        $result['sendRaw2'] = Server::sendRaw($dataStr, $fds[0]);
-        $result['sendRaw3'] = Server::sendRaw($dataStr, $fds);
+        $result['sendRaw2'] = Server::sendRaw($dataStr, $clientIds[0]);
+        $result['sendRaw3'] = Server::sendRaw($dataStr, $clientIds);
         $result['sendRawByFlag'] = Server::sendRawByFlag($dataStr, $flag);
 
         $result['sendToAll'] = Server::sendToAll($data);
@@ -85,7 +86,7 @@ class ServerUtilController extends HttpController
         $dataStr = json_encode($data);
         $result = [
             // @phpstan-ignore-next-line
-            'groupFdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
+            'groupClientIdCount' => ServerManager::getServer('main')->getGroup('g1')->count(),
         ];
 
         $result['sendToGroup'] = Server::sendToGroup('g1', $data);
@@ -96,12 +97,14 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
+     *
+     * @param int|string $clientId
      */
-    public function close(int $fd, string $flag): array
+    public function close($clientId, string $flag): array
     {
         return [
-            'fd'   => Server::close($fd),
-            'flag' => Server::closeByFlag($flag),
+            'clientId'   => Server::close($clientId),
+            'flag'       => Server::closeByFlag($flag),
         ];
     }
 }

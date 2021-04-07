@@ -117,7 +117,7 @@ class CoServer
         });
         $processPool->on('WorkerStart', function (WorkerEventParam $e) {
             $this->workerId = $e->getWorkerId();
-            \Co\run(function () use ($e) {
+            \Swoole\Coroutine\run(function () use ($e) {
                 if ($this->workerId <= $this->workerNum - 1)
                 {
                     // 处理请求的 worker 进程

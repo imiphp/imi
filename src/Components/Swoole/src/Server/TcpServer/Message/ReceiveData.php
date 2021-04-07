@@ -11,9 +11,12 @@ class ReceiveData extends \Imi\Server\TcpServer\Message\ReceiveData
      */
     protected int $reactorId = 0;
 
-    public function __construct(int $fd, int $reactorId, string $data)
+    /**
+     * @param int|string $clientId
+     */
+    public function __construct($clientId, int $reactorId, string $data)
     {
-        parent::__construct($fd, $data);
+        parent::__construct($clientId, $data);
         $this->reactorId = $reactorId;
     }
 

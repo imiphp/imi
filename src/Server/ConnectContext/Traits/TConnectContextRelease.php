@@ -12,23 +12,26 @@ use Imi\RequestContext;
  */
 trait TConnectContextRelease
 {
-    public function release(int $fd): void
+    /**
+     * @param int|string $clientId
+     */
+    public function release($clientId): void
     {
-        $groups = ConnectContext::get('__groups', [], $fd);
+        $groups = ConnectContext::get('__groups', [], $clientId);
 
         // 当前连接离开所有组
-        RequestContext::getServerBean('FdMap')->leaveAll($fd);
+        RequestContext::getServerBean('ClientIdMap')->leaveAll($clientId);
 
-        ConnectContext::set('__groups', $groups, $fd);
+        ConnectContext::set('__groups', $groups, $clientId);
 
         // 标记绑定连接释放
-        if ($flag = ConnectContext::getFlagByFd($fd))
+        if ($flag = ConnectContext::getFlagByClientId($clientId))
         {
             /** @var \Imi\Server\ConnectContext\StoreHandler $store */
             $store = RequestContext::getServerBean('ConnectContextStore');
             ConnectContext::unbind($flag, $store->getTtl());
         }
 
-        ConnectContext::destroy($fd);
+        ConnectContext::destroy($clientId);
     }
 }

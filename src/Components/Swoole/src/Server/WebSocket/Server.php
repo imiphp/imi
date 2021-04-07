@@ -160,9 +160,9 @@ class Server extends Base implements IWebSocketServer
                         'server'        => $this,
                     ]);
                     $this->trigger('close', [
-                        'server'    => $this,
-                        'fd'        => $fd,
-                        'reactorId' => $reactorId,
+                        'server'          => $this,
+                        'clientId'        => $fd,
+                        'reactorId'       => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -233,10 +233,12 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 向客户端推送消息.
+     *
+     * @param int|string $clientId
      */
-    public function push(int $fd, string $data, int $opcode = 1): bool
+    public function push($clientId, string $data, int $opcode = 1): bool
     {
         // @phpstan-ignore-next-line
-        return $this->getSwooleServer()->push($fd, $data, $opcode);
+        return $this->getSwooleServer()->push($clientId, $data, $opcode);
     }
 }

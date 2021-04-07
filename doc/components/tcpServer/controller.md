@@ -27,7 +27,7 @@ class Test extends \Imi\Controller\TcpController
 	public function login($data)
 	{
 		ConnectContext::set('username', $data->username);
-		$this->server->joinGroup('g1', $this->data->getFd());
+		$this->server->joinGroup('g1', $this->data->getClientId());
 		return ['action'=>'login', 'success'=>true];
 	}
 }
@@ -113,14 +113,14 @@ $this->server->groupCall('组名', 'push', ['success'=>true]);
 // $server 对象是 \Swoole\Server类型
 $server = $this->server->getSwooleServer();
 // 指定连接
-$fd = 19260817;
+$clientId = 19260817;
 $data = 'hello imi';
 
 // 原样发送数据
-$server->send($fd, $data);
+$server->send($clientId, $data);
 
 // 使用预定义的编码器，编码后发送数据
-$server->send($fd, $this->encodeMessage($data));
+$server->send($clientId, $this->encodeMessage($data));
 ```
 
 ## 类属性
@@ -170,10 +170,10 @@ public function getGroup(string $groupName);
  * 加入组，组不存在则自动创建
  *
  * @param string $groupName
- * @param integer $fd
+ * @param int|string $clientId
  * @return void
  */
-public function joinGroup(string $groupName, int $fd);
+public function joinGroup(string $groupName, $clientId);
 ```
 
 ```php
@@ -181,10 +181,10 @@ public function joinGroup(string $groupName, int $fd);
  * 离开组，组不存在则自动创建
  *
  * @param string $groupName
- * @param integer $fd
+ * @param int|string $clientId
  * @return void
  */
-public function leaveGroup(string $groupName, int $fd);
+public function leaveGroup(string $groupName, $clientId);
 ```
 
 ```php
@@ -214,9 +214,9 @@ public function getGroups(): array;
 ```php
 /**
  * 获取客户端的socket id
- * @return int
+ * @return int|string
  */
-public function getFd(): int;
+public function getClientId();
 ```
 
 ```php

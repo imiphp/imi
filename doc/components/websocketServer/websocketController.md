@@ -28,7 +28,7 @@ class Test extends WebSocketController
 	public function login($data)
 	{
 		ConnectContext::set('username', $data->username);
-		$this->server->joinGroup('g1', $this->frame->getFd());
+		$this->server->joinGroup('g1', $this->frame->getClientId());
 		return ['success'=>true];
 	}
 }
@@ -147,10 +147,10 @@ public function getGroup(string $groupName);
  * 加入组，组不存在则自动创建
  *
  * @param string $groupName
- * @param integer $fd
+ * @param int|string $clientId
  * @return void
  */
-public function joinGroup(string $groupName, int $fd);
+public function joinGroup(string $groupName, $clientId);
 ```
 
 ```php
@@ -158,10 +158,10 @@ public function joinGroup(string $groupName, int $fd);
  * 离开组，组不存在则自动创建
  *
  * @param string $groupName
- * @param integer $fd
+ * @param int|string $clientId
  * @return void
  */
-public function leaveGroup(string $groupName, int $fd);
+public function leaveGroup(string $groupName, $clientId);
 ```
 
 ```php
@@ -191,9 +191,9 @@ public function getGroups(): array;
 ```php
 /**
  * 获取客户端的socket id
- * @return int
+ * @return int|string
  */
-public function getFd(): int;
+public function getClientId();
 ```
 
 ```php

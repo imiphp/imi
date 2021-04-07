@@ -11,26 +11,33 @@ class ConnectContextChangeEventParam
 {
     /**
      * 连接标识符.
+     *
+     * @var int|string
      */
-    private int $fd = 0;
+    private $clientId = 0;
 
     /**
      * 服务器名.
      */
     private string $serverName = '';
 
-    public function __construct(int $fd, string $serverName)
+    /**
+     * @param int|string $clientId
+     */
+    public function __construct($clientId, string $serverName)
     {
-        $this->fd = $fd;
+        $this->clientId = $clientId;
         $this->serverName = $serverName;
     }
 
     /**
      * Get 连接标识符.
+     *
+     * @return int|string
      */
-    public function getFd(): int
+    public function getClientId()
     {
-        return $this->fd;
+        return $this->clientId;
     }
 
     /**

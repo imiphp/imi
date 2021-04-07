@@ -71,7 +71,7 @@ class DataParser
         switch ($server->getProtocol())
         {
             case Protocol::WEBSOCKET:
-                if (!($requestContext['fd'] ?? null))
+                if (!($requestContext['clientId'] ?? null))
                 {
                     return JsonObjectParser::class;
                 }

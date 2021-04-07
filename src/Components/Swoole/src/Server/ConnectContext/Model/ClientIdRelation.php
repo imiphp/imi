@@ -9,11 +9,11 @@ use Imi\Model\Annotation\MemoryTable;
 use Imi\Swoole\Model\MemoryTableModel;
 
 /**
- * fd关联表，主键为fd.
+ * clientId关联表，主键为clientId.
  *
- * @MemoryTable(name="imiFdRelation")
+ * @MemoryTable(name="imiClientIdRelation")
  */
-class FdRelation extends MemoryTableModel
+class ClientIdRelation extends MemoryTableModel
 {
     /**
      * worker进程ID.

@@ -264,8 +264,8 @@ Server::sendRawToGroup('myGroupName', '数据', 'myServer', false);
 关闭一个或多个连接
 
 ```php
-Server::close(1); // 关闭 fd 1
-Server::close([1, 2, 3]); // 关闭 fd 1、2、3
+Server::close(1); // 关闭 clientId 1
+Server::close([1, 2, 3]); // 关闭 clientId 1、2、3
 Server::close(1, 'myServer'); // 指定服务器名
 
 // BASE模式下，只关闭当前 worker 中的连接（默认关闭所有进程的指定连接）

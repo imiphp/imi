@@ -23,22 +23,22 @@ class BeforeReceive implements IReceiveEventListener
      */
     public function handle(ReceiveEventParam $e): void
     {
-        $fd = $e->fd;
+        $clientId = $e->clientId;
         if (!SwooleWorker::isWorkerStartAppComplete())
         {
-            $e->server->getSwooleServer()->close($fd);
+            $e->server->getSwooleServer()->close($clientId);
             $e->stopPropagation();
 
             return;
         }
         // 上下文创建
         RequestContext::muiltiSet([
-            'server'    => $e->getTarget(),
-            'fd'        => $fd,
+            'server'          => $e->getTarget(),
+            'clientId'        => $clientId,
         ]);
 
         // 中间件
         $dispatcher = RequestContext::getServerBean('TcpDispatcher');
-        $dispatcher->dispatch(new ReceiveData($fd, $e->reactorId, $e->data));
+        $dispatcher->dispatch(new ReceiveData($clientId, $e->reactorId, $e->data));
     }
 }

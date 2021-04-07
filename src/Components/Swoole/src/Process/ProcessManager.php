@@ -168,7 +168,7 @@ class ProcessManager
             if ($processOption['options']['co'])
             {
                 // 强制开启进程协程化
-                \Co\run($callable);
+                \Swoole\Coroutine\run($callable);
             }
             else
             {

@@ -12,9 +12,9 @@ use Imi\Swoole\Server\Server;
 /**
  * 发送给指定连接-请求
  *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendToFdsRequest")
+ * @Listener(eventName="IMI.PIPE_MESSAGE.sendToClientIdsRequest")
  */
-class OnSendToFdsRequest implements IEventListener
+class OnSendToClientIdsRequest implements IEventListener
 {
     /**
      * 事件处理方法.
@@ -23,10 +23,10 @@ class OnSendToFdsRequest implements IEventListener
     {
         $eData = $e->getData();
         $data = $eData['data'];
-        $result = Server::sendRaw($data['data'], $data['fds'], $data['serverName'], false);
+        $result = Server::sendRaw($data['data'], $data['clientIds'], $data['serverName'], false);
         if ($data['needResponse'] ?? true)
         {
-            Server::sendMessage('sendToFdsResponse', [
+            Server::sendMessage('sendToClientIdsResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
             ], $eData['workerId']);

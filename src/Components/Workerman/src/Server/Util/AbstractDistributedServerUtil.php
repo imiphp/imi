@@ -28,14 +28,14 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
         }
         if (null === $flag)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
-            $fds = [$fd];
+            $clientIds = [$clientId];
 
-            return $this->sendRaw($data, $fds, $serverName);
+            return $this->sendRaw($data, $clientIds, $serverName);
         }
         else
         {

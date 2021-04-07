@@ -33,8 +33,8 @@ class BeforeMessage implements IMessageEventListener
         }
         // 上下文创建
         RequestContext::muiltiSet([
-            'fd'        => $frame->fd,
-            'server'    => $e->getTarget(),
+            'clientId'        => $frame->fd,
+            'server'          => $e->getTarget(),
         ]);
 
         // 中间件

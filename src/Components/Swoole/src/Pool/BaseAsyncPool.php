@@ -218,7 +218,7 @@ abstract class BaseAsyncPool extends BasePool
             }
             else
             {
-                \Co\run(function () use ($poolItem) {
+                \Swoole\Coroutine\run(function () use ($poolItem) {
                     $this->queue->push($poolItem);
                 });
             }

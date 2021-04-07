@@ -29,8 +29,8 @@ class BeforeClose implements ICloseEventListener
             return;
         }
         RequestContext::muiltiSet([
-            'fd'        => $e->fd,
-            'server'    => $e->getTarget(),
+            'clientId'        => $e->clientId,
+            'server'          => $e->getTarget(),
         ]);
     }
 }

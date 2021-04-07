@@ -86,9 +86,9 @@ class Server extends Base implements ITcpServer
                 try
                 {
                     $this->trigger('connect', [
-                        'server'    => $this,
-                        'fd'        => $fd,
-                        'reactorId' => $reactorId,
+                        'server'          => $this,
+                        'clientId'        => $fd,
+                        'reactorId'       => $reactorId,
                     ], $this, ConnectEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -104,10 +104,10 @@ class Server extends Base implements ITcpServer
                 try
                 {
                     $this->trigger('receive', [
-                        'server'    => $this,
-                        'fd'        => $fd,
-                        'reactorId' => $reactorId,
-                        'data'      => $data,
+                        'server'          => $this,
+                        'clientId'        => $fd,
+                        'reactorId'       => $reactorId,
+                        'data'            => $data,
                     ], $this, ReceiveEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -123,9 +123,9 @@ class Server extends Base implements ITcpServer
                 try
                 {
                     $this->trigger('close', [
-                        'server'    => $this,
-                        'fd'        => $fd,
-                        'reactorId' => $reactorId,
+                        'server'          => $this,
+                        'clientId'        => $fd,
+                        'reactorId'       => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
                 catch (\Throwable $ex)
@@ -154,9 +154,11 @@ class Server extends Base implements ITcpServer
 
     /**
      * 向客户端发送消息.
+     *
+     * @param int|string $clientId
      */
-    public function send(int $fd, string $data): bool
+    public function send($clientId, string $data): bool
     {
-        return $this->getSwooleServer()->send($fd, $data);
+        return $this->getSwooleServer()->send((int) $clientId, $data);
     }
 }

@@ -80,35 +80,39 @@ class Group
 
     /**
      * 加入组.
+     *
+     * @param int|string $clientId
      */
-    public function join(int $fd): void
+    public function join($clientId): void
     {
         $groupName = $this->groupName;
-        if ($this->handler->joinGroup($groupName, $fd))
+        if ($this->handler->joinGroup($groupName, $clientId))
         {
-            $this->server->getBean('FdMap')->joinGroup($fd, $this);
+            $this->server->getBean('ClientIdMap')->joinGroup($clientId, $this);
             ConnectContext::use(function (array $contextData) use ($groupName): array {
                 $contextData['__groups'][] = $groupName;
 
                 return $contextData;
-            }, $fd);
+            }, $clientId);
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
-                'server'    => $this->server,
-                'groupName' => $groupName,
-                'fd'        => $fd,
+                'server'          => $this->server,
+                'groupName'       => $groupName,
+                'clientId'        => $clientId,
             ]);
         }
     }
 
     /**
      * 离开组.
+     *
+     * @param int|string $clientId
      */
-    public function leave(int $fd): void
+    public function leave($clientId): void
     {
         $groupName = $this->groupName;
-        if ($this->handler->leaveGroup($groupName, $fd))
+        if ($this->handler->leaveGroup($groupName, $clientId))
         {
-            $this->server->getBean('FdMap')->leaveGroup($fd, $this);
+            $this->server->getBean('ClientIdMap')->leaveGroup($clientId, $this);
             ConnectContext::use(function (array $contextData) use ($groupName) {
                 if (isset($contextData['__groups']))
                 {
@@ -116,31 +120,33 @@ class Group
 
                     return $contextData;
                 }
-            }, $fd);
+            }, $clientId);
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
-                'server'    => $this->server,
-                'groupName' => $groupName,
-                'fd'        => $fd,
+                'server'          => $this->server,
+                'groupName'       => $groupName,
+                'clientId'        => $clientId,
             ]);
         }
     }
 
     /**
      * 连接是否存在于组里.
+     *
+     * @param int|string $clientId
      */
-    public function isInGroup(int $fd): bool
+    public function isInGroup($clientId): bool
     {
-        return $this->handler->isInGroup($this->groupName, $fd);
+        return $this->handler->isInGroup($this->groupName, $clientId);
     }
 
     /**
-     * 获取所有fd.
+     * 获取所有连接ID.
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFds(): array
+    public function getClientIds(): array
     {
-        return $this->handler->getFds($this->groupName);
+        return $this->handler->getClientIds($this->groupName);
     }
 
     /**
@@ -176,7 +182,7 @@ class Group
     }
 
     /**
-     * 魔术方法，返回数组，fd=>执行结果.
+     * 魔术方法，返回数组，clientId=>执行结果.
      *
      * @return array
      */
@@ -200,17 +206,17 @@ class Group
         ];
         $methodIsCheck = \in_array($name, $checkMethods);
         $result = [];
-        /** @var FdMap $fdMap */
-        $fdMap = $server->getBean('FdMap');
-        $fds = $this->handler->getFds($this->groupName);
-        foreach ($fds as $fd)
+        /** @var ClientIdMap $clientIdMap */
+        $clientIdMap = $server->getBean('ClientIdMap');
+        $clientIds = $this->handler->getClientIds($this->groupName);
+        foreach ($clientIds as $clientId)
         {
             // 执行结果
-            $result[$fd] = $itemResult = $server->callServerMethod($name, $fd, ...$arguments);
+            $result[$clientId] = $itemResult = $server->callServerMethod($name, $clientId, ...$arguments);
             if ($methodIsCheck && false === $itemResult && \in_array($server->callServerMethod('getLastError'), $clientCloseErrors))
             {
                 // 客户端关闭的错误，直接把该客户端T出全部组
-                $fdMap->leaveAll($fd);
+                $clientIdMap->leaveAll($clientId);
             }
         }
 

@@ -27,7 +27,7 @@ class Local implements IHandler
     /**
      * 连接号数据.
      */
-    private array $fdsMap = [];
+    private array $clientIdsMap = [];
 
     /**
      * 旧数据.
@@ -44,23 +44,27 @@ class Local implements IHandler
 
     /**
      * 绑定一个标记到当前连接.
+     *
+     * @param int|string $clientId
      */
-    public function bind(string $flag, int $fd): void
+    public function bind(string $flag, $clientId): void
     {
-        $this->flagsMap[$fd] = $flag;
-        $this->fdsMap[$flag] = $fd;
+        $this->flagsMap[$clientId] = $flag;
+        $this->clientIdsMap[$flag] = $clientId;
     }
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
+     *
+     * @param int|string $clientId
      */
-    public function bindNx(string $flag, int $fd): bool
+    public function bindNx(string $flag, $clientId): bool
     {
-        if (isset($this->flagsMap[$fd]) || isset($this->fdsMap[$flag]))
+        if (isset($this->flagsMap[$clientId]) || isset($this->clientIdsMap[$flag]))
         {
             return false;
         }
-        $this->bind($flag, $fd);
+        $this->bind($flag, $clientId);
 
         return true;
     }
@@ -72,35 +76,37 @@ class Local implements IHandler
      */
     public function unbind(string $flag, ?int $keepTime = null): void
     {
-        $fd = $this->getFdByFlag($flag);
-        if (null === $fd)
+        $clientId = $this->getClientIdByFlag($flag);
+        if (null === $clientId)
         {
             return;
         }
         if (null !== $keepTime)
         {
             $this->oldDataMap[$flag] = [
-                'flag'     => $flag,
-                'fd'       => $fd,
-                'keepTime' => time() + $keepTime,
+                'flag'           => $flag,
+                'clientId'       => $clientId,
+                'keepTime'       => time() + $keepTime,
             ];
         }
-        if (isset($this->flagsMap[$fd]))
+        if (isset($this->flagsMap[$clientId]))
         {
-            unset($this->flagsMap[$fd]);
+            unset($this->flagsMap[$clientId]);
         }
-        if (isset($this->fdsMap[$flag]))
+        if (isset($this->clientIdsMap[$flag]))
         {
-            unset($this->fdsMap[$flag]);
+            unset($this->clientIdsMap[$flag]);
         }
     }
 
     /**
      * 使用标记获取连接编号.
+     *
+     * @return int|string|null
      */
-    public function getFdByFlag(string $flag): ?int
+    public function getClientIdByFlag(string $flag)
     {
-        return $this->fdsMap[$flag] ?? null;
+        return $this->clientIdsMap[$flag] ?? null;
     }
 
     /**
@@ -108,47 +114,49 @@ class Local implements IHandler
      *
      * @param string[] $flags
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFdsByFlags(array $flags): array
+    public function getClientIdsByFlags(array $flags): array
     {
-        $fdsMap = &$this->fdsMap;
-        $fds = [];
+        $clientIdsMap = &$this->clientIdsMap;
+        $clientIds = [];
         foreach ($flags as $flag)
         {
-            if (isset($fdsMap[$flag]))
+            if (isset($clientIdsMap[$flag]))
             {
-                $fds[$flag] = $fdsMap[$flag];
+                $clientIds[$flag] = $clientIdsMap[$flag];
             }
         }
 
-        return $fds;
-    }
-
-    /**
-     * 使用连接编号获取标记.
-     */
-    public function getFlagByFd(int $fd): ?string
-    {
-        return $this->flagsMap[$fd] ?? null;
+        return $clientIds;
     }
 
     /**
      * 使用连接编号获取标记.
      *
-     * @param int[] $fds
+     * @param int|string $clientId
+     */
+    public function getFlagByClientId($clientId): ?string
+    {
+        return $this->flagsMap[$clientId] ?? null;
+    }
+
+    /**
+     * 使用连接编号获取标记.
+     *
+     * @param int[]|string[] $clientIds
      *
      * @return string[]
      */
-    public function getFlagsByFds(array $fds): array
+    public function getFlagsByClientIds(array $clientIds): array
     {
         $flagsMap = &$this->flagsMap;
         $flags = [];
-        foreach ($fds as $fd)
+        foreach ($clientIds as $clientId)
         {
-            if (isset($flagsMap[$fd]))
+            if (isset($flagsMap[$clientId]))
             {
-                $flags[$fd] = $flagsMap[$fd];
+                $flags[$clientId] = $flagsMap[$clientId];
             }
         }
 
@@ -158,7 +166,7 @@ class Local implements IHandler
     /**
      * 使用标记获取旧的连接编号.
      */
-    public function getOldFdByFlag(string $flag): ?int
+    public function getOldClientIdByFlag(string $flag): ?int
     {
         $oldDataMap = &$this->oldDataMap;
         $oldData = $oldDataMap[$flag] ?? null;
@@ -174,7 +182,7 @@ class Local implements IHandler
             return null;
         }
 
-        return $oldData['fd'];
+        return $oldData['clientId'];
     }
 
     /**

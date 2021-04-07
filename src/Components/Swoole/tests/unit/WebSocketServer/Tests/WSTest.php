@@ -29,22 +29,22 @@ class WSTest extends BaseTest
             $recv = $client->recv();
             $this->assertNotFalse($recv);
             $recvData = json_decode($recv, true);
-            if (!isset($recvData['fd']))
+            if (!isset($recvData['clientId']))
             {
                 $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
             }
-            $fd = $recvData['fd'];
+            $clientId = $recvData['clientId'];
             $this->assertEquals([
-                'success'        => true,
-                'username'       => 'test',
-                'middlewareData' => 'imi',
-                'requestUri'     => $this->host,
-                'uri'            => $this->host,
-                'fd'             => $fd,
-                'getFdByFlag'    => $fd,
-                'getFlagByFd'    => 'test',
-                'getFdsByFlags'  => ['test' => $fd],
-                'getFlagsByFds'  => [$fd => 'test'],
+                'success'                          => true,
+                'username'                         => 'test',
+                'middlewareData'                   => 'imi',
+                'requestUri'                       => $this->host,
+                'uri'                              => $this->host,
+                'clientId'                         => $clientId,
+                'getClientIdByFlag'                => $clientId,
+                'getFlagByClientId'                => 'test',
+                'getClientIdsByFlags'              => ['test' => $clientId],
+                'getFlagsByClientIds'              => [$clientId => 'test'],
             ], $recvData);
             $time = time();
             $this->assertTrue($client->send(json_encode([

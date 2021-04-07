@@ -109,9 +109,9 @@ return ['success'=>true];
 ```php
 /**
  * 获取客户端的socket id
- * @return int
+ * @return int|string
  */
-public function getFd(): int;
+public function getClientId();
 ```
 
 ```php

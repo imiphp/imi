@@ -49,13 +49,13 @@ class Server
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
+    public static function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->send($data, $fd, $serverName, $toAllWorkers);
+        return static::getInstance()->send($data, $clientId, $serverName, $toAllWorkers);
     }
 
     /**
@@ -76,13 +76,13 @@ class Server
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRaw($data, $fd, $serverName, $toAllWorkers);
+        return static::getInstance()->sendRaw($data, $clientId, $serverName, $toAllWorkers);
     }
 
     /**
@@ -156,12 +156,12 @@ class Server
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]|null $fd
+     * @param int|int[]|null $clientId
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public static function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
+    public static function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->close($fd, $serverName, $toAllWorkers);
+        return static::getInstance()->close($clientId, $serverName, $toAllWorkers);
     }
 
     /**

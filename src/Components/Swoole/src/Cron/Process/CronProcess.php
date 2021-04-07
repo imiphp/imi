@@ -55,7 +55,9 @@ class CronProcess extends BaseProcess
         \Imi\Swoole\Util\Process::signal(\SIGTERM, function (int $signo) {
             $this->stop();
         });
-        $this->startSocketServer();
+        \Swoole\Coroutine\run(function () {
+            $this->startSocketServer();
+        });
     }
 
     protected function startSocketServer(): void

@@ -29,8 +29,10 @@ class Frame implements ISwooleWebSocketFrame
 
     /**
      * 获取客户端的socket id.
+     *
+     * @return int|string
      */
-    public function getFd(): int
+    public function getClientId()
     {
         return $this->frame->fd;
     }

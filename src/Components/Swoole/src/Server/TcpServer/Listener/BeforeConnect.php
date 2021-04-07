@@ -25,15 +25,15 @@ class BeforeConnect implements IConnectEventListener
     {
         if (!SwooleWorker::isWorkerStartAppComplete())
         {
-            $e->server->getSwooleServer()->close($e->fd);
+            $e->server->getSwooleServer()->close($e->clientId);
             $e->stopPropagation();
 
             return;
         }
         // 上下文创建
         RequestContext::muiltiSet([
-            'server'    => $e->server,
-            'fd'        => $e->fd,
+            'server'          => $e->server,
+            'clientId'        => $e->clientId,
         ]);
 
         // 连接上下文创建

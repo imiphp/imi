@@ -86,11 +86,11 @@ class LocalServerUtil implements ISwooleServerUtil
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
+    public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
@@ -100,7 +100,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $serverName = $server->getName();
         }
 
-        return $this->sendRaw($dataParser->encode($data, $serverName), $fd, $serverName, $toAllWorkers);
+        return $this->sendRaw($dataParser->encode($data, $serverName), $clientId, $serverName, $toAllWorkers);
     }
 
     /**
@@ -120,53 +120,53 @@ class LocalServerUtil implements ISwooleServerUtil
 
         if (null === $flag)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
-            $fds = [$fd];
+            $clientIds = [(int) $clientId];
         }
         else
         {
-            $fds = [];
+            $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $fd = $connectionBinder->getFdByFlag($tmpFlag);
-                if ($fd)
+                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                if ($clientId)
                 {
-                    $fds[] = $fd;
+                    $clientIds[] = (int) $clientId;
                 }
             }
-            if (!$fds)
+            if (!$clientIds)
             {
                 return 0;
             }
         }
 
-        return $this->send($data, $fds, $serverName, $toAllWorkers);
+        return $this->send($data, $clientIds, $serverName, $toAllWorkers);
     }
 
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         $swooleServer = $server->getSwooleServer();
-        if (null === $fd)
+        if (null === $clientId)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
         }
-        $fds = (array) $fd;
+        $clientIds = (array) $clientId;
         $success = 0;
         if ($server instanceof \Imi\Swoole\Server\WebSocket\Server)
         {
@@ -182,12 +182,12 @@ class LocalServerUtil implements ISwooleServerUtil
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                $this->sendMessage('sendToFdsRequest', [
-                    'messageId'    => $id,
-                    'fds'          => $fds,
-                    'data'         => $data,
-                    'serverName'   => $server->getName(),
-                    'needResponse' => $this->needResponse,
+                $this->sendMessage('sendToClientIdsRequest', [
+                    'messageId'          => $id,
+                    'clientIds'          => $clientIds,
+                    'data'               => $data,
+                    'serverName'         => $server->getName(),
+                    'needResponse'       => $this->needResponse,
                 ]);
                 for ($i = Worker::getWorkerNum(); $i > 0; --$i)
                 {
@@ -206,14 +206,15 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         else
         {
-            foreach ($fds as $tmpFd)
+            foreach ($clientIds as $tmpClientId)
             {
+                $tmpClientId = (int) $tmpClientId;
                 /** @var \Swoole\WebSocket\Server $swooleServer */
-                if ('push' === $method && !$swooleServer->isEstablished($tmpFd))
+                if ('push' === $method && !$swooleServer->isEstablished($tmpClientId))
                 {
                     continue;
                 }
-                if ($swooleServer->$method($tmpFd, $data))
+                if ($swooleServer->$method($tmpClientId, $data))
                 {
                     ++$success;
                 }
@@ -237,31 +238,31 @@ class LocalServerUtil implements ISwooleServerUtil
 
         if (null === $flag)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
-            $fds = [$fd];
+            $clientIds = [(int) $clientId];
         }
         else
         {
-            $fds = [];
+            $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $fd = $connectionBinder->getFdByFlag($tmpFlag);
-                if ($fd)
+                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                if ($clientId)
                 {
-                    $fds[] = $fd;
+                    $clientIds[] = (int) $clientId;
                 }
             }
-            if (!$fds)
+            if (!$clientIds)
             {
                 return 0;
             }
         }
 
-        return $this->sendRaw($data, $fds, $serverName, $toAllWorkers);
+        return $this->sendRaw($data, $clientIds, $serverName, $toAllWorkers);
     }
 
     /**
@@ -332,14 +333,14 @@ class LocalServerUtil implements ISwooleServerUtil
         }
         else
         {
-            foreach ($server->getSwoolePort()->connections as $fd)
+            foreach ($server->getSwoolePort()->connections as $clientId)
             {
                 /** @var \Swoole\WebSocket\Server $swooleServer */
-                if ('push' === $method && !$swooleServer->isEstablished($fd))
+                if ('push' === $method && !$swooleServer->isEstablished($clientId))
                 {
                     continue;
                 }
-                if ($swooleServer->$method($fd, $data))
+                if ($swooleServer->$method($clientId, $data))
                 {
                     ++$success;
                 }
@@ -444,30 +445,30 @@ class LocalServerUtil implements ISwooleServerUtil
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]|null $fd
+     * @param int|int[]|null $clientId
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         $swooleServer = $server->getSwooleServer();
         $count = 0;
-        if (null === $fd)
+        if (null === $clientId)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
-            $fds = [$fd];
+            $clientIds = [(int) $clientId];
         }
         else
         {
-            $fds = (array) $fd;
+            $clientIds = (array) $clientId;
         }
-        foreach ($fds as $currentFd)
+        foreach ($clientIds as $currentClientId)
         {
-            if ($swooleServer->close($currentFd))
+            if ($swooleServer->close((int) $currentClientId))
             {
                 ++$count;
             }
@@ -489,31 +490,31 @@ class LocalServerUtil implements ISwooleServerUtil
 
         if (null === $flag)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
-            $fds = [$fd];
+            $clientIds = [(int) $clientId];
         }
         else
         {
-            $fds = [];
+            $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $fd = $connectionBinder->getFdByFlag($tmpFlag);
-                if ($fd)
+                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                if ($clientId)
                 {
-                    $fds[] = $fd;
+                    $clientIds[] = (int) $clientId;
                 }
             }
-            if (!$fds)
+            if (!$clientIds)
             {
                 return 0;
             }
         }
 
-        return $this->close($fds, $serverName, $toAllWorkers);
+        return $this->close($clientIds, $serverName, $toAllWorkers);
     }
 
     /**

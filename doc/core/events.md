@@ -172,7 +172,7 @@ string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $
 事件参数：
 
 ```php
-\Imi\Swoole\Server\Base $server, string $groupName, int $fd
+\Imi\Swoole\Server\Base $server, string $groupName, $clientId
 ```
 
 ### IMI.SERVER.GROUP.LEAVE
@@ -182,7 +182,7 @@ string $name, \Swoole\Process\Pool $pool, int $workerId, int $workerNum, array $
 事件参数：
 
 ```php
-\Imi\Swoole\Server\Base $server, string $groupName, int $fd
+\Imi\Swoole\Server\Base $server, string $groupName, $clientId
 ```
 
 ### IMI.REQUEST_CONTENT.CREATE
@@ -498,7 +498,7 @@ class CloseEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 
     /**
      * 来自那个reactor线程
@@ -597,7 +597,7 @@ class CloseEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 
     /**
      * 来自那个reactor线程
@@ -627,7 +627,7 @@ class ConnectEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 
     /**
      * Reactor线程ID
@@ -654,7 +654,7 @@ class ReceiveEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 
     /**
      * Reactor线程ID
@@ -688,7 +688,7 @@ class CloseEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 
     /**
      * 来自那个reactor线程
@@ -716,7 +716,7 @@ class BufferEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 }
 ```
 
@@ -737,7 +737,7 @@ class BufferEventParam extends EventParam
      * 客户端连接的标识符
      * @var int
      */
-    public $fd;
+    public $clientId;
 }
 ```
 

@@ -15,11 +15,11 @@ interface IServerUtil
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int;
+    public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
@@ -36,11 +36,11 @@ interface IServerUtil
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 发送数据给指定标记的客户端，支持一个或多个（数组）.
@@ -98,10 +98,10 @@ interface IServerUtil
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]|null $fd
+     * @param int|int[]|null $clientId
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int;
+    public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int;
 
     /**
      * 关闭一个或多个指定标记的连接.

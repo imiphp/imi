@@ -27,7 +27,7 @@ class TestController extends \Imi\Controller\TcpController
     public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->data->getFd());
+        $this->server->joinGroup('g1', $this->data->getClientId());
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];
     }
@@ -48,9 +48,9 @@ class TestController extends \Imi\Controller\TcpController
             'action'     => 'send',
             'message'    => ConnectContext::get('username') . ':' . $data->message,
         ]);
-        foreach ($group->getHandler()->getFds('g1') as $fd)
+        foreach ($group->getHandler()->getClientIds('g1') as $clientId)
         {
-            $worker->connections[$fd]->send($message);
+            $worker->connections[$clientId]->send($message);
         }
     }
 

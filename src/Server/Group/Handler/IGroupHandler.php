@@ -18,25 +18,31 @@ interface IGroupHandler
 
     /**
      * 加入组，组不存在则自动创建.
+     *
+     * @param int|string $clientId
      */
-    public function joinGroup(string $groupName, int $fd): bool;
+    public function joinGroup(string $groupName, $clientId): bool;
 
     /**
      * 离开组，组不存在则自动创建.
+     *
+     * @param int|string $clientId
      */
-    public function leaveGroup(string $groupName, int $fd): bool;
+    public function leaveGroup(string $groupName, $clientId): bool;
 
     /**
      * 连接是否存在于组里.
+     *
+     * @param int|string $clientId
      */
-    public function isInGroup(string $groupName, int $fd): bool;
+    public function isInGroup(string $groupName, $clientId): bool;
 
     /**
-     * 获取所有fd.
+     * 获取所有连接ID.
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFds(string $groupName): array;
+    public function getClientIds(string $groupName): array;
 
     /**
      * 获取在组中的连接总数.

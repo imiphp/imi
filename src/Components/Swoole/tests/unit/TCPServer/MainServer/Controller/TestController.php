@@ -26,7 +26,7 @@ class TestController extends \Imi\Controller\TcpController
     public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->data->getFd());
+        $this->server->joinGroup('g1', $this->data->getClientId());
         ConnectContext::bind($data->username);
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];

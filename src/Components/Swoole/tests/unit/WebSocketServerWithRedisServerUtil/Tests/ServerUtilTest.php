@@ -197,7 +197,7 @@ class ServerUtilTest extends BaseTest
         ])));
         $recv = $client1->recv();
         $recvData1 = json_decode($recv, true);
-        $this->assertTrue(isset($recvData1['fd']), 'Not found fd');
+        $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
         $http2 = new HttpRequest();
         $http2->retry = 3;
@@ -213,10 +213,10 @@ class ServerUtilTest extends BaseTest
         $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
         $http3 = new HttpRequest();
-        $response = $http3->post($this->host . 'serverUtil/close', ['fd' => $recvData1['fd'], 'flag' => 'testClose']);
+        $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
         $this->assertEquals([
-            'fd'   => 1,
-            'flag' => 1,
+            'clientId'   => 1,
+            'flag'       => 1,
         ], $response->json(true));
         $this->assertEquals('', $client1->recv(1));
         $this->assertEquals('', $client2->recv(1));

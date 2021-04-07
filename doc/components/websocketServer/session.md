@@ -116,7 +116,7 @@ MemoryTable:
 ```php
 use Imi\ConnectContext;
 
-$fd = ConnectContext::getFd();
+$clientId = ConnectContext::getClientId();
 ```
 
 ### 绑定连接
@@ -161,7 +161,7 @@ ConnectContext::unbind($memberId);
 use Imi\ConnectContext;
 $memberId = 1; // 用户标识符
 
-$fd = ConnectContext::getFdByFlag($memberId);
+$clientId = ConnectContext::getClientIdByFlag($memberId);
 ```
 
 ### 【批量】使用标记（UID）获取连接编号
@@ -170,23 +170,23 @@ $fd = ConnectContext::getFdByFlag($memberId);
 use Imi\ConnectContext;
 $memberId = 1; // 用户标识符
 
-$fds = ConnectContext::getFdsByFlags([$memberId]); // [1]
+$clientIds = ConnectContext::getClientIdsByFlags([$memberId]); // [1]
 ```
 
 ### 使用连接编号获取标记（UID）
 
 ```php
 use Imi\ConnectContext;
-$fd = 1; // 连接编号
+$clientId = 1; // 连接编号
 
-$memberIds = ConnectContext::getFlagByFd($fd);
+$memberIds = ConnectContext::getFlagByClientId($clientId);
 ```
 
 ### 【批量】使用连接编号获取标记（UID）
 
 ```php
 use Imi\ConnectContext;
-$fd = 1; // 连接编号
+$clientId = 1; // 连接编号
 
-$memberIds = ConnectContext::getFlagsByFds([$fd]); // [1]
+$memberIds = ConnectContext::getFlagsByClientIds([$clientId]); // [1]
 ```

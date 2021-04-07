@@ -17,6 +17,6 @@ class Http2AfterClose implements ICloseEventListener
      */
     public function handle(CloseEventParam $e): void
     {
-        $this->release($e->fd);
+        $this->release($e->clientId);
     }
 }

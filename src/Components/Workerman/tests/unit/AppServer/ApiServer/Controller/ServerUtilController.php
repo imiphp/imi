@@ -35,7 +35,7 @@ class ServerUtilController extends HttpController
     /**
      * @Action
      */
-    public function send(array $fds, string $flag): array
+    public function send(array $clientIds, string $flag): array
     {
         $data = [
             'data'  => 'test',
@@ -43,12 +43,12 @@ class ServerUtilController extends HttpController
         $dataStr = json_encode($data);
         $result = [];
         $result['send1'] = Server::send($data);
-        $result['send2'] = Server::send($data, $fds[0], 'websocket');
-        $result['send3'] = Server::send($data, $fds, 'websocket');
+        $result['send2'] = Server::send($data, $clientIds[0], 'websocket');
+        $result['send3'] = Server::send($data, $clientIds, 'websocket');
         $result['sendByFlag'] = Server::sendByFlag($data, $flag, 'websocket');
         $result['sendRaw1'] = Server::sendRaw($dataStr);
-        $result['sendRaw2'] = Server::sendRaw($dataStr, $fds[0], 'websocket');
-        $result['sendRaw3'] = Server::sendRaw($dataStr, $fds, 'websocket');
+        $result['sendRaw2'] = Server::sendRaw($dataStr, $clientIds[0], 'websocket');
+        $result['sendRaw3'] = Server::sendRaw($dataStr, $clientIds, 'websocket');
         $result['sendRawByFlag'] = Server::sendRawByFlag($dataStr, $flag, 'websocket');
 
         $result['sendToAll'] = Server::sendToAll($data, 'websocket');

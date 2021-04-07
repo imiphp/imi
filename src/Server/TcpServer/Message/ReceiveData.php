@@ -11,8 +11,10 @@ class ReceiveData implements IReceiveData
 {
     /**
      * 客户端连接的标识符.
+     *
+     * @var int|string
      */
-    protected int $fd = 0;
+    protected $clientId = 0;
 
     /**
      * 接收到的数据.
@@ -26,19 +28,24 @@ class ReceiveData implements IReceiveData
      */
     protected $formatData;
 
-    public function __construct(int $fd, string $data)
+    /**
+     * @param int|string $clientId
+     */
+    public function __construct($clientId, string $data)
     {
-        $this->fd = $fd;
+        $this->clientId = $clientId;
         $this->data = $data;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }
 
     /**
      * 获取客户端的socket id.
+     *
+     * @return int|string
      */
-    public function getFd(): int
+    public function getClientId()
     {
-        return $this->fd;
+        return $this->clientId;
     }
 
     /**

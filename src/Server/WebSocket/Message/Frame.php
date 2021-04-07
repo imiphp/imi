@@ -11,8 +11,10 @@ class Frame implements IFrame
 {
     /**
      * 客户端的socket id.
+     *
+     * @var int|string
      */
-    protected int $fd;
+    protected $clientId;
 
     /**
      * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
@@ -38,10 +40,13 @@ class Frame implements IFrame
      */
     protected $formatData;
 
-    public function __construct(string $data, int $fd, int $opcode = 1, bool $finish = true)
+    /**
+     * @param int|string $clientId
+     */
+    public function __construct(string $data, $clientId, int $opcode = 1, bool $finish = true)
     {
         $this->data = $data;
-        $this->fd = $fd;
+        $this->clientId = $clientId;
         $this->opcode = $opcode;
         $this->finish = $finish;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
@@ -49,10 +54,12 @@ class Frame implements IFrame
 
     /**
      * 获取客户端的socket id.
+     *
+     * @return int|string
      */
-    public function getFd(): int
+    public function getClientId()
     {
-        return $this->fd;
+        return $this->clientId;
     }
 
     /**

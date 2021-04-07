@@ -14,10 +14,10 @@ class ConnectContextRestoreParam extends EventParam
     /**
      * 数据原始连接号.
      */
-    public int $fromFd = 0;
+    public int $fromClientId = 0;
 
     /**
      * 数据目标连接号（当前连接号）.
      */
-    public int $toFd = 0;
+    public int $toClientId = 0;
 }

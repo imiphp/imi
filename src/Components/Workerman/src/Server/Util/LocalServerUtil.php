@@ -50,11 +50,11 @@ class LocalServerUtil implements IWorkermanServerUtil
      * 数据将会通过处理器编码
      *
      * @param mixed          $data
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function send($data, $fd = null, $serverName = null, bool $toAllWorkers = true): int
+    public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -64,7 +64,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         /** @var \Imi\Server\DataParser\DataParser $dataParser */
         $dataParser = $server->getBean(DataParser::class);
 
-        return $this->sendRaw($dataParser->encode($data, $serverName), $fd, $server->getName(), $toAllWorkers);
+        return $this->sendRaw($dataParser->encode($data, $serverName), $clientId, $server->getName(), $toAllWorkers);
     }
 
     /**
@@ -94,11 +94,11 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param int|int[]|null $fd           为 null 时，则发送给当前连接
+     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
      * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function sendRaw(string $data, $fd = null, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server || !$server->isLongConnection())
@@ -106,19 +106,19 @@ class LocalServerUtil implements IWorkermanServerUtil
             return 0;
         }
         $worker = $server->getWorker();
-        if (null === $fd)
+        if (null === $clientId)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
         }
         $success = 0;
-        foreach ((array) $fd as $tmpFd)
+        foreach ((array) $clientId as $tmpClientId)
         {
             /** @var TcpConnection|null $connection */
-            $connection = $worker->connections[$tmpFd] ?? null;
+            $connection = $worker->connections[$tmpClientId] ?? null;
             if (null !== $connection && $connection->send($data))
             {
                 ++$success;
@@ -148,34 +148,34 @@ class LocalServerUtil implements IWorkermanServerUtil
         }
         if (null === $flag)
         {
-            $fd = ConnectContext::getFd();
-            if (!$fd)
+            $clientId = ConnectContext::getClientId();
+            if (!$clientId)
             {
                 return 0;
             }
-            $fds = [$fd];
+            $clientIds = [$clientId];
 
-            return $this->sendRaw($data, $fds, $serverName, false);
+            return $this->sendRaw($data, $clientIds, $serverName, false);
         }
         else
         {
             /** @var ConnectionBinder $connectionBinder */
             $connectionBinder = App::getBean('ConnectionBinder');
-            $fds = [];
+            $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $fd = $connectionBinder->getFdByFlag($tmpFlag);
-                if ($fd)
+                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                if ($clientId)
                 {
-                    $fds[] = $fd;
+                    $clientIds[] = $clientId;
                 }
             }
-            if (!$fds)
+            if (!$clientIds)
             {
                 return 0;
             }
 
-            return $this->sendRaw($data, $fds, $serverName, false);
+            return $this->sendRaw($data, $clientIds, $serverName, false);
         }
     }
 
@@ -285,7 +285,7 @@ class LocalServerUtil implements IWorkermanServerUtil
             $group = $server->getGroup($tmpGroupName);
             if ($group)
             {
-                $count += $this->sendRaw($data, $group->getFds(), $serverName, false);
+                $count += $this->sendRaw($data, $group->getClientIds(), $serverName, false);
             }
         }
 
@@ -295,10 +295,10 @@ class LocalServerUtil implements IWorkermanServerUtil
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]|null $fd
+     * @param int|int[]|null $clientId
      * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
-    public function close($fd, ?string $serverName = null, bool $toAllWorkers = true): int
+    public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         $server = $this->getServer($serverName);
         if (!$server)
@@ -307,10 +307,10 @@ class LocalServerUtil implements IWorkermanServerUtil
         }
         $worker = $server->getWorker();
         $count = 0;
-        foreach ((array) $fd as $currentFd)
+        foreach ((array) $clientId as $currentClientId)
         {
             /** @var TcpConnection|null $connection */
-            $connection = $worker->connections[$currentFd] ?? null;
+            $connection = $worker->connections[$currentClientId] ?? null;
             if ($connection)
             {
                 $connection->close();
@@ -345,21 +345,21 @@ class LocalServerUtil implements IWorkermanServerUtil
 
         /** @var ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
-        $fds = [];
+        $clientIds = [];
         foreach ((array) $flag as $tmpFlag)
         {
-            $fd = $connectionBinder->getFdByFlag($tmpFlag);
-            if ($fd)
+            $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+            if ($clientId)
             {
-                $fds[] = $fd;
+                $clientIds[] = $clientId;
             }
         }
-        if (!$fds)
+        if (!$clientIds)
         {
             return 0;
         }
 
-        return $this->close($fds, $serverName, false);
+        return $this->close($clientIds, $serverName, false);
     }
 
     /**

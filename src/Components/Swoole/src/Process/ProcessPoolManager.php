@@ -91,7 +91,7 @@ class ProcessPoolManager
             ]);
             // 随机数播种
             mt_srand();
-            \Co\run(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
+            \Swoole\Coroutine\run(function () use ($pool, $workerId, $name, $workerNum, $args, $ipcType, $msgQueueKey, $processPoolOption) {
                 $processInstance = App::getBean($processPoolOption['className'], $args);
                 // 加载服务器注解
                 Scanner::scanVendor();

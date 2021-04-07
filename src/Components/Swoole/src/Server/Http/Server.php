@@ -201,9 +201,9 @@ class Server extends Base
                 try
                 {
                     $this->trigger('close', [
-                        'server'    => $this,
-                        'fd'        => $fd,
-                        'reactorId' => $reactorId,
+                        'server'          => $this,
+                        'clientId'        => $fd,
+                        'reactorId'       => $reactorId,
                     ], $this, CloseEventParam::class);
                 }
                 catch (\Throwable $ex)

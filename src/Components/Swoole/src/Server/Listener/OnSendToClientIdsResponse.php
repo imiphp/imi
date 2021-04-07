@@ -12,9 +12,9 @@ use Imi\Swoole\Util\Co\ChannelContainer;
 /**
  * 发送给指定连接-响应.
  *
- * @Listener(eventName="IMI.PIPE_MESSAGE.sendToFdsResponse")
+ * @Listener(eventName="IMI.PIPE_MESSAGE.sendToClientIdsResponse")
  */
-class OnSendToFdsResponse implements IEventListener
+class OnSendToClientIdsResponse implements IEventListener
 {
     /**
      * 事件处理方法.

@@ -19,9 +19,9 @@ class ConnectContext
     public static function create(array $data = []): void
     {
         $requestContextData = RequestContext::getContext();
-        if (!static::get() && $fd = ($requestContextData['fd'] ?? null))
+        if (!static::get() && $clientId = ($requestContextData['clientId'] ?? null))
         {
-            static::use(function (array $contextData) use ($data, $fd, $requestContextData): array {
+            static::use(function (array $contextData) use ($data, $clientId, $requestContextData): array {
                 if ($contextData)
                 {
                     $contextData = array_merge($contextData, $data);
@@ -30,45 +30,47 @@ class ConnectContext
                 {
                     $contextData = $data;
                 }
-                $contextData['fd'] = $fd;
+                $contextData['clientId'] = $clientId;
                 $contextData['__serverName'] = $requestContextData['server']->getName();
 
                 return $contextData;
-            }, $fd);
+            }, $clientId);
         }
     }
 
     /**
      * 从某个连接上下文中，加载到当前上下文或指定上下文中.
      */
-    public static function load(int $fromFd, ?int $toFd = null): void
+    public static function load(int $fromClientId, ?int $toClientId = null): void
     {
-        if (!$toFd)
+        if (!$toClientId)
         {
-            $toFd = self::getFd();
-            if (null === $toFd)
+            $toClientId = self::getClientId();
+            if (null === $toClientId)
             {
                 return;
             }
         }
-        $data = static::getContext($fromFd);
-        static::use(function (array $contextData) use ($data, $toFd): array {
+        $data = static::getContext($fromClientId);
+        static::use(function (array $contextData) use ($data, $toClientId): array {
             $contextData = $data;
-            $contextData['fd'] = $toFd;
+            $contextData['clientId'] = $toClientId;
 
             return $contextData;
-        }, $toFd);
+        }, $toClientId);
     }
 
     /**
      * 销毁当前连接的上下文.
+     *
+     * @param int|string|null $clientId
      */
-    public static function destroy(?int $fd = null): void
+    public static function destroy($clientId = null): void
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return;
             }
@@ -77,49 +79,52 @@ class ConnectContext
         $store = RequestContext::getServerBean('ConnectContextStore');
         if (($ttl = $store->getTtl()) > 0)
         {
-            $store->delayDestroy((string) $fd, $ttl);
+            $store->delayDestroy((string) $clientId, $ttl);
         }
         else
         {
-            $store->destroy((string) $fd);
+            $store->destroy((string) $clientId);
         }
     }
 
     /**
      * 判断当前连接上下文是否存在.
+     *
+     * @param int|string|null $clientId
      */
-    public static function exists(?int $fd = null): bool
+    public static function exists($clientId = null): bool
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return false;
             }
         }
 
-        return RequestContext::getServerBean('ConnectContextStore')->exists((string) $fd);
+        return RequestContext::getServerBean('ConnectContextStore')->exists((string) $clientId);
     }
 
     /**
      * 获取上下文数据.
      *
-     * @param mixed $default
+     * @param mixed           $default
+     * @param int|string|null $clientId
      *
      * @return mixed
      */
-    public static function get(?string $name = null, $default = null, ?int $fd = null)
+    public static function get(?string $name = null, $default = null, $clientId = null)
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return $default;
             }
         }
-        $data = RequestContext::getServerBean('ConnectContextStore')->read((string) $fd);
+        $data = RequestContext::getServerBean('ConnectContextStore')->read((string) $clientId);
         if (null === $name)
         {
             return $data;
@@ -133,25 +138,26 @@ class ConnectContext
     /**
      * 设置上下文数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string          $name
+     * @param mixed           $value
+     * @param int|string|null $clientId
      */
-    public static function set(?string $name, $value, ?int $fd = null): void
+    public static function set(?string $name, $value, $clientId = null): void
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return;
             }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $fdStr = (string) $fd;
-        $result = $store->lock($fdStr, function () use ($store, $name, $value, $fdStr) {
-            $data = $store->read($fdStr);
+        $clientIdStr = (string) $clientId;
+        $result = $store->lock($clientIdStr, function () use ($store, $name, $value, $clientIdStr) {
+            $data = $store->read($clientIdStr);
             $data[$name] = $value;
-            $store->save($fdStr, $data);
+            $store->save($clientIdStr, $data);
         });
         if (!$result)
         {
@@ -161,26 +167,28 @@ class ConnectContext
 
     /**
      * 批量设置上下文数据.
+     *
+     * @param int|string|null $clientId
      */
-    public static function muiltiSet(array $data, ?int $fd = null): void
+    public static function muiltiSet(array $data, $clientId = null): void
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return;
             }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $fdStr = (string) $fd;
-        $result = $store->lock($fdStr, function () use ($store, $data, $fdStr) {
-            $storeData = $store->read($fdStr);
+        $clientIdStr = (string) $clientId;
+        $result = $store->lock($clientIdStr, function () use ($store, $data, $clientIdStr) {
+            $storeData = $store->read($clientIdStr);
             foreach ($data as $name => $value)
             {
                 $storeData[$name] = $value;
             }
-            $store->save($fdStr, $storeData);
+            $store->save($clientIdStr, $storeData);
         });
         if (!$result)
         {
@@ -190,66 +198,72 @@ class ConnectContext
 
     /**
      * 使用回调并且自动加锁进行操作，回调用返回数据会保存进连接上下文.
+     *
+     * @param int|string|null $clientId
      */
-    public static function use(callable $callable, ?int $fd = null): void
+    public static function use(callable $callable, $clientId = null): void
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return;
             }
         }
         $store = RequestContext::getServerBean('ConnectContextStore');
-        $fdStr = (string) $fd;
-        $store->lock($fdStr, function () use ($callable, $store, $fdStr) {
-            $data = $store->read($fdStr);
+        $clientIdStr = (string) $clientId;
+        $store->lock($clientIdStr, function () use ($callable, $store, $clientIdStr) {
+            $data = $store->read($clientIdStr);
             $result = $callable($data);
             if ($result)
             {
-                $store->save($fdStr, $result);
+                $store->save($clientIdStr, $result);
             }
         });
     }
 
     /**
      * 获取当前上下文.
+     *
+     * @param int|string|null $clientId
      */
-    public static function getContext(?int $fd = null): array
+    public static function getContext($clientId = null): array
     {
-        return static::get(null, null, $fd);
+        return static::get(null, null, $clientId);
     }
 
     /**
      * 绑定一个标记到当前连接.
+     *
+     * @param int|string|null $clientId
      */
-    public static function bind(string $flag, ?int $fd = null): void
+    public static function bind(string $flag, $clientId = null): void
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return;
             }
         }
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
-        $connectionBinder->bind($flag, $fd);
+        $connectionBinder->bind($flag, $clientId);
     }
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
      *
-     * @param int $fd
+     * @param int|string|null $clientId
      */
-    public static function bindNx(string $flag, ?int $fd = null): bool
+    public static function bindNx(string $flag, $clientId = null): bool
     {
-        if (!$fd)
+        if (!$clientId)
         {
-            $fd = self::getFd();
-            if (null === $fd)
+            $clientId = self::getClientId();
+            if (null === $clientId)
             {
                 return false;
             }
@@ -257,7 +271,7 @@ class ConnectContext
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
-        return $connectionBinder->bindNx($flag, $fd);
+        return $connectionBinder->bindNx($flag, $clientId);
     }
 
     /**
@@ -274,13 +288,15 @@ class ConnectContext
 
     /**
      * 使用标记获取连接编号.
+     *
+     * @return int|string|null
      */
-    public static function getFdByFlag(string $flag): ?int
+    public static function getClientIdByFlag(string $flag)
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
-        return $connectionBinder->getFdByFlag($flag);
+        return $connectionBinder->getClientIdByFlag($flag);
     }
 
     /**
@@ -288,84 +304,88 @@ class ConnectContext
      *
      * @param string[] $flags
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public static function getFdsByFlags(array $flags): array
+    public static function getClientIdsByFlags(array $flags): array
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
-        return $connectionBinder->getFdsByFlags($flags);
-    }
-
-    /**
-     * 使用连接编号获取标记.
-     */
-    public static function getFlagByFd(int $fd): ?string
-    {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-
-        return $connectionBinder->getFlagByFd($fd);
+        return $connectionBinder->getClientIdsByFlags($flags);
     }
 
     /**
      * 使用连接编号获取标记.
      *
-     * @param int[] $fds
+     * @param int|string $clientId
+     */
+    public static function getFlagByClientId($clientId): ?string
+    {
+        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
+        $connectionBinder = App::getBean('ConnectionBinder');
+
+        return $connectionBinder->getFlagByClientId($clientId);
+    }
+
+    /**
+     * 使用连接编号获取标记.
+     *
+     * @param int[]|string[] $clientIds
      *
      * @return string[]
      */
-    public static function getFlagsByFds(array $fds): array
+    public static function getFlagsByClientIds(array $clientIds): array
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
-        return $connectionBinder->getFlagsByFds($fds);
+        return $connectionBinder->getFlagsByClientIds($clientIds);
     }
 
     /**
      * 使用标记获取旧的连接编号.
      */
-    public static function getOldFdByFlag(string $flag): ?int
+    public static function getOldClientIdByFlag(string $flag): ?int
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
 
-        return $connectionBinder->getOldFdByFlag($flag);
+        return $connectionBinder->getOldClientIdByFlag($flag);
     }
 
     /**
      * 恢复标记对应连接中的数据.
      */
-    public static function restore(string $flag, ?int $toFd = null): void
+    public static function restore(string $flag, ?int $toClientId = null): void
     {
-        $fromFd = static::getOldFdByFlag($flag);
-        if (!$fromFd)
+        $fromClientId = static::getOldClientIdByFlag($flag);
+        if (!$fromClientId)
         {
-            throw new \RuntimeException(sprintf('Not found fd of connection flag %s', $flag));
+            throw new \RuntimeException(sprintf('Not found clientId of connection flag %s', $flag));
         }
-        if (!$toFd)
+        if (!$toClientId)
         {
-            $toFd = self::getFd();
-            if (null === $toFd)
+            $toClientId = self::getClientId();
+            if (null === $toClientId)
             {
                 return;
             }
         }
-        static::load($fromFd, $toFd);
-        static::bind($flag, $toFd);
+        static::load($fromClientId, $toClientId);
+        static::bind($flag, $toClientId);
         Event::trigger('IMI.CONNECT_CONTEXT.RESTORE', [
-            'fromFd'    => $fromFd,
-            'toFd'      => $toFd,
+            'fromClientId'    => $fromClientId,
+            'toClientId'      => $toClientId,
         ], null, ConnectContextRestoreParam::class);
     }
 
     /**
      * 获取当前连接号.
+     *
+     * @return int|string|null
      */
-    public static function getFd(): ?int
+    public static function getClientId()
     {
-        return RequestContext::get('fd');
+        return RequestContext::get('clientId');
     }
 }

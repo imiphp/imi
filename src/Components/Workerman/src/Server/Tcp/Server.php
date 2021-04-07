@@ -41,16 +41,16 @@ class Server extends Base implements ITcpServer
         parent::bindEvents();
 
         $this->worker->onMessage = function (TcpConnection $connection, string $data) {
-            $fd = $connection->id;
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
-                'fd'     => $fd,
+                'server'       => $this,
+                'clientId'     => $clientId,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
-                'server'     => $this,
-                'connection' => $connection,
-                'fd'         => $fd,
-                'data'       => $data,
+                'server'           => $this,
+                'connection'       => $connection,
+                'clientId'         => $clientId,
+                'data'             => $data,
             ], $this);
         };
     }
@@ -65,14 +65,16 @@ class Server extends Base implements ITcpServer
 
     /**
      * 向客户端发送消息.
+     *
+     * @param int|string $clientId
      */
-    public function send(int $fd, string $data): bool
+    public function send($clientId, string $data): bool
     {
         /** @var TcpConnection|null $connection */
-        $connection = $this->worker->connections[$fd] ?? null;
+        $connection = $this->worker->connections[$clientId] ?? null;
         if (!$connection)
         {
-            throw new \RuntimeException(sprintf('Connection %s does not exists', $fd));
+            throw new \RuntimeException(sprintf('Connection %s does not exists', $clientId));
         }
 
         return false !== $connection->send($data);

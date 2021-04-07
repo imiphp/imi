@@ -60,11 +60,11 @@ class ServerUtilTest extends BaseTest
                 ])));
                 $recv = $client->recv();
                 $recvData = json_decode($recv, true);
-                if (!isset($recvData['fd']))
+                if (!isset($recvData['clientId']))
                 {
                     $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
                 }
-                $channel->push([$index => $recvData['fd']]);
+                $channel->push([$index => $recvData['clientId']]);
                 for ($i = 0; $i < $recvCount; ++$i)
                 {
                     $recvResult = $client->recv();
@@ -130,7 +130,7 @@ class ServerUtilTest extends BaseTest
                     $waitChannel->push($th);
                 }
             });
-            $fds = [];
+            $clientIds = [];
             $th = null;
             for ($i = 0; $i < 3; ++$i)
             {
@@ -138,7 +138,7 @@ class ServerUtilTest extends BaseTest
                 $this->assertNotFalse($result);
                 if (\is_array($result))
                 {
-                    $fds[key($result)] = current($result);
+                    $clientIds[key($result)] = current($result);
                 }
                 elseif ($result instanceof \Throwable)
                 {
@@ -149,12 +149,12 @@ class ServerUtilTest extends BaseTest
             {
                 throw $th;
             }
-            ksort($fds);
-            $this->assertCount(2, $fds);
+            ksort($clientIds);
+            $this->assertCount(2, $clientIds);
             $http = new HttpRequest();
             $response = $http->post($this->host . 'serverUtil/send', [
-                'fds'  => $fds,
-                'flag' => 'testSend',
+                'clientIds'  => $clientIds,
+                'flag'       => 'testSend',
             ], 'json');
             $th = null;
             for ($i = 0; $i < 3; ++$i)
@@ -222,9 +222,9 @@ class ServerUtilTest extends BaseTest
             $http = new HttpRequest();
             $response = $http->get($this->host . 'serverUtil/sendToGroup');
             $this->assertEquals([
-                'groupFdCount'   => 2,
-                'sendToGroup'    => 2,
-                'sendRawToGroup' => 2,
+                'groupClientIdCount'   => 2,
+                'sendToGroup'          => 2,
+                'sendRawToGroup'       => 2,
             ], $response->json(true));
 
             for ($i = 0; $i < 2; ++$i)
@@ -251,7 +251,7 @@ class ServerUtilTest extends BaseTest
         ])));
         $recv = $client1->recv();
         $recvData1 = json_decode($recv, true);
-        $this->assertTrue(isset($recvData1['fd']), 'Not found fd');
+        $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
         $http2 = new HttpRequest();
         $http2->retry = 3;
@@ -267,10 +267,10 @@ class ServerUtilTest extends BaseTest
         $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
         $http3 = new HttpRequest();
-        $response = $http3->post($this->host . 'serverUtil/close', ['fd' => $recvData1['fd'], 'flag' => 'testClose']);
+        $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
         $this->assertEquals([
-            'fd'   => 1,
-            'flag' => 1,
+            'clientId'   => 1,
+            'flag'       => 1,
         ], $response->json(true));
         $this->assertEquals('', $client1->recv(1));
         $this->assertEquals('', $client2->recv(1));

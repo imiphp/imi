@@ -64,26 +64,30 @@ class Redis implements IHandler
 
     /**
      * 绑定一个标记到当前连接.
+     *
+     * @param int|string $clientId
      */
-    public function bind(string $flag, int $fd): void
+    public function bind(string $flag, $clientId): void
     {
-        ConnectContext::set('__flag', $flag, $fd);
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $fd) {
-            $redis->hSet($this->key, $flag, $fd);
+        ConnectContext::set('__flag', $flag, $clientId);
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId) {
+            $redis->hSet($this->key, $flag, $clientId);
         });
     }
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
+     *
+     * @param int|string $clientId
      */
-    public function bindNx(string $flag, int $fd): bool
+    public function bindNx(string $flag, $clientId): bool
     {
-        $result = $this->useRedis(function (RedisHandler $redis) use ($flag, $fd) {
-            return $redis->hSetNx($this->key, $flag, $fd);
+        $result = $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId) {
+            return $redis->hSetNx($this->key, $flag, $clientId);
         });
         if ($result)
         {
-            ConnectContext::set('__flag', $flag, $fd);
+            ConnectContext::set('__flag', $flag, $clientId);
         }
 
         return $result;
@@ -98,15 +102,15 @@ class Redis implements IHandler
     {
         $this->useRedis(function (RedisHandler $redis) use ($flag, $keepTime) {
             $key = $this->key;
-            if ($fd = $redis->hGet($key, $flag))
+            if ($clientId = $redis->hGet($key, $flag))
             {
-                ConnectContext::set('__flag', null, $fd);
+                ConnectContext::set('__flag', null, $clientId);
             }
             $redis->multi();
             $redis->hDel($key, $flag);
-            if ($fd && $keepTime > 0)
+            if ($clientId && $keepTime > 0)
             {
-                $redis->set($key . ':old:' . $flag, $fd, $keepTime);
+                $redis->set($key . ':old:' . $flag, $clientId, $keepTime);
             }
             $redis->exec();
         });
@@ -114,8 +118,10 @@ class Redis implements IHandler
 
     /**
      * 使用标记获取连接编号.
+     *
+     * @return int|string|null
      */
-    public function getFdByFlag(string $flag): ?int
+    public function getClientIdByFlag(string $flag)
     {
         return $this->useRedis(function (RedisHandler $redis) use ($flag) {
             return $redis->hGet($this->key, $flag) ?: null;
@@ -127,9 +133,9 @@ class Redis implements IHandler
      *
      * @param string[] $flags
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFdsByFlags(array $flags): array
+    public function getClientIdsByFlags(array $flags): array
     {
         return $this->useRedis(function (RedisHandler $redis) use ($flags) {
             return $redis->hMget($this->key, $flags);
@@ -138,25 +144,27 @@ class Redis implements IHandler
 
     /**
      * 使用连接编号获取标记.
+     *
+     * @param int|string $clientId
      */
-    public function getFlagByFd(int $fd): ?string
+    public function getFlagByClientId($clientId): ?string
     {
-        return ConnectContext::get('__flag', null, $fd);
+        return ConnectContext::get('__flag', null, $clientId);
     }
 
     /**
      * 使用连接编号获取标记.
      *
-     * @param int[] $fds
+     * @param int[]|string[] $clientIds
      *
      * @return string[]
      */
-    public function getFlagsByFds(array $fds): array
+    public function getFlagsByClientIds(array $clientIds): array
     {
         $flags = [];
-        foreach ($fds as $fd)
+        foreach ($clientIds as $clientId)
         {
-            $flags[$fd] = ConnectContext::get('__flag', null, $fd);
+            $flags[$clientId] = ConnectContext::get('__flag', null, $clientId);
         }
 
         return $flags;
@@ -165,7 +173,7 @@ class Redis implements IHandler
     /**
      * 使用标记获取旧的连接编号.
      */
-    public function getOldFdByFlag(string $flag): ?int
+    public function getOldClientIdByFlag(string $flag): ?int
     {
         return $this->useRedis(function (RedisHandler $redis) use ($flag) {
             return $redis->get($this->key . ':old:' . $flag) ?: null;

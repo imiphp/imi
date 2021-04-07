@@ -35,9 +35,9 @@ class BeforeHandShake implements IHandShakeEventListener
         }
         // 上下文创建
         RequestContext::muiltiSet([
-            'request'   => $request,
-            'response'  => $response,
-            'fd'        => RequestContext::get('swooleRequest')->fd,
+            'request'         => $request,
+            'response'        => $response,
+            'clientId'        => RequestContext::get('swooleRequest')->fd,
         ]);
 
         // 连接上下文创建

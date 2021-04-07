@@ -29,20 +29,20 @@ class TestController extends WebSocketController
     public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->frame->getFd());
+        $this->server->joinGroup('g1', $this->frame->getClientId());
         ConnectContext::bind($data->username);
 
         return [
-            'success'             => true,
-            'middlewareData'      => RequestContext::get('middlewareData'),
-            'requestUri'          => ConnectContext::get('requestUri'),
-            'uri'                 => (string) ConnectContext::get('uri'),
-            'token'               => $data->username,
-            'fd'                  => $this->frame->getFd(),
-            'getFdByFlag'         => ConnectContext::getFdByFlag($data->username),
-            'getFlagByFd'         => ConnectContext::getFlagByFd($this->frame->getFd()),
-            'getFdsByFlags'       => ConnectContext::getFdsByFlags([$data->username]),
-            'getFlagsByFds'       => ConnectContext::getFlagsByFds([$this->frame->getFd()]),
+            'success'                               => true,
+            'middlewareData'                        => RequestContext::get('middlewareData'),
+            'requestUri'                            => ConnectContext::get('requestUri'),
+            'uri'                                   => (string) ConnectContext::get('uri'),
+            'token'                                 => $data->username,
+            'clientId'                              => $this->frame->getClientId(),
+            'getClientIdByFlag'                     => ConnectContext::getClientIdByFlag($data->username),
+            'getFlagByClientId'                     => ConnectContext::getFlagByClientId($this->frame->getClientId()),
+            'getClientIdsByFlags'                   => ConnectContext::getClientIdsByFlags([$data->username]),
+            'getFlagsByClientIds'                   => ConnectContext::getFlagsByClientIds([$this->frame->getClientId()]),
         ];
     }
 
@@ -85,8 +85,8 @@ class TestController extends WebSocketController
     public function info(): array
     {
         return [
-            'fd'       => ConnectContext::getFd(),
-            'workerId' => Worker::getWorkerId(),
+            'clientId'       => ConnectContext::getClientId(),
+            'workerId'       => Worker::getWorkerId(),
         ];
     }
 

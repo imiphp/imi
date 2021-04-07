@@ -86,12 +86,14 @@ class ServerUtilController extends HttpController
 
     /**
      * @Action
+     *
+     * @param int|string $clientId
      */
-    public function close(int $fd, string $flag): array
+    public function close($clientId, string $flag): array
     {
         return [
-            'fd'   => Server::close($fd),
-            'flag' => Server::closeByFlag($flag),
+            'clientId'   => Server::close($clientId),
+            'flag'       => Server::closeByFlag($flag),
         ];
     }
 }

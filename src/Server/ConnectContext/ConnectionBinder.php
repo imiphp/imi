@@ -32,18 +32,22 @@ class ConnectionBinder
 
     /**
      * 绑定一个标记到当前连接.
+     *
+     * @param int|string $clientId
      */
-    public function bind(string $flag, int $fd): void
+    public function bind(string $flag, $clientId): void
     {
-        $this->handler->bind($flag, $fd);
+        $this->handler->bind($flag, $clientId);
     }
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
+     *
+     * @param int|string $clientId
      */
-    public function bindNx(string $flag, int $fd): bool
+    public function bindNx(string $flag, $clientId): bool
     {
-        return $this->handler->bindNx($flag, $fd);
+        return $this->handler->bindNx($flag, $clientId);
     }
 
     /**
@@ -58,10 +62,12 @@ class ConnectionBinder
 
     /**
      * 使用标记获取连接编号.
+     *
+     * @return int|string|null
      */
-    public function getFdByFlag(string $flag): ?int
+    public function getClientIdByFlag(string $flag)
     {
-        return $this->handler->getFdByFlag($flag);
+        return $this->handler->getClientIdByFlag($flag);
     }
 
     /**
@@ -69,38 +75,40 @@ class ConnectionBinder
      *
      * @param string[] $flags
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFdsByFlags(array $flags): array
+    public function getClientIdsByFlags(array $flags): array
     {
-        return $this->handler->getFdsByFlags($flags);
-    }
-
-    /**
-     * 使用连接编号获取标记.
-     */
-    public function getFlagByFd(int $fd): ?string
-    {
-        return $this->handler->getFlagByFd($fd);
+        return $this->handler->getClientIdsByFlags($flags);
     }
 
     /**
      * 使用连接编号获取标记.
      *
-     * @param int[] $fds
+     * @param int|string $clientId
+     */
+    public function getFlagByClientId($clientId): ?string
+    {
+        return $this->handler->getFlagByClientId($clientId);
+    }
+
+    /**
+     * 使用连接编号获取标记.
+     *
+     * @param int[]|string[] $clientIds
      *
      * @return string[]
      */
-    public function getFlagsByFds(array $fds): array
+    public function getFlagsByClientIds(array $clientIds): array
     {
-        return $this->handler->getFlagsByFds($fds);
+        return $this->handler->getFlagsByClientIds($clientIds);
     }
 
     /**
      * 使用标记获取旧的连接编号.
      */
-    public function getOldFdByFlag(string $flag): ?int
+    public function getOldClientIdByFlag(string $flag): ?int
     {
-        return $this->handler->getOldFdByFlag($flag);
+        return $this->handler->getOldClientIdByFlag($flag);
     }
 }

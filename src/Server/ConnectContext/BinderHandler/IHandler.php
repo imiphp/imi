@@ -11,13 +11,17 @@ interface IHandler
 {
     /**
      * 绑定一个标记到当前连接.
+     *
+     * @param int|string $clientId
      */
-    public function bind(string $flag, int $fd): void;
+    public function bind(string $flag, $clientId): void;
 
     /**
      * 绑定一个标记到当前连接，如果已绑定返回false.
+     *
+     * @param int|string $clientId
      */
-    public function bindNx(string $flag, int $fd): bool;
+    public function bindNx(string $flag, $clientId): bool;
 
     /**
      * 取消绑定.
@@ -28,34 +32,38 @@ interface IHandler
 
     /**
      * 使用标记获取连接编号.
+     *
+     * @return int|string|null
      */
-    public function getFdByFlag(string $flag): ?int;
+    public function getClientIdByFlag(string $flag);
 
     /**
      * 使用标记获取连接编号.
      *
      * @param string[] $flags
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFdsByFlags(array $flags): array;
-
-    /**
-     * 使用连接编号获取标记.
-     */
-    public function getFlagByFd(int $fd): ?string;
+    public function getClientIdsByFlags(array $flags): array;
 
     /**
      * 使用连接编号获取标记.
      *
-     * @param int[] $fds
+     * @param int|string $clientId
+     */
+    public function getFlagByClientId($clientId): ?string;
+
+    /**
+     * 使用连接编号获取标记.
+     *
+     * @param int[]|string[] $clientIds
      *
      * @return string[]
      */
-    public function getFlagsByFds(array $fds): array;
+    public function getFlagsByClientIds(array $clientIds): array;
 
     /**
      * 使用标记获取旧的连接编号.
      */
-    public function getOldFdByFlag(string $flag): ?int;
+    public function getOldClientIdByFlag(string $flag): ?int;
 }

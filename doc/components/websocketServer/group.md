@@ -1,6 +1,6 @@
 # 连接分组
 
-imi 支持对 WebSocket 的连接（fd）进行逻辑分组，你可以方便地对用户进行分组消息推送。
+imi 支持对 WebSocket 的连接（clientId）进行逻辑分组，你可以方便地对用户进行分组消息推送。
 
 所有的分组针对服务器，所以需要 imi 的服务器对象才可以调用下面这些方法，比如在`WebSocketController`中可以使用`$this->server`。
 
@@ -47,25 +47,25 @@ $this->server->createGroup('分组名称', 10);
 ### 加入分组
 
 ```php
-$this->server->joinGroup('分组名称', $this->frame->getFd());
+$this->server->joinGroup('分组名称', $this->frame->getClientId());
 ```
 
 ### 离开分组
 
 ```php
-$this->server->leaveGroup('分组名称', $this->frame->getFd());
+$this->server->leaveGroup('分组名称', $this->frame->getClientId());
 ```
 
 ### 连接是否存在于组里
 
 ```php
-$this->server->getGroup('分组名称')->isInGroup($this->frame->getFd());
+$this->server->getGroup('分组名称')->isInGroup($this->frame->getClientId());
 ```
 
 ### 获取所有连接
 
 ```php
-$this->server->getGroup('分组名称')->getFds();
+$this->server->getGroup('分组名称')->getClientIds();
 ```
 
 ### 获取在组中的连接总数
@@ -90,7 +90,7 @@ $this->server->hasGroup('分组名称');
 ### 调用组方法
 
 ```php
-// 遍历g1分组中所有fd，调用服务器的push方法，发送message
+// 遍历g1分组中所有clientId，调用服务器的push方法，发送message
 $this->server->groupCall('g1', 'push', 'message');
 ```
 
@@ -107,13 +107,13 @@ $this->server->getGroups();
 ### 加入组
 
 ```php
-$group->join($fd);
+$group->join($clientId);
 ```
 
 ### 离开组
 
 ```php
-$group->leave($fd);
+$group->leave($clientId);
 ```
 
 ### 获取服务器对象
@@ -133,6 +133,6 @@ $group->getMaxClients();
 ### 调用组方法
 
 ```php
-// 发送给组里所有的连接，其它服务器方法一样调用，省去fd参数即可
+// 发送给组里所有的连接，其它服务器方法一样调用，省去clientId参数即可
 $group->push('message');
 ```

@@ -87,7 +87,7 @@ class Redis implements IGroupHandler
         {
             $redis->del($this->key . ':master_pid');
         }
-        if ($redis->setnx($this->key . ':master_pid', $this->masterPID))
+        if ($r = $redis->setnx($this->key . ':master_pid', $this->masterPID))
         {
             // 清空分组列表
             $groupsKey = $this->getGroupsKey();
@@ -226,46 +226,52 @@ class Redis implements IGroupHandler
 
     /**
      * 加入组，组不存在则自动创建.
+     *
+     * @param int|string $clientId
      */
-    public function joinGroup(string $groupName, int $fd): bool
+    public function joinGroup(string $groupName, $clientId): bool
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $fd): bool {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $clientId): bool {
             $key = $this->getGroupNameKey($groupName);
 
-            return $redis->sAdd($key, $fd) > 0;
+            return $redis->sAdd($key, $clientId) > 0;
         });
     }
 
     /**
      * 离开组，组不存在则自动创建.
+     *
+     * @param int|string $clientId
      */
-    public function leaveGroup(string $groupName, int $fd): bool
+    public function leaveGroup(string $groupName, $clientId): bool
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $fd): bool {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $clientId): bool {
             $key = $this->getGroupNameKey($groupName);
 
-            return $redis->srem($key, $fd) > 0;
+            return $redis->srem($key, $clientId) > 0;
         });
     }
 
     /**
      * 连接是否存在于组里.
+     *
+     * @param int|string $clientId
      */
-    public function isInGroup(string $groupName, int $fd): bool
+    public function isInGroup(string $groupName, $clientId): bool
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $fd): bool {
+        return $this->useRedis(function (RedisHandler $redis) use ($groupName, $clientId): bool {
             $key = $this->getGroupNameKey($groupName);
 
-            return $redis->sismember($key, $fd);
+            return $redis->sismember($key, $clientId);
         });
     }
 
     /**
-     * 获取所有fd.
+     * 获取所有连接ID.
      *
-     * @return int[]
+     * @return int[]|string[]
      */
-    public function getFds(string $groupName): array
+    public function getClientIds(string $groupName): array
     {
         $groups = $this->groups;
 

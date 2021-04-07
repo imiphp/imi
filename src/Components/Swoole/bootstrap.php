@@ -13,7 +13,7 @@ return function () {
         'hook_flags' => \SWOOLE_HOOK_ALL ^ \SWOOLE_HOOK_NATIVE_CURL,
     ]);
     $status = 0;
-    Co\run(function () use (&$status) {
+    \Swoole\Coroutine\run(function () use (&$status) {
         try
         {
             $path = null;

@@ -35,7 +35,7 @@ class Dispatcher
         {
             /** @var IWebSocketServer $server */
             $server = RequestContext::getServer();
-            $server->push($frame->getFd(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
+            $server->push($frame->getClientId(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
         }
     }
 

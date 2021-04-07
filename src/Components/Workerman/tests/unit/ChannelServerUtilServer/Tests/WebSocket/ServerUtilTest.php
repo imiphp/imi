@@ -52,7 +52,7 @@ class ServerUtilTest extends BaseTest
             $recvData1 = $client1->receive();
             $recv = reset($recvData1)->getPayload();
             $recvData1 = json_decode($recv, true);
-            $this->assertTrue(isset($recvData1['fd']));
+            $this->assertTrue(isset($recvData1['clientId']));
 
             $client2 = new Client($this->host, $this->host);
             $this->assertTrue($client2->connect());
@@ -62,7 +62,7 @@ class ServerUtilTest extends BaseTest
             $recvData2 = $client2->receive();
             $recv = reset($recvData2)->getPayload();
             $recvData2 = json_decode($recv, true);
-            $this->assertTrue(isset($recvData2['fd']));
+            $this->assertTrue(isset($recvData2['clientId']));
 
             $client3 = new Client($this->host, $this->host);
             $this->assertTrue($client3->connect());

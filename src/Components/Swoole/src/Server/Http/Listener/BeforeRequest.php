@@ -42,7 +42,7 @@ class BeforeRequest implements IRequestEventListener
         $server = $this->server;
         if ($server->isHttp2())
         {
-            $context['fd'] = $context['swooleRequest']->fd;
+            $context['clientId'] = $context['swooleRequest']->fd;
             ConnectContext::create();
         }
         // 中间件

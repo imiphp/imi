@@ -56,37 +56,37 @@ class Server extends Base implements IWebSocketServer
 
         // @phpstan-ignore-next-line
         $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
-            $fd = $connection->id;
+            $clientId = $connection->id;
             $request = new WorkermanRequest($this->worker, $connection, new Request($httpHeader), 'ws');
 
             RequestContext::muiltiSet([
-                'server' => $this,
-                'fd'     => $fd,
+                'server'       => $this,
+                'clientId'     => $clientId,
             ]);
             ConnectContext::create([
                 'request' => $request,
                 'uri'     => $request->getUri(),
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
-                'server'     => $this,
-                'connection' => $connection,
-                'fd'         => $fd,
-                'request'    => $request,
+                'server'           => $this,
+                'connection'       => $connection,
+                'clientId'         => $clientId,
+                'request'          => $request,
             ], $this);
         };
 
         $this->worker->onMessage = function (TcpConnection $connection, string $data) {
-            $fd = $connection->id;
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
-                'fd'     => $fd,
+                'server'       => $this,
+                'clientId'     => $clientId,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
-                'server'     => $this,
-                'connection' => $connection,
-                'fd'         => $fd,
-                'data'       => $data,
-                'frame'      => new Frame($data, $fd),
+                'server'           => $this,
+                'connection'       => $connection,
+                'clientId'         => $clientId,
+                'data'             => $data,
+                'frame'            => new Frame($data, $clientId),
             ], $this);
         };
     }
@@ -101,14 +101,16 @@ class Server extends Base implements IWebSocketServer
 
     /**
      * 向客户端推送消息.
+     *
+     * @param int|string $clientId
      */
-    public function push(int $fd, string $data, int $opcode = 1): bool
+    public function push($clientId, string $data, int $opcode = 1): bool
     {
         /** @var TcpConnection|null $connection */
-        $connection = $this->worker->connections[$fd] ?? null;
+        $connection = $this->worker->connections[$clientId] ?? null;
         if (!$connection)
         {
-            throw new \RuntimeException(sprintf('Connection %s does not exists', $fd));
+            throw new \RuntimeException(sprintf('Connection %s does not exists', $clientId));
         }
 
         return false !== $connection->send($data);

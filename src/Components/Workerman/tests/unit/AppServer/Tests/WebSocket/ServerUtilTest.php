@@ -36,7 +36,7 @@ class ServerUtilTest extends BaseTest
             $recvData1 = $client1->receive();
             $recv = reset($recvData1)->getPayload();
             $recvData1 = json_decode($recv, true);
-            $this->assertTrue(isset($recvData1['fd']));
+            $this->assertTrue(isset($recvData1['clientId']));
 
             $client2 = new Client($this->host, $this->host);
             $this->assertTrue($client2->connect());
@@ -46,7 +46,7 @@ class ServerUtilTest extends BaseTest
             $recvData2 = $client2->receive();
             $recv = reset($recvData2)->getPayload();
             $recvData2 = json_decode($recv, true);
-            $this->assertTrue(isset($recvData2['fd']));
+            $this->assertTrue(isset($recvData2['clientId']));
 
             $client3 = new Client($this->host, $this->host);
             $this->assertTrue($client3->connect());
@@ -59,15 +59,15 @@ class ServerUtilTest extends BaseTest
             $recvData3 = json_decode($recv, true);
             $this->assertTrue($recvData3['success'] ?? null);
 
-            $fds = [
-                $recvData1['fd'],
-                $recvData2['fd'],
+            $clientIds = [
+                $recvData1['clientId'],
+                $recvData2['clientId'],
             ];
 
             $http = new HttpRequest();
             $response = $http->post($this->httpHost . 'serverUtil/send', [
-                'fds'  => $fds,
-                'flag' => 'testSend',
+                'clientIds'  => $clientIds,
+                'flag'       => 'testSend',
             ], 'json');
             $this->assertEquals([
                 'send1'         => 0,

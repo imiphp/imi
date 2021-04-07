@@ -139,7 +139,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             RequestContext::muiltiSet([
                 'server' => $this,
                 // @phpstan-ignore-next-line
-                'fd'     => $connection->id,
+                'clientId'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
                 'server'     => $this,
@@ -151,7 +151,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             RequestContext::muiltiSet([
                 'server' => $this,
                 // @phpstan-ignore-next-line
-                'fd'     => $connection->id,
+                'clientId'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
                 'server'     => $this,
@@ -163,7 +163,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             RequestContext::muiltiSet([
                 'server' => $this,
                 // @phpstan-ignore-next-line
-                'fd'     => $connection->id,
+                'clientId'     => $connection->id,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
                 'server'     => $this,
