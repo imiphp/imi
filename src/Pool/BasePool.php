@@ -153,7 +153,7 @@ abstract class BasePool implements IPool
             $item->getResource()->close();
         }
         $this->pool = [];
-        $this->buildQueue();
+        $this->initQueue();
     }
 
     /**
