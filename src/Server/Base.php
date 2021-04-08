@@ -17,6 +17,7 @@ use Imi\Server\Event\Param\WorkerExitEventParam;
 use Imi\Server\Event\Param\WorkerStartEventParam;
 use Imi\Server\Event\Param\WorkerStopEventParam;
 use Imi\Server\Group\TServerGroup;
+use Swoole\Event as SwooleEvent;
 
 abstract class Base
 {
@@ -163,6 +164,7 @@ abstract class Base
                     catch (\Throwable $ex)
                     {
                         App::getBean('ErrorLog')->onException($ex);
+                        exit(255);
                     }
                 });
             }
@@ -191,6 +193,7 @@ abstract class Base
                 catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
+                    SwooleEvent::exit();
                 }
             });
 
@@ -232,6 +235,7 @@ abstract class Base
                 catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
+                    exit(255);
                 }
             });
 
