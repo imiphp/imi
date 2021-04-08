@@ -9,6 +9,7 @@ use Imi\Cron\Message\RemoveCron;
 use Imi\Cron\Message\Result;
 use Imi\Process\Annotation\Process;
 use Imi\Process\BaseProcess;
+use Swoole\Event;
 
 /**
  * 定时任务进程.
@@ -59,6 +60,7 @@ class CronProcess extends BaseProcess
         });
         \Swoole\Runtime::enableCoroutine();
         $this->startSocketServer();
+        Event::wait();
     }
 
     /**
