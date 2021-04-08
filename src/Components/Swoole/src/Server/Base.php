@@ -21,6 +21,7 @@ use Imi\Swoole\Server\Event\Param\WorkerErrorEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
+use Swoole\Event as SwooleEvent;
 use Swoole\Server;
 use Swoole\Server\Port;
 
@@ -195,6 +196,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                     catch (\Throwable $ex)
                     {
                         App::getBean('ErrorLog')->onException($ex);
+                        exit(255);
                     }
                 });
             }
@@ -223,6 +225,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
+                    SwooleEvent::exit();
                 }
             });
 
@@ -264,6 +267,7 @@ abstract class Base extends BaseServer implements ISwooleServer
                 catch (\Throwable $ex)
                 {
                     App::getBean('ErrorLog')->onException($ex);
+                    exit(255);
                 }
             });
 
