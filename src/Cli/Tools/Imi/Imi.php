@@ -78,7 +78,7 @@ class Imi extends BaseCommand
             $input = fread(\STDIN, 1);
             if ('y' !== $input)
             {
-                exit;
+                exit(255);
             }
         }
 

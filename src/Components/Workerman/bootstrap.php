@@ -28,7 +28,7 @@ return function () {
             if (!is_file($fileName))
             {
                 echo 'No file vendor/autoload.php', \PHP_EOL;
-                exit;
+                exit(255);
             }
             require $fileName;
         })();
@@ -47,7 +47,7 @@ return function () {
             if (!isset($config['namespace']))
             {
                 echo 'Has no namespace, please add arg: --app-namespace "Your App Namespace"', \PHP_EOL;
-                exit;
+                exit(255);
             }
             $namespace = $config['namespace'];
         }

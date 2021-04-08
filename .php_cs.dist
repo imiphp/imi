@@ -34,6 +34,7 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude(__DIR__ . '/vendor')
+            ->in(__DIR__ . '/bin')
             ->in(__DIR__ . '/src')
             ->in(__DIR__ . '/config')
             ->in(__DIR__ . '/tests')

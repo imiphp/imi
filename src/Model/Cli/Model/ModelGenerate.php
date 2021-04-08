@@ -102,7 +102,7 @@ class ModelGenerate extends BaseCommand
         if (null === $modelPath)
         {
             $this->output->writeln('<error>Namespace</error> <comment>' . $namespace . '</comment> <error>cannot found</error>');
-            exit;
+            exit(255);
         }
         $this->output->writeln('<info>modelPath:</info> <comment>' . $modelPath . '</comment>');
         if (empty($baseClass) || !class_exists($baseClass))
@@ -138,7 +138,7 @@ class ModelGenerate extends BaseCommand
                 if (null === $path)
                 {
                     $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
-                    exit;
+                    exit(255);
                 }
                 File::createDir($path);
                 $basePath = $path . '/Base';
@@ -161,7 +161,7 @@ class ModelGenerate extends BaseCommand
                         if (null === $path)
                         {
                             $this->output->writeln('<error>Namespace</error> <comment>' . $modelNamespace . '</comment> <error>cannot found</error>');
-                            exit;
+                            exit(255);
                         }
                         File::createDir($path);
                         $basePath = $path . '/Base';
