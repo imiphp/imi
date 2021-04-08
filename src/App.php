@@ -127,7 +127,7 @@ abstract class App
         if (!\extension_loaded('swoole'))
         {
             echo 'No Swoole extension installed or enabled', \PHP_EOL;
-            exit;
+            exit(255);
         }
         // 短名称检查
         $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
@@ -135,7 +135,7 @@ abstract class App
         if (\in_array($useShortname, ['', 'off', 'false'], true))
         {
             echo 'Please enable swoole short name before using imi!', \PHP_EOL, 'You can set swoole.use_shortname = on into your php.ini.', \PHP_EOL;
-            exit;
+            exit(255);
         }
     }
 
@@ -166,7 +166,7 @@ abstract class App
         if (!is_writable($runtimePath = Imi::getRuntimePath()))
         {
             echo 'Runtime path "', $runtimePath, '" is not writable', \PHP_EOL;
-            exit;
+            exit(255);
         }
         // 框架运行时缓存支持
         if ($isServerStart)

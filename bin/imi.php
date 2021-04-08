@@ -1,30 +1,31 @@
 <?php
+
 use Imi\App;
 use Imi\Util\Args;
 use Imi\Util\File;
 
-$imi = new class{
+$imi = new class() {
     public function run()
     {
-        if(!class_exists('Imi\App'))
+        if (!class_exists('Imi\App'))
         {
             $paths = [
                 $_SERVER['PWD'] ?? getcwd(),
                 dirname(__DIR__),
                 dirname(__DIR__, 4), // 在非工作路径，使用绝对路径启动
             ];
-            foreach($paths as $path)
+            foreach ($paths as $path)
             {
                 $fileName = $path . '/vendor/autoload.php';
-                if(is_file($fileName))
+                if (is_file($fileName))
                 {
                     break;
                 }
             }
-            if(!is_file($fileName))
+            if (!is_file($fileName))
             {
-                echo 'No file vendor/autoload.php', PHP_EOL;
-                exit;
+                echo 'No file vendor/autoload.php', \PHP_EOL;
+                exit(255);
             }
             $loader = require $fileName;
             App::setLoader($loader);
@@ -34,13 +35,13 @@ $imi = new class{
         Args::init(1);
 
         $namespace = Args::get('appNamespace');
-        if(null === $namespace)
+        if (null === $namespace)
         {
             $config = include File::path($path ?? dirname($_SERVER['SCRIPT_NAME'], 2), 'config/config.php');
-            if(!isset($config['namespace']))
+            if (!isset($config['namespace']))
             {
-                echo 'Has no namespace, please add arg: -appNamespace "Your App Namespace"', PHP_EOL;
-                exit;
+                echo 'Has no namespace, please add arg: -appNamespace "Your App Namespace"', \PHP_EOL;
+                exit(255);
             }
             $namespace = $config['namespace'];
             unset($config);
