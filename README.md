@@ -28,9 +28,9 @@ imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/imag
 
 ## 官方视频教程（完全免费）
 
-imi 框架入门教程（11集全）<https://www.bilibili.com/video/av78158909>
+imi 框架入门教程（免费11集全）<https://www.bilibili.com/video/av78158909>
 
-imi 框架进阶教程（五子棋服务端开发，每周连载中）<https://space.bilibili.com/768718/channel/detail?cid=136926>
+imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.bilibili.com/768718/channel/detail?cid=136926>
 
 ### 核心组件
 
