@@ -15,11 +15,12 @@ use Imi\Cron\Message\Result;
 use Imi\Log\ErrorLog;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
+use Swoole\Coroutine\System;
 
 /**
  * 定时任务进程.
  *
- * @Process(name="CronProcess", co=false)
+ * @Process(name="CronProcess")
  */
 class CronProcess extends BaseProcess
 {
@@ -52,12 +53,13 @@ class CronProcess extends BaseProcess
 
     public function run(\Swoole\Process $process): void
     {
-        \Imi\Swoole\Util\Process::signal(\SIGTERM, function (int $signo) {
-            $this->stop();
+        imigo(function () {
+            if (System::waitSignal(\SIGTERM))
+            {
+                $this->stop();
+            }
         });
-        \Swoole\Coroutine\run(function () {
-            $this->startSocketServer();
-        });
+        $this->startSocketServer();
     }
 
     protected function startSocketServer(): void
