@@ -26,17 +26,10 @@ return [
 
 通过配置注入形式，实现非常灵活的配置，你甚至可以自己另外实现路由中间件，而不用被框架自带的中间件所影响，用哪些中间件都在你的掌控之中！
 
-## 获取握手请求路由解析结果
+## 获取握手时的 uri
 
 ```php
-$httpRouteResult = ConnectContext::get('routeResult');
-```
-
-## 获取握手时的 uri 对象
-
-```php
-/** @var \Imi\Util\Uri $uri */
-$uri = ConnectContext::get('uri');
+$uri = ConnectContext::get('uri'); // 字符串 uri
 ```
 
 ## 获取当前路由解析结果 (`routeResult`)

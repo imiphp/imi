@@ -277,19 +277,20 @@ class ConnectContext
     /**
      * 取消绑定.
      *
-     * @param int|null $keepTime 旧数据保持时间，null 则不保留
+     * @param int|string $clientId
+     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
      */
-    public static function unbind(string $flag, ?int $keepTime = null): void
+    public static function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
         $connectionBinder = App::getBean('ConnectionBinder');
-        $connectionBinder->unbind($flag, $keepTime);
+        $connectionBinder->unbind($flag, $clientId, $keepTime);
     }
 
     /**
      * 使用标记获取连接编号.
      *
-     * @return int|string|null
+     * @return array
      */
     public static function getClientIdByFlag(string $flag)
     {
@@ -303,8 +304,6 @@ class ConnectContext
      * 使用标记获取连接编号.
      *
      * @param string[] $flags
-     *
-     * @return int[]|string[]
      */
     public static function getClientIdsByFlags(array $flags): array
     {

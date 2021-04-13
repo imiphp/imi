@@ -182,9 +182,21 @@ class BeanProxy
         {
             return $beans[$beanName];
         }
-        elseif ($beanName !== $className)
+        elseif ($beanName !== $className && isset($beans[$className]))
         {
-            return $beans[$className] ?? [];
+            return $beans[$className];
+        }
+        else
+        {
+            $beans = Config::get('@app.beans');
+            if (isset($beans[$beanName]))
+            {
+                return $beans[$beanName];
+            }
+            elseif ($beanName !== $className && isset($beans[$className]))
+            {
+                return $beans[$className];
+            }
         }
 
         return [];

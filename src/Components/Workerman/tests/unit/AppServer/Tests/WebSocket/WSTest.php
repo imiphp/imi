@@ -40,9 +40,9 @@ class WSTest extends BaseTest
                 'uri'                              => $this->host,
                 'token'                            => $token,
                 'clientId'                         => $clientId,
-                'getClientIdByFlag'                => $clientId,
+                'getClientIdByFlag'                => [$clientId],
                 'getFlagByClientId'                => $token,
-                'getClientIdsByFlags'              => [$token => $clientId],
+                'getClientIdsByFlags'              => [$token => [$clientId]],
                 'getFlagsByClientIds'              => [$clientId => $token],
             ], $recvData);
             $time = time();

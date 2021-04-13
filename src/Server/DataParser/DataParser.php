@@ -24,13 +24,18 @@ class DataParser
      */
     public function encode($data, ?string $serverName = null)
     {
+        $parserClass = $this->getParserClass($serverName);
+        if (null === $parserClass)
+        {
+            return $data;
+        }
         if ($serverName)
         {
-            return ServerManager::getServer($serverName)->getBean($this->getParserClass($serverName))->encode($data);
+            return ServerManager::getServer($serverName)->getBean($parserClass)->encode($data);
         }
         else
         {
-            return RequestContext::getServerBean($this->getParserClass($serverName))->encode($data);
+            return RequestContext::getServerBean($parserClass)->encode($data);
         }
     }
 
@@ -43,20 +48,25 @@ class DataParser
      */
     public function decode($data, ?string $serverName = null)
     {
+        $parserClass = $this->getParserClass($serverName);
+        if (null === $parserClass)
+        {
+            return $data;
+        }
         if ($serverName)
         {
-            return ServerManager::getServer($serverName)->getBean($this->getParserClass($serverName))->decode($data);
+            return ServerManager::getServer($serverName)->getBean($parserClass)->decode($data);
         }
         else
         {
-            return RequestContext::getServerBean($this->getParserClass($serverName))->decode($data);
+            return RequestContext::getServerBean($parserClass)->decode($data);
         }
     }
 
     /**
      * 获取处理器类.
      */
-    public function getParserClass(?string $serverName = null): string
+    public function getParserClass(?string $serverName = null): ?string
     {
         $requestContext = RequestContext::getContext();
         if ($serverName)
@@ -76,7 +86,7 @@ class DataParser
                     return JsonObjectParser::class;
                 }
 
-                return ConnectContext::get('httpRouteResult')->routeItem->wsConfig->parserClass ?? JsonObjectParser::class;
+                return ConnectContext::get('dataParser') ?? JsonObjectParser::class;
             case Protocol::TCP:
             case Protocol::UDP:
                 return $server->getConfig()['dataParser'] ?? JsonObjectParser::class;

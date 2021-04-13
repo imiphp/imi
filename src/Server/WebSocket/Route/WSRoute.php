@@ -14,6 +14,7 @@ use Imi\Server\Route\RouteCallable;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute as WSRouteAnnotation;
 use Imi\Util\ObjectArrayHelper;
 use Imi\Util\Text;
+use Imi\Util\Uri;
 
 /**
  * @Bean("WSRoute")
@@ -39,8 +40,7 @@ class WSRoute implements IRoute
      */
     public function parse($data): ?RouteResult
     {
-        /** @var \Imi\Util\Uri $uri */
-        $uri = ConnectContext::get('uri');
+        $uri = new Uri(ConnectContext::get('uri'));
         $path = $uri->getPath();
         $httpRoute = $this->httpRoute;
         foreach ($this->rules as $item)

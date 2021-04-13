@@ -50,7 +50,7 @@ class Local implements IHandler
     public function bind(string $flag, $clientId): void
     {
         $this->flagsMap[$clientId] = $flag;
-        $this->clientIdsMap[$flag] = $clientId;
+        $this->clientIdsMap[$flag][] = $clientId;
     }
 
     /**
@@ -72,15 +72,11 @@ class Local implements IHandler
     /**
      * 取消绑定.
      *
-     * @param int|null $keepTime 旧数据保持时间，null 则不保留
+     * @param int|string $clientId
+     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
      */
-    public function unbind(string $flag, ?int $keepTime = null): void
+    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
-        $clientId = $this->getClientIdByFlag($flag);
-        if (null === $clientId)
-        {
-            return;
-        }
         if (null !== $keepTime)
         {
             $this->oldDataMap[$flag] = [
@@ -95,26 +91,26 @@ class Local implements IHandler
         }
         if (isset($this->clientIdsMap[$flag]))
         {
-            unset($this->clientIdsMap[$flag]);
+            $index = array_search($clientId, $this->clientIdsMap[$flag]);
+            if (false !== $index)
+            {
+                unset($this->clientIdsMap[$flag][$index]);
+            }
         }
     }
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @return int|string|null
      */
-    public function getClientIdByFlag(string $flag)
+    public function getClientIdByFlag(string $flag): array
     {
-        return $this->clientIdsMap[$flag] ?? null;
+        return (array) $this->clientIdsMap[$flag] ?? [];
     }
 
     /**
      * 使用标记获取连接编号.
      *
      * @param string[] $flags
-     *
-     * @return int[]|string[]
      */
     public function getClientIdsByFlags(array $flags): array
     {

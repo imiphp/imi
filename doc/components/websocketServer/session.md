@@ -151,8 +151,9 @@ ConnectContext::restore($memberId);
 ```php
 use Imi\ConnectContext;
 $memberId = 1; // 用户标识符
+$clientId = 1; // 客户端连接ID
 
-ConnectContext::unbind($memberId);
+ConnectContext::unbind($memberId, $clientId);
 ```
 
 ### 使用标记（UID）获取连接编号
@@ -161,16 +162,16 @@ ConnectContext::unbind($memberId);
 use Imi\ConnectContext;
 $memberId = 1; // 用户标识符
 
-$clientId = ConnectContext::getClientIdByFlag($memberId);
+$clientId = ConnectContext::getClientIdByFlag($memberId); // 数组，例：[1]
 ```
 
 ### 【批量】使用标记（UID）获取连接编号
 
 ```php
 use Imi\ConnectContext;
-$memberId = 1; // 用户标识符
+$flag = 'flag1'; // 用户标识符
 
-$clientIds = ConnectContext::getClientIdsByFlags([$memberId]); // [1]
+$clientIds = ConnectContext::getClientIdsByFlags([$flag]); // [1]
 ```
 
 ### 使用连接编号获取标记（UID）

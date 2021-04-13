@@ -96,19 +96,17 @@ class Redis implements IHandler
     /**
      * 取消绑定.
      *
-     * @param int|null $keepTime 旧数据保持时间，null 则不保留
+     * @param int|string $clientId
+     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
      */
-    public function unbind(string $flag, ?int $keepTime = null): void
+    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
-        $this->useRedis(function (RedisHandler $redis) use ($flag, $keepTime) {
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime) {
             $key = $this->key;
-            if ($clientId = $redis->hGet($key, $flag))
-            {
-                ConnectContext::set('__flag', null, $clientId);
-            }
+            ConnectContext::set('__flag', null, $clientId);
             $redis->multi();
             $redis->hDel($key, $flag);
-            if ($clientId && $keepTime > 0)
+            if ($keepTime > 0)
             {
                 $redis->set($key . ':old:' . $flag, $clientId, $keepTime);
             }
@@ -118,12 +116,10 @@ class Redis implements IHandler
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @return int|string|null
      */
-    public function getClientIdByFlag(string $flag)
+    public function getClientIdByFlag(string $flag): array
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($flag) {
+        return (array) $this->useRedis(function (RedisHandler $redis) use ($flag) {
             return $redis->hGet($this->key, $flag) ?: null;
         });
     }
@@ -132,14 +128,18 @@ class Redis implements IHandler
      * 使用标记获取连接编号.
      *
      * @param string[] $flags
-     *
-     * @return int[]|string[]
      */
     public function getClientIdsByFlags(array $flags): array
     {
-        return $this->useRedis(function (RedisHandler $redis) use ($flags) {
+        $result = $this->useRedis(function (RedisHandler $redis) use ($flags) {
             return $redis->hMget($this->key, $flags);
         });
+        foreach ($result as $k => $v)
+        {
+            $result[$k] = [$v];
+        }
+
+        return $result;
     }
 
     /**

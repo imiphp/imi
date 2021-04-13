@@ -7,6 +7,7 @@ namespace Imi\Swoole\Server\WebSocket\Middleware;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\RequestContext;
+use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Swoole\Server\Event\Param\OpenEventParam;
@@ -49,11 +50,9 @@ class HandShakeMiddleware implements MiddlewareInterface
         {
             // http 路由解析结果
             $routeResult = RequestContext::get('routeResult');
-            $routeResult->routeItem->callable = null;
-            $routeResult->callable = null;
             ConnectContext::muiltiSet([
-                'httpRouteResult'   => $routeResult,
-                'uri'               => $request->getUri(),
+                'parserClass' => $routeResult->routeItem->wsConfig->parserClass ?? JsonObjectParser::class,
+                'uri'         => (string) $request->getUri(),
             ]);
 
             $server = RequestContext::get('server');

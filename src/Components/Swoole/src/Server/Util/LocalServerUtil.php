@@ -85,10 +85,10 @@ class LocalServerUtil implements ISwooleServerUtil
      *
      * 数据将会通过处理器编码
      *
-     * @param mixed          $data
-     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
-     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param mixed                          $data
+     * @param int|int[]|string|string[]|null $clientId     为 null 时，则发送给当前连接
+     * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
@@ -135,7 +135,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
-                    $clientIds[] = (int) $clientId;
+                    $clientIds = array_merge($clientIds, $clientId);
                 }
             }
             if (!$clientIds)
@@ -150,9 +150,9 @@ class LocalServerUtil implements ISwooleServerUtil
     /**
      * 发送数据给指定客户端，支持一个或多个（数组）.
      *
-     * @param int|int[]|null $clientId     为 null 时，则发送给当前连接
-     * @param string|null    $serverName   服务器名，默认为当前服务器或主服务器
-     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param int|int[]|string|string[]|null $clientId     为 null 时，则发送给当前连接
+     * @param string|null                    $serverName   服务器名，默认为当前服务器或主服务器
+     * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -253,7 +253,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
-                    $clientIds[] = (int) $clientId;
+                    $clientIds = array_merge($clientIds, $clientId);
                 }
             }
             if (!$clientIds)
@@ -445,8 +445,8 @@ class LocalServerUtil implements ISwooleServerUtil
     /**
      * 关闭一个或多个连接.
      *
-     * @param int|int[]|null $clientId
-     * @param bool           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
+     * @param int|int[]|string|string[]|null $clientId
+     * @param bool                           $toAllWorkers BASE模式下，发送给所有 worker 中的连接
      */
     public function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
@@ -505,7 +505,7 @@ class LocalServerUtil implements ISwooleServerUtil
                 $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
-                    $clientIds[] = (int) $clientId;
+                    $clientIds = array_merge($clientIds, $clientId);
                 }
             }
             if (!$clientIds)

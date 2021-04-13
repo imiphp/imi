@@ -26,23 +26,20 @@ interface IHandler
     /**
      * 取消绑定.
      *
-     * @param int|null $keepTime 旧数据保持时间，null 则不保留
+     * @param int|string $clientId
+     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
      */
-    public function unbind(string $flag, ?int $keepTime = null): void;
+    public function unbind(string $flag, $clientId, ?int $keepTime = null): void;
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @return int|string|null
      */
-    public function getClientIdByFlag(string $flag);
+    public function getClientIdByFlag(string $flag): array;
 
     /**
      * 使用标记获取连接编号.
      *
      * @param string[] $flags
-     *
-     * @return int[]|string[]
      */
     public function getClientIdsByFlags(array $flags): array;
 

@@ -29,7 +29,7 @@ trait TConnectContextRelease
         {
             /** @var \Imi\Server\ConnectContext\StoreHandler $store */
             $store = RequestContext::getServerBean('ConnectContextStore');
-            ConnectContext::unbind($flag, $store->getTtl());
+            ConnectContext::unbind($flag, $clientId, $store->getTtl());
         }
 
         ConnectContext::destroy($clientId);

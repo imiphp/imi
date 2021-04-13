@@ -10,7 +10,6 @@ use Imi\Event\IEventListener;
 use Imi\RequestContext;
 use Imi\Server\ConnectContext\Traits\TConnectContextRelease;
 use Imi\Server\Protocol;
-use Workerman\Connection\TcpConnection;
 
 /**
  * Close事件后置处理.
@@ -30,8 +29,7 @@ class AfterClose implements IEventListener
         {
             return;
         }
-        /** @var TcpConnection $connection */
-        ['connection' => $connection] = $e->getData();
-        $this->release($connection->id);
+        ['clientId' => $clientId] = $e->getData();
+        $this->release($clientId);
     }
 }

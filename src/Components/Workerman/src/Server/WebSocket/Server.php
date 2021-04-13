@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\ConnectContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
+use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Protocol;
 use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\Frame;
@@ -64,8 +65,8 @@ class Server extends Base implements IWebSocketServer
                 'clientId'     => $clientId,
             ]);
             ConnectContext::create([
-                'request' => $request,
-                'uri'     => $request->getUri(),
+                'uri'        => (string) $request->getUri(),
+                'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
                 'server'           => $this,

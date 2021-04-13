@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server;
 
 use Channel\Client;
+use GatewayWorker\Lib\Gateway;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\RequestContext;
@@ -57,9 +58,13 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         {
             $socketName = $config['socketName'];
         }
-        else
+        elseif (isset($config['host'],$config['port']))
         {
             $socketName = $this->getWorkerScheme() . '://' . $config['host'] . ':' . $config['port'];
+        }
+        else
+        {
+            $socketName = '';
         }
         $worker = new $class($socketName);
         $worker->name = $this->name;
@@ -116,57 +121,71 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     protected function bindEvents(): void
     {
         $this->worker->onBufferDrain = function (ConnectionInterface $connection) {
+            // @phpstan-ignore-next-line
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
+                'server'   => $this,
+                'clientId' => $clientId,
             ]);
             $this->trigger('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', [
                 'server'     => $this,
+                'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
         };
 
         $this->worker->onBufferFull = function (ConnectionInterface $connection) {
+            // @phpstan-ignore-next-line
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
+                'server'   => $this,
+                'clientId' => $clientId,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_FULL', [
                 'server'     => $this,
+                'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
         };
 
         $this->worker->onClose = function (ConnectionInterface $connection) {
+            // @phpstan-ignore-next-line
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
-                // @phpstan-ignore-next-line
-                'clientId'     => $connection->id,
+                'server'   => $this,
+                'clientId' => $clientId,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
                 'server'     => $this,
+                'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
         };
 
         $this->worker->onConnect = function (ConnectionInterface $connection) {
+            // @phpstan-ignore-next-line
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
-                // @phpstan-ignore-next-line
-                'clientId'     => $connection->id,
+                'server'   => $this,
+                'clientId' => $clientId,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
                 'server'     => $this,
+                'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
         };
 
         $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
+            // @phpstan-ignore-next-line
+            $clientId = $connection->id;
             RequestContext::muiltiSet([
-                'server' => $this,
-                // @phpstan-ignore-next-line
-                'clientId'     => $connection->id,
+                'server'   => $this,
+                'clientId' => $clientId,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
                 'server'     => $this,
+                'clientId'   => $clientId,
                 'connection' => $connection,
                 'code'       => $code,
                 'msg'        => $msg,
@@ -232,6 +251,11 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 $workerId = ImiWorker::getWorkerId();
                 Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
                 Client::on('imi.process.message.' . $workerId, $callback);
+            }
+
+            if (isset($config['configs']['registerAddress']))
+            {
+                Gateway::$registerAddress = $config['configs']['registerAddress'];
             }
 
             Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
