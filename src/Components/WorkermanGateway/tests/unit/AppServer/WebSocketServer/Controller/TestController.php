@@ -54,8 +54,6 @@ class TestController extends WebSocketController
      */
     public function send(\stdClass $data): void
     {
-        /** @var \Imi\WorkermanGateway\Server\WebSocket\Server $server */
-        $server = $this->server;
         $message = ConnectContext::get('username') . ':' . $data->message;
         Server::sendRawToGroup('g1', $message);
     }
