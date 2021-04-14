@@ -31,6 +31,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SwooleApp extends CliApp
 {
     /**
+     * 应用模式的配置.
+     */
+    protected array $appConfig = [
+        'RequestContext' => CoroutineContextManager::class,
+        'Timer'          => SwooleTimer::class,
+        'ServerUtil'     => 'LocalServerUtil',
+    ];
+
+    /**
      * 构造方法.
      */
     public function __construct(string $namespace)
@@ -102,19 +111,6 @@ class SwooleApp extends CliApp
                     break;
                 }
             }
-        }
-        // @app.imi 配置检测
-        if (null === Config::get('@app.imi.RequestContext'))
-        {
-            Config::set('@app.imi.RequestContext', CoroutineContextManager::class);
-        }
-        if (null === Config::get('@app.imi.Timer'))
-        {
-            Config::set('@app.imi.Timer', SwooleTimer::class);
-        }
-        if (null === Config::get('@app.imi.ServerUtil'))
-        {
-            Config::set('@app.imi.ServerUtil', 'LocalServerUtil');
         }
         if ($initDotEnv)
         {

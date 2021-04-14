@@ -22,6 +22,11 @@ abstract class BaseApp implements IApp
     protected string $namespace = '';
 
     /**
+     * 应用模式的配置.
+     */
+    protected array $appConfig = [];
+
+    /**
      * 构造方法.
      */
     public function __construct(string $namespace)
@@ -72,6 +77,9 @@ abstract class BaseApp implements IApp
         {
             $this->loadDotEnv();
         }
+
+        // 应用模式配置
+        Config::set('@app.imi', array_merge($this->appConfig, Config::get('@app.imi', []), Config::get('@app.' . $this->getType() . '.imi', [])));
     }
 
     /**

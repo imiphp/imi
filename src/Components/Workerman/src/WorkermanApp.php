@@ -21,6 +21,14 @@ use Symfony\Component\Console\Input\ArgvInput;
 class WorkermanApp extends CliApp
 {
     /**
+     * 应用模式的配置.
+     */
+    protected array $appConfig = [
+        'Timer'      => WorkermanTimer::class,
+        'ServerUtil' => 'LocalServerUtil',
+    ];
+
+    /**
      * 构造方法.
      */
     public function __construct(string $namespace)
@@ -60,15 +68,6 @@ class WorkermanApp extends CliApp
                     break;
                 }
             }
-        }
-        // @app.imi 配置检测
-        if (null === Config::get('@app.imi.Timer'))
-        {
-            Config::set('@app.imi.Timer', WorkermanTimer::class);
-        }
-        if (null === Config::get('@app.imi.ServerUtil'))
-        {
-            Config::set('@app.imi.ServerUtil', 'LocalServerUtil');
         }
         if ($initDotEnv)
         {
