@@ -11,7 +11,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="WebSocketServer">
-            <directory>unit/AppServer/Tests/WebSocket</directory>
+            <directory>unit/WorkermanServer/Tests/WebSocket</directory>
         </testsuite>
     </testsuites>
 </phpunit>
