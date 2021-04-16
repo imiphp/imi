@@ -184,6 +184,8 @@ foreach ($request->getUploadedFiles() as $k => $file)
     {
         throw new \RuntimeException(sprintf('上传文件失败，错误码：%s', $file->getError()));
     }
+    // 获取临时文件名
+    $tmpFileName = $file->getStream()->getTmpFileName();
 }
 ```
 
