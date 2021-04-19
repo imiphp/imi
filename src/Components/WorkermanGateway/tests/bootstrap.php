@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Console\Input\ArgvInput;
+
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -28,19 +30,55 @@ function startServer(): void
 
     $servers = [
         'WorkermanServer'    => [
-            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start.sh',
-            'stop'          => __DIR__ . '/unit/WorkermanServer/bin/stop.sh',
+            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-workerman.sh',
+            'checkStatus'   => 'checkHttpServerStatus',
+        ],
+        'WorkermanRegisterServer'    => [
+            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-workerman.sh --name register',
+        ],
+        'WorkermanGatewayServer'    => [
+            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-workerman.sh --name gateway',
+        ],
+        'SwooleServer' => [
+            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-swoole.sh',
+            'stop'          => __DIR__ . '/unit/WorkermanServer/bin/stop-swoole.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
     ];
 
-    foreach ($servers as $name => $options)
+    $input = new ArgvInput();
+    switch ($input->getParameterOption('--testsuite'))
     {
-        // start server
-        $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
-        echo "Starting {$name}...", \PHP_EOL;
-        shell_exec("{$cmd}");
+        case 'swoole':
+            runTestServer('WorkermanRegisterServer', $servers['WorkermanRegisterServer']);
+            runTestServer('WorkermanGatewayServer', $servers['WorkermanGatewayServer']);
+            runTestServer('SwooleServer', $servers['SwooleServer']);
+            break;
+        case 'workerman':
+            runTestServer('WorkermanServer', $servers['WorkermanServer']);
+            break;
+        default:
+            throw new \RuntimeException(sprintf('Unknown --testsuite %s', $input->getParameterOption('--testsuite')));
+    }
 
+    register_shutdown_function(function () {
+        echo 'Stoping WorkermanServer...', \PHP_EOL;
+        shell_exec(<<<CMD
+kill `ps -ef|grep "WorkerMan: master process"|grep -v grep|awk '{print $2}'`
+CMD);
+        echo 'WorkermanServer stoped!', \PHP_EOL, \PHP_EOL;
+    });
+}
+
+function runTestServer(string $name, array $options): void
+{
+    // start server
+    $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+    echo "Starting {$name}...", \PHP_EOL;
+    shell_exec("{$cmd}");
+
+    if (isset($options['stop']))
+    {
         register_shutdown_function(function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
@@ -48,8 +86,10 @@ function startServer(): void
             shell_exec("{$cmd}");
             echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
         });
+    }
 
-        // @phpstan-ignore-next-line
+    if (isset($options['checkStatus']))
+    {
         if (($options['checkStatus'])())
         {
             echo "{$name} started!", \PHP_EOL;

@@ -10,12 +10,14 @@ use Imi\RequestContext;
 use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\Server;
 use Imi\Swoole\Server\Event\Param\OpenEventParam;
 use Imi\Util\Http\Consts\StatusCode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Swoole\Coroutine;
 
 /**
  * @Bean("HandShakeMiddleware")
@@ -60,6 +62,12 @@ class HandShakeMiddleware implements MiddlewareInterface
                 'server'   => &$server,
                 'request'  => &$request,
             ], $this, OpenEventParam::class);
+        }
+        else
+        {
+            Coroutine::defer(function () {
+                Server::close(RequestContext::get('clientId'));
+            });
         }
 
         return $response;

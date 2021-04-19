@@ -2,4 +2,4 @@
 
 __DIR__=$(cd `dirname $0`; pwd)
 
-"$__DIR__/imi" workerman/stop
+"$__DIR__/workerman" workerman/stop

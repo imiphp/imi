@@ -194,10 +194,8 @@ class CoServer
 
     /**
      * 处理服务器对象
-     *
-     * @param \Imi\Swoole\Server\Base $server
      */
-    private function parseServer(Base $server, int $workerId): void
+    private function parseServer(ISwooleServer $server, int $workerId): void
     {
         $swooleServer = $server->getSwooleServer();
         $swooleServer->worker_id = $workerId;

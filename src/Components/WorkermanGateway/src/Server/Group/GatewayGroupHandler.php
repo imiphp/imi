@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\WorkermanGateway\Workerman\Server\Group;
+namespace Imi\WorkermanGateway\Server\Group;
 
 use GatewayWorker\Lib\Gateway;
 use Imi\Bean\Annotation\Bean;
@@ -15,6 +15,13 @@ use Imi\Server\Group\Handler\IGroupHandler;
  */
 class GatewayGroupHandler implements IGroupHandler
 {
+    /**
+     * 启动时执行.
+     */
+    public function startup(): void
+    {
+    }
+
     /**
      * 组是否存在.
      */

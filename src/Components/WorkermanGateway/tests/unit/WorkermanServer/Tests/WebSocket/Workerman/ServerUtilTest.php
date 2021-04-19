@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\WorkermanGateway\Test\WorkermanServer\Tests\WebSocket;
+namespace Imi\WorkermanGateway\Test\WorkermanServer\Tests\WebSocket\Workerman;
 
+use Imi\WorkermanGateway\Test\WorkermanServer\Tests\WebSocket\BaseTest;
 use Wrench\Client;
 use Yurun\Util\HttpRequest;
 

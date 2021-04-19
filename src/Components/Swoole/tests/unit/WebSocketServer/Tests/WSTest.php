@@ -62,6 +62,7 @@ class WSTest extends BaseTest
             $client = $http->websocket($this->host);
             $this->assertTrue($client->isConnected());
 
+            $recvData = null;
             // 重试3次
             for ($i = 0; $i < 3; ++$i)
             {

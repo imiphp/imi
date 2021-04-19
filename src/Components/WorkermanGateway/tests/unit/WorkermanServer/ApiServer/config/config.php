@@ -52,15 +52,15 @@ return [
         'HttpNotFoundHandler'   => [
             'handler'   => 'MyHttpNotFoundHandler',
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => 'ConnectionContextGateway',
-        ],
-        'ConnectionBinder'  => [
-            'handlerClass' => 'ConnectionBinderGateway',
-        ],
-        'ServerGroup' => [
-            'groupHandler' => 'GroupGateway',
-        ],
+        // 'ConnectContextStore'   => [
+        //     'handlerClass'  => 'ConnectionContextGateway',
+        // ],
+        // 'ConnectionBinder'  => [
+        //     'handlerClass' => 'ConnectionBinderGateway',
+        // ],
+        // 'ServerGroup' => [
+        //     'groupHandler' => 'GroupGateway',
+        // ],
     ],
     'middleware'    => [
         'groups'    => [

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\WebSocket\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IHandShakeEventListener;
 use Imi\Swoole\Server\Event\Param\HandShakeEventParam;
@@ -33,15 +32,6 @@ class BeforeHandShake implements IHandShakeEventListener
 
             return;
         }
-        // 上下文创建
-        RequestContext::muiltiSet([
-            'request'         => $request,
-            'response'        => $response,
-            'clientId'        => RequestContext::get('swooleRequest')->fd,
-        ]);
-
-        // 连接上下文创建
-        ConnectContext::create();
 
         // 中间件
         /** @var \Imi\Server\Http\Dispatcher $dispatcher */

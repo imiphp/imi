@@ -19,6 +19,12 @@ return [
                 \Imi\WorkermanGateway\Test\WorkermanServer\WebSocketServer\Middleware\Test::class,
             ],
         ],
+        'HttpDispatcher'    => [
+            'middlewares'    => [
+                'HandShakeMiddleware',
+                \Imi\Server\Http\Middleware\RouteMiddleware::class,
+            ],
+        ],
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'WSRouteNotFound',
         ],

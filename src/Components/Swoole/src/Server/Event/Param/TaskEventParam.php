@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\Event\Param;
 
 use Imi\Event\EventParam;
-use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Swoole\Server\Task;
 
 class TaskEventParam extends EventParam
@@ -13,7 +13,7 @@ class TaskEventParam extends EventParam
     /**
      * 服务器对象
      */
-    public Base $server;
+    public ISwooleServer $server;
 
     /**
      * 任务ID.

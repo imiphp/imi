@@ -12,7 +12,7 @@ use Imi\Event\IEventListener;
 /**
  * @Listener("IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT")
  */
-class OnOpen implements IEventListener
+class WorkermanOnOpen implements IEventListener
 {
     /**
      * 事件处理方法.

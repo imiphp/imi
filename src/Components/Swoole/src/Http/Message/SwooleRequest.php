@@ -6,6 +6,7 @@ namespace Imi\Swoole\Http\Message;
 
 use Imi\Server\Http\Message\Request;
 use Imi\Swoole\Server\Base;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
@@ -21,12 +22,12 @@ class SwooleRequest extends Request
      *
      * @var \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server
      */
-    protected Base $serverInstance;
+    protected ISwooleServer $serverInstance;
 
     /**
      * @param \Imi\Swoole\Server\Http\Server|\Imi\Swoole\Server\WebSocket\Server $server
      */
-    public function __construct(Base $server, \Swoole\Http\Request $request)
+    public function __construct(ISwooleServer $server, \Swoole\Http\Request $request)
     {
         $this->swooleRequest = $request;
         $this->serverInstance = $server;

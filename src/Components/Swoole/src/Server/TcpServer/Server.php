@@ -97,6 +97,11 @@ class Server extends Base implements ITcpServer
                 }
             });
         }
+        else
+        {
+            $this->swoolePort->on('connect', function () {
+            });
+        }
 
         if ($event = ($events['receive'] ?? true))
         {
@@ -116,6 +121,11 @@ class Server extends Base implements ITcpServer
                 }
             });
         }
+        else
+        {
+            $this->swoolePort->on('receive', function () {
+            });
+        }
 
         if ($event = ($events['close'] ?? true))
         {
@@ -132,6 +142,11 @@ class Server extends Base implements ITcpServer
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
+            });
+        }
+        else
+        {
+            $this->swoolePort->on('close', function () {
             });
         }
     }

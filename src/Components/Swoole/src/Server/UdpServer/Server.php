@@ -94,6 +94,11 @@ class Server extends Base implements IUdpServer
                 }
             });
         }
+        else
+        {
+            $this->swoolePort->on('packet', function () {
+            });
+        }
     }
 
     /**

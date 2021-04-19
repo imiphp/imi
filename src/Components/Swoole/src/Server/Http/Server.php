@@ -193,6 +193,11 @@ class Server extends Base
                 }
             });
         }
+        else
+        {
+            $this->swoolePort->on('request', function () {
+            });
+        }
 
         if ($event = ($events['close'] ?? false) || $this->http2)
         {
@@ -210,6 +215,11 @@ class Server extends Base
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
+            });
+        }
+        else
+        {
+            $this->swoolePort->on('close', function () {
             });
         }
     }

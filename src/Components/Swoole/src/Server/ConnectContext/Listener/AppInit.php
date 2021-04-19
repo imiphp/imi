@@ -33,7 +33,7 @@ class AppInit implements IAppInitEventListener
                 {
                     /** @var \Imi\Server\Group\Handler\IGroupHandler $groupHandler */
                     $groupHandler = $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
-                    $groupHandler->clear();
+                    $groupHandler->startup();
                 }
                 App::getBean('ConnectionBinder');
             }

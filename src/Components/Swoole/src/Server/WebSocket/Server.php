@@ -6,6 +6,7 @@ namespace Imi\Swoole\Server\WebSocket;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\ConnectContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
@@ -112,12 +113,16 @@ class Server extends Base implements IWebSocketServer
                 {
                     $request = new SwooleRequest($this, $swooleRequest);
                     $response = new SwooleResponse($this, $swooleResponse);
-                    RequestContext::muiltiSet([
+                    RequestContext::create([
                         'server'         => $this,
                         'swooleRequest'  => $swooleRequest,
                         'swooleResponse' => $swooleResponse,
                         'request'        => $request,
                         'response'       => $response,
+                        'clientId'       => $swooleRequest->fd,
+                    ]);
+                    ConnectContext::create([
+                        'uri' => (string) $request->getUri(),
                     ]);
                     $this->trigger('handShake', [
                         'request'   => $request,
@@ -130,6 +135,11 @@ class Server extends Base implements IWebSocketServer
                 }
             });
         }
+        else
+        {
+            $this->swoolePort->on('handshake', function () {
+            });
+        }
 
         if ($event = ($events['message'] ?? true))
         {
@@ -138,6 +148,7 @@ class Server extends Base implements IWebSocketServer
                 {
                     RequestContext::muiltiSet([
                         'server'        => $this,
+                        'clientId'      => $frame->fd,
                     ]);
                     $this->trigger('message', [
                         'server'    => $this,
@@ -148,6 +159,11 @@ class Server extends Base implements IWebSocketServer
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
+            });
+        }
+        else
+        {
+            $this->swoolePort->on('message', function () {
             });
         }
 
@@ -169,6 +185,11 @@ class Server extends Base implements IWebSocketServer
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
+            });
+        }
+        else
+        {
+            $this->swoolePort->on('close', function () {
             });
         }
 
@@ -195,6 +216,11 @@ class Server extends Base implements IWebSocketServer
                 {
                     App::getBean('ErrorLog')->onException($ex);
                 }
+            });
+        }
+        else
+        {
+            $this->swoolePort->on('request', function () {
             });
         }
     }

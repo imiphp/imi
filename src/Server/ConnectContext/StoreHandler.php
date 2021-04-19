@@ -18,7 +18,7 @@ class StoreHandler implements IHandler
     /**
      * 处理器类.
      */
-    protected string $handlerClass = \Imi\Server\ConnectContext\StoreHandler\Redis::class;
+    protected string $handlerClass = \Imi\Server\ConnectContext\StoreHandler\Local::class;
 
     /**
      * 数据有效期，单位：秒

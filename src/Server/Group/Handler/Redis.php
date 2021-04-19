@@ -57,6 +57,14 @@ class Redis implements IGroupHandler
      */
     private int $masterPID = 0;
 
+    /**
+     * 启动时执行.
+     */
+    public function startup(): void
+    {
+        $this->clear();
+    }
+
     public function __init(): void
     {
         if ('' === $this->key)

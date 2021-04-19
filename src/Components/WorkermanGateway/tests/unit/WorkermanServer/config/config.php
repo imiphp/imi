@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Imi\WorkermanGateway\Workerman\Server\Util\GatewayServerUtil;
-
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\WorkermanGateway\Test\WorkermanServer',
@@ -20,7 +18,37 @@ return [
     // 组件命名空间
     'components'    => [
         'Workerman'        => 'Imi\Workerman',
+        'Swoole'           => 'Imi\Swoole',
         'WorkermanGateway' => 'Imi\WorkermanGateway',
+    ],
+
+    // 主服务器配置
+    'mainServer'    => [
+        'namespace'    => 'Imi\WorkermanGateway\Test\WorkermanServer\WebSocketServer',
+        'type'         => \Imi\WorkermanGateway\Swoole\Server\Type::BUSINESS_WEBSOCKET,
+        // 'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+        // 'port'         => 13002,
+        'mode'         => \SWOOLE_BASE,
+        'configs'      => [
+            'worker_num'    => 2,
+        ],
+        'workermanGateway' => [
+            'registerAddress'      => '127.0.0.1:13004',
+            'worker_coroutine_num' => swoole_cpu_num(),
+            'channel'              => [
+                'size' => 1024,
+            ],
+        ],
+    ],
+
+    // 子服务器（端口监听）配置
+    'subServers'        => [
+        'http'     => [
+            'namespace' => 'Imi\WorkermanGateway\Test\WorkermanServer\ApiServer',
+            'type'      => Imi\Swoole\Server\Type::HTTP,
+            'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
+            'port'      => 13000,
+        ],
     ],
 
     // Workerman 服务器配置
@@ -62,9 +90,6 @@ return [
         ],
     ],
 
-    'workerman' => [
-    ],
-
     // 数据库配置
     'db'    => [
         // 默认连接池名
@@ -97,7 +122,15 @@ return [
         ],
     ],
 
-    'imi' => [
-        'ServerUtil' => GatewayServerUtil::class,
+    'workerman' => [
+        'imi' => [
+            'ServerUtil' => Imi\WorkermanGateway\Workerman\Server\Util\GatewayServerUtil::class,
+        ],
+    ],
+
+    'swoole' => [
+        'imi' => [
+            'ServerUtil' => Imi\WorkermanGateway\Swoole\Server\Util\GatewayServerUtil::class,
+        ],
     ],
 ];

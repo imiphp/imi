@@ -19,6 +19,13 @@ class Local implements IGroupHandler
     private array $groups = [];
 
     /**
+     * 启动时执行.
+     */
+    public function startup(): void
+    {
+    }
+
+    /**
      * 组是否存在.
      */
     public function hasGroup(string $groupName): bool

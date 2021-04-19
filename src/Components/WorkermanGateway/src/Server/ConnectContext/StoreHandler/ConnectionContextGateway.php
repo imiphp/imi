@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\WorkermanGateway\Workerman\Server\ConnectContext\StoreHandler;
+namespace Imi\WorkermanGateway\Server\ConnectContext\StoreHandler;
 
 use GatewayWorker\Lib\Gateway;
 use Imi\Bean\Annotation\Bean;

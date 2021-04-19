@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Http\Message;
 
 use Imi\Server\Http\Message\Response;
+use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Util\Http\Consts\StatusCode;
 
 class SwooleResponse extends Response
@@ -17,9 +18,9 @@ class SwooleResponse extends Response
     /**
      * 对应的服务器.
      */
-    protected \Imi\Swoole\Server\Base $serverInstance;
+    protected ISwooleServer $serverInstance;
 
-    public function __construct(\Imi\Swoole\Server\Base $server, \Swoole\Http\Response $response)
+    public function __construct(ISwooleServer $server, \Swoole\Http\Response $response)
     {
         $this->swooleResponse = $response;
         $this->serverInstance = $server;
@@ -75,8 +76,11 @@ class SwooleResponse extends Response
     public function send(): self
     {
         $this->isEnded = true;
-        $this->sendHeaders();
-        $this->swooleResponse->end($this->getBody());
+        if ($this->swooleResponse->isWritable())
+        {
+            $this->sendHeaders();
+            $this->swooleResponse->end($this->getBody());
+        }
 
         return $this;
     }

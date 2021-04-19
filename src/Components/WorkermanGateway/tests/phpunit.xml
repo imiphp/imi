@@ -10,8 +10,11 @@
          stopOnFailure="false"
          verbose="true">
     <testsuites>
-        <testsuite name="WebSocketServer">
-            <directory>unit/WorkermanServer/Tests/WebSocket</directory>
+        <testsuite name="workerman">
+            <directory>unit/WorkermanServer/Tests/WebSocket/Workerman</directory>
+        </testsuite>
+        <testsuite name="swoole">
+            <directory>unit/WorkermanServer/Tests/WebSocket/Swoole</directory>
         </testsuite>
     </testsuites>
 </phpunit>
