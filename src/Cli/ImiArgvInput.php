@@ -410,17 +410,11 @@ class ImiArgvInput extends Input
         return implode(' ', $tokens);
     }
 
-    /**
-     * Get the value of dynamicOptions.
-     */
     public function getDynamicOptions(): bool
     {
         return $this->dynamicOptions;
     }
 
-    /**
-     * Set the value of dynamicOptions.
-     */
     public function setDynamicOptions(bool $dynamicOptions): self
     {
         $this->dynamicOptions = $dynamicOptions;

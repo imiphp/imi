@@ -101,9 +101,6 @@ class WorkermanRequest extends Request
         return $this->worker;
     }
 
-    /**
-     * Get the value of data.
-     */
     public function getData(): array
     {
         return $this->data;

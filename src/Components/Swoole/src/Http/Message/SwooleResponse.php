@@ -114,7 +114,7 @@ class SwooleResponse extends Response
     /**
      * 获取对应的服务器.
      */
-    public function getServerInstance(): \Imi\Swoole\Server\Base
+    public function getServerInstance(): ISwooleServer
     {
         return $this->serverInstance;
     }

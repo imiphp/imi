@@ -184,9 +184,6 @@ class CliApp extends BaseApp
         }
     }
 
-    /**
-     * Get the value of cli.
-     */
     public function getCli(): Application
     {
         return $this->cli;

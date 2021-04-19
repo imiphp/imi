@@ -23,8 +23,6 @@ class ReferenceGetterTestModel extends TreeBase
     protected array $list = [];
 
     /**
-     * Get the value of list.
-     *
      * @return int[]
      */
     public function &getList(): array
@@ -33,8 +31,6 @@ class ReferenceGetterTestModel extends TreeBase
     }
 
     /**
-     * Set the value of list.
-     *
      * @param int[] $list
      *
      * @return self

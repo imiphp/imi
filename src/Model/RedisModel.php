@@ -360,17 +360,11 @@ abstract class RedisModel extends BaseModel
         return $redis;
     }
 
-    /**
-     * Get the value of key.
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * Set the value of key.
-     */
     public function setKey(string $key): self
     {
         $this->key = $key;

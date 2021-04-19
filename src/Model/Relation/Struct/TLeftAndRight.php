@@ -69,17 +69,11 @@ trait TLeftAndRight
         }
     }
 
-    /**
-     * Get the value of leftField.
-     */
     public function getLeftField(): string
     {
         return $this->leftField;
     }
 
-    /**
-     * Get the value of rightField.
-     */
     public function getRightField(): string
     {
         return $this->rightField;

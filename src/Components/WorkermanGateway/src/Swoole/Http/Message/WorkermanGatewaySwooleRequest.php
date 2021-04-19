@@ -94,16 +94,13 @@ class WorkermanGatewaySwooleRequest extends Request
     }
 
     /**
-     * Get swoole的http请求对象
+     * 获取对应的服务器.
      */
-    public function getSwooleRequest(): \Swoole\Http\Request
+    public function getServerInstance(): ISwooleServer
     {
-        return $this->swooleRequest;
+        return $this->serverInstance;
     }
 
-    /**
-     * Get the value of data.
-     */
     public function getData(): array
     {
         return $this->data;

@@ -114,8 +114,6 @@ abstract class Base extends LazyArrayObject
     }
 
     /**
-     * Get the value of alias.
-     *
      * @return string|string[]
      */
     public function getAlias()

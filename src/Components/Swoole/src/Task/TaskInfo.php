@@ -24,17 +24,11 @@ class TaskInfo
         $this->param = $param;
     }
 
-    /**
-     * Get the value of taskHandler.
-     */
     public function getTaskHandler(): ITaskHandler
     {
         return $this->taskHandler;
     }
 
-    /**
-     * Get the value of param.
-     */
     public function getParam(): TaskParam
     {
         return $this->param;

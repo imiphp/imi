@@ -27,8 +27,6 @@ class Member extends MemberBase
     protected $notInJson = null;
 
     /**
-     * Get the value of notInJson.
-     *
      * @return null
      */
     public function getNotInJson()
