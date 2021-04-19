@@ -191,8 +191,10 @@ abstract class ClassObject
 
     /**
      * 增强实例化.
+     *
+     * @return object
      */
-    public static function newInstance(string $class, array $args): object
+    public static function newInstance(string $class, array $args)
     {
         $constructor = ReflectionContainer::getClassReflection($class)->getConstructor();
         if (!$constructor)
