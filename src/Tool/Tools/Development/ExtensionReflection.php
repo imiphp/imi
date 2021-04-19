@@ -2,6 +2,8 @@
 
 namespace Imi\Tool\Tools\Development;
 
+use Imi\Bean\ReflectionUtil;
+
 class ExtensionReflection
 {
     /**
@@ -81,14 +83,12 @@ CODE;
                 // 方法参数定义
                 $args[] = $this->getMethodParamDefine($param);
                 $type = $param->getType();
-                // @phpstan-ignore-next-line
-                $comments[] = '@var ' . ($type ? $type->getName() : 'mixed') . ' $' . $param->name;
+                $comments[] = '@var ' . ($type ? ReflectionUtil::getTypeComments($type) : 'mixed') . ' $' . $param->name;
             }
             $return = $function->getReturnType();
             if (null !== $return)
             {
-                // @phpstan-ignore-next-line
-                $comments[] = '@return ' . $return->getName();
+                $comments[] = '@return ' . ReflectionUtil::getTypeComments($return);
             }
             $args = implode(', ', $args);
             if ([] === $comments)
@@ -152,12 +152,7 @@ CODE;
         $paramType = $param->getType();
         if ($paramType)
         {
-            // @phpstan-ignore-next-line
-            $paramType = $paramType->getName();
-        }
-        if (null !== $paramType && $param->allowsNull())
-        {
-            $paramType = '?' . $paramType;
+            $paramType = ReflectionUtil::getTypeCode($paramType);
         }
         $result .= null === $paramType ? '' : ((string) $paramType . ' ');
         if ($param->isPassedByReference())
@@ -224,14 +219,12 @@ CODE;
                 // 方法参数定义
                 $args[] = $this->getMethodParamDefine($param);
                 $type = $param->getType();
-                // @phpstan-ignore-next-line
-                $comments[] = '@var ' . ($type ? $type->getName() : 'mixed') . ' $' . $param->name;
+                $comments[] = '@var ' . ($type ? ReflectionUtil::getTypeComments($type) : 'mixed') . ' $' . $param->name;
             }
             $return = $method->getReturnType();
             if (null !== $return)
             {
-                // @phpstan-ignore-next-line
-                $comments[] = '@return ' . $return->getName();
+                $comments[] = '@return ' . ReflectionUtil::getTypeComments($return);
             }
             $args = implode(', ', $args);
             if ([] === $comments)

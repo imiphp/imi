@@ -4,6 +4,7 @@ namespace Imi\Tool\Tools\Generate\Facade;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Parser\BeanParser;
+use Imi\Bean\ReflectionUtil;
 use Imi\Facade\Annotation\Facade;
 use Imi\Main\Helper;
 use Imi\Tool\Annotation\Arg;
@@ -82,17 +83,7 @@ class FacadeGenerate
             }
             elseif ($method->hasReturnType())
             {
-                $returnType = $method->getReturnType();
-                if ($returnType->allowsNull())
-                {
-                    // @phpstan-ignore-next-line
-                    $returnType = $returnType->getName() . '|null';
-                }
-                else
-                {
-                    // @phpstan-ignore-next-line
-                    $returnType = $returnType->getName();
-                }
+                $returnType = ReflectionUtil::getTypeComments($method->getReturnType());
             }
             else
             {
@@ -106,12 +97,7 @@ class FacadeGenerate
                 $paramType = $param->getType();
                 if ($paramType)
                 {
-                    // @phpstan-ignore-next-line
-                    $paramType = $paramType->getName();
-                }
-                if (null !== $paramType && $param->allowsNull())
-                {
-                    $paramType = '?' . $paramType;
+                    $paramType = ReflectionUtil::getTypeCode($paramType);
                 }
                 $result .= null === $paramType ? '' : ((string) $paramType . ' ');
                 if ($param->isPassedByReference())
