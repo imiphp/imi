@@ -139,7 +139,7 @@ after Imi\Swoole\Redis\Pool\CoroutineRedisPool::release(): 1/1
 
 类名、方法名和命名空间没有要求，只要`beanScan`里能扫描到即可。
 
-类注释中必须写`@Aspect`表名是一个切面类
+类注释中必须写`@Aspect`表明是一个切面类
 
 方法中写`@PointCut`表示指定切入点，支持通配符
 
