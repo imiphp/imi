@@ -186,7 +186,7 @@ TPL;
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
         {
             $methodName = $method->name;
-            if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $method->getName()))
+            if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $methodName))
             {
                 continue;
             }
