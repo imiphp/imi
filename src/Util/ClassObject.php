@@ -3,6 +3,8 @@
 namespace Imi\Util;
 
 use Imi\Bean\ReflectionContainer;
+use InvalidArgumentException;
+use ReflectionParameter;
 
 /**
  * 类和对象相关工具类.
@@ -60,13 +62,31 @@ abstract class ClassObject
      *
      * @return array
      */
-    public static function convertArgsToKV($class, $method, $args, $keepNotExistArgs = true)
+    public static function convertArgsToKV(string $class, string $method, array $args, bool $keepNotExistArgs = true): array
     {
-        $methodRef = ReflectionContainer::getMethodReflection($class, $method);
+        if ('__construct' === $method)
+        {
+            $params = ReflectionContainer::getClassReflection($class)->getConstructor()->getParameters();
+        }
+        else
+        {
+            $params = ReflectionContainer::getMethodReflection($class, $method)->getParameters();
+        }
 
+        return self::convertArrayToKV($params, $args, $keepNotExistArgs);
+    }
+
+    /**
+     * 将数组参数处理成 kv 数组.
+     *
+     * @param ReflectionParameter[] $params
+     * @param bool                  $keepNotExistArgs 保留不存在的参数，如果保留则值则取默认值，没有默认值则为null
+     */
+    public static function convertArrayToKV(array $params, array $args, bool $keepNotExistArgs = true): array
+    {
         $result = [];
 
-        foreach ($methodRef->getParameters() as $i => $param)
+        foreach ($params as $i => $param)
         {
             if (isset($args[$i]))
             {
@@ -97,6 +117,33 @@ abstract class ClassObject
                 }
             }
             $result[$paramName] = $resultItem;
+        }
+
+        return $result;
+    }
+
+    /**
+     * 将 kv 数组处理成数组.
+     */
+    public static function convertKVToArray(array $params, array $args): array
+    {
+        $result = [];
+        foreach ($params as $param)
+        {
+            $name = $param->getName();
+            if (isset($args[$name]))
+            {
+                $result[] = $args[$name];
+            }
+            elseif ($param->isDefaultValueAvailable())
+            {
+                $result[] = $param->getDefaultValue();
+            }
+            else
+            {
+                $declaringClass = $param->getDeclaringClass();
+                throw new InvalidArgumentException(sprintf('%s::__construct() %s not found', $declaringClass ? $declaringClass->getName() : '', $name));
+            }
         }
 
         return $result;
@@ -140,5 +187,19 @@ abstract class ClassObject
         }
 
         return $namespace === substr($class, 0, \strlen($namespace));
+    }
+
+    /**
+     * 增强实例化.
+     */
+    public static function newInstance(string $class, array $args): object
+    {
+        $constructor = ReflectionContainer::getClassReflection($class)->getConstructor();
+        if (!$constructor)
+        {
+            return new $class();
+        }
+
+        return new $class(...self::convertKVToArray($constructor->getParameters(), $args));
     }
 }
