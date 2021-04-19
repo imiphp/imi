@@ -229,7 +229,7 @@ TPL;
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
         {
             $methodName = $method->name;
-            if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $method))
+            if ($method->isStatic() || '__construct' === $methodName || $method->isFinal() || !static::hasAop($ref, $methodName))
             {
                 continue;
             }
@@ -480,8 +480,7 @@ TPL;
         }
         else
         {
-            // @phpstan-ignore-next-line
-            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method->getName());
+            $methodAnnotations = AnnotationManager::getMethodAnnotations($className, $method);
             foreach ($aspects as $item)
             {
                 // 判断是否属于当前类的切面
