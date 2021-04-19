@@ -193,8 +193,7 @@ TPL;
             $paramsTpls = static::getMethodParamTpls($method);
             $methodReturnType = static::getMethodReturnType($method);
             $returnsReference = $method->returnsReference() ? '&' : '';
-            // @phpstan-ignore-next-line
-            $returnContent = $method->hasReturnType() && 'void' === $method->getReturnType()->getName() ? '' : 'return $__result__;';
+            $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType()) ? '' : 'return $__result__;';
             $tpl .= <<<TPL
     public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
     {
@@ -290,12 +289,7 @@ TPL;
         $paramType = $param->getType();
         if ($paramType)
         {
-            // @phpstan-ignore-next-line
-            $paramType = $paramType->getName();
-        }
-        if (null !== $paramType && $param->allowsNull())
-        {
-            $paramType = '?' . $paramType;
+            $paramType = ReflectionUtil::getTypeCode($paramType);
         }
         $result .= null === $paramType ? '' : ((string) $paramType . ' ');
         if ($param->isPassedByReference())
@@ -338,8 +332,7 @@ TPL;
         }
         $returnType = $method->getReturnType();
 
-        // @phpstan-ignore-next-line
-        return ': ' . ($returnType->allowsNull() ? '?' : '') . $returnType->getName();
+        return ': ' . ReflectionUtil::getTypeCode($returnType);
     }
 
     /**

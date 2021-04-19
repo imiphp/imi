@@ -13,6 +13,7 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
+use Imi\Bean\ReflectionUtil;
 use Imi\Facade\Annotation\Facade;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -81,17 +82,7 @@ class FacadeGenerate extends BaseCommand
             }
             elseif ($method->hasReturnType())
             {
-                $returnType = $method->getReturnType();
-                if ($returnType->allowsNull())
-                {
-                    // @phpstan-ignore-next-line
-                    $returnType = $returnType->getName() . '|null';
-                }
-                else
-                {
-                    // @phpstan-ignore-next-line
-                    $returnType = $returnType->getName();
-                }
+                $returnType = ReflectionUtil::getTypeComments($method->getReturnType());
             }
             else
             {
@@ -105,12 +96,7 @@ class FacadeGenerate extends BaseCommand
                 $paramType = $param->getType();
                 if ($paramType)
                 {
-                    // @phpstan-ignore-next-line
-                    $paramType = $paramType->getName();
-                }
-                if (null !== $paramType && $param->allowsNull())
-                {
-                    $paramType = '?' . $paramType;
+                    $paramType = ReflectionUtil::getTypeCode($paramType);
                 }
                 $result .= null === $paramType ? '' : ((string) $paramType . ' ');
                 if ($param->isPassedByReference())

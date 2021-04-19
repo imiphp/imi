@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Struct;
 
+use ReflectionNamedType;
+
 class ActionMethodItem
 {
     /**
@@ -30,9 +32,8 @@ class ActionMethodItem
     {
         $this->name = $name;
         $this->default = $default;
-        if ($type)
+        if ($type instanceof ReflectionNamedType)
         {
-            // @phpstan-ignore-next-line
             $this->type = $type->getName();
         }
     }
