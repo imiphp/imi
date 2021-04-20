@@ -11,10 +11,10 @@
          verbose="true">
     <testsuites>
         <testsuite name="workerman">
-            <directory>unit/WorkermanServer/Tests/WebSocket/Workerman</directory>
+            <directory>unit/AppServer/Tests/WebSocket/Workerman</directory>
         </testsuite>
         <testsuite name="swoole">
-            <directory>unit/WorkermanServer/Tests/WebSocket/Swoole</directory>
+            <directory>unit/AppServer/Tests/WebSocket/Swoole</directory>
         </testsuite>
     </testsuites>
 </phpunit>

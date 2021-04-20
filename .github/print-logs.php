@@ -68,3 +68,14 @@ else
 {
     echo 'Not found!', \PHP_EOL;
 }
+
+echo '[WorkermanGateway]', \PHP_EOL;
+$fileName = dirname(__DIR__) . '/src/Components/WorkermanGateway/tests/unit/AppServer/logs/cli.log';
+if (is_file($fileName))
+{
+    echo file_get_contents($fileName), \PHP_EOL;
+}
+else
+{
+    echo 'Not found!', \PHP_EOL;
+}

@@ -30,18 +30,18 @@ function startServer(): void
 
     $servers = [
         'WorkermanServer'    => [
-            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-workerman.sh',
+            'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
         'WorkermanRegisterServer'    => [
-            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-workerman.sh --name register',
+            'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name register',
         ],
         'WorkermanGatewayServer'    => [
-            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-workerman.sh --name gateway',
+            'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name gateway',
         ],
         'SwooleServer' => [
-            'start'         => __DIR__ . '/unit/WorkermanServer/bin/start-swoole.sh',
-            'stop'          => __DIR__ . '/unit/WorkermanServer/bin/stop-swoole.sh',
+            'start'         => __DIR__ . '/unit/AppServer/bin/start-swoole.sh',
+            'stop'          => __DIR__ . '/unit/AppServer/bin/stop-swoole.sh',
             'checkStatus'   => 'checkHttpServerStatus',
         ],
     ];
