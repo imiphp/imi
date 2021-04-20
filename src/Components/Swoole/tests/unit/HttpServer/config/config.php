@@ -50,7 +50,7 @@ return [
                         'formatter' => [
                             'class'     => \Monolog\Formatter\LineFormatter::class,
                             'construct' => [
-                                'dateFormat'                 => 'Y-m-d',
+                                'dateFormat'                 => 'Y-m-d H:i:s',
                                 'allowInlineLineBreaks'      => true,
                                 'ignoreEmptyContextAndExtra' => true,
                             ],
