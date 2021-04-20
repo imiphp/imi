@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Imi\Log\LogLevel;
-
 return [
     'configs'    => [
     ],
@@ -22,49 +20,43 @@ return [
         'Swoole' => 'Imi\Swoole',
     ],
 
-    'beans'    => [
-        'Logger'            => [
-            'exHandlers'    => [
-                // 指定级别日志输出trace
-                [
-                    'class'        => \Imi\Log\Handler\File::class,
-                    'options'      => [
-                        'levels'        => [
-                            LogLevel::ALERT,
-                            LogLevel::CRITICAL,
-                            LogLevel::DEBUG,
-                            LogLevel::EMERGENCY,
-                            LogLevel::ERROR,
-                            LogLevel::NOTICE,
-                            LogLevel::WARNING,
+    // 日志配置
+    'logger' => [
+        'channels' => [
+            'imi' => [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
                         ],
-                        'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
-                        'format'        => "{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}\n{trace}",
-                        'traceFormat'   => '#{index}  {call} called at [{file}:{line}]',
                     ],
-                ],
-                [
-                    'class'        => \Imi\Log\Handler\File::class,
-                    'options'      => [
-                        'levels'        => [
-                            LogLevel::INFO,
+                    [
+                        'class'     => \Monolog\Handler\RotatingFileHandler::class,
+                        'construct' => [
+                            'filename' => dirname(__DIR__) . '/logs/log.log',
                         ],
-                        'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
-                        'format'        => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
-                    ],
-                ],
-                [
-                    'class'     => \Imi\Log\Handler\Console::class,
-                    'options'   => [
-                        'levels'        => [
-                            'Test',
+                        'formatter' => [
+                            'class'     => \Monolog\Formatter\LineFormatter::class,
+                            'construct' => [
+                                'dateFormat'                 => 'Y-m-d',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
                         ],
-                        'format'         => '{message}',
-                        'logCacheNumber' => 10240,
                     ],
                 ],
             ],
         ],
+    ],
+
+    'beans'    => [
         'ErrorLog'          => [
             // 'level' =>  ,
         ],

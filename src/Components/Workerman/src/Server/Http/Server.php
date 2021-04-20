@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Http;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
@@ -54,21 +55,31 @@ class Server extends Base
         parent::bindEvents();
         $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         $this->worker->onMessage = function (ConnectionInterface $connection, $data) {
-            $worker = $this->worker;
-            // @phpstan-ignore-next-line
-            $request = new WorkermanRequest($worker, $connection, $data);
-            // @phpstan-ignore-next-line
-            $response = new WorkermanResponse($worker, $connection, new Response());
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'request'  => $request,
-                'response' => $response,
-            ]);
-            $this->trigger('request', [
-                'server'   => $this,
-                'request'  => $request,
-                'response' => $response,
-            ], $this);
+            try
+            {
+                $worker = $this->worker;
+                // @phpstan-ignore-next-line
+                $request = new WorkermanRequest($worker, $connection, $data);
+                // @phpstan-ignore-next-line
+                $response = new WorkermanResponse($worker, $connection, new Response());
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'request'  => $request,
+                    'response' => $response,
+                ]);
+                $this->trigger('request', [
+                    'server'   => $this,
+                    'request'  => $request,
+                    'response' => $response,
+                ], $this);
+            }
+            catch (\Throwable $th)
+            {
+                if (true !== $this->getBean('HttpErrorHandler')->handle($th))
+                {
+                    App::getBean('ErrorLog')->onException($th);
+                }
+            }
         };
     }
 

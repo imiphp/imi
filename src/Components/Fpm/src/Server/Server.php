@@ -59,24 +59,34 @@ class Server extends BaseServer
      */
     public function start(): void
     {
-        // 初始化路由
-        /** @var HttpRoute $route */
-        $route = $this->getBean('HttpRoute');
-        if ($route->isEmpty())
+        try
         {
-            (new HttpRouteInit())->handle(new EventParam(''));
-        }
+            // 初始化路由
+            /** @var HttpRoute $route */
+            $route = $this->getBean('HttpRoute');
+            if ($route->isEmpty())
+            {
+                (new HttpRouteInit())->handle(new EventParam(''));
+            }
 
-        $request = new FpmRequest();
-        $response = new FpmResponse();
-        RequestContext::muiltiSet([
-            'server'   => $this,
-            'request'  => $request,
-            'response' => $response,
-        ]);
-        /** @var \Imi\Server\Http\Dispatcher $dispatcher */
-        $dispatcher = App::getBean('HttpDispatcher');
-        $dispatcher->dispatch($request);
+            $request = new FpmRequest();
+            $response = new FpmResponse();
+            RequestContext::muiltiSet([
+                'server'   => $this,
+                'request'  => $request,
+                'response' => $response,
+            ]);
+            /** @var \Imi\Server\Http\Dispatcher $dispatcher */
+            $dispatcher = App::getBean('HttpDispatcher');
+            $dispatcher->dispatch($request);
+        }
+        catch (\Throwable $th)
+        {
+            if (true !== $this->getBean('HttpErrorHandler')->handle($th))
+            {
+                App::getBean('ErrorLog')->onException($th);
+            }
+        }
     }
 
     /**

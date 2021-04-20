@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Test\Component;
 
-use Imi\App;
 use Imi\Cli\CliApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 
@@ -15,9 +14,6 @@ class TestApp extends CliApp
      */
     public function run(): void
     {
-        register_shutdown_function(function () {
-            App::getBean('Logger')->save();
-        });
     }
 
     /**

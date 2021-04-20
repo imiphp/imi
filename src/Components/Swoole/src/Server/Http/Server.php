@@ -185,10 +185,9 @@ class Server extends Base
                 }
                 catch (\Throwable $th)
                 {
-                    App::getBean('ErrorLog')->onException($th);
                     if (true !== $this->getBean('HttpErrorHandler')->handle($th))
                     {
-                        throw $th;
+                        App::getBean('ErrorLog')->onException($th);
                     }
                 }
             });

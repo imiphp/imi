@@ -7,6 +7,7 @@ namespace Imi\Bean;
 use Imi\Aop\AopManager;
 use Imi\App;
 use Imi\Util\Imi;
+use InvalidArgumentException;
 
 class BeanFactory
 {
@@ -75,6 +76,43 @@ class BeanFactory
         }
 
         return new $className(...$args);
+    }
+
+    /**
+     * 增强实例化.
+     */
+    public static function newInstanceEx(string $class, array $args = []): object
+    {
+        $object = self::newInstanceExNoInit($class, $args, $resultArgs);
+        static::initInstance($object, $resultArgs);
+
+        return $object;
+    }
+
+    /**
+     * 增强实例化，但不初始化.
+     */
+    public static function newInstanceExNoInit(string $class, array $args, ?array &$resultArgs = []): object
+    {
+        $resultArgs = [];
+        foreach (ReflectionContainer::getClassReflection($class)->getConstructor()->getParameters() as $param)
+        {
+            $name = $param->getName();
+            if (isset($args[$name]))
+            {
+                $resultArgs[] = $args[$name];
+            }
+            elseif ($param->isDefaultValueAvailable())
+            {
+                $resultArgs[] = $param->getDefaultValue();
+            }
+            else
+            {
+                throw new InvalidArgumentException(sprintf('BeanFactory::newInstanceEx(): %s::__construct() %s not found', $class, $name));
+            }
+        }
+
+        return self::newInstanceNoInit($class, ...$resultArgs);
     }
 
     /**

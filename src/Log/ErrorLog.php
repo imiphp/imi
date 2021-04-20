@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Log;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Util\Traits\TBeanRealClass;
 
@@ -72,11 +71,7 @@ class ErrorLog
                 $method = 'info';
                 break;
         }
-        Log::$method($errstr, [
-            'trace'     => $this->getTrace(),
-            'errorFile' => $errfile,
-            'errorLine' => $errline,
-        ]);
+        Log::$method($errstr);
     }
 
     /**
@@ -96,14 +91,8 @@ class ErrorLog
                 \E_RECOVERABLE_ERROR,
             ]))
             {
-                Log::error($e['message'], [
-                    'trace'      => [],
-                    'errorFile'  => $e['file'],
-                    'errorLine'  => $e['line'],
-                ]);
+                Log::error($e['message']);
             }
-            $logger = App::getBean('Logger');
-            $logger->save();
         }
         catch (\Throwable $th)
         {
@@ -131,11 +120,7 @@ class ErrorLog
         foreach ($throwables as $throwable)
         {
             // 日志处理
-            Log::error($throwable->getMessage(), [
-                'trace'     => $throwable->getTrace(),
-                'errorFile' => $throwable->getFile(),
-                'errorLine' => $throwable->getLine(),
-            ]);
+            Log::error($throwable);
         }
     }
 

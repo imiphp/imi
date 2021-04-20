@@ -67,7 +67,7 @@ jobs:
           ./.github/prepare-test.sh swoole
 
       - name: test
-        run: docker exec swoole composer test-all
+        run: docker exec swoole COMPOSER_PROCESS_TIMEOUT=600 composer test-all
 
       - name: print logs
         if: failure()

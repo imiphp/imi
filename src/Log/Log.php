@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace Imi\Log;
 
 use Imi\App;
+use Monolog\Logger;
 
 class Log
 {
     private function __construct()
     {
+    }
+
+    public static function get(?string $channelName): Logger
+    {
+        return App::getBean('Logger')->getLogger($channelName);
     }
 
     /**
@@ -18,9 +24,9 @@ class Log
      * @param mixed  $level
      * @param string $message
      */
-    public static function log($level, $message, array $context = []): void
+    public static function log($level, $message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->log($level, $message, static::parseContext($context));
+        self::get($channelName)->log($level, $message, $context);
     }
 
     /**
@@ -28,9 +34,9 @@ class Log
      *
      * @param string $message
      */
-    public static function emergency($message, array $context = []): void
+    public static function emergency($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->emergency($message, static::parseContext($context));
+        self::get($channelName)->emergency($message, $context);
     }
 
     /**
@@ -41,9 +47,9 @@ class Log
      *
      * @param string $message
      */
-    public static function alert($message, array $context = []): void
+    public static function alert($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->alert($message, static::parseContext($context));
+        self::get($channelName)->alert($message, $context);
     }
 
     /**
@@ -53,9 +59,9 @@ class Log
      *
      * @param string $message
      */
-    public static function critical($message, array $context = []): void
+    public static function critical($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->critical($message, static::parseContext($context));
+        self::get($channelName)->critical($message, $context);
     }
 
     /**
@@ -64,9 +70,9 @@ class Log
      *
      * @param string $message
      */
-    public static function error($message, array $context = []): void
+    public static function error($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->error($message, static::parseContext($context));
+        self::get($channelName)->error($message, $context);
     }
 
     /**
@@ -77,9 +83,9 @@ class Log
      *
      * @param string $message
      */
-    public static function warning($message, array $context = []): void
+    public static function warning($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->warning($message, static::parseContext($context));
+        self::get($channelName)->warning($message, $context);
     }
 
     /**
@@ -87,9 +93,9 @@ class Log
      *
      * @param string $message
      */
-    public static function notice($message, array $context = []): void
+    public static function notice($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->notice($message, static::parseContext($context));
+        self::get($channelName)->notice($message, $context);
     }
 
     /**
@@ -99,9 +105,9 @@ class Log
      *
      * @param string $message
      */
-    public static function info($message, array $context = []): void
+    public static function info($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->info($message, static::parseContext($context));
+        self::get($channelName)->info($message, $context);
     }
 
     /**
@@ -109,9 +115,9 @@ class Log
      *
      * @param string $message
      */
-    public static function debug($message, array $context = []): void
+    public static function debug($message, array $context = [], ?string $channelName = null): void
     {
-        App::getBean('Logger')->debug($message, static::parseContext($context));
+        self::get($channelName)->debug($message, $context);
     }
 
     /**

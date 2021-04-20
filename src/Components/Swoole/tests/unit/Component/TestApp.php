@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\Component;
 
-use Imi\App;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Swoole\SwooleApp;
 
@@ -15,9 +14,6 @@ class TestApp extends SwooleApp
      */
     public function run(): void
     {
-        register_shutdown_function(function () {
-            App::getBean('Logger')->save();
-        });
     }
 
     /**

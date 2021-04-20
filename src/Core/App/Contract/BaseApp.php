@@ -87,10 +87,13 @@ abstract class BaseApp implements IApp
      */
     public function loadMain(): void
     {
+        $this->initLogger();
+
         if (!Helper::getMain('Imi', 'imi'))
         {
             throw new \RuntimeException('Framework imi must have the class Imi\\Main');
         }
+
         Helper::getMain($this->namespace, 'app');
         Event::trigger('IMI.INIT_MAIN');
     }
@@ -110,5 +113,19 @@ abstract class BaseApp implements IApp
     protected function initRuntime(): void
     {
         Runtime::setRuntimeModeHandler(DefaultRuntimeModeHandler::class)->init();
+    }
+
+    /**
+     * 初始化日志.
+     */
+    protected function initLogger(): void
+    {
+        $config = Config::get('@app.logger.channels.imi');
+        if (null === $config)
+        {
+            Config::set('@app.logger.channels.imi', [
+                'handlers' => [],
+            ]);
+        }
     }
 }

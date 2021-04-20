@@ -13,7 +13,8 @@
         "psr/simple-cache": "~1.0",
         "vlucas/phpdotenv": "~5.3",
         "symfony/console": "^5.1",
-        "symfony/event-dispatcher": "^5.1"
+        "symfony/event-dispatcher": "^5.1",
+        "monolog/monolog": "^2.2"
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",

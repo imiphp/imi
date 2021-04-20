@@ -6,10 +6,9 @@ namespace Imi\Cli;
 
 use Imi\App;
 use Imi\Bean\Scanner;
+use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
-use Imi\Log\LogAppContexts;
-use Imi\Log\LogLevel;
 use Imi\Util\Imi;
 use Imi\Util\Process\ProcessAppContexts;
 use Symfony\Component\Console\Application;
@@ -32,41 +31,6 @@ class CliApp extends BaseApp
     {
         parent::__construct($namespace);
         App::set(ProcessAppContexts::SCRIPT_NAME, realpath($_SERVER['SCRIPT_FILENAME']));
-        App::set(LogAppContexts::CORE_HANDLERS, [
-            [
-                'class'     => \Imi\Log\Handler\Console::class,
-                'options'   => [
-                    'levels'    => [
-                        LogLevel::INFO,
-                    ],
-                    'format'    => '{Y}-{m}-{d} {H}:{i}:{s} <info>[{level}]</info> {message}',
-                ],
-            ],
-            [
-                'class'     => \Imi\Log\Handler\Console::class,
-                'options'   => [
-                    'levels' => [
-                        LogLevel::DEBUG,
-                        LogLevel::NOTICE,
-                        LogLevel::WARNING,
-                    ],
-                    'format' => '{Y}-{m}-{d} {H}:{i}:{s} <comment>[{level}]</comment> {message} {errorFile}:{errorLine}',
-                ],
-            ],
-            [
-                'class'     => \Imi\Log\Handler\Console::class,
-                'options'   => [
-                    'levels' => [
-                        LogLevel::ALERT,
-                        LogLevel::CRITICAL,
-                        LogLevel::EMERGENCY,
-                        LogLevel::ERROR,
-                    ],
-                    'format' => '{Y}-{m}-{d} {H}:{i}:{s} <fg=red>[{level}]</> <comment>{message}</comment> {errorFile}:{errorLine}' . \PHP_EOL . 'Stack trace:' . \PHP_EOL . '{trace}',
-                    'length' => 1024,
-                ],
-            ],
-        ], true);
         $this->input = new ArgvInput();
         $this->cliEventDispatcher = $dispatcher = new EventDispatcher();
         $this->cli = $cli = new Application('imi', App::getImiVersion());
@@ -187,5 +151,32 @@ class CliApp extends BaseApp
     public function getCli(): Application
     {
         return $this->cli;
+    }
+
+    /**
+     * 初始化日志.
+     */
+    protected function initLogger(): void
+    {
+        $config = Config::get('@app.logger.channels.imi');
+        if (null === $config)
+        {
+            Config::set('@app.logger.channels.imi', [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+        }
     }
 }
