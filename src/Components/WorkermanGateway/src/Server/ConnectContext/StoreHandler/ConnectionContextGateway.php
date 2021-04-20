@@ -25,7 +25,7 @@ class ConnectionContextGateway implements IHandler
         {
             return [];
         }
-        // @phpstan-ignore-next-line
+
         return Gateway::getSession($key) ?: [];
     }
 
@@ -38,7 +38,6 @@ class ConnectionContextGateway implements IHandler
         {
             return;
         }
-        // @phpstan-ignore-next-line
         Gateway::setSession($key, $data);
     }
 
@@ -51,7 +50,6 @@ class ConnectionContextGateway implements IHandler
         {
             return;
         }
-        // @phpstan-ignore-next-line
         Gateway::setSession($key, []);
     }
 
