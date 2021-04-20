@@ -120,6 +120,7 @@ class ErrorLog
         foreach ($throwables as $throwable)
         {
             // 日志处理
+            // @phpstan-ignore-next-line
             Log::error($throwable);
         }
     }

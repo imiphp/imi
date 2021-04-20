@@ -6,6 +6,7 @@ namespace Imi\Facade\Cli;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\BeanManager;
+use Imi\Bean\ReflectionUtil;
 use Imi\Bean\Scanner;
 use Imi\Cli\Annotation\Argument;
 use Imi\Cli\Annotation\Command;
@@ -13,7 +14,6 @@ use Imi\Cli\Annotation\CommandAction;
 use Imi\Cli\Annotation\Option;
 use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
-use Imi\Bean\ReflectionUtil;
 use Imi\Facade\Annotation\Facade;
 use Imi\Util\File;
 use Imi\Util\Imi;

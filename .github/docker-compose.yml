@@ -27,6 +27,7 @@ services:
             - "MYSQL_SERVER_HOST=mysql"
             - "REDIS_SERVER_HOST=redis"
             - "MYSQL_SERVER_PASSWORD="
+            - “COMPOSER_PROCESS_TIMEOUT=600”
         build:
             context: .
             dockerfile: ./swoole.dockerfile
