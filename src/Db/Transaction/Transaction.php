@@ -42,24 +42,24 @@ class Transaction
         $levels = $this->transactionLevels;
         $this->transactionLevels = 0;
         $i = $levels;
-        $prefixName = 'transaction.' . $this->transactionCount;
+        $prefixName = 'transaction.' . $this->transactionCount . '.';
         try
         {
             for (; $i >= 0; --$i)
             {
-                $this->trigger($prefixName . '.' . $i . '.commit', [
+                $this->trigger($prefixName . $i . '.commit', [
                     'db'    => $this,
                     'level' => $i,
                 ]);
-                $offEvents[] = $prefixName . '.' . $i . '.rollback';
+                $offEvents[] = $prefixName . $i . '.rollback';
             }
         }
         catch (\Throwable $th)
         {
             for (; $i >= 0; --$i)
             {
-                $offEvents[] = $prefixName . '.' . $i . '.commit';
-                $offEvents[] = $prefixName . '.' . $i . '.rollback';
+                $offEvents[] = $prefixName . $i . '.commit';
+                $offEvents[] = $prefixName . $i . '.rollback';
             }
             throw $th;
         }
@@ -88,24 +88,24 @@ class Transaction
             $final = $transactionLevels - $levels;
         }
         $i = $transactionLevels;
-        $prefixName = 'transaction.' . $this->transactionCount;
+        $prefixName = 'transaction.' . $this->transactionCount . '.';
         try
         {
             for (; $i >= $final; --$i)
             {
-                $this->trigger($prefixName . '.' . $i . '.rollback', [
+                $this->trigger($prefixName . $i . '.rollback', [
                     'db'    => $this,
                     'level' => $i,
                 ]);
-                $offEvents[] = $prefixName . '.' . $i . '.commit';
+                $offEvents[] = $prefixName . $i . '.commit';
             }
         }
         catch (\Throwable $th)
         {
             for (; $i >= $final; --$i)
             {
-                $offEvents[] = $prefixName . '.' . $i . '.commit';
-                $offEvents[] = $prefixName . '.' . $i . '.rollback';
+                $offEvents[] = $prefixName . $i . '.commit';
+                $offEvents[] = $prefixName . $i . '.rollback';
             }
             throw $th;
         }
