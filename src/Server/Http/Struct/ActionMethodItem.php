@@ -14,6 +14,11 @@ class ActionMethodItem
     protected string $name = '';
 
     /**
+     * 是否有默认值
+     */
+    protected bool $hasDefault = false;
+
+    /**
      * 默认值
      *
      * @var mixed
@@ -28,9 +33,10 @@ class ActionMethodItem
     /**
      * @param mixed $default
      */
-    public function __construct(string $name, $default, ?\ReflectionType $type)
+    public function __construct(string $name, bool $hasDefault, $default, ?\ReflectionType $type)
     {
         $this->name = $name;
+        $this->hasDefault = $hasDefault;
         $this->default = $default;
         if ($type instanceof ReflectionNamedType)
         {
@@ -62,5 +68,13 @@ class ActionMethodItem
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    /**
+     * Get 是否有默认值
+     */
+    public function hasDefault(): bool
+    {
+        return $this->hasDefault;
     }
 }

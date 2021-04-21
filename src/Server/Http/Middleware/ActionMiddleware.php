@@ -15,6 +15,7 @@ use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\Http\Struct\ActionMethodItem;
 use Imi\Server\View\View;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -190,9 +191,11 @@ class ActionMiddleware implements MiddlewareInterface
             /** @var \ReflectionParameter[] $params */
             foreach ($params as $param)
             {
+                $hasDefault = $param->isDefaultValueAvailable();
                 $actionMethodCache[] = new ActionMethodItem(
                     $param->name,
-                    $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null,
+                    $hasDefault,
+                    $hasDefault ? $param->getDefaultValue() : null,
                     $param->getType()
                 );
             }
@@ -242,9 +245,13 @@ class ActionMiddleware implements MiddlewareInterface
             {
                 $value = $parsedBody[$paramName];
             }
-            else
+            elseif ($actionMethodCacheItem->hasDefault())
             {
                 $value = $actionMethodCacheItem->getDefault();
+            }
+            else
+            {
+                throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
             }
             switch ($actionMethodCacheItem->getType())
             {
