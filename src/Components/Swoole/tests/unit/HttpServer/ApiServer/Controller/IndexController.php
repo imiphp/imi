@@ -7,6 +7,7 @@ namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
 use Imi\Aop\Annotation\Inject;
 use Imi\Controller\SingletonHttpController;
 use Imi\RequestContext;
+use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Middleware;
@@ -372,6 +373,21 @@ class IndexController extends SingletonHttpController
     public function type(int $id, string $name, int $page): array
     {
         return compact('id', 'name', 'page');
+    }
+
+    /**
+     * @Action
+     *
+     * @ExtractData(name="$get.id", to="id2")
+     * @ExtractData(name="$get.id", to="id3")
+     */
+    public function extractData(int $id, int $id2, string $id3): array
+    {
+        return [
+            'id'  => $id,
+            'id2' => $id2,
+            'id3' => $id3,
+        ];
     }
 
     /**

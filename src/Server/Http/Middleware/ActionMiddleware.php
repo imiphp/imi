@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Middleware;
 
+use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\ReflectionContainer;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Http\Annotation\ExtractData;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Controller\SingletonHttpController;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\Http\Struct\ActionMethodItem;
+use Imi\Server\Session\Session;
 use Imi\Server\View\View;
+use Imi\Util\ObjectArrayHelper;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -44,6 +48,13 @@ class ActionMiddleware implements MiddlewareInterface
      * @var ActionMethodItem[][]
      */
     private array $actionMethodCaches = [];
+
+    /**
+     * ExtractData 集合注解缓存.
+     *
+     * @var ExtractData[][]
+     */
+    private array $extractDataAnnotationCaches = [];
 
     /**
      * 处理方法.
@@ -143,6 +154,7 @@ class ActionMiddleware implements MiddlewareInterface
         if (isset($this->actionMethodCaches[$routeResult->id]))
         {
             $actionMethodCache = $this->actionMethodCaches[$routeResult->id];
+            $extractDataAnnotationCache = $this->extractDataAnnotationCaches[$routeResult->id];
         }
         else
         {
@@ -169,23 +181,27 @@ class ActionMiddleware implements MiddlewareInterface
                     $ref = ReflectionContainer::getMethodReflection($class, $method);
                     $params = $actionMethodParams[$class][$method] = $ref->getParameters();
                 }
+
+                $extractDataAnnotationCache = [];
+                /** @var ExtractData $extractData */
+                foreach (AnnotationManager::getMethodAnnotations($class, $method, ExtractData::class) as $extractData)
+                {
+                    $extractDataAnnotationCache[$extractData->to] = $extractData;
+                }
             }
             elseif (!$callable instanceof \Closure)
             {
                 $ref = new \ReflectionFunction($callable);
                 $params = $ref->getParameters();
+                $extractDataAnnotationCache = [];
             }
             else
             {
-                $this->actionMethodCaches[$routeResult->id] = [];
-
-                return [];
+                return $this->actionMethodCaches[$routeResult->id] = $this->extractDataAnnotationCaches[$routeResult->id] = [];
             }
             if (!$params)
             {
-                $this->actionMethodCaches[$routeResult->id] = [];
-
-                return [];
+                return $this->actionMethodCaches[$routeResult->id] = $this->extractDataAnnotationCaches[$routeResult->id] = [];
             }
             $actionMethodCache = [];
             /** @var \ReflectionParameter[] $params */
@@ -196,10 +212,12 @@ class ActionMiddleware implements MiddlewareInterface
                     $param->name,
                     $hasDefault,
                     $hasDefault ? $param->getDefaultValue() : null,
+                    $param->allowsNull(),
                     $param->getType()
                 );
             }
             $this->actionMethodCaches[$routeResult->id] = $actionMethodCache;
+            $this->extractDataAnnotationCaches[$routeResult->id] = $extractDataAnnotationCache;
         }
         if (!$actionMethodCache)
         {
@@ -218,11 +236,36 @@ class ActionMiddleware implements MiddlewareInterface
         {
             $parsedBodyIsArray = \is_array($parsedBody);
         }
+
+        if ($extractDataAnnotationCache)
+        {
+            $allData = [
+                '$get'      => $get,
+                '$post'     => $post,
+                '$body'     => $parsedBody,
+                '$headers'  => [],
+                '$cookie'   => $request->getCookieParams(),
+                '$session'  => Session::get(),
+                '$this'     => $request,
+            ];
+            $headers = &$allData['$headers'];
+            foreach ($request->getHeaders() as $name => $values)
+            {
+                $headers[$name] = implode(', ', $values);
+            }
+        }
+
         /** @var ActionMethodItem[] $actionMethodCache */
         foreach ($actionMethodCache as $actionMethodCacheItem)
         {
             $paramName = $actionMethodCacheItem->getName();
-            if (isset($routeResult->params[$paramName]))
+            if (isset($extractDataAnnotationCache[$paramName]))
+            {
+                /** @var ExtractData $extractData */
+                $extractData = $extractDataAnnotationCache[$paramName];
+                $value = ObjectArrayHelper::get($allData, $extractData->name, $extractData->default);
+            }
+            elseif (isset($routeResult->params[$paramName]))
             {
                 // 路由解析出来的参数
                 $value = $routeResult->params[$paramName];
@@ -248,6 +291,10 @@ class ActionMiddleware implements MiddlewareInterface
             elseif ($actionMethodCacheItem->hasDefault())
             {
                 $value = $actionMethodCacheItem->getDefault();
+            }
+            elseif ($actionMethodCacheItem->allowNull())
+            {
+                $value = null;
             }
             else
             {

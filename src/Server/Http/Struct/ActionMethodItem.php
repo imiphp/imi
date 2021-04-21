@@ -26,6 +26,11 @@ class ActionMethodItem
     protected $default;
 
     /**
+     * 是否允许为 null.
+     */
+    protected bool $allowNull;
+
+    /**
      * 类型.
      */
     protected ?string $type = null;
@@ -33,11 +38,12 @@ class ActionMethodItem
     /**
      * @param mixed $default
      */
-    public function __construct(string $name, bool $hasDefault, $default, ?\ReflectionType $type)
+    public function __construct(string $name, bool $hasDefault, $default, bool $allowNull, ?\ReflectionType $type)
     {
         $this->name = $name;
         $this->hasDefault = $hasDefault;
         $this->default = $default;
+        $this->allowNull = $allowNull;
         if ($type instanceof ReflectionNamedType)
         {
             $this->type = $type->getName();
@@ -71,10 +77,18 @@ class ActionMethodItem
     }
 
     /**
-     * Get 是否有默认值
+     * Get 是否有默认值.
      */
     public function hasDefault(): bool
     {
         return $this->hasDefault;
+    }
+
+    /**
+     * 是否允许为 null.
+     */
+    public function allowNull(): bool
+    {
+        return $this->allowNull;
     }
 }

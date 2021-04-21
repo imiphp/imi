@@ -279,4 +279,18 @@ class RequestTest extends BaseTest
             'page'  => 666,
         ]), $response->body());
     }
+
+    /**
+     * Annotation ExtractData.
+     */
+    public function testExtractData(): void
+    {
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'extractData?id=123');
+        $this->assertEquals(json_encode([
+            'id'    => 123,
+            'id2'   => 123,
+            'id3'   => '123',
+        ]), $response->body());
+    }
 }
