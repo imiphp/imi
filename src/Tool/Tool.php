@@ -17,6 +17,7 @@ use Imi\Tool\Parser\ToolParser;
 use Imi\Util\Args;
 use Imi\Util\Imi;
 use Swoole\ExitException;
+use Swoole\Timer;
 
 abstract class Tool
 {
@@ -142,6 +143,28 @@ abstract class Tool
                 imigo(function () use ($callable, $args, &$exitCode) {
                     try
                     {
+                        PoolManager::clearPools();
+                        // 获取配置
+                        $pools = [];
+                        foreach (Helper::getMains() as $main)
+                        {
+                            $pools = array_merge($pools, $main->getConfig()['pools'] ?? []);
+                        }
+                        // 异步池子初始化
+                        foreach ($pools as $name => $pool)
+                        {
+                            if (isset($pool['async']))
+                            {
+                                $pool = $pool['async'];
+                                $poolPool = $pool['pool'];
+                                PoolManager::addName($name, $poolPool['class'], new PoolConfig($poolPool['config']), $pool['resource']);
+                            }
+                            elseif (isset($pool['pool']['asyncClass']))
+                            {
+                                $poolPool = $pool['pool'];
+                                PoolManager::addName($name, $poolPool['asyncClass'], new PoolConfig($poolPool['config']), $pool['resource']);
+                            }
+                        }
                         $callable(...$args);
                     }
                     catch (ExitException $e)
@@ -152,6 +175,10 @@ abstract class Tool
                     {
                         App::getBean('ErrorLog')->onException($th);
                         $exitCode = 255;
+                    }
+                    finally
+                    {
+                        Timer::clearAll();
                     }
                 });
             }
