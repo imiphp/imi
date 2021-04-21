@@ -11,6 +11,7 @@ use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Request;
 use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -224,9 +225,13 @@ class ActionMiddleware implements MiddlewareInterface
                     // 方法默认值
                     $result[] = $param->getDefaultValue();
                 }
-                else
+                elseif ($param->allowsNull())
                 {
                     $result[] = null;
+                }
+                else
+                {
+                    throw new InvalidArgumentException(sprintf('Missing parameter: %s', $paramName));
                 }
             }
         }
