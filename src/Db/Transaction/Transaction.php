@@ -16,11 +16,19 @@ class Transaction
     private int $transactionLevels = 0;
 
     /**
+     * 事务总数.
+     *
+     * @var int
+     */
+    private $transactionCount = 0;
+
+    /**
      * 启动一个事务
      */
     public function beginTransaction(): bool
     {
         ++$this->transactionLevels;
+        ++$this->transactionCount;
 
         return true;
     }
@@ -34,23 +42,24 @@ class Transaction
         $levels = $this->transactionLevels;
         $this->transactionLevels = 0;
         $i = $levels;
+        $prefixName = 'transaction.' . $this->transactionCount;
         try
         {
             for (; $i >= 0; --$i)
             {
-                $this->trigger('transaction.' . $i . '.commit', [
+                $this->trigger($prefixName . '.' . $i . '.commit', [
                     'db'    => $this,
                     'level' => $i,
                 ]);
-                $offEvents[] = 'transaction.' . $i . '.rollback';
+                $offEvents[] = $prefixName . '.' . $i . '.rollback';
             }
         }
         catch (\Throwable $th)
         {
             for (; $i >= 0; --$i)
             {
-                $offEvents[] = 'transaction.' . $i . '.commit';
-                $offEvents[] = 'transaction.' . $i . '.rollback';
+                $offEvents[] = $prefixName . '.' . $i . '.commit';
+                $offEvents[] = $prefixName . '.' . $i . '.rollback';
             }
             throw $th;
         }
@@ -79,23 +88,24 @@ class Transaction
             $final = $transactionLevels - $levels;
         }
         $i = $transactionLevels;
+        $prefixName = 'transaction.' . $this->transactionCount;
         try
         {
             for (; $i >= $final; --$i)
             {
-                $this->trigger('transaction.' . $i . '.rollback', [
+                $this->trigger($prefixName . '.' . $i . '.rollback', [
                     'db'    => $this,
                     'level' => $i,
                 ]);
-                $offEvents[] = 'transaction.' . $i . '.commit';
+                $offEvents[] = $prefixName . '.' . $i . '.commit';
             }
         }
         catch (\Throwable $th)
         {
             for (; $i >= $final; --$i)
             {
-                $offEvents[] = 'transaction.' . $i . '.commit';
-                $offEvents[] = 'transaction.' . $i . '.rollback';
+                $offEvents[] = $prefixName . '.' . $i . '.commit';
+                $offEvents[] = $prefixName . '.' . $i . '.rollback';
             }
             throw $th;
         }
@@ -121,7 +131,7 @@ class Transaction
      */
     public function onTransactionCommit(callable $callable): void
     {
-        $this->one('transaction.' . $this->transactionLevels . '.commit', $callable);
+        $this->one('transaction.' . $this->transactionCount . '.' . $this->transactionLevels . '.commit', $callable);
     }
 
     /**
@@ -129,6 +139,6 @@ class Transaction
      */
     public function onTransactionRollback(callable $callable): void
     {
-        $this->one('transaction.' . $this->transactionLevels . '.rollback', $callable);
+        $this->one('transaction.' . $this->transactionCount . '.' . $this->transactionLevels . '.rollback', $callable);
     }
 }
