@@ -284,6 +284,7 @@ abstract class Model extends BaseModel
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
         $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
+            // @phpstan-ignore-next-line
             if ($conditionId)
             {
                 // 主键条件加入
