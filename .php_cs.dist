@@ -29,12 +29,12 @@ return PhpCsFixer\Config::create()
             'position_after_control_structures' => 'next',
         ],
         'single_line_comment_style'  => false,
+        'phpdoc_to_comment'          => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude(__DIR__ . '/vendor')
-            ->in(__DIR__ . '/bin')
             ->in(__DIR__ . '/src')
             ->in(__DIR__ . '/config')
             ->in(__DIR__ . '/tests')
