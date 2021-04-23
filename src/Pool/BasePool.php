@@ -148,9 +148,12 @@ abstract class BasePool implements IPool
     {
         $this->stopAutoGC();
         $this->stopHeartbeat();
-        foreach ($this->pool as $item)
+        if ($this->pool)
         {
-            $item->getResource()->close();
+            foreach ($this->pool as $item)
+            {
+                $item->getResource()->close();
+            }
         }
         $this->pool = [];
         $this->initQueue();
@@ -187,15 +190,18 @@ abstract class BasePool implements IPool
         $maxActiveTime = $config->getMaxActiveTime();
         $maxUsedTime = $config->getMaxUsedTime();
         $pool = &$this->pool;
-        foreach ($this->pool as $key => $item)
+        if ($pool)
         {
-            if (
+            foreach ($pool as $key => $item)
+            {
+                if (
                 (null !== $maxActiveTime && $item->isFree() && time() - $item->getCreateTime() >= $maxActiveTime) // 最大存活时间
                 || (null !== $maxUsedTime && $item->getLastReleaseTime() < $item->getLastUseTime() && time() - $item->getLastUseTime() >= $maxUsedTime) // 每次获取资源最长使用时间
                 ) {
-                $item->getResource()->close();
-                unset($pool[$key]);
-                $hasGC = true;
+                    $item->getResource()->close();
+                    unset($pool[$key]);
+                    $hasGC = true;
+                }
             }
         }
         if ($hasGC)
@@ -375,26 +381,29 @@ abstract class BasePool implements IPool
     {
         $hasGC = false;
         $pool = &$this->pool;
-        foreach ($pool as $key => $item)
+        if ($pool)
         {
-            if ($item->isFree() && $item->lock())
+            foreach ($pool as $key => $item)
             {
-                try
+                if ($item->isFree() && $item->lock())
                 {
-                    $resource = $item->getResource();
-                    if (!$resource->checkState())
+                    try
                     {
-                        $resource->close();
-                        unset($pool[$key]);
-                        $hasGC = true;
-                        $item = null;
+                        $resource = $item->getResource();
+                        if (!$resource->checkState())
+                        {
+                            $resource->close();
+                            unset($pool[$key]);
+                            $hasGC = true;
+                            $item = null;
+                        }
                     }
-                }
-                finally
-                {
-                    if ($item)
+                    finally
                     {
-                        $item->release();
+                        if ($item)
+                        {
+                            $item->release();
+                        }
                     }
                 }
             }

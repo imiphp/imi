@@ -394,15 +394,18 @@ abstract class Imi
         {
             $cmd .= ' -appNamespace "' . $appNamespace . '"';
         }
-        foreach ($args as $k => $v)
+        if ($args)
         {
-            if (is_numeric($k))
+            foreach ($args as $k => $v)
             {
-                $cmd .= ' -' . $v;
-            }
-            else
-            {
-                $cmd .= ' -' . $k . ' "' . $v . '"';
+                if (is_numeric($k))
+                {
+                    $cmd .= ' -' . $v;
+                }
+                else
+                {
+                    $cmd .= ' -' . $k . ' "' . $v . '"';
+                }
             }
         }
 

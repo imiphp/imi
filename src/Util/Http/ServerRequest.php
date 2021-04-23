@@ -464,9 +464,12 @@ class ServerRequest extends \Imi\Util\Http\Request implements ServerRequestInter
     {
         $objectFiles = &$object->files;
         $objectFiles = [];
-        foreach ($files as $key => $file)
+        if ($files)
         {
-            $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+            foreach ($files as $key => $file)
+            {
+                $objectFiles[$key] = new UploadedFile($file['name'], $file['type'], $file['tmp_name'], $file['size'], $file['error']);
+            }
         }
 
         return $object;

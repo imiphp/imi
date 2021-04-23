@@ -76,9 +76,12 @@ class FdMap
     public function leaveAll(int $fd)
     {
         $map = $this->map[$fd] ?? [];
-        foreach ($map as $group)
+        if ($map)
         {
-            $group->leave($fd);
+            foreach ($map as $group)
+            {
+                $group->leave($fd);
+            }
         }
     }
 }

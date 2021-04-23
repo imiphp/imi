@@ -109,9 +109,12 @@ abstract class Base
      */
     public function __construct($option = [])
     {
-        foreach ($option as $k => $v)
+        if ($option)
         {
-            $this->$k = $v;
+            foreach ($option as $k => $v)
+            {
+                $this->$k = $v;
+            }
         }
         $this->dateFormatsCacheStr = implode('#', static::DATE_FORMATS);
     }
@@ -301,8 +304,13 @@ abstract class Base
      */
     public function getTraceArgs($trace)
     {
+        $args = $trace['args'] ?? [];
+        if (!$args)
+        {
+            return '';
+        }
         $result = [];
-        foreach ($trace['args'] ?? [] as $value)
+        foreach ($args as $value)
         {
             if (is_scalar($value))
             {

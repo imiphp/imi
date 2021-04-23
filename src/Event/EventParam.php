@@ -42,9 +42,12 @@ class EventParam
         $this->__eventName = $eventName;
         $this->__target = $target;
         $this->__data = $data;
-        foreach ($data as $key => &$value)
+        if ($data)
         {
-            $this->$key = &$value;
+            foreach ($data as $key => &$value)
+            {
+                $this->$key = &$value;
+            }
         }
     }
 

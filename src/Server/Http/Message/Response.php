@@ -151,9 +151,12 @@ class Response extends \Imi\Util\Http\Response implements IResponse
             }
         }
         // header
-        foreach ($this->headers as $name => $headers)
+        if ($this->headers)
         {
-            $swooleResponse->header($name, $this->getHeaderLine($name));
+            foreach ($this->headers as $name => $headers)
+            {
+                $swooleResponse->header($name, $this->getHeaderLine($name));
+            }
         }
         // trailer
         if ($this->trailers)

@@ -17,9 +17,13 @@ abstract class AppBaseMain extends BaseMain
     public function loadConfig()
     {
         parent::loadConfig();
-        foreach (Config::get('@' . $this->moduleName . '.configs', []) as $name => $fileName)
+        $configs = Config::get('@' . $this->moduleName . '.configs', []);
+        if ($configs)
         {
-            Config::addConfig($name, include $fileName);
+            foreach ($configs as $name => $fileName)
+            {
+                Config::addConfig($name, include $fileName);
+            }
         }
         // 在项目中配置 imi 启用哪些功能模块
         if ($beanScan = Config::get('@app.imi.beanScan'))

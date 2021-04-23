@@ -48,16 +48,19 @@ class RouteCallable
     {
         $className = $this->className;
         $methodName = $this->methodName;
-        foreach ($params as $name => $value)
+        if ($params)
         {
-            $search = '{$' . $name . '}';
-            if (false !== strpos($className, $search))
+            foreach ($params as $name => $value)
             {
-                $className = str_replace($search, $value, $className);
-            }
-            if (false !== strpos($methodName, $search))
-            {
-                $methodName = str_replace($search, $value, $methodName);
+                $search = '{$' . $name . '}';
+                if (false !== strpos($className, $search))
+                {
+                    $className = str_replace($search, $value, $className);
+                }
+                if (false !== strpos($methodName, $search))
+                {
+                    $methodName = str_replace($search, $value, $methodName);
+                }
             }
         }
 

@@ -168,18 +168,20 @@ class HttpRoute
         $ignoreCase = $this->ignoreCase;
         for ($i = 0; $i < 2; ++$i)
         {
-            /** @var \Imi\Server\Http\Route\RouteItem[] $items */
-            foreach ($rules as $urlRule => $items)
+            if ($rules)
             {
-                $result = $this->checkUrl($urlRule, $pathInfo);
-                $resultResult = $result->result;
-                $resultParams = $result->params;
-                if ($resultResult || $result->resultIgnoreCase)
+                /** @var \Imi\Server\Http\Route\RouteItem[] $items */
+                foreach ($rules as $urlRule => $items)
                 {
-                    foreach ($items as $item)
+                    $result = $this->checkUrl($urlRule, $pathInfo);
+                    $resultResult = $result->result;
+                    $resultParams = $result->params;
+                    if ($resultResult || $result->resultIgnoreCase)
                     {
-                        $itemAnnotation = $item->annotation;
-                        if (
+                        foreach ($items as $item)
+                        {
+                            $itemAnnotation = $item->annotation;
+                            if (
                             ($resultResult || ($ignoreCase || $itemAnnotation->ignoreCase)) &&
                             $this->checkMethod($request, $itemAnnotation->method) &&
                             $this->checkDomain($request, $itemAnnotation->domain, $domainParams) &&
@@ -189,16 +191,17 @@ class HttpRoute
                             $this->checkHeader($request, $itemAnnotation->header) &&
                             $this->checkRequestMime($request, $itemAnnotation->requestMime)
                         ) {
-                            if ([] === $domainParams)
-                            {
-                                $params = $resultParams;
-                            }
-                            else
-                            {
-                                $params = array_merge($resultParams, $domainParams);
-                            }
+                                if ([] === $domainParams)
+                                {
+                                    $params = $resultParams;
+                                }
+                                else
+                                {
+                                    $params = array_merge($resultParams, $domainParams);
+                                }
 
-                            return new RouteResult(clone $item, $result, $params);
+                                return new RouteResult(clone $item, $result, $params);
+                            }
                         }
                     }
                 }

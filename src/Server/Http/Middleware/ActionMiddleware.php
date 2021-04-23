@@ -189,6 +189,10 @@ class ActionMiddleware implements MiddlewareInterface
         {
             return [];
         }
+        if (!$params)
+        {
+            return [];
+        }
         $result = [];
         foreach ($params as $param)
         {

@@ -116,7 +116,7 @@ trait TEvent
                 {
                     $map = &$events[$eventName];
                     // 数据映射
-                    foreach ($events[$eventName] as $k => $item)
+                    foreach ($map as $k => $item)
                     {
                         if ($callback === $item->callback || $callback === $item->callbackClass)
                         {
@@ -234,9 +234,13 @@ trait TEvent
     private function rebuildEventQueue($name)
     {
         $this->eventQueue[$name] = $queue = new \SplPriorityQueue();
-        foreach ($this->events[$name] ?? [] as $item)
+        $events = $this->events[$name] ?? [];
+        if ($events)
         {
-            $queue->insert($item, $item->priority);
+            foreach ($events as $item)
+            {
+                $queue->insert($item, $item->priority);
+            }
         }
         $this->eventChangeRecords[$name] = null;
     }

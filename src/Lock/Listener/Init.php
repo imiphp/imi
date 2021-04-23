@@ -24,10 +24,13 @@ class Init implements IEventListener
     {
         foreach (Helper::getMains() as $main)
         {
-            $config = $main->getConfig();
-            foreach ($config['lock']['list'] ?? [] as $id => $option)
+            $list = $main->getConfig()['lock']['list'] ?? [];
+            if ($list)
             {
-                Lock::add($id, $option);
+                foreach ($list as $id => $option)
+                {
+                    Lock::add($id, $option);
+                }
             }
         }
     }

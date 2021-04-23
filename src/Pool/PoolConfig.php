@@ -93,9 +93,12 @@ class PoolConfig implements IPoolConfig
      */
     public function __construct($option = [])
     {
-        foreach ($option as $k => $v)
+        if ($option)
         {
-            $this->$k = $v;
+            foreach ($option as $k => $v)
+            {
+                $this->$k = $v;
+            }
         }
     }
 

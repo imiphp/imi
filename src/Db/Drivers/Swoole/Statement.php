@@ -220,7 +220,7 @@ class Statement extends BaseStatement implements IStatement
                 $sqlParamsMap = $this->sqlParamsMap;
                 if ($sqlParamsMap)
                 {
-                    foreach ($this->sqlParamsMap as $index => $paramName)
+                    foreach ($sqlParamsMap as $index => $paramName)
                     {
                         if (isset($inputParameters[$paramName]))
                         {
@@ -228,7 +228,7 @@ class Statement extends BaseStatement implements IStatement
                         }
                     }
                 }
-                else
+                elseif ($inputParameters)
                 {
                     foreach ($inputParameters as $k => $v)
                     {

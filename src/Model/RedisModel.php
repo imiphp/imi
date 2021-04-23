@@ -95,48 +95,63 @@ abstract class RedisModel extends BaseModel
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         $keys = [];
-        foreach ($conditions as $condition)
+        if ($conditions)
         {
-            $keys[] = static::generateKey($condition);
+            foreach ($conditions as $condition)
+            {
+                $keys[] = static::generateKey($condition);
+            }
         }
         switch ($redisEntity->storage)
         {
             case RedisStorageMode::STRING:
                 $datas = static::__getRedis()->mget($keys);
                 $list = [];
-                foreach ($datas as $i => $data)
+                if ($datas)
                 {
-                    if (null !== $data)
+                    foreach ($datas as $i => $data)
                     {
-                        $record = static::createFromRecord($data);
-                        $record->key = $keys[$i];
-                        $list[] = $record;
+                        if (null !== $data)
+                        {
+                            $record = static::createFromRecord($data);
+                            $record->key = $keys[$i];
+                            $list[] = $record;
+                        }
                     }
                 }
 
                 return $list;
             case RedisStorageMode::HASH:
                 $members = [];
-                foreach ($conditions as $condition)
+                if ($conditions)
                 {
-                    $members[] = static::generateMember($condition);
+                    foreach ($conditions as $condition)
+                    {
+                        $members[] = static::generateMember($condition);
+                    }
                 }
                 $list = [];
                 $redis = static::__getRedis();
-                foreach (array_unique($keys) as $key)
+                if ($keys)
                 {
-                    $datas = $redis->hMget($key, $members);
-                    foreach ($datas as $i => $data)
+                    foreach (array_unique($keys) as $key)
                     {
-                        if (null !== $data)
+                        $datas = $redis->hMget($key, $members);
+                        if ($datas)
                         {
-                            $record = static::createFromRecord($data);
-                            $record->key = $key;
-                            if (isset($members[$i]))
+                            foreach ($datas as $i => $data)
                             {
-                                $record->__member = $members[$i];
+                                if (null !== $data)
+                                {
+                                    $record = static::createFromRecord($data);
+                                    $record->key = $key;
+                                    if (isset($members[$i]))
+                                    {
+                                        $record->__member = $members[$i];
+                                    }
+                                    $list[] = $record;
+                                }
                             }
-                            $list[] = $record;
                         }
                     }
                 }
@@ -145,12 +160,15 @@ abstract class RedisModel extends BaseModel
             case RedisStorageMode::HASH_OBJECT:
                 $redis = static::__getRedis();
                 $list = [];
-                foreach ($keys as $key)
+                if ($keys)
                 {
-                    $data = $redis->hGetAll($key);
-                    $record = static::createFromRecord($data);
-                    $record->key = $key;
-                    $list[] = $record;
+                    foreach ($keys as $key)
+                    {
+                        $data = $redis->hGetAll($key);
+                        $record = static::createFromRecord($data);
+                        $record->key = $key;
+                        $list[] = $record;
+                    }
                 }
 
                 return $list;
@@ -228,6 +246,10 @@ abstract class RedisModel extends BaseModel
      */
     public static function deleteBatch(...$conditions)
     {
+        if (!$conditions)
+        {
+            return 0;
+        }
         /** @var \Imi\Model\Annotation\RedisEntity $redisEntity */
         $redisEntity = ModelManager::getRedisEntity(static::__getRealClassName());
         switch ($redisEntity->storage)

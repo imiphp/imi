@@ -78,23 +78,26 @@ abstract class ObjectArrayHelper
         $names = explode('.', $name);
         $lastName = array_pop($names);
         $data = &$object;
-        foreach ($names as $nameItem)
+        if ($names)
         {
-            if (\is_array($data))
+            foreach ($names as $nameItem)
             {
-                if (!isset($data[$nameItem]))
+                if (\is_array($data))
                 {
-                    $data[$nameItem] = [];
+                    if (!isset($data[$nameItem]))
+                    {
+                        $data[$nameItem] = [];
+                    }
+                    $data = &$data[$nameItem];
                 }
-                $data = &$data[$nameItem];
-            }
-            elseif (\is_object($data))
-            {
-                if (!isset($data->$nameItem))
+                elseif (\is_object($data))
                 {
-                    $data->$nameItem = new stdClass();
+                    if (!isset($data->$nameItem))
+                    {
+                        $data->$nameItem = new stdClass();
+                    }
+                    $data = &$data->$nameItem;
                 }
-                $data = &$data->$nameItem;
             }
         }
         if (\is_array($data))
@@ -120,23 +123,26 @@ abstract class ObjectArrayHelper
         $names = explode('.', $name);
         $lastName = array_pop($names);
         $data = &$object;
-        foreach ($names as $nameItem)
+        if ($names)
         {
-            if (\is_array($data))
+            foreach ($names as $nameItem)
             {
-                if (!isset($data[$nameItem]))
+                if (\is_array($data))
                 {
-                    $data[$nameItem] = [];
+                    if (!isset($data[$nameItem]))
+                    {
+                        $data[$nameItem] = [];
+                    }
+                    $data = &$data[$nameItem];
                 }
-                $data = &$data[$nameItem];
-            }
-            elseif (\is_object($data))
-            {
-                if (!isset($data->$nameItem))
+                elseif (\is_object($data))
                 {
-                    $data->$nameItem = new stdClass();
+                    if (!isset($data->$nameItem))
+                    {
+                        $data->$nameItem = new stdClass();
+                    }
+                    $data = &$data->$nameItem;
                 }
-                $data = &$data->$nameItem;
             }
         }
         if (\is_array($data))

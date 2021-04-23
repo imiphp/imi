@@ -17,9 +17,12 @@ abstract class BasePoolProcess implements IPoolProcess
     public function __construct($data = [])
     {
         $this->data = $data;
-        foreach ($data as $k => $v)
+        if ($data)
         {
-            $this->$k = $v;
+            foreach ($data as $k => $v)
+            {
+                $this->$k = $v;
+            }
         }
     }
 }

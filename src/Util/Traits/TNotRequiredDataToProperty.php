@@ -9,9 +9,12 @@ trait TNotRequiredDataToProperty
 {
     public function __construct($data = [])
     {
-        foreach ($data as $k => $v)
+        if ($data)
         {
-            $this->$k = $v;
+            foreach ($data as $k => $v)
+            {
+                $this->$k = $v;
+            }
         }
     }
 }

@@ -84,6 +84,10 @@ abstract class ClassObject
      */
     public static function convertArrayToKV(array $params, array $args, bool $keepNotExistArgs = true): array
     {
+        if (!$params)
+        {
+            return [];
+        }
         $result = [];
 
         foreach ($params as $i => $param)
@@ -102,15 +106,13 @@ abstract class ClassObject
             }
         }
 
-        if (isset($param) && $param->isVariadic())
+        if ($param->isVariadic())
         {
             $paramName = $param->name;
             $resultItem = [$result[$paramName]];
-            // @phpstan-ignore-next-line
             if (isset($args[$i + 1]))
             {
                 $count = \count($args);
-                // @phpstan-ignore-next-line
                 for (++$i; $i < $count; ++$i)
                 {
                     $resultItem[] = $args[$i];
@@ -127,6 +129,10 @@ abstract class ClassObject
      */
     public static function convertKVToArray(array $params, array $args): array
     {
+        if (!$params)
+        {
+            return [];
+        }
         $result = [];
         foreach ($params as $param)
         {
