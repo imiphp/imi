@@ -56,9 +56,12 @@ class Server extends BaseCommand
                 ServerManager::createServer('main', $mainServer);
                 // 创建监听子服务器端口
                 $subServers = Config::get('@app.subServers', []);
-                foreach ($subServers as $name => $config)
+                if ($subServers)
                 {
-                    ServerManager::createServer($name, $config, true);
+                    foreach ($subServers as $name => $config)
+                    {
+                        ServerManager::createServer($name, $config, true);
+                    }
                 }
                 // 创建服务器对象们后置操作
                 Event::trigger('IMI.SERVERS.CREATE.AFTER');

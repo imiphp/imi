@@ -69,6 +69,10 @@ class Files implements \ArrayAccess, \JsonSerializable
         /** @var \Imi\Server\Http\Message\Request $request */
         $request = RequestContext::get('request');
         $files = $request->getUploadedFiles();
+        if (!$files)
+        {
+            return [];
+        }
         $result = [];
         foreach ($files as $key => $file)
         {

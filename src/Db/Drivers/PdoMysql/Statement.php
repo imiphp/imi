@@ -145,7 +145,7 @@ class Statement extends BaseStatement implements IStatement
     {
         $statement = $this->statement;
         $statement->closeCursor();
-        if (null !== $inputParameters)
+        if ($inputParameters)
         {
             foreach ($inputParameters as $k => $v)
             {

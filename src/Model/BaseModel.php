@@ -85,12 +85,14 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
 
         $fieldAnnotations = $this->__meta->getFields();
-        foreach ($data as $k => $v)
+        if ($data)
         {
-            if (isset($fieldAnnotations[$k]))
+            foreach ($data as $k => $v)
             {
-                $fieldAnnotation = $fieldAnnotations[$k];
-                switch ($fieldAnnotation->type)
+                if (isset($fieldAnnotations[$k]))
+                {
+                    $fieldAnnotation = $fieldAnnotations[$k];
+                    switch ($fieldAnnotation->type)
                 {
                     case 'json':
                         $value = json_decode($v, true);
@@ -106,8 +108,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                         }
                         break;
                 }
+                }
+                $this[$k] = $v;
             }
-            $this[$k] = $v;
         }
 
         // 初始化后

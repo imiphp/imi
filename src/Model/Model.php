@@ -256,12 +256,16 @@ abstract class Model extends BaseModel
         $keys[] = '#'; // 分隔符
 
         $conditionId = $bindValues = [];
-        foreach ($meta->getId() as $idName)
+        $id = $meta->getId();
+        if ($id)
         {
-            if (isset($this->$idName))
+            foreach ($id as $idName)
             {
-                $bindValues[':c_' . $idName] = $this->$idName;
-                $keys[] = $conditionId[] = $idName;
+                if (isset($this->$idName))
+                {
+                    $bindValues[':c_' . $idName] = $this->$idName;
+                    $keys[] = $conditionId[] = $idName;
+                }
             }
         }
         if (!isset($conditionId[0]))
@@ -269,10 +273,14 @@ abstract class Model extends BaseModel
             throw new \RuntimeException('Use Model->update(), primary key can not be null');
         }
         $result = $query->alias($this->__realClass . ':update:' . md5(implode(',', $keys)), function (IQuery $query) use ($conditionId) {
-            // 主键条件加入
-            foreach ($conditionId as $idName)
+            // @phpstan-ignore-next-line
+            if ($conditionId)
             {
-                $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
+                // 主键条件加入
+                foreach ($conditionId as $idName)
+                {
+                    $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
+                }
             }
             $query->limit(1);
         })->bindValues($bindValues)->update($data);
@@ -309,11 +317,14 @@ abstract class Model extends BaseModel
 
             $list = $query->select()->getArray();
 
-            foreach ($list as $row)
+            if ($list)
             {
-                $model = static::createFromRecord($row);
-                $model->set($data);
-                $model->update();
+                foreach ($list as $row)
+                {
+                    $model = static::createFromRecord($row);
+                    $model->set($data);
+                    $model->update();
+                }
             }
 
             return null;
@@ -392,11 +403,15 @@ abstract class Model extends BaseModel
             }
             $result = $query->alias($this->__realClass . ':save:' . md5(implode(',', $keys)), function (IQuery $query) use ($meta) {
                 // 主键条件加入
-                foreach ($meta->getId() as $idName)
+                $id = $meta->getId();
+                if ($id)
                 {
-                    if (isset($this->$idName))
+                    foreach ($id as $idName)
                     {
-                        $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
+                        if (isset($this->$idName))
+                        {
+                            $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
+                        }
                     }
                 }
             })->replace($data);
@@ -433,14 +448,17 @@ abstract class Model extends BaseModel
         $bindValues = [];
         $meta = $this->__meta;
         $id = $meta->getId();
-        foreach ($id as $idName)
+        if ($id)
         {
-            if (isset($this->$idName))
+            foreach ($id as $idName)
             {
-                $bindValues[$idName] = $this->$idName;
+                if (isset($this->$idName))
+                {
+                    $bindValues[$idName] = $this->$idName;
+                }
             }
         }
-        if (empty($bindValues))
+        if (!$bindValues)
         {
             throw new \RuntimeException('Use Model->delete(), primary key can not be null');
         }
@@ -613,7 +631,7 @@ abstract class Model extends BaseModel
             // 回调传入条件
             $where($query);
         }
-        else
+        elseif ($where)
         {
             foreach ($where as $k => $v)
             {

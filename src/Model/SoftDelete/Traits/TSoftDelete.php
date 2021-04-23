@@ -96,9 +96,12 @@ trait TSoftDelete
 
         $meta = $this->__meta;
         $id = $meta->getId();
-        foreach ($id as $idName)
+        if ($id)
         {
-            $query->where($idName, '=', $this->$idName);
+            foreach ($id as $idName)
+            {
+                $query->where($idName, '=', $this->$idName);
+            }
         }
         $fieldName = $softDeleteAnnotation->field;
         $fieldVlaue = $this->$fieldName = $this->__generateSoftDeleteValue();
@@ -181,20 +184,26 @@ trait TSoftDelete
                 $id = static::__getMeta()->getId();
                 $keys = [];
                 $bindValues = [];
-                foreach ($id as $i => $idName)
+                if ($id)
                 {
-                    if (!isset($ids[$i]))
+                    foreach ($id as $i => $idName)
                     {
-                        break;
+                        if (!isset($ids[$i]))
+                        {
+                            break;
+                        }
+                        $keys[] = $idName;
+                        $bindValues[':' . $idName] = $ids[$i];
                     }
-                    $keys[] = $idName;
-                    $bindValues[':' . $idName] = $ids[$i];
                 }
                 $bindValues[':' . $softDeleteAnnotation->field] = $softDeleteAnnotation->default;
                 $query = $query->alias($realClassName . ':findDeleted:pk2:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys, $softDeleteAnnotation) {
-                    foreach ($keys as $name)
+                    if ($keys)
                     {
-                        $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
+                        foreach ($keys as $name)
+                        {
+                            $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
+                        }
                     }
                     $query->whereRaw(new Field(null, null, $softDeleteAnnotation->field) . '!=:' . $softDeleteAnnotation->field)->limit(1);
                 })->bindValues($bindValues);
@@ -228,9 +237,12 @@ trait TSoftDelete
         $query = static::dbQuery($this);
         $meta = $this->__meta;
         $id = $meta->getId();
-        foreach ($id as $idName)
+        if ($id)
         {
-            $query->where($idName, '=', $this->$idName);
+            foreach ($id as $idName)
+            {
+                $query->where($idName, '=', $this->$idName);
+            }
         }
         $result = $query->update([
             $softDeleteAnnotation->field => $softDeleteAnnotation->default,

@@ -56,7 +56,7 @@ abstract class Base extends LazyArrayObject
                 // 只传一个参数处理
                 $this->{$this->defaultFieldName} = $data['value'];
             }
-            else
+            elseif ($data)
             {
                 foreach ($data as $k => $v)
                 {
@@ -65,12 +65,16 @@ abstract class Base extends LazyArrayObject
             }
         }
 
-        foreach ($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
+        $properties = $refClass->getProperties(\ReflectionProperty::IS_PUBLIC);
+        if ($properties)
         {
-            $propertyName = $property->name;
-            $value = $this->$propertyName;
-            unset($this->$propertyName);
-            $this->$propertyName = $value;
+            foreach ($properties as $property)
+            {
+                $propertyName = $property->name;
+                $value = $this->$propertyName;
+                unset($this->$propertyName);
+                $this->$propertyName = $value;
+            }
         }
     }
 
@@ -102,14 +106,21 @@ abstract class Base extends LazyArrayObject
     public function __unserialize(array $data): void
     {
         $refClass = ReflectionContainer::getClassReflection(static::class);
-        foreach ($refClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $property)
+        $properties = $refClass->getProperties(\ReflectionProperty::IS_PUBLIC);
+        if ($properties)
         {
-            unset($this->{$property->name});
+            foreach ($properties as $property)
+            {
+                unset($this->{$property->name});
+            }
         }
         [$this->defaultFieldName, $this->__alias, $dataMap] = $data;
-        foreach ($dataMap as $k => $v)
+        if ($dataMap)
         {
-            $this[$k] = $v;
+            foreach ($dataMap as $k => $v)
+            {
+                $this[$k] = $v;
+            }
         }
     }
 

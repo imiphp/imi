@@ -137,11 +137,14 @@ class RedisManager
         {
             $options[\Redis::OPT_SERIALIZER] = \Redis::SERIALIZER_PHP;
         }
-        foreach ($options as $key => $value)
+        if ($options)
         {
-            if (!$redis->setOption($key, $value))
+            foreach ($options as $key => $value)
             {
-                throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', $key, $value));
+                if (!$redis->setOption($key, $value))
+                {
+                    throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', $key, $value));
+                }
             }
         }
     }

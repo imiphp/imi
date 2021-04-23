@@ -299,14 +299,17 @@ class Validator implements IValidator
             return true;
         }
         $args = [];
-        foreach ($annotation->args as $arg)
+        if ($annotation->args)
         {
-            $value = $this->getArgValue($data, $arg, $annotation);
-            if ($value instanceof ValidateValue)
+            foreach ($annotation->args as $arg)
             {
-                $value = $this->getArgValue($data, $value->value, $annotation, false);
+                $value = $this->getArgValue($data, $arg, $annotation);
+                if ($value instanceof ValidateValue)
+                {
+                    $value = $this->getArgValue($data, $value->value, $annotation, false);
+                }
+                $args[] = $value;
             }
-            $args[] = $value;
         }
         $callable = $annotation->callable;
         if (\is_array($callable) && isset($callable[0]))
@@ -443,6 +446,10 @@ class Validator implements IValidator
         $className = static::__getRealClassName();
         /** @var \Imi\Validate\Annotation\Scene[] $scenes */
         $scenes = AnnotationManager::getClassAnnotations($className, Scene::class);
+        if (!$scenes)
+        {
+            return [];
+        }
         $result = [];
         foreach ($scenes as $item)
         {

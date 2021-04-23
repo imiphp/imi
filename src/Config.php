@@ -63,9 +63,12 @@ class Config
      */
     public static function load(string $name, array $configList): void
     {
-        foreach ($configList as $alias => $fileName)
+        if ($configList)
         {
-            static::set($name . '.' . $alias, include $fileName);
+            foreach ($configList as $alias => $fileName)
+            {
+                static::set($name . '.' . $alias, include $fileName);
+            }
         }
     }
 

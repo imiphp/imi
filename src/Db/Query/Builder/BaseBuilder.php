@@ -107,11 +107,19 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseJoin(array $join): string
     {
+        if (!$join)
+        {
+            return '';
+        }
         $result = implode(' ', $join);
         $params = &$this->params;
         foreach ($join as $item)
         {
-            $params = array_merge($params, $item->getBinds());
+            $binds = $item->getBinds();
+            if ($binds)
+            {
+                $params = array_merge($params, $binds);
+            }
         }
 
         return $result;
@@ -124,6 +132,10 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseWhere(array $where): string
     {
+        if (!$where)
+        {
+            return '';
+        }
         $result = [];
         $params = &$this->params;
         $query = $this->query;
@@ -131,7 +143,11 @@ abstract class BaseBuilder implements IBuilder
         {
             $result[] = $item->getLogicalOperator();
             $result[] = $item->toStringWithoutLogic($query);
-            $params = array_merge($params, $item->getBinds());
+            $binds = $item->getBinds();
+            if ($binds)
+            {
+                $params = array_merge($params, $binds);
+            }
         }
         unset($result[0]);
         $result = implode(' ', $result);
@@ -177,7 +193,11 @@ abstract class BaseBuilder implements IBuilder
             $params = &$this->params;
             foreach ($order as $item)
             {
-                $params = array_merge($params, $item->getBinds());
+                $binds = $item->getBinds();
+                if ($binds)
+                {
+                    $params = array_merge($params, $binds);
+                }
             }
 
             return $result;
@@ -212,6 +232,10 @@ abstract class BaseBuilder implements IBuilder
      */
     protected function parseHaving(array $having): string
     {
+        if (!$having)
+        {
+            return '';
+        }
         $params = &$this->params;
         $query = $this->query;
         $result = [];
@@ -219,7 +243,11 @@ abstract class BaseBuilder implements IBuilder
         {
             $result[] = $item->getLogicalOperator();
             $result[] = $item->toStringWithoutLogic($query);
-            $params = array_merge($params, $item->getBinds());
+            $binds = $item->getBinds();
+            if ($binds)
+            {
+                $params = array_merge($params, $binds);
+            }
         }
         unset($result[0]);
         $result = implode(' ', $result);

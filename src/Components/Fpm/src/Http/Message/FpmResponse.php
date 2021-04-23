@@ -54,9 +54,13 @@ class FpmResponse extends Response
         // 保证FastCGI模式下正常
         header('Status:' . $data);
         // header
-        foreach ($this->getHeaders() as $name => $_)
+        $headers = $this->getHeaders();
+        if ($headers)
         {
-            header($name . ':' . $this->getHeaderLine($name));
+            foreach ($headers as $name => $_)
+            {
+                header($name . ':' . $this->getHeaderLine($name));
+            }
         }
         // cookie
         if ($this->changedCookieNames)

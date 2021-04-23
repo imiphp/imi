@@ -138,15 +138,18 @@ class Redis extends Base
             return $redis->mget($keys);
         }, $this->poolName, true);
         $result = [];
-        foreach ($mgetResult as $i => $v)
+        if ($mgetResult)
         {
-            if (false === $v)
+            foreach ($mgetResult as $i => $v)
             {
-                $result[$keys[$i]] = $default;
-            }
-            else
-            {
-                $result[$keys[$i]] = $this->decode($v);
+                if (false === $v)
+                {
+                    $result[$keys[$i]] = $default;
+                }
+                else
+                {
+                    $result[$keys[$i]] = $this->decode($v);
+                }
             }
         }
 

@@ -55,38 +55,45 @@ class Inotify extends BaseMonitor
         $excludeRule = implode('|', array_map('\Imi\Util\Imi::parseRule', $excludePaths));
         $paths = &$this->paths;
         $mask = &$this->mask;
-        foreach ($this->includePaths as $path)
+        $includePaths = $this->includePaths;
+        if ($includePaths)
         {
-            if (!is_dir($path))
+            foreach ($includePaths as $path)
             {
-                continue;
-            }
-            inotify_add_watch($handler, $path, $mask);
-            $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO);
-            $iterator = new \RecursiveIteratorIterator($directory);
-            if ('' === $excludeRule)
-            {
-                foreach ($iterator as $fileName => $fileInfo)
+                if (!is_dir($path))
                 {
-                    $filePath = \dirname($fileName);
-                    $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
+                    continue;
                 }
-            }
-            else
-            {
-                foreach (File::enumFile($path) as $file)
+                inotify_add_watch($handler, $path, $mask);
+                $directory = new \RecursiveDirectoryIterator($path, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO);
+                $iterator = new \RecursiveIteratorIterator($directory);
+                if ('' === $excludeRule)
                 {
-                    $fullPath = $file->getFullPath();
-                    foreach ($excludePaths as $path)
+                    foreach ($iterator as $fileName => $fileInfo)
                     {
-                        if (substr($fullPath, 0, \strlen($path)) === $path)
-                        {
-                            $file->setContinue(false);
-                            continue 2;
-                        }
+                        $filePath = \dirname($fileName);
+                        $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
                     }
-                    $filePath = $file->getPath();
-                    $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
+                }
+                else
+                {
+                    foreach (File::enumFile($path) as $file)
+                    {
+                        $fullPath = $file->getFullPath();
+                        if ($excludePaths)
+                        {
+                            foreach ($excludePaths as $path)
+                            {
+                                if (substr($fullPath, 0, \strlen($path)) === $path)
+                                {
+                                    $file->setContinue(false);
+                                    continue 2;
+                                }
+                            }
+                        }
+                        $filePath = $file->getPath();
+                        $paths[$filePath] ??= inotify_add_watch($handler, $filePath, $mask);
+                    }
                 }
             }
         }

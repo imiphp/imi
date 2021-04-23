@@ -37,9 +37,12 @@ class CoroutineContextManager implements IContextManager
                 $context['__bindDestroy'] = true;
                 Coroutine::defer([$this, '__destroy']);
             }
-            foreach ($data as $k => $v)
+            if ($data)
             {
-                $context[$k] = $v;
+                foreach ($data as $k => $v)
+                {
+                    $context[$k] = $v;
+                }
             }
 
             return $context;

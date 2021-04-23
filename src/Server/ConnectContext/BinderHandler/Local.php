@@ -187,12 +187,15 @@ class Local implements IHandler
     public function gc(): void
     {
         $oldDataMap = &$this->oldDataMap;
-        $time = time();
-        foreach ($oldDataMap as $flag => $data)
+        if ($oldDataMap)
         {
-            if ($data['keepTime'] < $time)
+            $time = time();
+            foreach ($oldDataMap as $flag => $data)
             {
-                unset($oldDataMap[$flag]);
+                if ($data['keepTime'] < $time)
+                {
+                    unset($oldDataMap[$flag]);
+                }
             }
         }
     }

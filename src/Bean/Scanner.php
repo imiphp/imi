@@ -90,10 +90,14 @@ class Scanner
                 }
             }
         }
-        foreach (Config::get('@app.components', []) as $name => $namespace)
+        $components = Config::get('@app.components', []);
+        if ($components)
         {
-            $namespaces[] = $namespace;
-            Helper::getMain($namespace, $name);
+            foreach ($components as $name => $namespace)
+            {
+                $namespaces[] = $namespace;
+                Helper::getMain($namespace, $name);
+            }
         }
         Annotation::getInstance()->initByNamespace($namespaces);
         Event::trigger('IMI.SCAN_VENDOR');

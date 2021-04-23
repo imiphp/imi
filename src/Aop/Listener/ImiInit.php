@@ -32,47 +32,50 @@ class ImiInit implements IEventListener
      */
     private function parseConfigs(array $configs): void
     {
-        foreach ($configs as $className => $classConfig)
+        if ($configs)
         {
-            // 类
-            AnnotationManager::addClassAnnotations($className, new \Imi\Aop\Annotation\Aspect());
-
-            // 方法
-            foreach ($classConfig['methods'] ?? [] as $methodName => $methodConfig)
+            foreach ($configs as $className => $classConfig)
             {
-                $annotations = [];
-                foreach ($methodConfig as $annotationName => $annotationArgs)
-                {
-                    if (class_exists($annotationName))
-                    {
-                        $annotationClassName = $annotationName;
-                    }
-                    else
-                    {
-                        $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
-                    }
-                    $annotations[] = new $annotationClassName($annotationArgs);
-                }
-                AnnotationManager::addMethodAnnotations($className, $methodName, ...$annotations);
-            }
+                // 类
+                AnnotationManager::addClassAnnotations($className, new \Imi\Aop\Annotation\Aspect());
 
-            // 属性
-            foreach ($classConfig['properties'] ?? [] as $propName => $propConfig)
-            {
-                $annotations = [];
-                foreach ($propConfig as $annotationName => $annotationArgs)
+                // 方法
+                foreach ($classConfig['methods'] ?? [] as $methodName => $methodConfig)
                 {
-                    if (class_exists($annotationName))
+                    $annotations = [];
+                    foreach ($methodConfig as $annotationName => $annotationArgs)
                     {
-                        $annotationClassName = $annotationName;
+                        if (class_exists($annotationName))
+                        {
+                            $annotationClassName = $annotationName;
+                        }
+                        else
+                        {
+                            $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
+                        }
+                        $annotations[] = new $annotationClassName($annotationArgs);
                     }
-                    else
-                    {
-                        $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
-                    }
-                    $annotations[] = new $annotationClassName($annotationArgs);
+                    AnnotationManager::addMethodAnnotations($className, $methodName, ...$annotations);
                 }
-                AnnotationManager::addPropertyAnnotations($className, $propName, ...$annotations);
+
+                // 属性
+                foreach ($classConfig['properties'] ?? [] as $propName => $propConfig)
+                {
+                    $annotations = [];
+                    foreach ($propConfig as $annotationName => $annotationArgs)
+                    {
+                        if (class_exists($annotationName))
+                        {
+                            $annotationClassName = $annotationName;
+                        }
+                        else
+                        {
+                            $annotationClassName = '\Imi\Aop\Annotation\\' . ucfirst($annotationName);
+                        }
+                        $annotations[] = new $annotationClassName($annotationArgs);
+                    }
+                    AnnotationManager::addPropertyAnnotations($className, $propName, ...$annotations);
+                }
             }
         }
     }

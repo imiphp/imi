@@ -19,9 +19,12 @@ abstract class Base implements CacheInterface
 
     public function __construct(array $option = [])
     {
-        foreach ($option as $k => $v)
+        if ($option)
         {
-            $this->$k = $v;
+            foreach ($option as $k => $v)
+            {
+                $this->$k = $v;
+            }
         }
     }
 

@@ -36,9 +36,12 @@ abstract class BaseLock implements ILockHandler
     public function __construct(string $id, array $options = [])
     {
         $this->id = $id;
-        foreach ($options as $k => $v)
+        if ($options)
         {
-            $this->$k = $v;
+            foreach ($options as $k => $v)
+            {
+                $this->$k = $v;
+            }
         }
     }
 

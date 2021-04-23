@@ -123,18 +123,22 @@ class StatementManager
     {
         $context = RequestContext::getContext();
         $statementCaches = $context['statementCaches'] ?? [];
-        foreach (static::$statements[$db->hashCode()] ?? [] as &$item)
+        $statements = static::$statements[$db->hashCode()] ?? [];
+        if ($statements)
         {
-            $statement = $item['statement'];
-            if (false !== $i = array_search($statement, $statementCaches))
+            foreach ($statements as &$item)
             {
-                unset($statementCaches[$i]);
+                $statement = $item['statement'];
+                if (false !== $i = array_search($statement, $statementCaches))
+                {
+                    unset($statementCaches[$i]);
+                }
+                if ($statement)
+                {
+                    $statement->closeCursor();
+                }
+                $item['using'] = false;
             }
-            if ($statement)
-            {
-                $statement->closeCursor();
-            }
-            $item['using'] = false;
         }
         $context['statementCaches'] = $statementCaches;
     }
@@ -172,18 +176,18 @@ class StatementManager
         $statementCaches = $requestContext['statementCaches'] ?? [];
         $staticStatements = &static::$statements;
         $statements = $staticStatements[$db->hashCode()] ?? [];
-        foreach ($statements as $item)
-        {
-            if (false !== $i = array_search($item['statement'], $statementCaches))
-            {
-                unset($statementCaches[$i]);
-            }
-        }
-        $requestContext['statementCaches'] = $statementCaches;
         if ($statements)
         {
+            foreach ($statements as $item)
+            {
+                if (false !== $i = array_search($item['statement'], $statementCaches))
+                {
+                    unset($statementCaches[$i]);
+                }
+            }
             unset($staticStatements[$db->hashCode()]);
         }
+        $requestContext['statementCaches'] = $statementCaches;
     }
 
     /**

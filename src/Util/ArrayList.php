@@ -24,9 +24,12 @@ class ArrayList implements \Iterator, \ArrayAccess, IArrayable, \JsonSerializabl
     public function __construct(string $itemType, array $list = [])
     {
         $this->itemType = $itemType;
-        foreach ($list as $item)
+        if ($list)
         {
-            $this[] = $item;
+            foreach ($list as $item)
+            {
+                $this[] = $item;
+            }
         }
     }
 

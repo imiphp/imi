@@ -46,9 +46,12 @@ class View
         $handlers = &$this->handlers;
         foreach ([$this->coreHandlers, $this->exHandlers] as $list)
         {
-            foreach ($list as $name => $class)
+            if ($list)
             {
-                $handlers[$name] = RequestContext::getServerBean($class);
+                foreach ($list as $name => $class)
+                {
+                    $handlers[$name] = RequestContext::getServerBean($class);
+                }
             }
         }
     }

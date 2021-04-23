@@ -197,10 +197,13 @@ abstract class BaseAsyncPool extends BasePool
         {
             $queue->pop();
         }
-        // 重新建立队列
-        foreach ($this->pool as $item)
+        if ($this->pool)
         {
-            $queue->push($item);
+            // 重新建立队列
+            foreach ($this->pool as $item)
+            {
+                $queue->push($item);
+            }
         }
     }
 
@@ -269,26 +272,29 @@ abstract class BaseAsyncPool extends BasePool
     {
         $hasGC = false;
         $pool = &$this->pool;
-        foreach ($pool as $key => $item)
+        if ($pool)
         {
-            if ($item->isFree() && $item->lock())
+            foreach ($pool as $key => $item)
             {
-                try
+                if ($item->isFree() && $item->lock())
                 {
-                    $resource = $item->getResource();
-                    if (!$resource->checkState())
+                    try
                     {
-                        $resource->close();
-                        unset($pool[$key]);
-                        $hasGC = true;
-                        $item = null;
+                        $resource = $item->getResource();
+                        if (!$resource->checkState())
+                        {
+                            $resource->close();
+                            unset($pool[$key]);
+                            $hasGC = true;
+                            $item = null;
+                        }
                     }
-                }
-                finally
-                {
-                    if ($item)
+                    finally
                     {
-                        $item->release();
+                        if ($item)
+                        {
+                            $item->release();
+                        }
                     }
                 }
             }

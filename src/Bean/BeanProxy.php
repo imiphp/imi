@@ -95,12 +95,15 @@ class BeanProxy
                         }
                     }
                     $denyResult = false;
-                    foreach ($annotation->deny as $rule)
+                    if ($annotation->deny)
                     {
-                        $denyResult = Imi::checkRuleMatch($rule, $throwableClassName);
-                        if ($denyResult)
+                        foreach ($annotation->deny as $rule)
                         {
-                            return;
+                            $denyResult = Imi::checkRuleMatch($rule, $throwableClassName);
+                            if ($denyResult)
+                            {
+                                return;
+                            }
                         }
                     }
                 }
@@ -285,10 +288,13 @@ class BeanProxy
                 throw new \RuntimeException(sprintf('Unknown pointType %s', $pointType));
         }
         $class = 'Imi\Aop\Annotation\\' . Text::toPascalName($pointType);
-        foreach ($items as $item)
+        if ($items)
         {
-            $point = new $class($item->getOptions()['extra']);
-            $callback($item, $point);
+            foreach ($items as $item)
+            {
+                $point = new $class($item->getOptions()['extra']);
+                $callback($item, $point);
+            }
         }
     }
 

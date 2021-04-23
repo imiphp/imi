@@ -18,11 +18,15 @@ class RequestContextDestroy implements IEventListener
     public function handle(EventParam $e): void
     {
         // 释放当前连接池连接的 Statement
-        foreach (RequestContext::get('poolResources', []) as $resource)
+        $resources = RequestContext::get('poolResources', []);
+        if ($resources)
         {
-            if ($resource instanceof DbResource)
+            foreach ($resources as $resource)
             {
-                StatementManager::unUsingAll($resource->getInstance());
+                if ($resource instanceof DbResource)
+                {
+                    StatementManager::unUsingAll($resource->getInstance());
+                }
             }
         }
     }

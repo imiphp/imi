@@ -159,6 +159,7 @@ class ActionMiddleware implements MiddlewareInterface
         else
         {
             $callable = $routeResult->callable;
+            $extractDataAnnotationCache = [];
             // 根据动作回调类型获取反射
             if (\is_array($callable))
             {
@@ -182,7 +183,6 @@ class ActionMiddleware implements MiddlewareInterface
                     $params = $actionMethodParams[$class][$method] = $ref->getParameters();
                 }
 
-                $extractDataAnnotationCache = [];
                 /** @var ExtractData $extractData */
                 foreach (AnnotationManager::getMethodAnnotations($class, $method, ExtractData::class) as $extractData)
                 {
@@ -193,13 +193,8 @@ class ActionMiddleware implements MiddlewareInterface
             {
                 $ref = new \ReflectionFunction($callable);
                 $params = $ref->getParameters();
-                $extractDataAnnotationCache = [];
             }
-            else
-            {
-                return $this->actionMethodCaches[$routeResult->id] = $this->extractDataAnnotationCaches[$routeResult->id] = [];
-            }
-            if (!$params)
+            if (!isset($params) || !$params)
             {
                 return $this->actionMethodCaches[$routeResult->id] = $this->extractDataAnnotationCaches[$routeResult->id] = [];
             }

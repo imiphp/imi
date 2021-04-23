@@ -209,14 +209,17 @@ class Group
         /** @var ClientIdMap $clientIdMap */
         $clientIdMap = $server->getBean('ClientIdMap');
         $clientIds = $this->handler->getClientIds($this->groupName);
-        foreach ($clientIds as $clientId)
+        if ($clientIds)
         {
-            // 执行结果
-            $result[$clientId] = $itemResult = $server->callServerMethod($name, $clientId, ...$arguments);
-            if ($methodIsCheck && false === $itemResult && \in_array($server->callServerMethod('getLastError'), $clientCloseErrors))
+            foreach ($clientIds as $clientId)
             {
-                // 客户端关闭的错误，直接把该客户端T出全部组
-                $clientIdMap->leaveAll($clientId);
+                // 执行结果
+                $result[$clientId] = $itemResult = $server->callServerMethod($name, $clientId, ...$arguments);
+                if ($methodIsCheck && false === $itemResult && \in_array($server->callServerMethod('getLastError'), $clientCloseErrors))
+                {
+                    // 客户端关闭的错误，直接把该客户端T出全部组
+                    $clientIdMap->leaveAll($clientId);
+                }
             }
         }
 

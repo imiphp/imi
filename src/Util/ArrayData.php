@@ -59,10 +59,13 @@ class ArrayData implements \ArrayAccess, \Countable
         }
         $last = array_pop($name);
         $data = &$this->__data;
-        foreach ($name as $val)
+        if ($name)
         {
-            $data[$val] ??= [];
-            $data = &$data[$val];
+            foreach ($name as $val)
+            {
+                $data[$val] ??= [];
+                $data = &$data[$val];
+            }
         }
         $data[$last] = $value;
 
@@ -92,35 +95,38 @@ class ArrayData implements \ArrayAccess, \Countable
             return $default;
         }
         $result = &$this->__data;
-        foreach ($name as $value)
+        if ($name)
         {
-            if (\is_array($result))
+            foreach ($name as $value)
             {
-                // 数组
-                if (isset($result[$value]))
+                if (\is_array($result))
                 {
-                    $result = &$result[$value];
+                    // 数组
+                    if (isset($result[$value]))
+                    {
+                        $result = &$result[$value];
+                    }
+                    else
+                    {
+                        return $default;
+                    }
+                }
+                elseif (\is_object($result))
+                {
+                    // 对象
+                    if (property_exists($result, $value))
+                    {
+                        $result = &$result->$value;
+                    }
+                    else
+                    {
+                        return $default;
+                    }
                 }
                 else
                 {
                     return $default;
                 }
-            }
-            elseif (\is_object($result))
-            {
-                // 对象
-                if (property_exists($result, $value))
-                {
-                    $result = &$result->$value;
-                }
-                else
-                {
-                    return $default;
-                }
-            }
-            else
-            {
-                return $default;
             }
         }
         if (isset($value))
@@ -144,26 +150,32 @@ class ArrayData implements \ArrayAccess, \Countable
         {
             $name = \func_get_args();
         }
-        foreach ($name as $val)
+        if ($name)
         {
-            if (\is_string($val))
+            foreach ($name as $val)
             {
-                $val = explode('.', $val);
-            }
-            elseif (!\is_array($val))
-            {
-                return false;
-            }
-            $last = array_pop($val);
-            $result = &$this->__data;
-            foreach ($val as $value)
-            {
-                if (isset($result[$value]))
+                if (\is_string($val))
                 {
-                    $result = &$result[$value];
+                    $val = explode('.', $val);
                 }
+                elseif (!\is_array($val))
+                {
+                    return false;
+                }
+                $last = array_pop($val);
+                $result = &$this->__data;
+                if ($val)
+                {
+                    foreach ($val as $value)
+                    {
+                        if (isset($result[$value]))
+                        {
+                            $result = &$result[$value];
+                        }
+                    }
+                }
+                unset($result[$last]);
             }
-            unset($result[$last]);
         }
 
         return true;

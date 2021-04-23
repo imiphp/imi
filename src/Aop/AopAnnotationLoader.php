@@ -46,39 +46,42 @@ class AopAnnotationLoader
         if (null !== $fileName && is_file($fileName))
         {
             self::$map = $map = include $fileName;
-            foreach ($map as $class => $list1)
+            if ($map)
             {
-                foreach ($list1['methods'] as $method => $list2)
+                foreach ($map as $class => $list1)
                 {
-                    foreach ($list2['before'] ?? [] as $item)
+                    foreach ($list1['methods'] as $method => $list2)
                     {
-                        $callback = $item['callback'];
-                        $callback[0] = new $callback[0]();
-                        AopManager::addBefore($class, $method, $callback, $item['priority'], $item['options']);
-                    }
-                    foreach ($list2['after'] ?? [] as $item)
-                    {
-                        $callback = $item['callback'];
-                        $callback[0] = new $callback[0]();
-                        AopManager::addAfter($class, $method, $callback, $item['priority'], $item['options']);
-                    }
-                    foreach ($list2['around'] ?? [] as $item)
-                    {
-                        $callback = $item['callback'];
-                        $callback[0] = new $callback[0]();
-                        AopManager::addAround($class, $method, $callback, $item['priority'], $item['options']);
-                    }
-                    foreach ($list2['afterReturning'] ?? [] as $item)
-                    {
-                        $callback = $item['callback'];
-                        $callback[0] = new $callback[0]();
-                        AopManager::addAfterReturning($class, $method, $callback, $item['priority'], $item['options']);
-                    }
-                    foreach ($list2['afterThrowing'] ?? [] as $item)
-                    {
-                        $callback = $item['callback'];
-                        $callback[0] = new $callback[0]();
-                        AopManager::addAfterThrowing($class, $method, $callback, $item['priority'], $item['options']);
+                        foreach ($list2['before'] ?? [] as $item)
+                        {
+                            $callback = $item['callback'];
+                            $callback[0] = new $callback[0]();
+                            AopManager::addBefore($class, $method, $callback, $item['priority'], $item['options']);
+                        }
+                        foreach ($list2['after'] ?? [] as $item)
+                        {
+                            $callback = $item['callback'];
+                            $callback[0] = new $callback[0]();
+                            AopManager::addAfter($class, $method, $callback, $item['priority'], $item['options']);
+                        }
+                        foreach ($list2['around'] ?? [] as $item)
+                        {
+                            $callback = $item['callback'];
+                            $callback[0] = new $callback[0]();
+                            AopManager::addAround($class, $method, $callback, $item['priority'], $item['options']);
+                        }
+                        foreach ($list2['afterReturning'] ?? [] as $item)
+                        {
+                            $callback = $item['callback'];
+                            $callback[0] = new $callback[0]();
+                            AopManager::addAfterReturning($class, $method, $callback, $item['priority'], $item['options']);
+                        }
+                        foreach ($list2['afterThrowing'] ?? [] as $item)
+                        {
+                            $callback = $item['callback'];
+                            $callback[0] = new $callback[0]();
+                            AopManager::addAfterThrowing($class, $method, $callback, $item['priority'], $item['options']);
+                        }
                     }
                 }
             }

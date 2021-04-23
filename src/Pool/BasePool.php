@@ -110,11 +110,14 @@ abstract class BasePool implements IPool
      */
     public function close(): void
     {
-        foreach ($this->pool as $item)
+        if ($this->pool)
         {
-            $item->getResource()->close();
+            foreach ($this->pool as $item)
+            {
+                $item->getResource()->close();
+            }
+            $this->pool = [];
         }
-        $this->pool = [];
         $this->initQueue();
     }
 

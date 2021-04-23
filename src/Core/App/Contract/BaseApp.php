@@ -100,10 +100,13 @@ abstract class BaseApp implements IApp
 
     protected function loadDotEnv(): void
     {
-        // 加载 .env 配置
-        foreach ($_ENV as $name => $value)
+        if ($_ENV)
         {
-            Config::set($name, $value);
+            // 加载 .env 配置
+            foreach ($_ENV as $name => $value)
+            {
+                Config::set($name, $value);
+            }
         }
     }
 

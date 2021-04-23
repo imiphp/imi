@@ -73,11 +73,14 @@ class PoolManager
      */
     public static function clearPools(): void
     {
-        foreach (static::$pools as $pool)
+        if (static::$pools)
         {
-            $pool->close();
+            foreach (static::$pools as $pool)
+            {
+                $pool->close();
+            }
+            static::$pools = [];
         }
-        static::$pools = [];
     }
 
     /**
@@ -212,9 +215,12 @@ class PoolManager
     {
         $requestContext = RequestContext::getContext();
         $poolResources = $requestContext['poolResources'] ?? [];
-        foreach ($poolResources as $resource)
+        if ($poolResources)
         {
-            $resource->getPool()->release($resource);
+            foreach ($poolResources as $resource)
+            {
+                $resource->getPool()->release($resource);
+            }
         }
         $requestContext['poolResources'] = [];
     }

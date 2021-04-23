@@ -31,6 +31,10 @@ trait TServerAnnotationParser
             return $cache[$serverName];
         }
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
+        if (!$namespaces)
+        {
+            return [];
+        }
         foreach ($namespaces as &$namespace)
         {
             if ('\\' !== ($namespace[-1] ?? ''))

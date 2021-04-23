@@ -86,24 +86,31 @@ class FileMTime extends BaseMonitor
         $changedFiles = &$this->changedFiles;
         $changedFiles = [];
         $excludePaths = &$this->excludePaths;
+        $includePaths = $this->includePaths;
         // 包含的路径中检测
-        foreach ($this->includePaths as $path)
+        if ($includePaths)
         {
-            foreach (File::enumFile($path) as $file)
+            foreach ($includePaths as $path)
             {
-                $fullPath = $file->getFullPath();
-                foreach ($excludePaths as $path)
+                foreach (File::enumFile($path) as $file)
                 {
-                    if (substr($fullPath, 0, \strlen($path)) === $path)
+                    $fullPath = $file->getFullPath();
+                    if ($excludePaths)
                     {
-                        $file->setContinue(false);
-                        continue 2;
+                        foreach ($excludePaths as $path)
+                        {
+                            if (substr($fullPath, 0, \strlen($path)) === $path)
+                            {
+                                $file->setContinue(false);
+                                continue 2;
+                            }
+                        }
                     }
-                }
-                if ($this->parseCheckFile($fullPath))
-                {
-                    $changedFiles[] = $fullPath;
-                    $changed = true;
+                    if ($this->parseCheckFile($fullPath))
+                    {
+                        $changedFiles[] = $fullPath;
+                        $changed = true;
+                    }
                 }
             }
         }

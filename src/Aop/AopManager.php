@@ -96,29 +96,32 @@ class AopManager
             return self::$parsedCache[$class]['before'][$method];
         }
         $result = new \SplPriorityQueue();
-        /** @var AopItem $aopItem */
-        foreach (self::$cache[$class]['before'] ?? [] as $aopItem)
+        if (isset(self::$cache[$class]['before']))
         {
-            if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+            /** @var AopItem $aopItem */
+            foreach (self::$cache[$class]['before'] as $aopItem)
             {
-                $options = $aopItem->getOptions();
-                if (isset($options['deny']))
+                if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
-                    $deny = false;
-                    foreach ($options['deny'] as $rule)
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
                     {
-                        if (Imi::checkClassMethodRule($rule, $class, $method))
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
                         {
-                            $deny = true;
-                            break;
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
                         }
                     }
-                    if ($deny)
-                    {
-                        continue;
-                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
                 }
-                $result->insert($aopItem, $aopItem->getPriority());
             }
         }
 
@@ -135,29 +138,32 @@ class AopManager
             return self::$parsedCache[$class]['after'][$method];
         }
         $result = new \SplPriorityQueue();
-        /** @var AopItem $aopItem */
-        foreach (self::$cache[$class]['after'] ?? [] as $aopItem)
+        if (isset(self::$cache[$class]['after']))
         {
-            if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+            /** @var AopItem $aopItem */
+            foreach (self::$cache[$class]['after'] ?? [] as $aopItem)
             {
-                $options = $aopItem->getOptions();
-                if (isset($options['deny']))
+                if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
-                    $deny = false;
-                    foreach ($options['deny'] as $rule)
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
                     {
-                        if (Imi::checkClassMethodRule($rule, $class, $method))
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
                         {
-                            $deny = true;
-                            break;
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
                         }
                     }
-                    if ($deny)
-                    {
-                        continue;
-                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
                 }
-                $result->insert($aopItem, $aopItem->getPriority());
             }
         }
 
@@ -174,29 +180,32 @@ class AopManager
             return self::$parsedCache[$class]['around'][$method];
         }
         $result = new \SplPriorityQueue();
-        /** @var AopItem $aopItem */
-        foreach (self::$cache[$class]['around'] ?? [] as $aopItem)
+        if (isset(self::$cache[$class]['around']))
         {
-            if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+            /** @var AopItem $aopItem */
+            foreach (self::$cache[$class]['around'] ?? [] as $aopItem)
             {
-                $options = $aopItem->getOptions();
-                if (isset($options['deny']))
+                if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
-                    $deny = false;
-                    foreach ($options['deny'] as $rule)
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
                     {
-                        if (Imi::checkClassMethodRule($rule, $class, $method))
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
                         {
-                            $deny = true;
-                            break;
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
                         }
                     }
-                    if ($deny)
-                    {
-                        continue;
-                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
                 }
-                $result->insert($aopItem, $aopItem->getPriority());
             }
         }
 
@@ -213,29 +222,32 @@ class AopManager
             return self::$parsedCache[$class]['afterReturning'][$method];
         }
         $result = new \SplPriorityQueue();
-        /** @var AopItem $aopItem */
-        foreach (self::$cache[$class]['afterReturning'] ?? [] as $aopItem)
+        if (isset(self::$cache[$class]['afterReturning']))
         {
-            if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+            /** @var AopItem $aopItem */
+            foreach (self::$cache[$class]['afterReturning'] ?? [] as $aopItem)
             {
-                $options = $aopItem->getOptions();
-                if (isset($options['deny']))
+                if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
-                    $deny = false;
-                    foreach ($options['deny'] as $rule)
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
                     {
-                        if (Imi::checkClassMethodRule($rule, $class, $method))
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
                         {
-                            $deny = true;
-                            break;
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
                         }
                     }
-                    if ($deny)
-                    {
-                        continue;
-                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
                 }
-                $result->insert($aopItem, $aopItem->getPriority());
             }
         }
 
@@ -252,29 +264,32 @@ class AopManager
             return self::$parsedCache[$class]['afterThrowing'][$method];
         }
         $result = new \SplPriorityQueue();
-        /** @var AopItem $aopItem */
-        foreach (self::$cache[$class]['afterThrowing'] ?? [] as $aopItem)
+        if (isset(self::$cache[$class]['afterThrowing']))
         {
-            if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+            /** @var AopItem $aopItem */
+            foreach (self::$cache[$class]['afterThrowing'] ?? [] as $aopItem)
             {
-                $options = $aopItem->getOptions();
-                if (isset($options['deny']))
+                if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
                 {
-                    $deny = false;
-                    foreach ($options['deny'] as $rule)
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
                     {
-                        if (Imi::checkClassMethodRule($rule, $class, $method))
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
                         {
-                            $deny = true;
-                            break;
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
                         }
                     }
-                    if ($deny)
-                    {
-                        continue;
-                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
                 }
-                $result->insert($aopItem, $aopItem->getPriority());
             }
         }
 

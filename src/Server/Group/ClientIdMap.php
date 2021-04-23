@@ -68,9 +68,12 @@ class ClientIdMap
     public function leaveAll($clientId): void
     {
         $map = $this->map[$clientId] ?? [];
-        foreach ($map as $group)
+        if ($map)
         {
-            $group->leave($clientId);
+            foreach ($map as $group)
+            {
+                $group->leave($clientId);
+            }
         }
     }
 }
