@@ -5,6 +5,9 @@ composer.lock
 *.log
 .session
 /.idea
+.php_cs.cache
+/mddoc/vendor
+*.lock
 /.vscode
 *.cache
 /src/Components/*/vendor
