@@ -170,7 +170,7 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 * 完善注释
 * bug修复
 * 功能开发
-* 文档编写（<https://github.com/Yurunsoft/imidoc>）
+* 文档编写
 * 教程、博客分享
 
 > 最新代码以 `dev` 分支为准，提交 `PR` 也请合并至 `dev` 分支！
