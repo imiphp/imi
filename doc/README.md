@@ -14,4 +14,4 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 官方网站：https://www.imiphp.com/
 
-Github：https://github.com/Yurunsoft/IMI
+Github：https://github.com/Yurunsoft/imi

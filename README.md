@@ -160,7 +160,7 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 ## 贡献者
 
-[![贡献者](https://opencollective.com/IMI/contributors.svg?width=890&button=false)](https://github.com/Yurunsoft/IMI/graphs/contributors)
+[![贡献者](https://opencollective.com/IMI/contributors.svg?width=890&button=false)](https://github.com/Yurunsoft/imi/graphs/contributors)
 
 你想出现在贡献者列表中吗？
 
@@ -177,35 +177,7 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 提交 `Pull Request` 到本仓库，你就有机会成为 imi 的作者之一！
 
-## 关于测试用例
-
-### 环境要求
-
-Redis、MySQL
-
-### 首次运行测试
-
-* 创建 `db_imi_test` 数据库，将 `tests/db/db.sql` 导入到数据库
-
-* 配置系统环境变量，如果默认值跟你的一样就无需配置了
-
-名称 | 描述 | 默认值
--|-|-
-SERVER_HOST | 测试用的服务，监听的主机名 | 127.0.0.1 |
-MYSQL_SERVER_HOST | MySQL 主机名 | 127.0.0.1 |
-MYSQL_SERVER_PORT | MySQL 端口 | 3306 |
-MYSQL_SERVER_USERNAME | MySQL 用户名 | root |
-MYSQL_SERVER_PASSWORD | MySQL 密码 | root |
-REDIS_SERVER_HOST | Redis 主机名 | 127.0.0.1 |
-REDIS_SERVER_PORT | Redis 端口 | 6379 |
-REDIS_SERVER_PASSWORD | Redis 密码 |  |
-REDIS_CACHE_DB | Redis 缓存用的 `db`，该 `db` 会被清空数据，请慎重设置 | 1 |
-
-配置命令：`export NAME=VALUE`
-
-* 首次运行测试脚本：`composer install-test`
-
-* 首次之后再运行测试的命令：`composer test`
+参与框架开发教程详见：<doc/adv/devp.md>
 
 ## 捐赠
 
