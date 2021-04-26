@@ -13,11 +13,11 @@ use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 <?php }?>
  * <?php echo $requestContextProxyAnnotation; ?>
 
+ *
 <?php foreach ($methods as $item) { ?>
-
  * <?php echo $item; ?>
-<?php } ?>
 
+<?php } ?>
  */
 class <?php echo $shortClassName; ?> extends BaseRequestContextProxy<?php if ($interface) { ?> implements \<?php echo $interface; ?><?php }?>
 

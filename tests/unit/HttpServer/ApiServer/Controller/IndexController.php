@@ -384,7 +384,7 @@ class IndexController extends SingletonHttpController
      */
     public function singletonResponse2()
     {
-        $this->response->setResponseInstance($this->response->write('imi niubi-2'));
+        $this->response->__setProxyInstance($this->response->write('imi niubi-2'));
     }
 
     /**

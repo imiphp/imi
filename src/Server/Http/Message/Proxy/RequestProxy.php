@@ -9,7 +9,6 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 /**
  * @Bean(name="HttpRequestProxy", instanceType="singleton")
  * @RequestContextProxy(class="Imi\Util\Http\Contract\IServerRequest", name="request")
-
  *
  * @method mixed                get($name = NULL, $default = NULL)
  * @method static               mixed get($name = NULL, $default = NULL)

@@ -9,7 +9,6 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
 /**
  * @Bean(name="HttpResponseProxy", instanceType="singleton")
  * @RequestContextProxy(class="Imi\Util\Http\Contract\IResponse", name="response")
-
  *
  * @method int                   getStatusCode()
  * @method static                int getStatusCode()
