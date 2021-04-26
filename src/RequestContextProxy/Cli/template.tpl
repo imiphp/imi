@@ -19,7 +19,8 @@ use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 <?php } ?>
 
  */
-class <?php echo $shortClassName; ?> extends BaseRequestContextProxy
+class <?php echo $shortClassName; ?> extends BaseRequestContextProxy<?php if ($interface) { ?> implements \<?php echo $interface; ?><?php }?>
+
 {
 
 }
