@@ -4,8 +4,8 @@ on: [push, delete, create]
 
 jobs:
   gitee:
-    if: github.repository_owner == 'Yurunsoft'
-    runs-on: ubuntu-latest
+    if: github.repository == 'Yurunsoft/imi'
+    runs-on: ubuntu-20.04
     steps:
       - name: Configure Private Key
         env:
