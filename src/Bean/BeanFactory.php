@@ -139,7 +139,7 @@ class BeanFactory
     /**
      * 获取类模版.
      */
-    private static function getTpl(\ReflectionClass $ref, string $newClassName): string
+    public static function getTpl(\ReflectionClass $ref, string $newClassName): string
     {
         $class = $ref->getName();
         $methodsTpl = static::getMethodsTpl($ref);
@@ -218,7 +218,7 @@ TPL;
     /**
      * 获取方法模版.
      */
-    private static function getMethodsTpl(\ReflectionClass $ref): string
+    public static function getMethodsTpl(\ReflectionClass $ref): string
     {
         $tpl = '';
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
@@ -261,7 +261,7 @@ TPL;
     /**
      * 获取方法参数模版们.
      */
-    private static function getMethodParamTpls(\ReflectionMethod $method): array
+    public static function getMethodParamTpls(\ReflectionMethod $method): array
     {
         $args = $define = $call = [];
         $setArgs = $setArgsBack = '';
@@ -299,7 +299,8 @@ TPL;
             }
         }
         // 调用如果参数为空处理
-        if ([] === $call)
+        // @phpstan-ignore-next-line
+        if ('' === $call)
         {
             $call = '...func_get_args()';
         }
@@ -310,7 +311,7 @@ TPL;
     /**
      * 获取方法参数模版.
      */
-    private static function getMethodParamArgsTpl(\ReflectionParameter $param): string
+    public static function getMethodParamArgsTpl(\ReflectionParameter $param): string
     {
         $reference = $param->isPassedByReference() ? '&' : '';
 
@@ -320,7 +321,7 @@ TPL;
     /**
      * 获取方法参数定义模版.
      */
-    private static function getMethodParamDefineTpl(\ReflectionParameter $param): string
+    public static function getMethodParamDefineTpl(\ReflectionParameter $param): string
     {
         $result = '';
         // 类型
@@ -354,7 +355,7 @@ TPL;
     /**
      * 获取方法参数调用模版.
      */
-    private static function getMethodParamCallTpl(\ReflectionParameter $param): string
+    public static function getMethodParamCallTpl(\ReflectionParameter $param): string
     {
         return ($param->isVariadic() ? '...' : '') . '$' . $param->name;
     }
@@ -362,7 +363,7 @@ TPL;
     /**
      * 获取方法返回值模版.
      */
-    private static function getMethodReturnType(\ReflectionMethod $method): string
+    public static function getMethodReturnType(\ReflectionMethod $method): string
     {
         if (!$method->hasReturnType())
         {
@@ -403,7 +404,7 @@ TPL;
     /**
      * 是否有Aop注入当前方法.
      */
-    private static function hasAop(\ReflectionClass $class, string $method): bool
+    public static function hasAop(\ReflectionClass $class, string $method): bool
     {
         $className = $class->getName();
 
