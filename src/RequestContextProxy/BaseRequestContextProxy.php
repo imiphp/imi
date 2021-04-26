@@ -19,7 +19,7 @@ abstract class BaseRequestContextProxy
     protected static $cache = [];
 
     /**
-     * 获取实例.
+     * 获取请求上下文中的实例.
      *
      * @return mixed
      */
@@ -43,6 +43,34 @@ abstract class BaseRequestContextProxy
         }
 
         return RequestContext::get($cacheItem->name);
+    }
+
+    /**
+     * 设置请求上下文中的实例.
+     *
+     * @param mixed $instance
+     *
+     * @return void
+     */
+    public static function __setProxyInstance($instance): void
+    {
+        $cache = &self::$cache;
+        if (isset($cache[static::class]))
+        {
+            /** @var RequestContextProxy $cacheItem */
+            $cacheItem = $cache[static::class];
+        }
+        else
+        {
+            /** @var RequestContextProxy[] $annotations */
+            $annotations = AnnotationManager::getClassAnnotations(static::class, RequestContextProxy::class);
+            if (!isset($annotations[0]))
+            {
+                throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', static::class));
+            }
+            $cache[static::class] = $cacheItem = $annotations[0];
+        }
+        RequestContext::set($cacheItem->name, $instance);
     }
 
     /**

@@ -39,7 +39,7 @@ class RequestContextProxyGenerate
     public function generate($target, $class, $name)
     {
         Annotation::getInstance()->init(Helper::getAppMains());
-        if (class_exists($class))
+        if (class_exists($class) || interface_exists($class))
         {
             $fromClass = $class;
         }

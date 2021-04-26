@@ -21,7 +21,7 @@ class A
 
 ```
 
-定义 RequestContextProxy 类：
+定义代理类 RequestContextProxy：
 
 ```php
 <?php
@@ -44,13 +44,22 @@ class RequestContextProxyA extends BaseRequestContextProxy
 
 > 继承 `Imi\RequestContextProxy\BaseRequestContextProxy` 类，然后使用`@RequestContextProxy`注解类定义绑定到上下文的名称。
 
-使用：
+使用方式：
 
 ```php
 use Imi\Test\Component\RequestContextProxy\RequestContextProxyA;
 RequestContextProxyA::add(1, 2); // 3
+
+// 也可以实例化后使用
 $a = new RequestContextProxyA();
 $a->add(2, 3); // 5
+
+// 获取请求上下文中的实例
+$a = RequestContextProxyA::__getProxyInstance();
+$a->add(2, 3); // 5
+
+// 设置请求上下文中的实例
+RequestContextProxyA::__setProxyInstance($a);
 ```
 
 ## @RequestContextProxy 注解
