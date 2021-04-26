@@ -32,9 +32,10 @@ class RequestContextProxyGenerate
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
      * @Arg(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
      *
-     * @param string $target
-     * @param string $class
-     * @param string $name
+     * @param string      $target
+     * @param string      $class
+     * @param string      $name
+     * @param string|null $bean
      *
      * @return void
      */
