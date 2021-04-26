@@ -7,12 +7,15 @@ namespace Imi\RequestContextProxy;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\RequestContext;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
+use Imi\Util\Traits\TBeanRealClass;
 
 /**
  * 请求上下文代理基类.
  */
 abstract class BaseRequestContextProxy
 {
+    use TBeanRealClass;
+
     /**
      * 请求上下文代理缓存.
      *
@@ -26,20 +29,21 @@ abstract class BaseRequestContextProxy
     public static function __getProxyInstance(): object
     {
         $cache = &self::$cache;
-        if (isset($cache[static::class]))
+        $currentClass = self::__getRealClassName();
+        if (isset($cache[$currentClass]))
         {
             /** @var RequestContextProxy $cacheItem */
-            $cacheItem = $cache[static::class];
+            $cacheItem = $cache[$currentClass];
         }
         else
         {
             /** @var RequestContextProxy[] $annotations */
-            $annotations = AnnotationManager::getClassAnnotations(static::class, RequestContextProxy::class);
+            $annotations = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class);
             if (!isset($annotations[0]))
             {
-                throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', static::class));
+                throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', $currentClass));
             }
-            $cache[static::class] = $cacheItem = $annotations[0];
+            $cache[$currentClass] = $cacheItem = $annotations[0];
         }
 
         return RequestContext::get($cacheItem->name);
@@ -55,20 +59,21 @@ abstract class BaseRequestContextProxy
     public static function __setProxyInstance($instance): void
     {
         $cache = &self::$cache;
-        if (isset($cache[static::class]))
+        $currentClass = self::__getRealClassName();
+        if (isset($cache[$currentClass]))
         {
             /** @var RequestContextProxy $cacheItem */
-            $cacheItem = $cache[static::class];
+            $cacheItem = $cache[$currentClass];
         }
         else
         {
             /** @var RequestContextProxy[] $annotations */
-            $annotations = AnnotationManager::getClassAnnotations(static::class, RequestContextProxy::class);
+            $annotations = AnnotationManager::getClassAnnotations($currentClass, RequestContextProxy::class);
             if (!isset($annotations[0]))
             {
-                throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', static::class));
+                throw new \RuntimeException(sprintf('Class %s not found @RequestContextProxy Annotation', $currentClass));
             }
-            $cache[static::class] = $cacheItem = $annotations[0];
+            $cache[$currentClass] = $cacheItem = $annotations[0];
         }
         RequestContext::set($cacheItem->name, $instance);
     }

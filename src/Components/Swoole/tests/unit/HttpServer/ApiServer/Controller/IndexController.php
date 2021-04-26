@@ -351,7 +351,7 @@ class IndexController extends SingletonHttpController
      */
     public function singletonResponse2(): void
     {
-        $this->response->setResponseInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
+        $this->response->__setProxyInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
 
     /**
