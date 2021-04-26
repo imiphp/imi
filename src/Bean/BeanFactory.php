@@ -122,7 +122,7 @@ abstract class BeanFactory
      *
      * @return string
      */
-    private static function getTpl($ref, $newClassName)
+    public static function getTpl($ref, $newClassName)
     {
         $class = $ref->getName();
         $methodsTpl = static::getMethodsTpl($ref);
@@ -223,7 +223,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodsTpl($ref)
+    public static function getMethodsTpl($ref)
     {
         $tpl = '';
         foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method)
@@ -269,7 +269,7 @@ TPL;
      *
      * @return array
      */
-    private static function getMethodParamTpls(\ReflectionMethod $method)
+    public static function getMethodParamTpls(\ReflectionMethod $method)
     {
         $args = $define = $call = [];
         $setArgs = $setArgsBack = '';
@@ -307,7 +307,8 @@ TPL;
             }
         }
         // 调用如果参数为空处理
-        if ([] === $call)
+        // @phpstan-ignore-next-line
+        if ('' === $call)
         {
             $call = '...func_get_args()';
         }
@@ -322,7 +323,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodParamArgsTpl(\ReflectionParameter $param)
+    public static function getMethodParamArgsTpl(\ReflectionParameter $param)
     {
         $reference = $param->isPassedByReference() ? '&' : '';
 
@@ -336,7 +337,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodParamDefineTpl(\ReflectionParameter $param)
+    public static function getMethodParamDefineTpl(\ReflectionParameter $param)
     {
         $result = '';
         // 类型
@@ -374,7 +375,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodParamCallTpl(\ReflectionParameter $param)
+    public static function getMethodParamCallTpl(\ReflectionParameter $param)
     {
         return ($param->isVariadic() ? '...' : '') . '$' . $param->name;
     }
@@ -386,7 +387,7 @@ TPL;
      *
      * @return string
      */
-    private static function getMethodReturnType(\ReflectionMethod $method)
+    public static function getMethodReturnType(\ReflectionMethod $method)
     {
         if (!$method->hasReturnType())
         {
@@ -434,7 +435,7 @@ TPL;
      *
      * @return bool
      */
-    private static function hasAop($class, $method)
+    public static function hasAop($class, $method)
     {
         $aspects = AnnotationManager::getAnnotationPoints(Aspect::class);
         $className = $class->getName();
