@@ -3,6 +3,7 @@
 namespace Imi\Tool\Tools\Development;
 
 use Imi\Bean\ReflectionUtil;
+use Imi\Util\File;
 
 class ExtensionReflection
 {
@@ -63,7 +64,7 @@ define('{$name}', {$value});
 
 CODE;
         }
-        file_put_contents($this->savePath . '/consts.php', $result);
+        File::putContents($this->savePath . '/consts.php', $result);
     }
 
     /**
@@ -111,7 +112,7 @@ function {$function->name}({$args}){}
 
 CODE;
         }
-        file_put_contents($this->savePath . '/functions.php', $result);
+        File::putContents($this->savePath . '/functions.php', $result);
     }
 
     /**
@@ -311,12 +312,7 @@ interface {$className}
 }
 
 CODE;
-        $path = $this->savePath . '/interfaces/' . str_replace('\\', '/', $class->getNamespaceName()) . '/';
-        if (!is_dir($path))
-        {
-            mkdir($path, 0777, true);
-        }
-        file_put_contents($path . $class->getShortName() . '.php', $result);
+        File::putContents($this->savePath . '/interfaces/' . str_replace('\\', '/', $class->getNamespaceName()) . '/' . $class->getShortName() . '.php', $result);
     }
 
     /**
@@ -349,12 +345,7 @@ trait {$className}
 }
 
 CODE;
-        $path = $this->savePath . '/traits/' . str_replace('\\', '/', $class->getNamespaceName()) . '/';
-        if (!is_dir($path))
-        {
-            mkdir($path, 0777, true);
-        }
-        file_put_contents($path . $class->getShortName() . '.php', $result);
+        File::putContents($this->savePath . '/traits/' . str_replace('\\', '/', $class->getNamespaceName()) . '/' . $class->getShortName() . '.php', $result);
     }
 
     /**
@@ -387,11 +378,6 @@ class {$className}
 }
 
 CODE;
-        $path = $this->savePath . '/classes/' . str_replace('\\', '/', $class->getNamespaceName()) . '/';
-        if (!is_dir($path))
-        {
-            mkdir($path, 0777, true);
-        }
-        file_put_contents($path . $class->getShortName() . '.php', $result);
+        File::putContents($this->savePath . '/classes/' . str_replace('\\', '/', $class->getNamespaceName()) . '/' . $class->getShortName() . '.php', $result);
     }
 }

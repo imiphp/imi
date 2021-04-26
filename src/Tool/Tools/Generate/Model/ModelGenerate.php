@@ -229,7 +229,7 @@ class ModelGenerate
             {
                 echo 'Generating ', $table, ' BaseClass...', \PHP_EOL;
                 $baseContent = $this->renderTemplate('base-template', $data);
-                file_put_contents($baseFileName, $baseContent);
+                File::putContents($baseFileName, $baseContent);
             }
 
             // @phpstan-ignore-next-line
@@ -238,7 +238,7 @@ class ModelGenerate
                 echo 'Generating ', $table, ' Class...', \PHP_EOL;
                 $content = $this->renderTemplate('template', $data);
                 // @phpstan-ignore-next-line
-                file_put_contents($fileName, $content);
+                File::putContents($fileName, $content);
             }
         }
         echo 'Complete', \PHP_EOL;
