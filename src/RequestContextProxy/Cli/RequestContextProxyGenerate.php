@@ -100,7 +100,7 @@ class RequestContextProxyGenerate
             }
             elseif ($method->hasReturnType())
             {
-                $returnType = ReflectionUtil::getTypeComments($method->getReturnType());
+                $returnType = ReflectionUtil::getTypeComments($method->getReturnType(), $method->getDeclaringClass()->getName());
             }
             else
             {
@@ -114,7 +114,7 @@ class RequestContextProxyGenerate
                 $paramType = $param->getType();
                 if ($paramType)
                 {
-                    $paramType = ReflectionUtil::getTypeCode($paramType);
+                    $paramType = ReflectionUtil::getTypeCode($paramType, $param->getDeclaringClass()->getName());
                 }
                 $result .= null === $paramType ? '' : ((string) $paramType . ' ');
                 if ($param->isPassedByReference())
@@ -155,7 +155,7 @@ class RequestContextProxyGenerate
                 $paramsTpls = BeanFactory::getMethodParamTpls($method);
                 $methodReturnType = BeanFactory::getMethodReturnType($method);
                 $returnsReference = $method->returnsReference() ? '&' : '';
-                if ('void' !== ReflectionUtil::getTypeCode($method->getReturnType()))
+                if ('void' !== ReflectionUtil::getTypeCode($method->getReturnType(), $method->getDeclaringClass()->getName()))
                 {
                     $code = 'return ';
                 }
