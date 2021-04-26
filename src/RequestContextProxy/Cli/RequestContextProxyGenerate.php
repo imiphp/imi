@@ -4,6 +4,7 @@ namespace Imi\RequestContextProxy\Cli;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Bean\ReflectionUtil;
 use Imi\Main\Helper;
@@ -90,6 +91,10 @@ class RequestContextProxyGenerate
         $methods = [];
         foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
         {
+            if ($method->isStatic())
+            {
+                continue;
+            }
             $methodName = $method->getName();
             // 构造、析构方法去除
             if (\in_array($methodName, ['__construct', '__destruct']))
@@ -140,14 +145,56 @@ class RequestContextProxyGenerate
             }
             $params = implode(', ', $params);
             $item = $returnType . ' ' . $methodName . '(' . $params . ')';
-            if (!$method->isStatic())
+            $methods[] = '@method ' . $item;
+            $methods[] = '@method static ' . $item;
+        }
+        $methodCodes = '';
+        if (null !== $interface)
+        {
+            $refInterface = new ReflectionClass($interface);
+            foreach ($refInterface->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
             {
-                $methods[] = '@method ' . $item;
-                $methods[] = '@method static ' . $item;
+                $methodName = $method->name;
+                if ('__construct' === $methodName)
+                {
+                    continue;
+                }
+                $paramsTpls = BeanFactory::getMethodParamTpls($method);
+                $methodReturnType = BeanFactory::getMethodReturnType($method);
+                $returnsReference = $method->returnsReference() ? '&' : '';
+                if ('void' !== ReflectionUtil::getTypeCode($method->getReturnType()))
+                {
+                    $code = 'return ';
+                }
+                else
+                {
+                    $code = '';
+                }
+                if ($method->isStatic())
+                {
+                    $code = "throw new \RuntimeException('Unsupport method');";
+                    $static = 'static ';
+                }
+                else
+                {
+                    $code .= "\$this->__getProxyInstance()->{$methodName}({$paramsTpls['call']});";
+                    $static = '';
+                }
+                $methodCodes .= <<<TPL
+    /**
+     * {@inheritDoc}
+     */
+    public {$static}function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
+    {
+        {$code}
+    }
+
+
+TPL;
             }
         }
         // @phpstan-ignore-next-line
-        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation, $interface) {
+        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation, $interface, $methodCodes) {
             ob_start();
             include __DIR__ . '/template.tpl';
 

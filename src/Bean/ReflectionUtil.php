@@ -13,8 +13,12 @@ class ReflectionUtil
     {
     }
 
-    public static function getTypeComments(ReflectionType $type): string
+    public static function getTypeComments(?ReflectionType $type): string
     {
+        if (!$type)
+        {
+            return '';
+        }
         if ($type instanceof ReflectionNamedType)
         {
             $typeStr = $type->isBuiltin() ? $type->getName() : ('\\' . $type->getName());
@@ -47,8 +51,12 @@ class ReflectionUtil
         }
     }
 
-    public static function getTypeCode(ReflectionType $type): string
+    public static function getTypeCode(?ReflectionType $type): string
     {
+        if (!$type)
+        {
+            return '';
+        }
         if ($type instanceof ReflectionNamedType)
         {
             $typeStr = $type->isBuiltin() ? $type->getName() : ('\\' . $type->getName());

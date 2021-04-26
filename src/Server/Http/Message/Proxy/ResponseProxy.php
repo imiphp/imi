@@ -3,488 +3,302 @@
 namespace Imi\Server\Http\Message\Proxy;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\RequestContext;
-use Imi\Server\Http\Message\Response;
-use Imi\Util\Http\Consts\StatusCode;
-use Imi\Util\Http\Contract\IResponse;
-use Psr\Http\Message\StreamInterface;
+use Imi\RequestContextProxy\Annotation\RequestContextProxy;
+use Imi\RequestContextProxy\BaseRequestContextProxy;
 
 /**
- * @Bean("HttpResponseProxy")
- * 自动切换协程上下文的响应代理类
+ * @Bean(name="HttpResponseProxy", instanceType="singleton")
+ * @RequestContextProxy(class="Imi\Util\Http\Contract\IResponse", name="response")
+
+ *
+ * @method int                   getStatusCode()
+ * @method static                int getStatusCode()
+ * @method static                withStatus($code, $reasonPhrase = '')
+ * @method static                static withStatus($code, $reasonPhrase = '')
+ * @method string                getReasonPhrase()
+ * @method static                string getReasonPhrase()
+ * @method string                getProtocolVersion()
+ * @method static                string getProtocolVersion()
+ * @method static                withProtocolVersion($version)
+ * @method static                static withProtocolVersion($version)
+ * @method string[][]            getHeaders()
+ * @method static                string[][] getHeaders()
+ * @method bool                  hasHeader($name)
+ * @method static                bool hasHeader($name)
+ * @method string[]              getHeader($name)
+ * @method static                string[] getHeader($name)
+ * @method string                getHeaderLine($name)
+ * @method static                string getHeaderLine($name)
+ * @method static                withHeader($name, $value)
+ * @method static                static withHeader($name, $value)
+ * @method static                withAddedHeader($name, $value)
+ * @method static                static withAddedHeader($name, $value)
+ * @method static                withoutHeader($name)
+ * @method static                static withoutHeader($name)
+ * @method StreamInterface       getBody()
+ * @method static                StreamInterface getBody()
+ * @method static                withBody(\Psr\Http\Message\StreamInterface $body)
+ * @method static                static withBody(\Psr\Http\Message\StreamInterface $body)
+ * @method static                withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
+ * @method static                static withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
+ * @method array                 getTrailers()
+ * @method static                array getTrailers()
+ * @method bool                  hasTrailer($name)
+ * @method static                bool hasTrailer($name)
+ * @method string|null           getTrailer($name)
+ * @method static                string|null getTrailer($name)
+ * @method static                withTrailer($name, $value)
+ * @method static                static withTrailer($name, $value)
+ * @method static                write(string $content)
+ * @method static                static write(string $content)
+ * @method static                clear()
+ * @method static                static clear()
+ * @method static                redirect($url, $status = 302)
+ * @method static                static redirect($url, $status = 302)
+ * @method static                sendHeaders()
+ * @method static                static sendHeaders()
+ * @method static                send()
+ * @method static                static send()
+ * @method static                sendFile(string $filename, int $offset = 0, int $length = 0)
+ * @method static                static sendFile(string $filename, int $offset = 0, int $length = 0)
+ * @method \Swoole\Http\Response getSwooleResponse()
+ * @method static                \Swoole\Http\Response getSwooleResponse()
+ * @method \Imi\Server\Base      getServerInstance()
+ * @method static                \Imi\Server\Base getServerInstance()
+ * @method bool                  isEnded()
+ * @method static                bool isEnded()
  */
-class ResponseProxy implements IResponse
+class ResponseProxy extends BaseRequestContextProxy implements \Imi\Util\Http\Contract\IResponse
 {
     /**
-     * Gets the response status code.
-     *
-     * The status code is a 3-digit integer result code of the server's attempt
-     * to understand and satisfy the request.
-     *
-     * @return int status code
+     * {@inheritDoc}
      */
     public function getStatusCode()
     {
-        return static::getResponseInstance()->getStatusCode();
+        return $this->__getProxyInstance()->getStatusCode(...\func_get_args());
     }
 
     /**
-     * Return an instance with the specified status code and, optionally, reason phrase.
-     *
-     * If no reason phrase is specified, implementations MAY choose to default
-     * to the RFC 7231 or IANA recommended reason phrase for the response's
-     * status code.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * updated status and reason phrase.
-     *
-     * @see http://tools.ietf.org/html/rfc7231#section-6
-     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @param int    $code         the 3-digit integer result code to set
-     * @param string $reasonPhrase the reason phrase to use with the
-     *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification
-     *
-     * @return IResponse
-     *
-     * @throws \InvalidArgumentException for invalid status code arguments
+     * {@inheritDoc}
      */
     public function withStatus($code, $reasonPhrase = '')
     {
-        return static::getResponseInstance()->withStatus($code, $reasonPhrase);
+        return $this->__getProxyInstance()->withStatus($code, $reasonPhrase);
     }
 
     /**
-     * Gets the response reason phrase associated with the status code.
-     *
-     * Because a reason phrase is not a required element in a response
-     * status line, the reason phrase value MAY be null. Implementations MAY
-     * choose to return the default RFC 7231 recommended reason phrase (or those
-     * listed in the IANA HTTP Status Code Registry) for the response's
-     * status code.
-     *
-     * @see http://tools.ietf.org/html/rfc7231#section-6
-     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @return string reason phrase; must return an empty string if none present
+     * {@inheritDoc}
      */
     public function getReasonPhrase()
     {
-        return static::getResponseInstance()->getReasonPhrase();
+        return $this->__getProxyInstance()->getReasonPhrase(...\func_get_args());
     }
 
     /**
-     * Retrieves the HTTP protocol version as a string.
-     *
-     * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
-     *
-     * @return string HTTP protocol version
+     * {@inheritDoc}
      */
     public function getProtocolVersion()
     {
-        return static::getResponseInstance()->getProtocolVersion();
+        return $this->__getProxyInstance()->getProtocolVersion(...\func_get_args());
     }
 
     /**
-     * Return an instance with the specified HTTP protocol version.
-     *
-     * The version string MUST contain only the HTTP version number (e.g.,
-     * "1.1", "1.0").
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new protocol version.
-     *
-     * @param string $version HTTP protocol version
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function withProtocolVersion($version)
     {
-        return static::getResponseInstance()->withProtocolVersion($version);
+        return $this->__getProxyInstance()->withProtocolVersion($version);
     }
 
     /**
-     * Retrieves all message header values.
-     *
-     * The keys represent the header name as it will be sent over the wire, and
-     * each value is an array of strings associated with the header.
-     *
-     *     // Represent the headers as a string
-     *     foreach ($message->getHeaders() as $name => $values) {
-     *         echo $name . ": " . implode(", ", $values);
-     *     }
-     *
-     *     // Emit headers iteratively:
-     *     foreach ($message->getHeaders() as $name => $values) {
-     *         foreach ($values as $value) {
-     *             header(sprintf('%s: %s', $name, $value), false);
-     *         }
-     *     }
-     *
-     * While header names are not case-sensitive, getHeaders() will preserve the
-     * exact case in which headers were originally specified.
-     *
-     * @return string[][] Returns an associative array of the message's headers. Each
-     *                    key MUST be a header name, and each value MUST be an array of strings
-     *                    for that header.
+     * {@inheritDoc}
      */
     public function getHeaders()
     {
-        return static::getResponseInstance()->getHeaders();
+        return $this->__getProxyInstance()->getHeaders(...\func_get_args());
     }
 
     /**
-     * Checks if a header exists by the given case-insensitive name.
-     *
-     * @param string $name case-insensitive header field name
-     *
-     * @return bool Returns true if any header names match the given header
-     *              name using a case-insensitive string comparison. Returns false if
-     *              no matching header name is found in the message.
+     * {@inheritDoc}
      */
     public function hasHeader($name)
     {
-        return static::getResponseInstance()->hasHeader($name);
+        return $this->__getProxyInstance()->hasHeader($name);
     }
 
     /**
-     * Retrieves a message header value by the given case-insensitive name.
-     *
-     * This method returns an array of all the header values of the given
-     * case-insensitive header name.
-     *
-     * If the header does not appear in the message, this method MUST return an
-     * empty array.
-     *
-     * @param string $name case-insensitive header field name
-     *
-     * @return string[] An array of string values as provided for the given
-     *                  header. If the header does not appear in the message, this method MUST
-     *                  return an empty array.
+     * {@inheritDoc}
      */
     public function getHeader($name)
     {
-        return static::getResponseInstance()->getHeader($name);
+        return $this->__getProxyInstance()->getHeader($name);
     }
 
     /**
-     * Retrieves a comma-separated string of the values for a single header.
-     *
-     * This method returns all of the header values of the given
-     * case-insensitive header name as a string concatenated together using
-     * a comma.
-     *
-     * NOTE: Not all header values may be appropriately represented using
-     * comma concatenation. For such headers, use getHeader() instead
-     * and supply your own delimiter when concatenating.
-     *
-     * If the header does not appear in the message, this method MUST return
-     * an empty string.
-     *
-     * @param string $name case-insensitive header field name
-     *
-     * @return string A string of values as provided for the given header
-     *                concatenated together using a comma. If the header does not appear in
-     *                the message, this method MUST return an empty string.
+     * {@inheritDoc}
      */
     public function getHeaderLine($name)
     {
-        return static::getResponseInstance()->getHeaderLine($name);
+        return $this->__getProxyInstance()->getHeaderLine($name);
     }
 
     /**
-     * Return an instance with the provided value replacing the specified header.
-     *
-     * While header names are case-insensitive, the casing of the header will
-     * be preserved by this function, and returned from getHeaders().
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new and/or updated header and value.
-     *
-     * @param string          $name  case-insensitive header field name
-     * @param string|string[] $value header value(s)
-     *
-     * @return IResponse
-     *
-     * @throws \InvalidArgumentException for invalid header names or values
+     * {@inheritDoc}
      */
     public function withHeader($name, $value)
     {
-        return static::getResponseInstance()->withHeader($name, $value);
+        return $this->__getProxyInstance()->withHeader($name, $value);
     }
 
     /**
-     * Return an instance with the specified header appended with the given value.
-     *
-     * Existing values for the specified header will be maintained. The new
-     * value(s) will be appended to the existing list. If the header did not
-     * exist previously, it will be added.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new header and/or value.
-     *
-     * @param string          $name  case-insensitive header field name to add
-     * @param string|string[] $value header value(s)
-     *
-     * @return IResponse
-     *
-     * @throws \InvalidArgumentException for invalid header names or values
+     * {@inheritDoc}
      */
     public function withAddedHeader($name, $value)
     {
-        return static::getResponseInstance()->withAddedHeader($name, $value);
+        return $this->__getProxyInstance()->withAddedHeader($name, $value);
     }
 
     /**
-     * Return an instance without the specified header.
-     *
-     * Header resolution MUST be done without case-sensitivity.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that removes
-     * the named header.
-     *
-     * @param string $name case-insensitive header field name to remove
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function withoutHeader($name)
     {
-        return static::getResponseInstance()->withoutHeader($name);
+        return $this->__getProxyInstance()->withoutHeader($name);
     }
 
     /**
-     * Gets the body of the message.
-     *
-     * @return StreamInterface returns the body as a stream
+     * {@inheritDoc}
      */
     public function getBody()
     {
-        return static::getResponseInstance()->getBody();
+        return $this->__getProxyInstance()->getBody(...\func_get_args());
     }
 
     /**
-     * Return an instance with the specified message body.
-     *
-     * The body MUST be a StreamInterface object.
-     *
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return a new instance that has the
-     * new body stream.
-     *
-     * @param StreamInterface $body body
-     *
-     * @return IResponse
-     *
-     * @throws \InvalidArgumentException when the body is not valid
+     * {@inheritDoc}
      */
-    public function withBody(StreamInterface $body)
+    public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
-        return static::getResponseInstance()->withBody($body);
+        return $this->__getProxyInstance()->withBody($body);
     }
 
     /**
-     * 获取实例对象
-     *
-     * @param \Imi\Server\Base      $server
-     * @param \Swoole\Http\Response $response
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public static function getInstance(\Imi\Server\Base $server, \Swoole\Http\Response $response)
     {
-        return static::getResponseInstance()->getInstance($server, $response);
+        throw new \RuntimeException('Unsupport method');
     }
 
     /**
-     * 设置cookie.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httponly
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function withCookie($key, $value, $expire = 0, $path = '/', $domain = '', $secure = false, $httponly = false)
     {
-        return static::getResponseInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
+        return $this->__getProxyInstance()->withCookie($key, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
     /**
-     * 获取 Trailer 列表.
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function getTrailers()
     {
-        return static::getResponseInstance()->getTrailers();
+        return $this->__getProxyInstance()->getTrailers(...\func_get_args());
     }
 
     /**
-     * Trailer 是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function hasTrailer($name)
     {
-        return static::getResponseInstance()->hasTrailer($name);
+        return $this->__getProxyInstance()->hasTrailer($name);
     }
 
     /**
-     * 获取 Trailer 值
-     *
-     * @param string $name
-     *
-     * @return string|null
+     * {@inheritDoc}
      */
     public function getTrailer($name)
     {
-        return static::getResponseInstance()->getTrailer($name);
+        return $this->__getProxyInstance()->getTrailer($name);
     }
 
     /**
-     * 设置 Trailer.
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function withTrailer($name, $value)
     {
-        return static::getResponseInstance()->withTrailer($name, $value);
+        return $this->__getProxyInstance()->withTrailer($name, $value);
     }
 
     /**
-     * 输出内容，但不发送
-     *
-     * @param string $content
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function write(string $content)
     {
-        return static::getResponseInstance()->write($content);
+        return $this->__getProxyInstance()->write($content);
     }
 
     /**
-     * 清空内容.
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function clear()
     {
-        return static::getResponseInstance()->clear();
+        return $this->__getProxyInstance()->clear(...\func_get_args());
     }
 
     /**
-     * 设置服务器端重定向
-     * 默认状态码为302.
-     *
-     * @param string $url
-     * @param int    $status
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
-    public function redirect($url, $status = StatusCode::FOUND)
+    public function redirect($url, $status = 302)
     {
-        return static::getResponseInstance()->redirect($url, $status);
+        return $this->__getProxyInstance()->redirect($url, $status);
     }
 
     /**
-     * 发送头部信息，没有特别需求，无需手动调用.
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function sendHeaders()
     {
-        return static::getResponseInstance()->sendHeaders();
+        return $this->__getProxyInstance()->sendHeaders(...\func_get_args());
     }
 
     /**
-     * 发送所有响应数据.
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function send()
     {
-        return static::getResponseInstance()->send();
+        return $this->__getProxyInstance()->send(...\func_get_args());
     }
 
     /**
-     * 发送文件，一般用于文件下载.
-     *
-     * @param string $filename 要发送的文件名称，文件不存在或没有访问权限sendfile会失败
-     * @param int    $offset   上传文件的偏移量，可以指定从文件的中间部分开始传输数据。此特性可用于支持断点续传。
-     * @param int    $length   发送数据的尺寸，默认为整个文件的尺寸
-     *
-     * @return IResponse
+     * {@inheritDoc}
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0)
     {
-        return static::getResponseInstance()->sendFile($filename, $offset, $length);
+        return $this->__getProxyInstance()->sendFile($filename, $offset, $length);
     }
 
     /**
-     * 获取swoole响应对象
-     *
-     * @return \Swoole\Http\Response
+     * {@inheritDoc}
      */
     public function getSwooleResponse(): \Swoole\Http\Response
     {
-        return static::getResponseInstance()->getSwooleResponse();
+        return $this->__getProxyInstance()->getSwooleResponse(...\func_get_args());
     }
 
     /**
-     * 获取对应的服务器.
-     *
-     * @return \Imi\Server\Base
+     * {@inheritDoc}
      */
     public function getServerInstance(): \Imi\Server\Base
     {
-        return static::getResponseInstance()->getServerInstance();
+        return $this->__getProxyInstance()->getServerInstance(...\func_get_args());
     }
 
     /**
-     * 是否已结束请求
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function isEnded()
     {
-        return static::getResponseInstance()->isEnded();
-    }
-
-    /**
-     * 获取当前上下文中的对象实例.
-     *
-     * @return IResponse
-     */
-    public static function getResponseInstance(): IResponse
-    {
-        return RequestContext::get('response');
-    }
-
-    /**
-     * 设置当前上下文中的对象实例.
-     *
-     * @param IResponse $response
-     *
-     * @return void
-     */
-    public function setResponseInstance(IResponse $response)
-    {
-        RequestContext::set('response', $response);
+        return $this->__getProxyInstance()->isEnded(...\func_get_args());
     }
 }
