@@ -17,13 +17,14 @@ class ReflectionUtil
     {
         if ($type instanceof ReflectionNamedType)
         {
+            $typeStr = $type->isBuiltin() ? $type->getName() : ('\\' . $type->getName());
             if ($type->allowsNull())
             {
-                return $type->getName() . '|null';
+                return $typeStr . '|null';
             }
             else
             {
-                return $type->getName();
+                return $typeStr;
             }
         }
         elseif ($type instanceof ReflectionUnionType)
@@ -50,13 +51,14 @@ class ReflectionUtil
     {
         if ($type instanceof ReflectionNamedType)
         {
+            $typeStr = $type->isBuiltin() ? $type->getName() : ('\\' . $type->getName());
             if ($type->allowsNull())
             {
-                return '?' . $type->getName();
+                return '?' . $typeStr;
             }
             else
             {
-                return $type->getName();
+                return $typeStr;
             }
         }
         elseif ($type instanceof ReflectionUnionType)
