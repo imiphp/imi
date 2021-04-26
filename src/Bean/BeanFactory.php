@@ -236,7 +236,7 @@ TPL;
             $paramsTpls = static::getMethodParamTpls($method);
             $methodReturnType = static::getMethodReturnType($method);
             $returnsReference = $method->returnsReference() ? '&' : '';
-            $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType()) ? '' : 'return $__result__;';
+            $returnContent = $method->hasReturnType() && 'void' === ReflectionUtil::getTypeCode($method->getReturnType(), $method->getDeclaringClass()->getName()) ? '' : 'return $__result__;';
             $tpl .= <<<TPL
     public function {$returnsReference}{$methodName}({$paramsTpls['define']}){$methodReturnType}
     {
@@ -344,7 +344,7 @@ TPL;
         $paramType = $param->getType();
         if ($paramType)
         {
-            $paramType = ReflectionUtil::getTypeCode($paramType);
+            $paramType = ReflectionUtil::getTypeCode($paramType, $param->getDeclaringClass()->getName());
         }
         $result .= null === $paramType ? '' : ((string) $paramType . ' ');
         if ($param->isPassedByReference())
@@ -395,7 +395,7 @@ TPL;
         }
         $returnType = $method->getReturnType();
 
-        return ': ' . ReflectionUtil::getTypeCode($returnType);
+        return ': ' . ReflectionUtil::getTypeCode($returnType, $method->getDeclaringClass()->getName());
     }
 
     /**

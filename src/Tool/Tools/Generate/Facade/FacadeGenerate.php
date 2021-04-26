@@ -83,7 +83,7 @@ class FacadeGenerate
             }
             elseif ($method->hasReturnType())
             {
-                $returnType = ReflectionUtil::getTypeComments($method->getReturnType());
+                $returnType = ReflectionUtil::getTypeComments($method->getReturnType(), $method->getDeclaringClass()->getName());
             }
             else
             {
@@ -97,7 +97,7 @@ class FacadeGenerate
                 $paramType = $param->getType();
                 if ($paramType)
                 {
-                    $paramType = ReflectionUtil::getTypeCode($paramType);
+                    $paramType = ReflectionUtil::getTypeCode($paramType, $param->getDeclaringClass()->getName());
                 }
                 $result .= null === $paramType ? '' : ((string) $paramType . ' ');
                 if ($param->isPassedByReference())

@@ -13,7 +13,7 @@ class ReflectionUtil
     {
     }
 
-    public static function getTypeComments(?ReflectionType $type): string
+    public static function getTypeComments(?ReflectionType $type, ?string $className = null): string
     {
         if (!$type)
         {
@@ -21,7 +21,21 @@ class ReflectionUtil
         }
         if ($type instanceof ReflectionNamedType)
         {
-            $typeStr = $type->isBuiltin() ? $type->getName() : ('\\' . $type->getName());
+            $typeStr = $type->getName();
+            if (!$type->isBuiltin())
+            {
+                if ('self' === $typeStr)
+                {
+                    if (null !== $className)
+                    {
+                        $typeStr = '\\' . $className;
+                    }
+                }
+                else
+                {
+                    $typeStr = '\\' . $typeStr;
+                }
+            }
             if ($type->allowsNull())
             {
                 return $typeStr . '|null';
@@ -36,7 +50,7 @@ class ReflectionUtil
             $result = [];
             foreach ($type->getTypes() as $subType)
             {
-                $result[] = self::getTypeCode($subType);
+                $result[] = self::getTypeCode($subType, $className);
             }
             if ($type->allowsNull())
             {
@@ -51,7 +65,7 @@ class ReflectionUtil
         }
     }
 
-    public static function getTypeCode(?ReflectionType $type): string
+    public static function getTypeCode(?ReflectionType $type, ?string $className = null): string
     {
         if (!$type)
         {
@@ -59,7 +73,21 @@ class ReflectionUtil
         }
         if ($type instanceof ReflectionNamedType)
         {
-            $typeStr = $type->isBuiltin() ? $type->getName() : ('\\' . $type->getName());
+            $typeStr = $type->getName();
+            if (!$type->isBuiltin())
+            {
+                if ('self' === $typeStr)
+                {
+                    if (null !== $className)
+                    {
+                        $typeStr = '\\' . $className;
+                    }
+                }
+                else
+                {
+                    $typeStr = '\\' . $typeStr;
+                }
+            }
             if ($type->allowsNull())
             {
                 return '?' . $typeStr;
@@ -74,7 +102,7 @@ class ReflectionUtil
             $result = [];
             foreach ($type->getTypes() as $subType)
             {
-                $result[] = self::getTypeCode($subType);
+                $result[] = self::getTypeCode($subType, $className);
             }
             if ($type->allowsNull())
             {

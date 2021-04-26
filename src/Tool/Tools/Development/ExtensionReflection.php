@@ -153,7 +153,7 @@ CODE;
         $paramType = $param->getType();
         if ($paramType)
         {
-            $paramType = ReflectionUtil::getTypeCode($paramType);
+            $paramType = ReflectionUtil::getTypeCode($paramType, $param->getDeclaringClass()->getName());
         }
         $result .= null === $paramType ? '' : ((string) $paramType . ' ');
         if ($param->isPassedByReference())
@@ -215,17 +215,18 @@ CODE;
         {
             $args = [];
             $comments = [];
+            $methodClassName = $method->getDeclaringClass()->getName();
             foreach ($method->getParameters() as $param)
             {
                 // 方法参数定义
                 $args[] = $this->getMethodParamDefine($param);
                 $type = $param->getType();
-                $comments[] = '@var ' . ($type ? ReflectionUtil::getTypeComments($type) : 'mixed') . ' $' . $param->name;
+                $comments[] = '@var ' . ($type ? ReflectionUtil::getTypeComments($type, $methodClassName) : 'mixed') . ' $' . $param->name;
             }
             $return = $method->getReturnType();
             if (null !== $return)
             {
-                $comments[] = '@return ' . ReflectionUtil::getTypeComments($return);
+                $comments[] = '@return ' . ReflectionUtil::getTypeComments($return, $methodClassName);
             }
             $args = implode(', ', $args);
             if ([] === $comments)
