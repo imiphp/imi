@@ -31,15 +31,17 @@ class RequestContextProxyGenerate
      * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
      * @Arg(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
+     * @Arg(name="interface", type=ArgType::STRING, default=null, comments="生成的目标类要实现的接口")
      *
      * @param string      $target
      * @param string      $class
      * @param string      $name
      * @param string|null $bean
+     * @param string|null $interface
      *
      * @return void
      */
-    public function generate($target, $class, $name, $bean)
+    public function generate($target, $class, $name, $bean, $interface)
     {
         Annotation::getInstance()->init(Helper::getAppMains());
         if (class_exists($class) || interface_exists($class))
@@ -57,6 +59,10 @@ class RequestContextProxyGenerate
             {
                 throw new \RuntimeException(sprintf('Class %s does not found', $class));
             }
+        }
+        if (null === $interface && interface_exists($fromClass))
+        {
+            $interface = $fromClass;
         }
         $namespace = Imi::getClassNamespace($target);
         $shortClassName = Imi::getClassShortName($target);
@@ -134,14 +140,14 @@ class RequestContextProxyGenerate
             }
             $params = implode(', ', $params);
             $item = $returnType . ' ' . $methodName . '(' . $params . ')';
-            $methods[] = '@method ' . $item;
             if (!$method->isStatic())
             {
+                $methods[] = '@method ' . $item;
                 $methods[] = '@method static ' . $item;
             }
         }
         // @phpstan-ignore-next-line
-        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation) {
+        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation, $interface) {
             ob_start();
             include __DIR__ . '/template.tpl';
 
