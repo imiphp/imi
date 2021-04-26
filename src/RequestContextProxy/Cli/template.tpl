@@ -22,5 +22,5 @@ use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 class <?php echo $shortClassName; ?> extends BaseRequestContextProxy<?php if ($interface) { ?> implements \<?php echo $interface; ?><?php }?>
 
 {
-
+<?php echo $methodCodes; ?>
 }
