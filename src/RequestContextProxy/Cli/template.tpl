@@ -1,19 +1,25 @@
-<?='<?php'; ?>
+<?php echo '<?php'; ?>
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
+use Imi\Bean\Annotation\Bean;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 
 /**
- * <?=$requestContextProxyAnnotation; ?>
-<?php foreach ($methods as $item):?>
+<?php if ($beanAnnotation) { ?>
+ * <?php echo $beanAnnotation; ?>
 
- * <?=$item; ?>
-<?php endforeach; ?>
+<?php }?>
+ * <?php echo $requestContextProxyAnnotation; ?>
+
+<?php foreach ($methods as $item) { ?>
+
+ * <?php echo $item; ?>
+<?php } ?>
 
  */
-class <?= $shortClassName; ?> extends BaseRequestContextProxy
+class <?php echo $shortClassName; ?> extends BaseRequestContextProxy
 {
 
 }
