@@ -3,6 +3,7 @@
 namespace Imi\RequestContextProxy\Cli;
 
 use Imi\Bean\Annotation;
+use Imi\Bean\Annotation\Bean;
 use Imi\Bean\Parser\BeanParser;
 use Imi\Bean\ReflectionUtil;
 use Imi\Main\Helper;
@@ -29,6 +30,7 @@ class RequestContextProxyGenerate
      * @Arg(name="target", type=ArgType::STRING, required=true, comments="生成的目标类")
      * @Arg(name="class", type=ArgType::STRING, required=true, comments="要绑定的代理类名")
      * @Arg(name="name", type=ArgType::STRING, required=true, comments="请求上下文中的名称")
+     * @Arg(name="bean", type=ArgType::STRING, default=null, comments="生成的目标类的 Bean 名称")
      *
      * @param string $target
      * @param string $class
@@ -36,7 +38,7 @@ class RequestContextProxyGenerate
      *
      * @return void
      */
-    public function generate($target, $class, $name)
+    public function generate($target, $class, $name, $bean)
     {
         Annotation::getInstance()->init(Helper::getAppMains());
         if (class_exists($class) || interface_exists($class))
@@ -67,6 +69,16 @@ class RequestContextProxyGenerate
             'class' => $class,
             'name'  => $name,
         ]));
+        if (null === $bean)
+        {
+            $beanAnnotation = null;
+        }
+        else
+        {
+            $beanAnnotation = Annotation::toComments(new Bean([
+                'name'  => $bean,
+            ]));
+        }
         $refClass = new ReflectionClass($fromClass);
         $methods = [];
         foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
@@ -128,7 +140,7 @@ class RequestContextProxyGenerate
             }
         }
         // @phpstan-ignore-next-line
-        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName) {
+        $content = (function () use ($namespace, $requestContextProxyAnnotation, $methods, $shortClassName, $beanAnnotation) {
             ob_start();
             include __DIR__ . '/template.tpl';
 
