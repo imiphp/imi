@@ -51,7 +51,7 @@ class ControllerGenerate extends BaseCommand
             // 不覆盖
             return;
         }
-        file_put_contents($fileName, $content);
+        File::putContents($fileName, $content);
     }
 
     /**

@@ -217,14 +217,14 @@ class ModelGenerate extends BaseCommand
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> BaseClass...');
                 $baseContent = $this->renderTemplate('base-template', $data);
-                file_put_contents($baseFileName, $baseContent);
+                File::putContents($baseFileName, $baseContent);
             }
 
             if (!is_file($fileName) || true === $override || 'model' === $override)
             {
                 $this->output->writeln('Generating <info>' . $table . '</info> Class...');
                 $content = $this->renderTemplate('template', $data);
-                file_put_contents($fileName, $content);
+                File::putContents($fileName, $content);
             }
         }
         $this->output->writeln('<info>Complete</info>');

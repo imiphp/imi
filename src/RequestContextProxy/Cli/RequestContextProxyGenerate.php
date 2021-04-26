@@ -142,6 +142,6 @@ class RequestContextProxyGenerate
 
             return ob_get_clean();
         })();
-        file_put_contents($fileName, $content);
+        File::putContents($fileName, $content);
     }
 }
