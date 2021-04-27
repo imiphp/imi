@@ -7,6 +7,7 @@ namespace Imi\Server\Http\Controller;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
 
 /**
@@ -37,9 +38,11 @@ abstract class HttpController
     protected function __render(string $template, array $data = []): View
     {
         return new View([
-            'template'      => $template,
-            'renderType'    => 'html',
-            'data'          => $data,
+            'renderType' => 'html',
+            'data'       => $data,
+            'option'     => new HtmlView([
+                'template' => $template,
+            ]),
         ]);
     }
 }

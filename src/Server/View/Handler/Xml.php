@@ -6,7 +6,9 @@ namespace Imi\Server\View\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\BaseViewOption;
 use Imi\Server\View\Annotation\View;
+use Imi\Server\View\Annotation\XmlView;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\ResponseHeader;
 
@@ -18,9 +20,10 @@ use Imi\Util\Http\Consts\ResponseHeader;
 class Xml implements IHandler
 {
     /**
-     * @param mixed $data
+     * @param XmlView|null $viewOption
+     * @param mixed        $data
      */
-    public function handle(View $viewAnnotation, $data, IHttpResponse $response): IHttpResponse
+    public function handle(View $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
     {
         $response->setHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_XML);
         if ($data instanceof \DOMDocument)

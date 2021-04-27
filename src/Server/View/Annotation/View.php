@@ -20,19 +20,7 @@ class View extends Base
     /**
      * 只传一个参数时的参数名.
      */
-    protected ?string $defaultFieldName = 'template';
-
-    /**
-     * 模版基础路径
-     * abc-配置中设定的路径/abc/
-     * /abc/-绝对路径.
-     */
-    public ?string $baseDir = null;
-
-    /**
-     * 模版路径.
-     */
-    public ?string $template = null;
+    protected ?string $defaultFieldName = 'renderType';
 
     /**
      * 渲染类型.
@@ -47,9 +35,14 @@ class View extends Base
     public $data = [];
 
     /**
+     * 视图配置注解.
+     */
+    public ?BaseViewOption $option = null;
+
+    /**
      * @param mixed $data
      */
-    public function __construct(?array $__data = null, ?string $baseDir = null, ?string $template = null, string $renderType = 'json', $data = [])
+    public function __construct(?array $__data = null, string $renderType = 'json', $data = [], ?BaseViewOption $option = null)
     {
         parent::__construct(...\func_get_args());
     }

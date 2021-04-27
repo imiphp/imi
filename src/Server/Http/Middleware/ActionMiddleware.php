@@ -72,6 +72,7 @@ class ActionMiddleware implements MiddlewareInterface
         // 执行动作
         // @phpstan-ignore-next-line
         $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
+        $routeItem = $result->routeItem;
         // 视图
         if ($actionResult instanceof IHttpResponse)
         {
@@ -81,11 +82,12 @@ class ActionMiddleware implements MiddlewareInterface
         {
             // 动作返回的值是@View注解
             $viewAnnotation = $actionResult;
+            $viewOption = $viewAnnotation->option;
         }
         else
         {
             // 获取对应动作的视图注解
-            $viewAnnotation = $result->routeItem->view;
+            $viewAnnotation = $routeItem->view;
             if ($viewAnnotation->data && \is_array($actionResult))
             {
                 // 动作返回值是数组，合并到视图注解
@@ -98,7 +100,7 @@ class ActionMiddleware implements MiddlewareInterface
         }
 
         // 视图渲染
-        return $this->view->render($viewAnnotation, $data ?? $viewAnnotation->data, $context['response']);
+        return $this->view->render($viewAnnotation, $viewOption ?? $routeItem->viewOption, $data ?? $viewAnnotation->data, $context['response']);
     }
 
     /**

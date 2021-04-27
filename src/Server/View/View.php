@@ -7,6 +7,7 @@ namespace Imi\Server\View;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\BaseViewOption;
 use Imi\Server\View\Annotation\View as ViewAnnotation;
 
 /**
@@ -60,7 +61,7 @@ class View
     /**
      * @param mixed $data
      */
-    public function render(ViewAnnotation $viewAnnotation, $data, IHttpResponse $response): IHttpResponse
+    public function render(ViewAnnotation $viewAnnotation, ?BaseViewOption $viewOption, $data, IHttpResponse $response): IHttpResponse
     {
         $handlers = &$this->handlers;
         $renderType = $viewAnnotation->renderType;
@@ -71,7 +72,7 @@ class View
                 $data = array_merge($this->data, $data);
             }
 
-            return $handlers[$renderType]->handle($viewAnnotation, $data, $response);
+            return $handlers[$renderType]->handle($viewAnnotation, $viewOption, $data, $response);
         }
         else
         {

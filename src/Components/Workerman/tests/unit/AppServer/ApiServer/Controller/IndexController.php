@@ -11,6 +11,7 @@ use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Middleware;
 use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Util\Http\MessageUtil;
@@ -49,7 +50,8 @@ class IndexController extends HttpController
     /**
      * @Action
      * @Route(autoEndSlash=true)
-     * @View(renderType="html", template="html")
+     * @View(renderType="html")
+     * @HtmlView(template="html")
      */
     public function html(int $time): array
     {
@@ -60,7 +62,8 @@ class IndexController extends HttpController
 
     /**
      * @Action
-     * @View(renderType="html", baseDir="index/")
+     * @View(renderType="html")
+     * @HtmlView(baseDir="index/")
      */
     public function html2(int $time): array
     {

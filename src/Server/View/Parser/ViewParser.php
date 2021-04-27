@@ -8,9 +8,12 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\IBean;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Server\Route\RouteCallable;
+use Imi\Server\View\Annotation\BaseViewOption;
+use Imi\Server\View\Annotation\HtmlView;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\File;
 use Imi\Util\Imi;
+use Imi\Util\Text;
 use Imi\Util\Traits\TServerAnnotationParser;
 
 /**
@@ -42,9 +45,11 @@ class ViewParser extends BaseParser
     /**
      * 获取对应动作的视图注解.
      *
+     * 返回：[View, BaseViewOption]
+     *
      * @param callable $callable
      */
-    public function getByCallable($callable): View
+    public function getByCallable($callable): array
     {
         if ($callable instanceof RouteCallable)
         {
@@ -52,9 +57,7 @@ class ViewParser extends BaseParser
         }
         if (!\is_array($callable))
         {
-            $view = new View();
-
-            return $view;
+            return [new View(), null];
         }
         list($object, $methodName) = $callable;
         if ($object instanceof IBean)
@@ -68,22 +71,21 @@ class ViewParser extends BaseParser
         $viewCache = &$this->viewCache;
         if (!isset($viewCache[$className][$methodName]))
         {
-            $shortClassName = Imi::getClassShortName($className);
             $isClassView = false;
+            /** @var View|null $view */
             $view = AnnotationManager::getMethodAnnotations($className, $methodName, View::class)[0] ?? null;
             if (null === $view)
             {
+                /** @var View|null $view */
                 $view = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
                 if (null === $view)
                 {
-                    $view = new View([
-                        'template' => File::path($shortClassName, $methodName),
-                    ]);
+                    $view = new View();
+                    $isClassView = true;
                 }
                 else
                 {
                     $view = clone $view;
-                    $isClassView = true;
                 }
             }
             else
@@ -91,21 +93,44 @@ class ViewParser extends BaseParser
                 $view = clone $view;
             }
 
-            // baseDir
-            if (null === $view->baseDir && !$isClassView)
+            $viewOption = AnnotationManager::getMethodAnnotations($className, $methodName, BaseViewOption::class)[0] ?? null;
+            if (null === $viewOption)
             {
-                $classView = AnnotationManager::getClassAnnotations($className, View::class)[0] ?? null;
-                if ($classView)
+                $viewOption = AnnotationManager::getClassAnnotations($className, BaseViewOption::class)[0] ?? null;
+                if (null === $viewOption)
                 {
-                    $view->baseDir = $classView->baseDir;
+                    $className = 'Imi\Server\View\Annotation\\' . Text::toPascalName($view->renderType) . 'View';
+                    $viewOption = new $className();
+                }
+                else
+                {
+                    $viewOption = clone $viewOption;
                 }
             }
-            // template
-            if (null === $view->template)
+            else
             {
-                $view->template = $methodName;
+                $viewOption = clone $viewOption;
             }
-            $viewCache[$className][$methodName] = $view;
+            if ($viewOption instanceof HtmlView)
+            {
+                // baseDir
+                if (null === $viewOption->baseDir && !$isClassView)
+                {
+                    /** @var HtmlView|null $classViewOption */
+                    $classViewOption = AnnotationManager::getClassAnnotations($className, HtmlView::class)[0] ?? null;
+                    if ($classViewOption)
+                    {
+                        $viewOption->baseDir = $classViewOption->baseDir;
+                    }
+                }
+                // template
+                if (null === $viewOption->template)
+                {
+                    $viewOption->template = $isClassView ? File::path(Imi::getClassShortName($className), $methodName) : $methodName;
+                }
+            }
+
+            $viewCache[$className][$methodName] = [$view, $viewOption];
         }
 
         return $viewCache[$className][$methodName];

@@ -52,7 +52,7 @@ class JsonErrorHandler implements IErrorHandler
         }
         /** @var \Imi\Server\View\Handler\Json $jsonView */
         $jsonView = RequestContext::getServerBean('JsonView');
-        $jsonView->handle($this->viewAnnotation, $data, RequestContext::get('response'))->send();
+        $jsonView->handle($this->viewAnnotation, null, $data, RequestContext::get('response'))->send();
 
         return $this->cancelThrow;
     }

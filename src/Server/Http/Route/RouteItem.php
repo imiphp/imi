@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Route;
 
 use Imi\Server\Http\Route\Annotation\Route;
+use Imi\Server\View\Annotation\BaseViewOption;
 use Imi\Server\View\Annotation\View;
 use Imi\Server\WebSocket\Route\Annotation\WSConfig;
 
@@ -45,13 +46,19 @@ class RouteItem
     public View $view;
 
     /**
+     * 视图配置注解.
+     */
+    public ?BaseViewOption $viewOption = null;
+
+    /**
      * @param callable|\Imi\Server\Route\RouteCallable $callable
      */
-    public function __construct(Route $annotation, $callable, View $view, array $options = [])
+    public function __construct(Route $annotation, $callable, View $view, ?BaseViewOption $viewOption = null, array $options = [])
     {
         $this->annotation = $annotation;
         $this->callable = $callable;
         $this->view = $view;
+        $this->viewOption = $viewOption;
         $this->options = $options;
     }
 }
