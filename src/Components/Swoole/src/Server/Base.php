@@ -21,6 +21,7 @@ use Imi\Swoole\Server\Event\Param\WorkerErrorEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
+use Imi\Util\Imi;
 use Swoole\Event as SwooleEvent;
 use Swoole\Server;
 use Swoole\Server\Port;
@@ -87,15 +88,18 @@ abstract class Base extends BaseServer implements ISwooleServer
             $configs = $this->config['configs'];
         }
 
-        // 强制启用 task 协程化
-        $configs['task_enable_coroutine'] = true;
-
         if ($isSubServer)
         {
             $this->swoolePort->set($configs);
         }
         else
         {
+            // 强制启用 task 协程化
+            $configs['task_enable_coroutine'] = true;
+            if (!isset($configs['pid_file']))
+            {
+                $configs['pid_file'] = Imi::getRuntimePath('swoole.pid');
+            }
             $this->swooleServer->set($configs);
         }
         $this->bindEvents();

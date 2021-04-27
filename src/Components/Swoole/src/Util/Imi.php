@@ -6,7 +6,7 @@ namespace Imi\Swoole\Util;
 
 use Imi\App;
 use Imi\Config;
-use Imi\Util\Imi as UtilImi;
+use Imi\Util\Imi as ImiUtil;
 use Imi\Worker;
 
 class Imi
@@ -90,15 +90,15 @@ class Imi
      */
     public static function stopServer(): void
     {
-        $fileName = UtilImi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
+        $fileName = Config::get('@app.mainServer.configs.pid_file', ImiUtil::getRuntimePath('swoole.pid'));
         if (!is_file($fileName))
         {
             throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
         }
-        $pid = json_decode(file_get_contents($fileName), true);
+        $pid = (int) file_get_contents($fileName);
         if ($pid > 0)
         {
-            \Swoole\Process::kill($pid['masterPID']);
+            \Swoole\Process::kill($pid);
         }
         else
         {
@@ -111,7 +111,7 @@ class Imi
      */
     public static function reloadServer(): void
     {
-        $fileName = UtilImi::getRuntimePath(str_replace('\\', '-', App::getNamespace()) . '.pid');
+        $fileName = Config::get('@app.mainServer.configs.pid_file', ImiUtil::getRuntimePath('swoole.pid'));
         if (!is_file($fileName))
         {
             throw new \RuntimeException(sprintf('Pid file %s is not exists', $fileName));
@@ -119,7 +119,7 @@ class Imi
         $pid = json_decode(file_get_contents($fileName), true);
         if ($pid > 0)
         {
-            \Swoole\Process::kill($pid['masterPID'], \SIGUSR1);
+            \Swoole\Process::kill((int) $pid, \SIGUSR1);
         }
         else
         {
