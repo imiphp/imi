@@ -30,7 +30,4 @@ return [
             ],
         ],
     ],
-    'controller'    => [
-        'singleton' => true,
-    ],
 ];

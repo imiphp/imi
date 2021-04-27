@@ -10,10 +10,8 @@ use Imi\Bean\ReflectionContainer;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Annotation\ExtractData;
-use Imi\Server\Http\Controller\HttpController;
-use Imi\Server\Http\Controller\SingletonHttpController;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\Http\Message\Request;
-use Imi\Server\Http\Message\Response;
 use Imi\Server\Http\Route\RouteResult;
 use Imi\Server\Http\Struct\ActionMethodItem;
 use Imi\Server\Session\Session;
@@ -71,38 +69,15 @@ class ActionMiddleware implements MiddlewareInterface
             throw new \RuntimeException('RequestContent not found routeResult');
         }
         /** @var \Imi\Server\Http\Route\RouteResult $result */
-        $callable = &$result->callable;
-        $routeItem = $result->routeItem;
-        if ($isSingleton = $routeItem->singleton)
-        {
-            $object = $callable[0];
-        }
-        else
-        {
-            // 复制一份控制器对象
-            $object = $callable[0] = clone $callable[0];
-        }
-        // 路由匹配结果是否是[控制器对象, 方法名]
-        $isObject = $callable[0] instanceof HttpController;
-        if ($isObject)
-        {
-            if (!($isSingletonController = ($object instanceof SingletonHttpController)))
-            {
-                // 传入Request和Response对象
-                $object->request = $request;
-                $object->response = $response;
-            }
-        }
         // 执行动作
         // @phpstan-ignore-next-line
-        $actionResult = ($callable)(...$this->prepareActionParams($request, $result));
+        $actionResult = ($result->callable)(...$this->prepareActionParams($request, $result));
         // 视图
-        $finalResponse = null;
-        if ($actionResult instanceof Response)
+        if ($actionResult instanceof IHttpResponse)
         {
-            $finalResponse = $actionResult;
+            return $actionResult;
         }
-        elseif ($actionResult instanceof \Imi\Server\View\Annotation\View)
+        if ($actionResult instanceof \Imi\Server\View\Annotation\View)
         {
             // 动作返回的值是@View注解
             $viewAnnotation = $actionResult;
@@ -110,40 +85,20 @@ class ActionMiddleware implements MiddlewareInterface
         else
         {
             // 获取对应动作的视图注解
-            $viewAnnotation = clone $routeItem->view;
-            if ([] !== $viewAnnotation->data && \is_array($actionResult))
+            $viewAnnotation = $result->routeItem->view;
+            if ($viewAnnotation->data && \is_array($actionResult))
             {
                 // 动作返回值是数组，合并到视图注解
-                $viewAnnotation->data = array_merge($viewAnnotation->data, $actionResult);
+                $data = array_merge($viewAnnotation->data, $actionResult);
             }
             else
             {
-                // 非数组直接赋值
-                $viewAnnotation->data = $actionResult;
+                $data = $actionResult;
             }
         }
 
-        if (isset($viewAnnotation))
-        {
-            if ($isObject && !$isSingletonController && !$isSingleton)
-            {
-                // 获得控制器中的Response
-                $finalResponse = $object->response;
-            }
-            else
-            {
-                $finalResponse = $context['response'];
-            }
-            // 视图渲染
-            $finalResponse = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, [
-                'baseDir'     => $viewAnnotation->baseDir,
-                'template'    => $viewAnnotation->template,
-                'renderType'  => $viewAnnotation->renderType,
-                'data'        => $viewAnnotation->data,
-            ], $finalResponse);
-        }
-
-        return $finalResponse;
+        // 视图渲染
+        return $this->view->render($viewAnnotation, $data ?? $viewAnnotation->data, $context['response']);
     }
 
     /**

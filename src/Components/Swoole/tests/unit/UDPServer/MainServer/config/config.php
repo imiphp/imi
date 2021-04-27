@@ -31,7 +31,4 @@ return [
             'handler'   => 'RouteNotFound',
         ],
     ],
-    'controller'    => [
-        'singleton' => false,
-    ],
 ];

@@ -31,11 +31,6 @@ class RouteItem
     public array $options = [];
 
     /**
-     * 是否为单例控制器.
-     */
-    public bool $singleton = false;
-
-    /**
      * @param callable|\Imi\Server\Route\RouteCallable $callable
      */
     public function __construct(TcpRoute $annotation, $callable, array $options = [])

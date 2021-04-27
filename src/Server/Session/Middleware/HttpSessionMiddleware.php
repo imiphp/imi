@@ -84,7 +84,7 @@ class HttpSessionMiddleware implements MiddlewareInterface
     /**
      * 发送cookie.
      */
-    private function sendCookie(SessionManager $sessionManager, Response $response): IHttpResponse
+    private function sendCookie(SessionManager $sessionManager, IHttpResponse $response): IHttpResponse
     {
         $config = $sessionManager->getConfig();
         $cookie = $config->cookie;

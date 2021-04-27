@@ -6,6 +6,7 @@ namespace Imi\Server\Http\Error;
 
 use Imi\App;
 use Imi\RequestContext;
+use Imi\Server\View\Annotation\View;
 
 class JsonErrorHandler implements IErrorHandler
 {
@@ -18,6 +19,13 @@ class JsonErrorHandler implements IErrorHandler
      * 取消继续抛出异常.
      */
     protected bool $cancelThrow = false;
+
+    protected View $viewAnnotation;
+
+    public function __construct()
+    {
+        $this->viewAnnotation = new View();
+    }
 
     /**
      * 捕获错误
@@ -44,7 +52,7 @@ class JsonErrorHandler implements IErrorHandler
         }
         /** @var \Imi\Server\View\Handler\Json $jsonView */
         $jsonView = RequestContext::getServerBean('JsonView');
-        $jsonView->handle($data, [], RequestContext::get('response'))->send();
+        $jsonView->handle($this->viewAnnotation, $data, RequestContext::get('response'))->send();
 
         return $this->cancelThrow;
     }

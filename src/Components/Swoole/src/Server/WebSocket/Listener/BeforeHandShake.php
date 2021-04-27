@@ -36,7 +36,6 @@ class BeforeHandShake implements IHandShakeEventListener
         // 中间件
         /** @var \Imi\Server\Http\Dispatcher $dispatcher */
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        // @phpstan-ignore-next-line
         $dispatcher->dispatch($request);
     }
 }

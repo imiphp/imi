@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Imi\Server\Http;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Http\Message\Request;
+use Imi\Server\Http\Message\Contract\IHttpRequest;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\Http\Message\Response;
 
 /**
@@ -28,7 +29,7 @@ class Dispatcher
     /**
      * 调度.
      */
-    public function dispatch(Request $request): Response
+    public function dispatch(IHttpRequest $request): IHttpResponse
     {
         $requestHandler = new RequestHandler($this->getMiddlewares());
         /** @var Response $response */

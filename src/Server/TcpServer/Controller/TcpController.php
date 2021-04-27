@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Server\TcpServer\Controller;
 
-use Imi\Server\TcpServer\Contract\ITcpServer;
+use Imi\RequestContext;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
@@ -13,12 +14,9 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 abstract class TcpController
 {
     /**
-     * 服务器.
-     */
-    public ITcpServer $server;
-
-    /**
      * 数据.
+     *
+     * @ServerInject("TcpReceiveDataProxy")
      */
     public IReceiveData $data;
 
@@ -29,6 +27,6 @@ abstract class TcpController
      */
     protected function encodeMessage($data): string
     {
-        return $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($data);
+        return RequestContext::getServerBean(\Imi\Server\DataParser\DataParser::class)->encode($data);
     }
 }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi\Server\TcpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Controller\TcpController;
 use Imi\RequestContext;
+use Imi\Server\TcpServer\Controller\TcpController;
 use Imi\Server\TcpServer\IReceiveHandler;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
@@ -35,11 +35,6 @@ class ActionMiddleware implements IMiddleware
         $isObject = \is_array($callable) && isset($callable[0]) && $callable[0] instanceof TcpController;
         if ($isObject)
         {
-            if (!$result->routeItem->singleton)
-            {
-                // 复制一份控制器对象
-                $callable[0] = clone $callable[0];
-            }
             $callable[0]->server = RequestContext::getServer();
             $callable[0]->data = $data;
         }

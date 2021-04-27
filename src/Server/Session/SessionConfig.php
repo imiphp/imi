@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Server\Session;
 
-use Imi\Aop\Annotation\RequestInject;
 use Imi\Bean\Annotation\Bean;
+use Imi\Server\Annotation\ServerInject;
 
 /**
  * @Bean("SessionConfig")
@@ -18,7 +18,7 @@ class SessionConfig
     public string $name = '';
 
     /**
-     * @RequestInject("SessionCookie")
+     * @ServerInject("SessionCookie")
      *
      * @var \Imi\Server\Session\SessionCookie|null
      */

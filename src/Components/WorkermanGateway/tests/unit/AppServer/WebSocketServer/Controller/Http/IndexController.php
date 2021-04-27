@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Test\AppServer\WebSocketServer\Controller\Http;
 
-use Imi\Controller\HttpController;
+use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;

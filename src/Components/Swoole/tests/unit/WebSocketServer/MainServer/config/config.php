@@ -53,7 +53,4 @@ return [
             'key'       => 'imi:wsTest:connectionBinder:map',
         ],
     ],
-    'controller'    => [
-        'singleton' => false,
-    ],
 ];

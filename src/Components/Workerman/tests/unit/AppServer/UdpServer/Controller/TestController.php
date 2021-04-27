@@ -14,7 +14,7 @@ use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
  *
  * @UdpController
  */
-class TestController extends \Imi\Controller\UdpController
+class TestController extends \Imi\Server\UdpServer\Controller\UdpController
 {
     /**
      * 登录.

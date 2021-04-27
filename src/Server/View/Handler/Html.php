@@ -6,7 +6,8 @@ namespace Imi\Server\View\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\View;
 use Imi\Server\View\Engine\IEngine;
 use Imi\Util\File;
 
@@ -46,9 +47,12 @@ class Html implements IHandler
         $this->templateEngineInstance = RequestContext::getServerBean($this->templateEngine);
     }
 
-    public function handle($data, array $options, Response $response): Response
+    /**
+     * @param mixed $data
+     */
+    public function handle(View $viewAnnotation, $data, IHttpResponse $response): IHttpResponse
     {
-        $fileName = $this->getTemplateFilePath($options);
+        $fileName = $this->getTemplateFilePath($viewAnnotation);
 
         if (false === $fileName || !is_file($fileName))
         {
@@ -63,14 +67,14 @@ class Html implements IHandler
      *
      * @return string|bool
      */
-    protected function getTemplateFilePath(array $options)
+    protected function getTemplateFilePath(View $viewAnnotation)
     {
-        $fileName = realpath($options['template']);
+        $fileName = realpath($viewAnnotation->template);
         if ($fileName && is_file($fileName))
         {
             return $fileName;
         }
-        $fileName = File::path($this->templatePath ?: '', $options['baseDir'] ?? '', $options['template']);
+        $fileName = File::path($this->templatePath ?: '', $viewAnnotation->baseDir ?? '', $viewAnnotation->template);
         foreach ($this->fileSuffixs as $suffix)
         {
             $tryFileName = $fileName . '.' . $suffix;

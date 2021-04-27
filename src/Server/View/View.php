@@ -6,7 +6,8 @@ namespace Imi\Server\View;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\View as ViewAnnotation;
 
 /**
  * 视图类.
@@ -57,23 +58,20 @@ class View
     }
 
     /**
-     * @param array|object $data
+     * @param mixed $data
      */
-    public function render(string $renderType, $data, array $options, ?Response $response = null): Response
+    public function render(ViewAnnotation $viewAnnotation, $data, IHttpResponse $response): IHttpResponse
     {
         $handlers = &$this->handlers;
+        $renderType = $viewAnnotation->renderType;
         if (isset($handlers[$renderType]))
         {
             if ($this->data && \is_array($data))
             {
                 $data = array_merge($this->data, $data);
             }
-            if (null === $response)
-            {
-                $response = RequestContext::get('response');
-            }
 
-            return $handlers[$renderType]->handle($data, $options, $response);
+            return $handlers[$renderType]->handle($viewAnnotation, $data, $response);
         }
         else
         {

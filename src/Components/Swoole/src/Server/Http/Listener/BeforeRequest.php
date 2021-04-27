@@ -37,16 +37,16 @@ class BeforeRequest implements IRequestEventListener
     public function handle(RequestEventParam $e): void
     {
         $request = $e->request;
-        $response = $e->response;
-        $context = RequestContext::getContext();
         $server = $this->server;
         if ($server->isHttp2())
         {
+            $context = RequestContext::getContext();
             $context['clientId'] = $context['swooleRequest']->fd;
             ConnectContext::create();
         }
         // 中间件
-        $this->dispatcher ??= $server->getBean('HttpDispatcher');
-        $this->dispatcher->dispatch($request, $response);
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = $this->dispatcher ??= $server->getBean('HttpDispatcher');
+        $dispatcher->dispatch($request);
     }
 }

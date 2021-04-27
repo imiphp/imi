@@ -93,10 +93,6 @@ class HttpRoute
         {
             $routeItem->wsConfig = $options['wsConfig'];
         }
-        if (isset($options['singleton']))
-        {
-            $routeItem->singleton = $options['singleton'];
-        }
         $this->rules[$annotation->url][spl_object_hash($annotation)] = $routeItem;
     }
 

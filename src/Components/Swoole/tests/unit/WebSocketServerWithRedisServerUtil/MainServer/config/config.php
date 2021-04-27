@@ -38,7 +38,4 @@ return [
             'handlerClass' => 'ConnectionBinderLocal',
         ],
     ],
-    'controller'    => [
-        'singleton' => false,
-    ],
 ];

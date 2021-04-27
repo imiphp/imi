@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Controller;
 
-use Imi\Controller\WebSocketController;
+use Imi\Server\WebSocket\Controller\WebSocketController;
 use Imi\Server\WebSocket\Route\Annotation\WSAction;
 use Imi\Server\WebSocket\Route\Annotation\WSController;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute;

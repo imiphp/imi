@@ -6,6 +6,7 @@ namespace Imi\RequestContextProxy\Cli;
 
 use Imi\Bean\Annotation;
 use Imi\Bean\Annotation\Bean;
+use Imi\Bean\BeanFactory;
 use Imi\Bean\BeanManager;
 use Imi\Bean\ReflectionUtil;
 use Imi\Main\Helper;

@@ -183,7 +183,7 @@ TPL;
         $traits = PartialManager::getClassPartials($class);
         if ($traits)
         {
-            $traits = array_unique(array_merge(...$traits));
+            $traits = array_unique(isset($traits[1]) ? array_merge(...$traits) : $traits[0]);
             $traitsTpl = 'use ' . implode(',', $traits) . ';';
         }
         else

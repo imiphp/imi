@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\HttpsTestServer\Controller;
 
-use Imi\Controller\HttpController;
 use Imi\RequestContext;
+use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Util\Http\MessageUtil;

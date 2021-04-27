@@ -38,11 +38,12 @@ class RouteMiddleware implements MiddlewareInterface
         // 路由解析
         // @phpstan-ignore-next-line
         $result = $this->route->parse($request);
-        if (null === $result || !\is_callable($result->callable))
+        if (null === $result)
         {
             // 未匹配到路由
             // @phpstan-ignore-next-line
             $response = $this->notFoundHandler->handle($handler, $request, $context['response']);
+            $context['response'] = $response;
         }
         else
         {
@@ -50,6 +51,6 @@ class RouteMiddleware implements MiddlewareInterface
             $response = $handler->handle($request);
         }
 
-        return $context['response'] = $response;
+        return $response;
     }
 }

@@ -41,10 +41,15 @@ class View extends Base
 
     /**
      * 附加数据.
+     *
+     * @var mixed
      */
-    public ?array $data = [];
+    public $data = [];
 
-    public function __construct(?array $__data = null, ?string $baseDir = null, ?string $template = null, string $renderType = 'json', ?array $data = [])
+    /**
+     * @param mixed $data
+     */
+    public function __construct(?array $__data = null, ?string $baseDir = null, ?string $template = null, string $renderType = 'json', $data = [])
     {
         parent::__construct(...\func_get_args());
     }

@@ -53,8 +53,6 @@ abstract class BaseRequestContextProxy
      * 设置请求上下文中的实例.
      *
      * @param mixed $instance
-     *
-     * @return void
      */
     public static function __setProxyInstance($instance): void
     {

@@ -22,14 +22,7 @@ class TcpController extends Base
      */
     protected ?string $defaultFieldName = 'prefix';
 
-    /**
-     * 是否为单例控制器.
-     *
-     * 默认为 null 时取 '@server.服务器名.controller.singleton'
-     */
-    public ?bool $singleton = null;
-
-    public function __construct(?array $__data = null, ?bool $singleton = null)
+    public function __construct(?array $__data = null)
     {
         parent::__construct(...\func_get_args());
     }

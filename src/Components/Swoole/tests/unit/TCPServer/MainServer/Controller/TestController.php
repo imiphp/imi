@@ -15,7 +15,7 @@ use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
  *
  * @TcpController
  */
-class TestController extends \Imi\Controller\TcpController
+class TestController extends \Imi\Server\TcpServer\Controller\TcpController
 {
     /**
      * 登录.
@@ -26,7 +26,9 @@ class TestController extends \Imi\Controller\TcpController
     public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->data->getClientId());
+
+        // @phpstan-ignore-next-line
+        RequestContext::getServer()->joinGroup('g1', $this->data->getClientId());
         ConnectContext::bind($data->username);
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];
@@ -44,7 +46,9 @@ class TestController extends \Imi\Controller\TcpController
             'action'     => 'send',
             'message'    => ConnectContext::get('username') . ':' . $data->message,
         ];
-        $this->server->groupCall('g1', 'send', $this->server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($message));
+        $server = RequestContext::getServer();
+        // @phpstan-ignore-next-line
+        $server->groupCall('g1', 'send', $server->getBean(\Imi\Server\DataParser\DataParser::class)->encode($message));
     }
 
     /**

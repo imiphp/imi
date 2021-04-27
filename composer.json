@@ -54,7 +54,13 @@
         "test-workerman": "tests/phpunit -c src/Components/Workerman/tests/phpunit.xml",
         "test-workerman-gateway": "tests/phpunit -c src/Components/WorkermanGateway/tests/phpunit.xml --testsuite workerman && tests/phpunit -c src/Components/WorkermanGateway/tests/phpunit.xml --testsuite swoole",
         "test-fpm": "tests/phpunit -c src/Components/Fpm/tests/phpunit.xml",
-        "test-all": "composer test && composer test-fpm && composer test-swoole && composer test-workerman && composer test-workerman-gateway",
+        "test-all": [
+            "composer test",
+            "composer test-fpm",
+            "composer test-swoole",
+            "composer test-workerman",
+            "composer test-workerman-gateway"
+        ],
         "install-test-all": "php --ri swoole && composer install && cd ../ && composer test-all"
     },
     "extra": {

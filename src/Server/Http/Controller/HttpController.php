@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\Http\Controller;
 
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\View\Annotation\View;
@@ -14,12 +15,16 @@ use Imi\Server\View\Annotation\View;
 abstract class HttpController
 {
     /**
-     * 请求.
+     * 请求
+     *
+     * @ServerInject("HttpRequestProxy")
      */
     public IHttpRequest $request;
 
     /**
      * 响应.
+     *
+     * @ServerInject("HttpResponseProxy")
      */
     public IHttpResponse $response;
 

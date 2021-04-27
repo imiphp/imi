@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Test\AppServer\ApiServer\Controller;
 
-use Imi\Controller\SingletonHttpController;
 use Imi\RequestContext;
+use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
@@ -13,7 +13,7 @@ use Imi\Server\Http\Route\Annotation\Route;
 /**
  * @Controller(prefix="/", singleton=true)
  */
-class IndexController extends SingletonHttpController
+class IndexController extends HttpController
 {
     /**
      * @Action

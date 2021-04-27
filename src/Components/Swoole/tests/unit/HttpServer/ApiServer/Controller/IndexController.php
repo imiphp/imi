@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\HttpServer\ApiServer\Controller;
 
 use Imi\Aop\Annotation\Inject;
-use Imi\Controller\SingletonHttpController;
 use Imi\RequestContext;
 use Imi\Server\Http\Annotation\ExtractData;
+use Imi\Server\Http\Controller\HttpController;
+use Imi\Server\Http\Message\Proxy\ResponseProxy;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Middleware;
@@ -22,7 +23,7 @@ use Swoole\Coroutine;
 /**
  * @Controller(prefix="/", singleton=true)
  */
-class IndexController extends SingletonHttpController
+class IndexController extends HttpController
 {
     /**
      * @Inject("TestService")
@@ -338,7 +339,7 @@ class IndexController extends SingletonHttpController
      */
     public function singletonResponse1()
     {
-        $response = $this->response->getResponseInstance();
+        $response = ResponseProxy::__getProxyInstance();
         $response->getBody()->write('imi niubi-1');
 
         return $response;
@@ -351,7 +352,7 @@ class IndexController extends SingletonHttpController
      */
     public function singletonResponse2(): void
     {
-        $this->response->__setProxyInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
+        ResponseProxy::__setProxyInstance($this->response->withBody(new MemoryStream('imi niubi-2')));
     }
 
     /**

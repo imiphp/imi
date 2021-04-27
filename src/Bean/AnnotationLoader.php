@@ -45,9 +45,13 @@ class AnnotationLoader
                     $beanScan[] = $data['beanScan'];
                 }
             }
-            if ($beanScan)
+            if (isset($beanScan[1]))
             {
                 $beanScan = array_merge(...$beanScan);
+            }
+            elseif ($beanScan)
+            {
+                $beanScan = $beanScan[0];
             }
         }
         else

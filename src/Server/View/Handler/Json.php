@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Imi\Server\View\Handler;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
+use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\MediaType;
 use Imi\Util\Http\Consts\ResponseHeader;
 
@@ -38,9 +39,9 @@ class Json implements IHandler
     protected int $depth = 512;
 
     /**
-     * @param array|object $data
+     * @param mixed $data
      */
-    public function handle($data, array $options, Response $response): Response
+    public function handle(View $viewAnnotation, $data, IHttpResponse $response): IHttpResponse
     {
         $response->setHeader(ResponseHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
                  ->getBody()

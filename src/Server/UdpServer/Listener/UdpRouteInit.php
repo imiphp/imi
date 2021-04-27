@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\UdpServer\Listener;
 
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Main\Helper;
@@ -85,7 +84,6 @@ class UdpRouteInit implements IEventListener
                     {
                         $route->addRuleAnnotation($routeItem, new RouteCallable($server->getName(), $className, $methodName), [
                             'middlewares' => $middlewares,
-                            'singleton'   => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
                         ]);
                     }
                 }

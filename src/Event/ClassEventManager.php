@@ -49,6 +49,15 @@ class ClassEventManager
             }
         }
 
-        return array_merge(...$options);
+        if (isset($options[1]))
+        {
+            return array_merge(...$options);
+        }
+        if ($options)
+        {
+            return $options[0];
+        }
+
+        return [];
     }
 }

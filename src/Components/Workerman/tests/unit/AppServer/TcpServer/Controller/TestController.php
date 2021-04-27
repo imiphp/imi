@@ -9,14 +9,14 @@ use Imi\RequestContext;
 use Imi\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Server\TcpServer\Route\Annotation\TcpController;
 use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
-use Imi\Workerman\Server\Tcp\Server;
+use Imi\Workerman\Server\Contract\IWorkermanServer;
 
 /**
  * 数据收发测试.
  *
  * @TcpController
  */
-class TestController extends \Imi\Controller\TcpController
+class TestController extends \Imi\Server\TcpServer\Controller\TcpController
 {
     /**
      * 登录.
@@ -27,7 +27,8 @@ class TestController extends \Imi\Controller\TcpController
     public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->data->getClientId());
+        // @phpstan-ignore-next-line
+        RequestContext::getServer()->joinGroup('g1', $this->data->getClientId());
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];
     }
@@ -40,8 +41,8 @@ class TestController extends \Imi\Controller\TcpController
      */
     public function send(\stdClass $data): void
     {
-        /** @var Server $server */
-        $server = $this->server;
+        /** @var IWorkermanServer $server */
+        $server = RequestContext::getServer();
         $group = $server->getGroup('g1');
         $worker = $server->getWorker();
         $message = $this->encodeMessage([

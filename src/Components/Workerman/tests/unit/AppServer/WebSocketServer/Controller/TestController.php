@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi\Workerman\Test\AppServer\WebSocketServer\Controller;
 
 use Imi\ConnectContext;
-use Imi\Controller\WebSocketController;
 use Imi\RequestContext;
 use Imi\Server\Server;
+use Imi\Server\WebSocket\Controller\WebSocketController;
 use Imi\Server\WebSocket\Route\Annotation\WSAction;
 use Imi\Server\WebSocket\Route\Annotation\WSController;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute;
@@ -29,7 +29,8 @@ class TestController extends WebSocketController
     public function login(\stdClass $data): array
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->frame->getClientId());
+        // @phpstan-ignore-next-line
+        RequestContext::getServer()->joinGroup('g1', $this->frame->getClientId());
         ConnectContext::bind($data->username);
 
         return [
@@ -70,8 +71,6 @@ class TestController extends WebSocketController
      */
     public function send(\stdClass $data): void
     {
-        /** @var \Imi\Workerman\Server\WebSocket\Server $server */
-        $server = $this->server;
         $message = ConnectContext::get('username') . ':' . $data->message;
         Server::sendRawToGroup('g1', $message);
     }

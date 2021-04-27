@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Listener;
 
 use Imi\Bean\Annotation\AnnotationManager;
-use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Main\Helper;
@@ -117,7 +116,6 @@ class HttpRouteInit implements IEventListener
                         $options = [
                             'middlewares'   => $middlewares,
                             'wsConfig'      => AnnotationManager::getMethodAnnotations($className, $methodName, WSConfig::class)[0] ?? null,
-                            'singleton'     => null === $classAnnotation->singleton ? Config::get('@server.' . $name . '.controller.singleton', false) : $classAnnotation->singleton,
                         ];
                         $route->addRuleAnnotation($routeItem, $routeCallable, $options);
                         if (($routeItem->autoEndSlash || ($autoEndSlash && null === $routeItem->autoEndSlash)) && '/' !== substr($routeItem->url, 0, -1))

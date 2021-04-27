@@ -43,6 +43,7 @@ abstract class BaseApp implements IApp
         Config::addConfig('@imi', include \dirname(IMI_PATH) . '/config/config.php');
 
         $appPath = App::get(AppContexts::APP_PATH);
+        $hasAppConfig = false;
         if ($appPath)
         {
             // 加载项目目录下的 env
@@ -51,6 +52,7 @@ abstract class BaseApp implements IApp
             if (is_file($fileName))
             {
                 Config::addConfig('@app', include $fileName);
+                $hasAppConfig = true;
             }
         }
         else
@@ -67,9 +69,14 @@ abstract class BaseApp implements IApp
                 if (is_file($fileName))
                 {
                     Config::addConfig('@app', include $fileName);
+                    $hasAppConfig = true;
                     break;
                 }
             }
+        }
+        if (!$hasAppConfig)
+        {
+            Config::setConfig('@app', []);
         }
 
         App::setDebug(Config::get('@app.debug', true));

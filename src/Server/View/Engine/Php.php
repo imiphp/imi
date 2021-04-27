@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\Server\View\Engine;
 
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 
 /**
  * PHP原生模版引擎.
  */
 class Php implements IEngine
 {
-    public function render(Response $response, string $fileName, array $data = []): Response
+    /**
+     * @param mixed $data
+     */
+    public function render(IHttpResponse $response, string $fileName, $data = []): IHttpResponse
     {
         if (!is_file($fileName))
         {

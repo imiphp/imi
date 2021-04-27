@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi\Server\UdpServer\Middleware;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\Controller\UdpController;
 use Imi\RequestContext;
+use Imi\Server\UdpServer\Controller\UdpController;
 use Imi\Server\UdpServer\IPacketHandler;
 use Imi\Server\UdpServer\Message\IPacketData;
 
@@ -35,11 +35,6 @@ class ActionMiddleware implements IMiddleware
         $isObject = \is_array($callable) && isset($callable[0]) && $callable[0] instanceof UdpController;
         if ($isObject)
         {
-            if (!$result->routeItem->singleton)
-            {
-                // 复制一份控制器对象
-                $callable[0] = clone $callable[0];
-            }
             $callable[0]->server = RequestContext::getServer();
             $callable[0]->data = $data;
         }

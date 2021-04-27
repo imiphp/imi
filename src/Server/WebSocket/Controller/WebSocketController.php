@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\WebSocket\Controller;
 
-use Imi\Server\WebSocket\Contract\IWebSocketServer;
+use Imi\Server\Annotation\ServerInject;
 use Imi\Server\WebSocket\Message\IFrame;
 
 /**
@@ -13,12 +13,9 @@ use Imi\Server\WebSocket\Message\IFrame;
 abstract class WebSocketController
 {
     /**
-     * 服务器.
-     */
-    public IWebSocketServer $server;
-
-    /**
      * 桢.
+     *
+     * @ServerInject("WebSocketFrameProxy")
      */
     public IFrame $frame;
 }
