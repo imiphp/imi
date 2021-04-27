@@ -7,6 +7,7 @@ use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Server\Event\Listener\IHandShakeEventListener;
 use Imi\Server\Event\Param\HandShakeEventParam;
+use Imi\Server\Http\Dispatcher;
 use Imi\Util\Http\Consts\StatusCode;
 use Imi\Worker;
 
@@ -47,7 +48,8 @@ class BeforeHandShake implements IHandShakeEventListener
         ConnectContext::create();
 
         // 中间件
+        /** @var Dispatcher $dispatcher */
         $dispatcher = RequestContext::getServerBean('HttpDispatcher');
-        $dispatcher->dispatch($request, $response);
+        $dispatcher->dispatch($request);
     }
 }

@@ -6,6 +6,7 @@ use Imi\ConnectContext;
 use Imi\RequestContext;
 use Imi\Server\Event\Listener\IRequestEventListener;
 use Imi\Server\Event\Param\RequestEventParam;
+use Imi\Server\Http\Dispatcher;
 
 /**
  * request事件前置处理.
@@ -38,8 +39,9 @@ class BeforeRequest implements IRequestEventListener
                 ConnectContext::create();
             }
             // 中间件
+            /** @var Dispatcher $dispatcher */
             $dispatcher = $server->getBean('HttpDispatcher');
-            $dispatcher->dispatch($request, $response);
+            $dispatcher->dispatch($request);
         }
         catch (\Throwable $th)
         {
