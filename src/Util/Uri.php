@@ -60,18 +60,18 @@ class Uri implements UriInterface
         {
             throw new \InvalidArgumentException(sprintf('Uri %s parse error', $uri));
         }
-        $this->scheme = isset($uriOption['scheme']) ? $uriOption['scheme'] : '';
-        $this->host = isset($uriOption['host']) ? $uriOption['host'] : '';
-        $this->port = isset($uriOption['port']) ? $uriOption['port'] : null;
-        $userInfo = isset($uriOption['user']) ? $uriOption['user'] : '';
+        $this->scheme = $uriOption['scheme'] ?? '';
+        $this->host = $uriOption['host'] ?? '';
+        $this->port = $uriOption['port'] ?? null;
+        $userInfo = $uriOption['user'] ?? '';
         if (isset($uriOption['pass']))
         {
             $userInfo .= ':' . $uriOption['pass'];
         }
         $this->userInfo = $userInfo;
-        $this->path = isset($uriOption['path']) ? $uriOption['path'] : '';
-        $this->query = isset($uriOption['query']) ? $uriOption['query'] : '';
-        $this->fragment = isset($uriOption['fragment']) ? $uriOption['fragment'] : '';
+        $this->path = $uriOption['path'] ?? '';
+        $this->query = $uriOption['query'] ?? '';
+        $this->fragment = $uriOption['fragment'] ?? '';
     }
 
     /**

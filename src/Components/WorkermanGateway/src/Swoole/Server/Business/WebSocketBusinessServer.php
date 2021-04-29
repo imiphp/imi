@@ -36,10 +36,10 @@ class WebSocketBusinessServer extends \Imi\Swoole\Server\WebSocket\Server
     protected function getServerInitConfig(): array
     {
         return [
-            'host'      => isset($this->config['host']) ? $this->config['host'] : '127.0.0.1',
-            'port'      => isset($this->config['port']) ? $this->config['port'] : 0,
-            'sockType'  => isset($this->config['sockType']) ? $this->config['sockType'] : \SWOOLE_SOCK_TCP,
-            'mode'      => isset($this->config['mode']) ? $this->config['mode'] : \SWOOLE_BASE,
+            'host'      => $this->config['host'] ?? '127.0.0.1',
+            'port'      => $this->config['port'] ?? 0,
+            'sockType'  => $this->config['sockType'] ?? \SWOOLE_SOCK_TCP,
+            'mode'      => $this->config['mode'] ?? \SWOOLE_BASE,
         ];
     }
 

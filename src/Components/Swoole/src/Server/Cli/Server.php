@@ -29,65 +29,56 @@ class Server extends BaseCommand
      * 开启服务
      *
      * @CommandAction(name="start")
-     * @Option(name="name", type=ArgType::STRING, required=false, comments="要启动的服务器名")
      * @Option(name="workerNum", type=ArgType::INT, required=false, comments="工作进程数量")
      * @Option(name="daemon", shortcut="d", type=ArgType::STRING, required=false, comments="是否启用守护进程模式。加 -d 参数则使用守护进程模式。如果后面再跟上文件名，则会把标准输入和输出重定向到该文件")
      *
      * @param string|bool $d
      */
-    public function start(?string $name, ?int $workerNum, $d): void
+    public function start(?int $workerNum, $d): void
     {
-        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($name, $workerNum, $d) {
+        Event::one('IMI.SWOOLE.MAIN_COROUTINE.AFTER', function () use ($d) {
             $this->outImi();
             $this->outStartupInfo();
             PoolManager::clearPools();
             CacheManager::clearPools();
             Event::trigger('IMI.SWOOLE.SERVER.BEFORE_START');
-            if (null === $name)
+            // 创建服务器对象们前置操作
+            Event::trigger('IMI.SERVERS.CREATE.BEFORE');
+            $mainServer = Config::get('@app.mainServer');
+            if (null === $mainServer)
             {
-                // 创建服务器对象们前置操作
-                Event::trigger('IMI.SERVERS.CREATE.BEFORE');
-                $mainServer = Config::get('@app.mainServer');
-                if (null === $mainServer)
+                throw new \RuntimeException('config.mainServer not found');
+            }
+            // 主服务器
+            ServerManager::createServer('main', $mainServer);
+            // 创建监听子服务器端口
+            $subServers = Config::get('@app.subServers', []);
+            if ($subServers)
+            {
+                foreach ($subServers as $name => $config)
                 {
-                    throw new \RuntimeException('config.mainServer not found');
+                    ServerManager::createServer($name, $config, true);
                 }
-                // 主服务器
-                ServerManager::createServer('main', $mainServer);
-                // 创建监听子服务器端口
-                $subServers = Config::get('@app.subServers', []);
-                if ($subServers)
-                {
-                    foreach ($subServers as $name => $config)
-                    {
-                        ServerManager::createServer($name, $config, true);
-                    }
-                }
-                // 创建服务器对象们后置操作
-                Event::trigger('IMI.SERVERS.CREATE.AFTER');
+            }
+            // 创建服务器对象们后置操作
+            Event::trigger('IMI.SERVERS.CREATE.AFTER');
 
-                /** @var ISwooleServer $server */
-                $server = ServerManager::getServer('main', ISwooleServer::class);
-                $swooleServer = $server->getSwooleServer();
-                // 守护进程支持
-                if ($d)
-                {
-                    $options = [
-                        'daemonize' => 1,
-                    ];
-                    if (true !== $d)
-                    {
-                        $options['log_file'] = $d;
-                    }
-                    $swooleServer->set($options);
-                }
-                $server->start();
-            }
-            else
+            /** @var ISwooleServer $server */
+            $server = ServerManager::getServer('main', ISwooleServer::class);
+            $swooleServer = $server->getSwooleServer();
+            // 守护进程支持
+            if ($d)
             {
-                $server = App::createCoServer($name, $workerNum);
-                $server->run();
+                $options = [
+                    'daemonize' => 1,
+                ];
+                if (true !== $d)
+                {
+                    $options['log_file'] = $d;
+                }
+                $swooleServer->set($options);
             }
+            $server->start();
         });
     }
 

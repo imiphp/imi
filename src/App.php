@@ -11,7 +11,6 @@ use Imi\Bean\Scanner;
 use Imi\Core\App\Contract\IApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Event\Event;
-use Imi\Server\ServerManager;
 use Imi\Util\Composer;
 use Imi\Util\Imi;
 use Imi\Util\Text;
@@ -37,11 +36,6 @@ class App
      * 当前是否为调试模式.
      */
     private static bool $isDebug = false;
-
-    /**
-     * 是否协程服务器模式.
-     */
-    private static bool $isCoServer = false;
 
     /**
      * 上下文集合.
@@ -122,27 +116,6 @@ class App
         AnnotationManager::init();
         static::$isInited = true;
         Event::trigger('IMI.INITED');
-    }
-
-    /**
-     * 创建协程服务器.
-     *
-     * @return \Imi\Swoole\Server\CoServer
-     */
-    public static function createCoServer(string $name, int $workerNum): Swoole\Server\CoServer
-    {
-        static::$isCoServer = true;
-        $server = ServerManager::createCoServer($name, $workerNum);
-
-        return $server;
-    }
-
-    /**
-     * 是否协程服务器模式.
-     */
-    public static function isCoServer(): bool
-    {
-        return static::$isCoServer;
     }
 
     /**

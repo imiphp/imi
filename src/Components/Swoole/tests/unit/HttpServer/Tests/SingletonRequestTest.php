@@ -20,7 +20,7 @@ class SingletonRequestTest extends BaseTest
         $time = time();
         $response = $http->get($this->host . 'singletonRequest?time=' . $time);
         $data = $response->json(true);
-        $this->assertEquals($time, isset($data['get']['time']) ? $data['get']['time'] : null);
+        $this->assertEquals($time, $data['get']['time'] ?? null);
     }
 
     /**
@@ -34,7 +34,7 @@ class SingletonRequestTest extends BaseTest
             'time'  => $time,
         ]);
         $data = $response->json(true);
-        $this->assertEquals($time, isset($data['post']['time']) ? $data['post']['time'] : null);
+        $this->assertEquals($time, $data['post']['time'] ?? null);
     }
 
     /**
@@ -51,8 +51,8 @@ class SingletonRequestTest extends BaseTest
                             ])
                             ->get($this->host . 'singletonRequest');
         $data = $response->json(true);
-        $this->assertEquals($time, isset($data['cookie']['time']) ? $data['cookie']['time'] : null);
-        $this->assertEquals($hash, isset($data['cookie']['hash']) ? $data['cookie']['hash'] : null);
+        $this->assertEquals($time, $data['cookie']['time'] ?? null);
+        $this->assertEquals($hash, $data['cookie']['hash'] ?? null);
     }
 
     /**
@@ -87,7 +87,7 @@ class SingletonRequestTest extends BaseTest
                             ])
                             ->get($this->host . 'singletonRequest');
         $data = $response->json(true);
-        $this->assertEquals($time, isset($data['headers']['time']) ? $data['headers']['time'] : null);
-        $this->assertEquals($hash, isset($data['headers']['hash']) ? $data['headers']['hash'] : null);
+        $this->assertEquals($time, $data['headers']['time'] ?? null);
+        $this->assertEquals($hash, $data['headers']['hash'] ?? null);
     }
 }

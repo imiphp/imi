@@ -7,7 +7,6 @@ namespace Imi\Server;
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Server\Contract\IServer;
-use Imi\Swoole\Server\CoServer;
 
 class ServerManager
 {
@@ -17,11 +16,6 @@ class ServerManager
      * @var \Imi\Server\Contract\IServer[]
      */
     private static array $servers = [];
-
-    /**
-     * 协程服务器.
-     */
-    private static CoServer $coServer;
 
     private function __construct()
     {
@@ -90,21 +84,5 @@ class ServerManager
         ]);
 
         return $server;
-    }
-
-    /**
-     * 创建协程服务器.
-     */
-    public static function createCoServer(string $name, int $workerNum): CoServer
-    {
-        return static::$coServer = new CoServer($name, $workerNum);
-    }
-
-    /**
-     * 获取协程服务器.
-     */
-    public static function getCoServer(): CoServer
-    {
-        return static::$coServer;
     }
 }

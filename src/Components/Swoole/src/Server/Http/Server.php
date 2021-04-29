@@ -55,14 +55,7 @@ class Server extends Base
     protected function createServer(): void
     {
         $config = $this->getServerInitConfig();
-        if ($config['coServer'])
-        {
-            $this->swooleServer = new \Co\Http\Server($config['host'], $config['port'], $config['ssl'], $config['reuse_port']);
-        }
-        else
-        {
-            $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
-        }
+        $this->swooleServer = new \Swoole\Http\Server($config['host'], $config['port'], $config['mode'], $config['sockType']);
         $this->https = \defined('SWOOLE_SSL') && Bit::has($config['sockType'], \SWOOLE_SSL);
         $this->http2 = $this->config['configs']['open_http2_protocol'] ?? false;
     }
@@ -89,54 +82,13 @@ class Server extends Base
     protected function getServerInitConfig(): array
     {
         return [
-            'host'       => isset($this->config['host']) ? $this->config['host'] : '0.0.0.0',
-            'port'       => isset($this->config['port']) ? $this->config['port'] : 80,
-            'sockType'   => isset($this->config['sockType']) ? $this->config['sockType'] : \SWOOLE_SOCK_TCP,
-            'mode'       => isset($this->config['mode']) ? $this->config['mode'] : \SWOOLE_PROCESS,
-            'coServer'   => $this->config['coServer'] ?? false,
+            'host'       => $this->config['host'] ?? '0.0.0.0',
+            'port'       => $this->config['port'] ?? 80,
+            'sockType'   => $this->config['sockType'] ?? \SWOOLE_SOCK_TCP,
+            'mode'       => $this->config['mode'] ?? \SWOOLE_BASE,
             'ssl'        => $this->config['ssl'] ?? false,
             'reuse_port' => $this->config['reuse_port'] ?? true,
         ];
-    }
-
-    /**
-     * 绑定服务器事件.
-     */
-    protected function bindEvents(): void
-    {
-        $config = $this->getServerInitConfig();
-        if (!$config['coServer'])
-        {
-            parent::bindEvents();
-
-            return;
-        }
-        if ($event = ($this->config['events']['request'] ?? true))
-        {
-            $this->swooleServer->handle('/', \is_callable($event) ? $event : function (\Swoole\Http\Request $swooleRequest, \Swoole\Http\Response $swooleResponse) {
-                try
-                {
-                    $request = new SwooleRequest($this, $swooleRequest);
-                    $response = new SwooleResponse($this, $swooleResponse);
-                    RequestContext::muiltiSet([
-                        'server'         => $this,
-                        'swooleRequest'  => $swooleRequest,
-                        'swooleResponse' => $swooleResponse,
-                        'request'        => $request,
-                        'response'       => $response,
-                    ]);
-                    $this->trigger('request', [
-                        'request'   => $request,
-                        'response'  => $response,
-                    ], $this, RequestEventParam::class);
-                }
-                catch (\Throwable $ex)
-                {
-                    App::getBean('ErrorLog')->onException($ex);
-                }
-            });
-        }
-        $this->__bindEvents();
     }
 
     /**
@@ -155,11 +107,6 @@ class Server extends Base
                 $this->on('close', [new Http2AfterClose(), 'handle'], ImiPriority::IMI_MIN);
             }
         });
-
-        if ($config['coServer'])
-        {
-            return;
-        }
 
         // Swoole 服务器对象事件监听
 

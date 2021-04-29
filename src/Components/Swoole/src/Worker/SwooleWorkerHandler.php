@@ -49,18 +49,16 @@ class SwooleWorkerHandler implements ISwooleWorker
     {
         if (null === $this->workerId)
         {
+            /** @var ISwooleServer|null $main */
             $main = ServerManager::getServer('main', ISwooleServer::class);
-            if ($main instanceof \Imi\Swoole\Server\Base)
+            if (!$main)
             {
-                $workerId = $main->getSwooleServer()->worker_id;
-                if ($workerId > -1)
-                {
-                    $this->workerId = $workerId;
-                }
+                return null;
             }
-            elseif ($main instanceof \Imi\Swoole\Server\CoServer)
+            $workerId = $main->getSwooleServer()->worker_id;
+            if ($workerId > -1)
             {
-                $this->workerId = $main->getWorkerId();
+                $this->workerId = $workerId;
             }
         }
 

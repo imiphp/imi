@@ -130,7 +130,6 @@ class ProcessManager
                     {
                         throw new \RuntimeException('Lock process lock file error');
                     }
-                    \Imi\Swoole\Util\Process::clearNotInheritableSignalListener();
                     // 加载服务器注解
                     Scanner::scanVendor();
                     Scanner::scanApp();
@@ -264,28 +263,14 @@ class ProcessManager
      */
     public static function runWithManager(string $name, array $args = [], ?bool $redirectStdinStdout = null, ?int $pipeType = null, ?string $alias = null): ?Process
     {
-        if (App::isCoServer())
-        {
-            $processOption = self::get($name);
-            if (null === $processOption)
-            {
-                return null;
-            }
-            ServerManager::getCoServer()->addProcess(static::getProcessCallable($args, $name, $processOption, $alias));
+        $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
+        /** @var ISwooleServer $server */
+        $server = ServerManager::getServer('main', ISwooleServer::class);
+        $swooleServer = $server->getSwooleServer();
+        $swooleServer->addProcess($process);
+        static::$managerProcesses[$name][$alias] = $process;
 
-            return null;
-        }
-        else
-        {
-            $process = static::create($name, $args, $redirectStdinStdout, $pipeType, $alias);
-            /** @var ISwooleServer $server */
-            $server = ServerManager::getServer('main', ISwooleServer::class);
-            $swooleServer = $server->getSwooleServer();
-            $swooleServer->addProcess($process);
-            static::$managerProcesses[$name][$alias] = $process;
-
-            return $process;
-        }
+        return $process;
     }
 
     /**
