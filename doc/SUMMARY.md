@@ -25,7 +25,9 @@
 
 * [高性能 Http 服务](components/httpserver/coServer.md)
 * [路由](components/httpserver/route.md)
-* [中间件](components/httpserver/middleware.md)
+* [请求拦截](components/httpserver/intercept.md)
+  * [AOP 拦截请求](components/httpserver/aop.md)
+  * [中间件](components/httpserver/middleware.md)
 * [控制器](components/httpserver/controller.md)
 * [RESTful](components/httpserver/restful.md)
 * [Session](components/httpserver/session.md)
