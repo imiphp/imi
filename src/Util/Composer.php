@@ -22,18 +22,18 @@ class Composer
      *
      * @return \Composer\Autoload\ClassLoader[]
      */
-    public static function getClassLoaders(): array
+    public static function getClassLoaders(bool $force = false): array
     {
-        if (null !== self::$classLoaders)
+        if (!$force && null !== self::$classLoaders)
         {
             return self::$classLoaders;
         }
         $classLoaders = [];
-        foreach (get_declared_classes() as $class)
+        foreach (spl_autoload_functions() as $autoloadFunction)
         {
-            if (Text::startwith($class, 'ComposerAutoloaderInit'))
+            if (\is_array($autoloadFunction) && isset($autoloadFunction[0]) && $autoloadFunction[0] instanceof ClassLoader)
             {
-                $classLoaders[] = $class::getLoader();
+                $classLoaders[] = $autoloadFunction[0];
             }
         }
 
