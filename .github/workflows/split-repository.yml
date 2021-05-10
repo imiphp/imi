@@ -23,4 +23,6 @@ jobs:
           IMI_ACCESS_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
           SPLIT_CONFIG: ${{ secrets.SPLIT_CONFIG }}
         run: |
-          php -dxdebug.overload_var_dump=1 split-repository/run.php
+          cd split-repository
+          composer update
+          php -dxdebug.overload_var_dump=1 run.php
