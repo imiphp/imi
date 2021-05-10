@@ -640,22 +640,31 @@ STR;
         {
             return static::$imiVersion;
         }
-        $loader = static::getLoader();
-        if ($loader)
+        // composer
+        $loaders = Composer::getClassLoaders();
+        if ($loaders)
         {
-            $ref = ReflectionContainer::getClassReflection(\get_class($loader));
-            $fileName = \dirname($ref->getFileName(), 3) . '/composer.lock';
-            if (is_file($fileName))
+            foreach ($loaders as $loader)
             {
-                $data = json_decode(file_get_contents($fileName), true);
-                foreach ($data['packages'] ?? [] as $item)
+                $ref = ReflectionContainer::getClassReflection(\get_class($loader));
+                $fileName = \dirname($ref->getFileName(), 3) . '/composer.lock';
+                if (is_file($fileName))
                 {
-                    if ('yurunsoft/imi' === $item['name'])
+                    $data = json_decode(file_get_contents($fileName), true);
+                    foreach ($data['packages'] ?? [] as $item)
                     {
-                        return static::$imiVersion = $item['version'];
+                        if ('yurunsoft/imi' === $item['name'])
+                        {
+                            return static::$imiVersion = $item['version'];
+                        }
                     }
                 }
             }
+        }
+        // git
+        if (false !== strpos(shell_exec('git --version') ?? '', 'git version') && preg_match('/\*([^\r\n]+)/', shell_exec('git branch') ?? '', $matches) > 0)
+        {
+            return static::$imiVersion = trim($matches[1]);
         }
 
         return static::$imiVersion = 'Unknown';

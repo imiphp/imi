@@ -94,7 +94,9 @@ jobs:
         run: |
           ./.github/prepare-test.sh swoole
       - name: test
-        run: docker exec swoole php tests/run
+        run: docker exec swoole composer test
+      - name: test components
+        run: docker exec swoole composer test-components
       - name: print logs
         if: failure()
         run: docker exec swoole php .github/print-logs.php

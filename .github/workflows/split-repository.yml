@@ -1,0 +1,26 @@
+name: mirror
+
+on: [push]
+
+jobs:
+  gitee:
+    if: github.repository == 'Yurunsoft/imi' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Configure Private Key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.IMI_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+
+      - name: Split
+        env:
+          IMI_ACCESS_TOKEN: ${{ secrets.IMI_ACCESS_TOKEN }}
+          SPLIT_CONFIG: ${{ secrets.SPLIT_CONFIG }}
+        run: |
+          cd split-repository
+          composer update
+          php -dxdebug.overload_var_dump=1 run.php

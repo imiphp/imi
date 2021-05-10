@@ -245,8 +245,32 @@ abstract class Imi
         {
             $namespace .= '\\';
         }
-        $loader = App::getLoader();
-        if (null === $loader)
+        $loaders = Composer::getClassLoaders();
+        if ($loaders)
+        {
+            foreach ($loaders as $loader)
+            {
+                // 依靠 Composer PSR-4 配置的目录进行定位目录
+                $prefixDirsPsr4 = $loader->getPrefixesPsr4();
+                foreach ($prefixDirsPsr4 as $keyNamespace => $paths)
+                {
+                    $len = \strlen($keyNamespace);
+                    if (substr($namespace, 0, $len) === $keyNamespace)
+                    {
+                        if (isset($paths[1]))
+                        {
+                            return null;
+                        }
+                        $result = File::path($paths[0], str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
+                        if (is_dir($result))
+                        {
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+        else
         {
             // Composer 加载器未赋值，则只能取Main类命名空间下的目录
             foreach (Helper::getMains() as $main)
@@ -263,25 +287,10 @@ abstract class Imi
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
                     $path = \dirname($refClass->getFileName());
                     $result = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
-                    break;
-                }
-            }
-        }
-        else
-        {
-            // 依靠 Composer PSR-4 配置的目录进行定位目录
-            $prefixDirsPsr4 = $loader->getPrefixesPsr4();
-            foreach ($prefixDirsPsr4 as $keyNamespace => $paths)
-            {
-                $len = \strlen($keyNamespace);
-                if (substr($namespace, 0, $len) === $keyNamespace)
-                {
-                    if (isset($paths[1]))
+                    if (is_dir($result))
                     {
-                        return null;
+                        break;
                     }
-                    $result = File::path($paths[0], str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
-                    break;
                 }
             }
         }
@@ -307,8 +316,27 @@ abstract class Imi
         {
             $namespace .= '\\';
         }
-        $loader = App::getLoader();
-        if (null === $loader)
+        $loaders = Composer::getClassLoaders();
+        if ($loaders)
+        {
+            foreach ($loaders as $loader)
+            {
+                // 依靠 Composer PSR-4 配置的目录进行定位目录
+                $prefixDirsPsr4 = $loader->getPrefixesPsr4();
+                foreach ($prefixDirsPsr4 as $keyNamespace => $paths)
+                {
+                    $len = \strlen($keyNamespace);
+                    if (substr($namespace, 0, $len) === $keyNamespace)
+                    {
+                        foreach ($paths as $path)
+                        {
+                            $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
+                        }
+                    }
+                }
+            }
+        }
+        else
         {
             // Composer 加载器未赋值，则只能取Main类命名空间下的目录
             foreach (Helper::getMains() as $main)
@@ -325,22 +353,6 @@ abstract class Imi
                     $refClass = ReflectionContainer::getClassReflection(\get_class($main));
                     $path = \dirname($refClass->getFileName());
                     $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, $namespaceSubPath));
-                }
-            }
-        }
-        else
-        {
-            // 依靠 Composer PSR-4 配置的目录进行定位目录
-            $prefixDirsPsr4 = $loader->getPrefixesPsr4();
-            foreach ($prefixDirsPsr4 as $keyNamespace => $paths)
-            {
-                $len = \strlen($keyNamespace);
-                if (substr($namespace, 0, $len) === $keyNamespace)
-                {
-                    foreach ($paths as $path)
-                    {
-                        $resultPaths[] = File::path($path, str_replace('\\', \DIRECTORY_SEPARATOR, substr($namespace, $len)));
-                    }
                 }
             }
         }

@@ -27,6 +27,9 @@ return [
         'Imi\Util\Co',
         'Imi\RequestContextProxy',
     ],
+    'ignoreNamespace'   => [
+        'Imi\Components\*',
+    ],
     'atomics' => [
         'session',
         'imi.ConnectContextRedisLock',
