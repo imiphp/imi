@@ -70,9 +70,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer update --prefer-dist --no-progress --no-suggest
-          cd tests
-          composer update --prefer-dist --no-progress --no-suggest
+          composer update --prefer-dist --no-progress
+          cd ./split-repository
+          composer install --prefer-dist --no-progress
 
       - name: Cache Analyse
         uses: actions/cache@v2
