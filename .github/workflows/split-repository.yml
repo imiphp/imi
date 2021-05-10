@@ -3,10 +3,12 @@ name: split repository
 on: [push]
 
 jobs:
-  gitee:
+  split-repository:
     if: github.repository == 'Yurunsoft/imi' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/checkout@v2
+
       - name: Configure Private Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.IMI_PRIVATE_KEY }}
