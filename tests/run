@@ -9,7 +9,6 @@ use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
-require __DIR__ . '/vendor/autoload.php';
 
 /**
  * 开启服务器.
@@ -211,7 +210,7 @@ function startServer()
                     echo 'File not found', \PHP_EOL;
                 }
             }
-        }, function (ITaskParam $param, $data) use (&$completeTaskCount, $taskCount, $pool) {
+        }, function (ITaskParam $param, $data) use (&$completeTaskCount) {
             // 异步回调
             ++$completeTaskCount;
         });

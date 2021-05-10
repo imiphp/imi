@@ -10,20 +10,64 @@ use Composer\Autoload\ClassLoader;
 abstract class Composer
 {
     /**
+     * @var array|null
+     */
+    private static $classLoaders = null;
+
+    /**
      * 获取 Composer ClassLoader 对象
      *
      * @return \Composer\Autoload\ClassLoader|null
      */
     public static function getClassLoader(): ?ClassLoader
     {
-        foreach (get_declared_classes() as $class)
+        return self::getClassLoaders()[0] ?? null;
+    }
+
+    /**
+     * 获取 Composer ClassLoader 对象
+     *
+     * @return \Composer\Autoload\ClassLoader[]
+     */
+    public static function getClassLoaders(bool $force = false): array
+    {
+        if (!$force && null !== self::$classLoaders)
         {
-            if (Text::startwith($class, 'ComposerAutoloaderInit'))
+            return self::$classLoaders;
+        }
+        $classLoaders = [];
+        foreach (spl_autoload_functions() as $autoloadFunction)
+        {
+            if (\is_array($autoloadFunction) && isset($autoloadFunction[0]) && $autoloadFunction[0] instanceof ClassLoader)
             {
-                return $class::getLoader();
+                $classLoaders[] = $autoloadFunction[0];
             }
         }
 
-        return null;
+        return self::$classLoaders = $classLoaders;
+    }
+
+    /**
+     * 获取路径对应的所有命名空间.
+     */
+    public static function getPathNamespaces(string $path): array
+    {
+        $result = [];
+        foreach (self::getClassLoaders() as $classLoader)
+        {
+            $realPath = realpath($path);
+            foreach ($classLoader->getPrefixesPsr4() as $namespace => $namespacePaths)
+            {
+                foreach ($namespacePaths as $namespacePath)
+                {
+                    if ($realPath === realpath($namespacePath))
+                    {
+                        $result[] = $namespace;
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 }

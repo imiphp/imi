@@ -1,10 +1,12 @@
-/vendor
+vendor
 /composer.lock
 /ide-helper
 .runtime
 *.log
 .session
 /.idea
-.php_cs.cache
+*.cache
 /mddoc/vendor
 *.lock
+/src/Components/*/vendor
+/split-repository/vendor

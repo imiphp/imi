@@ -30,9 +30,6 @@ jobs:
       - name: prepare
         run: |
           composer update
-          cd tests
-          composer update
-          cd ../
           mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           tests/db/install-db.sh
       - name: test
@@ -94,7 +91,9 @@ jobs:
         run: |
           ./.github/prepare-test.sh swoole
       - name: test
-        run: docker exec swoole php tests/run
+        run: docker exec swoole composer test
+      - name: test components
+        run: docker exec swoole composer test-components
       - name: print logs
         if: failure()
         run: docker exec swoole php .github/print-logs.php
