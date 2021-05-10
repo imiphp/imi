@@ -11,7 +11,6 @@
     <testsuites>
         <testsuite name="JWT">
             <directory>Unit</directory>
-            <file>*.php</file>
         </testsuite>
     </testsuites>
     <listeners>

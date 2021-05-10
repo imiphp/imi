@@ -17,6 +17,8 @@
     },
     "require-dev": {
         "yurunsoft/ide-helper": "~1.0",
+        "yurunsoft/yurun-http": "^4.0.0",
+        "yurunsoft/swoole-co-pool": "~1.0",
         "swoole/ide-helper": "^4.6",
         "phpunit/phpunit": ">=7",
         "friendsofphp/php-cs-fixer": "2.18.3",
