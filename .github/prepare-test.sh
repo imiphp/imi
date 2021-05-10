@@ -13,7 +13,8 @@ docker-compose up -d $containerName \
 && docker exec $containerName php --ri swoole \
 && docker exec $containerName composer -V \
 && docker ps -a \
-&& docker exec $containerName composer update;
+&& docker exec $containerName composer update \
+&& docker exec $containerName bash -c "cd split-repository && composer update";
 
 if [[ $disableDb == "" ]]; then
   n=0

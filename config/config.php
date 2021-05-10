@@ -31,6 +31,9 @@ return [
         'Imi\Cli\bootstrap',
         'Imi\Components\*',
     ],
+    'ignoreNamespace'   => [
+        'Imi\Components\*',
+    ],
     'atomics' => [
         'imi.ConnectContextRedisLock',
         'imi.GroupRedisLock',

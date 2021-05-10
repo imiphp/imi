@@ -7,13 +7,16 @@ parameters:
         - src
         - tests
         - config
+        - split-repository
         - dev
 
     excludePaths:
+        - split-repository/vendor/*
         - src/Components/*/vendor/*
 
     bootstrapFiles:
         - vendor/autoload.php
+        - split-repository/vendor/autoload.php
 
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
