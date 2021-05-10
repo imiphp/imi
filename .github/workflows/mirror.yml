@@ -4,7 +4,7 @@ on: [push, delete, create]
 
 jobs:
   gitee:
-    if: github.repository == 'Yurunsoft/imi'
+    if: github.repository == 'Yurunsoft/imi' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-20.04
     steps:
       - name: Configure Private Key

@@ -10,12 +10,10 @@ parameters:
         - split-repository
 
     excludePaths:
-        - tests/vendor
         - src/Components/*/vendor/*
 
     bootstrapFiles:
         - vendor/autoload.php
-        - tests/vendor/autoload.php
         - split-repository/vendor/autoload.php
 
     treatPhpDocTypesAsCertain: false
