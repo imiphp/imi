@@ -10,6 +10,7 @@ parameters:
         - split-repository
 
     excludePaths:
+        - split-repository/vendor/*
         - src/Components/*/vendor/*
 
     bootstrapFiles:

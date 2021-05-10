@@ -50,7 +50,7 @@
             "Imi\\Dev\\Plugin::dev"
         ],
         "test": "./tests/run",
-        "install-test": "php --ri swoole && composer install && cd ./tests && composer install && cd ../ && composer test",
+        "install-test": "php --ri swoole && composer install && composer test",
         "test-jwt": "tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
         "test-components": [
             "composer test-jwt"
