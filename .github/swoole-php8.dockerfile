@@ -7,3 +7,5 @@ RUN echo "opcache.jit_buffer_size=64M" >> /usr/local/etc/php/conf.d/docker-php-e
 echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 
 RUN pecl install redis > /dev/null && docker-php-ext-enable redis
+
+RUN pecl install hprose > /dev/null && docker-php-ext-enable hprose

@@ -305,7 +305,7 @@ class Connection extends DefaultConnection
     /**
      * With 验证服务器端证书。
      *
-     * @param bool $sslVerifyPeer 验证服务器端证书。
+     * @param bool $sslVerifyPeer 验证服务器端证书
      *
      * @return self
      */
