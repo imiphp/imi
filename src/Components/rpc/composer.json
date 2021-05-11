@@ -1,0 +1,16 @@
+{
+    "name": "imiphp/imi-rpc",
+    "type": "library",
+    "license": "MIT",
+    "description": "在 imi 框架中开发 RPC 服务的基础组件",
+    "require": {
+        "php": ">=7.1.0",
+        "ext-swoole": ">=4.3"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\Rpc\\": "src/"
+        }
+    }
+}

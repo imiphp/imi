@@ -1,0 +1,25 @@
+    {
+        "name": "imiphp/imi-smarty",
+        "type": "library",
+        "license": "MIT",
+        "description": "支持在 imi 框架中使用 Smarty 模版引擎",
+        "require": {
+            "smarty/smarty": "~3.1"
+        },
+        "require-dev": {},
+        "autoload": {
+            "psr-4": {
+                "Imi\\Smarty\\": "src/"
+            },
+            "files": [
+                "src/smarty-plugins/smarty_internal_compile_private_special_variable.php"
+            ]
+        },
+        "autoload-dev": {
+            "psr-4": {
+                "Imi\\Smarty\\Example\\": "example/",
+                "Imi\\Smarty\\Test\\": "tests/unit/"
+            }
+        },
+        "scripts": {}
+    }

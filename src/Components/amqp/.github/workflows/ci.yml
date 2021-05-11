@@ -1,0 +1,38 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  ci-php:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole:
+          [
+            4.6-php7.2,
+            4.6-php7.3,
+            4.6-php7.4,
+            4.6-php8.0,
+            4.5-php7.1,
+            4.5-php7.2,
+            4.5-php7.3,
+            4.5-php7.4,
+            4.5-php8.0,
+            4.4-php7.1,
+            4.4-php7.2,
+            4.4-php7.3,
+            4.4-php7.4,
+          ]
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare
+        run: |
+          ./.github/prepare-test.sh swoole
+      - name: test
+        run: docker exec swoole composer test
+      - name: print logs
+        if: failure()
+        run: docker exec swoole php .github/print-logs.php

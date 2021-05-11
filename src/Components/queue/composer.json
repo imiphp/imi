@@ -1,0 +1,30 @@
+{
+    "name": "imiphp/imi-queue",
+    "type": "library",
+    "license": "MIT",
+    "description": "imi 框架的队列组件，使用 Redis 作为持久化",
+    "require": {},
+    "require-dev": {
+        "yurunsoft/ide-helper": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\Queue\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "QueueApp\\": "example/",
+            "Imi\\Queue\\Test\\": "tests/"
+        }
+    },
+    "scripts": {},
+    "extra": {
+        "ide-helper": {
+            "list": [
+                "swoole",
+                "redis"
+            ]
+        }
+    }
+}

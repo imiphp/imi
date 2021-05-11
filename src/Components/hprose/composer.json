@@ -1,0 +1,18 @@
+{
+    "name": "imiphp/imi-hprose",
+    "type": "library",
+    "license": "MIT",
+    "description": "在 imi 框架中集成 Hprose 服务开发",
+    "require": {
+        "hprose/hprose": "^2.0",
+        "hprose/hprose-swoole": "dev-master",
+        "imiphp/imi-rpc": "^1.2.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\Hprose\\": "src/",
+            "Imi\\Server\\Hprose\\": "src/Imi-Server-Hprose/"
+        }
+    }
+}

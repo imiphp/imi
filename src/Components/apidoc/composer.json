@@ -1,0 +1,34 @@
+{
+    "name": "imiphp/imi-apidoc",
+    "type": "library",
+    "license": "MIT",
+    "description": "imi 框架 HTTP API 文档生成器，支持 Swagger！",
+    "require": {
+        "zircote/swagger-php": "^3.0",
+        "phpdocumentor/reflection-docblock": "^4.3"
+    },
+    "require-dev": {
+        "yurunsoft/ide-helper": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\ApiDoc\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ApiDocApp\\": "example/",
+            "Imi\\ApiDoc\\Test\\": "tests/",
+            "Imi\\Server\\ApiDoc\\": "src/imi/Server/ApiDoc/"
+        }
+    },
+    "scripts": {},
+    "extra": {
+        "ide-helper": {
+            "list": [
+                "swoole",
+                "redis"
+            ]
+        }
+    }
+}

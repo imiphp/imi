@@ -1,0 +1,56 @@
+sudo: required
+language: php
+
+matrix:
+  include:
+  - php: '7.1'
+    env: SWOOLE_VERSION="v4.3.6"
+  - php: '7.2'
+    env: SWOOLE_VERSION="v4.3.6"
+  - php: '7.3'
+    env: SWOOLE_VERSION="v4.3.6"
+  - php: '7.1'
+    env: SWOOLE_VERSION="master"
+  - php: '7.2'
+    env: SWOOLE_VERSION="master"
+  - php: '7.3'
+    env: SWOOLE_VERSION="master"
+  - php: '7.4snapshot'
+    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false
+  - php: 'nightly'
+    env: SWOOLE_VERSION="master" DISABLE_XDEBUG=false INSTALL_REDIS_EXT=true
+  - php: '7.1'
+    env: SWOOLE_VERSION="v4.4.3"
+  - php: '7.2'
+    env: SWOOLE_VERSION="v4.4.3"
+  - php: '7.3'
+    env: SWOOLE_VERSION="v4.4.3"
+  allow_failures:
+  - env: SWOOLE_VERSION="master"
+  - php: nightly
+  - php: 7.4snapshot
+
+addons:
+  apt:
+    packages:
+    - unzip
+
+install:
+  - wget https://github.com/swoole/swoole-src/archive/$SWOOLE_VERSION.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j && make install && cd -
+  - echo "extension = swoole.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
+before_script:
+  - if [[ $DISABLE_XDEBUG != false ]]; then
+      phpenv config-rm xdebug.ini;
+    fi
+  - curl -sSfL -o ~/.phpenv/versions/$(phpenv version-name)/bin/phpunit https://phar.phpunit.de/phpunit-7.phar
+  - export TEST_PHPUNIT_PATH=~/.phpenv/versions/$(phpenv version-name)/bin/phpunit
+  - composer update
+  - cd ./tests && composer update && cd ../
+  - php --ri swoole
+
+script:
+  - ./tests/phpunit -c ./tests/phpunit.xml
+
+after_failure:
+  - php ./.travis/output-server-log.php
