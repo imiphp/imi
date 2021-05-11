@@ -28,6 +28,10 @@ foreach ([
     {
         echo file_get_contents($filename), \PHP_EOL;
     }
+    elseif (is_file($fileName = $dir . $server . '/logs/' . $date . '.log'))
+    {
+        echo file_get_contents($filename), \PHP_EOL;
+    }
     else
     {
         echo 'File not found', \PHP_EOL;
@@ -46,6 +50,10 @@ foreach ([
     $filename = $dir . $component . '/example/.runtime/logs/cli.log';
     echo '[components.', $component, '] ', \PHP_EOL, 'File: ', $filename, \PHP_EOL;
     if (is_file($filename))
+    {
+        echo file_get_contents($filename), \PHP_EOL;
+    }
+    elseif (is_file($fileName = $dir . $component . '/example/.runtime/logs/' . $date . '.log'))
     {
         echo file_get_contents($filename), \PHP_EOL;
     }
