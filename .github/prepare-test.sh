@@ -14,10 +14,11 @@ docker-compose up -d $containerName \
 && docker exec $containerName composer -V \
 && docker ps -a \
 && docker exec $containerName composer update \
-&& docker exec $containerName bash -c "cd split-repository && composer update" \
-&& docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper:2181 --create --partitions 3 --replication-factor 1 --topic queue-imi-1 \
-&& docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper:2181 --create --partitions 3 --replication-factor 1 --topic QueueTest1
-;
+&& docker exec $containerName bash -c "cd split-repository && composer update"
+
+(docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper:2181 --create --partitions 3 --replication-factor 1 --topic queue-imi-1 \
+&& docker exec kafka1 /opt/kafka/bin/kafka-topics.sh --zookeeper zookeeper:2181 --create --partitions 3 --replication-factor 1 --topic QueueTest1)
+|| echo "no kafka"
 
 if [[ $disableDb == "" ]]; then
   n=0
