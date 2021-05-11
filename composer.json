@@ -53,17 +53,24 @@
         "test-swoole": "src/Components/Swoole/tests/swoole-phpunit -c src/Components/Swoole/tests/phpunit.xml",
         "test-workerman": "tests/phpunit -c src/Components/Workerman/tests/phpunit.xml",
         "test-workerman-gateway": "tests/phpunit -c src/Components/WorkermanGateway/tests/phpunit.xml --testsuite workerman && tests/phpunit -c src/Components/WorkermanGateway/tests/phpunit.xml --testsuite swoole",
-        "test-fpm": "tests/phpunit -c src/Components/Fpm/tests/phpunit.xml",
         "test-jwt": "tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
-        "test-all": [
-            "composer test",
-            "composer test-fpm",
-            "composer test-swoole",
-            "composer test-workerman",
-            "composer test-workerman-gateway",
-            "composer test-jwt"
-        ],
-        "install-test-all": "php --ri swoole && composer install && cd ../ && composer test-all"
+        "test-queue": "tests/phpunit -c src/Components/queue/tests/phpunit.xml",
+        "test-amqp": "tests/phpunit -c src/Components/amqp/tests/phpunit.xml",
+        "test-kafka": "tests/phpunit -c src/Components/kafka/tests/phpunit.xml",
+        "test-grpc": "tests/phpunit -c src/Components/grpc/tests/phpunit.xml",
+        "test-snowflake": "tests/phpunit -c src/Components/snowflake/tests/phpunit.xml",
+        "test-mqtt": "tests/phpunit -c src/Components/mqtt/tests/phpunit.xml",
+        "test-smarty": "tests/phpunit -c src/Components/smarty/tests/phpunit.xml",
+        "test-components": [
+            "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
+            "composer test-queue",
+            "composer test-amqp",
+            "composer test-kafka",
+            "composer test-grpc",
+            "composer test-snowflake",
+            "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
+            "composer test-smarty"
+        ]
     },
     "extra": {
         "ide-helper": {

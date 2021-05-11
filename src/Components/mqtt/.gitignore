@@ -1,0 +1,3 @@
+/vendor
+/composer.lock
+/example/bin/server.pid

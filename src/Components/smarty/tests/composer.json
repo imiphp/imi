@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php": ">=7.1.0",
+        "yurunsoft/yurun-http": "~3.2"
+    }
+}

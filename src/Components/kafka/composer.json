@@ -1,0 +1,40 @@
+{
+    "name": "imiphp/imi-kafka",
+    "type": "library",
+    "license": "MIT",
+    "description": "支持在 imi 框架中使用 Kafka 客户端",
+    "require": {
+        "imiphp/imi-queue": "^1.2.0",
+        "longlang/phpkafka": "^1.1"
+    },
+    "require-dev": {
+        "yurunsoft/yurun-http": "^4.0.0",
+        "yurunsoft/ide-helper": "~1.0",
+        "swoole/ide-helper": "^4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\Kafka\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KafkaApp\\": "example/",
+            "Imi\\Kafka\\Test\\": "tests/",
+            "Imi\\Kafka\\Dev\\": "dev/"
+        }
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Kafka\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Kafka\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Kafka\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Kafka\\Dev\\Dev::postUpdate"
+    },
+    "extra": {
+        "ide-helper": {
+            "list": [
+                "redis"
+            ]
+        }
+    }
+}

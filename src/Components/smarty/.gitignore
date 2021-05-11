@@ -1,0 +1,7 @@
+vendor
+/composer.lock
+.runtime
+*.log
+.session
+/.idea
+*.lock

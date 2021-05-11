@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+$vendor = dirname(__DIR__, 3) . '/vendor/';
+$loader = require_once $vendor . 'autoload.php';
+
+\Imi\App::setLoader($loader);
+
+\Imi\App::setDebug(true);
+
+require $vendor . '/bin/imi';

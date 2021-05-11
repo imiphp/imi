@@ -1,0 +1,35 @@
+{
+    "name": "imiphp/imi-grpc",
+    "type": "library",
+    "license": "MIT",
+    "description": "在 imi 框架中集成 gRPC 服务开发、客户端调用及连接池",
+    "require": {
+        "ext-swoole": ">=4.4.0",
+        "imiphp/imi-rpc": "^1.2.0",
+        "yurunsoft/yurun-http": "^4.0.0",
+        "google/protobuf": "^3.10.0",
+        "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\Grpc\\": "src/grpc",
+            "Imi\\Server\\Grpc\\": "src/server/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GrpcApp\\": "example/",
+            "Grpc\\": "example/grpc/Grpc",
+            "GPBMetadata\\": "example/grpc/GPBMetadata",
+            "Imi\\Grpc\\Test\\": "tests/Grpc",
+            "Imi\\Grpc\\Dev\\": "dev/"
+        }
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Grpc\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Grpc\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Grpc\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Grpc\\Dev\\Dev::postUpdate"
+    }
+}

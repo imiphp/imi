@@ -1,0 +1,17 @@
+{
+    "name": "imiphp/imi-access-control",
+    "type": "library",
+    "license": "MIT",
+    "description": "imi 框架的权限控制组件",
+    "require": {
+        "php": ">=7.1.0",
+        "ext-swoole": ">=4.3"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\AC\\": "src/",
+            "Imi\\AC\\Test\\": "test/"
+        }
+    }
+}

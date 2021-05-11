@@ -1,0 +1,4 @@
+/vendor
+*.cache
+*.lock
+*.pid

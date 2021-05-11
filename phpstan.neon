@@ -29,5 +29,8 @@ parameters:
         - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
         - '#Access to static property \S+ on trait.+#'
         - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
+        - '#Property GPBMetadata\\Grpc::\$\S+ has no typehint specified.#'
+        - '#Property Grpc\\[^:]+::\$\S+ has no typehint specified.#'
+        - '#Method GPBMetadata\\Grpc::initOnce\(\) has no return typehint specified.#'
         - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
         - '#Constant IMI_PATH not found.#'
