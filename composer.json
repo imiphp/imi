@@ -62,9 +62,9 @@
         "test-components": [
             "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
             "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-queue) || echo 'skip queue'",
-            "composer test-amqp",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-amqp) || echo 'skip amqp'",
             "composer test-kafka",
-            "composer test-grpc",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-grpc) || echo 'skip grpc'",
             "composer test-snowflake",
             "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
             "composer test-smarty"
