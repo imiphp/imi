@@ -20,11 +20,11 @@ class TaskCron implements ITaskHandler
      * @param TaskParam      $param
      * @param \Swoole\Server $server
      * @param int            $taskID
-     * @param int            $WorkerID
+     * @param int            $workerID
      *
      * @return mixed
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $workerID)
     {
         CronUtil::reportCronResult($param->getData()['id'], true, '');
 

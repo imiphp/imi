@@ -1,0 +1,21 @@
+{
+    "name": "imiphp/imi-swoole-tracker",
+    "type": "library",
+    "license": "MIT",
+    "description": "在 imi 框架中接入 Swoole Tracker 监控",
+    "require": {
+        "php": ">=7.1.0",
+        "ext-swoole": ">=4.3"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\SwooleTracker\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\SwooleTracker\\Example\\": "example/"
+        }
+    }
+}

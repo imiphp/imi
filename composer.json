@@ -52,8 +52,22 @@
         "test": "./tests/run",
         "install-test": "php --ri swoole && composer install && composer test",
         "test-jwt": "tests/phpunit -c src/Components/jwt/tests/phpunit.xml",
+        "test-queue": "tests/phpunit -c src/Components/queue/tests/phpunit.xml",
+        "test-amqp": "tests/phpunit -c src/Components/amqp/tests/phpunit.xml",
+        "test-kafka": "tests/phpunit -c src/Components/kafka/tests/phpunit.xml",
+        "test-grpc": "tests/phpunit -c src/Components/grpc/tests/phpunit.xml",
+        "test-snowflake": "tests/phpunit -c src/Components/snowflake/tests/phpunit.xml",
+        "test-mqtt": "tests/phpunit -c src/Components/mqtt/tests/phpunit.xml",
+        "test-smarty": "tests/phpunit -c src/Components/smarty/tests/phpunit.xml",
         "test-components": [
-            "composer test-jwt"
+            "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-queue) || echo 'skip queue'",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-amqp) || echo 'skip amqp'",
+            "composer test-kafka",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-grpc) || echo 'skip grpc'",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-snowflake) || echo 'skip snowflake'",
+            "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
+            "composer test-smarty"
         ]
     },
     "extra": {

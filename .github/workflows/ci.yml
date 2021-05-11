@@ -52,7 +52,9 @@ jobs:
         run: |
           ./.github/prepare-test.sh swoole-php8
       - name: test
-        run: docker exec swoole-php8 php tests/run
+        run: docker exec swoole-php8 composer test
+      - name: test components
+        run: docker exec swoole-php8 composer test-components
       - name: print logs
         if: failure()
         run: docker exec swoole-php8 php .github/print-logs.php

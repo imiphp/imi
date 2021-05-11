@@ -7,7 +7,7 @@ namespace Imi\Util\Traits;
  */
 trait TNotRequiredDataToProperty
 {
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
         if ($data)
         {

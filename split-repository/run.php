@@ -314,6 +314,7 @@ foreach ($storeRepoMap as $name => $urls)
                             mkdir($dir, 0777, true);
                         }
                         file_put_contents($repoFilePath, file_get_contents($originFileName));
+                        execCMD('git update-index --chmod=' . fileperms($originFileName) . ' ' . $repoFilePath);
                         chdir($repoPath);
                         execCMD('git add ' . $repoFilePath, 'git add');
                         $needCommit = true;
@@ -337,6 +338,7 @@ foreach ($storeRepoMap as $name => $urls)
                             mkdir($dir, 0777, true);
                         }
                         file_put_contents($repoFilePath, file_get_contents($originFileName));
+                        execCMD('git update-index --chmod=' . fileperms($originFileName) . ' ' . $repoFilePath);
                         chdir($repoPath);
                         execCMD('git add ' . $repoFilePath, 'git add');
                         $needCommit = true;

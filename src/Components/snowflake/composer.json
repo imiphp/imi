@@ -1,0 +1,21 @@
+{
+    "name": "imiphp/imi-snowflake",
+    "type": "library",
+    "license": "MIT",
+    "description": "imi 框架的雪花算法生成组件",
+    "require": {
+        "godruoyi/php-snowflake": "^1.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Imi\\Snowflake\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Snowflake\\Test\\": "tests/"
+        }
+    },
+    "scripts": {}
+}

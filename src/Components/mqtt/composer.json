@@ -1,0 +1,33 @@
+{
+    "name": "imiphp/imi-mqtt",
+    "type": "library",
+    "license": "MIT",
+    "description": "在 imi 框架中开发 MQTT 服务端，并且内置了一个 MQTT 客户端",
+    "require": {
+        "binsoul/net-mqtt": "^0.8.0"
+    },
+    "require-dev": {
+        "yurunsoft/ide-helper": "~1.0",
+        "swoole/ide-helper": "^4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imi\\MQTT\\": "src/",
+            "Imi\\Server\\MQTT\\": "src/imi/Server/MQTT/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MQTTApp\\": "example/",
+            "Imi\\MQTT\\Test\\": "tests/"
+        }
+    },
+    "scripts": {},
+    "extra": {
+        "ide-helper": {
+            "list": [
+                "redis"
+            ]
+        }
+    }
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package grpc;
+option php_generic_services = true;
+
+service AuthService {
+    rpc Login (LoginRequest) returns (LoginResponse);
+}
+
+message LoginRequest {
+    string phone = 1;       // 手机号
+    string password = 2;    // 密码
+}
+
+message LoginResponse {
+    bool success = 1;       // 是否成功
+    string error = 2;       // 错误信息
+}

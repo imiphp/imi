@@ -27,7 +27,7 @@ class Test implements ITaskHandler
 	 * @param integer $WorkerID
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $workerID)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();
@@ -125,7 +125,7 @@ class Test implements ITaskHandler
 	 * @param integer $WorkerID
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerID)
+	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $workerID)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();

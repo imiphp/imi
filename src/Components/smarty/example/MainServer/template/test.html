@@ -1,0 +1,18 @@
+CONTENT:
+{$content}
+GET:
+{foreach from=$smarty.get item=value key=key }
+{$key}:{$value}
+{/foreach}
+POST:
+{foreach from=$smarty.post item=value key=key }
+{$key}:{$value}
+{/foreach}
+COOKIE:
+{foreach from=$smarty.cookies item=value key=key }
+{$key}:{$value}
+{/foreach}
+REQUEST:
+{foreach from=$smarty.request item=value key=key }
+{$key}:{$value}
+{/foreach}

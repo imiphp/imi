@@ -16,28 +16,38 @@ if (version_compare(\SWOOLE_VERSION, '4.4.4', '='))
 
 $statusCode = 0;
 go(function () use (&$statusCode) {
-    go(function () use (&$statusCode) {
-        try
+    try
+    {
+        if ($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
         {
-            if ($phpunitPath = getenv('TEST_PHPUNIT_PATH'))
-            {
-                require $phpunitPath;
-            }
-            $statusCode = PHPUnit\TextUI\Command::main(false);
+            require $phpunitPath;
         }
-        catch (\Swoole\ExitException $e)
+        $statusCode = PHPUnit\TextUI\Command::main(false);
+    }
+    catch (\Swoole\ExitException $e)
+    {
+        $statusCode = $e->getStatus();
+    }
+    catch (PHPUnit\TextUI\Exception $e)
+    {
+        $previous = $e->getPrevious();
+        if ($previous instanceof \Swoole\ExitException)
         {
-            $statusCode = $e->getStatus();
-        }
-        if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
-        {
-            Timer::clearAll();
+            $statusCode = $previous->getStatus();
         }
         else
         {
-            Event::exit();
+            throw $e;
         }
-    });
+    }
+    if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
+    {
+        Timer::clearAll();
+    }
+    else
+    {
+        Event::exit();
+    }
 });
 Event::wait();
 exit($statusCode);
