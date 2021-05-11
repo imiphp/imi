@@ -7,4 +7,4 @@ RUN pecl install redis > /dev/null && docker-php-ext-enable redis
 
 COPY install-env.sh install-env.sh
 
-RUN install-env.sh
+RUN ["/bin/bash", "-c", "install-env.sh"] 
