@@ -23,13 +23,15 @@ foreach ([
 ] as $server)
 {
     $filename = $dir . $server . '/logs/cli.log';
-    echo '[', $server, '] ', \PHP_EOL, 'File: ', $filename, \PHP_EOL;
+    echo '[', $server, '] ', \PHP_EOL;
     if (is_file($filename))
     {
+        echo 'File: ', $filename, \PHP_EOL;
         echo file_get_contents($filename), \PHP_EOL;
     }
     elseif (is_file($fileName = $dir . $server . '/logs/' . $date . '.log'))
     {
+        echo 'File: ', $filename, \PHP_EOL;
         echo file_get_contents($filename), \PHP_EOL;
     }
     else
@@ -48,13 +50,15 @@ foreach ([
 ] as $component)
 {
     $filename = $dir . $component . '/example/.runtime/logs/cli.log';
-    echo '[components.', $component, '] ', \PHP_EOL, 'File: ', $filename, \PHP_EOL;
+    echo '[components.', $component, '] ', \PHP_EOL;
     if (is_file($filename))
     {
+        echo 'File: ', $filename, \PHP_EOL;
         echo file_get_contents($filename), \PHP_EOL;
     }
     elseif (is_file($fileName = $dir . $component . '/example/.runtime/logs/' . $date . '.log'))
     {
+        echo 'File: ', $filename, \PHP_EOL;
         echo file_get_contents($filename), \PHP_EOL;
     }
     else

@@ -30,7 +30,7 @@ return [
                 'class'        => \Imi\Log\Handler\File::class,
                 'options'      => [
                     'levels'        => [LogLevel::INFO],
-                    'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
+                    'fileName'      => dirname(__DIR__) . '/.runtime/logs/{Y}-{m}-{d}.log',
                     'format'        => '{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}',
                 ],
             ],
@@ -47,7 +47,7 @@ return [
                         LogLevel::NOTICE,
                         LogLevel::WARNING,
                     ],
-                    'fileName'      => dirname(__DIR__) . '/logs/{Y}-{m}-{d}.log',
+                    'fileName'      => dirname(__DIR__) . '/.runtime/logs/{Y}-{m}-{d}.log',
                     'format'        => "{Y}-{m}-{d} {H}:{i}:{s} [{level}] {message}\n{trace}",
                     'traceFormat'   => '#{index}  {call} called at [{file}:{line}]',
                     'traceMinimum'  => true,
