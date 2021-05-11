@@ -10,7 +10,7 @@ class SmartyTest extends TestCase
     /**
      * @var string
      */
-    protected $host = 'http://127.0.0.1:13000/';
+    protected $host = 'http://127.0.0.1:13456/';
 
     public function testSmarty(): void
     {

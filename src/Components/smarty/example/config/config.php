@@ -25,7 +25,7 @@ return [
         'namespace'    => 'Imi\Smarty\Example\MainServer',
         'type'         => Imi\Server\Type::HTTP,
         'host'         => '127.0.0.1',
-        'port'         => 13000,
+        'port'         => 13456,
         'configs'      => [
             'worker_num'        => 1,
             'task_worker_num'   => 1,
