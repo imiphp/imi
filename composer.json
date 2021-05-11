@@ -66,7 +66,7 @@
             "composer test-kafka",
             "composer test-grpc",
             "composer test-snowflake",
-            "composer test-mqtt",
+            "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
             "composer test-smarty"
         ]
     },

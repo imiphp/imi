@@ -29,6 +29,18 @@ go(function () use (&$statusCode) {
         {
             $statusCode = $e->getStatus();
         }
+        catch (PHPUnit\TextUI\Exception $e)
+        {
+            $previous = $e->getPrevious();
+            if ($previous instanceof \Swoole\ExitException)
+            {
+                $statusCode = $previous->getStatus();
+            }
+            else
+            {
+                throw $e;
+            }
+        }
         if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
         {
             Timer::clearAll();

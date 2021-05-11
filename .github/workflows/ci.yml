@@ -35,8 +35,6 @@ jobs:
       - name: test
         run: |
           composer test
-      - name: test components
-        run: composer test-components
 
   ci-php8-jit:
     runs-on: ubuntu-20.04

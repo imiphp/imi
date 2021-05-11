@@ -8,4 +8,4 @@ echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.
 
 RUN pecl install redis > /dev/null && docker-php-ext-enable redis
 
-RUN pecl install hprose > /dev/null && docker-php-ext-enable hprose
+RUN ./install-env.sh
