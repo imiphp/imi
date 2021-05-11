@@ -5,4 +5,6 @@ RUN docker-php-ext-install bcmath mysqli pdo_mysql > /dev/null
 
 RUN pecl install redis > /dev/null && docker-php-ext-enable redis
 
-RUN ./install-env.sh
+COPY install-env.sh install-env.sh
+
+RUN install-env.sh

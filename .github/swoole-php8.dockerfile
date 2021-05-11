@@ -8,4 +8,6 @@ echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.
 
 RUN pecl install redis > /dev/null && docker-php-ext-enable redis
 
-RUN ./install-env.sh
+COPY install-env.sh install-env.sh
+
+RUN install-env.sh
