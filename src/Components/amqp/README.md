@@ -491,6 +491,6 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 捐赠
 
-<img src="https://raw.githubusercontent.com/imiphp/imi-amqp/master/res/pay.png"/>
+<img src="https://cdn.jsdelivr.net/gh/Yurunsoft/IMI@dev/res/pay.png"/>
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……

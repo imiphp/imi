@@ -11,6 +11,8 @@
 
 本组件仅支持使用 `Redis` 作为中间件，可以针对方法、接口设置限流，通过设置`总容量、单位时间内生成填充的数量、每次扣除数量`实现限流。
 
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+
 ## Composer
 
 本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:

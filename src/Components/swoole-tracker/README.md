@@ -21,6 +21,8 @@ Swoole Tracker: https://www.swoole-cloud.com/tracker.html
 
 * 所有工具零部署成本，后台一键开启关闭各种检测，完美支持PHP7。
 
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+
 ## Swoole Tracker
 
 目前`Swoole Tracker`的`v2.5.0`版本支持自动生成应用名称并创建应用，无需修改任何代码，生成的应用名称格式为：
@@ -193,6 +195,6 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 捐赠
 
-<img src="https://raw.githubusercontent.com/imiphp/imi-swoole-tracker/master/res/pay.png"/>
+<img src="https://cdn.jsdelivr.net/gh/Yurunsoft/IMI@dev/res/pay.png"/>
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……

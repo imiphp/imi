@@ -11,6 +11,8 @@
 
 未来将实现：中间件、过滤器、`Http` 协议、`WebSocket` 协议……
 
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+
 ## Composer
 
 本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:

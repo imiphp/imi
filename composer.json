@@ -60,8 +60,8 @@
         "test-mqtt": "tests/phpunit -c src/Components/mqtt/tests/phpunit.xml",
         "test-smarty": "tests/phpunit -c src/Components/smarty/tests/phpunit.xml",
         "test-components": [
-            "composer test-jwt",
-            "composer test-queue",
+            "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-queue) || echo 'skip queue'",
             "composer test-amqp",
             "composer test-kafka",
             "composer test-grpc",
