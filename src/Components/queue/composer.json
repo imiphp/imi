@@ -5,7 +5,8 @@
     "description": "imi 框架的队列组件，使用 Redis 作为持久化",
     "require": {},
     "require-dev": {
-        "yurunsoft/ide-helper": "~1.0"
+        "yurunsoft/ide-helper": "~1.0",
+        "swoole/ide-helper": "^4.6"
     },
     "autoload": {
         "psr-4": {
@@ -22,7 +23,6 @@
     "extra": {
         "ide-helper": {
             "list": [
-                "swoole",
                 "redis"
             ]
         }

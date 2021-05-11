@@ -8,7 +8,8 @@
         "phpdocumentor/reflection-docblock": "^4.3"
     },
     "require-dev": {
-        "yurunsoft/ide-helper": "~1.0"
+        "yurunsoft/ide-helper": "~1.0",
+        "swoole/ide-helper": "^4.6"
     },
     "autoload": {
         "psr-4": {
@@ -26,7 +27,6 @@
     "extra": {
         "ide-helper": {
             "list": [
-                "swoole",
                 "redis"
             ]
         }

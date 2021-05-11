@@ -33,3 +33,24 @@ foreach ([
         echo 'File not found', \PHP_EOL;
     }
 }
+
+$dir = dirname(__DIR__) . '/src/Components/';
+foreach ([
+    'amqp',
+    'grpc',
+    'kafka',
+    'mqtt',
+    'smarty',
+] as $component)
+{
+    $filename = $dir . $component . '/example/.runtime/logs/cli.log';
+    echo '[components.', $component, '] ', \PHP_EOL, 'File: ', $filename, \PHP_EOL;
+    if (is_file($filename))
+    {
+        echo file_get_contents($filename), \PHP_EOL;
+    }
+    else
+    {
+        echo 'File not found', \PHP_EOL;
+    }
+}
