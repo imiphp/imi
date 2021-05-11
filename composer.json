@@ -65,7 +65,7 @@
             "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-amqp) || echo 'skip amqp'",
             "composer test-kafka",
             "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-grpc) || echo 'skip grpc'",
-            "composer test-snowflake",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-snowflake) || echo 'skip snowflake'",
             "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
             "composer test-smarty"
         ]
