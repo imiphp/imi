@@ -4,6 +4,7 @@ namespace Imi\ApiDoc\Tool;
 
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Bean\ReflectionUtil;
 use Imi\Server\Route\Annotation\Action;
 use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Route\Annotation\Route;
@@ -24,7 +25,6 @@ use OpenApi\Annotations\Schema;
 use OpenApi\Context;
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionType;
 
 /**
  * @Tool("doc")
@@ -131,7 +131,7 @@ class DocTool
         foreach ($controllerClasses as $controllerClass)
         {
             // 控制器注解
-            /** @var Controller $controllerAnnotation */
+            /** @var Controller|null $controllerAnnotation */
             $controllerAnnotation = AnnotationManager::getClassAnnotations($controllerClass, Controller::class)[0] ?? null;
             if (!$controllerAnnotation)
             {
@@ -187,7 +187,7 @@ class DocTool
                                 'in'            => 'query',
                                 'required'      => !$param->isOptional(),
                                 'description'   => $docParam ? (string) $docParam->getDescription() : \OpenApi\Annotations\UNDEFINED,
-                                '_context'      => $context,
+                                '_context'      => $context ?? null,
                             ]);
                         }
                     }
@@ -199,9 +199,9 @@ class DocTool
                             $docParam = $this->getDocParam($docParams, $param->getName());
                             $properties[] = new Property([
                                 'property'  => $param->getName(),
-                                'type'      => $this->parsePhpType($param->getType()),
+                                'type'      => ReflectionUtil::getTypeCode($param->getType(), $refMethod->getDeclaringClass()->getName()),
                                 'title'     => $docParam ? (string) $docParam->getDescription() : \OpenApi\Annotations\UNDEFINED,
-                                '_context'  => $context,
+                                '_context'  => $context ?? null,
                             ]);
                         }
                         $schema = new Schema([
@@ -209,19 +209,19 @@ class DocTool
                             'title'      => $controllerClass . '::' . $method . '@request',
                             'type'       => 'object',
                             'properties' => $properties,
-                            '_context'   => $context,
+                            '_context'   => $context ?? null,
                         ]);
                         $requestContent = new MediaType([
                             'mediaType' => 'application/json',
                             'schema'    => $schema,
-                            '_context'  => $context,
+                            '_context'  => $context ?? null,
                         ]);
                         $requestBody = new RequestBody([
                             'request'   => $controllerClass . '::' . $method . '@request',
                             'content'   => [
                                 $requestContent,
                             ],
-                            '_context'  => $context,
+                            '_context'  => $context ?? null,
                         ]);
                     }
 
@@ -263,27 +263,12 @@ class DocTool
         }
     }
 
-    private function parsePhpType(?ReflectionType $type)
-    {
-        if (!$type)
-        {
-            return 'string';
-        }
-        switch ($type->getName())
-        {
-            case 'integer':
-                return 'integer';
-            case 'float':
-                return 'number';
-            case 'boolean':
-                return 'boolean';
-            case 'array':
-                return 'array';
-            default:
-                return 'string';
-        }
-    }
-
+    /**
+     * @param array  $docParams
+     * @param string $paramName
+     *
+     * @return \phpDocumentor\Reflection\DocBlock\Tags\Param|null
+     */
     private function getDocParam(array $docParams, string $paramName)
     {
         foreach ($docParams as $param)
@@ -294,5 +279,7 @@ class DocTool
                 return $param;
             }
         }
+
+        return null;
     }
 }

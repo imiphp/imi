@@ -24,7 +24,7 @@ class OperationService
      *
      * @param int $id
      *
-     * @return \Imi\AC\Model\Operation
+     * @return \Imi\AC\Model\Operation|null
      */
     public function get($id)
     {
@@ -40,7 +40,7 @@ class OperationService
      * @param int         $index
      * @param string      $description
      *
-     * @return \Imi\AC\Model\Operation
+     * @return \Imi\AC\Model\Operation|false
      */
     public function create($name, $code = null, $parentId = 0, $index = 0, $description = '')
     {
@@ -92,7 +92,7 @@ class OperationService
      *
      * @param int $id
      *
-     * @return void
+     * @return bool
      */
     public function delete($id)
     {
@@ -110,7 +110,7 @@ class OperationService
      *
      * @param string $code
      *
-     * @return \Imi\AC\Model\Operation
+     * @return \Imi\AC\Model\Operation|null
      */
     public function getByCode($code)
     {

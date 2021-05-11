@@ -111,7 +111,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => '127.0.0.1',
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => 6379,
                     'password'  => null,
                 ],
@@ -125,7 +125,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'      => '127.0.0.1',
+                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'      => 6379,
                     'password'  => null,
                 ],

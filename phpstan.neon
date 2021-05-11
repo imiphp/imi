@@ -29,6 +29,7 @@ parameters:
         - '#Access to static property \S+ on trait.+#'
         - '#Access to an undefined property Swoole\\Http\\Response::\$isEnded.#'
         - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
+        - '#Property GPBMetadata\\Grpc::\$\S+ has no typehint specified.#'
         - '#Property Grpc\\[^:]+::\$\S+ has no typehint specified.#'
         - '#Method GPBMetadata\\Grpc::initOnce\(\) has no return typehint specified.#'
         - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'

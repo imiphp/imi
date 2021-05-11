@@ -40,7 +40,7 @@ return [
                 ],
                 'resource'    => [
                     'dbClass'     => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'username'    => 'root',
                     'password'    => 'root',
                     'database'    => 'db_imi_access_control',
@@ -57,7 +57,7 @@ return [
                 ],
                 'resource'    => [
                     'dbClass'     => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'username'    => 'root',
                     'password'    => 'root',
                     'database'    => 'db_imi_access_control',

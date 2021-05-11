@@ -19,7 +19,7 @@ class Role
     /**
      * 角色记录.
      *
-     * @var \Imi\AC\Model\Role
+     * @var \Imi\AC\Model\Role|null
      */
     private $roleInfo;
 
@@ -54,6 +54,10 @@ class Role
      */
     protected $operationService;
 
+    /**
+     * @param mixed  $pk
+     * @param string $pkType
+     */
     public function __construct($pk, $pkType = 'id')
     {
         $this->__autoInject();

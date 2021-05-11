@@ -10,6 +10,8 @@ use Imi\Model\Annotation\Column;
  * OperationTreeItem.
  *
  * @Inherit
+ *
+ * @property \Imi\AC\Model\Filter\OperationTreeItem[] $children
  */
 class OperationTreeItem extends Operation
 {

@@ -25,7 +25,7 @@ class IndexController extends HttpController
      * @Action
      * @Route("/")
      *
-     * @return void
+     * @return mixed
      */
     public function index()
     {
@@ -40,14 +40,16 @@ class IndexController extends HttpController
      * @param string $phone
      * @param string $password
      *
-     * @return void
+     * @return mixed
      */
     public function testLogin($phone, $password)
     {
         $request = new LoginRequest();
         $request->setPhone($phone);
         $request->setPassword($password);
+        // @phpstan-ignore-next-line
         $response = $this->authService->login($request, \Grpc\LoginResponse::class);
+        // @phpstan-ignore-next-line
         if (!$response)
         {
             throw new \RuntimeException('GG');

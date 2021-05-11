@@ -54,6 +54,9 @@ class Member
      */
     protected $operationService;
 
+    /**
+     * @param int $memberId
+     */
     public function __construct($memberId)
     {
         $this->__autoInject();

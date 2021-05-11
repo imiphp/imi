@@ -53,6 +53,9 @@ class MemberService
      */
     protected $operationService;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $this->roleService = App::getBean($this->roleServiceBean);
@@ -139,7 +142,7 @@ class MemberService
         $roleIds = $this->roleService->selectIdsByCodes($roles);
         if (!$roleIds)
         {
-            return [];
+            return;
         }
         $this->memberRoleRelationModel::query()->where('member_id', '=', $memberId)
                                    ->whereIn('role_id', $roleIds)
@@ -267,7 +270,7 @@ class MemberService
         $operationIds = $this->operationService->selectIdsByCodes($operations);
         if (!$operationIds)
         {
-            return [];
+            return;
         }
         $this->memberOperationRelationModel::query()->where('member_id', '=', $memberId)
                                         ->whereIn('operation_id', $operationIds)

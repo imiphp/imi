@@ -64,7 +64,7 @@ return [
             ],
             // 数组资源配置
             'resource' => [
-                'host'    => '127.0.0.1',
+                'host'    => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                 'port'    => 6379,
                 // 是否自动序列化变量
                 'serialize'    => false,

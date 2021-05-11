@@ -50,7 +50,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'username'    => 'root',
                     'password'    => 'root',
                     'database'    => 'mysql',
@@ -67,7 +67,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                     'username'    => 'root',
                     'password'    => 'root',
                     'database'    => 'mysql',
@@ -85,7 +85,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'        => 6379,
                 ],
             ],
@@ -98,7 +98,7 @@ return [
                     ],
                 ],
                 'resource'    => [
-                    'host'        => '127.0.0.1',
+                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
                     'port'        => 6379,
                 ],
             ],

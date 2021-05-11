@@ -41,6 +41,9 @@ class RoleService
      */
     protected $operationService;
 
+    /**
+     * @return void
+     */
     public function __init()
     {
         $this->operationService = App::getBean($this->operationServiceBean);
@@ -51,7 +54,7 @@ class RoleService
      *
      * @param int $id
      *
-     * @return \Imi\AC\Model\Role
+     * @return \Imi\AC\Model\Role|null
      */
     public function get($id)
     {
@@ -63,7 +66,7 @@ class RoleService
      *
      * @param string $code
      *
-     * @return \Imi\AC\Model\Role
+     * @return \Imi\AC\Model\Role|null
      */
     public function getByCode($code)
     {
@@ -123,7 +126,7 @@ class RoleService
      * @param string|null $code
      * @param string      $description
      *
-     * @return \Imi\AC\Model\Role
+     * @return \Imi\AC\Model\Role|false
      */
     public function create($name, $code = null, $description = '')
     {
@@ -169,7 +172,7 @@ class RoleService
      *
      * @param int $id
      *
-     * @return void
+     * @return bool
      */
     public function delete($id)
     {
@@ -262,7 +265,7 @@ class RoleService
         $operationIds = $this->operationService->selectIdsByCodes($operations);
         if (!$operationIds)
         {
-            return [];
+            return;
         }
         $this->roleOperationRelationModel::query()->where('role_id', '=', $roleId)
                                       ->whereIn('operation_id', $operationIds)
