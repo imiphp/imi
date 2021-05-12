@@ -53,19 +53,23 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ### 扩展组件
 
-* [MQTT](../../../../imiphp/imi-mqtt)
-* [RPC](../../../../imiphp/imi-rpc)
-* [gRPC](../../../../imiphp/imi-grpc)
-* [Hprose](../../../../imiphp/imi-hprose)
-* [AMQP](../../../../imiphp/imi-amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
-* [JWT](../../../../imiphp/imi-jwt) (在 imi 框架中非常方便地接入 jwt)
-* [权限控制](../../../../imiphp/imi-access-control)
-* [Smarty 模版引擎](../../../../imiphp/imi-smarty)
-* [限流](../../../../imiphp/imi-rate-limit)
-* [跨进程变量共享](../../../../imiphp/imi-shared-memory)
-* [Swoole Tracker](../../../../imiphp/imi-swoole-tracker)
-* [雪花算法发号器](../../../../imiphp/imi-snowflake)
-* [Swagger API 文档生成](../../../../imiphp/imi-apidoc)
+* [MQTT](src/Components/mqtt)
+* [RPC](src/Components/rpc)
+* [gRPC](src/Components/grpc)
+* [Hprose](src/Components/hprose)
+* [消息队列](src/Components/queue)
+* [AMQP](src/Components/amqp) (支持 AMQP 协议的消息队列都可用，如：RabbitMQ)
+* [Kafka](src/Components/kafka)
+* [JWT](src/Components/jwt) (在 imi 框架中非常方便地接入 jwt)
+* [权限控制](src/Components/access-control)
+* [Smarty 模版引擎](src/Components/smarty)
+* [限流](src/Components/rate-limit)
+* [跨进程变量共享](src/Components/shared-memory)
+* [雪花算法发号器](src/Components/snowflake)
+* [Swagger API 文档生成](src/Components/apidoc)
+* [Swoole Tracker](src/Components/swoole-tracker)
+
+> 这些组件都已经在 imi 主仓库中维护
 
 ## 开始使用
 
