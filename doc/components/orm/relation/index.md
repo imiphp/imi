@@ -26,7 +26,7 @@
 
 `@OneToMany("模型类名")`
 
-`@OneToMany(model="模型类名")`
+`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc")`
 
 ### @ManyToMany
 
@@ -34,7 +34,7 @@
 
 **用法：**
 
-`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表")`
+`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc")`
 
 ### @PolymorphicOneToOne
 
@@ -50,7 +50,7 @@
 
 **用法：**
 
-`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值")`
+`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc")`
 
 ### @PolymorphicManyToMany
 
@@ -58,7 +58,7 @@
 
 **用法：**
 
-`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值")`
+`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc")`
 
 ### @PolymorphicToOne
 
@@ -80,7 +80,7 @@
 
 **用法：**
 
-`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值")`
+`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc")`
 
 ### @JoinFrom
 
