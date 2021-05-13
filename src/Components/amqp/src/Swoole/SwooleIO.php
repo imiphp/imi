@@ -233,7 +233,7 @@ class SwooleIO extends AbstractIO
         return 1;
     }
 
-    protected function startHeartbeat()
+    protected function startHeartbeat(): void
     {
         if ($this->heartbeat > 0)
         {
@@ -246,7 +246,7 @@ class SwooleIO extends AbstractIO
         }
     }
 
-    protected function stopHeartbeat()
+    protected function stopHeartbeat(): void
     {
         if ($this->heartbeatTimerId)
         {
