@@ -45,6 +45,11 @@ class SwooleIO extends AbstractIO
     private $buffer = '';
 
     /**
+     * @var int|null
+     */
+    protected $heartbeatTimerId = null;
+
+    /**
      * @param string        $host
      * @param int           $port
      * @param float         $connection_timeout
@@ -92,6 +97,7 @@ class SwooleIO extends AbstractIO
             throw new AMQPRuntimeException(sprintf('Error Connecting to server(%s): %s ', $sock->errCode, swoole_strerror($sock->errCode)), $sock->errCode);
         }
         $this->sock = $sock;
+        $this->startHeartbeat();
     }
 
     /**
@@ -193,6 +199,7 @@ class SwooleIO extends AbstractIO
      */
     public function close()
     {
+        $this->stopHeartbeat();
         if ($this->sock)
         {
             $this->sock->close();
@@ -224,5 +231,27 @@ class SwooleIO extends AbstractIO
         $this->check_heartbeat();
 
         return 1;
+    }
+
+    protected function startHeartbeat()
+    {
+        if ($this->heartbeat > 0)
+        {
+            $this->heartbeatTimerId = \Swoole\Timer::tick($this->heartbeat * 1000, function () {
+                if ($this->sock && $this->sock->isConnected())
+                {
+                    $this->write_heartbeat();
+                }
+            });
+        }
+    }
+
+    protected function stopHeartbeat()
+    {
+        if ($this->heartbeatTimerId)
+        {
+            \Swoole\Timer::clear($this->heartbeatTimerId);
+            $this->heartbeatTimerId = null;
+        }
     }
 }
