@@ -1,0 +1,16 @@
+version: "3.4"
+services:
+  swoole-only:
+    container_name: "swoole-only"
+    build:
+      context: .
+      dockerfile: ./env.dockerfile
+      args:
+        SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
+    volumes:
+      - "${GITHUB_WORKSPACE}:/imi:rw"
+    working_dir: /imi
+    ulimits:
+      core: -1
+    privileged: true
+    command: tail -f /etc/group

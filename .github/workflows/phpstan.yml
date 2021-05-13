@@ -6,80 +6,21 @@ jobs:
   tests:
     runs-on: ubuntu-20.04
     env:
-      php-versions: 7.4
-      extensions: sockets, curl
-      ext-key: cache-v1
+      SWOOLE_DOCKER_VERSION: 4.6-php7.4
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup cache environment
-        id: extcache
-        uses: shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ env.php-versions }}
-          extensions: ${{ env.extensions }}
-          key: ${{ env.ext-key }}
-
-      - name: Cache extensions
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.extcache.outputs.dir }}
-          key: ${{ steps.extcache.outputs.key }}
-          restore-keys: ${{ steps.extcache.outputs.key }}
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.php-versions }}
-          extensions: ${{ env.extensions }}
-          tools: pecl, composer:v2
-          coverage: none
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Swoole
+      - name: Prepare
         run: |
-          apt-fast install libcurl4-openssl-dev -y
-          sudo pecl update-channels
-          MAKEFLAGS="-j $(nproc)" sudo -E sudo pecl install -f \
-            -D ' \
-              enable-openssl="yes" enable-sockets="yes" enable-http2="yes" \
-              enable-swoole-json="yes" enable-swoole-curl="yes"  \
-            ' \
-            swoole
-
-      - name: Show Version
-        run: |
-          composer -V
-          php -m
-          php --ri swoole
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ env.php-versions }}-
-            ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: |
-          composer update --prefer-dist --no-progress
-          cd ./split-repository
-          composer install --prefer-dist --no-progress
-
-      - name: Cache Analyse
-        uses: actions/cache@v2
-        with:
-          path: /tmp/phpstan
-          key: phpstan-analyse
-          restore-keys: phpstan-analyse
+          docker-compose -f ./.github/phpstan.docker-composer.yml up -d swoole-only
+          docker exec swoole-only php -v
+          docker exec swoole-only php -m
+          docker exec swoole-only php --ri swoole
+          docker exec swoole-only composer -V
+          docker exec swoole-only composer update --prefer-dist --no-progress
+          docker exec swoole-only cd split-repository
+          docker exec swoole-only composer install --prefer-dist --no-progress
 
       - name: Analyse
-        run: ./vendor/bin/phpstan analyse --memory-limit 1G
+        run: docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G
