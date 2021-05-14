@@ -65,7 +65,7 @@
             "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
             "composer test-queue",
             "composer test-amqp",
-            "composer test-kafka",
+            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-kafka) || echo 'skip kafka'",
             "composer test-grpc",
             "composer test-snowflake",
             "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
