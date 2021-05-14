@@ -284,7 +284,16 @@ class Redis implements IHandler
      */
     public function lock(string $key, ?callable $callable = null): bool
     {
-        return Lock::getInstance($this->lockId, $key)->lock($callable);
+        if (null === $this->lockId)
+        {
+            $callable();
+
+            return true;
+        }
+        else
+        {
+            return Lock::getInstance($this->lockId, $key)->lock($callable);
+        }
     }
 
     /**
@@ -292,6 +301,13 @@ class Redis implements IHandler
      */
     public function unlock(): bool
     {
-        return Lock::unlock($this->lockId);
+        if (null === $this->lockId)
+        {
+            return true;
+        }
+        else
+        {
+            return Lock::unlock($this->lockId);
+        }
     }
 }
