@@ -39,7 +39,7 @@ abstract class BaseQueueTest extends TestCase
                 }
             }
             $this->assertInstanceOf(\Imi\Queue\Contract\IMessage::class, $message);
-            $this->assertEquals('', $messageId);
+            $this->assertEquals('', $message->getMessageId());
             $this->assertEquals('testPush', $message->getMessage());
             $driver->success($message);
         }

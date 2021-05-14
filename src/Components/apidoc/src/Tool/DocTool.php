@@ -13,7 +13,6 @@ use Imi\Tool\Annotation\Operation;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\ArgType;
 use Imi\Util\ClassObject;
-use Imi\Util\Text;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\MediaType;
@@ -252,7 +251,7 @@ class DocTool
 
                     foreach ($requestMethods as $requestMethod)
                     {
-                        $operationClassName = '\OpenApi\Annotations\\' . Text::toPascalName($requestMethod);
+                        $operationClassName = '\OpenApi\Annotations\\' . ucfirst(strtolower($requestMethod));
 
                         /** @var AnnotationsOperation $operationAnnotation */
                         $operationAnnotation = new $operationClassName([
