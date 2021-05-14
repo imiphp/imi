@@ -5,7 +5,7 @@
     "description": "imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。",
     "require": {
         "php": ">=7.1.0",
-        "ext-swoole": ">=4.3",
+        "ext-swoole": ">=4.4",
         "yurunsoft/swoole-co-pool": "^1.1.0",
         "yurunsoft/doctrine-annotations": "^1.73.0",
         "psr/log": "~1.0",
@@ -61,11 +61,11 @@
         "test-smarty": "tests/phpunit -c src/Components/smarty/tests/phpunit.xml",
         "test-components": [
             "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
-            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-queue) || echo 'skip queue'",
-            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-amqp) || echo 'skip amqp'",
+            "composer test-queue",
+            "composer test-amqp",
             "composer test-kafka",
-            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-grpc) || echo 'skip grpc'",
-            "(php -r \"exit(version_compare(SWOOLE_VERSION, '4.4', '>=') ? 0 : 1);\" && composer test-snowflake) || echo 'skip snowflake'",
+            "composer test-grpc",
+            "composer test-snowflake",
             "(php -r \"exit(version_compare(PHP_VERSION, '7.2', '>=') ? 0 : 1);\" && composer test-mqtt) || echo 'skip mqtt'",
             "composer test-smarty"
         ]

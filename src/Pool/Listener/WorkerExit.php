@@ -19,13 +19,9 @@ class WorkerExit implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        // @phpstan-ignore-next-line
-        if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
+        foreach (PoolManager::getNames() as $name)
         {
-            foreach (PoolManager::getNames() as $name)
-            {
-                PoolManager::getInstance($name)->close();
-            }
+            PoolManager::getInstance($name)->close();
         }
     }
 }
