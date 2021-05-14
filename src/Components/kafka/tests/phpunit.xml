@@ -12,8 +12,8 @@
         <testsuite name="Kafka">
             <directory>Kafka</directory>
         </testsuite>
-        <!-- <testsuite name="Queue">
+        <testsuite name="Queue">
             <directory>Queue</directory>
-        </testsuite> -->
+        </testsuite>
     </testsuites>
 </phpunit>

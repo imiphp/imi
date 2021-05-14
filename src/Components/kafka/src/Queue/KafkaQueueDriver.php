@@ -39,6 +39,13 @@ class KafkaQueueDriver implements IQueueDriver
     protected $name;
 
     /**
+     * 分组ID.
+     *
+     * @var string|null
+     */
+    public $groupId = null;
+
+    /**
      * @var Consumer[]
      */
     private $consumers;
@@ -196,11 +203,26 @@ class KafkaQueueDriver implements IQueueDriver
         return 0;
     }
 
+    public function close(): void
+    {
+        foreach ($this->consumers as $consumer)
+        {
+            $consumer->close();
+        }
+        $this->consumers = [];
+    }
+
     protected function getConsumer(string $topic): Consumer
     {
         if (!isset($this->consumers[$topic]))
         {
-            return $this->consumers[$topic] = KafkaPool::createConsumer($this->poolName, $topic);
+            $config = [];
+            if (null !== $this->groupId)
+            {
+                $config['groupId'] = $this->groupId;
+            }
+
+            return $this->consumers[$topic] = KafkaPool::createConsumer($this->poolName, $topic, $config);
         }
 
         return $this->consumers[$topic];

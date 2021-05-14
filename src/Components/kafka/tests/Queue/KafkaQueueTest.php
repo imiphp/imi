@@ -11,6 +11,7 @@ class KafkaQueueTest extends BaseQueueTest
     {
         return App::getBean('KafkaQueueDriver', 'imi-kafka-queue-test', [
             'poolName' => 'kafka',
+            'groupId'  => 'queue-test',
         ]);
     }
 }

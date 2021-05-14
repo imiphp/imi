@@ -257,7 +257,9 @@ class TestProcess extends BaseProcess
                     // 驱动类所需要的参数数组
                     'config'        => [
                         // Kafka 连接池名称
-                        'poolName'      => 'kafka',
+                        'poolName' => 'kafka',
+                        // 分组ID，如果不传或为null则使用连接池中的配置
+                        'groupId'  => 'g1',
                     ],
                 ],
             ],
