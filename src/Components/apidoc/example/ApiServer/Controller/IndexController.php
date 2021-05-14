@@ -38,6 +38,26 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
+     * @Route(method={"GET", "POST"})
+     *
+     * @return void
+     */
+    public function multiMethod1(int $id)
+    {
+    }
+
+    /**
+     * @Action
+     * @Route(method={"PUT", "POST"})
+     *
+     * @return void
+     */
+    public function multiMethod2(int $id)
+    {
+    }
+
+    /**
+     * @Action
      * @Route("register")
      * @OA\Get(
      *     path="/register",

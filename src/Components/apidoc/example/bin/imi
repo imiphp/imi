@@ -1,10 +1,8 @@
 #!/usr/bin/env php
 <?php
-$vendor = dirname(__DIR__, 2) . '/vendor/';
-$loader = require_once $vendor . 'autoload.php';
-
-\Imi\App::setLoader($loader);
+require_once dirname(__DIR__, 2) . '/vendor/' . 'autoload.php';
+require_once dirname(__DIR__, 5) . '/vendor/' . 'autoload.php';
 
 \Imi\App::setDebug(true);
 
-require $vendor . 'bin/imi';
+require dirname(\Imi\Util\Imi::getNamespacePath('Imi')) . '/bin/imi';

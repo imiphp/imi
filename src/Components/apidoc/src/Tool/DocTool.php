@@ -13,6 +13,7 @@ use Imi\Tool\Annotation\Operation;
 use Imi\Tool\Annotation\Tool;
 use Imi\Tool\ArgType;
 use Imi\Util\ClassObject;
+use Imi\Util\Text;
 use OpenApi\Analysis;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\MediaType;
@@ -158,9 +159,6 @@ class DocTool
                     /** @var Route $route */
                     $route = AnnotationManager::getMethodAnnotations($controllerClass, $method, Route::class)[0] ?? null;
 
-                    // method
-                    $requestMethod = $route->method ?? 'GET';
-
                     // path
                     $requestPath = $route->url ?? $method;
                     if ('/' !== ($requestPath[0] ?? null))
@@ -173,10 +171,22 @@ class DocTool
                     /** @var \phpDocumentor\Reflection\DocBlock\Tags\Param[] $docParams */
                     $docParams = $docblock->getTagsByName('param');
 
+                    // method
+                    $requestMethods = (array) ($route->method ?? 'GET');
+                    $hasGet = false;
+                    foreach ($requestMethods as $requestMethod)
+                    {
+                        if ('get' === strtolower($requestMethod))
+                        {
+                            $hasGet = true;
+                            break;
+                        }
+                    }
+
                     // parameters
                     $requestParameters = [];
                     $requestBody = null;
-                    if ('GET' === $requestMethod)
+                    if ($hasGet)
                     {
                         foreach ($refMethod->getParameters() as $param)
                         {
@@ -225,9 +235,7 @@ class DocTool
                         ]);
                     }
 
-                    $operationClassName = '\OpenApi\Annotations\\' . ucfirst($requestMethod);
-
-                    $context = new Context([
+                    $methodContext = new Context([
                         'comment'   => $refMethod->getDocComment() ?? '',
                         'filename'  => $refMethod->getFileName(),
                         'line'      => $refMethod->getStartLine(),
@@ -239,25 +247,30 @@ class DocTool
                     $defaultResponse = new Response([
                         'response'      => 200,
                         'description'   => 'ok',
-                        '_context'      => $context,
+                        '_context'      => $methodContext,
                     ]);
 
-                    /** @var AnnotationsOperation $operationAnnotation */
-                    $operationAnnotation = new $operationClassName([
-                        'path'          => $requestPath,
-                        'parameters'    => $requestParameters,
-                        'responses'     => [
-                            $defaultResponse,
-                        ],
-                        'tags'          => [$controllerClass],
-                        '_context'      => $context,
-                    ]);
-                    if ($requestBody)
+                    foreach ($requestMethods as $requestMethod)
                     {
-                        $operationAnnotation->requestBody = $requestBody;
-                    }
+                        $operationClassName = '\OpenApi\Annotations\\' . Text::toPascalName($requestMethod);
 
-                    $analysis->addAnnotation($operationAnnotation, $context);
+                        /** @var AnnotationsOperation $operationAnnotation */
+                        $operationAnnotation = new $operationClassName([
+                            'path'          => $requestPath,
+                            'parameters'    => $requestParameters,
+                            'responses'     => [
+                                $defaultResponse,
+                            ],
+                            'tags'          => [$controllerClass],
+                            '_context'      => $methodContext,
+                        ]);
+                        if ($requestBody)
+                        {
+                            $operationAnnotation->requestBody = $requestBody;
+                        }
+
+                        $analysis->addAnnotation($operationAnnotation, $methodContext);
+                    }
                 }
             }
         }
