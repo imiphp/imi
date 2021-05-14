@@ -270,6 +270,7 @@ foreach ($storeRepoMap as $name => $urls)
     {
         chdir($mainRepoPath);
         execCMD('git --no-pager show ' . $commit . ' --stat', '提交记录', $result);
+        parseShowData($result, $author, $date, $message);
         $needCommit = false;
         foreach ($result as $row)
         {
@@ -359,8 +360,6 @@ foreach ($storeRepoMap as $name => $urls)
             continue;
         }
         chdir($mainRepoPath);
-        execCMD('git show ' . $commit, '', $showData);
-        parseShowData($showData, $author, $date, $message);
         $authorName = shell_exec('git show ' . $commit . ' -s --format=%cn');
         $authorEmail = shell_exec('git show ' . $commit . ' -s --format=%ce');
 
