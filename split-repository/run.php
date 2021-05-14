@@ -369,8 +369,8 @@ foreach ($storeRepoMap as $name => $urls)
         {
             execCMD('git branch -M ' . $branch, '');
         }
-        execCMD('git status', 'git status', $result);
-        if (false === strpos(implode(\PHP_EOL, $result), 'nothing to commit, working tree clean'))
+        execCMD('git status -s', '', $result);
+        if ($result)
         {
             execCMD('git config user.name "' . $authorName . '" && git config user.email "' . $authorEmail . '" && git commit --author "' . $author . '" --date "' . $date . '" -am \'' . $message . '\'', 'git commit');
         }
