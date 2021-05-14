@@ -38,9 +38,9 @@ class MemoryTable implements IHandler
     /**
      * 锁 ID.
      *
-     * @var string
+     * @var string|null
      */
-    protected $lockId;
+    protected $lockId = null;
 
     /**
      * 读取数据.

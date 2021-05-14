@@ -72,9 +72,9 @@ class Redis implements IHandler
     /**
      * 锁 ID.
      *
-     * @var string
+     * @var string|null
      */
-    protected $lockId;
+    protected $lockId = null;
 
     /**
      * 心跳Timer的ID.
@@ -393,7 +393,16 @@ class Redis implements IHandler
      */
     public function lock(string $key, $callable = null)
     {
-        return Lock::getInstance($this->lockId, $key)->lock($callable);
+        if (null === $this->lockId)
+        {
+            $callable();
+
+            return true;
+        }
+        else
+        {
+            return Lock::getInstance($this->lockId, $key)->lock($callable);
+        }
     }
 
     /**
@@ -403,6 +412,13 @@ class Redis implements IHandler
      */
     public function unlock()
     {
-        return Lock::unlock($this->lockId);
+        if (null === $this->lockId)
+        {
+            return true;
+        }
+        else
+        {
+            return Lock::unlock($this->lockId);
+        }
     }
 }
