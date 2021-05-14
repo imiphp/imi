@@ -19,7 +19,8 @@ function execCMD(string $cmd, string $description = '', ?array &$result = null):
     echo implode(\PHP_EOL, $result), \PHP_EOL;
     if (0 !== $resultCode)
     {
-        throw new \RuntimeException(sprintf('cmd status code is %s', $resultCode));
+        echo sprintf('cmd status code is %s', $resultCode), PHP_EOL;
+        exit($resultCode);
     }
     echo '--end--', \PHP_EOL;
 }
@@ -224,7 +225,7 @@ foreach ($storeRepoMap as $name => $urls)
     $url = $urls[0];
     chdir(__DIR__);
     $repoName = basename($url, '.git');
-    $repoPath = '/tmp/' . $repoName . '/';
+    $repoPath = __DIR__ . $repoName . '/';
     if (is_dir($repoPath))
     {
         chdir($repoPath);
@@ -232,7 +233,7 @@ foreach ($storeRepoMap as $name => $urls)
     }
     else
     {
-        chdir('/tmp');
+        chdir(__DIR__);
         execCMD('git clone ' . $url, '克隆' . $url);
         chdir($repoPath);
     }
@@ -308,7 +309,6 @@ foreach ($storeRepoMap as $name => $urls)
                     $originFileName = $mainRepoPath . $to;
                     if (is_file($originFileName))
                     {
-                        chdir($mainRepoPath);
                         $dir = dirname($repoFilePath);
                         if (!is_dir($dir))
                         {
@@ -332,7 +332,6 @@ foreach ($storeRepoMap as $name => $urls)
                     $originFileName = $mainRepoPath . $fileName;
                     if (is_file($originFileName))
                     {
-                        chdir($mainRepoPath);
                         $dir = dirname($repoFilePath);
                         if (!is_dir($dir))
                         {
@@ -368,7 +367,7 @@ foreach ($storeRepoMap as $name => $urls)
         {
             execCMD('git branch -M ' . $branch, '');
         }
-        execCMD('git status -s', '', $result);
+        execCMD('git status -s -u no', '', $result);
         if ($result)
         {
             execCMD('git config user.name "' . $authorName . '" && git config user.email "' . $authorEmail . '" && git commit --author "' . $author . '" --date "' . $date . '" -am \'' . $message . '\'', 'git commit');
