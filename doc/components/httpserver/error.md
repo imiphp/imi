@@ -85,10 +85,9 @@ class JsonErrorHandler implements IErrorHandler
 				'message'	=>	'error',
 			];
 		}
-		RequestContext::get('response')
-		->withAddedHeader(RequestHeader::CONTENT_TYPE, MediaType::APPLICATION_JSON)
-		->write(Json::encode($data))
-		->send();
+        /** @var \Imi\Server\View\Handler\Json $jsonView */
+        $jsonView = RequestContext::getServerBean('JsonView');
+        $jsonView->handle($data, [], RequestContext::get('response'))->send();
 
 		// 如有需要，可以手动记录下日志：
 		\Imi\App::getBean('ErrorLog')->onException($throwable);
