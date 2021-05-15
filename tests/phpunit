@@ -40,14 +40,7 @@ go(function () use (&$statusCode) {
             throw $e;
         }
     }
-    if (version_compare(\SWOOLE_VERSION, '4.4', '>='))
-    {
-        Timer::clearAll();
-    }
-    else
-    {
-        Event::exit();
-    }
+    Timer::clearAll();
 });
 Event::wait();
 exit($statusCode);

@@ -5,7 +5,7 @@
     "description": "在 imi 框架中开发 RPC 服务的基础组件",
     "require": {
         "php": ">=7.1.0",
-        "ext-swoole": ">=4.3"
+        "ext-swoole": ">=4.4"
     },
     "require-dev": {},
     "autoload": {
