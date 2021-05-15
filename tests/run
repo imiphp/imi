@@ -132,7 +132,7 @@ function startServer()
             'checkStatus'   => 'checkHttpServerStatus',
         ],
         'RedisSessionServer'    => [
-            'start'         => __DIR__ . '/unit/RedisSessionServer/bin/' . (version_compare(\SWOOLE_VERSION, '4.4', '>=') ? 'start.sh' : 'start-sw4.3.sh'),
+            'start'         => __DIR__ . '/unit/RedisSessionServer/bin/start.sh',
             'stop'          => __DIR__ . '/unit/RedisSessionServer/bin/stop.sh',
             'checkStatus'   => 'checkRedisSessionServerStatus',
         ],
@@ -257,14 +257,7 @@ function test()
     }
     proc_close($processHndler);
 
-    if (version_compare(\SWOOLE_VERSION, '4.4', '<') && 255 === ($status['exitcode'] ?? 0) && 'OK' === substr($records2[0] ?? '', 0, 2))
-    {
-        exit(0);
-    }
-    else
-    {
-        exit($status['exitcode'] ?? 0);
-    }
+    exit($status['exitcode'] ?? 0);
 }
 
 register_shutdown_function(function () {

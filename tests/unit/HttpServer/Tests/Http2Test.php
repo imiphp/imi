@@ -26,12 +26,6 @@ class Http2Test extends BaseTest
      */
     public function testUri()
     {
-        // @phpstan-ignore-next-line
-        if (version_compare(\SWOOLE_VERSION, '4.4', '<'))
-        {
-            $this->markTestSkipped('Http2 in Swoole 4.3.x has some bugs...');
-        }
-
         $this->go(function () {
             $http = new HttpRequest();
             $http->protocolVersion = '2.0';
