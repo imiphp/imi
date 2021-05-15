@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --ignore-platform-reqs
+        run: composer update --prefer-dist --no-progress --ignore-platform-reqs --no-scripts
 
       - name: Cache Tests
         uses: actions/cache@v2
