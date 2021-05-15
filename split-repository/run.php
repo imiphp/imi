@@ -19,7 +19,7 @@ function execCMD(string $cmd, string $description = '', ?array &$result = null):
     echo implode(\PHP_EOL, $result), \PHP_EOL;
     if (0 !== $resultCode)
     {
-        echo sprintf('cmd status code is %s', $resultCode), PHP_EOL;
+        echo sprintf('cmd status code is %s', $resultCode), \PHP_EOL;
         exit($resultCode);
     }
     echo '--end--', \PHP_EOL;
