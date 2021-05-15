@@ -152,7 +152,7 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 - [PHP](https://php.net/) >= 7.1
 - [Composer](https://getcomposer.org/)
-- [Swoole](https://www.swoole.com/) >= 4.3.0
+- [Swoole](https://www.swoole.com/) >= 4.4.0
 
 ## 版权信息
 
