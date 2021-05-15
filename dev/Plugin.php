@@ -24,8 +24,13 @@ class Plugin
             if (is_file($fileName))
             {
                 $output->writeln('[Update <info>' . $dir->getBasename() . '</info>]');
-                passthru('cd "' . $dir->getPathname() . '" && ' . $cmd);
+                passthru('cd "' . $dir->getPathname() . '" && ' . $cmd, $exitCode);
+
+                $exitCode = $exitCode > 0 ? "fail($exitCode)" : 'success';
+                $output->writeln('[Update <info>' . $dir->getBasename() . '</info>] status:' . $exitCode);
             }
         }
+
+        exit(0);
     }
 }

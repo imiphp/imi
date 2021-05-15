@@ -82,13 +82,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-${{ matrix.swoole }}-
             ${{ runner.os }}-composer-
-      - name: Cache docker
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        with:
-          key: env-docker-cache-{hash}
-          restore-keys: |
-            env-docker-cache-
       - name: Prepare
         run: |
           docker-compose -f ./.github/ci.docker-compose.yml up -d swoole
