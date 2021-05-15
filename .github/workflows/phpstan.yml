@@ -11,16 +11,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-
+            ${{ runner.os }}-composer-
+
+      - name: Cache analyse
+        uses: actions/cache@v2
+        with:
+          path: /tmp/phpstan
+          key: phpstan-analyse
+          restore-keys: phpstan-analyse
+
+      - name: Cache docker
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+
       - name: Prepare
         run: |
-          docker-compose -f ./.github/phpstan.docker-composer.yml up -d swoole-only
-          docker exec swoole-only php -v
-          docker exec swoole-only php -m
-          docker exec swoole-only php --ri swoole
-          docker exec swoole-only composer -V
+          docker-compose -f ./.github/env.docker-compose.yml up -d swoole-only
+          docker exec swoole-only php -v \
+            && php -m \
+            && php --ri swoole \
+            && composer -V
           docker exec swoole-only composer update --prefer-dist --no-progress
-          docker exec swoole-only cd split-repository
-          docker exec swoole-only composer install --prefer-dist --no-progress
+          docker exec swoole-only bash -c "cd split-repository && composer install --prefer-dist --no-progress"
 
       - name: Analyse
-        run: docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G
+        run: |
+          docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G
+          docker exec swoole-only ls -l /tmp/phpstan
+          ls -l /tmp/phpstan

@@ -12,7 +12,7 @@ class Plugin
     public static function dev(): void
     {
         $componentsDir = \dirname(__DIR__) . '/src/Components';
-        $cmd = '"' . \PHP_BINARY . '" "' . realpath($_SERVER['SCRIPT_FILENAME']) . '" update';
+        $cmd = '"' . \PHP_BINARY . '" "' . realpath($_SERVER['SCRIPT_FILENAME']) . '" update --prefer-dist --no-progress';
         $output = new ConsoleOutput();
         foreach (new FilesystemIterator($componentsDir, FilesystemIterator::SKIP_DOTS) as $dir)
         {
