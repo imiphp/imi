@@ -64,7 +64,10 @@ jobs:
 #              4.4-php7.3,
 #              4.4-php7.4,
           ]
-        mysql: [ 5.7, 8.0 ]
+        mysql: [
+#            5.7,
+            8.0,
+        ]
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
@@ -116,13 +119,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
-          path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.swoole }}-
+            ${{ runner.os }}-composer-${{ env.php-versions }}-
             ${{ runner.os }}-composer-
       - name: install db
         run: |
@@ -132,10 +138,10 @@ jobs:
       - name: install php
         run: .github/macos/install-php7.4-mac.sh
       - name: install swoole
-        run: sudo .github/macos/install-swoole4.6.sh
+        run: .github/macos/install-swoole.sh 4.6.7
       - name: prepare
         run: |
-          composer update
+          composer update --prefer-dist --no-progress
           mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
           tests/db/install-db.sh
       - name: test
