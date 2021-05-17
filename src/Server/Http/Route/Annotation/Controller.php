@@ -27,7 +27,19 @@ class Controller extends Base
      */
     public ?string $prefix = null;
 
-    public function __construct(?array $__data = null, ?string $prefix = null)
+    /**
+     * 指定当前控制器允许哪些服务器使用.
+     *
+     * 支持字符串或数组，默认为 null 则不限制
+     *
+     * @var string|string[]|null
+     */
+    public $server = null;
+
+    /**
+     * @param string|string[]|null $server
+     */
+    public function __construct(?array $__data = null, ?string $prefix = null, $server = null)
     {
         parent::__construct(...\func_get_args());
     }

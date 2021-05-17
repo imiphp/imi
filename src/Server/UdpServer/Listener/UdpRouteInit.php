@@ -55,6 +55,10 @@ class UdpRouteInit implements IEventListener
             {
                 /** @var \Imi\Server\UdpServer\Route\Annotation\UdpController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                {
+                    continue;
+                }
                 // 类中间件
                 $classMiddlewares = [];
                 /** @var UdpMiddleware $middleware */

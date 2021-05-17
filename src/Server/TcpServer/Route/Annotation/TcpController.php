@@ -22,7 +22,19 @@ class TcpController extends Base
      */
     protected ?string $defaultFieldName = 'prefix';
 
-    public function __construct(?array $__data = null)
+    /**
+     * 指定当前控制器允许哪些服务器使用.
+     *
+     * 支持字符串或数组，默认为 null 则不限制
+     *
+     * @var string|string[]|null
+     */
+    public $server = null;
+
+    /**
+     * @param string|string[]|null $server
+     */
+    public function __construct(?array $__data = null, $server = null)
     {
         parent::__construct(...\func_get_args());
     }

@@ -37,6 +37,17 @@ class Test extends \Imi\Controller\TcpController
 
 ## 注解
 
+### @TcpController
+
+注释目标：类
+
+表明一个类是控制器类
+
+| 属性名称 | 说明 |
+| ------------ | ------------ 
+| singleton | 是否为单例控制器，默认为 null 时取 '@server.服务器名.controller.singleton' |
+| server | 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制 |
+
 ### @TcpRoute
 
 指定 Tcp 路由解析规则。

@@ -75,7 +75,9 @@ Github: <https://github.com/imiphp/imi-hprose>
 
 `@RpcController`
 
-别名前缀：`@RpcController('a_b_')`
+别名前缀：`@RpcController("a_b_")`
+
+指定服务器：`@RpcController(prefix="a_b_", server="服务器名")`
 
 ### 动作注解
 

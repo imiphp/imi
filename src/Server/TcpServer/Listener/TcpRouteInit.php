@@ -52,6 +52,10 @@ class TcpRouteInit implements IEventListener
                 // 类中间件
                 /** @var \Imi\Server\TcpServer\Route\Annotation\TcpController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                {
+                    continue;
+                }
                 $classMiddlewares = [];
                 /** @var TcpMiddleware $middleware */
                 foreach (AnnotationManager::getClassAnnotations($className, TcpMiddleware::class) ?? [] as $middleware)

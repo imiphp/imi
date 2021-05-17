@@ -8,6 +8,7 @@ return [
     // bean扫描目录
     'beanScan'    => [
         'Imi\Swoole\Test\HttpServer\HttpsTestServer\Controller',
+        'Imi\Swoole\Test\HttpServer\OutsideController',
     ],
     'beans'    => [
         'HttpDispatcher'    => [
