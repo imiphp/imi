@@ -34,7 +34,7 @@ jobs:
 
       - name: Prepare
         run: |
-          docker-compose -f ./.github/env.docker-compose.yml up -d swoole-only
+          docker-compose -f ./.github/ci.docker-compose.yml up -d swoole-only
           docker exec swoole-only php -v \
             && php -m \
             && php --ri swoole \
