@@ -4,6 +4,10 @@
 
 传统关系型数据库（MySQL）的模型，日常增删改查完全够用，支持复合主键、联合主键。
 
+需要注意的是，imi 的模型与传统 TP 等框架中的模型概念有些差别。
+
+imi 的模型类里一般不写逻辑代码，模型类的一个对象就代表一条记录，并且所有字段都需要有值（除非你不定义指定的字段）。
+
 ## 模型定义
 
 喜闻乐见的对命名空间、类名无要求，只要按照规定写注解即可！
@@ -327,6 +331,43 @@ $testModel->set([
 ]);
 ```
 
+### 插入
+
+```php
+$testModel = TestModel::newInstance();
+$testModel->setA('1');
+$testModel->setB('1');
+$testModel->setC('1');
+$result = $testModel->insert();
+// $result 用法同数据库中的 insert() 返回值用法
+echo '插入的自增ID：', $testModel->getId();
+```
+
+> 未设置值的字段（以注解定义为准），默认以 `null` 值插入，如有需要建议给字段设置默认值
+
+### 更新
+
+```php
+$testModel = TestModel::find(1, 'abc');
+$result = $testModel->update();
+// $result 用法同数据库中的 update() 返回值用法
+```
+
+### 保存
+
+```php
+// 自动判断是插入还是更新
+$testModel->save();
+```
+
+### 删除
+
+```php
+$testModel = TestModel::find(1, 'abc');
+$result = $testModel->delete();
+// $result 用法同数据库中的 delete() 返回值用法
+```
+
 ## 查询构建器
 
 imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
@@ -433,26 +474,6 @@ TestModel::count();
 TestModel::sum('id');
 ```
 
-### 插入
-
-```php
-$testModel = TestModel::newInstance();
-$testModel->setA('1');
-$testModel->setB('1');
-$testModel->setC('1');
-$result = $testModel->insert();
-// $result 用法同数据库中的 insert() 返回值用法
-echo '插入的自增ID：', $testModel->getId();
-```
-
-### 更新
-
-```php
-$testModel = TestModel::find(1, 'abc');
-$result = $testModel->update();
-// $result 用法同数据库中的 update() 返回值用法
-```
-
 ### 批量更新
 
 ```php
@@ -460,21 +481,6 @@ $result = $testModel->update();
 TestModel::updateBatch([
     'a'	=>	'abc',
 ], 'id > 5');
-```
-
-### 保存
-
-```php
-// 自动判断是插入还是更新
-$testModel->save();
-```
-
-### 删除
-
-```php
-$testModel = TestModel::find(1, 'abc');
-$result = $testModel->delete();
-// $result 用法同数据库中的 delete() 返回值用法
 ```
 
 ### 批量删除
