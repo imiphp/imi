@@ -225,7 +225,7 @@ foreach ($storeRepoMap as $name => $urls)
     $url = $urls[0];
     chdir(__DIR__);
     $repoName = basename($url, '.git');
-    $repoPath = __DIR__ . $repoName . '/';
+    $repoPath = __DIR__ . '/' . $repoName . '/';
     if (is_dir($repoPath))
     {
         chdir($repoPath);
