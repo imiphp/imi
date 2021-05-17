@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Imi\Dev;
 
 use FilesystemIterator;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Process\Process;
 use function implode;
 use function method_exists;
-use function sprintf;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Process\Process;
 
 class Plugin
 {
@@ -33,13 +32,17 @@ class Plugin
                     'update',
                     '--no-interaction',
                     '--prefer-dist',
-                    '--no-progress'
+                    '--no-progress',
                 ];
                 // 兼容 symfony process < 3.3
-                if (method_exists(Process::class, 'fromShellCommandline')) {
+                if (method_exists(Process::class, 'fromShellCommandline'))
+                {
                     $p = new Process($cmd, $dir->getPathname(), null, null, 0);
-                } else {
+                }
+                else
+                {
                     $p = new Process([], $dir->getPathname(), null, null, 0);
+                    /* @phpstan-ignore-next-line */
                     $p->setCommandLine(implode(' ', $cmd));
                 }
                 $p->run(function ($type, $buffer) {
