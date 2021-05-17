@@ -21,8 +21,6 @@ use Imi\Util\Traits\TServerAnnotationParser;
  */
 class ViewParser extends BaseParser
 {
-    use TServerAnnotationParser;
-
     /**
      * 视图注解缓存.
      *
