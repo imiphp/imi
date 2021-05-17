@@ -46,5 +46,3 @@ jobs:
       - name: Analyse
         run: |
           docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G
-          docker exec ${ENV_SERVICE} ls -l /tmp/phpstan
-          ls -l /tmp/phpstan

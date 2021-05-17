@@ -13,6 +13,7 @@ jobs:
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      ENV_SERVICE: swoole-php8
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -26,21 +27,21 @@ jobs:
             ${{ runner.os }}-composer-
       - name: Prepare
         run: |
-          docker-compose -f ./.github/ci.docker-compose.yml up -d swoole-php8
-          docker exec swoole-php8 php -v && php -m
-          docker exec swoole-php8 php --ri swoole
-          docker exec swoole-php8 php -r "var_dump(opcache_get_status(false));"
-          docker exec swoole-php8 composer -V
-          docker exec swoole-php8 composer update --no-interaction --prefer-dist --no-progress
+          docker-compose -f ./.github/ci.docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} php -v && php -m
+          docker exec ${ENV_SERVICE} php --ri swoole
+          docker exec ${ENV_SERVICE} php -r "var_dump(opcache_get_status(false));"
+          docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
-          docker exec swoole-php8 bash tests/db/install-db.sh
+          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
       - name: Test
-        run: docker exec swoole-php8 composer test
+        run: docker exec ${ENV_SERVICE} composer test
       - name: Test components
-        run: docker exec swoole-php8 composer test-components
+        run: docker exec ${ENV_SERVICE} composer test-components
       - name: Print logs
         if: failure()
-        run: docker exec swoole-php8 php .github/print-logs.php
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php:
     runs-on: ubuntu-20.04
@@ -70,6 +71,7 @@ jobs:
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      ENV_SERVICE: swoole
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -84,19 +86,19 @@ jobs:
       - name: Prepare
         run: |
           docker-compose -f ./.github/ci.docker-compose.yml up -d swoole
-          docker exec swoole php -v && php -m
-          docker exec swoole php --ri swoole
-          docker exec swoole composer -V
-          docker exec swoole composer update --no-interaction --prefer-dist --no-progress
+          docker exec ${ENV_SERVICE} php -v && php -m
+          docker exec ${ENV_SERVICE} php --ri swoole
+          docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
-          docker exec swoole bash tests/db/install-db.sh
+          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
       - name: Test
-        run: docker exec swoole composer test
+        run: docker exec ${ENV_SERVICE} composer test
       - name: Test components
-        run: docker exec swoole composer test-components
+        run: docker exec ${ENV_SERVICE} composer test-components
       - name: Print logs
         if: failure()
-        run: docker exec swoole php .github/print-logs.php
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-macos:
     runs-on: macos-latest
