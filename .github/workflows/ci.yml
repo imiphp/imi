@@ -31,8 +31,7 @@ jobs:
           docker exec swoole-php8 php --ri swoole
           docker exec swoole-php8 php -r "var_dump(opcache_get_status(false));"
           docker exec swoole-php8 composer -V
-          docker exec swoole-php8 composer update --prefer-dist --no-progress
-          docker exec swoole-php8 bash -c "cd split-repository && composer install --prefer-dist --no-progress"
+          docker exec swoole-php8 composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
           docker exec swoole-php8 bash tests/db/install-db.sh
       - name: Test
@@ -88,8 +87,7 @@ jobs:
           docker exec swoole php -v && php -m
           docker exec swoole php --ri swoole
           docker exec swoole composer -V
-          docker exec swoole composer update --prefer-dist --no-progress
-          docker exec swoole bash -c "cd split-repository && composer install --prefer-dist --no-progress"
+          docker exec swoole composer update --no-interaction --prefer-dist --no-progress
           .github/prepare-kafka.sh
           docker exec swoole bash tests/db/install-db.sh
       - name: Test
