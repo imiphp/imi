@@ -6,6 +6,7 @@ return [
     // bean扫描目录
     'beanScan'    => [
         'Imi\Test\HttpServer\HttpsTestServer\Controller',
+        'Imi\Test\HttpServer\OutsideController',
     ],
     'beans'    => [
         'HttpDispatcher'    => [

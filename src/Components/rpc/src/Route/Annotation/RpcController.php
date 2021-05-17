@@ -28,4 +28,13 @@ class RpcController extends Base implements IRpcController
      * @var string
      */
     public $prefix;
+
+    /**
+     * 指定当前控制器允许哪些服务器使用.
+     *
+     * 支持字符串或数组，默认为 null 则不限制
+     *
+     * @var string|string[]|null
+     */
+    public $server = null;
 }

@@ -142,6 +142,21 @@
 * [热更新](components/hotupdate/index.md)
 * [雪花算法发号器](components/snowflake.md)
 * [imi 组件列表一览](components/list.md)
+  * [MQTT](components/mqtt/server.md)
+  * [gRPC](components/rpc/grpc.md)
+  * [Hprose](components/rpc/hprose.md)
+  * [消息队列](components/mq/redis.md)
+  * [AMQP](components/mq/amqp.md)
+  * [Kafka](components/mq/kafka.md)
+  * [JWT](components/httpserver/jwt.md)
+  * [权限控制](components/access-control.md)
+  * [Smarty 模版引擎](components/smarty.md)
+  * [限流](components/rate-limit.md)
+  * [跨进程变量共享](components/shared-memory.md)
+  * [雪花算法发号器](components/snowflake.md)
+  * [Swagger API 文档生成](dev/generate/swagger.md)
+  * [Swoole Tracker](components/swoole-tracker.md)
+
 
 ## 数据结构
 
