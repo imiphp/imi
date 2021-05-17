@@ -77,7 +77,7 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
     build:
       context: .
-      dockerfile: ./env.dockerfile
+      dockerfile: swoole.dockerfile
       args:
         SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
     volumes:
@@ -104,7 +104,7 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:9092"
     build:
       context: .
-      dockerfile: ./env.dockerfile
+      dockerfile: swoole.dockerfile
       args:
         SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
         PHP_JIT: "1"
@@ -121,7 +121,7 @@ services:
     container_name: "swoole-only"
     build:
       context: .
-      dockerfile: ./env.dockerfile
+      dockerfile: swoole.dockerfile
       args:
         SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
     volumes:

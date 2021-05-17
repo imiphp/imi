@@ -35,7 +35,7 @@ jobs:
 
       - name: Prepare
         run: |
-          docker-compose -f ./.github/ci.docker-compose.yml up -d ${ENV_SERVICE}
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
           docker exec ${ENV_SERVICE} php -v \
             && php -m \
             && php --ri swoole \
