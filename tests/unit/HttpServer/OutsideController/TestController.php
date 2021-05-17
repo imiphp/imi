@@ -8,7 +8,7 @@ use Imi\Server\Route\Annotation\Controller;
 use Imi\Server\Route\Annotation\Route;
 
 /**
- * @Controller
+ * @Controller(server="main")
  */
 class TestController extends HttpController
 {

@@ -56,6 +56,10 @@ class RouteInit implements IEventListener
             foreach ($controllerParser->getByServer($name, $controllerAnnotationClass) as $className => $classItem)
             {
                 $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                {
+                    continue;
+                }
                 foreach (AnnotationManager::getMethodsAnnotations($className, $actionAnnotationClass) as $methodName => $actionAnnotations)
                 {
                     /** @var \Imi\Rpc\Route\Annotation\Contract\IRpcRoute[] $routes */
