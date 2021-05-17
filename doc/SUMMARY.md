@@ -145,7 +145,7 @@
   * [MQTT](components/mqtt/server.md)
   * [gRPC](components/rpc/grpc.md)
   * [Hprose](components/rpc/hprose.md)
-  * [消息队列](components/rpc/redis.md)
+  * [消息队列](components/mq/redis.md)
   * [AMQP](components/mq/amqp.md)
   * [Kafka](components/mq/kafka.md)
   * [JWT](components/httpserver/jwt.md)
