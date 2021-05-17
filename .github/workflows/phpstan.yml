@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       SWOOLE_DOCKER_VERSION: 4.6-php7.4
+      ENV_SERVICE: swoole-only
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,16 +35,16 @@ jobs:
 
       - name: Prepare
         run: |
-          docker-compose -f ./.github/ci.docker-compose.yml up -d swoole-only
-          docker exec swoole-only php -v \
+          docker-compose -f ./.github/ci.docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} php -v \
             && php -m \
             && php --ri swoole \
             && composer -V
-          docker exec swoole-only composer update --no-interaction --prefer-dist --no-progress
-          docker exec swoole-only bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
+          docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
       - name: Analyse
         run: |
-          docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G
-          docker exec swoole-only ls -l /tmp/phpstan
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G
+          docker exec ${ENV_SERVICE} ls -l /tmp/phpstan
           ls -l /tmp/phpstan
