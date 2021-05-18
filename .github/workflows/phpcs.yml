@@ -5,20 +5,43 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-20.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole: [4.6-php7.4]
-
     env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-
+      php-versions: 7.4
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Prepare
-        run: ./.github/prepare-test.sh swoole-only 1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.php-versions }}
+          tools: pecl, composer:v2
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Test
-        run: docker exec swoole-only ./vendor/bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-versions }}-
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress --ignore-platform-reqs --no-scripts
+
+      - name: Cache Tests
+        uses: actions/cache@v2
+        with:
+          path: ./.php_cs.cache
+          key: php-cs-fix-${{ hashFiles('**/.php_cs.dist') }}
+          restore-keys: php-cs-fix-
+
+      - name: Coding Standards Tests
+        run: ./vendor/bin/php-cs-fixer fix --dry-run --diff --diff-format=udiff
