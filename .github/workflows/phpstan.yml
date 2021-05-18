@@ -5,20 +5,44 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-20.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        swoole: [4.6-php7.4]
-
     env:
-      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
-
+      SWOOLE_DOCKER_VERSION: 4.6-php7.4
+      ENV_SERVICE: swoole-only
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-
+            ${{ runner.os }}-composer-
+
+      - name: Cache analyse
+        uses: actions/cache@v2
+        with:
+          path: /tmp/phpstan
+          key: phpstan-analyse
+          restore-keys: phpstan-analyse
+
+      - name: Cache docker
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
 
       - name: Prepare
-        run: ./.github/prepare-test.sh swoole-only 1
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} php -v \
+            && php -m \
+            && php --ri swoole \
+            && composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
+          docker exec ${ENV_SERVICE} bash -c "cd split-repository && composer install --no-interaction --prefer-dist --no-progress"
 
-      - name: Test
-        run: docker exec swoole-only ./vendor/bin/phpstan analyse --memory-limit 1G
+      - name: Analyse
+        run: |
+          docker exec ${ENV_SERVICE} ./vendor/bin/phpstan analyse --memory-limit 1G

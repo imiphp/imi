@@ -3,83 +3,122 @@ name: ci
 on: [push, pull_request]
 
 jobs:
-  # ci-macos:
-  #   runs-on: macos-latest
-
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       php: [7.4]
-  #       swoole: [4.6]
-
-  #   env:
-  #     MYSQL_SERVER_PASSWORD: ""
-
-  #   steps:
-  #     - uses: actions/checkout@v1
-
-  #     - name: install db
-  #       run: |
-  #         brew install mysql redis
-  #         mysqld --initialize-insecure
-  #         brew services start mysql
-  #         brew services start redis
-
-  #     - name: install php
-  #       run: .github/macos/install-php7.4-mac.sh
-
-  #     - name: install swoole
-  #       run: sudo .github/macos/install-swoole4.6.sh
-
-  #     - name: prepare
-  #       run: |
-  #         composer update
-  #         mysql -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
-  #         tests/db/install-db.sh
-
-  #     - name: test
-  #       run: |
-  #         composer test-all
-
-  #     - name: print logs
-  #       if: failure()
-  #       run: php .github/print-logs.php
+  ci-php8-jit:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole: [4.6-php8.0]
+        mysql: [8.0]
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+      MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
+      ENV_SERVICE: swoole-php8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.swoole }}-
+            ${{ runner.os }}-composer-
+      - name: Prepare
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
+          docker exec ${ENV_SERVICE} php -v && php -m
+          docker exec ${ENV_SERVICE} php --ri swoole
+          docker exec ${ENV_SERVICE} php -r "var_dump(opcache_get_status(false));"
+          docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
+          .github/prepare-kafka.sh
+          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
+      - name: Test
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
 
   ci-php:
     runs-on: ubuntu-20.04
-
     strategy:
       fail-fast: false
       matrix:
         swoole: [4.6-php7.4, 4.6-php8.0]
-        # mysql: [5.7, 8.0]
-        mysql: [8.0]
-
+        mysql: [5.7, 8.0]
     env:
       SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
       MYSQL_DOCKER_VERSION: ${{ matrix.mysql }}
-
+      ENV_SERVICE: swoole
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: /tmp/composer
+          key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ matrix.swoole }}-
+            ${{ runner.os }}-composer-
+      - name: Prepare
+        run: |
+          docker-compose -f ./.github/docker-compose.yml up -d swoole
+          docker exec ${ENV_SERVICE} php -v && php -m
+          docker exec ${ENV_SERVICE} php --ri swoole
+          docker exec ${ENV_SERVICE} composer -V
+          docker exec ${ENV_SERVICE} composer update --no-interaction --prefer-dist --no-progress
+          .github/prepare-kafka.sh
+          docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
+      - name: Test
+        run: docker exec ${ENV_SERVICE} composer test
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Print logs
+        if: failure()
+        run: docker exec ${ENV_SERVICE} php .github/print-logs.php
+
+  ci-macos:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.4]
+        swoole: [4.6]
+    env:
+      MYSQL_SERVER_PASSWORD: ""
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-versions }}-
+            ${{ runner.os }}-composer-
+      - name: install db
+        run: |
+          brew install mysql redis
+          brew services start mysql
+          brew services start redis
+      - name: install php
+        run: .github/macos/install-php7.4-mac.sh
+      - name: install swoole
+        run: .github/macos/install-swoole.sh 4.6.7
       - name: prepare
         run: |
-          ./.github/prepare-test.sh swoole-php8
+          composer update --prefer-dist --no-progress
+          mysql -uroot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          tests/db/install-db.sh
       - name: test
-        run: docker exec swoole-php8 composer test
-      - name: test components
-        run: docker exec swoole-php8 composer test-components
-      - name: print logs
-        if: failure()
-        run: docker exec swoole-php8 php .github/print-logs.php
-
-      - name: prepare
         run: |
-          ./.github/prepare-test.sh swoole
-
-      - name: test
-        run: docker exec swoole composer test
-      - name: test components
-        run: docker exec swoole composer test-components
-      - name: print logs
-        if: failure()
-        run: docker exec swoole php .github/print-logs.php
+          composer test

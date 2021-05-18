@@ -26,5 +26,5 @@ jobs:
           SPLIT_CONFIG: ${{ secrets.SPLIT_CONFIG }}
         run: |
           cd split-repository
-          composer update
+          composer update --no-interaction --prefer-dist --no-progress
           php -dxdebug.overload_var_dump=1 run.php
