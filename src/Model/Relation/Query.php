@@ -5,6 +5,7 @@ namespace Imi\Model\Relation;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Db\Db;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Event\Event;
 use Imi\Model\Annotation\Relation\AutoSelect;
 use Imi\Model\Annotation\Relation\RelationBase;
@@ -116,7 +117,12 @@ abstract class Query
         }
         else
         {
+            /** @var IQuery $query */
             $query = $modelClass::query()->where($rightField, '=', $model->$leftField);
+            if ($annotation->fields)
+            {
+                $query->field(...$annotation->fields);
+            }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
                 'propertyName' => $propertyName,
@@ -170,7 +176,12 @@ abstract class Query
         $model->$propertyName = new ArrayList($modelClass);
         if (null !== $model->$leftField)
         {
+            /** @var IQuery $query */
             $query = $modelClass::query()->where($rightField, '=', $model->$leftField);
+            if ($annotation->fields)
+            {
+                $query->field(...$annotation->fields);
+            }
             if ($annotation->order)
             {
                 $query->orderRaw($annotation->order);
@@ -292,7 +303,12 @@ abstract class Query
         }
         else
         {
+            /** @var IQuery $query */
             $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+            if ($annotation->fields)
+            {
+                $query->field(...$annotation->fields);
+            }
             Event::trigger($eventName . '.BEFORE', [
                 'model'        => $model,
                 'propertyName' => $propertyName,
@@ -346,7 +362,12 @@ abstract class Query
         $model->$propertyName = $modelPropery = new ArrayList($modelClass);
         if (null !== $model->$leftField)
         {
+            /** @var IQuery $query */
             $query = $modelClass::query()->where($annotation->type, '=', $annotation->typeValue)->where($rightField, '=', $model->$leftField);
+            if ($annotation->fields)
+            {
+                $query->field(...$annotation->fields);
+            }
             if ($annotation->order)
             {
                 $query->orderRaw($annotation->order);
@@ -405,7 +426,12 @@ abstract class Query
                 }
                 else
                 {
+                    /** @var IQuery $query */
                     $query = $modelClass::query()->where($leftField, '=', $model->$rightField);
+                    if ($annotationItem->fields)
+                    {
+                        $query->field(...$annotationItem->fields);
+                    }
                     Event::trigger($eventName . '.BEFORE', [
                         'model'        => $model,
                         'propertyName' => $propertyName,

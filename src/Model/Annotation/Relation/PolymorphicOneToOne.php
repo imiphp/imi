@@ -42,4 +42,11 @@ class PolymorphicOneToOne extends RelationBase
      * @var mixed
      */
     public $typeValue;
+
+    /**
+     * 为查询出来的模型指定字段.
+     *
+     * @var string[]|null
+     */
+    public $fields = null;
 }

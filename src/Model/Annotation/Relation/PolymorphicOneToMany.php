@@ -51,4 +51,11 @@ class PolymorphicOneToMany extends RelationBase
      * @var string
      */
     public $order;
+
+    /**
+     * 为查询出来的模型指定字段.
+     *
+     * @var string[]|null
+     */
+    public $fields = null;
 }

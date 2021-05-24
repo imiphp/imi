@@ -28,6 +28,10 @@
 
 `@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc")`
 
+为查询出来的模型指定字段：
+
+`@OneToMany(model="模型类名", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
+
 ### @ManyToMany
 
 多对多关系声明
@@ -35,6 +39,10 @@
 **用法：**
 
 `@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc")`
+
+为查询出来的模型指定字段：
+
+`@ManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
 
 ### @PolymorphicOneToOne
 
@@ -44,6 +52,10 @@
 
 `@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值")`
 
+为查询出来的模型指定字段：
+
+`@PolymorphicOneToOne(model="关联模型", type="多态类型字段名", typeValue="多态类型值", fields={"字段1", "字段2"})`
+
 ### @PolymorphicOneToMany
 
 多态一对多关系声明
@@ -52,6 +64,10 @@
 
 `@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc")`
 
+为查询出来的模型指定字段：
+
+`@PolymorphicOneToMany(model="关联模型", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
+
 ### @PolymorphicManyToMany
 
 多态多对多关系声明
@@ -59,6 +75,10 @@
 **用法：**
 
 `@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc")`
+
+为查询出来的模型指定字段：
+
+`@PolymorphicManyToMany(model="关联模型", middle="中间模型类名", rightMany="属性名，赋值为关联的模型对象列表", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2"})`
 
 ### @PolymorphicToOne
 
@@ -69,6 +89,10 @@
 **用法：**
 
 `@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值")`
+
+为查询出来的模型指定字段：
+
+`@PolymorphicToOne(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", fields={"字段1", "字段2"})`
 
 ### @PolymorphicToMany
 
@@ -81,6 +105,10 @@
 **用法：**
 
 `@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc")`
+
+为查询出来的模型指定字段：
+
+`@PolymorphicToMany(model="关联模型", modelField="关联的模型用于关联的字段", field="当前模型用于关联的字段", type="多态类型字段名", typeValue="多态类型值", order="排序规则字符串，例：age desc, id desc", fields={"字段1", "字段2")`
 
 ### @JoinFrom
 
