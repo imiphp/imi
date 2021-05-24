@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Model;
 
+use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Query;
 
 /**
@@ -18,5 +19,26 @@ class ModelQuery extends Query
         {
             $this->table($tableName);
         }
+        $this->setResultClass(ModelQueryResult::class);
+    }
+
+    /**
+     * 执行SQL语句.
+     *
+     * @param string $sql
+     *
+     * @return IResult
+     */
+    public function execute($sql)
+    {
+        $field = $this->option->field;
+        /** @var ModelQueryResult $result */
+        $result = parent::execute($sql);
+        if ($field)
+        {
+            $result->setIsSetSerializedFields(true);
+        }
+
+        return $result;
     }
 }
