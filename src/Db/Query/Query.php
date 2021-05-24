@@ -1313,7 +1313,7 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function setResultClass(string $resultClass): self
+    public function setResultClass(string $resultClass)
     {
         $this->resultClass = $resultClass;
 
