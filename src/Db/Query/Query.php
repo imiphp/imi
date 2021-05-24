@@ -89,6 +89,13 @@ class Query implements IQuery
     protected ?string $alias = null;
 
     /**
+     * 查询结果集类名.
+     *
+     * @var string
+     */
+    protected $resultClass = Result::class;
+
+    /**
      * 别名 Sql 集合.
      *
      * @var string[]
@@ -176,11 +183,12 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function tableRaw(string $raw): self
+    public function tableRaw(string $raw, ?string $alias = null): self
     {
         $optionTable = $this->option->table;
         $optionTable->useRaw(true);
         $optionTable->setRawSQL($raw);
+        $optionTable->setAlias($alias);
 
         return $this;
     }
@@ -250,11 +258,15 @@ class Query implements IQuery
      *
      * @return static
      */
-    public function fieldRaw(string $raw): self
+    public function fieldRaw(string $raw, ?string $alias = null): self
     {
         $field = new Field();
         $field->useRaw();
         $field->setRawSQL($raw);
+        if (null !== $alias)
+        {
+            $field->setAlias($alias);
+        }
         $this->option->field[] = $field;
 
         return $this;
@@ -1149,14 +1161,14 @@ class Query implements IQuery
             }
             if (!$db)
             {
-                return new Result(false);
+                return new $this->resultClass(false);
             }
             $stmt = $db->prepare($sql);
             $binds = $this->binds;
             $this->binds = [];
             $stmt->execute($binds);
 
-            return new Result($stmt, $this->modelClass);
+            return new $this->resultClass($stmt, $this->modelClass);
         }
         finally
         {
@@ -1292,5 +1304,29 @@ class Query implements IQuery
         $this->option->lock = $value;
 
         return $this;
+    }
+
+    /**
+     * 设置结果集类名.
+     *
+     * @param string $resultClass
+     *
+     * @return static
+     */
+    public function setResultClass(string $resultClass): self
+    {
+        $this->resultClass = $resultClass;
+
+        return $this;
+    }
+
+    /**
+     * 获取结果集类名.
+     *
+     * @return string
+     */
+    public function getResultClass(): string
+    {
+        return $this->resultClass;
     }
 }

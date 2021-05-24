@@ -919,6 +919,17 @@ $result = Db::query()->bindValues([
 ])->execute('select * from tb_test where name = :name and age = :age');
 ```
 
+## 设置/获取 Result 结果集类名
+
+```php
+$query = Db::query();
+// 获取
+var_dump($query->getResultClass());
+
+// 设置
+$query->setResultClass(\Imi\Db\Query\Result::class);
+```
+
 ## Result 用法
 
 ```php

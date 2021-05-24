@@ -305,4 +305,15 @@ abstract class QueryCurdBaseTest extends BaseTest
             'time'      => '2019-06-21 00:00:00',
         ], $record);
     }
+
+    public function testRawAlias()
+    {
+        $query = Db::query($this->poolName);
+        $record = $query->from('tb_article')->whereIsNotNull('id')->field('id')->fieldRaw('title')->fieldRaw('id + 1', 'id2')->select()->get();
+        Assert::assertEquals([
+            'id'    => '1',
+            'title' => 'title',
+            'id2'   => '2',
+        ], $record);
+    }
 }
