@@ -40,7 +40,14 @@ class PolymorphicOneToOne extends RelationBase
      */
     public $typeValue;
 
-    public function __construct(?array $__data = null, string $model = '', string $type = '')
+    /**
+     * 为查询出来的模型指定字段.
+     *
+     * @var string[]|null
+     */
+    public ?array $fields = null;
+
+    public function __construct(?array $__data = null, string $model = '', string $type = '', ?array $fields = null)
     {
         parent::__construct(...\func_get_args());
     }

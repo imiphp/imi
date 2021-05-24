@@ -28,7 +28,14 @@ class OneToOne extends RelationBase
      */
     public string $model = '';
 
-    public function __construct(?array $__data = null, string $model = '')
+    /**
+     * 为查询出来的模型指定字段.
+     *
+     * @var string[]|null
+     */
+    public ?array $fields = null;
+
+    public function __construct(?array $__data = null, string $model = '', ?array $fields = null)
     {
         parent::__construct(...\func_get_args());
     }

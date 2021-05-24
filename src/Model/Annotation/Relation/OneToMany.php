@@ -35,7 +35,14 @@ class OneToMany extends RelationBase
      */
     public ?string $order = null;
 
-    public function __construct(?array $__data = null, string $model = '', ?string $order = null)
+    /**
+     * 为查询出来的模型指定字段.
+     *
+     * @var string[]|null
+     */
+    public ?array $fields = null;
+
+    public function __construct(?array $__data = null, string $model = '', ?string $order = null, ?array $fields = null)
     {
         parent::__construct(...\func_get_args());
     }
