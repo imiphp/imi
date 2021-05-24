@@ -377,4 +377,23 @@ class ModelTest extends BaseTest
         $this->assertNull(TestSoftDelete::find($record->id));
         $this->assertNull(TestSoftDelete::findDeleted($record->id));
     }
+
+    public function testSetFields()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $this->assertNull($member->__getSerializedFields());
+        $this->assertEquals([
+            'id'       => null,
+            'username' => '1',
+        ], $member->toArray());
+
+        $member->__setSerializedFields(['username', 'password']);
+        $this->assertEquals(['username', 'password'], $member->__getSerializedFields());
+        $this->assertEquals([
+            'username' => '1',
+            'password' => '2',
+        ], $member->toArray());
+    }
 }
