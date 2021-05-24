@@ -527,3 +527,16 @@ $list = TestModel::select();
 $arrayList = TestModel::convertListToArray($list); // 过滤注解定义的隐藏属性
 $arrayList = TestModel::convertListToArray($list, false); // 不过滤
 ```
+
+### 手动获取/设置模型序列化字段
+
+默认情况下，根据 `@Column` 注解定义字段，`@Serializable`、`@Serializables` 干预序列化（toArray、json_encode）后的字段。
+
+现在你也可以手动干预了，示例如下：
+
+```php
+$member->__getSerializedFields(); // 获取，默认为 null 则使用默认规则
+
+$member->__setSerializedFields(['username', 'password']); // 手动干预，序列化后只有username、password字段
+$member->__setSerializedFields(null); // 设为默认
+```
