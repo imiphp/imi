@@ -752,7 +752,7 @@ interface IQuery
      *
      * @return static
      */
-    public function setResultClass(string $resultClass): self;
+    public function setResultClass(string $resultClass);
 
     /**
      * 获取结果集类名.
