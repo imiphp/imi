@@ -213,6 +213,15 @@ class ModelTest extends BaseTest
         ], $list);
     }
 
+    public function testQuerySetField()
+    {
+        /** @var Member $member */
+        $member = Member::query()->field('username')->where('id', '=', 1)->select()->get();
+        $this->assertEquals([
+            'username'  => '1',
+        ], $member->toArray());
+    }
+
     public function testBatchUpdate()
     {
         $count1 = Member::count();

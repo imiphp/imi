@@ -384,8 +384,6 @@ $query = TestModel::query();
 $query = TestModel::dbQuery();
 ```
 
-> 如果希望使用 `field()` 去指定返回字段，请使用`dbQuery()`
-
 ### 查询记录
 
 查询记录并返回一个模型实例。
