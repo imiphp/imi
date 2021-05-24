@@ -48,11 +48,12 @@ interface IQuery
     /**
      * 设置表名，使用SQL原生语句.
      *
-     * @param string $raw
+     * @param string      $raw
+     * @param string|null $alias
      *
      * @return static
      */
-    public function tableRaw(string $raw);
+    public function tableRaw(string $raw, ?string $alias = null);
 
     /**
      * 设置表名，table()的别名.
@@ -95,11 +96,12 @@ interface IQuery
     /**
      * 指定查询字段，使用SQL原生语句.
      *
-     * @param string $raw
+     * @param string      $raw
+     * @param string|null $alias
      *
      * @return static
      */
-    public function fieldRaw(string $raw);
+    public function fieldRaw(string $raw, ?string $alias = null);
 
     /**
      * 设置 where 条件，一般用于 =、>、<、like等.
@@ -742,4 +744,20 @@ interface IQuery
      * @return static
      */
     public function lock($value);
+
+    /**
+     * 设置结果集类名.
+     *
+     * @param string $resultClass
+     *
+     * @return static
+     */
+    public function setResultClass(string $resultClass): self;
+
+    /**
+     * 获取结果集类名.
+     *
+     * @return string
+     */
+    public function getResultClass(): string;
 }
