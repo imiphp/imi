@@ -17,11 +17,10 @@ class UpdateBuilder extends BaseBuilder
         {
             $data = $option->saveData;
         }
-        $valueParams = [];
-        $sql = 'update ' . $option->table . ' set ';
 
         // set后面的field=value
         $setStrs = [];
+        $jsonSets = [];
         foreach ($data as $k => $v)
         {
             if ($v instanceof \Imi\Db\Query\Raw)
@@ -32,19 +31,60 @@ class UpdateBuilder extends BaseBuilder
                 }
                 else
                 {
-                    $setStrs[] = $this->parseKeyword($k) . ' = ' . $v;
+                    $matches = $this->parseKeywordText($k);
+                    $field = $this->parseKeywordToText($matches['keywords']);
+                    if ($matches['jsonKeywords'])
+                    {
+                        $jsonSets[$field][] = [
+                            'jsonKeywords' => $matches['jsonKeywords'],
+                            'raw'          => $v,
+                        ];
+                    }
+                    else
+                    {
+                        $setStrs[] = $field . ' = ' . $v;
+                    }
                 }
             }
             else
             {
-                $valueParam = ':' . $k;
-                $valueParams[] = $valueParam;
-                $params[$valueParam] = $v;
-                $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
+                $matches = $this->parseKeywordText($k);
+                $field = $this->parseKeywordToText($matches['keywords']);
+                if ($matches['jsonKeywords'])
+                {
+                    if (is_scalar($v))
+                    {
+                        $valueParam = $this->query->getAutoParamName();
+                        $jsonSets[$field][] = [
+                            'jsonKeywords' => $matches['jsonKeywords'],
+                            'valueParam'   => $valueParam,
+                        ];
+                        $params[$valueParam] = $v;
+                    }
+                    else
+                    {
+                        $jsonSets[$field][] = [
+                            'jsonKeywords' => $matches['jsonKeywords'],
+                            'raw'          => 'CONVERT(\'' . json_encode($v) . '\',JSON)',
+                        ];
+                    }
+                }
+                else
+                {
+                    $valueParam = ':' . $k;
+                    $setStrs[] = $field . ' = ' . $valueParam;
+                    $params[$valueParam] = $v;
+                }
             }
         }
 
-        $sql .= implode(',', $setStrs)
+        $jsonSets = $this->parseJsonSet($jsonSets);
+        if ($setStrs && '' !== $jsonSets)
+        {
+            $jsonSets = ', ' . $jsonSets;
+        }
+        $sql = 'update ' . $option->table . ' set ' . implode(',', $setStrs)
+            . $jsonSets
             . $this->parseWhere($option->where)
             . $this->parseOrder($option->order)
             . $this->parseLimit($option->offset, $option->limit);
@@ -52,5 +92,25 @@ class UpdateBuilder extends BaseBuilder
         $query->bindValues($params);
 
         return $sql;
+    }
+
+    public function parseJsonSet(array $jsonSets): string
+    {
+        if (!$jsonSets)
+        {
+            return '';
+        }
+        $result = [];
+        foreach ($jsonSets as $field => $options)
+        {
+            $item = $field . '=JSON_SET(' . $field;
+            foreach ($options as $option)
+            {
+                $item .= ',"$.' . implode('.', $option['jsonKeywords']) . '",' . ($option['raw'] ?? $option['valueParam']);
+            }
+            $result[] = $item . ')';
+        }
+
+        return implode(',', $result);
     }
 }
