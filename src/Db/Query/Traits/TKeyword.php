@@ -48,7 +48,7 @@ trait TKeyword
                 return [
                     'keywords'      => $matches['keywords'],
                     'alias'         => $alias,
-                    'jsonKeywords'  => $matches['jsonKeywords'] ?? null,
+                    'jsonKeywords'  => null,
                 ];
             }
         }

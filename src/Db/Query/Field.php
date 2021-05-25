@@ -40,6 +40,13 @@ class Field implements IField
      */
     protected $alias;
 
+    /**
+     * JSON 关键词配置.
+     *
+     * @var array|null
+     */
+    protected $jsonKeywords;
+
     public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null)
     {
         $this->database = $database;
@@ -173,6 +180,7 @@ class Field implements IField
                 $this->field = $keywords[0];
             }
             $this->alias = $matches['alias'];
+            $this->jsonKeywords = $matches['jsonKeywords'];
         }
     }
 
@@ -194,7 +202,7 @@ class Field implements IField
             $this->database,
             $this->table,
             $this->field,
-        ], $this->alias);
+        ], $this->alias, $this->jsonKeywords);
     }
 
     /**

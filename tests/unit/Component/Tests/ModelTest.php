@@ -346,6 +346,13 @@ class ModelTest extends BaseTest
         $record2 = TestJson::find($record->id);
         $this->assertNotNull($record2);
         $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
+
+        $record2->update([
+            'json_data->a' => 111,
+        ]);
+        $record2 = TestJson::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertEquals(['a' => 111, 'b' => 2, 'c' => 3], $record2->jsonData->toArray());
     }
 
     public function testList()

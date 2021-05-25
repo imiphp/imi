@@ -662,6 +662,9 @@ Db::query()->where('id', 'not between', [1, 10]);
 // or id = 1
 Db::query()->where('id', '=', 1, 'or');
 Db::query()->orWhere('id', '=', 1);
+
+// JSON 类型字段条件
+Db::query()->where('field1->uid', '=', 1);
 ```
 
 #### TP 风格 where
@@ -788,6 +791,9 @@ Db::query()->order('id')->order('age', 'desc');
 
 // order by id desc
 Db::query()->orderRaw('id desc');
+
+// JSON 类型参数排序
+Db::query()->order('field1->uid', 'desc');
 ```
 
 ### group by
@@ -949,6 +955,10 @@ $result->getAffectedRows(); // 获取影响行数
 $result = Db::query()->table('tb_test')->where('id', '=', 1)->update([
     'name'	=>	'yurun',
     'age'	=>	666,
+    // JSON 类型参数
+    'field1->name'        => 'bbb', // 修改 name
+    'field1->list2'       => [1, 2, 3], // 修改 list2，支持数组、对象
+    'field1->list1[0].id' => '2', // 支持对数组中指定成员、对象属性赋值，支持无限级
 ]);
 
 // $result使用方法同上
