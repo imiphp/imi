@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Member;
+use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestJson;
 use Imi\Test\Component\Model\TestList;
@@ -411,5 +412,24 @@ class ModelTest extends BaseTest
             'username' => '1',
             'password' => '2',
         ], $member->toArray());
+    }
+
+    public function testSqlField()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $result = $member->insert();
+        $this->assertTrue($result->isSuccess());
+        $this->assertEquals(1, $result->getAffectedRows());
+        $id = $result->getLastInsertId();
+
+        $record = MemberWithSqlField::find($id);
+        $this->assertEquals([
+            'id'       => $id,
+            'username' => '1',
+            'test1'    => 2,
+            'test2'    => 4,
+        ], $record->toArray());
     }
 }

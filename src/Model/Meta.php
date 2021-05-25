@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Imi\Model;
 
 use Imi\Bean\Annotation\AnnotationManager;
+use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
 use Imi\Model\Annotation\Serializable;
+use Imi\Model\Annotation\Sql;
 use Imi\Model\Annotation\Serializables;
 use Imi\Model\Annotation\Table;
 
@@ -43,25 +45,25 @@ class Meta
     private ?string $firstId = null;
 
     /**
-     * 字段配置.
+     * 所有字段配置.
      *
      * @var \Imi\Model\Annotation\Column[]
      */
     private array $fields = [];
 
     /**
-     * 字段名列表.
+     * 所有字段属性名列表.
      *
      * @var string[]
      */
     private array $fieldNames = [];
 
     /**
-     * 字段名列表，会包含关联模型的导出字段.
+     * 数据库字段名和 Column 注解映射.
      *
-     * @var string[]
+     * @var array
      */
-    private array $realFieldNames = [];
+    private $dbFields;
 
     /**
      * 模型是否为驼峰命名.
@@ -76,7 +78,7 @@ class Meta
     /**
      * 序列化注解列表.
      *
-     * @var \Imi\Model\Annotation\Serializable[]
+     * @var \Imi\Model\Annotation\Serializable[][]
      */
     private array $serializableSets = [];
 
@@ -100,7 +102,7 @@ class Meta
     /**
      * JsonNotNull 注解集合.
      *
-     * @var \Imi\Model\Annotation\JsonNotNull[]
+     * @var \Imi\Model\Annotation\JsonNotNull[][]
      */
     private array $propertyJsonNotNullMap = [];
 
@@ -108,6 +110,13 @@ class Meta
      * JSON 序列化时的配置.
      */
     private ?JsonEncode $jsonEncode = null;
+
+    /**
+     * 定义 SQL 语句的字段列表.
+     *
+     * @var \Imi\Model\Annotation\Sql[][]
+     */
+    private $sqlColumns;
 
     public function __construct(string $modelClass)
     {
@@ -124,8 +133,23 @@ class Meta
             $this->id = (array) $table->id;
         }
         $this->firstId = $this->id[0] ?? null;
-        $this->fields = $fields = ModelManager::getFields($modelClass);
+        $fields = $dbFields = [];
+        foreach (AnnotationManager::getPropertiesAnnotations($modelClass, Column::class) as $name => $columns)
+        {
+            /** @var Column $column */
+            $column = $columns[0];
+            if (isset($column->name))
+            {
+                $dbFields[$column->name] = [
+                    'propertyName' => $name,
+                    'column'       => $column,
+                ];
+            }
+            $fields[$name] = $column;
+        }
+        $this->fields = $fields;
         $this->fieldNames = array_keys($fields);
+        $this->dbFields = $dbFields;
         foreach ($fields as $field => $column)
         {
             if ($column->isAutoIncrement)
@@ -142,14 +166,11 @@ class Meta
         $this->serializableSets = AnnotationManager::getPropertiesAnnotations($modelClass, Serializable::class);
         $this->extractPropertys = ModelManager::getExtractPropertys($modelClass);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($modelClass, JsonNotNull::class);
+        $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($modelClass, Sql::class);
         $this->relation = ModelRelationManager::hasRelation($modelClass);
         if ($this->relation)
         {
-            $this->realFieldNames = array_merge($this->fieldNames, ModelRelationManager::getRelationFieldNames($modelClass));
-        }
-        else
-        {
-            $this->realFieldNames = $this->fieldNames;
+            $this->fieldNames = array_merge($this->fieldNames, ModelRelationManager::getRelationFieldNames($modelClass));
         }
     }
 
@@ -214,15 +235,6 @@ class Meta
     }
 
     /**
-     * Get 字段名列表，会包含关联模型的导出字段.
-     *
-     * @return string[]
-     */
-    public function getRealFieldNames(): array
-    {
-        return $this->realFieldNames;
-    }
-
     /**
      * Get 是否有关联.
      */
@@ -260,7 +272,7 @@ class Meta
     /**
      * Get 序列化注解列表.
      *
-     * @return \Imi\Model\Annotation\Serializable[]
+     * @return \Imi\Model\Annotation\Serializable[][]
      */
     public function getSerializableSets(): array
     {
@@ -278,7 +290,7 @@ class Meta
     /**
      * Get jsonNotNull 注解集合.
      *
-     * @return \Imi\Model\Annotation\JsonNotNull[]
+     * @return \Imi\Model\Annotation\JsonNotNull[][]
      */
     public function getPropertyJsonNotNullMap(): array
     {
@@ -291,5 +303,25 @@ class Meta
     public function getJsonEncode(): ?JsonEncode
     {
         return $this->jsonEncode;
+    }
+
+    /**
+     * Get 定义 SQL 语句的字段列表.
+     *
+     * @return \Imi\Model\Annotation\Sql[][]
+     */
+    public function getSqlColumns()
+    {
+        return $this->sqlColumns;
+    }
+
+    /**
+     * Get 数据库字段名和 Column 注解映射.
+     *
+     * @return array
+     */
+    public function getDbFields()
+    {
+        return $this->dbFields;
     }
 }

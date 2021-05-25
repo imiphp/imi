@@ -253,6 +253,107 @@ abstract class ArticleBase extends Model
 
 `updateTime`：save/update 模型时是否将当前时间写入该字段。支持 date/time/datetime/timestamp/year/int/bigint。当字段为 int 类型，写入秒级时间戳。当字段为 bigint 类型，写入毫秒级时间戳。
 
+### @Sql
+
+为虚拟字段定义 SQL 语句，模型查询时自动带上改字段。
+
+`@Sql("SQL 语句")`
+
+如果 `@Column` 注解定义了 `name` 属性，则将 `name` 作为字段别名；如果未定义，则使用属性名称作为别名。
+
+示例：
+
+```php
+<?php
+
+namespace Imi\Test\Component\Model;
+
+use Imi\Bean\Annotation\Inherit;
+use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Serializables;
+use Imi\Model\Annotation\Sql;
+use Imi\Test\Component\Model\Base\MemberBase;
+
+/**
+ * Member.
+ *
+ * @Inherit
+ * @Serializables(mode="deny", fields={"password"})
+ */
+class MemberWithSqlField extends MemberBase
+{
+    /**
+     * @Column(name="a", virtual=true)
+     * @Sql("1+1")
+     *
+     * @var int
+     */
+    public $test1;
+
+    /**
+     * @Column(virtual=true)
+     * @Sql("2+2")
+     *
+     * @var int
+     */
+    public $test2;
+
+    /**
+     * Set the value of test1.
+     *
+     * @param int $test1
+     *
+     * @return self
+     */
+    public function setTest1(int $test1)
+    {
+        $this->test1 = $test1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of test1.
+     *
+     * @return int
+     */
+    public function getTest1()
+    {
+        return $this->test1;
+    }
+
+    /**
+     * Set the value of test2.
+     *
+     * @param int $test2
+     *
+     * @return self
+     */
+    public function setTest2(int $test2)
+    {
+        $this->test2 = $test2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of test2.
+     *
+     * @return int
+     */
+    public function getTest2()
+    {
+        return $this->test2;
+    }
+}
+```
+
+查询时的 SQL 语句：
+
+```sql
+select `tb_member`.*,(1+1) as `a`,(2+2) as `test2` from `tb_member` where `id`=:id limit 1
+```
+
 ### @JsonNotNull
 
 写在属性上，无参数。
