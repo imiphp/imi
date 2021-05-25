@@ -105,7 +105,7 @@ class TestValidate
 
     /**
      * @AutoValidation
-     * @Condition(name="argName", @callable({"$this", "validate"}), args={"{:value}", "{:data}", "{name}", "{:data.a}", {":data.$this.abc"}})
+     * @Condition(name="argName", callable={"$this", "validate"}, args={"{:value}", "{:data}", "{name}", "{:data.a}", {":data.$this.abc"}})
      */
     public function test($a, $b)
     {
