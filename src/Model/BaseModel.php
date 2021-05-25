@@ -25,7 +25,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     use TEvent;
 
     /**
-     * 数据库原始字段名称.
+     * 模型字段名数组.
      *
      * @var array
      */
@@ -86,7 +86,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function __construct($data = [])
     {
         $this->__meta = $meta = static::__getMeta();
-        $this->__fieldNames = $meta->getRealFieldNames();
+        $this->__fieldNames = $meta->getFieldNames();
         $this->__realClass = $meta->getClassName();
         if (!$this instanceof IBean)
         {
@@ -107,30 +107,43 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
             'data'  => $data,
         ], $this, \Imi\Model\Event\Param\InitEventParam::class);
 
-        $fieldAnnotations = $this->__meta->getFields();
         if ($data)
         {
+            $fieldAnnotations = $this->__meta->getFields();
+            $dbFieldAnnotations = $this->__meta->getDbFields();
             foreach ($data as $k => $v)
             {
                 if (isset($fieldAnnotations[$k]))
                 {
                     $fieldAnnotation = $fieldAnnotations[$k];
-                    switch ($fieldAnnotation->type)
-                {
-                    case 'json':
-                        $value = json_decode($v, true);
-                        if (\is_array($value))
-                        {
-                            $v = new LazyArrayObject($value);
-                        }
-                        break;
-                    case 'list':
-                        if (null !== $v && null !== $fieldAnnotation->listSeparator)
-                        {
-                            $v = explode($fieldAnnotation->listSeparator, $v);
-                        }
-                        break;
                 }
+                elseif (isset($dbFieldAnnotations[$k]))
+                {
+                    $fieldAnnotation = $dbFieldAnnotations[$k]['column'];
+                    $k = $dbFieldAnnotations[$k]['propertyName'];
+                }
+                else
+                {
+                    $fieldAnnotation = null;
+                }
+                if ($fieldAnnotation)
+                {
+                    switch ($fieldAnnotation->type)
+                    {
+                        case 'json':
+                            $value = json_decode($v, true);
+                            if (\is_array($value))
+                            {
+                                $v = new LazyArrayObject($value);
+                            }
+                            break;
+                        case 'list':
+                            if (null !== $v && null !== $fieldAnnotation->listSeparator)
+                            {
+                                $v = explode($fieldAnnotation->listSeparator, $v);
+                            }
+                            break;
+                    }
                 }
                 $this[$k] = $v;
             }
@@ -230,17 +243,17 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         $fields = $meta->getFields();
         $camelName = $this->__getCamelName($offset);
         // 数据库bit类型字段处理
-        $column = null;
         if (isset($fields[$offset]))
         {
             $column = $fields[$offset];
         }
+        elseif (isset($fields[$camelName]))
+        {
+            $column = $fields[$camelName];
+        }
         else
         {
-            if (isset($fields[$camelName]))
-            {
-                $column = $fields[$camelName];
-            }
+            $column = null;
         }
         if (null !== $column && 'bit' === $column->type)
         {

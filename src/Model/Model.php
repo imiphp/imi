@@ -8,6 +8,7 @@ use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Event\Event;
+use Imi\Model\Annotation\Column;
 use Imi\Model\Event\ModelEvents;
 use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Relation\Query;
@@ -727,8 +728,10 @@ abstract class Model extends BaseModel
         $result = new LazyArrayObject();
         $canUpdateTime = 'save' === $type || 'update' === $type;
         $objectIsObject = \is_object($object);
-        foreach ($meta->getFields() as $name => $column)
+        foreach ($meta->getDbFields() as $dbFielName => $item)
         {
+            /** @var Column $column */
+            ['propertyName' => $name, 'column' => $column] = $item;
             // 虚拟字段不参与数据库操作
             if ($column->virtual)
             {
@@ -760,11 +763,11 @@ abstract class Model extends BaseModel
                         $value = date('Y');
                         break;
                     default:
-                        throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $column->name, $column->type));
+                        throw new \RuntimeException(sprintf('Column %s type is %s, can not updateTime', $dbFielName, $column->type));
                 }
                 if ($objectIsObject)
                 {
-                    $object->{$column->name} = $value;
+                    $object->$dbFielName = $value;
                 }
             }
             elseif (\array_key_exists($name, $data))
@@ -813,7 +816,7 @@ abstract class Model extends BaseModel
                     }
                     break;
             }
-            $result[$name] = $value;
+            $result[$dbFielName] = $value;
         }
 
         // 更新时无需更新主键
