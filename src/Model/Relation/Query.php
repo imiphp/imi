@@ -638,12 +638,12 @@ abstract class Query
         $middleTable = $middleModel::__getMeta()->getTableName();
         $rightTable = $rightModel::__getMeta()->getTableName();
 
-        foreach ($middleModel::__getMeta()->getFieldNames() as $name)
+        foreach ($middleModel::__getMeta()->getDbFields() as $name => $_)
         {
             $middleFields[$middleTable . '_' . $name] = $name;
         }
 
-        foreach ($rightModel::__getMeta()->getFieldNames() as $name)
+        foreach ($rightModel::__getMeta()->getDbFields() as $name => $_)
         {
             $rightFields[$rightTable . '_' . $name] = $name;
         }
