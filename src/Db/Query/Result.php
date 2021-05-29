@@ -18,28 +18,28 @@ class Result implements IResult
      *
      * @var IStatement
      */
-    private $statement;
+    protected $statement;
 
     /**
      * 是否执行成功
      *
      * @var bool
      */
-    private $isSuccess;
+    protected $isSuccess;
 
     /**
      * 查询结果类的类名，为null则为数组.
      *
      * @var string|null
      */
-    private $modelClass;
+    protected $modelClass;
 
     /**
      * 记录列表.
      *
      * @var array
      */
-    private $statementRecords = [];
+    protected $statementRecords = [];
 
     /**
      * @param \Imi\Db\Interfaces\IStatement|bool $statement

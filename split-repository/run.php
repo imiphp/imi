@@ -25,38 +25,6 @@ function execCMD(string $cmd, string $description = '', ?array &$result = null):
     echo '--end--', \PHP_EOL;
 }
 
-function parseShowData(array $data, ?string &$author, ?string &$date, ?string &$message): void
-{
-    $messageBegin = false;
-    $len = count($data);
-    $message = '';
-    for ($i = 0; $i < $len; ++$i)
-    {
-        $row = $data[$i];
-        if ($messageBegin)
-        {
-            if ('' !== $row && ' ' !== substr($row, 0, 1))
-            {
-                break;
-            }
-            $message .= trim($row) . \PHP_EOL;
-        }
-        else
-        {
-            if ('Author: ' === substr($row, 0, 8))
-            {
-                $author = substr($row, 8);
-            }
-            elseif ('Date: ' === substr($row, 0, 6))
-            {
-                $date = substr($row, 6);
-                ++$i;
-                $messageBegin = true;
-            }
-        }
-    }
-}
-
 /**
  * 根据最后一次处理的提交记录，获取commit列表，顺序从旧到新.
  *
@@ -225,7 +193,7 @@ foreach ($storeRepoMap as $name => $urls)
     $url = $urls[0];
     chdir(__DIR__);
     $repoName = basename($url, '.git');
-    $repoPath = __DIR__ . $repoName . '/';
+    $repoPath = __DIR__ . '/' . $repoName . '/';
     if (is_dir($repoPath))
     {
         chdir($repoPath);
@@ -271,7 +239,13 @@ foreach ($storeRepoMap as $name => $urls)
     {
         chdir($mainRepoPath);
         execCMD('git --no-pager show ' . $commit . ' --stat', '提交记录', $result);
-        parseShowData($result, $author, $date, $message);
+        execCMD('git show ' . $commit . ' -s --format=%cn', '', $result);
+        $author = $result[0];
+        execCMD('git show ' . $commit . ' -s --format=%ad', '', $result);
+        $date = $result[0];
+        execCMD('git show ' . $commit . ' -s --format=%s', '', $result);
+        $message = $result[0];
+
         $needCommit = false;
         foreach ($result as $row)
         {
@@ -367,7 +341,7 @@ foreach ($storeRepoMap as $name => $urls)
         {
             execCMD('git branch -M ' . $branch, '');
         }
-        execCMD('git status -s -u no', '', $result);
+        execCMD('git status -s', '', $result);
         if ($result)
         {
             execCMD('git config user.name "' . $authorName . '" && git config user.email "' . $authorEmail . '" && git commit --author "' . $author . '" --date "' . $date . '" -am \'' . $message . '\'', 'git commit');

@@ -1,6 +1,6 @@
 name: mirror
 
-on: [push, delete, create]
+on: [push, delete, create, release]
 
 jobs:
   gitee:

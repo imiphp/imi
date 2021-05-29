@@ -2,6 +2,7 @@
 
 namespace Imi\Test\HttpServer\Tests;
 
+use Imi\Util\Http\Consts\StatusCode;
 use Yurun\Util\HttpRequest;
 
 /**
@@ -31,5 +32,17 @@ class HttpsTest extends BaseTest
         $response = $http->get($uri);
         $data = $response->json(true);
         $this->assertEquals($uri, $data['uri'] ?? null);
+    }
+
+    /**
+     * 控制器指定 server 测试.
+     *
+     * @return void
+     */
+    public function testOutsideController()
+    {
+        $http = new HttpRequest();
+        $response = $http->get($this->host . 'testOutside');
+        $this->assertEquals(StatusCode::NOT_FOUND, $response->getStatusCode());
     }
 }

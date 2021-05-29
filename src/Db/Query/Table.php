@@ -2,6 +2,7 @@
 
 namespace Imi\Db\Query;
 
+use Imi\Db\Query\Builder\BaseBuilder;
 use Imi\Db\Query\Interfaces\ITable;
 use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Traits\TRaw;
@@ -140,7 +141,14 @@ class Table implements ITable
     {
         if ($this->isRaw)
         {
-            return $this->rawSQL;
+            if (null === $this->alias)
+            {
+                return $this->rawSQL;
+            }
+            else
+            {
+                return '(' . $this->rawSQL . ') as ' . BaseBuilder::DELIMITED_IDENTIFIERS . $this->alias . BaseBuilder::DELIMITED_IDENTIFIERS;
+            }
         }
 
         return $this->parseKeywordToText([

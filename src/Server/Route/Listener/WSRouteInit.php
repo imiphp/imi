@@ -62,6 +62,10 @@ class WSRouteInit implements IEventListener
             {
                 /** @var \Imi\Server\Route\Annotation\WebSocket\WSController $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                {
+                    continue;
+                }
                 // 类中间件
                 $classMiddlewares = [];
                 foreach (AnnotationManager::getClassAnnotations($className, WSMiddleware::class) ?? [] as $middleware)

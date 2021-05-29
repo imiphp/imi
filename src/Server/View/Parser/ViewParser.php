@@ -9,15 +9,12 @@ use Imi\Server\Route\RouteCallable;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\File;
 use Imi\Util\Imi;
-use Imi\Util\Traits\TServerAnnotationParser;
 
 /**
  * 视图注解处理器.
  */
 class ViewParser extends BaseParser
 {
-    use TServerAnnotationParser;
-
     /**
      * 视图注解缓存.
      *

@@ -65,6 +65,10 @@ class HttpRouteInit implements IEventListener
             {
                 /** @var \Imi\Server\Route\Annotation\Controller $classAnnotation */
                 $classAnnotation = $classItem->getAnnotation();
+                if (null !== $classAnnotation->server && !\in_array($name, (array) $classAnnotation->server))
+                {
+                    continue;
+                }
                 // 类中间件
                 $classMiddlewares = [];
                 foreach (AnnotationManager::getClassAnnotations($className, Middleware::class) ?? [] as $middleware)

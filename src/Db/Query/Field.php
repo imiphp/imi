@@ -2,6 +2,7 @@
 
 namespace Imi\Db\Query;
 
+use Imi\Db\Query\Builder\BaseBuilder;
 use Imi\Db\Query\Interfaces\IField;
 use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Traits\TRaw;
@@ -38,6 +39,13 @@ class Field implements IField
      * @var string|null
      */
     protected $alias;
+
+    /**
+     * JSON 关键词配置.
+     *
+     * @var array|null
+     */
+    protected $jsonKeywords;
 
     public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null)
     {
@@ -172,6 +180,7 @@ class Field implements IField
                 $this->field = $keywords[0];
             }
             $this->alias = $matches['alias'];
+            $this->jsonKeywords = $matches['jsonKeywords'];
         }
     }
 
@@ -179,14 +188,21 @@ class Field implements IField
     {
         if ($this->isRaw)
         {
-            return $this->rawSQL;
+            if (null === $this->alias)
+            {
+                return $this->rawSQL;
+            }
+            else
+            {
+                return '(' . $this->rawSQL . ') as ' . BaseBuilder::DELIMITED_IDENTIFIERS . $this->alias . BaseBuilder::DELIMITED_IDENTIFIERS;
+            }
         }
 
         return $this->parseKeywordToText([
             $this->database,
             $this->table,
             $this->field,
-        ], $this->alias);
+        ], $this->alias, $this->jsonKeywords);
     }
 
     /**

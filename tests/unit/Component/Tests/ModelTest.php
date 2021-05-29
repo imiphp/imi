@@ -4,6 +4,7 @@ namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Model\Member;
+use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestJson;
 use Imi\Test\Component\Model\TestList;
@@ -213,6 +214,15 @@ class ModelTest extends BaseTest
         ], $list);
     }
 
+    public function testQuerySetField()
+    {
+        /** @var Member $member */
+        $member = Member::query()->field('username')->where('id', '=', 1)->select()->get();
+        $this->assertEquals([
+            'username'  => '1',
+        ], $member->toArray());
+    }
+
     public function testBatchUpdate()
     {
         $count1 = Member::count();
@@ -337,6 +347,13 @@ class ModelTest extends BaseTest
         $record2 = TestJson::find($record->id);
         $this->assertNotNull($record2);
         $this->assertEquals($record->jsonData, $record2->jsonData->toArray());
+
+        $record2->update([
+            'json_data->a' => 111,
+        ]);
+        $record2 = TestJson::find($record->id);
+        $this->assertNotNull($record2);
+        $this->assertEquals(['a' => 111, 'b' => 2, 'c' => 3], $record2->jsonData->toArray());
     }
 
     public function testList()
@@ -380,5 +397,43 @@ class ModelTest extends BaseTest
         // 查不到
         $this->assertNull(TestSoftDelete::find($record->id));
         $this->assertNull(TestSoftDelete::findDeleted($record->id));
+    }
+
+    public function testSetFields()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $this->assertNull($member->__getSerializedFields());
+        $this->assertEquals([
+            'id'       => null,
+            'username' => '1',
+        ], $member->toArray());
+
+        $member->__setSerializedFields(['username', 'password']);
+        $this->assertEquals(['username', 'password'], $member->__getSerializedFields());
+        $this->assertEquals([
+            'username' => '1',
+            'password' => '2',
+        ], $member->toArray());
+    }
+
+    public function testSqlField()
+    {
+        $member = Member::newInstance();
+        $member->username = '1';
+        $member->password = '2';
+        $result = $member->insert();
+        $this->assertTrue($result->isSuccess());
+        $this->assertEquals(1, $result->getAffectedRows());
+        $id = $result->getLastInsertId();
+
+        $record = MemberWithSqlField::find($id);
+        $this->assertEquals([
+            'id'       => $id,
+            'username' => '1',
+            'test1'    => 2,
+            'test2'    => 4,
+        ], $record->toArray());
     }
 }

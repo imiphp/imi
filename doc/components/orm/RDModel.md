@@ -4,6 +4,10 @@
 
 传统关系型数据库（MySQL）的模型，日常增删改查完全够用，支持复合主键、联合主键。
 
+需要注意的是，imi 的模型与传统 TP 等框架中的模型概念有些差别。
+
+imi 的模型类里一般不写逻辑代码，模型类的一个对象就代表一条记录，并且所有字段都需要有值（除非你不定义指定的字段）。
+
 ## 模型定义
 
 喜闻乐见的对命名空间、类名无要求，只要按照规定写注解即可！
@@ -249,6 +253,107 @@ abstract class ArticleBase extends Model
 
 `updateTime`：save/update 模型时是否将当前时间写入该字段。支持 date/time/datetime/timestamp/year/int/bigint。当字段为 int 类型，写入秒级时间戳。当字段为 bigint 类型，写入毫秒级时间戳。
 
+### @Sql
+
+为虚拟字段定义 SQL 语句，模型查询时自动带上改字段。
+
+`@Sql("SQL 语句")`
+
+如果 `@Column` 注解定义了 `name` 属性，则将 `name` 作为字段别名；如果未定义，则使用属性名称作为别名。
+
+示例：
+
+```php
+<?php
+
+namespace Imi\Test\Component\Model;
+
+use Imi\Bean\Annotation\Inherit;
+use Imi\Model\Annotation\Column;
+use Imi\Model\Annotation\Serializables;
+use Imi\Model\Annotation\Sql;
+use Imi\Test\Component\Model\Base\MemberBase;
+
+/**
+ * Member.
+ *
+ * @Inherit
+ * @Serializables(mode="deny", fields={"password"})
+ */
+class MemberWithSqlField extends MemberBase
+{
+    /**
+     * @Column(name="a", virtual=true)
+     * @Sql("1+1")
+     *
+     * @var int
+     */
+    public $test1;
+
+    /**
+     * @Column(virtual=true)
+     * @Sql("2+2")
+     *
+     * @var int
+     */
+    public $test2;
+
+    /**
+     * Set the value of test1.
+     *
+     * @param int $test1
+     *
+     * @return self
+     */
+    public function setTest1(int $test1)
+    {
+        $this->test1 = $test1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of test1.
+     *
+     * @return int
+     */
+    public function getTest1()
+    {
+        return $this->test1;
+    }
+
+    /**
+     * Set the value of test2.
+     *
+     * @param int $test2
+     *
+     * @return self
+     */
+    public function setTest2(int $test2)
+    {
+        $this->test2 = $test2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of test2.
+     *
+     * @return int
+     */
+    public function getTest2()
+    {
+        return $this->test2;
+    }
+}
+```
+
+查询时的 SQL 语句：
+
+```sql
+select `tb_member`.*,(1+1) as `a`,(2+2) as `test2` from `tb_member` where `id`=:id limit 1
+```
+
 ### @JsonNotNull
 
 写在属性上，无参数。
@@ -327,6 +432,43 @@ $testModel->set([
 ]);
 ```
 
+### 插入
+
+```php
+$testModel = TestModel::newInstance();
+$testModel->setA('1');
+$testModel->setB('1');
+$testModel->setC('1');
+$result = $testModel->insert();
+// $result 用法同数据库中的 insert() 返回值用法
+echo '插入的自增ID：', $testModel->getId();
+```
+
+> 未设置值的字段（以注解定义为准），默认以 `null` 值插入，如有需要建议给字段设置默认值
+
+### 更新
+
+```php
+$testModel = TestModel::find(1, 'abc');
+$result = $testModel->update();
+// $result 用法同数据库中的 update() 返回值用法
+```
+
+### 保存
+
+```php
+// 自动判断是插入还是更新
+$testModel->save();
+```
+
+### 删除
+
+```php
+$testModel = TestModel::find(1, 'abc');
+$result = $testModel->delete();
+// $result 用法同数据库中的 delete() 返回值用法
+```
+
 ## 查询构建器
 
 imi 中数据库查询连贯操作都来自于查询器，查询器的创建方式：
@@ -342,8 +484,6 @@ $query = TestModel::query();
 ```php
 $query = TestModel::dbQuery();
 ```
-
-> 如果希望使用 `field()` 去指定返回字段，请使用`dbQuery()`
 
 ### 查询记录
 
@@ -433,26 +573,6 @@ TestModel::count();
 TestModel::sum('id');
 ```
 
-### 插入
-
-```php
-$testModel = TestModel::newInstance();
-$testModel->setA('1');
-$testModel->setB('1');
-$testModel->setC('1');
-$result = $testModel->insert();
-// $result 用法同数据库中的 insert() 返回值用法
-echo '插入的自增ID：', $testModel->getId();
-```
-
-### 更新
-
-```php
-$testModel = TestModel::find(1, 'abc');
-$result = $testModel->update();
-// $result 用法同数据库中的 update() 返回值用法
-```
-
 ### 批量更新
 
 ```php
@@ -460,21 +580,6 @@ $result = $testModel->update();
 TestModel::updateBatch([
     'a'	=>	'abc',
 ], 'id > 5');
-```
-
-### 保存
-
-```php
-// 自动判断是插入还是更新
-$testModel->save();
-```
-
-### 删除
-
-```php
-$testModel = TestModel::find(1, 'abc');
-$result = $testModel->delete();
-// $result 用法同数据库中的 delete() 返回值用法
 ```
 
 ### 批量删除
@@ -520,4 +625,17 @@ $array = $testModel->convertToArray(false); // 不过滤
 $list = TestModel::select();
 $arrayList = TestModel::convertListToArray($list); // 过滤注解定义的隐藏属性
 $arrayList = TestModel::convertListToArray($list, false); // 不过滤
+```
+
+### 手动获取/设置模型序列化字段
+
+默认情况下，根据 `@Column` 注解定义字段，`@Serializable`、`@Serializables` 干预序列化（toArray、json_encode）后的字段。
+
+现在你也可以手动干预了，示例如下：
+
+```php
+$member->__getSerializedFields(); // 获取，默认为 null 则使用默认规则
+
+$member->__setSerializedFields(['username', 'password']); // 手动干预，序列化后只有username、password字段
+$member->__setSerializedFields(null); // 设为默认
 ```

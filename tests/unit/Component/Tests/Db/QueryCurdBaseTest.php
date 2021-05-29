@@ -26,6 +26,13 @@ abstract class QueryCurdBaseTest extends BaseTest
      */
     protected $expectedTestWhereExSql;
 
+    /**
+     * 测试 JSON 查询的 SQL.
+     *
+     * @var string
+     */
+    protected $expectedTestJsonSelectSql;
+
     public function testSelectGet()
     {
         $query = Db::query($this->poolName);
@@ -323,5 +330,46 @@ abstract class QueryCurdBaseTest extends BaseTest
             'content'   => 'content',
             'time'      => '2019-06-21 00:00:00',
         ], $record);
+    }
+
+    public function testRawAlias()
+    {
+        $query = Db::query($this->poolName);
+        $record = $query->from('tb_article')->whereIsNotNull('id')->field('id')->fieldRaw('title')->fieldRaw('id + 1', 'id2')->select()->get();
+        Assert::assertEquals([
+            'id'    => '1',
+            'title' => 'title',
+            'id2'   => '2',
+        ], $record);
+    }
+
+    public function testJson()
+    {
+        $query = Db::query($this->poolName);
+        $jsonStr = '{"uid": "' . ($uid = uniqid('', true)) . '", "name": "aaa", "list1": [{"id": 1}]}';
+        // 插入数据
+        $insertResult = $query->from('tb_test_json')->insert([
+            'json_data' => $jsonStr,
+        ]);
+        $id = $insertResult->getLastInsertId();
+        // 查询条件
+        $result = $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->select();
+        $this->assertEquals([
+            'id'        => $id,
+            'json_data' => $jsonStr,
+        ], $result->get());
+        $this->assertEquals($this->expectedTestJsonSelectSql, $result->getSql());
+        // 更新数据
+        $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->update([
+            'json_data->a'           => '1',
+            'json_data->name'        => 'bbb',
+            'json_data->list1[0].id' => '2',
+            'json_data->list2'       => [1, 2, 3],
+        ]);
+        $result = $query->from('tb_test_json')->where('json_data->uid', '=', $uid)->order('json_data->uid')->select();
+        $this->assertEquals([
+            'id'        => $id,
+            'json_data' => '{"a": "1", "uid": "' . $uid . '", "name": "bbb", "list1": [{"id": "2"}], "list2": [1, 2, 3]}',
+        ], $result->get());
     }
 }
