@@ -14,7 +14,6 @@ use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Update;
 use Imi\Util\LazyArrayObject;
-use Imi\Util\Text;
 
 /**
  * 常用的数据库模型.
