@@ -350,69 +350,72 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function toArray(): array
     {
-        $result = iterator_to_array($this);
         $serializedFields = $this->__serializedFields;
+        $result = [];
         if (null === $serializedFields)
         {
             $meta = $this->__meta;
             $realClass = $this->__realClass;
             if ($meta->hasRelation())
             {
-                // 支持注解配置隐藏为null的关联属性
-                foreach (ModelRelationManager::getRelationFieldNames($this) as $name)
-                {
-                    if (\array_key_exists($name, $result) && null === $result[$name])
-                    {
-                        /** @var AutoSelect|null $autoSelect */
-                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
-                        if ($autoSelect && !$autoSelect->alwaysShow)
-                        {
-                            unset($result[$name]);
-                        }
-                    }
-                }
+                $relationFieldNames = ModelRelationManager::getRelationFieldNames($this);
+            }
+            else
+            {
+                $relationFieldNames = [];
             }
             // 禁止序列化支持
             $serializables = $meta->getSerializables();
             $serializableSets = $meta->getSerializableSets();
             // JsonNotNull 注解支持
             $propertyJsonNotNullMap = $meta->getPropertyJsonNotNullMap();
-            if ($serializables || $serializableSets || $propertyJsonNotNullMap)
+            foreach ($this->__fieldNames as $name)
             {
-                foreach ($result as $propertyName => $value)
+                $value = $this[$name];
+                if (null === $value)
                 {
-                    if (null === $value && isset($propertyJsonNotNullMap[$propertyName]))
+                    if (isset($propertyJsonNotNullMap[$name]))
                     {
-                        unset($result[$propertyName]);
+                        continue;
                     }
-                    elseif (isset($serializableSets[$propertyName]))
+                    if (\in_array($name, $relationFieldNames))
                     {
-                        // 单独属性上的 @Serializable 注解
-                        if (!$serializableSets[$propertyName][0]->allow)
+                        /** @var AutoSelect|null $autoSelect */
+                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
+                        if ($autoSelect && !$autoSelect->alwaysShow)
                         {
-                            unset($result[$propertyName]);
-                        }
-                    }
-                    elseif ($serializables)
-                    {
-                        if (\in_array($propertyName, $serializables->fields))
-                        {
-                            // 在黑名单中的字段剔除
-                            if ('deny' === $serializables->mode)
-                            {
-                                unset($result[$propertyName]);
-                            }
-                        }
-                        else
-                        {
-                            // 不在白名单中的字段剔除
-                            if ('allow' === $serializables->mode)
-                            {
-                                unset($result[$propertyName]);
-                            }
+                            continue;
                         }
                     }
                 }
+                elseif (isset($serializableSets[$name]))
+                {
+                    // 单独属性上的 @Serializable 注解
+                    if (!$serializableSets[$name][0]->allow)
+                    {
+                        continue;
+                    }
+                }
+                elseif ($serializables)
+                {
+                    if (\in_array($name, $serializables->fields))
+                    {
+                        // 在黑名单中的字段剔除
+                        if ('deny' === $serializables->mode)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        // 不在白名单中的字段剔除
+                        if ('allow' === $serializables->mode)
+                        {
+                            continue;
+                        }
+                    }
+                }
+                $result[$name] = $value;
             }
 
             return $result;
@@ -420,9 +423,22 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         else
         {
             $resultArray = [];
+            $__fieldNames = $this->__fieldNames;
             foreach ($serializedFields as $fieldName)
             {
-                $resultArray[$fieldName] = $result[$fieldName] ?? null;
+                if (isset($__fieldNames[$fieldName]))
+                {
+                    $name = $fieldName;
+                }
+                elseif (false !== ($key = array_search($fieldName, $__fieldNames)))
+                {
+                    $name = $key;
+                }
+                else
+                {
+                    $name = $fieldName;
+                }
+                $resultArray[$name] = $this[$name] ?? null;
             }
 
             return $resultArray;

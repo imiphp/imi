@@ -11,11 +11,11 @@ use Imi\Db\Query\Query;
 class ModelQuery extends Query
 {
     /**
-     * 查询前的字段数量.
+     * 是否设置序列化字段.
      *
-     * @var int
+     * @var bool
      */
-    protected $beforeSelectFieldsCount = 0;
+    protected $isSetSerializedFields = false;
 
     /**
      * @return void
@@ -37,8 +37,11 @@ class ModelQuery extends Query
      */
     public function select(): IResult
     {
-        $this->beforeSelectFieldsCount = 0;
-        if (!$this->option->field)
+        if ($this->option->field)
+        {
+            $this->isSetSerializedFields = true;
+        }
+        else
         {
             /** @var \Imi\Model\Meta $meta */
             $meta = $this->modelClass::__getMeta();
@@ -51,8 +54,8 @@ class ModelQuery extends Query
                     $sqlAnnotation = $sqlAnnotations[0];
                     $this->fieldRaw($sqlAnnotation->sql, $fields[$name]->name ?? $name);
                 }
-                $this->beforeSelectFieldsCount = \count($sqlColumns) + 1;
             }
+            $this->isSetSerializedFields = false;
         }
 
         return parent::select();
@@ -67,10 +70,9 @@ class ModelQuery extends Query
      */
     public function execute($sql)
     {
-        $field = $this->option->field;
         /** @var ModelQueryResult $result */
         $result = parent::execute($sql);
-        if (isset($field[$this->beforeSelectFieldsCount]))
+        if ($this->isSetSerializedFields)
         {
             $result->setIsSetSerializedFields(true);
         }
