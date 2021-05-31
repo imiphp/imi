@@ -73,6 +73,7 @@ abstract class BaseAsyncPool extends BasePool
         $selectResult = true;
         $queue = $this->queue;
         $config = $this->config;
+        $waitTimeoutFloat = $config->getWaitTimeout() / 1000;
         if ($this->getFree() <= 0)
         {
             if ($this->getCount() < $config->getMaxResources())
@@ -82,7 +83,7 @@ abstract class BaseAsyncPool extends BasePool
             }
             else
             {
-                $selectResult = $queue->pop($config->getWaitTimeout() / 1000);
+                $selectResult = $queue->pop($waitTimeoutFloat);
                 if (false === $selectResult)
                 {
                     throw new \RuntimeException(sprintf('AsyncPool [%s] getResource timeout', $this->getName()));
@@ -102,7 +103,10 @@ abstract class BaseAsyncPool extends BasePool
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
-        $poolItem->lock();
+        if (!$poolItem->lock($waitTimeoutFloat))
+        {
+            throw new \RuntimeException(sprintf('AsyncPool [%s] lock resource failed', $this->getName()));
+        }
         try
         {
             $resource = $poolItem->getResource();
@@ -163,7 +167,10 @@ abstract class BaseAsyncPool extends BasePool
         {
             throw new \RuntimeException(sprintf('AsyncPool [%s] getResource failed', $this->getName()));
         }
-        $poolItem->lock();
+        if (!$poolItem->lock())
+        {
+            throw new \RuntimeException(sprintf('AsyncPool [%s] lock resource failed', $this->getName()));
+        }
         try
         {
             $resource = $poolItem->getResource();
