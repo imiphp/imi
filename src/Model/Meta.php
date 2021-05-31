@@ -155,8 +155,15 @@ class Meta
             }
             $fields[$name] = $column;
         }
+        $this->dbFields = $dbFields;
         $this->fields = $fields;
-        $this->fieldNames = $fieldNames = array_keys($fields);
+        $fieldNames = array_keys($fields);
+        $this->relation = ModelRelationManager::hasRelation($modelClass);
+        if ($this->relation)
+        {
+            $fieldNames = array_merge($fieldNames, ModelRelationManager::getRelationFieldNames($modelClass));
+        }
+        $this->fieldNames = $fieldNames;
         $this->camel = $camel = $entity->camel ?? false;
         $serializableFieldNames = [];
         foreach ($fieldNames as $fieldName)
@@ -171,7 +178,6 @@ class Meta
             }
         }
         $this->serializableFieldNames = $serializableFieldNames;
-        $this->dbFields = $dbFields;
         foreach ($fields as $field => $column)
         {
             if ($column->isAutoIncrement)
@@ -185,11 +191,6 @@ class Meta
         $this->extractPropertys = ModelManager::getExtractPropertys($modelClass);
         $this->propertyJsonNotNullMap = AnnotationManager::getPropertiesAnnotations($modelClass, JsonNotNull::class);
         $this->sqlColumns = AnnotationManager::getPropertiesAnnotations($modelClass, Sql::class);
-        $this->relation = ModelRelationManager::hasRelation($modelClass);
-        if ($this->relation)
-        {
-            $this->fieldNames = array_merge($this->fieldNames, ModelRelationManager::getRelationFieldNames($modelClass));
-        }
     }
 
     /**
