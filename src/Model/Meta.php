@@ -13,6 +13,7 @@ use Imi\Model\Annotation\Serializable;
 use Imi\Model\Annotation\Sql;
 use Imi\Model\Annotation\Serializables;
 use Imi\Model\Annotation\Table;
+use Imi\Util\Text;
 
 /**
  * 模型元数据.
@@ -57,6 +58,13 @@ class Meta
      * @var string[]
      */
     private array $fieldNames = [];
+
+    /**
+     * 序列化后的所有字段属性名列表.
+     *
+     * @var string[]
+     */
+    private $serializableFieldNames;
 
     /**
      * 数据库字段名和 Column 注解映射.
@@ -148,7 +156,21 @@ class Meta
             $fields[$name] = $column;
         }
         $this->fields = $fields;
-        $this->fieldNames = array_keys($fields);
+        $this->fieldNames = $fieldNames = array_keys($fields);
+        $this->camel = $camel = $entity->camel ?? false;
+        $serializableFieldNames = [];
+        foreach ($fieldNames as $fieldName)
+        {
+            if ($camel)
+            {
+                $serializableFieldNames[$fieldName] = Text::toCamelName($fieldName);
+            }
+            else
+            {
+                $serializableFieldNames[$fieldName] = Text::toUnderScoreCase($fieldName);
+            }
+        }
+        $this->serializableFieldNames = $serializableFieldNames;
         $this->dbFields = $dbFields;
         foreach ($fields as $field => $column)
         {
@@ -157,10 +179,6 @@ class Meta
                 $this->autoIncrementField = $field;
                 break;
             }
-        }
-        if ($entity)
-        {
-            $this->camel = $entity->camel;
         }
         $this->serializables = ModelManager::getSerializables($modelClass);
         $this->serializableSets = AnnotationManager::getPropertiesAnnotations($modelClass, Serializable::class);
@@ -323,5 +341,15 @@ class Meta
     public function getDbFields()
     {
         return $this->dbFields;
+    }
+
+    /**
+     * Get 序列化后的所有字段属性名列表.
+     *
+     * @return string[]
+     */
+    public function getSerializableFieldNames()
+    {
+        return $this->serializableFieldNames;
     }
 }
