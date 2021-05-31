@@ -440,18 +440,42 @@ class ModelTest extends BaseTest
 
     public function testNotCamel()
     {
-        $data = [
-            'id'       => 1,
+        $record = TestJson::newInstance([
+            'jsonData' => '[1, 2, 3]',
+        ]);
+        $this->assertEquals([
+            'id'       => null,
             'jsonData' => [1, 2, 3],
-        ];
-        $record = TestJson::newInstance($data);
-        $this->assertEquals($data, $record->toArray());
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([1, 2, 3], $record->getJsonData()->toArray());
+        $id = $record->insert()->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+        $record = TestJson::find($id);
+        $this->assertEquals([
+            'id'       => $id,
+            'jsonData' => [1, 2, 3],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([1, 2, 3], $record->getJsonData()->toArray());
 
-        $data = [
-            'id'        => 1,
-            'json_data' => [1, 2, 3],
-        ];
-        $record = TestJsonNotCamel::newInstance($data);
-        $this->assertEquals($data, $record->toArray());
+        $record = TestJsonNotCamel::newInstance([
+            'json_data' => '[4, 5, 6]',
+        ]);
+        $this->assertEquals([
+            'id'        => null,
+            'json_data' => [4, 5, 6],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+        $id = $record->insert()->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+        $record = TestJsonNotCamel::find($id);
+        $this->assertEquals([
+            'id'        => $id,
+            'json_data' => [4, 5, 6],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
     }
 }
