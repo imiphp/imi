@@ -7,6 +7,7 @@ use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestJson;
+use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
@@ -435,5 +436,22 @@ class ModelTest extends BaseTest
             'test1'    => 2,
             'test2'    => 4,
         ], $record->toArray());
+    }
+
+    public function testNotCamel()
+    {
+        $data = [
+            'id'       => 1,
+            'jsonData' => [1, 2, 3],
+        ];
+        $record = TestJson::newInstance($data);
+        $this->assertEquals($data, $record->toArray());
+
+        $data = [
+            'id'        => 1,
+            'json_data' => [1, 2, 3],
+        ];
+        $record = TestJsonNotCamel::newInstance($data);
+        $this->assertEquals($data, $record->toArray());
     }
 }

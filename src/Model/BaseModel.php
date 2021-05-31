@@ -25,7 +25,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     use TEvent;
 
     /**
-     * 模型字段名数组.
+     * 序列化后的所有字段属性名列表.
      *
      * @var array
      */
@@ -86,7 +86,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function __construct($data = [])
     {
         $this->__meta = $meta = static::__getMeta();
-        $this->__fieldNames = $meta->getFieldNames();
+        $this->__fieldNames = $meta->getSerializableFieldNames();
         $this->__realClass = $meta->getClassName();
         if (!$this instanceof IBean)
         {
@@ -288,10 +288,17 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function offsetUnset($offset)
     {
-        $index = array_search($offset, $this->__fieldNames);
-        if (false !== $index)
+        if (isset($this->__fieldNames[$offset]))
         {
-            unset($this->__fieldNames[$index]);
+            unset($this->__fieldNames[$offset]);
+        }
+        else
+        {
+            $index = array_search($offset, $this->__fieldNames);
+            if (false !== $index)
+            {
+                unset($this->__fieldNames[$index]);
+            }
         }
     }
 
@@ -475,7 +482,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function &current()
     {
-        $value = $this[$this->__getFieldName(current($this->__fieldNames))];
+        $value = $this[current($this->__fieldNames)];
 
         return $value;
     }
@@ -485,7 +492,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function key()
     {
-        return $this->__getFieldName(current($this->__fieldNames));
+        return current($this->__fieldNames);
     }
 
     /**
@@ -509,7 +516,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function valid()
     {
-        return false !== $this->__getFieldName(current($this->__fieldNames));
+        return false !== current($this->__fieldNames);
     }
 
     /**
@@ -551,29 +558,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
 
         return $__camelCache[$name];
-    }
-
-    /**
-     * 获取字段名.
-     *
-     * @param string|false $fieldName
-     *
-     * @return string|bool
-     */
-    protected function __getFieldName($fieldName)
-    {
-        if (false === $fieldName)
-        {
-            return false;
-        }
-        if ($this->__meta->isCamel())
-        {
-            return $this->__getCamelName($fieldName);
-        }
-        else
-        {
-            return $fieldName;
-        }
     }
 
     /**
