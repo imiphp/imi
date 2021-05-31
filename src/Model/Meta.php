@@ -155,15 +155,20 @@ class Meta
             }
             $fields[$name] = $column;
         }
-        $this->dbFields = $dbFields;
-        $this->fields = $fields;
-        $fieldNames = array_keys($fields);
         $this->relation = ModelRelationManager::hasRelation($modelClass);
         if ($this->relation)
         {
-            $fieldNames = array_merge($fieldNames, ModelRelationManager::getRelationFieldNames($modelClass));
+            foreach (ModelRelationManager::getRelationFieldNames($modelClass) as $name)
+            {
+                if (!isset($fields[$name]))
+                {
+                    $fields[$name] = new Column(['virtual' => true]);
+                }
+            }
         }
-        $this->fieldNames = $fieldNames;
+        $this->dbFields = $dbFields;
+        $this->fields = $fields;
+        $this->fieldNames = $fieldNames = array_keys($fields);
         $this->camel = $camel = $entity->camel ?? false;
         $serializableFieldNames = [];
         foreach ($fieldNames as $fieldName)
