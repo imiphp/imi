@@ -193,7 +193,7 @@ Server::sendToAll([
 ], 'myServer', false);
 ```
 
-### sendToAllRaw
+### sendRawToAll
 
 发送数据给所有客户端
 
