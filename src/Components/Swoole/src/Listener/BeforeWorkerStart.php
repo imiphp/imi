@@ -38,5 +38,6 @@ class BeforeWorkerStart implements IWorkerStartEventListener
             App::set(ProcessAppContexts::PROCESS_TYPE, ProcessType::WORKER, true);
             Imi::setProcessName('worker');
         }
+        \Swoole\Runtime::enableCoroutine(true);
     }
 }
