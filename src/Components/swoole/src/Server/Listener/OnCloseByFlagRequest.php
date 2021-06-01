@@ -8,6 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Server\Server;
+use Imi\Worker;
 
 /**
  * 关闭指定标识-请求
@@ -22,9 +23,10 @@ class OnCloseByFlagRequest implements IEventListener
     public function handle(EventParam $e): void
     {
         $eData = $e->getData();
+        $workerId = $eData['workerId'];
         $data = $eData['data'];
         $result = Server::closeByFlag($data['flag'], $data['serverName'], false);
-        if ($data['needResponse'] ?? true)
+        if (($data['needResponse'] ?? true) && !Worker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('closeByFlagResponse', [
                 'messageId' => $data['messageId'],

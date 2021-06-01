@@ -16,6 +16,8 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Swoole\Server\Contract\ISwooleServerUtil;
 use Imi\Swoole\Server\Event\Param\PipeMessageEventParam;
 use Imi\Swoole\Util\Co\ChannelContainer;
+use Imi\Util\Process\ProcessAppContexts;
+use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 
 /**
@@ -182,21 +184,24 @@ class LocalServerUtil implements ISwooleServerUtil
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                $this->sendMessage('sendToClientIdsRequest', [
+                $count = $this->sendMessage('sendToClientIdsRequest', [
                     'messageId'          => $id,
                     'clientIds'          => $clientIds,
                     'data'               => $data,
                     'serverName'         => $server->getName(),
                     'needResponse'       => $this->needResponse,
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $success += ($result['result'] ?? 0);
                 }
             }
             finally
@@ -310,20 +315,23 @@ class LocalServerUtil implements ISwooleServerUtil
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                $this->sendMessage('sendRawToAllRequest', [
+                $count = $this->sendMessage('sendRawToAllRequest', [
                     'messageId'     => $id,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
                     'needResponse'  => $this->needResponse,
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $success += ($result['result'] ?? 0);
                 }
             }
             finally
@@ -398,21 +406,24 @@ class LocalServerUtil implements ISwooleServerUtil
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                $this->sendMessage('sendToGroupsRequest', [
+                $count = $this->sendMessage('sendToGroupsRequest', [
                     'messageId'     => $id,
                     'groups'        => $groups,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
                     'needResponse'  => $this->needResponse,
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $success += ($result['result'] ?? 0);
                 }
             }
             finally
