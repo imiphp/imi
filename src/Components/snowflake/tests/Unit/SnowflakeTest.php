@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Snowflake\Test;
 
 use Imi\Snowflake\SnowflakeUtil;

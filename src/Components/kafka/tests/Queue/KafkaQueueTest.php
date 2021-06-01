@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Test\Queue;
 
 use Imi\App;

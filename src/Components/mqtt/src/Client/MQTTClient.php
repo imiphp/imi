@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\MQTT\Client;
 
 use BinSoul\Net\Mqtt\Packet;
@@ -145,8 +147,6 @@ class MQTTClient
 
     /**
      * Get swoole 协程客户端.
-     *
-     * @return \Swoole\Coroutine\Client
      */
     public function getClient(): Client
     {
@@ -175,8 +175,6 @@ class MQTTClient
 
     /**
      * 连接.
-     *
-     * @return bool
      */
     public function connect(): bool
     {
@@ -247,13 +245,6 @@ class MQTTClient
     /**
      * 发布.
      *
-     * @param string   $topic
-     * @param string   $payload
-     * @param int      $qosLevel
-     * @param bool     $duplicate
-     * @param bool     $retained
-     * @param int|null $identifier
-     *
      * @return int|bool
      */
     public function publish(string $topic, string $payload, int $qosLevel = 0, bool $duplicate = false, bool $retained = false, ?int $identifier = null)
@@ -272,8 +263,6 @@ class MQTTClient
     /**
      * 发布确认.
      *
-     * @param int|null $identifier
-     *
      * @return int|bool
      */
     public function publishAck(?int $identifier = null)
@@ -286,8 +275,6 @@ class MQTTClient
 
     /**
      * 发布已收到（保证交付部分1）.
-     *
-     * @param int|null $identifier
      *
      * @return int|bool
      */
@@ -302,8 +289,6 @@ class MQTTClient
     /**
      * 发布释放（确保交付的第2部分）.
      *
-     * @param int|null $identifier
-     *
      * @return int|bool
      */
     public function publishRelease(?int $identifier = null)
@@ -317,8 +302,6 @@ class MQTTClient
     /**
      * 发布完成（保证交付的第3部分）.
      *
-     * @param int|null $identifier
-     *
      * @return int|bool
      */
     public function publishComplete(?int $identifier = null)
@@ -331,10 +314,6 @@ class MQTTClient
 
     /**
      * 订阅.
-     *
-     * @param string   $topic
-     * @param int      $qosLevel
-     * @param int|null $identifier
      *
      * @return int|bool
      */
@@ -351,9 +330,6 @@ class MQTTClient
     /**
      * 取消订阅.
      *
-     * @param array    $topics
-     * @param int|null $identifier
-     *
      * @return int|bool
      */
     public function unsubscribe(array $topics, ?int $identifier = null)
@@ -367,8 +343,6 @@ class MQTTClient
 
     /**
      * 发送包.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet $packet
      *
      * @return int|bool
      */
@@ -393,8 +367,6 @@ class MQTTClient
 
     /**
      * 接收包.
-     *
-     * @return \BinSoul\Net\Mqtt\Packet|null
      */
     public function recv(): ?Packet
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Queue;
 
 use Imi\Bean\Annotation\Bean;
@@ -323,8 +325,6 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 获取队列名称.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -333,12 +333,6 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 推送消息到队列，返回消息ID.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     * @param float                        $delay
-     * @param array                        $options
-     *
-     * @return string
      */
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
@@ -367,8 +361,6 @@ class AMQPQueueDriver implements IQueueDriver
      * 从队列弹出一个消息.
      *
      * @param float $timeout 超时时间，单位：秒。值是-1时立即返回结果
-     *
-     * @return \Imi\Queue\Contract\IMessage|null
      */
     public function pop(float $timeout = -1): ?IMessage
     {
@@ -430,10 +422,6 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 删除一个消息.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     *
-     * @return bool
      */
     public function delete(IMessage $message): bool
     {
@@ -505,7 +493,6 @@ class AMQPQueueDriver implements IQueueDriver
      * 将消息标记为失败.
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
-     * @param bool                             $requeue
      *
      * @return void
      */
@@ -532,8 +519,6 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 获取队列状态
-     *
-     * @return \Imi\Queue\Model\QueueStatus
      */
     public function status(): QueueStatus
     {
@@ -624,8 +609,6 @@ class AMQPQueueDriver implements IQueueDriver
      * 将失败消息恢复到队列.
      *
      * 返回恢复数量
-     *
-     * @return int
      */
     public function restoreFailMessages(): int
     {
@@ -648,8 +631,6 @@ class AMQPQueueDriver implements IQueueDriver
      * 将超时消息恢复到队列.
      *
      * 返回恢复数量
-     *
-     * @return int
      */
     public function restoreTimeoutMessages(): int
     {
@@ -670,8 +651,6 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * 获取消息 ID 的键.
-     *
-     * @return string
      */
     public function getRedisMessageIdKey(): string
     {
@@ -682,8 +661,6 @@ class AMQPQueueDriver implements IQueueDriver
      * 获取队列的键.
      *
      * @param int|string $queueType
-     *
-     * @return string
      */
     public function getRedisQueueKey($queueType): string
     {
@@ -694,8 +671,6 @@ class AMQPQueueDriver implements IQueueDriver
      * 将处理超时的消息加入到超时队列.
      *
      * 返回消息数量
-     *
-     * @param int $count
      *
      * @return void
      */
@@ -742,11 +717,6 @@ LUA
 
     /**
      * 消息是否被删除.
-     *
-     * @param string $messageId
-     * @param bool   $delete
-     *
-     * @return bool
      */
     protected function messageIsDeleted(string $messageId, bool $delete = true): bool
     {

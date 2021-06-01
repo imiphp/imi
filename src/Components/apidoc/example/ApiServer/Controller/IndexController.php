@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ApiDocApp\ApiServer\Controller;
 
-use Imi\Controller\SingletonHttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Controller\HttpController;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 
 /**
  * @OA\Info(title="My First API", version="0.1")
  * @Controller("/")
  */
-class IndexController extends SingletonHttpController
+class IndexController extends HttpController
 {
     /**
      * @Action
@@ -76,8 +78,6 @@ class IndexController extends SingletonHttpController
 
     /**
      * @Action
-     *
-     * @param int $id
      *
      * @return void
      */

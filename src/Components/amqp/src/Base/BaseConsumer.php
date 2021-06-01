@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Base;
 
 use Imi\AMQP\Base\Traits\TAMQP;
@@ -114,8 +116,6 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 消费任务
-     *
-     * @param \Imi\AMQP\Contract\IMessage $message
      *
      * @return mixed
      */

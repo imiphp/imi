@@ -72,9 +72,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     protected $__serializedFields = null;
 
-    /**
-     * @param array $data
-     */
     public function __construct(array $data = [])
     {
         $this->__meta = $meta = static::__getMeta();
@@ -559,8 +556,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 获取模型序列化字段.
-     *
-     * @return array|null
      */
     public function __getSerializedFields(): ?array
     {
@@ -569,10 +564,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
 
     /**
      * 设置模型序列化字段.
-     *
-     * @param array|null $serializedFields
-     *
-     * @return self
      */
     public function __setSerializedFields(?array $serializedFields): self
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\MQTT\Message;
 
 use Imi\RequestContext;
@@ -49,19 +51,17 @@ class ReceiveData implements IReceiveData
     /**
      * 获取客户端的socket id.
      *
-     * @return int
+     * @return int|string
      */
-    public function getFd(): int
+    public function getClientId()
     {
         return $this->fd;
     }
 
     /**
      * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断.
-     *
-     * @return string
      */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }
@@ -78,8 +78,6 @@ class ReceiveData implements IReceiveData
 
     /**
      * 获取Reactor线程ID.
-     *
-     * @return int
      */
     public function getReactorID(): int
     {

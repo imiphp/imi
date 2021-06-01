@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -19,7 +21,7 @@ class Queue extends Base
      *
      * @var string
      */
-    protected $defaultFieldName = 'name';
+    protected ?string $defaultFieldName = 'name';
 
     /**
      * 队列名称.

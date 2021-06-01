@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc;
 
 use Google\Protobuf\Internal\Message;
@@ -41,8 +43,7 @@ abstract class Parser
     }
 
     /**
-     * @param mixed  $deserialize
-     * @param string $value
+     * @param mixed $deserialize
      *
      * @return Message|null
      */
@@ -79,8 +80,6 @@ abstract class Parser
     /**
      * @param mixed $response
      * @param mixed $deserialize
-     *
-     * @return array
      */
     public static function parseToResultArray($response, $deserialize): array
     {

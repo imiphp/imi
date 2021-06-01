@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Model;
 
 use Imi\Bean\BeanFactory;
@@ -15,10 +17,8 @@ class ModelQueryResult extends Result
 {
     /**
      * 是否设置模型序列化字段.
-     *
-     * @var bool
      */
-    protected $isSetSerializedFields = false;
+    protected bool $isSetSerializedFields = false;
 
     /**
      * 返回一行数据，数组或对象，失败返回null.
@@ -27,7 +27,7 @@ class ModelQueryResult extends Result
      *
      * @return mixed|null
      */
-    public function get($className = null)
+    public function get(?string $className = null)
     {
         if (!$this->isSuccess)
         {
@@ -79,13 +79,11 @@ class ModelQueryResult extends Result
     }
 
     /**
-     * 返回数组，失败返回null.
+     * 返回数组.
      *
-     * @param string $className 实体类名，为null则数组每个成员为数组
-     *
-     * @return array|null
+     * @param string|null $className 实体类名，为null则数组每个成员为数组
      */
-    public function getArray($className = null)
+    public function getArray(?string $className = null): array
     {
         if (!$this->isSuccess)
         {
@@ -138,8 +136,6 @@ class ModelQueryResult extends Result
 
     /**
      * Get 是否设置模型序列化字段.
-     *
-     * @return bool
      */
     public function getIsSetSerializedFields(): bool
     {
@@ -150,8 +146,6 @@ class ModelQueryResult extends Result
      * Set 是否设置模型序列化字段.
      *
      * @param bool $isSetSerializedFields 是否设置模型序列化字段
-     *
-     * @return self
      */
     public function setIsSetSerializedFields(bool $isSetSerializedFields): self
     {

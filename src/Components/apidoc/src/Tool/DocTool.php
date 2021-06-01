@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\ApiDoc\Tool;
 
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\ReflectionUtil;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Tool\Annotation\Arg;
 use Imi\Tool\Annotation\Operation;
 use Imi\Tool\Annotation\Tool;
@@ -95,8 +97,6 @@ class DocTool
 
     /**
      * 处理路由.
-     *
-     * @param \OpenApi\Analysis $analysis
      *
      * @return void
      */
@@ -276,9 +276,6 @@ class DocTool
     }
 
     /**
-     * @param array  $docParams
-     * @param string $paramName
-     *
      * @return \phpDocumentor\Reflection\DocBlock\Tags\Param|null
      */
     private function getDocParam(array $docParams, string $paramName)

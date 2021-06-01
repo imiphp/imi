@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Queue\Contract;
 
 use Imi\Queue\Contract\IMessage;

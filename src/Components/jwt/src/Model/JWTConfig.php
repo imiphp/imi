@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\JWT\Model;
 
 use Imi\Util\Traits\TDataToProperty;
@@ -115,8 +117,6 @@ class JWTConfig
 
     /**
      * Get 签名者.
-     *
-     * @return string
      */
     public function getSigner(): string
     {
@@ -125,8 +125,6 @@ class JWTConfig
 
     /**
      * Get 算法.
-     *
-     * @return string
      */
     public function getAlgo(): string
     {
@@ -135,8 +133,6 @@ class JWTConfig
 
     /**
      * Get 超时秒数.
-     *
-     * @return int|null
      */
     public function getExpires(): ?int
     {
@@ -145,8 +141,6 @@ class JWTConfig
 
     /**
      * Get 发行人.
-     *
-     * @return string|null
      */
     public function getIssuer(): ?string
     {
@@ -155,8 +149,6 @@ class JWTConfig
 
     /**
      * Get 头.
-     *
-     * @return array
      */
     public function getHeaders(): array
     {
@@ -165,8 +157,6 @@ class JWTConfig
 
     /**
      * Get 自定义获取 token 回调.
-     *
-     * @return callable|null
      */
     public function getTokenHandler(): ?callable
     {
@@ -175,8 +165,6 @@ class JWTConfig
 
     /**
      * Get 私钥.
-     *
-     * @return string|null
      */
     public function getPrivateKey(): ?string
     {
@@ -185,8 +173,6 @@ class JWTConfig
 
     /**
      * Get 公钥.
-     *
-     * @return string|null
      */
     public function getPublicKey(): ?string
     {
@@ -195,8 +181,6 @@ class JWTConfig
 
     /**
      * Get 接收.
-     *
-     * @return string|null
      */
     public function getAudience(): ?string
     {
@@ -205,8 +189,6 @@ class JWTConfig
 
     /**
      * Get 主题.
-     *
-     * @return string|null
      */
     public function getSubject(): ?string
     {
@@ -255,8 +237,6 @@ class JWTConfig
 
     /**
      * 获取签名者对象
-     *
-     * @return \Lcobucci\JWT\Signer
      */
     public function getSignerInstance(): Signer
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Enum;
 
 use Imi\Enum\Annotation\EnumItem;

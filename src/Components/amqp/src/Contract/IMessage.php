@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Contract;
 
 use PhpAmqpLib\Message\AMQPMessage;
@@ -11,15 +13,11 @@ interface IMessage
 {
     /**
      * 获取主体内容.
-     *
-     * @return string
      */
     public function getBody(): string;
 
     /**
      * 设置主体内容.
-     *
-     * @param string $body
      *
      * @return static
      */
@@ -43,8 +41,6 @@ interface IMessage
 
     /**
      * Get 配置属性.
-     *
-     * @return array
      */
     public function getProperties(): array;
 
@@ -59,8 +55,6 @@ interface IMessage
 
     /**
      * Get 路由键.
-     *
-     * @return string
      */
     public function getRoutingKey(): string;
 
@@ -75,8 +69,6 @@ interface IMessage
 
     /**
      * Get 当mandatory标志位设置为true时，如果exchange根据自身类型和消息routeKey无法找到一个符合条件的queue，那么会调用basic.return方法将消息返还给生产者；当mandatory设为false时，出现上述情形broker会直接将消息扔掉。
-     *
-     * @return bool
      */
     public function getMandatory(): bool;
 
@@ -89,8 +81,6 @@ interface IMessage
 
     /**
      * Get 当immediate标志位设置为true时，如果exchange在将消息route到queue(s)时发现对应的queue上没有消费者，那么这条消息不会放入队列中。当与消息routeKey关联的所有queue(一个或多个)都没有消费者时，该消息会通过basic.return方法返还给生产者。
-     *
-     * @return bool
      */
     public function getImmediate(): bool;
 
@@ -103,8 +93,6 @@ interface IMessage
 
     /**
      * Get ticket.
-     *
-     * @return int|null
      */
     public function getTicket(): ?int;
 
@@ -119,8 +107,6 @@ interface IMessage
 
     /**
      * 设置 AMQP 消息.
-     *
-     * @param \PhpAmqpLib\Message\AMQPMessage $amqpMessage
      *
      * @return void
      */

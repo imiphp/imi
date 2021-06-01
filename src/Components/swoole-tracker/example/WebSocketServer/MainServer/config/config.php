@@ -33,7 +33,7 @@ return [
         ],
         'HttpDispatcher'    => [
             'middlewares'    => [
-                \Imi\Server\WebSocket\Middleware\HandShakeMiddleware::class,
+                \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
                 'SwooleTrackerHttpMiddleware',
             ],
@@ -50,7 +50,7 @@ return [
             'redisPool'    => 'redis',
         ],
         'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable::class,
+            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
         ],
         'ConnectContextMemoryTable' => [
             'tableName' => 'connectContext',

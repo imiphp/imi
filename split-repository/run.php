@@ -27,8 +27,6 @@ function execCMD(string $cmd, string $description = '', ?array &$result = null):
 
 /**
  * 根据最后一次处理的提交记录，获取commit列表，顺序从旧到新.
- *
- * @return array
  */
 function getCommitsFromLast(?string $lastCommit): array
 {

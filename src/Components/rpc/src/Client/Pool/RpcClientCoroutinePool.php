@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Client\Pool;
 
 use Imi\Bean\BeanFactory;
-use Imi\Pool\BaseAsyncPool;
 use Imi\Pool\TUriResourceConfig;
+use Imi\Swoole\Pool\BaseAsyncPool;
 
 /**
  * Swoole协程RPC连接池.
@@ -28,8 +30,6 @@ class RpcClientCoroutinePool extends BaseAsyncPool
 
     /**
      * 创建资源.
-     *
-     * @return \Imi\Pool\Interfaces\IPoolResource
      */
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {

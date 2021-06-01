@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Smarty\Example\MainServer\Controller;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
 
 /**
@@ -49,6 +51,8 @@ class IndexController extends HttpController
      */
     public function ping()
     {
-        return $this->response->write('pong');
+        $this->response->getBody()->write('pong');
+
+        return $this->response;
     }
 }

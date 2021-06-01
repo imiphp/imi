@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\RateLimit\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -21,7 +23,7 @@ class BlockingConsumer extends Base
      *
      * @var string
      */
-    protected $defaultFieldName = 'timeout';
+    protected ?string $defaultFieldName = 'timeout';
 
     /**
      * 超时时间，单位：秒.

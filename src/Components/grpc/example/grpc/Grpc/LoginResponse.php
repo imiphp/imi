@@ -31,9 +31,9 @@ class LoginResponse extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *                    Optional. Data for populating the Message object.
      *
-     *     @var bool $success
+     *     @var bool
      *           是否成功
-     *     @var string $error
+     *     @var string
      *           错误信息
      * }
      */

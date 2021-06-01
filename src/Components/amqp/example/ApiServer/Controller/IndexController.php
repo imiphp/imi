@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AMQPApp\ApiServer\Controller;
 
 use AMQPApp\AMQP\QueueTest\QueueTestMessage;
@@ -10,9 +12,9 @@ use Imi\Controller\HttpController;
 use Imi\Queue\Facade\Queue;
 use Imi\Queue\Model\Message;
 use Imi\Redis\Redis;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 
 /**
  * @Controller("/")
@@ -41,7 +43,9 @@ class IndexController extends HttpController
      */
     public function index()
     {
-        return $this->response->write('imi');
+        $this->response->getBody()->write('imi');
+
+        return $this->response;
     }
 
     /**

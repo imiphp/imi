@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Facade;
 
 use Imi\Facade\Annotation\Facade;

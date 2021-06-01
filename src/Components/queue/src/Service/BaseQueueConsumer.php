@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Service;
 
 use Imi\Aop\Annotation\Inject;
@@ -57,8 +59,6 @@ abstract class BaseQueueConsumer
     /**
      * 开始消费循环.
      *
-     * @param int|null $co
-     *
      * @return void
      */
     public function start(?int $co = null)
@@ -113,8 +113,6 @@ abstract class BaseQueueConsumer
                 /**
                  * 执行任务
                  *
-                 * @param ITaskParam $param
-                 *
                  * @return mixed
                  */
                 public function run(ITaskParam $param)
@@ -153,9 +151,6 @@ abstract class BaseQueueConsumer
 
     /**
      * 处理消费.
-     *
-     * @param \Imi\Queue\Contract\IMessage   $message
-     * @param \Imi\Queue\Driver\IQueueDriver $queue
      *
      * @return void
      */

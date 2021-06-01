@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\MQTT\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
@@ -9,6 +11,6 @@ use Imi\Bean\Annotation\ClassEventListener;
  *
  * @ClassEventListener(className="Imi\Server\MQTT\Server",eventName="close",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
-class BeforeClose extends \Imi\Server\TcpServer\Listener\BeforeClose
+class BeforeClose extends \Imi\Swoole\Server\TcpServer\Listener\BeforeClose
 {
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Imi\Server\Type;
+use Imi\Swoole\Server\Type;
 
 return [
     // 项目根命名空间
@@ -40,7 +40,7 @@ return [
                 // 同步池类名
                 'syncClass'     => \Imi\Redis\SyncRedisPool::class,
                 // 协程池类名
-                'asyncClass'    => \Imi\Redis\CoroutineRedisPool::class,
+                'asyncClass'    => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'        => [
                     // 池子中最多资源数
                     'maxResources' => 10,
@@ -96,6 +96,41 @@ return [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',
+                ],
+            ],
+        ],
+    ],
+    // 日志配置
+    'logger' => [
+        'channels' => [
+            'imi' => [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                    [
+                        'class'     => \Monolog\Handler\RotatingFileHandler::class,
+                        'construct' => [
+                            'filename' => dirname(__DIR__) . '/.runtime/logs/log.log',
+                        ],
+                        'formatter' => [
+                            'class'     => \Monolog\Formatter\LineFormatter::class,
+                            'construct' => [
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],

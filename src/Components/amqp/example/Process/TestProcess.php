@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AMQPApp\Process;
 
 use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\BaseProcess;
 
 /**
  * @Process(name="TestProcess")
@@ -27,7 +29,7 @@ class TestProcess extends BaseProcess
      */
     protected $testConsumer2;
 
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $this->runConsumer($this->testConsumer);
         $this->runConsumer($this->testConsumer2);

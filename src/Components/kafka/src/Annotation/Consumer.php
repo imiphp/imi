@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -19,7 +21,7 @@ class Consumer extends Base
      *
      * @var string
      */
-    protected $defaultFieldName = 'topic';
+    protected ?string $defaultFieldName = 'topic';
 
     /**
      * 主题名称.

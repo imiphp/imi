@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SharedMemory\Pool;
 
 use Imi\Pool\BasePoolResource;
@@ -25,22 +27,16 @@ class ClientResource extends BasePoolResource
 
     /**
      * 打开
-     *
-     * @param callable|null $callback
-     *
-     * @return bool
      */
-    public function open($callback = null)
+    public function open(?callable $callback = null): bool
     {
         return $this->client->getClient()->connect();
     }
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->client->getClient()->close();
     }
@@ -57,17 +53,13 @@ class ClientResource extends BasePoolResource
 
     /**
      * 重置资源，当资源被使用后重置一些默认的设置.
-     *
-     * @return void
      */
-    public function reset()
+    public function reset(): void
     {
     }
 
     /**
      * 检查资源是否可用.
-     *
-     * @return bool
      */
     public function checkState(): bool
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Model;
 
 use Imi\Util\Traits\TDataToProperty;

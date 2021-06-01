@@ -14,7 +14,6 @@ use Imi\Server\View\Annotation\View;
 use Imi\Util\File;
 use Imi\Util\Imi;
 use Imi\Util\Text;
-use Imi\Util\Traits\TServerAnnotationParser;
 
 /**
  * 视图注解处理器.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\JWT\Aop;
 
 use Imi\Aop\Annotation\Around;

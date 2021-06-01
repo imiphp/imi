@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Model\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -10,21 +12,23 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("PROPERTY")
- * @Parser("Imi\Model\Parser\ModelParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
+#[\Attribute]
 class Sql extends Base
 {
     /**
      * 只传一个参数时的参数名.
-     *
-     * @var string
      */
-    protected $defaultFieldName = 'sql';
+    protected ?string $defaultFieldName = 'sql';
 
     /**
      * SQL 语句.
-     *
-     * @var string
      */
-    public $sql;
+    public string $sql = '';
+
+    public function __construct(?array $__data = null, string $sql = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

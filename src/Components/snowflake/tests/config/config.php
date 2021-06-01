@@ -32,7 +32,7 @@ return [
             ],
             'async'    => [
                 'pool'    => [
-                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                    'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                     'config'       => [
                         'maxResources'    => 128,
                         'minResources'    => 1,
@@ -52,20 +52,6 @@ return [
         'defaultPool'   => 'redis_test',
     ],
     'beans'    => [
-        'Logger'            => [
-            'exHandlers'    => [
-                [
-                    'class'     => \Imi\Log\Handler\Console::class,
-                    'options'   => [
-                        'levels'        => [
-                            'Test',
-                        ],
-                        'format'         => '{message}',
-                        'logCacheNumber' => 10240,
-                    ],
-                ],
-            ],
-        ],
         'JWT'   => [
             'list'  => [
                 'a' => [

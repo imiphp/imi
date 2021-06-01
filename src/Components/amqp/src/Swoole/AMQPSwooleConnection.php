@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Swoole;
 
-use Imi\Util\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 use PhpAmqpLib\Connection\AbstractConnection;
 
 /**

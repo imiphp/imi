@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Service;
 
 use Imi\App;
@@ -69,10 +71,6 @@ class QueueService
 
     /**
      * 获取队列配置.
-     *
-     * @param string|null $name
-     *
-     * @return \Imi\Queue\Model\QueueConfig
      */
     public function getQueueConfig(?string $name = null): QueueConfig
     {
@@ -100,10 +98,6 @@ class QueueService
 
     /**
      * 获取队列对象
-     *
-     * @param string|null $name
-     *
-     * @return \Imi\Queue\Driver\IQueueDriver
      */
     public function getQueue(?string $name = null): IQueueDriver
     {

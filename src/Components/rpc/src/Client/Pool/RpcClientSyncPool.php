@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Client\Pool;
 
 use Imi\Bean\BeanFactory;
@@ -28,8 +30,6 @@ class RpcClientSyncPool extends BaseSyncPool
 
     /**
      * 创建资源.
-     *
-     * @return \Imi\Pool\Interfaces\IPoolResource
      */
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MQTTApp\MQTTServer\Controller;
 
 use BinSoul\Net\Mqtt\Packet\ConnectRequestPacket;
@@ -24,11 +26,6 @@ class MQTTController extends BaseMQTTController
 {
     /**
      * 连接.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet\ConnectRequestPacket $request
-     * @param \Imi\Server\MQTT\Message\ReceiveData          $receiveData
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket|null
      */
     public function connect(ConnectRequestPacket $request, ReceiveData $receiveData): ?ConnectResponsePacket
     {
@@ -48,11 +45,6 @@ class MQTTController extends BaseMQTTController
 
     /**
      * 断开连接.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet\DisconnectRequestPacket $request
-     * @param \Imi\Server\MQTT\Message\ReceiveData             $receiveData
-     *
-     * @return void
      */
     public function disconnect(DisconnectRequestPacket $request, ReceiveData $receiveData): void
     {
@@ -60,11 +52,6 @@ class MQTTController extends BaseMQTTController
 
     /**
      * Ping.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet\PingRequestPacket $request
-     * @param \Imi\Server\MQTT\Message\ReceiveData       $receiveData
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\PingResponsePacket|null
      */
     public function ping(PingRequestPacket $request, ReceiveData $receiveData): ?PingResponsePacket
     {
@@ -73,9 +60,6 @@ class MQTTController extends BaseMQTTController
 
     /**
      * 发布.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet\PublishRequestPacket $request
-     * @param \Imi\Server\MQTT\Message\ReceiveData          $receiveData
      *
      * @return \BinSoul\Net\Mqtt\Packet\PublishAckPacket|\BinSoul\Net\Mqtt\Packet\PublishReceivedPacket|\BinSoul\Net\Mqtt\Packet\PublishReleasePacket|\BinSoul\Net\Mqtt\Packet\PublishCompletePacket|null
      */
@@ -105,11 +89,6 @@ class MQTTController extends BaseMQTTController
 
     /**
      * 订阅.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet\SubscribeRequestPacket $request
-     * @param \Imi\Server\MQTT\Message\ReceiveData            $receiveData
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket|null
      */
     public function subscribe(SubscribeRequestPacket $request, ReceiveData $receiveData): ?SubscribeResponsePacket
     {
@@ -120,18 +99,13 @@ class MQTTController extends BaseMQTTController
         $publishData = new PublishRequestPacket();
         $publishData->setPayload('test');
         $publishData->setTopic('a');
-        Server::send($publishData, $receiveData->getFd());
+        Server::send($publishData, $receiveData->getClientId());
 
         return $response;
     }
 
     /**
      * 取消订阅.
-     *
-     * @param \BinSoul\Net\Mqtt\Packet\UnsubscribeRequestPacket $request
-     * @param \Imi\Server\MQTT\Message\ReceiveData              $receiveData
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket|null
      */
     public function unsubscribe(UnsubscribeRequestPacket $request, ReceiveData $receiveData): ?UnsubscribeResponsePacket
     {

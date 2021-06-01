@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Route\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -20,7 +22,7 @@ class RpcController extends Base implements IRpcController
      *
      * @var string
      */
-    protected $defaultFieldName = 'prefix';
+    protected ?string $defaultFieldName = 'prefix';
 
     /**
      * 路由前缀

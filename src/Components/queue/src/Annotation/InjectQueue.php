@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Annotation;
 
 use Imi\Aop\Annotation\Inject;

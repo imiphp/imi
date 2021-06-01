@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueueApp\Listener;
 
 use Imi\Aop\Annotation\Inject;
@@ -23,12 +25,8 @@ class WorkerStartListener implements IEventListener
 
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         // 每 1 秒投递进 test1 队列
         Coroutine::create(function () {

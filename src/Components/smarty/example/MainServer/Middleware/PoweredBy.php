@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Smarty\Example\MainServer\Middleware;
 
 use Psr\Http\Message\ResponseInterface;

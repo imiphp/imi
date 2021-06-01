@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Hprose\Client;
 
 use Imi\Event\Event;
@@ -37,10 +39,8 @@ class HproseSocketClient implements IRpcClient
 
     /**
      * 打开
-     *
-     * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $this->client = new \Hprose\Socket\Client($this->options['uris'], false);
         Event::trigger('IMI.RPC.HPROSE.CLIENT.OPEN', [
@@ -52,18 +52,14 @@ class HproseSocketClient implements IRpcClient
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->client = null;
     }
 
     /**
      * 是否已连接.
-     *
-     * @return bool
      */
     public function isConnected(): bool
     {
@@ -84,8 +80,6 @@ class HproseSocketClient implements IRpcClient
      * 获取服务对象
      *
      * @param string $name 服务名
-     *
-     * @return \Imi\Rpc\Client\IService
      */
     public function getService($name = null): IService
     {

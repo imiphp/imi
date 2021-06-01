@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker\UDP\Middleware;
 
 use Imi\Bean\Annotation\Bean;
@@ -22,10 +24,7 @@ class SwooleTrackerMiddleware extends BaseMiddleware implements IMiddleware
      */
     protected $nameHandler;
 
-    /**
-     * @return void
-     */
-    public function __init()
+    public function __init(): void
     {
         if (null === $this->nameHandler)
         {

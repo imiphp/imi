@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Hprose\Listener;
 
 use Imi\Bean\Annotation\Listener;
@@ -14,12 +16,8 @@ class InitDefaultRoute implements IEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData();
         $this->init($data['className'], $data['classAnnotation'], $data['methodName'], $data['result']);

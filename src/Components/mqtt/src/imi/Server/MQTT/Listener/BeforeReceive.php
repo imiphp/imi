@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\MQTT\Listener;
 
 use BinSoul\Net\Mqtt\Packet;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
-use Imi\Server\Event\Param\ReceiveEventParam;
 use Imi\Server\MQTT\Message\ReceiveData;
-use Imi\Worker;
+use Imi\Swoole\Server\Event\Param\ReceiveEventParam;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * Receive事件前置处理.
  *
  * @ClassEventListener(className="Imi\Server\MQTT\Server",eventName="receive",priority=Imi\Util\ImiPriority::IMI_MAX)
  */
-class BeforeReceive extends \Imi\Server\TcpServer\Listener\BeforeReceive
+class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
 {
     /**
      * 包类型集合.
@@ -35,16 +37,12 @@ class BeforeReceive extends \Imi\Server\TcpServer\Listener\BeforeReceive
 
     /**
      * 事件处理方法.
-     *
-     * @param ReceiveEventParam $e
-     *
-     * @return void
      */
-    public function handle(ReceiveEventParam $e)
+    public function handle(ReceiveEventParam $e): void
     {
-        $fd = $e->fd;
+        $fd = $e->clientId;
         $server = $e->server;
-        if (!Worker::isWorkerStartAppComplete())
+        if (!SwooleWorker::isWorkerStartAppComplete())
         {
             $server->getSwooleServer()->close($fd);
             $e->stopPropagation();
@@ -59,7 +57,7 @@ class BeforeReceive extends \Imi\Server\TcpServer\Listener\BeforeReceive
         }
 
         // 数据
-        $data = new ReceiveData($fd, $e->reactorID, $e->data);
+        $data = new ReceiveData($fd, $e->reactorId, $e->data);
 
         // 上下文创建
         RequestContext::muiltiSet([

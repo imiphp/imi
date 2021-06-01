@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
-use Imi\Util\Imi;
+use Imi\Swoole\Process\BaseProcess;
+use Imi\Swoole\Util\Imi;
 use Swoole\Coroutine;
 
 /**
@@ -30,7 +32,7 @@ class QueueConsumerProcess extends BaseProcess
      */
     private $consumers = [];
 
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $imiQueue = $this->imiQueue;
         $processGroups = [];
@@ -51,12 +53,11 @@ class QueueConsumerProcess extends BaseProcess
         }
         foreach ($processGroups as $group => $options)
         {
-            $processPool = new \Imi\Process\Pool($options['process']);
+            $processPool = new \Imi\Swoole\Process\Pool($options['process']);
             $configs = $options['configs'];
-            $processPool->on('WorkerStart', function (\Imi\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
+            $processPool->on('WorkerStart', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) use ($group, $configs) {
                 go(function () use ($group, $configs) {
                     \Swoole\Runtime::enableCoroutine(true);
-                    App::initWorker();
                     Imi::setProcessName('process', [
                         'processName'   => 'QueueConsumer-' . $group,
                     ]);
@@ -72,7 +73,7 @@ class QueueConsumerProcess extends BaseProcess
                 });
             });
             // 工作进程退出事件-可选
-            $processPool->on('WorkerExit', function (\Imi\Process\Pool\WorkerEventParam $e) {
+            $processPool->on('WorkerExit', function (\Imi\Swoole\Process\Pool\WorkerEventParam $e) {
                 // 做一些释放操作
                 foreach ($this->consumers as $consumer)
                 {

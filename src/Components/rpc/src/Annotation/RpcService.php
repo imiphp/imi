@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Annotation;
 
 use Imi\Aop\Annotation\Inject;

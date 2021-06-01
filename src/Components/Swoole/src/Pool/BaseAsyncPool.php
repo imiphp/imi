@@ -33,6 +33,11 @@ abstract class BaseAsyncPool extends BasePool
     protected ?int $heartbeatTimerId = null;
 
     /**
+     * PoolItem 类型.
+     */
+    protected string $poolItemClass = PoolItem::class;
+
+    /**
      * 关闭池子，释放所有资源.
      */
     public function close(): void

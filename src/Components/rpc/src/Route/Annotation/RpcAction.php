@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Route\Annotation;
 
 use Imi\Bean\Annotation\Base;

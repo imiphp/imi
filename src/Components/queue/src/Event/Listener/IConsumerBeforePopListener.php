@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Event\Listener;
 
 use Imi\Queue\Event\Param\ConsumerBeforePopParam;
@@ -11,8 +13,6 @@ interface IConsumerBeforePopListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param ConsumerBeforePopParam $e
      *
      * @return void
      */

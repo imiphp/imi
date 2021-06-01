@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc\Listener;
 
 use Imi\Bean\Annotation\Listener;
@@ -9,7 +11,7 @@ use Imi\Grpc\Client\GrpcClient;
 use Imi\Pool\PoolManager;
 use Imi\Rpc\Client\Pool\RpcClientCoroutinePool;
 use Imi\Rpc\Client\Pool\RpcClientSyncPool;
-use Imi\Util\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 
 /**
  * @Listener(eventName="IMI.MAIN_SERVER.WORKER.EXIT",priority=Imi\Util\ImiPriority::IMI_MIN)
@@ -19,12 +21,8 @@ class WorkerExit implements IEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         foreach (PoolManager::getNames() as $name)
         {

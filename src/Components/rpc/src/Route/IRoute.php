@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Route;
 
 use Imi\Rpc\Route\Annotation\Contract\IRpcController;
@@ -10,10 +12,8 @@ interface IRoute
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param \Imi\Rpc\Route\Annotation\Contract\IRpcController $controllerAnnotation
-     * @param \Imi\Rpc\Route\Annotation\Contract\IRpcRoute      $routeAnnotation
-     * @param mixed                                             $callable
-     * @param array                                             $options
+     * @param mixed $callable
+     * @param array $options
      *
      * @return void
      */
@@ -22,10 +22,9 @@ interface IRoute
     /**
      * 获取缺省的路由注解.
      *
-     * @param string                                            $className
-     * @param string                                            $methodName
-     * @param \Imi\Rpc\Route\Annotation\Contract\IRpcController $controllerAnnotation
-     * @param array                                             $options
+     * @param string $className
+     * @param string $methodName
+     * @param array  $options
      *
      * @return \Imi\Rpc\Route\Annotation\Contract\IRpcRoute
      */

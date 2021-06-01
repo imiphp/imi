@@ -21,7 +21,7 @@ return [
     // 主服务器配置
     'mainServer'    => [
         'namespace'    => 'Imi\SwooleTracker\Example\HttpServer\ApiServer',
-        'type'         => Imi\Server\Type::HTTP,
+        'type'         => Imi\Swoole\Server\Type::HTTP,
         'host'         => '127.0.0.1',
         'port'         => 13000,
         'configs'      => [
@@ -32,5 +32,41 @@ return [
 
     // 子服务器（端口监听）配置
     'subServers'        => [
+    ],
+
+    // 日志配置
+    'logger' => [
+        'channels' => [
+            'imi' => [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                    [
+                        'class'     => \Monolog\Handler\RotatingFileHandler::class,
+                        'construct' => [
+                            'filename' => dirname(__DIR__) . '.runtime/.logs/log.log',
+                        ],
+                        'formatter' => [
+                            'class'     => \Monolog\Formatter\LineFormatter::class,
+                            'construct' => [
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

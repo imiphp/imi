@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Model;
 
 use Imi\Queue\Contract\IMessage;
@@ -46,8 +48,6 @@ class Message implements IMessage
 
     /**
      * 获取消息 ID.
-     *
-     * @return string
      */
     public function getMessageId(): string
     {
@@ -56,8 +56,6 @@ class Message implements IMessage
 
     /**
      * 设置消息 ID.
-     *
-     * @param string $messageId
      *
      * @return void
      */
@@ -68,8 +66,6 @@ class Message implements IMessage
 
     /**
      * 获取消息内容.
-     *
-     * @return string
      */
     public function getMessage(): string
     {
@@ -78,8 +74,6 @@ class Message implements IMessage
 
     /**
      * 设置消息内容.
-     *
-     * @param string $message
      *
      * @return void
      */
@@ -90,8 +84,6 @@ class Message implements IMessage
 
     /**
      * 获取工作超时时间，单位：秒.
-     *
-     * @return float
      */
     public function getWorkingTimeout(): float
     {
@@ -100,8 +92,6 @@ class Message implements IMessage
 
     /**
      * 设置工作超时时间，单位：秒.
-     *
-     * @param float $workingTimeout
      *
      * @return void
      */
@@ -112,8 +102,6 @@ class Message implements IMessage
 
     /**
      * 获取已重试次数.
-     *
-     * @return int
      */
     public function getRetryCount(): int
     {
@@ -122,8 +110,6 @@ class Message implements IMessage
 
     /**
      * 获取重试次数.
-     *
-     * @param int $retryCount
      *
      * @return void
      */
@@ -134,8 +120,6 @@ class Message implements IMessage
 
     /**
      * 获取最大重试次数.
-     *
-     * @return int
      */
     public function getMaxRetryCount(): int
     {
@@ -144,8 +128,6 @@ class Message implements IMessage
 
     /**
      * 获取最大重试次数.
-     *
-     * @param int $maxRetryCount
      *
      * @return void
      */
@@ -156,8 +138,6 @@ class Message implements IMessage
 
     /**
      * 将当前对象作为数组返回.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -172,8 +152,6 @@ class Message implements IMessage
 
     /**
      * 从数组加载数据.
-     *
-     * @param array $data
      *
      * @return void
      */

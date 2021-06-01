@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Hprose\Listener;
 
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Hprose\Route\Annotation\HproseRoute as HproseRouteAnnotation;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\Util\Text;
 
 /**
@@ -16,12 +18,8 @@ class AddRouteRule implements IEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $data = $e->getData();
         $this->addRuleAnnotation($data['annotation'], $data['callable'], $data['options']);
@@ -30,9 +28,8 @@ class AddRouteRule implements IEventListener
     /**
      * 增加路由规则，直接使用注解方式.
      *
-     * @param \Imi\Hprose\Route\Annotation\HproseRoute $annotation
-     * @param mixed                                    $callable
-     * @param array                                    $options
+     * @param mixed $callable
+     * @param array $options
      *
      * @return void
      */
@@ -42,7 +39,7 @@ class AddRouteRule implements IEventListener
         $controllerAnnotation = $options['controller'];
         /** @var \Hprose\Swoole\Socket\Service $hproseServer */
         // @phpstan-ignore-next-line
-        $hproseServer = ServerManage::getServer($serverName)->getHproseService();
+        $hproseServer = ServerManager::getServer($serverName)->getHproseService();
 
         // alias
         if (Text::isEmpty($controllerAnnotation->prefix))

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Tool;
 
 use Imi\Queue\Facade\Queue;
@@ -18,8 +20,6 @@ class QueueTool
      * @Operation("status")
      * @Arg(name="queue", type="string", required=true)
      *
-     * @param string $queue
-     *
      * @return void
      */
     public function status(string $queue)
@@ -33,8 +33,6 @@ class QueueTool
      * @Operation("restoreFail")
      * @Arg(name="queue", type="string", required=true)
      *
-     * @param string $queue
-     *
      * @return void
      */
     public function restoreFail(string $queue)
@@ -47,8 +45,6 @@ class QueueTool
      *
      * @Operation("restoreTimeout")
      * @Arg(name="queue", type="string", required=true)
-     *
-     * @param string $queue
      *
      * @return void
      */

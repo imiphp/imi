@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace QueueApp\Consumer;
 
 use Imi\Bean\Annotation\Bean;
@@ -15,9 +17,6 @@ class BConsumer extends BaseQueueConsumer
 {
     /**
      * 处理消费.
-     *
-     * @param \Imi\Queue\Contract\IMessage   $message
-     * @param \Imi\Queue\Driver\IQueueDriver $queue
      *
      * @return void
      */

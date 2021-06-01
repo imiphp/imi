@@ -72,7 +72,6 @@ function startServer(): void
             echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;
         });
 
-        // @phpstan-ignore-next-line
         if (($options['checkStatus'])())
         {
             echo "{$name} started!", \PHP_EOL;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Test\Component\Model;
 
 use Imi\Bean\Annotation\Inherit;
@@ -35,8 +37,6 @@ class MemberWithSqlField extends MemberBase
     /**
      * Set the value of test1.
      *
-     * @param int $test1
-     *
      * @return self
      */
     public function setTest1(int $test1)
@@ -58,8 +58,6 @@ class MemberWithSqlField extends MemberBase
 
     /**
      * Set the value of test2.
-     *
-     * @param int $test2
      *
      * @return self
      */

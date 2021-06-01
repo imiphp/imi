@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker\Example\HttpServer\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 
 /**
  * @Controller("/")
@@ -20,7 +22,9 @@ class IndexController extends HttpController
      */
     public function index()
     {
-        return $this->response->write('imi niubi');
+        $this->response->getBody()->write('imi niubi');
+
+        return $this->response;
     }
 
     /**

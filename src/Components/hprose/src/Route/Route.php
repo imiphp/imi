@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Hprose\Route;
 
 use Imi\Bean\Annotation\Bean;
@@ -9,7 +11,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcRoute;
 use Imi\Rpc\Route\Annotation\RpcController;
 use Imi\Rpc\Route\IRoute;
 use Imi\Server\Route\RouteCallable;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 use Imi\Util\Text;
 
 /**
@@ -54,7 +56,7 @@ class Route implements IRoute
         $serverName = $options['serverName'];
         /** @var \Hprose\Swoole\Socket\Service $hproseServer */
         // @phpstan-ignore-next-line
-        $hproseServer = ServerManage::getServer($serverName)->getHproseService();
+        $hproseServer = ServerManager::getServer($serverName)->getHproseService();
 
         // alias
         if (Text::isEmpty($controllerAnnotation->prefix))
@@ -86,10 +88,9 @@ class Route implements IRoute
     /**
      * 获取缺省的路由注解.
      *
-     * @param string                                            $className
-     * @param string                                            $methodName
-     * @param \Imi\Rpc\Route\Annotation\Contract\IRpcController $controllerAnnotation
-     * @param array                                             $options
+     * @param string $className
+     * @param string $methodName
+     * @param array  $options
      *
      * @return HproseRoute
      */

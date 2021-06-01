@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc;
 
 use Imi\Rpc\Contract\IRpcServer;
-use Imi\Server\WebSocket\Server;
+use Imi\Swoole\Server\WebSocket\Server;
 
 /**
  * RPC WebSocket 服务器基类.

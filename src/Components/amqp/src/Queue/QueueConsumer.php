@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Queue;
 
 use Imi\AMQP\Annotation\Consumer;
@@ -84,10 +86,6 @@ class QueueConsumer extends BaseConsumer
 
     /**
      * 弹出消息.
-     *
-     * @param float $timeout
-     *
-     * @return \Imi\AMQP\Message|null
      */
     public function pop(float $timeout): ?Message
     {
@@ -139,8 +137,6 @@ class QueueConsumer extends BaseConsumer
 
     /**
      * 消费任务
-     *
-     * @param \Imi\AMQP\Contract\IMessage $message
      *
      * @return mixed
      */

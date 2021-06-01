@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Listener;
 
 use Imi\Bean\Annotation\AnnotationManager;
@@ -10,7 +12,7 @@ use Imi\RequestContext;
 use Imi\Rpc\Contract\IRpcServer;
 use Imi\Rpc\Route\Annotation\Parser\RpcControllerParser;
 use Imi\Server\Route\RouteCallable;
-use Imi\ServerManage;
+use Imi\Server\ServerManager;
 
 /**
  * RPC 服务器路由初始化.
@@ -21,31 +23,25 @@ class RouteInit implements IEventListener
 {
     /**
      * 事件处理方法.
-     *
-     * @param EventParam $e
-     *
-     * @return void
      */
-    public function handle(EventParam $e)
+    public function handle(EventParam $e): void
     {
         $this->parseAnnotations($e);
     }
 
     /**
      * 处理注解路由.
-     *
-     * @return void
      */
-    private function parseAnnotations(EventParam $e)
+    private function parseAnnotations(EventParam $e): void
     {
         $controllerParser = RpcControllerParser::getInstance();
-        foreach (ServerManage::getServers() as $name => $server)
+        foreach (ServerManager::getServers() as $name => $server)
         {
             if (!$server instanceof IRpcServer)
             {
                 continue;
             }
-            /** @var IRpcServer|\Imi\Server\Base $server */
+            /** @var IRpcServer|\Imi\Swoole\Server\Base $server */
             $controllerAnnotationClass = $server->getControllerAnnotation();
             $actionAnnotationClass = $server->getActionAnnotation();
             $routeAnnotationClass = $server->getRouteAnnotation();
@@ -73,7 +69,7 @@ class RouteInit implements IEventListener
 
                     foreach ($routes as $routeItem)
                     {
-                        $route->addRuleAnnotation($classAnnotation, $routeItem, new RouteCallable($server, $className, $methodName), [
+                        $route->addRuleAnnotation($classAnnotation, $routeItem, new RouteCallable($server->getName(), $className, $methodName), [
                             'serverName'    => $name,
                         ]);
                     }

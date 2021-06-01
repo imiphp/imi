@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc\Client\Contract;
 
 use Imi\Rpc\Client\IService;
@@ -11,9 +13,8 @@ interface IGrpcService extends IService
      * 成功返回 streamId
      * $metadata 格式：['key' => ['value']].
      *
-     * @param string                            $method
-     * @param \Google\Protobuf\Internal\Message $message
-     * @param array                             $metadata
+     * @param string $method
+     * @param array  $metadata
      *
      * @return int|bool
      */

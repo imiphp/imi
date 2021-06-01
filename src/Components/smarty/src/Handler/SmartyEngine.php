@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Smarty\Handler;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\Server\Http\Message\Response;
+use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\View\Engine\IEngine;
 use Imi\Util\Imi;
 
@@ -54,17 +56,21 @@ class SmartyEngine implements IEngine
      */
     protected $cacheLifetime;
 
-    public function render(Response $response, $fileName, $data = []): Response
+    /**
+     * @param mixed $data
+     */
+    public function render(IHttpResponse $response, string $fileName, $data = []): IHttpResponse
     {
-        $smarty = $this->newSmartyInstance($response->getServerInstance()->getName());
+        $smarty = $this->newSmartyInstance();
         $smarty->assign($data);
         if (!is_file($fileName))
         {
             return $response;
         }
         $content = $smarty->fetch($fileName, 'abc');
+        $response->getBody()->write($content);
 
-        return $response->write($content);
+        return $response;
     }
 
     /**

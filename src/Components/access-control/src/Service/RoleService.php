@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AC\Service;
 
 use Imi\AC\Exception\OperationNotFound;
@@ -41,10 +43,7 @@ class RoleService
      */
     protected $operationService;
 
-    /**
-     * @return void
-     */
-    public function __init()
+    public function __init(): void
     {
         $this->operationService = App::getBean($this->operationServiceBean);
     }

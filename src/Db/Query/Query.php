@@ -1309,8 +1309,6 @@ class Query implements IQuery
     /**
      * 设置结果集类名.
      *
-     * @param string $resultClass
-     *
      * @return static
      */
     public function setResultClass(string $resultClass)
@@ -1322,8 +1320,6 @@ class Query implements IQuery
 
     /**
      * 获取结果集类名.
-     *
-     * @return string
      */
     public function getResultClass(): string
     {

@@ -17,10 +17,8 @@ class Transaction
 
     /**
      * 事务总数.
-     *
-     * @var int
      */
-    private $transactionCount = 0;
+    private int $transactionCount = 0;
 
     /**
      * 启动一个事务

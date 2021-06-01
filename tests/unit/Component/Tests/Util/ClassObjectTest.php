@@ -108,10 +108,8 @@ class ClassObjectTest extends BaseTest
 
     /**
      * @testdox newInstance
-     *
-     * @return void
      */
-    public function testNewInstance()
+    public function testNewInstance(): void
     {
         $class = \Imi\Test\Component\Util\ClassObject\Test::class;
         $object = ClassObject::newInstance($class, [

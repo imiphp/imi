@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Snowflake;
 
 use Godruoyi\Snowflake\Snowflake;

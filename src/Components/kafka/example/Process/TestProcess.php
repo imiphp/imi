@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KafkaApp\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Kafka\Contract\IConsumer;
 use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\BaseProcess;
 
 /**
  * @Process(name="TestProcess")
@@ -20,7 +22,7 @@ class TestProcess extends BaseProcess
      */
     protected $testConsumer;
 
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $this->runConsumer($this->testConsumer);
         \Swoole\Coroutine::yield();

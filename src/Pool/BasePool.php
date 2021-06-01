@@ -48,6 +48,11 @@ abstract class BasePool implements IPool
     protected int $addingResources = 0;
 
     /**
+     * PoolItem 类型.
+     */
+    protected string $poolItemClass = PoolItem::class;
+
+    /**
      * @param \Imi\Pool\Interfaces\IPoolConfig $config
      * @param mixed                            $resourceConfig
      */
@@ -188,7 +193,7 @@ abstract class BasePool implements IPool
             $resource->open();
 
             $hash = $resource->hashCode();
-            $this->pool[$hash] = new PoolItem($resource);
+            $this->pool[$hash] = new $this->poolItemClass($resource);
 
             $this->push($resource);
 

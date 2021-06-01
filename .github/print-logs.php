@@ -96,7 +96,7 @@ foreach ([
         echo 'File: ', $filename, \PHP_EOL;
         echo file_get_contents($filename), \PHP_EOL;
     }
-    elseif (is_file($fileName = $dir . $component . '/example/.runtime/logs/' . $date . '.log'))
+    elseif (is_file($fileName = $dir . $component . '/example/.runtime/logs/log-' . $date . '.log'))
     {
         echo 'File: ', $filename, \PHP_EOL;
         echo file_get_contents($filename), \PHP_EOL;

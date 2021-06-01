@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\JWT\Bean;
 
 use Imi\Bean\Annotation\Bean;
@@ -36,10 +38,7 @@ class JWT
      */
     private $parsedList = [];
 
-    /**
-     * @return void
-     */
-    public function __init()
+    public function __init(): void
     {
         foreach ($this->list as $key => $item)
         {
@@ -65,8 +64,6 @@ class JWT
 
     /**
      * Get 默认配置名.
-     *
-     * @return string|null
      */
     public function getDefault(): ?string
     {
@@ -75,10 +72,6 @@ class JWT
 
     /**
      * 获取配置.
-     *
-     * @param string|null $name
-     *
-     * @return \Imi\JWT\Model\JWTConfig|null
      */
     public function getConfig(?string $name = null): ?JWTConfig
     {
@@ -92,10 +85,6 @@ class JWT
 
     /**
      * 获取 Token 构建器对象
-     *
-     * @param string|null $name
-     *
-     * @return Builder
      */
     public function getBuilderInstance(?string $name = null): Builder
     {
@@ -138,11 +127,7 @@ class JWT
     /**
      * 生成 Token.
      *
-     * @param mixed         $data
-     * @param string|null   $name
-     * @param callable|null $beforeGetToken
-     *
-     * @return \Lcobucci\JWT\Token
+     * @param mixed $data
      */
     public function getToken($data, ?string $name = null, ?callable $beforeGetToken = null): Token
     {
@@ -159,11 +144,6 @@ class JWT
 
     /**
      * 处理 Token.
-     *
-     * @param string      $jwt
-     * @param string|null $name
-     *
-     * @return \Lcobucci\JWT\Token
      */
     public function parseToken(string $jwt, ?string $name = null): Token
     {

@@ -36,10 +36,8 @@ class Field implements IField
 
     /**
      * JSON 关键词配置.
-     *
-     * @var array|null
      */
-    protected $jsonKeywords;
+    protected ?array $jsonKeywords = null;
 
     public function __construct(?string $database = null, ?string $table = null, ?string $field = null, ?string $alias = null)
     {

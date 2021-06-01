@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Pool;
 
 use Imi\Bean\Annotation\Bean;
@@ -18,8 +20,6 @@ class Kafka
 
     /**
      * Get 默认连接池名.
-     *
-     * @return string|null
      */
     public function getDefaultPoolName(): ?string
     {

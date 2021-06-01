@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\MQTT\Test;
 
 use Imi\MQTT\Client\Contract\IMQTTClientListener;
@@ -34,9 +36,6 @@ class TestClientListener implements IMQTTClientListener
     /**
      * 连接确认.
      *
-     * @param \Imi\MQTT\Client\MQTTClient                    $client
-     * @param \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket $packet
-     *
      * @return void
      */
     public function connectACK(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket $packet)
@@ -46,9 +45,6 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * 发布.
-     *
-     * @param \Imi\MQTT\Client\MQTTClient                   $client
-     * @param \BinSoul\Net\Mqtt\Packet\PublishRequestPacket $packet
      *
      * @return void
      */
@@ -60,9 +56,6 @@ class TestClientListener implements IMQTTClientListener
     /**
      * 发布确认.
      *
-     * @param \Imi\MQTT\Client\MQTTClient               $client
-     * @param \BinSoul\Net\Mqtt\Packet\PublishAckPacket $packet
-     *
      * @return void
      */
     public function publishAck(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishAckPacket $packet)
@@ -72,9 +65,6 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * 发布已收到（保证交付部分1）.
-     *
-     * @param \Imi\MQTT\Client\MQTTClient                    $client
-     * @param \BinSoul\Net\Mqtt\Packet\PublishReceivedPacket $packet
      *
      * @return void
      */
@@ -86,9 +76,6 @@ class TestClientListener implements IMQTTClientListener
     /**
      * 发布释放（确保交付的第2部分）.
      *
-     * @param \Imi\MQTT\Client\MQTTClient                   $client
-     * @param \BinSoul\Net\Mqtt\Packet\PublishReleasePacket $packet
-     *
      * @return void
      */
     public function publishRelease(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReleasePacket $packet)
@@ -98,9 +85,6 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * 发布完成（保证交付的第3部分）.
-     *
-     * @param \Imi\MQTT\Client\MQTTClient                    $client
-     * @param \BinSoul\Net\Mqtt\Packet\PublishCompletePacket $packet
      *
      * @return void
      */
@@ -112,9 +96,6 @@ class TestClientListener implements IMQTTClientListener
     /**
      * 订阅确认.
      *
-     * @param \Imi\MQTT\Client\MQTTClient                      $client
-     * @param \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket $packet
-     *
      * @return void
      */
     public function subscribeACK(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket $packet)
@@ -124,9 +105,6 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * 取消订阅确认.
-     *
-     * @param \Imi\MQTT\Client\MQTTClient                        $client
-     * @param \BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket $packet
      *
      * @return void
      */
@@ -138,9 +116,6 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * Ping 响应.
-     *
-     * @param \Imi\MQTT\Client\MQTTClient                 $client
-     * @param \BinSoul\Net\Mqtt\Packet\PingResponsePacket $packet
      *
      * @return void
      */

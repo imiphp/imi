@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Test\RabbitMQ;
 
 use Yurun\Util\HttpRequest;

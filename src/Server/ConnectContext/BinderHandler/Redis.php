@@ -32,10 +32,7 @@ class Redis implements IHandler
      */
     protected string $key = 'imi:connectionBinder:map';
 
-    /**
-     * @return void
-     */
-    public function __init()
+    public function __init(): void
     {
         if (0 === Worker::getWorkerID())
         {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Base;
 
 use Imi\AMQP\Base\Traits\TAMQP;
@@ -73,8 +75,6 @@ abstract class BasePublisher implements IPublisher
 
     /**
      * 发布消息.
-     *
-     * @param \Imi\AMQP\Contract\IMessage $message
      *
      * @return bool
      */

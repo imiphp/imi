@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc\Client;
 
 use Imi\Aop\Annotation\Inject;
@@ -51,7 +53,6 @@ class GrpcService implements IGrpcService
     protected $interfaceManager;
 
     /**
-     * @param GrpcClient  $client
      * @param string      $name
      * @param string|null $interface
      */
@@ -82,9 +83,8 @@ class GrpcService implements IGrpcService
      * 成功返回 streamId
      * $metadata 格式：['key' => ['value']].
      *
-     * @param string                            $method
-     * @param \Google\Protobuf\Internal\Message $message
-     * @param array                             $metadata
+     * @param string $method
+     * @param array  $metadata
      *
      * @return int|bool
      */

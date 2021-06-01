@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Snowflake;
 
 use Godruoyi\Snowflake\SequenceResolver;
@@ -53,8 +55,6 @@ LUA;
 
     /**
      * Set cacge prefix.
-     *
-     * @param string $prefix
      *
      * @return self
      */

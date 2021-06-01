@@ -3,7 +3,7 @@
 use Imi\App;
 use Imi\Event\Event;
 use Imi\Event\EventParam;
-use Imi\Server\Event\Param\WorkerExitEventParam;
+use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Swoole\Coroutine;
 use Swoole\Runtime;
 use function Yurun\Swoole\Coroutine\batch;

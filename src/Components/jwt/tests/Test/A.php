@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\JWT\Test\Test;
 
 use Imi\Bean\Annotation\Bean;

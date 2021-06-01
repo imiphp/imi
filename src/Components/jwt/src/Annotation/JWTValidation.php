@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\JWT\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -19,7 +21,7 @@ class JWTValidation extends Base
      *
      * @var string
      */
-    protected $defaultFieldName = 'name';
+    protected ?string $defaultFieldName = 'name';
 
     /**
      * JWT 配置名称.

@@ -37,7 +37,7 @@ return [
     'subServers'        => [
         'SubServerName'   => [
             'namespace'    => 'GrpcApp\ApiServer',
-            'type'         => Imi\Server\Type::HTTP,
+            'type'         => Imi\Swoole\Server\Type::HTTP,
             'host'         => '127.0.0.1',
             'port'         => 8081,
         ],
@@ -62,7 +62,7 @@ return [
             ],
             'async'    => [
                 'pool'    => [
-                    'class'        => \Imi\Redis\CoroutineRedisPool::class,
+                    'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                     'config'       => [
                         'maxResources'    => 10,
                         'minResources'    => 1,
@@ -108,7 +108,7 @@ return [
     // 内存表配置
     'memoryTable'   => [
         'connectContext'    => [
-            'class'  => \Imi\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+            'class'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
             'lockId' => 'redisConnectContextLock',
             'size'   => 65536,
         ],
@@ -128,5 +128,40 @@ return [
 
     'rpc'   => [
         'defaultPool'   => 'grpc',
+    ],
+    // 日志配置
+    'logger' => [
+        'channels' => [
+            'imi' => [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                    [
+                        'class'     => \Monolog\Handler\RotatingFileHandler::class,
+                        'construct' => [
+                            'filename' => dirname(__DIR__) . '/.runtime/logs/log.log',
+                        ],
+                        'formatter' => [
+                            'class'     => \Monolog\Formatter\LineFormatter::class,
+                            'construct' => [
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

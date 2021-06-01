@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\RateLimit\Storage;
 
 use bandwidthThrottle\tokenBucket\storage\scope\GlobalScope;
@@ -41,9 +43,8 @@ final class ImiRedisStorage implements Storage, GlobalScope
      * The Redis API needs to be connected yet. I.e. Redis::connect() was
      * called already.
      *
-     * @param string                  $name    the resource name
-     * @param \Imi\Redis\RedisHandler $redis   the Redis API
-     * @param int                     $timeout
+     * @param string                  $name  the resource name
+     * @param \Imi\Redis\RedisHandler $redis the Redis API
      */
     public function __construct($name, \Imi\Redis\RedisHandler $redis, int $timeout = 3)
     {

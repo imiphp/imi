@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc;
 
 use Imi\Rpc\Contract\IRpcServer;
-use Imi\Server\Base;
+use Imi\Swoole\Server\Base;
 
 /**
  * RPC 服务器基类.

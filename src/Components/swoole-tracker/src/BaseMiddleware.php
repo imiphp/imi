@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker;
 
 abstract class BaseMiddleware
@@ -40,10 +42,7 @@ abstract class BaseMiddleware
      */
     protected $exceptionCode = 500;
 
-    /**
-     * @return void
-     */
-    public function __init()
+    public function __init(): void
     {
         if (null === $this->serverIp)
         {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Server\WebSocket\Message\Proxy;
 
 use Imi\Bean\Annotation\Bean;

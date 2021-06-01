@@ -12,7 +12,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @Annotation
  * @Target("CLASS")
- * @Parser("Imi\Model\Parser\ModelParser")
+ * @Parser("Imi\Bean\Parser\NullParser")
  */
 #[\Attribute]
 class JsonEncode extends Base

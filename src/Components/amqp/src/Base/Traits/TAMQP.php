@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Base\Traits;
 
 use Imi\AMQP\Annotation\Connection;
@@ -13,7 +15,7 @@ use Imi\Aop\Annotation\Inject;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
-use Imi\Util\Coroutine;
+use Imi\Swoole\Util\Coroutine;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Wire\AMQPTable;
@@ -92,8 +94,6 @@ trait TAMQP
 
     /**
      * 获取连接对象
-     *
-     * @return \PhpAmqpLib\Connection\AbstractConnection
      */
     protected function getConnection(): AbstractConnection
     {

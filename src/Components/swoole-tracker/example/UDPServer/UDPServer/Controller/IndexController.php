@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker\Example\UDPServer\UDPServer\Controller;
 
 use Imi\Server\Route\Annotation\Udp\UdpAction;

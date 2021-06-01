@@ -49,7 +49,7 @@ return [
             // 异步池子，worker进程使用
             'async'    => [
                 'pool'    => [
-                    'class'        => \Imi\Db\Pool\CoroutineDbPool::class,
+                    'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                     'config'       => [
                         'maxResources'    => 10,
                         'minResources'    => 0,
@@ -61,6 +61,42 @@ return [
                     'username'    => 'root',
                     'password'    => 'root',
                     'database'    => 'db_imi_access_control',
+                ],
+            ],
+        ],
+    ],
+
+    // 日志配置
+    'logger' => [
+        'channels' => [
+            'imi' => [
+                'handlers' => [
+                    [
+                        'class'     => \Imi\Log\Handler\ConsoleHandler::class,
+                        'formatter' => [
+                            'class'     => \Imi\Log\Formatter\ConsoleLineFormatter::class,
+                            'construct' => [
+                                'format'                     => null,
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
+                    [
+                        'class'     => \Monolog\Handler\RotatingFileHandler::class,
+                        'construct' => [
+                            'filename' => dirname(__DIR__, 2) . '/log.log',
+                        ],
+                        'formatter' => [
+                            'class'     => \Monolog\Formatter\LineFormatter::class,
+                            'construct' => [
+                                'dateFormat'                 => 'Y-m-d H:i:s',
+                                'allowInlineLineBreaks'      => true,
+                                'ignoreEmptyContextAndExtra' => true,
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],

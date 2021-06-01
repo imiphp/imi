@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SharedMemory\Pool;
 
-use Imi\Pool\BaseAsyncPool;
 use Imi\SharedMemory\Client;
+use Imi\Swoole\Pool\BaseAsyncPool;
 use Imi\Util\Imi;
 
 /**
@@ -13,8 +15,6 @@ class ClientPool extends BaseAsyncPool
 {
     /**
      * 创建资源.
-     *
-     * @return \Imi\Pool\Interfaces\IPoolResource
      */
     protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
     {

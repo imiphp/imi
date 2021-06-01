@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Snowflake\Bean;
 
 use Imi\Bean\Annotation\Bean;
@@ -38,8 +40,6 @@ class Snowflake
 
     /**
      * 使用名称获取配置.
-     *
-     * @param string $name
      *
      * @return array
      */

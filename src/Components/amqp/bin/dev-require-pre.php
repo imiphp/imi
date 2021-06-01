@@ -4,7 +4,7 @@ $dir = dirname(__DIR__);
 
 $cmd = "rm -rf {$dir}/vendor/imiphp && mkdir -p {$dir}/vendor/imiphp";
 echo '[cmd] ', $cmd, \PHP_EOL;
-echo `$cmd`, \PHP_EOL;
+echo shell_exec($cmd), \PHP_EOL;
 $json = json_decode(file_get_contents($dir . '/composer.json'), true);
 $bakFile = $dir . '/composer.json.bak';
 if (!is_file($bakFile))
@@ -24,7 +24,7 @@ if (isset($json['require']))
         $componentDir = dirname($dir) . '/' . substr($key, 11);
         $cmd = "rm -rf {$path} && ln -s -f {$componentDir} {$path}";
         echo '[cmd] ', $cmd, \PHP_EOL;
-        echo `$cmd`, \PHP_EOL;
+        echo shell_exec($cmd), \PHP_EOL;
 
         preg_match('/(\d+\.?(\d+(\.\d+))?)/', $value, $matches);
         $requirePackageComposerPath = "{$dir}/vendor/" . $key . '/composer.json';

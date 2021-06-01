@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Imi\Pool;
 
-use Imi\Util\Co\ChannelContainer;
 use Imi\Pool\Interfaces\IPoolResource;
 
 /**
@@ -48,15 +47,6 @@ class PoolItem
         $this->createTime = microtime(true);
     }
 
-    public function __destruct()
-    {
-        $id = spl_object_hash($this);
-        if (ChannelContainer::hasChannel($id))
-        {
-            ChannelContainer::removeChannel($id);
-        }
-    }
-
     /**
      * Get 资源对象
      */
@@ -86,7 +76,7 @@ class PoolItem
      */
     public function lock(float $timeout = 0): bool
     {
-        if ($this->isFree || ChannelContainer::pop(spl_object_hash($this), $timeout))
+        if ($this->isFree)
         {
             ++$this->usageCount;
             $this->isFree = false;
@@ -105,11 +95,6 @@ class PoolItem
     {
         $this->isFree = true;
         $this->lastReleaseTime = microtime(true);
-        $id = spl_object_hash($this);
-        if (ChannelContainer::hasChannel($id))
-        {
-            ChannelContainer::push($id, true);
-        }
     }
 
     /**

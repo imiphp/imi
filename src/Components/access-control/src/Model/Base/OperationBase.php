@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AC\Model\Base;
 
 use Imi\Model\Annotation\Column;

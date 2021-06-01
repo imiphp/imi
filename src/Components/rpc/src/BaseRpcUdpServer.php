@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc;
 
 use Imi\Rpc\Contract\IRpcServer;
-use Imi\Server\UdpServer\Server;
+use Imi\Swoole\Server\UdpServer\Server;
 
 /**
  * RPC UDP 服务器基类.

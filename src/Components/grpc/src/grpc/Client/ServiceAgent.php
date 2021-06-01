@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc\Client;
 
 use Imi\Rpc\Client\Pool\RpcClientPool;
@@ -43,9 +45,6 @@ class ServiceAgent
     }
 
     /**
-     * @param string $name
-     * @param array  $arguments
-     *
      * @return mixed
      */
     public function __call(string $name, array $arguments)

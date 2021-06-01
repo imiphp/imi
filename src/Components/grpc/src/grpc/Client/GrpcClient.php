@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc\Client;
 
 use Imi\Bean\BeanFactory;
@@ -86,10 +88,8 @@ class GrpcClient implements IRpcClient
 
     /**
      * 打开
-     *
-     * @return bool
      */
-    public function open()
+    public function open(): bool
     {
         $this->httpRequest = new HttpRequest();
         $this->http2Client = new SwooleClient($this->uri->getHost(), Uri::getServerPort($this->uri), 'https' === $this->uri->getScheme());
@@ -104,18 +104,14 @@ class GrpcClient implements IRpcClient
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->http2Client->close();
     }
 
     /**
      * 是否已连接.
-     *
-     * @return bool
      */
     public function isConnected(): bool
     {
@@ -136,8 +132,6 @@ class GrpcClient implements IRpcClient
      * 获取服务对象
      *
      * @param string $name 服务名
-     *
-     * @return \Imi\Rpc\Client\IService
      */
     public function getService($name = null): IService
     {
@@ -159,11 +153,10 @@ class GrpcClient implements IRpcClient
      *
      * $metadata 格式：['key' => ['value']]
      *
-     * @param string                            $package
-     * @param string                            $service
-     * @param string                            $name
-     * @param \Google\Protobuf\Internal\Message $message
-     * @param array                             $metadata
+     * @param string $package
+     * @param string $service
+     * @param string $name
+     * @param array  $metadata
      *
      * @return int|bool
      */

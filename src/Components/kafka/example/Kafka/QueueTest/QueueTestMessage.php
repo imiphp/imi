@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KafkaApp\Kafka\QueueTest;
 
 use Imi\Util\Traits\TNotRequiredDataToProperty;
@@ -39,9 +41,6 @@ class QueueTestMessage
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function toMessage(): string
     {
         return json_encode([

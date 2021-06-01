@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrpcApp\ApiServer\Controller;
 
 use Grpc\LoginRequest;
 use Imi\Controller\HttpController;
 use Imi\Grpc\Client\Annotation\GrpcService;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 
 /**
  * @Controller("/")

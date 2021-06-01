@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AMQPApp\AMQP\Test2;
 
 use Imi\AMQP\Annotation\Consumer;

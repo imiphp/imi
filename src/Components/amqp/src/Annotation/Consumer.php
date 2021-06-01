@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Annotation;
 
 use Imi\Bean\Annotation\Base;
@@ -19,7 +21,7 @@ class Consumer extends Base
      *
      * @var string
      */
-    protected $defaultFieldName = 'tag';
+    protected ?string $defaultFieldName = 'tag';
 
     /**
      * 消费者标签.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\AMQP\Dev;
 
 use Composer\Package\Link;
@@ -45,7 +47,7 @@ class Dev
             $path = "{$dir}/vendor/{$name}";
             $cmd = "rm -rf {$path} && ln -s -f {$componentDir} {$path}";
             echo '[cmd] ', $cmd, \PHP_EOL;
-            echo `$cmd`, \PHP_EOL;
+            echo shell_exec($cmd), \PHP_EOL;
         }
     }
 }

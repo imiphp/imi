@@ -10,8 +10,8 @@ use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\JsonEncode;
 use Imi\Model\Annotation\JsonNotNull;
 use Imi\Model\Annotation\Serializable;
-use Imi\Model\Annotation\Sql;
 use Imi\Model\Annotation\Serializables;
+use Imi\Model\Annotation\Sql;
 use Imi\Model\Annotation\Table;
 use Imi\Util\Text;
 
@@ -64,14 +64,12 @@ class Meta
      *
      * @var string[]
      */
-    private $serializableFieldNames;
+    private array $serializableFieldNames;
 
     /**
      * 数据库字段名和 Column 注解映射.
-     *
-     * @var array
      */
-    private $dbFields;
+    private array $dbFields;
 
     /**
      * 模型是否为驼峰命名.
@@ -124,7 +122,7 @@ class Meta
      *
      * @var \Imi\Model\Annotation\Sql[][]
      */
-    private $sqlColumns;
+    private array $sqlColumns;
 
     public function __construct(string $modelClass)
     {

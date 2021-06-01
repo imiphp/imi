@@ -14,10 +14,8 @@ class ModelQuery extends Query
 {
     /**
      * 是否设置序列化字段.
-     *
-     * @var bool
      */
-    protected $isSetSerializedFields = false;
+    protected bool $isSetSerializedFields = false;
 
     public function __init(): void
     {
@@ -31,8 +29,6 @@ class ModelQuery extends Query
 
     /**
      * 查询记录.
-     *
-     * @return IResult
      */
     public function select(): IResult
     {
@@ -62,12 +58,8 @@ class ModelQuery extends Query
 
     /**
      * 执行SQL语句.
-     *
-     * @param string $sql
-     *
-     * @return IResult
      */
-    public function execute($sql)
+    public function execute(string $sql): IResult
     {
         /** @var ModelQueryResult $result */
         $result = parent::execute($sql);

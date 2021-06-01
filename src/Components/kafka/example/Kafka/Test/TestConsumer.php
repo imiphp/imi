@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KafkaApp\Kafka\Test;
 
 use Imi\Bean\Annotation\Bean;

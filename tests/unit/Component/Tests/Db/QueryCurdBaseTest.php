@@ -313,7 +313,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
-    public function testRawAlias()
+    public function testRawAlias(): void
     {
         $query = Db::query($this->poolName);
         $record = $query->from('tb_article')->whereIsNotNull('id')->field('id')->fieldRaw('title')->fieldRaw('id + 1', 'id2')->select()->get();
@@ -324,7 +324,7 @@ abstract class QueryCurdBaseTest extends BaseTest
         ], $record);
     }
 
-    public function testJson()
+    public function testJson(): void
     {
         $query = Db::query($this->poolName);
         $jsonStr = '{"uid": "' . ($uid = uniqid('', true)) . '", "name": "aaa", "list1": [{"id": 1}]}';

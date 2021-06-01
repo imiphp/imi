@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Rpc\Client;
 
 interface IRpcClient
@@ -27,8 +29,6 @@ interface IRpcClient
 
     /**
      * 是否已连接.
-     *
-     * @return bool
      */
     public function isConnected(): bool;
 

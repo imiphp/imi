@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker\Example\WebSocketServer\MainServer\Controller\Http;
 
 use Imi\Controller\HttpController;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\View\Annotation\View;
 use Imi\Util\Http\Consts\StatusCode;
 

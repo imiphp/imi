@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KafkaApp\ApiServer\Controller;
 
 use Imi\Controller\HttpController;
@@ -7,9 +9,9 @@ use Imi\Kafka\Pool\KafkaPool;
 use Imi\Queue\Facade\Queue;
 use Imi\Queue\Model\Message;
 use Imi\Redis\Redis;
-use Imi\Server\Route\Annotation\Action;
-use Imi\Server\Route\Annotation\Controller;
-use Imi\Server\Route\Annotation\Route;
+use Imi\Server\Http\Route\Annotation\Action;
+use Imi\Server\Http\Route\Annotation\Controller;
+use Imi\Server\Http\Route\Annotation\Route;
 use KafkaApp\Kafka\QueueTest\QueueTestMessage;
 
 /**
@@ -25,13 +27,13 @@ class IndexController extends HttpController
      */
     public function index()
     {
-        return $this->response->write('imi');
+        $this->response->getBody()->write('imi');
+
+        return $this->response;
     }
 
     /**
      * @Action
-     *
-     * @param int $memberId
      *
      * @return mixed
      */
@@ -55,8 +57,6 @@ class IndexController extends HttpController
 
     /**
      * @Action
-     *
-     * @param int $memberId
      *
      * @return mixed
      */

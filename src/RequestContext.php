@@ -55,9 +55,11 @@ class RequestContext
     /**
      * 销毁上下文.
      */
-    public static function destroy(string $flag): bool
+    public static function destroy(?string $flag = null): bool
     {
-        return static::getInstance()->destroy($flag);
+        $instance = static::getInstance();
+
+        return $instance->destroy($flag ?? $instance->getCurrentFlag());
     }
 
     /**

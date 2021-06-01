@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Grpc\Middleware;
 
 use Imi\Bean\Annotation\Bean;
@@ -37,11 +39,6 @@ class ActionMiddleware implements MiddlewareInterface
 
     /**
      * 处理方法.
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -58,7 +55,7 @@ class ActionMiddleware implements MiddlewareInterface
         }
         // 路由匹配结果是否是[控制器对象, 方法名]
         $isObject = \is_array($result->callable) && isset($result->callable[0]) && $result->callable[0] instanceof HttpController;
-        $useObjectRequestAndResponse = $isObject && !$result->routeItem->singleton;
+        $useObjectRequestAndResponse = $isObject;
         if ($useObjectRequestAndResponse)
         {
             // 复制一份控制器对象
@@ -118,7 +115,7 @@ class ActionMiddleware implements MiddlewareInterface
                 }
                 // 视图渲染
                 $options = $viewAnnotation->toArray();
-                $finalResponse = $this->view->render($viewAnnotation->renderType, $viewAnnotation->data, $options, $finalResponse);
+                $finalResponse = $this->view->render($viewAnnotation, $viewAnnotation->data, $options, $finalResponse);
             }
         }
 

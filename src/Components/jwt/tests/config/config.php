@@ -14,20 +14,6 @@ return [
     'ignoreNamespace'   => [
     ],
     'beans'    => [
-        'Logger'            => [
-            'exHandlers'    => [
-                [
-                    'class'     => \Imi\Log\Handler\Console::class,
-                    'options'   => [
-                        'levels'        => [
-                            'Test',
-                        ],
-                        'format'         => '{message}',
-                        'logCacheNumber' => 10240,
-                    ],
-                ],
-            ],
-        ],
         'JWT'   => [
             'list'  => [
                 'a' => [

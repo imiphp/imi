@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GrpcApp\Task;
 
+use Imi\Swoole\Task\Interfaces\ITaskHandler;
+use Imi\Swoole\Task\TaskParam;
 use Imi\Task\Annotation\Task;
-use Imi\Task\Interfaces\ITaskHandler;
-use Imi\Task\TaskParam;
 
 /**
  * @Task("Test1")
@@ -12,16 +14,11 @@ use Imi\Task\TaskParam;
 class TestTask implements ITaskHandler
 {
     /**
-     * 任务处理方法.
-     *
-     * @param TaskParam      $param
-     * @param \Swoole\Server $server
-     * @param int            $taskID
-     * @param int            $workerID
+     * 任务处理方法，返回的值会通过 finish 事件推送给 worker 进程.
      *
      * @return mixed
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $workerID)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
     {
         $data = $param->getData();
 
@@ -31,13 +28,9 @@ class TestTask implements ITaskHandler
     /**
      * 任务结束时触发.
      *
-     * @param \swoole_server $server
-     * @param int            $taskID
-     * @param mixed          $data
-     *
-     * @return void
+     * @param mixed $data
      */
-    public function finish(\Swoole\Server $server, int $taskID, $data)
+    public function finish(\Swoole\Server $server, int $taskId, $data): void
     {
     }
 }

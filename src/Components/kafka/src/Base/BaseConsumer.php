@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Kafka\Base;
 
 use Imi\Bean\Annotation\AnnotationManager;
@@ -98,8 +100,6 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 消费任务
-     *
-     * @param ConsumeMessage $message
      *
      * @return mixed
      */

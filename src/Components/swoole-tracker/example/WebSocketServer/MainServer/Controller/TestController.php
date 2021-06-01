@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker\Example\WebSocketServer\MainServer\Controller;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
+use Imi\RequestContext;
 use Imi\Server\Route\Annotation\WebSocket\WSAction;
 use Imi\Server\Route\Annotation\WebSocket\WSController;
 use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
 use Imi\Server\Route\Annotation\WebSocket\WSRoute;
+use Imi\Server\Server;
 
 /**
  * 数据收发测试.
@@ -29,7 +33,8 @@ class TestController extends WebSocketController
     public function login($data)
     {
         ConnectContext::set('username', $data->username);
-        $this->server->joinGroup('g1', $this->frame->getFd());
+        // @phpstan-ignore-next-line
+        RequestContext::getServer()->joinGroup('g1', $this->frame->getClientId());
 
         return ['success' => true];
     }
@@ -48,7 +53,7 @@ class TestController extends WebSocketController
     public function send($data)
     {
         $message = ConnectContext::get('username') . ':' . $data->message;
-        $this->server->groupCall('g1', 'push', $message);
+        Server::sendToGroup('g1', $message);
     }
 
     /**

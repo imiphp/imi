@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SwooleTracker\Example\TCPServer\TCPServer\DataParser;
 
 class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
@@ -8,10 +10,8 @@ class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
      * 编码为存储格式.
      *
      * @param mixed $data
-     *
-     * @return mixed
      */
-    public function encode($data)
+    public function encode($data): string
     {
         $content = json_encode($data);
 
@@ -21,11 +21,9 @@ class JsonObjectFixedParser extends \Imi\Server\DataParser\JsonObjectParser
     /**
      * 解码为php变量.
      *
-     * @param mixed $data
-     *
      * @return mixed
      */
-    public function decode($data)
+    public function decode(string $data)
     {
         return json_decode(substr($data, 4));
     }

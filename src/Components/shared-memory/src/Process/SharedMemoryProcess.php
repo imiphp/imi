@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\SharedMemory\Process;
 
 use Imi\Config;
 use Imi\Process\Annotation\Process;
-use Imi\Process\BaseProcess;
+use Imi\Swoole\Process\BaseProcess;
 use Imi\Util\Imi;
 use Yurun\Swoole\SharedMemory\Server;
 
@@ -13,7 +15,7 @@ use Yurun\Swoole\SharedMemory\Server;
  */
 class SharedMemoryProcess extends BaseProcess
 {
-    public function run(\Swoole\Process $process)
+    public function run(\Swoole\Process $process): void
     {
         $socketFile = Config::get('@app.swooleSharedMemory.socketFile');
         if (null === $socketFile)

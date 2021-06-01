@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imi\Queue\Driver;
 
 use Imi\Bean\Annotation\Bean;
@@ -58,8 +60,6 @@ class RedisQueueDriver implements IQueueDriver
 
     /**
      * 获取队列名称.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -68,12 +68,6 @@ class RedisQueueDriver implements IQueueDriver
 
     /**
      * 推送消息到队列，返回消息ID.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     * @param float                        $delay
-     * @param array                        $options
-     *
-     * @return string
      */
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
@@ -175,8 +169,6 @@ LUA
      * 从队列弹出一个消息.
      *
      * @param float $timeout 超时时间，单位：秒。值是-1时立即返回结果
-     *
-     * @return \Imi\Queue\Contract\IMessage|null
      */
     public function pop(float $timeout = -1): ?IMessage
     {
@@ -262,10 +254,6 @@ LUA
 
     /**
      * 删除一个消息.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     *
-     * @return bool
      */
     public function delete(IMessage $message): bool
     {
@@ -332,8 +320,6 @@ LUA
     /**
      * 将消息标记为成功
      *
-     * @param \Imi\Queue\Contract\IMessage $message
-     *
      * @return bool
      */
     public function success(IMessage $message)
@@ -372,9 +358,6 @@ LUA
 
     /**
      * 将消息标记为失败.
-     *
-     * @param \Imi\Queue\Contract\IMessage $message
-     * @param bool                         $requeue
      *
      * @return bool
      */
@@ -424,8 +407,6 @@ LUA
 
     /**
      * 获取队列状态
-     *
-     * @return \Imi\Queue\Model\QueueStatus
      */
     public function status(): QueueStatus
     {
@@ -457,8 +438,6 @@ LUA
      * 将失败消息恢复到队列.
      *
      * 返回恢复数量
-     *
-     * @return int
      */
     public function restoreFailMessages(): int
     {
@@ -495,8 +474,6 @@ LUA
      * 将超时消息恢复到队列.
      *
      * 返回恢复数量
-     *
-     * @return int
      */
     public function restoreTimeoutMessages(): int
     {
@@ -533,10 +510,6 @@ LUA
      * 将达到指定时间的消息加入到队列.
      *
      * 返回消息数量
-     *
-     * @param int $count
-     *
-     * @return int
      */
     protected function parseDelayMessages(int $count = 100): int
     {
@@ -581,8 +554,6 @@ LUA
      *
      * 返回消息数量
      *
-     * @param int $count
-     *
      * @return int
      */
     protected function parseTimeoutMessages(int $count = 100)
@@ -625,8 +596,6 @@ LUA
 
     /**
      * 获取消息键前缀
-     *
-     * @return string
      */
     public function getMessageKeyPrefix(): string
     {
@@ -635,8 +604,6 @@ LUA
 
     /**
      * 获取消息 ID 的键.
-     *
-     * @return string
      */
     public function getMessageIdKey(): string
     {
@@ -645,10 +612,6 @@ LUA
 
     /**
      * 获取队列的键.
-     *
-     * @param int $queueType
-     *
-     * @return string
      */
     public function getQueueKey(int $queueType): string
     {
