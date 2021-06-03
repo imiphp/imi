@@ -252,7 +252,7 @@ public function getFormatData();
  *
  * @return int
  */
-public function getReactorID(): int;
+public function getReactorId(): int;
 ```
 
 ## 控制器类方法

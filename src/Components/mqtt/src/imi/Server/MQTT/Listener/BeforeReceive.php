@@ -40,11 +40,11 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
      */
     public function handle(ReceiveEventParam $e): void
     {
-        $fd = $e->clientId;
+        $clientId = $e->clientId;
         $server = $e->server;
         if (!SwooleWorker::isWorkerStartAppComplete())
         {
-            $server->getSwooleServer()->close($fd);
+            $server->getSwooleServer()->close($clientId);
             $e->stopPropagation();
 
             return;
@@ -57,13 +57,13 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
         }
 
         // 数据
-        $data = new ReceiveData($fd, $e->reactorId, $e->data);
+        $data = new ReceiveData($clientId, $e->reactorId, $e->data);
 
         // 上下文创建
         RequestContext::muiltiSet([
-            'server'        => $e->getTarget(),
-            'fd'            => $fd,
-            'receiveData'   => $data,
+            'server'      => $e->getTarget(),
+            'clientId'    => $clientId,
+            'receiveData' => $data,
         ]);
 
         /** @var \Imi\Server\MQTT\BaseMQTTController $controllerInstance */
@@ -77,7 +77,7 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
         $response = $controllerInstance->$methodName($packet, $data);
         if ($response)
         {
-            $server->getSwooleServer()->send($fd, $server->getBean(DataParser::class)->encode($response));
+            $server->getSwooleServer()->send($clientId, $server->getBean(DataParser::class)->encode($response));
         }
     }
 }

@@ -107,12 +107,12 @@ class Connection extends DefaultConnection
         string $username = '',
         string $password = '',
         Message $will = null,
-        string $clientID = '',
+        string $clientId = '',
         int $keepAlive = 60,
         int $protocol = 4,
         bool $clean = true
     ) {
-        parent::__construct($username, $password, $will, $clientID, $keepAlive, $protocol, $clean);
+        parent::__construct($username, $password, $will, $clientId, $keepAlive, $protocol, $clean);
         $this->host = $host;
         $this->port = $port;
         $this->timeout = $timeout;

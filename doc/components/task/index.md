@@ -23,11 +23,11 @@ class Test implements ITaskHandler
 	 * 任务处理方法
 	 * @param TaskParam $param
 	 * @param \Swoole\Server $server
-	 * @param integer $taskID
+	 * @param integer $taskId
 	 * @param integer $WorkerId
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerId)
+	public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();
@@ -40,7 +40,7 @@ class Test implements ITaskHandler
 	 * @param mixed $data
 	 * @return void
 	 */
-	public function finish(\Swoole\Server $server, int $taskID, $data)
+	public function finish(\Swoole\Server $server, int $taskId, $data)
 	{
 		
 	}
@@ -121,11 +121,11 @@ class Test implements ITaskHandler
 	 * 任务处理方法
 	 * @param TaskParam $param
 	 * @param \Swoole\Server $server
-	 * @param integer $taskID
+	 * @param integer $taskId
 	 * @param integer $WorkerId
 	 * @return void
 	 */
-	public function handle(TaskParam $param, \Swoole\Server $server, int $taskID, int $WorkerId)
+	public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
 	{
 		// 投递任务时的数据
 		$data = $param->getData();
@@ -138,7 +138,7 @@ class Test implements ITaskHandler
 	 * @param mixed $data
 	 * @return void
 	 */
-	public function finish(\Swoole\Server $server, int $taskID, $data)
+	public function finish(\Swoole\Server $server, int $taskId, $data)
 	{
 		
 	}

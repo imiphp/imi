@@ -73,7 +73,7 @@ class WorkerStartEventParam extends EventParam
      * Worker进程ID
      * @var int
      */
-    public $workerID;
+    public $workerId;
 }
 ```
 
@@ -254,7 +254,7 @@ class WorkerStartEventParam extends EventParam
      * Worker进程ID
      * @var int
      */
-    public $workerID;
+    public $workerId;
 }
 ```
 
@@ -277,7 +277,7 @@ class WorkerStopEventParam extends EventParam
      * Worker进程ID
      * @var int
      */
-    public $workerID;
+    public $workerId;
 }
 ```
 
@@ -336,13 +336,13 @@ class TaskEventParam extends EventParam
      * 任务ID
      * @var int
      */
-    public $taskID;
+    public $taskId;
 
     /**
      * worker进程ID
      * @var int
      */
-    public $workerID;
+    public $workerId;
 
     /**
      * 任务数据
@@ -371,7 +371,7 @@ class FinishEventParam extends EventParam
      * 任务ID
      * @var int
      */
-    public $taskID;
+    public $taskId;
 
     /**
      * 任务数据
@@ -400,7 +400,7 @@ class PipeMessageEventParam extends EventParam
      * Worker进程ID
      * @var int
      */
-    public $workerID;
+    public $workerId;
 
     /**
      * 消息内容，可以是任意PHP类型
@@ -429,7 +429,7 @@ class WorkerErrorEventParam extends EventParam
      * Worker进程ID
      * @var int
      */
-    public $workerID;
+    public $workerId;
 
     /**
      * Worker进程PID
@@ -505,7 +505,7 @@ class CloseEventParam extends EventParam
      *
      * @var int
      */
-    public $reactorID;
+    public $reactorId;
 }
 ```
 
@@ -604,7 +604,7 @@ class CloseEventParam extends EventParam
      *
      * @var int
      */
-    public $reactorID;
+    public $reactorId;
 }
 ```
 
@@ -633,7 +633,7 @@ class ConnectEventParam extends EventParam
      * Reactor线程ID
      * @var int
      */
-    public $reactorID;
+    public $reactorId;
 }
 ```
 
@@ -660,7 +660,7 @@ class ReceiveEventParam extends EventParam
      * Reactor线程ID
      * @var int
      */
-    public $reactorID;
+    public $reactorId;
 
     /**
      * 接收到的数据
@@ -695,7 +695,7 @@ class CloseEventParam extends EventParam
      *
      * @var int
      */
-    public $reactorID;
+    public $reactorId;
 }
 ```
 

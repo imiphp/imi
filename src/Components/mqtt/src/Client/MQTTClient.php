@@ -187,7 +187,7 @@ class MQTTClient
         // MQTT 连接
         $connectRequest = new ConnectRequestPacket();
         $connectRequest->setCleanSession($connection->isCleanSession());
-        $connectRequest->setClientID($connection->getClientID());
+        $connectRequest->setClientId($connection->getClientId());
         $connectRequest->setKeepAlive($connection->getKeepAlive());
         $connectRequest->setPassword($connection->getPassword());
         $connectRequest->setProtocolLevel($connection->getProtocol());

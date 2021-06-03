@@ -12,16 +12,16 @@ class ReceiveData implements IReceiveData
     /**
      * 客户端连接的标识符.
      *
-     * @var int
+     * @var string|int
      */
-    protected $fd;
+    protected $clientId;
 
     /**
      * Reactor线程ID.
      *
      * @var int
      */
-    protected $reactorID;
+    protected $reactorId;
 
     /**
      * 接收到的数据.
@@ -38,12 +38,13 @@ class ReceiveData implements IReceiveData
     protected $formatData;
 
     /**
-     * @param mixed $data
+     * @param string|int $clientId
+     * @param mixed      $data
      */
-    public function __construct(int $fd, int $reactorID, $data)
+    public function __construct($clientId, int $reactorId, $data)
     {
-        $this->fd = $fd;
-        $this->reactorID = $reactorID;
+        $this->clientId = $clientId;
+        $this->reactorId = $reactorId;
         $this->data = $data;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }
@@ -55,7 +56,7 @@ class ReceiveData implements IReceiveData
      */
     public function getClientId()
     {
-        return $this->fd;
+        return $this->clientId;
     }
 
     /**
@@ -79,8 +80,8 @@ class ReceiveData implements IReceiveData
     /**
      * 获取Reactor线程ID.
      */
-    public function getReactorID(): int
+    public function getReactorId(): int
     {
-        return $this->reactorID;
+        return $this->reactorId;
     }
 }

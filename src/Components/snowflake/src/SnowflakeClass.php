@@ -13,7 +13,7 @@ class SnowflakeClass extends Snowflake
     {
         if (null === $workerid)
         {
-            $workerid = Worker::getWorkerID();
+            $workerid = Worker::getWorkerId();
         }
         parent::__construct($datacenter, $workerid);
     }

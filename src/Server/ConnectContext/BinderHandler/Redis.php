@@ -34,7 +34,7 @@ class Redis implements IHandler
 
     public function __init(): void
     {
-        if (0 === Worker::getWorkerID())
+        if (0 === Worker::getWorkerId())
         {
             $this->useRedis(function (RedisHandler $redis) {
                 $key = $this->key;

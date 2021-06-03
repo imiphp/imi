@@ -150,13 +150,13 @@ class Server extends BaseRpcServer
         $this->hproseService->socketHandle($this);
         $this->isHookHproseOn = false;
 
-        $server->on('connect', function (\swoole_server $server, $fd, $reactorID) {
+        $server->on('connect', function (\swoole_server $server, $fd, $reactorId) {
             try
             {
                 $this->trigger('connect', [
                     'server'    => $this,
-                    'fd'        => $fd,
-                    'reactorID' => $reactorID,
+                    'clientId'  => $fd,
+                    'reactorId' => $reactorId,
                 ], $this, ConnectEventParam::class);
             }
             catch (\Throwable $ex)
@@ -165,13 +165,13 @@ class Server extends BaseRpcServer
             }
         });
 
-        $server->on('receive', function (\swoole_server $server, $fd, $reactorID, $data) {
+        $server->on('receive', function (\swoole_server $server, $fd, $reactorId, $data) {
             try
             {
                 $this->trigger('receive', [
                     'server'    => $this,
-                    'fd'        => $fd,
-                    'reactorID' => $reactorID,
+                    'clientId'  => $fd,
+                    'reactorId' => $reactorId,
                     'data'      => $data,
                 ], $this, ReceiveEventParam::class);
             }
@@ -181,13 +181,13 @@ class Server extends BaseRpcServer
             }
         });
 
-        $server->on('close', function (\swoole_server $server, $fd, $reactorID) {
+        $server->on('close', function (\swoole_server $server, $fd, $reactorId) {
             try
             {
                 $this->trigger('close', [
                     'server'    => $this,
-                    'fd'        => $fd,
-                    'reactorID' => $reactorID,
+                    'clientId'  => $fd,
+                    'reactorId' => $reactorId,
                 ], $this, CloseEventParam::class);
             }
             catch (\Throwable $ex)

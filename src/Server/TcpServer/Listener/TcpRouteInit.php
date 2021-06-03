@@ -88,7 +88,7 @@ class TcpRouteInit implements IEventListener
                     }
                 }
             }
-            if (0 === Worker::getWorkerID())
+            if (0 === Worker::getWorkerId())
             {
                 $route->checkDuplicateRoutes();
             }
