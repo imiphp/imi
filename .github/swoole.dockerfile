@@ -5,7 +5,8 @@ FROM phpswoole/swoole:${SWOOLE_DOCKER_VERSION}
 ARG PHP_JIT="0"
 
 RUN set -eux \
-    && docker-php-ext-install bcmath mysqli pdo_mysql \
+    && apt-get update && apt-get -y install procps \
+    && docker-php-ext-install bcmath mysqli pdo_mysql pcntl \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && ( \
