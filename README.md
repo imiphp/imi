@@ -1,4 +1,4 @@
-# imi - 基于 Swoole 的 PHP 协程开发框架
+# imi - PHP 长连接微服务分布式开发框架
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
@@ -16,13 +16,13 @@
 
 ## 介绍
 
-imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpApi、WebSocket、TCP、UDP、MQTT 服务的开发。
+imi 是一款支持长连接微服务分布式的 PHP 开发框架，它可以运行在 PHP-FPM、Swoole、Workerman 多种容器环境下。
 
-在 Swoole 的加持下，相比 php-fpm 请求响应能力，I/O密集型场景处理能力，有着本质上的提升。
+imi 支持开发 Http 接口，以及 Http2、WebSocket、TCP、UDP、MQTT 等常驻内存服务。
 
-imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动通信、企业软件、云计算、网络游戏、物联网（IOT）、车联网、智能家居等领域。可以使企业 IT 研发团队的效率大大提升，更加专注于开发创新产品。
+imi 拥有丰富的功能组件，v2.x 版本内置了 2 个分布式长连接服务的解决方案。可以广泛应用于互联网、移动通信、企业软件、云计算、网络游戏、物联网（IOT）、车联网、智能家居等领域。使企业 IT 研发团队的效率大大提升，更加专注于开发创新产品。
 
-> 目前 imi v2 版本已经开始开发了（2020-09），如果有任何问题或建议，欢迎联系我们！
+> imi 第一个版本发布于 2018 年 6 月 21 日
 
 imi 框架交流群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)
 
@@ -34,7 +34,8 @@ imi 框架进阶教程——五子棋游戏开发(免费7集全)<https://space.b
 
 ### 核心组件
 
-* HttpApi、WebSocket、TCP、UDP、MQTT 服务器
+* Http、Http2、WebSocket、TCP、UDP、MQTT 服务器
+* 分布式长连接解决方案（消息队列模式、网关模式）
 * MySQL 连接池 (主从+负载均衡)
 * Redis 连接池 (主从+负载均衡)
 * 超好用的 ORM (Db、Redis、Tree)

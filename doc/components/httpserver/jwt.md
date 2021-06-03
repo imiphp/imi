@@ -6,6 +6,10 @@
 
 Github: <https://github.com/imiphp/imi-jwt>
 
+imi v1 使用 1.0 版本
+
+imi v2 使用 2.0 版本
+
 ## Composer
 
 本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:

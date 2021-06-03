@@ -8,6 +8,8 @@
 
 ## 通过 imi 配置
 
+### Swoole
+
 项目 `config.php`：
 
 ```php
@@ -43,6 +45,30 @@
                 'ssl_cert_file'     =>  '/server.crt',
                 'ssl_key_file'      =>  '/server.key',
             ]
+        ],
+    ],
+]
+```
+
+### Workerman
+
+```php
+// Workerman 服务器配置
+'workermanServer' => [
+    'http' => [
+        'namespace' => 'Imi\Workerman\Test\AppServer\ApiServer',
+        'type'      => Imi\Workerman\Server\Type::HTTP,
+        'host'      => '0.0.0.0',
+        'port'      => 13000,
+        'context'   => [
+            'ssl' => [
+                'local_cert'  => '/etc/nginx/conf.d/ssl/server.pem', // 也可以是crt文件
+                'local_pk'    => '/etc/nginx/conf.d/ssl/server.key',
+                'verify_peer' => false,
+            ],
+        ]
+        'configs'   => [
+            'transport' => 'ssl',
         ],
     ],
 ]

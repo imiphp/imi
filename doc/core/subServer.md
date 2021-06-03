@@ -58,18 +58,19 @@ class Main extends BaseMain
 ```php
 <?php
 return [
-    // 加载子配置文件，避免`config.php`过于臃肿不便维护
-    // 要注意这里的别名不可与configs同级的名字重复，否则会被覆盖
+    // 加载子配置文件，可以使用 \Imi\Config::get('@.别名1.xxx') 获取
     'configs'    =>    [
         "别名1"    =>    '配置文件路径1',
         "别名2"    =>    '配置文件路径2',
         ……
     ],
-    // bean扫描目录，指定命名空间
-    'beanScan'	=>	[
-    	'ImiDemo\HttpDemo\MainServer\Controller',
-    ],
+
+    // 如果配置了 configs.别名1，这里的值会被上面的文件覆盖
+    '别名1' => [],
+
+    // bean扫描目录，指定命名空间，建议省略
+    // 'beanScan'	=>	[
+    // 	'ImiDemo\WebSocketDemo\Listener',
+    // ],
 ];
 ```
-
-> 只有在 `beanScan` 中配置，才可以被扫描到，注解才可以生效

@@ -92,7 +92,7 @@ class JsonErrorHandler implements IErrorHandler
 		// 如有需要，可以手动记录下日志：
 		\Imi\App::getBean('ErrorLog')->onException($throwable);
 
-		return $this->cancelThrow;
+		return $this->cancelThrow; // 返回 true 就是取消继续抛出异常，也就不会输出和保存日志，慎用
 	}
 }
 ```

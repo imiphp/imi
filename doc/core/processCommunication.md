@@ -2,11 +2,23 @@
 
 为了方便进程内部通讯，进行数据交换。imi v1.2.0 版本新增了内部进程间通讯封装。
 
+我们只需要使用 `Server::sendMessage()` 发送，使用监听事件接收就行了。
+
+**支持：** Swoole、Workerman
+
+## Swoole
+
 使用 Swoole 提供的 [sendMessage()](http://wiki.swoole.com/#/server/methods?id=sendmessage) 和 [onPipeMessage 事件](http://wiki.swoole.com/#/server/events?id=onpipemessage) 实现。
 
 在 `onPipeMessage` 事件中，收到指定结构的数据，就会触发相应事件。
 
-我们只需要监听事件就行了。
+类名：`Imi\Swoole\Server\Server`
+
+## Workerman
+
+使用 [Channel分布式通讯组件](http://doc3.workerman.net/315195) 实现。
+
+类名：`Imi\Workerman\Server\Server`
 
 ## 介绍
 
@@ -25,9 +37,7 @@
 
 ## 代码示例
 
-### 发送并监听
-
-**发送：**
+### 发送
 
 ```php
 use Imi\Swoole\Server\Server;
@@ -43,7 +53,7 @@ Server::sendMessage('test', [
 ], 1);
 ```
 
-**监听：**
+### 监听
 
 事件名称为：`IMI.PIPE_MESSAGE.test`
 
@@ -85,6 +95,8 @@ class TestMessage implements IEventListener
 办法很简单，比如：发送数据动作名为 `testRequest`，再定义一个 `testResponse` 动作监听用于接收数据即可。
 
 再使用 `Channel` 挂起协程等待响应结果，完美！
+
+> 暂时只有 Swoole 支持
 
 **发送请求并等待响应：**
 
@@ -152,6 +164,8 @@ class TestRequestMessage implements IEventListener
 ```
 
 **监听响应：**
+
+> 暂时只有 Swoole 支持
 
 事件名称为：`IMI.PIPE_MESSAGE.testResponse`
 

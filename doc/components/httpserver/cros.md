@@ -36,3 +36,20 @@ imi 框架内置了一个 `OptionsMiddleware` 中间件，用于解决使用 `ap
     ],
 ]
 ```
+
+## Nginx 配置
+
+如果你不希望在 imi 里做跨域处理，也可以使用 Nginx 来配置：
+
+```
+# 跨域
+# * 就是允许全部，你也可以指定
+add_header 'Access-Control-Allow-Origin' '*';
+# 你还可以加入其它想要的请求方式
+add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+# 你还可以加入你想要允许的请求头
+add_header 'Access-Control-Allow-Headers' 'authorization,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+if ($request_method = 'OPTIONS') {
+    return 204;
+}
+```

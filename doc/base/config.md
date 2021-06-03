@@ -1,8 +1,10 @@
 # 配置文件
 
-在每个`Main`所在目录下的`config/config.php`配置文件，会在该`Main`被实例化时加载。
+配置文件分为：**项目配置**和**服务器配置**。
 
-如果你不知道`Main`是什么，请看上一章：[《开始一个新项目》](/base/new.html)
+**项目配置** 是一些公共的配置，会影响整个项目。
+
+**服务器配置** 是针对指定服务器，比如你写的某个 Http 服务的一些特别配置，可以在里面配置一些服务器相关的设置。
 
 imi 还支持你在项目根目录下，建立一个`.env`文件，在里面设置运行环境配置。
 
@@ -13,16 +15,54 @@ imi 还支持你在项目根目录下，建立一个`.env`文件，在里面设�
 ```php
 <?php
 return [
-    // 加载子配置文件，避免`config.php`过于臃肿不便维护
-    // 要注意这里的别名不可与configs同级的名字重复，否则会被覆盖
+    // 加载子配置文件，可以使用 \Imi\Config::get('@.别名1.xxx') 获取
     'configs'    =>    [
         "别名1"    =>    '配置文件路径1',
         "别名2"    =>    '配置文件路径2',
         ……
     ],
-    // bean扫描目录，指定命名空间
-    'beanScan'	=>	[
-    	'ImiDemo\WebSocketDemo\Listener',
+
+    // 如果配置了 configs.别名1，这里的值会被上面的文件覆盖
+    '别名1' => [],
+
+    // bean扫描目录，指定命名空间，建议省略
+    // 'beanScan'	=>	[
+    // 	'ImiDemo\WebSocketDemo\Listener',
+    // ],
+
+    // 日志配置，详见日志文档
+    'logger' => [],
+
+    // imi 核心配置，一般可以省略
+    'imi' => [
+        // 运行时缓存配置
+        'runtime' => [
+            // --- bean 相关缓存开始 ---
+            'bean' => true, // 启用 bean 相关缓存，如果为false，则下面的配置无效
+            'annotation_parser_data' => true, // 处理器存储数据缓存
+            'annotation_parser_parsers' => true, // 处理器数据缓存
+            'annotation_manager_annotations' => true, // 注解缓存
+            'annotation_manager_annotation_relation' => true, // 注解关联缓存
+            'partial' => true, // partial 缓存
+            // --- bean 相关缓存结束 ---
+
+            'cli' => true, // 命令行缓存
+            'route' => true, // 路由缓存
+            'enum' => true, // 枚举类缓存
+            'event' => true, // 事件缓存
+
+            // swoole 相关
+            'swoole' => [
+                'process' => true, // 进程缓存
+            ],
+
+            // workerman 相关
+            'workerman' => [
+                'process' => true, // 进程缓存
+            ]
+        ],
+        'ServerUtil' => '', // 服务器工具类类名，详见服务器工具类文档
+        'Timer' => '', // 定时器类名，详见定时器文档
     ],
 ];
 ```
@@ -104,6 +144,8 @@ return [
             'type'      => Imi\Workerman\Server\Type::HTTP, // HTTP、WEBSOCKET、TCP、UDP
             'host'      => '0.0.0.0',
             'port'      => 8080,
+            // socket的上下文选项，参考：http://doc3.workerman.net/315128
+            'context'   => [],
             'configs'   => [
                 // 支持设置 Workerman 参数
             ],

@@ -15,16 +15,31 @@
 * [生命周期](core/lifeCycle.md)
 * [容器](core/container.md)
 * [Partial](core/partial.md)
-* [事件](core/events.md)
+* [事件](components/event/index.md)
+  * [事件监听](components/event/index.md)
+  * [事件列表](core/events.md)
 * [中间件](core/middleware.md)
-* [进程名称管理](core/processNameManager.md)
 * [错误转为异常捕获](core/handleError.md)
-* [Swoole 子服务器（单项目多端口多协议）](core/subServer.md)
 * [内部进程间通讯](core/processCommunication.md)
+
+## 注解
+
+* [注入值注解](annotations/injectValue.md)
+* [方法参数过滤器](annotations/filterArg.md)
+* [编写自定义注解](annotations/annotation.md)
+* [注解管理器](annotations/annotationManager.md)
+* [注解相关问题](annotations/qa.md)
+
+## 多容器
+
+* [PHP-FPM](container/php-fpm.md)
+* [Swoole](container/swoole.md)
+  * [子服务器（单项目多端口多协议）](core/subServer.md)
+  * [进程名称管理](core/processNameManager.md)
+* [Workerman](container/workerman.md)
 
 ## Http 服务
 
-* [高性能 Http 服务](components/httpserver/coServer.md)
 * [路由](components/httpserver/route.md)
 * [请求拦截](components/httpserver/intercept.md)
   * [AOP 拦截请求](components/httpserver/aop.md)
@@ -89,11 +104,6 @@
 * [Hprose](components/rpc/hprose.md)
 * [gRPC](components/rpc/grpc.md)
 
-## 消息队列
-
-* [RabbitMQ(AMQP)](components/mq/amqp.md)
-* [Redis](components/mq/redis.md)
-
 ## 功能组件
 
 * [配置读写](components/config/index.md)
@@ -133,7 +143,6 @@
   * [使用方法](components/lock/index.md)
   * [RedisLock](components/lock/redis.md)
   * [AtomicLock](components/lock/atomic.md)
-* [事件监听](components/event/index.md)
 * [后台任务](components/task/index.md)
 * [定时任务](components/task/cron.md)
 * [AOP](components/aop/index.md)
@@ -159,6 +168,10 @@
   * [Swagger API 文档生成](dev/generate/swagger.md)
   * [Swoole Tracker](components/swoole-tracker.md)
 
+## 消息队列
+
+* [RabbitMQ(AMQP)](components/mq/amqp.md)
+* [Redis](components/mq/redis.md)
 
 ## 数据结构
 
@@ -192,14 +205,6 @@
 * [ServerManage](utils/ServerManage.md)
 * [通道容器](utils/ChannelContainer.md)
 * [服务器工具类](utils/Server.md)
-
-## 注解
-
-* [注入值注解](annotations/injectValue.md)
-* [方法参数过滤器](annotations/filterArg.md)
-* [编写自定义注解](annotations/annotation.md)
-* [注解管理器](annotations/annotationManager.md)
-* [注解相关问题](annotations/qa.md)
 
 ## 开发工具
 

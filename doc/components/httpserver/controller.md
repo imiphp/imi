@@ -1,5 +1,7 @@
 # 控制器
 
+所有的请求都会打进控制器，我们开发项目时候，处理请求基本都是在控制器里做。
+
 如下代码所示，一个最简单的控制器代码。
 
 ## 基本控制器
@@ -19,15 +21,15 @@ use Imi\Server\Http\Route\Annotation\Controller;
  */
 class Index extends HttpController
 {
-	/**
-	 * 一个动作
-	 * @Action
-	 * @Route(url="/")
-	 */
-	public function index()
-	{
-		return $this->response->write('hello imi!');
-	}
+    /**
+     * 一个动作
+     * @Action
+     * @Route(url="/")
+     */
+    public function index()
+    {
+        return $this->response->write('hello imi!');
+    }
 }
 ```
 
@@ -37,41 +39,33 @@ class Index extends HttpController
 hello imi!
 ```
 
-## 单例控制器
+### Swoole 中的禁忌用法
 
-用法完全一致，适合用于单例控制器场景，对象内部协程上下文自动切换
+控制器是单例的，Swoole 环境下运行不适合赋值取值静态变量、类属性。
 
 ```php
 <?php
 namespace Test;
 
-use Imi\Controller\SingletonHttpController;
+use Imi\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Route;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 
 /**
  * 一个简单的控制器
- * @Controller(singleton=true)
+ * @Controller
  */
-class Index extends SingletonHttpController
+class Index extends HttpController
 {
-	/**
-	 * 一个动作
-	 * @Action
-	 * @Route(url="/")
-	 */
-	public function index()
-	{
-		return $this->response->write('hello imi!');
-	}
-}
-```
+    private $id;
 
-访问地址：`http://localhost:{port}/`
-输出内容：
-```
-hello imi!
+    public function __construct()
+    {
+        // 这个是有问题的，只会在第一次请求时候执行
+        $this->id = $this->request->get('id');
+    }
+}
 ```
 
 ## 属性
@@ -302,9 +296,9 @@ public function action()
 public function sendFile(string $filename, int $offset = 0, int $length = 0)
 ```
 
-#### 是否已结束请求
+#### 是否可写
 
-`public function isEnded()`
+`public function isWritable()`
 
 #### 获取swoole响应对象
 

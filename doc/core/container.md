@@ -17,6 +17,8 @@ return [
 ];
 ```
 
+> imi v2.0 版本开始已经不一定需要配置 `beanScan` 了
+
 ## 容器分类
 
 * 全局容器
@@ -34,6 +36,8 @@ $object = \Imi\App::getBean('XXX');
 ### 服务器容器
 
 只针对目标服务器的容器，该容器中目前存储了该服务器的路由对象及配置等等。
+
+比如你的项目分别监听了 Http、TCP 两个协议端口，Http 请求接口进来，使用服务器容器获取到的对象，只会是这个 Http 服务独有的，TCP 服务里拿不到。
 
 ```php
 $object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');

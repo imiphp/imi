@@ -2,8 +2,6 @@
 
 在 imi 中更加推荐使用 AOP 来拦截请求。
 
-> 不要忘记把 `Aspect` 类加入 `beanScan`！
-
 ## Demo
 
 ```php

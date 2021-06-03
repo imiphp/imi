@@ -1,5 +1,7 @@
 # 路由
 
+定义路由规则，让 imi 可以根据请求，导航到你写的控制器里。
+
 ## 启用路由
 
 服务器配置文件中加入中间件：
@@ -39,6 +41,8 @@ return [
 
 ### @Controller
 
+类名：`\Imi\Server\Http\Route\Annotation\Controller`
+
 注释目标：类
 
 表明一个类是控制器类
@@ -50,6 +54,8 @@ return [
 | server | 指定当前控制器允许哪些服务器使用。支持字符串或数组，默认为 null 则不限制 |
 
 ### @Route
+
+类名：`\Imi\Server\Http\Route\Annotation\Route`
 
 注释目标：方法
 
@@ -70,6 +76,8 @@ return [
 | autoEndSlash | 智能尾部斜杠，无论是否存在都匹配<br>`null`-取HttpRoute中默认值<br>`true`-忽略大小写<br>`false`-严格判断 |
 
 ### @Action
+
+类名：`\Imi\Server\Http\Route\Annotation\Action`
 
 注释目标：方法
 
@@ -114,63 +122,6 @@ class Index extends HttpController
 hello imi!
 ```
 
-## 配置
-
-路由配置必须写在服务器配置文件中，如果你写在项目配置文件是无效的。
-
-路由配置支持三种方式：传统、回调、路由回调
-
-```php
-<?php
-return [
-    'route' => [
-        // 传统方式，直接指定控制器、方法、路由，和注解方式比较类似
-        [
-            'controller' => \ImiDemo\HttpDemo\MainServer\Controller\Test::class,
-            'method' => 'index',
-            'route' => [
-                'url' => '/test',
-                // 'method'	=>	'PUT',
-                // 'method'	=>	['GET', 'POST'],
-                // 'domain'	=>	'{name}.xxx.com',
-            ],
-        ],
-        // 回调方式，给callback指定一个callable类型
-        [
-            'route' => [
-                'url' => '/callback1',
-            ],
-            'callback' => function () {
-                return RequestContext::get('response')->write('callback1');
-            },
-        ],
-        // 路由回调方式，new RouteCallable(类名, 方法名)
-        [
-            'route' => [
-                'url' => '/callback2',
-            ],
-            'callback' => new RouteCallable('\Test', 'abc'),
-        ],
-        // 匹配URL，把interface代入到类、方法名中
-        [
-            'controller' => '\ImiDemo\HttpDemo\MainServer\Controller\Test{$interface}',
-            'method' => '{$interface}',
-            'route' => [
-                'url' => '/test/{interface}',
-            ],
-        ],
-        // 懒人免去写@Controller和@Action注解的麻烦
-        [
-            'controller'	=>	'\ImiDemo\HttpDemo\MainServer\Controller\{$controller}',
-            'method'		=>	'{$action}',
-            'route'	=>	[
-                'url'	=>	'/{controller}/{action}',
-            ],
-        ],
-    ]
-];
-```
-
 ## 获取当前路由解析结果 (`routeResult`)
 
 ```php
@@ -181,21 +132,24 @@ $routeResult = RequestContext::get('routeResult');
 
 ```php
 /**
- * 路由配置项
+ * 路由ID.
+ */
+public int $id = 0;
+
+/**
+ * 路由配置项.
  *
  * @var \Imi\Server\Http\Route\RouteItem
  */
-public $routeItem;
+public RouteItem $routeItem;
 
 /**
- * 参数
- *
- * @var array
+ * 参数.
  */
-public $params;
+public array $params = [];
 
 /**
- * 回调
+ * 回调.
  *
  * @var callable
  */
@@ -206,37 +160,41 @@ public $callable;
 
 ```php
 /**
- * 注解
- *
- * @var \Imi\Server\Http\Route\Annotation\Route
+ * 注解.
  */
-public $annotation;
+public Route $annotation;
 
 /**
- * 回调
+ * 回调.
  *
  * @var callable|\Imi\Server\Route\RouteCallable
  */
 public $callable;
 
 /**
- * 中间件列表
- *
- * @var array
+ * 中间件列表.
  */
-public $middlewares = [];
+public array $middlewares = [];
 
 /**
- * WebSocket 配置
+ * WebSocket 配置.
  *
- * @var array
+ * @var WSConfig
  */
-public $wsConfig = [];
+public ?WSConfig $wsConfig = null;
 
 /**
- * 其它配置项
- *
- * @var array
+ * 其它配置项.
  */
-public $options;
+public array $options = [];
+
+/**
+ * 视图注解.
+ */
+public View $view;
+
+/**
+ * 视图配置注解.
+ */
+public ?BaseViewOption $viewOption = null;
 ```

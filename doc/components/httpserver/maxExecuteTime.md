@@ -29,7 +29,7 @@ imi 提供了一个中间件，用以支持设置最大请求执行时间，如�
 ```php
 [
     'ExecuteTimeoutMiddleware' =>  [
-        'maxExecuteTime'    =>  3000,
+        'maxExecuteTime'    =>  3000, // 最长执行时间，单位：毫秒
         'handler'           =>  \Imi\Server\Http\Error\ExecuteTimeoutHandler::class,
     ],
 ]
