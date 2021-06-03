@@ -128,6 +128,18 @@ function saveConfig(): void
 chdir(__DIR__);
 
 static $storeRepoMap = [
+    'src/Components/swoole' => [
+        'git@github.com:imiphp/imi-swoole',
+    ],
+    'src/Components/workerman' => [
+        'git@github.com:imiphp/imi-workerman',
+    ],
+    'src/Components/fpm' => [
+        'git@github.com:imiphp/imi-fpm',
+    ],
+    'src/Components/workerman-gateway' => [
+        'git@github.com:imiphp/imi-workerman-gateway',
+    ],
     'src/Components/access-control' => [
         'git@github.com:imiphp/imi-access-control',
     ],
