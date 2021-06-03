@@ -26,12 +26,25 @@ class WorkermanResponse extends Response
      */
     protected TcpConnection $connection;
 
+    /**
+     * 是否可写.
+     */
+    protected bool $isWritable = true;
+
     public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Response $response)
     {
         $this->workermanResponse = $response;
         $this->worker = $worker;
         $this->connection = $connection;
         parent::__construct();
+    }
+
+    /**
+     * 是否可写.
+     */
+    public function isWritable(): bool
+    {
+        return $this->isWritable;
     }
 
     /**
@@ -73,7 +86,7 @@ class WorkermanResponse extends Response
      */
     public function send(): self
     {
-        $this->isEnded = true;
+        $this->isWritable = false;
         $this->sendHeaders();
         $response = $this->workermanResponse;
         $response->withBody((string) $this->getBody());
@@ -93,7 +106,7 @@ class WorkermanResponse extends Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
-        $this->isEnded = true;
+        $this->isWritable = false;
         $this->sendHeaders();
         $response = $this->workermanResponse;
         $response->withFile($filename, $offset, $length);

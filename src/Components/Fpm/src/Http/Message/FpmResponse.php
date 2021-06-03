@@ -16,6 +16,14 @@ class FpmResponse extends Response
     protected array $changedCookieNames = [];
 
     /**
+     * 是否可写.
+     */
+    public function isWritable(): bool
+    {
+        return !connection_aborted();
+    }
+
+    /**
      * 设置cookie.
      *
      * @return static
@@ -82,7 +90,6 @@ class FpmResponse extends Response
      */
     public function send(): self
     {
-        $this->isEnded = true;
         $this->sendHeaders();
         echo (string) $this->getBody();
 
@@ -100,7 +107,6 @@ class FpmResponse extends Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
-        $this->isEnded = true;
         $this->sendHeaders();
         $fs = new FileStream($filename, StreamMode::READONLY);
         if ($offset > 0)

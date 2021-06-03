@@ -33,7 +33,7 @@ interface IHttpResponse extends IResponse
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self;
 
     /**
-     * 是否已结束请求
+     * 是否可写.
      */
-    public function isEnded(): bool;
+    public function isWritable(): bool;
 }

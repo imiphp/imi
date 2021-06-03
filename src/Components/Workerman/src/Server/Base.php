@@ -58,7 +58,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         {
             $socketName = $config['socketName'];
         }
-        elseif (isset($config['host'],$config['port']))
+        elseif (isset($config['host'], $config['port']))
         {
             $socketName = $this->getWorkerScheme() . '://' . $config['host'] . ':' . $config['port'];
         }

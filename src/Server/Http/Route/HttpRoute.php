@@ -74,7 +74,7 @@ class HttpRoute
                 'url' => $url,
             ]);
         }
-        [$view,$viewOption] = ViewParser::getInstance()->getByCallable($callable);
+        [$view, $viewOption] = ViewParser::getInstance()->getByCallable($callable);
         $this->rules[$url][spl_object_hash($annotation)] = new RouteItem($annotation, $callable, $view, $viewOption);
     }
 
@@ -85,7 +85,7 @@ class HttpRoute
      */
     public function addRuleAnnotation(RouteAnnotation $annotation, $callable, array $options = []): void
     {
-        [$view,$viewOption] = ViewParser::getInstance()->getByCallable($callable);
+        [$view, $viewOption] = ViewParser::getInstance()->getByCallable($callable);
         $routeItem = new RouteItem($annotation, $callable, $view, $viewOption, $options);
         if (isset($options['middlewares']))
         {

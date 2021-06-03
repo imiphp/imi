@@ -28,6 +28,14 @@ class SwooleResponse extends Response
     }
 
     /**
+     * 是否可写.
+     */
+    public function isWritable(): bool
+    {
+        return $this->swooleResponse->isWritable();
+    }
+
+    /**
      * 发送头部信息，没有特别需求，无需手动调用.
      *
      * @return static
@@ -75,12 +83,8 @@ class SwooleResponse extends Response
      */
     public function send(): self
     {
-        $this->isEnded = true;
-        if ($this->swooleResponse->isWritable())
-        {
-            $this->sendHeaders();
-            $this->swooleResponse->end($this->getBody());
-        }
+        $this->sendHeaders();
+        $this->swooleResponse->end($this->getBody());
 
         return $this;
     }
@@ -96,7 +100,6 @@ class SwooleResponse extends Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
-        $this->isEnded = true;
         $this->sendHeaders();
         $this->swooleResponse->sendfile($filename, $offset, $length);
 

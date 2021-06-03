@@ -18,8 +18,8 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static                                          \Imi\Server\Http\Message\Contract\IHttpResponse send()
  * @method \Imi\Server\Http\Message\Contract\IHttpResponse sendFile(string $filename, int $offset = 0, int $length = 0)
  * @method static                                          \Imi\Server\Http\Message\Contract\IHttpResponse sendFile(string $filename, int $offset = 0, int $length = 0)
- * @method bool                                            isEnded()
- * @method static                                          bool isEnded()
+ * @method bool                                            isWritable()
+ * @method static                                          bool isWritable()
  * @method static                                          setStatus(int $code, string $reasonPhrase = '')
  * @method static                                          static setStatus(int $code, string $reasonPhrase = '')
  * @method static                                          withCookie(string $key, string $value, int $expire = 0, string $path = '/', string $domain = '', bool $secure = false, bool $httponly = false)
@@ -108,9 +108,9 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
     /**
      * {@inheritDoc}
      */
-    public function isEnded(): bool
+    public function isWritable(): bool
     {
-        return $this->__getProxyInstance()->isEnded(...\func_get_args());
+        return $this->__getProxyInstance()->isWritable(...\func_get_args());
     }
 
     /**
