@@ -77,9 +77,9 @@ class FpmApp extends BaseApp
             {
                 // 扫描 imi 框架
                 Scanner::scanImi();
+                // 扫描组件
+                Scanner::scanVendor();
             }
-            // 扫描组件
-            Scanner::scanVendor();
             if ($isBuildRuntime)
             {
                 Imi::buildRuntime($fileName);

@@ -46,10 +46,7 @@ class BuildRuntimeListener implements IEventListener
         {
             $data['partial'] = PartialManager::getMap();
         }
-        if (Config::get('@app.imi.runtime.bean', true))
-        {
-            $data['bean'] = BeanManager::getMap();
-        }
+        $data['bean'] = BeanManager::getMap();
         $eventData['data']['bean'] = $data;
     }
 }
