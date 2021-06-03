@@ -66,7 +66,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
         {
             $socketName = '';
         }
-        $worker = new $class($socketName);
+        $worker = new $class($socketName, $config['context'] ?? []);
         $worker->name = $this->name;
         foreach ($config['configs'] ?? [] as $k => $v)
         {
