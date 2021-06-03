@@ -6,5 +6,6 @@ return [
         'Imi\Grpc\Util',
         'Imi\Grpc\Client',
         'Imi\Grpc\Listener',
+        'Imi\Server\Grpc',
     ],
 ];

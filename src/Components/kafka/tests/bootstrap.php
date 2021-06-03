@@ -1,12 +1,9 @@
 <?php
 
-use Imi\App;
-use Imi\Event\Event;
-use Imi\Event\EventParam;
-use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
-use Swoole\Coroutine;
-use Swoole\Runtime;
 use function Yurun\Swoole\Coroutine\batch;
+
+require dirname(__DIR__, 4) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * @return bool
@@ -76,19 +73,6 @@ function startServer()
 }
 
 startServer();
-
-\Imi\Event\Event::on('IMI.INIT_TOOL', function (EventParam $param) {
-    $data = $param->getData();
-    $data['skip'] = true;
-    \Imi\Tool\Tool::init();
-});
-\Imi\Event\Event::on('IMI.INITED', function (EventParam $param) {
-    Runtime::enableCoroutine();
-    App::initWorker();
-    $param->stopPropagation();
-}, 1);
-App::run('KafkaApp');
-
-Coroutine::defer(function () {
-    Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [], null, WorkerExitEventParam::class);
+\Swoole\Coroutine::defer(function () {
+    \Imi\Event\Event::trigger('IMI.MAIN_SERVER.WORKER.EXIT', [], null, \Imi\Swoole\Server\Event\Param\WorkerExitEventParam::class);
 });

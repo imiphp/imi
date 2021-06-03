@@ -37,8 +37,8 @@ jobs:
           docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
       - name: Test
         run: docker exec ${ENV_SERVICE} composer test
-      # - name: Test components
-      #   run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php
@@ -76,8 +76,8 @@ jobs:
           docker exec ${ENV_SERVICE} bash tests/db/install-db.sh
       - name: Test
         run: docker exec ${ENV_SERVICE} composer test
-      # - name: Test components
-      #   run: docker exec ${ENV_SERVICE} composer test-components
+      - name: Test components
+        run: docker exec ${ENV_SERVICE} composer test-components
       - name: Print logs
         if: failure()
         run: docker exec ${ENV_SERVICE} php .github/print-logs.php

@@ -13,4 +13,7 @@
             <directory>MQTT</directory>
         </testsuite>
     </testsuites>
+    <extensions>
+        <extension class="Imi\MQTT\Test\PHPUnitHook" />
+    </extensions>
 </phpunit>

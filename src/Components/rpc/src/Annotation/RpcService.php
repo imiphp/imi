@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Imi\Rpc\Annotation;
 
 use Imi\Aop\Annotation\Inject;
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Rpc\Client\Pool\RpcClientPool;
 
 /**
  * RPC 服务对象注入.
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
  */
 class RpcService extends Inject
 {

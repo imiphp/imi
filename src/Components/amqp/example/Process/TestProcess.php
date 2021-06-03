@@ -7,7 +7,7 @@ namespace AMQPApp\Process;
 use Imi\AMQP\Contract\IConsumer;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 
 /**

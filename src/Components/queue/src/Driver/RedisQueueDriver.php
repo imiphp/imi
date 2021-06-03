@@ -289,7 +289,7 @@ LUA
             }
         }
 
-        return $result;
+        return 1 == $result;
     }
 
     /**
@@ -415,8 +415,7 @@ LUA
         foreach (QueueType::getValues() as $value)
         {
             $data = QueueType::getData($value);
-            // @phpstan-ignore-next-line
-            switch ($data->type)
+            switch ($data['type'])
             {
                 case 'list':
                     $count = $redis->lLen($this->getQueueKey($value));
@@ -425,8 +424,7 @@ LUA
                     $count = $redis->zCard($this->getQueueKey($value));
                     break;
                 default:
-                    // @phpstan-ignore-next-line
-                    throw new QueueException('Invalid type ' . $data->type);
+                    throw new QueueException('Invalid type ' . $data['type']);
             }
             $status[strtolower(QueueType::getName($value))] = $count;
         }

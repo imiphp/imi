@@ -337,7 +337,7 @@ class AMQPQueueDriver implements IQueueDriver
     public function push(IMessage $message, float $delay = 0, array $options = []): string
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
-        $message->setMessageId($messageId = $redis->incr($this->getRedisMessageIdKey()));
+        $message->setMessageId($messageId = (string) $redis->incr($this->getRedisMessageIdKey()));
         $amqpMessage = new \Imi\AMQP\Message();
         $amqpMessage->setBody(json_encode($message->toArray()));
         if ($delay > 0)

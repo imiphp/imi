@@ -22,7 +22,7 @@ class KafkaMQTest extends BaseTest
         ], $response->json(true));
     }
 
-    public function testConsum(): void
+    public function testConsume(): void
     {
         $http = new HttpRequest();
         $excepted = [

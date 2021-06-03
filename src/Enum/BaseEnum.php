@@ -16,7 +16,7 @@ abstract class BaseEnum
         $map = EnumManager::getKVMap(static::class);
         $key = array_search($value, $map);
 
-        return $key ?? null;
+        return false === $key ? null : $key;
     }
 
     /**

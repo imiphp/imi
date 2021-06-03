@@ -85,7 +85,7 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
     // 主服务器配置
     'mainServer'    =>  [
         'namespace' =>    'ImiApp\GrpcServer',
-        'type'      =>    'Grpc',
+        'type'      =>    'GrpcServer',
         'host'      =>    '127.0.0.1',
         'port'      =>    8080,
     ],
@@ -101,7 +101,7 @@ protoc 下载和安装：<https://github.com/protocolbuffers/protobuf/releases>
         // 子服务器名
         'XXX'   =>  [
             'namespace' =>    'ImiApp\GrpcServer',
-            'type'      =>    'Grpc',
+            'type'      =>    'GrpcServer',
             'host'      =>    '127.0.0.1',
             'port'      =>    8080,
         ]

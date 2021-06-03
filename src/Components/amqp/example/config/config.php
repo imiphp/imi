@@ -22,7 +22,8 @@ return [
 
     // 组件命名空间
     'components'    => [
-        'AMQP'  => 'Imi\AMQP',
+        'Swoole' => 'Imi\Swoole',
+        'AMQP'   => 'Imi\AMQP',
     ],
 
     // 主服务器配置
@@ -43,65 +44,32 @@ return [
     // 连接池配置
     'pools'    => [
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => 6379,
-                    'password'  => null,
+            'pool'    => [
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => 6379,
-                    'password'  => null,
-                ],
+            'resource'    => [
+                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => 6379,
+                'password'  => null,
             ],
         ],
         'rabbit'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\AMQP\Pool\AMQPSyncPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => AMQP_SERVER_HOST,
-                    'port'      => 5672,
-                    'user'      => 'guest',
-                    'password'  => 'guest',
+            'pool'    => [
+                'class'        => \Imi\AMQP\Pool\AMQPCoroutinePool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\AMQP\Pool\AMQPCoroutinePool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => AMQP_SERVER_HOST,
-                    'port'      => 5672,
-                    'user'      => 'guest',
-                    'password'  => 'guest',
-                ],
+            'resource'    => [
+                'host'      => AMQP_SERVER_HOST,
+                'port'      => 5672,
+                'user'      => 'guest',
+                'password'  => 'guest',
             ],
         ],
     ],

@@ -13,4 +13,7 @@
             <directory>Queue</directory>
         </testsuite>
     </testsuites>
+    <extensions>
+        <extension class="Imi\Queue\Test\PHPUnitHook" />
+    </extensions>
 </phpunit>

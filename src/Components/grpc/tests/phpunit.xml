@@ -13,4 +13,7 @@
             <directory>Grpc</directory>
         </testsuite>
     </testsuites>
+    <extensions>
+        <extension class="Imi\Grpc\Test\PHPUnitHook" />
+    </extensions>
 </phpunit>

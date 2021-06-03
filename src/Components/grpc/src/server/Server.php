@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\Server\Grpc;
 
+use Imi\Bean\Annotation\Bean;
 use Imi\Server\Grpc\Error\GrpcErrorHandler;
 
 /**
+ * @Bean("GrpcServer")
  * gRPC 服务器类.
  */
 class Server extends \Imi\Swoole\Server\Http\Server

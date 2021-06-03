@@ -16,4 +16,7 @@
             <directory>Queue</directory>
         </testsuite>
     </testsuites>
+    <extensions>
+        <extension class="Imi\Kafka\Test\PHPUnitHook" />
+    </extensions>
 </phpunit>

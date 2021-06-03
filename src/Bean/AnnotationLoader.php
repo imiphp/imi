@@ -94,4 +94,12 @@ class AnnotationLoader
             }
         }
     }
+
+    /**
+     * 命名空间是否已加载.
+     */
+    public function isLoaded(string $namespace): bool
+    {
+        return isset($this->loaded[$namespace]);
+    }
 }

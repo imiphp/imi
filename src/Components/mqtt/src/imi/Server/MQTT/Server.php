@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Server\MQTT;
 
+use Imi\Bean\Annotation\Bean;
+
 /**
+ * @Bean("MQTTServer")
  * MQTT 服务器类.
  */
 class Server extends \Imi\Swoole\Server\TcpServer\Server

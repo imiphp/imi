@@ -10,7 +10,6 @@ use Imi\Swoole\Process\Pool\BeforeStartEventParam;
 use Imi\Swoole\Process\Pool\InitEventParam;
 use Imi\Swoole\Process\Pool\MessageEventParam;
 use Imi\Swoole\Process\Pool\WorkerEventParam;
-use Swoole\Coroutine\System;
 use Swoole\Event;
 use Swoole\Process;
 use Swoole\Timer;
@@ -21,8 +20,10 @@ class Pool
 
     /**
      * 工作进程数量.
+     *
+     * @var int
      */
-    private int $workerNum;
+    private $workerNum;
 
     /**
      * 工作进程列表
@@ -30,34 +31,43 @@ class Pool
      *
      * @var \Swoole\Process[]
      */
-    private array $workers = [];
+    private $workers = [];
 
     /**
      * 以进程 PID 为 key 的映射.
      *
      * @var int[]
      */
-    private array $workerIdMap = [];
+    private $workerIdMap = [];
 
     /**
      * 是否工作.
+     *
+     * @var bool
      */
-    private bool $working = false;
+    private $working = false;
 
     /**
      * 主进程 PID.
+     *
+     * @var int
      */
-    private int $masterPID;
+    private $masterPID;
 
-    public function __construct(int $workerNum)
+    /**
+     * @param int $workerNum
+     */
+    public function __construct($workerNum)
     {
         $this->workerNum = $workerNum;
     }
 
     /**
      * 启动进程池.
+     *
+     * @return void
      */
-    public function start(): void
+    public function start()
     {
         $this->masterPID = getmypid();
         $this->working = true;
@@ -66,55 +76,49 @@ class Pool
             'pool'  => $this,
         ], $this, BeforeStartEventParam::class);
 
-        go(function () {
+        Process::signal(\SIGCHLD, function ($sig) {
             while (!empty($this->workers))
             {
-                if (System::waitSignal(\SIGCHLD))
+                foreach ($this->workers as $worker)
                 {
-                    foreach ($this->workers as $worker)
+                    $ret = $worker->wait(false);
+                    if ($ret)
                     {
-                        $ret = $worker->wait(false);
-                        if ($ret)
+                        $pid = $ret['pid'] ?? null;
+                        $workerId = $this->workerIdMap[$pid] ?? null;
+                        if (null === $workerId)
                         {
-                            $pid = $ret['pid'] ?? null;
-                            $workerId = $this->workerIdMap[$pid] ?? null;
-                            if (null === $workerId)
-                            {
-                                trigger_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), \E_USER_WARNING);
-                                continue;
-                            }
-                            Event::del($this->workers[$workerId]->pipe);
-                            unset($this->workerIdMap[$pid], $this->workers[$workerId]);
-                            if ($this->working)
-                            {
-                                $this->startWorker($workerId);
-                            }
-                            elseif (empty($this->workers))
-                            {
-                                Event::exit();
-                            }
+                            trigger_error(sprintf('%s: Can not found workerId by pid %s', __CLASS__, $pid), \E_USER_WARNING);
+                            continue;
+                        }
+                        Event::del($this->workers[$workerId]->pipe);
+                        unset($this->workerIdMap[$pid], $this->workers[$workerId]);
+                        if ($this->working)
+                        {
+                            $this->startWorker($workerId);
+                        }
+                        elseif (empty($this->workers))
+                        {
+                            Event::exit();
                         }
                     }
                 }
             }
         });
 
-        go(function () {
-            if (System::waitSignal(\SIGTERM))
+        Process::signal(\SIGTERM, function () {
+            $this->working = false;
+            foreach ($this->workers as $worker)
             {
-                $this->working = false;
+                Process::kill($worker->pid, \SIGTERM);
+            }
+            Timer::after(3000, function () {
+                Log::info('Worker exit timeout, forced to terminate');
                 foreach ($this->workers as $worker)
                 {
-                    Process::kill($worker->pid, \SIGTERM);
+                    Process::kill($worker->pid, \SIGKILL);
                 }
-                Timer::after(3000, function () {
-                    Log::info('Worker exit timeout, forced to terminate');
-                    foreach ($this->workers as $worker)
-                    {
-                        Process::kill($worker->pid, \SIGKILL);
-                    }
-                });
-            }
+            });
         });
 
         for ($i = 0; $i < $this->workerNum; ++$i)
@@ -189,16 +193,13 @@ class Pool
             throw new \RuntimeException(sprintf('Can not start worker %s again', $workerId));
         }
         $worker = new \Imi\Swoole\Process\Process(function (Process $worker) use ($workerId) {
-            go(function () use ($worker, $workerId) {
-                if (System::waitSignal(\SIGTERM))
-                {
-                    $this->trigger('WorkerExit', [
-                        'pool'      => $this,
-                        'worker'    => $worker,
-                        'workerId'  => $workerId,
-                    ], $this, WorkerEventParam::class);
-                    Event::exit();
-                }
+            Process::signal(\SIGTERM, function () use ($worker, $workerId) {
+                $this->trigger('WorkerExit', [
+                    'pool'      => $this,
+                    'worker'    => $worker,
+                    'workerId'  => $workerId,
+                ], $this, WorkerEventParam::class);
+                Event::exit();
             });
             register_shutdown_function(function () use ($worker, $workerId) {
                 $this->trigger('WorkerStop', [

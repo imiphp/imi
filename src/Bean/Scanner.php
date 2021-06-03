@@ -13,6 +13,7 @@ use Imi\Main\Helper;
 use Imi\Main\IMain;
 use Imi\Util\Composer;
 use Imi\Util\File;
+use Imi\Util\Imi;
 use ReflectionClass;
 
 /**
@@ -93,11 +94,7 @@ class Scanner
         $components = Config::get('@app.components', []);
         if ($components)
         {
-            foreach ($components as $name => $namespace)
-            {
-                $namespaces[] = $namespace;
-                Helper::getMain($namespace, $name);
-            }
+            self::scanComponents($components);
         }
         Annotation::getInstance()->initByNamespace($namespaces);
         Event::trigger('IMI.SCAN_VENDOR');
@@ -122,6 +119,47 @@ class Scanner
         {
             $time = microtime(true) - $time;
             Log::info('scanApp ' . $time . 's');
+        }
+    }
+
+    /**
+     * 扫描组件.
+     */
+    public static function scanComponents(array $components): void
+    {
+        $annotation = Annotation::getInstance();
+        $loader = $annotation->getLoader();
+        $namespaces = [];
+        foreach ($components as $name => $namespace)
+        {
+            if (!$loader->isLoaded($namespace))
+            {
+                $namespaces[] = $namespace;
+                Helper::getMain($namespace, $name);
+            }
+        }
+        $annotation->initByNamespace($namespaces);
+        $nextComponents = [];
+        foreach ($namespaces as $namespace)
+        {
+            foreach (Imi::getNamespacePaths($namespace) as $path)
+            {
+                $fileName = $path . '/config/config.php';
+                if (is_file($fileName))
+                {
+                    $config = include $fileName;
+                    $configComponents = $config['components'] ?? null;
+                    if ($configComponents)
+                    {
+                        $nextComponents = array_merge($nextComponents, $configComponents);
+                    }
+                    break;
+                }
+            }
+        }
+        if ($nextComponents)
+        {
+            self::scanComponents($nextComponents);
         }
     }
 }

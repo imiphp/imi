@@ -51,11 +51,9 @@ class IndexController extends HttpController
     /**
      * @Action
      *
-     * @param int $memberId
-     *
      * @return mixed
      */
-    public function publish($memberId = 19260817)
+    public function publish(int $memberId = 19260817)
     {
         $message = new TestMessage();
         $message->setMemberId($memberId);

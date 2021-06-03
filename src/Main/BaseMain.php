@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Imi\Main;
 
 use Imi\Bean\ReflectionContainer;
-use Imi\Config;
 
 /**
  * 主类基类.
@@ -26,6 +25,11 @@ abstract class BaseMain implements IMain
      * 模块名称.
      */
     protected string $moduleName = '';
+
+    /**
+     * 模块配置.
+     */
+    protected array $config;
 
     public function __construct(string $moduleName)
     {
@@ -65,7 +69,7 @@ abstract class BaseMain implements IMain
      */
     public function getBeanScan(): array
     {
-        return Config::get('@' . $this->moduleName . '.beanScan', []);
+        return $this->getConfig()['beanScan'] ?? [];
     }
 
     /**
@@ -73,7 +77,20 @@ abstract class BaseMain implements IMain
      */
     public function getConfig(): array
     {
-        return Config::get('@' . $this->moduleName, []);
+        if (!isset($this->config))
+        {
+            $fileName = $this->getPath() . '/config/config.php';
+            if (is_file($fileName))
+            {
+                return $this->config = include $fileName;
+            }
+            else
+            {
+                return $this->config = [];
+            }
+        }
+
+        return $this->config;
     }
 
     /**

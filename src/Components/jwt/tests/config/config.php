@@ -4,9 +4,9 @@ return [
     'configs'    => [
     ],
     // bean扫描目录
-    'beanScan'    => [
-        'Imi\JWT\Test\Test',
-    ],
+    // 'beanScan'    => [
+    //     'Imi\JWT\Test\Test',
+    // ],
     'components'    => [
         // 引入本组件
         'jwt'    => 'Imi\JWT',

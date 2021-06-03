@@ -27,7 +27,7 @@ MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT�
 ```php
 'mainServer'    =>    [
     'namespace'     =>    'ImiApp\MQTTServer',
-    'type'          =>    'MQTT',
+    'type'          =>    'MQTTServer',
     'host'          =>    '127.0.0.1',
     'port'          =>    8081,
     'controller'    =>  \ImiApp\MQTTServer\Controller\MQTTController::class,
@@ -46,7 +46,7 @@ MQTT是一个基于客户端-服务器的消息发布/订阅传输协议。MQTT�
 'subServers'        =>    [
     'xxxServer'    =>    [
         'namespace'     =>    'ImiApp\MQTTServer',
-        'type'          =>    'MQTT',
+        'type'          =>    'MQTTServer',
         'host'          =>    '127.0.0.1',
         'port'          =>    8081,
         'controller'    =>  \ImiApp\MQTTServer\Controller\MQTTController::class,

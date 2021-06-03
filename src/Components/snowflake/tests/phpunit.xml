@@ -13,8 +13,7 @@
             <directory>Unit</directory>
         </testsuite>
     </testsuites>
-    <listeners>
-        <listener class="Imi\Snowflake\Test\PHPUintListener\ImiListener">
-        </listener>
-    </listeners>
+    <extensions>
+        <extension class="Imi\Snowflake\Test\PHPUnitHook" />
+    </extensions>
 </phpunit>

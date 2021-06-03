@@ -12,14 +12,15 @@ return [
     ],
 
     // 扫描目录
-    'beanScan'    => [
-        'QueueApp\Consumer',
-        'QueueApp\Listener',
-    ],
+    // 'beanScan'    => [
+    //     'QueueApp\Consumer',
+    //     'QueueApp\Listener',
+    // ],
 
     // 组件命名空间
     'components'    => [
         'Queue'  => 'Imi\Queue',
+        'Swoole' => 'Imi\Swoole',
     ],
 
     // 主服务器配置
@@ -37,10 +38,8 @@ return [
     'pools'    => [
         'redis'    => [
             'pool' => [
-                // 同步池类名
-                'syncClass'     => \Imi\Redis\SyncRedisPool::class,
                 // 协程池类名
-                'asyncClass'    => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'class'         => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config'        => [
                     // 池子中最多资源数
                     'maxResources' => 10,

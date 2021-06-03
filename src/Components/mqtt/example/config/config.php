@@ -17,13 +17,14 @@ return [
 
     // 组件命名空间
     'components'    => [
-        'MQTT'  => 'Imi\MQTT',
+        'Swoole' => 'Imi\Swoole',
+        'MQTT'   => 'Imi\MQTT',
     ],
 
     // 主服务器配置
     'mainServer'    => [
         'namespace'     => 'MQTTApp\MQTTServer',
-        'type'          => 'MQTT',
+        'type'          => 'MQTTServer',
         'host'          => '127.0.0.1',
         'port'          => 8081,
         'configs'       => [
@@ -36,7 +37,7 @@ return [
     'subServers'        => [
         'MQTTSSL'   => [
             'namespace'     => 'MQTTApp\MQTTSServer',
-            'type'          => 'MQTT',
+            'type'          => 'MQTTServer',
             'host'          => '127.0.0.1',
             'port'          => 8082,
             'sockType'      => \SWOOLE_SOCK_TCP | \SWOOLE_SSL, // SSL 需要设置一下 sockType
@@ -52,33 +53,17 @@ return [
     // 连接池配置
     'pools'    => [
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => 6379,
-                    'password'  => null,
+            'pool'    => [
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 1,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 1,
-                    ],
-                ],
-                'resource'    => [
-                    'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'      => 6379,
-                    'password'  => null,
-                ],
+            'resource'    => [
+                'host'      => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'      => 6379,
+                'password'  => null,
             ],
         ],
     ],

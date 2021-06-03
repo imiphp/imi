@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\SharedMemory\Process;
 
 use Imi\Config;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Util\Imi;
 use Yurun\Swoole\SharedMemory\Server;

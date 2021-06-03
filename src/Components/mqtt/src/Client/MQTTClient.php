@@ -402,7 +402,7 @@ class MQTTClient
         $pingTimespan = $this->connection->getPingTimespan();
         if ($pingTimespan > 0)
         {
-            $this->pingTimerId = Timer::tick($pingTimespan * 1000, [$this, 'ping']);
+            $this->pingTimerId = Timer::tick((int) ($pingTimespan * 1000), [$this, 'ping']);
         }
         while ($this->connected)
         {

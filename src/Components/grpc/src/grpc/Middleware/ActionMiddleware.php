@@ -121,7 +121,7 @@ class ActionMiddleware implements MiddlewareInterface
 
         if (!$finalResponse->hasTrailer('grpc-status'))
         {
-            $finalResponse = $finalResponse->withTrailer('grpc-status', 0);
+            $finalResponse = $finalResponse->withTrailer('grpc-status', '0');
         }
 
         return $finalResponse;

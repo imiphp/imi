@@ -17,7 +17,8 @@ return [
 
     // 组件命名空间
     'components'    => [
-        'Smarty'       => 'Imi\Smarty',
+        'Swoole' => 'Imi\Swoole',
+        'Smarty' => 'Imi\Smarty',
     ],
 
     // 主服务器配置
@@ -40,67 +41,32 @@ return [
     'pools'    => [
         // 主数据库
         'maindb'    => [
-            // 同步池子
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Db\Pool\SyncDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'username'    => 'root',
-                    'password'    => 'root',
-                    'database'    => 'mysql',
-                    'charset'     => 'utf8mb4',
+            'pool'    => [
+                'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            // 异步池子，worker进程使用
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'username'    => 'root',
-                    'password'    => 'root',
-                    'database'    => 'mysql',
-                    'charset'     => 'utf8mb4',
-                ],
+            'resource'    => [
+                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'username'    => 'root',
+                'password'    => 'root',
+                'database'    => 'mysql',
+                'charset'     => 'utf8mb4',
             ],
         ],
         'redis'    => [
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Redis\SyncRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'        => 6379,
+            'pool'    => [
+                'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
-                    'port'        => 6379,
-                ],
+            'resource'    => [
+                'host'        => imiGetEnv('REDIS_SERVER_HOST', '127.0.0.1'),
+                'port'        => 6379,
             ],
         ],
     ],

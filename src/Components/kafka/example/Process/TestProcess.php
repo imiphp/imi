@@ -7,7 +7,7 @@ namespace KafkaApp\Process;
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
 use Imi\Kafka\Contract\IConsumer;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 
 /**

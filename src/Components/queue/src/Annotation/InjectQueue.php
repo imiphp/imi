@@ -6,14 +6,14 @@ namespace Imi\Queue\Annotation;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 
 /**
  * 注入队列对象
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
  */
 class InjectQueue extends Inject
 {

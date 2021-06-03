@@ -6,10 +6,11 @@ namespace Imi\Queue\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
-use Imi\Process\Annotation\Process;
+use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Imi;
 use Swoole\Coroutine;
+use Swoole\Event;
 
 /**
  * 队列消费进程.
@@ -82,5 +83,6 @@ class QueueConsumerProcess extends BaseProcess
             });
             $processPool->start();
         }
+        Event::wait();
     }
 }

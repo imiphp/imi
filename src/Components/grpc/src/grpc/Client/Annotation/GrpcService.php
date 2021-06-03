@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Imi\Grpc\Client\Annotation;
 
-use Imi\Bean\Annotation\Parser;
+use Imi\Bean\Annotation\Inherit;
 use Imi\Bean\BeanFactory;
 use Imi\Rpc\Annotation\RpcService;
 
 /**
  * gRPC 服务对象注入.
  *
+ * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
- * @Parser("Imi\Aop\Parser\AopParser")
  */
 class GrpcService extends RpcService
 {
