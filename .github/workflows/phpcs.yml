@@ -15,7 +15,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-versions }}
-          tools: pecl, composer:2.0.14
+          tools: pecl, composer:v2
           coverage: none
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer update --prefer-dist --no-progress --ignore-platform-reqs --no-scripts
+        run: composer update --prefer-dist --no-progress --ignore-platform-reqs
 
       - name: Cache Tests
         uses: actions/cache@v2
