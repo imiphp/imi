@@ -30,7 +30,7 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         // @phpstan-ignore-next-line
-        RequestContext::getServer()->joinGroup('g1', $this->frame->getClientId());
+        $this->server->joinGroup('g1', $this->frame->getClientId());
         ConnectContext::bind($data->username);
 
         return [

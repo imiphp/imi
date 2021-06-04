@@ -6,7 +6,6 @@ namespace Imi\SwooleTracker\Example\WebSocketServer\MainServer\Controller;
 
 use Imi\ConnectContext;
 use Imi\Controller\WebSocketController;
-use Imi\RequestContext;
 use Imi\Server\Route\Annotation\WebSocket\WSAction;
 use Imi\Server\Route\Annotation\WebSocket\WSController;
 use Imi\Server\Route\Annotation\WebSocket\WSMiddleware;
@@ -34,7 +33,7 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         // @phpstan-ignore-next-line
-        RequestContext::getServer()->joinGroup('g1', $this->frame->getClientId());
+        $this->server->joinGroup('g1', $this->frame->getClientId());
 
         return ['success' => true];
     }

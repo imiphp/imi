@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Server\Server;
-use Imi\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给所有 Worker 进程的连接-请求
@@ -26,12 +26,12 @@ class OnSendRawToAllRequest implements IEventListener
         $workerId = $eData['workerId'];
         $data = $eData['data'];
         $result = Server::sendRawToAll($data['data'], $data['serverName'], false);
-        if ($data['needResponse'] ?? true && !Worker::isWorkerIdProcess($workerId))
+        if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('sendRawToAllResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $eData['workerId']);
+            ], $workerId);
         }
     }
 }

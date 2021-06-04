@@ -28,7 +28,7 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
     {
         ConnectContext::set('username', $data->username);
         // @phpstan-ignore-next-line
-        RequestContext::getServer()->joinGroup('g1', $this->data->getClientId());
+        $this->server->joinGroup('g1', $this->data->getClientId());
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];
     }

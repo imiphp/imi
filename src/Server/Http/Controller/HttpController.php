@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\Http\Controller;
 
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Contract\IServer;
 use Imi\Server\Http\Message\Contract\IHttpRequest;
 use Imi\Server\Http\Message\Contract\IHttpResponse;
 use Imi\Server\View\Annotation\HtmlView;
@@ -15,6 +16,11 @@ use Imi\Server\View\Annotation\View;
  */
 abstract class HttpController
 {
+    /**
+     * 服务器对象
+     */
+    public IServer $server;
+
     /**
      * 请求
      *
@@ -28,6 +34,11 @@ abstract class HttpController
      * @ServerInject("HttpResponseProxy")
      */
     public IHttpResponse $response;
+
+    public function __construct(IServer $server)
+    {
+        $this->server = $server;
+    }
 
     /**
      * 渲染页面.

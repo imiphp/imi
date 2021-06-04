@@ -29,7 +29,7 @@ class TestController extends WebSocketController
     {
         ConnectContext::set('username', $data->username);
         // @phpstan-ignore-next-line
-        RequestContext::getServer()->joinGroup('g1', $this->frame->getClientId());
+        $this->server->joinGroup('g1', $this->frame->getClientId());
         ConnectContext::bind($data->username);
 
         return [
@@ -72,7 +72,7 @@ class TestController extends WebSocketController
     {
         $message = ConnectContext::get('username') . ':' . $data->message;
         // @phpstan-ignore-next-line
-        RequestContext::getServer()->groupCall('g1', 'push', $message);
+        $this->server->groupCall('g1', 'push', $message);
     }
 
     /**

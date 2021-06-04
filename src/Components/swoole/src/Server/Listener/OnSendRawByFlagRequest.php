@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Server\Server;
-use Imi\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给指定标识-请求
@@ -26,12 +26,12 @@ class OnSendRawByFlagRequest implements IEventListener
         $workerId = $eData['workerId'];
         $data = $eData['data'];
         $result = Server::sendRawByFlag($data['data'], $data['flag'], $data['serverName'], false);
-        if ($data['needResponse'] ?? true && !Worker::isWorkerIdProcess($workerId))
+        if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('sendRawByFlagResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $eData['workerId']);
+            ], $workerId);
         }
     }
 }

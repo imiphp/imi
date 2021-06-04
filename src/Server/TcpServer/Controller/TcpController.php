@@ -6,6 +6,7 @@ namespace Imi\Server\TcpServer\Controller;
 
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
+use Imi\Server\Contract\IServer;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
@@ -14,11 +15,21 @@ use Imi\Server\TcpServer\Message\IReceiveData;
 abstract class TcpController
 {
     /**
+     * 服务器对象
+     */
+    public IServer $server;
+
+    /**
      * 数据.
      *
      * @ServerInject("TcpReceiveDataProxy")
      */
     public IReceiveData $data;
+
+    public function __construct(IServer $server)
+    {
+        $this->server = $server;
+    }
 
     /**
      * 编码消息，把数据编码为发送给客户端的格式.

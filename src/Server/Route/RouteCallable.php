@@ -53,6 +53,8 @@ class RouteCallable
             }
         }
 
-        return [ServerManager::getServer($this->serverName)->getBean($className), $methodName];
+        $server = ServerManager::getServer($this->serverName);
+
+        return [$server->getBean($className, $server), $methodName];
     }
 }
