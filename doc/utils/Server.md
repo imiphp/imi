@@ -96,7 +96,7 @@ Server::send([
 
 ```php
 // 需要有绑定过的连接，才可以使用此方法
-\Imi\ConnectContext::bind('user1');
+\Imi\ConnectionContext::bind('user1');
 
 // 发送给当前连接
 Server::sendByFlag([
@@ -151,7 +151,7 @@ Server::sendRaw('数据', 1, 'myServer', false);
 
 ```php
 // 需要有绑定过的连接，才可以使用此方法
-\Imi\ConnectContext::bind('user1');
+\Imi\ConnectionContext::bind('user1');
 
 // 发送给当前连接
 Server::sendRawByFlag('数据');
@@ -278,7 +278,7 @@ Server::close(1, 'myServer', false);
 
 ```php
 // 需要有绑定过的连接，才可以使用此方法
-\Imi\ConnectContext::bind('user1');
+\Imi\ConnectionContext::bind('user1');
 
 Server::closeByFlag('user1'); // 关闭 user1
 Server::closeByFlag(['user1', 'user2']); // 关闭 user1、user2

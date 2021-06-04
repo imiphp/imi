@@ -24,8 +24,8 @@ return [
             'key'          => 'IMITEST.TCP.GROUP',
             'redisDb'      => 2,
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => 'ConnectContextLocal',
+        'ConnectionContextStore'   => [
+            'handlerClass'  => 'ConnectionContextLocal',
             'ttl'           => 600,
         ],
         'TcpRouteNotFoundHandler'   => [
@@ -50,9 +50,9 @@ return [
     ],
     // 锁配置
     'lock'  => [
-        'default' => 'redisConnectContextLock',
+        'default' => 'redisConnectionContextLock',
         'list'    => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

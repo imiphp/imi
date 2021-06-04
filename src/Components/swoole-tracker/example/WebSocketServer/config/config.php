@@ -76,8 +76,8 @@ return [
 
     // 内存表配置
     'memoryTable'   => [
-        'connectContext'    => [
-            'class'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+        'ConnectionContext'    => [
+            'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
             'lockId' => 'atomic',
         ],
     ],

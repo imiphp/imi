@@ -6,7 +6,7 @@
 <?php
 namespace ImiDemo\UdpDemo\MainServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
 use Imi\Server\UdpServer\Route\Annotation\UdpAction;
 use Imi\Server\UdpServer\Route\Annotation\UdpController;
@@ -113,6 +113,12 @@ return ['success'=>true];
 
 由于UDP的特性，所以不支持分组发送。如有需要，可根据实际场景自行实现分组。
 
+## 类属性
+
+### $server
+
+详见：<https://doc.imiphp.com/core/server.html>
+
 ### $data
 
 #### 方法
@@ -142,4 +148,3 @@ public function getClientInfo();
 
 // 格式同：https://wiki.swoole.com/#/server/methods?id=getclientinfo
 ```
-

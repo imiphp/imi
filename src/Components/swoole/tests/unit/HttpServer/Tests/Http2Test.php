@@ -32,11 +32,11 @@ class Http2Test extends BaseTest
             $this->assertEquals('HTTP/2', $data['server']['server_protocol'] ?? null);
             $this->assertEquals('yurun', $response->getHeaderLine('trailer'));
             $this->assertEquals('niubi', $response->getHeaderLine('yurun'));
-            $this->assertEquals(1, $data['connectContext']['count'] ?? null);
+            $this->assertEquals(1, $data['ConnectionContext']['count'] ?? null);
 
             $response = $http->get($uri);
             $data = $response->json(true);
-            $this->assertEquals(2, $data['connectContext']['count'] ?? null);
+            $this->assertEquals(2, $data['ConnectionContext']['count'] ?? null);
         });
     }
 }

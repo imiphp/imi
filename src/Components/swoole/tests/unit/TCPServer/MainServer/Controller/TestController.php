@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\TCPServer\MainServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Server\TcpServer\Route\Annotation\TcpController;
@@ -25,11 +25,11 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
      */
     public function login(\stdClass $data): array
     {
-        ConnectContext::set('username', $data->username);
+        ConnectionContext::set('username', $data->username);
 
         // @phpstan-ignore-next-line
         $this->server->joinGroup('g1', $this->data->getClientId());
-        ConnectContext::bind($data->username);
+        ConnectionContext::bind($data->username);
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];
     }
@@ -44,7 +44,7 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
     {
         $message = [
             'action'     => 'send',
-            'message'    => ConnectContext::get('username') . ':' . $data->message,
+            'message'    => ConnectionContext::get('username') . ':' . $data->message,
         ];
         $server = RequestContext::getServer();
         // @phpstan-ignore-next-line

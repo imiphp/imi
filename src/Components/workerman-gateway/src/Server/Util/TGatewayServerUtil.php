@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\WorkermanGateway\Server\Util;
 
 use GatewayWorker\Lib\Gateway;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Server\DataParser\DataParser;
 
 trait TGatewayServerUtil
@@ -68,7 +68,7 @@ trait TGatewayServerUtil
     {
         if (null === $clientId)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
         }
         Gateway::sendToAll($data, (array) $clientId, null);
 
@@ -180,7 +180,7 @@ trait TGatewayServerUtil
         $count = 0;
         if (null === $clientId)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\Group;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Group\Handler\IGroupHandler;
@@ -89,7 +89,7 @@ class Group
         if ($this->handler->joinGroup($groupName, $clientId))
         {
             $this->server->getBean('ClientIdMap')->joinGroup($clientId, $this);
-            ConnectContext::use(function (array $contextData) use ($groupName): array {
+            ConnectionContext::use(function (array $contextData) use ($groupName): array {
                 $contextData['__groups'][] = $groupName;
 
                 return $contextData;
@@ -113,7 +113,7 @@ class Group
         if ($this->handler->leaveGroup($groupName, $clientId))
         {
             $this->server->getBean('ClientIdMap')->leaveGroup($clientId, $this);
-            ConnectContext::use(function (array $contextData) use ($groupName) {
+            ConnectionContext::use(function (array $contextData) use ($groupName) {
                 if (isset($contextData['__groups']))
                 {
                     $contextData['__groups'] = ArrayUtil::remove($contextData['__groups'], $groupName);

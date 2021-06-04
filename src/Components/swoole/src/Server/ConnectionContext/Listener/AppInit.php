@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\ConnectContext\Listener;
+namespace Imi\Swoole\Server\ConnectionContext\Listener;
 
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
@@ -28,14 +28,13 @@ class AppInit implements IAppInitEventListener
             if ($server->isLongConnection())
             {
                 RequestContext::set('server', $server);
-                $server->getBean('ConnectContextStore')->getHandler();
+                $server->getBean('ConnectionContextStore');
                 if (Imi::getClassPropertyValue('ServerGroup', 'status'))
                 {
                     /** @var \Imi\Server\Group\Handler\IGroupHandler $groupHandler */
                     $groupHandler = $server->getBean(Imi::getClassPropertyValue('ServerGroup', 'groupHandler'));
                     $groupHandler->startup();
                 }
-                App::getBean('ConnectionBinder');
             }
         }
     }

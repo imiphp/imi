@@ -7,7 +7,7 @@
 ```php
 return [
 	'beans'	=>	[
-		// 配置 http 为了握手
+		// 配置 http 为了握手，仅 Swoole 需要
         'HttpDispatcher'    =>    [
             'middlewares'    =>    [
                 'HandShakeMiddleware',
@@ -29,7 +29,7 @@ return [
 ## 获取握手时的 uri
 
 ```php
-$uri = ConnectContext::get('uri'); // 字符串 uri
+$uri = ConnectionContext::get('uri'); // 字符串 uri
 ```
 
 ## 获取当前路由解析结果 (`routeResult`)

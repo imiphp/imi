@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\WorkermanGateway\Test\AppServer\WebSocketServer\Listener;
 
 use Imi\Bean\Annotation\Listener;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 
@@ -19,6 +19,6 @@ class WorkermanOnOpen implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        ConnectContext::set('requestUri', (string) ConnectContext::get('uri'));
+        ConnectionContext::set('requestUri', (string) ConnectionContext::get('uri'));
     }
 }

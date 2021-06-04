@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\DataParser;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Protocol;
@@ -86,7 +86,7 @@ class DataParser
                     return JsonObjectParser::class;
                 }
 
-                return ConnectContext::get('dataParser') ?? JsonObjectParser::class;
+                return ConnectionContext::get('dataParser') ?? JsonObjectParser::class;
             case Protocol::TCP:
             case Protocol::UDP:
                 return $server->getConfig()['dataParser'] ?? JsonObjectParser::class;

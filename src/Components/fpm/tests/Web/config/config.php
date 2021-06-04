@@ -83,7 +83,7 @@ return [
                     'poolName'  => 'redis',
                 ],
             ],
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

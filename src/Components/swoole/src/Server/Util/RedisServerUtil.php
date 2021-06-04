@@ -9,7 +9,9 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
 use Imi\Redis\RedisManager;
+use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Server\ServerManager;
 
 /**
  * @Bean("RedisServerUtil")
@@ -109,7 +111,7 @@ class RedisServerUtil extends LocalServerUtil
             return $this->sendMessage('sendRawByFlagRequest', [
                 'data'         => $data,
                 'flag'         => $flag,
-                'serverName'   => $serverName,
+                'serverName'   => $serverName ?? (RequestContext::getServer()->getName()),
                 'needResponse' => $this->needResponse,
             ]);
         }
@@ -133,7 +135,7 @@ class RedisServerUtil extends LocalServerUtil
         {
             return $this->sendMessage('sendRawToAllRequest', [
                 'data'         => $data,
-                'serverName'   => $serverName,
+                'serverName'   => $serverName ?? (RequestContext::getServer()->getName()),
                 'needResponse' => $this->needResponse,
             ]);
         }
@@ -159,7 +161,7 @@ class RedisServerUtil extends LocalServerUtil
             return $this->sendMessage('sendToGroupsRequest', [
                 'groups'       => $groupName,
                 'data'         => $data,
-                'serverName'   => $serverName,
+                'serverName'   => $serverName ?? (RequestContext::getServer()->getName()),
                 'needResponse' => $this->needResponse,
             ]);
         }
@@ -181,7 +183,7 @@ class RedisServerUtil extends LocalServerUtil
         {
             return $this->sendMessage('closeByFlagRequest', [
                 'flag'         => $flag,
-                'serverName'   => $serverName,
+                'serverName'   => $serverName ?? (RequestContext::getServer()->getName()),
                 'needResponse' => $this->needResponse,
             ]);
         }
@@ -201,10 +203,11 @@ class RedisServerUtil extends LocalServerUtil
                 {
                     $redis->subscribe([$this->channel], function (\Redis $redis, string $channel, string $msg) {
                         $data = json_decode($msg, true);
-                        if (!isset($data['action']))
+                        if (!isset($data['action'], $data['serverName']))
                         {
                             return;
                         }
+                        RequestContext::set('server', ServerManager::getServer($data['serverName']));
                         Event::trigger('IMI.PIPE_MESSAGE.' . $data['action'], [
                             'data' => $data,
                         ], $this);

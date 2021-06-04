@@ -6,7 +6,7 @@ namespace Imi\Swoole\Server\WebSocket;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
@@ -121,7 +121,7 @@ class Server extends Base implements IWebSocketServer
                         'response'       => $response,
                         'clientId'       => $swooleRequest->fd,
                     ]);
-                    ConnectContext::create([
+                    ConnectionContext::create([
                         'uri' => (string) $request->getUri(),
                     ]);
                     $this->trigger('handShake', [

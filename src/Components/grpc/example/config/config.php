@@ -90,9 +90,9 @@ return [
 
     // 内存表配置
     'memoryTable'   => [
-        'connectContext'    => [
-            'class'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
-            'lockId' => 'redisConnectContextLock',
+        'ConnectionContext'    => [
+            'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
+            'lockId' => 'redisConnectionContextLock',
             'size'   => 65536,
         ],
     ],
@@ -100,7 +100,7 @@ return [
     // 锁
     'lock'  => [
         'list'  => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Imi;
 
 use Imi\Event\Event;
-use Imi\Server\ConnectContext\Event\Param\ConnectContextRestoreParam;
+use Imi\Server\ConnectionContext\Event\Param\ConnectionContextRestoreParam;
 
-class ConnectContext
+class ConnectionContext
 {
     private function __construct()
     {
@@ -75,8 +75,8 @@ class ConnectContext
                 return;
             }
         }
-        /** @var \Imi\Server\ConnectContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectContextStore');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
         if (($ttl = $store->getTtl()) > 0)
         {
             $store->delayDestroy((string) $clientId, $ttl);
@@ -103,7 +103,7 @@ class ConnectContext
             }
         }
 
-        return RequestContext::getServerBean('ConnectContextStore')->exists((string) $clientId);
+        return RequestContext::getServerBean('ConnectionContextStore')->exists((string) $clientId);
     }
 
     /**
@@ -124,7 +124,7 @@ class ConnectContext
                 return $default;
             }
         }
-        $data = RequestContext::getServerBean('ConnectContextStore')->read((string) $clientId);
+        $data = RequestContext::getServerBean('ConnectionContextStore')->read((string) $clientId);
         if (null === $name)
         {
             return $data;
@@ -152,7 +152,7 @@ class ConnectContext
                 return;
             }
         }
-        $store = RequestContext::getServerBean('ConnectContextStore');
+        $store = RequestContext::getServerBean('ConnectionContextStore');
         $clientIdStr = (string) $clientId;
         $result = $store->lock($clientIdStr, function () use ($store, $name, $value, $clientIdStr) {
             $data = $store->read($clientIdStr);
@@ -161,7 +161,7 @@ class ConnectContext
         });
         if (!$result)
         {
-            throw new \RuntimeException('ConnectContext lock fail');
+            throw new \RuntimeException('ConnectionContext lock fail');
         }
     }
 
@@ -180,7 +180,7 @@ class ConnectContext
                 return;
             }
         }
-        $store = RequestContext::getServerBean('ConnectContextStore');
+        $store = RequestContext::getServerBean('ConnectionContextStore');
         $clientIdStr = (string) $clientId;
         $result = $store->lock($clientIdStr, function () use ($store, $data, $clientIdStr) {
             $storeData = $store->read($clientIdStr);
@@ -192,7 +192,7 @@ class ConnectContext
         });
         if (!$result)
         {
-            throw new \RuntimeException('ConnectContext lock fail');
+            throw new \RuntimeException('ConnectionContext lock fail');
         }
     }
 
@@ -211,7 +211,8 @@ class ConnectContext
                 return;
             }
         }
-        $store = RequestContext::getServerBean('ConnectContextStore');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
         $clientIdStr = (string) $clientId;
         $store->lock($clientIdStr, function () use ($callable, $store, $clientIdStr) {
             $data = $store->read($clientIdStr);
@@ -240,17 +241,9 @@ class ConnectContext
      */
     public static function bind(string $flag, $clientId = null): void
     {
-        if (!$clientId)
-        {
-            $clientId = self::getClientId();
-            if (null === $clientId)
-            {
-                return;
-            }
-        }
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-        $connectionBinder->bind($flag, $clientId);
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store->bind($flag, $clientId ?? self::getClientId());
     }
 
     /**
@@ -260,18 +253,10 @@ class ConnectContext
      */
     public static function bindNx(string $flag, $clientId = null): bool
     {
-        if (!$clientId)
-        {
-            $clientId = self::getClientId();
-            if (null === $clientId)
-            {
-                return false;
-            }
-        }
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
 
-        return $connectionBinder->bindNx($flag, $clientId);
+        return $store->bindNx($flag, $clientId ?? self::getClientId());
     }
 
     /**
@@ -282,22 +267,20 @@ class ConnectContext
      */
     public static function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-        $connectionBinder->unbind($flag, $clientId, $keepTime);
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store->unbind($flag, $clientId, $keepTime);
     }
 
     /**
      * 使用标记获取连接编号.
-     *
-     * @return array
      */
-    public static function getClientIdByFlag(string $flag)
+    public static function getClientIdByFlag(string $flag): array
     {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
 
-        return $connectionBinder->getClientIdByFlag($flag);
+        return $store->getClientIdByFlag($flag);
     }
 
     /**
@@ -307,10 +290,10 @@ class ConnectContext
      */
     public static function getClientIdsByFlags(array $flags): array
     {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
 
-        return $connectionBinder->getClientIdsByFlags($flags);
+        return $store->getClientIdsByFlags($flags);
     }
 
     /**
@@ -320,10 +303,10 @@ class ConnectContext
      */
     public static function getFlagByClientId($clientId): ?string
     {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
 
-        return $connectionBinder->getFlagByClientId($clientId);
+        return $store->getFlagByClientId($clientId);
     }
 
     /**
@@ -335,10 +318,10 @@ class ConnectContext
      */
     public static function getFlagsByClientIds(array $clientIds): array
     {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
 
-        return $connectionBinder->getFlagsByClientIds($clientIds);
+        return $store->getFlagsByClientIds($clientIds);
     }
 
     /**
@@ -346,10 +329,10 @@ class ConnectContext
      */
     public static function getOldClientIdByFlag(string $flag): ?int
     {
-        /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
+        $store = RequestContext::getServerBean('ConnectionContextStore');
 
-        return $connectionBinder->getOldClientIdByFlag($flag);
+        return $store->getOldClientIdByFlag($flag);
     }
 
     /**
@@ -375,7 +358,7 @@ class ConnectContext
         Event::trigger('IMI.CONNECT_CONTEXT.RESTORE', [
             'fromClientId'    => $fromClientId,
             'toClientId'      => $toClientId,
-        ], null, ConnectContextRestoreParam::class);
+        ], null, ConnectionContextRestoreParam::class);
     }
 
     /**

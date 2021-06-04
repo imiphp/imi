@@ -28,11 +28,8 @@ return [
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'WSRouteNotFound',
         ],
-        'ConnectContextStore'   => [
+        'ConnectionContextStore'   => [
             'handlerClass'  => 'ConnectionContextGateway',
-        ],
-        'ConnectionBinder'  => [
-            'handlerClass' => 'ConnectionBinderGateway',
         ],
         'ServerGroup' => [
             'groupHandler' => 'GroupGateway',
@@ -40,9 +37,9 @@ return [
     ],
     // 锁配置
     'lock'  => [
-        'default' => 'redisConnectContextLock',
+        'default' => 'redisConnectionContextLock',
         'list'    => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

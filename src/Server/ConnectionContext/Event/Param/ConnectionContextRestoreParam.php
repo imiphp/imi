@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\ConnectContext\Event\Param;
+namespace Imi\Server\ConnectionContext\Event\Param;
 
 use Imi\Event\EventParam;
 
 /**
  * 连接上下文数据恢复事件参数.
  */
-class ConnectContextRestoreParam extends EventParam
+class ConnectionContextRestoreParam extends EventParam
 {
     /**
      * 数据原始连接号.

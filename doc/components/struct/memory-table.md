@@ -16,9 +16,9 @@ imi 支持 [MemoryTableModel](/components/orm/MemoryTableModel.html)，也支持
         ],
         'lockId'    =>  'atomic', // 锁 ID，非必设。不配置就不允许使用锁，其它的可以正常用
     ],
-    'connectContext'    =>  [
+    'ConnectionContext'    =>  [
         // 指定实现了 Imi\Util\MemoryTable\IMemoryTableOption 接口的来，来定义表结构
-        'class' =>  \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+        'class' =>  \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
         'lockId'=>  'atomic', // 同上
     ],
 ],
@@ -100,14 +100,14 @@ MemoryTableManager::lock($tableName, function(){
 
 ```php
 <?php
-namespace Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable;
+namespace Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable;
 
 use Imi\Util\MemoryTable\IMemoryTableOption;
 
 /**
  * Swoole 内存表
  */
-class ConnectContextOption implements IMemoryTableOption
+class ConnectionContextOption implements IMemoryTableOption
 {
     /**
      * 获取配置

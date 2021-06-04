@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Server\Http\Listener;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\Http\Dispatcher;
 use Imi\Swoole\Server\Contract\ISwooleServer;
@@ -42,7 +42,7 @@ class BeforeRequest implements IRequestEventListener
         {
             $context = RequestContext::getContext();
             $context['clientId'] = $context['swooleRequest']->fd;
-            ConnectContext::create();
+            ConnectionContext::create();
         }
         // 中间件
         /** @var Dispatcher $dispatcher */

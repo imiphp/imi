@@ -9,7 +9,7 @@ imi中内置实现了中间件+控制器方式开发tcp，在一些场景也可�
 namespace Imi\Server\TcpServer\Listener;
 
 use Imi\App;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Bean\Annotation\ClassEventListener;
 use Imi\Swoole\Server\Event\Param\ReceiveEventParam;

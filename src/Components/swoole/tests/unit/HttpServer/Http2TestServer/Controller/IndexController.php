@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Test\HttpServer\Http2TestServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
@@ -21,7 +21,7 @@ class IndexController extends HttpController
      */
     public function info(): array
     {
-        ConnectContext::use(function (array $context) {
+        ConnectionContext::use(function (array $context) {
             $context['count'] = ($context['count'] ?? 0) + 1;
 
             return $context;
@@ -34,14 +34,14 @@ class IndexController extends HttpController
         RequestContext::set('response', $response);
 
         return [
-            'get'               => $request->get(),
-            'post'              => $request->post(),
-            'cookie'            => $request->getCookieParams(),
-            'headers'           => MessageUtil::headersToStringList($request->getHeaders()),
-            'server'            => $request->getServerParams(),
-            'request'           => $request->request(),
-            'uri'               => (string) $request->getUri(),
-            'connectContext'    => ConnectContext::get(),
+            'get'                  => $request->get(),
+            'post'                 => $request->post(),
+            'cookie'               => $request->getCookieParams(),
+            'headers'              => MessageUtil::headersToStringList($request->getHeaders()),
+            'server'               => $request->getServerParams(),
+            'request'              => $request->request(),
+            'uri'                  => (string) $request->getUri(),
+            'ConnectionContext'    => ConnectionContext::get(),
         ];
     }
 }

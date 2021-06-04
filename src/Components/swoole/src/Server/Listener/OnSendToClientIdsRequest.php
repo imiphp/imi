@@ -23,7 +23,7 @@ class OnSendToClientIdsRequest implements IEventListener
     public function handle(EventParam $e): void
     {
         $eData = $e->getData();
-        $workerId = $eData['workerId'];
+        $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $result = Server::sendRaw($data['data'], $data['clientIds'], $data['serverName'], false);
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))

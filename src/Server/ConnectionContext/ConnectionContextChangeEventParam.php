@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\ConnectContext;
+namespace Imi\Server\ConnectionContext;
 
 /**
  * 连接上下文改变事件参数.
  */
-class ConnectContextChangeEventParam
+class ConnectionContextChangeEventParam
 {
     /**
      * 连接标识符.

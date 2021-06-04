@@ -83,7 +83,7 @@ return [
     // 锁
     'lock'  => [
         'list'  => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

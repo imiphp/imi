@@ -23,7 +23,7 @@ class OnSendRawByFlagRequest implements IEventListener
     public function handle(EventParam $e): void
     {
         $eData = $e->getData();
-        $workerId = $eData['workerId'];
+        $workerId = $eData['workerId'] ?? -1;
         $data = $eData['data'];
         $result = Server::sendRawByFlag($data['data'], $data['flag'], $data['serverName'], false);
         if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))

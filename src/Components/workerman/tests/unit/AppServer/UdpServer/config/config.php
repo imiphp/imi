@@ -40,9 +40,9 @@ return [
     ],
     // 锁配置
     'lock'  => [
-        'default' => 'redisConnectContextLock',
+        'default' => 'redisConnectionContextLock',
         'list'    => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

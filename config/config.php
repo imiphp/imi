@@ -32,7 +32,7 @@ return [
         'Imi\Components\*',
     ],
     'atomics' => [
-        'imi.ConnectContextRedisLock',
+        'imi.ConnectionContextRedisLock',
         'imi.GroupRedisLock',
     ],
     // 跳过初始化的工具

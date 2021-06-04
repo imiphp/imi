@@ -67,7 +67,7 @@ return [
 <?php
 namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Controller\WebSocketController;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 use Imi\Server\WebSocket\Route\Annotation\WSAction;

@@ -6,7 +6,7 @@
 <?php
 namespace ImiDemo\TcpDemo\MainServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
 use Imi\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Server\TcpServer\Route\Annotation\TcpController;
@@ -26,7 +26,7 @@ class Test extends \Imi\Controller\TcpController
 	 */
 	public function login($data)
 	{
-		ConnectContext::set('username', $data->username);
+		ConnectionContext::set('username', $data->username);
 		$this->server->joinGroup('g1', $this->data->getClientId());
 		return ['action'=>'login', 'success'=>true];
 	}
@@ -138,86 +138,8 @@ $server->send($clientId, $this->encodeMessage($data));
 
 ### $server
 
-#### 方法
+详见：<https://doc.imiphp.com/core/server.html>
 
-**getSwooleServer**
-
-获取Swoole的Server对象
-
-
-```php
-/**
- * 组是否存在
- *
- * @param string $groupName
- * @return boolean
- */
-public function hasGroup(string $groupName);
-```
-
-```php
-/**
- * 创建组，返回组对象
- *
- * @param string $groupName
- * @param integer $maxClients
- * @return \Imi\Server\Group\Group
- */
-public function createGroup(string $groupName, int $maxClients = -1);
-```
-
-```php
-/**
- * 获取组对象，不存在返回null
- *
- * @param string $groupName
- * @return \Imi\Server\Group\Group|null
- */
-public function getGroup(string $groupName);
-```
-
-```php
-/**
- * 加入组，组不存在则自动创建
- *
- * @param string $groupName
- * @param int|string $clientId
- * @return void
- */
-public function joinGroup(string $groupName, $clientId);
-```
-
-```php
-/**
- * 离开组，组不存在则自动创建
- *
- * @param string $groupName
- * @param int|string $clientId
- * @return void
- */
-public function leaveGroup(string $groupName, $clientId);
-```
-
-```php
-/**
- * 调用组方法
- *
- * @param string $groupName
- * @param string $methodName
- * @param mixed ...$args
- * @return array
- */
-public function groupCall(string $groupName, string $methodName, ...$args);
-```
-
-```php
-/**
- * 获取所有组列表
- *
- * @return \Imi\Server\Group\Group[]
- */
-public function getGroups(): array;
-```
 ### $data
 
 #### 方法

@@ -18,12 +18,6 @@ return [
                 \Imi\Swoole\Test\UDPServer\MainServer\Middleware\Test::class,
             ],
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
-        ],
-        'ConnectContextMemoryTable' => [
-            'tableName' => 'connectContext',
-        ],
         'ServerGroup'   => [
             'status'    => false,
         ],

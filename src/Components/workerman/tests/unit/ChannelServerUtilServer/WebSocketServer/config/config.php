@@ -22,26 +22,19 @@ return [
             'redisPool'    => 'redis',
             'redisDb'      => 2,
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => 'ConnectContextLocal',
+        'ConnectionContextStore'   => [
+            'handlerClass'  => 'ConnectionContextLocal',
             'ttl'           => 600,
         ],
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'WSRouteNotFound',
         ],
-        'ConnectionBinder'  => [
-            'handlerClass' => 'ConnectionBinderRedis',
-        ],
-        'ConnectionBinderRedis' => [
-            'redisPool' => 'redis',
-            'key'       => 'imi:ChannelServerUtilServer:connectionBinder:map',
-        ],
     ],
     // 锁配置
     'lock'  => [
-        'default' => 'redisConnectContextLock',
+        'default' => 'redisConnectionContextLock',
         'list'    => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

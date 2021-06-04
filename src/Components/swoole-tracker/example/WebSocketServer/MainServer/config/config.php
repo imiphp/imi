@@ -46,14 +46,14 @@ return [
             // 'successCode'       =>  500, // 当成功时上报的默认code
             // 'exceptionCode'     =>  500, // 当发生异常时上报的默认code
         ],
-        'ConnectContextRedis'    => [
+        'ConnectionContextRedis'    => [
             'redisPool'    => 'redis',
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        'ConnectionContextStore'   => [
+            'handlerClass'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable::class,
         ],
-        'ConnectContextMemoryTable' => [
-            'tableName' => 'connectContext',
+        'ConnectionContextMemoryTable' => [
+            'tableName' => 'ConnectionContext',
         ],
     ],
 ];

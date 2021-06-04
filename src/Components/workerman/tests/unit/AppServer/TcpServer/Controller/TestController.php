@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Test\AppServer\TcpServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Server\TcpServer\Route\Annotation\TcpController;
@@ -26,7 +26,7 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
      */
     public function login(\stdClass $data): array
     {
-        ConnectContext::set('username', $data->username);
+        ConnectionContext::set('username', $data->username);
         // @phpstan-ignore-next-line
         $this->server->joinGroup('g1', $this->data->getClientId());
 
@@ -47,7 +47,7 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
         $worker = $server->getWorker();
         $message = $this->encodeMessage([
             'action'     => 'send',
-            'message'    => ConnectContext::get('username') . ':' . $data->message,
+            'message'    => ConnectionContext::get('username') . ':' . $data->message,
         ]);
         foreach ($group->getHandler()->getClientIds('g1') as $clientId)
         {

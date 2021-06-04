@@ -16,15 +16,12 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\Redis::class,
+        'ConnectionContextStore'   => [
+            'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Redis::class,
         ],
-        'ConnectContextRedis'    => [
+        'ConnectionContextRedis'    => [
             'redisPool' => 'redis',
-            'lockId'    => 'redisConnectContextLock',
-        ],
-        'ConnectContextMemoryTable' => [
-            'tableName' => 'connectContext',
+            'lockId'    => 'redisConnectionContextLock',
         ],
     ],
 ];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Test\AppServer\WebSocketServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Server\Server;
 use Imi\Server\WebSocket\Controller\WebSocketController;
@@ -28,22 +28,22 @@ class TestController extends WebSocketController
      */
     public function login(\stdClass $data): array
     {
-        ConnectContext::set('username', $data->username);
+        ConnectionContext::set('username', $data->username);
         // @phpstan-ignore-next-line
         $this->server->joinGroup('g1', $this->frame->getClientId());
-        ConnectContext::bind($data->username);
+        ConnectionContext::bind($data->username);
 
         return [
             'success'                               => true,
             'middlewareData'                        => RequestContext::get('middlewareData'),
-            'requestUri'                            => ConnectContext::get('requestUri'),
-            'uri'                                   => (string) ConnectContext::get('uri'),
+            'requestUri'                            => ConnectionContext::get('requestUri'),
+            'uri'                                   => (string) ConnectionContext::get('uri'),
             'token'                                 => $data->username,
             'clientId'                              => $this->frame->getClientId(),
-            'getClientIdByFlag'                     => ConnectContext::getClientIdByFlag($data->username),
-            'getFlagByClientId'                     => ConnectContext::getFlagByClientId($this->frame->getClientId()),
-            'getClientIdsByFlags'                   => ConnectContext::getClientIdsByFlags([$data->username]),
-            'getFlagsByClientIds'                   => ConnectContext::getFlagsByClientIds([$this->frame->getClientId()]),
+            'getClientIdByFlag'                     => ConnectionContext::getClientIdByFlag($data->username),
+            'getFlagByClientId'                     => ConnectionContext::getFlagByClientId($this->frame->getClientId()),
+            'getClientIdsByFlags'                   => ConnectionContext::getClientIdsByFlags([$data->username]),
+            'getFlagsByClientIds'                   => ConnectionContext::getFlagsByClientIds([$this->frame->getClientId()]),
         ];
     }
 
@@ -55,11 +55,11 @@ class TestController extends WebSocketController
      */
     public function reconnect(\stdClass $data): array
     {
-        ConnectContext::restore($data->token);
+        ConnectionContext::restore($data->token);
 
         return [
             'success'   => true,
-            'username'  => ConnectContext::get('username'),
+            'username'  => ConnectionContext::get('username'),
         ];
     }
 
@@ -71,7 +71,7 @@ class TestController extends WebSocketController
      */
     public function send(\stdClass $data): void
     {
-        $message = ConnectContext::get('username') . ':' . $data->message;
+        $message = ConnectionContext::get('username') . ':' . $data->message;
         Server::sendRawToGroup('g1', $message);
     }
 
@@ -84,7 +84,7 @@ class TestController extends WebSocketController
     public function info(): array
     {
         return [
-            'clientId'       => ConnectContext::getClientId(),
+            'clientId'       => ConnectionContext::getClientId(),
             'workerId'       => Worker::getWorkerId(),
         ];
     }

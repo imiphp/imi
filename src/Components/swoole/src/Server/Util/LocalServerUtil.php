@@ -6,10 +6,9 @@ namespace Imi\Swoole\Server\Util;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
-use Imi\Server\ConnectContext\ConnectionBinder;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Contract\ISwooleServer;
@@ -117,12 +116,9 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-
         if (null === $flag)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -134,7 +130,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -162,7 +158,7 @@ class LocalServerUtil implements ISwooleServerUtil
         $swooleServer = $server->getSwooleServer();
         if (null === $clientId)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -238,12 +234,9 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-
         if (null === $flag)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -255,7 +248,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -466,7 +459,7 @@ class LocalServerUtil implements ISwooleServerUtil
         $count = 0;
         if (null === $clientId)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -496,12 +489,9 @@ class LocalServerUtil implements ISwooleServerUtil
      */
     public function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
-
         if (null === $flag)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -513,7 +503,7 @@ class LocalServerUtil implements ISwooleServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);

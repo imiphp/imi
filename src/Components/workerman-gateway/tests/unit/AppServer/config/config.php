@@ -147,9 +147,9 @@ return [
 
     // 锁
     'lock'  => [
-        'default' => 'redisConnectContextLock',
+        'default' => 'redisConnectionContextLock',
         'list'    => [
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

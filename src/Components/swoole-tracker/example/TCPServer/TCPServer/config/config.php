@@ -32,7 +32,7 @@ return [
         'ServerGroup'   => [
             'status'        => false,
         ],
-        'ConnectContextRedis'    => [
+        'ConnectionContextRedis'    => [
             'redisPool' => 'redis',
             'lockId'    => 'redis',
         ],

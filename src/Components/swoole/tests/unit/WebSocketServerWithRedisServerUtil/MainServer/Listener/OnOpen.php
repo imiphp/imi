@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Test\WebSocketServerWithRedisServerUtil\MainServer\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Swoole\Server\Event\Listener\IOpenEventListener;
 use Imi\Swoole\Server\Event\Param\OpenEventParam;
 
@@ -19,6 +19,6 @@ class OnOpen implements IOpenEventListener
      */
     public function handle(OpenEventParam $e): void
     {
-        ConnectContext::set('requestUri', (string) $e->request->getUri());
+        ConnectionContext::set('requestUri', (string) $e->request->getUri());
     }
 }

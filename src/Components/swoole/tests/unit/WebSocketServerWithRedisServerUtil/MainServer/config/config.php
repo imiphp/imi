@@ -24,18 +24,12 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => 'ConnectContextLocal',
+        'ConnectionContextStore'   => [
+            'handlerClass'  => 'ConnectionContextLocal',
             'ttl'           => 600,
-        ],
-        'ConnectContextMemoryTable' => [
-            'tableName' => 'connectContext',
         ],
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'RouteNotFound',
-        ],
-        'ConnectionBinder'  => [
-            'handlerClass' => 'ConnectionBinderLocal',
         ],
     ],
 ];

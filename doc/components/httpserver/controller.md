@@ -70,9 +70,17 @@ class Index extends HttpController
 
 ## 属性
 
+### $server
+
+详见：<https://doc.imiphp.com/core/server.html>
+
 ### $request
 
 请求信息对象，可以用于获取参数、请求头等，遵循 PSR-7 标准。
+
+PSR-7: <https://www.php-fig.org/psr/psr-7/>
+
+imi 在 PSR-7 基础上，为所有 `withXXX` 方法都加上了 `setXXX` 用法，方便快捷无心智负担。
 
 该对象同样可以用如下方法全局调用：
 
@@ -155,9 +163,21 @@ request 数据包含 get/post/cookie
 
 > 协议会根据当前服务器是否启用 `ssl` 判断，支持协议：`http/https/ws/wss`
 
-#### 获取 imi 中对应服务器的对象
+#### 获取 Swoole 服务器对象
 
 `public function getServerInstance(): \Imi\Swoole\Server\Http\Server`
+
+#### 获取 Workerman 的 Worker 对象
+
+`public function getWorker(): \Workerman\Worker`
+
+#### 获取 Workerman 的 http 请求对象
+
+`public function getWorkermanRequest(): \Workerman\Protocols\Http\Request`
+
+#### 获取 Workerman 的连接对象
+
+`public function getConnection(): \Workerman\Connection\TcpConnection`
 
 #### 获取上传的文件
 
@@ -237,6 +257,10 @@ $swooleRequest = $this->request->getSwooleRequest();
 
 响应对象，遵循 PSR-7 标准。
 
+PSR-7: <https://www.php-fig.org/psr/psr-7/>
+
+imi 在 PSR-7 基础上，为所有 `withXXX` 方法都加上了 `setXXX` 用法，方便快捷无心智负担。
+
 该对象同样可以用如下方法全局调用：
 
 ```php
@@ -250,14 +274,14 @@ $response = \Imi\RequestContext::get('response');
 ```php
 public function action()
 {
-	$this->response = $this->response->write('hello imi!');
+	$this->response = $this->response->withStatus(404);
 }
 ```
 2. 操作后返回
 ```php
 public function action()
 {
-	return $this->response->write('hello imi!');
+	return $this->response->withStatus(404);
 }
 ```
 
@@ -266,14 +290,6 @@ public function action()
 `public function redirect($url, $status = StatusCode::FOUND)`
 
 `$status` 是状态码，默认302，可以使用`StatusCode::XXX`常量
-
-#### 输出内容
-
-`public function write(string $content)`
-
-#### 清空输出缓冲区
-
-`public function clear()`
 
 #### 设置Cookie
 
@@ -302,11 +318,11 @@ public function sendFile(string $filename, int $offset = 0, int $length = 0)
 
 #### 获取swoole响应对象
 
-`public function getSwooleResonse(): \swoole_http_response`
+`public function getSwooleResonse(): \Swoole\Http\Response`
 
 #### 获取对应的服务器
 
-`public function getServerInstance(): \Imi\Swoole\Server\Http\Server`
+`public function getServerInstance(): \Imi\Swoole\Server\Contract\ISwooleServer`
 
 #### 设置状态码
 
@@ -331,9 +347,43 @@ $reponse->withAddedHeader('test', ['v2', 'v3']);
 // 最终header中test为v1,v2,v3
 ```
 
+#### 获取 Trailer 列表
+
+`public function getTrailers(): array`
+
+> Trailer 仅 Http2 中使用
+
+#### Trailer 是否存在
+
+`public function hasTrailer(string $name): bool`
+
+#### 获取 Trailer 值
+
+`public function getTrailer(string $name): ?string`
+
+#### 设置 Trailer 返回新对象
+
+`public function withTrailer(string $name, string $value): self`
+
+#### 设置 Trailer
+
+`public function setTrailer(string $name, string $value): self`
+
 #### 获取 Swoole Response 对象
 
 ```php
 /** @var \Swoole\Http\Response $swooleResponse */
 $swooleResponse = $this->request->getSwooleResponse();
 ```
+
+#### 获取 Workerman 的 http 响应对象
+
+`public function getWorkermanResponse(): \Workerman\Protocols\Http\Response`
+
+#### 获取 Workerman 的 Worker 对象
+
+`public function getWorker(): \Workerman\Worker`
+
+#### 获取 Workerman 的连接对象
+
+`public function getConnection(): \Workerman\Connection\TcpConnection`

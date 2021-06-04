@@ -63,7 +63,7 @@ return [
 <?php
 namespace ImiDemo\UdpDemo\MainServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Server\UdpServer\Route\Annotation\UdpRoute;
 use Imi\Server\UdpServer\Route\Annotation\UdpAction;
 use Imi\Server\UdpServer\Route\Annotation\UdpController;

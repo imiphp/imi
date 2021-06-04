@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Util;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
-use Imi\Server\ConnectContext\ConnectionBinder;
 use Imi\Server\DataParser\DataParser;
 use Imi\Server\ServerManager;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
@@ -108,7 +106,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         $worker = $server->getWorker();
         if (null === $clientId)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -148,7 +146,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         }
         if (null === $flag)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -159,12 +157,10 @@ class LocalServerUtil implements IWorkermanServerUtil
         }
         else
         {
-            /** @var ConnectionBinder $connectionBinder */
-            $connectionBinder = App::getBean('ConnectionBinder');
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -309,7 +305,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         $count = 0;
         if (null === $clientId)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;
@@ -356,12 +352,10 @@ class LocalServerUtil implements IWorkermanServerUtil
             $serverName = $server->getName();
         }
 
-        /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
         $clientIds = [];
         foreach ((array) $flag as $tmpFlag)
         {
-            $clientId = $connectionBinder->getClientIdByFlag($tmpFlag);
+            $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
             if ($clientId)
             {
                 $clientIds = array_merge($clientIds, $clientId);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\WebSocket\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\Server\ConnectContext\Traits\TConnectContextRelease;
+use Imi\Server\ConnectionContext\Traits\TConnectionContextRelease;
 use Imi\Swoole\Server\Event\Listener\ICloseEventListener;
 use Imi\Swoole\Server\Event\Param\CloseEventParam;
 
@@ -16,7 +16,7 @@ use Imi\Swoole\Server\Event\Param\CloseEventParam;
  */
 class AfterClose implements ICloseEventListener
 {
-    use TConnectContextRelease;
+    use TConnectionContextRelease;
 
     /**
      * 事件处理方法.

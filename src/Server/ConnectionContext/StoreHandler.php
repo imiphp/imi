@@ -2,32 +2,97 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\ConnectContext;
+namespace Imi\Server\ConnectionContext;
 
-use Imi\App;
 use Imi\Bean\Annotation\Bean;
-use Imi\Server\ConnectContext\BinderHandler\IHandler;
+use Imi\RequestContext;
+use Imi\Server\ConnectionContext\StoreHandler\IHandler;
 
 /**
- * 连接绑定器.
+ * 连接上下文存储处理器-总.
  *
- * @Bean("ConnectionBinder")
+ * @Bean("ConnectionContextStore")
  */
-class ConnectionBinder
+class StoreHandler implements IHandler
 {
     /**
      * 处理器类.
      */
-    protected string $handlerClass = 'ConnectionBinderRedis';
+    protected string $handlerClass = \Imi\Server\ConnectionContext\StoreHandler\Local::class;
 
     /**
-     * 处理器对象.
+     * 数据有效期，单位：秒
+     * 连接断开后，供断线重连的，数据保留时间
+     * 设为 0 则连接断开立即销毁数据.
+     */
+    protected int $ttl = 0;
+
+    /**
+     * 处理器对象
      */
     private IHandler $handler;
 
     public function __init(): void
     {
-        $this->handler = App::getBean($this->handlerClass);
+        $this->handler = RequestContext::getServerBean($this->handlerClass);
+    }
+
+    /**
+     * 读取数据.
+     */
+    public function read(string $key): array
+    {
+        return $this->handler->read($key);
+    }
+
+    /**
+     * 保存数据.
+     */
+    public function save(string $key, array $data): void
+    {
+        $this->handler->save($key, $data);
+    }
+
+    /**
+     * 销毁数据.
+     */
+    public function destroy(string $key): void
+    {
+        $this->handler->destroy($key);
+    }
+
+    /**
+     * 延迟销毁数据.
+     */
+    public function delayDestroy(string $key, int $ttl): void
+    {
+        $this->handler->delayDestroy($key, $ttl);
+    }
+
+    /**
+     * 数据是否存在.
+     */
+    public function exists(string $key): bool
+    {
+        return $this->handler->exists($key);
+    }
+
+    /**
+     * 加锁
+     *
+     * @param callable $callable
+     */
+    public function lock(string $key, ?callable $callable = null): bool
+    {
+        return $this->handler->lock($key, $callable);
+    }
+
+    /**
+     * 解锁
+     */
+    public function unlock(): bool
+    {
+        return $this->handler->unlock();
     }
 
     /**
@@ -107,5 +172,13 @@ class ConnectionBinder
     public function getOldClientIdByFlag(string $flag): ?int
     {
         return $this->handler->getOldClientIdByFlag($flag);
+    }
+
+    /**
+     * Get 设为 0 则连接断开立即销毁数据.
+     */
+    public function getTtl(): int
+    {
+        return $this->ttl;
     }
 }

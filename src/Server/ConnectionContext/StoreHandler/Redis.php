@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Server\ConnectContext\StoreHandler;
+namespace Imi\Server\ConnectionContext\StoreHandler;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
@@ -16,7 +16,7 @@ use Imi\Worker;
 /**
  * 连接上下文存储处理器-Redis.
  *
- * @Bean("ConnectContextRedis")
+ * @Bean("ConnectionContextRedis")
  */
 class Redis implements IHandler
 {
@@ -86,7 +86,7 @@ class Redis implements IHandler
         }
         if (!$this->lockId)
         {
-            throw new \RuntimeException('ConnectContextRedis lockId must be set');
+            throw new \RuntimeException('ConnectionContextRedis lockId must be set');
         }
         $workerId = Worker::getWorkerId();
         $this->masterPID = $masterPID = Worker::getMasterPid();
@@ -113,6 +113,24 @@ class Redis implements IHandler
         {
             // 清空存储列表
             $redis->del($this->getStoreKey());
+        }
+        $key = $this->key . ':binder';
+        $redis->del($key);
+        $keys = [];
+        $count = 0;
+        foreach ($redis->scanEach($key . ':*') as $key)
+        {
+            $keys[] = $key;
+            if (++$count >= 1000)
+            {
+                $redis->del($keys);
+                $keys = [];
+                $count = 0;
+            }
+        }
+        if ($keys)
+        {
+            $redis->del($keys);
         }
     }
 
@@ -309,5 +327,135 @@ class Redis implements IHandler
         {
             return Lock::unlock($this->lockId);
         }
+    }
+
+    /**
+     * 绑定一个标记到当前连接.
+     *
+     * @param int|string $clientId
+     */
+    public function bind(string $flag, $clientId): void
+    {
+        $this->lock((string) $clientId, function () use ($flag, $clientId) {
+            $data = $this->read((string) $clientId);
+            $data['__flag'] = $flag;
+            $this->save((string) $clientId, $data);
+        });
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId) {
+            $redis->hSet($this->key . ':binder', $flag, $clientId);
+        });
+    }
+
+    /**
+     * 绑定一个标记到当前连接，如果已绑定返回false.
+     *
+     * @param int|string $clientId
+     */
+    public function bindNx(string $flag, $clientId): bool
+    {
+        $result = $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId) {
+            return $redis->hSetNx($this->key . ':binder', $flag, $clientId);
+        });
+        if ($result)
+        {
+            $this->lock((string) $clientId, function () use ($flag, $clientId) {
+                $data = $this->read((string) $clientId);
+                $data['__flag'] = $flag;
+                $this->save((string) $clientId, $data);
+            });
+        }
+
+        return $result;
+    }
+
+    /**
+     * 取消绑定.
+     *
+     * @param int|string $clientId
+     * @param int|null   $keepTime 旧数据保持时间，null 则不保留
+     */
+    public function unbind(string $flag, $clientId, ?int $keepTime = null): void
+    {
+        $this->useRedis(function (RedisHandler $redis) use ($flag, $clientId, $keepTime) {
+            $key = $this->key . ':binder';
+            $this->lock((string) $clientId, function () use ($flag, $clientId) {
+                $data = $this->read((string) $clientId);
+                $data['__flag'] = $flag;
+                $this->save((string) $clientId, $data);
+            });
+            $redis->multi();
+            $redis->hDel($key, $flag);
+            if ($keepTime > 0)
+            {
+                $redis->set($key . ':old:' . $flag, $clientId, $keepTime);
+            }
+            $redis->exec();
+        });
+    }
+
+    /**
+     * 使用标记获取连接编号.
+     */
+    public function getClientIdByFlag(string $flag): array
+    {
+        return (array) $this->useRedis(function (RedisHandler $redis) use ($flag) {
+            return $redis->hGet($this->key . ':binder', $flag) ?: null;
+        });
+    }
+
+    /**
+     * 使用标记获取连接编号.
+     *
+     * @param string[] $flags
+     */
+    public function getClientIdsByFlags(array $flags): array
+    {
+        $result = $this->useRedis(function (RedisHandler $redis) use ($flags) {
+            return $redis->hMget($this->key . ':binder', $flags);
+        });
+        foreach ($result as $k => $v)
+        {
+            $result[$k] = [$v];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 使用连接编号获取标记.
+     *
+     * @param int|string $clientId
+     */
+    public function getFlagByClientId($clientId): ?string
+    {
+        return $this->read((string) $clientId)['__flag'] ?? null;
+    }
+
+    /**
+     * 使用连接编号获取标记.
+     *
+     * @param int[]|string[] $clientIds
+     *
+     * @return string[]
+     */
+    public function getFlagsByClientIds(array $clientIds): array
+    {
+        $flags = [];
+        foreach ($clientIds as $clientId)
+        {
+            $flags[$clientId] = $this->read((string) $clientId)['__flag'] ?? null;
+        }
+
+        return $flags;
+    }
+
+    /**
+     * 使用标记获取旧的连接编号.
+     */
+    public function getOldClientIdByFlag(string $flag): ?int
+    {
+        return $this->useRedis(function (RedisHandler $redis) use ($flag) {
+            return $redis->get($this->key . ':binder:old:' . $flag) ?: null;
+        });
     }
 }

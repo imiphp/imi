@@ -6,7 +6,7 @@ namespace Imi\Server\WebSocket\Route;
 
 use Imi\Bean\Annotation\Bean;
 use Imi\Bean\BeanFactory;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Log\Log;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Route\HttpRoute;
@@ -40,7 +40,7 @@ class WSRoute implements IRoute
      */
     public function parse($data): ?RouteResult
     {
-        $uri = new Uri(ConnectContext::get('uri'));
+        $uri = new Uri(ConnectionContext::get('uri'));
         $path = $uri->getPath();
         $httpRoute = $this->httpRoute;
         foreach ($this->rules as $item)

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Swoole\Server\TcpServer\Listener;
 
 use Imi\Bean\Annotation\ClassEventListener;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Swoole\Server\Event\Listener\IConnectEventListener;
 use Imi\Swoole\Server\Event\Param\ConnectEventParam;
@@ -37,6 +37,6 @@ class BeforeConnect implements IConnectEventListener
         ]);
 
         // 连接上下文创建
-        ConnectContext::create();
+        ConnectionContext::create();
     }
 }

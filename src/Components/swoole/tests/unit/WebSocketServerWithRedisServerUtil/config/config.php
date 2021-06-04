@@ -103,8 +103,8 @@ return [
 
     // 内存表配置
     'memoryTable'   => [
-        'connectContext'    => [
-            'class'      => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
+        'ConnectionContext'    => [
+            'class'      => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
             'lockId'     => 'atomic',
             'dataLength' => 2048,
         ],
@@ -125,7 +125,7 @@ return [
                     'atomicName'    => 'atomic1',
                 ],
             ],
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

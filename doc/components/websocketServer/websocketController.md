@@ -1,12 +1,14 @@
 # WebSocket 控制器
 
+所有从客户端发过来的数据都会打进控制器，我们开发项目时候，处理请求基本都是在控制器里做。
+
 ## 定义
 
 ```php
 <?php
 namespace ImiDemo\WebSocketDemo\MainServer\WSController\Index;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Controller\WebSocketController;
 use Imi\Server\WebSocket\Route\Annotation\WSRoute;
 use Imi\Server\WebSocket\Route\Annotation\WSAction;
@@ -27,7 +29,7 @@ class Test extends WebSocketController
 	 */
 	public function login($data)
 	{
-		ConnectContext::set('username', $data->username);
+		ConnectionContext::set('username', $data->username);
 		$this->server->joinGroup('g1', $this->frame->getClientId());
 		return ['success'=>true];
 	}
@@ -114,86 +116,8 @@ $this->server->groupCall('组名', 'push', ['success'=>true]);
 
 ### $server
 
-#### 方法
+详见：<https://doc.imiphp.com/core/server.html>
 
-**getSwooleServer**
-
-获取Swoole的Server对象
-
-
-```php
-/**
- * 组是否存在
- *
- * @param string $groupName
- * @return boolean
- */
-public function hasGroup(string $groupName);
-```
-
-```php
-/**
- * 创建组，返回组对象
- *
- * @param string $groupName
- * @param integer $maxClients
- * @return \Imi\Server\Group\Group
- */
-public function createGroup(string $groupName, int $maxClients = -1);
-```
-
-```php
-/**
- * 获取组对象，不存在返回null
- *
- * @param string $groupName
- * @return \Imi\Server\Group\Group|null
- */
-public function getGroup(string $groupName);
-```
-
-```php
-/**
- * 加入组，组不存在则自动创建
- *
- * @param string $groupName
- * @param int|string $clientId
- * @return void
- */
-public function joinGroup(string $groupName, $clientId);
-```
-
-```php
-/**
- * 离开组，组不存在则自动创建
- *
- * @param string $groupName
- * @param int|string $clientId
- * @return void
- */
-public function leaveGroup(string $groupName, $clientId);
-```
-
-```php
-/**
- * 调用组方法
- *
- * @param string $groupName
- * @param string $methodName
- * @param mixed ...$args
- * @return array
- */
-public function groupCall(string $groupName, string $methodName, ...$args);
-```
-
-```php
-/**
- * 获取所有组列表
- *
- * @return \Imi\Server\Group\Group[]
- */
-public function getGroups(): array;
-```
 ### $frame
 
 #### 方法

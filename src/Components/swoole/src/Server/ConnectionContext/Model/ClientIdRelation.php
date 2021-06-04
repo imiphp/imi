@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\ConnectContext\Model;
+namespace Imi\Swoole\Server\ConnectionContext\Model;
 
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\MemoryTable;

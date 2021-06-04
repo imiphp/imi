@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman\Server\WebSocket;
 
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\DataParser\JsonObjectParser;
@@ -64,7 +64,7 @@ class Server extends Base implements IWebSocketServer
                 'server'       => $this,
                 'clientId'     => $clientId,
             ]);
-            ConnectContext::create([
+            ConnectionContext::create([
                 'uri'        => (string) $request->getUri(),
                 'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
             ]);

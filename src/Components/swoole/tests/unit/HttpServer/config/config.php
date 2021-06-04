@@ -164,9 +164,9 @@ return [
             ],
             'lockId'    => 'memoryTableLock',
         ],
-        'connectContext'    => [
-            'class'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable\ConnectContextOption::class,
-            'lockId' => 'redisConnectContextLock',
+        'ConnectionContext'    => [
+            'class'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable\ConnectionContextOption::class,
+            'lockId' => 'redisConnectionContextLock',
         ],
     ],
 
@@ -185,7 +185,7 @@ return [
                     'poolName'  => 'redis',
                 ],
             ],
-            'redisConnectContextLock' => [
+            'redisConnectionContextLock' => [
                 'class'     => 'RedisLock',
                 'options'   => [
                     'poolName'  => 'redis',

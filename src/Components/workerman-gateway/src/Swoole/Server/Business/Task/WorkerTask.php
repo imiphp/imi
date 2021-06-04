@@ -6,7 +6,7 @@ namespace Imi\WorkermanGateway\Swoole\Server\Business\Task;
 
 use GatewayWorker\Protocols\GatewayProtocol;
 use Imi\App;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\RequestContext;
 use Imi\Swoole\Http\Message\SwooleResponse;
 use Imi\Swoole\Server\Contract\ISwooleServer;
@@ -55,7 +55,7 @@ class WorkerTask implements ICoTask
                         'server'        => $server,
                         'clientId'      => $clientId,
                     ]);
-                    var_dump('message', $clientId, ConnectContext::get('uri'));
+                    var_dump('message', $clientId, ConnectionContext::get('uri'));
                     $server->trigger('message', [
                         'server'    => $server,
                         'frame'     => $frame,
@@ -81,10 +81,10 @@ class WorkerTask implements ICoTask
                         'response'       => $response,
                         'clientId'       => $clientId,
                     ]);
-                    ConnectContext::create([
+                    ConnectionContext::create([
                         'uri' => (string) $request->getUri(),
                     ]);
-                    var_dump('connect', $clientId, ConnectContext::get('uri'));
+                    var_dump('connect', $clientId, ConnectionContext::get('uri'));
                     $server->trigger('handShake', [
                         'request'   => $request,
                         'response'  => $response,

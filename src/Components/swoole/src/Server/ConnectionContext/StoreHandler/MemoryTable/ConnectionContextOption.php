@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable;
+namespace Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable;
 
 use Imi\Util\MemoryTable\IMemoryTableOption;
 
 /**
  * Swoole 内存表.
  */
-class ConnectContextOption implements IMemoryTableOption
+class ConnectionContextOption implements IMemoryTableOption
 {
     /**
      * 获取配置.

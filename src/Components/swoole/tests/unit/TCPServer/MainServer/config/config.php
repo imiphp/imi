@@ -24,21 +24,14 @@ return [
             'key'          => 'IMITEST.TCP.GROUP',
             'redisDb'      => 2,
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Swoole\Server\ConnectContext\StoreHandler\MemoryTable::class,
+        'ConnectionContextStore'   => [
+            'handlerClass'  => \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable::class,
         ],
-        'ConnectContextMemoryTable' => [
-            'tableName' => 'connectContext',
+        'ConnectionContextMemoryTable' => [
+            'tableName' => 'ConnectionContext',
         ],
         'TcpRouteNotFoundHandler'   => [
             'handler'   => 'RouteNotFound',
-        ],
-        // 连接绑定器
-        'ConnectionBinder'  => [
-            'handlerClass' => 'ConnectionBinderLocal',
-        ],
-        // 连接绑定器本地驱动
-        'ConnectionBinderLocal' => [
         ],
     ],
 ];

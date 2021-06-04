@@ -63,7 +63,7 @@ return [
 <?php
 namespace ImiDemo\TcpDemo\MainServer\Controller;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Server\TcpServer\Route\Annotation\TcpRoute;
 use Imi\Server\TcpServer\Route\Annotation\TcpAction;
 use Imi\Server\TcpServer\Route\Annotation\TcpController;

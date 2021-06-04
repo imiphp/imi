@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\RequestContext;
-use Imi\Server\ConnectContext\Traits\TConnectContextRelease;
+use Imi\Server\ConnectionContext\Traits\TConnectionContextRelease;
 use Imi\Server\Protocol;
 
 /**
@@ -18,7 +18,7 @@ use Imi\Server\Protocol;
  */
 class AfterClose implements IEventListener
 {
-    use TConnectContextRelease;
+    use TConnectionContextRelease;
 
     /**
      * 事件处理方法.

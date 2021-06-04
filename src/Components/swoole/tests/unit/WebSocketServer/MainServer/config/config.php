@@ -31,26 +31,16 @@ return [
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],
-        'ConnectContextRedis'    => [
+        'ConnectionContextRedis'    => [
             'redisPool' => 'redis',
-            'lockId'    => 'redisConnectContextLock',
+            'lockId'    => 'redisConnectionContextLock',
         ],
-        'ConnectContextStore'   => [
-            'handlerClass'  => \Imi\Server\ConnectContext\StoreHandler\Redis::class,
+        'ConnectionContextStore'   => [
+            'handlerClass'  => \Imi\Server\ConnectionContext\StoreHandler\Redis::class,
             'ttl'           => 600,
-        ],
-        'ConnectContextMemoryTable' => [
-            'tableName' => 'connectContext',
         ],
         'WSRouteNotFoundHandler'    => [
             'handler'   => 'RouteNotFound',
-        ],
-        'ConnectionBinder'  => [
-            'handlerClass' => 'ConnectionBinderRedis',
-        ],
-        'ConnectionBinderRedis' => [
-            'redisPool' => 'redis',
-            'key'       => 'imi:wsTest:connectionBinder:map',
         ],
     ],
 ];

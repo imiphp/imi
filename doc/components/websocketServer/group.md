@@ -2,7 +2,7 @@
 
 imi 支持对 WebSocket 的连接（clientId）进行逻辑分组，你可以方便地对用户进行分组消息推送。
 
-所有的分组针对服务器，所以需要 imi 的服务器对象才可以调用下面这些方法，比如在`WebSocketController`中可以使用`$this->server`。
+所有的分组针对服务器，所以需要 imi 的服务器对象才可以调用下面这些方法，比如在`WebSocketController`中可以使用`RequestContext::getServer()`。
 
 ## 分组的使用
 
@@ -90,8 +90,8 @@ $this->server->hasGroup('分组名称');
 ### 调用组方法
 
 ```php
-// 遍历g1分组中所有clientId，调用服务器的push方法，发送message
-$this->server->groupCall('g1', 'push', 'message');
+// 遍历分组中所有clientId，调用服务器的push方法，发送message
+$this->server->groupCall('分组名称', 'push', 'message');
 ```
 
 ### 获取所有分组

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Util;
 
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 
 abstract class AbstractDistributedServerUtil extends LocalServerUtil
 {
@@ -28,7 +28,7 @@ abstract class AbstractDistributedServerUtil extends LocalServerUtil
         }
         if (null === $flag)
         {
-            $clientId = ConnectContext::getClientId();
+            $clientId = ConnectionContext::getClientId();
             if (!$clientId)
             {
                 return 0;

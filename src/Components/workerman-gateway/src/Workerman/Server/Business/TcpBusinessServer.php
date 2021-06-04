@@ -6,7 +6,7 @@ namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
 use GatewayWorker\BusinessWorker;
 use Imi\Bean\Annotation\Bean;
-use Imi\ConnectContext;
+use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
@@ -85,7 +85,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'server'       => $this,
                 'clientId'     => $clientId,
             ]);
-            ConnectContext::create([
+            ConnectionContext::create([
                 'uri'     => (string) $request->getUri(),
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.Tcp.CONNECT', [
