@@ -6,6 +6,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Server\Server;
+use Imi\Worker;
 
 /**
  * 关闭连接-请求
@@ -27,9 +28,12 @@ class OnCloseConnectionRequest implements IEventListener
         $workerId = $data['workerID'];
         $data = $data['data'];
         $result = Server::close($data['fds'], $data['serverName'], false);
-        Server::sendMessage('closeConnectionResponse', [
-            'messageId' => $data['messageId'],
-            'result'    => $result,
-        ], $workerId);
+        if (!Worker::isWorkerIdProcess($workerId))
+        {
+            Server::sendMessage('closeConnectionResponse', [
+                'messageId' => $data['messageId'],
+                'result'    => $result,
+            ], $workerId);
+        }
     }
 }

@@ -84,8 +84,6 @@ function startServer()
 
 startServer();
 
-App::initFramework('MQTTApp');
-
 \Imi\Event\Event::on('IMI.INIT_TOOL', function (EventParam $param) {
     $data = $param->getData();
     $data['skip'] = true;
