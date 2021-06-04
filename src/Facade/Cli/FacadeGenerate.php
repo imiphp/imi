@@ -114,7 +114,8 @@ class FacadeGenerate extends BaseCommand
                 // 默认值
                 if ($param->isDefaultValueAvailable())
                 {
-                    $result .= ' = ' . var_export($param->getDefaultValue(), true);
+                    $defaultValue = $param->getDefaultValue();
+                    $result .= ' = ' . (\is_array($defaultValue) ? '[]' : var_export($defaultValue, true));
                 }
                 $params[] = $result;
             }
