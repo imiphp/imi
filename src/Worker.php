@@ -72,16 +72,4 @@ class Worker
     {
         return static::$workerHandler ? static::$workerHandler->getMasterPid() : 0;
     }
-
-    /**
-     * 返回 workerId 是否是用户进程.
-     *
-     * @param int $workerId
-     *
-     * @return bool
-     */
-    public static function isWorkerIdProcess(int $workerId): bool
-    {
-        return $workerId >= self::getWorkerNum() + self::getTaskWorkerNum();
-    }
 }

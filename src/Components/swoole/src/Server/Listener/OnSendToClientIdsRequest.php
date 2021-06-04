@@ -8,7 +8,7 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Swoole\Server\Server;
-use Imi\Worker;
+use Imi\Swoole\SwooleWorker;
 
 /**
  * 发送给指定连接-请求
@@ -26,12 +26,12 @@ class OnSendToClientIdsRequest implements IEventListener
         $workerId = $eData['workerId'];
         $data = $eData['data'];
         $result = Server::sendRaw($data['data'], $data['clientIds'], $data['serverName'], false);
-        if (($data['needResponse'] ?? true) && !Worker::isWorkerIdProcess($workerId))
+        if (($data['needResponse'] ?? true) && !SwooleWorker::isWorkerIdProcess($workerId))
         {
             Server::sendMessage('sendToClientIdsResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $eData['workerId']);
+            ], $workerId);
         }
     }
 }

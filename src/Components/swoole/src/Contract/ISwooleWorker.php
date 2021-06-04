@@ -27,4 +27,9 @@ interface ISwooleWorker extends IWorker
      * 获取服务器 manager 进程 PID.
      */
     public function getManagerPid(): int;
+
+    /**
+     * 返回 workerId 是否是用户进程.
+     */
+    public function isWorkerIdProcess(int $workerId): bool;
 }

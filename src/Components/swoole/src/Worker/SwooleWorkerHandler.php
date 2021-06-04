@@ -162,4 +162,12 @@ class SwooleWorkerHandler implements ISwooleWorker
 
         return $server->getSwooleServer()->manager_pid;
     }
+
+    /**
+     * 返回 workerId 是否是用户进程.
+     */
+    public function isWorkerIdProcess(int $workerId): bool
+    {
+        return $workerId >= $this->getWorkerNum() + $this->getTaskWorkerNum();
+    }
 }

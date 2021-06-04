@@ -44,4 +44,12 @@ class SwooleWorker extends Worker
     {
         return static::getWorkerHandler()->getManagerPid();
     }
+
+    /**
+     * 返回 workerId 是否是用户进程.
+     */
+    public static function isWorkerIdProcess(int $workerId): bool
+    {
+        return static::getWorkerHandler()->isWorkerIdProcess($workerId);
+    }
 }
