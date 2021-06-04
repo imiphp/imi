@@ -15,7 +15,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-versions }}
-          tools: pecl, composer:v2
+          tools: pecl, composer:2.0.14
           coverage: none
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
