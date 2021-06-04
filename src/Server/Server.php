@@ -146,7 +146,7 @@ abstract class Server
     public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = (null === $serverName ? RequestContext::getServer() : ServerManage::getServer($serverName))->getBean('ConnectionBinder');
 
         if (null === $flag)
         {
@@ -271,7 +271,7 @@ abstract class Server
     public static function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = (null === $serverName ? RequestContext::getServer() : ServerManage::getServer($serverName))->getBean('ConnectionBinder');
 
         if (null === $flag)
         {
@@ -584,7 +584,7 @@ abstract class Server
     public static function closeByFlag($flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = (null === $serverName ? RequestContext::getServer() : ServerManage::getServer($serverName))->getBean('ConnectionBinder');
 
         if (null === $flag)
         {
