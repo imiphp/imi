@@ -7,6 +7,7 @@ use Imi\Test\Component\Model\Member;
 use Imi\Test\Component\Model\MemberWithSqlField;
 use Imi\Test\Component\Model\ReferenceGetterTestModel;
 use Imi\Test\Component\Model\TestJson;
+use Imi\Test\Component\Model\TestJsonNotCamel;
 use Imi\Test\Component\Model\TestList;
 use Imi\Test\Component\Model\TestSoftDelete;
 use Imi\Test\Component\Model\UpdateTime;
@@ -435,5 +436,56 @@ class ModelTest extends BaseTest
             'test1'    => 2,
             'test2'    => 4,
         ], $record->toArray());
+    }
+
+    public function testNotCamel()
+    {
+        $record = TestJson::newInstance([
+            'jsonData' => '[1, 2, 3]',
+        ]);
+        $this->assertEquals([
+            'id'       => null,
+            'jsonData' => [1, 2, 3],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([1, 2, 3], $record->getJsonData()->toArray());
+        $id = $record->insert()->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+        $record = TestJson::find($id);
+        $this->assertEquals([
+            'id'       => $id,
+            'jsonData' => [1, 2, 3],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([1, 2, 3], $record->getJsonData()->toArray());
+        $list = TestJson::query()->where('id', '=', $id)->select()->getArray();
+        $this->assertEquals([[
+            'id'       => $id,
+            'jsonData' => [1, 2, 3],
+        ]], TestJson::convertListToArray($list));
+
+        $record = TestJsonNotCamel::newInstance([
+            'json_data' => '[4, 5, 6]',
+        ]);
+        $this->assertEquals([
+            'id'        => null,
+            'json_data' => [4, 5, 6],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+        $id = $record->insert()->getLastInsertId();
+        $this->assertGreaterThan(0, $id);
+        $record = TestJsonNotCamel::find($id);
+        $this->assertEquals([
+            'id'        => $id,
+            'json_data' => [4, 5, 6],
+        ], $record->convertToArray());
+        // @phpstan-ignore-next-line
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+        $list = TestJsonNotCamel::query()->where('id', '=', $id)->select()->getArray();
+        $this->assertEquals([[
+            'id'        => $id,
+            'json_data' => [4, 5, 6],
+        ]], TestJson::convertListToArray($list));
     }
 }

@@ -11,6 +11,8 @@ use Imi\Server\DataParser\DataParser;
 use Imi\Server\Event\Param\PipeMessageEventParam;
 use Imi\ServerManage;
 use Imi\Util\Co\ChannelContainer;
+use Imi\Util\Process\ProcessAppContexts;
+use Imi\Util\Process\ProcessType;
 use Imi\Worker;
 
 /**
@@ -144,7 +146,7 @@ abstract class Server
     public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = (null === $serverName ? RequestContext::getServer() : ServerManage::getServer($serverName))->getBean('ConnectionBinder');
 
         if (null === $flag)
         {
@@ -213,20 +215,23 @@ abstract class Server
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                static::sendMessage('sendToFdsRequest', [
+                $count = static::sendMessage('sendToFdsRequest', [
                     'messageId'  => $id,
                     'fds'        => $fds,
                     'data'       => $data,
                     'serverName' => $server->getName(),
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $success += ($result['result'] ?? 0);
                 }
             }
             finally
@@ -266,7 +271,7 @@ abstract class Server
     public static function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = (null === $serverName ? RequestContext::getServer() : ServerManage::getServer($serverName))->getBean('ConnectionBinder');
 
         if (null === $flag)
         {
@@ -351,19 +356,22 @@ abstract class Server
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                static::sendMessage('sendRawToAllRequest', [
+                $count = static::sendMessage('sendRawToAllRequest', [
                     'messageId'     => $id,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $success += ($result['result'] ?? 0);
                 }
             }
             finally
@@ -447,20 +455,23 @@ abstract class Server
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                static::sendMessage('sendToGroupsRequest', [
+                $count = static::sendMessage('sendToGroupsRequest', [
                     'messageId'     => $id,
                     'groups'        => $groups,
                     'data'          => $data,
                     'serverName'    => $server->getName(),
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $success += ($result['result'] ?? 0);
                 }
             }
             finally
@@ -503,7 +514,7 @@ abstract class Server
     {
         $server = static::getServer($serverName);
         $swooleServer = $server->getSwooleServer();
-        $count = 0;
+        $success = 0;
         if (null === $fd)
         {
             $fd = ConnectContext::getFd();
@@ -524,19 +535,22 @@ abstract class Server
             try
             {
                 $channel = ChannelContainer::getChannel($id);
-                static::sendMessage('closeConnectionRequest', [
+                $count = static::sendMessage('closeConnectionRequest', [
                     'messageId'     => $id,
                     'fds'           => $fds,
                     'serverName'    => $server->getName(),
                 ]);
-                for ($i = Worker::getWorkerNum(); $i > 0; --$i)
+                if (ProcessType::PROCESS !== App::get(ProcessAppContexts::PROCESS_TYPE))
                 {
-                    $result = $channel->pop(30);
-                    if (false === $result)
+                    for ($i = $count; $i > 0; --$i)
                     {
-                        break;
+                        $result = $channel->pop(30);
+                        if (false === $result)
+                        {
+                            break;
+                        }
+                        $success += ($result['result'] ?? 0);
                     }
-                    $count += ($result['result'] ?? 0);
                 }
             }
             finally
@@ -550,12 +564,12 @@ abstract class Server
             {
                 if ($swooleServer->close($currentFd))
                 {
-                    ++$count;
+                    ++$success;
                 }
             }
         }
 
-        return $count;
+        return $success;
     }
 
     /**
@@ -570,7 +584,7 @@ abstract class Server
     public static function closeByFlag($flag = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
         /** @var ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = (null === $serverName ? RequestContext::getServer() : ServerManage::getServer($serverName))->getBean('ConnectionBinder');
 
         if (null === $flag)
         {

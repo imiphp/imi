@@ -14,7 +14,6 @@ use Imi\Model\Event\Param\InitEventParam;
 use Imi\Model\Relation\Query;
 use Imi\Model\Relation\Update;
 use Imi\Util\LazyArrayObject;
-use Imi\Util\Text;
 
 /**
  * 常用的数据库模型.
@@ -774,17 +773,13 @@ abstract class Model extends BaseModel
             {
                 $value = $data[$name];
             }
+            elseif (\array_key_exists($column->name, $data))
+            {
+                $value = $data[$column->name];
+            }
             else
             {
-                $fieldName = Text::toCamelName($name);
-                if (\array_key_exists($fieldName, $data))
-                {
-                    $value = $data[$fieldName];
-                }
-                else
-                {
-                    $value = null;
-                }
+                $value = null;
             }
             if (null === $value && !$column->nullable)
             {

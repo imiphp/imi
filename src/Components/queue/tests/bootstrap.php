@@ -9,8 +9,6 @@ $loader = require dirname(__DIR__) . '/vendor/autoload.php';
 
 ini_set('date.timezone', date_default_timezone_get());
 
-App::initFramework('QueueApp');
-
 \Imi\Event\Event::on('IMI.INIT_TOOL', function (EventParam $param) {
     $data = $param->getData();
     $data['skip'] = true;

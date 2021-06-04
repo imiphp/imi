@@ -265,7 +265,7 @@ abstract class ConnectContext
             }
         }
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
         $connectionBinder->bind($flag, $fd);
     }
 
@@ -288,7 +288,7 @@ abstract class ConnectContext
             }
         }
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
 
         return $connectionBinder->bindNx($flag, $fd);
     }
@@ -304,7 +304,7 @@ abstract class ConnectContext
     public static function unbind(string $flag, ?int $keepTime = null)
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
         $connectionBinder->unbind($flag, $keepTime);
     }
 
@@ -318,7 +318,7 @@ abstract class ConnectContext
     public static function getFdByFlag(string $flag): ?int
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
 
         return $connectionBinder->getFdByFlag($flag);
     }
@@ -333,7 +333,7 @@ abstract class ConnectContext
     public static function getFdsByFlags(array $flags): array
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
 
         return $connectionBinder->getFdsByFlags($flags);
     }
@@ -348,7 +348,7 @@ abstract class ConnectContext
     public static function getFlagByFd(int $fd): ?string
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
 
         return $connectionBinder->getFlagByFd($fd);
     }
@@ -363,7 +363,7 @@ abstract class ConnectContext
     public static function getFlagsByFds(array $fds): array
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
 
         return $connectionBinder->getFlagsByFds($fds);
     }
@@ -378,7 +378,7 @@ abstract class ConnectContext
     public static function getOldFdByFlag(string $flag): ?int
     {
         /** @var \Imi\Server\ConnectContext\ConnectionBinder $connectionBinder */
-        $connectionBinder = App::getBean('ConnectionBinder');
+        $connectionBinder = RequestContext::getServerBean('ConnectionBinder');
 
         return $connectionBinder->getOldFdByFlag($flag);
     }

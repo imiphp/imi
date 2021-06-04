@@ -25,7 +25,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     use TEvent;
 
     /**
-     * 模型字段名数组.
+     * 序列化后的所有字段属性名列表.
      *
      * @var array
      */
@@ -86,7 +86,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     public function __construct($data = [])
     {
         $this->__meta = $meta = static::__getMeta();
-        $this->__fieldNames = $meta->getFieldNames();
+        $this->__fieldNames = $meta->getSerializableFieldNames();
         $this->__realClass = $meta->getClassName();
         if (!$this instanceof IBean)
         {
@@ -288,10 +288,17 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function offsetUnset($offset)
     {
-        $index = array_search($offset, $this->__fieldNames);
-        if (false !== $index)
+        if (isset($this->__fieldNames[$offset]))
         {
-            unset($this->__fieldNames[$index]);
+            unset($this->__fieldNames[$offset]);
+        }
+        else
+        {
+            $index = array_search($offset, $this->__fieldNames);
+            if (false !== $index)
+            {
+                unset($this->__fieldNames[$index]);
+            }
         }
     }
 
@@ -343,69 +350,72 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function toArray(): array
     {
-        $result = iterator_to_array($this);
         $serializedFields = $this->__serializedFields;
+        $result = [];
         if (null === $serializedFields)
         {
             $meta = $this->__meta;
             $realClass = $this->__realClass;
             if ($meta->hasRelation())
             {
-                // 支持注解配置隐藏为null的关联属性
-                foreach (ModelRelationManager::getRelationFieldNames($this) as $name)
-                {
-                    if (\array_key_exists($name, $result) && null === $result[$name])
-                    {
-                        /** @var AutoSelect|null $autoSelect */
-                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
-                        if ($autoSelect && !$autoSelect->alwaysShow)
-                        {
-                            unset($result[$name]);
-                        }
-                    }
-                }
+                $relationFieldNames = ModelRelationManager::getRelationFieldNames($this);
+            }
+            else
+            {
+                $relationFieldNames = [];
             }
             // 禁止序列化支持
             $serializables = $meta->getSerializables();
             $serializableSets = $meta->getSerializableSets();
             // JsonNotNull 注解支持
             $propertyJsonNotNullMap = $meta->getPropertyJsonNotNullMap();
-            if ($serializables || $serializableSets || $propertyJsonNotNullMap)
+            foreach ($this->__fieldNames as $name)
             {
-                foreach ($result as $propertyName => $value)
+                $value = $this[$name];
+                if (null === $value)
                 {
-                    if (null === $value && isset($propertyJsonNotNullMap[$propertyName]))
+                    if (isset($propertyJsonNotNullMap[$name]))
                     {
-                        unset($result[$propertyName]);
+                        continue;
                     }
-                    elseif (isset($serializableSets[$propertyName]))
+                    if (\in_array($name, $relationFieldNames))
                     {
-                        // 单独属性上的 @Serializable 注解
-                        if (!$serializableSets[$propertyName][0]->allow)
+                        /** @var AutoSelect|null $autoSelect */
+                        $autoSelect = AnnotationManager::getPropertyAnnotations($realClass, $name, AutoSelect::class)[0] ?? null;
+                        if ($autoSelect && !$autoSelect->alwaysShow)
                         {
-                            unset($result[$propertyName]);
-                        }
-                    }
-                    elseif ($serializables)
-                    {
-                        if (\in_array($propertyName, $serializables->fields))
-                        {
-                            // 在黑名单中的字段剔除
-                            if ('deny' === $serializables->mode)
-                            {
-                                unset($result[$propertyName]);
-                            }
-                        }
-                        else
-                        {
-                            // 不在白名单中的字段剔除
-                            if ('allow' === $serializables->mode)
-                            {
-                                unset($result[$propertyName]);
-                            }
+                            continue;
                         }
                     }
                 }
+                elseif (isset($serializableSets[$name]))
+                {
+                    // 单独属性上的 @Serializable 注解
+                    if (!$serializableSets[$name][0]->allow)
+                    {
+                        continue;
+                    }
+                }
+                elseif ($serializables)
+                {
+                    if (\in_array($name, $serializables->fields))
+                    {
+                        // 在黑名单中的字段剔除
+                        if ('deny' === $serializables->mode)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        // 不在白名单中的字段剔除
+                        if ('allow' === $serializables->mode)
+                        {
+                            continue;
+                        }
+                    }
+                }
+                $result[$name] = $value;
             }
 
             return $result;
@@ -413,9 +423,22 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         else
         {
             $resultArray = [];
+            $__fieldNames = $this->__fieldNames;
             foreach ($serializedFields as $fieldName)
             {
-                $resultArray[$fieldName] = $result[$fieldName] ?? null;
+                if (isset($__fieldNames[$fieldName]))
+                {
+                    $name = $fieldName;
+                }
+                elseif (false !== ($key = array_search($fieldName, $__fieldNames)))
+                {
+                    $name = $key;
+                }
+                else
+                {
+                    $name = $fieldName;
+                }
+                $resultArray[$name] = $this[$name] ?? null;
             }
 
             return $resultArray;
@@ -475,7 +498,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function &current()
     {
-        $value = $this[$this->__getFieldName(current($this->__fieldNames))];
+        $value = $this[current($this->__fieldNames)];
 
         return $value;
     }
@@ -485,7 +508,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function key()
     {
-        return $this->__getFieldName(current($this->__fieldNames));
+        return current($this->__fieldNames);
     }
 
     /**
@@ -509,7 +532,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
      */
     public function valid()
     {
-        return false !== $this->__getFieldName(current($this->__fieldNames));
+        return false !== current($this->__fieldNames);
     }
 
     /**
@@ -551,29 +574,6 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         }
 
         return $__camelCache[$name];
-    }
-
-    /**
-     * 获取字段名.
-     *
-     * @param string|false $fieldName
-     *
-     * @return string|bool
-     */
-    protected function __getFieldName($fieldName)
-    {
-        if (false === $fieldName)
-        {
-            return false;
-        }
-        if ($this->__meta->isCamel())
-        {
-            return $this->__getCamelName($fieldName);
-        }
-        else
-        {
-            return $fieldName;
-        }
     }
 
     /**
