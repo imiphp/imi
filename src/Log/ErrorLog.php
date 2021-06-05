@@ -15,9 +15,23 @@ class ErrorLog
     use TBeanRealClass;
 
     /**
-     * 错误级别.
+     * PHP 报告的错误级别.
      */
     protected int $level = 0;
+
+    /**
+     * 错误捕获级别.
+     *
+     * @var int
+     */
+    protected int $catchLevel = \E_ALL | \E_STRICT;
+
+    /**
+     * 抛出异常的错误级别.
+     *
+     * @var int
+     */
+    protected int $exceptionLevel = \E_ERROR | \E_PARSE | \E_CORE_ERROR | \E_COMPILE_ERROR | \E_USER_ERROR | \E_RECOVERABLE_ERROR | \E_WARNING | \E_CORE_WARNING | \E_COMPILE_WARNING | \E_USER_WARNING;
 
     /**
      * 回溯堆栈帧的数量限制.
@@ -32,7 +46,7 @@ class ErrorLog
         error_reporting($this->level);
         register_shutdown_function([$this, 'onShutdown']);
         // @phpstan-ignore-next-line
-        set_error_handler([$this, 'onError']);
+        set_error_handler([$this, 'onError'], $this->catchLevel);
     }
 
     /**
@@ -40,7 +54,7 @@ class ErrorLog
      */
     public function onError(int $errno, string $errstr, string $errfile, int $errline): void
     {
-        if (error_reporting() & $errno)
+        if ($this->exceptionLevel & $errno)
         {
             throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
         }
