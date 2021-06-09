@@ -6,6 +6,8 @@ namespace Imi;
 
 use Imi\Event\Event;
 use Imi\Server\ConnectionContext\Event\Param\ConnectionContextRestoreParam;
+use Imi\Server\ConnectionContext\StoreHandler;
+use Imi\Server\ServerManager;
 
 class ConnectionContext
 {
@@ -16,10 +18,10 @@ class ConnectionContext
     /**
      * 为当前连接创建上下文.
      */
-    public static function create(array $data = []): void
+    public static function create(array $data = [], ?string $serverName = null): void
     {
         $requestContextData = RequestContext::getContext();
-        if (!static::get() && $clientId = ($requestContextData['clientId'] ?? null))
+        if (!static::get(null, null, null, $serverName) && $clientId = ($requestContextData['clientId'] ?? null))
         {
             static::use(function (array $contextData) use ($data, $clientId, $requestContextData): array {
                 if ($contextData)
@@ -34,14 +36,14 @@ class ConnectionContext
                 $contextData['__serverName'] = $requestContextData['server']->getName();
 
                 return $contextData;
-            }, $clientId);
+            }, $clientId, $serverName);
         }
     }
 
     /**
      * 从某个连接上下文中，加载到当前上下文或指定上下文中.
      */
-    public static function load(int $fromClientId, ?int $toClientId = null): void
+    public static function load(int $fromClientId, ?int $toClientId = null, ?string $serverName = null): void
     {
         if (!$toClientId)
         {
@@ -51,13 +53,13 @@ class ConnectionContext
                 return;
             }
         }
-        $data = static::getContext($fromClientId);
+        $data = static::getContext($fromClientId, $serverName);
         static::use(function (array $contextData) use ($data, $toClientId): array {
             $contextData = $data;
             $contextData['clientId'] = $toClientId;
 
             return $contextData;
-        }, $toClientId);
+        }, $toClientId, $serverName);
     }
 
     /**
@@ -65,7 +67,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function destroy($clientId = null): void
+    public static function destroy($clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -76,7 +78,7 @@ class ConnectionContext
             }
         }
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
         if (($ttl = $store->getTtl()) > 0)
         {
             $store->delayDestroy((string) $clientId, $ttl);
@@ -92,7 +94,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function exists($clientId = null): bool
+    public static function exists($clientId = null, ?string $serverName = null): bool
     {
         if (!$clientId)
         {
@@ -103,7 +105,7 @@ class ConnectionContext
             }
         }
 
-        return RequestContext::getServerBean('ConnectionContextStore')->exists((string) $clientId);
+        return self::getConnectionContextStore($serverName)->exists((string) $clientId);
     }
 
     /**
@@ -114,7 +116,7 @@ class ConnectionContext
      *
      * @return mixed
      */
-    public static function get(?string $name = null, $default = null, $clientId = null)
+    public static function get(?string $name = null, $default = null, $clientId = null, ?string $serverName = null)
     {
         if (!$clientId)
         {
@@ -124,7 +126,7 @@ class ConnectionContext
                 return $default;
             }
         }
-        $data = RequestContext::getServerBean('ConnectionContextStore')->read((string) $clientId);
+        $data = self::getConnectionContextStore($serverName)->read((string) $clientId);
         if (null === $name)
         {
             return $data;
@@ -142,7 +144,7 @@ class ConnectionContext
      * @param mixed           $value
      * @param int|string|null $clientId
      */
-    public static function set(?string $name, $value, $clientId = null): void
+    public static function set(?string $name, $value, $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -152,7 +154,7 @@ class ConnectionContext
                 return;
             }
         }
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
         $result = $store->lock($clientIdStr, function () use ($store, $name, $value, $clientIdStr) {
             $data = $store->read($clientIdStr);
@@ -170,7 +172,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function muiltiSet(array $data, $clientId = null): void
+    public static function muiltiSet(array $data, $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -180,7 +182,7 @@ class ConnectionContext
                 return;
             }
         }
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
         $result = $store->lock($clientIdStr, function () use ($store, $data, $clientIdStr) {
             $storeData = $store->read($clientIdStr);
@@ -201,7 +203,7 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function use(callable $callable, $clientId = null): void
+    public static function use(callable $callable, $clientId = null, ?string $serverName = null): void
     {
         if (!$clientId)
         {
@@ -212,7 +214,7 @@ class ConnectionContext
             }
         }
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
         $clientIdStr = (string) $clientId;
         $store->lock($clientIdStr, function () use ($callable, $store, $clientIdStr) {
             $data = $store->read($clientIdStr);
@@ -229,9 +231,9 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function getContext($clientId = null): array
+    public static function getContext($clientId = null, ?string $serverName = null): array
     {
-        return static::get(null, null, $clientId);
+        return static::get(null, null, $clientId, $serverName);
     }
 
     /**
@@ -239,10 +241,10 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function bind(string $flag, $clientId = null): void
+    public static function bind(string $flag, $clientId = null, ?string $serverName = null): void
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
         $store->bind($flag, $clientId ?? self::getClientId());
     }
 
@@ -251,10 +253,10 @@ class ConnectionContext
      *
      * @param int|string|null $clientId
      */
-    public static function bindNx(string $flag, $clientId = null): bool
+    public static function bindNx(string $flag, $clientId = null, ?string $serverName = null): bool
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
 
         return $store->bindNx($flag, $clientId ?? self::getClientId());
     }
@@ -265,20 +267,20 @@ class ConnectionContext
      * @param int|string $clientId
      * @param int|null   $keepTime 旧数据保持时间，null 则不保留
      */
-    public static function unbind(string $flag, $clientId, ?int $keepTime = null): void
+    public static function unbind(string $flag, $clientId, ?int $keepTime = null, ?string $serverName = null): void
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
         $store->unbind($flag, $clientId, $keepTime);
     }
 
     /**
      * 使用标记获取连接编号.
      */
-    public static function getClientIdByFlag(string $flag): array
+    public static function getClientIdByFlag(string $flag, ?string $serverName = null): array
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
 
         return $store->getClientIdByFlag($flag);
     }
@@ -288,10 +290,10 @@ class ConnectionContext
      *
      * @param string[] $flags
      */
-    public static function getClientIdsByFlags(array $flags): array
+    public static function getClientIdsByFlags(array $flags, ?string $serverName = null): array
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
 
         return $store->getClientIdsByFlags($flags);
     }
@@ -301,10 +303,10 @@ class ConnectionContext
      *
      * @param int|string $clientId
      */
-    public static function getFlagByClientId($clientId): ?string
+    public static function getFlagByClientId($clientId, ?string $serverName = null): ?string
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
 
         return $store->getFlagByClientId($clientId);
     }
@@ -316,10 +318,10 @@ class ConnectionContext
      *
      * @return string[]
      */
-    public static function getFlagsByClientIds(array $clientIds): array
+    public static function getFlagsByClientIds(array $clientIds, ?string $serverName = null): array
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
 
         return $store->getFlagsByClientIds($clientIds);
     }
@@ -327,10 +329,10 @@ class ConnectionContext
     /**
      * 使用标记获取旧的连接编号.
      */
-    public static function getOldClientIdByFlag(string $flag): ?int
+    public static function getOldClientIdByFlag(string $flag, ?string $serverName = null): ?int
     {
         /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-        $store = RequestContext::getServerBean('ConnectionContextStore');
+        $store = self::getConnectionContextStore($serverName);
 
         return $store->getOldClientIdByFlag($flag);
     }
@@ -338,9 +340,9 @@ class ConnectionContext
     /**
      * 恢复标记对应连接中的数据.
      */
-    public static function restore(string $flag, ?int $toClientId = null): void
+    public static function restore(string $flag, ?int $toClientId = null, ?string $serverName = null): void
     {
-        $fromClientId = static::getOldClientIdByFlag($flag);
+        $fromClientId = static::getOldClientIdByFlag($flag, $serverName);
         if (!$fromClientId)
         {
             throw new \RuntimeException(sprintf('Not found clientId of connection flag %s', $flag));
@@ -353,11 +355,12 @@ class ConnectionContext
                 return;
             }
         }
-        static::load($fromClientId, $toClientId);
-        static::bind($flag, $toClientId);
+        static::load($fromClientId, $toClientId, $serverName);
+        static::bind($flag, $toClientId, $serverName);
         Event::trigger('IMI.CONNECT_CONTEXT.RESTORE', [
-            'fromClientId'    => $fromClientId,
-            'toClientId'      => $toClientId,
+            'fromClientId' => $fromClientId,
+            'toClientId'   => $toClientId,
+            'serverName'   => $serverName,
         ], null, ConnectionContextRestoreParam::class);
     }
 
@@ -369,5 +372,10 @@ class ConnectionContext
     public static function getClientId()
     {
         return RequestContext::get('clientId');
+    }
+
+    public static function getConnectionContextStore(?string $serverName = null): StoreHandler
+    {
+        return null === $serverName ? RequestContext::getServerBean('ConnectionContextStore') : ServerManager::getServer($serverName)->getBean('ConnectionContextStore');
     }
 }

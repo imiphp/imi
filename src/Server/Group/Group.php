@@ -93,7 +93,7 @@ class Group
                 $contextData['__groups'][] = $groupName;
 
                 return $contextData;
-            }, $clientId);
+            }, $clientId, $this->server->getName());
             Event::trigger('IMI.SERVER.GROUP.JOIN', [
                 'server'          => $this->server,
                 'groupName'       => $groupName,
@@ -120,7 +120,7 @@ class Group
 
                     return $contextData;
                 }
-            }, $clientId);
+            }, $clientId, $this->server->getName());
             Event::trigger('IMI.SERVER.GROUP.LEAVE', [
                 'server'          => $this->server,
                 'groupName'       => $groupName,

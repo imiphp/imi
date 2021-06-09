@@ -23,14 +23,15 @@ class GroupRestore implements IConnectionContextRestoreListener
     {
         $fromClientId = $e->fromClientId;
         $toClientId = $e->toClientId;
-        $ConnectionContextData = ConnectionContext::getContext($fromClientId);
-        $groups = $ConnectionContextData['__groups'] ?? [];
+        $serverName = $e->serverName;
+        $connectionContextData = ConnectionContext::getContext($fromClientId, $serverName);
+        $groups = $connectionContextData['__groups'] ?? [];
         if (!$groups)
         {
             return;
         }
         /** @var IServerGroup $server */
-        $server = ServerManager::getServer($ConnectionContextData['__serverName'], IServerGroup::class);
+        $server = ServerManager::getServer($serverName ?? $connectionContextData['__serverName'], IServerGroup::class);
         foreach ($groups as $group)
         {
             $server->joinGroup($group, $toClientId);

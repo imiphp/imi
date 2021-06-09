@@ -160,7 +160,7 @@ class LocalServerUtil implements IWorkermanServerUtil
             $clientIds = [];
             foreach ((array) $flag as $tmpFlag)
             {
-                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
+                $clientId = ConnectionContext::getClientIdByFlag($tmpFlag, $serverName);
                 if ($clientId)
                 {
                     $clientIds = array_merge($clientIds, $clientId);
@@ -355,7 +355,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         $clientIds = [];
         foreach ((array) $flag as $tmpFlag)
         {
-            $clientId = ConnectionContext::getClientIdByFlag($tmpFlag);
+            $clientId = ConnectionContext::getClientIdByFlag($tmpFlag, $serverName);
             if ($clientId)
             {
                 $clientIds = array_merge($clientIds, $clientId);

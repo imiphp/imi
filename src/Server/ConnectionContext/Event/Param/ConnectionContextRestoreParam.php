@@ -20,4 +20,9 @@ class ConnectionContextRestoreParam extends EventParam
      * 数据目标连接号（当前连接号）.
      */
     public int $toClientId = 0;
+
+    /**
+     * 服务器名.
+     */
+    public ?string $serverName = null;
 }

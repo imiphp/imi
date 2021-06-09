@@ -86,7 +86,7 @@ class DataParser
                     return JsonObjectParser::class;
                 }
 
-                return ConnectionContext::get('dataParser') ?? JsonObjectParser::class;
+                return ConnectionContext::get('dataParser', null, null, $serverName) ?? JsonObjectParser::class;
             case Protocol::TCP:
             case Protocol::UDP:
                 return $server->getConfig()['dataParser'] ?? JsonObjectParser::class;

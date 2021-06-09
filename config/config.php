@@ -31,13 +31,4 @@ return [
         'Imi\Cli\bootstrap',
         'Imi\Components\*',
     ],
-    'atomics' => [
-        'imi.ConnectionContextRedisLock',
-        'imi.GroupRedisLock',
-    ],
-    // 跳过初始化的工具
-    'skipInitTools' => [
-        ['imi', 'buildImiRuntime'],
-        ['imi', 'clearImiRuntime'],
-    ],
 ];

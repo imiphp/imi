@@ -193,7 +193,7 @@ class Local implements IHandler
      */
     public function getClientIdByFlag(string $flag): array
     {
-        return (array) $this->clientIdsMap[$flag] ?? [];
+        return (array) ($this->clientIdsMap[$flag] ?? []);
     }
 
     /**

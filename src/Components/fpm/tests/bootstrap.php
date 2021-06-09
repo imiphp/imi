@@ -12,10 +12,10 @@ function startServer(): void
     function checkHttpServerStatus(): bool
     {
         $serverStarted = false;
-        for ($i = 0; $i < 60; ++$i)
+        for ($i = 0; $i < 20; ++$i)
         {
             sleep(1);
-            $context = stream_context_create(['http' => ['timeout' => 1]]);
+            $context = stream_context_create(['http' => ['timeout' => 3]]);
             if ('imi' === @file_get_contents(imiGetEnv('HTTP_SERVER_HOST', 'http://127.0.0.1:13000/'), false, $context))
             {
                 $serverStarted = true;

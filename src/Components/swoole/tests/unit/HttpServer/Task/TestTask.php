@@ -18,7 +18,7 @@ class TestTask implements ITaskHandler
      *
      * @return mixed
      */
-    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $WorkerId)
+    public function handle(TaskParam $param, \Swoole\Server $server, int $taskId, int $workerId)
     {
         $data = $param->getData();
 
