@@ -16,7 +16,7 @@ imi 框架：https://www.imiphp.com
 
 ## 启动命令
 
-在本项目目录中，执行命令：`vendor/bin/imi server/start`
+在本项目目录中，执行命令：`vendor/bin/imi swoole/start`
 
 ## 权限
 

@@ -2,9 +2,9 @@
 
 ## 命令模式
 
-守护进程方式启动：`bin/imi server/start -d`
+守护进程方式启动：`bin/imi swoole/start -d`
 
-重定向标准输入输出：`bin/imi server/start -d 文件名.log`
+重定向标准输入输出：`bin/imi swoole/start -d 文件名.log`
 
 > 此方法只可让服务在后台运行，退出 ssh 后不被终止。
 
@@ -27,7 +27,7 @@ After=syslog.target
 [Service]
 Type=simple
 LimitNOFILE=65535
-ExecStart=/your app path/vendor/bin/imi server/start
+ExecStart=/your app path/vendor/bin/imi swoole/start
 ExecReload=/bin/kill -USR1 $MAINPID
 Restart=always
 
@@ -83,7 +83,7 @@ Supervisor是用 Python 开发的一套通用的进程管理程序，能将一�
 directory=/your app path
 
 # 脚本执行命令
-command=/your app path/vendor/bin/imi server/start
+command=/your app path/vendor/bin/imi swoole/start
 
 # supervisor启动的时候是否随着同时启动，默认True
 autostart=true

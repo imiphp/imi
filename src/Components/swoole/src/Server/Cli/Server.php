@@ -21,7 +21,7 @@ use Imi\Swoole\Util\Imi as SwooleImiUtil;
 use Imi\Util\Imi;
 
 /**
- * @Command("server")
+ * @Command("swoole")
  */
 class Server extends BaseCommand
 {

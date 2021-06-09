@@ -7,7 +7,7 @@
 示例：
 
 ```
-HttpDemo/bin/imi server/start
+HttpDemo/bin/imi swoole/start
 ```
 
 ## 停止服务
@@ -17,7 +17,7 @@ HttpDemo/bin/imi server/start
 示例：
 
 ```
-HttpDemo/bin/imi server/stop
+HttpDemo/bin/imi swoole/stop
 ```
 
 ## 重新加载服务
@@ -29,11 +29,11 @@ HttpDemo/bin/imi server/stop
 示例：
 
 ```
-HttpDemo/bin/imi server/reload
+HttpDemo/bin/imi swoole/reload
 ```
 
 更新运行时缓存后，再重新加载服务
 
 ```
-HttpDemo/bin/imi server/reload -runtime
+HttpDemo/bin/imi swoole/reload -runtime
 ```

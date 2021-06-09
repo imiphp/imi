@@ -125,7 +125,7 @@ class SwooleApp extends CliApp
     {
         $this->initRuntime();
         $input = new ArgvInput();
-        $isServerStart = ('server/start' === ($_SERVER['argv'][1] ?? null));
+        $isServerStart = ('swoole/start' === ($_SERVER['argv'][1] ?? null));
         if ($isServerStart)
         {
             $result = false;
