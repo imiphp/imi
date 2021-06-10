@@ -653,7 +653,7 @@ STR;
                     $data = json_decode(file_get_contents($fileName), true);
                     foreach ($data['packages'] ?? [] as $item)
                     {
-                        if ('yurunsoft/imi' === $item['name'])
+                        if ('imiphp/imi' === $item['name'] || 'yurunsoft/imi' === $item['name'])
                         {
                             return static::$imiVersion = $item['version'];
                         }

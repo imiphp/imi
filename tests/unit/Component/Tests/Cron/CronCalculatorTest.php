@@ -263,7 +263,7 @@ class CronCalculatorTest extends BaseTest
     }
 
     /**
-     * @see https://github.com/Yurunsoft/imi/issues/51
+     * @see https://github.com/imiphp/imi/issues/51
      *
      * @return void
      */
