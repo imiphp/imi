@@ -2,6 +2,8 @@
 
 imi 支持 [MemoryTableModel](/components/orm/MemoryTableModel.html)，也支持直接定义和操作MemoryTable。
 
+> 仅 Swoole 可用
+
 ## 配置方法
 
 ```php

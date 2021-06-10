@@ -1,4 +1,4 @@
-# 通道容器
+# ChannelContainer
 
 **类名:** `Imi\Swoole\Util\Co\ChannelContainer`
 

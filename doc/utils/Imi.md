@@ -20,6 +20,15 @@ var_dump(Imi::parseDotRule('a.b.c'));
 var_dump(Imi::parseDotRule('a\.b.c'));
 ```
 
+### getClassNamespace
+
+获取类命名空间
+
+```php
+// A\B
+echo Imi::getClassNamespace('A\B\C');
+```
+
 ### getClassShortName
 
 获取类短名称
@@ -69,10 +78,118 @@ echo Imi::getClassPropertyValue('ServerGroup', 'groupHandler');
 echo Imi::getImiCmd('swoole', 'reload');
 ```
 
+### getRuntimePath
+
+获取运行时目录路径
+
+```php
+// 返回：运行时目录路径
+echo Imi::getRuntimePath();
+
+// 返回：运行时目录路径/a.jpg
+echo Imi::getRuntimePath('a.jpg');
+
+// 返回：运行时目录路径/a/b.jpg
+echo Imi::getRuntimePath('a', 'b.jpg');
+```
+
+### buildRuntime
+
+构建运行时缓存
+
+```php
+/**
+ * 构建运行时缓存.
+ *
+ * @param string|null $cacheName 如果为空则默认为runtime
+ */
+public static function buildRuntime(?string $cacheName = null): void
+```
+
+### loadRuntimeInfo
+
+```php
+/**
+ * 从文件加载运行时数据
+ */
+public static function loadRuntimeInfo(string $cacheName): bool
+```
+
+### incrUpdateRuntime
+
+```php
+/**
+ * 增量更新运行时缓存.
+ */
+public static function incrUpdateRuntime(array $files): void
+```
+
+### checkReusePort
+
+```php
+/**
+ * 检查系统是否支持端口重用.
+ */
+public static function checkReusePort(): bool
+```
+
 ### eval
 
 `eval()` 函数的安全替代方法
 
 ```php
 Imi::eval('echo "hello imi";');
+```
+
+### isWSL
+
+检测是否为 WSL 环境
+
+```php
+/**
+ * 检测是否为 WSL 环境.
+ */
+public static function isWSL(): bool
+```
+
+### getLinuxVersion
+
+获取 Linux 版本号
+
+```php
+/**
+ * 获取 Linux 版本号.
+ */
+public static function getLinuxVersion(): string
+```
+
+### getDarwinVersion
+
+获取苹果系统版本
+
+```php
+/**
+ * 获取苹果系统版本.
+ */
+public static function getDarwinVersion(): string
+```
+
+### getCygwinVersion
+
+```php
+/**
+ * 获取 Cygwin 版本.
+ */
+public static function getCygwinVersion(): string
+```
+
+### isDockerEnvironment
+
+判断是否为 Docker 环境
+
+```php
+/**
+ * 判断是否为 Docker 环境.
+ */
+public static function isDockerEnvironment(): bool
 ```

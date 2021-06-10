@@ -58,6 +58,18 @@ $obj = App::getBean('aaa');
 
 第三个参数可以禁止非 `Imi\` 开头的命名空间的类，对应用上下文中`$name`对应的值进行写操作。
 
+### getImiVersion
+
+获取 imi 版本
+
+`public static function getImiVersion(): string`
+
+### getApp
+
+获取 app 实例对象
+
+`public static function getApp(): \Imi\Core\App\Contract\IApp`
+
 #### 框架核心上下文列表
 
 ##### 进程相关

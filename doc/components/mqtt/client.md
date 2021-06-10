@@ -1,5 +1,7 @@
 # MQTT 客户端
 
+> 仅支持 Swoole
+
 安装：`composer require imiphp/imi-mqtt`
 
 项目配置文件：

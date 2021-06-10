@@ -8,6 +8,8 @@
 
 Github: <https://github.com/imiphp/imi-grpc>
 
+> 仅支持 Swoole
+
 ## Composer
 
 本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:

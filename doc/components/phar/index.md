@@ -4,7 +4,7 @@
 
 `Phar` 模式生成 `phar` 文件需要修改`php.ini`，加入以下配置：
 
-```
+```ini
 phar.readonly=Off
 ```
 

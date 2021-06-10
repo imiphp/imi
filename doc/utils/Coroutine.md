@@ -16,4 +16,4 @@
 var_dump(Coroutine::isIn());
 ```
 
-> 由于继承了 Swoole 的协程类，所以可以使用其全部方法
+> 由于继承了 Swoole 的协程类，所以可以使用其全部方法: <http://wiki.swoole.com/#/coroutine/coroutine>

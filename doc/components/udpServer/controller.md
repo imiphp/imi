@@ -77,32 +77,6 @@ class Test extends \Imi\Controller\UdpController
 
 直接在方法中返回一个数组或对象，在服务器配置设定的处理器，就会把这个转为对应数据响应给客户端。
 
-**配置文件**
-
-```php
-return [
-	// 项目根命名空间
-	'namespace'	=>	'ImiDemo\UdpDemo',
-	// 扫描目录
-	'beanScan'	=>	[
-	],
-	// 主服务器配置，提供websocket服务
-	'mainServer'	=>	[
-		'namespace'	=>	'ImiDemo\UdpDemo\MainServer',
-		'type'		=>	Type::UDP_SERVER,
-		'host'		=>	'0.0.0.0',
-		'port'		=>	8087,
-		'configs'	=>	[
-			'reactor_num'		=>	2,
-			'worker_num'		=>	2,
-			'task_worker_num'	=>	8,
-		],
-		// 数据处理器
-		'dataParser'	=>	Imi\Server\DataParser\JsonObjectParser::class,
-	],
-}
-```
-
 **响应数据**
 
 ```php

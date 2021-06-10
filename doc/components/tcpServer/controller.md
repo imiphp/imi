@@ -76,32 +76,6 @@ class Test extends \Imi\Controller\TcpController
 
 直接在方法中返回一个数组或对象，在服务器配置设定的处理器，就会把这个转为对应数据响应给客户端。
 
-**配置文件**
-
-```php
-return [
-	// 主服务器配置，提供websocket服务
-	'mainServer'	=>	[
-		'namespace'	=>	'ImiDemo\TcpDemo\MainServer',
-		'type'		=>	Type::TCP_SERVER,
-		// 'host'		=>	'0.0.0.0',
-		'port'		=>	8085,
-		// 'mode'		=>	SWOOLE_BASE,
-		// 'sockType'	=>	SWOOLE_SOCK_TCP,
-		'configs'	=>	[
-			'reactor_num'		=>	2,
-			'worker_num'		=>	2,
-			'task_worker_num'	=>	8,
-			// EOF自动分包
-			'open_eof_split'	=>	true, //打开EOF_SPLIT检测
-			'package_eof'		=>	"\r\n", //设置EOF
-		],
-		// 数据处理器
-		'dataParser'	=>	\ImiDemo\TcpDemo\MainServer\Parser\JsonObjectParser::class,
-	],
-}
-```
-
 **响应数据**
 
 ```php
@@ -115,24 +89,6 @@ $this->server->groupCall('组名', 'push', ['success'=>true]);
 ```
 
 当然，并不是每个请求都需要有响应数据，什么都不`return`或者`return null`就是不响应数据。
-
-## 指定连接发送数据
-
-以下代码写在控制器的代码中，总而言之，如果你要推送消息，你得拿到`SwooleServer`对象。
-
-```php
-// $server 对象是 \Swoole\Server类型
-$server = $this->server->getSwooleServer();
-// 指定连接
-$clientId = 19260817;
-$data = 'hello imi';
-
-// 原样发送数据
-$server->send($clientId, $data);
-
-// 使用预定义的编码器，编码后发送数据
-$server->send($clientId, $this->encodeMessage($data));
-```
 
 ## 类属性
 

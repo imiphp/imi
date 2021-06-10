@@ -53,3 +53,10 @@ getenv() 函数的封装，支持默认值
 
 定义：`imiGetEnv($varname = null, $default = null, $localOnly = false);`
 
+### Imi\cmd
+
+处理命令行，执行后不会有 sh 进程
+
+```php
+echo \Imi\cmd('ls');
+```

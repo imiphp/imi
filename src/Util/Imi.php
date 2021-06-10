@@ -436,8 +436,7 @@ class Imi
     }
 
     /**
-     * 从文件加载运行时数据
-     * $minimumAvailable 设为 true，则 getRuntimeInfo() 无法获取到数据.
+     * 从文件加载运行时数据.
      */
     public static function loadRuntimeInfo(string $cacheName): bool
     {

@@ -2,7 +2,78 @@
 
 **类名:** `Imi\Swoole\Server\Server`
 
-服务器工具类
+服务器工具类，支持向客户端进行消息推送，部分工具类实现还支持了分布式消息推送。
+
+## 多种服务器工具类实现
+
+配置：
+
+```php
+'imi' => [
+    'ServerUtil' => 'LocalServerUtil',
+],
+```
+
+### Swoole
+
+#### LocalServerUtil
+
+基于 Swoole Server 的 `sendMessage()` 方法实现，支持跨 Worker 进程中的连接，推送数据到客户端。
+
+适用于单实例部署的场景。
+
+> Swoole 模式下默认使用该类
+
+#### RedisServerUtil
+
+使用 Redis 发布订阅实现的，分布式服务器工具类，支持分布式消息推送。
+
+适用于分布式多实例部署的场景。
+
+### Workerman
+
+#### LocalServerUtil
+
+仅支持单个进程中，连接的消息推送，建议仅用于开发环境。
+
+#### ChannelServerUtil
+
+基于 Workerman 的 Channel 组件实现。
+
+适用于分布式多实例部署的场景。
+
+首先你需要配置一个 Channel 服务：
+
+```php
+// Workerman 服务器配置
+'workermanServer' => [
+    // channel 是名称可以改成你自己的
+    'channel' => [
+        'namespace'   => '',
+        'type'        => Imi\Workerman\Server\Type::CHANNEL,
+        'host'        => '0.0.0.0',
+        'port'        => 13005,
+        'configs'     => [
+        ],
+    ],
+]
+```
+
+然后配置 Worker 进程连接 Channel：
+
+```php
+'workerman' => [
+    // 多进程通讯组件配置
+    'channel' => [
+        'host' => '127.0.0.1',
+        'port' => 13005,
+    ],
+],
+```
+
+### Fpm
+
+无
 
 ## 方法
 

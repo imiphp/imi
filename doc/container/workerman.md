@@ -13,6 +13,8 @@ imi v2.0 版本开始，支持运行在 Workerman 环境中。
 | UDP | ✔ |
 | MQTT |  |
 
-## 启动命令
+## 命令
 
-`vendor/bin/imi workerman/start`
+启动服务: `vendor/bin/imi workerman/start`
+
+停止服务: `vendor/bin/imi workerman/start`

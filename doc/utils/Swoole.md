@@ -1,49 +1,39 @@
-# Swoole
+# SwooleWorker
 
 ## v2.x
 
 **类名:** `Imi\Swoole\SwooleWorker`
 
+**继承:** `Imi\Worker` (详见：<https://doc.imiphp.com/utils/Worker.html>)
+
 ### 方法
 
-#### getMasterPid
+#### isTask
 
-获取master进程pid
+是否为 task 进程
 
-```php
-echo SwooleWorker::getMasterPid();
-```
+`public static function isTask(): bool`
+
+#### getTaskWorkerNum
+
+获取 task 进程数量
+
+`public static function getTaskWorkerNum(): int`
+
+#### isWorkerStartAppComplete
+
+是否 IMI.MAIN_SERVER.WORKER.START.APP 事件执行完毕
+
+`public static function isWorkerStartAppComplete(): bool`
 
 #### getManagerPid
 
-获取manager进程pid
+获取服务器 manager 进程 PID
 
+`public static function getManagerPid(): int`
 
-```php
-echo SwooleWorker::getManagerPid();
-```
+#### isWorkerIdProcess
 
-## v1.x
+返回 workerId 是否是用户进程
 
-**类名:** `Imi\Swoole\Util\Swoole`
-
-Swoole 环境下的一些工具类。
-
-### 方法
-
-#### getMasterPID
-
-获取master进程pid
-
-```php
-echo Swoole::getMasterPID();
-```
-
-#### getManagerPID
-
-获取manager进程pid
-
-
-```php
-echo Swoole::getManagerPID();
-```
+`public static function isWorkerIdProcess(int $workerId): bool`

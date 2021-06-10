@@ -61,6 +61,7 @@
         'host'      => '0.0.0.0',
         'port'      => 13000,
         'context'   => [
+            // 这个需要
             'ssl' => [
                 'local_cert'  => '/etc/nginx/conf.d/ssl/server.pem', // 也可以是crt文件
                 'local_pk'    => '/etc/nginx/conf.d/ssl/server.key',
@@ -68,7 +69,7 @@
             ],
         ]
         'configs'   => [
-            'transport' => 'ssl',
+            'transport' => 'ssl', // 这个需要
         ],
     ],
 ]

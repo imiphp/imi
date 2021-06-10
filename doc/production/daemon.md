@@ -18,7 +18,7 @@ Systemd 一般都已经集成在了现代 Linux 发行版中，使用它可以�
 
 创建服务配置文件 `test.service`
 
-```
+```ini
 [Unit]
 Description=test
 After=network.target

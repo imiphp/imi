@@ -8,7 +8,6 @@
 
 本组件基于 [龙之言](https://longlang.org/) 组织的 [longlang/phpkafka](https://github.com/longyan/phpkafka) 组件，该组件由宇润主导开发。
 
-
 ## Composer
 
 本项目可以使用composer安装，遵循psr-4自动加载规则，在你的 `composer.json` 中加入下面的内容:

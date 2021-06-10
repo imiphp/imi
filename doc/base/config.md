@@ -106,6 +106,9 @@ return [
         // 参考 swoole sockType，可选
         'sockType'	=>	SWOOLE_SOCK_TCP,
         // 服务器配置，参数用法同\Swoole\Server->set($configs)
+        // 参考: http://wiki.swoole.com/#/server/setting
+        // 参考: http://wiki.swoole.com/#/websocket_server?id=%e9%80%89%e9%a1%b9
+        // 参考: http://wiki.swoole.com/#/http_server?id=%e9%85%8d%e7%bd%ae%e9%80%89%e9%a1%b9
         'configs'	=>	[
             'reactor_num'	    => 8,
             'worker_num'	    => 8,
@@ -171,13 +174,13 @@ return [
 
 如下，是设置连接池的uri例子：
 
-```
+```env
 @app.pools.maindb.async.resource = "tcp://192.168.0.222/?username=root&password=root&database=db_test&timeout=60"
 ```
 
 数组的支持：
 
-```
+```env
 @app.a.0.id = 1
 @app.a.0.name = name1
 @app.a.1.id = 2
