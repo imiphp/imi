@@ -9,7 +9,7 @@
 
 在 imi 框架中非常方便地接入 jwt
 
-> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/imiphp/imi>
 
 ## Composer
 

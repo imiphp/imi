@@ -11,7 +11,7 @@
 
 未来将实现：中间件、过滤器、`Http` 协议、`WebSocket` 协议……
 
-> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/imiphp/imi>
 
 ## Composer
 

@@ -13,7 +13,7 @@ imi 框架的权限控制组件，不提供具体 API、管理界面，仅提供
 
 用户除了角色赋予的操作权限以外，还可以单独赋予操作权限。
 
-> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/imiphp/imi>
 
 ## Composer
 
@@ -187,6 +187,6 @@ QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "
 
 ## 捐赠
 
-<img src="https://cdn.jsdelivr.net/gh/Yurunsoft/IMI@dev/res/pay.png"/>
+<img src="https://cdn.jsdelivr.net/gh/imiphp/imi@dev/res/pay.png"/>
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……

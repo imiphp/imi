@@ -11,7 +11,7 @@
 
 `imi-hprose` 基于 `imi-rpc` 实现：https://github.com/imiphp/imi-hprose
 
-> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/imiphp/imi>
 
 ## Composer
 
