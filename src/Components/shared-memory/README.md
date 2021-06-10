@@ -9,7 +9,7 @@
 
 基于 [Swoole Shared Memory](https://github.com/Yurunsoft/swoole-shared-memory) 开发的 `imi` 框架跨进程变量共享组件。
 
-> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/Yurunsoft/imi>
+> 本仓库仅用于浏览，不接受 issue 和 Pull Requests，请前往：<https://github.com/imiphp/imi>
 
 ## Composer
 
