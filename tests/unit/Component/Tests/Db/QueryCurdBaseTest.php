@@ -108,7 +108,7 @@ abstract class QueryCurdBaseTest extends BaseTest
     }
 
     /**
-     * @see https://github.com/Yurunsoft/imi/issues/58
+     * @see https://github.com/imiphp/imi/issues/58
      */
     public function testBug58(): void
     {
@@ -288,7 +288,7 @@ abstract class QueryCurdBaseTest extends BaseTest
             'content'   => 'content',
             'time'      => '2019-06-21 00:00:00',
         ], $record);
-        // BUG: https://github.com/Yurunsoft/IMI/pull/25
+        // BUG: https://github.com/imiphp/imi/pull/25
         Assert::assertEquals('select * from `tb_article`', Db::query($this->poolName)->from('tb_article')->whereEx([])->select()->getSql());
     }
 

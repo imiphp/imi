@@ -290,7 +290,7 @@ class CronCalculatorTest extends BaseTest
     /**
      * @depends testInit
      *
-     * @see https://github.com/Yurunsoft/imi/issues/51
+     * @see https://github.com/imiphp/imi/issues/51
      */
     public function testBug51(CronCalculator $cronCalculator): void
     {

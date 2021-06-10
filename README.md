@@ -2,16 +2,16 @@
 
 <p align="center">
     <a href="https://www.imiphp.com" target="_blank">
-        <img src="https://raw.githubusercontent.com/Yurunsoft/IMI/dev/res/logo.png" alt="imi" />
+        <img src="https://raw.githubusercontent.com/imiphp/imi/dev/res/logo.png" alt="imi" />
     </a>
 </p>
 
-[![Latest Version](https://img.shields.io/packagist/v/yurunsoft/imi.svg)](https://packagist.org/packages/yurunsoft/imi)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/Yurunsoft/imi/ci/dev)
+[![Latest Version](https://img.shields.io/packagist/v/imiphp/imi.svg)](https://packagist.org/packages/imiphp/imi)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/imiphp/imi/ci/dev)
 [![Php Version](https://img.shields.io/badge/php-%3E=7.4-brightgreen.svg)](https://secure.php.net/)
 [![Swoole Version](https://img.shields.io/badge/swoole-%3E=4.6.0-brightgreen.svg)](https://github.com/swoole/swoole-src)
 [![imi Doc](https://img.shields.io/badge/docs-passing-green.svg)](https://doc.imiphp.com)
-[![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/Yurunsoft/imi/blob/master/LICENSE)
+[![imi License](https://img.shields.io/badge/license-MulanPSL%201.0-brightgreen.svg)](https://github.com/imiphp/imi/blob/master/LICENSE)
 [![star](https://gitee.com/yurunsoft/IMI/badge/star.svg?theme=gvp)](https://gitee.com/yurunsoft/IMI/stargazers)
 
 ## 介绍
@@ -165,7 +165,7 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 ## 贡献者
 
-[![贡献者](https://opencollective.com/IMI/contributors.svg?width=890&button=false)](https://github.com/Yurunsoft/imi/graphs/contributors)
+[![贡献者](https://opencollective.com/IMI/contributors.svg?width=890&button=false)](https://github.com/imiphp/imi/graphs/contributors)
 
 你想出现在贡献者列表中吗？
 
@@ -186,6 +186,6 @@ imi 遵循 木兰宽松许可证(Mulan PSL v2) 开源协议发布，并提供免
 
 ## 捐赠
 
-![捐赠](https://cdn.jsdelivr.net/gh/Yurunsoft/IMI@dev/res/pay.png)
+![捐赠](https://cdn.jsdelivr.net/gh/imiphp/imi@dev/res/pay.png)
 
 开源不求盈利，多少都是心意，生活不易，随缘随缘……

@@ -2,7 +2,7 @@
 
 ## 介绍
 
-[imi 框架](https://github.com/Yurunsoft/imi)的队列组件，使用 Redis 作为持久化
+[imi 框架](https://github.com/imiphp/imi)的队列组件，使用 Redis 作为持久化
 
 支持的特性：
 

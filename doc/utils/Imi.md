@@ -43,7 +43,7 @@ echo Imi::getClassShortName('A\B\C');
 根据命名空间获取真实路径，返回null则为获取失败
 
 ```php
-// /mnt/d/projects/imi-demo/vendor/yurunsoft/imi/src/
+// /mnt/d/projects/imi-demo/vendor/imiphp/imi/src/
 echo Imi::getNamespacePath('Imi'), PHP_EOL;
 
 // /mnt/d/projects/imi-demo/HttpDemo/
