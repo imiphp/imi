@@ -21,14 +21,14 @@ class RandomTest extends BaseTest
 
     public function testNumber()
     {
-        $val = (string) Random::number();
+        $val = Random::number();
         $this->assertTrue($val >= \PHP_INT_MIN && $val <= \PHP_INT_MAX);
         [, $afterDot] = explode('.', $val);
         $this->assertLessThanOrEqual(2, \strlen($afterDot));
 
-        $val = (string) Random::number(1, 3, 1);
+        $val = Random::number(1, 3, 1);
         $this->assertTrue($val >= 1 && $val <= 3);
-        [, $afterDot] = explode('.', $val);
+        [, $afterDot] = explode('.', $val . '.0');
         $this->assertLessThanOrEqual(1, \strlen($afterDot));
     }
 
