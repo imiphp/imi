@@ -238,13 +238,13 @@ foreach ($storeRepoMap as $name => $urls)
     foreach ($commits as $commit)
     {
         chdir($mainRepoPath);
-        execCMD('git --no-pager show ' . $commit . ' --stat', '提交记录', $result);
         execCMD('git show ' . $commit . ' -s --format=%cn', '', $result);
         $author = $result[0];
         execCMD('git show ' . $commit . ' -s --format=%ad', '', $result);
         $date = $result[0];
         execCMD('git show ' . $commit . ' -s --format=%s', '', $result);
         $message = $result[0];
+        execCMD('git --no-pager show ' . $commit . ' --stat', '提交记录', $result);
 
         $needCommit = false;
         foreach ($result as $row)

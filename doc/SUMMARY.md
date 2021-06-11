@@ -90,8 +90,9 @@
 
 ## 消息队列
 
-* [RabbitMQ(AMQP)](components/mq/amqp.md)
 * [Redis](components/mq/redis.md)
+* [RabbitMQ(AMQP)](components/mq/amqp.md)
+* [Kafka](components/mq/kafka.md)
 
 ## 功能组件
 

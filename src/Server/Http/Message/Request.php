@@ -59,7 +59,14 @@ class Request extends ServerRequest implements IServerRequest
     {
         $requestHeader = $request->header;
         $requestServer = $request->server;
-        $key = $requestHeader['host'] . '#' . $requestServer['path_info'];
+        if (isset($requestHeader['host']))
+        {
+            $key = $requestHeader['host'] . '#' . $requestServer['path_info'];
+        }
+        else
+        {
+            $key = $requestServer['path_info'];
+        }
         $instanceMap = &static::$instanceMap;
         if (!isset($instanceMap[$key]))
         {

@@ -2,7 +2,7 @@
 
 ## 仓库
 
-Github：https://github.com/Yurunsoft/imi
+Github：https://github.com/imiphp/imi
 
 ## 目录结构
 
