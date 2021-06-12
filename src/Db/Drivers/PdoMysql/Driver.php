@@ -29,11 +29,6 @@ class Driver extends Base implements IDb
     protected ?PDO $instance = null;
 
     /**
-     * 连接配置.
-     */
-    protected array $option = [];
-
-    /**
      * 最后执行过的SQL语句.
      */
     protected string $lastSql = '';
@@ -76,7 +71,7 @@ class Driver extends Base implements IDb
         $options[\PDO::ATTR_STRINGIFY_FETCHES] ??= false;
         $options[\PDO::ATTR_EMULATE_PREPARES] ??= false;
         $options[\PDO::ATTR_ERRMODE] ??= \PDO::ERRMODE_EXCEPTION;
-        $this->option = $option;
+        parent::__construct($option);
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction();
     }
@@ -126,6 +121,7 @@ class Driver extends Base implements IDb
     {
         $option = $this->option;
         $this->instance = new \PDO($this->buildDSN(), $option['username'], $option['password'], $option['options']);
+        $this->execInitSqls();
 
         return true;
     }

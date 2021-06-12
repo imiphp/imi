@@ -68,6 +68,11 @@ return [
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
+                // 数据库连接后，执行初始化的 SQL
+                // 'sqls' => [
+                //     'select 1',
+                //     'select 2',
+                // ],
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -127,6 +132,11 @@ return [
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
+                // 数据库连接后，执行初始化的 SQL
+                // 'sqls' => [
+                //     'select 1',
+                //     'select 2',
+                // ],
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -167,6 +177,11 @@ return [
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
+                // 数据库连接后，执行初始化的 SQL
+                // 'sqls' => [
+                //     'select 1',
+                //     'select 2',
+                // ],
             ],
         ],
     ],
