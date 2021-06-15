@@ -6,17 +6,17 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
-use Imi\Model\Model;
+use Imi\Model\Model as Model;
 
 /**
  * tb_test_json 基类.
  *
  * @Entity
  * @Table(name="tb_test_json", id={"id"})
- * @DDL("CREATE TABLE `tb_test_json` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `json_data` text NOT NULL COMMENT 'json数据',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * @DDL("CREATE TABLE `tb_test_json` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `json_data` json NOT NULL COMMENT 'json数据',   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
  *
- * @property int    $id
- * @property string $jsonData json数据
+ * @property int                       $id
+ * @property \Imi\Util\LazyArrayObject $jsonData json数据
  */
 abstract class TestJsonBase extends Model
 {
@@ -57,16 +57,16 @@ abstract class TestJsonBase extends Model
      * json数据
      * json_data.
      *
-     * @Column(name="json_data", type="text", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
+     * @Column(name="json_data", type="json", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
      *
-     * @var string
+     * @var \Imi\Util\LazyArrayObject
      */
     protected $jsonData;
 
     /**
      * 获取 jsonData - json数据.
      *
-     * @return string
+     * @return \Imi\Util\LazyArrayObject
      */
     public function getJsonData()
     {
@@ -76,7 +76,7 @@ abstract class TestJsonBase extends Model
     /**
      * 赋值 jsonData - json数据.
      *
-     * @param string $jsonData json_data
+     * @param \Imi\Util\LazyArrayObject $jsonData json_data
      *
      * @return static
      */

@@ -6,7 +6,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
-use Imi\Model\Model;
+use Imi\Model\Model as Model;
 
 /**
  * tb_tree 基类.
@@ -115,6 +115,10 @@ abstract class TreeBase extends Model
      */
     public function setName($name)
     {
+        if (isset($name[31]))
+        {
+            throw new \InvalidArgumentException('The maximum length of $name is 32');
+        }
         $this->name = $name;
 
         return $this;

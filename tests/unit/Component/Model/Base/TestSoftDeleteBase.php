@@ -82,6 +82,10 @@ abstract class TestSoftDeleteBase extends Model
      */
     public function setTitle($title)
     {
+        if (isset($title[254]))
+        {
+            throw new \InvalidArgumentException('The maximum length of $title is 255');
+        }
         $this->title = $title;
 
         return $this;

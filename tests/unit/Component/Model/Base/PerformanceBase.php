@@ -6,7 +6,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
-use Imi\Model\Model;
+use Imi\Model\Model as Model;
 
 /**
  * tb_performance 基类.
@@ -81,6 +81,10 @@ abstract class PerformanceBase extends Model
      */
     public function setValue($value)
     {
+        if (isset($value[254]))
+        {
+            throw new \InvalidArgumentException('The maximum length of $value is 255');
+        }
         $this->value = $value;
 
         return $this;
