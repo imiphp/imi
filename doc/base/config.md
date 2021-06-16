@@ -63,6 +63,10 @@ return [
         ],
         'ServerUtil' => '', // 服务器工具类类名，详见服务器工具类文档
         'Timer' => '', // 定时器类名，详见定时器文档
+        // 服务器容器绑定
+        'beans' => [
+            'aaa' => XXX::class,
+        ],
     ],
 ];
 ```
@@ -114,6 +118,10 @@ return [
             'worker_num'	    => 8,
             'task_worker_num'	=> 16,
         ],
+        // 服务器容器绑定
+        'beans' => [
+            'aaa' => XXX::class,
+        ],
     ],
     // 子服务器（端口监听）配置
     'subServers'    =>    [
@@ -151,6 +159,10 @@ return [
             'context'   => [],
             'configs'   => [
                 // 支持设置 Workerman 参数
+            ],
+            // 服务器容器绑定
+            'beans' => [
+                'aaa' => XXX::class,
             ],
         ],
     ],

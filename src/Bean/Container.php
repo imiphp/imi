@@ -109,6 +109,22 @@ class Container implements ContainerInterface
     }
 
     /**
+     * 设置绑定列表.
+     */
+    public function setBinds(array $binds): void
+    {
+        $this->binds = $binds;
+    }
+
+    /**
+     * 追加绑定列表.
+     */
+    public function appendBinds(array $binds): void
+    {
+        $this->binds = array_merge($this->binds, $binds);
+    }
+
+    /**
      * Get 绑定列表.
      */
     public function getBinds(): array

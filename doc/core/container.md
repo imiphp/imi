@@ -22,8 +22,8 @@ return [
 ## 容器分类
 
 * 全局容器
-* 服务器容器
-* 请求上下文容器
+* 服务器容器（继承全局容器）
+* 请求上下文容器（继承服务器容器或全局容器）
 
 ### 全局容器
 
@@ -49,6 +49,64 @@ $object = \Imi\Server\ServerManager::getServer('main')->getBean('XXX');
 
 ```php
 $object = \Imi\RequestContext::getBean('XXX');
+```
+
+## 容器绑定
+
+**配置绑定：**
+
+全局容器-项目配置文件：
+
+```php
+[
+    'imi' => [
+        'beans' => [
+            'aaa' => XXX::class,
+        ],
+    ],
+]
+```
+
+服务器容器：
+
+> 详见各环境的服务器配置文档。
+
+**动态绑定：**
+
+全局容器：
+
+```php
+use Imi\App;
+
+// 绑定
+App::getContainer()->bind('aaa', XXX::class);
+
+// 实例化
+$obj = App::getBean('aaa');
+```
+
+服务器容器：
+
+```php
+use Imi\Server\ServerManager;
+
+// 绑定
+ServerManager::getServer()->getContainer()->bind('aaa', XXX::class);
+
+// 实例化
+$obj = ServerManager::getServer()->getContainer()->getBean('aaa');
+```
+
+请求上下文容器：
+
+```php
+use Imi\RequestContext;
+
+// 绑定
+RequestContext::getContainer()->bind('aaa', XXX::class);
+
+// 实例化
+$obj = RequestContext::getBean('aaa');
 ```
 
 ## 容器对象类 (Bean)

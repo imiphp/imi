@@ -55,13 +55,6 @@ class FpmApp extends BaseApp
     }
 
     /**
-     * 初始化.
-     */
-    public function init(): void
-    {
-    }
-
-    /**
      * 加载运行时.
      */
     public function loadRuntime(): int

@@ -147,6 +147,14 @@ class RequestContext
     }
 
     /**
+     * 获取请求上下文容器.
+     */
+    public static function getContainer(): Container
+    {
+        return self::getContext()['container'];
+    }
+
+    /**
      * 在当前请求上下文中获取Bean对象
      *
      * @param array $params

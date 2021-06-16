@@ -107,6 +107,7 @@ class CliApp extends BaseApp
      */
     public function init(): void
     {
+        parent::init();
         $this->addCommands();
     }
 

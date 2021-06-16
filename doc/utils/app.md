@@ -16,16 +16,6 @@
 
 `public static function getContainer()`
 
-#### 容器手动绑定
-
-```php
-// 绑定
-App::getContainer()->bind('aaa', XXX::class);
-
-// 实例化
-$obj = App::getBean('aaa');
-```
-
 ### getBean
 
 获取全局Bean对象

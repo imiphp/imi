@@ -118,6 +118,17 @@ abstract class BaseApp implements IApp
     }
 
     /**
+     * 初始化.
+     */
+    public function init(): void
+    {
+        if ($beanBinds = Config::get('@app.imi.beans'))
+        {
+            App::getContainer()->setBinds($beanBinds);
+        }
+    }
+
+    /**
      * 初始化运行时.
      */
     protected function initRuntime(): void

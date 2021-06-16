@@ -35,9 +35,14 @@ abstract class BaseServer implements IServer
      */
     public function __construct(string $name, array $config)
     {
-        $this->container = App::getContainer()->newSubContainer();
+        $this->container = $container = App::getContainer()->newSubContainer();
         $this->name = $name;
         $this->config = $config;
+        $beans = $config['beans'] ?? [];
+        if ($beans)
+        {
+            $container->appendBinds($beans);
+        }
     }
 
     /**
