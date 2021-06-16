@@ -31,7 +31,7 @@ class OnCloseByFlagRequest implements IEventListener
             Server::sendMessage('closeByFlagResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $workerId);
+            ], $workerId, $data['serverName']);
         }
     }
 }

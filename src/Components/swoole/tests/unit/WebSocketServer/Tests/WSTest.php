@@ -56,16 +56,16 @@ class WSTest extends BaseTest
             $client->close();
 
             // 重连逻辑
-            $http = new HttpRequest();
-            $http->retry = 3;
-            $http->timeout = 10000;
-            $client = $http->websocket($this->host);
-            $this->assertTrue($client->isConnected());
-
             $recvData = null;
             // 重试3次
             for ($i = 0; $i < 3; ++$i)
             {
+                sleep(1);
+                $http = new HttpRequest();
+                $http->retry = 3;
+                $http->timeout = 10000;
+                $client = $http->websocket($this->host);
+                $this->assertTrue($client->isConnected());
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'reconnect',
                     'token'     => 'test',
@@ -74,12 +74,11 @@ class WSTest extends BaseTest
                 if (false !== $recv)
                 {
                     $recvData = json_decode($recv, true);
-                    if (null !== $recvData)
+                    if (null !== $recvData && ($recvData['username'] ?? null))
                     {
                         break;
                     }
                 }
-                sleep(1);
             }
             $this->assertEquals([
                 'success'   => true,

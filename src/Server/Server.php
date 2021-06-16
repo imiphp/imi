@@ -4,22 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Server;
 
-use Imi\App;
-use Imi\Config;
+use Imi\RequestContext;
 use Imi\Server\Contract\IServer;
 use Imi\Server\Contract\IServerUtil;
-use InvalidArgumentException;
 
 /**
  * 服务器工具类.
  */
 class Server
 {
-    /**
-     * 服务器工具类对象.
-     */
-    private static IServerUtil $serverUtil;
-
     private function __construct()
     {
     }
@@ -27,20 +20,9 @@ class Server
     /**
      * 获取上下文管理器实例.
      */
-    public static function getInstance(): IServerUtil
+    public static function getInstance(?string $serverName = null): IServerUtil
     {
-        if (!isset(static::$serverUtil))
-        {
-            $contextClass = Config::get('@app.imi.ServerUtil');
-            if (null === $contextClass)
-            {
-                throw new InvalidArgumentException('Config "@app.imi.ServerUtil" not found');
-            }
-
-            return static::$serverUtil = App::getBean($contextClass);
-        }
-
-        return static::$serverUtil;
+        return self::getServer($serverName)->getBean('ServerUtil');
     }
 
     /**
@@ -55,7 +37,7 @@ class Server
      */
     public static function send($data, $clientId = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->send($data, $clientId, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->send($data, $clientId, $serverName, $toAllWorkers);
     }
 
     /**
@@ -70,7 +52,7 @@ class Server
      */
     public static function sendByFlag($data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendByFlag($data, $flag, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendByFlag($data, $flag, $serverName, $toAllWorkers);
     }
 
     /**
@@ -82,7 +64,7 @@ class Server
      */
     public static function sendRaw(string $data, $clientId = null, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRaw($data, $clientId, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendRaw($data, $clientId, $serverName, $toAllWorkers);
     }
 
     /**
@@ -94,7 +76,7 @@ class Server
      */
     public static function sendRawByFlag(string $data, $flag = null, $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRawByFlag($data, $flag, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendRawByFlag($data, $flag, $serverName, $toAllWorkers);
     }
 
     /**
@@ -108,7 +90,7 @@ class Server
      */
     public static function sendToAll($data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendToAll($data, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendToAll($data, $serverName, $toAllWorkers);
     }
 
     /**
@@ -121,7 +103,7 @@ class Server
      */
     public static function sendRawToAll(string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRawToAll($data, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendRawToAll($data, $serverName, $toAllWorkers);
     }
 
     /**
@@ -136,7 +118,7 @@ class Server
      */
     public static function sendToGroup($groupName, $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendToGroup($groupName, $data, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendToGroup($groupName, $data, $serverName, $toAllWorkers);
     }
 
     /**
@@ -150,7 +132,7 @@ class Server
      */
     public static function sendRawToGroup($groupName, string $data, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->sendRawToGroup($groupName, $data, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->sendRawToGroup($groupName, $data, $serverName, $toAllWorkers);
     }
 
     /**
@@ -161,7 +143,7 @@ class Server
      */
     public static function close($clientId, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->close($clientId, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->close($clientId, $serverName, $toAllWorkers);
     }
 
     /**
@@ -172,7 +154,7 @@ class Server
      */
     public static function closeByFlag($flag, ?string $serverName = null, bool $toAllWorkers = true): int
     {
-        return static::getInstance()->closeByFlag($flag, $serverName, $toAllWorkers);
+        return static::getInstance($serverName)->closeByFlag($flag, $serverName, $toAllWorkers);
     }
 
     /**
@@ -180,6 +162,13 @@ class Server
      */
     public static function getServer(?string $serverName = null): ?IServer
     {
-        return static::getInstance()->getServer($serverName);
+        if (null === $serverName)
+        {
+            return RequestContext::getServer() ?? ServerManager::getServer('main');
+        }
+        else
+        {
+            return ServerManager::getServer($serverName);
+        }
     }
 }

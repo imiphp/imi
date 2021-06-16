@@ -127,6 +127,8 @@ return [
     ],
 
     'imi' => [
-        'ServerUtil' => 'ChannelServerUtil',
+        'beans' => [
+            'ServerUtil' => \Imi\Workerman\Server\Util\ChannelServerUtil::class,
+        ],
     ],
 ];

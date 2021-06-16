@@ -24,8 +24,10 @@ class WorkermanApp extends CliApp
      * 应用模式的配置.
      */
     protected array $appConfig = [
-        'Timer'      => WorkermanTimer::class,
-        'ServerUtil' => 'LocalServerUtil',
+        'Timer' => WorkermanTimer::class,
+        'beans' => [
+            'ServerUtil' => \Imi\Workerman\Server\Util\LocalServerUtil::class,
+        ],
     ];
 
     /**

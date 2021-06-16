@@ -22,7 +22,9 @@ return [
     ],
 
     'imi' => [
-        'ServerUtil' => 'RedisServerUtil',
+        'beans' => [
+            'ServerUtil' => \Imi\Swoole\Server\Util\RedisServerUtil::class,
+        ],
     ],
 
     // 日志配置

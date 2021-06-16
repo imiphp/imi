@@ -31,7 +31,7 @@ class OnSendToClientIdsRequest implements IEventListener
             Server::sendMessage('sendToClientIdsResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $workerId);
+            ], $workerId, $data['serverName']);
         }
     }
 }

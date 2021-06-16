@@ -10,7 +10,9 @@
 
 ```php
 'imi' => [
-    'ServerUtil' => 'LocalServerUtil',
+    'beans' => [
+        'ServerUtil' => XXX::class,
+    ],
 ],
 ```
 

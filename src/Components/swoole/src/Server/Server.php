@@ -9,7 +9,7 @@ use Imi\Swoole\Server\Contract\ISwooleServerUtil;
 /**
  * 服务器工具类.
  *
- * @method static ISwooleServerUtil getInstance()
+ * @method static ISwooleServerUtil getInstance(?string $serverName = null)
  */
 class Server extends \Imi\Server\Server
 {
@@ -20,9 +20,9 @@ class Server extends \Imi\Server\Server
      *
      * @param int|int[]|null $workerId
      */
-    public static function sendMessage(string $action, array $data = [], $workerId = null): int
+    public static function sendMessage(string $action, array $data = [], $workerId = null, ?string $serverName = null): int
     {
-        return static::getInstance()->sendMessage($action, $data, $workerId);
+        return static::getInstance($serverName)->sendMessage($action, $data, $workerId);
     }
 
     /**
@@ -32,8 +32,8 @@ class Server extends \Imi\Server\Server
      *
      * @param int|int[]|null $workerId
      */
-    public static function sendMessageRaw(string $message, $workerId = null): int
+    public static function sendMessageRaw(string $message, $workerId = null, ?string $serverName = null): int
     {
-        return static::getInstance()->sendMessageRaw($message, $workerId);
+        return static::getInstance($serverName)->sendMessageRaw($message, $workerId);
     }
 }

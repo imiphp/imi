@@ -12,7 +12,7 @@ use Workerman\Worker;
 /**
  * 服务器工具类.
  *
- * @method static IWorkermanServerUtil getInstance()
+ * @method static IWorkermanServerUtil getInstance(?string $serverName = null)
  */
 class Server extends \Imi\Server\Server
 {
@@ -41,7 +41,7 @@ class Server extends \Imi\Server\Server
      */
     public static function sendMessage(string $action, array $data = [], $workerId = null, ?string $serverName = null): int
     {
-        return static::getInstance()->sendMessage($action, $data, $workerId, $serverName);
+        return static::getInstance($serverName)->sendMessage($action, $data, $workerId, $serverName);
     }
 
     /**
@@ -53,6 +53,6 @@ class Server extends \Imi\Server\Server
      */
     public static function sendMessageRaw(array $data, $workerId = null, ?string $serverName = null): int
     {
-        return static::getInstance()->sendMessageRaw($data, $workerId, $serverName);
+        return static::getInstance($serverName)->sendMessageRaw($data, $workerId, $serverName);
     }
 }

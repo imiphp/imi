@@ -161,13 +161,17 @@ return [
 
     'workerman' => [
         'imi' => [
-            'ServerUtil' => Imi\WorkermanGateway\Workerman\Server\Util\GatewayServerUtil::class,
+            'beans' => [
+                'ServerUtil' => Imi\WorkermanGateway\Workerman\Server\Util\GatewayServerUtil::class,
+            ],
         ],
     ],
 
     'swoole' => [
         'imi' => [
-            'ServerUtil' => Imi\WorkermanGateway\Swoole\Server\Util\GatewayServerUtil::class,
+            'beans' => [
+                'ServerUtil' => Imi\WorkermanGateway\Swoole\Server\Util\GatewayServerUtil::class,
+            ],
         ],
     ],
 ];

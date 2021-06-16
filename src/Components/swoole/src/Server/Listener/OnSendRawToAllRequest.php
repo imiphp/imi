@@ -31,7 +31,7 @@ class OnSendRawToAllRequest implements IEventListener
             Server::sendMessage('sendRawToAllResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $workerId);
+            ], $workerId, $data['serverName']);
         }
     }
 }

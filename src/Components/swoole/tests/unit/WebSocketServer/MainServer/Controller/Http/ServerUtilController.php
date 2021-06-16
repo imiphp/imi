@@ -60,7 +60,6 @@ class ServerUtilController extends HttpController
         $dataStr = json_encode($data);
         $result = [];
         $result['send1'] = Server::send($data);
-        var_dump('test');
         $result['send2'] = Server::send($data, $clientIds[0]);
         $result['send3'] = Server::send($data, $clientIds);
         $result['sendByFlag'] = Server::sendByFlag($data, $flag);

@@ -31,7 +31,7 @@ class OnSendToGroupsRequest implements IEventListener
             Server::sendMessage('sendToGroupsResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $workerId);
+            ], $workerId, $data['serverName']);
         }
     }
 }

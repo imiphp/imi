@@ -134,6 +134,8 @@ return [
     ],
 
     'imi' => [
-        'ServerUtil' => \Imi\Workerman\Server\Util\LocalServerUtil::class,
+        'beans' => [
+            'ServerUtil' => \Imi\Workerman\Server\Util\LocalServerUtil::class,
+        ],
     ],
 ];

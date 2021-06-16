@@ -31,7 +31,7 @@ class OnSendRawByFlagRequest implements IEventListener
             Server::sendMessage('sendRawByFlagResponse', [
                 'messageId' => $data['messageId'],
                 'result'    => $result,
-            ], $workerId);
+            ], $workerId, $data['serverName']);
         }
     }
 }

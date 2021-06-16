@@ -86,7 +86,10 @@ abstract class BaseApp implements IApp
         }
 
         // 应用模式配置
-        Config::set('@app.imi', array_merge($this->appConfig, Config::get('@app.imi', []), Config::get('@app.' . $this->getType() . '.imi', [])));
+        $appConfig = Config::get('@app.imi', []);
+        $appTypeConfig = Config::get('@app.' . $this->getType() . '.imi', []);
+        Config::set('@app.imi', array_merge($this->appConfig, $appConfig, $appTypeConfig));
+        Config::set('@app.imi.beans', array_merge($this->appConfig['beans'] ?? [], $appConfig['beans'] ?? [], $appTypeConfig['beans'] ?? []));
     }
 
     /**
