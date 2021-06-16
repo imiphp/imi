@@ -44,29 +44,58 @@ function startServer(): void
         return $serverStarted;
     }
 
-    $servers = [
-        'AppServer'    => [
-            'start'         => __DIR__ . '/unit/AppServer/bin/start.sh',
-            'stop'          => __DIR__ . '/unit/AppServer/bin/stop.sh',
-            'checkStatus'   => 'checkHttpServerStatus',
-        ],
-        'ChannelServerUtilServer'    => [
-            'start'         => __DIR__ . '/unit/ChannelServerUtilServer/bin/start.sh',
-            'stop'          => __DIR__ . '/unit/ChannelServerUtilServer/bin/stop.sh',
-            'checkStatus'   => 'checkChannelServerUtilServerStatus',
-        ],
-    ];
+    if ('\\' === \DIRECTORY_SEPARATOR)
+    {
+        $servers = [
+            'AppServer'    => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start.ps1',
+                'stop'          => __DIR__ . '/unit/AppServer/bin/stop.ps1',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+            'ChannelServerUtilServer'    => [
+                'start'         => __DIR__ . '/unit/ChannelServerUtilServer/bin/start.ps1',
+                'stop'          => __DIR__ . '/unit/ChannelServerUtilServer/bin/stop.ps1',
+                'checkStatus'   => 'checkChannelServerUtilServerStatus',
+            ],
+        ];
+    }
+    else
+    {
+        $servers = [
+            'AppServer'    => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start.sh',
+                'stop'          => __DIR__ . '/unit/AppServer/bin/stop.sh',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+            'ChannelServerUtilServer'    => [
+                'start'         => __DIR__ . '/unit/ChannelServerUtilServer/bin/start.sh',
+                'stop'          => __DIR__ . '/unit/ChannelServerUtilServer/bin/stop.sh',
+                'checkStatus'   => 'checkChannelServerUtilServerStatus',
+            ],
+        ];
+    }
 
     foreach ($servers as $name => $options)
     {
         // start server
-        $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+        if ('\\' === \DIRECTORY_SEPARATOR)
+        {
+            $cmd = 'powershell ' . $options['start'];
+        }
+        else
+        {
+            $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+        }
         echo "Starting {$name}...", \PHP_EOL;
         shell_exec("{$cmd}");
 
         register_shutdown_function(function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
+            if ('\\' === \DIRECTORY_SEPARATOR)
+            {
+                $cmd = 'powershell ' . $cmd;
+            }
             echo "Stoping {$name}...", \PHP_EOL;
             shell_exec("{$cmd}");
             echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;

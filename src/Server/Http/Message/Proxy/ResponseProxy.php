@@ -108,9 +108,17 @@ class ResponseProxy extends BaseRequestContextProxy implements \Imi\Server\Http\
     /**
      * {@inheritDoc}
      */
-    public function isWritable(): bool
+    public function isHeaderWritable(): bool
     {
-        return $this->__getProxyInstance()->isWritable(...\func_get_args());
+        return $this->__getProxyInstance()->isHeaderWritable(...\func_get_args());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isBodyWritable(): bool
+    {
+        return $this->__getProxyInstance()->isBodyWritable(...\func_get_args());
     }
 
     /**

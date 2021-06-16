@@ -27,9 +27,14 @@ class WorkermanResponse extends Response
     protected TcpConnection $connection;
 
     /**
-     * 是否可写.
+     * 响应头是否可写.
      */
-    protected bool $isWritable = true;
+    protected bool $isHeaderWritable = true;
+
+    /**
+     * 响应主体是否可写.
+     */
+    protected bool $isBodyWritable = true;
 
     public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Response $response)
     {
@@ -40,11 +45,19 @@ class WorkermanResponse extends Response
     }
 
     /**
-     * 是否可写.
+     * 响应头是否可写.
      */
-    public function isWritable(): bool
+    public function isHeaderWritable(): bool
     {
-        return $this->isWritable;
+        return $this->isHeaderWritable;
+    }
+
+    /**
+     * 响应主体是否可写.
+     */
+    public function isBodyWritable(): bool
+    {
+        return $this->isBodyWritable;
     }
 
     /**
@@ -52,6 +65,11 @@ class WorkermanResponse extends Response
      */
     private function sendHeaders(): void
     {
+        if (!$this->isHeaderWritable())
+        {
+            return;
+        }
+        $this->isHeaderWritable = false;
         $response = $this->workermanResponse;
         // cookie
         if ($this->cookies)
@@ -86,11 +104,14 @@ class WorkermanResponse extends Response
      */
     public function send(): self
     {
-        $this->isWritable = false;
         $this->sendHeaders();
-        $response = $this->workermanResponse;
-        $response->withBody((string) $this->getBody());
-        $this->connection->send($response);
+        if ($this->isBodyWritable())
+        {
+            $this->isBodyWritable = false;
+            $response = $this->workermanResponse;
+            $response->withBody((string) $this->getBody());
+            $this->connection->send($response);
+        }
 
         return $this;
     }
@@ -106,11 +127,14 @@ class WorkermanResponse extends Response
      */
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
-        $this->isWritable = false;
         $this->sendHeaders();
-        $response = $this->workermanResponse;
-        $response->withFile($filename, $offset, $length);
-        $this->connection->send($response);
+        if ($this->isBodyWritable())
+        {
+            $this->isBodyWritable = false;
+            $response = $this->workermanResponse;
+            $response->withFile($filename, $offset, $length);
+            $this->connection->send($response);
+        }
 
         return $this;
     }

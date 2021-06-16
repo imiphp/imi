@@ -16,9 +16,17 @@ class FpmResponse extends Response
     protected array $changedCookieNames = [];
 
     /**
-     * 是否可写.
+     * 响应头是否可写.
      */
-    public function isWritable(): bool
+    public function isHeaderWritable(): bool
+    {
+        return !connection_aborted() && !headers_sent();
+    }
+
+    /**
+     * 响应主体是否可写.
+     */
+    public function isBodyWritable(): bool
     {
         return !connection_aborted();
     }
@@ -51,11 +59,13 @@ class FpmResponse extends Response
 
     /**
      * 发送头部信息，没有特别需求，无需手动调用.
-     *
-     * @return static
      */
-    private function sendHeaders(): self
+    private function sendHeaders(): void
     {
+        if (!$this->isHeaderWritable())
+        {
+            return;
+        }
         // status
         $data = $this->getStatusCode() . ' ' . $this->getReasonPhrase();
         header('HTTP/1.1 ' . $data);
@@ -79,8 +89,6 @@ class FpmResponse extends Response
                 setcookie($cookie['key'], $cookie['value'], $cookie['expire'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']);
             }
         }
-
-        return $this;
     }
 
     /**
@@ -91,7 +99,10 @@ class FpmResponse extends Response
     public function send(): self
     {
         $this->sendHeaders();
-        echo (string) $this->getBody();
+        if ($this->isBodyWritable())
+        {
+            echo (string) $this->getBody();
+        }
 
         return $this;
     }
@@ -108,18 +119,21 @@ class FpmResponse extends Response
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
         $this->sendHeaders();
-        $fs = new FileStream($filename, StreamMode::READONLY);
-        if ($offset > 0)
+        if ($this->isBodyWritable())
         {
-            $fs->seek($offset);
-        }
-        if ($length > 0)
-        {
-            echo $fs->read($length);
-        }
-        else
-        {
-            echo $fs->getContents();
+            $fs = new FileStream($filename, StreamMode::READONLY);
+            if ($offset > 0)
+            {
+                $fs->seek($offset);
+            }
+            if ($length > 0)
+            {
+                echo $fs->read($length);
+            }
+            else
+            {
+                echo $fs->getContents();
+            }
         }
 
         return $this;

@@ -34,10 +34,7 @@ class Dispatcher
         $requestHandler = new RequestHandler($this->getMiddlewares());
         /** @var Response $response */
         $response = $requestHandler->handle($request);
-        if ($response->isWritable())
-        {
-            $response->send();
-        }
+        $response->send();
 
         return $response;
     }

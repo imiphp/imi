@@ -18,7 +18,7 @@ return [
     // 组件命名空间
     'components'    => [
         'Workerman'        => 'Imi\Workerman',
-        'Swoole'           => 'Imi\Swoole',
+        'Swoole'           => defined('SWOOLE_VERSION') ? 'Imi\Swoole' : '',
         'WorkermanGateway' => 'Imi\WorkermanGateway',
     ],
 
@@ -59,7 +59,7 @@ return [
     ],
 
     // 主服务器配置
-    'mainServer'    => [
+    'mainServer'    => defined('SWOOLE_VERSION') ? [
         'namespace'    => 'Imi\WorkermanGateway\Test\AppServer\WebSocketServer',
         'type'         => \Imi\WorkermanGateway\Swoole\Server\Type::BUSINESS_WEBSOCKET,
         // 'host'         => imiGetEnv('SERVER_HOST', '127.0.0.1'),
@@ -75,17 +75,17 @@ return [
                 'size' => 1024,
             ],
         ],
-    ],
+    ] : [],
 
     // 子服务器（端口监听）配置
-    'subServers'        => [
+    'subServers'        => defined('SWOOLE_VERSION') ? [
         'http'     => [
             'namespace' => 'Imi\WorkermanGateway\Test\AppServer\ApiServer',
             'type'      => Imi\Swoole\Server\Type::HTTP,
             'host'      => imiGetEnv('SERVER_HOST', '127.0.0.1'),
             'port'      => 13000,
         ],
-    ],
+    ] : [],
 
     // Workerman 服务器配置
     'workermanServer' => [
@@ -119,6 +119,7 @@ return [
         'websocket' => [
             'namespace'   => 'Imi\WorkermanGateway\Test\AppServer\WebSocketServer',
             'type'        => Imi\WorkermanGateway\Workerman\Server\Type::BUSINESS_WEBSOCKET,
+            'shareWorker' => '\\' === \DIRECTORY_SEPARATOR ? 'http' : null,
             'configs'     => [
                 'registerAddress' => '127.0.0.1:13004',
                 'count'           => 2,

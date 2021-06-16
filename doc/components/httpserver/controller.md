@@ -312,9 +312,13 @@ public function action()
 public function sendFile(string $filename, int $offset = 0, int $length = 0)
 ```
 
-#### 是否可写
+#### 响应头是否可写
 
-`public function isWritable()`
+`public function isHeaderWritable()`
+
+#### 响应主体是否可写
+
+`public function isBodyWritable()`
 
 #### 获取swoole响应对象
 

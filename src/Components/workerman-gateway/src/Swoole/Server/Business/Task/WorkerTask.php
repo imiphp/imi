@@ -21,23 +21,25 @@ use Yurun\Swoole\CoPool\Interfaces\ICoTask;
 use Yurun\Swoole\CoPool\Interfaces\ITaskParam;
 use function Yurun\Swoole\Coroutine\goWait;
 
-class WorkerTask implements ICoTask
+if (\extension_loaded('swoole'))
 {
-    /**
-     * 执行任务
-     *
-     * @return mixed
-     */
-    public function run(ITaskParam $param)
+    class WorkerTask implements ICoTask
     {
-        goWait(function () use ($param) {
-            try
-            {
-                $result = $param->getData();
-                /** @var ISwooleServer $server */
-                /** @var IGatewayClient $client */
-                ['server' => $server, 'client' => $client, 'message' => $message, 'clientId' => $clientId] = $result;
-                switch ($message['cmd']) {
+        /**
+         * 执行任务
+         *
+         * @return mixed
+         */
+        public function run(ITaskParam $param)
+        {
+            goWait(function () use ($param) {
+                try
+                {
+                    $result = $param->getData();
+                    /** @var ISwooleServer $server */
+                    /** @var IGatewayClient $client */
+                    ['server' => $server, 'client' => $client, 'message' => $message, 'clientId' => $clientId] = $result;
+                    switch ($message['cmd']) {
                 case GatewayProtocol::CMD_ON_CONNECT:
                     // 连接
                     $server->trigger('connect', [
@@ -90,11 +92,12 @@ class WorkerTask implements ICoTask
                         'response'  => $response,
                     ], $server, HandShakeEventParam::class);
                 }
-            }
-            catch (\Throwable $th)
-            {
-                App::getBean('ErrorLog')->onException($th);
-            }
-        });
+                }
+                catch (\Throwable $th)
+                {
+                    App::getBean('ErrorLog')->onException($th);
+                }
+            });
+        }
     }
 }

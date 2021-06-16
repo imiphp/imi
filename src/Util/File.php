@@ -105,20 +105,27 @@ class File
      */
     public static function path(string ...$args): string
     {
-        static $dsds = \DIRECTORY_SEPARATOR . \DIRECTORY_SEPARATOR;
-        $result = implode(\DIRECTORY_SEPARATOR, $args);
-        $offset = strpos($result, '://');
+        if (!isset($args[0]))
+        {
+            return '';
+        }
+        $offset = strpos($args[0], '://');
         if (false === $offset)
         {
             $offset = 0;
+            $ds = \DIRECTORY_SEPARATOR;
+            $dsds = \DIRECTORY_SEPARATOR . \DIRECTORY_SEPARATOR;
         }
         else
         {
             $offset += 3;
+            $ds = '/';
+            $dsds = '//';
         }
+        $result = implode($ds, $args);
         while (false !== ($position = strpos($result, $dsds, $offset)))
         {
-            $result = substr_replace($result, \DIRECTORY_SEPARATOR, $position, 2);
+            $result = substr_replace($result, $ds, $position, 2);
         }
 
         return $result;

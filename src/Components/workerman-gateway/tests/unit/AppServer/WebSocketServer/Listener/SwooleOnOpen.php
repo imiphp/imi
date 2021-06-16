@@ -9,16 +9,19 @@ use Imi\ConnectionContext;
 use Imi\Swoole\Server\Event\Listener\IOpenEventListener;
 use Imi\Swoole\Server\Event\Param\OpenEventParam;
 
-/**
- * @ClassEventListener(className="Imi\WorkermanGateway\Swoole\Server\Business\WebSocketBusinessServer",eventName="open")
- */
-class SwooleOnOpen implements IOpenEventListener
+if (\extension_loaded('swoole'))
 {
     /**
-     * 事件处理方法.
+     * @ClassEventListener(className="Imi\WorkermanGateway\Swoole\Server\Business\WebSocketBusinessServer",eventName="open")
      */
-    public function handle(OpenEventParam $e): void
+    class SwooleOnOpen implements IOpenEventListener
     {
-        ConnectionContext::set('requestUri', (string) $e->request->getUri());
+        /**
+         * 事件处理方法.
+         */
+        public function handle(OpenEventParam $e): void
+        {
+            ConnectionContext::set('requestUri', (string) $e->request->getUri());
+        }
     }
 }

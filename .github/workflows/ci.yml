@@ -122,3 +122,58 @@ jobs:
       - name: test
         run: |
           composer test
+
+  ci-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: "8.0"
+          root-password: root
+
+      - name: Setup Redis-server
+        run: |
+          nuget install redis-64 -excludeversion
+          redis-64\tools\redis-server.exe --service-install
+          redis-64\tools\redis-server.exe --service-start
+          '@ECHO Redis Started'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          ini-values: session.save_path=C:\temp
+          tools: pecl
+          extensions: bcmath, curl, openssl, mbstring, intl, json, igbinary, redis, mysqli, pdo, pdo_mysql
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-versions }}-
+            ${{ runner.os }}-composer-
+
+      - name: prepare
+        run: |
+          mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS db_imi_test;'
+          composer update --prefer-dist --no-progress
+          php src/Cli/bin/imi-cli generate/table --app-namespace "Imi\Test\Component"
+
+      - name: test
+        run: |
+          php tests\phpunit -c .\tests\phpunit.xml
+          php tests\phpunit -c src\Components\fpm\tests\phpunit.xml
+          php tests\phpunit -c src\Components\workerman\tests\phpunit.xml
+          php tests\phpunit -c src\Components\workerman-gateway\tests\phpunit.xml --testsuite workerman
+      - name: Print logs
+        if: failure()
+        run: php .github/print-logs.php

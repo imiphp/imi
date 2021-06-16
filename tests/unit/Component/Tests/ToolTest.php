@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests;
 
 use Imi\Test\BaseTest;
+use Imi\Util\File;
 use Imi\Util\Imi;
 
 /**
@@ -14,7 +15,7 @@ class ToolTest extends BaseTest
 {
     public function testCoExit(): void
     {
-        $cmd = \Imi\cmd('"' . \dirname(Imi::getNamespacePath('Imi')) . '/src/Cli/bin/imi-cli" TestTool/test --app-namespace "Imi\Test\Component"');
+        $cmd = \Imi\cmd('"' . \PHP_BINARY . '" "' . File::path(\dirname(Imi::getNamespacePath('Imi')), 'src', 'Cli', 'bin', 'imi-cli"') . ' TestTool/test --app-namespace "Imi\Test\Component"');
         exec($cmd, $output, $exitCode);
         $this->assertEquals(0, $exitCode);
 

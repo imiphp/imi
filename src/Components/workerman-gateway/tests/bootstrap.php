@@ -28,23 +28,36 @@ function startServer(): void
         return $serverStarted;
     }
 
-    $servers = [
-        'WorkermanServer'    => [
-            'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh',
-            'checkStatus'   => 'checkHttpServerStatus',
-        ],
-        'WorkermanRegisterServer'    => [
-            'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name register',
-        ],
-        'WorkermanGatewayServer'    => [
-            'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name gateway',
-        ],
-        'SwooleServer' => [
-            'start'         => __DIR__ . '/unit/AppServer/bin/start-swoole.sh',
-            'stop'          => __DIR__ . '/unit/AppServer/bin/stop-swoole.sh',
-            'checkStatus'   => 'checkHttpServerStatus',
-        ],
-    ];
+    if ('\\' === \DIRECTORY_SEPARATOR)
+    {
+        $servers = [
+            'WorkermanServer'    => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.ps1',
+                'stop'          => __DIR__ . '/unit/AppServer/bin/stop-workerman.ps1',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+        ];
+    }
+    else
+    {
+        $servers = [
+            'WorkermanServer'    => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+            'WorkermanRegisterServer'    => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name register',
+            ],
+            'WorkermanGatewayServer'    => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start-workerman.sh --name gateway',
+            ],
+            'SwooleServer' => [
+                'start'         => __DIR__ . '/unit/AppServer/bin/start-swoole.sh',
+                'stop'          => __DIR__ . '/unit/AppServer/bin/stop-swoole.sh',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+        ];
+    }
 
     $input = new ArgvInput();
     switch ($input->getParameterOption('--testsuite'))
@@ -61,19 +74,29 @@ function startServer(): void
             throw new \RuntimeException(sprintf('Unknown --testsuite %s', $input->getParameterOption('--testsuite')));
     }
 
-    register_shutdown_function(function () {
-        echo 'Stoping WorkermanServer...', \PHP_EOL;
-        shell_exec(<<<CMD
+    if ('/' === \DIRECTORY_SEPARATOR)
+    {
+        register_shutdown_function(function () {
+            echo 'Stoping WorkermanServer...', \PHP_EOL;
+            shell_exec(<<<CMD
 kill `ps -ef|grep "WorkerMan: master process"|grep -v grep|awk '{print $2}'`
 CMD);
-        echo 'WorkermanServer stoped!', \PHP_EOL, \PHP_EOL;
-    });
+            echo 'WorkermanServer stoped!', \PHP_EOL, \PHP_EOL;
+        });
+    }
 }
 
 function runTestServer(string $name, array $options): void
 {
     // start server
-    $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+    if ('\\' === \DIRECTORY_SEPARATOR)
+    {
+        $cmd = 'powershell ' . $options['start'];
+    }
+    else
+    {
+        $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+    }
     echo "Starting {$name}...", \PHP_EOL;
     shell_exec("{$cmd}");
 
@@ -82,6 +105,10 @@ function runTestServer(string $name, array $options): void
         register_shutdown_function(function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
+            if ('\\' === \DIRECTORY_SEPARATOR)
+            {
+                $cmd = 'powershell ' . $cmd;
+            }
             echo "Stoping {$name}...", \PHP_EOL;
             shell_exec("{$cmd}");
             echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;

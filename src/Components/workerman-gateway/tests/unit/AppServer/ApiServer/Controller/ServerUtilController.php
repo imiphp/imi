@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Test\AppServer\ApiServer\Controller;
 
+use Imi\App;
 use Imi\Server\Http\Controller\HttpController;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Workerman\Server\Server;
-use Swoole\Coroutine;
 
 /**
  * 服务器工具类.
@@ -85,6 +85,6 @@ class ServerUtilController extends HttpController
 
     private function getServerName(): string
     {
-        return Coroutine::getuid() > 0 ? 'main' : 'websocket';
+        return 'swoole' === App::getApp()->getType() ? 'main' : 'websocket';
     }
 }

@@ -9,100 +9,103 @@ use Imi\Swoole\Server\Contract\ISwooleServer;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
-class WorkermanGatewaySwooleRequest extends Request
+if (\extension_loaded('swoole'))
 {
-    /**
-     * 对应的服务器.
-     */
-    protected ISwooleServer $serverInstance;
-
-    protected array $data = [];
-
-    public function __construct(ISwooleServer $server, array $data)
+    class WorkermanGatewaySwooleRequest extends Request
     {
-        $this->serverInstance = $server;
-        $this->data = $data;
-    }
+        /**
+         * 对应的服务器.
+         */
+        protected ISwooleServer $serverInstance;
 
-    /**
-     * 初始化协议版本.
-     */
-    protected function initProtocolVersion(): void
-    {
-        [, $this->protocolVersion] = explode('/', $this->data['server']['SERVER_PROTOCOL']);
-    }
+        protected array $data = [];
 
-    /**
-     * 初始化 headers.
-     */
-    protected function initHeaders(): void
-    {
-        $headers = [];
-        foreach ($this->data['server'] as $name => $value)
+        public function __construct(ISwooleServer $server, array $data)
         {
-            if ('HTTP_' === substr($name, 0, 5))
-            {
-                $headers[strtolower(str_replace('_', '-', substr($name, 5)))] = $value;
-            }
+            $this->serverInstance = $server;
+            $this->data = $data;
         }
-        $this->mergeHeaders($headers);
-    }
 
-    /**
-     * 初始化 body.
-     */
-    protected function initBody(): void
-    {
-        $this->body = new MemoryStream('');
-    }
+        /**
+         * 初始化协议版本.
+         */
+        protected function initProtocolVersion(): void
+        {
+            [, $this->protocolVersion] = explode('/', $this->data['server']['SERVER_PROTOCOL']);
+        }
 
-    /**
-     * 初始化 uri.
-     */
-    protected function initUri(): void
-    {
-        $data = $this->data;
-        $this->uri = new Uri('ws://' . $data['server']['HTTP_HOST'] . $data['server']['REQUEST_URI']);
-    }
+        /**
+         * 初始化 headers.
+         */
+        protected function initHeaders(): void
+        {
+            $headers = [];
+            foreach ($this->data['server'] as $name => $value)
+            {
+                if ('HTTP_' === substr($name, 0, 5))
+                {
+                    $headers[strtolower(str_replace('_', '-', substr($name, 5)))] = $value;
+                }
+            }
+            $this->mergeHeaders($headers);
+        }
 
-    /**
-     * 初始化 method.
-     */
-    protected function initMethod(): void
-    {
-        $this->method = $this->data['server']['REQUEST_METHOD'];
-    }
+        /**
+         * 初始化 body.
+         */
+        protected function initBody(): void
+        {
+            $this->body = new MemoryStream('');
+        }
 
-    /**
-     * 初始化 server.
-     */
-    protected function initServer(): void
-    {
-        $this->server = $this->data['server'];
-    }
+        /**
+         * 初始化 uri.
+         */
+        protected function initUri(): void
+        {
+            $data = $this->data;
+            $this->uri = new Uri('ws://' . $data['server']['HTTP_HOST'] . $data['server']['REQUEST_URI']);
+        }
 
-    /**
-     * 初始化请求参数.
-     */
-    protected function initRequestParams(): void
-    {
-        $data = $this->data;
-        $this->get = $data['get'];
-        $this->post = [];
-        $this->cookies = $data['cookie'];
-        $this->request = null;
-    }
+        /**
+         * 初始化 method.
+         */
+        protected function initMethod(): void
+        {
+            $this->method = $this->data['server']['REQUEST_METHOD'];
+        }
 
-    /**
-     * 获取对应的服务器.
-     */
-    public function getServerInstance(): ISwooleServer
-    {
-        return $this->serverInstance;
-    }
+        /**
+         * 初始化 server.
+         */
+        protected function initServer(): void
+        {
+            $this->server = $this->data['server'];
+        }
 
-    public function getData(): array
-    {
-        return $this->data;
+        /**
+         * 初始化请求参数.
+         */
+        protected function initRequestParams(): void
+        {
+            $data = $this->data;
+            $this->get = $data['get'];
+            $this->post = [];
+            $this->cookies = $data['cookie'];
+            $this->request = null;
+        }
+
+        /**
+         * 获取对应的服务器.
+         */
+        public function getServerInstance(): ISwooleServer
+        {
+            return $this->serverInstance;
+        }
+
+        public function getData(): array
+        {
+            return $this->data;
+        }
     }
 }

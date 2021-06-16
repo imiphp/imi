@@ -33,7 +33,12 @@ interface IHttpResponse extends IResponse
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self;
 
     /**
-     * 是否可写.
+     * 响应头是否可写.
      */
-    public function isWritable(): bool;
+    public function isHeaderWritable(): bool;
+
+    /**
+     * 响应主体是否可写.
+     */
+    public function isBodyWritable(): bool;
 }

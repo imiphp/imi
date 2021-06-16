@@ -6,6 +6,7 @@ namespace Imi\Test\Component\Tests\Util;
 
 use Imi\Test\BaseTest;
 use Imi\Test\Component\Util\Imi\TestPropertyClass;
+use Imi\Util\File;
 use Imi\Util\Imi;
 
 /**
@@ -236,7 +237,7 @@ class ImiTest extends BaseTest
     {
         $this->assertEquals([
             __DIR__,
-            \dirname(__DIR__, 5) . '/src/Test/Component/Tests/Util',
+            File::path(\dirname(__DIR__, 5), 'src', 'Test', 'Component', 'Tests', 'Util'),
         ], Imi::getNamespacePaths('Imi\Test\Component\Tests\Util'));
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+$date = date('Y-m-d');
+
 echo '[Base Component]', \PHP_EOL;
 $fileName = dirname(__DIR__) . '/tests/unit/Component/logs/' . date('Y-m-d') . '.log';
 if (is_file($fileName))
@@ -44,6 +46,7 @@ foreach ([
 
 foreach ([
     'AppServer',
+    'ChannelServerUtilServer',
 ] as $name)
 {
     echo '[Workerman ', $name, ']', \PHP_EOL;
@@ -54,7 +57,15 @@ foreach ([
     }
     else
     {
-        echo 'Not found!', \PHP_EOL;
+        $fileName = dirname(__DIR__) . '/src/Components/workerman/tests/unit/' . $name . '/logs/log-' . $date . '.log';
+        if (is_file($fileName))
+        {
+            echo file_get_contents($fileName), \PHP_EOL;
+        }
+        else
+        {
+            echo 'Not found!', \PHP_EOL;
+        }
     }
 }
 
@@ -66,7 +77,15 @@ if (is_file($fileName))
 }
 else
 {
-    echo 'Not found!', \PHP_EOL;
+    $fileName = dirname(__DIR__) . '/src/Components/fpm/tests/HttpServer/logs/log-' . $date . '.log';
+    if (is_file($fileName))
+    {
+        echo file_get_contents($fileName), \PHP_EOL;
+    }
+    else
+    {
+        echo 'Not found!', \PHP_EOL;
+    }
 }
 
 echo '[WorkermanGateway]', \PHP_EOL;
@@ -77,7 +96,15 @@ if (is_file($fileName))
 }
 else
 {
-    echo 'Not found!', \PHP_EOL;
+    $fileName = dirname(__DIR__) . '/src/Components/workerman-gateway/tests/unit/AppServer/logs/log-' . $date . '.log';
+    if (is_file($fileName))
+    {
+        echo file_get_contents($fileName), \PHP_EOL;
+    }
+    else
+    {
+        echo 'Not found!', \PHP_EOL;
+    }
 }
 
 $dir = dirname(__DIR__) . '/src/Components/';

@@ -26,24 +26,48 @@ function startServer(): void
         return $serverStarted;
     }
 
-    $servers = [
-        'HttpServer'    => [
-            'start'         => __DIR__ . '/HttpServer/bin/start.sh -d',
-            'stop'          => __DIR__ . '/HttpServer/bin/stop.sh',
-            'checkStatus'   => 'checkHttpServerStatus',
-        ],
-    ];
+    if ('\\' === \DIRECTORY_SEPARATOR)
+    {
+        $servers = [
+            'HttpServer'    => [
+                'start'         => __DIR__ . '\HttpServer\bin\start.ps1 -d 1',
+                'stop'          => __DIR__ . '\HttpServer\bin\stop.ps1',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+        ];
+    }
+    else
+    {
+        $servers = [
+            'HttpServer'    => [
+                'start'         => __DIR__ . '/HttpServer/bin/start.sh -d',
+                'stop'          => __DIR__ . '/HttpServer/bin/stop.sh',
+                'checkStatus'   => 'checkHttpServerStatus',
+            ],
+        ];
+    }
 
     foreach ($servers as $name => $options)
     {
         // start server
-        $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+        if ('\\' === \DIRECTORY_SEPARATOR)
+        {
+            $cmd = 'powershell ' . $options['start'];
+        }
+        else
+        {
+            $cmd = 'nohup ' . $options['start'] . ' > /dev/null 2>&1';
+        }
         echo "Starting {$name}...", \PHP_EOL;
         shell_exec("{$cmd}");
 
         register_shutdown_function(function () use ($name, $options) {
             // stop server
             $cmd = $options['stop'];
+            if ('\\' === \DIRECTORY_SEPARATOR)
+            {
+                $cmd = 'powershell ' . $cmd;
+            }
             echo "Stoping {$name}...", \PHP_EOL;
             shell_exec("{$cmd}");
             echo "{$name} stoped!", \PHP_EOL, \PHP_EOL;

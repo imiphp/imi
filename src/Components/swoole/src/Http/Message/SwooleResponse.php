@@ -28,20 +28,30 @@ class SwooleResponse extends Response
     }
 
     /**
-     * 是否可写.
+     * 响应头是否可写.
      */
-    public function isWritable(): bool
+    public function isHeaderWritable(): bool
+    {
+        return $this->swooleResponse->isWritable();
+    }
+
+    /**
+     * 响应主体是否可写.
+     */
+    public function isBodyWritable(): bool
     {
         return $this->swooleResponse->isWritable();
     }
 
     /**
      * 发送头部信息，没有特别需求，无需手动调用.
-     *
-     * @return static
      */
-    private function sendHeaders()
+    private function sendHeaders(): void
     {
+        if (!$this->isHeaderWritable())
+        {
+            return;
+        }
         $swooleResponse = $this->swooleResponse;
         // cookie
         if ($this->cookies)
@@ -73,7 +83,7 @@ class SwooleResponse extends Response
             $swooleResponse->status($this->statusCode);
         }
 
-        return $this;
+        return;
     }
 
     /**
@@ -84,7 +94,10 @@ class SwooleResponse extends Response
     public function send(): self
     {
         $this->sendHeaders();
-        $this->swooleResponse->end($this->getBody());
+        if ($this->isBodyWritable())
+        {
+            $this->swooleResponse->end($this->getBody());
+        }
 
         return $this;
     }
@@ -101,7 +114,10 @@ class SwooleResponse extends Response
     public function sendFile(string $filename, int $offset = 0, int $length = 0): self
     {
         $this->sendHeaders();
-        $this->swooleResponse->sendfile($filename, $offset, $length);
+        if ($this->isBodyWritable())
+        {
+            $this->swooleResponse->sendfile($filename, $offset, $length);
+        }
 
         return $this;
     }
