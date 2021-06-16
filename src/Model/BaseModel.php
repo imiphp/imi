@@ -388,7 +388,7 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
                         }
                     }
                 }
-                elseif (isset($serializableSets[$name]))
+                if (isset($serializableSets[$name]))
                 {
                     // 单独属性上的 @Serializable 注解
                     if (!$serializableSets[$name][0]->allow)
