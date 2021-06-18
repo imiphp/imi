@@ -81,7 +81,7 @@ abstract class TestListBase extends Model
      */
     public function setList($list)
     {
-        if (isset($list[255]))
+        if (mb_strlen($list) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $list is 255');
         }

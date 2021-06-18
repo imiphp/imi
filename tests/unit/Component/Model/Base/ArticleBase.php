@@ -83,7 +83,7 @@ abstract class ArticleBase extends Model
      */
     public function setTitle($title)
     {
-        if (isset($title[255]))
+        if (mb_strlen($title) > 255)
         {
             throw new \InvalidArgumentException('The maximum length of $title is 255');
         }
@@ -120,7 +120,7 @@ abstract class ArticleBase extends Model
      */
     public function setContent($content)
     {
-        if (isset($content[16777215]))
+        if (mb_strlen($content) > 16777215)
         {
             throw new \InvalidArgumentException('The maximum length of $content is 16777215');
         }

@@ -37,6 +37,7 @@ class ModelGenerate
      * @Arg(name="basePath", type=ArgType::STRING, default=null, comments="指定命名空间对应的基准路径，可选")
      * @Arg(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Arg(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
+     * @Arg(name="lengthCheck", type=ArgType::BOOLEAN, default=false, comments="是否检查字符串字段长度,可选")
      *
      * @param string      $namespace
      * @param string      $baseClass
@@ -50,10 +51,11 @@ class ModelGenerate
      * @param string|null $basePath
      * @param bool        $entity
      * @param bool        $sqlSingleLine
+     * @param bool        $lengthCheck
      *
      * @return void
      */
-    public function generate($namespace, $baseClass, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity, $sqlSingleLine)
+    public function generate($namespace, $baseClass, $database, $poolName, $prefix, $include, $exclude, $override, $config, $basePath, $entity, $sqlSingleLine, $lengthCheck)
     {
         $override = (string) $override;
         switch ($override)
@@ -220,6 +222,7 @@ class ModelGenerate
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
                 'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
+                'lengthCheck'   => $lengthCheck,
             ];
             $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE']);
