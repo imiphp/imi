@@ -68,14 +68,14 @@ abstract class <?php echo $className; ?>Base extends Model
 <?php if ($length = [
     'char'       => $field['length'],
     'varchar'    => $field['length'],
-    'tinyblob'   => 2 ^ 8 - 1,
-    'tinytext'   => 2 ^ 8 - 1,
-    'blob'       => 2 ^ 16 - 1,
-    'text'       => 2 ^ 16 - 1,
-    'mediumblob' => 2 ^ 24 - 1,
-    'mediumtext' => 2 ^ 24 - 1,
-    'longblob'   => 2 ^ 32 - 1,
-    'longtext'   => 2 ^ 32 - 1,
+    'tinyblob'   => 2 ** 8 - 1,
+    'tinytext'   => 2 ** 8 - 1,
+    'blob'       => 2 ** 16 - 1,
+    'text'       => 2 ** 16 - 1,
+    'mediumblob' => 2 ** 24 - 1,
+    'mediumtext' => 2 ** 24 - 1,
+    'longblob'   => 2 ** 32 - 1,
+    'longtext'   => 2 ** 32 - 1,
 ][$field['type']] ?? null) { ?>
         if (isset($<?php echo $field['varName']; ?>[<?php echo $length; ?>]))
         {

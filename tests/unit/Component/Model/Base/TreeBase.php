@@ -115,7 +115,7 @@ abstract class TreeBase extends Model
      */
     public function setName($name)
     {
-        if (isset($name[31]))
+        if (isset($name[32]))
         {
             throw new \InvalidArgumentException('The maximum length of $name is 32');
         }

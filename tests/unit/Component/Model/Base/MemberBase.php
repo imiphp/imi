@@ -83,7 +83,7 @@ abstract class MemberBase extends Model
      */
     public function setUsername($username)
     {
-        if (isset($username[31]))
+        if (isset($username[32]))
         {
             throw new \InvalidArgumentException('The maximum length of $username is 32');
         }
@@ -121,7 +121,7 @@ abstract class MemberBase extends Model
      */
     public function setPassword($password)
     {
-        if (isset($password[254]))
+        if (isset($password[255]))
         {
             throw new \InvalidArgumentException('The maximum length of $password is 255');
         }

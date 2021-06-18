@@ -81,7 +81,7 @@ abstract class PerformanceBase extends Model
      */
     public function setValue($value)
     {
-        if (isset($value[254]))
+        if (isset($value[255]))
         {
             throw new \InvalidArgumentException('The maximum length of $value is 255');
         }
