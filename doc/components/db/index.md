@@ -66,6 +66,11 @@ return [
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                // 数据库连接后，执行初始化的 SQL
+                // 'sqls' => [
+                //     'select 1',
+                //     'select 2',
+                // ],
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -125,6 +130,11 @@ return [
                 // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                // 数据库连接后，执行初始化的 SQL
+                // 'sqls' => [
+                //     'select 1',
+                //     'select 2',
+                // ],
             ],
             // uri 写法
             // 'resource'  =>  [
@@ -197,6 +207,11 @@ return [
                     // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                     // 使用 Swoole MySQL 驱动
                     // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                    // 数据库连接后，执行初始化的 SQL
+                    // 'sqls' => [
+                    //     'select 1',
+                    //     'select 2',
+                    // ],
                 ],
             ],
             // 异步池子，worker进程使用
@@ -223,6 +238,11 @@ return [
                         // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                        // 数据库连接后，执行初始化的 SQL
+                        // 'sqls' => [
+                        //     'select 1',
+                        //     'select 2',
+                        // ],
                     ],
                     [
                         'host'		=> '127.0.0.2',
@@ -238,6 +258,11 @@ return [
                         // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
                         // 使用 Swoole MySQL 驱动
                         // 'dbClass' => \Imi\Db\Drivers\Swoole\Driver::class,
+                        // 数据库连接后，执行初始化的 SQL
+                        // 'sqls' => [
+                        //     'select 1',
+                        //     'select 2',
+                        // ],
                     ]
                 ],
             ],
@@ -273,6 +298,11 @@ return [
                     // 'timeout' => '建立连接超时时间',
                     // 'charset' => '',
                     // 'strict_type' => false, //开启严格模式，返回的字段将自动转为数字类型
+                    // 数据库连接后，执行初始化的 SQL
+                    // 'sqls' => [
+                    //     'select 1',
+                    //     'select 2',
+                    // ],
                 ],
             ],
             // 异步池子，worker进程使用
@@ -291,6 +321,11 @@ return [
                     // 'timeout' => '建立连接超时时间',
                     // 'charset' => '',
                     // 'options' => [], // PDO连接选项
+                    // 数据库连接后，执行初始化的 SQL
+                    // 'sqls' => [
+                    //     'select 1',
+                    //     'select 2',
+                    // ],
                 ],
                 // uri 写法
                 // 'resource'  =>  [

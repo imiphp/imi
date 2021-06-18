@@ -6,7 +6,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
-use Imi\Model\Model;
+use Imi\Model\Model as Model;
 
 /**
  * tb_update_time 基类.

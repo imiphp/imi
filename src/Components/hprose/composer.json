@@ -14,5 +14,16 @@
             "Imi\\Hprose\\": "src/",
             "Imi\\Server\\Hprose\\": "src/Imi-Server-Hprose/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imi\\Hprose\\Dev\\": "dev/"
+        }
+    },
+    "scripts": {
+        "pre-install-cmd": "Imi\\Hprose\\Dev\\Dev::preUpdate",
+        "pre-update-cmd": "Imi\\Hprose\\Dev\\Dev::preUpdate",
+        "post-install-cmd": "Imi\\Hprose\\Dev\\Dev::postUpdate",
+        "post-update-cmd": "Imi\\Hprose\\Dev\\Dev::postUpdate"
     }
 }

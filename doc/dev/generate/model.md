@@ -17,6 +17,7 @@
 `-basePath` 指定命名空间对应的基准路径，可选
 `-entity` 序列化时是否使用驼峰命名(`true` or `false`),默认`true`,可选
 `-sqlSingleLine` 生成的SQL为单行,默认`false`,可选
+`-lengthCheck` 是否检查字符串字段长度,可选
 
 示例：
 

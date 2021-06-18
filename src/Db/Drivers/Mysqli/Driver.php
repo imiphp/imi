@@ -25,13 +25,6 @@ class Driver extends Base implements IDb
     protected $instance;
 
     /**
-     * 连接配置.
-     *
-     * @var array
-     */
-    protected $option;
-
-    /**
      * 最后执行过的SQL语句.
      *
      * @var string
@@ -89,7 +82,7 @@ class Driver extends Base implements IDb
         {
             $option['password'] = '';
         }
-        $this->option = $option;
+        parent::__construct($option);
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction();
     }
@@ -121,6 +114,7 @@ class Driver extends Base implements IDb
         $option = $this->option;
         $this->instance = $instance = new \mysqli($option['host'] ?? '127.0.0.1', $option['username'], $option['password'], $option['database'], $option['port'] ?? 3306);
         $instance->set_charset($option['charset'] ?? 'utf8');
+        $this->execInitSqls();
 
         return true;
     }

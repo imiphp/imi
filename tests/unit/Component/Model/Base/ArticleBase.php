@@ -6,7 +6,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
-use Imi\Model\Model;
+use Imi\Model\Model as Model;
 
 /**
  * tb_article 基类.
@@ -83,6 +83,10 @@ abstract class ArticleBase extends Model
      */
     public function setTitle($title)
     {
+        if (mb_strlen($title) > 255)
+        {
+            throw new \InvalidArgumentException('The maximum length of $title is 255');
+        }
         $this->title = $title;
 
         return $this;
@@ -116,6 +120,10 @@ abstract class ArticleBase extends Model
      */
     public function setContent($content)
     {
+        if (mb_strlen($content) > 16777215)
+        {
+            throw new \InvalidArgumentException('The maximum length of $content is 16777215');
+        }
         $this->content = $content;
 
         return $this;

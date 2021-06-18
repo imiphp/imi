@@ -24,13 +24,6 @@ class Driver extends Base implements IDb
     protected $instance;
 
     /**
-     * 连接配置.
-     *
-     * @var array
-     */
-    protected $option;
-
-    /**
      * 最后执行过的SQL语句.
      *
      * @var string
@@ -86,7 +79,7 @@ class Driver extends Base implements IDb
         {
             $option['options'] = [];
         }
-        $this->option = $option;
+        parent::__construct($option);
         $this->isCacheStatement = Config::get('@app.db.statement.cache', true);
         $this->transaction = new Transaction();
     }
@@ -147,6 +140,7 @@ class Driver extends Base implements IDb
     {
         $option = $this->option;
         $this->instance = new \PDO($this->buildDSN(), $option['username'], $option['password'], $option['options']);
+        $this->execInitSqls();
 
         return true;
     }

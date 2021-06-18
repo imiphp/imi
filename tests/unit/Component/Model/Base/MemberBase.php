@@ -6,7 +6,7 @@ use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Entity;
 use Imi\Model\Annotation\Table;
-use Imi\Model\Model;
+use Imi\Model\Model as Model;
 
 /**
  * tb_member 基类.
@@ -83,6 +83,10 @@ abstract class MemberBase extends Model
      */
     public function setUsername($username)
     {
+        if (mb_strlen($username) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $username is 32');
+        }
         $this->username = $username;
 
         return $this;
@@ -117,6 +121,10 @@ abstract class MemberBase extends Model
      */
     public function setPassword($password)
     {
+        if (mb_strlen($password) > 255)
+        {
+            throw new \InvalidArgumentException('The maximum length of $password is 255');
+        }
         $this->password = $password;
 
         return $this;

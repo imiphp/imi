@@ -447,7 +447,6 @@ class ModelTest extends BaseTest
             'id'       => null,
             'jsonData' => [1, 2, 3],
         ], $record->convertToArray());
-        // @phpstan-ignore-next-line
         $this->assertEquals([1, 2, 3], $record->getJsonData()->toArray());
         $id = $record->insert()->getLastInsertId();
         $this->assertGreaterThan(0, $id);
@@ -456,7 +455,6 @@ class ModelTest extends BaseTest
             'id'       => $id,
             'jsonData' => [1, 2, 3],
         ], $record->convertToArray());
-        // @phpstan-ignore-next-line
         $this->assertEquals([1, 2, 3], $record->getJsonData()->toArray());
         $list = TestJson::query()->where('id', '=', $id)->select()->getArray();
         $this->assertEquals([[
@@ -471,7 +469,6 @@ class ModelTest extends BaseTest
             'id'        => null,
             'json_data' => [4, 5, 6],
         ], $record->convertToArray());
-        // @phpstan-ignore-next-line
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
         $id = $record->insert()->getLastInsertId();
         $this->assertGreaterThan(0, $id);
@@ -480,7 +477,6 @@ class ModelTest extends BaseTest
             'id'        => $id,
             'json_data' => [4, 5, 6],
         ], $record->convertToArray());
-        // @phpstan-ignore-next-line
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
         $list = TestJsonNotCamel::query()->where('id', '=', $id)->select()->getArray();
         $this->assertEquals([[

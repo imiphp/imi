@@ -1,70 +1,92 @@
-<?= '<?php' ?>
+<?php echo '<?php'; ?>
 
-namespace <?= $namespace ?>\Base;
+namespace <?php echo $namespace; ?>\Base;
 
-use <?= $baseClassName ?> as Model;
+use <?php echo $baseClassName; ?> as Model;
 use Imi\Model\Annotation\DDL;
 use Imi\Model\Annotation\Table;
 use Imi\Model\Annotation\Column;
 use Imi\Model\Annotation\Entity;
 
 /**
- * <?= $tableComment ?> 基类
- * <?php if($entity === true):?>@Entity<?php else:?>@Entity(false)<?php endif;?>
+ * <?php echo $tableComment; ?> 基类
+ * <?php if (true === $entity) { ?>@Entity<?php }
+else
+{ ?>@Entity(false)<?php }?>
 
- * @Table(name="<?= $table['name'] ?>"<?php if(isset($table['id'][0])):?>, id={<?= '"', implode('", "', $table['id']), '"' ?>}<?php endif;?><?php if($poolName):?>, dbPoolName="<?=$poolName?>"<?php endif;?>)
- * @DDL("<?= str_replace('"', '""', $ddl) ?>")
-<?php foreach($fields as $field):?>
- * @property <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= '' === $field['comment'] ? '' : $field['comment'] ?>
+ * @Table(name="<?php echo $table['name']; ?>"<?php if (isset($table['id'][0])) { ?>, id={<?php echo '"', implode('", "', $table['id']), '"'; ?>}<?php }?><?php if ($poolName) { ?>, dbPoolName="<?php echo $poolName; ?>"<?php }?>)
+ * @DDL("<?php echo str_replace('"', '""', $ddl); ?>")
+<?php foreach ($fields as $field) { ?>
+ * @property <?php echo $field['phpType']; ?> $<?php echo $field['varName']; ?> <?php echo '' === $field['comment'] ? '' : $field['comment']; ?>
 
-<?php endforeach;?>
+<?php }?>
  */
-abstract class <?= $className ?>Base extends Model
+abstract class <?php echo $className; ?>Base extends Model
 {
 <?php
-    foreach($fields as $field):
-?>
+    foreach ($fields as $field)
+    {
+        ?>
     /**
-<?php if('' === $field['comment']):?>
-     * <?= $field['name'] ?>
-<?php else: ?>
-     * <?= $field['comment'] ?>
+<?php if ('' === $field['comment']) { ?>
+     * <?php echo $field['name']; ?>
+<?php }
+        else
+        { ?>
+     * <?php echo $field['comment']; ?>
 
-     * <?= $field['name'] ?>
-<?php endif;?>
+     * <?php echo $field['name']; ?>
+<?php } ?>
 
-     * @Column(name="<?= $field['name'] ?>", type="<?= $field['type'] ?>", length=<?= $field['length'] ?>, accuracy=<?= $field['accuracy'] ?>, nullable=<?= json_encode($field['nullable']) ?>, default="<?= $field['default'] ?>", isPrimaryKey=<?= json_encode($field['isPrimaryKey']) ?>, primaryKeyIndex=<?= $field['primaryKeyIndex'] ?>, isAutoIncrement=<?= json_encode($field['isAutoIncrement']) ?>)
-     * @var <?= $field['phpType'] ?>
+     * @Column(name="<?php echo $field['name']; ?>", type="<?php echo $field['type']; ?>", length=<?php echo $field['length']; ?>, accuracy=<?php echo $field['accuracy']; ?>, nullable=<?php echo json_encode($field['nullable']); ?>, default="<?php echo $field['default']; ?>", isPrimaryKey=<?php echo json_encode($field['isPrimaryKey']); ?>, primaryKeyIndex=<?php echo $field['primaryKeyIndex']; ?>, isAutoIncrement=<?php echo json_encode($field['isAutoIncrement']); ?>)
+     * @var <?php echo $field['phpType']; ?>
 
      */
-    protected $<?= $field['varName'] ?>;
+    protected $<?php echo $field['varName']; ?>;
 
     /**
-     * 获取 <?= $field['varName'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
+     * 获取 <?php echo $field['varName']; ?><?php echo '' === $field['comment'] ? '' : (' - ' . $field['comment']); ?>
 
      *
-     * @return <?= $field['phpType'] ?>
+     * @return <?php echo $field['phpType']; ?>
 
-     */ 
-    public function get<?= ucfirst($field['varName']) ?>()
+     */
+    public function get<?php echo ucfirst($field['varName']); ?>()
     {
-        return $this-><?= $field['varName'] ?>;
+        return $this-><?php echo $field['varName']; ?>;
     }
 
     /**
-     * 赋值 <?= $field['varName'] ?><?= '' === $field['comment'] ? '' : (' - ' . $field['comment']) ?>
+     * 赋值 <?php echo $field['varName']; ?><?php echo '' === $field['comment'] ? '' : (' - ' . $field['comment']); ?>
 
-     * @param <?= $field['phpType'] ?> $<?= $field['varName'] ?> <?= $field['name'] ?>
+     * @param <?php echo $field['phpType']; ?> $<?php echo $field['varName']; ?> <?php echo $field['name']; ?>
 
      * @return static
-     */ 
-    public function set<?= ucfirst($field['varName']) ?>($<?= $field['varName'] ?>)
+     */
+    public function set<?php echo ucfirst($field['varName']); ?>($<?php echo $field['varName']; ?>)
     {
-        $this-><?= $field['varName'] ?> = $<?= $field['varName'] ?>;
+<?php if ($lengthCheck && $length = [
+    'char'       => $field['length'],
+    'varchar'    => $field['length'],
+    'tinyblob'   => 2 ** 8 - 1,
+    'tinytext'   => 2 ** 8 - 1,
+    'blob'       => 2 ** 16 - 1,
+    'text'       => 2 ** 16 - 1,
+    'mediumblob' => 2 ** 24 - 1,
+    'mediumtext' => 2 ** 24 - 1,
+    'longblob'   => 2 ** 32 - 1,
+    'longtext'   => 2 ** 32 - 1,
+][$field['type']] ?? null) { ?>
+        if (mb_strlen($<?php echo $field['varName']; ?>) > <?php echo $length; ?>)
+        {
+            throw new \InvalidArgumentException('The maximum length of $<?php echo $field['varName']; ?> is <?php echo $length; ?>');
+        }
+<?php } ?>
+        $this-><?php echo $field['varName']; ?> = $<?php echo $field['varName']; ?>;
         return $this;
     }
 
 <?php
-    endforeach;
+    }
 ?>
 }
