@@ -6,7 +6,7 @@ imi 是基于 PHP Swoole 的高性能协程应用开发框架，它支持 HttpAp
 
 imi 框架拥有丰富的功能组件，可以广泛应用于互联网、移动通信、企业软件、云计算、网络游戏、物联网（IOT）、车联网、智能家居等领域。可以使企业 IT 研发团队的效率大大提升，更加专注于开发创新产品。
 
-QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png "点击加群")](https://jq.qq.com/?_wv=1027&k=5wXf4Zq)，如有问题，负责的宇润全程手把手解决。
+QQ群：17916227 [![点击加群](https://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=5wXf4Zq "点击加群")，如有问题，负责的宇润全程手把手解决。
 
 ### 为什么要用 Swoole？
 
