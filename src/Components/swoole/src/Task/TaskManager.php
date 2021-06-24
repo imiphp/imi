@@ -31,10 +31,6 @@ class TaskManager
      */
     public static function add(string $name, string $className, array $options): void
     {
-        if (isset(self::$map[$name]))
-        {
-            throw new \RuntimeException(sprintf('Task %s is exists', $name));
-        }
         self::$map[$name] = [
             'className' => $className,
             'options'   => $options,

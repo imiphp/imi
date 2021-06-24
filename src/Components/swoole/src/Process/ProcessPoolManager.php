@@ -36,10 +36,6 @@ class ProcessPoolManager
      */
     public static function add(string $name, string $className, array $options): void
     {
-        if (isset(self::$map[$name]))
-        {
-            throw new \RuntimeException(sprintf('Process pool %s is exists', $name));
-        }
         self::$map[$name] = [
             'className' => $className,
             'options'   => $options,
