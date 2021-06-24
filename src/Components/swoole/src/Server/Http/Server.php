@@ -96,8 +96,6 @@ class Server extends Base
      */
     protected function __bindEvents(): void
     {
-        $config = $this->getServerInitConfig();
-
         Event::one('IMI.MAIN_SERVER.WORKER.START.APP', function (WorkerStartEventParam $e) {
             // 内置事件监听
             $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);

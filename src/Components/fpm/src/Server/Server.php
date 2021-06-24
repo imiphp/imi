@@ -77,7 +77,7 @@ class Server extends BaseServer
                 'response' => $response,
             ]);
             /** @var \Imi\Server\Http\Dispatcher $dispatcher */
-            $dispatcher = App::getBean('HttpDispatcher');
+            $dispatcher = $this->getBean('HttpDispatcher');
             $dispatcher->dispatch($request);
         }
         catch (\Throwable $th)

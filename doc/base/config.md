@@ -170,6 +170,22 @@ return [
 ];
 ```
 
+### PHP-FPM 项目配置文件
+
+```php
+[
+    // 忽略扫描的命名空间
+    'ignoreNamespace'   =>  [
+        'ImiApp\public\*', // 忽略 public 目录
+        'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
+        'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
+    ],
+    'fpm' => [
+        'serverPath' => '如果兼容 Swoole、Workerman 服务器子目录，则设置一下该目录路径',
+    ],
+]
+```
+
 ### .env
 
 在 `.env` 中的配置方式，支持两种写法。
