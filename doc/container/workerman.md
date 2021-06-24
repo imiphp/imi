@@ -15,6 +15,6 @@ imi v2.0 版本开始，支持运行在 Workerman 环境中。
 
 ## 命令
 
-启动服务: `vendor/bin/imi workerman/start`
+启动服务: `vendor/bin/imi-workerman workerman/start`
 
-停止服务: `vendor/bin/imi workerman/start`
+停止服务: `vendor/bin/imi-workerman workerman/start`

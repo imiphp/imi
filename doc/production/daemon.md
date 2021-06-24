@@ -27,7 +27,7 @@ After=syslog.target
 [Service]
 Type=simple
 LimitNOFILE=65535
-ExecStart=/your app path/vendor/bin/imi swoole/start
+ExecStart=/your app path/vendor/bin/imi-swoole swoole/start
 ExecReload=/bin/kill -USR1 $MAINPID
 Restart=always
 
@@ -83,7 +83,7 @@ Supervisor是用 Python 开发的一套通用的进程管理程序，能将一�
 directory=/your app path
 
 # 脚本执行命令
-command=/your app path/vendor/bin/imi swoole/start
+command=/your app path/vendor/bin/imi-swoole swoole/start
 
 # supervisor启动的时候是否随着同时启动，默认True
 autostart=true
