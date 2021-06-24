@@ -5,7 +5,7 @@
     "description": "imi workerman gateway component",
     "require": {
         "workerman/gateway-worker": "^3.0",
-        "yurunsoft/workerman-gateway-sdk": "dev-master"
+        "yurunsoft/workerman-gateway-sdk": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=8"
