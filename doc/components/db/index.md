@@ -24,9 +24,9 @@ return [
         'alias1' => [
             'pool' => [
                 // 同步池类名
-                'syncClass'     =>    \Imi\Db\Pool\SyncDbPool::class,
+                'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数
@@ -88,9 +88,9 @@ return [
         'alias1.slave' => [
             'pool' => [
                 // 同步池类名
-                'syncClass'     =>    \Imi\Db\Pool\SyncDbPool::class,
+                'class'     =>    \Imi\Db\Pool\SyncDbPool::class,
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
+                'class'    =>    \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
                 // 连接池配置
                 'config' => [
                     // 池子中最多资源数

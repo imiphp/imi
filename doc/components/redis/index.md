@@ -23,9 +23,9 @@ return [
         'alias1' => [
             'pool' => [
                 // 同步池类名
-                'syncClass'     =>    \Imi\Redis\SyncRedisPool::class,
+                'class'     =>    \Imi\Redis\SyncRedisPool::class,
                 // 协程池类名
-                'asyncClass'    =>    \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
+                'class'    =>    \Imi\Swoole\Redis\Pool\CoroutineRedisPool::class,
                 'config' => [
                     // 池子中最多资源数
                     // 'maxResources' => 10,
