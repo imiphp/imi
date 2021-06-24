@@ -47,7 +47,7 @@ class Scanner
     public static function scanVendor(bool $statistics = true): void
     {
         $time = microtime(true);
-        $namespaces = [];
+        $components = [];
         foreach (Composer::getClassLoaders() as $classLoader)
         {
             $ref = new ReflectionClass($classLoader);
@@ -80,23 +80,24 @@ class Scanner
                         }
                         $mainClassName = $namespace . 'Main';
                         // 判断是否合法的 imi Main 类
-                        if (class_exists($mainClassName) && is_subclass_of($namespace, IMain::class))
+                        if (class_exists($mainClassName) && is_subclass_of($mainClassName, IMain::class))
                         {
                             // 此目录为 imi 组件目录
-                            $namespaces[] = $namespace;
-                            Helper::getMain($namespace, basename($pathName));
+                            $realNamespace = rtrim($namespace, '\\');
+                            $componentName = basename($pathName);
+                            $components[$componentName] = $realNamespace;
+                            Helper::getMain($realNamespace, $componentName);
                             break;
                         }
                     }
                 }
             }
         }
-        $components = Config::get('@app.components', []);
+        $components = array_merge($components, Config::get('@app.components', []));
         if ($components)
         {
             self::scanComponents($components);
         }
-        Annotation::getInstance()->initByNamespace($namespaces);
         Event::trigger('IMI.SCAN_VENDOR');
         if ($statistics)
         {

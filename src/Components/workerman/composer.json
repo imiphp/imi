@@ -22,6 +22,6 @@
         }
     },
     "bin": [
-        "src/bin/imi-workerman"
+        "bin/imi-workerman"
     ]
 }

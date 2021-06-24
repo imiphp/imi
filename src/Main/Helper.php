@@ -94,7 +94,7 @@ class Helper
 
     private static function newInstance(string $namespace, string $componentName): ?BaseMain
     {
-        $className = $namespace . '\\Main';
+        $className = $namespace . '\Main';
         if (class_exists($className))
         {
             static::$mains[$namespace] = $instance = new $className($componentName);
