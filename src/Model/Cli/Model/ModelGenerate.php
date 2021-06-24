@@ -30,6 +30,7 @@ class ModelGenerate extends BaseCommand
      * @CommandAction("model")
      *
      * @Argument(name="namespace", type=ArgType::STRING, required=true, comments="生成的Model所在命名空间")
+     * @Argument(name="baseClass", type=ArgType::STRING, default="Imi\Model\Model", comments="生成的Model所继承的基类,默认\Imi\Model\Model,可选")
      * @Option(name="database", type=ArgType::STRING, comments="数据库名，不传则取连接池默认配置的库名")
      * @Option(name="poolName", type=ArgType::STRING, comments="连接池名称，不传则取默认连接池")
      * @Option(name="prefix", type=ArgType::ARRAY, default={}, comments="传值则去除该表前缀，以半角逗号分隔多个前缀")
@@ -41,11 +42,12 @@ class ModelGenerate extends BaseCommand
      * @Option(name="entity", type=ArgType::BOOLEAN, default=true, comments="序列化时是否使用驼峰命名(true or false),默认true,可选")
      * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
      * @Option(name="sqlSingleLine", type=ArgType::BOOLEAN, default=false, comments="生成的SQL为单行,默认false,可选")
+     * @Option(name="lengthCheck", type=ArgType::BOOLEAN, default=false, comments="是否检查字符串字段长度,可选")
      *
      * @param string|bool $override
      * @param string|bool $config
      */
-    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine): void
+    public function generate(string $namespace, string $baseClass, ?string $database, ?string $poolName, array $prefix, array $include, array $exclude, $override, $config, ?string $basePath, bool $entity, bool $sqlSingleLine, bool $lengthCheck): void
     {
         $override = (string) $override;
         switch ($override)
@@ -208,6 +210,7 @@ class ModelGenerate extends BaseCommand
                 'poolName'      => $poolName,
                 'ddl'           => $ddl,
                 'tableComment'  => '' === $item['TABLE_COMMENT'] ? $table : $item['TABLE_COMMENT'],
+                'lengthCheck'   => $lengthCheck,
             ];
             $fields = $query->execute(sprintf('show full columns from `%s`.`%s`', $database, $table))->getArray();
             $this->parseFields($fields, $data, 'VIEW' === $item['TABLE_TYPE'], $table, $configData);

@@ -25,4 +25,32 @@ class TestList extends TestListBase
      * @var array
      */
     protected $list;
+
+    /**
+     * 获取 list.
+     *
+     * @phpstan-ignore-next-line
+     *
+     * @return array
+     */
+    public function getList()
+    {
+        return $this->list;
+    }
+
+    /**
+     * 赋值 list.
+     *
+     * @phpstan-ignore-next-line
+     *
+     * @param array $list list
+     *
+     * @return static
+     */
+    public function setList($list)
+    {
+        $this->list = $list;
+
+        return $this;
+    }
 }
