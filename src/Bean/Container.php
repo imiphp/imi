@@ -54,36 +54,59 @@ class Container implements ContainerInterface
         unset($params[0]);
 
         $binds = &$this->binds;
-        if (isset($binds[$id]))
+
+        do
         {
-            $object = BeanFactory::newInstanceNoInit($binds[$id], ...$params);
-            if ([] === $params)
+            if (isset($binds[$id]))
             {
-                $singletonObjects[$id] = $object;
-            }
-        }
-        else
-        {
-            $data = BeanManager::get($id);
-            if ($data)
-            {
-                $object = BeanFactory::newInstanceNoInit($data['className'], ...$params);
-            }
-            elseif (class_exists($id))
-            {
-                $object = BeanFactory::newInstanceNoInit($id, ...$params);
+                $className = $binds[$id];
+                if (class_exists($className))
+                {
+                    $object = BeanFactory::newInstanceNoInit($className, ...$params);
+                    if ([] === $params)
+                    {
+                        $singletonObjects[$id] = $object;
+                    }
+                }
+                else
+                {
+                    $id = $className;
+                    continue;
+                }
             }
             else
             {
-                throw new ContainerException(sprintf('%s not found', $id));
-            }
+                $data = BeanManager::get($id);
+                if ($data)
+                {
+                    $className = $data['className'];
+                    if (class_exists($className))
+                    {
+                        $object = BeanFactory::newInstanceNoInit($data['className'], ...$params);
+                    }
+                    else
+                    {
+                        $id = $className;
+                        continue;
+                    }
+                }
+                elseif (class_exists($id))
+                {
+                    $object = BeanFactory::newInstanceNoInit($id, ...$params);
+                }
+                else
+                {
+                    throw new ContainerException(sprintf('%s not found', $id));
+                }
 
-            // 传参实例化强制不使用单例
-            if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
-            {
-                $singletonObjects[$id] = $object;
+                // 传参实例化强制不使用单例
+                if ([] === $params && (!isset($data['instanceType']) || Bean::INSTANCE_TYPE_SINGLETON === $data['instanceType']))
+                {
+                    $singletonObjects[$id] = $object;
+                }
+                break;
             }
-        }
+        } while (true);
 
         BeanFactory::initInstance($object, $params);
 
