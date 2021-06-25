@@ -8,6 +8,7 @@ use Imi\Process\Annotation\Process;
 use Imi\Process\BaseProcess;
 use Imi\Util\Imi;
 use Swoole\Coroutine;
+use Swoole\Event;
 
 /**
  * 队列消费进程.
@@ -81,5 +82,6 @@ class QueueConsumerProcess extends BaseProcess
             });
             $processPool->start();
         }
+        Event::wait();
     }
 }

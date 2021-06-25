@@ -77,7 +77,7 @@ abstract class <?php echo $className; ?>Base extends Model
     'longblob'   => 2 ** 32 - 1,
     'longtext'   => 2 ** 32 - 1,
 ][$field['type']] ?? null) { ?>
-        if (mb_strlen($<?php echo $field['varName']; ?>) > <?php echo $length; ?>)
+        if (is_string($<?php echo $field['varName']; ?>) && mb_strlen($<?php echo $field['varName']; ?>) > <?php echo $length; ?>)
         {
             throw new \InvalidArgumentException('The maximum length of $<?php echo $field['varName']; ?> is <?php echo $length; ?>');
         }
