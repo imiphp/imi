@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="./bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -13,9 +12,9 @@
         <testsuite name="Components">
             <directory>unit/Component/Tests</directory>
         </testsuite>
-        <!-- <testsuite name="Performance">
+        <testsuite name="Performance">
             <directory>unit/Component/Performance</directory>
-        </testsuite> -->
+        </testsuite>
     </testsuites>
     <extensions>
         <extension class="Imi\Test\Component\PHPUnitHook" />
