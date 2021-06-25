@@ -167,7 +167,7 @@ class Meta
         $this->dbFields = $dbFields;
         $this->fields = $fields;
         $this->fieldNames = $fieldNames = array_keys($fields);
-        $this->camel = $camel = $entity->camel ?? false;
+        $this->camel = $camel = $entity->camel ?? true;
         $serializableFieldNames = [];
         foreach ($fieldNames as $fieldName)
         {
