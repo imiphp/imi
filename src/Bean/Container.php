@@ -104,8 +104,8 @@ class Container implements ContainerInterface
                 {
                     $singletonObjects[$id] = $object;
                 }
-                break;
             }
+            break;
         } while (true);
 
         BeanFactory::initInstance($object, $params);
