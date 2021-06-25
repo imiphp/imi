@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     // 项目根命名空间
     'namespace'    => 'Imi\Smarty\Example',

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Smarty Internal Plugin Compile Special Smarty Variable
  * Compiles the special $smarty variables.

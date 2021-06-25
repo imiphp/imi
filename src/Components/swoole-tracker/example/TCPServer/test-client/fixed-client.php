@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Swoole\Coroutine\Client;
 
 // EOF自动分包的客户端测试

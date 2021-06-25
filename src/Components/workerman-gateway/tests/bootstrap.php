@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Symfony\Component\Console\Input\ArgvInput;
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';

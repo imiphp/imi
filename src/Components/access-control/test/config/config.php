@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // 注释项代表可省略的，使用默认值
 return [
     // 项目根命名空间

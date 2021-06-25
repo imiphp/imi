@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $dir = dirname(__DIR__);
 
 $cmd = "rm -rf {$dir}/vendor/imiphp && mkdir -p {$dir}/vendor/imiphp";

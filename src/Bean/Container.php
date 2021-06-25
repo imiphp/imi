@@ -108,8 +108,10 @@ class Container implements ContainerInterface
             break;
         } while (true);
 
+        // @phpstan-ignore-next-line
         BeanFactory::initInstance($object, $params);
 
+        // @phpstan-ignore-next-line
         return $object;
     }
 

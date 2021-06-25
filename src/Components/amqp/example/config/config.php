@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 defined('AMQP_SERVER_HOST') || define('AMQP_SERVER_HOST', imiGetEnv('AMQP_SERVER_HOST', '127.0.0.1'));
 
 return [

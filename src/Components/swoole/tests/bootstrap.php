@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use function Yurun\Swoole\Coroutine\batch;
 use function Yurun\Swoole\Coroutine\goWait;
 

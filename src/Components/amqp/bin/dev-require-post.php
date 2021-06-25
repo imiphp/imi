@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $dir = dirname(__DIR__);
 
 $json = json_decode(file_get_contents($dir . '/composer.json'), true);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 go(function () {
     $client = new Swoole\Coroutine\Client(\SWOOLE_SOCK_UDP);
     $client->connect('127.0.0.1', 8083);

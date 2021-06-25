@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 defined('KAFKA_BOOTSTRAP_SERVERS') || define('KAFKA_BOOTSTRAP_SERVERS', imiGetEnv('KAFKA_BOOTSTRAP_SERVERS', '127.0.0.1:9092'));
 
 return [
