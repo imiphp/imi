@@ -103,10 +103,6 @@ class Redis implements IHandler
         {
             return;
         }
-        if (!$this->lockId)
-        {
-            throw new \RuntimeException('ConnectContextRedis lockId must be set');
-        }
         $workerId = Worker::getWorkerID();
         $this->masterPID = $masterPID = Swoole::getMasterPID();
         $masterPidKey = $this->key . ':master_pid';
