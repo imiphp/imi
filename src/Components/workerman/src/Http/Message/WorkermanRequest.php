@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Workerman\Http\Message;
 
 use Imi\Server\Http\Message\Request;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 use Workerman\Connection\TcpConnection;
@@ -139,5 +140,15 @@ class WorkermanRequest extends Request
     public function getConnection(): TcpConnection
     {
         return $this->connection;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        $connection = $this->workermanRequest->connection;
+
+        return new IPEndPoint($connection->getRemoteIp(), $connection->getRemotePort());
     }
 }

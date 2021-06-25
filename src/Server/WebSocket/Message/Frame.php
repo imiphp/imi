@@ -6,6 +6,7 @@ namespace Imi\Server\WebSocket\Message;
 
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Util\Socket\IPEndPoint;
 
 class Frame implements IFrame
 {
@@ -39,6 +40,11 @@ class Frame implements IFrame
      * @var mixed
      */
     protected $formatData;
+
+    /**
+     * 客户端地址
+     */
+    protected IPEndPoint $clientAddress;
 
     /**
      * @param int|string $clientId
@@ -96,5 +102,18 @@ class Frame implements IFrame
     public function isFinish(): bool
     {
         return $this->finish;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        if (!isset($this->clientAddress))
+        {
+            return $this->clientAddress = RequestContext::getServer()->getClientAddress($this->clientId);
+        }
+
+        return $this->clientAddress;
     }
 }

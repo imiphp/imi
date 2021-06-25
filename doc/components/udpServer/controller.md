@@ -99,26 +99,19 @@ return ['success'=>true];
 
 ```php
 /**
- * 获取客户端的socket id
- * @return int|string
+ * 数据内容.
  */
-public function getClientId();
-```
+public function getData(): string;
 
-```php
 /**
- * 数据内容，可以是文本内容也可以是二进制数据，可以通过opcode的值来判断
- * @return string
+ * 获取格式化后的数据，一般是数组或对象
+ *
+ * @return mixed
  */
-public function getData();
-```
+public function getFormatData();
 
-```php
 /**
- * 获取客户端信息
- * @return array
+ * 获取客户端地址
  */
-public function getClientInfo();
-
-// 格式同：https://wiki.swoole.com/#/server/methods?id=getclientinfo
+public function getClientAddress(): \Imi\Util\Socket\IPEndPoint;
 ```

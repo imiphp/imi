@@ -6,6 +6,7 @@ namespace Imi\Swoole\Server\WebSocket\Message;
 
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Util\Socket\IPEndPoint;
 
 class Frame implements ISwooleWebSocketFrame
 {
@@ -13,6 +14,11 @@ class Frame implements ISwooleWebSocketFrame
      * swoole websocket frame.
      */
     protected \Swoole\WebSocket\Frame $frame;
+
+    /**
+     * 客户端地址
+     */
+    protected IPEndPoint $clientAddress;
 
     /**
      * 格式化后的数据.
@@ -79,5 +85,18 @@ class Frame implements ISwooleWebSocketFrame
     public function getSwooleWebSocketFrame(): \Swoole\Websocket\Frame
     {
         return $this->frame;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        if (!isset($this->clientAddress))
+        {
+            return $this->clientAddress = RequestContext::getServer()->getClientAddress($this->getClientId());
+        }
+
+        return $this->clientAddress;
     }
 }

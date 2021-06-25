@@ -6,6 +6,7 @@ namespace Imi\Server\TcpServer\Message;
 
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Util\Socket\IPEndPoint;
 
 class ReceiveData implements IReceiveData
 {
@@ -27,6 +28,11 @@ class ReceiveData implements IReceiveData
      * @var mixed
      */
     protected $formatData;
+
+    /**
+     * 客户端地址
+     */
+    protected IPEndPoint $clientAddress;
 
     /**
      * @param int|string $clientId
@@ -64,5 +70,18 @@ class ReceiveData implements IReceiveData
     public function getFormatData()
     {
         return $this->formatData;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        if (!isset($this->clientAddress))
+        {
+            return $this->clientAddress = RequestContext::getServer()->getClientAddress($this->clientId);
+        }
+
+        return $this->clientAddress;
     }
 }

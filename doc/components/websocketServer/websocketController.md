@@ -155,6 +155,11 @@ public function getOpcode(): int;
  * 表示数据帧是否完整.
  */
 public function isFinish(): bool;
+
+/**
+ * 获取客户端地址
+ */
+public function getClientAddress(): \Imi\Util\Socket\IPEndPoint;
 ```
 
 Swoole 方法：

@@ -5,11 +5,30 @@ declare(strict_types=1);
 namespace Imi\Fpm\Http\Message;
 
 use Imi\Server\Http\Message\Request;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
 class FpmRequest extends Request
 {
+    /**
+     * 客户端地址
+     */
+    protected IPEndPoint $clientAddress;
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        if (!isset($this->clientAddress))
+        {
+            return $this->clientAddress = new IPEndPoint($_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT']);
+        }
+
+        return $this->clientAddress;
+    }
+
     /**
      * 初始化协议版本.
      */

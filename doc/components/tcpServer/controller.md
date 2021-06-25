@@ -126,11 +126,9 @@ public function getFormatData();
 
 ```php
 /**
- * 获取Reactor线程ID
- *
- * @return int
+ * 获取客户端地址
  */
-public function getReactorId(): int;
+public function getClientAddress(): \Imi\Util\Socket\IPEndPoint;
 ```
 
 ## 控制器类方法

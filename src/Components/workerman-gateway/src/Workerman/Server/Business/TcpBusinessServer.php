@@ -11,7 +11,6 @@ use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
-use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 use ReflectionClass;
 use Workerman\Worker;
 
@@ -70,28 +69,13 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ]);
+            ConnectionContext::muiltiSet([
+                '__clientAddress' => $_SERVER['REMOTE_ADDR'],
+                '__clientPort'    => $_SERVER['REMOTE_PORT'],
+            ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
                 'server'   => $this,
                 'clientId' => $clientId,
-            ], $this);
-        });
-
-        $property = $refClass->getProperty('_eventOnTcpConnect');
-        $property->setAccessible(true);
-        $property->setValue($worker, function (string $clientId, array $data) {
-            $request = new WorkermanRequest($this->worker, $data);
-
-            RequestContext::muiltiSet([
-                'server'       => $this,
-                'clientId'     => $clientId,
-            ]);
-            ConnectionContext::create([
-                'uri'     => (string) $request->getUri(),
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.Tcp.CONNECT', [
-                'server'   => $this,
-                'clientId' => $clientId,
-                'request'  => $request,
             ], $this);
         });
 

@@ -27,9 +27,8 @@ class IndexController extends \Imi\Controller\TcpController
      */
     public function send($data)
     {
-        // @phpstan-ignore-next-line
-        $clientInfo = $this->server->getSwooleServer()->getClientInfo($this->data->getClientId());
-        $message = '[' . ($clientInfo['remote_ip'] ?? '') . ':' . ($clientInfo['remote_port'] ?? '') . ']: ' . $data->message;
+        $address = $this->data->getClientAddress();
+        $message = '[' . $address->getAddress() . ':' . $address->getPort() . ']: ' . $data->message;
         var_dump($message);
 
         return [

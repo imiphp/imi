@@ -7,21 +7,18 @@ namespace Imi\Server\UdpServer\Message\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
+use Imi\Util\Socket\IPEndPoint;
 
 /**
  * @Bean(name="UdpPacketDataProxy")
  * @RequestContextProxy(class="Imi\Server\UdpServer\Message\IPacketData", name="packetData")
  *
- * @method string getData()
- * @method static string getData()
- * @method mixed  getFormatData()
- * @method static mixed getFormatData()
- * @method string getRemoteIp()
- * @method static string getRemoteIp()
- * @method int    getRemotePort()
- * @method static int getRemotePort()
- * @method string getRemoteAddress()
- * @method static string getRemoteAddress()
+ * @method string                      getData()
+ * @method static                      string getData()
+ * @method mixed                       getFormatData()
+ * @method static                      mixed getFormatData()
+ * @method \Imi\Util\Socket\IPEndPoint getFormatData()
+ * @method static                      \Imi\Util\Socket\IPEndPoint getFormatData()
  */
 class PacketDataProxy extends BaseRequestContextProxy implements \Imi\Server\UdpServer\Message\IPacketData
 {
@@ -44,24 +41,8 @@ class PacketDataProxy extends BaseRequestContextProxy implements \Imi\Server\Udp
     /**
      * {@inheritDoc}
      */
-    public function getRemoteIp(): string
+    public function getClientAddress(): IPEndPoint
     {
-        return $this->__getProxyInstance()->getRemoteIp(...\func_get_args());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRemotePort(): int
-    {
-        return $this->__getProxyInstance()->getRemotePort(...\func_get_args());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRemoteAddress(): string
-    {
-        return $this->__getProxyInstance()->getRemoteAddress(...\func_get_args());
+        return $this->__getProxyInstance()->getClientAddress(...\func_get_args());
     }
 }

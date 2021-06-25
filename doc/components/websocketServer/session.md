@@ -178,12 +178,6 @@ public static function getClientId();
 
 ```php
 'beans' =>  [
-    // 连接绑定器
-    'ConnectionBinder'  =>  [
-        // 存储器类，默认 ConnectionBinderRedis
-        // 支持：ConnectionBinderRedis、ConnectionBinderLocal
-        // 'handlerClass' => 'ConnectionBinderRedis',
-    ],
     'ConnectionContextStore'   =>  [
         'handlerClass'  =>  \Imi\Server\ConnectionContext\StoreHandler\Local::class,
     ],
@@ -199,12 +193,6 @@ public static function getClientId();
 
 ```php
 'beans' =>  [
-    // 连接绑定器
-    'ConnectionBinder'  =>  [
-        // 存储器类，默认 ConnectionBinderRedis
-        // 支持：ConnectionBinderRedis、ConnectionBinderLocal
-        // 'handlerClass' => 'ConnectionBinderRedis',
-    ],
     'ConnectionContextStore'   =>  [
         'handlerClass'  =>  \Imi\Server\ConnectionContext\StoreHandler\Redis::class,
     ],
@@ -229,12 +217,6 @@ public static function getClientId();
 
 ```php
 'beans' =>  [
-    // 连接绑定器
-    'ConnectionBinder'  =>  [
-        // 存储器类，默认 ConnectionBinderRedis
-        // 支持：ConnectionBinderRedis、ConnectionBinderLocal
-        // 'handlerClass' => 'ConnectionBinderRedis',
-    ],
     'ConnectionContextStore'   =>  [
         'handlerClass'  =>  \Imi\Swoole\Server\ConnectionContext\StoreHandler\MemoryTable::class,
     ],
@@ -255,12 +237,6 @@ public static function getClientId();
 
 ```php
 'beans' =>  [
-    // 连接绑定器
-    'ConnectionBinder'  =>  [
-        // 存储器类，默认 ConnectionBinderRedis
-        // 支持：ConnectionBinderRedis、ConnectionBinderLocal
-        // 'handlerClass' => 'ConnectionBinderRedis',
-    ],
     'ConnectionContextStore'   =>  [
         'handlerClass'  =>  \Imi\WorkermanGateway\Server\ConnectionContext\StoreHandler\ConnectionContextGateway::class,
     ],

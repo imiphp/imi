@@ -32,6 +32,10 @@
 
 适用于分布式多实例部署的场景。
 
+#### SwooleGatewayServerUtil
+
+在 Swoole 模式下使用 Workerman 网关
+
 ### Workerman
 
 #### LocalServerUtil
@@ -72,6 +76,10 @@
     ],
 ],
 ```
+
+#### WorkermanGatewayServerUtil
+
+在 Workerman 模式下使用 Workerman 网关
 
 ### Fpm
 

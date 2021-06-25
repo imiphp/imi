@@ -7,6 +7,7 @@ namespace Imi\Server\Http\Message\Proxy;
 use Imi\Bean\Annotation\Bean;
 use Imi\RequestContextProxy\Annotation\RequestContextProxy;
 use Imi\RequestContextProxy\BaseRequestContextProxy;
+use Imi\Util\Socket\IPEndPoint;
 
 /**
  * @Bean(name="HttpRequestProxy")
@@ -116,6 +117,8 @@ use Imi\RequestContextProxy\BaseRequestContextProxy;
  * @method static            static setMethod(string $method)
  * @method static            setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
  * @method static            static setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false)
+ * @method IPEndPoint        getClientAddress()
+ * @method static            IPEndPoint getClientAddress()
  */
 class RequestProxy extends BaseRequestContextProxy implements \Imi\Server\Http\Message\Contract\IHttpRequest
 {
@@ -533,5 +536,13 @@ class RequestProxy extends BaseRequestContextProxy implements \Imi\Server\Http\M
     public function setUri(\Psr\Http\Message\UriInterface $uri, bool $preserveHost = false): \Imi\Util\Http\Contract\IRequest
     {
         return $this->__getProxyInstance()->setUri($uri, $preserveHost);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        return $this->__getProxyInstance()->getClientAddress();
     }
 }

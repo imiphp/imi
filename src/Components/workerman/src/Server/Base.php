@@ -14,9 +14,12 @@ use Imi\Server\Group\Contract\IServerGroup;
 use Imi\Server\Group\TServerGroup;
 use Imi\Server\ServerManager;
 use Imi\Util\Imi;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
+use InvalidArgumentException;
 use Workerman\Connection\ConnectionInterface;
+use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
 
 abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
@@ -280,6 +283,23 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'worker' => $worker,
             ], $this);
         };
+    }
+
+    /**
+     * 获取客户端地址
+     *
+     * @param string|int $clientId
+     */
+    public function getClientAddress($clientId): IPEndPoint
+    {
+        /** @var TcpConnection|null $connection */
+        $connection = $this->worker->connections[$clientId] ?? null;
+        if (null === $connection)
+        {
+            throw new InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
+        }
+
+        return new IPEndPoint($connection->getRemoteIp(), $connection->getRemotePort());
     }
 
     /**

@@ -40,58 +40,65 @@ if (\extension_loaded('swoole'))
                     /** @var IGatewayClient $client */
                     ['server' => $server, 'client' => $client, 'message' => $message, 'clientId' => $clientId] = $result;
                     switch ($message['cmd']) {
-                case GatewayProtocol::CMD_ON_CONNECT:
-                    // 连接
-                    $server->trigger('connect', [
-                        'server'          => $server,
-                        'clientId'        => $clientId,
-                        'reactorId'       => 0,
-                    ], $server, ConnectEventParam::class);
-                    break;
-                case GatewayProtocol::CMD_ON_MESSAGE:
-                    $frame = new Frame();
-                    $frame->fd = $clientId;
-                    $frame->data = $message['body'];
-                    $frame->finish = true;
-                    RequestContext::create([
-                        'server'        => $server,
-                        'clientId'      => $clientId,
-                    ]);
-                    var_dump('message', $clientId, ConnectionContext::get('uri'));
-                    $server->trigger('message', [
-                        'server'    => $server,
-                        'frame'     => $frame,
-                    ], $server, MessageEventParam::class);
-                    break;
-                case GatewayProtocol::CMD_ON_CLOSE:
-                    $server->trigger('close', [
-                        'server'          => $server,
-                        'clientId'        => $clientId,
-                        'reactorId'       => 0,
-                    ], $server, CloseEventParam::class);
-                    break;
-                case GatewayProtocol::CMD_ON_WEBSOCKET_CONNECT:
-                    $swooleRequest = new \Swoole\Http\Request();
-                    $swooleResponse = new \Swoole\Http\Response();
-                    $request = new WorkermanGatewaySwooleRequest($server, $message['body']);
-                    $response = new SwooleResponse($server, $swooleResponse);
-                    RequestContext::create([
-                        'server'         => $server,
-                        'swooleRequest'  => $swooleRequest,
-                        'swooleResponse' => $swooleResponse,
-                        'request'        => $request,
-                        'response'       => $response,
-                        'clientId'       => $clientId,
-                    ]);
-                    ConnectionContext::create([
-                        'uri' => (string) $request->getUri(),
-                    ]);
-                    var_dump('connect', $clientId, ConnectionContext::get('uri'));
-                    $server->trigger('handShake', [
-                        'request'   => $request,
-                        'response'  => $response,
-                    ], $server, HandShakeEventParam::class);
-                }
+                        case GatewayProtocol::CMD_ON_CONNECT:
+                            // 连接
+                            ConnectionContext::muiltiSet([
+                                '__clientAddress' => long2ip($message['client_ip']),
+                                '__clientPort'    => $message['client_port'],
+                            ]);
+                            $server->trigger('connect', [
+                                'server'        => $server,
+                                'clientId'      => $clientId,
+                                'reactorId'     => 0,
+                            ], $server, ConnectEventParam::class);
+                            break;
+                        case GatewayProtocol::CMD_ON_MESSAGE:
+                            $frame = new Frame();
+                            $frame->fd = $clientId;
+                            $frame->data = $message['body'];
+                            $frame->finish = true;
+                            RequestContext::create([
+                                'server'        => $server,
+                                'clientId'      => $clientId,
+                            ]);
+                            $server->trigger('message', [
+                                'server'    => $server,
+                                'frame'     => $frame,
+                            ], $server, MessageEventParam::class);
+                            break;
+                        case GatewayProtocol::CMD_ON_CLOSE:
+                            $server->trigger('close', [
+                                'server'          => $server,
+                                'clientId'        => $clientId,
+                                'reactorId'       => 0,
+                            ], $server, CloseEventParam::class);
+                            break;
+                        case GatewayProtocol::CMD_ON_WEBSOCKET_CONNECT:
+                            ConnectionContext::muiltiSet([
+                                '__clientAddress' => long2ip($message['client_ip']),
+                                '__clientPort'    => $message['client_port'],
+                            ]);
+                            $swooleRequest = new \Swoole\Http\Request();
+                            $swooleResponse = new \Swoole\Http\Response();
+                            $request = new WorkermanGatewaySwooleRequest($server, $clientId, $message['body']);
+                            $response = new SwooleResponse($server, $swooleResponse);
+                            RequestContext::create([
+                                'server'         => $server,
+                                'swooleRequest'  => $swooleRequest,
+                                'swooleResponse' => $swooleResponse,
+                                'request'        => $request,
+                                'response'       => $response,
+                                'clientId'       => $clientId,
+                            ]);
+                            ConnectionContext::create([
+                                'uri' => (string) $request->getUri(),
+                            ]);
+                            $server->trigger('handShake', [
+                                'request'   => $request,
+                                'response'  => $response,
+                            ], $server, HandShakeEventParam::class);
+                            break;
+                    }
                 }
                 catch (\Throwable $th)
                 {

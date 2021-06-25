@@ -35,7 +35,8 @@ class Dispatcher
         {
             /** @var IUdpServer $server */
             $server = RequestContext::getServer();
-            $server->sendTo($data->getRemoteIp(), $data->getRemotePort(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
+            $address = $data->getClientAddress();
+            $server->sendTo($address->getAddress(), $address->getPort(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
         }
     }
 

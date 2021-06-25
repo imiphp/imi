@@ -30,6 +30,7 @@ return PhpCsFixer\Config::create()
         ],
         'single_line_comment_style'  => false,
         'phpdoc_to_comment'          => false,
+        'declare_strict_types'       => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

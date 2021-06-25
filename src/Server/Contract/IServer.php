@@ -6,6 +6,7 @@ namespace Imi\Server\Contract;
 
 use Imi\Bean\Container;
 use Imi\Event\IEvent;
+use Imi\Util\Socket\IPEndPoint;
 
 /**
  * 服务器接口.
@@ -72,4 +73,11 @@ interface IServer extends IEvent
      * @return mixed
      */
     public function callServerMethod(string $methodName, ...$args);
+
+    /**
+     * 获取客户端地址
+     *
+     * @param string|int $clientId
+     */
+    public function getClientAddress($clientId): IPEndPoint;
 }

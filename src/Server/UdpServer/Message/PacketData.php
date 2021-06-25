@@ -6,18 +6,14 @@ namespace Imi\Server\UdpServer\Message;
 
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Util\Socket\IPEndPoint;
 
 class PacketData implements IPacketData
 {
     /**
-     * 客户端 IP.
+     * 客户端地址
      */
-    protected string $remoteIp = '';
-
-    /**
-     * 客户端端口.
-     */
-    protected int $remotePort = 0;
+    protected IPEndPoint $clientAddress;
 
     /**
      * 数据内容.
@@ -33,8 +29,7 @@ class PacketData implements IPacketData
 
     public function __construct(string $remoteIp, int $remotePort, string $data)
     {
-        $this->remoteIp = $remoteIp;
-        $this->remotePort = $remotePort;
+        $this->clientAddress = new IPEndPoint($remoteIp, $remotePort);
         $this->data = $data;
         $this->formatData = RequestContext::getServerBean(DataParser::class)->decode($data);
     }
@@ -58,26 +53,10 @@ class PacketData implements IPacketData
     }
 
     /**
-     * 获取客户端 IP.
-     */
-    public function getRemoteIp(): string
-    {
-        return $this->remoteIp;
-    }
-
-    /**
-     * 获取客户端端口.
-     */
-    public function getRemotePort(): int
-    {
-        return $this->remotePort;
-    }
-
-    /**
      * 获取客户端地址
      */
-    public function getRemoteAddress(): string
+    public function getClientAddress(): IPEndPoint
     {
-        return $this->remoteIp . ':' . $this->remotePort;
+        return $this->clientAddress;
     }
 }

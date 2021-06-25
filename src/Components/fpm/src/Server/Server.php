@@ -14,6 +14,7 @@ use Imi\Server\Contract\BaseServer;
 use Imi\Server\Http\Listener\HttpRouteInit;
 use Imi\Server\Http\Route\HttpRoute;
 use Imi\Server\Protocol;
+use Imi\Util\Socket\IPEndPoint;
 
 /**
  * @Bean("FpmHttpServer")
@@ -52,6 +53,16 @@ class Server extends BaseServer
     public function isSSL(): bool
     {
         return false;
+    }
+
+    /**
+     * 获取客户端地址
+     *
+     * @param string|int $clientId
+     */
+    public function getClientAddress($clientId): IPEndPoint
+    {
+        return new IPEndPoint($_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT']);
     }
 
     /**

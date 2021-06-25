@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Server\TcpServer\Message;
 
+use Imi\Util\Socket\IPEndPoint;
+
 interface IReceiveData
 {
     /**
@@ -24,4 +26,9 @@ interface IReceiveData
      * @return mixed
      */
     public function getFormatData();
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint;
 }

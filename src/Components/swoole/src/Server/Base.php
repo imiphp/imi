@@ -22,6 +22,8 @@ use Imi\Swoole\Server\Event\Param\WorkerExitEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStartEventParam;
 use Imi\Swoole\Server\Event\Param\WorkerStopEventParam;
 use Imi\Util\Imi;
+use Imi\Util\Socket\IPEndPoint;
+use InvalidArgumentException;
 use Swoole\Event as SwooleEvent;
 use Swoole\Server;
 use Swoole\Server\Port;
@@ -358,6 +360,22 @@ abstract class Base extends BaseServer implements ISwooleServer
             });
         }
         $this->__bindEvents();
+    }
+
+    /**
+     * 获取客户端地址
+     *
+     * @param string|int $clientId
+     */
+    public function getClientAddress($clientId): IPEndPoint
+    {
+        $clientInfo = $this->swooleServer->getClientInfo($clientId);
+        if (false === $clientInfo)
+        {
+            throw new InvalidArgumentException(sprintf('Client %s does not exists', $clientId));
+        }
+
+        return new IPEndPoint($clientInfo['remote_ip'], $clientInfo['remote_port']);
     }
 
     /**

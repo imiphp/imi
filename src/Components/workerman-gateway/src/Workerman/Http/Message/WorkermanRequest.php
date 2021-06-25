@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\WorkermanGateway\Workerman\Http\Message;
 
+use Imi\RequestContext;
 use Imi\Server\Http\Message\Request;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 use Workerman\Worker;
@@ -16,11 +18,14 @@ class WorkermanRequest extends Request
      */
     protected Worker $worker;
 
+    protected string $clientId;
+
     protected array $data = [];
 
-    public function __construct(Worker $worker, array $data)
+    public function __construct(Worker $worker, string $clientId, array $data)
     {
         $this->worker = $worker;
+        $this->clientId = $clientId;
         $this->data = $data;
     }
 
@@ -101,8 +106,21 @@ class WorkermanRequest extends Request
         return $this->worker;
     }
 
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
     public function getData(): array
     {
         return $this->data;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        return RequestContext::getServer()->getClientAddress($this->clientId);
     }
 }

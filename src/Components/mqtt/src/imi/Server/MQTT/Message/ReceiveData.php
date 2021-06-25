@@ -6,6 +6,7 @@ namespace Imi\Server\MQTT\Message;
 
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
+use Imi\Util\Socket\IPEndPoint;
 
 class ReceiveData implements IReceiveData
 {
@@ -36,6 +37,11 @@ class ReceiveData implements IReceiveData
      * @var \BinSoul\Net\Mqtt\Packet
      */
     protected $formatData;
+
+    /**
+     * 客户端地址
+     */
+    protected IPEndPoint $clientAddress;
 
     /**
      * @param string|int $clientId
@@ -83,5 +89,18 @@ class ReceiveData implements IReceiveData
     public function getReactorId(): int
     {
         return $this->reactorId;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        if (!isset($this->clientAddress))
+        {
+            return $this->clientAddress = RequestContext::getServer()->getClientAddress($this->clientId);
+        }
+
+        return $this->clientAddress;
     }
 }

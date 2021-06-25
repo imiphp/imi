@@ -7,6 +7,7 @@ namespace Imi\Swoole\Http\Message;
 use Imi\Server\Http\Message\Request;
 use Imi\Swoole\Server\Base;
 use Imi\Swoole\Server\Contract\ISwooleServer;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\Util\Stream\MemoryStream;
 use Imi\Util\Uri;
 
@@ -131,5 +132,13 @@ class SwooleRequest extends Request
     public function getServerInstance(): Base
     {
         return $this->serverInstance;
+    }
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint
+    {
+        return $this->serverInstance->getClientAddress($this->swooleRequest->fd);
     }
 }

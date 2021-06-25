@@ -243,7 +243,10 @@ string(47) "/xxx.html"
 #### 获取客户端IP地址
 
 ```php
-$ip = $this->request->getServerParam('remote_addr');
+$address = $this->request->getClientAddress();
+$address->getAddress(); // ip
+$address->getPort(); // 端口
+echo $address; // ip:端口
 ```
 
 #### 获取 Swoole Request 对象

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Server\WebSocket\Message;
 
+use Imi\Util\Socket\IPEndPoint;
+
 interface IFrame
 {
     /**
@@ -36,4 +38,9 @@ interface IFrame
      * 表示数据帧是否完整.
      */
     public function isFinish(): bool;
+
+    /**
+     * 获取客户端地址
+     */
+    public function getClientAddress(): IPEndPoint;
 }
