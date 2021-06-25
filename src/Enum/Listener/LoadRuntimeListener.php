@@ -22,6 +22,6 @@ class LoadRuntimeListener implements IEventListener
             return;
         }
         $data = $e->getData()['data']['enum'] ?? [];
-        EnumManager::setMap($data['enum']);
+        EnumManager::setMap($data['enum'] ?? []);
     }
 }

@@ -11,6 +11,7 @@ use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\Log\ErrorLog;
 use Imi\Server\Server;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\Worker;
 use Imi\WorkermanGateway\Swoole\Server\Business\Task\WorkerTask;
 use Swoole\Coroutine;
@@ -103,6 +104,18 @@ if (\extension_loaded('swoole'))
         public function send($clientId, string $data): bool
         {
             return Server::sendRaw($data, $clientId, $this->getName()) > 0;
+        }
+
+        /**
+         * 获取客户端地址
+         *
+         * @param string|int $clientId
+         */
+        public function getClientAddress($clientId): IPEndPoint
+        {
+            $session = Gateway::getSession($clientId);
+
+            return new IPEndPoint($session['__clientAddress'], $session['__clientPort']);
         }
     }
 }

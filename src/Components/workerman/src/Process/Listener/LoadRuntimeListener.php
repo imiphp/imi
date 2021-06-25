@@ -22,6 +22,6 @@ class LoadRuntimeListener implements IEventListener
             return;
         }
         $data = $e->getData()['data']['workermanProcess'] ?? [];
-        ProcessManager::setMap($data['process']);
+        ProcessManager::setMap($data['process'] ?? []);
     }
 }

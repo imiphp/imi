@@ -42,6 +42,10 @@ if (\extension_loaded('swoole'))
                     switch ($message['cmd']) {
                         case GatewayProtocol::CMD_ON_CONNECT:
                             // 连接
+                            RequestContext::create([
+                                'server'        => $server,
+                                'clientId'      => $clientId,
+                            ]);
                             ConnectionContext::muiltiSet([
                                 '__clientAddress' => long2ip($message['client_ip']),
                                 '__clientPort'    => $message['client_port'],
@@ -74,25 +78,19 @@ if (\extension_loaded('swoole'))
                             ], $server, CloseEventParam::class);
                             break;
                         case GatewayProtocol::CMD_ON_WEBSOCKET_CONNECT:
-                            ConnectionContext::muiltiSet([
-                                '__clientAddress' => long2ip($message['client_ip']),
-                                '__clientPort'    => $message['client_port'],
-                            ]);
                             $swooleRequest = new \Swoole\Http\Request();
                             $swooleResponse = new \Swoole\Http\Response();
                             $request = new WorkermanGatewaySwooleRequest($server, $clientId, $message['body']);
                             $response = new SwooleResponse($server, $swooleResponse);
-                            RequestContext::create([
+                            RequestContext::muiltiSet([
                                 'server'         => $server,
+                                'clientId'       => $clientId,
                                 'swooleRequest'  => $swooleRequest,
                                 'swooleResponse' => $swooleResponse,
                                 'request'        => $request,
                                 'response'       => $response,
-                                'clientId'       => $clientId,
                             ]);
-                            ConnectionContext::create([
-                                'uri' => (string) $request->getUri(),
-                            ]);
+                            ConnectionContext::set('uri', (string) $request->getUri());
                             $server->trigger('handShake', [
                                 'request'   => $request,
                                 'response'  => $response,

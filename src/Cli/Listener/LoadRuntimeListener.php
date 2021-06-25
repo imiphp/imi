@@ -22,6 +22,6 @@ class LoadRuntimeListener implements IEventListener
             return;
         }
         $data = $e->getData()['data']['cli'] ?? [];
-        CliManager::setMap($data['cli']);
+        CliManager::setMap($data['cli'] ?? []);
     }
 }

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
 use GatewayWorker\BusinessWorker;
+use GatewayWorker\Lib\Gateway;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
+use Imi\Util\Socket\IPEndPoint;
 use ReflectionClass;
 use Workerman\Worker;
 
@@ -116,5 +118,17 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
     public function send($clientId, string $data): bool
     {
         return Server::sendRaw($data, $clientId, $this->getName()) > 0;
+    }
+
+    /**
+     * 获取客户端地址
+     *
+     * @param string|int $clientId
+     */
+    public function getClientAddress($clientId): IPEndPoint
+    {
+        $session = Gateway::getSession($clientId);
+
+        return new IPEndPoint($session['__clientAddress'], $session['__clientPort']);
     }
 }

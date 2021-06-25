@@ -23,7 +23,7 @@ class LoadRuntimeListener implements IEventListener
             return;
         }
         $data = $e->getData()['data']['event'] ?? [];
-        EventManager::setMap($data['event']);
-        ClassEventManager::setMap($data['classEvent']);
+        EventManager::setMap($data['event'] ?? []);
+        ClassEventManager::setMap($data['classEvent'] ?? []);
     }
 }

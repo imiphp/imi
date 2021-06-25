@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\WorkermanGateway\Workerman\Server\Business;
 
 use GatewayWorker\BusinessWorker;
+use GatewayWorker\Lib\Gateway;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
@@ -13,6 +14,7 @@ use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Protocol;
 use Imi\Server\Server;
 use Imi\Server\WebSocket\Message\Frame;
+use Imi\Util\Socket\IPEndPoint;
 use Imi\WorkermanGateway\Workerman\Http\Message\WorkermanRequest;
 use ReflectionClass;
 use Workerman\Worker;
@@ -74,6 +76,10 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ]);
+            ConnectionContext::muiltiSet([
+                '__clientAddress' => $_SERVER['REMOTE_ADDR'],
+                '__clientPort'    => $_SERVER['REMOTE_PORT'],
+            ]);
             Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
                 'server'   => $this,
                 'clientId' => $clientId,
@@ -89,9 +95,9 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'server'       => $this,
                 'clientId'     => $clientId,
             ]);
-            ConnectionContext::create([
-                'uri'        => (string) $request->getUri(),
-                'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
+            ConnectionContext::muiltiSet([
+                'uri'             => (string) $request->getUri(),
+                'dataParser'      => $this->config['dataParser'] ?? JsonObjectParser::class,
             ]);
             Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
                 'server'   => $this,
@@ -138,5 +144,17 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
     public function push($clientId, string $data, int $opcode = 1): bool
     {
         return Server::sendRaw($data, $clientId, $this->getName()) > 0;
+    }
+
+    /**
+     * 获取客户端地址
+     *
+     * @param string|int $clientId
+     */
+    public function getClientAddress($clientId): IPEndPoint
+    {
+        $session = Gateway::getSession($clientId);
+
+        return new IPEndPoint($session['__clientAddress'], $session['__clientPort']);
     }
 }

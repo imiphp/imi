@@ -22,6 +22,6 @@ class LoadRuntimeListener implements IEventListener
             return;
         }
         $data = $e->getData()['data']['task'] ?? [];
-        TaskManager::setMap($data['task']);
+        TaskManager::setMap($data['task'] ?? []);
     }
 }
