@@ -91,7 +91,7 @@ class QueueConsumer extends BaseConsumer
      */
     public function pop(float $timeout): ?Message
     {
-        if (!$this->channel->is_consuming())
+        if (!$this->channel || !$this->channel->is_consuming())
         {
             $this->reopen();
             $this->channel->basic_qos(0, $this->queueLength, false);
