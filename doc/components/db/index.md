@@ -69,7 +69,7 @@ return [
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
                 // 数据库连接后，执行初始化的 SQL
-                // 'sqls' => [
+                // 'initSqls' => [
                 //     'select 1',
                 //     'select 2',
                 // ],
@@ -133,7 +133,7 @@ return [
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
                 // 数据库连接后，执行初始化的 SQL
-                // 'sqls' => [
+                // 'initSqls' => [
                 //     'select 1',
                 //     'select 2',
                 // ],
@@ -162,6 +162,7 @@ return [
         'statement'     =>  [
             'cache' =>  true, // 是否开启 statement 缓存，默认开启
         ],
+                    // 'initSqls' => [
         'connections' => [
             'alias1' => [
                 'host' => '127.0.0.1',
@@ -178,12 +179,16 @@ return [
                 // 使用 Swoole MySQL 驱动
                 // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
                 // 数据库连接后，执行初始化的 SQL
-                // 'sqls' => [
+                // 'initSqls' => [
                 //     'select 1',
                 //     'select 2',
                 // ],
             ],
+                        // 'initSqls' => [
+                        // 'initSqls' => [
         ],
+                    // 'initSqls' => [
+                    // 'initSqls' => [
     ],
 ];
 ```
