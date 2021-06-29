@@ -86,6 +86,8 @@ return [
             'configs'     => [
                 'protocol' => \Workerman\Protocols\Text::class,
             ],
+            // 数据处理器
+            'dataParser'    => \Imi\Workerman\Test\AppServer\TcpServer\Parser\JsonObjectParser::class,
         ],
         'udp' => [
             'namespace'   => 'Imi\Workerman\Test\AppServer\UdpServer',
@@ -95,6 +97,8 @@ return [
             'shareWorker' => 'http',
             'configs'     => [
             ],
+            // 数据处理器
+            'dataParser'    => Imi\Server\DataParser\JsonObjectParser::class,
         ],
     ],
 

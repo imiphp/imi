@@ -20,7 +20,7 @@
             'open_eof_split'     => true, //打开EOF_SPLIT检测
             'package_eof'        => "\r\n", //设置EOF
         ],
-        // 这里配置
+        // 这里配置数据处理器
         'dataParser'    => \Imi\Server\DataParser\JsonArrayParser::class,
     ],
     // 子服务器（端口监听）配置
@@ -38,7 +38,7 @@
         // 服务器配置，参数用法同\Swoole\Server->set($configs)
         'configs'	=>	[
         ],
-        // 这里配置
+        // 这里配置数据处理器
         'dataParser'    => \Imi\Server\DataParser\JsonArrayParser::class,
     ],
 ]
@@ -61,12 +61,30 @@ return [
             'configs'     => [
                 'protocol' => \Workerman\Protocols\Text::class,
             ],
-            // 这里配置
+            // 这里配置数据处理器
             'dataParser'    => \Imi\Server\DataParser\JsonArrayParser::class,
         ],
     ],
 ];
 ```
+
+关于 Workerman 的 `protocol` 和 imi 中的 `dataParser` 差别。
+
+`protocol` 是 Workerman 中自定义通信协议的类；`dataParser` 是 imi 框架中对于通信协议编码解码的类；
+
+在 imi 中 `protocol` 只会用到里面的 `decode()` 方法
+
+在 imi 中 `dataParser` 的 `encode()`、`decode()` 方法都会被用到
+
+imi 内置的 Workerman Protocol 类：
+
+`\Imi\Workerman\Server\Protocol\FrameWithLength`:
+
+> 基于 Workerman Frame 协议改造，返回内容：`数据包长度+数据包`
+
+`\Imi\Workerman\Server\Protocol\TextCRLF`:
+
+> 基于 Workerman Text 协议改造，以 `\r\n` 分隔数据包
 
 ## 内置处理器类
 

@@ -117,7 +117,7 @@ class LocalServerUtil implements IWorkermanServerUtil
         {
             /** @var TcpConnection|null $connection */
             $connection = $worker->connections[$tmpClientId] ?? null;
-            if (null !== $connection && $connection->send($data))
+            if (null !== $connection && $connection->send($data, !isset($connection->websocketCurrentFrameLength)))
             {
                 ++$success;
             }

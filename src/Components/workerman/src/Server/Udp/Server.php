@@ -70,6 +70,6 @@ class Server extends Base implements IUdpServer
     {
         $connection = new UdpConnection($this->worker->getMainSocket(), $ip . ':' . $port);
 
-        return (bool) $connection->send($data);
+        return (bool) $connection->send($data, true);
     }
 }

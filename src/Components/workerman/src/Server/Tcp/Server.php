@@ -77,6 +77,6 @@ class Server extends Base implements ITcpServer
             throw new \RuntimeException(sprintf('Connection %s does not exists', $clientId));
         }
 
-        return false !== $connection->send($data);
+        return false !== $connection->send($data, true);
     }
 }
