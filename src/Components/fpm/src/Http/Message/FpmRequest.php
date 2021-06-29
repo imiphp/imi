@@ -75,16 +75,7 @@ class FpmRequest extends Request
             $url = 'http://';
         }
 
-        if ('80' !== $_SERVER['SERVER_PORT'] && '443' !== $_SERVER['SERVER_PORT'])
-        {
-            $url .= $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
-        }
-        else
-        {
-            $url .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        }
-
-        $this->uri = new Uri($url);
+        $this->uri = new Uri($url . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
     }
 
     /**
