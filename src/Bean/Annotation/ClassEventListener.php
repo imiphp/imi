@@ -10,25 +10,14 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\ClassEventParser")
+ *
+ * @property string $className 类名
+ * @property string $eventName 事件名
+ * @property int    $priority  优先级，越大越先执行
  */
 #[\Attribute]
 class ClassEventListener extends Base
 {
-    /**
-     * 类名.
-     */
-    public string $className = '';
-
-    /**
-     * 事件名.
-     */
-    public string $eventName = '';
-
-    /**
-     * 优先级，越大越先执行.
-     */
-    public int $priority = 0;
-
     public function __construct(?array $__data = null, string $className = '', string $eventName = '', int $priority = 0)
     {
         parent::__construct(...\func_get_args());

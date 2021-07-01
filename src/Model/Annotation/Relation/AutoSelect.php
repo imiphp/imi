@@ -13,6 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property bool $status     是否开启
+ * @property bool $alwaysShow 是否总是显示该属性；如果为false，在为null时序列化为数组或json不显示该属性
  */
 #[\Attribute]
 class AutoSelect extends Base
@@ -21,17 +24,6 @@ class AutoSelect extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'status';
-
-    /**
-     * 是否开启.
-     */
-    public bool $status = true;
-
-    /**
-     * 是否总是显示该属性
-     * 如果为false，在为null时序列化为数组或json不显示该属性.
-     */
-    public bool $alwaysShow = true;
 
     public function __construct(?array $__data = null, bool $status = true, bool $alwaysShow = true)
     {

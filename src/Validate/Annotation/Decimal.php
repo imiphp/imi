@@ -13,50 +13,23 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property float|null $min      最小值，为null不限制
+ * @property float|null $max      最大值，为null不限制
+ * @property int|null   $accuracy 小数精度位数，为null不限制
  */
 #[\Attribute]
 class Decimal extends Condition
 {
     /**
-     * 最小值，为null不限制.
+     * @param callable $callable
      */
-    public ?float $min = null;
-
-    /**
-     * 最大值，为null不限制.
-     */
-    public ?float $max = null;
-
-    /**
-     * 小数精度位数，为null不限制.
-     *
-     * @var int
-     */
-    public ?int $accuracy = null;
-
-    /**
-     * 验证回调.
-     *
-     * @var callable
-     */
-    public $callable = '\Imi\Validate\ValidatorHelper::decimal';
-
-    /**
-     * 参数名数组.
-     */
-    public array $args = [
+    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::decimal', array $args = [
         '{:value}',
         '{min}',
         '{max}',
         '{accuracy}',
-    ];
-
-    public function __construct(?array $__data = null, ?float $min = null, ?float $max = null, ?int $accuracy = null, array $args = [
-        '{:value}',
-        '{min}',
-        '{max}',
-        '{accuracy}',
-    ])
+    ], ?string $exception = null, ?int $exCode = null, ?float $min = null, ?float $max = null, ?int $accuracy = null)
     {
         parent::__construct(...\func_get_args());
     }

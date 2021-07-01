@@ -12,6 +12,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property int $options 由以下常量组成的二进制掩码：JSON_HEX_QUOT、JSON_HEX_TAG、JSON_HEX_AMP、JSON_HEX_APOS、JSON_NUMERIC_CHECK、JSON_PRETTY_PRINT、JSON_UNESCAPED_SLASHES、JSON_FORCE_OBJECT、JSON_PRESERVE_ZERO_FRACTION、JSON_UNESCAPED_UNICODE、JSON_PARTIAL_OUTPUT_ON_ERROR
+ * @property int $depth   设置最大深度。 必须大于0。
  */
 #[\Attribute]
 class JsonView extends BaseViewOption
@@ -20,27 +23,6 @@ class JsonView extends BaseViewOption
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'options';
-
-    /**
-     * 由以下常量组成的二进制掩码：
-     * JSON_HEX_QUOT
-     * JSON_HEX_TAG
-     * JSON_HEX_AMP
-     * JSON_HEX_APOS
-     * JSON_NUMERIC_CHECK
-     * JSON_PRETTY_PRINT
-     * JSON_UNESCAPED_SLASHES
-     * JSON_FORCE_OBJECT
-     * JSON_PRESERVE_ZERO_FRACTION
-     * JSON_UNESCAPED_UNICODE
-     * JSON_PARTIAL_OUTPUT_ON_ERROR。
-     */
-    public int $options = 0;
-
-    /**
-     * 设置最大深度。 必须大于0。
-     */
-    public int $depth = 512;
 
     public function __construct(?array $__data = null, int $options = 0, int $depth = 512)
     {

@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $sql 表结构 SQL；CREATE TABLE 语句
  */
 #[\Attribute]
 class DDL extends Base
@@ -21,13 +23,6 @@ class DDL extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'sql';
-
-    /**
-     * 表结构 SQL.
-     *
-     * CREATE TABLE 语句
-     */
-    public string $sql = '';
 
     public function __construct(?array $__data = null, string $sql = '')
     {

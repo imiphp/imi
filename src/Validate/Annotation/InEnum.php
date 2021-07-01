@@ -13,34 +13,19 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string $enum 注解类名
  */
 #[\Attribute]
 class InEnum extends Condition
 {
     /**
-     * 注解类名.
+     * @param callable $callable
      */
-    public string $enum = '';
-
-    /**
-     * 验证回调.
-     *
-     * @var callable
-     */
-    public $callable = '\Imi\Validate\ValidatorHelper::inEnum';
-
-    /**
-     * 参数名数组.
-     */
-    public array $args = [
+    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::inEnum', array $args = [
         '{:value}',
         '{enum}',
-    ];
-
-    public function __construct(?array $__data = null, string $enum = '', array $args = [
-        '{:value}',
-        '{enum}',
-    ])
+    ], ?string $exception = null, ?int $exCode = null, string $enum = '')
     {
         parent::__construct(...\func_get_args());
     }

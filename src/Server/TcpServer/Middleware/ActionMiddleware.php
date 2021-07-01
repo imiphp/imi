@@ -35,7 +35,7 @@ class ActionMiddleware implements IMiddleware
         $isObject = \is_array($callable) && isset($callable[0]) && $callable[0] instanceof TcpController;
         if ($isObject)
         {
-            $callable[0]->server = RequestContext::getServer();
+            $callable[0]->server = $requestContext['server'] ?? null;
             $callable[0]->data = $data;
         }
         // 执行动作

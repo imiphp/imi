@@ -35,7 +35,7 @@ class Dispatcher
         {
             /** @var ITcpServer $server */
             $server = RequestContext::getServer();
-            $server->send($data->getClientId(), RequestContext::getServerBean(DataParser::class)->encode($responseData));
+            $server->send($data->getClientId(), $server->getBean(DataParser::class)->encode($responseData));
         }
     }
 

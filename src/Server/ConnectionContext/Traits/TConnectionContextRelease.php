@@ -19,8 +19,9 @@ trait TConnectionContextRelease
     {
         $groups = ConnectionContext::get('__groups', [], $clientId);
 
+        $server = RequestContext::getServer();
         // 当前连接离开所有组
-        RequestContext::getServerBean('ClientIdMap')->leaveAll($clientId);
+        $server->getBean('ClientIdMap')->leaveAll($clientId);
 
         ConnectionContext::set('__groups', $groups, $clientId);
 
@@ -28,7 +29,7 @@ trait TConnectionContextRelease
         if ($flag = ConnectionContext::getFlagByClientId($clientId))
         {
             /** @var \Imi\Server\ConnectionContext\StoreHandler $store */
-            $store = RequestContext::getServerBean('ConnectionContextStore');
+            $store = $server->getBean('ConnectionContextStore');
             ConnectionContext::unbind($flag, $clientId, $store->getTtl());
         }
 

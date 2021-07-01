@@ -13,15 +13,12 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property int $priority 优先级，越大越先执行
  */
 #[\Attribute]
 class Aspect extends Base
 {
-    /**
-     * 优先级，越大越先执行.
-     */
-    public int $priority = 0;
-
     public function __construct(?array $__data = null, int $priority = 0)
     {
         parent::__construct(...\func_get_args());

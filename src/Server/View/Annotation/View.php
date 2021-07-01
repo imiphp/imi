@@ -13,6 +13,10 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Server\View\Parser\ViewParser")
+ *
+ * @property string              $renderType 渲染类型
+ * @property mixed               $data       附加数据
+ * @property BaseViewOption|null $option     视图配置注解
  */
 #[\Attribute]
 class View extends Base
@@ -21,23 +25,6 @@ class View extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'renderType';
-
-    /**
-     * 渲染类型.
-     */
-    public string $renderType = 'json';
-
-    /**
-     * 附加数据.
-     *
-     * @var mixed
-     */
-    public $data = [];
-
-    /**
-     * 视图配置注解.
-     */
-    public ?BaseViewOption $option = null;
 
     /**
      * @param mixed $data

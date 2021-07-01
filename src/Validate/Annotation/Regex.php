@@ -13,34 +13,19 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string $pattern 正则表达式文本
  */
 #[\Attribute]
 class Regex extends Condition
 {
     /**
-     * 正则表达式文本.
+     * @param callable $callable
      */
-    public string $pattern = '';
-
-    /**
-     * 验证回调.
-     *
-     * @var callable
-     */
-    public $callable = '\Imi\Validate\ValidatorHelper::regex';
-
-    /**
-     * 参数名数组.
-     */
-    public array $args = [
+    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::regex', array $args = [
         '{:value}',
         '{pattern}',
-    ];
-
-    public function __construct(?array $__data = null, string $pattern = '', array $args = [
-        '{:value}',
-        '{pattern}',
-    ])
+    ], ?string $exception = null, ?int $exCode = null, string $pattern = '')
     {
         parent::__construct(...\func_get_args());
     }

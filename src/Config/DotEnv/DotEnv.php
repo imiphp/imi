@@ -35,14 +35,20 @@ class DotEnv
     {
         $builder = null === $names ? StoreBuilder::createWithDefaultName() : StoreBuilder::createWithNoNames();
 
-        foreach ((array) $paths as $path)
+        if ($paths)
         {
-            $builder = $builder->addPath($path);
+            foreach ((array) $paths as $path)
+            {
+                $builder = $builder->addPath($path);
+            }
         }
 
-        foreach ((array) $names as $name)
+        if ($names)
         {
-            $builder = $builder->addName($name);
+            foreach ((array) $names as $name)
+            {
+                $builder = $builder->addName($name);
+            }
         }
 
         if ($shortCircuit)

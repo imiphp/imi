@@ -13,6 +13,11 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Swoole\Process\Parser\ProcessPoolParser")
+ *
+ * @property string      $name        进程池名称
+ * @property int         $workerNum   进程数量
+ * @property int         $ipcType     进程间通信的模式，默认为0表示不使用任何进程间通信特性
+ * @property string|null $msgQueueKey 消息队列key
  */
 #[\Attribute]
 class ProcessPool extends Base
@@ -21,26 +26,6 @@ class ProcessPool extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 进程池名称.
-     */
-    public string $name = '';
-
-    /**
-     * 进程数量.
-     */
-    public int $workerNum = 1;
-
-    /**
-     * 进程间通信的模式，默认为0表示不使用任何进程间通信特性.
-     */
-    public int $ipcType = 0;
-
-    /**
-     * 消息队列key.
-     */
-    public ?string $msgQueueKey = null;
 
     public function __construct(?array $__data = null, string $name = '', int $workerNum = 1, int $ipcType = 0, ?string $msgQueueKey = null)
     {

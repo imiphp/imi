@@ -13,6 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
+ *
+ * @property string|null $name           操作名称
+ * @property bool        $dynamicOptions 是否启用动态参数支持
  */
 #[\Attribute]
 class CommandAction extends Base
@@ -21,16 +24,6 @@ class CommandAction extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 操作名称.
-     */
-    public ?string $name = null;
-
-    /**
-     * 是否启用动态参数支持
-     */
-    public bool $dynamicOptions = false;
 
     public function __construct(?array $__data = null, ?string $name = null, bool $dynamicOptions = false)
     {

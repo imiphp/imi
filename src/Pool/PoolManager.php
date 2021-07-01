@@ -263,7 +263,7 @@ class PoolManager
         }
 
         $name = 'poolResource.' . $resource->getPool()->getName();
-        $poolResource = RequestContext::get($name);
+        $poolResource = $requestContext[$name] ?? null;
         if ($poolResource === $resource)
         {
             $requestContext[$name] = null;

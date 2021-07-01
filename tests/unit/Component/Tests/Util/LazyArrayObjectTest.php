@@ -55,21 +55,21 @@ class LazyArrayObjectTest extends BaseTest
 
         $this->assertFalse(isset($data->a));
         $this->assertFalse(isset($data['a']));
-        $data->a = ['b' => 1];
+        $data->a = $data->b = ['b' => 1];
         $this->assertTrue(isset($data->a));
         $this->assertTrue(isset($data['a']));
         $this->assertEquals(1, $data->a['b']);
 
         unset($data['a']);
-        $this->assertNull($data->a);
-        $this->assertNull($data['a']);
+        $this->assertNull($data->a ?? null);
+        $this->assertNull($data['a'] ?? null);
         $this->assertFalse(isset($data->a));
         $this->assertFalse(isset($data['a']));
 
-        unset($data->x);
-        $this->assertNull($data->x);
-        $this->assertNull($data['x']);
-        $this->assertFalse(isset($data->x));
-        $this->assertFalse(isset($data['x']));
+        unset($data->b);
+        $this->assertNull($data->b ?? null);
+        $this->assertNull($data['b'] ?? null);
+        $this->assertFalse(isset($data->b));
+        $this->assertFalse(isset($data['b']));
     }
 }

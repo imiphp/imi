@@ -10,6 +10,8 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY", "CONST"})
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|string[]|null $annotation 允许的注解类，为 null 则不限制，支持字符串或数组
  */
 #[\Attribute]
 class Inherit extends Base
@@ -18,13 +20,6 @@ class Inherit extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'annotation';
-
-    /**
-     * 允许的注解类，为 null 则不限制，支持字符串或数组.
-     *
-     * @var string|string[]|null
-     */
-    public $annotation = null;
 
     /**
      * @param string|string[]|null $annotation

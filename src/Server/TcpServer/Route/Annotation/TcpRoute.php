@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
+ *
+ * @property array $condition 条件
  */
 #[\Attribute]
 class TcpRoute extends Base
@@ -21,11 +23,6 @@ class TcpRoute extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'condition';
-
-    /**
-     * 条件.
-     */
-    public array $condition = [];
 
     public function __toString()
     {

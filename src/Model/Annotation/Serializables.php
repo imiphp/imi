@@ -14,24 +14,13 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $mode   模式；allow-白名单；deny-黑名单
+ * @property array  $fields 字段名数组
  */
 #[\Attribute]
 class Serializables extends Base
 {
-    /**
-     * 模式
-     * allow-白名单
-     * deny-黑名单.
-     */
-    public string $mode = '';
-
-    /**
-     * 字段名数组.
-     *
-     * @var string[]
-     */
-    public array $fields = [];
-
     public function __construct(?array $__data = null, string $mode = '', array $fields = [])
     {
         parent::__construct(...\func_get_args());

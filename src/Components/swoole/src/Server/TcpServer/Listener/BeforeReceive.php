@@ -32,16 +32,15 @@ class BeforeReceive implements IReceiveEventListener
             return;
         }
         // 上下文创建
-        RequestContext::muiltiSet([
-            'server'      => $e->getTarget(),
-            'clientId'    => $clientId,
-        ]);
+        $requestContext = RequestContext::getContext();
+        $requestContext['server'] = $server = $e->getTarget();
+        $requestContext['clientId'] = $clientId;
 
         $imiReceiveData = new ReceiveData($clientId, $e->reactorId, $e->data);
-        RequestContext::set('receiveData', $imiReceiveData);
+        $requestContext['receiveData'] = $imiReceiveData;
 
         // 中间件
-        $dispatcher = RequestContext::getServerBean('TcpDispatcher');
+        $dispatcher = $server->getBean('TcpDispatcher');
         $dispatcher->dispatch($imiReceiveData);
     }
 }

@@ -13,6 +13,10 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $class   类名，支持 Bean 名
+ * @property bool   $request 为 true 时，使用当前请求上下文的 Bean 对象
+ * @property array  $args    实例化参数
  */
 #[\Attribute]
 class Facade extends Base
@@ -21,21 +25,6 @@ class Facade extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'class';
-
-    /**
-     * 类名，支持 Bean 名.
-     */
-    public string $class = '';
-
-    /**
-     * 为 true 时，使用当前请求上下文的 Bean 对象
-     */
-    public bool $request = false;
-
-    /**
-     * 实例化参数.
-     */
-    public array $args = [];
 
     public function __construct(?array $__data = null, string $class = '', bool $request = false, array $args = [])
     {

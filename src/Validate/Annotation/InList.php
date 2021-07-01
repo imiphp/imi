@@ -13,34 +13,19 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property array $list 列表
  */
 #[\Attribute]
 class InList extends Condition
 {
     /**
-     * 列表.
+     * @param callable $callable
      */
-    public array $list = [];
-
-    /**
-     * 验证回调.
-     *
-     * @var callable
-     */
-    public $callable = '\Imi\Validate\ValidatorHelper::in';
-
-    /**
-     * 参数名数组.
-     */
-    public array $args = [
+    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::in', array $args = [
         '{:value}',
         '{list}',
-    ];
-
-    public function __construct(?array $__data = null, array $list = [], array $args = [
-        '{:value}',
-        '{list}',
-    ])
+    ], ?string $exception = null, ?int $exCode = null, array $list = [])
     {
         parent::__construct(...\func_get_args());
     }

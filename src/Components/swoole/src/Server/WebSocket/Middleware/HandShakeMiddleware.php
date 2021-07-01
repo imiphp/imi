@@ -31,10 +31,11 @@ class HandShakeMiddleware implements MiddlewareInterface
     {
         /** @var IHttpResponse $response */
         $response = $handler->handle($request);
+        $requestContext = RequestContext::getContext();
         if ('websocket' !== $request->getHeaderLine('Upgrade'))
         {
             /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
-            $routeResult = RequestContext::get('routeResult');
+            $routeResult = $requestContext['routeResult'];
             if ($routeResult->routeItem->wsConfig['wsOnly'] ?? false)
             {
                 $response = $response->setStatus(StatusCode::BAD_REQUEST);
@@ -51,13 +52,13 @@ class HandShakeMiddleware implements MiddlewareInterface
         if (StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
         {
             // http 路由解析结果
-            $routeResult = RequestContext::get('routeResult');
+            $routeResult = $requestContext['routeResult'];
             ConnectionContext::muiltiSet([
                 'parserClass' => $routeResult->routeItem->wsConfig->parserClass ?? JsonObjectParser::class,
                 'uri'         => (string) $request->getUri(),
             ]);
 
-            $server = RequestContext::get('server');
+            $server = $requestContext['server'];
             $server->trigger('open', [
                 'server'   => &$server,
                 'request'  => &$request,
@@ -65,8 +66,9 @@ class HandShakeMiddleware implements MiddlewareInterface
         }
         else
         {
-            Coroutine::defer(function () {
-                Server::close(RequestContext::get('clientId'));
+            $clientId = $requestContext['clientId'];
+            Coroutine::defer(function () use ($clientId) {
+                Server::close($clientId);
             });
         }
 

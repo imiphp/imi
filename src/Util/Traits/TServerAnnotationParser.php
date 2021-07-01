@@ -31,33 +31,38 @@ trait TServerAnnotationParser
             return $cache[$serverName];
         }
         $namespaces = Config::get('@server.' . $serverName . '.beanScan', []);
-        if (!$namespaces)
-        {
-            return [];
-        }
-        foreach ($namespaces as &$namespace)
-        {
-            if ('\\' !== ($namespace[-1] ?? ''))
-            {
-                $namespace .= '\\';
-            }
-        }
-        unset($namespace);
         $result = [];
-        foreach (AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'class') as $option)
+        if ($namespaces)
         {
-            $class = $option->getClass();
-            foreach ($namespaces as $namespace)
+            foreach ($namespaces as &$namespace)
             {
-                if (Text::startwith($class, $namespace))
+                if ('\\' !== ($namespace[-1] ?? ''))
                 {
-                    $result[$class] = $option;
-                    continue 2;
+                    $namespace .= '\\';
+                }
+            }
+            unset($namespace);
+            foreach (AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'class') as $option)
+            {
+                $class = $option->getClass();
+                foreach ($namespaces as $namespace)
+                {
+                    if (Text::startwith($class, $namespace))
+                    {
+                        $result[$class] = $option;
+                        continue 2;
+                    }
                 }
             }
         }
-        $cache[$serverName] = $result;
+        else
+        {
+            foreach (AnnotationManager::getAnnotationPoints($this->controllerAnnotationClass, 'class') as $option)
+            {
+                $result[$option->getClass()] = $option;
+            }
+        }
 
-        return $result;
+        return $cache[$serverName] = $result;
     }
 }

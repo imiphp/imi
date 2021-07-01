@@ -14,20 +14,13 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string $name   场景名称
+ * @property array  $fields 需要验证的字段名列表
  */
 #[\Attribute]
 class Scene extends Base
 {
-    /**
-     * 场景名称.
-     */
-    public string $name = '';
-
-    /**
-     * 需要验证的字段名列表.
-     */
-    public array $fields = [];
-
     public function __construct(?array $__data = null, string $name = '', array $fields = [])
     {
         parent::__construct(...\func_get_args());

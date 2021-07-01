@@ -109,7 +109,7 @@ class File
         {
             return '';
         }
-        $offset = strpos($args[0], '://');
+        $offset = strpos($args[0], '://', 1);
         if (false === $offset)
         {
             $offset = 0;
@@ -123,9 +123,9 @@ class File
             $dsds = '//';
         }
         $result = implode($ds, $args);
-        while (false !== ($position = strpos($result, $dsds, $offset)))
+        while (false !== ($offset = strpos($result, $dsds, $offset)))
         {
-            $result = substr_replace($result, $ds, $position, 2);
+            $result = substr_replace($result, $ds, $offset, 2);
         }
 
         return $result;

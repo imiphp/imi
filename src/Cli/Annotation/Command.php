@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Cli\Parser\ToolParser")
+ *
+ * @property string|null $name 命令行名称
  */
 #[\Attribute]
 class Command extends Base
@@ -21,13 +23,6 @@ class Command extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 命令行名称.
-     *
-     * @var string
-     */
-    public ?string $name = null;
 
     public function __construct(?array $__data = null, ?string $name = null)
     {

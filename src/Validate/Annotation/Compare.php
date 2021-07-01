@@ -13,45 +13,22 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property mixed  $value     被比较值
+ * @property string $operation 比较符，使用顺序：name代表的值->比较符->被比较值；允许使用：==、!=、===、!==、<、<=、>、>=
  */
 #[\Attribute]
 class Compare extends Condition
 {
     /**
-     * 被比较值
-     *
-     * @var mixed
+     * @param mixed    $value
+     * @param callable $callable
      */
-    public $value;
-
-    /**
-     * 比较符，使用顺序：name代表的值->比较符->被比较值
-     *
-     * 允许使用：==、!=、===、!==、<、<=、>、>=
-     */
-    public string $operation = '==';
-
-    /**
-     * 验证回调.
-     *
-     * @var callable
-     */
-    public $callable = '\Imi\Validate\ValidatorHelper::compare';
-
-    /**
-     * 参数名数组.
-     */
-    public array $args = [
+    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', $callable = '\Imi\Validate\ValidatorHelper::compare', array $args = [
         '{:value}',
         '{operation}',
         '{value}',
-    ];
-
-    public function __construct(?array $__data = null, string $operation = '==', array $args = [
-        '{:value}',
-        '{operation}',
-        '{value}',
-    ])
+    ], ?string $exception = null, ?int $exCode = null, $value = null, string $operation = '==')
     {
         parent::__construct(...\func_get_args());
     }

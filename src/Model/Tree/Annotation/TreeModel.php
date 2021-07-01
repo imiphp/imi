@@ -13,26 +13,14 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|null $idField       主键字段名；默认为null，则自动获取
+ * @property string      $parentField   父级ID字段名
+ * @property string      $childrenField 子集字段名
  */
 #[\Attribute]
 class TreeModel extends Base
 {
-    /**
-     * 主键字段名
-     * 默认为null，则自动获取.
-     */
-    public ?string $idField = null;
-
-    /**
-     * 父级ID字段名.
-     */
-    public string $parentField = 'parent_id';
-
-    /**
-     * 子集字段名.
-     */
-    public string $childrenField = 'children';
-
     public function __construct(?array $__data = null, ?string $idField = null, string $parentField = 'parent_id', string $childrenField = 'children')
     {
         parent::__construct(...\func_get_args());

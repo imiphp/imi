@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
+ *
+ * @property string|string[]|null $middlewares
  */
 #[\Attribute]
 class TcpMiddleware extends Base
@@ -21,13 +23,6 @@ class TcpMiddleware extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'middlewares';
-
-    /**
-     * 中间件类或数组.
-     *
-     * @var string|string[]|null
-     */
-    public $middlewares;
 
     /**
      * @param string|string[]|null $middlewares

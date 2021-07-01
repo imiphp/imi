@@ -10,15 +10,12 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\PartialParser")
+ *
+ * @property string $class 注入类名
  */
 #[\Attribute]
 class Partial extends Base
 {
-    /**
-     * 注入类名.
-     */
-    public string $class = '';
-
     /**
      * 只传一个参数时的参数名.
      */

@@ -16,6 +16,8 @@ class Config
      */
     private static array $configs = [];
 
+    private static array $dotRulesCache = [];
+
     private function __construct()
     {
     }
@@ -105,7 +107,21 @@ class Config
      */
     public static function set(string $name, $value): bool
     {
-        $names = Imi::parseDotRule($name);
+        if ('cli' === \PHP_SAPI)
+        {
+            $names = Imi::parseDotRule($name);
+        }
+        else
+        {
+            if (isset(self::$dotRulesCache[$name]))
+            {
+                $names = self::$dotRulesCache[$name];
+            }
+            else
+            {
+                $names = self::$dotRulesCache[$name] = Imi::parseDotRule($name);
+            }
+        }
         if (isset($names[0]))
         {
             $first = array_shift($names);
@@ -134,7 +150,21 @@ class Config
      */
     public static function get(string $name, $default = null)
     {
-        $names = Imi::parseDotRule($name);
+        if ('cli' === \PHP_SAPI)
+        {
+            $names = Imi::parseDotRule($name);
+        }
+        else
+        {
+            if (isset(self::$dotRulesCache[$name]))
+            {
+                $names = self::$dotRulesCache[$name];
+            }
+            else
+            {
+                $names = self::$dotRulesCache[$name] = Imi::parseDotRule($name);
+            }
+        }
         if (isset($names[0]))
         {
             $first = array_shift($names);
@@ -196,7 +226,21 @@ class Config
      */
     public static function has(string $name): bool
     {
-        $names = Imi::parseDotRule($name);
+        if ('cli' === \PHP_SAPI)
+        {
+            $names = Imi::parseDotRule($name);
+        }
+        else
+        {
+            if (isset(self::$dotRulesCache[$name]))
+            {
+                $names = self::$dotRulesCache[$name];
+            }
+            else
+            {
+                $names = self::$dotRulesCache[$name] = Imi::parseDotRule($name);
+            }
+        }
         if (isset($names[0]))
         {
             $first = array_shift($names);

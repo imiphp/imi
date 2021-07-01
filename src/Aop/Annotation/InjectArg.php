@@ -13,23 +13,17 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string $name  参数名
+ * @property mixed  $value 注入的值
  */
 #[\Attribute]
 class InjectArg extends Base
 {
     /**
-     * 参数名.
+     * @param mixed $value
      */
-    public string $name = '';
-
-    /**
-     * 注入的值
-     *
-     * @var mixed
-     */
-    public $value;
-
-    public function __construct(?array $__data = null, string $name = '')
+    public function __construct(?array $__data = null, string $name = '', $value = null)
     {
         parent::__construct(...\func_get_args());
     }

@@ -10,6 +10,9 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\ListenerParser")
+ *
+ * @property string $eventName 事件名
+ * @property int    $priority  优先级，越大越先执行
  */
 #[\Attribute]
 class Listener extends Base
@@ -18,16 +21,6 @@ class Listener extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'eventName';
-
-    /**
-     * 事件名.
-     */
-    public string $eventName = '';
-
-    /**
-     * 优先级，越大越先执行.
-     */
-    public int $priority = 0;
 
     public function __construct(?array $__data = null, string $eventName = '', int $priority = 0)
     {

@@ -13,6 +13,10 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|null       $name       表名
+ * @property string|null       $dbPoolName 数据库连接池名称
+ * @property string|array|null $id         主键，支持数组方式设置联合索引
  */
 #[\Attribute]
 class Table extends Base
@@ -23,23 +27,9 @@ class Table extends Base
     protected ?string $defaultFieldName = 'name';
 
     /**
-     * 表名.
+     * @param string|array|null $id
      */
-    public ?string $name = null;
-
-    /**
-     * 数据库连接池名称.
-     */
-    public ?string $dbPoolName = null;
-
-    /**
-     * 主键，支持数组方式设置联合索引.
-     *
-     * @var string|array|null
-     */
-    public $id = null;
-
-    public function __construct(?array $__data = null, ?string $name = null, ?string $dbPoolName = null)
+    public function __construct(?array $__data = null, ?string $name = null, ?string $dbPoolName = null, $id = null)
     {
         parent::__construct(...\func_get_args());
     }

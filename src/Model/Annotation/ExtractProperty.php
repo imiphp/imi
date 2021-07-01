@@ -13,6 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $fieldName 字段名，支持.的形式无限级取值
+ * @property string $alias     提取到当前模型中的字段别名，不设置默认为原始字段名
  */
 #[\Attribute]
 class ExtractProperty extends Base
@@ -21,16 +24,6 @@ class ExtractProperty extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'fieldName';
-
-    /**
-     * 字段名，支持.的形式无限级取值
-     */
-    public string $fieldName = '';
-
-    /**
-     * 提取到当前模型中的字段别名，不设置默认为原始字段名.
-     */
-    public string $alias = '';
 
     public function __construct(?array $__data = null, string $fieldName = '', string $alias = '')
     {

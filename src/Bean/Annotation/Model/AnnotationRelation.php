@@ -192,14 +192,17 @@ class AnnotationRelation
         if (isset($classRelations[$annotationClassName]))
         {
             $classRelationsItem = &$classRelations[$annotationClassName];
-            foreach ($classRelationsItem as $i => $relation)
+            if ($classRelationsItem)
             {
-                if ($relation->getClass() === $className)
+                foreach ($classRelationsItem as $i => $relation)
                 {
-                    unset($classRelationsItem[$i]);
+                    if ($relation->getClass() === $className)
+                    {
+                        unset($classRelationsItem[$i]);
+                    }
                 }
+                $classRelationsItem = array_values($classRelationsItem);
             }
-            $classRelationsItem = array_values($classRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -213,14 +216,17 @@ class AnnotationRelation
         if (isset($methodRelations[$annotationClassName]))
         {
             $methodRelationsItem = &$methodRelations[$annotationClassName];
-            foreach ($methodRelationsItem as $i => $relation)
+            if ($methodRelationsItem)
             {
-                if ($relation->getClass() === $className && $relation->getMethod() === $methodName)
+                foreach ($methodRelationsItem as $i => $relation)
                 {
-                    unset($methodRelationsItem[$i]);
+                    if ($relation->getClass() === $className && $relation->getMethod() === $methodName)
+                    {
+                        unset($methodRelationsItem[$i]);
+                    }
                 }
+                $methodRelationsItem = array_values($methodRelationsItem);
             }
-            $methodRelationsItem = array_values($methodRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -234,14 +240,17 @@ class AnnotationRelation
         if (isset($propertyRelations[$annotationClassName]))
         {
             $propertyRelationsItem = &$propertyRelations[$annotationClassName];
-            foreach ($propertyRelationsItem as $i => $relation)
+            if ($propertyRelationsItem)
             {
-                if ($relation->getClass() === $className && $relation->getProperty() === $propertyName)
+                foreach ($propertyRelationsItem as $i => $relation)
                 {
-                    unset($propertyRelationsItem[$i]);
+                    if ($relation->getClass() === $className && $relation->getProperty() === $propertyName)
+                    {
+                        unset($propertyRelationsItem[$i]);
+                    }
                 }
+                $propertyRelationsItem = array_values($propertyRelationsItem);
             }
-            $propertyRelationsItem = array_values($propertyRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
@@ -255,30 +264,36 @@ class AnnotationRelation
         if (isset($constantRelations[$annotationClassName]))
         {
             $constantRelationsItem = &$constantRelations[$annotationClassName];
-            foreach ($constantRelationsItem as $i => $relation)
+            if ($constantRelationsItem)
             {
-                if ($relation->getClass() === $className && $relation->getConstant() === $constantName)
+                foreach ($constantRelationsItem as $i => $relation)
                 {
-                    unset($constantRelationsItem[$i]);
+                    if ($relation->getClass() === $className && $relation->getConstant() === $constantName)
+                    {
+                        unset($constantRelationsItem[$i]);
+                    }
                 }
+                $constantRelationsItem = array_values($constantRelationsItem);
             }
-            $constantRelationsItem = array_values($constantRelationsItem);
         }
         $this->allRelations[$annotationClassName] = null;
     }
 
     /**
      * 移除类所有注解关联.
+     *
+     * @param string|string[] $className
      */
-    public function removeClassRelation(string $className): void
+    public function removeClassRelation($className): void
     {
         $classRelations = &$this->classRelations;
+        $className = (array) $className;
         foreach ($classRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className)
+                if (\in_array($item->getClass(), $className))
                 {
                     unset($list[$i]);
                     $haveUnset = true;
@@ -294,16 +309,19 @@ class AnnotationRelation
 
     /**
      * 移除方法所有注解关联.
+     *
+     * @param string|string[] $methodName
      */
-    public function removeMethodRelation(string $className, string $methodName): void
+    public function removeMethodRelation(string $className, $methodName): void
     {
         $methodRelations = &$this->methodRelations;
+        $methodName = (array) $methodName;
         foreach ($methodRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className && $item->getMethod() === $methodName)
+                if ($item->getClass() === $className && \in_array($item->getMethod(), $methodName))
                 {
                     unset($list[$i]);
                     $haveUnset = true;
@@ -319,16 +337,19 @@ class AnnotationRelation
 
     /**
      * 移除属性所有注解关联.
+     *
+     * @param string|string[] $propertyName
      */
-    public function removePropertyRelation(string $className, string $propertyName): void
+    public function removePropertyRelation(string $className, $propertyName): void
     {
         $propertyRelations = &$this->propertyRelations;
+        $propertyName = (array) $propertyName;
         foreach ($propertyRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className && $item->getProperty() === $propertyName)
+                if ($item->getClass() === $className && \in_array($item->getProperty(), $propertyName))
                 {
                     unset($list[$i]);
                     $haveUnset = true;
@@ -344,16 +365,19 @@ class AnnotationRelation
 
     /**
      * 移除常量所有注解关联.
+     *
+     * @param string|string[] $constantName
      */
-    public function removeConstantRelation(string $className, string $constantName): void
+    public function removeConstantRelation(string $className, $constantName): void
     {
         $constantRelations = &$this->constantRelations;
+        $constantName = (array) $constantName;
         foreach ($constantRelations as $annotationClass => &$list)
         {
             $haveUnset = false;
             foreach ($list as $i => $item)
             {
-                if ($item->getClass() === $className && $item->getConstant() === $constantName)
+                if ($item->getClass() === $className && \in_array($item->getConstant(), $constantName))
                 {
                     unset($list[$i]);
                     $haveUnset = true;

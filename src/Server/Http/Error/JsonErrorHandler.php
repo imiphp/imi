@@ -50,9 +50,10 @@ class JsonErrorHandler implements IErrorHandler
                 'message' => 'error',
             ];
         }
+        $requestContext = RequestContext::getContext();
         /** @var \Imi\Server\View\Handler\Json $jsonView */
-        $jsonView = RequestContext::getServerBean('JsonView');
-        $jsonView->handle($this->viewAnnotation, null, $data, RequestContext::get('response'))->send();
+        $jsonView = $requestContext['server']->getBean('JsonView');
+        $jsonView->handle($this->viewAnnotation, null, $data, $requestContext['response'] ?? null)->send();
 
         return $this->cancelThrow;
     }

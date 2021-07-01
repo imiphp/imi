@@ -14,15 +14,12 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CONST")
  * @Parser("Imi\Enum\Annotation\Parser\EnumParser")
+ *
+ * @property string $text 文本描述
  */
 #[\Attribute]
 class EnumItem extends Base
 {
-    /**
-     * 文本描述.
-     */
-    public string $text = '';
-
     /**
      * 只传一个参数时的参数名.
      */

@@ -12,22 +12,13 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property string|object $class  类名，或者传入对象
+ * @property string        $method 方法名
  */
 #[\Attribute]
 class Callback extends BaseInjectValue
 {
-    /**
-     * 类名，或者传入对象
-     *
-     * @var string|object
-     */
-    public $class;
-
-    /**
-     * 方法名.
-     */
-    public string $method = '';
-
     /**
      * @param string|object $class
      */

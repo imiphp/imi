@@ -14,6 +14,9 @@ use Imi\Bean\Annotation\Inherit;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property string $name    常量名
+ * @property mixed  $default 常量不存在时，返回的默认值
  */
 #[\Attribute]
 class ConstValue extends BaseInjectValue
@@ -22,18 +25,6 @@ class ConstValue extends BaseInjectValue
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 常量名.
-     */
-    public string $name = '';
-
-    /**
-     * 常量不存在时，返回的默认值
-     *
-     * @var mixed
-     */
-    public $default = null;
 
     /**
      * @param mixed $default

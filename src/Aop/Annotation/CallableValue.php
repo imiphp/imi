@@ -12,6 +12,8 @@ use Imi\Bean\Annotation\Inherit;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property callable $callable 回调
  */
 #[\Attribute]
 class CallableValue extends BaseInjectValue
@@ -20,13 +22,6 @@ class CallableValue extends BaseInjectValue
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'callable';
-
-    /**
-     * 回调.
-     *
-     * @var callable
-     */
-    public $callable;
 
     public function __construct(?array $__data = null, callable $callable = null)
     {

@@ -774,7 +774,10 @@ abstract class Model extends BaseModel
         {
             foreach ($meta->getId() as $id)
             {
-                unset($result[$id]);
+                if (isset($result[$id]))
+                {
+                    unset($result[$id]);
+                }
             }
         }
 

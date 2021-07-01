@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $sql SQL 语句
  */
 #[\Attribute]
 class Sql extends Base
@@ -21,11 +23,6 @@ class Sql extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'sql';
-
-    /**
-     * SQL 语句.
-     */
-    public string $sql = '';
 
     public function __construct(?array $__data = null, string $sql = '')
     {

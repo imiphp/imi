@@ -26,6 +26,8 @@ class AnnotationManager
      */
     private static AnnotationRelation $annotationRelation;
 
+    private static bool $removeWhenset = true;
+
     private function __construct()
     {
     }
@@ -33,6 +35,16 @@ class AnnotationManager
     public static function init(): void
     {
         static::$annotationRelation = new AnnotationRelation();
+    }
+
+    public static function getRemoveWhenset(): bool
+    {
+        return self::$removeWhenset;
+    }
+
+    public static function setRemoveWhenset(bool $removeWhenset): void
+    {
+        self::$removeWhenset = $removeWhenset;
     }
 
     /**
@@ -101,7 +113,10 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             static::$annotationRelation->removeClassRelation($className);
-            $staticAnnotations[$className]->clearClassAnnotations();
+            if (self::$removeWhenset)
+            {
+                $staticAnnotations[$className]->clearClassAnnotations();
+            }
         }
         static::addClassAnnotations($className, ...$annotations);
     }
@@ -140,7 +155,10 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $staticAnnotations[$className]->clearMethodAnnotations($methodName);
-            static::$annotationRelation->removeMethodRelation($className, $methodName);
+            if (self::$removeWhenset)
+            {
+                static::$annotationRelation->removeMethodRelation($className, $methodName);
+            }
         }
         static::addMethodAnnotations($className, $methodName, ...$annotations);
     }
@@ -179,7 +197,10 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $staticAnnotations[$className]->clearPropertyAnnotations($propertyName);
-            static::$annotationRelation->removePropertyRelation($className, $propertyName);
+            if (self::$removeWhenset)
+            {
+                static::$annotationRelation->removePropertyRelation($className, $propertyName);
+            }
         }
         static::addPropertyAnnotations($className, $propertyName, ...$annotations);
     }
@@ -218,7 +239,10 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $staticAnnotations[$className]->clearConstantAnnotations($constantName);
-            static::$annotationRelation->removeConstantRelation($className, $constantName);
+            if (self::$removeWhenset)
+            {
+                static::$annotationRelation->removeConstantRelation($className, $constantName);
+            }
         }
         static::addConstantAnnotations($className, $constantName, ...$annotations);
     }
@@ -529,17 +553,17 @@ class AnnotationManager
         {
             $classAnnotation = $staticAnnotations[$className];
             static::$annotationRelation->removeClassRelation($className);
-            foreach ($classAnnotation->getMethodAnnotations() as $methodName => $annotations)
+            if ($list = $classAnnotation->getMethodAnnotations())
             {
-                static::$annotationRelation->removeMethodRelation($className, $methodName);
+                static::$annotationRelation->removeMethodRelation($className, array_keys($list));
             }
-            foreach ($classAnnotation->getPropertyAnnotations() as $propertyName => $annotations)
+            if ($list = $classAnnotation->getPropertyAnnotations())
             {
-                static::$annotationRelation->removePropertyRelation($className, $propertyName);
+                static::$annotationRelation->removePropertyRelation($className, array_keys($list));
             }
-            foreach ($classAnnotation->getConstantAnnotations() as $constName => $annotations)
+            if ($list = $classAnnotation->getConstantAnnotations())
             {
-                static::$annotationRelation->removeConstantRelation($className, $constName);
+                static::$annotationRelation->removeConstantRelation($className, array_keys($list));
             }
             unset($staticAnnotations[$className]);
         }

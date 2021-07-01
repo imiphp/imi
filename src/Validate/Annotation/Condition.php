@@ -16,73 +16,26 @@ use Imi\Config;
  * @Annotation
  * @Target({"CLASS", "METHOD", "PROPERTY"})
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string|null $name          参数名称；属性注解可省略
+ * @property bool        $optional      非必验证，只有当值存在才验证
+ * @property mixed       $default       当值不符合条件时的默认值
+ * @property bool        $inverseResult 对结果取反
+ * @property string      $message       当验证条件不符合时的信息；支持代入{:value}原始值；支持代入{:data.xxx}所有数据中的某项；支持以{name}这样的形式，代入注解参数值
+ * @property callable    $callable      验证回调
+ * @property array       $args          参数名数组；支持代入{:value}原始值；支持代入{:data}所有数据；支持代入{:data.xxx}所有数据中的某项；支持以{name}这样的形式，代入注解参数值；如果没有{}，则原样传值
+ * @property string|null $exception     异常类
+ * @property int|null    $exCode        异常编码
  */
 #[\Attribute]
 class Condition extends Base
 {
     /**
-     * 参数名称
-     * 属性注解可省略.
+     * @param mixed $default
      */
-    public ?string $name = null;
-
-    /**
-     * 非必验证，只有当值存在才验证
-     */
-    public bool $optional = false;
-
-    /**
-     * 当值不符合条件时的默认值
-     *
-     * @var mixed
-     */
-    public $default;
-
-    /**
-     * 对结果取反.
-     */
-    public bool $inverseResult = false;
-
-    /**
-     * 当验证条件不符合时的信息.
-     *
-     * 支持代入{:value}原始值
-     * 支持代入{:data.xxx}所有数据中的某项
-     * 支持以{name}这样的形式，代入注解参数值
-     */
-    public string $message = '{name} validate failed';
-
-    /**
-     * 验证回调.
-     *
-     * @var callable
-     */
-    public $callable;
-
-    /**
-     * 参数名数组.
-     *
-     * 支持代入{:value}原始值
-     * 支持代入{:data}所有数据
-     * 支持代入{:data.xxx}所有数据中的某项
-     * 支持以{name}这样的形式，代入注解参数值
-     * 如果没有{}，则原样传值
-     */
-    public array $args = ['{:value}'];
-
-    /**
-     * 异常类.
-     */
-    public ?string $exception = null;
-
-    /**
-     * 异常编码
-     */
-    public ?int $exCode = null;
-
-    public function __construct(array $data = [])
+    public function __construct(?array $__data = null, ?string $name = null, bool $optional = false, $default = null, bool $inverseResult = false, string $message = '{name} validate failed', ?callable $callable = null, array $args = ['{:value}'], ?string $exception = null, ?int $exCode = null)
     {
-        parent::__construct($data);
+        parent::__construct(...\func_get_args());
         if (null === $this->exception)
         {
             $this->exception = Config::get('@app.validation.exception', \InvalidArgumentException::class);

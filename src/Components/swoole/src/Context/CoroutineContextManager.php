@@ -54,7 +54,7 @@ class CoroutineContextManager implements IContextManager
                 throw new ContextExistsException(sprintf('Context %s already exists!', $flag));
             }
 
-            return $this->contexts[$flag] = new ArrayObject($data);
+            return $this->contexts[$flag] = new ArrayObject($data, ArrayObject::ARRAY_AS_PROPS);
         }
     }
 

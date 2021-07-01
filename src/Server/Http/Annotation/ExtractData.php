@@ -14,33 +14,18 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string $name    导出数据名称；支持：$get.id、$post.content、$body.name
+ * @property string $to      导出数据到的参数名
+ * @property mixed  $default 参数不存在时的默认值
  */
 #[\Attribute]
 class ExtractData extends Base
 {
     /**
-     * 导出数据名称.
-     *
-     * 支持：
-     * $get.id
-     * $post.content
-     * $body.name
+     * @param mixed $default
      */
-    public string $name = '';
-
-    /**
-     * 导出数据到的参数名.
-     */
-    public string $to = '';
-
-    /**
-     * 参数不存在时的默认值
-     *
-     * @var mixed
-     */
-    public $default = null;
-
-    public function __construct(?array $__data = null, string $name = '', string $to = '')
+    public function __construct(?array $__data = null, string $name = '', string $to = '', $default = null)
     {
         parent::__construct(...\func_get_args());
     }

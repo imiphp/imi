@@ -13,6 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Server\WebSocket\Parser\WSControllerParser")
+ *
+ * @property array       $condition 条件
+ * @property string|null $route     http 路由；如果设置，则只有握手指定 http 路由，才可以触发该 WebSocket 路由
  */
 #[\Attribute]
 class WSRoute extends Base
@@ -21,18 +24,6 @@ class WSRoute extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'condition';
-
-    /**
-     * 条件.
-     */
-    public array $condition = [];
-
-    /**
-     * http 路由.
-     *
-     * 如果设置，则只有握手指定 http 路由，才可以触发该 WebSocket 路由
-     */
-    public ?string $route = null;
 
     public function __toString()
     {

@@ -54,8 +54,8 @@ class Server extends BaseRpcServer
         $this->hproseService = new \Hprose\Swoole\Socket\Service();
         $this->parseConfig($config);
         $this->hproseService->onBeforeInvoke = function ($name, &$args, $byref, \stdClass $context) {
-            RequestContext::create();
-            RequestContext::set('server', $this);
+            $requestContext = RequestContext::create();
+            $requestContext['server'] = $this;
             $this->trigger('BeforeInvoke', [
                 'name'      => $name,
                 'args'      => &$args,

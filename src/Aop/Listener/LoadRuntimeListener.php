@@ -8,7 +8,6 @@ use Imi\Aop\AopAnnotationLoader;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
-use Imi\Util\File;
 
 class LoadRuntimeListener implements IEventListener
 {
@@ -21,8 +20,7 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        ['cacheName' => $cacheName] = $e->getData();
-        $fileName = File::path($cacheName, 'aop.cache');
-        AopAnnotationLoader::load($fileName);
+        $data = $e->getData()['data']['aop'] ?? [];
+        AopAnnotationLoader::setMap($data['map'] ?? []);
     }
 }

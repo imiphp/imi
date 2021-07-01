@@ -14,6 +14,9 @@ use Imi\Swoole\Task\TaskParam;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Swoole\Task\Parser\TaskParser")
+ *
+ * @property string $name       任务名称
+ * @property string $paramClass 参数类
  */
 #[\Attribute]
 class Task extends Base
@@ -22,16 +25,6 @@ class Task extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 任务名称.
-     */
-    public string $name = '';
-
-    /**
-     * 参数类.
-     */
-    public string $paramClass = TaskParam::class;
 
     public function __construct(?array $__data = null, string $name = '', string $paramClass = TaskParam::class)
     {

@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Workerman\Process\Parser\ProcessParser")
+ *
+ * @property string $name 进程名称
  */
 #[\Attribute]
 class Process extends Base
@@ -21,11 +23,6 @@ class Process extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 进程名称.
-     */
-    public string $name = '';
 
     public function __construct(?array $__data = null, string $name = '')
     {

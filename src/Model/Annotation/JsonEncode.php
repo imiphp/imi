@@ -13,6 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property int $flags json_encode() 的 flags 参数
+ * @property int $depth 递归层数
  */
 #[\Attribute]
 class JsonEncode extends Base
@@ -23,16 +26,6 @@ class JsonEncode extends Base
      * @var string
      */
     protected ?string $defaultFieldName = 'flags';
-
-    /**
-     * json_encode() 的 flags 参数.
-     */
-    public int $flags = 0;
-
-    /**
-     * 递归层数.
-     */
-    public int $depth = 512;
 
     public function __construct(?array $__data = null, int $flags = 0, int $depth = 512)
     {

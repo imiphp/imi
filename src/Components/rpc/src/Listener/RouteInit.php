@@ -45,8 +45,8 @@ class RouteInit implements IEventListener
             $controllerAnnotationClass = $server->getControllerAnnotation();
             $actionAnnotationClass = $server->getActionAnnotation();
             $routeAnnotationClass = $server->getRouteAnnotation();
-            RequestContext::create();
-            RequestContext::set('server', $server);
+            $contextRequest = RequestContext::create();
+            $contextRequest['server'] = $server;
             /** @var \Imi\Rpc\Route\IRoute $route */
             $route = $server->getBean($server->getRouteClass());
             foreach ($controllerParser->getByServer($name, $controllerAnnotationClass) as $className => $classItem)

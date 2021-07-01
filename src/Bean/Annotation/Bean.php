@@ -10,6 +10,9 @@ namespace Imi\Bean\Annotation;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\BeanParser")
+ *
+ * @property string|null $name         Bean名称，留空则为当前类名（包含完整命名空间）
+ * @property string      $instanceType 实例化类型，默认为单例模式
  */
 #[\Attribute]
 class Bean extends Base
@@ -28,16 +31,6 @@ class Bean extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * Bean名称，留空则为当前类名（包含完整命名空间）.
-     */
-    public ?string $name = null;
-
-    /**
-     * 实例化类型，默认为单例模式.
-     */
-    public string $instanceType = self::INSTANCE_TYPE_SINGLETON;
 
     public function __construct(?array $__data = null, ?string $name = null, string $instanceType = self::INSTANCE_TYPE_SINGLETON)
     {

@@ -19,6 +19,6 @@ class AopInit implements IEventListener
      */
     public function handle(EventParam $e): void
     {
-        AopAnnotationLoader::load(null, false);
+        AopAnnotationLoader::load(false);
     }
 }

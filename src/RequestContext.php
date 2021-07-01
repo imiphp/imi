@@ -49,7 +49,9 @@ class RequestContext
      */
     public static function create(array $data = []): ArrayObject
     {
-        return static::getInstance()->create(static::getCurrentFlag(), $data);
+        $instance = static::getInstance();
+
+        return $instance->create($instance->getCurrentFlag(), $data);
     }
 
     /**
@@ -79,7 +81,8 @@ class RequestContext
      */
     public static function get(string $name, $default = null)
     {
-        $context = static::getInstance()->get(static::getCurrentFlag(), true);
+        $instance = static::getInstance();
+        $context = $instance->get($instance->getCurrentFlag(), true);
 
         return $context[$name] ?? $default;
     }
@@ -91,7 +94,8 @@ class RequestContext
      */
     public static function set(string $name, $value): void
     {
-        $context = static::getInstance()->get(static::getCurrentFlag(), true);
+        $instance = static::getInstance();
+        $context = $instance->get($instance->getCurrentFlag(), true);
         $context[$name] = $value;
     }
 
@@ -100,7 +104,8 @@ class RequestContext
      */
     public static function muiltiSet(array $data): void
     {
-        $context = static::getInstance()->get(static::getCurrentFlag(), true);
+        $instance = static::getInstance();
+        $context = $instance->get($instance->getCurrentFlag(), true);
         foreach ($data as $k => $v)
         {
             $context[$k] = $v;
@@ -114,7 +119,8 @@ class RequestContext
      */
     public static function use(callable $callback)
     {
-        $context = static::getInstance()->get(static::getCurrentFlag(), true);
+        $instance = static::getInstance();
+        $context = $instance->get($instance->getCurrentFlag(), true);
         $result = $callback($context);
 
         return $result;
@@ -125,7 +131,9 @@ class RequestContext
      */
     public static function getContext(): ArrayObject
     {
-        return static::getInstance()->get(static::getCurrentFlag(), true);
+        $instance = static::getInstance();
+
+        return $instance->get($instance->getCurrentFlag(), true);
     }
 
     /**
@@ -161,7 +169,8 @@ class RequestContext
      */
     public static function getBean(string $name, ...$params): object
     {
-        $context = static::getInstance()->get(static::getCurrentFlag(), true);
+        $instance = static::getInstance();
+        $context = $instance->get($instance->getCurrentFlag(), true);
         if (isset($context['container']))
         {
             /** @var Container $container */

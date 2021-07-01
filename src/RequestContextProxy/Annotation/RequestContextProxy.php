@@ -13,6 +13,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|null $class 代理类名
+ * @property string      $name  请求上下文中的名称
  */
 #[\Attribute]
 class RequestContextProxy extends Base
@@ -21,16 +24,6 @@ class RequestContextProxy extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 代理类名.
-     */
-    public ?string $class = null;
-
-    /**
-     * 请求上下文中的名称.
-     */
-    public string $name = '';
 
     public function __construct(?array $__data = null, ?string $class = null, string $name = '')
     {

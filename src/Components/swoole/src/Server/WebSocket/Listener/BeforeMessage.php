@@ -33,10 +33,11 @@ class BeforeMessage implements IMessageEventListener
         }
 
         // 中间件
+        $requestContext = RequestContext::getContext();
         /** @var \Imi\Server\WebSocket\Dispatcher $dispatcher */
-        $dispatcher = RequestContext::getServerBean('WebSocketDispatcher');
+        $dispatcher = $requestContext['server']->getBean('WebSocketDispatcher');
         $imiFrame = new Frame($frame);
-        RequestContext::set('frame', $imiFrame);
+        $requestContext['frame'] = $imiFrame;
         $dispatcher->dispatch($imiFrame);
     }
 }

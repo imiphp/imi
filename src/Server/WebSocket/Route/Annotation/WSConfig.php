@@ -14,20 +14,13 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
+ *
+ * @property string|null $parserClass 处理器类
+ * @property bool        $wsOnly      该动作仅作为 websocket 动作，握手失败则返回 400 错误
  */
 #[\Attribute]
 class WSConfig extends Base
 {
-    /**
-     * 处理器类.
-     */
-    public ?string $parserClass = null;
-
-    /**
-     * 该动作仅作为 websocket 动作，握手失败则返回 400 错误.
-     */
-    public bool $wsOnly = true;
-
     public function __construct(?array $__data = null, ?string $parserClass = null, bool $wsOnly = true)
     {
         parent::__construct(...\func_get_args());

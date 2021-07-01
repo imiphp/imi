@@ -15,16 +15,13 @@ use Imi\Db\Query\QueryType;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property int $queryType 查询类型
  */
 #[\Attribute]
 class DbInject extends RequestInject
 {
-    /**
-     * 查询类型.
-     */
-    public int $queryType = QueryType::WRITE;
-
-    public function __construct(?array $__data = null, int $queryType = QueryType::WRITE)
+    public function __construct(?array $__data = null, string $name = '', array $args = [], int $queryType = QueryType::WRITE)
     {
         parent::__construct(...\func_get_args());
     }

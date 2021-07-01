@@ -31,11 +31,11 @@ class BeforePacket implements IPacketEventListener
         $clientInfo = $e->clientInfo;
         $requestContext = RequestContext::getContext();
         $requestContext['clientInfo'] = $clientInfo;
-        $requestContext['server'] = $e->getTarget();
+        $requestContext['server'] = $server = $e->getTarget();
         $packetData = $requestContext['packetData'] = new PacketData($clientInfo['address'], $clientInfo['port'], $e->data, $clientInfo);
 
         // 中间件
-        $dispatcher = RequestContext::getServerBean('UdpDispatcher');
+        $dispatcher = $server->get('UdpDispatcher');
         $dispatcher->dispatch($packetData);
     }
 }

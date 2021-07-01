@@ -79,17 +79,18 @@ abstract class BaseApp implements IApp
             Config::setConfig('@app', []);
         }
 
-        App::setDebug(Config::get('@app.debug', true));
+        $appConfig = Config::get('@app');
+        App::setDebug($appConfig['debug'] ?? true);
         if ($initDotEnv)
         {
             $this->loadDotEnv();
         }
 
         // 应用模式配置
-        $appConfig = Config::get('@app.imi', []);
-        $appTypeConfig = Config::get('@app.' . $this->getType() . '.imi', []);
-        Config::set('@app.imi', array_merge($this->appConfig, $appConfig, $appTypeConfig));
-        Config::set('@app.imi.beans', array_merge($this->appConfig['beans'] ?? [], $appConfig['beans'] ?? [], $appTypeConfig['beans'] ?? []));
+        $appModeConfig = $appConfig['imi'] ?? [];
+        $appTypeConfig = $appConfig[$this->getType()]['imi'] ?? [];
+        Config::set('@app.imi', array_merge($this->appConfig, $appModeConfig, $appTypeConfig));
+        Config::set('@app.imi.beans', array_merge($this->appConfig['beans'] ?? [], $appModeConfig['beans'] ?? [], $appTypeConfig['beans'] ?? []));
     }
 
     /**

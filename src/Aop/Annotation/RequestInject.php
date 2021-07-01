@@ -16,6 +16,9 @@ use Imi\Swoole\Util\Coroutine;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property string $name Bean名称或类名
+ * @property array  $args Bean实例化参数
  */
 #[\Attribute]
 class RequestInject extends BaseInjectValue
@@ -24,16 +27,6 @@ class RequestInject extends BaseInjectValue
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * Bean名称或类名.
-     */
-    public string $name = '';
-
-    /**
-     * Bean实例化参数.
-     */
-    public array $args = [];
 
     public function __construct(?array $__data = null, string $name = '', array $args = [])
     {

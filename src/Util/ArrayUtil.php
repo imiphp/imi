@@ -59,7 +59,7 @@ class ArrayUtil
         $merged = [];
         foreach ($arrays as $array)
         {
-            if (!\is_array($array))
+            if (!$array || !\is_array($array))
             {
                 continue;
             }

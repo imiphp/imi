@@ -86,7 +86,7 @@ class FpmResponse extends Response
             foreach ($this->changedCookieNames as $name => $_)
             {
                 $cookie = $this->getCookie($name);
-                setcookie($cookie['key'], $cookie['value'], $cookie['expire'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httponly']);
+                setcookie($cookie['key'], $cookie['value'], $cookie['expire'] ?? 0, $cookie['path'] ?? '/', $cookie['domain'] ?? '', $cookie['secure'] ?? false, $cookie['httponly'] ?? false);
             }
         }
     }

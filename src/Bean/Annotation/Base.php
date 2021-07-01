@@ -26,56 +26,41 @@ abstract class Base extends LazyArrayObject
     protected $__alias;
 
     /**
-     * @param mixed ...$args
+     * @param mixed ...$__args
      */
-    public function __construct(?array $data = null, ...$args)
+    public function __construct(?array $__data = null, ...$__args)
     {
-        parent::__construct([]);
-
-        $refClass = ReflectionContainer::getClassReflection(static::class);
-
-        if (null === $data)
+        $data = $__data ?? [];
+        $params = ReflectionContainer::getClassReflection(static::class)->getConstructor()->getParameters();
+        foreach ($params as $i => $param)
         {
-            if ($args)
+            $name = $param->name;
+            if ('__data' === $name || '__args' === $name)
             {
-                $argsCount = \count($args);
-                $params = $refClass->getConstructor()->getParameters();
-                $count = \count($params);
-                $forCount = min($count, $argsCount);
-                for ($i = 0; $i < $forCount; ++$i)
-                {
-                    $param = $params[$i + 1];
-                    $this->{$param->getName()} = $args[$i];
-                }
+                continue;
+            }
+            if ($__data && \array_key_exists($name, $__data))
+            {
+                continue;
+            }
+            if (isset($__args[$i]))
+            {
+                $data[$name] = $__args[$i];
+            }
+            else
+            {
+                $data[$name] = $param->getDefaultValue();
             }
         }
-        else
+        $defaultFieldName = $this->defaultFieldName;
+        if ($__data && null !== $defaultFieldName && 'value' !== $defaultFieldName && \array_key_exists('value', $__data) && 1 === \count($__data))
         {
-            if (null !== $this->defaultFieldName && \array_key_exists('value', $data) && 1 === \count($data))
-            {
-                // 只传一个参数处理
-                $this->{$this->defaultFieldName} = $data['value'];
-            }
-            elseif ($data)
-            {
-                foreach ($data as $k => $v)
-                {
-                    $this->$k = $v;
-                }
-            }
+            // 只传一个参数处理
+            $data[$defaultFieldName] = $__data['value'];
+            unset($data['value']);
         }
 
-        $properties = $refClass->getProperties(\ReflectionProperty::IS_PUBLIC);
-        if ($properties)
-        {
-            foreach ($properties as $property)
-            {
-                $propertyName = $property->name;
-                $value = $this->$propertyName;
-                unset($this->$propertyName);
-                $this->$propertyName = $value;
-            }
-        }
+        parent::__construct($data);
     }
 
     /**
@@ -92,36 +77,6 @@ abstract class Base extends LazyArrayObject
         }
 
         return $value;
-    }
-
-    public function __serialize(): array
-    {
-        return [
-            $this->defaultFieldName,
-            $this->__alias,
-            $this->toArray(),
-        ];
-    }
-
-    public function __unserialize(array $data): void
-    {
-        $refClass = ReflectionContainer::getClassReflection(static::class);
-        $properties = $refClass->getProperties(\ReflectionProperty::IS_PUBLIC);
-        if ($properties)
-        {
-            foreach ($properties as $property)
-            {
-                unset($this->{$property->name});
-            }
-        }
-        [$this->defaultFieldName, $this->__alias, $dataMap] = $data;
-        if ($dataMap)
-        {
-            foreach ($dataMap as $k => $v)
-            {
-                $this[$k] = $v;
-            }
-        }
     }
 
     /**

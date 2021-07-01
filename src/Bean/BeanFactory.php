@@ -52,7 +52,6 @@ class BeanFactory
         }
         else
         {
-            $ref = ReflectionContainer::getClassReflection($class);
             if (App::get(BeanContexts::FIXED_EVAL_NAME, false))
             {
                 static::parseEvalName($class, $fileName, $className);
@@ -62,12 +61,14 @@ class BeanFactory
                 }
                 else
                 {
+                    $ref = ReflectionContainer::getClassReflection($class);
                     $tpl = static::getTpl($ref, $className);
                     Imi::eval($tpl, $fileName, false);
                 }
             }
             else
             {
+                $ref = ReflectionContainer::getClassReflection($class);
                 $className = static::getNewClassName($ref->getShortName());
                 $tpl = static::getTpl($ref, $className);
                 Imi::eval($tpl);

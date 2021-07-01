@@ -13,23 +13,14 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|null   $name   参数名
+ * @property callable|null $filter 过滤器
  */
 #[\Attribute]
 class FilterArg extends Base
 {
-    /**
-     * 参数名.
-     */
-    public ?string $name = null;
-
-    /**
-     * 过滤器.
-     *
-     * @var callable|null
-     */
-    public $filter = null;
-
-    public function __construct(?array $__data = null, ?string $name = null)
+    public function __construct(?array $__data = null, ?string $name = null, ?callable $filter = null)
     {
         parent::__construct(...\func_get_args());
     }

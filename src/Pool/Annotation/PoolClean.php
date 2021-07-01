@@ -13,22 +13,13 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"METHOD"})
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $mode 模式；allow-白名单；deny-黑名单
+ * @property array  $list 连接池名称列表
  */
 #[\Attribute]
 class PoolClean extends Base
 {
-    /**
-     * 模式
-     * allow-白名单
-     * deny-黑名单.
-     */
-    public string $mode = 'allow';
-
-    /**
-     * 连接池名称列表.
-     */
-    public array $list = [];
-
     public function __construct(?array $__data = null, string $mode = 'allow', array $list = [])
     {
         parent::__construct(...\func_get_args());

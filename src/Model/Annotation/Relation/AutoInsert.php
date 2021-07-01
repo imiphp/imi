@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property bool $status 是否开启
  */
 #[\Attribute]
 class AutoInsert extends Base
@@ -21,11 +23,6 @@ class AutoInsert extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'status';
-
-    /**
-     * 是否开启.
-     */
-    public bool $status = true;
 
     public function __construct(?array $__data = null, bool $status = true)
     {

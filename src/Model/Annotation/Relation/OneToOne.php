@@ -12,6 +12,9 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("PROPERTY")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string        $model  关联的模型类；可以是包含命名空间的完整类名；可以同命名空间下的类名
+ * @property string[]|null $fields 为查询出来的模型指定字段
  */
 #[\Attribute]
 class OneToOne extends RelationBase
@@ -20,20 +23,6 @@ class OneToOne extends RelationBase
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'model';
-
-    /**
-     * 关联的模型类
-     * 可以是包含命名空间的完整类名
-     * 可以同命名空间下的类名.
-     */
-    public string $model = '';
-
-    /**
-     * 为查询出来的模型指定字段.
-     *
-     * @var string[]|null
-     */
-    public ?array $fields = null;
 
     public function __construct(?array $__data = null, string $model = '', ?array $fields = null)
     {

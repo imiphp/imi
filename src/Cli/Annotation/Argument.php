@@ -13,6 +13,12 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
+ *
+ * @property string      $name     参数名称
+ * @property string|null $type     参数类型
+ * @property mixed       $default  默认值
+ * @property bool        $required 是否是必选参数
+ * @property string      $comments 注释
  */
 #[\Attribute]
 class Argument extends Base
@@ -23,35 +29,9 @@ class Argument extends Base
     protected ?string $defaultFieldName = 'name';
 
     /**
-     * 参数名称.
+     * @param mixed $default
      */
-    public string $name = '';
-
-    /**
-     * 参数类型.
-     *
-     * @var string
-     */
-    public ?string $type = null;
-
-    /**
-     * 默认值
-     *
-     * @var mixed
-     */
-    public $default;
-
-    /**
-     * 是否是必选参数.
-     */
-    public bool $required = false;
-
-    /**
-     * 注释.
-     */
-    public string $comments = '';
-
-    public function __construct(?array $__data = null, string $name = '', ?string $type = null, bool $required = false, string $comments = '')
+    public function __construct(?array $__data = null, string $name = '', ?string $type = null, $default = null, bool $required = false, string $comments = '')
     {
         parent::__construct(...\func_get_args());
     }

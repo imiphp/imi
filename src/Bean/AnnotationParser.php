@@ -9,8 +9,11 @@ use Imi\Bean\Annotation\Inherit;
 use Imi\Bean\Parser\BaseParser;
 use Imi\Event\TEvent;
 use Imi\Util\ClassObject;
+use Imi\Util\Imi;
 use Yurun\Doctrine\Common\Annotations\AnnotationReader;
 use Yurun\Doctrine\Common\Annotations\AnnotationRegistry;
+use Yurun\Doctrine\Common\Annotations\FileCacheReader;
+use Yurun\Doctrine\Common\Annotations\Reader;
 
 /**
  * 注解处理类.
@@ -39,7 +42,7 @@ class AnnotationParser
     /**
      * 注解读取器.
      */
-    private AnnotationReader $reader;
+    private Reader $reader;
 
     public function __construct()
     {
@@ -49,11 +52,15 @@ class AnnotationParser
         });
     }
 
-    public function parse(string $className): void
+    public function parse(string $className, bool $transaction = true): void
     {
         if (!class_exists($className) && !interface_exists($className, false) && !trait_exists($className, false))
         {
             return;
+        }
+        if ($transaction)
+        {
+            AnnotationManager::setRemoveWhenset(false);
         }
         $ref = ReflectionContainer::getClassReflection($className);
 
@@ -71,6 +78,10 @@ class AnnotationParser
 
         // 处理注解的处理器
         $this->parseAnnotationParsers($ref);
+        if ($transaction)
+        {
+            AnnotationManager::setRemoveWhenset(true);
+        }
     }
 
     public function execParse(string $className): void
@@ -673,7 +684,7 @@ class AnnotationParser
             }
             if (class_exists($className))
             {
-                $this->parse($className);
+                $this->parse($className, false);
             }
             else
             {
@@ -683,7 +694,7 @@ class AnnotationParser
             {
                 if (class_exists($subClassName))
                 {
-                    $this->parse($subClassName);
+                    $this->parse($subClassName, false);
                 }
                 else
                 {
@@ -724,9 +735,20 @@ class AnnotationParser
     /**
      * Get 注解读取器.
      */
-    private function getReader(): AnnotationReader
+    private function getReader(): Reader
     {
-        return $this->reader ??= new AnnotationReader();
+        if (isset($this->reader))
+        {
+            return $this->reader;
+        }
+        if ('cli' === \PHP_SAPI)
+        {
+            return $this->reader = new AnnotationReader();
+        }
+        else
+        {
+            return $this->reader = new FileCacheReader(new AnnotationReader(), Imi::getRuntimePath('annotation'));
+        }
     }
 
     /**

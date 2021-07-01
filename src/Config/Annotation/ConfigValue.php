@@ -16,6 +16,9 @@ use Imi\Config;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property string $name    配置名，支持@app、@currentServer等用法
+ * @property mixed  $default 配置不存在时，返回的默认值
  */
 #[\Attribute]
 class ConfigValue extends BaseInjectValue
@@ -24,18 +27,6 @@ class ConfigValue extends BaseInjectValue
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'name';
-
-    /**
-     * 配置名，支持@app、@currentServer等用法.
-     */
-    public string $name = '';
-
-    /**
-     * 配置不存在时，返回的默认值
-     *
-     * @var mixed
-     */
-    public $default = null;
 
     /**
      * @param mixed $default

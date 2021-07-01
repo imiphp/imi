@@ -9,6 +9,8 @@ namespace Imi\Bean\Annotation;
  *
  * @Annotation
  * @Target("CLASS")
+ *
+ * @property string $className 处理器类名
  */
 #[\Attribute]
 class Parser extends Base
@@ -17,11 +19,6 @@ class Parser extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'className';
-
-    /**
-     * 处理器类名.
-     */
-    public string $className = '';
 
     public function __construct(?array $__data = null, string $className = '')
     {

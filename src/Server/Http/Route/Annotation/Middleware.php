@@ -13,6 +13,8 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Server\Http\Parser\ControllerParser")
+ *
+ * @property string|string[]|null $middlewares 中间件类或数组
  */
 #[\Attribute]
 class Middleware extends Base
@@ -21,13 +23,6 @@ class Middleware extends Base
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'middlewares';
-
-    /**
-     * 中间件类或数组.
-     *
-     * @var string|string[]|null
-     */
-    public $middlewares;
 
     /**
      * @param string|string[]|null $middlewares

@@ -13,20 +13,13 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property array $allow 允许捕获的异常类列表
+ * @property array $deny  不允许捕获的异常类列表
  */
 #[\Attribute]
 class AfterThrowing extends Base
 {
-    /**
-     * 允许捕获的异常类列表.
-     */
-    public array $allow = [];
-
-    /**
-     * 不允许捕获的异常类列表.
-     */
-    public array $deny = [];
-
     public function __construct(?array $__data = null, array $allow = [], array $deny = [])
     {
         parent::__construct(...\func_get_args());

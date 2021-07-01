@@ -44,14 +44,15 @@ class FpmApp extends BaseApp
             $this->loadDotEnv();
         }
 
-        $serverPath = Config::get('@app.fpm.serverPath');
+        $appConfig = Config::get('@app');
+        $serverPath = $appConfig['fpm']['serverPath'] ?? null;
         if ($serverPath && ($fileName = File::path($serverPath, 'config/config.php')) && is_file($fileName))
         {
             Config::addConfig('@server.main', include $fileName);
         }
         else
         {
-            Config::addConfig('@server.main', Config::get('@app'));
+            Config::addConfig('@server.main', $appConfig);
         }
     }
 
