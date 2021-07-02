@@ -26,6 +26,16 @@ class AopManager
     {
     }
 
+    public static function getCache(): array
+    {
+        return self::$cache;
+    }
+
+    public static function setCache(array $cache): void
+    {
+        self::$cache = $cache;
+    }
+
     public static function clear(): void
     {
         self::$cache = self::$parsedCache = [];

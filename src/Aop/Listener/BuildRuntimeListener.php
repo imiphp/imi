@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Aop\Listener;
 
 use Imi\Aop\AopAnnotationLoader;
+use Imi\Aop\AopManager;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
@@ -22,7 +23,7 @@ class BuildRuntimeListener implements IEventListener
         }
         $eventData = $e->getData();
         $eventData['data']['aop'] = [
-            'map' => AopAnnotationLoader::getMap(),
+            'cache' => AopManager::getCache(),
         ];
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\UdpServer\Controller;
 
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\Contract\IServer;
+use Imi\Server\UdpServer\Contract\IUdpServer;
 use Imi\Server\UdpServer\Message\IPacketData;
 
 /**
@@ -16,7 +16,7 @@ abstract class UdpController
     /**
      * 服务器对象
      */
-    public IServer $server;
+    public IUdpServer $server;
 
     /**
      * 包数据.
@@ -25,7 +25,7 @@ abstract class UdpController
      */
     public IPacketData $data;
 
-    public function __construct(IServer $server)
+    public function __construct(IUdpServer $server)
     {
         $this->server = $server;
     }

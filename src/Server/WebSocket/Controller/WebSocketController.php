@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Server\WebSocket\Controller;
 
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\Contract\IServer;
+use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\IFrame;
 
 /**
@@ -16,7 +16,7 @@ abstract class WebSocketController
     /**
      * 服务器对象
      */
-    public IServer $server;
+    public IWebSocketServer $server;
 
     /**
      * 桢.
@@ -25,7 +25,7 @@ abstract class WebSocketController
      */
     public IFrame $frame;
 
-    public function __construct(IServer $server)
+    public function __construct(IWebSocketServer $server)
     {
         $this->server = $server;
     }

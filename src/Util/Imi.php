@@ -438,7 +438,7 @@ class Imi
     /**
      * 从文件加载运行时数据.
      */
-    public static function loadRuntimeInfo(string $cacheName): bool
+    public static function loadRuntimeInfo(string $cacheName, bool $onlyImi = false): bool
     {
         $fileName = File::path($cacheName, 'runtime.cache');
         if (!is_file($fileName))
@@ -455,6 +455,7 @@ class Imi
             'cacheName' => $cacheName,
             'data'      => $data,
             'success'   => &$success,
+            'onlyImi'   => $onlyImi,
         ]);
 
         return $success;

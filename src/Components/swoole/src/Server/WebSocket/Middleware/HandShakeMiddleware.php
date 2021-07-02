@@ -52,10 +52,11 @@ class HandShakeMiddleware implements MiddlewareInterface
         if (StatusCode::SWITCHING_PROTOCOLS === $response->getStatusCode())
         {
             // http 路由解析结果
+            /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
             $routeResult = $requestContext['routeResult'];
             ConnectionContext::muiltiSet([
-                'parserClass' => $routeResult->routeItem->wsConfig->parserClass ?? JsonObjectParser::class,
-                'uri'         => (string) $request->getUri(),
+                'dataParser' => $routeResult->routeItem->wsConfig->parserClass ?? JsonObjectParser::class,
+                'uri'        => (string) $request->getUri(),
             ]);
 
             $server = $requestContext['server'];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imi\Aop\Listener;
 
 use Imi\Aop\AopAnnotationLoader;
+use Imi\Aop\AopManager;
 use Imi\Config;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
@@ -20,7 +21,16 @@ class LoadRuntimeListener implements IEventListener
         {
             return;
         }
-        $data = $e->getData()['data']['aop'] ?? [];
-        AopAnnotationLoader::setMap($data['map'] ?? []);
+        $eventData = $e->getData();
+        $onlyImi = $eventData['onlyImi'];
+        $data = $eventData['data']['aop'] ?? [];
+        if ($cache = ($data['cache'] ?? null))
+        {
+            AopManager::setCache($cache);
+        }
+        elseif (!$onlyImi)
+        {
+            AopAnnotationLoader::load();
+        }
     }
 }

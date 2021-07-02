@@ -102,12 +102,12 @@ class WorkermanApp extends CliApp
         if ($file = $input->getParameterOption('--imi-runtime'))
         {
             // 尝试加载指定 runtime
-            $result = Imi::loadRuntimeInfo($file);
+            $result = Imi::loadRuntimeInfo($file, true);
         }
         else
         {
             // 尝试加载默认 runtime
-            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'));
+            $result = Imi::loadRuntimeInfo(Imi::getRuntimePath('imi-runtime'), true);
         }
         if ($result)
         {

@@ -6,7 +6,7 @@ namespace Imi\Server\TcpServer\Controller;
 
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
-use Imi\Server\Contract\IServer;
+use Imi\Server\TcpServer\Contract\ITcpServer;
 use Imi\Server\TcpServer\Message\IReceiveData;
 
 /**
@@ -17,7 +17,7 @@ abstract class TcpController
     /**
      * 服务器对象
      */
-    public IServer $server;
+    public ITcpServer $server;
 
     /**
      * 数据.
@@ -26,7 +26,7 @@ abstract class TcpController
      */
     public IReceiveData $data;
 
-    public function __construct(IServer $server)
+    public function __construct(ITcpServer $server)
     {
         $this->server = $server;
     }

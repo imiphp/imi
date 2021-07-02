@@ -7,6 +7,7 @@ namespace Imi\Swoole\Listener;
 use Imi\App;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\Event;
+use Imi\Server\Http\Listener\HttpRouteInit;
 use Imi\Server\Server;
 use Imi\Server\ServerManager;
 use Imi\Swoole\Server\Event\Listener\IWorkerStartEventListener;
@@ -47,6 +48,8 @@ class AfterWorkerStart implements IWorkerStartEventListener
         {
             Server::getInstance($name);
         }
+        $httpRouteInit = new HttpRouteInit();
+        $httpRouteInit->handle($e);
     }
 
     /**
