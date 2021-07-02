@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Redis;
 
+use RedisException;
+
 /**
  * imi 框架中封装的 Redis 类.
  *
@@ -281,9 +283,23 @@ class RedisHandler
         $this->clearLastError();
         // @phpstan-ignore-next-line
         $result = $this->evalSha($sha1, $args, $numKeys);
-        if ('NOSCRIPT No matching script. Please use EVAL.' === $this->getLastError())
+        $error = $this->getLastError();
+        if ($error)
         {
-            $result = $this->eval($script, $args, $numKeys);
+            if ('NOSCRIPT No matching script. Please use EVAL.' === $error)
+            {
+                $this->clearLastError();
+                $result = $this->eval($script, $args, $numKeys);
+                $error = $this->getLastError();
+                if ($error)
+                {
+                    throw new RedisException($error);
+                }
+            }
+            else
+            {
+                throw new RedisException($error);
+            }
         }
 
         return $result;
