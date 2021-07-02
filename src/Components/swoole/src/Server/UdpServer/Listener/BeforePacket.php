@@ -35,7 +35,7 @@ class BeforePacket implements IPacketEventListener
         $packetData = $requestContext['packetData'] = new PacketData($clientInfo['address'], $clientInfo['port'], $e->data, $clientInfo);
 
         // 中间件
-        $dispatcher = $server->get('UdpDispatcher');
+        $dispatcher = $server->getBean('UdpDispatcher');
         $dispatcher->dispatch($packetData);
     }
 }

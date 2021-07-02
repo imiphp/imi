@@ -109,7 +109,7 @@ class File
         {
             return '';
         }
-        $offset = strpos($args[0], '://', 1);
+        $offset = strpos($args[0], '://');
         if (false === $offset)
         {
             $offset = 0;

@@ -46,7 +46,7 @@ if (\extension_loaded('swoole'))
                                 'server'        => $server,
                                 'clientId'      => $clientId,
                             ]);
-                            ConnectionContext::muiltiSet([
+                            ConnectionContext::create([
                                 '__clientAddress' => long2ip($message['client_ip']),
                                 '__clientPort'    => $message['client_port'],
                             ]);

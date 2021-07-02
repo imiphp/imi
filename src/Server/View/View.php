@@ -43,21 +43,6 @@ class View
      */
     protected array $handlers = [];
 
-    public function __init(): void
-    {
-        $handlers = &$this->handlers;
-        foreach ([$this->coreHandlers, $this->exHandlers] as $list)
-        {
-            if ($list)
-            {
-                foreach ($list as $name => $class)
-                {
-                    $handlers[$name] = RequestContext::getServerBean($class);
-                }
-            }
-        }
-    }
-
     /**
      * @param mixed $data
      */
@@ -67,16 +52,25 @@ class View
         $renderType = $viewAnnotation->renderType;
         if (isset($handlers[$renderType]))
         {
-            if ($this->data && \is_array($data))
-            {
-                $data = array_merge($this->data, $data);
-            }
-
-            return $handlers[$renderType]->handle($viewAnnotation, $viewOption, $data, $response);
+            $handler = $handlers[$renderType];
+        }
+        elseif (isset($this->exHandlers[$renderType]))
+        {
+            $handler = $handlers[$renderType] = RequestContext::getServerBean($this->exHandlers[$renderType]);
+        }
+        elseif (isset($this->coreHandlers[$renderType]))
+        {
+            $handler = $handlers[$renderType] = RequestContext::getServerBean($this->coreHandlers[$renderType]);
         }
         else
         {
             throw new \RuntimeException('Unsupport View renderType: ' . $renderType);
         }
+        if ($this->data && \is_array($data))
+        {
+            $data = array_merge($this->data, $data);
+        }
+
+        return $handler->handle($viewAnnotation, $viewOption, $data, $response);
     }
 }
