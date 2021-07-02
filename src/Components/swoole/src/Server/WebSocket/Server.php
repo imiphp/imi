@@ -212,9 +212,12 @@ class Server extends Base implements IWebSocketServer
                         'response' => $response,
                     ], $this, RequestEventParam::class);
                 }
-                catch (\Throwable $ex)
+                catch (\Throwable $th)
                 {
-                    App::getBean('ErrorLog')->onException($ex);
+                    if (true !== $this->getBean('HttpErrorHandler')->handle($th))
+                    {
+                        App::getBean('ErrorLog')->onException($th);
+                    }
                 }
             });
         }
