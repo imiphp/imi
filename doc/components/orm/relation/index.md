@@ -18,6 +18,10 @@
 
 `@OneToOne(model="模型类名")`
 
+为查询出来的模型指定字段：
+
+`@OneToOne(model="模型类名", fields={"字段1", "字段2"})`
+
 ### @OneToMany
 
 一对多关系声明
