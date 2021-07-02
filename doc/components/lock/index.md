@@ -189,7 +189,7 @@ echo $result, PHP_EOL; // 3
 ```php
 $redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
     'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
-    'db'        =>  1, // Redis 几号库，默认0
+    'db'        =>  null, // Redis 几号库，为null或不配置则使用连接池中的设置
     'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
     'keyPrefix' =>  'imi:lock:', // Redis key 前置
 ]);
@@ -212,7 +212,7 @@ else
 ```php
 $redisLock = new \Imi\Lock\Handler\Redis('锁ID', [
     'poolName'  => 'redis', // Redis 连接池名称，默认取redis.default配置
-    'db'        =>  1, // Redis 几号库，默认0
+    'db'        =>  null, // Redis 几号库，为null或不配置则使用连接池中的设置
     'waitSleepTime' =>  20, // 获得锁每次尝试间隔，单位：毫秒
     'keyPrefix' =>  'imi:lock:', // Redis key 前置
 ]);

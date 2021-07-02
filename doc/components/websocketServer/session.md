@@ -198,7 +198,7 @@ public static function getClientId();
     ],
     'ConnectionContextRedis'    =>    [
         'redisPool'    => 'redis', // Redis 连接池名称
-        'redisDb'      => 0, // redis中第几个库
+        'redisDb'      => null, // redis中第几个库，为null或不配置则使用连接池中的设置
         'key'          => 'imi:connect_context', // 键
         'heartbeatTimespan' => 5, // 心跳时间，单位：秒
         'heartbeatTtl' => 8, // 心跳数据过期时间，单位：秒

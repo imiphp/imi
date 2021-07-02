@@ -26,7 +26,7 @@ class Redis extends BaseLock
     /**
      * Redis 几号库.
      */
-    public int $db = 0;
+    public ?int $db = null;
 
     /**
      * 获得锁每次尝试间隔，单位：毫秒.
@@ -96,17 +96,19 @@ class Redis extends BaseLock
 local key     = KEYS[1]
 local content = KEYS[2]
 local ttl     = ARGV[2]
-local db      = ARGV[1]
-redis.call('select', db)
+local db      = tonumber(ARGV[1])
+if db then
+    redis.call('select', db)
+end
 local lockSet = redis.call('setnx', key, content)
 if lockSet == 1 then
-redis.call('pexpire', key, ttl)
+    redis.call('pexpire', key, ttl)
 else
-local value = redis.call('get', key)
-if(value == content) then
-lockSet = 1;
-redis.call('pexpire', key, ttl)
-end
+    local value = redis.call('get', key)
+    if(value == content) then
+        lockSet = 1;
+        redis.call('pexpire', key, ttl)
+    end
 end
 return lockSet
 SCRIPT
@@ -128,11 +130,13 @@ SCRIPT
             return false !== $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
 local content = KEYS[2]
-local db      = ARGV[1]
-redis.call('select', db)
+local db      = tonumber(ARGV[1])
+if db then
+    redis.call('select', db)
+end
 local value = redis.call('get', key)
 if value == content then
-  return redis.call('del', key);
+    return redis.call('del', key);
 end
 return 0
 SCRIPT

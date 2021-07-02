@@ -25,7 +25,7 @@ class Redis implements IGroupHandler
     /**
      * redis中第几个库.
      */
-    protected int $redisDb = 0;
+    protected ?int $redisDb = null;
 
     /**
      * 心跳时间，单位：秒.
@@ -356,7 +356,10 @@ class Redis implements IGroupHandler
     private function useRedis(callable $callback)
     {
         return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
-            $redis->select($this->redisDb);
+            if (null !== $this->redisDb)
+            {
+                $redis->select($this->redisDb);
+            }
 
             return $callback($redis);
         }, $this->redisPool, true);
