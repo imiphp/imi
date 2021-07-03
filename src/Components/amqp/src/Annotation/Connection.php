@@ -13,7 +13,26 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS"})
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|null $poolName          连接池名称
+ * @property string      $host              主机
+ * @property int         $port              端口
+ * @property string      $user              用户名
+ * @property string      $password          密码
+ * @property string      $vhost
+ * @property bool        $insist
+ * @property string      $loginMethod
+ * @property null        $loginResponse
+ * @property string      $locale
+ * @property float       $connectionTimeout 连接超时
+ * @property float       $readWriteTimeout  读写超时
+ * @property null        $context           上下文
+ * @property bool        $keepalive
+ * @property int         $heartbeat         心跳时间
+ * @property float       $channelRpcTimeout 频道 RPC 超时时间
+ * @property string|null $sslProtocol       ssl 协议
  */
+#[\Attribute]
 class Connection extends Base
 {
     /**
@@ -24,123 +43,11 @@ class Connection extends Base
     protected ?string $defaultFieldName = 'poolName';
 
     /**
-     * 连接池名称.
-     *
-     * @var string|null
+     * @param null $loginResponse
+     * @param null $context
      */
-    public $poolName;
-
-    /**
-     * 主机.
-     *
-     * @var string
-     */
-    public $host;
-
-    /**
-     * 端口.
-     *
-     * @var int
-     */
-    public $port;
-
-    /**
-     * 用户名.
-     *
-     * @var string
-     */
-    public $user;
-
-    /**
-     * 密码
-     *
-     * @var string
-     */
-    public $password;
-
-    /**
-     * vhost.
-     *
-     * @var string
-     */
-    public $vhost = '/';
-
-    /**
-     * insist.
-     *
-     * @var bool
-     */
-    public $insist = false;
-
-    /**
-     * loginMethod.
-     *
-     * @var string
-     */
-    public $loginMethod = 'AMQPLAIN';
-
-    /**
-     * loginResponse.
-     *
-     * @deprecated
-     *
-     * @var null
-     */
-    public $loginResponse = null;
-
-    /**
-     * locale.
-     *
-     * @var string
-     */
-    public $locale = 'en_US';
-
-    /**
-     * 连接超时.
-     *
-     * @var float
-     */
-    public $connectionTimeout = 3.0;
-
-    /**
-     * 读写超时.
-     *
-     * @var float
-     */
-    public $readWriteTimeout = 3.0;
-
-    /**
-     * 上下文.
-     *
-     * @var null
-     */
-    public $context = null;
-
-    /**
-     * keepalive.
-     *
-     * @var bool
-     */
-    public $keepalive = false;
-
-    /**
-     * 心跳时间.
-     *
-     * @var int
-     */
-    public $heartbeat = 0;
-
-    /**
-     * 频道 RPC 超时时间.
-     *
-     * @var float
-     */
-    public $channelRpcTimeout = 0.0;
-
-    /**
-     * ssl 协议.
-     *
-     * @var string|null
-     */
-    public $sslProtocol = null;
+    public function __construct(?array $__data = null, ?string $poolName = null, string $host = '', int $port = 0, string $user = '', string $password = '', string $vhost = '/', bool $insist = false, string $loginMethod = 'AMQPLAIN', $loginResponse = null, string $locale = 'en_US', float $connectionTimeout = 3.0, float $readWriteTimeout = 3.0, $context = null, bool $keepalive = false, int $heartbeat = 0, float $channelRpcTimeout = 0.0, ?string $sslProtocol = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

@@ -13,43 +13,18 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property string        $name     限流器名称
+ * @property int           $max      最大同时工作数量
+ * @property float|null    $timeout  工作超时时间，单位：秒，支持小数点精确到毫秒；默认为null，则不限制（不推荐不安全，有隐患）
+ * @property callable|null $callback 触发限流的回调
+ * @property string|null   $poolName 连接池名称，留空取默认 redis 连接池
  */
+#[\Attribute]
 class WorkerLimit extends Base
 {
-    /**
-     * 限流器名称.
-     *
-     * @var string
-     */
-    public $name;
-
-    /**
-     * 最大同时工作数量.
-     *
-     * @var int
-     */
-    public $max;
-
-    /**
-     * 工作超时时间，单位：秒，支持小数点精确到毫秒.
-     *
-     * 默认为null，则不限制（不推荐不安全，有隐患）
-     *
-     * @var float|null
-     */
-    public $timeout;
-
-    /**
-     * 触发限流的回调.
-     *
-     * @var callable
-     */
-    public $callback;
-
-    /**
-     * 连接池名称，留空取默认 redis 连接池.
-     *
-     * @var string|null
-     */
-    public $poolName;
+    public function __construct(?array $__data = null, string $name = '', int $max = 0, ?float $timeout = null, ?callable $callback = null, ?string $poolName = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

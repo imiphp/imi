@@ -92,7 +92,7 @@ class App
             // 扫描项目
             Scanner::scanApp();
         }
-        Event::trigger('IMI.LOAD_RUNTIME_INFO');
+        Event::trigger('IMI.LOAD_RUNTIME');
         // 初始化
         $appInstance->init();
         // 注册错误日志

@@ -451,7 +451,7 @@ class Imi
             return false;
         }
         $success = true;
-        Event::trigger('IMI.LOAD_RUNTIME', [
+        Event::trigger('IMI.LOAD_RUNTIME_INFO', [
             'cacheName' => $cacheName,
             'data'      => $data,
             'success'   => &$success,

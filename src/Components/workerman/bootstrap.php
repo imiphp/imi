@@ -35,7 +35,7 @@ return function () {
     }
 
     // 事件监听
-    Event::on('IMI.LOAD_RUNTIME', \Imi\Workerman\Process\Listener\LoadRuntimeListener::class, 19940000);
+    Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Workerman\Process\Listener\LoadRuntimeListener::class, 19940000);
     Event::on('IMI.BUILD_RUNTIME', \Imi\Workerman\Process\Listener\BuildRuntimeListener::class, 19940000);
 
     App::run((function () use ($path): string {

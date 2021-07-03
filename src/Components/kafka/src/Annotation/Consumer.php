@@ -13,7 +13,12 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target({"CLASS"})
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string|string[] $topic    主题名称
+ * @property string|null     $groupId  分组ID
+ * @property string|null     $poolName 连接池名称
  */
+#[\Attribute]
 class Consumer extends Base
 {
     /**
@@ -24,23 +29,10 @@ class Consumer extends Base
     protected ?string $defaultFieldName = 'topic';
 
     /**
-     * 主题名称.
-     *
-     * @var string|string[]
+     * @param string|string[] $topic
      */
-    public $topic;
-
-    /**
-     * 分组ID.
-     *
-     * @var string|null
-     */
-    public $groupId = null;
-
-    /**
-     * 连接池名称.
-     *
-     * @var string|null
-     */
-    public $poolName = null;
+    public function __construct(?array $__data = null, $topic = [], ?string $groupId = null, ?string $poolName = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

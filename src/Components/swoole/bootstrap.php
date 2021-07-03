@@ -42,9 +42,9 @@ return function () {
             }
 
             // 事件监听
-            Event::on('IMI.LOAD_RUNTIME', \Imi\Swoole\Process\Listener\LoadRuntimeListener::class, 19940000);
+            Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Swoole\Process\Listener\LoadRuntimeListener::class, 19940000);
             Event::on('IMI.BUILD_RUNTIME', \Imi\Swoole\Process\Listener\BuildRuntimeListener::class, 19940000);
-            Event::on('IMI.LOAD_RUNTIME', \Imi\Swoole\Task\Listener\LoadRuntimeListener::class, 19940000);
+            Event::on('IMI.LOAD_RUNTIME_INFO', \Imi\Swoole\Task\Listener\LoadRuntimeListener::class, 19940000);
             Event::on('IMI.BUILD_RUNTIME', \Imi\Swoole\Task\Listener\BuildRuntimeListener::class, 19940000);
 
             // 运行

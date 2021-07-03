@@ -15,7 +15,10 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("METHOD")
  * @Parser("\Imi\Bean\Parser\NullParser")
+ *
+ * @property int|null $timeout 超时时间，单位：秒；为 null 不限制
  */
+#[\Attribute]
 class BlockingConsumer extends Base
 {
     /**
@@ -25,12 +28,8 @@ class BlockingConsumer extends Base
      */
     protected ?string $defaultFieldName = 'timeout';
 
-    /**
-     * 超时时间，单位：秒.
-     *
-     * 为 null 不限制
-     *
-     * @var int|null
-     */
-    public $timeout;
+    public function __construct(?array $__data = null, ?int $timeout)
+    {
+        parent::__construct(...\func_get_args());
+    }
 }

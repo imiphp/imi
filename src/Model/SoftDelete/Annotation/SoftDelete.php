@@ -13,25 +13,17 @@ use Imi\Bean\Annotation\Parser;
  * @Annotation
  * @Target("CLASS")
  * @Parser("Imi\Bean\Parser\NullParser")
+ *
+ * @property string $field   软删除字段名
+ * @property mixed  $default 软删除字段的默认值，代表非删除状态
  */
+#[\Attribute]
 class SoftDelete extends Base
 {
     /**
      * 只传一个参数时的参数名.
      */
     protected ?string $defaultFieldName = 'field';
-
-    /**
-     * 软删除字段名.
-     */
-    public string $field = 'delete_time';
-
-    /**
-     * 软删除字段的默认值，代表非删除状态
-     *
-     * @var mixed
-     */
-    public $default = 0;
 
     /**
      * @param mixed $default

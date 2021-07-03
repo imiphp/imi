@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Aop\Listener;
 
+use Imi\Aop\AopAnnotationLoader;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
@@ -25,6 +26,7 @@ class ImiInit implements IEventListener
         {
             $this->parseConfigs($main->getConfig()['aop'] ?? []);
         }
+        AopAnnotationLoader::load(false);
     }
 
     /**
