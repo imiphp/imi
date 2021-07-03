@@ -421,15 +421,12 @@ class AnnotationParser
                     $this->parse($parentClassName);
                     $this->execParse($parentClassName);
                 }
-                // @phpstan-ignore-next-line
                 if (\is_string($annotation->annotation))
                 {
-                    // @phpstan-ignore-next-line
                     $inheritAnnotationClasses = [$annotation->annotation];
                 }
                 else
                 {
-                    // @phpstan-ignore-next-line
                     $inheritAnnotationClasses = $annotation->annotation;
                 }
                 $inheritAnnotations = [];

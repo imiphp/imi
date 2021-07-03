@@ -115,11 +115,11 @@ class Query implements IQuery
     protected $resultClass = Result::class;
 
     /**
-     * 别名 Sql 集合.
+     * 别名 Sql 数据集合.
      *
-     * @var string[]
+     * @var array
      */
-    protected static $aliasSqls = [];
+    protected static $aliasSqlMap = [];
 
     /**
      * @param \Imi\Db\Interfaces\IDb|null $db
@@ -1043,15 +1043,51 @@ class Query implements IQuery
     public function select(): IResult
     {
         $alias = $this->alias;
-        $aliasSqls = &static::$aliasSqls;
-        if ($alias && isset($aliasSqls[$alias]))
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
         {
-            $sql = $aliasSqls[$alias];
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
         }
         else
         {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
             $builder = new SelectBuilder($this);
-            $aliasSqls[$alias] = $sql = $builder->build();
+            $sql = $builder->build();
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
         }
         if (!$this->isInitQueryType && !$this->isInTransaction())
         {
@@ -1097,10 +1133,23 @@ class Query implements IQuery
     public function insert($data = null): IResult
     {
         $alias = $this->alias;
-        $aliasSqls = &static::$aliasSqls;
-        if ($alias && isset($aliasSqls[$alias]))
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
         {
-            $sql = $aliasSqls[$alias];
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
             $bindValues = [];
             $numberKey = isset($data[0]);
             foreach ($data as $k => $v)
@@ -1118,8 +1167,21 @@ class Query implements IQuery
         }
         else
         {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
             $builder = new InsertBuilder($this);
-            $aliasSqls[$alias] = $sql = $builder->build($data);
+            $sql = $builder->build($data);
+            if ($alias)
+            {
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    // @phpstan-ignore-next-line
+                    'binds' => $binds,
+                ];
+            }
         }
 
         return $this->execute($sql);
@@ -1151,10 +1213,23 @@ class Query implements IQuery
     public function update($data = null): IResult
     {
         $alias = $this->alias;
-        $aliasSqls = &static::$aliasSqls;
-        if ($alias && isset($aliasSqls[$alias]))
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
         {
-            $sql = $aliasSqls[$alias];
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
             $bindValues = [];
             foreach ($data as $k => $v)
             {
@@ -1164,8 +1239,31 @@ class Query implements IQuery
         }
         else
         {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
             $builder = new UpdateBuilder($this);
-            $aliasSqls[$alias] = $sql = $builder->build($data);
+            $sql = $builder->build($data);
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
         }
 
         return $this->execute($sql);
@@ -1181,10 +1279,23 @@ class Query implements IQuery
     public function replace($data = null): IResult
     {
         $alias = $this->alias;
-        $aliasSqls = &static::$aliasSqls;
-        if ($alias && isset($aliasSqls[$alias]))
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
         {
-            $sql = $aliasSqls[$alias];
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
             $bindValues = [];
             foreach ($data as $k => $v)
             {
@@ -1194,8 +1305,31 @@ class Query implements IQuery
         }
         else
         {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
             $builder = new ReplaceBuilder($this);
-            $aliasSqls[$alias] = $sql = $builder->build($data);
+            $sql = $builder->build($data);
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
         }
 
         return $this->execute($sql);
@@ -1209,15 +1343,51 @@ class Query implements IQuery
     public function delete(): IResult
     {
         $alias = $this->alias;
-        $aliasSqls = &static::$aliasSqls;
-        if ($alias && isset($aliasSqls[$alias]))
+        $aliasSqlMap = &static::$aliasSqlMap;
+        if ($alias && isset($aliasSqlMap[$alias]))
         {
-            $sql = $aliasSqls[$alias];
+            $aliasSqlData = $aliasSqlMap[$alias];
+            $sql = $aliasSqlData['sql'];
+            $binds = $aliasSqlData['binds'];
+            if ($binds)
+            {
+                if ($this->binds)
+                {
+                    $this->binds = array_merge($binds, $this->binds);
+                }
+                else
+                {
+                    $this->binds = $binds;
+                }
+            }
         }
         else
         {
+            if ($alias)
+            {
+                $binds = $this->binds;
+                $this->binds = [];
+            }
             $builder = new DeleteBuilder($this);
-            $aliasSqls[$alias] = $sql = $builder->build();
+            $sql = $builder->build();
+            if ($alias)
+            {
+                // @phpstan-ignore-next-line
+                $originBinds = $binds;
+                $binds = $this->binds;
+                if ($binds)
+                {
+                    $this->binds = array_merge($originBinds, $binds);
+                }
+                else
+                {
+                    $this->binds = $originBinds;
+                }
+                $aliasSqlMap[$alias] = [
+                    'sql'   => $sql,
+                    'binds' => $binds,
+                ];
+            }
         }
         $result = $this->execute($sql);
 
