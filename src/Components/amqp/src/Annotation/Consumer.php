@@ -34,7 +34,7 @@ class Consumer extends Base
     protected ?string $defaultFieldName = 'tag';
 
     /**
-     * @param string|array    $queue
+     * @param string|array         $queue
      * @param string|string[]|null $exchange
      */
     public function __construct(?array $__data = null, string $tag = '', $queue = '', $exchange = null, string $routingKey = '', string $message = \Imi\AMQP\Message::class, bool $mandatory = false, bool $immediate = false, ?int $ticket = null)

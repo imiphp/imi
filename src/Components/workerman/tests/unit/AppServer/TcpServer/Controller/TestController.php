@@ -27,7 +27,6 @@ class TestController extends \Imi\Server\TcpServer\Controller\TcpController
     public function login(\stdClass $data): array
     {
         ConnectionContext::set('username', $data->username);
-        // @phpstan-ignore-next-line
         $this->server->joinGroup('g1', $this->data->getClientId());
 
         return ['action' => 'login', 'success' => true, 'middlewareData' => RequestContext::get('middlewareData')];

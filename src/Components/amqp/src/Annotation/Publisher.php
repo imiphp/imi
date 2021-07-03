@@ -14,9 +14,9 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS"})
  * @Parser("Imi\Bean\Parser\NullParser")
  *
- * @property string|array $queue      队列名称
+ * @property string|array      $queue      队列名称
  * @property string|array|null $exchange   交换机名称
- * @property string       $routingKey 路由键
+ * @property string            $routingKey 路由键
  */
 #[\Attribute]
 class Publisher extends Base

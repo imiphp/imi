@@ -29,7 +29,6 @@ class TestController extends WebSocketController
     public function login(\stdClass $data): array
     {
         ConnectionContext::set('username', $data->username);
-        // @phpstan-ignore-next-line
         $this->server->joinGroup('g1', $this->frame->getClientId());
         ConnectionContext::bind($data->username);
 
