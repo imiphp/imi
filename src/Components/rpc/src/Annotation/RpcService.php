@@ -14,22 +14,17 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property string|null $poolName    连接池名称
+ * @property string|null $serviceName 服务名称
  */
+#[\Attribute]
 class RpcService extends Inject
 {
-    /**
-     * 连接池名称.
-     *
-     * @var string|null
-     */
-    public $poolName;
-
-    /**
-     * 服务名称.
-     *
-     * @var string
-     */
-    public $serviceName;
+    public function __construct(?array $__data = null, ?string $poolName = null, ?string $serviceName = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值

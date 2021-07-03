@@ -14,29 +14,16 @@ use Imi\Rpc\Annotation\RpcService;
  * @Inherit
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
+ *
+ * @property string|null $interface 服务接口
  */
+#[\Attribute]
 class GrpcService extends RpcService
 {
-    /**
-     * 连接池名称.
-     *
-     * @var string|null
-     */
-    public $poolName;
-
-    /**
-     * 服务名称.
-     *
-     * @var string
-     */
-    public $serviceName;
-
-    /**
-     * 服务接口.
-     *
-     * @var string
-     */
-    public $interface;
+    public function __construct(?array $__data = null, ?string $poolName = null, ?string $serviceName = null, ?string $interface = null)
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取注入值的真实值
