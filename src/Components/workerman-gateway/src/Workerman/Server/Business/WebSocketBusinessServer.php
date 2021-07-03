@@ -84,6 +84,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ], $this);
+            RequestContext::destroy();
         });
 
         $property = $refClass->getProperty('_eventOnWebSocketConnect');
@@ -104,6 +105,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'clientId' => $clientId,
                 'request'  => $request,
             ], $this);
+            RequestContext::destroy();
         });
 
         $property = $refClass->getProperty('_eventOnClose');
@@ -117,6 +119,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ], $this);
+            RequestContext::destroy();
         });
 
         $property = $refClass->getProperty('_eventOnMessage');
@@ -133,6 +136,7 @@ class WebSocketBusinessServer extends \Imi\Workerman\Server\WebSocket\Server
                 'data'     => $data,
                 'frame'    => new Frame($data, $clientId),
             ], $this);
+            RequestContext::destroy();
         });
     }
 

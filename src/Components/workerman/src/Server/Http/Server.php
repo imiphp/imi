@@ -80,6 +80,10 @@ class Server extends Base
                     App::getBean('ErrorLog')->onException($th);
                 }
             }
+            finally
+            {
+                RequestContext::destroy();
+            }
         };
     }
 

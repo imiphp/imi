@@ -185,6 +185,10 @@ class Local implements IHandler
             {
                 unset($this->clientIdsMap[$flag][$index]);
             }
+            if (!$this->clientIdsMap[$flag])
+            {
+                unset($this->clientIdsMap[$flag]);
+            }
         }
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\WebSocket;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\ConnectionContext;
 use Imi\Event\Event;
@@ -12,8 +13,12 @@ use Imi\Server\DataParser\JsonObjectParser;
 use Imi\Server\Protocol;
 use Imi\Server\WebSocket\Contract\IWebSocketServer;
 use Imi\Server\WebSocket\Message\Frame;
+use Imi\Util\Http\Consts\StatusCode;
+use Imi\Util\ImiPriority;
 use Imi\Workerman\Http\Message\WorkermanRequest;
+use Imi\Workerman\Http\Message\WorkermanResponse;
 use Imi\Workerman\Server\Base;
+use Imi\Workerman\Server\Http\Listener\BeforeRequest;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Protocols\Websocket;
@@ -55,25 +60,51 @@ class Server extends Base implements IWebSocketServer
     {
         parent::bindEvents();
 
+        $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         // @phpstan-ignore-next-line
         $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
             $clientId = $connection->id;
-            $request = new WorkermanRequest($this->worker, $connection, new Request($httpHeader), 'ws');
-
+            $worker = $this->worker;
+            $request = new WorkermanRequest($worker, $connection, new Request($httpHeader), 'ws');
+            $response = new WorkermanResponse($worker, $connection);
             RequestContext::muiltiSet([
-                'server'       => $this,
-                'clientId'     => $clientId,
+                'server'   => $this,
+                'clientId' => $clientId,
+                'request'  => $request,
+                'response' => $response,
             ]);
             ConnectionContext::create([
                 'uri'        => (string) $request->getUri(),
                 'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
             ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
-                'server'           => $this,
-                'connection'       => $connection,
-                'clientId'         => $clientId,
-                'request'          => $request,
-            ], $this);
+            try
+            {
+                $this->trigger('request', [
+                    'server'   => $this,
+                    'request'  => $request,
+                    'response' => $response,
+                ], $this);
+                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.CONNECT', [
+                    'server'     => $this,
+                    'connection' => $connection,
+                    'clientId'   => $clientId,
+                    'request'    => $request,
+                    'response'   => $response,
+                ], $this);
+                if (!\in_array($response->getStatusCode(), [StatusCode::OK, StatusCode::SWITCHING_PROTOCOLS]))
+                {
+                    $connection->close();
+                }
+            }
+            catch (\Throwable $th)
+            {
+                $connection->close();
+                App::getBean('ErrorLog')->onException($th);
+            }
+            finally
+            {
+                RequestContext::destroy();
+            }
         };
 
         $this->worker->onMessage = function (TcpConnection $connection, string $data) {

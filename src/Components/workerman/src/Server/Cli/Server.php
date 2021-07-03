@@ -15,6 +15,7 @@ use Imi\Config;
 use Imi\Event\Event;
 use Imi\Pool\PoolManager;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Util\Imi;
 use Imi\Worker as ImiWorker;
 use Imi\Workerman\Server\Contract\IWorkermanServer;
@@ -98,6 +99,7 @@ class Server extends BaseCommand
         // 创建服务器对象们后置操作
         Event::trigger('IMI.SERVERS.CREATE.AFTER');
         WorkermanServerUtil::initWorkermanWorker($name);
+        Event::trigger('IMI.APP.INIT', [], $this, AppInitEventParam::class);
         Worker::runAll();
     }
 

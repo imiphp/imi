@@ -20,7 +20,7 @@ return [
         ],
         'HttpDispatcher'    => [
             'middlewares'    => [
-                'HandShakeMiddleware',
+                \Imi\Swoole\Server\WebSocket\Middleware\HandShakeMiddleware::class,
                 \Imi\Server\Http\Middleware\RouteMiddleware::class,
             ],
         ],

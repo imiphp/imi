@@ -52,6 +52,7 @@ class Server extends Base implements ITcpServer
                 'clientId'         => $clientId,
                 'data'             => $data,
             ], $this);
+            RequestContext::destroy();
         };
     }
 

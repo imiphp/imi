@@ -11,9 +11,11 @@ use Imi\Config;
 use Imi\Core\App\Contract\BaseApp;
 use Imi\Core\App\Enum\LoadRuntimeResult;
 use Imi\Core\Runtime\Runtime;
+use Imi\Event\Event;
 use Imi\Fpm\Runtime\Handler\FpmRuntimeModeHandler;
 use Imi\Fpm\Server\Type;
 use Imi\Server\ServerManager;
+use Imi\Swoole\Server\Event\Param\AppInitEventParam;
 use Imi\Util\File;
 use Imi\Util\Imi;
 
@@ -107,6 +109,7 @@ class FpmApp extends BaseApp
                 'namespace' => $this->namespace,
             ]);
         }
+        Event::trigger('IMI.APP.INIT', [], $this, AppInitEventParam::class);
         $server->start();
     }
 

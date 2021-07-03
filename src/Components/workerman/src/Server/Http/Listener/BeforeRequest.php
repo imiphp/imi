@@ -7,7 +7,7 @@ namespace Imi\Workerman\Server\Http\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Server\Http\Dispatcher;
-use Imi\Workerman\Server\Http\Server;
+use Imi\Workerman\Server\Base as BaseServer;
 
 /**
  * request事件前置处理.
@@ -16,9 +16,9 @@ class BeforeRequest implements IEventListener
 {
     protected Dispatcher $dispatcher;
 
-    protected Server $server;
+    protected BaseServer $server;
 
-    public function __construct(Server $server)
+    public function __construct(BaseServer $server)
     {
         $this->server = $server;
     }

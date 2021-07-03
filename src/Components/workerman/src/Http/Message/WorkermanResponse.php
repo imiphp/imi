@@ -14,7 +14,7 @@ class WorkermanResponse extends Response
     /**
      * Workerman 的 http 响应对象
      */
-    protected \Workerman\Protocols\Http\Response $workermanResponse;
+    protected ?\Workerman\Protocols\Http\Response $workermanResponse;
 
     /**
      * Workerman 的 Worker 对象
@@ -36,7 +36,7 @@ class WorkermanResponse extends Response
      */
     protected bool $isBodyWritable = true;
 
-    public function __construct(Worker $worker, TcpConnection $connection, \Workerman\Protocols\Http\Response $response)
+    public function __construct(Worker $worker, TcpConnection $connection, ?\Workerman\Protocols\Http\Response $response = null)
     {
         $this->workermanResponse = $response;
         $this->worker = $worker;
@@ -49,7 +49,7 @@ class WorkermanResponse extends Response
      */
     public function isHeaderWritable(): bool
     {
-        return $this->isHeaderWritable;
+        return $this->workermanResponse && $this->isHeaderWritable;
     }
 
     /**
@@ -57,7 +57,7 @@ class WorkermanResponse extends Response
      */
     public function isBodyWritable(): bool
     {
-        return $this->isBodyWritable;
+        return $this->workermanResponse && $this->isBodyWritable;
     }
 
     /**
@@ -142,7 +142,7 @@ class WorkermanResponse extends Response
     /**
      * Get workerman 的 http 响应对象
      */
-    public function getWorkermanResponse(): \Workerman\Protocols\Http\Response
+    public function getWorkermanResponse(): ?\Workerman\Protocols\Http\Response
     {
         return $this->workermanResponse;
     }

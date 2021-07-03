@@ -135,6 +135,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
+            RequestContext::destroy();
         };
 
         $this->worker->onBufferFull = function (ConnectionInterface $connection) {
@@ -149,6 +150,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
+            RequestContext::destroy();
         };
 
         $this->worker->onClose = function (ConnectionInterface $connection) {
@@ -163,6 +165,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
+            RequestContext::destroy();
         };
 
         $this->worker->onConnect = function (ConnectionInterface $connection) {
@@ -177,6 +180,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'clientId'   => $clientId,
                 'connection' => $connection,
             ], $this);
+            RequestContext::destroy();
         };
 
         $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
@@ -193,6 +197,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'code'       => $code,
                 'msg'        => $msg,
             ], $this);
+            RequestContext::destroy();
         };
 
         $this->worker->onWorkerReload = function (Worker $worker) {
@@ -204,6 +209,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'server' => $this,
                 'worker' => $worker,
             ], $this);
+            RequestContext::destroy();
         };
 
         $this->worker->onWorkerStart = function (Worker $worker) {
@@ -271,6 +277,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
             {
                 Server::getInstance($name);
             }
+            RequestContext::destroy();
         };
 
         $this->worker->onWorkerStop = function (Worker $worker) {
@@ -282,6 +289,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                 'server' => $this,
                 'worker' => $worker,
             ], $this);
+            RequestContext::destroy();
         };
     }
 

@@ -79,6 +79,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ], $this);
+            RequestContext::destroy();
         });
 
         $property = $refClass->getProperty('_eventOnClose');
@@ -92,6 +93,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'server'   => $this,
                 'clientId' => $clientId,
             ], $this);
+            RequestContext::destroy();
         });
 
         $property = $refClass->getProperty('_eventOnMessage');
@@ -107,6 +109,7 @@ class TcpBusinessServer extends \Imi\Workerman\Server\Tcp\Server
                 'clientId' => $clientId,
                 'data'     => $data,
             ], $this);
+            RequestContext::destroy();
         });
     }
 

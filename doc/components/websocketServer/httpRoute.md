@@ -4,4 +4,4 @@
 
 用法同 HTTP 服务器，不再细说。
 
-> 仅 Swoole 需要
+> 仅 Swoole、Workerman 需要
