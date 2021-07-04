@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Udp;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
@@ -42,16 +43,23 @@ class Server extends Base implements IUdpServer
         parent::bindEvents();
 
         $this->worker->onMessage = function (UdpConnection $connection, string $data) {
-            $requestContext = RequestContext::getContext();
-            $requestContext['server'] = $this;
-            $requestContext['connection'] = $connection;
-            $packetData = $requestContext['connection'] = new PacketData($connection, $data);
-            Event::trigger('IMI.WORKERMAN.SERVER.UDP.MESSAGE', [
-                'server'     => $this,
-                'connection' => $connection,
-                'data'       => $data,
-                'packetData' => $packetData,
-            ], $this);
+            try
+            {
+                $requestContext = RequestContext::getContext();
+                $requestContext['server'] = $this;
+                $requestContext['connection'] = $connection;
+                $packetData = $requestContext['connection'] = new PacketData($connection, $data);
+                Event::trigger('IMI.WORKERMAN.SERVER.UDP.MESSAGE', [
+                    'server'     => $this,
+                    'connection' => $connection,
+                    'data'       => $data,
+                    'packetData' => $packetData,
+                ], $this);
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Workerman\Server\Tcp;
 
+use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Event\Event;
 use Imi\RequestContext;
@@ -41,18 +42,25 @@ class Server extends Base implements ITcpServer
         parent::bindEvents();
 
         $this->worker->onMessage = function (TcpConnection $connection, string $data) {
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'       => $this,
-                'clientId'     => $clientId,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
-                'server'           => $this,
-                'connection'       => $connection,
-                'clientId'         => $clientId,
-                'data'             => $data,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'       => $this,
+                    'clientId'     => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.TCP.MESSAGE', [
+                    'server'           => $this,
+                    'connection'       => $connection,
+                    'clientId'         => $clientId,
+                    'data'             => $data,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
     }
 

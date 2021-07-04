@@ -63,22 +63,22 @@ class Server extends Base implements IWebSocketServer
         $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
         // @phpstan-ignore-next-line
         $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
-            $clientId = $connection->id;
-            $worker = $this->worker;
-            $request = new WorkermanRequest($worker, $connection, new Request($httpHeader), 'ws');
-            $response = new WorkermanResponse($worker, $connection);
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-                'request'  => $request,
-                'response' => $response,
-            ]);
-            ConnectionContext::create([
-                'uri'        => (string) $request->getUri(),
-                'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
-            ]);
             try
             {
+                $clientId = $connection->id;
+                $worker = $this->worker;
+                $request = new WorkermanRequest($worker, $connection, new Request($httpHeader), 'ws');
+                $response = new WorkermanResponse($worker, $connection);
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                    'request'  => $request,
+                    'response' => $response,
+                ]);
+                ConnectionContext::create([
+                    'uri'        => (string) $request->getUri(),
+                    'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
+                ]);
                 $this->trigger('request', [
                     'server'   => $this,
                     'request'  => $request,
@@ -108,18 +108,25 @@ class Server extends Base implements IWebSocketServer
         };
 
         $this->worker->onMessage = function (TcpConnection $connection, string $data) {
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'       => $this,
-                'clientId'     => $clientId,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
-                'server'           => $this,
-                'connection'       => $connection,
-                'clientId'         => $clientId,
-                'data'             => $data,
-                'frame'            => new Frame($data, $clientId),
-            ], $this);
+            try
+            {
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'       => $this,
+                    'clientId'     => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.WEBSOCKET.MESSAGE', [
+                    'server'           => $this,
+                    'connection'       => $connection,
+                    'clientId'         => $clientId,
+                    'data'             => $data,
+                    'frame'            => new Frame($data, $clientId),
+                ], $this);
+            }
+            catch (\Throwable $th)
+            {
+                App::getBean('ErrorLog')->onException($th);
+            }
         };
     }
 
