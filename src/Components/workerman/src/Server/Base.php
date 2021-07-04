@@ -133,7 +133,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
                     'server'   => $this,
                     'clientId' => $clientId,
                 ]);
-                $this->trigger('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', [
+                Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', [
                     'server'     => $this,
                     'clientId'   => $clientId,
                     'connection' => $connection,

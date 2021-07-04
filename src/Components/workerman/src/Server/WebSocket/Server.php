@@ -79,7 +79,7 @@ class Server extends Base implements IWebSocketServer
                     'uri'        => (string) $request->getUri(),
                     'dataParser' => $this->config['dataParser'] ?? JsonObjectParser::class,
                 ]);
-                $this->trigger('request', [
+                Event::trigger('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [
                     'server'   => $this,
                     'request'  => $request,
                     'response' => $response,
