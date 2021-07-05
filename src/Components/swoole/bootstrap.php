@@ -8,10 +8,6 @@ use Imi\Util\File;
 use Symfony\Component\Console\Input\ArgvInput;
 
 return function () {
-    // 暂时移除 PHP 8 中有 bug 的 hook native curl
-    Co::set([
-        'hook_flags' => \SWOOLE_HOOK_ALL ^ \SWOOLE_HOOK_NATIVE_CURL,
-    ]);
     $status = 0;
     \Swoole\Coroutine\run(function () use (&$status) {
         try

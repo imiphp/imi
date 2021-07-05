@@ -23,7 +23,7 @@ if (version_compare('7.3.0', \PHP_VERSION, '>'))
         )
     );
 
-    die(1);
+    exit(1);
 }
 
 foreach ([__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $file)
@@ -47,7 +47,7 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL'))
         'You can learn all about Composer on https://getcomposer.org/.' . \PHP_EOL
     );
 
-    die(1);
+    exit(1);
 }
 
 $options = getopt('', ['prepend:']);
@@ -61,10 +61,6 @@ unset($options);
 
 require PHPUNIT_COMPOSER_INSTALL;
 
-// 暂时移除 PHP 8 中有 bug 的 hook native curl
-Co::set([
-    'hook_flags' => \SWOOLE_HOOK_ALL ^ \SWOOLE_HOOK_NATIVE_CURL,
-]);
 $code = 0;
 Co\run(function () use (&$code) {
     try

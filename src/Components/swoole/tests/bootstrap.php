@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use function Yurun\Swoole\Coroutine\batch;
-use function Yurun\Swoole\Coroutine\goWait;
 
 require dirname(__DIR__, 4) . '/vendor/autoload.php';
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -208,6 +207,12 @@ function startServer(): void
     }
 
     batch($callbacks, 120, max(swoole_cpu_num() - 1, 1));
+
+    register_shutdown_function(function () {
+        \Swoole\Runtime::enableCoroutine(false);
+        echo 'check ports...', \PHP_EOL;
+        echo shell_exec(\PHP_BINARY . ' ' . __DIR__ . '/bin/checkPorts.php');
+    });
 }
 
-goWait('startServer');
+startServer();

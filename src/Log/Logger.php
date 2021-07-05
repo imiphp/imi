@@ -73,4 +73,9 @@ class Logger
 
         return $this->loggers[$channelName];
     }
+
+    public function clear(): void
+    {
+        $this->loggers = [];
+    }
 }

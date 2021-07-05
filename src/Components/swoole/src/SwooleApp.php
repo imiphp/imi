@@ -205,6 +205,9 @@ class SwooleApp extends CliApp
     public function init(): void
     {
         parent::init();
+        register_shutdown_function(function () {
+            App::getBean('Logger')->clear();
+        });
         foreach (Config::getAliases() as $alias)
         {
             // 原子计数初始化
@@ -220,8 +223,8 @@ class SwooleApp extends CliApp
             CacheManager::init();
             Lock::init();
         };
-        Event::on('IMI.PROCESS.BEGIN', $initCallback);
-        Event::on('IMI.MAIN_SERVER.WORKER.START', $initCallback);
+        Event::one('IMI.PROCESS.BEGIN', $initCallback);
+        Event::one('IMI.MAIN_SERVER.WORKER.START', $initCallback);
     }
 
     private function onCommand(ConsoleCommandEvent $e): void
