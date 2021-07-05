@@ -6,6 +6,7 @@ namespace Imi\Workerman\Server;
 
 use Channel\Client;
 use GatewayWorker\Lib\Gateway;
+use Imi\App;
 use Imi\Config;
 use Imi\Event\Event;
 use Imi\RequestContext;
@@ -124,172 +125,228 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     protected function bindEvents(): void
     {
         $this->worker->onBufferDrain = function (ConnectionInterface $connection) {
-            // @phpstan-ignore-next-line
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-            ]);
-            $this->trigger('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', [
-                'server'     => $this,
-                'clientId'   => $clientId,
-                'connection' => $connection,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                // @phpstan-ignore-next-line
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_DRAIN', [
+                    'server'     => $this,
+                    'clientId'   => $clientId,
+                    'connection' => $connection,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
 
         $this->worker->onBufferFull = function (ConnectionInterface $connection) {
-            // @phpstan-ignore-next-line
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_FULL', [
-                'server'     => $this,
-                'clientId'   => $clientId,
-                'connection' => $connection,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                // @phpstan-ignore-next-line
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.BUFFER_FULL', [
+                    'server'     => $this,
+                    'clientId'   => $clientId,
+                    'connection' => $connection,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
 
         $this->worker->onClose = function (ConnectionInterface $connection) {
-            // @phpstan-ignore-next-line
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
-                'server'     => $this,
-                'clientId'   => $clientId,
-                'connection' => $connection,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                // @phpstan-ignore-next-line
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.CLOSE', [
+                    'server'     => $this,
+                    'clientId'   => $clientId,
+                    'connection' => $connection,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
 
         $this->worker->onConnect = function (ConnectionInterface $connection) {
-            // @phpstan-ignore-next-line
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
-                'server'     => $this,
-                'clientId'   => $clientId,
-                'connection' => $connection,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                // @phpstan-ignore-next-line
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.CONNECT', [
+                    'server'     => $this,
+                    'clientId'   => $clientId,
+                    'connection' => $connection,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
 
         $this->worker->onError = function (ConnectionInterface $connection, int $code, string $msg) {
-            // @phpstan-ignore-next-line
-            $clientId = $connection->id;
-            RequestContext::muiltiSet([
-                'server'   => $this,
-                'clientId' => $clientId,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
-                'server'     => $this,
-                'clientId'   => $clientId,
-                'connection' => $connection,
-                'code'       => $code,
-                'msg'        => $msg,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                // @phpstan-ignore-next-line
+                $clientId = $connection->id;
+                RequestContext::muiltiSet([
+                    'server'   => $this,
+                    'clientId' => $clientId,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.ERROR', [
+                    'server'     => $this,
+                    'clientId'   => $clientId,
+                    'connection' => $connection,
+                    'code'       => $code,
+                    'msg'        => $msg,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
 
         $this->worker->onWorkerReload = function (Worker $worker) {
-            RequestContext::muiltiSet([
-                'server' => $this,
-                'worker' => $worker,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.WORKER_RELOAD', [
-                'server' => $this,
-                'worker' => $worker,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                RequestContext::muiltiSet([
+                    'server' => $this,
+                    'worker' => $worker,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.WORKER_RELOAD', [
+                    'server' => $this,
+                    'worker' => $worker,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
 
         $this->worker->onWorkerStart = function (Worker $worker) {
-            // 随机数播种
-            mt_srand();
-
-            Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
-
-            // 创建共享 Worker 的服务
-            $config = $this->config;
-            if (!($config['shareWorker'] ?? false) && ($config['autorun'] ?? true))
+            try
             {
-                foreach (Config::get('@app.workermanServer') as $name => $config)
+                // 随机数播种
+                mt_srand();
+
+                Imi::loadRuntimeInfo(Imi::getRuntimePath('runtime'));
+
+                // 创建共享 Worker 的服务
+                $config = $this->config;
+                if (!($config['shareWorker'] ?? false) && ($config['autorun'] ?? true))
                 {
-                    $shareWorker = $config['shareWorker'] ?? false;
-                    if (false !== $shareWorker && $this->getName() === $shareWorker)
+                    foreach (Config::get('@app.workermanServer') as $name => $config)
                     {
-                        /** @var IWorkermanServer $server */
-                        $server = ServerManager::createServer($name, $config);
-                        $subWorker = $server->getWorker();
-                        $subWorker->count = $worker->count;
-                        $subWorker->listen();
+                        $shareWorker = $config['shareWorker'] ?? false;
+                        if (false !== $shareWorker && $this->getName() === $shareWorker)
+                        {
+                            /** @var IWorkermanServer $server */
+                            $server = ServerManager::createServer($name, $config);
+                            $subWorker = $server->getWorker();
+                            $subWorker->count = $worker->count;
+                            $subWorker->listen();
+                        }
                     }
                 }
+
+                RequestContext::muiltiSet([
+                    'server' => $this,
+                    'worker' => $worker,
+                ]);
+
+                // 多进程通讯组件连接
+                $channel = Config::get('@app.workerman.channel');
+                if ($channel)
+                {
+                    Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
+                    // 监听进程通讯
+                    $callback = function (array $data) {
+                        $action = $data['action'] ?? null;
+                        if (!$action)
+                        {
+                            return;
+                        }
+                        Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
+                            'data'      => $data,
+                        ]);
+                    };
+                    $workerId = ImiWorker::getWorkerId();
+                    Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
+                    Client::on('imi.process.message.' . $workerId, $callback);
+                }
+
+                if (isset($config['configs']['registerAddress']))
+                {
+                    Gateway::$registerAddress = $config['configs']['registerAddress'];
+                }
+
+                Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
+                    'server' => $this,
+                    'worker' => $worker,
+                ], $this);
+
+                \Imi\Worker::inited();
+                foreach (ServerManager::getServers() as $name => $_)
+                {
+                    Server::getInstance($name);
+                }
+                RequestContext::destroy();
             }
-
-            RequestContext::muiltiSet([
-                'server' => $this,
-                'worker' => $worker,
-            ]);
-
-            // 多进程通讯组件连接
-            $channel = Config::get('@app.workerman.channel');
-            if ($channel)
+            catch (\Throwable $ex)
             {
-                Client::connect($channel['host'] ?: '127.0.0.1', $channel['port'] ?: 2206);
-                // 监听进程通讯
-                $callback = function (array $data) {
-                    $action = $data['action'] ?? null;
-                    if (!$action)
-                    {
-                        return;
-                    }
-                    Event::trigger('IMI.PIPE_MESSAGE.' . $action, [
-                        'data'      => $data,
-                    ]);
-                };
-                $workerId = ImiWorker::getWorkerId();
-                Client::on('imi.process.message.' . $this->getName() . '.' . $workerId, $callback);
-                Client::on('imi.process.message.' . $workerId, $callback);
+                App::getBean('ErrorLog')->onException($ex);
             }
-
-            if (isset($config['configs']['registerAddress']))
-            {
-                Gateway::$registerAddress = $config['configs']['registerAddress'];
-            }
-
-            Event::trigger('IMI.WORKERMAN.SERVER.WORKER_START', [
-                'server' => $this,
-                'worker' => $worker,
-            ], $this);
-
-            \Imi\Worker::inited();
-            foreach (ServerManager::getServers() as $name => $_)
-            {
-                Server::getInstance($name);
-            }
-            RequestContext::destroy();
         };
 
         $this->worker->onWorkerStop = function (Worker $worker) {
-            RequestContext::muiltiSet([
-                'server' => $this,
-                'worker' => $worker,
-            ]);
-            Event::trigger('IMI.WORKERMAN.SERVER.WORKER_STOP', [
-                'server' => $this,
-                'worker' => $worker,
-            ], $this);
-            RequestContext::destroy();
+            try
+            {
+                RequestContext::muiltiSet([
+                    'server' => $this,
+                    'worker' => $worker,
+                ]);
+                Event::trigger('IMI.WORKERMAN.SERVER.WORKER_STOP', [
+                    'server' => $this,
+                    'worker' => $worker,
+                ], $this);
+                RequestContext::destroy();
+            }
+            catch (\Throwable $ex)
+            {
+                App::getBean('ErrorLog')->onException($ex);
+            }
         };
     }
 

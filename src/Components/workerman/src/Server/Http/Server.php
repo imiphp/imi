@@ -6,6 +6,7 @@ namespace Imi\Workerman\Server\Http;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
+use Imi\Event\Event;
 use Imi\RequestContext;
 use Imi\Server\Protocol;
 use Imi\Util\ImiPriority;
@@ -67,7 +68,7 @@ class Server extends Base
                     'request'  => $request,
                     'response' => $response,
                 ]);
-                $this->trigger('request', [
+                Event::trigger('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [
                     'server'   => $this,
                     'request'  => $request,
                     'response' => $response,
