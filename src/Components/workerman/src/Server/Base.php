@@ -35,7 +35,7 @@ abstract class Base extends BaseServer implements IWorkermanServer, IServerGroup
     /**
      * Workerman Worker 类名.
      */
-    protected string $workerClass = Worker::class;
+    protected string $workerClass = WorkermanServerWorker::class;
 
     /**
      * 构造方法.

@@ -16,6 +16,7 @@ use Imi\Log\ErrorLog;
 use Imi\Timer\Timer;
 use Imi\Workerman\Process\Annotation\Process;
 use Imi\Workerman\Process\BaseProcess;
+use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Connection\ConnectionInterface;
 use Workerman\Worker;
 
@@ -70,7 +71,7 @@ class CronProcess extends BaseProcess
         {
             unlink($socketFile);
         }
-        $this->unixWorker = $worker = new Worker('unix://' . $socketFile);
+        $this->unixWorker = $worker = new WorkermanServerWorker('unix://' . $socketFile);
         $worker->protocol = \Imi\Workerman\Cron\Protocol\Frame::class;
         $worker->onMessage = [$this, 'onUnixMessage'];
         $worker->listen();

@@ -10,6 +10,7 @@ use Imi\RequestContext;
 use Imi\Util\Process\ProcessAppContexts;
 use Imi\Util\Process\ProcessType;
 use Imi\Workerman\Process\Contract\IProcess;
+use Imi\Workerman\Server\WorkermanServerWorker;
 use Workerman\Worker;
 
 /**
@@ -74,7 +75,7 @@ class ProcessManager
             throw new \RuntimeException(sprintf('Process %s is exists', $name));
         }
         $processName = $alias ?? $name;
-        self::$processes[$processName] = $worker = new Worker();
+        self::$processes[$processName] = $worker = new WorkermanServerWorker();
         $worker->name = $name;
         $worker->reloadable = false;
         $worker->onWorkerStart = function (Worker $worker) use ($args, $processName, $options) {
