@@ -17,7 +17,7 @@ class WSTest extends BaseTest
     public function test(): void
     {
         $this->go(function () {
-            $client = new Client($this->host, $this->host);
+            $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'login',
@@ -56,7 +56,7 @@ class WSTest extends BaseTest
             $client->disconnect();
 
             // 重连逻辑
-            $client = new Client($this->host, $this->host);
+            $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
 
             // 重试3次
@@ -98,7 +98,7 @@ class WSTest extends BaseTest
     public function testNotFound(): void
     {
         $this->go(function () {
-            $client = new Client($this->host, $this->host);
+            $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'gg',
@@ -113,7 +113,7 @@ class WSTest extends BaseTest
     public function testMatchHttpRoute(): void
     {
         $this->go(function () {
-            $client = new Client($this->host, $this->host);
+            $client = new Client($this->host, $this->httpHost);
             $this->assertTrue($client->connect());
             $this->assertTrue($client->sendData(json_encode([
                 'action'    => 'test',

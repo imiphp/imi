@@ -32,9 +32,12 @@ class StoreHandler implements IHandler
      */
     private IHandler $handler;
 
-    public function __init(): void
+    /**
+     * 获取处理器对象
+     */
+    public function getHandler(): IHandler
     {
-        $this->handler = RequestContext::getServerBean($this->handlerClass);
+        return $this->handler ??= RequestContext::getServerBean($this->handlerClass);
     }
 
     /**
@@ -42,7 +45,7 @@ class StoreHandler implements IHandler
      */
     public function read(string $key): array
     {
-        return $this->handler->read($key);
+        return $this->getHandler()->read($key);
     }
 
     /**
@@ -50,7 +53,7 @@ class StoreHandler implements IHandler
      */
     public function save(string $key, array $data): void
     {
-        $this->handler->save($key, $data);
+        $this->getHandler()->save($key, $data);
     }
 
     /**
@@ -58,7 +61,7 @@ class StoreHandler implements IHandler
      */
     public function destroy(string $key): void
     {
-        $this->handler->destroy($key);
+        $this->getHandler()->destroy($key);
     }
 
     /**
@@ -66,7 +69,7 @@ class StoreHandler implements IHandler
      */
     public function delayDestroy(string $key, int $ttl): void
     {
-        $this->handler->delayDestroy($key, $ttl);
+        $this->getHandler()->delayDestroy($key, $ttl);
     }
 
     /**
@@ -74,7 +77,7 @@ class StoreHandler implements IHandler
      */
     public function exists(string $key): bool
     {
-        return $this->handler->exists($key);
+        return $this->getHandler()->exists($key);
     }
 
     /**
@@ -84,7 +87,7 @@ class StoreHandler implements IHandler
      */
     public function lock(string $key, ?callable $callable = null): bool
     {
-        return $this->handler->lock($key, $callable);
+        return $this->getHandler()->lock($key, $callable);
     }
 
     /**
@@ -92,7 +95,7 @@ class StoreHandler implements IHandler
      */
     public function unlock(): bool
     {
-        return $this->handler->unlock();
+        return $this->getHandler()->unlock();
     }
 
     /**
@@ -102,7 +105,7 @@ class StoreHandler implements IHandler
      */
     public function bind(string $flag, $clientId): void
     {
-        $this->handler->bind($flag, $clientId);
+        $this->getHandler()->bind($flag, $clientId);
     }
 
     /**
@@ -112,7 +115,7 @@ class StoreHandler implements IHandler
      */
     public function bindNx(string $flag, $clientId): bool
     {
-        return $this->handler->bindNx($flag, $clientId);
+        return $this->getHandler()->bindNx($flag, $clientId);
     }
 
     /**
@@ -123,7 +126,7 @@ class StoreHandler implements IHandler
      */
     public function unbind(string $flag, $clientId, ?int $keepTime = null): void
     {
-        $this->handler->unbind($flag, $clientId, $keepTime);
+        $this->getHandler()->unbind($flag, $clientId, $keepTime);
     }
 
     /**
@@ -131,7 +134,7 @@ class StoreHandler implements IHandler
      */
     public function getClientIdByFlag(string $flag): array
     {
-        return $this->handler->getClientIdByFlag($flag);
+        return $this->getHandler()->getClientIdByFlag($flag);
     }
 
     /**
@@ -141,7 +144,7 @@ class StoreHandler implements IHandler
      */
     public function getClientIdsByFlags(array $flags): array
     {
-        return $this->handler->getClientIdsByFlags($flags);
+        return $this->getHandler()->getClientIdsByFlags($flags);
     }
 
     /**
@@ -151,7 +154,7 @@ class StoreHandler implements IHandler
      */
     public function getFlagByClientId($clientId): ?string
     {
-        return $this->handler->getFlagByClientId($clientId);
+        return $this->getHandler()->getFlagByClientId($clientId);
     }
 
     /**
@@ -163,7 +166,7 @@ class StoreHandler implements IHandler
      */
     public function getFlagsByClientIds(array $clientIds): array
     {
-        return $this->handler->getFlagsByClientIds($clientIds);
+        return $this->getHandler()->getFlagsByClientIds($clientIds);
     }
 
     /**
@@ -171,7 +174,7 @@ class StoreHandler implements IHandler
      */
     public function getOldClientIdByFlag(string $flag): ?int
     {
-        return $this->handler->getOldClientIdByFlag($flag);
+        return $this->getHandler()->getOldClientIdByFlag($flag);
     }
 
     /**

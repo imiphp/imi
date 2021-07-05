@@ -60,7 +60,11 @@ class Server extends Base implements IWebSocketServer
     {
         parent::bindEvents();
 
-        $this->on('request', [new BeforeRequest($this), 'handle'], ImiPriority::IMI_MAX);
+        if (!App::get('has_imi_workerman_http_request_event', false))
+        {
+            Event::on('IMI.WORKERMAN.SERVER.HTTP.REQUEST', [new BeforeRequest(), 'handle'], ImiPriority::IMI_MAX);
+            App::set('has_imi_workerman_http_request_event', true);
+        }
         // @phpstan-ignore-next-line
         $this->worker->onWebSocketConnect = function (TcpConnection $connection, string $httpHeader): void {
             try

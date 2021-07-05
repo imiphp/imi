@@ -61,21 +61,42 @@ class Group
         $this->maxClients = $maxClients;
     }
 
-    public function __init(): void
+    /**
+     * 获得组处理器对象
+     */
+    public function getHandler(): ?IGroupHandler
     {
         if ($this->status)
         {
-            $this->handler = $handler = $this->server->getBean($this->groupHandler);
-            $handler->createGroup($this->groupName, $this->maxClients);
+            if (isset($this->handler))
+            {
+                return $this->handler;
+            }
+            else
+            {
+                $this->handler = $handler = $this->server->getBean($this->groupHandler);
+                $handler->createGroup($this->groupName, $this->maxClients);
+
+                return $handler;
+            }
+        }
+        else
+        {
+            return null;
         }
     }
 
     /**
-     * 获得组处理器对象
+     * 启动时执行.
      */
-    public function getHandler(): IGroupHandler
+    public function startup(): void
     {
-        return $this->handler;
+        $handler = $this->getHandler();
+        if (!$handler)
+        {
+            return;
+        }
+        $handler->startup();
     }
 
     /**
@@ -86,7 +107,7 @@ class Group
     public function join($clientId): void
     {
         $groupName = $this->groupName;
-        if ($this->handler->joinGroup($groupName, $clientId))
+        if ($this->getHandler()->joinGroup($groupName, $clientId))
         {
             $this->server->getBean('ClientIdMap')->joinGroup($clientId, $this);
             ConnectionContext::use(function (array $contextData) use ($groupName): array {
@@ -110,7 +131,7 @@ class Group
     public function leave($clientId): void
     {
         $groupName = $this->groupName;
-        if ($this->handler->leaveGroup($groupName, $clientId))
+        if ($this->getHandler()->leaveGroup($groupName, $clientId))
         {
             $this->server->getBean('ClientIdMap')->leaveGroup($clientId, $this);
             ConnectionContext::use(function (array $contextData) use ($groupName) {
@@ -136,7 +157,7 @@ class Group
      */
     public function isInGroup($clientId): bool
     {
-        return $this->handler->isInGroup($this->groupName, $clientId);
+        return $this->getHandler()->isInGroup($this->groupName, $clientId);
     }
 
     /**
@@ -146,7 +167,7 @@ class Group
      */
     public function getClientIds(): array
     {
-        return $this->handler->getClientIds($this->groupName);
+        return $this->getHandler()->getClientIds($this->groupName);
     }
 
     /**
@@ -154,7 +175,7 @@ class Group
      */
     public function count(): int
     {
-        return $this->handler->count($this->groupName);
+        return $this->getHandler()->count($this->groupName);
     }
 
     /**
@@ -162,7 +183,7 @@ class Group
      */
     public function clear(): void
     {
-        $this->handler->clear();
+        $this->getHandler()->clear();
     }
 
     /**

@@ -28,7 +28,7 @@ class ServerUtilTest extends BaseTest
     public function testSend(): void
     {
         $this->go(function () {
-            $client1 = new Client($this->host, $this->host);
+            $client1 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client1->connect());
             $this->assertTrue($client1->sendData(json_encode([
                 'action'    => 'info',
@@ -38,7 +38,7 @@ class ServerUtilTest extends BaseTest
             $recvData1 = json_decode($recv, true);
             $this->assertTrue(isset($recvData1['clientId']));
 
-            $client2 = new Client($this->host, $this->host);
+            $client2 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client2->connect());
             $this->assertTrue($client2->sendData(json_encode([
                 'action'    => 'info',
@@ -48,7 +48,7 @@ class ServerUtilTest extends BaseTest
             $recvData2 = json_decode($recv, true);
             $this->assertTrue(isset($recvData2['clientId']));
 
-            $client3 = new Client($this->host, $this->host);
+            $client3 = new Client($this->host, $this->httpHost);
             $this->assertTrue($client3->connect());
             $this->assertTrue($client3->sendData(json_encode([
                 'action'    => 'login',
@@ -108,7 +108,7 @@ class ServerUtilTest extends BaseTest
             $clients = [];
             for ($i = 0; $i < 2; ++$i)
             {
-                $clients[] = $client = new Client($this->host, $this->host);
+                $clients[] = $client = new Client($this->host, $this->httpHost);
                 $this->assertTrue($client->connect());
                 $this->assertTrue($client->sendData(json_encode([
                     'action'    => 'login',
@@ -145,7 +145,7 @@ class ServerUtilTest extends BaseTest
 
     public function testClose(): void
     {
-        $client1 = new Client($this->host, $this->host);
+        $client1 = new Client($this->host, $this->httpHost);
         $this->assertTrue($client1->connect());
         $this->assertTrue($client1->sendData(json_encode([
             'action'    => 'login',
