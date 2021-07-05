@@ -85,7 +85,11 @@ class Annotation
      */
     private function loadModuleAnnotations(string $namespace): void
     {
-        $ignoredNamespaces = [];
+        // 默认过滤的命名空间
+        $ignoredNamespaces = Config::get('app.overrideDefaultIgnoreNamespace', false) ? [] : [
+            $namespace . '\\config',
+            $namespace . '\\vendor',
+        ];
         foreach (Config::getAliases() as $alias)
         {
             $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
