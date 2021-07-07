@@ -36,11 +36,11 @@ class BuildRuntimeListener implements IEventListener
         }
         if (Config::get('@app.imi.runtime.annotation_manager_annotations', true))
         {
-            $data['annotationManagerAnnotations'] = AnnotationManager::getAnnotations();
+            $data['annotationManagerAnnotations'] = AnnotationManager::generateAnnotationsCache();
         }
         if (Config::get('@app.imi.runtime.annotation_manager_annotation_relation', true))
         {
-            $data['annotationManagerAnnotationRelation'] = AnnotationManager::getAnnotationRelation();
+            $data['annotationManagerAnnotationRelation'] = AnnotationManager::getAnnotationRelation()->generateCache();
         }
         if (Config::get('@app.imi.runtime.partial', true))
         {

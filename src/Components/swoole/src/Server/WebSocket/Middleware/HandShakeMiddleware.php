@@ -35,7 +35,7 @@ class HandShakeMiddleware implements MiddlewareInterface
         if ('websocket' !== $request->getHeaderLine('Upgrade'))
         {
             /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
-            $routeResult = $requestContext['routeResult'];
+            $routeResult = $requestContext['routeResult'] ?? null;
             if ($routeResult->routeItem->wsConfig['wsOnly'] ?? false)
             {
                 $response = $response->setStatus(StatusCode::BAD_REQUEST);
@@ -53,7 +53,7 @@ class HandShakeMiddleware implements MiddlewareInterface
         {
             // http 路由解析结果
             /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
-            $routeResult = $requestContext['routeResult'];
+            $routeResult = $requestContext['routeResult'] ?? null;
             ConnectionContext::muiltiSet([
                 'dataParser' => $routeResult->routeItem->wsConfig->parserClass ?? JsonObjectParser::class,
                 'uri'        => (string) $request->getUri(),

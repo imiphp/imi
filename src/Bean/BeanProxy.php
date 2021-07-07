@@ -141,12 +141,12 @@ class BeanProxy
             foreach ($injects as $propName => $annotationOption)
             {
                 $class = $annotationOption['injectType'];
-                /** @var \Imi\Aop\Annotation\BaseInjectValue $annotation */
-                $annotation = new $class($annotationOption['injectOptions']);
-                if ($reInit && $annotation instanceof Inject)
+                if ($reInit && (Inject::class === $class || is_subclass_of($class, Inject::class)))
                 {
                     continue;
                 }
+                /** @var \Imi\Aop\Annotation\BaseInjectValue $annotation */
+                $annotation = new $class($annotationOption['injectOptions']);
                 $propRef = $refClass->getProperty($propName);
                 $propRef->setAccessible(true);
                 $propRef->setValue($object, $annotation->getRealValue());

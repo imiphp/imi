@@ -24,7 +24,7 @@ class LoadRuntimeListener implements IEventListener
         $data = $eventData['data']['aop'] ?? [];
         if ($cache = ($data['cache'] ?? null))
         {
-            AopManager::setCache($cache);
+            AopManager::setArrayCache($cache);
         }
     }
 }

@@ -17,6 +17,8 @@ class AopManager
      */
     private static array $cache = [];
 
+    private static array $arrayCache = [];
+
     /**
      * @var AopItem[][][][]
      */
@@ -34,6 +36,30 @@ class AopManager
     public static function setCache(array $cache): void
     {
         self::$cache = $cache;
+    }
+
+    public static function getArrayCache(): array
+    {
+        if (!self::$arrayCache)
+        {
+            $arrayCache = self::$cache;
+            foreach ($arrayCache as $k1 => $v1)
+            {
+                foreach ($v1 as $k2 => $v2)
+                {
+                    $arrayCache[$k1][$k2] = serialize($v2);
+                }
+            }
+
+            return self::$arrayCache = $arrayCache;
+        }
+
+        return self::$arrayCache;
+    }
+
+    public static function setArrayCache(array $arrayCache): void
+    {
+        self::$arrayCache = $arrayCache;
     }
 
     public static function clear(): void
@@ -106,6 +132,10 @@ class AopManager
             return self::$parsedCache[$class]['before'][$method];
         }
         $result = new \SplPriorityQueue();
+        if (!isset(self::$cache[$class]['before']) && isset(self::$arrayCache[$class]['before']))
+        {
+            self::$cache[$class]['before'] = unserialize(self::$arrayCache[$class]['before']);
+        }
         if (isset(self::$cache[$class]['before']))
         {
             /** @var AopItem $aopItem */
@@ -148,6 +178,10 @@ class AopManager
             return self::$parsedCache[$class]['after'][$method];
         }
         $result = new \SplPriorityQueue();
+        if (!isset(self::$cache[$class]['after']) && isset(self::$arrayCache[$class]['after']))
+        {
+            self::$cache[$class]['after'] = unserialize(self::$arrayCache[$class]['after']);
+        }
         if (isset(self::$cache[$class]['after']))
         {
             /** @var AopItem $aopItem */
@@ -190,6 +224,10 @@ class AopManager
             return self::$parsedCache[$class]['around'][$method];
         }
         $result = new \SplPriorityQueue();
+        if (!isset(self::$cache[$class]['around']) && isset(self::$arrayCache[$class]['around']))
+        {
+            self::$cache[$class]['around'] = unserialize(self::$arrayCache[$class]['around']);
+        }
         if (isset(self::$cache[$class]['around']))
         {
             /** @var AopItem $aopItem */
@@ -232,6 +270,10 @@ class AopManager
             return self::$parsedCache[$class]['afterReturning'][$method];
         }
         $result = new \SplPriorityQueue();
+        if (!isset(self::$cache[$class]['afterReturning']) && isset(self::$arrayCache[$class]['afterReturning']))
+        {
+            self::$cache[$class]['afterReturning'] = unserialize(self::$arrayCache[$class]['afterReturning']);
+        }
         if (isset(self::$cache[$class]['afterReturning']))
         {
             /** @var AopItem $aopItem */
@@ -274,6 +316,10 @@ class AopManager
             return self::$parsedCache[$class]['afterThrowing'][$method];
         }
         $result = new \SplPriorityQueue();
+        if (!isset(self::$cache[$class]['afterThrowing']) && isset(self::$arrayCache[$class]['afterThrowing']))
+        {
+            self::$cache[$class]['afterThrowing'] = unserialize(self::$arrayCache[$class]['afterThrowing']);
+        }
         if (isset(self::$cache[$class]['afterThrowing']))
         {
             /** @var AopItem $aopItem */

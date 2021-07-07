@@ -36,11 +36,11 @@ class LoadRuntimeListener implements IEventListener
         }
         if (($config['annotation_manager_annotations'] ?? true) && isset($data['annotationManagerAnnotations']))
         {
-            AnnotationManager::setAnnotations($data['annotationManagerAnnotations']);
+            AnnotationManager::setAnnotationsCache($data['annotationManagerAnnotations']);
         }
         if (($config['annotation_manager_annotation_relation'] ?? true) && isset($data['annotationManagerAnnotationRelation']))
         {
-            AnnotationManager::setAnnotationRelation($data['annotationManagerAnnotationRelation']);
+            AnnotationManager::getAnnotationRelation()->setCache($data['annotationManagerAnnotationRelation']);
         }
         if (($config['partial'] ?? true) && isset($data['partial']))
         {

@@ -21,6 +21,8 @@ class AnnotationManager
      */
     private static array $annotations = [];
 
+    private static array $annotationsCache = [];
+
     /**
      * 注解类与类、方法、属性的关联关系.
      */
@@ -45,6 +47,27 @@ class AnnotationManager
     public static function setRemoveWhenset(bool $removeWhenset): void
     {
         self::$removeWhenset = $removeWhenset;
+    }
+
+    public static function generateAnnotationsCache(): array
+    {
+        $annotationsCache = self::$annotations;
+        foreach ($annotationsCache as &$item)
+        {
+            $item = serialize($item);
+        }
+
+        return $annotationsCache;
+    }
+
+    public static function getAnnotationsCache(): array
+    {
+        return self::$annotationsCache;
+    }
+
+    public static function setAnnotationsCache(array $annotationsCache): void
+    {
+        self::$annotationsCache = $annotationsCache;
     }
 
     /**
@@ -91,6 +114,10 @@ class AnnotationManager
         {
             $classAnnotation = $staticAnnotations[$className];
         }
+        elseif (isset(static::$annotationsCache[$className]))
+        {
+            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
+        }
         else
         {
             $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
@@ -132,6 +159,10 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
+        }
+        elseif (isset(static::$annotationsCache[$className]))
+        {
+            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
         }
         else
         {
@@ -175,6 +206,10 @@ class AnnotationManager
         {
             $classAnnotation = $staticAnnotations[$className];
         }
+        elseif (isset(static::$annotationsCache[$className]))
+        {
+            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
+        }
         else
         {
             $staticAnnotations[$className] = $classAnnotation = new ClassAnnotation($className);
@@ -216,6 +251,10 @@ class AnnotationManager
         if (isset($staticAnnotations[$className]))
         {
             $classAnnotation = $staticAnnotations[$className];
+        }
+        elseif (isset(static::$annotationsCache[$className]))
+        {
+            $staticAnnotations[$className] = $classAnnotation = unserialize(static::$annotationsCache[$className]);
         }
         else
         {
@@ -267,11 +306,18 @@ class AnnotationManager
     public static function getClassAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {
@@ -306,11 +352,18 @@ class AnnotationManager
     public static function getMethodAnnotations(string $className, string $methodName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {
@@ -345,11 +398,18 @@ class AnnotationManager
     public static function getPropertyAnnotations(string $className, string $propertyName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {
@@ -384,11 +444,18 @@ class AnnotationManager
     public static function getConstantAnnotations(string $className, string $constantName, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {
@@ -422,11 +489,18 @@ class AnnotationManager
     public static function getMethodsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {
@@ -465,11 +539,18 @@ class AnnotationManager
     public static function getPropertiesAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {
@@ -508,11 +589,18 @@ class AnnotationManager
     public static function getConstantsAnnotations(string $className, ?string $annotationClassName = null, bool $autoAnalysis = true): array
     {
         $staticAnnotations = &static::$annotations;
-        if (!isset($staticAnnotations[$className]) && $autoAnalysis)
+        if (!isset($staticAnnotations[$className]))
         {
-            $parser = Annotation::getInstance()->getParser();
-            $parser->parse($className);
-            $parser->execParse($className);
+            if (isset(static::$annotationsCache[$className]))
+            {
+                $staticAnnotations[$className] = unserialize(static::$annotationsCache[$className]);
+            }
+            elseif ($autoAnalysis)
+            {
+                $parser = Annotation::getInstance()->getParser();
+                $parser->parse($className);
+                $parser->execParse($className);
+            }
         }
         if (!isset($staticAnnotations[$className]))
         {

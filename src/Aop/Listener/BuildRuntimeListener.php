@@ -22,7 +22,7 @@ class BuildRuntimeListener implements IEventListener
         }
         $eventData = $e->getData();
         $eventData['data']['aop'] = [
-            'cache' => AopManager::getCache(),
+            'cache' => AopManager::getArrayCache(),
         ];
     }
 }

@@ -39,6 +39,56 @@ class AnnotationRelation
      */
     private array $allRelations = [];
 
+    private array $cache = [];
+
+    public function generateCache(): array
+    {
+        $classRelations = $this->classRelations;
+        foreach ($classRelations as &$item)
+        {
+            $item = serialize($item);
+        }
+        unset($item);
+
+        $methodRelations = $this->methodRelations;
+        foreach ($methodRelations as &$item)
+        {
+            $item = serialize($item);
+        }
+        unset($item);
+
+        $propertyRelations = $this->propertyRelations;
+        foreach ($propertyRelations as &$item)
+        {
+            $item = serialize($item);
+        }
+        unset($item);
+
+        $constantRelations = $this->constantRelations;
+        foreach ($constantRelations as &$item)
+        {
+            $item = serialize($item);
+        }
+        unset($item);
+
+        return [
+            'classRelations'    => $classRelations,
+            'methodRelations'   => $methodRelations,
+            'propertyRelations' => $propertyRelations,
+            'constantRelations' => $constantRelations,
+        ];
+    }
+
+    public function getCache(): array
+    {
+        return $this->cache;
+    }
+
+    public function setCache(array $cache): void
+    {
+        $this->cache = $cache;
+    }
+
     /**
      * Get 类关联列表.
      *
@@ -58,6 +108,10 @@ class AnnotationRelation
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
+        if (!isset($this->classRelations[$class]) && isset($this->cache['classRelations'][$class]))
+        {
+            $this->classRelations[$class] = unserialize($this->cache['classRelations'][$class]);
+        }
         $this->classRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
@@ -88,6 +142,10 @@ class AnnotationRelation
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
+        if (!isset($this->methodRelations[$class]) && isset($this->cache['methodRelations'][$class]))
+        {
+            $this->methodRelations[$class] = unserialize($this->cache['methodRelations'][$class]);
+        }
         $this->methodRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
@@ -118,6 +176,10 @@ class AnnotationRelation
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
+        if (!isset($this->propertyRelations[$class]) && isset($this->cache['propertyRelations'][$class]))
+        {
+            $this->propertyRelations[$class] = unserialize($this->cache['propertyRelations'][$class]);
+        }
         $this->propertyRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
@@ -148,6 +210,10 @@ class AnnotationRelation
     {
         $annotation = $relation->getAnnotation();
         $class = \get_class($annotation);
+        if (!isset($this->constantRelations[$class]) && isset($this->cache['constantRelations'][$class]))
+        {
+            $this->constantRelations[$class] = unserialize($this->cache['constantRelations'][$class]);
+        }
         $this->constantRelations[$class][] = $relation;
         if (null !== ($alias = $annotation->getAlias()))
         {
@@ -169,6 +235,22 @@ class AnnotationRelation
     {
         if (null === $where)
         {
+            if (!isset($this->classRelations[$className]) && isset($this->cache['classRelations'][$className]))
+            {
+                $this->classRelations[$className] = unserialize($this->cache['classRelations'][$className]);
+            }
+            if (!isset($this->methodRelations[$className]) && isset($this->cache['methodRelations'][$className]))
+            {
+                $this->methodRelations[$className] = unserialize($this->cache['methodRelations'][$className]);
+            }
+            if (!isset($this->propertyRelations[$className]) && isset($this->cache['propertyRelations'][$className]))
+            {
+                $this->propertyRelations[$className] = unserialize($this->cache['propertyRelations'][$className]);
+            }
+            if (!isset($this->constantRelations[$className]) && isset($this->cache['constantRelations'][$className]))
+            {
+                $this->constantRelations[$className] = unserialize($this->cache['constantRelations'][$className]);
+            }
             $allRelations = &$this->allRelations;
             $allRelations[$className] ??= array_merge(
                 $this->classRelations[$className] ?? [],
@@ -180,7 +262,13 @@ class AnnotationRelation
             return $allRelations[$className];
         }
 
-        return $this->{$where . 'Relations'}[$className] ?? [];
+        $fieldName = $where . 'Relations';
+        if (!isset($this->$fieldName[$className]) && isset($this->cache[$fieldName][$className]))
+        {
+            $this->$fieldName[$className] = unserialize($this->cache[$fieldName][$className]);
+        }
+
+        return $this->$fieldName[$className] ?? [];
     }
 
     /**

@@ -27,7 +27,7 @@ class HandShakeMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
         $requestContext = RequestContext::getContext();
         /** @var \Imi\Server\Http\Route\RouteResult $routeResult */
-        $routeResult = $requestContext['routeResult'];
+        $routeResult = $requestContext['routeResult'] ?? null;
         if (isset($routeResult->routeItem->wsConfig->parserClass))
         {
             ConnectionContext::set('dataParser', $routeResult->routeItem->wsConfig->parserClass);
