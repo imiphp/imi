@@ -39,10 +39,10 @@ class MessageHandler implements IMessageHandler
     public function handle(IFrame $frame)
     {
         $middlewares = &$this->middlewares;
-        $index = $this->index;
+        $index = &$this->index;
         if (isset($middlewares[$index]))
         {
-            $middleware = $middlewares[$index];
+            $middleware = $middlewares[$index++];
             if (\is_object($middleware))
             {
                 $requestHandler = $middleware;
@@ -51,33 +51,12 @@ class MessageHandler implements IMessageHandler
             {
                 $requestHandler = RequestContext::getServerBean($middleware);
             }
+
+            return $requestHandler->process($frame, $this);
         }
         else
         {
             return null;
         }
-
-        return $requestHandler->process($frame, $this->next());
-    }
-
-    /**
-     * 获取下一个RequestHandler对象
-     *
-     * @return static
-     */
-    protected function next(): self
-    {
-        $self = clone $this;
-        ++$self->index;
-
-        return $self;
-    }
-
-    /**
-     * 是否是最后一个.
-     */
-    public function isLast(): bool
-    {
-        return !isset($this->middlewares[$this->index]);
     }
 }

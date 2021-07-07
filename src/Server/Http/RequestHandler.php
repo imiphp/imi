@@ -39,37 +39,17 @@ class RequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $middlewares = &$this->middlewares;
-        $index = $this->index;
+        $index = &$this->index;
         if (isset($middlewares[$index]))
         {
             /** @var \Psr\Http\Server\MiddlewareInterface $requestHandler */
-            $requestHandler = RequestContext::getServerBean($middlewares[$index]);
+            $requestHandler = RequestContext::getServerBean($middlewares[$index++]);
 
-            return $requestHandler->process($request, $this->next());
+            return $requestHandler->process($request, $this);
         }
         else
         {
             return RequestContext::get('response');
         }
-    }
-
-    /**
-     * 获取下一个RequestHandler对象
-     *
-     * @return static
-     */
-    protected function next(): self
-    {
-        ++$this->index;
-
-        return $this;
-    }
-
-    /**
-     * 是否是最后一个.
-     */
-    public function isLast(): bool
-    {
-        return !isset($this->middlewares[$this->index]);
     }
 }
