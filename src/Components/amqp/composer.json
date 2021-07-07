@@ -5,7 +5,7 @@
     "description": "支持在 imi 框架中使用 支持 AMQP 协议的消息队列，如：RabbitMQ",
     "require": {
         "imiphp/imi-queue": "^1.2.0",
-        "php-amqplib/php-amqplib": "^2.11.0"
+        "php-amqplib/php-amqplib": "^2.11.0|^3.0.0"
     },
     "require-dev": {
         "yurunsoft/yurun-http": "^4.0.0",
