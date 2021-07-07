@@ -6,7 +6,7 @@ jobs:
   tests:
     runs-on: ubuntu-20.04
     env:
-      SWOOLE_DOCKER_VERSION: 4.6-php7.4
+      SWOOLE_DOCKER_VERSION: 4.6-php8.0
       ENV_SERVICE: swoole-only
     steps:
       - name: Checkout

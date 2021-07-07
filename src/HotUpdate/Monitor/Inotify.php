@@ -24,7 +24,7 @@ class Inotify extends BaseMonitor
     /**
      * inotify_add_watch() mask参数.
      */
-    protected int $mask = \IN_MODIFY | \IN_MOVE | \IN_CREATE | \IN_DELETE;
+    protected int $mask = IN_MODIFY | IN_MOVE | IN_CREATE | IN_DELETE;
 
     /**
      * 更改的文件们.
@@ -130,7 +130,7 @@ class Inotify extends BaseMonitor
                 {
                     $changedFiles[] = $filePath;
                 }
-                if ((Bit::has($item['mask'], \IN_CREATE) || Bit::has($item['mask'], \IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
+                if ((Bit::has($item['mask'], IN_CREATE) || Bit::has($item['mask'], IN_MOVED_TO)) && $filePathIsDir && !$this->isExclude($filePath))
                 {
                     $paths[$filePath] = inotify_add_watch($handler, $filePath, $mask);
                 }

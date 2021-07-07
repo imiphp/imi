@@ -14,21 +14,21 @@ class RedisStorageMode
      *
      * 使用 set/get 存序列化后的对象
      */
-    const STRING = 'string';
+    public const STRING = 'string';
 
     /**
      * hash 模式.
      *
      * 使用 hset/hget 存序列化后的对象
      */
-    const HASH = 'hash';
+    public const HASH = 'hash';
 
     /**
      * hash 对象模式.
      *
      * 使用 hset/hget，将对象存到一个 key 中，member 为字段名
      */
-    const HASH_OBJECT = 'hash_object';
+    public const HASH_OBJECT = 'hash_object';
 
     private function __construct()
     {

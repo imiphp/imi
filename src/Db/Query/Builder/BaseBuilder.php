@@ -15,7 +15,7 @@ abstract class BaseBuilder implements IBuilder
     /**
      * 分隔标识符，解决保留字问题.
      */
-    const DELIMITED_IDENTIFIERS = '`';
+    public const DELIMITED_IDENTIFIERS = '`';
 
     /**
      * IQuery 类.

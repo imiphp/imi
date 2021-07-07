@@ -13,7 +13,7 @@ use Imi\Server\Http\Route\Annotation\Route;
 class TestAnnotationPHP8
 {
     #[EnumItem(text: 'test')]
-    const CONST_VALUE = 1;
+    public const CONST_VALUE = 1;
 
     /**
      * @var \Imi\Log\ErrorLog

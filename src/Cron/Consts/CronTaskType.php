@@ -15,7 +15,7 @@ class CronTaskType extends BaseEnum
     /**
      * @EnumItem("定时任务进程")
      */
-    const CRON_PROCESS = 'cron_process';
+    public const CRON_PROCESS = 'cron_process';
 
     private function __construct()
     {

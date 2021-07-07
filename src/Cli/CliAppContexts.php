@@ -12,7 +12,7 @@ class CliAppContexts
     /**
      * 命令行名称.
      */
-    const COMMAND_NAME = 'command_name';
+    public const COMMAND_NAME = 'command_name';
 
     private function __construct()
     {

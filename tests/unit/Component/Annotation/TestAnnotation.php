@@ -17,7 +17,7 @@ class TestAnnotation
     /**
      * @EnumItem("test")
      */
-    const CONST_VALUE = 1;
+    public const CONST_VALUE = 1;
 
     /**
      * @Inject("ErrorLog")

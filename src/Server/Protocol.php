@@ -6,15 +6,15 @@ namespace Imi\Server;
 
 class Protocol
 {
-    const HTTP = 'http';
+    public const HTTP = 'http';
 
-    const WEBSOCKET = 'websocket';
+    public const WEBSOCKET = 'websocket';
 
-    const TCP = 'tcp';
+    public const TCP = 'tcp';
 
-    const UDP = 'udp';
+    public const UDP = 'udp';
 
-    const LONG_CONNECTION_PROTOCOLS = [
+    public const LONG_CONNECTION_PROTOCOLS = [
         self::WEBSOCKET,
         self::TCP,
     ];

@@ -9,21 +9,21 @@ namespace Imi\Util\Http\Consts;
  */
 class RequestMethod
 {
-    const GET = 'GET';
+    public const GET = 'GET';
 
-    const POST = 'POST';
+    public const POST = 'POST';
 
-    const HEAD = 'HEAD';
+    public const HEAD = 'HEAD';
 
-    const PUT = 'PUT';
+    public const PUT = 'PUT';
 
-    const PATCH = 'PATCH';
+    public const PATCH = 'PATCH';
 
-    const DELETE = 'DELETE';
+    public const DELETE = 'DELETE';
 
-    const OPTIONS = 'OPTIONS';
+    public const OPTIONS = 'OPTIONS';
 
-    const TRACE = 'TRACE';
+    public const TRACE = 'TRACE';
 
     private function __construct()
     {

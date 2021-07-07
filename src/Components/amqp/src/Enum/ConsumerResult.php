@@ -17,29 +17,29 @@ abstract class ConsumerResult extends BaseEnum
      *
      * @EnumItem("确认消息")
      */
-    const ACK = 1;
+    public const ACK = 1;
 
     /**
      * 用于消息消费失败.
      *
      * @EnumItem("否定消息")
      */
-    const NACK = 2;
+    public const NACK = 2;
 
     /**
      * 用于消息消费失败，并重回队列.
      *
      * @EnumItem("否定消息，并重回队列")
      */
-    const NACK_REQUEUE = 3;
+    public const NACK_REQUEUE = 3;
 
     /**
      * @EnumItem("拒绝消息")
      */
-    const REJECT = 4;
+    public const REJECT = 4;
 
     /**
      * @EnumItem("拒绝消息，并重回队列")
      */
-    const REJECT_REQUEUE = 5;
+    public const REJECT_REQUEUE = 5;
 }

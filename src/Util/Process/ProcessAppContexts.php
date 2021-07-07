@@ -12,22 +12,22 @@ class ProcessAppContexts
     /**
      * 进程类型.
      */
-    const PROCESS_TYPE = 'process_type';
+    public const PROCESS_TYPE = 'process_type';
 
     /**
      * 进程名称.
      */
-    const PROCESS_NAME = 'process_name';
+    public const PROCESS_NAME = 'process_name';
 
     /**
      * 主进程pid.
      */
-    const MASTER_PID = 'master_pid';
+    public const MASTER_PID = 'master_pid';
 
     /**
      * 当前进程脚本名称.
      */
-    const SCRIPT_NAME = 'script_name';
+    public const SCRIPT_NAME = 'script_name';
 
     private function __construct()
     {

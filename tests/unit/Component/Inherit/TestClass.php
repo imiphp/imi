@@ -30,12 +30,12 @@ class TestClass extends ParentClass
     /**
      * @Inherit("")
      */
-    const CCC = 1;
+    public const CCC = 1;
 
     /**
      * @Inherit
      */
-    const CCC2 = 1;
+    public const CCC2 = 1;
 
     /**
      * @Inherit({"Imi\Aop\Annotation\FilterArg"})

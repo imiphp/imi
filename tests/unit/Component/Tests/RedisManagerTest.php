@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
  */
 class RedisManagerTest extends BaseTest
 {
-    const CONNECTION_NAME = 'tradition';
+    public const CONNECTION_NAME = 'tradition';
 
     public function testDefaultPoolName(): void
     {

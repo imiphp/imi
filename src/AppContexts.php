@@ -9,7 +9,7 @@ class AppContexts
     /**
      * 应用命名空间根所在路径.
      */
-    const APP_PATH = 'app_path';
+    public const APP_PATH = 'app_path';
 
     private function __construct()
     {

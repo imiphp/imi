@@ -70,7 +70,7 @@ class MQTTClient
     /**
      * 包类型集合.
      */
-    const PACKET_TYPE_MAP = [
+    public const PACKET_TYPE_MAP = [
         Packet::TYPE_CONNACK    => 'connectACK',
         Packet::TYPE_PUBLISH    => 'publish',
         Packet::TYPE_PUBACK     => 'publishAck',

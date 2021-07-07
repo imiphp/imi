@@ -9,12 +9,12 @@ class ResourceConfigMode
     /**
      * 轮流
      */
-    const TURN = 1;
+    public const TURN = 1;
 
     /**
      * 随机.
      */
-    const RANDOM = 2;
+    public const RANDOM = 2;
 
     private function __construct()
     {

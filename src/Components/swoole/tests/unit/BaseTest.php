@@ -8,7 +8,7 @@ use function Yurun\Swoole\Coroutine\goWait;
 
 abstract class BaseTest extends \Imi\Test\BaseTest
 {
-    const PERFORMANCE_COUNT = 1000;
+    public const PERFORMANCE_COUNT = 1000;
 
     protected function go(callable $callable, ?callable $finally = null): void
     {

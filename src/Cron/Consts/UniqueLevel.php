@@ -15,12 +15,12 @@ class UniqueLevel extends BaseEnum
     /**
      * @EnumItem("当前实例唯一")
      */
-    const CURRENT = 'current';
+    public const CURRENT = 'current';
 
     /**
      * @EnumItem("所有实例唯一")
      */
-    const ALL = 'all';
+    public const ALL = 'all';
 
     private function __construct()
     {

@@ -35,7 +35,7 @@ abstract class Base extends BaseServer implements ISwooleServer
     /**
      * Swoole 支持的协议列表.
      */
-    const SWOOLE_PROTOCOLS = [
+    public const SWOOLE_PROTOCOLS = [
         'open_http_protocol',
         'open_websocket_protocol',
         'open_http2_protocol',

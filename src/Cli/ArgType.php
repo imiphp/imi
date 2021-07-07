@@ -9,19 +9,19 @@ namespace Imi\Cli;
  */
 class ArgType
 {
-    const STRING = 'string';
+    public const STRING = 'string';
 
-    const INT = 'int';
+    public const INT = 'int';
 
-    const FLOAT = 'float';
+    public const FLOAT = 'float';
 
-    const DOUBLE = 'float';
+    public const DOUBLE = 'float';
 
-    const BOOL = 'boolean';
+    public const BOOL = 'boolean';
 
-    const BOOLEAN = 'boolean';
+    public const BOOLEAN = 'boolean';
 
-    const ARRAY = 'array';
+    public const ARRAY = 'array';
 
     private function __construct()
     {

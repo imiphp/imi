@@ -6,7 +6,7 @@ namespace Imi\Log;
 
 class LogLevel extends \Psr\Log\LogLevel
 {
-    const ALL = [
+    public const ALL = [
         self::ALERT,
         self::CRITICAL,
         self::DEBUG,

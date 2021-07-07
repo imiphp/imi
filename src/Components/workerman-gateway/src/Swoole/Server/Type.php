@@ -9,12 +9,12 @@ class Type
     /**
      * WebSocket 业务服务器.
      */
-    const BUSINESS_WEBSOCKET = 'SwooleGatewayWebSocketBusinessServer';
+    public const BUSINESS_WEBSOCKET = 'SwooleGatewayWebSocketBusinessServer';
 
     /**
      * TCP 业务服务器.
      */
-    const BUSINESS_TCP = 'SwooleGatewayTcpBusinessServer';
+    public const BUSINESS_TCP = 'SwooleGatewayTcpBusinessServer';
 
     private function __construct()
     {

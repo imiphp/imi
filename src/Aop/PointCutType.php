@@ -12,22 +12,22 @@ class PointCutType
     /**
      * 方法.
      */
-    const METHOD = 1;
+    public const METHOD = 1;
 
     /**
      * 带有注解的方法.
      */
-    const ANNOTATION = 2;
+    public const ANNOTATION = 2;
 
     /**
      * 构造方法.
      */
-    const CONSTRUCT = 3;
+    public const CONSTRUCT = 3;
 
     /**
      * 带有注解的类的构造方法.
      */
-    const ANNOTATION_CONSTRUCT = 4;
+    public const ANNOTATION_CONSTRUCT = 4;
 
     private function __construct()
     {

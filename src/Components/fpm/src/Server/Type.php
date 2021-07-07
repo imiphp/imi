@@ -9,7 +9,7 @@ class Type
     /**
      * HTTP服务器.
      */
-    const HTTP = 'FpmHttpServer';
+    public const HTTP = 'FpmHttpServer';
 
     private function __construct()
     {

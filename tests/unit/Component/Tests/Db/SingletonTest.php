@@ -9,7 +9,7 @@ use Imi\Test\BaseTest;
 
 class SingletonTest extends BaseTest
 {
-    const CONNECTION_NAME = 'tradition';
+    public const CONNECTION_NAME = 'tradition';
 
     public function testGetInstance(): void
     {

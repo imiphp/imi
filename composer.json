@@ -20,7 +20,7 @@
         "yurunsoft/ide-helper": "~1.0",
         "yurunsoft/yurun-http": "^4.0.0",
         "phpunit/phpunit": ">=9",
-        "friendsofphp/php-cs-fixer": "^3.0.0",
+        "friendsofphp/php-cs-fixer": "^2.19.0",
         "phpstan/phpstan": "^0.12.91"
     },
     "autoload": {

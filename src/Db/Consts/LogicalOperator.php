@@ -12,32 +12,32 @@ class LogicalOperator extends BaseEnum
     /**
      * @EnumItem
      */
-    const AND = 'and';
+    public const AND = 'and';
 
     /**
      * @EnumItem
      */
-    const OR = 'or';
+    public const OR = 'or';
 
     /**
      * @EnumItem
      */
-    const XOR = 'xor';
+    public const XOR = 'xor';
 
     /**
      * @EnumItem
      */
-    const AND_NOT = 'and not';
+    public const AND_NOT = 'and not';
 
     /**
      * @EnumItem
      */
-    const OR_NOT = 'or not';
+    public const OR_NOT = 'or not';
 
     /**
      * @EnumItem
      */
-    const XOR_NOT = 'xor not';
+    public const XOR_NOT = 'xor not';
 
     private function __construct()
     {

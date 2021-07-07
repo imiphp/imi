@@ -9,27 +9,27 @@ class Type
     /**
      * 异步服务器，支持TCP、UDP、UnixSocket.
      */
-    const SERVER = 'Server';
+    public const SERVER = 'Server';
 
     /**
      * HTTP服务器.
      */
-    const HTTP = 'HttpServer';
+    public const HTTP = 'HttpServer';
 
     /**
      * WebSocket服务器.
      */
-    const WEBSOCKET = 'WebSocketServer';
+    public const WEBSOCKET = 'WebSocketServer';
 
     /**
      * 异步服务器，支持TCP、UDP、UnixSocket.
      */
-    const TCP_SERVER = 'TcpServer';
+    public const TCP_SERVER = 'TcpServer';
 
     /**
      * 异步服务器，支持TCP、UDP、UnixSocket.
      */
-    const UDP_SERVER = 'UdpServer';
+    public const UDP_SERVER = 'UdpServer';
 
     private function __construct()
     {

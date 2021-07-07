@@ -9,27 +9,27 @@ class Type
     /**
      * HTTP 服务器.
      */
-    const HTTP = 'WorkermanHttpServer';
+    public const HTTP = 'WorkermanHttpServer';
 
     /**
      * WebSocket 服务器.
      */
-    const WEBSOCKET = 'WorkermanWebSocketServer';
+    public const WEBSOCKET = 'WorkermanWebSocketServer';
 
     /**
      * TCP 服务器.
      */
-    const TCP = 'WorkermanTcpServer';
+    public const TCP = 'WorkermanTcpServer';
 
     /**
      * UDP 服务器.
      */
-    const UDP = 'WorkermanUdpServer';
+    public const UDP = 'WorkermanUdpServer';
 
     /**
      * Channel 服务器.
      */
-    const CHANNEL = 'WorkermanChannelServer';
+    public const CHANNEL = 'WorkermanChannelServer';
 
     private function __construct()
     {

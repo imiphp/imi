@@ -37,12 +37,12 @@ class ParentClass
     /**
      * @EnumItem
      */
-    const CCC = 1;
+    public const CCC = 1;
 
     /**
      * @EnumItem
      */
-    const CCC2 = 1;
+    public const CCC2 = 1;
 
     /**
      * @FilterArg

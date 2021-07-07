@@ -15,7 +15,7 @@ class WorkermanServerWorker extends Worker
     {
         parent::__construct($socket_name, $context_option);
 
-        if (\OS_TYPE_LINUX === static::$_OS  // if linux
+        if (OS_TYPE_LINUX === static::$_OS  // if linux
             && version_compare(\PHP_VERSION, '7.0.0', 'ge') // if php >= 7.0.0
             && version_compare(php_uname('r'), '3.9', 'ge') // if kernel >=3.9
             && 'darwin' !== strtolower(php_uname('s')) // if not Mac OS

@@ -22,7 +22,7 @@ class BeforeReceive extends \Imi\Swoole\Server\TcpServer\Listener\BeforeReceive
     /**
      * 包类型集合.
      */
-    const PACKET_TYPE_MAP = [
+    public const PACKET_TYPE_MAP = [
         Packet::TYPE_CONNECT        => 'connect',
         Packet::TYPE_DISCONNECT     => 'disconnect',
         Packet::TYPE_PINGREQ        => 'ping',

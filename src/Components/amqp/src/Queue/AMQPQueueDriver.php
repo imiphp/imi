@@ -25,13 +25,13 @@ class AMQPQueueDriver implements IQueueDriver
         __construct as private traitConstruct;
     }
 
-    const ROUTING_NORMAL = 'normal';
+    public const ROUTING_NORMAL = 'normal';
 
-    const ROUTING_DELAY = 'delay';
+    public const ROUTING_DELAY = 'delay';
 
-    const ROUTING_TIMEOUT = 'timeout';
+    public const ROUTING_TIMEOUT = 'timeout';
 
-    const ROUTING_FAIL = 'fail';
+    public const ROUTING_FAIL = 'fail';
 
     /**
      * AMQP 连接池名称.

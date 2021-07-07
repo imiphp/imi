@@ -9,12 +9,12 @@ class QueryType
     /**
      * 读.
      */
-    const READ = 1;
+    public const READ = 1;
 
     /**
      * 写.
      */
-    const WRITE = 2;
+    public const WRITE = 2;
 
     private function __construct()
     {

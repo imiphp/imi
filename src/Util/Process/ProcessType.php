@@ -12,27 +12,27 @@ class ProcessType
     /**
      * master 进程.
      */
-    const MASTER = 'master';
+    public const MASTER = 'master';
 
     /**
      * manager 进程.
      */
-    const MANAGER = 'manager';
+    public const MANAGER = 'manager';
 
     /**
      * worker 进程.
      */
-    const WORKER = 'worker';
+    public const WORKER = 'worker';
 
     /**
      * task worker 进程.
      */
-    const TASK_WORKER = 'task_worker';
+    public const TASK_WORKER = 'task_worker';
 
     /**
      * 进程.
      */
-    const PROCESS = 'process';
+    public const PROCESS = 'process';
 
     private function __construct()
     {
