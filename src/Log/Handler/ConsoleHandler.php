@@ -8,6 +8,9 @@ use Monolog\Handler\AbstractProcessingHandler;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * {@inheritDoc}
+ */
 class ConsoleHandler extends AbstractProcessingHandler
 {
     protected OutputInterface $output;

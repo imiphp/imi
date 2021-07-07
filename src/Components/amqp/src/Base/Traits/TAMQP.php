@@ -174,6 +174,7 @@ trait TAMQP
         foreach ($this->exchanges as $exchange)
         {
             Log::debug(sprintf('exchangeDeclare: %s, type: %s', $exchange->name, $exchange->type));
+            // @phpstan-ignore-next-line
             $this->channel->exchange_declare($exchange->name, $exchange->type, $exchange->passive, $exchange->durable, $exchange->autoDelete, $exchange->internal, $exchange->nowait, new AMQPTable($exchange->arguments), $exchange->ticket);
         }
         foreach ($this->queues as $queue)

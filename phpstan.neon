@@ -28,7 +28,6 @@ parameters:
         - '#Access to an undefined property Imi\\Util\\ArrayData::\$[^.]+.#'
         - '#Unsafe usage of new static\(\).+#'
         - '#Argument of an invalid type Imi\\Util\\ArrayData supplied for foreach, only iterables are supported.#'
-        - '#Access to static property \S+ on trait.+#'
         - '#Argument of an invalid type ArrayAccess supplied for foreach, only iterables are supported.#'
         - '#Property GPBMetadata\\Grpc::\$\S+ has no typehint specified.#'
         - '#Property Grpc\\[^:]+::\$\S+ has no typehint specified.#'

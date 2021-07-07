@@ -55,6 +55,7 @@ class ServerUtilTest extends BaseTest
                 $http->timeout = 10000;
                 $client = $http->websocket($this->host);
                 $this->assertTrue($client->isConnected());
+                sleep(1);
                 $this->assertTrue($client->send(json_encode([
                     'action'    => 'info',
                 ])));
@@ -108,6 +109,7 @@ class ServerUtilTest extends BaseTest
                     $http->timeout = 10000;
                     $client = $http->websocket($this->host);
                     $this->assertTrue($client->isConnected());
+                    sleep(1);
                     $this->assertTrue($client->send(json_encode([
                         'action'    => 'login',
                         'username'  => 'testSend',
@@ -198,6 +200,7 @@ class ServerUtilTest extends BaseTest
             $http1->timeout = 10000;
             $client1 = $http1->websocket($this->host);
             $this->assertTrue($client1->isConnected());
+            sleep(1);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'login',
                 'username'  => uniqid('', true),
@@ -211,6 +214,7 @@ class ServerUtilTest extends BaseTest
             $http2->timeout = 10000;
             $client2 = $http2->websocket($this->host);
             $this->assertTrue($client2->isConnected());
+            sleep(1);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => uniqid('', true),
@@ -246,6 +250,7 @@ class ServerUtilTest extends BaseTest
         $http1->timeout = 10000;
         $client1 = $http1->websocket($this->host);
         $this->assertTrue($client1->isConnected());
+        sleep(1);
         $this->assertTrue($client1->send(json_encode([
             'action'    => 'info',
         ])));
@@ -258,6 +263,7 @@ class ServerUtilTest extends BaseTest
         $http1->timeout = 10000;
         $client2 = $http2->websocket($this->host);
         $this->assertTrue($client2->isConnected());
+        sleep(1);
         $this->assertTrue($client2->send(json_encode([
             'action'    => 'login',
             'username'  => 'testClose',

@@ -89,18 +89,23 @@ abstract class BaseConsumer implements IConsumer
                         switch ($result)
                         {
                             case ConsumerResult::ACK:
+                                // @phpstan-ignore-next-line
                                 $this->channel->basic_ack($message->getDeliveryTag());
                                 break;
                             case ConsumerResult::NACK:
+                                // @phpstan-ignore-next-line
                                 $this->channel->basic_nack($message->getDeliveryTag());
                                 break;
                             case ConsumerResult::NACK_REQUEUE:
+                                // @phpstan-ignore-next-line
                                 $this->channel->basic_nack($message->getDeliveryTag(), false, true);
                                 break;
                             case ConsumerResult::REJECT:
+                                // @phpstan-ignore-next-line
                                 $this->channel->basic_reject($message->getDeliveryTag(), false);
                                 break;
                             case ConsumerResult::REJECT_REQUEUE:
+                                // @phpstan-ignore-next-line
                                 $this->channel->basic_reject($message->getDeliveryTag(), true);
                                 break;
                         }

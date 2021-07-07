@@ -228,7 +228,7 @@ class File
         }
         finally
         {
-            if ($handler)
+            if (isset($handler) && $handler)
             {
                 closedir($handler);
             }

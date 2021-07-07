@@ -37,7 +37,6 @@ class RedisManagerTest extends BaseTest
         }
         finally
         {
-            // @phpstan-ignore-next-line
             if ($instance)
             {
                 RedisManager::release($instance);

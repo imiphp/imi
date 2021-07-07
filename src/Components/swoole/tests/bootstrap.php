@@ -85,7 +85,10 @@ function startServer(): void
             }
             finally
             {
-                socket_close($sock);
+                if (isset($sock))
+                {
+                    socket_close($sock);
+                }
             }
         }
 
@@ -118,7 +121,10 @@ function startServer(): void
             }
             finally
             {
-                fclose($handle);
+                if (isset($handle))
+                {
+                    fclose($handle);
+                }
             }
         }
 
