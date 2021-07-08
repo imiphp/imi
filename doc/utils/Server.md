@@ -11,7 +11,7 @@
 ```php
 'imi' => [
     'beans' => [
-        'ServerUtil' => XXX::class,
+        'ServerUtil' => '类名或Bean名称',
     ],
 ],
 ```
@@ -31,6 +31,19 @@
 使用 Redis 发布订阅实现的，分布式服务器工具类，支持分布式消息推送。
 
 适用于分布式多实例部署的场景。
+
+支持注入的 beans 参数：
+
+```php
+[
+    'beans' => [
+        'RedisServerUtil' => [
+            'redisName' => null, // 配置的 Redis 连接名称，为 null 则使用默认
+            'channel' => 'imi:RedisServerUtil:channel', // 发布订阅的频道名，不同服务请设为不同的，以防冲突
+        ],
+    ],
+]
+```
 
 #### SwooleGatewayServerUtil
 

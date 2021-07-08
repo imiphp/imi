@@ -22,6 +22,7 @@
 * [错误转为异常捕获](core/handleError.md)
 * [内部进程间通讯](core/processCommunication.md)
 * [Server 对象](core/server.md)
+* [长连接分布式解决方案](core/long-connection-distributed.md)
 
 ## 注解
 

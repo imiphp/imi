@@ -61,17 +61,19 @@ class ServerUtilTest extends BaseTest
                         'action'    => 'info',
                     ])));
                     $recv = $client->recv();
-                    if ($recv)
+                    // @phpstan-ignore-next-line
+                    if ($recv && ($recvData = json_decode($recv, true)) && isset($recvData['clientId']))
                     {
                         break;
                     }
                     sleep(1);
                 }
-                $recvData = json_decode($recv, true);
+                // @phpstan-ignore-next-line
                 if (!isset($recvData['clientId']))
                 {
                     $this->assertTrue(false, $client->getErrorCode() . '-' . $client->getErrorMessage());
                 }
+                // @phpstan-ignore-next-line
                 $channel->push([$index => $recvData['clientId']]);
                 for ($i = 0; $i < $recvCount; ++$i)
                 {
@@ -129,6 +131,7 @@ class ServerUtilTest extends BaseTest
                         }
                         sleep(1);
                     }
+                    // @phpstan-ignore-next-line
                     $recvData = json_decode($recv, true);
                     $this->assertTrue($recvData['success'] ?? null, $client->getErrorCode() . '-' . $client->getErrorMessage());
                     $channel->push('test');
@@ -227,6 +230,7 @@ class ServerUtilTest extends BaseTest
                 }
                 sleep(1);
             }
+            // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
             $this->assertTrue($recvData['success'] ?? null, $client1->getErrorCode() . '-' . $client1->getErrorMessage());
 
@@ -248,6 +252,7 @@ class ServerUtilTest extends BaseTest
                 }
                 sleep(1);
             }
+            // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
             $this->assertTrue($recvData['success'] ?? null, $client2->getErrorCode() . '-' . $client2->getErrorMessage());
 
@@ -284,13 +289,14 @@ class ServerUtilTest extends BaseTest
                 'action'    => 'info',
             ])));
             $recv = $client1->recv();
-            if ($recv)
+            // @phpstan-ignore-next-line
+            if ($recv && ($recvData1 = json_decode($recv, true)) && isset($recvData1['clientId']))
             {
                 break;
             }
             sleep(1);
         }
-        $recvData1 = json_decode($recv, true);
+        // @phpstan-ignore-next-line
         $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
         $http2 = new HttpRequest();
@@ -311,10 +317,12 @@ class ServerUtilTest extends BaseTest
             }
             sleep(1);
         }
+        // @phpstan-ignore-next-line
         $recvData2 = json_decode($recv, true);
         $this->assertTrue($recvData2['success'] ?? null, 'Not found success');
 
         $http3 = new HttpRequest();
+        // @phpstan-ignore-next-line
         $response = $http3->post($this->host . 'serverUtil/close', ['clientId' => $recvData1['clientId'], 'flag' => 'testClose']);
         $this->assertEquals([
             'clientId'   => 1,

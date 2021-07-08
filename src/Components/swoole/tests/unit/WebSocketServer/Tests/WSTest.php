@@ -35,7 +35,9 @@ class WSTest extends BaseTest
                 }
                 sleep(1);
             }
+            // @phpstan-ignore-next-line
             $this->assertNotFalse($recv);
+            // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
             if (!isset($recvData['clientId']))
             {
@@ -132,6 +134,7 @@ class WSTest extends BaseTest
                 }
                 sleep(1);
             }
+            // @phpstan-ignore-next-line
             $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
         });
@@ -158,11 +161,13 @@ class WSTest extends BaseTest
                 }
                 sleep(1);
             }
+            // @phpstan-ignore-next-line
             $this->assertEquals(json_encode('gg'), $recv, $client->getErrorCode() . '-' . $client->getErrorMessage());
             $client->close();
 
             $client = $http->websocket($this->host . 'test');
             $this->assertTrue($client->isConnected());
+            $recv = null;
             for ($_ = 0; $_ < 3; ++$_)
             {
                 $this->assertTrue($client->send(json_encode([
