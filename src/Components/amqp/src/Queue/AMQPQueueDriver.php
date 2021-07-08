@@ -486,7 +486,6 @@ class AMQPQueueDriver implements IQueueDriver
      */
     public function success(IMessage $message)
     {
-        // @phpstan-ignore-next-line
         $this->consumer->getAMQPChannel()->basic_ack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag());
     }
 
@@ -501,7 +500,6 @@ class AMQPQueueDriver implements IQueueDriver
     {
         if ($requeue)
         {
-            // @phpstan-ignore-next-line
             $this->consumer->getAMQPChannel()->basic_nack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag(), false, $requeue);
 
             return;
@@ -511,12 +509,10 @@ class AMQPQueueDriver implements IQueueDriver
             $amqpMessage = $message->getAmqpMessage();
             $amqpMessage->setRoutingKey(self::ROUTING_FAIL);
             $this->failPublisher->publish($amqpMessage);
-            // @phpstan-ignore-next-line
             $this->consumer->getAMQPChannel()->basic_ack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag());
         }
         else
         {
-            // @phpstan-ignore-next-line
             $this->consumer->getAMQPChannel()->basic_nack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag());
         }
     }
@@ -623,7 +619,6 @@ class AMQPQueueDriver implements IQueueDriver
             $amqpMessage->setBody($message->getBody());
             $amqpMessage->setRoutingKey(self::ROUTING_NORMAL);
             $this->publisher->publish($amqpMessage);
-            // @phpstan-ignore-next-line
             $this->failConsumer->getAMQPChannel()->basic_ack($message->getAMQPMessage()->getDeliveryTag());
             ++$count;
         }
@@ -646,7 +641,6 @@ class AMQPQueueDriver implements IQueueDriver
             $amqpMessage->setBody($message->getBody());
             $amqpMessage->setRoutingKey(self::ROUTING_NORMAL);
             $this->publisher->publish($amqpMessage);
-            // @phpstan-ignore-next-line
             $this->timeoutConsumer->getAMQPChannel()->basic_ack($message->getAMQPMessage()->getDeliveryTag());
             ++$count;
         }

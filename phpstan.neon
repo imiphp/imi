@@ -22,6 +22,7 @@ parameters:
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
