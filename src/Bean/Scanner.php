@@ -114,7 +114,7 @@ class Scanner
         $time = microtime(true);
         $namespace = App::getNamespace();
         Helper::getMain($namespace, 'app');
-        Annotation::getInstance()->initByNamespace($namespace);
+        Annotation::getInstance()->initByNamespace($namespace, true);
         Event::trigger('IMI.SCAN_APP');
         if ($statistics)
         {

@@ -57,11 +57,11 @@ class Annotation
      *
      * @param string|string[] $namespaces
      */
-    public function initByNamespace($namespaces): void
+    public function initByNamespace($namespaces, bool $isApp = false): void
     {
         foreach ((array) $namespaces as $namespace)
         {
-            $this->loadModuleAnnotations($namespace);
+            $this->loadModuleAnnotations($namespace, $isApp);
         }
     }
 
@@ -84,7 +84,7 @@ class Annotation
     /**
      * 加载模块注解.
      */
-    private function loadModuleAnnotations(string $namespace): void
+    private function loadModuleAnnotations(string $namespace, bool $isApp = false): void
     {
         // 默认过滤的命名空间
         $ignoredNamespaces = Config::get('app.overrideDefaultIgnoreNamespace', false) ? [] : [
@@ -96,12 +96,17 @@ class Annotation
         {
             foreach (Imi::getNamespacePaths($namespace) as $path)
             {
+                $ignoredPaths[] = File::path($path, '.git');
                 $ignoredPaths[] = File::path($path, 'config');
                 $ignoredPaths[] = File::path($path, 'vendor');
             }
         }
         foreach (Config::getAliases() as $alias)
         {
+            if ('@app' === $alias && !$isApp)
+            {
+                continue;
+            }
             $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
             $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.ignorePaths', []));
         }
@@ -110,7 +115,7 @@ class Annotation
         }, $ignoredPaths);
         if ($ignoredPaths)
         {
-            $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . '))).*\.php$/';
+            $pathPattern = '/^(?!((' . implode(')|(', $ignoredPaths) . ')))/';
         }
         else
         {

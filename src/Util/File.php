@@ -72,7 +72,7 @@ class File
      *
      * @return \Generator
      */
-    public static function enumFile(string $dirPath)
+    public static function enumFile(string $dirPath, ?string $pattern = null, array $extensionNames = [])
     {
         if (!is_dir($dirPath))
         {
@@ -84,11 +84,18 @@ class File
             if ('.' !== $file && '..' !== $file)
             {
                 $item = new FileEnumItem($dirPath, $file);
-                yield $item;
                 $fullPath = $item->getFullPath();
+                if (null !== $pattern && !preg_match($pattern, $fullPath))
+                {
+                    continue;
+                }
+                if (!$extensionNames || \in_array(pathinfo($fullPath, \PATHINFO_EXTENSION), $extensionNames))
+                {
+                    yield $item;
+                }
                 if (is_dir($fullPath) && $item->getContinue())
                 {
-                    foreach (static::enumFile($fullPath) as $fileItem)
+                    foreach (static::enumFile($fullPath, $pattern, $extensionNames) as $fileItem)
                     {
                         yield $fileItem;
                     }

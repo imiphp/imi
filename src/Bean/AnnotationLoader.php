@@ -71,10 +71,10 @@ class AnnotationLoader
         foreach ($namespacePaths as $path)
         {
             $pathLength = \strlen($path);
-            foreach (File::enumPHPFile($path, $pattern) as $filePath)
+            foreach (File::enumFile($path, $pattern, ['php']) as $filePath)
             {
-                $filePath = $filePath[0];
-                $diffPath = substr($filePath, $pathLength);
+                $path = $filePath->getFullPath();
+                $diffPath = substr($path, $pathLength);
                 if (isset($diffPath[0]) && \DIRECTORY_SEPARATOR === $diffPath[0])
                 {
                     $diffPath = substr($diffPath, 1);
@@ -88,7 +88,7 @@ class AnnotationLoader
                 {
                     $diffPath .= \DIRECTORY_SEPARATOR;
                 }
-                $fileNamespace = $namespace . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . basename($filePath, '.php'));
+                $fileNamespace = $namespace . '\\' . str_replace(\DIRECTORY_SEPARATOR, '\\', $diffPath . basename($path, '.php'));
                 // 回调
                 $callback($fileNamespace);
             }
