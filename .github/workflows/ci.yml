@@ -22,9 +22,6 @@ jobs:
         with:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.swoole }}-
-            ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
@@ -62,9 +59,6 @@ jobs:
         with:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ matrix.swoole }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ matrix.swoole }}-
-            ${{ runner.os }}-composer-
       - name: Prepare
         run: |
           docker-compose -f ./.github/docker-compose.yml up -d swoole
@@ -102,9 +96,6 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ env.php-versions }}-
-            ${{ runner.os }}-composer-
       - name: install db
         run: |
           brew install mysql redis
@@ -158,9 +149,6 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ env.php-versions }}-
-            ${{ runner.os }}-composer-
 
       - name: prepare
         run: |

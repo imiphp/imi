@@ -17,16 +17,12 @@ jobs:
         with:
           path: /tmp/composer
           key: ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-
-            ${{ runner.os }}-composer-
 
       - name: Cache analyse
         uses: actions/cache@v2
         with:
           path: /tmp/phpstan
           key: phpstan-analyse
-          restore-keys: phpstan-analyse
 
       - name: Cache docker
         uses: satackey/action-docker-layer-caching@v0.0.11
@@ -34,8 +30,6 @@ jobs:
         continue-on-error: true
         with:
           key: foo-docker-cache-${{ hashFiles('**/.github/docker-compose.yml', '**/.github/swoole.dockerfile', '**/.github/workflows/phpstan.yml') }}
-          restore-keys: |
-            foo-docker-cache-
 
       - name: Prepare
         run: |
