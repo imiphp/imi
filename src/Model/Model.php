@@ -512,6 +512,24 @@ abstract class Model extends BaseModel
     }
 
     /**
+     * 为一个列表查询指定关联.
+     *
+     * @param array  $list
+     * @param string ...$names
+     *
+     * @return array
+     */
+    public static function queryRelationsList(array $list, string ...$names): array
+    {
+        foreach ($list as $row)
+        {
+            $row->queryRelations(...$names);
+        }
+
+        return $list;
+    }
+
+    /**
      * 初始化关联属性.
      *
      * @param string ...$names
