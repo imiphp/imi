@@ -33,7 +33,7 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
         with:
-          key: foo-docker-cache-${{ hashFiles('**/.github/docker-compose.yml') }}${{ hashFiles('**/.github/swoole.dockerfile') }}${{ hashFiles('**/.github/workflows/phpstan.yml') }}
+          key: foo-docker-cache-${{ hashFiles('**/.github/docker-compose.yml', '**/.github/swoole.dockerfile', '**/.github/workflows/phpstan.yml') }}
           restore-keys: |
             foo-docker-cache-
 

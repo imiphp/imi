@@ -97,8 +97,6 @@ class Query implements IQuery
 
     /**
      * 别名 Sql 数据集合.
-     *
-     * @var array
      */
     protected static array $aliasSqlMap = [];
 
