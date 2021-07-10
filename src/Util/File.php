@@ -54,7 +54,7 @@ class File
      *
      * @return \RegexIterator|\ArrayIterator
      */
-    public static function enumPHPFile(string $dirPath)
+    public static function enumPHPFile(string $dirPath, string $pattern = '/^.+\.php$/i')
     {
         if (!is_dir($dirPath))
         {
@@ -62,7 +62,7 @@ class File
         }
         $directory = new \RecursiveDirectoryIterator($dirPath);
         $iterator = new \RecursiveIteratorIterator($directory);
-        $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+        $regex = new \RegexIterator($iterator, $pattern, \RecursiveRegexIterator::GET_MATCH);
 
         return $regex;
     }

@@ -81,6 +81,10 @@ return [
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
     ],
+    // 忽略扫描的目录
+    'ignorePaths' => [
+        '绝对路径',
+    ],
     // Swoole >= 4.1.0可用，不设置默认为true，开启一键协程化
     'enableCoroutine'    =>    true,
     // runtime目录设置，默认可不设置，为当前项目下的.runtime目录
@@ -143,6 +147,10 @@ return [
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
     ],
+    // 忽略扫描的目录
+    'ignorePaths' => [
+        '绝对路径',
+    ],
     // runtime目录设置，默认可不设置，为当前项目下的.runtime目录
     // 注意，多个项目不可设置为相同目录！
     'runtimePath'   =>  '/tmp/imidemo-runtime/',
@@ -179,6 +187,10 @@ return [
         'ImiApp\public\*', // 忽略 public 目录
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
+    ],
+    // 忽略扫描的目录
+    'ignorePaths' => [
+        '绝对路径',
     ],
     'fpm' => [
         'serverPath' => '如果兼容 Swoole、Workerman 服务器子目录，则设置一下该目录路径',

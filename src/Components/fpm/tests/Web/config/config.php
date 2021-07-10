@@ -26,10 +26,13 @@ return [
     ],
 
     'ignoreNamespace'   => [
-        'Imi\Fpm\Test\Web\public\*',
         'Imi\Swoole\*',
         'Imi\Workerman\*',
         'Imi\Cron\*',
+    ],
+
+    'ignorePaths'   => [
+        dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'public',
     ],
 
     // 日志配置

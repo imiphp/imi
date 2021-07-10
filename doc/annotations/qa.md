@@ -13,6 +13,10 @@ return [
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
     ],
+    // 忽略扫描的目录
+    'ignorePaths' => [
+        '绝对路径',
+    ],
 ]
 ```
 

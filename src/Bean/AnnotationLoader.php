@@ -18,7 +18,7 @@ class AnnotationLoader
     /**
      * 加载模块注解.
      */
-    public function loadModuleAnnotations(string $namespace, callable $callback): void
+    public function loadModuleAnnotations(string $namespace, callable $callback, string $pattern): void
     {
         $loaded = &$this->loaded;
         // 避免重复加载
@@ -65,13 +65,13 @@ class AnnotationLoader
         {
             foreach ($beanScan as $namespace)
             {
-                $this->loadModuleAnnotations($namespace, $callback);
+                $this->loadModuleAnnotations($namespace, $callback, $pattern);
             }
         }
         foreach ($namespacePaths as $path)
         {
             $pathLength = \strlen($path);
-            foreach (File::enumPHPFile($path) as $filePath)
+            foreach (File::enumPHPFile($path, $pattern) as $filePath)
             {
                 $filePath = $filePath[0];
                 $diffPath = substr($filePath, $pathLength);

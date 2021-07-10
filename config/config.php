@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+$imiPath = dirname(__DIR__) . \DIRECTORY_SEPARATOR . 'src' . \DIRECTORY_SEPARATOR;
+
 return [
     'beanScan' => [
         'Imi\Config',
@@ -27,8 +29,10 @@ return [
         'Imi\Process',
     ],
     'ignoreNamespace'   => [
-        'Imi\functions',
-        'Imi\Cli\bootstrap',
         'Imi\Components\*',
+    ],
+    'ignorePaths'   => [
+        $imiPath . 'functions',
+        $imiPath . 'Cli' . \DIRECTORY_SEPARATOR . 'bootstrap',
     ],
 ];
