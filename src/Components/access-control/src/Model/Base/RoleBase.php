@@ -13,8 +13,8 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name="ac_role", id={"id"})
- * @DDL("CREATE TABLE `ac_role` (
-) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * @DDL("CREATE TABLE `ac_role` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `code` varchar(32) NOT NULL COMMENT '角色代码',   `name` varchar(32) NOT NULL COMMENT '角色名称',   `description` text NOT NULL COMMENT '角色介绍',   PRIMARY KEY (`id`),   UNIQUE KEY `code` (`code`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ *
  * @property int    $id
  * @property string $code        角色代码
  * @property string $name        角色名称
@@ -84,6 +84,10 @@ abstract class RoleBase extends Model
      */
     public function setCode($code)
     {
+        if (\is_string($code) && mb_strlen($code) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $code is 32');
+        }
         $this->code = $code;
 
         return $this;
@@ -118,6 +122,10 @@ abstract class RoleBase extends Model
      */
     public function setName($name)
     {
+        if (\is_string($name) && mb_strlen($name) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $name is 32');
+        }
         $this->name = $name;
 
         return $this;
@@ -152,6 +160,10 @@ abstract class RoleBase extends Model
      */
     public function setDescription($description)
     {
+        if (\is_string($description) && mb_strlen($description) > 65535)
+        {
+            throw new \InvalidArgumentException('The maximum length of $description is 65535');
+        }
         $this->description = $description;
 
         return $this;

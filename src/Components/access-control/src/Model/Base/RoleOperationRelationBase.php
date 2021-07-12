@@ -13,8 +13,8 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name="ac_role_operation_relation", id={"role_id", "operation_id"})
- * @DDL("CREATE TABLE `ac_role_operation_relation` (
-) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * @DDL("CREATE TABLE `ac_role_operation_relation` (   `role_id` int(10) unsigned NOT NULL COMMENT '角色ID',   `operation_id` int(10) unsigned NOT NULL COMMENT '操作ID',   PRIMARY KEY (`role_id`,`operation_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ *
  * @property int $roleId      角色ID
  * @property int $operationId 操作ID
  */
