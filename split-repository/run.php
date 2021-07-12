@@ -32,7 +32,7 @@ function getCommitsFromLast(?string $lastCommit): array
 {
     $commits = [];
     $result = null;
-    execCMD('git show --stat', '', $result);
+    execCMD('git show --stat=99999', '', $result);
     $commits[] = $lastHash = substr($result[0], 7, 40);
     if (null === $lastCommit)
     {
@@ -254,7 +254,7 @@ foreach ($storeRepoMap as $name => $urls)
         $date = $result[0];
         execCMD('git show ' . $commit . ' -s --format=%s', '', $result);
         $message = $result[0];
-        execCMD('git --no-pager show ' . $commit . ' --stat', '提交记录', $result);
+        execCMD('git --no-pager show ' . $commit . ' --stat=99999', '提交记录', $result);
 
         $needCommit = false;
         foreach ($result as $row)
