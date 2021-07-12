@@ -15,14 +15,14 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name="ac_operation", id={"id"})
- * @DDL("CREATE TABLE `ac_operation` (
-) ENGINE=InnoDB DEFAULT CHARSET=utf8")
- * @property int    $id
- * @property int    $parentId    父级ID，顶级为0
- * @property int    $index       排序，越小越靠前
- * @property string $code        操作代码
- * @property string $name        操作名称
- * @property string $description 操作介绍
+ * @DDL("CREATE TABLE `ac_operation` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID，顶级为0',   `index` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序，越小越靠前',   `code` varchar(32) NOT NULL COMMENT '操作代码',   `name` varchar(32) NOT NULL COMMENT '操作名称',   `description` text NOT NULL COMMENT '操作介绍',   PRIMARY KEY (`id`),   UNIQUE KEY `code` (`code`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ *
+ * @property int|null    $id
+ * @property int|null    $parentId    父级ID，顶级为0
+ * @property int|null    $index       排序，越小越靠前
+ * @property string|null $code        操作代码
+ * @property string|null $name        操作名称
+ * @property string|null $description 操作介绍
  */
 abstract class OperationBase extends Model
 {
@@ -30,17 +30,13 @@ abstract class OperationBase extends Model
      * id.
      *
      * @Column(name="id", type="int", length=10, accuracy=0, nullable=false, default="", isPrimaryKey=true, primaryKeyIndex=0, isAutoIncrement=true)
-     *
-     * @var int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * 获取 id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -48,11 +44,11 @@ abstract class OperationBase extends Model
     /**
      * 赋值 id.
      *
-     * @param int $id id
+     * @param int|null $id id
      *
      * @return static
      */
-    public function setId($id)
+    public function setId(?int $id)
     {
         $this->id = $id;
 
@@ -64,17 +60,13 @@ abstract class OperationBase extends Model
      * parent_id.
      *
      * @Column(name="parent_id", type="int", length=10, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var int
      */
-    protected $parentId;
+    protected ?int $parentId = null;
 
     /**
      * 获取 parentId - 父级ID，顶级为0.
-     *
-     * @return int
      */
-    public function getParentId()
+    public function getParentId(): ?int
     {
         return $this->parentId;
     }
@@ -82,11 +74,11 @@ abstract class OperationBase extends Model
     /**
      * 赋值 parentId - 父级ID，顶级为0.
      *
-     * @param int $parentId parent_id
+     * @param int|null $parentId parent_id
      *
      * @return static
      */
-    public function setParentId($parentId)
+    public function setParentId(?int $parentId)
     {
         $this->parentId = $parentId;
 
@@ -98,17 +90,13 @@ abstract class OperationBase extends Model
      * index.
      *
      * @Column(name="index", type="tinyint", length=3, accuracy=0, nullable=false, default="0", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var int
      */
-    protected $index;
+    protected ?int $index = null;
 
     /**
      * 获取 index - 排序，越小越靠前.
-     *
-     * @return int
      */
-    public function getIndex()
+    public function getIndex(): ?int
     {
         return $this->index;
     }
@@ -116,11 +104,11 @@ abstract class OperationBase extends Model
     /**
      * 赋值 index - 排序，越小越靠前.
      *
-     * @param int $index index
+     * @param int|null $index index
      *
      * @return static
      */
-    public function setIndex($index)
+    public function setIndex(?int $index)
     {
         $this->index = $index;
 
@@ -132,17 +120,13 @@ abstract class OperationBase extends Model
      * code.
      *
      * @Column(name="code", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string
      */
-    protected $code;
+    protected ?string $code = null;
 
     /**
      * 获取 code - 操作代码
-     *
-     * @return string
      */
-    public function getCode()
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -150,12 +134,16 @@ abstract class OperationBase extends Model
     /**
      * 赋值 code - 操作代码
      *
-     * @param string $code code
+     * @param string|null $code code
      *
      * @return static
      */
-    public function setCode($code)
+    public function setCode(?string $code)
     {
+        if (\is_string($code) && mb_strlen($code) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $code is 32');
+        }
         $this->code = $code;
 
         return $this;
@@ -166,17 +154,13 @@ abstract class OperationBase extends Model
      * name.
      *
      * @Column(name="name", type="varchar", length=32, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string
      */
-    protected $name;
+    protected ?string $name = null;
 
     /**
      * 获取 name - 操作名称.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -184,12 +168,16 @@ abstract class OperationBase extends Model
     /**
      * 赋值 name - 操作名称.
      *
-     * @param string $name name
+     * @param string|null $name name
      *
      * @return static
      */
-    public function setName($name)
+    public function setName(?string $name)
     {
+        if (\is_string($name) && mb_strlen($name) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $name is 32');
+        }
         $this->name = $name;
 
         return $this;
@@ -200,17 +188,13 @@ abstract class OperationBase extends Model
      * description.
      *
      * @Column(name="description", type="text", length=0, accuracy=0, nullable=false, default="", isPrimaryKey=false, primaryKeyIndex=-1, isAutoIncrement=false)
-     *
-     * @var string
      */
-    protected $description;
+    protected ?string $description = null;
 
     /**
      * 获取 description - 操作介绍.
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -218,12 +202,16 @@ abstract class OperationBase extends Model
     /**
      * 赋值 description - 操作介绍.
      *
-     * @param string $description description
+     * @param string|null $description description
      *
      * @return static
      */
-    public function setDescription($description)
+    public function setDescription(?string $description)
     {
+        if (\is_string($description) && mb_strlen($description) > 65535)
+        {
+            throw new \InvalidArgumentException('The maximum length of $description is 65535');
+        }
         $this->description = $description;
 
         return $this;

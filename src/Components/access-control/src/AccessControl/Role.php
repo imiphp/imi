@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\AC\AccessControl;
 
+use Imi\AC\Service\OperationService;
+use Imi\AC\Service\RoleService;
 use Imi\App;
 use Imi\Bean\Traits\TAutoInject;
 
@@ -13,54 +15,39 @@ class Role
 
     /**
      * 角色代码
-     *
-     * @var int
      */
-    private $roleCode;
+    private int $roleCode;
 
     /**
      * 角色记录.
-     *
-     * @var \Imi\AC\Model\Role|null
      */
-    private $roleInfo;
+    private ?\Imi\AC\Model\Role $roleInfo;
 
     /**
      * 支持的所有操作权限.
      *
      * @var \Imi\AC\Model\Operation[]
      */
-    private $operations;
+    private array $operations;
 
     /**
      * 角色服务层名称.
-     *
-     * @var string
      */
-    protected $roleServiceBean = 'ACRoleService';
+    protected string $roleServiceBean = 'ACRoleService';
 
     /**
      * 操作权限服务层名称.
-     *
-     * @var string
      */
-    protected $operationServiceBean = 'ACOperationService';
+    protected string $operationServiceBean = 'ACOperationService';
+
+    protected RoleService $roleService;
+
+    protected OperationService $operationService;
 
     /**
-     * @var \Imi\AC\Service\RoleService
+     * @param mixed $pk
      */
-    protected $roleService;
-
-    /**
-     * @var \Imi\AC\Service\OperationService
-     */
-    protected $operationService;
-
-    /**
-     * @param mixed  $pk
-     * @param string $pkType
-     */
-    public function __construct($pk, $pkType = 'id')
+    public function __construct($pk, string $pkType = 'id')
     {
         $this->__autoInject();
         $this->roleService = App::getBean($this->roleServiceBean);
@@ -87,10 +74,8 @@ class Role
 
     /**
      * 处理操作的本地数据更新.
-     *
-     * @return void
      */
-    private function updateOperations()
+    private function updateOperations(): void
     {
         $operations = $this->roleService->getOperations($this->roleInfo->id);
         $this->operations = [];
@@ -102,10 +87,8 @@ class Role
 
     /**
      * 获取角色记录.
-     *
-     * @return \Imi\AC\Model\Role
      */
-    public function getRoleInfo()
+    public function getRoleInfo(): \Imi\AC\Model\Role
     {
         return $this->roleInfo;
     }
@@ -113,13 +96,9 @@ class Role
     /**
      * 创建角色.
      *
-     * @param string $name
-     * @param string $code
-     * @param string $description
-     *
      * @return static|false
      */
-    public static function create($name, $code = null, $description = '')
+    public static function create(string $name, ?string $code = null, string $description = '')
     {
         $record = App::getBean('ACRoleService')->create($name, $code, $description);
         if ($record)
@@ -137,7 +116,7 @@ class Role
      *
      * @return \Imi\AC\Model\Operation[]
      */
-    public function getOperations()
+    public function getOperations(): array
     {
         return array_values($this->operations);
     }
@@ -147,7 +126,7 @@ class Role
      *
      * @return \Imi\AC\Model\Filter\OperationTreeItem[]
      */
-    public function getOperationTree()
+    public function getOperationTree(): array
     {
         return $this->operationService->listToTree($this->operations);
     }
@@ -158,10 +137,8 @@ class Role
      * 传入操作代码
      *
      * @param string ...$operations
-     *
-     * @return void
      */
-    public function addOperations(...$operations)
+    public function addOperations(string ...$operations): void
     {
         $this->roleService->addOperations($this->roleInfo->id, ...$operations);
         $this->updateOperations();
@@ -175,10 +152,8 @@ class Role
      * 调用后，只拥有本次传入的操作权限
      *
      * @param string ...$operations
-     *
-     * @return void
      */
-    public function setOperations(...$operations)
+    public function setOperations(string ...$operations): void
     {
         $this->roleService->setOperations($this->roleInfo->id, ...$operations);
         $this->updateOperations();
@@ -190,10 +165,8 @@ class Role
      * 传入操作代码
      *
      * @param string ...$operations
-     *
-     * @return void
      */
-    public function removeOperations(...$operations)
+    public function removeOperations(string ...$operations): void
     {
         $this->roleService->removeOperations($this->roleInfo->id, ...$operations);
         $this->updateOperations();
@@ -203,10 +176,8 @@ class Role
      * 根据操作代码判断，是否拥有一个或多个操作权限.
      *
      * @param string ...$operations
-     *
-     * @return bool
      */
-    public function hasOperations(...$operations)
+    public function hasOperations(string ...$operations): bool
     {
         foreach ($operations as $code)
         {

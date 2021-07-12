@@ -10,16 +10,8 @@ abstract class Operation
 {
     /**
      * 创建操作权限.
-     *
-     * @param string      $name
-     * @param string|null $code
-     * @param int         $parentId
-     * @param int         $index
-     * @param string      $description
-     *
-     * @return \Imi\AC\Model\Operation
      */
-    public static function create($name, $code = null, $parentId = 0, $index = 0, $description = '')
+    public static function create(string $name, ?string $code = null, int $parentId = 0, int $index = 0, string $description = ''): \Imi\AC\Model\Operation
     {
         return App::getBean('ACOperationService')->create($name, $code, $parentId, $index, $description);
     }

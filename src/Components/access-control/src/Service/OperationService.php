@@ -16,19 +16,13 @@ class OperationService
 {
     /**
      * 操作权限模型.
-     *
-     * @var string
      */
-    protected $operationModel = Operation::class;
+    protected string $operationModel = Operation::class;
 
     /**
      * 获取操作.
-     *
-     * @param int $id
-     *
-     * @return \Imi\AC\Model\Operation|null
      */
-    public function get($id)
+    public function get(int $id): ?Operation
     {
         return $this->operationModel::find($id);
     }
@@ -36,15 +30,9 @@ class OperationService
     /**
      * 创建操作权限.
      *
-     * @param string      $name
-     * @param string|null $code
-     * @param int         $parentId
-     * @param int         $index
-     * @param string      $description
-     *
      * @return \Imi\AC\Model\Operation|false
      */
-    public function create($name, $code = null, $parentId = 0, $index = 0, $description = '')
+    public function create(string $name, ?string $code = null, int $parentId = 0, int $index = 0, string $description = '')
     {
         $record = $this->operationModel::newInstance();
         $record->name = $name;
@@ -63,17 +51,8 @@ class OperationService
 
     /**
      * 更新操作权限.
-     *
-     * @param int         $id
-     * @param string      $name
-     * @param string|null $code
-     * @param int         $parentId
-     * @param int         $index
-     * @param string      $description
-     *
-     * @return bool
      */
-    public function update($id, $name, $code, $parentId = 0, $index = 0, $description = '')
+    public function update(int $id, string $name, ?string $code, int $parentId = 0, int $index = 0, string $description = ''): bool
     {
         $record = $this->get($id);
         if (!$record)
@@ -91,12 +70,8 @@ class OperationService
 
     /**
      * 删除操作.
-     *
-     * @param int $id
-     *
-     * @return bool
      */
-    public function delete($id)
+    public function delete(int $id): bool
     {
         $record = $this->get($id);
         if (!$record)
@@ -109,12 +84,8 @@ class OperationService
 
     /**
      * 根据代码获取角色.
-     *
-     * @param string $code
-     *
-     * @return \Imi\AC\Model\Operation|null
      */
-    public function getByCode($code)
+    public function getByCode(string $code): ?Operation
     {
         return $this->operationModel::query()->where('code', '=', $code)->select()->get();
     }
@@ -122,11 +93,9 @@ class OperationService
     /**
      * 根据多个角色获取操作ID.
      *
-     * @param array $codes
-     *
      * @return int[]
      */
-    public function selectIdsByCodes($codes)
+    public function selectIdsByCodes(array $codes): array
     {
         if (!$codes)
         {
@@ -139,11 +108,9 @@ class OperationService
     /**
      * 根据id列表查询记录.
      *
-     * @param int $ids
-     *
      * @return \Imi\AC\Model\Operation[]
      */
-    public function selectListByIds($ids)
+    public function selectListByIds(array $ids): array
     {
         if (!$ids)
         {
@@ -161,7 +128,7 @@ class OperationService
      *
      * @return \Imi\AC\Model\Operation[]
      */
-    public function selectList()
+    public function selectList(): array
     {
         return $this->operationModel::select();
     }
@@ -173,7 +140,7 @@ class OperationService
      *
      * @return \Imi\AC\Model\Filter\OperationTreeItem[]
      */
-    public function listToTree($list)
+    public function listToTree(array $list): array
     {
         $tree = [];
 

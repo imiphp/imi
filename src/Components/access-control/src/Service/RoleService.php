@@ -19,29 +19,23 @@ class RoleService
 {
     /**
      * 角色权限关联模型.
-     *
-     * @var string
      */
-    protected $roleOperationRelationModel = RoleOperationRelation::class;
+    protected string $roleOperationRelationModel = RoleOperationRelation::class;
 
     /**
      * 角色模型.
-     *
-     * @var string
      */
-    protected $roleModel = Role::class;
+    protected string $roleModel = Role::class;
 
     /**
      * 操作权限服务层名称.
-     *
-     * @var string
      */
-    protected $operationServiceBean = 'ACOperationService';
+    protected string $operationServiceBean = 'ACOperationService';
 
     /**
      * @var \Imi\AC\Service\OperationService
      */
-    protected $operationService;
+    protected OperationService $operationService;
 
     public function __init(): void
     {
@@ -50,24 +44,16 @@ class RoleService
 
     /**
      * 获取角色.
-     *
-     * @param int $id
-     *
-     * @return \Imi\AC\Model\Role|null
      */
-    public function get($id)
+    public function get(int $id): ?Role
     {
         return $this->roleModel::find($id);
     }
 
     /**
      * 根据代码获取角色.
-     *
-     * @param string $code
-     *
-     * @return \Imi\AC\Model\Role|null
      */
-    public function getByCode($code)
+    public function getByCode(string $code): ?Role
     {
         return $this->roleModel::query()->where('code', '=', $code)->select()->get();
     }
@@ -75,11 +61,9 @@ class RoleService
     /**
      * 根据id列表查询记录.
      *
-     * @param int $ids
-     *
      * @return \Imi\AC\Model\Role[]
      */
-    public function selectListByIds($ids)
+    public function selectListByIds(array $ids): array
     {
         if (!$ids)
         {
@@ -94,11 +78,9 @@ class RoleService
     /**
      * 根据多个角色获取操作ID.
      *
-     * @param array $codes
-     *
      * @return int[]
      */
-    public function selectIdsByCodes($codes)
+    public function selectIdsByCodes(array $codes): array
     {
         if (!$codes)
         {
@@ -113,7 +95,7 @@ class RoleService
      *
      * @return \Imi\AC\Model\Role[]
      */
-    public function selectList()
+    public function selectList(): array
     {
         return $this->roleModel::select();
     }
@@ -121,13 +103,9 @@ class RoleService
     /**
      * 创建角色.
      *
-     * @param string      $name
-     * @param string|null $code
-     * @param string      $description
-     *
      * @return \Imi\AC\Model\Role|false
      */
-    public function create($name, $code = null, $description = '')
+    public function create(string $name, ?string $code = null, string $description = '')
     {
         $record = $this->roleModel::newInstance();
         $record->name = $name;
@@ -144,15 +122,8 @@ class RoleService
 
     /**
      * 更新角色.
-     *
-     * @param int         $id
-     * @param string      $name
-     * @param string|null $code
-     * @param string      $description
-     *
-     * @return bool
      */
-    public function update($id, $name, $code, $description = '')
+    public function update(int $id, string $name, ?string $code, string $description = ''): bool
     {
         $record = $this->get($id);
         if (!$record)
@@ -168,12 +139,8 @@ class RoleService
 
     /**
      * 删除角色.
-     *
-     * @param int $id
-     *
-     * @return bool
      */
-    public function delete($id)
+    public function delete(int $id): bool
     {
         $record = $this->get($id);
         if (!$record)
@@ -191,12 +158,9 @@ class RoleService
      *
      * @Transaction
      *
-     * @param int    $roleId
      * @param string ...$operations
-     *
-     * @return void
      */
-    public function addOperations($roleId, ...$operations)
+    public function addOperations(int $roleId, string ...$operations): void
     {
         foreach ($operations as $operationCode)
         {
@@ -221,12 +185,9 @@ class RoleService
      *
      * @Transaction
      *
-     * @param int    $roleId
      * @param string ...$operations
-     *
-     * @return void
      */
-    public function setOperations($roleId, ...$operations)
+    public function setOperations(int $roleId, string ...$operations): void
     {
         $this->roleOperationRelationModel::query()->where('role_id', '=', $roleId)->delete();
         $this->addOperations($roleId, ...$operations);
@@ -235,11 +196,9 @@ class RoleService
     /**
      * 获取支持的所有操作权限.
      *
-     * @param int $roleId
-     *
      * @return \Imi\AC\Model\Operation[]
      */
-    public function getOperations($roleId)
+    public function getOperations(int $roleId): array
     {
         $operationIds = $this->roleOperationRelationModel::query()->where('role_id', '=', $roleId)
                                                       ->field('operation_id')
@@ -254,12 +213,9 @@ class RoleService
      *
      * 传入操作代码
      *
-     * @param int    $roleId
      * @param string ...$operations
-     *
-     * @return void
      */
-    public function removeOperations($roleId, ...$operations)
+    public function removeOperations(int $roleId, string ...$operations): void
     {
         $operationIds = $this->operationService->selectIdsByCodes($operations);
         if (!$operationIds)

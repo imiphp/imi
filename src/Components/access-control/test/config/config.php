@@ -31,39 +31,19 @@ return [
     'pools'    => [
         // 数据库连接池名：maindb
         'maindb'    => [
-            // 同步池子，task进程使用
-            'sync'    => [
-                'pool'    => [
-                    'class'        => \Imi\Db\Pool\SyncDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'dbClass'     => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'username'    => 'root',
-                    'password'    => 'root',
-                    'database'    => 'db_imi_access_control',
+            'pool'    => [
+                'class'        => \Imi\Db\Pool\SyncDbPool::class,
+                'config'       => [
+                    'maxResources'    => 10,
+                    'minResources'    => 0,
                 ],
             ],
-            // 异步池子，worker进程使用
-            'async'    => [
-                'pool'    => [
-                    'class'        => \Imi\Swoole\Db\Pool\CoroutineDbPool::class,
-                    'config'       => [
-                        'maxResources'    => 10,
-                        'minResources'    => 0,
-                    ],
-                ],
-                'resource'    => [
-                    'dbClass'     => \Imi\Db\Drivers\PdoMysql\Driver::class,
-                    'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
-                    'username'    => 'root',
-                    'password'    => 'root',
-                    'database'    => 'db_imi_access_control',
-                ],
+            'resource'    => [
+                'dbClass'     => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
+                'username'    => 'root',
+                'password'    => 'root',
+                'database'    => 'db_imi_access_control',
             ],
         ],
     ],

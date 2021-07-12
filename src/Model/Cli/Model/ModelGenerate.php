@@ -266,10 +266,8 @@ class ModelGenerate extends BaseCommand
 
     /**
      * 处理字段信息.
-     *
-     * @param array $data
      */
-    private function parseFields(array $fields, ?array &$data, bool $isView, string $table, array $config): void
+    private function parseFields(array $fields, ?array &$data, bool $isView, string $table, ?array $config): void
     {
         $idCount = 0;
         foreach ($fields as $i => $field)

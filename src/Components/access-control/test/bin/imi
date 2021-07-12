@@ -1,10 +1,8 @@
 #!/usr/bin/env php
 <?php
-$vendor = dirname(__DIR__, 2) . '/vendor/';
+$vendor = dirname(__DIR__, 5) . '/vendor/';
 $loader = require_once $vendor . 'autoload.php';
-
-\Imi\App::setLoader($loader);
 
 \Imi\App::setDebug(true);
 
-require $vendor . 'yurunsoft/imi/bin/imi.php';
+require $vendor . '../src/Cli/bin/imi-cli';
