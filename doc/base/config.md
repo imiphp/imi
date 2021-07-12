@@ -81,8 +81,12 @@ return [
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
     ],
-    // 忽略扫描的目录
+    // 全局忽略扫描的目录
     'ignorePaths' => [
+        '绝对路径',
+    ],
+    // 仅扫描项目时忽略扫描的目录
+    'appIgnorePaths' => [
         '绝对路径',
     ],
     // Swoole >= 4.1.0可用，不设置默认为true，开启一键协程化
@@ -147,8 +151,12 @@ return [
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
     ],
-    // 忽略扫描的目录
+    // 全局忽略扫描的目录
     'ignorePaths' => [
+        '绝对路径',
+    ],
+    // 仅扫描项目时忽略扫描的目录
+    'appIgnorePaths' => [
         '绝对路径',
     ],
     // runtime目录设置，默认可不设置，为当前项目下的.runtime目录
@@ -188,8 +196,12 @@ return [
         'Imi\Test\Component\Annotation\A\*',    // 忽略扫描该命名空间下所有类
         'Imi\Test\Component\Annotation\B\TestB',// 忽略该类
     ],
-    // 忽略扫描的目录
+    // 全局忽略扫描的目录
     'ignorePaths' => [
+        '绝对路径',
+    ],
+    // 仅扫描项目时忽略扫描的目录
+    'appIgnorePaths' => [
         '绝对路径',
     ],
     'fpm' => [

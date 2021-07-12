@@ -103,12 +103,13 @@ class Annotation
         }
         foreach (Config::getAliases() as $alias)
         {
+            $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
+            $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.ignorePaths', []));
             if ('@app' === $alias && !$isApp)
             {
                 continue;
             }
-            $ignoredNamespaces = array_merge($ignoredNamespaces, Config::get($alias . '.ignoreNamespace', []));
-            $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.ignorePaths', []));
+            $ignoredPaths = array_merge($ignoredPaths, Config::get($alias . '.appIgnorePaths', []));
         }
         $ignoredPaths = array_map(function ($item) {
             return preg_quote($item, '/');
