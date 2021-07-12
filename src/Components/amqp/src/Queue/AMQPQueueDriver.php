@@ -35,156 +35,128 @@ class AMQPQueueDriver implements IQueueDriver
 
     /**
      * AMQP 连接池名称.
-     *
-     * @var string
      */
-    protected $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 队列名称.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 支持消息删除功能.
      *
      * 依赖 Redis
-     *
-     * @var bool
      */
-    protected $supportDelete = true;
+    protected bool $supportDelete = true;
 
     /**
      * 支持消费超时队列功能.
      *
      * 依赖 Redis，并且自动增加一个队列
-     *
-     * @var bool
      */
-    protected $supportTimeout = true;
+    protected bool $supportTimeout = true;
 
     /**
      * 支持消费失败队列功能.
      *
      * 自动增加一个队列
-     *
-     * @var bool
      */
-    protected $supportFail = true;
+    protected bool $supportFail = true;
 
     /**
      * Redis 连接池名称.
-     *
-     * @var string
      */
-    protected $redisPoolName;
+    protected ?string $redisPoolName = null;
 
     /**
      * Redis 键名前缀
-     *
-     * @var string
      */
-    protected $redisPrefix = '';
+    protected string $redisPrefix = '';
 
     /**
      * 循环尝试 pop 的时间间隔，单位：秒.
-     *
-     * @var float
      */
-    protected $timespan = 0.03;
+    protected float $timespan = 0.03;
 
     /**
      * 本地缓存的队列长度.
-     *
-     * @var int
      */
-    protected $queueLength = 16;
+    protected int $queueLength = 16;
 
     /**
      * 消息类名.
-     *
-     * @var string
      */
-    protected $message = JsonAMQPMessage::class;
+    protected string $message = JsonAMQPMessage::class;
 
     /**
      * 发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private $publisher;
+    private ?QueuePublisher $publisher;
 
     /**
      * 延迟发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private $delayPublisher;
+    private ?QueuePublisher $delayPublisher;
 
     /**
      * 消费者.
      *
      * @var \Imi\AMQP\Queue\QueueConsumer|null
      */
-    private $consumer;
+    private ?QueueConsumer $consumer;
 
     /**
      * 超时队列发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private $timeoutPublisher;
+    private ?QueuePublisher $timeoutPublisher;
 
     /**
      * 超时队列消费者.
      *
      * @var \Imi\AMQP\Queue\QueueConsumer|null
      */
-    private $timeoutConsumer;
+    private ?QueueConsumer $timeoutConsumer;
 
     /**
      * 失败队列发布者.
      *
      * @var \Imi\AMQP\Queue\QueuePublisher|null
      */
-    private $failPublisher;
+    private ?QueuePublisher $failPublisher;
 
     /**
      * 失败队列消费者.
      *
      * @var \Imi\AMQP\Queue\QueueConsumer|null
      */
-    private $failConsumer;
+    private ?QueueConsumer $failConsumer;
 
     /**
      * AMQP 的队列名称.
-     *
-     * @var string
      */
-    private $queueName;
+    private string $queueName;
 
     /**
      * AMQP 的延迟队列名称.
-     *
-     * @var string
      */
-    private $delayQueueName;
+    private string $delayQueueName;
 
     /**
      * AMQP 的失败队列名称.
-     *
-     * @var string
      */
-    private $failQueueName;
+    private string $failQueueName;
 
     /**
      * AMQP 的超时队列名称.
-     *
-     * @var string
      */
-    private $timeoutQueueName;
+    private string $timeoutQueueName;
 
     public function __construct(string $name, array $config = [])
     {
@@ -481,10 +453,8 @@ class AMQPQueueDriver implements IQueueDriver
      * 将消息标记为成功
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
-     *
-     * @return void
      */
-    public function success(IMessage $message)
+    public function success(IMessage $message): void
     {
         $this->consumer->getAMQPChannel()->basic_ack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag());
     }
@@ -493,10 +463,8 @@ class AMQPQueueDriver implements IQueueDriver
      * 将消息标记为失败.
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
-     *
-     * @return void
      */
-    public function fail(IMessage $message, bool $requeue = false)
+    public function fail(IMessage $message, bool $requeue = false): void
     {
         if ($requeue)
         {
@@ -671,10 +639,8 @@ class AMQPQueueDriver implements IQueueDriver
      * 将处理超时的消息加入到超时队列.
      *
      * 返回消息数量
-     *
-     * @return void
      */
-    protected function parseTimeoutMessages(int $count = 100)
+    protected function parseTimeoutMessages(int $count = 100): void
     {
         $redis = RedisManager::getInstance($this->redisPoolName);
         $result = $redis->evalEx(<<<LUA

@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Imi\AMQP\Queue;
 
+use Imi\AMQP\Contract\IMessage;
 use Imi\Queue\Model\Message;
 
 class QueueAMQPMessage extends Message
 {
     /**
      * AMQP 消息.
-     *
-     * @var \Imi\AMQP\Contract\IMessage
      */
-    protected $amqpMessage;
+    protected IMessage $amqpMessage;
 
     /**
      * Get aMQP 消息.
-     *
-     * @return \Imi\AMQP\Contract\IMessage
      */
-    public function getAmqpMessage()
+    public function getAmqpMessage(): IMessage
     {
         return $this->amqpMessage;
     }
@@ -29,10 +26,8 @@ class QueueAMQPMessage extends Message
      * Set aMQP 消息.
      *
      * @param \Imi\AMQP\Contract\IMessage $amqpMessage AMQP 消息
-     *
-     * @return self
      */
-    public function setAmqpMessage(\Imi\AMQP\Contract\IMessage $amqpMessage)
+    public function setAmqpMessage(IMessage $amqpMessage): self
     {
         $this->amqpMessage = $amqpMessage;
         $this->loadFromArray($this->getAmqpMessage()->getBodyData());

@@ -41,10 +41,8 @@ class QueuePublisher extends BasePublisher
 
     /**
      * 初始化配置.
-     *
-     * @return void
      */
-    protected function initConfig()
+    protected function initConfig(): void
     {
     }
 }

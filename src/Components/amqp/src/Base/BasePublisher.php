@@ -18,10 +18,8 @@ abstract class BasePublisher implements IPublisher
 
     /**
      * ack 是否成功
-     *
-     * @var bool
      */
-    private $ackSuccess;
+    private bool $ackSuccess;
 
     public function __construct()
     {
@@ -30,10 +28,8 @@ abstract class BasePublisher implements IPublisher
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         if ($this->channel)
         {
@@ -45,12 +41,8 @@ abstract class BasePublisher implements IPublisher
 
     /**
      * 准备发布.
-     *
-     * @param bool $force
-     *
-     * @return void
      */
-    protected function preparePublish($force = false)
+    protected function preparePublish(bool $force = false): void
     {
         if (!$this->connection)
         {
@@ -75,10 +67,8 @@ abstract class BasePublisher implements IPublisher
 
     /**
      * 发布消息.
-     *
-     * @return bool
      */
-    public function publish(IMessage $message)
+    public function publish(IMessage $message): bool
     {
         $this->preparePublish();
         $amqpMessage = new AMQPMessage($message->getBody(), $message->getProperties());

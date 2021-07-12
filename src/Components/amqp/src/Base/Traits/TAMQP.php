@@ -9,6 +9,7 @@ use Imi\AMQP\Annotation\Consumer;
 use Imi\AMQP\Annotation\Exchange;
 use Imi\AMQP\Annotation\Publisher;
 use Imi\AMQP\Annotation\Queue;
+use Imi\AMQP\Pool\AMQP;
 use Imi\AMQP\Pool\AMQPPool;
 use Imi\AMQP\Swoole\AMQPSwooleConnection;
 use Imi\Aop\Annotation\Inject;
@@ -16,6 +17,7 @@ use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\BeanFactory;
 use Imi\Log\Log;
 use Imi\Swoole\Util\Coroutine;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Wire\AMQPTable;
@@ -24,66 +26,56 @@ trait TAMQP
 {
     /**
      * @Inject("AMQP")
-     *
-     * @var \Imi\AMQP\Pool\AMQP
      */
-    protected $amqp;
+    protected AMQP $amqp;
 
     /**
      * 连接.
-     *
-     * @var \PhpAmqpLib\Connection\AbstractConnection|null
      */
-    protected $connection;
+    protected ?AbstractConnection $connection = null;
 
     /**
      * 频道.
-     *
-     * @var \PhpAmqpLib\Channel\AMQPChannel|null
      */
-    protected $channel;
+    protected ?AMQPChannel $channel = null;
 
     /**
      * 队列配置列表.
      *
      * @var \Imi\AMQP\Annotation\Queue[]
      */
-    protected $queues;
+    protected array $queues;
 
     /**
      * 交换机配置列表.
      *
      * @var \Imi\AMQP\Annotation\Exchange[]
      */
-    protected $exchanges;
+    protected array $exchanges;
 
     /**
      * 发布者列表.
      *
      * @var \Imi\AMQP\Annotation\Publisher[]
      */
-    protected $publishers;
+    protected array $publishers;
 
     /**
      * 消费者列表.
      *
      * @var \Imi\AMQP\Annotation\Consumer[]
      */
-    protected $consumers;
+    protected array $consumers;
 
     /**
      * 连接池名称.
-     *
-     * @var string
      */
-    protected $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 初始化配置.
-     *
-     * @return void
      */
-    protected function initConfig()
+    protected function initConfig(): void
     {
         $class = BeanFactory::getObjectClass($this);
         $this->queues = AnnotationManager::getClassAnnotations($class, Queue::class);
@@ -166,10 +158,8 @@ trait TAMQP
 
     /**
      * 定义.
-     *
-     * @return void
      */
-    protected function declare()
+    protected function declare(): void
     {
         foreach ($this->exchanges as $exchange)
         {
@@ -186,10 +176,8 @@ trait TAMQP
 
     /**
      * 定义发布者.
-     *
-     * @return void
      */
-    protected function declarePublisher()
+    protected function declarePublisher(): void
     {
         $this->declare();
         foreach ($this->publishers as $publisher)
@@ -211,10 +199,8 @@ trait TAMQP
 
     /**
      * 定义消费者.
-     *
-     * @return void
      */
-    protected function declareConsumer()
+    protected function declareConsumer(): void
     {
         $this->declare();
         foreach ($this->consumers as $consumer)
@@ -232,10 +218,8 @@ trait TAMQP
 
     /**
      * Get 连接.
-     *
-     * @return \PhpAmqpLib\Connection\AbstractConnection
      */
-    public function getAMQPConnection()
+    public function getAMQPConnection(): AbstractConnection
     {
         if (!$this->connection)
         {
@@ -247,10 +231,8 @@ trait TAMQP
 
     /**
      * Get 频道.
-     *
-     * @return \PhpAmqpLib\Channel\AMQPChannel
      */
-    public function getAMQPChannel()
+    public function getAMQPChannel(): AMQPChannel
     {
         if (!$this->channel || !$this->channel->is_open())
         {

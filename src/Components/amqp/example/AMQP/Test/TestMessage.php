@@ -26,10 +26,8 @@ class TestMessage extends Message
      * 设置主体数据.
      *
      * @param mixed $data
-     *
-     * @return self
      */
-    public function setBodyData($data)
+    public function setBodyData($data): self
     {
         foreach ($data as $k => $v)
         {

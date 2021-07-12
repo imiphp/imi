@@ -25,10 +25,8 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 运行消费循环.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->connection = $this->getConnection();
         $this->channel = $this->connection->channel();
@@ -42,10 +40,8 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 停止消费循环.
-     *
-     * @return void
      */
-    public function stop()
+    public function stop(): void
     {
         if ($this->channel)
         {
@@ -56,10 +52,8 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->stop();
         $this->connection = null;
@@ -67,10 +61,8 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 绑定消费者.
-     *
-     * @return void
      */
-    protected function bindConsumer()
+    protected function bindConsumer(): void
     {
         foreach ($this->consumers as $consumer)
         {

@@ -15,10 +15,8 @@ class AMQPResource extends BasePoolResource
 {
     /**
      * AMQP 客户端.
-     *
-     * @var \PhpAmqpLib\Connection\AbstractConnection
      */
-    private $connection;
+    private AbstractConnection $connection;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, AbstractConnection $connection)
     {
