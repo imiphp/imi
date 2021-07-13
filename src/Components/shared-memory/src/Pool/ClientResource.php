@@ -14,10 +14,8 @@ class ClientResource extends BasePoolResource
 {
     /**
      * 客户端对象
-     *
-     * @var \Imi\SharedMemory\Client
      */
-    private $client;
+    private Client $client;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, Client $client)
     {

@@ -38,10 +38,8 @@ abstract class SharedMemory
      * 释放内存共享连接实例.
      *
      * @param \Imi\SharedMemory\Client $client
-     *
-     * @return void
      */
-    public static function release($client)
+    public static function release(Client $client): void
     {
         $resource = RequestContext::get('poolResources.' . spl_object_hash($client));
         if (null !== $resource)
@@ -55,13 +53,9 @@ abstract class SharedMemory
      * 回调有 1 个参数：$instance(操作实例对象)
      * 本方法返回值为回调的返回值
      *
-     * @param string   $objectName
-     * @param callable $callable
-     * @param string   $poolName
-     *
      * @return mixed
      */
-    public static function use($objectName, $callable, $poolName = null)
+    public static function use(string $objectName, callable $callable, ?string $poolName = null)
     {
         return PoolManager::use($poolName ?? static::getDefaultPoolName(), function ($resource, Client $client) use ($objectName, $callable) {
             $object = $client->getObject($objectName);

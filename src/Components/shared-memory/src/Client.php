@@ -8,17 +8,13 @@ class Client
 {
     /**
      * 客户端对象
-     *
-     * @var \Yurun\Swoole\SharedMemory\Client\Client
      */
-    private $client;
+    private \Yurun\Swoole\SharedMemory\Client\Client $client;
 
     /**
      * 存储器数组.
-     *
-     * @var array
      */
-    private $objects = [];
+    private array $objects = [];
 
     public function __construct(array $options = [])
     {
@@ -39,22 +35,16 @@ class Client
 
     /**
      * 获取客户端对象
-     *
-     * @return \Yurun\Swoole\SharedMemory\Client\Client
      */
-    public function getClient()
+    public function getClient(): \Yurun\Swoole\SharedMemory\Client\Client
     {
         return $this->client;
     }
 
     /**
      * 获取操作对象
-     *
-     * @param string $objectName
-     *
-     * @return object
      */
-    public function getObject($objectName)
+    public function getObject(string $objectName): ?object
     {
         return $this->objects[$objectName] ?? null;
     }
