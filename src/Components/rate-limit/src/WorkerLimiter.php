@@ -14,16 +14,16 @@ abstract class WorkerLimiter
     /**
      * 限流执行任务
      *
-     * @param callable    $callable 任务回调
-     * @param string      $name     限流器名称
-     * @param int         $max      最大同时运行任务数
-     * @param float       $timeout  超时时间，单位：秒;为 null 不限制
-     * @param callable    $callback 触发限流的回调
-     * @param string|null $poolName 连接池名称，留空取默认 redis 连接池
+     * @param callable      $callable 任务回调
+     * @param string        $name     限流器名称
+     * @param int           $max      最大同时运行任务数
+     * @param float|null    $timeout  超时时间，单位：秒;为 null 不限制
+     * @param callable|null $callback 触发限流的回调
+     * @param string|null   $poolName 连接池名称，留空取默认 redis 连接池
      *
      * @return mixed
      */
-    public static function call($callable, $name, $max, $timeout = null, $callback = null, $poolName = null)
+    public static function call(callable $callable, string $name, int $max, ?float $timeout = null, ?callable $callback = null, ?string $poolName = null)
     {
         // 加锁
         $workerId = WorkerLimiterLock::lock($name, $max, $timeout, $poolName);
@@ -49,17 +49,17 @@ abstract class WorkerLimiter
     /**
      * 限流执行任务，允许超时等待.
      *
-     * @param callable    $callable        任务回调
-     * @param string      $name            限流器名称
-     * @param int         $max             最大同时运行任务数
-     * @param float       $timeout         任务超时时间，单位：秒;为 null 不限制
-     * @param float       $blockingTimeout 等待重试超时时间，单位：秒;为 null 不限制
-     * @param callable    $callback        触发限流的回调
-     * @param string|null $poolName        连接池名称，留空取默认 redis 连接池
+     * @param callable      $callable        任务回调
+     * @param string        $name            限流器名称
+     * @param int           $max             最大同时运行任务数
+     * @param float|null    $timeout         任务超时时间，单位：秒;为 null 不限制
+     * @param float|null    $blockingTimeout 等待重试超时时间，单位：秒;为 null 不限制
+     * @param callable|null $callback        触发限流的回调
+     * @param string|null   $poolName        连接池名称，留空取默认 redis 连接池
      *
      * @return mixed
      */
-    public static function callBlock($callable, $name, $max, $timeout = null, $blockingTimeout = null, $callback = null, $poolName = null)
+    public static function callBlock(callable $callable, string $name, int $max, ?float $timeout = null, ?float $blockingTimeout = null, ?callable $callback = null, ?string $poolName = null)
     {
         if (null === $blockingTimeout)
         {
@@ -114,7 +114,7 @@ abstract class WorkerLimiter
      *
      * @return mixed
      */
-    public static function defaultCallback($name)
+    public static function defaultCallback(string $name)
     {
         throw new RateLimitException(sprintf('%s Worker Limit', $name));
     }

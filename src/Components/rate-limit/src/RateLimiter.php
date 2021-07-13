@@ -20,17 +20,17 @@ abstract class RateLimiter
     /**
      * 限流
      *
-     * @param string   $name     限流器名称
-     * @param int      $capacity 总容量
-     * @param callable $callback 触发限流的回调
-     * @param int      $fill     单位时间内生成填充的数量，不设置或为null时，默认值与 $capacity 相同
-     * @param string   $unit     单位时间，默认为：秒(second)，支持：microsecond、millisecond、second、minute、hour、day、week、month、year
-     * @param int      $deduct   每次扣除数量，默认为1
-     * @param string   $poolName 连接池名称，留空取默认 redis 连接池
+     * @param string        $name     限流器名称
+     * @param int           $capacity 总容量
+     * @param callable|null $callback 触发限流的回调
+     * @param int|null      $fill     单位时间内生成填充的数量，不设置或为null时，默认值与 $capacity 相同
+     * @param string        $unit     单位时间，默认为：秒(second)，支持：microsecond、millisecond、second、minute、hour、day、week、month、year
+     * @param int           $deduct   每次扣除数量，默认为1
+     * @param string|null   $poolName 连接池名称，留空取默认 redis 连接池
      *
      * @return mixed
      */
-    public static function limit($name, $capacity, $callback = null, $fill = null, $unit = 'second', $deduct = 1, $poolName = null)
+    public static function limit(string $name, int $capacity, ?callable $callback = null, ?int $fill = null, string $unit = 'second', int $deduct = 1, ?string $poolName = null)
     {
         if (null === $fill)
         {
@@ -60,18 +60,18 @@ abstract class RateLimiter
     /**
      * 限流，允许超时等待.
      *
-     * @param string   $name            限流器名称
-     * @param int      $capacity        总容量
-     * @param callable $callback        触发限流的回调
-     * @param int|null $blockingTimeout 超时时间，单位：秒;为 null 不限制
-     * @param int      $fill            单位时间内生成填充的数量，不设置或为null时，默认值与 $capacity 相同
-     * @param string   $unit            单位时间，默认为：秒(second)，支持：microsecond、millisecond、second、minute、hour、day、week、month、year
-     * @param int      $deduct          每次扣除数量，默认为1
-     * @param string   $poolName        连接池名称，留空取默认 redis 连接池
+     * @param string        $name            限流器名称
+     * @param int           $capacity        总容量
+     * @param callable|null $callback        触发限流的回调
+     * @param int|null      $blockingTimeout 超时时间，单位：秒;为 null 不限制
+     * @param int|null      $fill            单位时间内生成填充的数量，不设置或为null时，默认值与 $capacity 相同
+     * @param string        $unit            单位时间，默认为：秒(second)，支持：microsecond、millisecond、second、minute、hour、day、week、month、year
+     * @param int           $deduct          每次扣除数量，默认为1
+     * @param string|null   $poolName        连接池名称，留空取默认 redis 连接池
      *
      * @return mixed
      */
-    public static function limitBlock($name, $capacity, $callback = null, $blockingTimeout = null, $fill = null, $unit = 'second', $deduct = 1, $poolName = null)
+    public static function limitBlock(string $name, int $capacity, ?callable $callback = null, ?int $blockingTimeout = null, ?int $fill = null, string $unit = 'second', int $deduct = 1, ?string $poolName = null)
     {
         if (null === $fill)
         {
@@ -108,7 +108,7 @@ abstract class RateLimiter
      *
      * @return mixed
      */
-    public static function defaultCallback($name)
+    public static function defaultCallback(string $name)
     {
         throw new RateLimitException(sprintf('%s Rate Limit', $name));
     }
