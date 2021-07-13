@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\MQTT\Client;
 
+use BinSoul\Net\Mqtt\DefaultPacketFactory;
 use BinSoul\Net\Mqtt\Packet;
 use BinSoul\Net\Mqtt\Packet\ConnectRequestPacket;
 use BinSoul\Net\Mqtt\Packet\ConnectResponsePacket;
@@ -29,43 +30,32 @@ class MQTTClient
 {
     /**
      * Swoole 协程客户端.
-     *
-     * @var \Swoole\Coroutine\Client
      */
-    private $client;
+    private Client $client;
 
     /**
      * 连接信息.
      *
      * @var \Imi\MQTT\Client\Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * 事件监听器.
-     *
-     * @var \Imi\MQTT\Client\Contract\IMQTTClientListener
      */
-    private $listener;
+    private IMQTTClientListener $listener;
 
     /**
      * 已连接状态
-     *
-     * @var bool
      */
-    private $connected = false;
+    private bool $connected = false;
 
-    /**
-     * @var \BinSoul\Net\Mqtt\DefaultPacketFactory
-     */
-    private $packetFactory;
+    private DefaultPacketFactory $packetFactory;
 
     /**
      * Ping 定时器ID.
-     *
-     * @var int
      */
-    private $pingTimerId;
+    private ?int $pingTimerId = null;
 
     /**
      * 包类型集合.
@@ -165,10 +155,8 @@ class MQTTClient
 
     /**
      * Get 已连接状态
-     *
-     * @return bool
      */
-    public function getConnected()
+    public function getConnected(): bool
     {
         return $this->connected;
     }
@@ -215,10 +203,8 @@ class MQTTClient
 
     /**
      * 断开连接.
-     *
-     * @return void
      */
-    public function disconnect()
+    public function disconnect(): void
     {
         if ($this->connected)
         {
@@ -394,10 +380,8 @@ class MQTTClient
 
     /**
      * 开始循环接收，直到关闭连接.
-     *
-     * @return void
      */
-    public function wait()
+    public function wait(): void
     {
         $pingTimespan = $this->connection->getPingTimespan();
         if ($pingTimespan > 0)

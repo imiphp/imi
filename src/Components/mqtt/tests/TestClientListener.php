@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\MQTT\Test;
 
+use BinSoul\Net\Mqtt\Packet\ConnectResponsePacket;
+use BinSoul\Net\Mqtt\Packet\PingResponsePacket;
+use BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket;
+use BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket;
 use Imi\MQTT\Client\Contract\IMQTTClientListener;
 
 class TestClientListener implements IMQTTClientListener
@@ -35,80 +39,64 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * 连接确认.
-     *
-     * @return void
      */
-    public function connectACK(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket $packet)
+    public function connectACK(\Imi\MQTT\Client\MQTTClient $client, ConnectResponsePacket $packet): void
     {
         $this->connectACKResult = $packet;
     }
 
     /**
      * 发布.
-     *
-     * @return void
      */
-    public function publish(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishRequestPacket $packet)
+    public function publish(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishRequestPacket $packet): void
     {
         $this->publishResults[$packet->getPacketType()] = $packet;
     }
 
     /**
      * 发布确认.
-     *
-     * @return void
      */
-    public function publishAck(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishAckPacket $packet)
+    public function publishAck(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishAckPacket $packet): void
     {
         $this->publishResults[$packet->getPacketType()] = $packet;
     }
 
     /**
      * 发布已收到（保证交付部分1）.
-     *
-     * @return void
      */
-    public function publishReceived(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReceivedPacket $packet)
+    public function publishReceived(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReceivedPacket $packet): void
     {
         $this->publishResults[$packet->getPacketType()] = $packet;
     }
 
     /**
      * 发布释放（确保交付的第2部分）.
-     *
-     * @return void
      */
-    public function publishRelease(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReleasePacket $packet)
+    public function publishRelease(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishReleasePacket $packet): void
     {
         $this->publishResults[$packet->getPacketType()] = $packet;
     }
 
     /**
      * 发布完成（保证交付的第3部分）.
-     *
-     * @return void
      */
-    public function publishComplete(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishCompletePacket $packet)
+    public function publishComplete(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PublishCompletePacket $packet): void
     {
         $this->publishResults[$packet->getPacketType()] = $packet;
     }
 
     /**
      * 订阅确认.
-     *
-     * @return void
      */
-    public function subscribeACK(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket $packet)
+    public function subscribeACK(\Imi\MQTT\Client\MQTTClient $client, SubscribeResponsePacket $packet): void
     {
         $this->subscribeACKResult = $packet;
     }
 
     /**
      * 取消订阅确认.
-     *
-     * @return void
      */
-    public function unsubscribeACK(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket $packet)
+    public function unsubscribeACK(\Imi\MQTT\Client\MQTTClient $client, UnsubscribeResponsePacket $packet): void
     {
         $this->unsubscribeACKResult = $packet;
         $client->disconnect();
@@ -116,60 +104,48 @@ class TestClientListener implements IMQTTClientListener
 
     /**
      * Ping 响应.
-     *
-     * @return void
      */
-    public function ping(\Imi\MQTT\Client\MQTTClient $client, \BinSoul\Net\Mqtt\Packet\PingResponsePacket $packet)
+    public function ping(\Imi\MQTT\Client\MQTTClient $client, PingResponsePacket $packet): void
     {
         $this->pingResult = $packet;
     }
 
     /**
      * Get the value of connectACKResult.
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\ConnectResponsePacket
      */
-    public function getConnectACKResult()
+    public function getConnectACKResult(): ConnectResponsePacket
     {
         return $this->connectACKResult;
     }
 
     /**
      * Get the value of subscribeACKResult.
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\SubscribeResponsePacket
      */
-    public function getSubscribeACKResult()
+    public function getSubscribeACKResult(): SubscribeResponsePacket
     {
         return $this->subscribeACKResult;
     }
 
     /**
      * Get the value of unsubscribeACKResult.
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\UnsubscribeResponsePacket
      */
-    public function getUnsubscribeACKResult()
+    public function getUnsubscribeACKResult(): UnsubscribeResponsePacket
     {
         return $this->unsubscribeACKResult;
     }
 
     /**
      * Get the value of pingResult.
-     *
-     * @return \BinSoul\Net\Mqtt\Packet\PingResponsePacket
      */
-    public function getPingResult()
+    public function getPingResult(): PingResponsePacket
     {
         return $this->pingResult;
     }
 
     /**
      * Get the value of publishResults.
-     *
-     * @return array
      */
-    public function getPublishResults()
+    public function getPublishResults(): array
     {
         return $this->publishResults;
     }

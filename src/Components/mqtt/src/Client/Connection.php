@@ -14,87 +14,63 @@ class Connection extends DefaultConnection
 {
     /**
      * 主机地址
-     *
-     * @var string
      */
-    private $host;
+    private string $host;
 
     /**
      * 端口号.
-     *
-     * @var int
      */
-    private $port;
+    private int $port;
 
     /**
      * 超时时间，单位：秒.
-     *
-     * @var float|null
      */
-    private $timeout;
+    private ?float $timeout;
 
     /**
      * Ping 时间间隔，为 NULL 则不自动 Ping.
-     *
-     * @var float|null
      */
-    private $pingTimespan;
+    private ?float $pingTimespan;
 
     /**
      * 使用 SSL 连接.
-     *
-     * @var bool
      */
-    private $ssl = false;
+    private bool $ssl = false;
 
     /**
      * 证书文件.
-     *
-     * @var string|null
      */
-    private $sslCertFile;
+    private ?string $sslCertFile;
 
     /**
      * 证书密钥文件.
-     *
-     * @var string|null
      */
-    private $sslKeyFile;
+    private ?string $sslKeyFile;
 
     /**
      * 验证服务器端证书。
-     *
-     * @var bool
      */
-    private $sslVerifyPeer = true;
+    private bool $sslVerifyPeer = true;
 
     /**
      * 允许自签名证书.
-     *
-     * @var bool
      */
-    private $sslAllowSelfSigned = false;
+    private bool $sslAllowSelfSigned = false;
 
     /**
      * 服务器主机名称.
-     *
-     * @var string|null
      */
-    private $sslHostName;
+    private ?string $sslHostName;
 
     /**
      * CA 证书.
-     *
-     * @var string|null
      */
-    private $sslCafile;
+    private ?string $sslCafile;
 
     /**
      * 证书目录.
-     *
-     * @var string|null
      */
-    private $sslCapath;
+    private ?string $sslCapath;
 
     /**
      * Constructs an instance of this class.
@@ -121,10 +97,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 主机地址
-     *
-     * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
@@ -133,10 +107,8 @@ class Connection extends DefaultConnection
      * With 主机地址
      *
      * @param string $host 主机地址
-     *
-     * @return self
      */
-    public function withHost(string $host)
+    public function withHost(string $host): self
     {
         $result = clone $this;
         $result->host = $host;
@@ -146,10 +118,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 端口号.
-     *
-     * @return int
      */
-    public function getPort()
+    public function getPort(): int
     {
         return $this->port;
     }
@@ -158,10 +128,8 @@ class Connection extends DefaultConnection
      * With 端口号.
      *
      * @param int $port 端口号
-     *
-     * @return self
      */
-    public function withPort(int $port)
+    public function withPort(int $port): self
     {
         $result = clone $this;
         $result->port = $port;
@@ -171,10 +139,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 超时时间，单位：秒.
-     *
-     * @return float|null
      */
-    public function getTimeout()
+    public function getTimeout(): ?float
     {
         return $this->timeout;
     }
@@ -183,10 +149,8 @@ class Connection extends DefaultConnection
      * With 超时时间，单位：秒.
      *
      * @param float $timeout 超时时间，单位：秒
-     *
-     * @return self
      */
-    public function withTimeout(?float $timeout)
+    public function withTimeout(?float $timeout): self
     {
         $result = clone $this;
         $result->timeout = $timeout;
@@ -196,10 +160,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get ping 时间间隔，为 NULL 则不自动 Ping.
-     *
-     * @return float|null
      */
-    public function getPingTimespan()
+    public function getPingTimespan(): ?float
     {
         return $this->pingTimespan;
     }
@@ -208,10 +170,8 @@ class Connection extends DefaultConnection
      * With ping 时间间隔，为 NULL 则不自动 Ping.
      *
      * @param float|null $pingTimespan Ping 时间间隔，为 NULL 则不自动 Ping
-     *
-     * @return self
      */
-    public function withPingTimespan($pingTimespan)
+    public function withPingTimespan(?float $pingTimespan): self
     {
         $result = clone $this;
         $result->pingTimespan = $pingTimespan;
@@ -221,10 +181,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 使用 SSL 连接.
-     *
-     * @return bool
      */
-    public function getSsl()
+    public function getSsl(): bool
     {
         return $this->ssl;
     }
@@ -233,10 +191,8 @@ class Connection extends DefaultConnection
      * With 使用 SSL 连接.
      *
      * @param bool $ssl 使用 SSL 连接
-     *
-     * @return self
      */
-    public function withSsl(bool $ssl)
+    public function withSsl(bool $ssl): self
     {
         $result = clone $this;
         $result->ssl = $ssl;
@@ -246,10 +202,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 证书文件.
-     *
-     * @return string|null
      */
-    public function getSslCertFile()
+    public function getSslCertFile(): ?string
     {
         return $this->sslCertFile;
     }
@@ -258,10 +212,8 @@ class Connection extends DefaultConnection
      * With 证书文件.
      *
      * @param string|null $sslCertFile 证书文件
-     *
-     * @return self
      */
-    public function withSslCertFile($sslCertFile)
+    public function withSslCertFile(?string $sslCertFile): self
     {
         $result = clone $this;
         $result->sslCertFile = $sslCertFile;
@@ -271,10 +223,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 证书密钥文件.
-     *
-     * @return string|null
      */
-    public function getSslKeyFile()
+    public function getSslKeyFile(): ?string
     {
         return $this->sslKeyFile;
     }
@@ -283,10 +233,8 @@ class Connection extends DefaultConnection
      * With 证书密钥文件.
      *
      * @param string|null $sslKeyFile 证书密钥文件
-     *
-     * @return self
      */
-    public function withSslKeyFile($sslKeyFile)
+    public function withSslKeyFile(?string $sslKeyFile): self
     {
         $result = clone $this;
         $result->sslKeyFile = $sslKeyFile;
@@ -296,10 +244,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 验证服务器端证书。
-     *
-     * @return bool
      */
-    public function getSslVerifyPeer()
+    public function getSslVerifyPeer(): bool
     {
         return $this->sslVerifyPeer;
     }
@@ -308,10 +254,8 @@ class Connection extends DefaultConnection
      * With 验证服务器端证书。
      *
      * @param bool $sslVerifyPeer 验证服务器端证书
-     *
-     * @return self
      */
-    public function withSslVerifyPeer(bool $sslVerifyPeer)
+    public function withSslVerifyPeer(bool $sslVerifyPeer): self
     {
         $result = clone $this;
         $result->sslVerifyPeer = $sslVerifyPeer;
@@ -321,10 +265,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 允许自签名证书.
-     *
-     * @return bool
      */
-    public function getSslAllowSelfSigned()
+    public function getSslAllowSelfSigned(): bool
     {
         return $this->sslAllowSelfSigned;
     }
@@ -333,10 +275,8 @@ class Connection extends DefaultConnection
      * With 允许自签名证书.
      *
      * @param bool $sslAllowSelfSigned 允许自签名证书
-     *
-     * @return self
      */
-    public function withSslAllowSelfSigned(bool $sslAllowSelfSigned)
+    public function withSslAllowSelfSigned(bool $sslAllowSelfSigned): self
     {
         $result = clone $this;
         $result->sslAllowSelfSigned = $sslAllowSelfSigned;
@@ -346,10 +286,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 服务器主机名称.
-     *
-     * @return string|null
      */
-    public function getSslHostName()
+    public function getSslHostName(): ?string
     {
         return $this->sslHostName;
     }
@@ -358,10 +296,8 @@ class Connection extends DefaultConnection
      * With 服务器主机名称.
      *
      * @param string|null $sslHostName 服务器主机名称
-     *
-     * @return self
      */
-    public function withSslHostName($sslHostName)
+    public function withSslHostName(?string $sslHostName): self
     {
         $result = clone $this;
         $result->sslHostName = $sslHostName;
@@ -371,10 +307,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get cA 证书.
-     *
-     * @return string|null
      */
-    public function getSslCafile()
+    public function getSslCafile(): ?string
     {
         return $this->sslCafile;
     }
@@ -383,10 +317,8 @@ class Connection extends DefaultConnection
      * With cA 证书.
      *
      * @param string|null $sslCafile CA 证书
-     *
-     * @return self
      */
-    public function withSslCafile($sslCafile)
+    public function withSslCafile(?string $sslCafile): self
     {
         $result = clone $this;
         $result->sslCafile = $sslCafile;
@@ -396,10 +328,8 @@ class Connection extends DefaultConnection
 
     /**
      * Get 证书目录.
-     *
-     * @return string|null
      */
-    public function getSslCapath()
+    public function getSslCapath(): ?string
     {
         return $this->sslCapath;
     }
@@ -408,10 +338,8 @@ class Connection extends DefaultConnection
      * With 证书目录.
      *
      * @param string|null $sslCapath 证书目录
-     *
-     * @return self
      */
-    public function withSslCapath($sslCapath)
+    public function withSslCapath(?string $sslCapath): self
     {
         $result = clone $this;
         $result->sslCapath = $sslCapath;

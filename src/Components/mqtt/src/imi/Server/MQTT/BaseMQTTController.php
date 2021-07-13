@@ -56,37 +56,29 @@ abstract class BaseMQTTController
 
     /**
      * 发布确认.
-     *
-     * @return void
      */
-    public function publishAck(\BinSoul\Net\Mqtt\Packet\PublishAckPacket $request, ReceiveData $receiveData)
+    public function publishAck(\BinSoul\Net\Mqtt\Packet\PublishAckPacket $request, ReceiveData $receiveData): void
     {
     }
 
     /**
      * 发布已收到（保证交付部分1）.
-     *
-     * @return void
      */
-    public function publishReceived(\BinSoul\Net\Mqtt\Packet\PublishReceivedPacket $request, ReceiveData $receiveData)
+    public function publishReceived(\BinSoul\Net\Mqtt\Packet\PublishReceivedPacket $request, ReceiveData $receiveData): void
     {
     }
 
     /**
      * 发布释放（确保交付的第2部分）.
-     *
-     * @return void
      */
-    public function publishRelease(\BinSoul\Net\Mqtt\Packet\PublishReleasePacket $request, ReceiveData $receiveData)
+    public function publishRelease(\BinSoul\Net\Mqtt\Packet\PublishReleasePacket $request, ReceiveData $receiveData): void
     {
     }
 
     /**
      * 发布完成（保证交付的第3部分）.
-     *
-     * @return void
      */
-    public function publishComplete(\BinSoul\Net\Mqtt\Packet\PublishCompletePacket $request, ReceiveData $receiveData)
+    public function publishComplete(\BinSoul\Net\Mqtt\Packet\PublishCompletePacket $request, ReceiveData $receiveData): void
     {
     }
 

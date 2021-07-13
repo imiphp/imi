@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\MQTT\Message;
 
+use BinSoul\Net\Mqtt\Packet;
 use Imi\RequestContext;
 use Imi\Server\DataParser\DataParser;
 use Imi\Util\Socket\IPEndPoint;
@@ -19,24 +20,18 @@ class ReceiveData implements IReceiveData
 
     /**
      * Reactor线程ID.
-     *
-     * @var int
      */
-    protected $reactorId;
+    protected int $reactorId;
 
     /**
      * 接收到的数据.
-     *
-     * @var string
      */
-    protected $data;
+    protected string $data;
 
     /**
      * 接收到的数据.
-     *
-     * @var \BinSoul\Net\Mqtt\Packet
      */
-    protected $formatData;
+    protected Packet $formatData;
 
     /**
      * 客户端地址

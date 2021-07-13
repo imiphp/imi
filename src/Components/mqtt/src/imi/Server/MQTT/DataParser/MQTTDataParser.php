@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Server\MQTT\DataParser;
 
+use BinSoul\Net\Mqtt\DefaultPacketFactory;
 use BinSoul\Net\Mqtt\PacketStream;
 use Imi\Aop\Annotation\Inject;
 use Imi\Server\DataParser\IParser;
@@ -13,10 +14,8 @@ class MQTTDataParser implements IParser
 {
     /**
      * @Inject(\BinSoul\Net\Mqtt\DefaultPacketFactory::class)
-     *
-     * @var \BinSoul\Net\Mqtt\DefaultPacketFactory
      */
-    protected $packetFactory;
+    protected DefaultPacketFactory $packetFactory;
 
     /**
      * 编码为存储格式.
