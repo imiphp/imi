@@ -7,12 +7,13 @@ namespace Imi\ApiDoc\Tool;
 use Imi\App;
 use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\ReflectionUtil;
+use Imi\Cli\Annotation\Argument;
+use Imi\Cli\Annotation\Command;
+use Imi\Cli\Annotation\CommandAction;
+use Imi\Cli\Annotation\Option;
 use Imi\Server\Http\Route\Annotation\Action;
 use Imi\Server\Http\Route\Annotation\Controller;
 use Imi\Server\Http\Route\Annotation\Route;
-use Imi\Tool\Annotation\Arg;
-use Imi\Tool\Annotation\Operation;
-use Imi\Tool\Annotation\Tool;
 use Imi\Tool\ArgType;
 use Imi\Util\ClassObject;
 use OpenApi\Analysis;
@@ -29,24 +30,20 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * @Tool("doc")
+ * @Command("doc")
  */
 class DocTool
 {
     /**
      * 生成 API 接口文档.
      *
-     * @Operation(name="api", co=false)
+     * @CommandAction(name="api")
      *
-     * @Arg(name="to", type=ArgType::STRING, required=true, comments="生成到的目标文件名")
-     * @Arg(name="namespace", type=ArgType::STRING, required=false, comments="指定扫描的命名空间，多个用半角逗号分隔")
-     *
-     * @return void
+     * @Argument(name="to", type=ArgType::STRING, required=true, comments="生成到的目标文件名")
+     * @Option(name="namespace", type=ArgType::STRING, required=false, comments="指定扫描的命名空间，多个用半角逗号分隔")
      */
-    public function api(string $to, ?string $namespace)
+    public function api(string $to, ?string $namespace): void
     {
-        // 加载服务器注解
-        \Imi\Bean\Annotation::getInstance()->init(\Imi\Main\Helper::getAppMains());
         $directory = $controllerClasses = [];
         // 处理要扫描的目录/文件
         $controllerAnnotationPoints = AnnotationManager::getAnnotationPoints(Controller::class, 'class');
@@ -275,10 +272,7 @@ class DocTool
         }
     }
 
-    /**
-     * @return \phpDocumentor\Reflection\DocBlock\Tags\Param|null
-     */
-    private function getDocParam(array $docParams, string $paramName)
+    private function getDocParam(array $docParams, string $paramName): ?\phpDocumentor\Reflection\DocBlock\Tags\Param
     {
         foreach ($docParams as $param)
         {

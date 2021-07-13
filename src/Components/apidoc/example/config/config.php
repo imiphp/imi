@@ -13,15 +13,9 @@ return [
         'beans'        => __DIR__ . '/beans.php',
     ],
 
-    // 扫描目录
-    'beanScan'    => [
-        'ApiDocApp\Listener',
-        'ApiDocApp\Task',
-    ],
-
     // 组件命名空间
     'components'    => [
-        'ApiDoc'  => 'Imi\ApiDoc',
+        'ApiDoc'    => 'Imi\ApiDoc',
     ],
 
     // 主服务器配置
