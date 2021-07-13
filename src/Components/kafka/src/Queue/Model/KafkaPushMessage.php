@@ -9,35 +9,20 @@ use Imi\Queue\Model\Message;
 
 class KafkaPushMessage extends Message implements IKafkaPushMessage
 {
-    /**
-     * @var string|null
-     */
-    protected $key = null;
+    protected ?string $key = null;
 
-    /**
-     * @var array
-     */
-    protected $headers = [];
+    protected array $headers = [];
 
-    /**
-     * @var int|null
-     */
-    protected $partition = null;
+    protected ?int $partition = null;
 
-    /**
-     * @var int|null
-     */
-    protected $brokerId = null;
+    protected ?int $brokerId = null;
 
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @return void
-     */
-    public function setKey(?string $key)
+    public function setKey(?string $key): void
     {
         $this->key = $key;
     }
@@ -47,10 +32,7 @@ class KafkaPushMessage extends Message implements IKafkaPushMessage
         return $this->headers;
     }
 
-    /**
-     * @return void
-     */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
@@ -60,10 +42,7 @@ class KafkaPushMessage extends Message implements IKafkaPushMessage
         return $this->partition;
     }
 
-    /**
-     * @return void
-     */
-    public function setPartition(?int $partition)
+    public function setPartition(?int $partition): void
     {
         $this->partition = $partition;
     }
@@ -73,10 +52,7 @@ class KafkaPushMessage extends Message implements IKafkaPushMessage
         return $this->brokerId;
     }
 
-    /**
-     * @return void
-     */
-    public function setBrokerId(?int $brokerId)
+    public function setBrokerId(?int $brokerId): void
     {
         $this->brokerId = $brokerId;
     }

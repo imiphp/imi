@@ -28,29 +28,23 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * Kafka 连接池名称.
-     *
-     * @var string
      */
-    protected $poolName;
+    protected ?string $poolName;
 
     /**
      * 队列名称.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 分组ID.
-     *
-     * @var string|null
      */
-    public $groupId = null;
+    public ?string $groupId = null;
 
     /**
      * @var Consumer[]
      */
-    private $consumers;
+    private array $consumers;
 
     public function __construct(string $name, array $config = [])
     {
@@ -118,20 +112,16 @@ class KafkaQueueDriver implements IQueueDriver
      * 清空队列.
      *
      * @param int|int[]|null $queueType 清空哪个队列，默认为全部
-     *
-     * @return void
      */
-    public function clear($queueType = null)
+    public function clear($queueType = null): void
     {
         throw new \RuntimeException('Unsupport clear queue in KafkaQueueDriver');
     }
 
     /**
      * 将消息标记为成功
-     *
-     * @return void
      */
-    public function success(IMessage $message)
+    public function success(IMessage $message): void
     {
         if (!$message instanceof IKafkaPopMessage)
         {
@@ -143,10 +133,8 @@ class KafkaQueueDriver implements IQueueDriver
 
     /**
      * 将消息标记为失败.
-     *
-     * @return void
      */
-    public function fail(IMessage $message, bool $requeue = false)
+    public function fail(IMessage $message, bool $requeue = false): void
     {
     }
 

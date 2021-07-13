@@ -13,10 +13,8 @@ class Kafka
 {
     /**
      * 默认连接池名.
-     *
-     * @var string|null
      */
-    protected $defaultPoolName;
+    protected ?string $defaultPoolName;
 
     /**
      * Get 默认连接池名.

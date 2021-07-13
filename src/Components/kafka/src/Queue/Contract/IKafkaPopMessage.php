@@ -11,8 +11,5 @@ interface IKafkaPopMessage extends IMessage
 {
     public function getConsumeMessage(): ConsumeMessage;
 
-    /**
-     * @return void
-     */
-    public function setConsumeMessage(ConsumeMessage $consumeMessage);
+    public function setConsumeMessage(ConsumeMessage $consumeMessage): void;
 }

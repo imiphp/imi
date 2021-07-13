@@ -18,20 +18,11 @@ use function Yurun\Swoole\Coroutine\goWait;
  */
 abstract class BaseConsumer implements IConsumer
 {
-    /**
-     * @var ConsumerAnnotation
-     */
-    protected $consumerAnnotation;
+    protected ConsumerAnnotation $consumerAnnotation;
 
-    /**
-     * @var Consumer|null
-     */
-    protected $consumer = null;
+    protected ?Consumer $consumer = null;
 
-    /**
-     * @var bool
-     */
-    protected $running = false;
+    protected bool $running = false;
 
     public function __construct()
     {
@@ -40,10 +31,8 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 初始化配置.
-     *
-     * @return void
      */
-    protected function initConfig()
+    protected function initConfig(): void
     {
         $class = BeanFactory::getObjectClass($this);
         $this->consumerAnnotation = AnnotationManager::getClassAnnotations($class, ConsumerAnnotation::class)[0] ?? null;
@@ -51,10 +40,8 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 运行消费循环.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $consumerAnnotation = $this->consumerAnnotation;
         $config = [];
@@ -79,20 +66,16 @@ abstract class BaseConsumer implements IConsumer
 
     /**
      * 停止消费循环.
-     *
-     * @return void
      */
-    public function stop()
+    public function stop(): void
     {
         $this->running = false;
     }
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close()
+    public function close(): void
     {
         $this->consumer->close();
         $this->consumer = null;

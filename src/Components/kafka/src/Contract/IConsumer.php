@@ -11,22 +11,16 @@ interface IConsumer
 {
     /**
      * 运行消费循环.
-     *
-     * @return void
      */
-    public function run();
+    public function run(): void;
 
     /**
      * 停止消费循环.
-     *
-     * @return void
      */
-    public function stop();
+    public function stop(): void;
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close();
+    public function close(): void;
 }

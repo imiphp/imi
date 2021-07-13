@@ -66,10 +66,8 @@ class KafkaPool
 
     /**
      * 获取默认池子名称.
-     *
-     * @return string
      */
-    public static function getDefaultPoolName()
+    public static function getDefaultPoolName(): string
     {
         return App::getBean('Kafka')->getDefaultPoolName();
     }
