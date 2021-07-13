@@ -19,24 +19,18 @@ class SmartyEngine implements IEngine
 {
     /**
      * Smarty 实例列表.
-     *
-     * @var array
      */
-    private static $instances = [];
+    private static array $instances = [];
 
     /**
      * 缓存目录.
-     *
-     * @var string
      */
-    protected $cacheDir;
+    protected ?string $cacheDir = null;
 
     /**
      * 编译目录.
-     *
-     * @var string
      */
-    protected $compileDir;
+    protected ?string $compileDir = null;
 
     /**
      * 是否开启缓存.
@@ -44,17 +38,13 @@ class SmartyEngine implements IEngine
      * \Smarty::CACHING_OFF
      * \Smarty::CACHING_LIFETIME_CURRENT
      * \Smarty::CACHING_LIFETIME_SAVED
-     *
-     * @var int
      */
-    protected $caching;
+    protected int $caching = 0;
 
     /**
      * 缓存有效时间.
-     *
-     * @var int
      */
-    protected $cacheLifetime;
+    protected int $cacheLifetime = 0;
 
     /**
      * @param mixed $data
@@ -75,12 +65,8 @@ class SmartyEngine implements IEngine
 
     /**
      * 获取 Smarty 实例.
-     *
-     * @param string|null $serverName
-     *
-     * @return \Smarty
      */
-    public function newSmartyInstance($serverName = null)
+    public function newSmartyInstance(?string $serverName = null): \Smarty
     {
         if (null === $serverName)
         {
