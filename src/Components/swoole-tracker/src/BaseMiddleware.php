@@ -8,39 +8,29 @@ abstract class BaseMiddleware
 {
     /**
      * 服务名.
-     *
-     * @var string
      */
-    protected $serviceName = 'imi';
+    protected string $serviceName = 'imi';
 
     /**
      * 服务器 IP，默认获取当前网卡 IP.
-     *
-     * @var string
      */
-    protected $serverIp;
+    protected ?string $serverIp = null;
 
     /**
      * 网卡 interface 名
      * 自动获取当前网卡IP时有效.
-     *
-     * @var string
      */
-    protected $interface;
+    protected ?string $interface = null;
 
     /**
      * 当成功时上报的默认code.
-     *
-     * @var int
      */
-    protected $successCode = 0;
+    protected int $successCode = 0;
 
     /**
      * 当发生异常时上报的默认code.
-     *
-     * @var int
      */
-    protected $exceptionCode = 500;
+    protected int $exceptionCode = 500;
 
     public function __init(): void
     {
