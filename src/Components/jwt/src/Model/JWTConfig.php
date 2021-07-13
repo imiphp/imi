@@ -16,59 +16,43 @@ class JWTConfig
 
     /**
      * 签名者.
-     *
-     * @var string
      */
-    private $signer = 'Hmac';
+    private string $signer = 'Hmac';
 
     /**
      * 算法.
-     *
-     * @var string
      */
-    private $algo = 'Sha256';
+    private string $algo = 'Sha256';
 
     /**
      * 自定义数据字段名.
-     *
-     * @var string
      */
-    private $dataName = 'data';
+    private string $dataName = 'data';
 
     /**
      * 接收.
-     *
-     * @var string|null
      */
-    private $audience;
+    private ?string $audience = null;
 
     /**
      * 主题.
-     *
-     * @var string|null
      */
-    private $subject;
+    private ?string $subject = null;
 
     /**
      * 超时秒数.
-     *
-     * @var int|null
      */
-    private $expires;
+    private ?int $expires = null;
 
     /**
      * 发行人.
-     *
-     * @var string|null
      */
-    private $issuer;
+    private ?string $issuer = null;
 
     /**
      * 实际日期必须大于等于本值
-     *
-     * @var int
      */
-    private $notBefore;
+    private int $notBefore = 0;
 
     /**
      * JWT 发出时间
@@ -82,38 +66,30 @@ class JWTConfig
 
     /**
      * Token id.
-     *
-     * @var string|null
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * 头.
-     *
-     * @var array
      */
-    private $headers = [];
+    private array $headers = [];
 
     /**
      * 自定义获取 token 回调.
      *
      * @var callable|null
      */
-    private $tokenHandler;
+    private $tokenHandler = null;
 
     /**
      * 私钥.
-     *
-     * @var string
      */
-    private $privateKey;
+    private string $privateKey = '';
 
     /**
      * 公钥.
-     *
-     * @var string
      */
-    private $publicKey;
+    private string $publicKey = '';
 
     /**
      * Get 签名者.
@@ -217,20 +193,16 @@ class JWTConfig
 
     /**
      * Get 自定义数据字段名.
-     *
-     * @return string
      */
-    public function getDataName()
+    public function getDataName(): string
     {
         return $this->dataName;
     }
 
     /**
      * Get 实际日期必须大于等于本值
-     *
-     * @return int
      */
-    public function getNotBefore()
+    public function getNotBefore(): int
     {
         return $this->notBefore;
     }

@@ -49,7 +49,6 @@ class JWTValidationAop
         {
             throw new AnnotationNotFoundException(sprintf('%s::%s() must have @%s annotation', $class, $method, JWTValidation::class));
         }
-        var_dump($jwtValidation->toArray());
         /** @var \Imi\JWT\Bean\JWT $jwt */
         $jwt = App::getBean('JWT');
         $config = $jwt->getConfig($jwtValidation->name);

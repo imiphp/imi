@@ -19,24 +19,20 @@ class JWT
 {
     /**
      * 配置列表.
-     *
-     * @var array
      */
-    protected $list = [];
+    protected array $list = [];
 
     /**
      * 默认配置名.
-     *
-     * @var string|null
      */
-    protected $default;
+    protected ?string $default = null;
 
     /**
      * 处理后的列表.
      *
      * @var \Imi\JWT\Model\JWTConfig[]
      */
-    private $parsedList = [];
+    private array $parsedList = [];
 
     public function __init(): void
     {
