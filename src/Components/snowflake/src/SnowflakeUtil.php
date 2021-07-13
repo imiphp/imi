@@ -10,10 +10,8 @@ class SnowflakeUtil
 {
     /**
      * 实例对象集合.
-     *
-     * @var array
      */
-    private static $instances = [];
+    private static array $instances = [];
 
     /**
      * 获取实例对象
@@ -66,10 +64,8 @@ class SnowflakeUtil
 
     /**
      * 解析雪花算法生成的ID.
-     *
-     * @param bool $transform
      */
-    public static function parseId(string $name, string $id, $transform = false): array
+    public static function parseId(string $name, string $id, bool $transform = false): array
     {
         return static::getInstance($name)->parseId($id, $transform);
     }

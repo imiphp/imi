@@ -23,25 +23,19 @@ class Snowflake
      *         'redisPool'      => null, // Redis 连接池名称，为空取默认连接池
      *     ]
      * ]
-     *
-     * @var array
      */
-    protected $list = [];
+    protected array $list = [];
 
     /**
      * Get List.
-     *
-     * @return array
      */
-    public function getList()
+    public function getList(): array
     {
         return $this->list;
     }
 
     /**
      * 使用名称获取配置.
-     *
-     * @return array
      */
     public function getByName(string $name): ?array
     {

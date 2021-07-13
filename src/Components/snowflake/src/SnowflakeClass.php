@@ -9,7 +9,7 @@ use Imi\Worker;
 
 class SnowflakeClass extends Snowflake
 {
-    public function __construct(int $datacenter = null, int $workerid = null)
+    public function __construct(?int $datacenter = null, ?int $workerid = null)
     {
         if (null === $workerid)
         {
