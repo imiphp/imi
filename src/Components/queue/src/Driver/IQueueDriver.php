@@ -36,24 +36,18 @@ interface IQueueDriver
      * 清空队列.
      *
      * @param int|int[]|null $queueType 清空哪个队列，默认为全部
-     *
-     * @return void
      */
-    public function clear($queueType = null);
+    public function clear($queueType = null): void;
 
     /**
      * 将消息标记为成功
-     *
-     * @return void
      */
-    public function success(IMessage $message);
+    public function success(IMessage $message): int;
 
     /**
      * 将消息标记为失败.
-     *
-     * @return void
      */
-    public function fail(IMessage $message, bool $requeue = false);
+    public function fail(IMessage $message, bool $requeue = false): int;
 
     /**
      * 获取队列状态

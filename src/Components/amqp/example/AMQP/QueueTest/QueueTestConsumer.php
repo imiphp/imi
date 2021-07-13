@@ -20,10 +20,8 @@ class QueueTestConsumer extends BaseQueueConsumer
      * 处理消费.
      *
      * @param QueueAMQPMessage $message
-     *
-     * @return void
      */
-    protected function consume(IMessage $message, IQueueDriver $queue)
+    protected function consume(IMessage $message, IQueueDriver $queue): void
     {
         var_dump(__CLASS__, $message->getMessage(), \get_class($message));
         $queueTestMessage = QueueTestMessage::fromMessage($message->getMessage());

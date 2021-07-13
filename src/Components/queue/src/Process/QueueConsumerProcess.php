@@ -6,6 +6,7 @@ namespace Imi\Queue\Process;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\App;
+use Imi\Queue\Service\QueueService;
 use Imi\Swoole\Process\Annotation\Process;
 use Imi\Swoole\Process\BaseProcess;
 use Imi\Swoole\Util\Imi;
@@ -21,17 +22,15 @@ class QueueConsumerProcess extends BaseProcess
 {
     /**
      * @Inject("imiQueue")
-     *
-     * @var \Imi\Queue\Service\QueueService
      */
-    protected $imiQueue;
+    protected QueueService $imiQueue;
 
     /**
      * 消费者列表.
      *
      * @var \Imi\Queue\Service\BaseQueueConsumer[]
      */
-    private $consumers = [];
+    private array $consumers = [];
 
     public function run(\Swoole\Process $process): void
     {

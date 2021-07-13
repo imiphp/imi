@@ -28,28 +28,22 @@ abstract class BaseQueueConsumer
      *
      * @var \Imi\Queue\Service\QueueService
      */
-    protected $imiQueue;
+    protected QueueService $imiQueue;
 
     /**
      * 队列名称.
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * 是否正在工作.
-     *
-     * @var bool
      */
-    private $working = false;
+    private bool $working = false;
 
     /**
      * 协程工作池.
-     *
-     * @var \Yurun\Swoole\CoPool\CoPool|null
      */
-    private $coPool;
+    private ?CoPool $coPool;
 
     public function __construct(?string $name = null)
     {
@@ -58,10 +52,8 @@ abstract class BaseQueueConsumer
 
     /**
      * 开始消费循环.
-     *
-     * @return void
      */
-    public function start(?int $co = null)
+    public function start(?int $co = null): void
     {
         $this->working = true;
         $config = $this->imiQueue->getQueueConfig($this->name);
@@ -137,10 +129,8 @@ abstract class BaseQueueConsumer
 
     /**
      * 停止消费.
-     *
-     * @return void
      */
-    public function stop()
+    public function stop(): void
     {
         $this->working = false;
         if ($this->coPool)
@@ -151,8 +141,6 @@ abstract class BaseQueueConsumer
 
     /**
      * 处理消费.
-     *
-     * @return void
      */
-    abstract protected function consume(IMessage $message, IQueueDriver $queue);
+    abstract protected function consume(IMessage $message, IQueueDriver $queue): void;
 }

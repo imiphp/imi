@@ -406,10 +406,8 @@ class AMQPQueueDriver implements IQueueDriver
      * 清空队列.
      *
      * @param int|int[]|null $queueType 清空哪个队列，默认为全部
-     *
-     * @return void
      */
-    public function clear($queueType = null)
+    public function clear($queueType = null): void
     {
         if (null === $queueType)
         {
@@ -454,9 +452,11 @@ class AMQPQueueDriver implements IQueueDriver
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
      */
-    public function success(IMessage $message): void
+    public function success(IMessage $message): int
     {
         $this->consumer->getAMQPChannel()->basic_ack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag());
+
+        return 1;
     }
 
     /**
@@ -464,13 +464,13 @@ class AMQPQueueDriver implements IQueueDriver
      *
      * @param \Imi\AMQP\Queue\QueueAMQPMessage $message
      */
-    public function fail(IMessage $message, bool $requeue = false): void
+    public function fail(IMessage $message, bool $requeue = false): int
     {
         if ($requeue)
         {
             $this->consumer->getAMQPChannel()->basic_nack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag(), false, $requeue);
 
-            return;
+            return 0;
         }
         if ($this->supportFail)
         {
@@ -483,6 +483,8 @@ class AMQPQueueDriver implements IQueueDriver
         {
             $this->consumer->getAMQPChannel()->basic_nack($message->getAmqpMessage()->getAMQPMessage()->getDeliveryTag());
         }
+
+        return 1;
     }
 
     /**

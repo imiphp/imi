@@ -19,38 +19,32 @@ class QueueService
 {
     /**
      * 队列列表.
-     *
-     * @var array
      */
-    protected $list;
+    protected array $list;
 
     /**
      * 默认队列.
-     *
-     * @var string|null
      */
-    protected $default;
+    protected ?string $default = null;
 
     /**
      * 队列对象集合.
      *
      * @var \Imi\Queue\Driver\IQueueDriver[]
      */
-    private $queueInstances;
+    private array $queueInstances = [];
 
     /**
      * 配置集合.
      *
      * @var \Imi\Queue\Model\QueueConfig[]
      */
-    private $configs = [];
+    private array $configs = [];
 
     /**
      * Get 队列列表.
-     *
-     * @return array
      */
-    public function getList()
+    public function getList(): array
     {
         return $this->list;
     }
@@ -59,10 +53,8 @@ class QueueService
      * Set 队列列表.
      *
      * @param array $list 队列列表
-     *
-     * @return self
      */
-    public function setList(array $list)
+    public function setList(array $list): self
     {
         $this->list = $list;
 

@@ -16,85 +16,65 @@ class QueueStatus implements JsonSerializable
 
     /**
      * 准备就绪数量.
-     *
-     * @var int
      */
-    protected $ready;
+    protected int $ready;
 
     /**
      * 工作中数量.
-     *
-     * @var int
      */
-    protected $working;
+    protected int $working;
 
     /**
      * 失败数量.
-     *
-     * @var int
      */
-    protected $fail;
+    protected int $fail;
 
     /**
      * 超时数量.
-     *
-     * @var int
      */
-    protected $timeout;
+    protected int $timeout;
 
     /**
      * 延时数量.
-     *
-     * @var int
      */
-    protected $delay;
+    protected int $delay;
 
     /**
      * Get 准备就绪数量.
-     *
-     * @return int
      */
-    public function getReady()
+    public function getReady(): int
     {
         return $this->ready;
     }
 
     /**
      * Get 工作中数量.
-     *
-     * @return int
      */
-    public function getWorking()
+    public function getWorking(): int
     {
         return $this->working;
     }
 
     /**
      * Get 失败数量.
-     *
-     * @return int
      */
-    public function getFail()
+    public function getFail(): int
     {
         return $this->fail;
     }
 
     /**
      * Get 超时数量.
-     *
-     * @return int
      */
-    public function getTimeout()
+    public function getTimeout(): int
     {
         return $this->timeout;
     }
 
     /**
      * Get 延时数量.
-     *
-     * @return int
      */
-    public function getDelay()
+    public function getDelay(): int
     {
         return $this->delay;
     }

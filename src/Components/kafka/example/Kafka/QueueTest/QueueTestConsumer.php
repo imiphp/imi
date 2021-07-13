@@ -17,10 +17,8 @@ class QueueTestConsumer extends BaseQueueConsumer
 {
     /**
      * 处理消费.
-     *
-     * @return void
      */
-    protected function consume(IMessage $message, IQueueDriver $queue)
+    protected function consume(IMessage $message, IQueueDriver $queue): void
     {
         $queueTestMessage = QueueTestMessage::fromMessage($message->getMessage());
         Redis::set('imi-kafka:consume:QueueTest:' . $queueTestMessage->getMemberId(), $message->getMessage());

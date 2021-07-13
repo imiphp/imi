@@ -121,7 +121,7 @@ class KafkaQueueDriver implements IQueueDriver
     /**
      * 将消息标记为成功
      */
-    public function success(IMessage $message): void
+    public function success(IMessage $message): int
     {
         if (!$message instanceof IKafkaPopMessage)
         {
@@ -129,13 +129,16 @@ class KafkaQueueDriver implements IQueueDriver
         }
         $consumer = $this->getConsumer($this->name);
         $consumer->ack($message->getConsumeMessage());
+
+        return 1;
     }
 
     /**
      * 将消息标记为失败.
      */
-    public function fail(IMessage $message, bool $requeue = false): void
+    public function fail(IMessage $message, bool $requeue = false): int
     {
+        return 0;
     }
 
     /**

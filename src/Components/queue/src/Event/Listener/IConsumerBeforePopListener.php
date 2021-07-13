@@ -13,8 +13,6 @@ interface IConsumerBeforePopListener
 {
     /**
      * 事件处理方法.
-     *
-     * @return void
      */
-    public function handle(ConsumerBeforePopParam $e);
+    public function handle(ConsumerBeforePopParam $e): void;
 }

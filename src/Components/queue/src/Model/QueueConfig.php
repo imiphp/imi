@@ -8,68 +8,50 @@ class QueueConfig
 {
     /**
      * 队列名称.
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * 使用的队列驱动.
-     *
-     * @var string
      */
-    private $driver = 'RedisQueueDriver';
+    private string $driver = 'RedisQueueDriver';
 
     /**
      * 消费协程数量.
-     *
-     * @var int
      */
-    private $co = 1;
+    private int $co = 1;
 
     /**
      * 消费进程数量.
      *
      * 可能会受进程分组影响，以同一组中配置的最多进程数量为准
-     *
-     * @var int
      */
-    private $process = 1;
+    private int $process = 1;
 
     /**
      * 消费循环尝试 pop 的时间间隔，单位：秒.
-     *
-     * @var float
      */
-    private $timespan = 0.03;
+    private float $timespan = 0.03;
 
     /**
      * 驱动类所需要的参数数组.
-     *
-     * @var array
      */
-    private $config = [];
+    private array $config = [];
 
     /**
      * 进程分组名称.
-     *
-     * @var string
      */
-    private $processGroup = 'default';
+    private string $processGroup = 'default';
 
     /**
      * 自动消费.
-     *
-     * @var bool
      */
-    private $autoConsumer = true;
+    private bool $autoConsumer = true;
 
     /**
      * 消费者类.
-     *
-     * @var string
      */
-    private $consumer;
+    private string $consumer;
 
     public function __construct(string $name, array $data)
     {
@@ -110,90 +92,72 @@ class QueueConfig
 
     /**
      * Get 使用的队列驱动.
-     *
-     * @return string
      */
-    public function getDriver()
+    public function getDriver(): string
     {
         return $this->driver;
     }
 
     /**
      * Get 消费协程数量.
-     *
-     * @return int
      */
-    public function getCo()
+    public function getCo(): int
     {
         return $this->co;
     }
 
     /**
      * Get 消费进程数量.
-     *
-     * @return int
      */
-    public function getProcess()
+    public function getProcess(): int
     {
         return $this->process;
     }
 
     /**
      * Get 消费循环尝试 pop 的时间间隔，单位：秒.
-     *
-     * @return float
      */
-    public function getTimespan()
+    public function getTimespan(): float
     {
         return $this->timespan;
     }
 
     /**
      * Get 驱动类所需要的参数数组.
-     *
-     * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
 
     /**
      * Get 队列名称.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Get 进程分组名称.
-     *
-     * @return string
      */
-    public function getProcessGroup()
+    public function getProcessGroup(): string
     {
         return $this->processGroup;
     }
 
     /**
      * Get 自动消费.
-     *
-     * @return bool
      */
-    public function getAutoConsumer()
+    public function getAutoConsumer(): bool
     {
         return $this->autoConsumer;
     }
 
     /**
      * Get 消费者类.
-     *
-     * @return string
      */
-    public function getConsumer()
+    public function getConsumer(): string
     {
         return $this->consumer;
     }

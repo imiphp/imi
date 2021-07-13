@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Imi\Queue\Tool;
 
+use Imi\Cli\Annotation\Argument;
+use Imi\Cli\Annotation\Command;
+use Imi\Cli\Annotation\CommandAction;
 use Imi\Queue\Facade\Queue;
-use Imi\Tool\Annotation\Arg;
-use Imi\Tool\Annotation\Operation;
-use Imi\Tool\Annotation\Tool;
 
 /**
- * @Tool("queue")
+ * @Command("queue")
  */
 class QueueTool
 {
     /**
      * 获取队列状态
      *
-     * @Operation("status")
-     * @Arg(name="queue", type="string", required=true)
+     * @CommandAction("status")
+     * @Argument(name="queue", type="string", required=true)
      *
      * @return void
      */
@@ -30,8 +30,8 @@ class QueueTool
     /**
      * 将失败消息恢复到队列.
      *
-     * @Operation("restoreFail")
-     * @Arg(name="queue", type="string", required=true)
+     * @CommandAction("restoreFail")
+     * @Argument(name="queue", type="string", required=true)
      *
      * @return void
      */
@@ -43,8 +43,8 @@ class QueueTool
     /**
      * 将超时消息恢复到队列.
      *
-     * @Operation("restoreTimeout")
-     * @Arg(name="queue", type="string", required=true)
+     * @CommandAction("restoreTimeout")
+     * @Argument(name="queue", type="string", required=true)
      *
      * @return void
      */

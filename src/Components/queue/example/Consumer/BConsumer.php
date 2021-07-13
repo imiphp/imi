@@ -17,10 +17,8 @@ class BConsumer extends BaseQueueConsumer
 {
     /**
      * 处理消费.
-     *
-     * @return void
      */
-    protected function consume(IMessage $message, IQueueDriver $queue)
+    protected function consume(IMessage $message, IQueueDriver $queue): void
     {
         Log::info(sprintf('[%s]%s:%s', $queue->getName(), $message->getMessageId(), $message->getMessage()));
         $queue->success($message);

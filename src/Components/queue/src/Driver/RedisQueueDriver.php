@@ -26,31 +26,23 @@ class RedisQueueDriver implements IQueueDriver
 
     /**
      * Redis 连接池名称.
-     *
-     * @var string
      */
-    protected $poolName;
+    protected ?string $poolName = null;
 
     /**
      * 键前缀
-     *
-     * @var string
      */
-    protected $prefix = 'imi:';
+    protected string $prefix = 'imi:';
 
     /**
      * 队列名称.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 循环尝试 pop 的时间间隔，单位：秒.
-     *
-     * @var float
      */
-    protected $timespan = 0.03;
+    protected float $timespan = 0.03;
 
     public function __construct(string $name, array $config = [])
     {
@@ -296,10 +288,8 @@ LUA
      * 清空队列.
      *
      * @param int|int[]|null $queueType 清空哪个队列，默认为全部
-     *
-     * @return void
      */
-    public function clear($queueType = null)
+    public function clear($queueType = null): void
     {
         if (null === $queueType)
         {
@@ -319,10 +309,8 @@ LUA
 
     /**
      * 将消息标记为成功
-     *
-     * @return bool
      */
-    public function success(IMessage $message)
+    public function success(IMessage $message): int
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<LUA
@@ -358,10 +346,8 @@ LUA
 
     /**
      * 将消息标记为失败.
-     *
-     * @return bool
      */
-    public function fail(IMessage $message, bool $requeue = false)
+    public function fail(IMessage $message, bool $requeue = false): int
     {
         $redis = RedisManager::getInstance($this->poolName);
         if ($requeue)
@@ -551,10 +537,8 @@ LUA
      * 将处理超时的消息加入到超时队列.
      *
      * 返回消息数量
-     *
-     * @return int
      */
-    protected function parseTimeoutMessages(int $count = 100)
+    protected function parseTimeoutMessages(int $count = 100): int
     {
         $redis = RedisManager::getInstance($this->poolName);
         $result = $redis->evalEx(<<<LUA
@@ -589,7 +573,7 @@ LUA
             }
         }
 
-        return $result;
+        return (int) $result;
     }
 
     /**

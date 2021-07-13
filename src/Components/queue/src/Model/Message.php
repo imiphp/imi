@@ -13,38 +13,28 @@ class Message implements IMessage
 {
     /**
      * 消息 ID.
-     *
-     * @var string
      */
-    protected $messageId = '';
+    protected string $messageId = '';
 
     /**
      * 已重试次数.
-     *
-     * @var int
      */
-    protected $retryCount = 0;
+    protected int $retryCount = 0;
 
     /**
      * 最大重试次数.
-     *
-     * @var int
      */
-    protected $maxRetryCount = 0;
+    protected int $maxRetryCount = 0;
 
     /**
      * 消息内容.
-     *
-     * @var string
      */
-    protected $message;
+    protected string $message;
 
     /**
      * 工作超时时间，单位：秒.
-     *
-     * @var float
      */
-    protected $workingTimeout = 0;
+    protected float $workingTimeout = 0;
 
     /**
      * 获取消息 ID.
@@ -56,10 +46,8 @@ class Message implements IMessage
 
     /**
      * 设置消息 ID.
-     *
-     * @return void
      */
-    public function setMessageId(string $messageId)
+    public function setMessageId(string $messageId): void
     {
         $this->messageId = $messageId;
     }
@@ -74,10 +62,8 @@ class Message implements IMessage
 
     /**
      * 设置消息内容.
-     *
-     * @return void
      */
-    public function setMessage(string $message)
+    public function setMessage(string $message): void
     {
         $this->message = $message;
     }
@@ -93,11 +79,11 @@ class Message implements IMessage
     /**
      * 设置工作超时时间，单位：秒.
      *
-     * @return void
+     * @param float $workingTimeout
      */
-    public function setWorkingTimeout(float $workingTimeout)
+    public function setWorkingTimeout($workingTimeout): void
     {
-        $this->workingTimeout = $workingTimeout;
+        $this->workingTimeout = (float) $workingTimeout;
     }
 
     /**
@@ -111,11 +97,11 @@ class Message implements IMessage
     /**
      * 获取重试次数.
      *
-     * @return void
+     * @param int $retryCount
      */
-    public function setRetryCount(int $retryCount)
+    public function setRetryCount($retryCount): void
     {
-        $this->retryCount = $retryCount;
+        $this->retryCount = (int) $retryCount;
     }
 
     /**
@@ -129,11 +115,11 @@ class Message implements IMessage
     /**
      * 获取最大重试次数.
      *
-     * @return void
+     * @param int $maxRetryCount
      */
-    public function setMaxRetryCount(int $maxRetryCount)
+    public function setMaxRetryCount($maxRetryCount): void
     {
-        $this->maxRetryCount = $maxRetryCount;
+        $this->maxRetryCount = (int) $maxRetryCount;
     }
 
     /**
@@ -152,14 +138,20 @@ class Message implements IMessage
 
     /**
      * 从数组加载数据.
-     *
-     * @return void
      */
-    public function loadFromArray(array $data)
+    public function loadFromArray(array $data): void
     {
         foreach ($data as $k => $v)
         {
-            $this->$k = $v;
+            $method = 'set' . ucfirst($k);
+            if (method_exists($this, $method))
+            {
+                $this->$method($v);
+            }
+            else
+            {
+                $this->$k = $v;
+            }
         }
     }
 }
