@@ -15,10 +15,7 @@ use Imi\Util\Text;
  */
 class RpcControllerParser extends BaseParser
 {
-    /**
-     * @var array
-     */
-    protected $cache = [];
+    protected array $cache = [];
 
     /**
      * 处理方法.
@@ -36,13 +33,8 @@ class RpcControllerParser extends BaseParser
 
     /**
      * 根据服务器获取对应的控制器数据.
-     *
-     * @param string $serverName
-     * @param string $controllerAnnotationClass
-     *
-     * @return array
      */
-    public function getByServer($serverName, $controllerAnnotationClass)
+    public function getByServer(string $serverName, string $controllerAnnotationClass): array
     {
         if (isset($this->cache[$serverName]))
         {

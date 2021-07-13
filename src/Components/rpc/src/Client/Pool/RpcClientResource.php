@@ -14,10 +14,8 @@ class RpcClientResource extends BasePoolResource
 {
     /**
      * rpcClient对象
-     *
-     * @var IRpcClient
      */
-    private $client;
+    private IRpcClient $client;
 
     public function __construct(\Imi\Pool\Interfaces\IPool $pool, IRpcClient $client)
     {
@@ -45,10 +43,8 @@ class RpcClientResource extends BasePoolResource
 
     /**
      * 获取对象实例.
-     *
-     * @return IRpcClient
      */
-    public function getInstance()
+    public function getInstance(): IRpcClient
     {
         return $this->client;
     }

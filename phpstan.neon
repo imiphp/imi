@@ -9,11 +9,9 @@ parameters:
         - config
         - dev
         - split-repository
-        - dev
 
     excludePaths:
-        - split-repository/vendor/*
-        - src/Components/*/vendor/*
+        - */vendor/*
 
     bootstrapFiles:
         - vendor/autoload.php

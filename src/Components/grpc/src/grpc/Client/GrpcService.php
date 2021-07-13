@@ -6,6 +6,7 @@ namespace Imi\Grpc\Client;
 
 use Imi\Aop\Annotation\Inject;
 use Imi\Grpc\Client\Contract\IGrpcService;
+use Imi\Grpc\Util\GrpcInterfaceManager;
 use Imi\Rpc\Client\IRpcClient;
 
 class GrpcService implements IGrpcService
@@ -15,48 +16,34 @@ class GrpcService implements IGrpcService
      *
      * @var \Imi\Grpc\Client\GrpcClient
      */
-    protected $client;
+    protected GrpcClient $client;
 
     /**
      * 包名.
-     *
-     * @var string
      */
-    protected $package;
+    protected string $package = '';
 
     /**
      * 服务名称.
-     *
-     * @var string
      */
-    protected $serviceName;
+    protected string $serviceName = '';
 
     /**
      * 完整服务名称.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 服务接口.
-     *
-     * @var string|null
      */
-    protected $interface;
+    protected ?string $interface;
 
     /**
      * @Inject("GrpcInterfaceManager")
-     *
-     * @var \Imi\Grpc\Util\GrpcInterfaceManager
      */
-    protected $interfaceManager;
+    protected GrpcInterfaceManager $interfaceManager;
 
-    /**
-     * @param string      $name
-     * @param string|null $interface
-     */
-    public function __construct(GrpcClient $client, $name, $interface = null)
+    public function __construct(GrpcClient $client, string $name, ?string $interface = null)
     {
         $this->client = $client;
         $this->name = $name;
@@ -70,10 +57,8 @@ class GrpcService implements IGrpcService
 
     /**
      * 获取服务名称.
-     *
-     * @return string|null
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -83,26 +68,17 @@ class GrpcService implements IGrpcService
      * 成功返回 streamId
      * $metadata 格式：['key' => ['value']].
      *
-     * @param string $method
-     * @param array  $metadata
-     *
      * @return int|bool
      */
-    public function send($method, \Google\Protobuf\Internal\Message $message, $metadata = [])
+    public function send(string $method, \Google\Protobuf\Internal\Message $message, array $metadata = [])
     {
         return $this->client->send($this->package, $this->serviceName, $method, $message, $metadata);
     }
 
     /**
      * 接收响应结果.
-     *
-     * @param string     $responseClass
-     * @param int        $streamId
-     * @param float|null $timeout
-     *
-     * @return \Google\Protobuf\Internal\Message
      */
-    public function recv($responseClass, $streamId = -1, $timeout = null)
+    public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null): \Google\Protobuf\Internal\Message
     {
         return $this->client->recv($responseClass, $streamId, $timeout);
     }
@@ -115,7 +91,7 @@ class GrpcService implements IGrpcService
      *
      * @return mixed
      */
-    public function call($method, $args = [])
+    public function call(string $method, array $args = [])
     {
         $streamId = $this->send($method, $args[0] ?? null);
         if (!$streamId)

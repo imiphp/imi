@@ -8,6 +8,8 @@ use Imi\Bean\Annotation\Listener;
 use Imi\Event\EventParam;
 use Imi\Event\IEventListener;
 use Imi\Hprose\Route\Annotation\HproseRoute;
+use Imi\Rpc\Route\Annotation\RpcController;
+use Imi\Rpc\Route\Annotation\RpcRoute;
 
 /**
  * @Listener("IMI.ROUTE.INIT.DEFAULT:Hprose")
@@ -25,15 +27,8 @@ class InitDefaultRoute implements IEventListener
 
     /**
      * 初始化.
-     *
-     * @param string                                  $className
-     * @param \Imi\Rpc\Route\Annotation\RpcController $classAnnotation
-     * @param string                                  $methodName
-     * @param \Imi\Rpc\Route\Annotation\RpcRoute      $result
-     *
-     * @return void
      */
-    private function init($className, $classAnnotation, $methodName, &$result)
+    private function init(string $className, RpcController $classAnnotation, string $methodName, ?RpcRoute &$result): void
     {
         $result = new HproseRoute([
             'name'      => $methodName,

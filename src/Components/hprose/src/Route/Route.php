@@ -23,13 +23,11 @@ class Route implements IRoute
      * 路由解析处理.
      *
      * @param mixed $data
-     *
-     * @return array|null
      */
-    public function parse($data)
+    public function parse($data): array
     {
         // 由 hprose 对象内部处理
-        return null;
+        return [];
     }
 
     /**
@@ -38,11 +36,8 @@ class Route implements IRoute
      * @param RpcController $controllerAnnotation
      * @param HproseRoute   $routeAnnotation
      * @param mixed         $callable
-     * @param array         $options
-     *
-     * @return void
      */
-    public function addRuleAnnotation(IRpcController $controllerAnnotation, IRpcRoute $routeAnnotation, $callable, $options = [])
+    public function addRuleAnnotation(IRpcController $controllerAnnotation, IRpcRoute $routeAnnotation, $callable, array $options = []): void
     {
         // callable
         $callable = $this->parseCallable($callable);
@@ -87,14 +82,8 @@ class Route implements IRoute
 
     /**
      * 获取缺省的路由注解.
-     *
-     * @param string $className
-     * @param string $methodName
-     * @param array  $options
-     *
-     * @return HproseRoute
      */
-    public function getDefaultRouteAnnotation($className, $methodName, IRpcController $controllerAnnotation, $options = [])
+    public function getDefaultRouteAnnotation(string $className, string $methodName, IRpcController $controllerAnnotation, array $options = []): HproseRoute
     {
         return new HproseRoute([
             'name'      => $methodName,
@@ -105,10 +94,8 @@ class Route implements IRoute
      * 处理回调.
      *
      * @param callable|RouteCallable $callable
-     *
-     * @return callable
      */
-    private function parseCallable($callable)
+    private function parseCallable($callable): callable
     {
         if ($callable instanceof RouteCallable)
         {

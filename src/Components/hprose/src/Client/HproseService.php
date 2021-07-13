@@ -11,17 +11,13 @@ class HproseService implements IService
 {
     /**
      * 客户端.
-     *
-     * @var \Imi\Rpc\Client\IRpcClient
      */
-    protected $client;
+    protected IRpcClient $client;
 
     /**
      * 服务名称.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     public function __construct(IRpcClient $client, string $name)
     {
@@ -31,10 +27,8 @@ class HproseService implements IService
 
     /**
      * 获取服务名称.
-     *
-     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -47,7 +41,7 @@ class HproseService implements IService
      *
      * @return mixed
      */
-    public function call($method, $args = [])
+    public function call(string $method, array $args = [])
     {
         return $this->client->getInstance()->{$this->name}->$method(...$args);
     }

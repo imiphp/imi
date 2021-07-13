@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Hprose\Client;
 
+use Hprose\Socket\Client;
 use Imi\Event\Event;
 use Imi\Rpc\Client\IRpcClient;
 use Imi\Rpc\Client\IService;
@@ -15,24 +16,20 @@ class HproseSocketClient implements IRpcClient
 {
     /**
      * Client.
-     *
-     * @var \Hprose\Socket\Client|null
      */
-    protected $client;
+    protected ?Client $client;
 
     /**
      * 配置.
-     *
-     * @var array
      */
-    protected $options;
+    protected array $options;
 
     /**
      * 构造方法.
      *
      * @param array $options 配置
      */
-    public function __construct($options)
+    public function __construct(array $options)
     {
         $this->options = $options;
     }
@@ -68,10 +65,8 @@ class HproseSocketClient implements IRpcClient
 
     /**
      * 获取实例对象
-     *
-     * @return \Hprose\Socket\Client
      */
-    public function getInstance()
+    public function getInstance(): Client
     {
         return $this->client;
     }
@@ -79,19 +74,17 @@ class HproseSocketClient implements IRpcClient
     /**
      * 获取服务对象
      *
-     * @param string $name 服务名
+     * @param string|null $name 服务名
      */
-    public function getService($name = null): IService
+    public function getService(?string $name = null): IService
     {
         return new HproseService($this, $name);
     }
 
     /**
      * 获取配置.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

@@ -11,6 +11,8 @@ use Imi\Grpc\Parser;
 use Imi\RequestContext;
 use Imi\Server\Annotation\ServerInject;
 use Imi\Server\Http\Message\Request;
+use Imi\Server\Http\Route\RouteResult;
+use Imi\Server\View\View;
 use Imi\Util\Http\Response;
 use Imi\Util\Stream\MemoryStream;
 use Psr\Http\Message\ResponseInterface;
@@ -25,17 +27,15 @@ class ActionMiddleware implements MiddlewareInterface
 {
     /**
      * @ServerInject("View")
-     *
-     * @var \Imi\Server\View\View
      */
-    protected $view;
+    protected View $view;
 
     /**
      * 动作方法参数缓存.
      *
      * @var \ReflectionParameter[]
      */
-    private $actionMethodParams = [];
+    private array $actionMethodParams = [];
 
     /**
      * 处理方法.
@@ -129,12 +129,8 @@ class ActionMiddleware implements MiddlewareInterface
 
     /**
      * 准备调用action的参数.
-     *
-     * @param \Imi\Server\Http\Route\RouteResult $routeResult
-     *
-     * @return array
      */
-    private function prepareActionParams(Request $request, $routeResult)
+    private function prepareActionParams(Request $request, RouteResult $routeResult): array
     {
         // 根据动作回调类型获取反射
         if (\is_array($routeResult->callable))

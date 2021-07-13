@@ -13,21 +13,12 @@ interface IGrpcService extends IService
      * 成功返回 streamId
      * $metadata 格式：['key' => ['value']].
      *
-     * @param string $method
-     * @param array  $metadata
-     *
      * @return int|bool
      */
-    public function send($method, \Google\Protobuf\Internal\Message $message, $metadata = []);
+    public function send(string $method, \Google\Protobuf\Internal\Message $message, array $metadata = []);
 
     /**
      * 接收响应结果.
-     *
-     * @param string     $responseClass
-     * @param int        $streamId
-     * @param float|null $timeout
-     *
-     * @return \Google\Protobuf\Internal\Message
      */
-    public function recv($responseClass, $streamId = -1, $timeout = null);
+    public function recv(string $responseClass, int $streamId = -1, ?float $timeout = null): \Google\Protobuf\Internal\Message;
 }

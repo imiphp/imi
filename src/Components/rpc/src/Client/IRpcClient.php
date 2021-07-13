@@ -11,21 +11,17 @@ interface IRpcClient
      *
      * @param array $options 配置
      */
-    public function __construct($options);
+    public function __construct(array $options);
 
     /**
      * 打开
-     *
-     * @return bool
      */
-    public function open();
+    public function open(): bool;
 
     /**
      * 关闭.
-     *
-     * @return void
      */
-    public function close();
+    public function close(): void;
 
     /**
      * 是否已连接.
@@ -42,16 +38,14 @@ interface IRpcClient
     /**
      * 获取服务对象
      *
-     * @param string $name 服务名
+     * @param string|null $name 服务名
      *
      * @return \Imi\Rpc\Client\IService
      */
-    public function getService($name = null): IService;
+    public function getService(?string $name = null): IService;
 
     /**
      * 获取配置.
-     *
-     * @return array
      */
-    public function getOptions();
+    public function getOptions(): array;
 }

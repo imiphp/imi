@@ -15,6 +15,7 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcAction;
  * @Target("METHOD")
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
  */
+#[\Attribute]
 class RpcAction extends Base implements IRpcAction
 {
 }

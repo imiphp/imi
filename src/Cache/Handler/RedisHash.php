@@ -313,6 +313,10 @@ SCRIPT;
         {
             throw new InvalidArgumentException('Invalid key: ' . $key);
         }
+        if ('' === $this->separator)
+        {
+            throw new InvalidArgumentException('Invalid separator, it must be not empty');
+        }
         $list = explode($this->separator, $key);
 
         if (isset($list[1]))

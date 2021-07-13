@@ -74,7 +74,7 @@ final class EntryParser
             return Error::create(self::getErrorMessage('an unexpected equals', $line));
         }
 
-        /* @var \GrahamCampbell\ResultType\Result<array{string,string|null},string> */
+        /** @var \GrahamCampbell\ResultType\Result<array{string,string|null},string> */
         return Success::create($result);
     }
 

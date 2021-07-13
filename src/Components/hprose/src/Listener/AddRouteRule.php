@@ -29,11 +29,8 @@ class AddRouteRule implements IEventListener
      * 增加路由规则，直接使用注解方式.
      *
      * @param mixed $callable
-     * @param array $options
-     *
-     * @return void
      */
-    private function addRuleAnnotation(HproseRouteAnnotation $annotation, $callable, $options = [])
+    private function addRuleAnnotation(HproseRouteAnnotation $annotation, $callable, array $options = []): void
     {
         $serverName = $options['serverName'];
         $controllerAnnotation = $options['controller'];

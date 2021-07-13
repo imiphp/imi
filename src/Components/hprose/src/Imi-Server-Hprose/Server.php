@@ -20,15 +20,10 @@ class Server extends BaseRpcServer
 {
     /**
      * Hprose Service.
-     *
-     * @var \Hprose\Swoole\Socket\Service
      */
-    private $hproseService;
+    private \Hprose\Swoole\Socket\Service $hproseService;
 
-    /**
-     * @var bool
-     */
-    private $isHookHproseOn = false;
+    private bool $isHookHproseOn = false;
 
     /**
      * 创建 swoole 服务器对象
@@ -123,7 +118,7 @@ class Server extends BaseRpcServer
      * @param mixed  $callback 回调，支持回调函数、基于IEventListener的类名
      * @param int    $priority 优先级，越大越先执行
      */
-    public function on($name, $callback, $priority = 0): void
+    public function on($name, $callback, int $priority = 0): void
     {
         if ($this->isHookHproseOn)
         {
@@ -199,10 +194,8 @@ class Server extends BaseRpcServer
 
     /**
      * Get hprose Service.
-     *
-     * @return \Hprose\Swoole\Socket\Service
      */
-    public function getHproseService()
+    public function getHproseService(): \Hprose\Swoole\Socket\Service
     {
         return $this->hproseService;
     }

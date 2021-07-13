@@ -9,10 +9,7 @@ use Imi\Server\Http\Error\IErrorHandler;
 
 class GrpcErrorHandler implements IErrorHandler
 {
-    /**
-     * @var string
-     */
-    protected $handler = DefaultGrpcErrorHandler::class;
+    protected string $handler = DefaultGrpcErrorHandler::class;
 
     public function handle(\Throwable $throwable): bool
     {

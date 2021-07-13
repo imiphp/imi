@@ -7,6 +7,8 @@ namespace Imi\Rpc\Client\Pool;
 use Imi\Config;
 use Imi\Pool\PoolManager;
 use Imi\RequestContext;
+use Imi\Rpc\Client\IRpcClient;
+use Imi\Rpc\Client\IService;
 
 /**
  * Rpc客户端连接池.
@@ -16,11 +18,9 @@ class RpcClientPool
     /**
      * 获取新的数据库连接实例.
      *
-     * @param string $poolName 连接池名称
-     *
-     * @return \Imi\Rpc\Client\IRpcClient
+     * @param string|null $poolName 连接池名称
      */
-    public static function getNewInstance($poolName = null)
+    public static function getNewInstance(?string $poolName = null): IRpcClient
     {
         return PoolManager::getResource(static::parsePoolName($poolName))->getInstance();
     }
@@ -28,24 +28,17 @@ class RpcClientPool
     /**
      * 获取数据库连接实例，每个RequestContext中共用一个.
      *
-     * @param string $poolName 连接池名称
-     *
-     * @return \Imi\Rpc\Client\IRpcClient|null
+     * @param string|null $poolName 连接池名称
      */
-    public static function getInstance($poolName = null)
+    public static function getInstance(?string $poolName = null): ?IRpcClient
     {
         return PoolManager::getRequestContextResource(static::parsePoolName($poolName))->getInstance();
     }
 
     /**
      * 获取服务对象
-     *
-     * @param string $serviceName
-     * @param string $poolName
-     *
-     * @return \Imi\Rpc\Client\IService|null
      */
-    public static function getService($serviceName, $poolName = null)
+    public static function getService(string $serviceName, ?string $poolName = null): ?IService
     {
         $client = static::getInstance($poolName);
         if ($client)
@@ -58,12 +51,8 @@ class RpcClientPool
 
     /**
      * 释放数据库连接实例.
-     *
-     * @param \Imi\Rpc\Client\IRpcClient $client
-     *
-     * @return void
      */
-    public static function release($client)
+    public static function release(IRpcClient $client): void
     {
         $resource = RequestContext::get('poolResources.' . spl_object_hash($client));
         if (null !== $resource)
@@ -74,12 +63,8 @@ class RpcClientPool
 
     /**
      * 处理连接池 名称.
-     *
-     * @param string $poolName
-     *
-     * @return string
      */
-    public static function parsePoolName($poolName = null)
+    public static function parsePoolName(?string $poolName = null): string
     {
         if (null === $poolName)
         {
@@ -91,10 +76,8 @@ class RpcClientPool
 
     /**
      * 获取默认池子名称.
-     *
-     * @return string
      */
-    public static function getDefaultPoolName()
+    public static function getDefaultPoolName(): string
     {
         return Config::get('@currentServer.rpc.defaultPool');
     }

@@ -44,10 +44,8 @@ abstract class Parser
 
     /**
      * @param mixed $deserialize
-     *
-     * @return Message|null
      */
-    public static function deserializeMessage($deserialize, string $value)
+    public static function deserializeMessage($deserialize, string $value): ?Message
     {
         if (empty($value))
         {

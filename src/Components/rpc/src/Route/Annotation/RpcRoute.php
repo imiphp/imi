@@ -14,6 +14,9 @@ use Imi\Rpc\Route\Annotation\Contract\IRpcRoute;
  * @Annotation
  * @Target("METHOD")
  * @Parser("Imi\Rpc\Route\Annotation\Parser\RpcControllerParser")
+ *
+ * @property mixed  $name    路由名称规则
+ * @property string $rpcType RPC 协议类型，继承本类后必须赋值
  */
 abstract class RpcRoute extends Base implements IRpcRoute
 {
@@ -25,27 +28,17 @@ abstract class RpcRoute extends Base implements IRpcRoute
     protected ?string $defaultFieldName = 'name';
 
     /**
-     * 路由名称规则.
-     *
-     * @var array
+     * @param mixed $name
      */
-    public $name;
-
-    /**
-     * RPC 协议类型.
-     *
-     * 继承本类后必须赋值
-     *
-     * @var string
-     */
-    public $rpcType;
+    public function __construct(?array $__data = null, $name = null, string $rpcType = '')
+    {
+        parent::__construct(...\func_get_args());
+    }
 
     /**
      * 获取 RPC 类型.
-     *
-     * @return string
      */
-    public function getRpcType()
+    public function getRpcType(): string
     {
         return $this->rpcType;
     }
