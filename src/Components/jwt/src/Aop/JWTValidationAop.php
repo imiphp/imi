@@ -17,6 +17,14 @@ use Imi\JWT\Exception\InvalidTokenException;
 use Imi\RequestContext;
 use Imi\Util\ClassObject;
 use Imi\Util\Http\Consts\RequestHeader;
+use Lcobucci\Clock\FrozenClock;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Validation\Constraint\IdentifiedBy;
+use Lcobucci\JWT\Validation\Constraint\IssuedBy;
+use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
+use Lcobucci\JWT\Validation\Constraint\PermittedFor;
+use Lcobucci\JWT\Validation\Constraint\RelatedTo;
 
 /**
  * @Aspect
@@ -73,41 +81,84 @@ class JWTValidationAop
         $token = $jwt->parseToken($jwtStr, $jwtValidation->name ?? $jwt->getDefault());
 
         // 验证
-        $validationData = new \Lcobucci\JWT\ValidationData();
-        if (false !== $jwtValidation->id)
+        if (3 === $jwt->getJwtPackageVersion())
         {
-            $validationData->setId($jwtValidation->id ?? $config->getId());
-        }
-        if (false !== $jwtValidation->issuer)
-        {
-            $validationData->setIssuer($jwtValidation->issuer ?? $config->getIssuer());
-        }
-        if (false !== $jwtValidation->audience)
-        {
-            $validationData->setAudience($jwtValidation->audience ?? $config->getAudience());
-        }
-        if (false !== $jwtValidation->subject)
-        {
-            $validationData->setSubject($jwtValidation->subject ?? $config->getSubject());
-        }
-        if (!$token->validate($validationData))
-        {
-            throw new InvalidTokenException();
-        }
-
-        if ($jwtValidation->tokenParam || $jwtValidation->dataParam)
-        {
-            $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
-            if ($jwtValidation->tokenParam)
+            $validationData = new \Lcobucci\JWT\ValidationData();
+            if (false !== $jwtValidation->id)
             {
-                $args[$jwtValidation->tokenParam] = $token;
+                $validationData->setId($jwtValidation->id ?? $config->getId());
             }
-            if ($jwtValidation->dataParam)
+            if (false !== $jwtValidation->issuer)
             {
-                $data = $token->getClaim($config->getDataName());
-                $args[$jwtValidation->dataParam] = $data;
+                $validationData->setIssuer($jwtValidation->issuer ?? $config->getIssuer());
             }
-            $args = array_values($args);
+            if (false !== $jwtValidation->audience)
+            {
+                $validationData->setAudience($jwtValidation->audience ?? $config->getAudience());
+            }
+            if (false !== $jwtValidation->subject)
+            {
+                $validationData->setSubject($jwtValidation->subject ?? $config->getSubject());
+            }
+            if (!$token->validate($validationData))
+            {
+                throw new InvalidTokenException();
+            }
+            if ($jwtValidation->tokenParam || $jwtValidation->dataParam)
+            {
+                $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+                if ($jwtValidation->tokenParam)
+                {
+                    $args[$jwtValidation->tokenParam] = $token;
+                }
+                if ($jwtValidation->dataParam)
+                {
+                    $data = $token->getClaim($config->getDataName());
+                    $args[$jwtValidation->dataParam] = $data;
+                }
+                $args = array_values($args);
+            }
+        }
+        else
+        {
+            $config = $jwt->getConfig($jwtValidation->name);
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()), InMemory::plainText($config->getPublicKey()));
+            $constraints = [];
+            if (false !== $jwtValidation->id && null !== ($id = ($jwtValidation->id ?? $config->getId())))
+            {
+                $constraints[] = new IdentifiedBy($id);
+            }
+            if (false !== $jwtValidation->issuer && null !== ($issuer = ($jwtValidation->issuer ?? $config->getIssuer())))
+            {
+                $constraints[] = new IssuedBy($issuer);
+            }
+            if (false !== $jwtValidation->audience && null !== ($audience = ($jwtValidation->audience ?? $config->getAudience())))
+            {
+                $constraints[] = new PermittedFor($audience);
+            }
+            if (false !== $jwtValidation->subject && null !== ($subject = ($jwtValidation->subject ?? $config->getSubject())))
+            {
+                $constraints[] = new RelatedTo($subject);
+            }
+            $constraints[] = new LooseValidAt(new FrozenClock(new \DateTimeImmutable()));
+            if ($constraints && !$configuration->validator()->validate($token, ...$constraints))
+            {
+                throw new InvalidTokenException();
+            }
+            if ($jwtValidation->tokenParam || $jwtValidation->dataParam)
+            {
+                $args = ClassObject::convertArgsToKV($class, $joinPoint->getMethod(), $joinPoint->getArgs());
+                if ($jwtValidation->tokenParam)
+                {
+                    $args[$jwtValidation->tokenParam] = $token;
+                }
+                if ($jwtValidation->dataParam)
+                {
+                    $data = $token->claims()->get($config->getDataName());
+                    $args[$jwtValidation->dataParam] = $data;
+                }
+                $args = array_values($args);
+            }
         }
 
         return $joinPoint->proceed($args ?? null);

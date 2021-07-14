@@ -18,12 +18,26 @@ class JWTTest extends TestCase
             'memberId'  => 19260817,
         ];
         $token = JWT::getToken($data, null, function (Builder $builder) {
-            $builder->expiresAt(strtotime('1926-08-17'));
+            if (3 === JWT::getJwtPackageVersion())
+            {
+                $builder->expiresAt(strtotime('1926-08-17'));
+            }
+            else
+            {
+                $builder->expiresAt(new \DateTimeImmutable('1926-08-17'));
+            }
         });
-        $tokenStr = (string) $token;
+        $tokenStr = $token->toString();
         $token2 = JWT::parseToken($tokenStr);
         $config = JWT::getConfig();
-        $this->assertEquals(json_encode($data), json_encode($token2->getClaim($config->getDataName())));
+        if (3 === JWT::getJwtPackageVersion())
+        {
+            $this->assertEquals(json_encode($data), json_encode($token2->getClaim($config->getDataName())));
+        }
+        else
+        {
+            $this->assertEquals(json_encode($data), json_encode($token2->claims()->get($config->getDataName())));
+        }
     }
 
     /**
