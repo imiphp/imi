@@ -21,6 +21,7 @@ parameters:
     treatPhpDocTypesAsCertain: false
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
         - '#Access to an undefined property Imi\\Util\\LazyArrayObject::\$[^.]+.#'
@@ -38,3 +39,11 @@ parameters:
             message: '#Method \S+ has no return typehint specified.#'
             paths:
                 - tests/unit/**Test.php
+        -
+            message: '#class .+ not found#'
+            paths:
+                - src/Components/jwt/*
+        -
+            message: '#Lcobucci\\JWT\\UnencryptedToken#'
+            paths:
+                - src/Components/jwt/*
