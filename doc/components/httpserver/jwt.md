@@ -79,7 +79,7 @@ $data = [
     'memberId'  =>  19260817,
 ];
 $token = JWT::getToken($data); // Token 对象
-$tokenContent = $token->__toString(); // Token 字符串
+$tokenContent = $token->toString(); // Token 字符串
 ```
 
 指定名称：
@@ -91,7 +91,7 @@ $data = [
     'memberId'  =>  19260817,
 ];
 $token = JWT::getToken($data, 'a'); // Token 对象
-$tokenContent = $token->__toString(); // Token 字符串
+$tokenContent = $token->toString(); // Token 字符串
 ```
 
 自定义处理：
@@ -106,7 +106,7 @@ $token = JWT::getToken($data, 'a', function(\Lcobucci\JWT\Builder $builder){
     // 可以针对该对象做一些操作
     $builder->withClaim('aaa', 'bbb');
 }); // Token 对象
-$tokenContent = $token->__toString(); // Token 字符串
+$tokenContent = $token->toString(); // Token 字符串
 ```
 
 ### 验证 Token
@@ -118,7 +118,8 @@ use \Imi\JWT\Facade\JWT;
 /** @var \Lcobucci\JWT\Token $token */
 $token = JWT::parseToken($jwt); // 仅验证是否合法
 // $token = JWT::parseToken($jwt, 'a'); // 指定配置名称
-$data = $token->getClaim('data'); // 获取往token里丢的数据
+$data = $token->getClaim('data'); // 获取往token里丢的数据，PHP <= 7.3
+$data = $token->claim()->get('data'); // 获取往token里丢的数据，PHP >= 7.4
 
 // 验证有效期、id、issuer、audience、subject
 $validationData = new \Lcobucci\JWT\ValidationData;

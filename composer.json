@@ -67,7 +67,7 @@
             "composer test-workerman",
             "composer test-workerman-gateway",
             "composer test-fpm",
-            "(php -r \"exit(version_compare(PHP_VERSION, '8.0', '<') ? 0 : 1);\" && composer test-jwt) || echo 'skip jwt'",
+            "composer test-jwt",
             "composer test-queue",
             "composer test-amqp",
             "composer test-kafka",
