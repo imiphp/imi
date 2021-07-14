@@ -44,6 +44,6 @@ parameters:
             paths:
                 - src/Components/jwt/*
         -
-            message: '#Lcobucci\\JWT\\UnencryptedToken#'
+            message: '#Lcobucci#'
             paths:
                 - src/Components/jwt/*
