@@ -143,7 +143,7 @@ class JWTValidationAop
                 $constraints[] = new RelatedTo($subject);
             }
             $constraints[] = new LooseValidAt(new FrozenClock(new \DateTimeImmutable()));
-            if ($constraints && !$configuration->validator()->validate($token, ...$constraints))
+            if (!$configuration->validator()->validate($token, ...$constraints))
             {
                 throw new InvalidTokenException();
             }

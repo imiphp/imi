@@ -33,3 +33,15 @@ parameters:
         - '#Method GPBMetadata\\Grpc::initOnce\(\) has no return typehint specified.#'
         - '#PHPDoc tag @throws with type \S+ is not subtype of Throwable#'
         - '#Constant IMI_PATH not found.#'
+        -
+            message: '#Method \S+ has no return typehint specified.#'
+            paths:
+                - tests/unit/**Test.php
+        -
+            message: '#class .+ not found#'
+            paths:
+                - src/Components/jwt/*
+        -
+            message: '#Lcobucci\\JWT\\UnencryptedToken#'
+            paths:
+                - src/Components/jwt/*
