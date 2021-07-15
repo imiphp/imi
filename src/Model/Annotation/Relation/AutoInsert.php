@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property bool $status 是否开启
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class AutoInsert extends Base
 {
     /**

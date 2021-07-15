@@ -14,7 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\UdpServer\Parser\UdpControllerParser")
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class UdpAction extends Base
 {
 }

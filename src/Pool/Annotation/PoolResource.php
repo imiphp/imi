@@ -15,7 +15,7 @@ use Imi\Pool\PoolManager;
  * @Target({"PROPERTY", "ANNOTATION"})
  * @Parser("Imi\Bean\Parser\NullParser")
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PoolResource extends RequestInject
 {
     /**

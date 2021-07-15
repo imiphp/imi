@@ -22,7 +22,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool        $beforeInvocation 在方法执行前删除缓存，默认为false
  * @property string      $hashMethod       可以指定 hash 方法，默认为：md5
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class CacheEvict extends Base
 {
     public function __construct(?array $__data = null, ?string $name = null, string $key = '', bool $beforeInvocation = false, string $hashMethod = 'md5')

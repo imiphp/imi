@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $mode   模式；allow-白名单；deny-黑名单
  * @property array  $fields 字段名数组
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Serializables extends Base
 {
     public function __construct(?array $__data = null, string $mode = '', array $fields = [])

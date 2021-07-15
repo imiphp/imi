@@ -20,7 +20,7 @@ use Imi\Bean\Annotation\Parser;
  * @property callable|null $callback 触发限流的回调
  * @property string|null   $poolName 连接池名称，留空取默认 redis 连接池
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class WorkerLimit extends Base
 {
     public function __construct(?array $__data = null, string $name = '', int $max = 0, ?float $timeout = null, ?callable $callback = null, ?string $poolName = null)

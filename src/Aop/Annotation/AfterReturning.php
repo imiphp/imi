@@ -14,7 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Bean\Parser\NullParser")
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class AfterReturning extends Base
 {
 }

@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property int|null $min 最小值，为null不限制
  * @property int|null $max 最大值，为null不限制
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Integer extends Condition
 {
     /**

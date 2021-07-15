@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target({"CLASS","METHOD"})
  * @Parser("Imi\Bean\Parser\NullParser")
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class XmlView extends BaseViewOption
 {
     public function __construct(?array $__data = null)

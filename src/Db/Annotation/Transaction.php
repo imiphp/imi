@@ -20,7 +20,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string      $rollbackType   回滚类型；默认为回滚所有
  * @property int         $rollbackLevels 回滚层数，默认为1；当 $rollbackType 为 RollbackType::PART 时有效
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Transaction extends Base
 {
     public function __construct(?array $__data = null, ?string $dbPoolName = null, string $type = TransactionType::AUTO, bool $autoCommit = true, string $rollbackType = RollbackType::ALL, int $rollbackLevels = 1)

@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property bool $allow 是否允许参与序列化
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Serializable extends Base
 {
     /**

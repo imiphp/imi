@@ -14,7 +14,7 @@ namespace Imi\Bean\Annotation;
  * @property string $eventName 事件名
  * @property int    $priority  优先级，越大越先执行
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Listener extends Base
 {
     /**

@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool   $request 为 true 时，使用当前请求上下文的 Bean 对象
  * @property array  $args    实例化参数
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Facade extends Base
 {
     /**

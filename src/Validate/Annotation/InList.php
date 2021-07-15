@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property array $list 列表
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class InList extends Condition
 {
     /**

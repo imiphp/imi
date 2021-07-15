@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $field       字段名
  * @property string|null $middleField 中间表模型字段
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class JoinToMiddle extends Base
 {
     public function __construct(?array $__data = null, ?string $field = null, ?string $middleField = null)

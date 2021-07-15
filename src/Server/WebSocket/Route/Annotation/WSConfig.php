@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $parserClass 处理器类
  * @property bool        $wsOnly      该动作仅作为 websocket 动作，握手失败则返回 400 错误
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class WSConfig extends Base
 {
     public function __construct(?array $__data = null, ?string $parserClass = null, bool $wsOnly = true)

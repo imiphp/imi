@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|array|null $exchange   交换机名称
  * @property string            $routingKey 路由键
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Publisher extends Base
 {
     /**

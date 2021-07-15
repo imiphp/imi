@@ -13,7 +13,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Cli\Parser\ToolParser")
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Operation extends CommandAction
 {
     /**

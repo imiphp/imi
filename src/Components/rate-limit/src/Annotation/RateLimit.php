@@ -22,7 +22,7 @@ use Imi\Bean\Annotation\Parser;
  * @property callable|null $callback 触发限流的回调
  * @property string|null   $poolName 连接池名称，留空取默认 redis 连接池
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class RateLimit extends Base
 {
     public function __construct(?array $__data = null, string $name = '', int $capacity = 0, int $fill = 0, string $unit = 'second', int $deduct = 1, ?callable $callback = null, ?string $poolName = null)

@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Inherit;
  * @property string $name Bean名称或类名
  * @property array  $args Bean实例化参数
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Inject extends BaseInjectValue
 {
     /**

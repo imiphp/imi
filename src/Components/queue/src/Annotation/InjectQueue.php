@@ -15,7 +15,7 @@ use Imi\Bean\Annotation\Inherit;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class InjectQueue extends Inject
 {
     /**

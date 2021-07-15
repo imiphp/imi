@@ -20,7 +20,7 @@ use Imi\Config;
  * @property string $name    配置名，支持@app、@currentServer等用法
  * @property mixed  $default 配置不存在时，返回的默认值
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class ConfigValue extends BaseInjectValue
 {
     /**

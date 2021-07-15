@@ -14,7 +14,7 @@ use Imi\Bean\Annotation\Parser;
  * @Target("METHOD")
  * @Parser("Imi\Server\TcpServer\Parser\TcpControllerParser")
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class TcpAction extends Base
 {
 }

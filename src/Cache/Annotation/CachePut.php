@@ -23,7 +23,7 @@ use Imi\Bean\Annotation\Parser;
  * @property int|null    $ttl        缓存超时时间，单位：秒
  * @property string      $hashMethod 可以指定 hash 方法，默认为：md5
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class CachePut extends Base
 {
     public function __construct(?array $__data = null, ?string $name = null, string $key = '', ?string $value = null, ?int $ttl = null, string $hashMethod = 'md5')

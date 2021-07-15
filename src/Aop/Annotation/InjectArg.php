@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $name  参数名
  * @property mixed  $value 注入的值
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class InjectArg extends Base
 {
     /**

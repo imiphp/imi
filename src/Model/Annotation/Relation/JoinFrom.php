@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string|null $field 字段名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class JoinFrom extends Base
 {
     /**

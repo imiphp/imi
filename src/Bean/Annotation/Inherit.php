@@ -13,7 +13,7 @@ namespace Imi\Bean\Annotation;
  *
  * @property string|string[]|null $annotation 允许的注解类，为 null 则不限制，支持字符串或数组
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_CLASS_CONSTANT)]
 class Inherit extends Base
 {
     /**

@@ -22,7 +22,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null       $tokenParam Token 对象注入的参数名称
  * @property string|null       $dataParam  数据注入的参数名称
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class JWTValidation extends Base
 {
     /**

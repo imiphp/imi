@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null     $groupId  分组ID
  * @property string|null     $poolName 连接池名称
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Consumer extends Base
 {
     /**

@@ -27,7 +27,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|string[] $requestMime          请求的mime类型判断；判断请求头中的Content-Type中是否包含这些mime类型之一；支持字符串和字符串数组
  * @property string|string[] $responseMime         返回的mime类型；只有当请求头Accept中包含，才可以返回；支持字符串和字符串数组
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Route extends Base
 {
     /**

@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property int $priority 优先级，越大越先执行
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Aspect extends Base
 {
     public function __construct(?array $__data = null, int $priority = 0)

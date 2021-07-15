@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string|string[]|null $middlewares
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class TcpMiddleware extends Base
 {
     /**

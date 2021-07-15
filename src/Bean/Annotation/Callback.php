@@ -16,7 +16,7 @@ use Imi\Aop\Annotation\BaseInjectValue;
  * @property string|object $class  类名，或者传入对象
  * @property string        $method 方法名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Callback extends BaseInjectValue
 {
     /**

@@ -24,7 +24,7 @@ use Imi\Bean\Annotation\Parser;
  * @property array    $arguments  参数
  * @property int|null $ticket     参数
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Exchange extends Base
 {
     public function __construct(?array $__data = null, string $name = '', string $type = \PhpAmqpLib\Exchange\AMQPExchangeType::DIRECT, bool $passive = false, bool $durable = true, bool $autoDelete = false, bool $internal = false, bool $nowait = false, array $arguments = [], ?int $ticket = null)

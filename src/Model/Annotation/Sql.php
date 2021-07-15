@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string $sql SQL 语句
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Sql extends Base
 {
     /**

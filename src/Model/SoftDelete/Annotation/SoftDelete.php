@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $field   软删除字段名
  * @property mixed  $default 软删除字段的默认值，代表非删除状态
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class SoftDelete extends Base
 {
     /**

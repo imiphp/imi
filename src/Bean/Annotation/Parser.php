@@ -12,7 +12,7 @@ namespace Imi\Bean\Annotation;
  *
  * @property string $className 处理器类名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Parser extends Base
 {
     /**

@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string|null $name 命令行名称
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Command extends Base
 {
     /**

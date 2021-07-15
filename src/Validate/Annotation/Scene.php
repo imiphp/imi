@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $name   场景名称
  * @property array  $fields 需要验证的字段名列表
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Scene extends Base
 {
     public function __construct(?array $__data = null, string $name = '', array $fields = [])

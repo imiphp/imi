@@ -19,7 +19,7 @@ use Imi\Bean\Annotation\Parser;
  * @property array $allow 允许的切入点
  * @property array $deny  不允许的切入点，即使包含中有的，也可以被排除
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class PointCut extends Base
 {
     public function __construct(?array $__data = null, int $type = PointCutType::METHOD, array $allow = [], array $deny = [])

@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string $text 文本描述
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 class EnumItem extends Base
 {
     /**

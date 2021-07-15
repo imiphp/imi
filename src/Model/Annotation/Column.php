@@ -27,7 +27,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool        $updateTime      save/update 模型时是否将当前时间写入该字段；支持 date/time/datetime/timestamp/year/int/bigint；当字段为 int 类型，写入秒级时间戳；当字段为 bigint 类型，写入毫秒级时间戳
  * @property string|null $listSeparator   列表分割字符串；如果字段类型为list，并且此字段不为null，读取时会处理为数组，写入时会处理为字符串
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Column extends Base
 {
     /**

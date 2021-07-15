@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string|string[] $middlewares 中间件类或数组
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class WSMiddleware extends Base
 {
     /**

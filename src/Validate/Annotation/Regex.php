@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string $pattern 正则表达式文本
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Regex extends Condition
 {
     /**

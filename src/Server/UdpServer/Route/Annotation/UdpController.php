@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string|string[]|null $server 指定当前控制器允许哪些服务器使用；支持字符串或数组，默认为 null 则不限制
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class UdpController extends Base
 {
     /**

@@ -19,7 +19,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null   $order     排序规则字符串；例：age desc, id desc
  * @property string[]|null $fields    为查询出来的模型指定字段
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class ManyToMany extends RelationBase
 {
     public function __construct(?array $__data = null, string $model = '', string $middle = '', string $rightMany = '', ?string $order = null, ?array $fields = null)

@@ -14,7 +14,7 @@ namespace Imi\Bean\Annotation;
  * @property string|null $name         Bean名称，留空则为当前类名（包含完整命名空间）
  * @property string      $instanceType 实例化类型，默认为单例模式
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Bean extends Base
 {
     /**

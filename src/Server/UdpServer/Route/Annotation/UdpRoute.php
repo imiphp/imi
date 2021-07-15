@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property array $condition 条件
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class UdpRoute extends Base
 {
     /**

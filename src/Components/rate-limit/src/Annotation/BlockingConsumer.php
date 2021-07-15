@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property int|null $timeout 超时时间，单位：秒；为 null 不限制
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class BlockingConsumer extends Base
 {
     /**

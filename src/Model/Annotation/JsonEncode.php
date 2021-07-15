@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property int $flags json_encode() 的 flags 参数
  * @property int $depth 递归层数
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class JsonEncode extends Base
 {
     /**

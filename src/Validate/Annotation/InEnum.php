@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string $enum 注解类名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class InEnum extends Condition
 {
     /**

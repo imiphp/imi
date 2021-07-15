@@ -19,7 +19,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $to      导出数据到的参数名
  * @property mixed  $default 参数不存在时的默认值
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class ExtractData extends Base
 {
     /**

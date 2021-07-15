@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string      $parentField   父级ID字段名
  * @property string      $childrenField 子集字段名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class TreeModel extends Base
 {
     public function __construct(?array $__data = null, ?string $idField = null, string $parentField = 'parent_id', string $childrenField = 'children')

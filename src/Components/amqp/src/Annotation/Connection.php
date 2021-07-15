@@ -32,7 +32,7 @@ use Imi\Bean\Annotation\Parser;
  * @property float       $channelRpcTimeout 频道 RPC 超时时间
  * @property string|null $sslProtocol       ssl 协议
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Connection extends Base
 {
     /**

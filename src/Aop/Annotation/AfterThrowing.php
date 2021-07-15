@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property array $allow 允许捕获的异常类列表
  * @property array $deny  不允许捕获的异常类列表
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class AfterThrowing extends Base
 {
     public function __construct(?array $__data = null, array $allow = [], array $deny = [])

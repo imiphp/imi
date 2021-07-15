@@ -30,7 +30,7 @@ use Imi\Bean\Annotation\Parser;
  * @property float       $lockWaitTimeout  获取锁超时时间，单位：秒
  * @property float       $maxExecutionTime 最大运行执行时间，单位：秒；该值与分布式锁超时时间共享，默认为 60 秒
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Cron extends Base
 {
     /**

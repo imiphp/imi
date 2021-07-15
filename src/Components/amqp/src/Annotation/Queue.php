@@ -24,7 +24,7 @@ use Imi\Bean\Annotation\Parser;
  * @property array|\PhpAmqpLib\Wire\AMQPTable $arguments  参数
  * @property int|null                         $ticket     参数
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Queue extends Base
 {
     /**

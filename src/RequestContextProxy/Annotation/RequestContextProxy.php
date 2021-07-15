@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $class 代理类名
  * @property string      $name  请求上下文中的名称
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class RequestContextProxy extends Base
 {
     /**

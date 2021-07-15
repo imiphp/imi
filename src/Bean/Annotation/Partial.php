@@ -13,7 +13,7 @@ namespace Imi\Bean\Annotation;
  *
  * @property string $class 注入类名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Partial extends Base
 {
     /**

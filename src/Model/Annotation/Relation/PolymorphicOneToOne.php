@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property mixed         $typeValue 多态类型字段值
  * @property string[]|null $fields    为查询出来的模型指定字段
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicOneToOne extends RelationBase
 {
     /**

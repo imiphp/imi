@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string $name 进程名称
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Process extends Base
 {
     /**

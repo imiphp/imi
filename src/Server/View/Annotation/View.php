@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property mixed               $data       附加数据
  * @property BaseViewOption|null $option     视图配置注解
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class View extends Base
 {
     /**

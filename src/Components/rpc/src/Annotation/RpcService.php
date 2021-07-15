@@ -18,7 +18,7 @@ use Imi\Rpc\Client\Pool\RpcClientPool;
  * @property string|null $poolName    连接池名称
  * @property string|null $serviceName 服务名称
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class RpcService extends Inject
 {
     public function __construct(?array $__data = null, ?string $poolName = null, ?string $serviceName = null)

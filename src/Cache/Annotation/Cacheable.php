@@ -25,7 +25,7 @@ use Imi\Lock\Annotation\Lockable;
  * @property bool          $preventBreakdown 防止缓存击穿；如果设为 true，会在获得锁后，尝试获取缓存，如果缓存存在则不再执行方法体；需要配合 $lockable 属性使用
  * @property string        $hashMethod       可以指定 hash 方法，默认为：md5
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Cacheable extends Base
 {
     public function __construct(?array $__data = null, ?string $name = null, string $key = '', ?int $ttl = null, ?Lockable $lockable = null, bool $preventBreakdown = false, string $hashMethod = 'md5')

@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool $status        是否开启
  * @property bool $orphanRemoval save时，删除无关联数据
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class AutoUpdate extends Base
 {
     /**

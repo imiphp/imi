@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $type      右表多态类型字段名
  * @property mixed  $typeValue 右表多态类型字段值
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class PolymorphicManyToMany extends ManyToMany
 {
     /**

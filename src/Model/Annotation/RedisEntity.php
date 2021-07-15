@@ -22,7 +22,7 @@ use Imi\Model\Enum\RedisStorageMode;
  * @property int|null    $ttl      数据默认的过期时间，null为永不过期；hash 存储模式不支持过期
  * @property string      $storage  Redis 实体类存储模式；支持 string、hash
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class RedisEntity extends Base
 {
     /**

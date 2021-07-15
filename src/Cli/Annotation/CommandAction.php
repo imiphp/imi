@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $name           操作名称
  * @property bool        $dynamicOptions 是否启用动态参数支持
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class CommandAction extends Base
 {
     /**

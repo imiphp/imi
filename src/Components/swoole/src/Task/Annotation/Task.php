@@ -18,7 +18,7 @@ use Imi\Swoole\Task\TaskParam;
  * @property string $name       任务名称
  * @property string $paramClass 参数类
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Task extends Base
 {
     /**

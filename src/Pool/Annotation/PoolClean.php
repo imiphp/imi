@@ -17,7 +17,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string $mode 模式；allow-白名单；deny-黑名单
  * @property array  $list 连接池名称列表
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class PoolClean extends Base
 {
     public function __construct(?array $__data = null, string $mode = 'allow', array $list = [])

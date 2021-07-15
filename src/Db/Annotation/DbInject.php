@@ -18,7 +18,7 @@ use Imi\Db\Query\QueryType;
  *
  * @property int $queryType 查询类型
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class DbInject extends RequestInject
 {
     public function __construct(?array $__data = null, string $name = '', array $args = [], int $queryType = QueryType::WRITE)

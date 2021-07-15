@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null       $dbPoolName 数据库连接池名称
  * @property string|array|null $id         主键，支持数组方式设置联合索引
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Table extends Base
 {
     /**

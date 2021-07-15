@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property bool $camel 序列化时使用驼峰命名
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Entity extends Base
 {
     /**

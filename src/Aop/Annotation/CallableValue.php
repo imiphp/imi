@@ -15,7 +15,7 @@ use Imi\Bean\Annotation\Inherit;
  *
  * @property callable $callable 回调
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class CallableValue extends BaseInjectValue
 {
     /**

@@ -17,7 +17,7 @@ use Imi\Rpc\Annotation\RpcService;
  *
  * @property string|null $interface 服务接口
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class GrpcService extends RpcService
 {
     public function __construct(?array $__data = null, ?string $poolName = null, ?string $serviceName = null, ?string $interface = null)

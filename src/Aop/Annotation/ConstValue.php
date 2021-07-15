@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Inherit;
  * @property string $name    常量名
  * @property mixed  $default 常量不存在时，返回的默认值
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class ConstValue extends BaseInjectValue
 {
     /**

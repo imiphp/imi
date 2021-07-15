@@ -21,7 +21,7 @@ use Imi\Bean\Annotation\Parser;
  * @property bool        $required 是否是必选参数
  * @property string      $comments 注释
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Option extends Base
 {
     /**

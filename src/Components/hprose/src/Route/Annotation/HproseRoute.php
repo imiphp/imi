@@ -21,7 +21,7 @@ use Imi\Rpc\Route\Annotation\RpcRoute;
  * @property bool   $async       该设置表示本服务函数是否为异步函数，异步函数的最后一个参数是一个回调函数，用户需要在异步函数中调用该回调方法来传回返回值
  * @property bool   $passContext 该属性为 boolean 类型，默认值为 false。该属性表示在调用中是否将 $context 自动作为最后一个参数传入调用方法。你也可以针对某个服务函数/方法进行单独设置。除非所有的服务方法的参数最后都定义了 $context 参数。否则，建议不要修改默认设置，而是针对某个服务函数/方法进行单独设置。
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class HproseRoute extends RpcRoute
 {
     public function __construct(?array $__data = null, string $rpcType = 'Hprose', int $mode = \Hprose\ResultMode::Normal, bool $simple = false, bool $oneway = false, bool $async = false, bool $passContext = false)

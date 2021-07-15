@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property int      $min  最短长度
  * @property int|null $max  最长长度，为null则不限制长度
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Text extends Condition
 {
     /**

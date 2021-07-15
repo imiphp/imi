@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  * @property string|null $baseDir  模版基础路径；abc-配置中设定的路径/abc/；/abc/-绝对路径
  * @property string|null $template 模版路径
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
 class HtmlView extends BaseViewOption
 {
     /**

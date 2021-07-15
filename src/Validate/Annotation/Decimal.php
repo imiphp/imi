@@ -18,7 +18,7 @@ use Imi\Bean\Annotation\Parser;
  * @property float|null $max      最大值，为null不限制
  * @property int|null   $accuracy 小数精度位数，为null不限制
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_PROPERTY)]
 class Decimal extends Condition
 {
     /**

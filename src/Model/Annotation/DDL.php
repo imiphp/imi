@@ -16,7 +16,7 @@ use Imi\Bean\Annotation\Parser;
  *
  * @property string $sql 表结构 SQL；CREATE TABLE 语句
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class DDL extends Base
 {
     /**
