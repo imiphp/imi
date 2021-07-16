@@ -292,7 +292,7 @@ class BeanProxy
         {
             foreach ($items as $item)
             {
-                $point = new $class($item->getOptions()['extra']);
+                $point = new $class($item->getOptions()['extra'] ?? []);
                 $callback($item, $point);
             }
         }

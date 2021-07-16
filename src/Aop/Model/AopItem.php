@@ -52,4 +52,9 @@ class AopItem
     {
         return $this->options;
     }
+
+    public function getClassMethodRule(): string
+    {
+        return $this->class . '::' . $this->methodRule;
+    }
 }

@@ -24,6 +24,11 @@ class AopManager
      */
     private static array $parsedCache = [];
 
+    /**
+     * @var AopItem[][]
+     */
+    private static array $dynamicRulesCache = [];
+
     private function __construct()
     {
     }
@@ -36,6 +41,16 @@ class AopManager
     public static function setCache(array $cache): void
     {
         self::$cache = $cache;
+    }
+
+    public static function getDynamicRulesCache(): array
+    {
+        return self::$dynamicRulesCache;
+    }
+
+    public static function setDynamicRulesCache(array $dynamicRulesCache): void
+    {
+        self::$dynamicRulesCache = $dynamicRulesCache;
     }
 
     public static function getArrayCache(): array
@@ -67,12 +82,25 @@ class AopManager
         self::$cache = self::$parsedCache = [];
     }
 
+    public static function isDynamicRule(string $class, string $methodRule): bool
+    {
+        return false !== strpos($class, '*') || false !== strpos($methodRule, '*');
+    }
+
     public static function addBefore(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = []): AopItem
     {
-        self::$cache[$class]['before'][] = $result = new AopItem($class, $methodRule, $callback, $priority, $options);
-        if (isset(self::$parsedCache[$class]['before']))
+        $result = new AopItem($class, $methodRule, $callback, $priority, $options);
+        if (self::isDynamicRule($class, $methodRule))
         {
-            unset(self::$parsedCache[$class]['before']);
+            self::$dynamicRulesCache['before'][] = $result;
+        }
+        else
+        {
+            self::$cache[$class]['before'][] = $result;
+            if (isset(self::$parsedCache[$class]['before']))
+            {
+                unset(self::$parsedCache[$class]['before']);
+            }
         }
 
         return $result;
@@ -80,10 +108,18 @@ class AopManager
 
     public static function addAfter(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = []): AopItem
     {
-        self::$cache[$class]['after'][] = $result = new AopItem($class, $methodRule, $callback, $priority, $options);
-        if (isset(self::$parsedCache[$class]['after']))
+        $result = new AopItem($class, $methodRule, $callback, $priority, $options);
+        if (self::isDynamicRule($class, $methodRule))
         {
-            unset(self::$parsedCache[$class]['after']);
+            self::$dynamicRulesCache['after'][] = $result;
+        }
+        else
+        {
+            self::$cache[$class]['after'][] = $result;
+            if (isset(self::$parsedCache[$class]['after']))
+            {
+                unset(self::$parsedCache[$class]['after']);
+            }
         }
 
         return $result;
@@ -91,10 +127,18 @@ class AopManager
 
     public static function addAround(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = []): AopItem
     {
-        self::$cache[$class]['around'][] = $result = new AopItem($class, $methodRule, $callback, $priority, $options);
-        if (isset(self::$parsedCache[$class]['around']))
+        $result = new AopItem($class, $methodRule, $callback, $priority, $options);
+        if (self::isDynamicRule($class, $methodRule))
         {
-            unset(self::$parsedCache[$class]['around']);
+            self::$dynamicRulesCache['around'][] = $result;
+        }
+        else
+        {
+            self::$cache[$class]['around'][] = $result;
+            if (isset(self::$parsedCache[$class]['around']))
+            {
+                unset(self::$parsedCache[$class]['around']);
+            }
         }
 
         return $result;
@@ -102,10 +146,18 @@ class AopManager
 
     public static function addAfterReturning(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = []): AopItem
     {
-        self::$cache[$class]['afterReturning'][] = $result = new AopItem($class, $methodRule, $callback, $priority, $options);
-        if (isset(self::$parsedCache[$class]['afterReturning']))
+        $result = new AopItem($class, $methodRule, $callback, $priority, $options);
+        if (self::isDynamicRule($class, $methodRule))
         {
-            unset(self::$parsedCache[$class]['afterReturning']);
+            self::$dynamicRulesCache['afterReturning'][] = $result;
+        }
+        else
+        {
+            self::$cache[$class]['afterReturning'][] = $result;
+            if (isset(self::$parsedCache[$class]['afterReturning']))
+            {
+                unset(self::$parsedCache[$class]['afterReturning']);
+            }
         }
 
         return $result;
@@ -113,10 +165,18 @@ class AopManager
 
     public static function addAfterThrowing(string $class, string $methodRule, callable $callback, int $priority = 0, array $options = []): AopItem
     {
-        self::$cache[$class]['afterThrowing'][] = $result = new AopItem($class, $methodRule, $callback, $priority, $options);
-        if (isset(self::$parsedCache[$class]['afterThrowing']))
+        $result = new AopItem($class, $methodRule, $callback, $priority, $options);
+        if (self::isDynamicRule($class, $methodRule))
         {
-            unset(self::$parsedCache[$class]['afterThrowing']);
+            self::$dynamicRulesCache['afterThrowing'][] = $result;
+        }
+        else
+        {
+            self::$cache[$class]['afterThrowing'][] = $result;
+            if (isset(self::$parsedCache[$class]['afterThrowing']))
+            {
+                unset(self::$parsedCache[$class]['afterThrowing']);
+            }
         }
 
         return $result;
@@ -138,10 +198,36 @@ class AopManager
         }
         if (isset(self::$cache[$class]['before']))
         {
-            /** @var AopItem $aopItem */
             foreach (self::$cache[$class]['before'] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+                {
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
+                    {
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
+                        {
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
+                        }
+                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
+                }
+            }
+        }
+        if (isset(self::$dynamicRulesCache['before']))
+        {
+            foreach (self::$dynamicRulesCache['before'] as $aopItem)
+            {
+                if (Imi::checkClassMethodRule($aopItem->getClassMethodRule(), $class, $method))
                 {
                     $options = $aopItem->getOptions();
                     if (isset($options['deny']))
@@ -184,10 +270,36 @@ class AopManager
         }
         if (isset(self::$cache[$class]['after']))
         {
-            /** @var AopItem $aopItem */
             foreach (self::$cache[$class]['after'] ?? [] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+                {
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
+                    {
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
+                        {
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
+                        }
+                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
+                }
+            }
+        }
+        if (isset(self::$dynamicRulesCache['after']))
+        {
+            foreach (self::$dynamicRulesCache['after'] as $aopItem)
+            {
+                if (Imi::checkClassMethodRule($aopItem->getClassMethodRule(), $class, $method))
                 {
                     $options = $aopItem->getOptions();
                     if (isset($options['deny']))
@@ -230,10 +342,36 @@ class AopManager
         }
         if (isset(self::$cache[$class]['around']))
         {
-            /** @var AopItem $aopItem */
             foreach (self::$cache[$class]['around'] ?? [] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+                {
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
+                    {
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
+                        {
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
+                        }
+                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
+                }
+            }
+        }
+        if (isset(self::$dynamicRulesCache['around']))
+        {
+            foreach (self::$dynamicRulesCache['around'] as $aopItem)
+            {
+                if (Imi::checkClassMethodRule($aopItem->getClassMethodRule(), $class, $method))
                 {
                     $options = $aopItem->getOptions();
                     if (isset($options['deny']))
@@ -276,10 +414,36 @@ class AopManager
         }
         if (isset(self::$cache[$class]['afterReturning']))
         {
-            /** @var AopItem $aopItem */
             foreach (self::$cache[$class]['afterReturning'] ?? [] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+                {
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
+                    {
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
+                        {
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
+                        }
+                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
+                }
+            }
+        }
+        if (isset(self::$dynamicRulesCache['afterReturning']))
+        {
+            foreach (self::$dynamicRulesCache['afterReturning'] as $aopItem)
+            {
+                if (Imi::checkClassMethodRule($aopItem->getClassMethodRule(), $class, $method))
                 {
                     $options = $aopItem->getOptions();
                     if (isset($options['deny']))
@@ -322,10 +486,36 @@ class AopManager
         }
         if (isset(self::$cache[$class]['afterThrowing']))
         {
-            /** @var AopItem $aopItem */
             foreach (self::$cache[$class]['afterThrowing'] ?? [] as $aopItem)
             {
                 if (Imi::checkRuleMatch($aopItem->getMethodRule(), $method))
+                {
+                    $options = $aopItem->getOptions();
+                    if (isset($options['deny']))
+                    {
+                        $deny = false;
+                        foreach ($options['deny'] as $rule)
+                        {
+                            if (Imi::checkClassMethodRule($rule, $class, $method))
+                            {
+                                $deny = true;
+                                break;
+                            }
+                        }
+                        if ($deny)
+                        {
+                            continue;
+                        }
+                    }
+                    $result->insert($aopItem, $aopItem->getPriority());
+                }
+            }
+        }
+        if (isset(self::$dynamicRulesCache['afterThrowing']))
+        {
+            foreach (self::$dynamicRulesCache['afterThrowing'] as $aopItem)
+            {
+                if (Imi::checkClassMethodRule($aopItem->getClassMethodRule(), $class, $method))
                 {
                     $options = $aopItem->getOptions();
                     if (isset($options['deny']))

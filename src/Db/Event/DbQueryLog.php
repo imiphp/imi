@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Imi\Db\Event;
 
-use Imi\Aop\Annotation\Around;
-use Imi\Aop\Annotation\PointCut;
+use Imi\Aop\AopManager;
 use Imi\Aop\AroundJoinPoint;
-use Imi\Bean\Annotation\AnnotationManager;
 use Imi\Bean\Annotation\Bean;
 use Imi\Db\Event\Param\DbExecuteEventParam;
 use Imi\Db\Event\Param\DbPrepareEventParam;
@@ -27,35 +25,12 @@ class DbQueryLog
     {
         if ($this->enable)
         {
-            // 类
-            AnnotationManager::setClassAnnotations(self::class, new \Imi\Aop\Annotation\Aspect());
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'exec', [$this, 'aopExecute']);
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'query', [$this, 'aopExecute']);
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'batchExec', [$this, 'aopExecute']);
 
-            // 方法
-            $annotations = [];
-            $annotations[] = new Around();
-            $annotations[] = $pointCut = new PointCut();
-            $pointCut->allow = [
-                'Imi\Db\Drivers\*\Driver::exec',
-                'Imi\Db\Drivers\*\Driver::query',
-                'Imi\Db\Drivers\*\Driver::batchExec',
-            ];
-            AnnotationManager::setMethodAnnotations(self::class, 'aopExecute', ...$annotations);
-
-            $annotations = [];
-            $annotations[] = new Around();
-            $annotations[] = $pointCut = new PointCut();
-            $pointCut->allow = [
-                'Imi\Db\Drivers\*\Driver::prepare',
-            ];
-            AnnotationManager::setMethodAnnotations(self::class, 'aopPrepare', ...$annotations);
-
-            $annotations = [];
-            $annotations[] = new Around();
-            $annotations[] = $pointCut = new PointCut();
-            $pointCut->allow = [
-                'Imi\Db\Drivers\*\Statement::execute',
-            ];
-            AnnotationManager::setMethodAnnotations(self::class, 'aopStatementExecute', ...$annotations);
+            AopManager::addAround('Imi\Db\*Drivers\*\Driver', 'prepare', [$this, 'aopPrepare']);
+            AopManager::addAround('Imi\Db\*Drivers\*\Statement', 'execute', [$this, 'aopStatementExecute']);
         }
     }
 

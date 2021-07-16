@@ -22,7 +22,8 @@ class BuildRuntimeListener implements IEventListener
         }
         $eventData = $e->getData();
         $eventData['data']['aop'] = [
-            'cache' => AopManager::getArrayCache(),
+            'cache'             => AopManager::getArrayCache(),
+            'dynamicRulesCache' => AopManager::getDynamicRulesCache(),
         ];
     }
 }
