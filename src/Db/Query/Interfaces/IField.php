@@ -26,5 +26,5 @@ interface IField extends ITable
      * name alias——field alias
      * name as alias—— field as alias.
      */
-    public function setValue(string $value): void;
+    public function setValue(string $value, IQuery $query): void;
 }

@@ -12,8 +12,8 @@ use Imi\Cli\ArgType;
 use Imi\Cli\Contract\BaseCommand;
 use Imi\Config;
 use Imi\Db\Db;
+use Imi\Db\Mysql\Util\SqlUtil;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Db\Util\SqlUtil;
 use Imi\Model\Model;
 use Imi\Util\File;
 use Imi\Util\Imi;
@@ -191,7 +191,7 @@ class ModelGenerate extends BaseCommand
             if ($withRecords)
             {
                 $dataList = $query->from($table)->select()->getArray();
-                $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($table, $dataList);
+                $ddl .= ';' . \PHP_EOL . SqlUtil::buildInsertSql($query, $table, $dataList);
             }
             if ($sqlSingleLine)
             {

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query\Interfaces;
 
-use Imi\Db\Consts\LogicalOperator;
 use Imi\Db\Interfaces\IDb;
-use Imi\Db\Query\QueryOption;
 
 /**
  * 查询器接口.
@@ -15,15 +13,19 @@ interface IQuery
 {
     /**
      * 获取所有操作的记录.
+     *
+     * @return mixed
      */
-    public function getOption(): QueryOption;
+    public function getOption();
 
     /**
      * 设置操作记录.
      *
+     * @param mixed $option
+     *
      * @return static
      */
-    public function setOption(QueryOption $option): self;
+    public function setOption($option): self;
 
     /**
      * 获取数据库操作对象
@@ -98,28 +100,28 @@ interface IQuery
      *
      * @return static
      */
-    public function where(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self;
+    public function where(string $fieldName, string $operation, $value, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 where 条件，用原生语句.
      *
      * @return static
      */
-    public function whereRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereRaw(string $raw, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 where 条件，传入回调，回调中的条件加括号.
      *
      * @return static
      */
-    public function whereBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereBrackets(callable $callback, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 where 条件，使用 IBaseWhere 结构.
      *
      * @return static
      */
-    public function whereStruct(IBaseWhere $where, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereStruct(IBaseWhere $where, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 where 条件，支持语法如下：.
@@ -138,7 +140,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereEx(array $condition, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereEx(array $condition, string $logicalOperator = 'and'): self;
 
     /**
      * where between $begin end $end.
@@ -148,7 +150,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereBetween(string $fieldName, $begin, $end, string $logicalOperator = 'and'): self;
 
     /**
      * or where between $begin end $end.
@@ -168,7 +170,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereNotBetween(string $fieldName, $begin, $end, string $logicalOperator = 'and'): self;
 
     /**
      * or where not between $begin end $end.
@@ -222,7 +224,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereIn(string $fieldName, array $list, string $logicalOperator = 'and'): self;
 
     /**
      * or where field in (list).
@@ -236,7 +238,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereNotIn(string $fieldName, array $list, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereNotIn(string $fieldName, array $list, string $logicalOperator = 'and'): self;
 
     /**
      * or where field not in (list).
@@ -250,7 +252,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereIsNull(string $fieldName, string $logicalOperator = 'and'): self;
 
     /**
      * or where field is null.
@@ -264,7 +266,7 @@ interface IQuery
      *
      * @return static
      */
-    public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self;
+    public function whereIsNotNull(string $fieldName, string $logicalOperator = 'and'): self;
 
     /**
      * or where field is not null.
@@ -401,28 +403,28 @@ interface IQuery
      *
      * @return static
      */
-    public function having(string $fieldName, string $operation, $value, string $logicalOperator = LogicalOperator::AND): self;
+    public function having(string $fieldName, string $operation, $value, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 having 条件，用原生语句.
      *
      * @return static
      */
-    public function havingRaw(string $raw, string $logicalOperator = LogicalOperator::AND): self;
+    public function havingRaw(string $raw, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 having 条件，传入回调，回调中的条件加括号.
      *
      * @return static
      */
-    public function havingBrackets(callable $callback, string $logicalOperator = LogicalOperator::AND): self;
+    public function havingBrackets(callable $callback, string $logicalOperator = 'and'): self;
 
     /**
      * 设置 having 条件，使用 IHaving 结构.
      *
      * @return static
      */
-    public function havingStruct(IHaving $having, string $logicalOperator = LogicalOperator::AND): self;
+    public function havingStruct(IHaving $having, string $logicalOperator = 'and'): self;
 
     /**
      * 绑定预处理参数.
@@ -610,4 +612,19 @@ interface IQuery
      * 获取结果集类名.
      */
     public function getResultClass(): string;
+
+    /**
+     * 字段安全引用.
+     */
+    public function fieldQuote(string $name): string;
+
+    /**
+     * 把输入的关键字文本转为数组.
+     */
+    public function parseKeywordText(string $string): array;
+
+    /**
+     * 从数组拼装为有分隔标识符的关键字.
+     */
+    public function parseKeywordToText(array $keywords, ?string $alias = null, ?array $jsonKeywords = null): string;
 }

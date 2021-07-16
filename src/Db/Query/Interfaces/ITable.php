@@ -23,5 +23,5 @@ interface ITable extends IDatabase
      * name alias——table alias
      * name as alias—— table as alias.
      */
-    public function setValue(string $value): void;
+    public function setValue(string $value, IQuery $query): void;
 }

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Db\Driver\Swoole;
 
-use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
-use Imi\Db\Interfaces\IDb;
-use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Mysql\Contract\IMysqlDb;
+use Imi\Db\Mysql\Contract\IMysqlStatement;
+use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 
 /**
  * Swoole Coroutine MySQL 驱动 Statement.
  */
-class Statement extends BaseStatement implements IStatement
+class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     /**
      * Statement.
@@ -29,7 +29,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 数据库操作对象
      */
-    protected IDb $db;
+    protected IMysqlDb $db;
 
     /**
      * 绑定数据.
@@ -54,7 +54,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * @param \Swoole\Coroutine\MySQL\Statement|array $statement
      */
-    public function __construct(IDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IMysqlDb $db, $statement, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -69,7 +69,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取数据库操作对象
      */
-    public function getDb(): IDb
+    public function getDb(): IMysqlDb
     {
         return $this->db;
     }

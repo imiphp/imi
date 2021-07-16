@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Builder\BaseBuilder;
 use Imi\Db\Query\Interfaces\IField;
-use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Traits\TRaw;
 
 class Field implements IField
 {
-    use TKeyword;
     use TRaw;
 
     /**
@@ -119,9 +117,9 @@ class Field implements IField
      * name alias——field alias
      * name as alias—— field as alias.
      */
-    public function setValue(string $value): void
+    public function setValue(string $value, IQuery $query): void
     {
-        $matches = $this->parseKeywordText($value);
+        $matches = $query->parseKeywordText($value);
         if (isset($matches['keywords']))
         {
             $keywords = $matches['keywords'];
@@ -148,7 +146,7 @@ class Field implements IField
         }
     }
 
-    public function __toString()
+    public function toString(IQuery $query): string
     {
         if ($this->isRaw)
         {
@@ -158,11 +156,11 @@ class Field implements IField
             }
             else
             {
-                return '(' . $this->rawSQL . ') as ' . BaseBuilder::DELIMITED_IDENTIFIERS . $this->alias . BaseBuilder::DELIMITED_IDENTIFIERS;
+                return '(' . $this->rawSQL . ') as ' . $query->fieldQuote($this->alias);
             }
         }
 
-        return $this->parseKeywordToText([
+        return $query->parseKeywordToText([
             $this->database,
             $this->table,
             $this->field,

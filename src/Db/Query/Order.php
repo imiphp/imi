@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Imi\Db\Query;
 
 use Imi\Db\Query\Interfaces\IOrder;
-use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Traits\TRaw;
 
 class Order implements IOrder
 {
-    use TKeyword;
     use TRaw;
 
     /**
@@ -61,14 +60,14 @@ class Order implements IOrder
         $this->direction = $direction;
     }
 
-    public function __toString()
+    public function toString(IQuery $query): string
     {
         if ($this->isRaw)
         {
             return $this->rawSQL;
         }
 
-        return $this->parseKeyword($this->fieldName) . ' ' . $this->direction;
+        return $query->fieldQuote($this->fieldName) . ' ' . $this->direction;
     }
 
     /**

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Builder;
+namespace Imi\Db\Mysql\Query\Builder;
+
+use Imi\Db\Query\QueryOption;
 
 class ReplaceBuilder extends BaseBuilder
 {
@@ -11,13 +13,14 @@ class ReplaceBuilder extends BaseBuilder
         parent::build(...$args);
         $query = $this->query;
         $params = &$this->params;
+        /** @var QueryOption $option */
         $option = $query->getOption();
         list($data) = $args;
         if (null === $data)
         {
             $data = $option->saveData;
         }
-        $sql = 'replace into ' . $option->table . ' ';
+        $sql = 'replace into ' . $option->table->toString($query) . ' ';
         if ($data instanceof \Imi\Db\Query\Interfaces\IQuery)
         {
             $builder = new SelectBuilder($data);
@@ -34,18 +37,18 @@ class ReplaceBuilder extends BaseBuilder
                 {
                     if (is_numeric($k))
                     {
-                        $setStrs[] = (string) $v;
+                        $setStrs[] = $v->toString($query);
                     }
                     else
                     {
-                        $setStrs[] = $this->parseKeyword($k) . ' = ' . $v;
+                        $setStrs[] = $query->fieldQuote($k) . ' = ' . $v->toString($query);
                     }
                 }
                 else
                 {
                     $valueParam = ':' . $k;
                     $params[$valueParam] = $v;
-                    $setStrs[] = $this->parseKeyword($k) . ' = ' . $valueParam;
+                    $setStrs[] = $query->fieldQuote($k) . ' = ' . $valueParam;
                 }
             }
             $sql .= 'set ' . implode(',', $setStrs);

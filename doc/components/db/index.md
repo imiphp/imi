@@ -63,11 +63,11 @@ return [
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 'dbClass' => 'PdoMysqlDriver',
                 // 使用 hook mysqli 驱动
-                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
+                // 'dbClass' => 'MysqliDriver',
                 // 使用 Swoole MySQL 驱动
-                // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
+                // 'dbClass' => 'SwooleMysqlDriver',
                 // 数据库连接后，执行初始化的 SQL
                 // 'initSqls' => [
                 //     'select 1',
@@ -127,11 +127,11 @@ return [
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 'dbClass' => 'PdoMysqlDriver',
                 // 使用 hook mysqli 驱动
-                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
+                // 'dbClass' => 'MysqliDriver',
                 // 使用 Swoole MySQL 驱动
-                // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
+                // 'dbClass' => 'SwooleMysqlDriver',
                 // 数据库连接后，执行初始化的 SQL
                 // 'initSqls' => [
                 //     'select 1',
@@ -173,11 +173,11 @@ return [
                 // 'timeout' => '建立连接超时时间',
                 // 'charset' => '',
                 // 使用 hook pdo 驱动（缺省默认）
-                // 'dbClass' => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                // 'dbClass' => 'PdoMysqlDriver',
                 // 使用 hook mysqli 驱动
-                // 'dbClass' => \Imi\Db\Drivers\Mysqli\Driver::class,
+                // 'dbClass' => 'MysqliDriver',
                 // 使用 Swoole MySQL 驱动
-                // 'dbClass' => \Imi\Swoole\Db\Drivers\Swoole\Driver::class,
+                // 'dbClass' => 'SwooleMysqlDriver',
                 // 数据库连接后，执行初始化的 SQL
                 // 'initSqls' => [
                 //     'select 1',
@@ -916,14 +916,14 @@ $result = Db::query()->table('tb_test')->where('id', '=', 1)->delete();
 排它锁：
 
 ```php
-use Imi\Db\Query\Lock\MysqlLock;
+use Imi\Db\Mysql\Query\Lock\MysqlLock;
 Db::query()->from('tb_xxx')->where('id', '=', 1)->lock(MysqlLock::FOR_UPDATE)->select()->get();
 ```
 
 共享锁：
 
 ```php
-use Imi\Db\Query\Lock\MysqlLock;
+use Imi\Db\Mysql\Query\Lock\MysqlLock;
 Db::query()->from('tb_xxx')->where('id', '=', 1)->lock(MysqlLock::SHARED)->select()->get();
 ```
 

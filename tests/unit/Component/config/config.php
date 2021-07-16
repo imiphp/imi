@@ -150,7 +150,7 @@ return [
                 'password'    => imiGetEnv('MYSQL_SERVER_PASSWORD', 'root'),
                 'database'    => 'db_imi_test',
                 'charset'     => 'utf8mb4',
-                'dbClass'     => \Imi\Db\Drivers\Mysqli\Driver::class,
+                'dbClass'     => 'MysqliDriver',
             ],
         ],
         'redis_test'    => [

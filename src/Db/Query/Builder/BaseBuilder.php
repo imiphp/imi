@@ -4,19 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query\Builder;
 
-use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Db\Query\Traits\TKeyword;
 
 abstract class BaseBuilder implements IBuilder
 {
-    use TKeyword;
-
-    /**
-     * 分隔标识符，解决保留字问题.
-     */
-    public const DELIMITED_IDENTIFIERS = '`';
-
     /**
      * IQuery 类.
      */
@@ -69,36 +60,7 @@ abstract class BaseBuilder implements IBuilder
     /**
      * fields.
      */
-    protected function parseField(array $fields): string
-    {
-        if (!isset($fields[0]))
-        {
-            return '*';
-        }
-        $result = [];
-        foreach ($fields as $k => $v)
-        {
-            if (is_numeric($k))
-            {
-                if ($v instanceof Field)
-                {
-                    $field = $v;
-                }
-                else
-                {
-                    $field = new Field();
-                    $field->setValue($v);
-                }
-            }
-            else
-            {
-                $field = new Field(null, null, $k, $v);
-            }
-            $result[] = $field;
-        }
-
-        return implode(',', $result);
-    }
+    abstract protected function parseField(array $fields): string;
 
     /**
      * join.
@@ -189,10 +151,12 @@ abstract class BaseBuilder implements IBuilder
     {
         if (isset($order[0]))
         {
-            $result = ' order by ' . implode(',', $order);
             $params = &$this->params;
+            $orderStrs = [];
+            $query = $this->query;
             foreach ($order as $item)
             {
+                $orderStrs[] = $item->toString($query);
                 $binds = $item->getBinds();
                 if ($binds)
                 {
@@ -200,7 +164,7 @@ abstract class BaseBuilder implements IBuilder
                 }
             }
 
-            return $result;
+            return ' order by ' . implode(',', $orderStrs);
         }
         else
         {

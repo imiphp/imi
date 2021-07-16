@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Consts;
+namespace Imi\Db\Mysql\Consts;
 
 use Imi\Enum\Annotation\EnumItem;
 use Imi\Enum\BaseEnum;

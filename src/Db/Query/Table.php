@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use Imi\Db\Query\Builder\BaseBuilder;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\ITable;
-use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Traits\TRaw;
 
 class Table implements ITable
 {
-    use TKeyword;
     use TRaw;
 
     /**
@@ -91,9 +89,9 @@ class Table implements ITable
      * name alias——table alias
      * name as alias—— table as alias.
      */
-    public function setValue(string $value): void
+    public function setValue(string $value, IQuery $query): void
     {
-        $matches = $this->parseKeywordText($value);
+        $matches = $query->parseKeywordText($value);
         if (isset($matches['keywords']))
         {
             $keywords = $matches['keywords'];
@@ -111,7 +109,7 @@ class Table implements ITable
         }
     }
 
-    public function __toString()
+    public function toString(IQuery $query): string
     {
         if ($this->isRaw)
         {
@@ -121,11 +119,11 @@ class Table implements ITable
             }
             else
             {
-                return '(' . $this->rawSQL . ') as ' . BaseBuilder::DELIMITED_IDENTIFIERS . $this->alias . BaseBuilder::DELIMITED_IDENTIFIERS;
+                return '(' . $this->rawSQL . ') as ' . $query->fieldQuote($this->alias);
             }
         }
 
-        return $this->parseKeywordToText([
+        return $query->parseKeywordToText([
             $this->database,
             $this->table,
         ], $this->alias);

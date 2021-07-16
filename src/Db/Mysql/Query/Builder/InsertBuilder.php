@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Builder;
+namespace Imi\Db\Mysql\Query\Builder;
 
+use Imi\Db\Query\QueryOption;
 use Imi\Util\ArrayUtil;
 
 class InsertBuilder extends BaseBuilder
@@ -13,6 +14,7 @@ class InsertBuilder extends BaseBuilder
         parent::build(...$args);
         $query = $this->query;
         $params = &$this->params;
+        /** @var QueryOption $option */
         $option = $query->getOption();
         list($data) = $args;
         if (null === $data)
@@ -34,19 +36,19 @@ class InsertBuilder extends BaseBuilder
                 {
                     if (!is_numeric($k))
                     {
-                        $fields[] = $this->parseKeyword($k);
-                        $valueParams[] = (string) $v;
+                        $fields[] = $query->fieldQuote($k);
+                        $valueParams[] = $v->toString($query);
                     }
                 }
                 else
                 {
-                    $fields[] = $this->parseKeyword($k);
+                    $fields[] = $query->fieldQuote($k);
                     $valueParam = ':' . $k;
                     $valueParams[] = $valueParam;
                     $params[$valueParam] = $v;
                 }
             }
-            $sql = 'insert into ' . $option->table . '(' . implode(',', $fields) . ') values(' . implode(',', $valueParams) . ')';
+            $sql = 'insert into ' . $option->table->toString($query) . '(' . implode(',', $fields) . ') values(' . implode(',', $valueParams) . ')';
         }
         else
         {
@@ -55,7 +57,7 @@ class InsertBuilder extends BaseBuilder
             {
                 if ($v instanceof \Imi\Db\Query\Raw)
                 {
-                    $valueParams[] = (string) $v;
+                    $valueParams[] = $v->toString($query);
                 }
                 else
                 {
@@ -64,7 +66,7 @@ class InsertBuilder extends BaseBuilder
                     $params[$valueParam] = $v;
                 }
             }
-            $sql = 'insert into ' . $option->table . ' values(' . implode(',', $valueParams) . ')';
+            $sql = 'insert into ' . $option->table->toString($query) . ' values(' . implode(',', $valueParams) . ')';
         }
         $query->bindValues($params);
 

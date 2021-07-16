@@ -6,7 +6,6 @@ namespace Imi\Model;
 
 use Imi\App;
 use Imi\Db\Db;
-use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Event\Event;
@@ -36,27 +35,25 @@ abstract class Model extends BaseModel
     /**
      * 返回一个查询器.
      *
-     * @param string|object $object
-     * @param string|null   $poolName  连接池名，为null则取默认
-     * @param int|null      $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
+     * @param string|null $poolName  连接池名，为null则取默认
+     * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function query($object = null, ?string $poolName = null, ?int $queryType = null): IQuery
+    public static function query(?string $poolName = null, ?int $queryType = null, string $queryClass = ModelQuery::class): IQuery
     {
-        $meta = static::__getMeta($object);
+        $meta = static::__getMeta(static::__getRealClassName());
 
-        return App::getBean(ModelQuery::class, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
+        return App::getBean($queryClass, null, $meta->getClassName(), $poolName ?? $meta->getDbPoolName(), $queryType);
     }
 
     /**
      * 返回一个数据库查询器，查询结果为数组，而不是当前类实例对象
      *
-     * @param string|object $object
-     * @param string|null   $poolName  连接池名，为null则取默认
-     * @param int|null      $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
+     * @param string|null $poolName  连接池名，为null则取默认
+     * @param int|null    $queryType 查询类型；Imi\Db\Query\QueryType::READ/WRITE
      */
-    public static function dbQuery($object = null, ?string $poolName = null, ?int $queryType = null): IQuery
+    public static function dbQuery(?string $poolName = null, ?int $queryType = null): IQuery
     {
-        $meta = static::__getMeta($object);
+        $meta = static::__getMeta(static::__getRealClassName());
 
         return Db::query($poolName ?? $meta->getDbPoolName(), null, $queryType)->from($meta->getTableName());
     }
@@ -96,7 +93,7 @@ abstract class Model extends BaseModel
                 $query = $query->alias($realClassName . ':find:pk1:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys) {
                     foreach ($keys as $name)
                     {
-                        $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
+                        $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
                     }
                     $query->limit(1);
                 })->bindValues($bindValues);
@@ -119,7 +116,7 @@ abstract class Model extends BaseModel
                 $query = $query->alias($realClassName . ':find:pk2:' . md5(implode(',', $keys)), function (IQuery $query) use ($keys) {
                     foreach ($keys as $name)
                     {
-                        $query->whereRaw(new Field(null, null, $name) . '=:' . $name);
+                        $query->whereRaw($query->fieldQuote($name) . '=:' . $name);
                     }
                     $query->limit(1);
                 })->bindValues($bindValues);
@@ -185,7 +182,7 @@ abstract class Model extends BaseModel
         {
             $data = new LazyArrayObject($data);
         }
-        $query = static::query($this);
+        $query = static::query();
         $meta = $this->__meta;
 
         // 插入前
@@ -230,7 +227,7 @@ abstract class Model extends BaseModel
      */
     public function update($data = null): IResult
     {
-        $query = static::query($this);
+        $query = static::query();
         $meta = $this->__meta;
         if (null === $data)
         {
@@ -279,7 +276,7 @@ abstract class Model extends BaseModel
                 // 主键条件加入
                 foreach ($conditionId as $idName)
                 {
-                    $query->whereRaw(new Field(null, null, $idName) . '=:c_' . $idName);
+                    $query->whereRaw($query->fieldQuote($idName) . '=:c_' . $idName);
                 }
             }
             $query->limit(1);
@@ -360,7 +357,7 @@ abstract class Model extends BaseModel
     public function save(): IResult
     {
         $meta = $this->__meta;
-        $query = static::query($this);
+        $query = static::query();
         $data = static::parseSaveData(iterator_to_array($this), 'save', $this);
 
         // 保存前
@@ -410,7 +407,7 @@ abstract class Model extends BaseModel
                     {
                         if (isset($this->$idName))
                         {
-                            $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
+                            $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
                         }
                     }
                 }
@@ -437,7 +434,7 @@ abstract class Model extends BaseModel
      */
     public function delete(): IResult
     {
-        $query = static::query($this);
+        $query = static::query();
 
         // 删除前
         $this->trigger(ModelEvents::BEFORE_DELETE, [
@@ -468,7 +465,7 @@ abstract class Model extends BaseModel
             {
                 if (isset($this->$idName))
                 {
-                    $query->whereRaw(new Field(null, null, $idName) . '=:' . $idName);
+                    $query->whereRaw($query->fieldQuote($idName) . '=:' . $idName);
                 }
             }
             $query->limit(1);
@@ -514,10 +511,7 @@ abstract class Model extends BaseModel
     /**
      * 为一个列表查询指定关联.
      *
-     * @param array  $list
      * @param string ...$names
-     *
-     * @return array
      */
     public static function queryRelationsList(array $list, string ...$names): array
     {

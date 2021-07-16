@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query;
 
-use Imi\Bean\Annotation\Bean;
-use Imi\Db\Consts\LogicalOperator;
+use Imi\App;
 use Imi\Db\Db;
 use Imi\Db\Interfaces\IDb;
-use Imi\Db\Query\Builder\BatchInsertBuilder;
-use Imi\Db\Query\Builder\DeleteBuilder;
-use Imi\Db\Query\Builder\InsertBuilder;
-use Imi\Db\Query\Builder\ReplaceBuilder;
-use Imi\Db\Query\Builder\SelectBuilder;
-use Imi\Db\Query\Builder\UpdateBuilder;
+use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Query\Having\Having;
 use Imi\Db\Query\Having\HavingBrackets;
 use Imi\Db\Query\Interfaces\IBaseWhere;
@@ -26,10 +20,7 @@ use Imi\Db\Query\Where\Where;
 use Imi\Db\Query\Where\WhereBrackets;
 use Imi\Util\Pagination;
 
-/**
- * @Bean("Query")
- */
-class Query implements IQuery
+abstract class Query implements IQuery
 {
     /**
      * 操作记录.
@@ -127,6 +118,11 @@ class Query implements IQuery
         $this->option = clone $this->option;
     }
 
+    public static function newInstance(?IDb $db = null, ?string $modelClass = null, ?string $poolName = null, ?int $queryType = null): self
+    {
+        return App::getBean(static::class, $db, $modelClass, $poolName, $queryType);
+    }
+
     /**
      * 获取所有操作的记录.
      */
@@ -138,9 +134,11 @@ class Query implements IQuery
     /**
      * 设置操作记录.
      *
+     * @param QueryOption $option
+     *
      * @return static
      */
-    public function setOption(QueryOption $option): self
+    public function setOption($option): self
     {
         $this->dbParamInc = 0;
         $this->option = $option;
@@ -565,7 +563,7 @@ class Query implements IQuery
      */
     public function whereIsNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
     {
-        return $this->whereRaw((new Field(null, null, $fieldName)) . ' is null', $logicalOperator);
+        return $this->whereRaw($this->fieldQuote($fieldName) . ' is null', $logicalOperator);
     }
 
     /**
@@ -585,7 +583,7 @@ class Query implements IQuery
      */
     public function whereIsNotNull(string $fieldName, string $logicalOperator = LogicalOperator::AND): self
     {
-        return $this->whereRaw((new Field(null, null, $fieldName)) . ' is not null', $logicalOperator);
+        return $this->whereRaw($this->fieldQuote($fieldName) . ' is not null', $logicalOperator);
     }
 
     /**
@@ -613,7 +611,7 @@ class Query implements IQuery
      */
     public function join(string $table, string $left, string $operation, string $right, string $tableAlias = null, IBaseWhere $where = null, string $type = 'inner'): self
     {
-        $this->option->join[] = new Join($table, $left, $operation, $right, $tableAlias, $where, $type);
+        $this->option->join[] = new Join($this, $table, $left, $operation, $right, $tableAlias, $where, $type);
 
         return $this;
     }
@@ -625,7 +623,7 @@ class Query implements IQuery
      */
     public function joinRaw(string $raw): self
     {
-        $join = new Join();
+        $join = new Join($this);
         $join->useRaw();
         $join->setRawSQL($raw);
         $this->option->join[] = $join;
@@ -790,7 +788,7 @@ class Query implements IQuery
         foreach ($groups as $item)
         {
             $group = new Group();
-            $group->setValue($item);
+            $group->setValue($item, $this);
             $optionGroup[] = $group;
         }
 
@@ -906,66 +904,6 @@ class Query implements IQuery
     }
 
     /**
-     * 查询记录.
-     */
-    public function select(): IResult
-    {
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builder = new SelectBuilder($this);
-            $sql = $builder->build();
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
-        if (!$this->isInitQueryType && !$this->isInTransaction())
-        {
-            $this->queryType = QueryType::READ;
-        }
-
-        return $this->execute($sql);
-    }
-
-    /**
      * 分页查询.
      */
     public function paginate(int $page, int $count, array $options = []): IPaginateResult
@@ -983,267 +921,6 @@ class Query implements IQuery
         $pagination = new Pagination($page, $count);
 
         return new PaginateResult($statement, $pagination->getLimitOffset(), $count, $total, null === $total ? null : $pagination->calcPageCount($total), $options);
-    }
-
-    /**
-     * 插入记录.
-     *
-     * @param array|object|null $data
-     */
-    public function insert($data = null): IResult
-    {
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-            $bindValues = [];
-            $numberKey = isset($data[0]);
-            foreach ($data as $k => $v)
-            {
-                if ($numberKey)
-                {
-                    $bindValues[':' . ($k + 1)] = $v;
-                }
-                else
-                {
-                    $bindValues[':' . $k] = $v;
-                }
-            }
-            $this->bindValues($bindValues);
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builder = new InsertBuilder($this);
-            $sql = $builder->build($data);
-            if ($alias)
-            {
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    // @phpstan-ignore-next-line
-                    'binds' => $binds,
-                ];
-            }
-        }
-
-        return $this->execute($sql);
-    }
-
-    /**
-     * 批量插入数据
-     * 以第 0 个成员作为字段标准.
-     *
-     * @param array|object|null $data
-     */
-    public function batchInsert($data = null): IResult
-    {
-        $builder = new BatchInsertBuilder($this);
-        $sql = $builder->build($data);
-
-        return $this->execute($sql);
-    }
-
-    /**
-     * 更新记录.
-     *
-     * @param array|object|null $data
-     */
-    public function update($data = null): IResult
-    {
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-            $bindValues = [];
-            foreach ($data as $k => $v)
-            {
-                $bindValues[':' . $k] = $v;
-            }
-            $this->bindValues($bindValues);
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builder = new UpdateBuilder($this);
-            $sql = $builder->build($data);
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
-
-        return $this->execute($sql);
-    }
-
-    /**
-     * 替换数据（Replace）.
-     *
-     * @param array|object|null $data
-     */
-    public function replace($data = null): IResult
-    {
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-            $bindValues = [];
-            foreach ($data as $k => $v)
-            {
-                $bindValues[':' . $k] = $v;
-            }
-            $this->bindValues($bindValues);
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builder = new ReplaceBuilder($this);
-            $sql = $builder->build($data);
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
-
-        return $this->execute($sql);
-    }
-
-    /**
-     * 删除记录.
-     */
-    public function delete(): IResult
-    {
-        $alias = $this->alias;
-        $aliasSqlMap = &static::$aliasSqlMap;
-        if ($alias && isset($aliasSqlMap[$alias]))
-        {
-            $aliasSqlData = $aliasSqlMap[$alias];
-            $sql = $aliasSqlData['sql'];
-            $binds = $aliasSqlData['binds'];
-            if ($binds)
-            {
-                if ($this->binds)
-                {
-                    $this->binds = array_merge($binds, $this->binds);
-                }
-                else
-                {
-                    $this->binds = $binds;
-                }
-            }
-        }
-        else
-        {
-            if ($alias)
-            {
-                $binds = $this->binds;
-                $this->binds = [];
-            }
-            $builder = new DeleteBuilder($this);
-            $sql = $builder->build();
-            if ($alias)
-            {
-                // @phpstan-ignore-next-line
-                $originBinds = $binds;
-                $binds = $this->binds;
-                if ($binds)
-                {
-                    $this->binds = array_merge($originBinds, $binds);
-                }
-                else
-                {
-                    $this->binds = $originBinds;
-                }
-                $aliasSqlMap[$alias] = [
-                    'sql'   => $sql,
-                    'binds' => $binds,
-                ];
-            }
-        }
-        $result = $this->execute($sql);
-
-        return $result;
     }
 
     /**
@@ -1303,7 +980,7 @@ class Query implements IQuery
     {
         $field = new Field();
         $field->useRaw();
-        $field->setRawSQL($functionName . '(' . $field->parseKeyword($fieldName) . ')');
+        $field->setRawSQL($functionName . '(' . $this->fieldQuote($fieldName) . ')');
         $this->option->field = [
             $field,
         ];
@@ -1406,7 +1083,7 @@ class Query implements IQuery
      */
     public function setFieldInc(string $fieldName, float $incValue = 1): self
     {
-        $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' + ' . $incValue);
+        $this->option->saveData[$fieldName] = new Raw($this->fieldQuote($fieldName) . ' + ' . $incValue);
 
         return $this;
     }
@@ -1418,7 +1095,7 @@ class Query implements IQuery
      */
     public function setFieldDec(string $fieldName, float $decValue = 1): self
     {
-        $this->option->saveData[$fieldName] = new Raw(new Field($fieldName) . ' - ' . $decValue);
+        $this->option->saveData[$fieldName] = new Raw($this->fieldQuote($fieldName) . ' - ' . $decValue);
 
         return $this;
     }
@@ -1426,7 +1103,7 @@ class Query implements IQuery
     /**
      * 当前主库连接是否在事务中.
      */
-    private function isInTransaction(): bool
+    protected function isInTransaction(): bool
     {
         $poolName = $this->poolName;
         if (null === $poolName)

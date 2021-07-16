@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Util;
+namespace Imi\Db\Mysql\Util;
 
 use Imi\Db\Exception\DbException;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Table;
 
 /**
@@ -92,12 +93,12 @@ class SqlUtil
     /**
      * 生成插入语句.
      */
-    public static function buildInsertSql(string $table, array $dataList): string
+    public static function buildInsertSql(IQuery $query, string $table, array $dataList): string
     {
         $sql = '';
         $tableObj = new Table();
-        $tableObj->setValue($table);
-        $tableStr = $tableObj->__toString();
+        $tableObj->setValue($table, $query);
+        $tableStr = $tableObj->toString($query);
         foreach ($dataList as $row)
         {
             foreach ($row as &$value)

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Drivers\Mysqli;
+namespace Imi\Db\Mysql\Drivers\Mysqli;
 
-use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
-use Imi\Db\Interfaces\IDb;
-use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Mysql\Contract\IMysqlDb;
+use Imi\Db\Mysql\Contract\IMysqlStatement;
+use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 use mysqli_result;
 use mysqli_stmt;
 
@@ -16,7 +16,7 @@ use mysqli_stmt;
  *
  * @property string $queryString
  */
-class Statement extends BaseStatement implements IStatement
+class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     protected ?mysqli_stmt $statement;
 
@@ -33,7 +33,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 数据库操作对象
      */
-    protected IDb $db;
+    protected IMysqlDb $db;
 
     /**
      * 最后执行过的SQL语句.
@@ -50,7 +50,7 @@ class Statement extends BaseStatement implements IStatement
      */
     protected ?array $sqlParamsMap = null;
 
-    public function __construct(IDb $db, ?mysqli_stmt $statement, ?mysqli_result $result, string $originSql, ?array $sqlParamsMap = null)
+    public function __construct(IMysqlDb $db, ?mysqli_stmt $statement, ?mysqli_result $result, string $originSql, ?array $sqlParamsMap = null)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -62,7 +62,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取数据库操作对象
      */
-    public function getDb(): IDb
+    public function getDb(): IMysqlDb
     {
         return $this->db;
     }

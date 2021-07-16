@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Builder;
+namespace Imi\Db\Mysql\Query\Builder;
+
+use Imi\Db\Query\QueryOption;
 
 class DeleteBuilder extends BaseBuilder
 {
@@ -10,9 +12,10 @@ class DeleteBuilder extends BaseBuilder
     {
         parent::build(...$args);
         $query = $this->query;
+        /** @var QueryOption $option */
         $option = $query->getOption();
 
-        $sql = 'delete from ' . $option->table
+        $sql = 'delete from ' . $option->table->toString($query)
                 . $this->parseWhere($option->where)
                 . $this->parseOrder($option->order)
                 . $this->parseLimit($option->offset, $option->limit)

@@ -6,18 +6,15 @@ namespace Imi\Db\Query;
 
 use Imi\Db\Query\Interfaces\IBaseWhere;
 use Imi\Db\Query\Interfaces\IJoin;
-use Imi\Db\Query\Traits\TKeyword;
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Traits\TRaw;
 
 class Join implements IJoin
 {
-    use TKeyword;
     use TRaw;
 
     /**
      * 表名.
-     *
-     * @var \Imi\Db\Query\Table
      */
     protected Table $table;
 
@@ -46,10 +43,10 @@ class Join implements IJoin
      */
     protected string $type = 'inner';
 
-    public function __construct(?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner')
+    public function __construct(IQuery $query, ?string $table = null, ?string $left = null, ?string $operation = null, ?string $right = null, ?string $tableAlias = null, ?IBaseWhere $where = null, string $type = 'inner')
     {
         $this->table = $thisTable = new Table();
-        $thisTable->setValue($table);
+        $thisTable->setValue($table, $query);
         if (null !== $tableAlias)
         {
             $thisTable->setAlias($tableAlias);
@@ -64,9 +61,9 @@ class Join implements IJoin
     /**
      * 表名.
      */
-    public function getTable(): ?string
+    public function getTable(IQuery $query): ?string
     {
-        return (string) $this->table;
+        return $this->table->toString($query);
     }
 
     /**
@@ -120,10 +117,10 @@ class Join implements IJoin
     /**
      * 设置表名.
      */
-    public function setTable(?string $table = null): void
+    public function setTable(string $table, IQuery $query): void
     {
         $this->table = $thisTable = new Table();
-        $thisTable->setValue($table);
+        $thisTable->setValue($table, $query);
     }
 
     /**
@@ -174,16 +171,16 @@ class Join implements IJoin
         $this->type = $type;
     }
 
-    public function __toString()
+    public function toString(IQuery $query): string
     {
         if ($this->isRaw)
         {
             return $this->rawSQL;
         }
-        $result = $this->type . ' join ' . $this->table . ' on ' . $this->parseKeyword($this->left) . $this->operation . $this->parseKeyword($this->right);
+        $result = $this->type . ' join ' . $this->table->toString($query) . ' on ' . $query->fieldQuote($this->left) . $this->operation . $query->fieldQuote($this->right);
         if ($this->where instanceof IBaseWhere)
         {
-            $result .= ' ' . $this->where;
+            $result .= ' ' . $this->where->toString($query);
         }
 
         return $result;

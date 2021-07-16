@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Drivers\PdoMysql;
+namespace Imi\Db\Mysql\Drivers\PdoMysql;
 
-use Imi\Db\Drivers\BaseStatement;
 use Imi\Db\Exception\DbException;
-use Imi\Db\Interfaces\IDb;
-use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Mysql\Contract\IMysqlDb;
+use Imi\Db\Mysql\Contract\IMysqlStatement;
+use Imi\Db\Mysql\Drivers\MysqlBaseStatement;
 use Imi\Util\Text;
 use PDOStatement;
 
@@ -16,7 +16,7 @@ use PDOStatement;
  *
  * @property string $queryString
  */
-class Statement extends BaseStatement implements IStatement
+class Statement extends MysqlBaseStatement implements IMysqlStatement
 {
     /**
      * \PDOStatement.
@@ -31,14 +31,14 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 数据库操作对象
      */
-    protected IDb $db;
+    protected IMysqlDb $db;
 
     /**
      * 最后插入ID.
      */
     protected int $lastInsertId = 0;
 
-    public function __construct(IDb $db, PDOStatement $statement)
+    public function __construct(IMysqlDb $db, PDOStatement $statement)
     {
         $this->db = $db;
         $this->statement = $statement;
@@ -48,7 +48,7 @@ class Statement extends BaseStatement implements IStatement
     /**
      * 获取数据库操作对象
      */
-    public function getDb(): IDb
+    public function getDb(): IMysqlDb
     {
         return $this->db;
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Imi\Test\Component\Tests\Db;
 
 use Imi\Db\Db;
-use Imi\Db\Query\Lock\MysqlLock;
+use Imi\Db\Mysql\Query\Lock\MysqlLock;
 use Imi\Test\BaseTest;
 use PHPUnit\Framework\Assert;
 

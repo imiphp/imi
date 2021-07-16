@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Lock;
+namespace Imi\Db\Mysql\Query\Lock;
 
 class MysqlLock
 {

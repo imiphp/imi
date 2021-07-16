@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imi\Db\Interfaces;
 
+use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Transaction\Transaction;
 use Imi\Util\Interfaces\IHashCode;
 
@@ -125,4 +126,9 @@ interface IDb extends IHashCode
      * Get 事务管理.
      */
     public function getTransaction(): Transaction;
+
+    /**
+     * 创建查询构建器.
+     */
+    public function createQuery(?string $modelClass = null): IQuery;
 }

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Builder;
+namespace Imi\Db\Mysql\Query\Builder;
 
+use Imi\Db\Query\QueryOption;
 use Imi\Util\ObjectArrayHelper;
 
 class BatchInsertBuilder extends BaseBuilder
@@ -13,6 +14,7 @@ class BatchInsertBuilder extends BaseBuilder
         parent::build(...$args);
         $query = $this->query;
         $params = &$this->params;
+        /** @var QueryOption $option */
         $option = $query->getOption();
         list($list) = $args;
         if (null === $list)
@@ -31,9 +33,9 @@ class BatchInsertBuilder extends BaseBuilder
         $safeFields = [];
         foreach ($fields as $key)
         {
-            $safeFields[] = $this->parseKeyword($key);
+            $safeFields[] = $query->fieldQuote($key);
         }
-        $sql = 'insert into ' . $option->table . '(' . implode(',', $safeFields) . ') values ';
+        $sql = 'insert into ' . $option->table->toString($query) . '(' . implode(',', $safeFields) . ') values ';
         $values = [];
 
         foreach ($list as $data)

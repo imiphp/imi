@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Builder;
+namespace Imi\Db\Mysql\Query\Builder;
 
-use Imi\Db\Query\Lock\MysqlLock;
+use Imi\Db\Mysql\Query\Lock\MysqlLock;
+use Imi\Db\Query\QueryOption;
 
 class SelectBuilder extends BaseBuilder
 {
@@ -12,11 +13,12 @@ class SelectBuilder extends BaseBuilder
     {
         parent::build(...$args);
         $query = $this->query;
+        /** @var QueryOption $option */
         $option = $query->getOption();
         $sql = 'select ' . $this->parseDistinct($option->distinct)
                 . $this->parseField($option->field)
                 . ' from '
-                . $option->table
+                . $option->table->toString($query)
                 . $this->parseJoin($option->join)
                 . $this->parseWhere($option->where)
                 . $this->parseGroup($option->group)

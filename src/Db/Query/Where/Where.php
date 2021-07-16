@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Imi\Db\Query\Where;
 
-use Imi\Db\Consts\LogicalOperator;
+use Imi\Db\Mysql\Consts\LogicalOperator;
 use Imi\Db\Query\Interfaces\IQuery;
 use Imi\Db\Query\Interfaces\IWhere;
-use Imi\Db\Query\Traits\TKeyword;
 use Imi\Db\Query\Traits\TRaw;
 
 class Where extends BaseWhere implements IWhere
 {
-    use TKeyword;
     use TRaw;
 
     /**
@@ -129,7 +127,7 @@ class Where extends BaseWhere implements IWhere
             return $this->rawSQL;
         }
         $operation = $this->operation;
-        $result = $this->parseKeyword($this->fieldName) . ' ' . $operation . ' ';
+        $result = $query->fieldQuote($this->fieldName) . ' ' . $operation . ' ';
         switch (strtolower($operation))
         {
             case 'between':

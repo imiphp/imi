@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Drivers\PdoMysql;
+namespace Imi\Db\Mysql\Drivers\PdoMysql;
 
 use Imi\App;
 use Imi\Bean\Annotation\Bean;
 use Imi\Config;
-use Imi\Db\Drivers\Base;
 use Imi\Db\Exception\DbException;
-use Imi\Db\Interfaces\IDb;
-use Imi\Db\Interfaces\IStatement;
+use Imi\Db\Mysql\Contract\IMysqlDb;
+use Imi\Db\Mysql\Contract\IMysqlStatement;
+use Imi\Db\Mysql\Drivers\MysqlBase;
+use Imi\Db\Mysql\Util\SqlUtil;
 use Imi\Db\Statement\StatementManager;
 use Imi\Db\Transaction\Transaction;
-use Imi\Db\Util\SqlUtil;
 use PDO;
 
 /**
@@ -21,7 +21,7 @@ use PDO;
  *
  * @Bean("PdoMysqlDriver")
  */
-class Driver extends Base implements IDb
+class Driver extends MysqlBase implements IMysqlDb
 {
     /**
      * 连接对象
@@ -328,7 +328,7 @@ class Driver extends Base implements IDb
     /**
      * 准备执行语句并返回一个语句对象
      */
-    public function prepare(string $sql, array $driverOptions = []): IStatement
+    public function prepare(string $sql, array $driverOptions = []): IMysqlStatement
     {
         if ($this->isCacheStatement && $stmtCache = StatementManager::get($this, $sql))
         {
@@ -356,7 +356,7 @@ class Driver extends Base implements IDb
     /**
      * 执行一条SQL语句，返回一个结果集作为PDOStatement对象
      */
-    public function query(string $sql): IStatement
+    public function query(string $sql): IMysqlStatement
     {
         $this->lastSql = $sql;
         $this->lastStmt = $lastStmt = $this->instance->query($sql);

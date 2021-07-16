@@ -21,7 +21,7 @@ interface IBase
      */
     public function setRawSQL(string $rawSQL): void;
 
-    public function __toString();
+    public function toString(IQuery $query): string;
 
     /**
      * 获取绑定的数据们.

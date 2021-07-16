@@ -39,7 +39,7 @@ return [
                 ],
             ],
             'resource'    => [
-                'dbClass'     => \Imi\Db\Drivers\PdoMysql\Driver::class,
+                'dbClass'     => 'PdoMysqlDriver',
                 'host'        => imiGetEnv('MYSQL_SERVER_HOST', '127.0.0.1'),
                 'username'    => 'root',
                 'password'    => 'root',

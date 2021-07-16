@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Imi\Db\Query\Builder;
+namespace Imi\Db\Mysql\Query\Builder;
+
+use Imi\Db\Query\QueryOption;
 
 class UpdateBuilder extends BaseBuilder
 {
@@ -11,6 +13,7 @@ class UpdateBuilder extends BaseBuilder
         parent::build(...$args);
         $query = $this->query;
         $params = &$this->params;
+        /** @var QueryOption $option */
         $option = $query->getOption();
         list($data) = $args;
         if (null === $data)
@@ -27,34 +30,34 @@ class UpdateBuilder extends BaseBuilder
             {
                 if (is_numeric($k))
                 {
-                    $setStrs[] = (string) $v;
+                    $setStrs[] = $v->toString($query);
                 }
                 else
                 {
-                    $matches = $this->parseKeywordText($k);
-                    $field = $this->parseKeywordToText($matches['keywords']);
+                    $matches = $query->parseKeywordText($k);
+                    $field = $query->parseKeywordToText($matches['keywords']);
                     if ($matches['jsonKeywords'])
                     {
                         $jsonSets[$field][] = [
                             'jsonKeywords' => $matches['jsonKeywords'],
-                            'raw'          => $v,
+                            'raw'          => $v->toString($query),
                         ];
                     }
                     else
                     {
-                        $setStrs[] = $field . ' = ' . $v;
+                        $setStrs[] = $field . ' = ' . $v->toString($query);
                     }
                 }
             }
             else
             {
-                $matches = $this->parseKeywordText($k);
-                $field = $this->parseKeywordToText($matches['keywords']);
+                $matches = $query->parseKeywordText($k);
+                $field = $query->parseKeywordToText($matches['keywords']);
                 if ($matches['jsonKeywords'])
                 {
                     if (is_scalar($v))
                     {
-                        $valueParam = $this->query->getAutoParamName();
+                        $valueParam = $query->getAutoParamName();
                         $jsonSets[$field][] = [
                             'jsonKeywords' => $matches['jsonKeywords'],
                             'valueParam'   => $valueParam,
@@ -83,7 +86,7 @@ class UpdateBuilder extends BaseBuilder
         {
             $jsonSets = ', ' . $jsonSets;
         }
-        $sql = 'update ' . $option->table . ' set ' . implode(',', $setStrs)
+        $sql = 'update ' . $option->table->toString($query) . ' set ' . implode(',', $setStrs)
             . $jsonSets
             . $this->parseWhere($option->where)
             . $this->parseOrder($option->order)

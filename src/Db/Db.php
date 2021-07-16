@@ -8,7 +8,6 @@ use Imi\App;
 use Imi\Config;
 use Imi\Db\Interfaces\IDb;
 use Imi\Db\Query\Interfaces\IQuery;
-use Imi\Db\Query\Query;
 use Imi\Db\Query\QueryType;
 use Imi\Pool\Interfaces\IPoolResource;
 use Imi\Pool\PoolManager;
@@ -42,7 +41,7 @@ class Db
             }
 
             /** @var IDb $db */
-            $db = App::getBean($config['dbClass'] ?? \Imi\Db\Drivers\PdoMysql\Driver::class, $config);
+            $db = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
             $db->open();
 
             return $db;
@@ -75,7 +74,7 @@ class Db
                     throw new \RuntimeException(sprintf('Not found db config %s', $poolName));
                 }
                 /** @var IDb $db */
-                $db = $context[$requestContextKey] = App::getBean($config['dbClass'] ?? \Imi\Db\Drivers\PdoMysql\Driver::class, $config);
+                $db = $context[$requestContextKey] = App::getBean($config['dbClass'] ?? 'PdoMysqlDriver', $config);
                 $db->open();
             }
 
@@ -100,7 +99,7 @@ class Db
      */
     public static function query(?string $poolName = null, ?string $modelClass = null, ?int $queryType = null): IQuery
     {
-        return App::getBean(Query::class, null, $modelClass, $poolName, $queryType);
+        return self::getInstance($poolName, $queryType ?? QueryType::WRITE)->createQuery($modelClass);
     }
 
     /**

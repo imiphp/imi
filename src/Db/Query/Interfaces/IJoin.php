@@ -9,7 +9,7 @@ interface IJoin extends IBase
     /**
      * 表名.
      */
-    public function getTable(): ?string;
+    public function getTable(IQuery $query): ?string;
 
     /**
      * 在 join b on a.id=b.id 中的 a.id.
@@ -46,7 +46,7 @@ interface IJoin extends IBase
     /**
      * 设置表名.
      */
-    public function setTable(?string $table = null): void;
+    public function setTable(string $table, IQuery $query): void;
 
     /**
      * 设置在 join b on a.id=b.id 中的 a.id.

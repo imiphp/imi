@@ -32,5 +32,5 @@ interface IDatabase extends IBase
      * name alias——database alias
      * name as alias——database as alias.
      */
-    public function setValue(string $value): void;
+    public function setValue(string $value, IQuery $query): void;
 }
