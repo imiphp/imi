@@ -51,6 +51,8 @@ return [
             ],
             // 数组资源配置
             'resource' => [
+                // --- 单机模式配置 ---
+                // 'mode' => \Imi\Redis\Enum\RedisMode::STANDALONE,
                 // 'host'	=>	'127.0.0.1',
                 // 'port'	=>	6379,
                 // 是否自动序列化变量
@@ -59,6 +61,34 @@ return [
                 // 'password'	=>	null,
                 // 第几个库
                 // 'db'	=>	0,
+
+                // --- 哨兵模式配置 ---
+                'mode' => \Imi\Redis\Enum\RedisMode::SENTINEL,
+                'master' => 'master 名称',
+                'nodes' => [
+                    // 支持两种格式
+                    // 格式一
+                    '127.0.0.1:6379',
+                    // 格式二
+                    [
+                        'host' => '127.0.0.1'
+                        'port' => 6379,
+                    ],
+                ],
+                'timeout' => null,
+                'retryInterval' => null,
+                'readTimeout' => null,
+
+                // --- 集群模式配置 ---
+                'mode' => \Imi\Redis\Enum\RedisMode::CLUSTER,
+                'seeds' => [
+                    '127.0.0.1:6379',
+                    '127.0.0.1:6380',
+                ],
+                'name' => null,
+                'persistent' => null,
+                'timeout' => null,
+                'readTimeout' => null,
             ],
             // uri资源配置，以分号;分隔多个，参数使用query参数格式，特殊字符需要转码
             // 'resource'  =>  'tcp://192.168.0.222&timeout=60;tcp://192.168.0.222',

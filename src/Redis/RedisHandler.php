@@ -243,12 +243,12 @@ class RedisHandler
     /**
      * redis 对象
      *
-     * @var \Redis
+     * @var \Redis|\RedisCluster
      */
     private $redis;
 
     /**
-     * @param \Redis $redis
+     * @param \Redis|\RedisCluster $redis
      */
     public function __construct($redis)
     {
@@ -269,7 +269,7 @@ class RedisHandler
     /**
      * 获取 Redis 对象实例.
      *
-     * @return \Redis
+     * @return \Redis|\RedisCluster
      */
     public function getInstance()
     {
@@ -307,12 +307,21 @@ class RedisHandler
      * @param int|null    $iterator
      * @param string|null $pattern
      * @param int|null    $count
+     * @param mixed       $strNode
      *
      * @return mixed
      */
-    public function scan(?int &$iterator, ?string $pattern = null, ?int $count = null)
+    public function scan(?int &$iterator, ?string $pattern = null, ?int $count = null, $strNode = null)
     {
-        return $this->redis->scan($iterator, $pattern, $count);
+        if (null === $strNode)
+        {
+            return $this->redis->scan($iterator, $pattern, $count);
+        }
+        else
+        {
+            // @phpstan-ignore-next-line
+            return $this->redis->scan($iterator, $strNode, $pattern, $count);
+        }
     }
 
     /**
@@ -325,14 +334,37 @@ class RedisHandler
      */
     public function scanEach(?string $pattern = null, ?int $count = null)
     {
-        $it = null;
-        while (false !== ($keys = $this->scan($it, $pattern, $count)))
+        $redis = $this->redis;
+        if ($this->isCluster())
         {
-            if ($keys)
+            // @phpstan-ignore-next-line
+            foreach ($redis->_masters() as $master)
             {
-                foreach ($keys as $key)
+                $it = null;
+                // @phpstan-ignore-next-line
+                while (false !== ($keys = $redis->scan($it, $master, $pattern, $count)))
                 {
-                    yield $key;
+                    if ($keys)
+                    {
+                        foreach ($keys as $key)
+                        {
+                            yield $key;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            $it = null;
+            while (false !== ($keys = $redis->scan($it, $pattern, $count)))
+            {
+                if ($keys)
+                {
+                    foreach ($keys as $key)
+                    {
+                        yield $key;
+                    }
                 }
             }
         }
@@ -453,5 +485,13 @@ class RedisHandler
                 }
             }
         }
+    }
+
+    /**
+     * 是否为集群.
+     */
+    public function isCluster(): bool
+    {
+        return $this->redis instanceof \RedisCluster;
     }
 }

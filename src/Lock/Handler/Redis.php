@@ -119,9 +119,9 @@ class Redis extends BaseLock
         return ImiRedis::use(function ($redis) {
             return 1 == $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
-local content = KEYS[2]
-local ttl     = ARGV[2]
-local db      = ARGV[1]
+local content = ARGV[1]
+local db      = ARGV[2]
+local ttl     = ARGV[3]
 redis.call('select', db)
 local lockSet = redis.call('setnx', key, content)
 if lockSet == 1 then
@@ -140,7 +140,7 @@ SCRIPT
                 $this->guid,
                 $this->db,
                 $this->lockExpire,
-            ], 2);
+            ], 1);
         }, $this->poolName, true);
     }
 
@@ -154,8 +154,8 @@ SCRIPT
         return ImiRedis::use(function ($redis) {
             return false !== $redis->evalEx(<<<SCRIPT
 local key     = KEYS[1]
-local content = KEYS[2]
-local db      = ARGV[1]
+local content = ARGV[1]
+local db      = ARGV[2]
 redis.call('select', db)
 local value = redis.call('get', key)
 if value == content then
@@ -167,7 +167,7 @@ SCRIPT
                 $this->key,
                 $this->guid,
                 $this->db,
-            ], 2);
+            ], 1);
         }, $this->poolName, true);
     }
 }
