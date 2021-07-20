@@ -63,17 +63,14 @@ class RedisResource extends BasePoolResource
     {
         $config = $this->config;
         $redis = $this->redis;
-        if ($redis->isConnected())
+        if (!$redis->isCluster() && $redis->isConnected() && !$redis->select($config['db'] ?? 0))
         {
-            if (!$redis->select($config['db'] ?? 0))
-            {
-                throw new \RedisException('Redis select db failed');
-            }
-            $optScan = $config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
-            if (!$redis->setOption(\Redis::OPT_SCAN, $optScan))
-            {
-                throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', \Redis::OPT_SCAN, $optScan));
-            }
+            throw new \RedisException('Redis select db failed');
+        }
+        $optScan = $config['options'][\Redis::OPT_SCAN] ?? \Redis::SCAN_RETRY;
+        if (!$redis->setOption(\Redis::OPT_SCAN, $optScan))
+        {
+            throw new \RuntimeException(sprintf('Redis setOption %s=%s failed', \Redis::OPT_SCAN, $optScan));
         }
     }
 
@@ -82,19 +79,27 @@ class RedisResource extends BasePoolResource
      */
     public function checkState(): bool
     {
-        try
+        $redis = $this->redis;
+        if ($redis->isCluster())
         {
-            $result = $this->redis->ping();
-            // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
-            return true === $result || '+PONG' === $result;
+            return true;
         }
-        catch (\Throwable $ex)
+        else
         {
-            /** @var \Imi\Log\ErrorLog $errorLog */
-            $errorLog = App::getBean('ErrorLog');
-            $errorLog->onException($ex);
+            try
+            {
+                $result = $redis->ping();
+                // PHPRedis 扩展，5.0.0 版本开始，ping() 返回为 true，旧版本为 +PONG
+                return true === $result || '+PONG' === $result;
+            }
+            catch (\Throwable $ex)
+            {
+                /** @var \Imi\Log\ErrorLog $errorLog */
+                $errorLog = App::getBean('ErrorLog');
+                $errorLog->onException($ex);
 
-            return false;
+                return false;
+            }
         }
     }
 }

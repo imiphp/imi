@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Imi\Redis;
 
-use Imi\App;
 use Imi\Pool\BaseSyncPool;
 use Imi\Pool\TUriResourceConfig;
+use Imi\Redis\Traits\TRedisPool;
 
 class SyncRedisPool extends BaseSyncPool
 {
+    use TRedisPool;
     use TUriResourceConfig;
 
     /**
-     * 鏁版嵁搴撴搷浣滅被.
+     * 数据库操作类.
      */
     protected string $handlerClass = \Redis::class;
 
@@ -25,19 +26,5 @@ class SyncRedisPool extends BaseSyncPool
     {
         parent::__construct($name, $config, $resourceConfig);
         $this->initUriResourceConfig();
-    }
-
-    /**
-     * 鍒涘缓璧勬簮.
-     *
-     * @return \Imi\Redis\RedisResource
-     */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
-    {
-        $config = $this->getNextResourceConfig();
-        $class = $config['handlerClass'] ?? $this->handlerClass;
-        $db = App::getBean(RedisHandler::class, new $class());
-
-        return new RedisResource($this, $db, $config);
     }
 }

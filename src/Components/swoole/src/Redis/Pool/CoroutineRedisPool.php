@@ -4,38 +4,23 @@ declare(strict_types=1);
 
 namespace Imi\Swoole\Redis\Pool;
 
-use Imi\App;
 use Imi\Pool\TUriResourceConfig;
-use Imi\Redis\RedisHandler;
-use Imi\Redis\RedisResource;
+use Imi\Redis\Traits\TRedisPool;
 use Imi\Swoole\Pool\BaseAsyncPool;
 
 class CoroutineRedisPool extends BaseAsyncPool
 {
+    use TRedisPool;
     use TUriResourceConfig;
 
     /**
-     * 鏁版嵁搴撴搷浣滅被.
+     * 数据库操作类.
      */
     protected string $handlerClass = \Redis::class;
 
-    public function __construct(string $name, \Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
+    public function __construct(string $name, ?\Imi\Pool\Interfaces\IPoolConfig $config = null, $resourceConfig = null)
     {
         parent::__construct($name, $config, $resourceConfig);
         $this->initUriResourceConfig();
-    }
-
-    /**
-     * 鍒涘缓璧勬簮.
-     *
-     * @return \Imi\Redis\RedisResource
-     */
-    protected function createResource(): \Imi\Pool\Interfaces\IPoolResource
-    {
-        $config = $this->getNextResourceConfig();
-        $class = $config['handlerClass'] ?? $this->handlerClass;
-        $db = App::getBean(RedisHandler::class, new $class());
-
-        return new RedisResource($this, $db, $config);
     }
 }

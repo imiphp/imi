@@ -356,7 +356,7 @@ class Redis implements IGroupHandler
     private function useRedis(callable $callback)
     {
         return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
-            if (null !== $this->redisDb)
+            if (null !== $this->redisDb && !$redis->isCluster())
             {
                 $redis->select($this->redisDb);
             }

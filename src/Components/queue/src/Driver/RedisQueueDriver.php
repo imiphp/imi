@@ -581,7 +581,17 @@ LUA
      */
     public function getMessageKeyPrefix(): string
     {
-        return $this->prefix . $this->name . ':message:';
+        $redis = RedisManager::getInstance($this->poolName);
+        if ($redis->isCluster())
+        {
+            $name = '{' . $this->name . '}';
+        }
+        else
+        {
+            $name = $this->name;
+        }
+
+        return $this->prefix . $name . ':message:';
     }
 
     /**
@@ -589,7 +599,17 @@ LUA
      */
     public function getMessageIdKey(): string
     {
-        return $this->prefix . $this->name . ':message:id';
+        $redis = RedisManager::getInstance($this->poolName);
+        if ($redis->isCluster())
+        {
+            $name = '{' . $this->name . '}';
+        }
+        else
+        {
+            $name = $this->name;
+        }
+
+        return $this->prefix . $name . ':message:id';
     }
 
     /**
@@ -597,6 +617,16 @@ LUA
      */
     public function getQueueKey(int $queueType): string
     {
-        return $this->prefix . $this->name . ':' . strtolower(QueueType::getName($queueType));
+        $redis = RedisManager::getInstance($this->poolName);
+        if ($redis->isCluster())
+        {
+            $name = '{' . $this->name . '}';
+        }
+        else
+        {
+            $name = $this->name;
+        }
+
+        return $this->prefix . $name . ':' . strtolower(QueueType::getName($queueType));
     }
 }

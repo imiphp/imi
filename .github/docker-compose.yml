@@ -18,6 +18,15 @@ services:
       retries: 3
       start_period: 5s
 
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: db_imi_test
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+
   redis:
     image: redis:6-alpine
     container_name: redis

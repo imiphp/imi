@@ -123,14 +123,17 @@ class RedisManager
      */
     public static function initRedisConnection(RedisHandler $redis, array $config): void
     {
-        $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
-        if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
+        if (!$redis->isCluster())
         {
-            throw new \RedisException('Redis auth failed');
-        }
-        if (isset($config['db']) && !$redis->select($config['db']))
-        {
-            throw new \RedisException('Redis select db failed');
+            $redis->connect($config['host'] ?? '127.0.0.1', $config['port'] ?? 6379, $config['timeout'] ?? 0);
+            if (('' !== ($config['password'] ?? '')) && !$redis->auth($config['password']))
+            {
+                throw new \RedisException('Redis auth failed');
+            }
+            if (isset($config['db']) && !$redis->select($config['db']))
+            {
+                throw new \RedisException('Redis select db failed');
+            }
         }
         $options = $config['options'] ?? [];
         if (($config['serialize'] ?? true) && !isset($options[\Redis::OPT_SERIALIZER]))

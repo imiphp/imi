@@ -131,8 +131,8 @@ class RedisHash extends Base
         static $script = <<<SCRIPT
 local key = KEYS[1]
 local result = {}
-for i = 2, #KEYS do
-    table.insert(result, redis.call('hget', key, KEYS[i]))
+for i = 1, #ARGV do
+    table.insert(result, redis.call('hget', key, ARGV[i]))
 end
 return result
 SCRIPT;
@@ -152,7 +152,7 @@ SCRIPT;
                 $evalResult = $redis->evalEx($script, array_merge(
                     [$key],
                     $members
-                ), \count($members) + 1);
+                ), 1);
                 $result = array_merge($result, $evalResult);
             }
 
@@ -193,8 +193,9 @@ SCRIPT;
     {
         static $script = <<<SCRIPT
 local key = KEYS[1]
-for i = 2, #KEYS do
-    redis.call('hset', key, KEYS[i], ARGV[i - 1])
+local halfLen = #ARGV / 2
+for i = 1, halfLen do
+    redis.call('hset', key, ARGV[i], ARGV[halfLen + i])
 end
 return true
 SCRIPT;
@@ -220,7 +221,7 @@ SCRIPT;
         $result = Redis::use(function (\Imi\Redis\RedisHandler $redis) use ($script, $setValues) {
             foreach ($setValues as $key => $item)
             {
-                $result = false !== $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), \count($item['member']) + 1);
+                $result = false !== $redis->evalEx($script, array_merge([$key], $item['member'], $item['value']), 1);
                 if (!$result)
                 {
                     return $result;
@@ -248,8 +249,8 @@ SCRIPT;
     {
         static $script = <<<SCRIPT
 local key = KEYS[1]
-for i = 2, #KEYS do
-    redis.call('hdel', key, KEYS[i])
+for i = 1, #ARGV do
+    redis.call('hdel', key, ARGV[i])
 end
 return true
 SCRIPT;
@@ -269,7 +270,7 @@ SCRIPT;
                 $result = $redis->evalEx($script, array_merge(
                     [$key],
                     $members
-                ), \count($members) + 1);
+                ), 1);
                 if (!$result)
                 {
                     return $result;
