@@ -10,7 +10,7 @@
     "require-dev": {
         "yurunsoft/yurun-http": "^4.0.0",
         "yurunsoft/ide-helper": "~1.0",
-        "swoole/ide-helper": "^4.6",
+        "swoole/ide-helper": "^4.7",
         "yurunsoft/swoole-co-pool": "^1.1.0"
     },
     "autoload": {

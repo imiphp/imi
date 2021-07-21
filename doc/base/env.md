@@ -5,7 +5,7 @@
 - Linux 系统 (Swoole 不支持在 Windows 上运行)
 - [PHP](https://php.net/) >= 7.4
 - [Composer](https://getcomposer.org/)
-- [Swoole](https://www.swoole.com/) >= 4.6.0
+- [Swoole](https://www.swoole.com/) >= 4.7.0
 - Redis、PDO 扩展
 
 ## Windows 开发者
