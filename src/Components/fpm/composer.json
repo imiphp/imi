@@ -1,5 +1,5 @@
 {
-    "name": "imiphp/fpm",
+    "name": "imiphp/imi-fpm",
     "type": "library",
     "license": "MulanPSL-1.0",
     "description": "imi php-fpm component",

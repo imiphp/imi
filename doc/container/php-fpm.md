@@ -2,6 +2,8 @@
 
 imi v2.0 版本开始，支持运行在 PHP-FPM 环境中。
 
+组件引入：`composer require imiphp/imi-fpm`
+
 ## 核心特性
 
 | 特性 | 是否支持 |

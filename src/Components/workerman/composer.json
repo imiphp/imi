@@ -1,5 +1,5 @@
 {
-    "name": "imiphp/workerman",
+    "name": "imiphp/imi-workerman",
     "type": "library",
     "license": "MulanPSL-1.0",
     "description": "imi workerman component",

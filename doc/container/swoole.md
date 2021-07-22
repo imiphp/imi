@@ -2,6 +2,8 @@
 
 imi v0.0.1 版本开始，支持运行在 Workerman 环境中。
 
+组件引入：`composer require imiphp/imi-swoole`
+
 ## 核心特性
 
 | 特性 | 是否支持 |

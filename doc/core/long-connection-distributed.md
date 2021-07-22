@@ -6,6 +6,8 @@ imi v2.0 开始，新增了长连接分布式解决方案。
 
 使用分布式解决方案时，你对连接的绑定、分组、推送等操作，底层都会自动实现逻辑，心智负担极地，可以说是一把梭！
 
+组件引入：`composer require imiphp/imi-workerman-gateway`
+
 Demo: `composer create-project imiphp/project-websocket`
 
 ## 模式

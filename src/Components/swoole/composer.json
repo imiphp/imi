@@ -1,5 +1,5 @@
 {
-    "name": "imiphp/swoole",
+    "name": "imiphp/imi-swoole",
     "type": "library",
     "license": "MulanPSL-1.0",
     "description": "imi swoole component",
