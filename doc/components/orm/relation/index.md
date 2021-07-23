@@ -245,3 +245,9 @@ $model->queryRelations('属性名1', '属性名2');
 // 查询后可以这么获取结果
 $data = $model->属性名;
 ```
+
+### 为一个列表查询指定关联
+
+```php
+\Imi\Model\Model::queryRelationsList($modelList);
+```

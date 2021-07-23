@@ -13,8 +13,8 @@ use Imi\Model\Model as Model;
  *
  * @Entity
  * @Table(name="ac_operation", id={"id"})
- * @DDL("CREATE TABLE `ac_operation` (
-) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ * @DDL("CREATE TABLE `ac_operation` (   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,   `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID，顶级为0',   `index` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '排序，越小越靠前',   `code` varchar(32) NOT NULL COMMENT '操作代码',   `name` varchar(32) NOT NULL COMMENT '操作名称',   `description` text NOT NULL COMMENT '操作介绍',   PRIMARY KEY (`id`),   UNIQUE KEY `code` (`code`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8")
+ *
  * @property int    $id
  * @property int    $parentId    父级ID，顶级为0
  * @property int    $index       排序，越小越靠前
@@ -154,6 +154,10 @@ abstract class OperationBase extends Model
      */
     public function setCode($code)
     {
+        if (\is_string($code) && mb_strlen($code) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $code is 32');
+        }
         $this->code = $code;
 
         return $this;
@@ -188,6 +192,10 @@ abstract class OperationBase extends Model
      */
     public function setName($name)
     {
+        if (\is_string($name) && mb_strlen($name) > 32)
+        {
+            throw new \InvalidArgumentException('The maximum length of $name is 32');
+        }
         $this->name = $name;
 
         return $this;
@@ -222,6 +230,10 @@ abstract class OperationBase extends Model
      */
     public function setDescription($description)
     {
+        if (\is_string($description) && mb_strlen($description) > 65535)
+        {
+            throw new \InvalidArgumentException('The maximum length of $description is 65535');
+        }
         $this->description = $description;
 
         return $this;

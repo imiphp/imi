@@ -6,9 +6,12 @@ use Imi\Bean\Annotation\Bean;
 use Imi\JWT\Exception\ConfigNotFoundException;
 use Imi\JWT\Exception\InvalidTokenException;
 use Imi\JWT\Model\JWTConfig;
-use Imi\JWT\Util\Builder;
-use Imi\JWT\Util\Parser;
+use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
 
 /**
  * @Bean("JWT")
@@ -104,35 +107,82 @@ class JWT
         {
             throw new ConfigNotFoundException('Must option the config @app.beans.JWT.list');
         }
-        $builder = new Builder();
-        $time = time();
-        $builder->permittedFor($config->getAudience())
+        if (3 === $this->getJwtPackageVersion())
+        {
+            $builder = new Builder();
+            $time = time();
+            $builder->permittedFor($config->getAudience())
                 ->relatedTo($config->getSubject())
                 ->expiresAt($time + $config->getExpires())
                 ->issuedBy($config->getIssuer())
                 ->canOnlyBeUsedAfter($config->getNotBefore())
                 ->identifiedBy($config->getId());
-        $issuedAt = $config->getIssuedAt();
-        if (true === $issuedAt)
-        {
-            $builder->issuedAt($time);
-        }
-        elseif (false !== $issuedAt)
-        {
-            $builder->issuedAt($issuedAt);
-        }
-        if ($headers = $config->getHeaders())
-        {
-            foreach ($headers as $k => $v)
+            $issuedAt = $config->getIssuedAt();
+            if (true === $issuedAt)
             {
-                $builder->withHeader($k, $v);
+                $builder->issuedAt($time);
+            }
+            elseif (false !== $issuedAt)
+            {
+                $builder->issuedAt($issuedAt);
+            }
+            if ($headers = $config->getHeaders())
+            {
+                foreach ($headers as $k => $v)
+                {
+                    $builder->withHeader($k, $v);
+                }
+            }
+            $signer = $config->getSignerInstance();
+            $key = $config->getPrivateKey();
+            $builder->sign($signer, $key);
+        }
+        else
+        {
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()), InMemory::plainText($config->getPublicKey()));
+            $builder = $configuration->builder();
+
+            $now = new \DateTimeImmutable();
+            $builder->permittedFor($config->getAudience())
+                ->relatedTo($config->getSubject())
+                ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
+                ->issuedBy($config->getIssuer())
+                ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
+                ->identifiedBy($config->getId() ?? '');
+            $issuedAt = $config->getIssuedAt();
+            if (true === $issuedAt)
+            {
+                $builder->issuedAt($now);
+            }
+            elseif (false !== $issuedAt)
+            {
+                $builder->issuedAt($issuedAt);
+            }
+            if ($headers = $config->getHeaders())
+            {
+                foreach ($headers as $k => $v)
+                {
+                    $builder->withHeader($k, $v);
+                }
             }
         }
-        $signer = $config->getSignerInstance();
-        $key = $config->getPrivateKey();
-        $builder->sign($signer, $key);
 
         return $builder;
+    }
+
+    public function getParserInstance(?string $name = null): Parser
+    {
+        if (3 === $this->getJwtPackageVersion())
+        {
+            return new \Lcobucci\JWT\Parser();
+        }
+        else
+        {
+            $config = $this->getConfig($name);
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()), InMemory::plainText($config->getPublicKey()));
+
+            return $configuration->parser();
+        }
     }
 
     /**
@@ -142,7 +192,7 @@ class JWT
      * @param string|null   $name
      * @param callable|null $beforeGetToken
      *
-     * @return \Lcobucci\JWT\Token
+     * @return \Lcobucci\JWT\Token|\Lcobucci\JWT\UnencryptedToken
      */
     public function getToken($data, ?string $name = null, ?callable $beforeGetToken = null): Token
     {
@@ -154,7 +204,14 @@ class JWT
         $config = $this->getConfig($name);
         $builder->withClaim($config->getDataName(), $data);
 
-        return $builder->getToken();
+        if (3 === $this->getJwtPackageVersion())
+        {
+            return $builder->getToken();
+        }
+        else
+        {
+            return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()));
+        }
     }
 
     /**
@@ -163,14 +220,18 @@ class JWT
      * @param string      $jwt
      * @param string|null $name
      *
-     * @return \Lcobucci\JWT\Token
+     * @return \Lcobucci\JWT\Token|\Lcobucci\JWT\UnencryptedToken
      */
     public function parseToken(string $jwt, ?string $name = null): Token
     {
-        $token = (new Parser())->parse($jwt);
         $config = $this->getConfig($name);
-        if ($config)
+        if (!$config)
         {
+            throw new InvalidTokenException();
+        }
+        if (3 === $this->getJwtPackageVersion())
+        {
+            $token = (new \Lcobucci\JWT\Parser())->parse($jwt);
             $signer = $config->getSignerInstance();
             $key = $config->getPublicKey();
             if (!$token->verify($signer, $key))
@@ -178,7 +239,28 @@ class JWT
                 throw new InvalidTokenException();
             }
         }
+        else
+        {
+            $parser = $this->getParserInstance($name);
+            $token = $parser->parse($jwt);
+            $signer = $config->getSignerInstance();
+            $key = $config->getPublicKey();
+            $signedWith = new SignedWith($signer, InMemory::plainText($key));
+            try
+            {
+                $signedWith->assert($token);
+            }
+            catch (\Throwable $th)
+            {
+                throw new InvalidTokenException($th->getMessage(), $th->getCode(), $th->getPrevious());
+            }
+        }
 
         return $token;
+    }
+
+    public function getJwtPackageVersion(): int
+    {
+        return class_exists(\Lcobucci\JWT\Token\Parser::class) ? 4 : 3;
     }
 }

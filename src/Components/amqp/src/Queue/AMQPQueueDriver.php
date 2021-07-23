@@ -758,9 +758,9 @@ local messageId = ARGV[1];
 local deleteRecord = ARGV[2];
 if(deleteRecord)
 then
-    return redis.call('srem', deleteKey, messageId);
+    return redis.call('srem', deletedKey, messageId);
 else
-    return redis.call('sismember', deleteKey, messageId);
+    return redis.call('sismember', deletedKey, messageId);
 end
 LUA
         , [

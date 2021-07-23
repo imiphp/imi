@@ -66,7 +66,7 @@ class JWTConfig
      *
      * @var int
      */
-    private $notBefore;
+    private $notBefore = 0;
 
     /**
      * JWT 发出时间
@@ -238,7 +238,7 @@ class JWTConfig
      *
      * @return string
      */
-    public function getDataName()
+    public function getDataName(): string
     {
         return $this->dataName;
     }
@@ -248,7 +248,7 @@ class JWTConfig
      *
      * @return int
      */
-    public function getNotBefore()
+    public function getNotBefore(): int
     {
         return $this->notBefore;
     }

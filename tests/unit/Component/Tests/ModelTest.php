@@ -222,6 +222,22 @@ class ModelTest extends BaseTest
         $this->assertEquals([
             'username'  => '1',
         ], $member->toArray());
+
+        $member = Member::newInstance(['username' => 'test']);
+        $member->password = 'password';
+        $member->insert();
+        $id = $member->id;
+        $this->assertEquals([
+            'id'        => $id,
+            'username'  => 'test',
+        ], $member->toArray());
+
+        $member = Member::find($id);
+        $this->assertEquals([
+            'id'        => $id,
+            'username'  => 'test',
+        ], $member->toArray());
+        $this->assertEquals('password', $member->password);
     }
 
     public function testBatchUpdate()
@@ -472,16 +488,25 @@ class ModelTest extends BaseTest
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
         $id = $record->insert()->getLastInsertId();
         $this->assertGreaterThan(0, $id);
+
         $record = TestJsonNotCamel::find($id);
         $this->assertEquals([
             'id'        => $id,
             'json_data' => [4, 5, 6],
         ], $record->convertToArray());
         $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
+
         $list = TestJsonNotCamel::query()->where('id', '=', $id)->select()->getArray();
         $this->assertEquals([[
             'id'        => $id,
             'json_data' => [4, 5, 6],
         ]], TestJson::convertListToArray($list));
+
+        $record = TestJsonNotCamel::query()->field('id', 'json_data')->where('id', '=', $id)->select()->get();
+        $this->assertEquals([
+            'id'        => $id,
+            'json_data' => [4, 5, 6],
+        ], $record->convertToArray());
+        $this->assertEquals([4, 5, 6], $record->getJsonData()->toArray());
     }
 }

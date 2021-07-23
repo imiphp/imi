@@ -372,8 +372,11 @@ class Redis implements IHandler
      */
     private function useRedis($callback)
     {
-        return ImiRedis::use(function ($redis) use ($callback) {
-            $redis->select($this->redisDb);
+        return ImiRedis::use(function (RedisHandler $redis) use ($callback) {
+            if (!$redis->isCluster())
+            {
+                $redis->select($this->redisDb);
+            }
 
             return $callback($redis);
         }, $this->redisPool, true);

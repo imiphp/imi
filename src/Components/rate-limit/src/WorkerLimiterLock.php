@@ -20,7 +20,7 @@ abstract class WorkerLimiterLock
     {
         $now = microtime(true);
         $args = [
-            $name,     // 名称
+            '{' . $name . '}',     // 名称
             $max,      // 最大允许数量
             $now,      // 当前时间
             null === $timeout ? null : ($now + $timeout), // 过期时间
@@ -85,7 +85,7 @@ SCRIPT
     public static function unlock($name, $workerId, $poolName = null)
     {
         $args = [
-            $name,     // 名称
+            '{' . $name . '}',     // 名称
             $workerId, // 任务ID
         ];
         $numKeys = 1;
