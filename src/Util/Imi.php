@@ -503,14 +503,11 @@ abstract class Imi
         $data['namespace'] = App::getNamespace();
         switch ($type)
         {
+            case 'manager':
             case 'master':
                 break;
-            case 'manager':
-                break;
-            case 'worker':
-                $data['workerId'] = Worker::getWorkerID();
-                break;
             case 'taskWorker':
+            case 'worker':
                 $data['workerId'] = Worker::getWorkerID();
                 break;
             case 'process':
@@ -618,6 +615,7 @@ abstract class Imi
             // @phpstan-ignore-next-line
             $item->columns = $getMemoryTableColumns(AnnotationManager::getPropertiesAnnotations($item->getClass(), Column::class)) ?? [];
         }
+        unset($item);
         $runtimeInfo->memoryTable = $annotationsSet;
         $runtimeInfo->annotationParserData = Annotation::getInstance()->getParser()->getStoreData();
         $runtimeInfo->annotationParserParsers = Annotation::getInstance()->getParser()->getParsers();
@@ -823,7 +821,7 @@ abstract class Imi
      */
     public static function getDarwinVersion(): string
     {
-        $xml = simplexml_load_file('/System/Library/CoreServices/SystemVersion.plist');
+        $xml = simplexml_load_string(file_get_contents('/System/Library/CoreServices/SystemVersion.plist'));
         if (!$xml)
         {
             return '';
