@@ -124,14 +124,14 @@ class JWT
         }
         else
         {
-            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()), InMemory::plainText($config->getPublicKey()));
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''), InMemory::plainText($config->getPublicKey() ?? ''));
             $builder = $configuration->builder();
 
             $now = new \DateTimeImmutable();
-            $builder->permittedFor($config->getAudience())
-                ->relatedTo($config->getSubject())
+            $builder->permittedFor($config->getAudience() ?? '')
+                ->relatedTo($config->getSubject() ?? '')
                 ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
-                ->issuedBy($config->getIssuer())
+                ->issuedBy($config->getIssuer() ?? '')
                 ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
                 ->identifiedBy($config->getId() ?? '');
             $issuedAt = $config->getIssuedAt();
@@ -164,7 +164,7 @@ class JWT
         else
         {
             $config = $this->getConfig($name);
-            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()), InMemory::plainText($config->getPublicKey()));
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''), InMemory::plainText($config->getPublicKey() ?? ''));
 
             return $configuration->parser();
         }
@@ -191,7 +191,7 @@ class JWT
         }
         else
         {
-            return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()));
+            return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''));
         }
     }
 
@@ -220,7 +220,7 @@ class JWT
             $parser = $this->getParserInstance($name);
             $token = $parser->parse($jwt);
             $signer = $config->getSignerInstance();
-            $key = $config->getPublicKey();
+            $key = $config->getPublicKey() ?? '';
             $signedWith = new SignedWith($signer, InMemory::plainText($key));
             try
             {
