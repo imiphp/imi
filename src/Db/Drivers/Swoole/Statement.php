@@ -380,7 +380,23 @@ class Statement extends BaseStatement implements IStatement
      */
     public function nextRowset(): bool
     {
-        return (bool) next($this->result);
+        if ($this->statement instanceof \Swoole\Coroutine\MySQL\Statement)
+        {
+            $result = $this->statement->nextResult();
+            if ($result)
+            {
+                $result = $this->statement->fetchAll();
+                if (false === $result)
+                {
+                    $result = [];
+                }
+                $this->result = $result;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
