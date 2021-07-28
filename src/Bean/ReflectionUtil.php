@@ -19,7 +19,7 @@ class ReflectionUtil
     {
         if (!$type)
         {
-            return '';
+            return 'mixed';
         }
         if ($type instanceof ReflectionNamedType)
         {
