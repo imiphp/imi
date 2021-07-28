@@ -122,7 +122,7 @@ class JWTValidationAop
         else
         {
             $config = $jwt->getConfig($jwtValidation->name);
-            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey()), InMemory::plainText($config->getPublicKey()));
+            $configuration = Configuration::forAsymmetricSigner($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''), InMemory::plainText($config->getPublicKey() ?? ''));
             $constraints = [];
             if (false !== $jwtValidation->id && null !== ($id = ($jwtValidation->id ?? $config->getId())))
             {
