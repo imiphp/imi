@@ -237,7 +237,7 @@ class App
             }
         }
         // git
-        if (false !== strpos(shell_exec('git --version') ?? '', 'git version') && preg_match('/\*([^\r\n]+)/', shell_exec('git branch') ?? '', $matches) > 0)
+        if (preg_match('/\*([^\r\n]+)/', shell_exec('which git && git branch') ?? '', $matches) > 0)
         {
             return static::$imiVersion = trim($matches[1]);
         }
