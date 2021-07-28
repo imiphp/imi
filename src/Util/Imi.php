@@ -862,7 +862,7 @@ abstract class Imi
      */
     public static function getCygwinVersion(): string
     {
-        if (preg_match('/^cygwin\s+(\S+)\s+OK$/', exec('cygcheck -c cygwin'), $matches) > 0)
+        if (preg_match('/^cygwin\s+(\S+)\s+OK$/', exec('which cygcheck && cygcheck -c cygwin'), $matches) > 0)
         {
             return $matches[1];
         }
