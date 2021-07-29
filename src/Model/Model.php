@@ -528,6 +528,9 @@ abstract class Model extends BaseModel
                 $this->__parseExtractProperty($name, $propertyAnnotations[$name]);
             }
         }
+
+        // 关联字段加入序列化
+        $this->__fieldNames = array_merge($this->__fieldNames, $names);
     }
 
     /**
