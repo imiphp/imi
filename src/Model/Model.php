@@ -530,7 +530,7 @@ abstract class Model extends BaseModel
         }
 
         // 关联字段加入序列化
-        $this->__fieldNames = array_merge($this->__fieldNames, $names);
+        $this->__serializedFields = array_merge($this->__serializedFields, $names);
     }
 
     /**
