@@ -57,6 +57,7 @@ class ServerUtilTest extends BaseTest
                 $this->assertTrue($client->isConnected());
                 for ($_ = 0; $_ < 3; ++$_)
                 {
+                    sleep(1);
                     $this->assertTrue($client->send(json_encode([
                         'action'    => 'info',
                     ])));
@@ -65,7 +66,6 @@ class ServerUtilTest extends BaseTest
                     {
                         break;
                     }
-                    sleep(1);
                 }
                 if (!isset($recvData['clientId']))
                 {
@@ -118,6 +118,7 @@ class ServerUtilTest extends BaseTest
                     $this->assertTrue($client->isConnected());
                     for ($_ = 0; $_ < 3; ++$_)
                     {
+                        sleep(1);
                         $this->assertTrue($client->send(json_encode([
                             'action'    => 'login',
                             'username'  => 'testSend',
@@ -127,7 +128,6 @@ class ServerUtilTest extends BaseTest
                         {
                             break;
                         }
-                        sleep(1);
                     }
                     // @phpstan-ignore-next-line
                     $recvData = json_decode($recv, true);
@@ -217,6 +217,7 @@ class ServerUtilTest extends BaseTest
             $this->assertTrue($client1->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
+                sleep(1);
                 $this->assertTrue($client1->send(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
@@ -226,7 +227,6 @@ class ServerUtilTest extends BaseTest
                 {
                     break;
                 }
-                sleep(1);
             }
             // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
@@ -239,6 +239,7 @@ class ServerUtilTest extends BaseTest
             $this->assertTrue($client2->isConnected());
             for ($_ = 0; $_ < 3; ++$_)
             {
+                sleep(1);
                 $this->assertTrue($client2->send(json_encode([
                     'action'    => 'login',
                     'username'  => uniqid('', true),
@@ -248,7 +249,6 @@ class ServerUtilTest extends BaseTest
                 {
                     break;
                 }
-                sleep(1);
             }
             // @phpstan-ignore-next-line
             $recvData = json_decode($recv, true);
@@ -283,6 +283,7 @@ class ServerUtilTest extends BaseTest
         $this->assertTrue($client1->isConnected());
         for ($_ = 0; $_ < 3; ++$_)
         {
+            sleep(1);
             $this->assertTrue($client1->send(json_encode([
                 'action'    => 'info',
             ])));
@@ -291,7 +292,6 @@ class ServerUtilTest extends BaseTest
             {
                 break;
             }
-            sleep(1);
         }
         $this->assertTrue(isset($recvData1['clientId']), 'Not found clientId');
 
@@ -302,6 +302,7 @@ class ServerUtilTest extends BaseTest
         $this->assertTrue($client2->isConnected());
         for ($_ = 0; $_ < 3; ++$_)
         {
+            sleep(1);
             $this->assertTrue($client2->send(json_encode([
                 'action'    => 'login',
                 'username'  => 'testClose',
@@ -311,7 +312,6 @@ class ServerUtilTest extends BaseTest
             {
                 break;
             }
-            sleep(1);
         }
         // @phpstan-ignore-next-line
         $recvData2 = json_decode($recv, true);

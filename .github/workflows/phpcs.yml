@@ -20,24 +20,8 @@ jobs:
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ env.php-versions }}-${{ hashFiles('**/composer.json') }}
-
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress --ignore-platform-reqs --no-scripts
-
-      - name: Cache Tests
-        uses: actions/cache@v2
-        with:
-          path: ./.php_cs.cache
-          key: php-cs-fix-${{ hashFiles('**/.php_cs.dist') }}
 
       - name: Coding Standards Tests
         run: ./vendor/bin/php-cs-fixer fix --dry-run --diff

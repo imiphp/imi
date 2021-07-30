@@ -12,25 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: /tmp/composer
-          key: ${{ runner.os }}-composer-${{ env.SWOOLE_DOCKER_VERSION }}-${{ hashFiles('**/composer.json') }}
-
-      - name: Cache analyse
-        uses: actions/cache@v2
-        with:
-          path: /tmp/phpstan
-          key: phpstan-analyse
-
-      - name: Cache docker
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
-        with:
-          key: foo-docker-cache-${{ hashFiles('**/.github/docker-compose.yml', '**/.github/swoole.dockerfile', '**/.github/workflows/phpstan.yml') }}
-
       - name: Prepare
         run: |
           docker-compose -f ./.github/docker-compose.yml up -d ${ENV_SERVICE}
