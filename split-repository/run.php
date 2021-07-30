@@ -6,7 +6,7 @@ use Github\Client;
 
 require __DIR__ . '/vendor/autoload.php';
 
-function execCMD(string $cmd, string $description = '', ?array &$result = null): void
+function execCMD(string $cmd, string $description = '', ?array &$result = null, ?callable $callback = null): void
 {
     $result = [];
     echo '--begin--', \PHP_EOL;
@@ -17,7 +17,7 @@ function execCMD(string $cmd, string $description = '', ?array &$result = null):
     echo $cmd, \PHP_EOL;
     exec($cmd, $result, $resultCode);
     echo implode(\PHP_EOL, $result), \PHP_EOL;
-    if (0 !== $resultCode)
+    if (0 !== $resultCode && (null === $callback || !$callback($result, $resultCode)))
     {
         echo sprintf('cmd status code is %s', $resultCode), \PHP_EOL;
         exit($resultCode);
@@ -343,8 +343,8 @@ foreach ($storeRepoMap as $name => $urls)
             continue;
         }
         chdir($mainRepoPath);
-        $authorName = shell_exec('git show ' . $commit . ' -s --format=%cn');
-        $authorEmail = shell_exec('git show ' . $commit . ' -s --format=%ce');
+        $authorName = trim(shell_exec('git show ' . $commit . ' -s --format=%cn'));
+        $authorEmail = trim(shell_exec('git show ' . $commit . ' -s --format=%ce'));
 
         chdir($repoPath);
         if ($noBranch)
@@ -354,7 +354,9 @@ foreach ($storeRepoMap as $name => $urls)
         execCMD('git status -s', '', $result);
         if ($result)
         {
-            execCMD('git config user.name "' . $authorName . '" && git config user.email "' . $authorEmail . '" && git commit --author "' . $author . ' <' . $authorEmail . '>" --date "' . $date . '" -am \'' . $message . '\'', 'git commit');
+            execCMD('git config user.name "' . $authorName . '" && git config user.email "' . $authorEmail . '" && git commit --author "' . $author . ' <' . $authorEmail . '>" --date "' . $date . '" -am \'' . $message . '\'', 'git commit', $result, function (array $result, int $resultCode) {
+                return false !== strpos(implode(\PHP_EOL, $result), 'nothing to commit');
+            });
         }
     }
     chdir($repoPath);
