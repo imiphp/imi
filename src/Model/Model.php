@@ -536,7 +536,7 @@ abstract class Model extends BaseModel
         }
         else
         {
-            $this->__serializedFields = $names;
+            $this->__serializedFields = array_merge($this->__fieldNames, $names);
         }
     }
 
