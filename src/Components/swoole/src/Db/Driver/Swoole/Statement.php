@@ -261,14 +261,14 @@ class Statement extends MysqlBaseStatement implements IMysqlStatement
         if ($row)
         {
             next($this->result);
-        }
-        if (isset($row[$columnKey]))
-        {
-            return $row[$columnKey];
-        }
-        elseif (is_numeric($columnKey))
-        {
-            return array_values($row)[$columnKey] ?? null;
+            if (isset($row[$columnKey]))
+            {
+                return $row[$columnKey];
+            }
+            elseif (is_numeric($columnKey))
+            {
+                return array_values($row)[$columnKey] ?? null;
+            }
         }
 
         return null;
