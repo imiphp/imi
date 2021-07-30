@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   split-repository:
-    if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
+    if: github.repository == 'imiphp/imi' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/2.0')
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
