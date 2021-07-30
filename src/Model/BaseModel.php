@@ -315,9 +315,9 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
     {
         $serializedFields = $this->__serializedFields;
         $result = [];
-        $meta = $this->__meta;
         if (null === $serializedFields)
         {
+            $meta = $this->__meta;
             $realClass = $this->__realClass;
             if ($meta->hasRelation())
             {
@@ -387,27 +387,15 @@ abstract class BaseModel implements \Iterator, \ArrayAccess, IArrayable, \JsonSe
         {
             $resultArray = [];
             $__fieldNames = $this->__fieldNames;
-            $camel = $meta->isCamel();
             foreach ($serializedFields as $fieldName)
             {
-                if ($camel)
+                if (\in_array($fieldName, $__fieldNames))
                 {
-                    if (isset($__fieldNames[$fieldName]))
-                    {
-                        $name = $fieldName;
-                    }
-                    elseif (false !== ($key = array_search($fieldName, $__fieldNames)))
-                    {
-                        $name = $key;
-                    }
-                    else
-                    {
-                        $name = $fieldName;
-                    }
+                    $name = $fieldName;
                 }
                 else
                 {
-                    $name = $fieldName;
+                    $name = $__fieldNames[$fieldName] ?? $fieldName;
                 }
                 $resultArray[$name] = $this[$name] ?? null;
             }
