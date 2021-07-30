@@ -321,10 +321,6 @@ class RedisHandler
      */
     public function scan(?int &$iterator, ?string $pattern = null, int $count = 0, $strNode = null)
     {
-        if (null === $count)
-        {
-            $count = 0;
-        }
         if (null === $strNode)
         {
             return $this->redis->scan($iterator, $pattern, $count);
@@ -386,11 +382,6 @@ class RedisHandler
      */
     public function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
     {
-        if (null === $count)
-        {
-            $count = 0;
-        }
-
         return $this->redis->hscan($key, $iterator, $pattern, $count);
     }
 
@@ -421,11 +412,6 @@ class RedisHandler
      */
     public function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
     {
-        if (null === $count)
-        {
-            $count = 0;
-        }
-
         return $this->redis->sscan($key, $iterator, $pattern, $count);
     }
 
@@ -456,11 +442,6 @@ class RedisHandler
      */
     public function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
     {
-        if (null === $count)
-        {
-            $count = 0;
-        }
-
         return $this->redis->zscan($key, $iterator, $pattern, $count);
     }
 
