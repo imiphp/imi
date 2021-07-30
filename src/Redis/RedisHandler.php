@@ -319,7 +319,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function scan(?int &$iterator, ?string $pattern = null, ?int $count = null, $strNode = null)
+    public function scan(?int &$iterator, ?string $pattern = null, int $count = 0, $strNode = null)
     {
         if (null === $count)
         {
@@ -341,7 +341,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function scanEach(?string $pattern = null, ?int $count = null)
+    public function scanEach(?string $pattern = null, int $count = 0)
     {
         $redis = $this->redis;
         if ($this->isCluster())
@@ -384,7 +384,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function hscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    public function hscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
     {
         if (null === $count)
         {
@@ -399,7 +399,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function hscanEach(string $key, ?string $pattern = null, ?int $count = null)
+    public function hscanEach(string $key, ?string $pattern = null, int $count = 0)
     {
         $it = null;
         while (false !== ($result = $this->hscan($key, $it, $pattern, $count)))
@@ -419,7 +419,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function sscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    public function sscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
     {
         if (null === $count)
         {
@@ -434,7 +434,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function sscanEach(string $key, ?string $pattern = null, ?int $count = null)
+    public function sscanEach(string $key, ?string $pattern = null, int $count = 0)
     {
         $it = null;
         while (false !== ($result = $this->sscan($key, $it, $pattern, $count)))
@@ -454,7 +454,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function zscan(string $key, ?int &$iterator, ?string $pattern = null, ?int $count = null)
+    public function zscan(string $key, ?int &$iterator, ?string $pattern = null, int $count = 0)
     {
         if (null === $count)
         {
@@ -469,7 +469,7 @@ class RedisHandler
      *
      * @return mixed
      */
-    public function zscanEach(string $key, ?string $pattern = null, ?int $count = null)
+    public function zscanEach(string $key, ?string $pattern = null, int $count = 0)
     {
         $it = null;
         while (false !== ($result = $this->zscan($key, $it, $pattern, $count)))
