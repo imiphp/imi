@@ -2,6 +2,7 @@
 
 namespace Imi\Model;
 
+use Imi\Db\Query\Field;
 use Imi\Db\Query\Interfaces\IResult;
 use Imi\Db\Query\Query;
 
@@ -37,7 +38,7 @@ class ModelQuery extends Query
      */
     public function select(): IResult
     {
-        if ($this->option->field)
+        if ($this->hasCustomFields())
         {
             $this->isSetSerializedFields = true;
         }
@@ -59,6 +60,55 @@ class ModelQuery extends Query
         }
 
         return parent::select();
+    }
+
+    private function hasCustomFields(): bool
+    {
+        $field = $this->option->field;
+        if (!$field)
+        {
+            return false;
+        }
+        if (\count($field) > 1)
+        {
+            return true;
+        }
+
+        $k = key($field);
+        $v = current($field);
+
+        if (is_numeric($k))
+        {
+            if ('*' === $v)
+            {
+                return false;
+            }
+            if ($v instanceof Field)
+            {
+                $field = $v;
+            }
+            else
+            {
+                $field = new Field();
+                $field->setValue($v);
+            }
+        }
+        else
+        {
+            $field = new Field(null, null, $k, $v);
+        }
+        if ('*' !== $field->getField())
+        {
+            return true;
+        }
+        $table = $field->getTable();
+        $tableObject = $this->option->table;
+        if (null === $table || $table === $tableObject->getTable() || $table === $tableObject->getAlias())
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
