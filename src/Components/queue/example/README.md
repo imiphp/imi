@@ -12,7 +12,7 @@ imi 框架：https://www.imiphp.com
 
 ### 方法二
 
-* `composer create-project imiphp/project-http`
+* `composer create-project imiphp/project-http 2.0.x-dev`
 
 ## 启动命令
 
