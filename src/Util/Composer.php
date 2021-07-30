@@ -52,10 +52,14 @@ abstract class Composer
      */
     public static function getPathNamespaces(string $path): array
     {
+        $realPath = realpath($path);
+        if (!$realPath)
+        {
+            return [];
+        }
         $result = [];
         foreach (self::getClassLoaders() as $classLoader)
         {
-            $realPath = realpath($path);
             foreach ($classLoader->getPrefixesPsr4() as $namespace => $namespacePaths)
             {
                 foreach ($namespacePaths as $namespacePath)
