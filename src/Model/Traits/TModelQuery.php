@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Imi\Model\Traits;
 
 use Imi\Db\Query\Field;
-use Imi\Model\ModelQueryResult;
 use Imi\Db\Query\Interfaces\IResult;
+use Imi\Model\ModelQueryResult;
 
 trait TModelQuery
 {
