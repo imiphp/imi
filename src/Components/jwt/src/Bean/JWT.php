@@ -124,7 +124,7 @@ class JWT
             }
             elseif (false !== $issuedAt)
             {
-                $builder->issuedAt($issuedAt);
+                $builder->issuedAt($now->modify('+' . ($issuedAt ?? 0) . ' second'));
             }
             if ($headers = $config->getHeaders())
             {
@@ -156,7 +156,7 @@ class JWT
             }
             elseif (false !== $issuedAt)
             {
-                $builder->issuedAt($issuedAt);
+                $builder->issuedAt($now->modify('+' . ($issuedAt ?? 0) . ' second'));
             }
             if ($headers = $config->getHeaders())
             {
