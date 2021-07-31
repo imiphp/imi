@@ -5,7 +5,7 @@
     "description": "在 imi 框架中集成 gRPC 服务开发、客户端调用及连接池",
     "require": {
         "ext-swoole": ">=4.4.0",
-        "imiphp/imi-rpc": "^1.2.0",
+        "imiphp/imi-rpc": "2.*",
         "yurunsoft/yurun-http": "^4.0.0",
         "google/protobuf": "^3.10.0",
         "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0"

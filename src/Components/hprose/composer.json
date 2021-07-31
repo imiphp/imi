@@ -6,7 +6,7 @@
     "require": {
         "hprose/hprose": "^2.0",
         "hprose/hprose-swoole": "dev-master",
-        "imiphp/imi-rpc": "^1.2.0"
+        "imiphp/imi-rpc": "2.*"
     },
     "require-dev": {},
     "autoload": {
