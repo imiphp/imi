@@ -134,7 +134,7 @@ class JWT
                 }
             }
             $signer = $config->getSignerInstance();
-            $key = $config->getPrivateKey();
+            $key = $config->getPrivateKey() ?? '';
             $builder->sign($signer, \Lcobucci\JWT\Signer\Key\InMemory::plainText($key));
         }
         else
@@ -226,8 +226,8 @@ class JWT
         {
             $token = (new \Lcobucci\JWT\Parser())->parse($jwt);
             $signer = $config->getSignerInstance();
-            $key = $config->getPublicKey();
-            if (!$token->verify($signer, $key))
+            $key = $config->getPublicKey() ?? '';
+            if (!$token->verify($signer, InMemory::plainText($key)))
             {
                 throw new InvalidTokenException();
             }
