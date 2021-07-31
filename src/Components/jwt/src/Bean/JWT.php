@@ -95,17 +95,17 @@ class JWT
         if (3 === $this->getJwtPackageVersion())
         {
             $builder = new Builder();
-            $time = time();
-            $builder->permittedFor($config->getAudience())
-                ->relatedTo($config->getSubject())
-                ->expiresAt($time + $config->getExpires())
-                ->issuedBy($config->getIssuer())
-                ->canOnlyBeUsedAfter($config->getNotBefore())
-                ->identifiedBy($config->getId());
+            $now = new \DateTimeImmutable();
+            $builder->permittedFor($config->getAudience() ?? '')
+                ->relatedTo($config->getSubject() ?? '')
+                ->expiresAt($now->modify('+' . ($config->getExpires() ?? 0) . ' second'))
+                ->issuedBy($config->getIssuer() ?? '')
+                ->canOnlyBeUsedAfter($now->modify('+' . $config->getNotBefore() . ' second'))
+                ->identifiedBy($config->getId() ?? '');
             $issuedAt = $config->getIssuedAt();
             if (true === $issuedAt)
             {
-                $builder->issuedAt($time);
+                $builder->issuedAt($now);
             }
             elseif (false !== $issuedAt)
             {
@@ -120,7 +120,7 @@ class JWT
             }
             $signer = $config->getSignerInstance();
             $key = $config->getPrivateKey();
-            $builder->sign($signer, $key);
+            $builder->sign($signer, \Lcobucci\JWT\Signer\Key\InMemory::plainText($key));
         }
         else
         {
@@ -185,14 +185,7 @@ class JWT
         $config = $this->getConfig($name);
         $builder->withClaim($config->getDataName(), $data);
 
-        if (3 === $this->getJwtPackageVersion())
-        {
-            return $builder->getToken();
-        }
-        else
-        {
-            return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''));
-        }
+        return $builder->getToken($config->getSignerInstance(), InMemory::plainText($config->getPrivateKey() ?? ''));
     }
 
     /**
