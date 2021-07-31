@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Imi\Model\Traits;
 
-use Imi\Db\Query\Interfaces\IResult;
+use Imi\Db\Query\Field;
 use Imi\Model\ModelQueryResult;
+use Imi\Db\Query\Interfaces\IResult;
 
 trait TModelQuery
 {
@@ -29,7 +30,7 @@ trait TModelQuery
      */
     public function select(): IResult
     {
-        if ($this->option->field)
+        if ($this->hasCustomFields())
         {
             $this->isSetSerializedFields = true;
         }
@@ -51,6 +52,55 @@ trait TModelQuery
         }
 
         return parent::select();
+    }
+
+    private function hasCustomFields(): bool
+    {
+        $field = $this->option->field;
+        if (!$field)
+        {
+            return false;
+        }
+        if (\count($field) > 1)
+        {
+            return true;
+        }
+
+        $k = key($field);
+        $v = current($field);
+
+        if (is_numeric($k))
+        {
+            if ('*' === $v)
+            {
+                return false;
+            }
+            if ($v instanceof Field)
+            {
+                $field = $v;
+            }
+            else
+            {
+                $field = new Field();
+                $field->setValue($v, $this);
+            }
+        }
+        else
+        {
+            $field = new Field(null, null, $k, $v);
+        }
+        if ('*' !== $field->getField())
+        {
+            return true;
+        }
+        $table = $field->getTable();
+        $tableObject = $this->option->table;
+        if (null === $table || $table === $tableObject->getTable() || $table === $tableObject->getAlias())
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
