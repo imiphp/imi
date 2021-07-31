@@ -19,7 +19,7 @@ imi v0.0.1 版本开始，支持运行在 Swoole 环境中。
 
 启动服务: `vendor/bin/imi-swoole swoole/start`
 
-停止服务: `vendor/bin/imi-swoole swoole/start`
+停止服务: `vendor/bin/imi-swoole swoole/stop`
 
 重载服务: `vendor/bin/imi-swoole swoole/reload`
 

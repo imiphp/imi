@@ -4,7 +4,7 @@
 
 ## 方式一
 
-框架自带文件：`vendor/yurunsoft/imi/bin/imi`
+框架自带文件：`vendor/bin/imi-cli`
 
 用框架自带执行命令行，需要手动传入`--app-namesapce "项目命名空间"`参数
 

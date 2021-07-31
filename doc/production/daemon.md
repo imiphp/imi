@@ -21,8 +21,7 @@ Systemd 一般都已经集成在了现代 Linux 发行版中，使用它可以�
 ```ini
 [Unit]
 Description=test
-After=network.target
-After=syslog.target
+After=network.target syslog.target
 
 [Service]
 Type=simple

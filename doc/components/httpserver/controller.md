@@ -72,7 +72,7 @@ class Index extends HttpController
 
 ### $server
 
-详见：<https://doc.imiphp.com/core/server.html>
+详见：<https://doc.imiphp.com/v2.0/core/server.html>
 
 ### $request
 
